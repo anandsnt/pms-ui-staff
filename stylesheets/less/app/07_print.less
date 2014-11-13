@@ -1,4 +1,43 @@
-.container {
+/* 1. ROOT
+==========================================================*/
+* { 
+    text-shadow: none !important; 
+    filter:none !important; 
+    -ms-filter: none !important; 
+    -webkit-print-color-adjust:exact;
+}
+
+@page { margin: 1cm 0.5cm; }
+
+html {
+    #font > .sans-serif(12pt, 400, 1.3);
+    color: @textColor;
+    background: transparent;
+}
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+p, 
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4 { orphans: 3; widows: 3; }
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4 { page-break-after: avoid; }
+
+q {quotes: none}
+q:before, q:after {content: ""}
+
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+/* 4. LAYOUT
+==========================================================*/
+	
+/* App screens				==============================*/
+	.container {
         position: static;
         top: 0 !important; 
         left: 0 !important;
@@ -65,3 +104,910 @@
 
     .iScrollVerticalScrollbar,
     .iScrollHorizontalScrollbar { .hide; }
+
+/* Navigation sidebar		==============================*/
+	#main-menu,
+    #availability { display: none !important; }
+
+/* Nav Bar 					==============================*/
+	.nav-bar {
+        position: relative;
+        height: auto;
+        padding: 0;
+        background: transparent;
+        margin-bottom: 1cm;
+        .box-shadow(none);
+
+        .switch-button,
+        .back-button,
+        .show-mobile,
+        .icon-alert { display: none !important; }
+
+        h1 {
+            font-size: 18pt;
+            line-height: 1em;
+
+            span { 
+                font-size: 10pt; 
+
+                strong,
+                span { 
+                    display: inline; 
+                    font-weight: 400;
+                }
+            }
+        }
+
+        .logo {
+            margin: 0 auto;
+            .size(30px, 135px);
+            .show;
+
+            img { .size(100%, auto); }
+        }     
+    }
+
+/* 5. COMPONENTS
+==========================================================*/
+
+/* Reports 					==============================*/
+	#reports { .hide; }
+	
+	#report-update { .hide; }
+
+	#reports-details-wrap {
+		position: static !important;
+		height: auto !important;
+		overflow: auto !important;
+		background: transparent !important;
+	}
+
+	#report-details {
+		position: static !important;
+		height: auto !important;
+		overflow: auto !important;
+		background: transparent !important;
+
+		.report-header { .hide; }
+
+		.report-totals { 
+
+			padding: .3cm 0;
+			margin: 0 .5cm .75cm;
+			border-top: 2px solid rgba(0,0,0,.1);
+
+			ul li {
+				font-size: 13px;
+			}
+		}
+
+		.report-content {
+			height: auto !important;
+
+			> .wrapper { padding: 0; }
+
+			table {
+				table-layout: fixed;
+				border-collapse: collapse; 
+				margin-bottom: 0;
+
+				tr {	
+					page-break-after: always;
+					page-break-inside: avoid;
+						
+					th,
+					td {
+						page-break-after:always !important;
+						page-break-inside: avoid !important;
+						white-space: normal !important;
+						overflow: visible !important;
+						vertical-align: top !important;
+						background: transparent !important;
+						line-height: 1.1;
+						padding: .2cm 1cm .2cm 0;
+						border-bottom: 1px solid rgba(0,0,0,.1);
+						min-width: 15%;
+						max-width: 30%;
+						width: 30%;
+						word-break: break-all;
+					}
+				}
+
+				tfoot {
+					tr {
+						td {
+							color: @grey3;
+							border-bottom: 0;
+							padding-top: .5cm;
+
+							span { color: @textColor; }
+
+							.pagination { .hide(); }
+						}
+					}
+				}
+			}
+		}
+	}
+
+/* Guest Bill*/	
+	.overview, .block-item,.action-select { .hide; }
+    .logo-hide, .text-hide{.hide;}
+	#guest-card, #bills-tabs-nav, #signature-pad{ .hide; }
+
+	.reservation-header,.billing-information, .bill-summary-wrapper,.selectBill { .hide; }
+
+	.button, .total-stay-fees,.notice,.error error_message, button { .hide; }
+
+	.hotel_logo {
+		position: static;
+		top: auto;
+		right: auto;
+		text-align: center;
+		margin: 1cm auto .25cm auto;
+		.size(70px,316px);
+
+		img { 
+			max-height: 70px;
+			max-width: 316px;
+		}
+	}
+
+	
+    .print-billcard{
+    	display:block !important;
+
+    	.guest-info{
+
+    		table{
+    			width:100%;
+    			font-size:20px;
+    			tr:first-child{
+    				border-bottom: 1px solid black;
+    				padding-bottom:.25cm;
+    			}
+    			tr {
+    				page-break-after: always !important;
+    				page-break-inside: avoid !important;
+
+    				td:first-child, td:last-child{
+    					width:40%;
+    				}
+    				td:nth-child(2){
+    					width:20%;
+    				}
+    				td:first-child{
+    					text-align:left;
+    				}
+    				td:last-child{
+    					text-align:right;
+    				}
+
+
+    				td {							
+    					page-break-inside: avoid !important;
+    				}
+    			}
+            }
+        }
+
+    	.details {
+    		height: auto !important;
+    		overflow: auto !important;
+    		border-top: 2px solid rgba(0,0,0,.1);
+
+    		table{
+    			table-layout: fixed;
+    			border-collapse: collapse; 
+    			margin-bottom: 0;
+
+    			tr {	
+    				page-break-after: always;
+    				page-break-inside: avoid;
+    				
+    				th{
+    					padding-bottom:0.5cm !important;
+    				}
+
+    				th,
+    				td {
+    					page-break-after:always !important;
+    					page-break-inside: avoid !important;
+    					white-space: normal !important;
+    					overflow: visible !important;
+    					vertical-align: top !important;
+    					line-height: 1.1;
+    					padding: .2cm 1cm .2cm 0;
+    					border-bottom: 1px solid rgba(0,0,0,.1);
+    					min-width:14%;
+    					max-width:29%;
+    					width:29%;
+    					font-size:15px
+    				}
+    			}
+
+    			tfoot {
+    				tr {
+    					page-break-after: always !important;
+    					page-break-inside: avoid !important;
+    					td {
+    						page-break-after:always !important;
+    						page-break-inside: avoid !important;
+    						border-bottom: 0;
+    						padding-top: 1cm !important;
+    						font-size:15px;
+    					}
+    				}
+    			}
+    		}
+    	}
+
+    	.print-billcard {
+    		display:block !important;
+    		margin-top:-2cm;
+    		padding-top:5px;
+
+    		.guest-info{
+    			table{
+    					width:100%;
+    					font-size:20px;
+    					tr:first-child{
+    						border-bottom: 1px solid black;
+    						padding-bottom:.25cm;
+    					}
+    					tr {
+    							page-break-after: always !important;
+    							page-break-inside: avoid !important;
+
+    							td:first-child, td:last-child{
+    								width:40%;
+    							}
+    							td:nth-child(2){
+    								width:20%;
+    							}
+    							td:first-child{
+    								text-align:left;
+    							}
+    							td:last-child{
+    								text-align:right;
+    							}
+
+
+    							td {
+    								page-break-after:always !important;
+    								page-break-inside: avoid !important;
+    								padding:0;
+    							}
+    						}
+    			}
+    		}
+
+    		.bill-details{
+    			table {
+    			    border-collapse: collapse;
+    				width:100%;
+    				font-size:20px;
+    					
+    				tr {
+    					page-break-after: always !important;
+    					page-break-inside: avoid !important;
+    					th{
+    						text-align:center;
+    						font-weight:bold !important;
+    						border:1px solid #C0C0C0;
+    						padding:0.25cm 0;
+    					}
+    					td:first-child{
+    						text-align:center;
+    					}
+    					td:nth-child(2), td:nth-child(3), td:nth-child(4){
+    						text-align:right;
+    					}
+    					td {
+
+    						border:1px solid #C0C0C0;
+    						width:30%;
+    						page-break-after:always !important;
+    						page-break-inside: avoid !important;
+    						padding:.25cm .25cm 0;
+    					}
+    				
+    				}
+    			}
+    		}
+
+    		.amount-details{
+    			table {
+    			    border-collapse: collapse;
+    				width:100%;
+    				font-size:20px;
+    					
+    				tr {
+    					page-break-after: always !important;
+    					page-break-inside: avoid !important;
+    				
+    					td {
+    						text-align:right;
+    						border:1px solid #C0C0C0;
+    						width:30%;
+    						page-break-after:always !important;
+    						page-break-inside: avoid !important;
+    						padding:.25cm .25cm 0;
+    					}
+    				}
+    			}
+    		}
+    	}
+    }
+
+/* Work Management          ==============================*/
+    #worksheet-content {
+        margin: 0 auto;
+        width: 75%;
+
+        .worksheet-header,
+        .unassigned-rooms,
+        .assigned-rooms h2,
+        .sheet-placeholder { .hide; }
+
+        /* Worksheet room ***/           
+        .worksheet-room {
+            position: relative;
+            text-align: left;
+            line-height: 30pt;
+            vertical-align: middle;
+            margin: 0;
+            height: 38pt;
+            overflow: hidden;
+            border-bottom: 1px solid @grey2;
+            page-break-after: auto;
+            page-break-inside: avoid;
+            .float;
+            
+            h3 {
+                font-size: 30pt;
+                line-height: 1em;
+                font-weight: 700;
+                margin: 0;
+                .size(30pt, 4cm);
+                .pull-left;
+                
+                &.clean,
+                &.inspected { color: @green; }
+                &.dirty,
+                &.pickup { color: @red; }
+                &.out { color: @grey3; }
+            }
+
+            &.single-sheet {
+                padding: 4pt 34pt 4pt 0 !important;
+
+                .reservation-status {
+                    margin-top: 3pt;
+                    .size(24pt, 6.5cm);
+                    .pull-left;
+
+                    .guest-status { 
+                        margin-right: 8pt;
+                        .square(24pt);
+
+                        &.check-in { background-position: 8px -112px; }
+                        &.check-out { background-position: 8px -152px; }
+                        &.inhouse { background-position: 8px -192px; }
+                        &.no-show { display: none !important; }
+                    }
+
+                    .current,
+                    .next { 
+                        font-size: 10pt;
+                        line-height: 24pt;
+                        text-transform: uppercase;
+                        .size(24pt, 50%);
+                        .pull-left;
+
+                        &.check-in { color: @green; }
+                        &.check-out { color: @red; }
+                        &.inhouse { color: @blue; }
+                    }
+                }
+
+                .icon-queued {
+                    background-position: 6px -4175px;
+                    margin-right: 4pt;
+                    .hide-text;
+                    .square(30pt);
+                    .show;
+                    .pull-right;
+                }
+                
+                .vip {
+                    font-size: 8pt;
+                    line-height: 20pt;
+                    margin: 5pt 4pt 0 0;
+                    .square(20pt);
+                    .pull-right;
+                }
+
+                .button,
+                .no-action {
+                    position: absolute;
+                    top: 4pt;
+                    left: auto !important;
+                    right: 0 !important;
+                    padding: 0;
+                    #border-radius > .rounded(0px);
+                    .box-shadow(none);
+                    .square(30pt);
+                    .hide-text;
+                    .no-transition;
+                    .show;
+
+                    &.green { .hide; }
+
+                    &.red { 
+                        background: transparent !important;
+                        border: 2px solid @grey3;
+                    }
+                }
+
+                .no-action { 
+                    background: transparent !important;
+                    border: 2px solid @green;
+
+                    &:after {
+                        content: "✔";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        text-indent: 0;
+                        text-align: center;
+                        font-size: 20pt;
+                        line-height: 30pt;
+                        color: @green;
+                        .square(100%);
+                        .show;
+                    }
+                }
+            }
+
+            &.multi-sheet {
+                color: #fff;
+                padding: 4pt 0 !important;
+
+                h3 { color: @textColor; }
+
+                .guest,
+                .room {
+                    position: relative;
+                    font-size: 10pt;
+                    line-height: 24pt;
+                    text-transform: uppercase;
+                    color: @textColor;
+                    margin-top: 3pt;
+                    height: 24pt;
+                    .show;
+                }
+
+                .guest {
+                    padding-left: 30pt;   
+                    width: 4cm;
+                    .pull-left;                 
+                    
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        background-image: @icons;
+                        background-repeat: no-repeat;
+                        .square(24pt);
+                        .show;
+                    }
+
+                    &.check-in {
+                        color: @green; 
+
+                        &:before {
+                            background-color: @green;
+                            background-position: 8px -112px; 
+                        }
+                    }
+
+                    &.check-out { 
+                        color: @red; 
+
+                        &:before {
+                            background-color: @red;
+                            background-position: 8px -152px;
+                        }
+                    }
+
+                    &.inhouse { 
+                        color: @blue; 
+
+                        &:before {
+                            background-color: @blue;
+                            background-position: 8px -192px;
+                        }
+                    }
+
+                    &.no-show { 
+                        &:before { .hide; }
+                    }
+                }
+
+                .room {
+                    padding-right: 34pt;
+                    text-align: left;
+                    color: @textColor;
+                    width: 5cm;
+                    .pull-right;
+
+                    &:before {
+                        position: absolute;
+                        top: -3pt;
+                        right: 0;
+                        .square(30pt);
+                        .show;
+                    }
+
+                    &.clean,
+                    &.inspected { 
+                        color: @green; 
+
+                        &:before {
+                            content: "✔";
+                            text-align: center;
+                            font-size: 20pt;
+                            line-height: 30pt;
+                            color: @green;
+                            border: 2px solid @green;
+                            .show;
+                        }
+
+                    }
+
+                    &.dirty { color: @red; }
+                    &.pickup { color: @orange; }
+
+                    &.dirty,
+                    &.pickup {
+                        &:before { 
+                            content: "";
+                            border: 2px solid @grey3; 
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Assigned rooms ***/
+        .assigned-rooms {
+
+            .worksheet-content { border-top: 1px solid @grey2; }
+            
+            &.single-sheet {
+                
+                .worksheet-summary { 
+                    text-align: center;
+                    width: auto;
+                    margin: 0 auto 8pt;
+                    .show;
+
+                    li {
+                        display: inline-block;
+                        font-size: 10pt;
+                        line-height: 1em;
+                        text-align: center;
+                        color: @grey3;
+                        margin: 0 8pt 0 0;
+                        padding-right: 8pt;
+                        border-bottom: 0;
+                        border-right: 1px solid rgba(0,0,0,.1);
+                        width: auto;
+
+                        span { 
+                            font-size: 28pt;
+                            font-weight: 300;
+                            color: @textColor;
+                            float: none;
+                        }
+
+                        &:last-child {
+                            margin-right: 0;
+                            padding-right: 0;
+                            border-right: 0;
+                        }
+                    }
+                }
+            }
+
+            &.multi-sheet {
+            
+                .sheet-content {
+                    page-break-after: always;
+                    page-break-inside: auto;
+                    
+                    .button { 
+                        font-size: 21pt;
+                        text-transform: none;
+                        color: @textColor;
+                        padding: 0;
+                        margin-bottom: 8pt;
+                        #border-radius > .rounded(0px);
+                        .box-shadow(none);
+                        .no-transition;
+                        .show;
+
+                        &.brand-colors { background: transparent !important; }
+                    }
+
+                    .data {
+                        text-align: center;
+                        width: auto;
+                        margin: 0 auto 8pt;
+                        .show;  
+
+                        li {
+                            display: inline-block;
+                            font-size: 28pt;
+                            line-height: 1em;
+                            text-align: center;
+                            font-weight: 300;
+                            color: @textColor;
+                            margin: 0 1cm 0 0;
+                            padding: 0;
+                            border-bottom: 0;
+                            width: auto;
+
+                            span { 
+                                display: inline-block;
+
+                                &.completed { margin-right: 8pt; }
+                                &.total { padding-left: 8pt; border-left: 1px solid @grey3; }
+                            }
+
+                            &.shift { 
+                                .total { color: @grey3; }
+                            }
+                            
+                            &.departures { 
+                                color: @red;
+                                .total { border-color: @red; }
+                            }
+                            
+                            &.stayovers { 
+                                color: @blue;
+                                .total { border-color: @blue; }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+/* Journal                   ==============================*/
+    #journal {
+
+        .journal-header,
+        .journal-print,
+        .journal-history { .hide; }
+
+        .journal-content {
+
+            .journal-grid {
+                font-size: 14px;
+                text-transform: uppercase;
+
+                .grid-header {
+                    width: 100%;
+                    padding: 0 40px 0 10px;
+                    background: @grey1;
+                    .float;
+
+                    li {
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        line-height: 40px;
+                        margin: 0 20px 0 0;
+                        .pull-left;
+
+                        &.value { 
+                            width: 80px;
+                            margin: 0;
+                        }
+                    }
+                    
+                    &.payment {
+                        li {
+                            &.name { .calc-width(40, 30); }
+                            &.code { .calc-width(30, 30); }
+                            &.number { .calc-width(20, 30); }
+                        }
+                    }
+                }
+
+                .grid-footer {
+                    font-size: 14px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    line-height: 40px;
+                    margin: 0;
+                    
+                    &.payment {
+                        padding-left: -webkit-calc(~"90% - 130px");
+                        padding-left: -moz-calc(~"90% - 130px");
+                        padding-left: calc(~"90% - 130px");
+
+                        span { margin-left: 20px; }
+                    }
+                }
+
+                .toggle {
+                    color: @textColor;
+                    line-height: 40px;
+                    padding: 0 10px;
+                    margin: 0;
+                    page-break-inside: avoid;
+                    .show;
+                    .float;
+
+                    strong,
+                    span { .pull-left; }
+
+                    .code,
+                    .name,
+                    .number { margin-right: 20px; }
+
+                    .name { font-weight: 600; }
+                    .value { width: 80px; }
+                    
+                    &.has-arrow { background-image: none; }
+                }
+
+                /* 1st level ***/
+                .grid-group {
+                    display: inline;
+
+                    > .toggle {
+                        border-bottom: 1px solid @grey3;
+
+                        &.revenue-title {
+                            .name { .calc-width(100, 100); }
+                        }
+
+                        &.payment-title {
+                            .name { .calc-width(40, 40); }
+                            .code { .calc-width(30, 40); }
+                            .number { .calc-width(20, 40); }
+                        }                      
+                    }
+                }  
+
+                /* 2nd level ***/
+                .grid-charge {
+                    .hide;
+
+                    > .toggle {
+                        border-bottom: 1px solid @grey3;
+
+                        .code { width: 80px; }
+                        .name { .calc-width(100, 200); }
+                    }
+                } 
+
+                /* 3rd level **/
+                .grid-items {
+                    margin: 0;
+                    width: 100%;
+                    text-transform: uppercase;
+                    table-layout: auto;
+                    border-collapse: collapse; 
+                    border-spacing: 0;
+                    .hide;
+
+                    tr {
+                        page-break-after: always;
+                        page-break-inside: avoid;
+
+                        th { white-space: normal; }
+
+                        th,
+                        td {
+                            font-size: 10pt;
+                            line-height: 1em;
+                            vertical-align: top;
+                            text-align: left;
+                            page-break-after: always;
+                            page-break-inside: avoid;
+                            white-space: normal;
+                            padding: 8pt 4pt;
+                        }
+
+                        td { border-bottom: 1px solid @grey3; }
+                    }
+
+                    thead {
+                        th { 
+                            font-weight: 400;
+                            color: @grey3;
+                            border-bottom: 1px solid @grey3;
+                        }
+                    }
+                }
+
+                &.print-details {
+                    .grid-header { background: transparent; }
+                    
+                    .grid-group {
+                        > .toggle {
+                            background: @grey1;
+                            border-bottom: 0;
+                        }
+                    }
+
+                    .grid-charge { 
+                        display: block !important; 
+
+                        &.hidden { display: block !important; }
+                    }
+
+                    .grid-items { 
+                        display: table !important; 
+
+                        &.hidden { display: table !important; }
+                    }
+                }
+            }
+
+            .journal-shift {
+                margin: 0 auto;
+                width: 50%;
+
+                .shift-details {
+                    
+                    caption {
+                        font-size: 10pt;
+                        color: @grey3;
+                        margin-bottom: 8pt;
+                        text-align: center;
+
+                        &.closed { color: @red; }
+                        &.opened { color: @green; }
+                    }
+
+                    tr {
+
+                        th,
+                        td { line-height: 18pt; }
+
+                        th { width: 80%; }
+
+                        td {
+                            width: 20%;
+                            font-size: 18pt;
+                            font-weight: 600;
+                            text-align: right;
+
+                            &.entry { 
+                                font-size: 10pt;
+                                line-height: 40px;
+                                font-weight: 400;
+
+                                input { width: 4cm; }
+                            }
+                        }
+                    }
+                }
+
+                button { .hide; }
+            }
+        }
+    }
+
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
