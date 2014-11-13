@@ -52,9 +52,10 @@
                                 <div class="rate" ng-show="travelAgent.rate"><span class="label">Rate</span> {{travelAgent.rate.difference}}{{ travelAgent.rate.based_on.name }}{{travelAgent.rate.surplus}}</div>
                             </div>
                             <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
-                            <span class="icons icon-location"> <span class="no-right-margin" ng-bind-html="'{{ travelAgent.address.city }}'|highlight:searchData.travelAgentCard.travelAgentCity:false"></span><span ng-show="travelAgent.address.state" class="no-right-margin">,&nbsp;</span>{{ travelAgent.address.state }}</span>
-                            <span class="icons icon-phone">{{ travelAgent.phone }}</span>
-                            <span class="icons icon-email-grey">{{ travelAgent.email }}</span>
+                            <span class="icons" ng-class="{'icon-location' : travelAgent.address.city != '' && travelAgent.address.city != null}"> 
+                            <span class="no-right-margin" ng-bind-html="'{{ travelAgent.address.city }}'|highlight:searchData.travelAgentCard.travelAgentCity:false"></span><span ng-show="travelAgent.address.state" class="no-right-margin">,&nbsp;</span>{{ travelAgent.address.state }}</span>
+                            <span class="icons" ng-class="{'icon-phone' : travelAgent.phone != '' && travelAgent.phone != null}">{{ travelAgent.phone }}</span>
+                            <span class="icons" ng-class="{'icon-email-grey': travelAgent.email != '' && travelAgent.email != null}">{{ travelAgent.email }}</span>
                         </div>
                     </a>
                 </li>

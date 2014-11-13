@@ -43,9 +43,9 @@
                                      <div class="rate" ng-show="company.rate"><span class="label">Rate</span> {{company.rate.difference}}{{ company.rate.based_on.name }}{{company.rate.surplus}}</div>
                                 </div>
                                 <span class="confirmation">{{ company.address.postalCode }}</span>
-                                <span class="icons icon-location"><span class="no-right-margin" ng-bind-html="'{{ company.address.city }}'|highlight:searchData.companyCard.companyCity:false"></span><span class="no-right-margin" ng-show="company.address.state">,&nbsp;</span>{{ company.address.state }}</span>
-                                <span class="icons icon-phone">{{ company.phone }}</span>
-                                <span class="icons icon-email-grey">{{ company.email }}</span>
+                                <span class="icons" ng-class="{'icon-location': company.address.city != '' && icon-location != null}"><span class="no-right-margin" ng-bind-html="'{{ company.address.city }}'|highlight:searchData.companyCard.companyCity:false"></span><span class="no-right-margin" ng-show="company.address.state">,&nbsp;</span>{{ company.address.state }}</span>
+                                <span class="icons" ng-class="{'icon-phone': company.phone != '' && company.phone != null}">{{ company.phone }}</span>
+                                <span class="icons" ng-class="{'icon-email-grey': company.email != '' && company.email != null}">{{ company.email }}</span>
                             </div>
                         </a>
                     </li>
