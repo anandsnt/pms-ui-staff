@@ -10,16 +10,16 @@
 
                     <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="revenue-title toggle">
                         <strong ng-show="level1.show" class="name">{{level1.name}}</strong>
-                        <span ng-show="level1.show" class="value">{{currencySymbol}}{{level1.total}}</span>
+                        <span ng-show="level1.show" class="value">{{currencySymbol}}{{ getTotalAmountOfGroupItem(index1) | number: precisonTwo}}</span>
                     </a>
 
                     <!-- Second level - charge codes -->
                     <div ng-repeat="(index2 ,level2) in level1.charge_codes" ng-show="level1.active" class="grid-charge">
 
                         <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowLevel2(index1, index2)}" ng-show="level2.show && level2.filterFlag" class="revenue-title toggle">
-                            <span class="code" ng-show="level2.show">{{level2.id}}</span>
+                            <span class="code short-text" ng-show="level2.show">{{level2.code}}</span>
                             <strong class="name" ng-show="level2.show">{{level2.name}}</strong>
-                            <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.total}}</span>
+                            <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.total | number: precisonTwo}}</span>
                         </a>
 
                         <!-- Third level - transactions  -->
@@ -43,9 +43,9 @@
                                     <td>{{level3.reservation_number}}</td>
                                     <td>{{level3.type}}</td>
                                     <td>{{level3.details}}</td>
-                                    <td>{{level3.time}}</td>
-                                    <td>{{level3.debit}}</td>
-                                    <td>{{level3.credit}}</td> 
+                                    <td>{{getTimeString(level3.date, level3.time)}}</td>
+                                    <td>{{currencySymbol}}{{level3.debit | number: precisonTwo}}</td>
+                                    <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td> 
                                 </tr>
                                 
                             </tbody>
@@ -53,7 +53,7 @@
                         
                     </div>
                 </div>
-                
+                <p class="grid-footer payment"><span translate>TOTAL</span> {{currencySymbol}}{{ getTotalOfAllChargeGroups() | number: precisonTwo}}</p>
             </div>
 
     </div>

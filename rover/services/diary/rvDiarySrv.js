@@ -1,5 +1,5 @@
-sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryStore',
-        function($q, RVBaseWebSrv, rvBaseWebSrvV2, store) {
+sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryStore', 'rvDiaryUtil',
+        function($q, RVBaseWebSrv, rvBaseWebSrvV2, store, util) {
                 var std_params = {
                         begin_date: undefined,
                         begin_time: undefined,
@@ -11,13 +11,17 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room_type_id: undefined
                     },
                     hops = Object.prototype.hasOwnProperty,
+                    slice = Array.prototype.slice,
                     define = Object.defineProperty,
                     api_config = {
                         Availability: {
                             type: 'GET',
                             url: 'api/hourly_availability',
                             params: _.extend({}, std_params, std_params_addl),
-                            namespace: 'results.availability'
+                            namespace: 'results',
+                            store: {
+                                data: []
+                            }
                         },
                         AvailabilityCount: {
                             type: 'GET',
@@ -25,7 +29,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             params: _.extend({}, std_params, std_params_addl),
                             namespace: 'availability_count_per_hour',
                             store: {
-                                data: {}
+                                data: []
                             }
                         },
                         Occupancy: {
@@ -34,9 +38,9 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             params: dateRangeTransfer,
                             namemspace: 'reservations',
                             store: {
-                                data: undefined,
+                                data: [],
                                 index: {
-                                    id: {},
+                                    reservation_d: {},
                                     room_id: {},
                                     room_type: {}
                                 }
@@ -46,13 +50,13 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             type: 'GET',
                             url: 'api/rooms',
                             params: undefined,
-                            namespace: 'results',
+                            namespace: 'rooms',
                             store: {
-                                data: {},
+                                data: [],
                                 index: {
                                     id: {},
-                                    reservation_id: {},
-                                    room_type: {} 
+                                    room_no: {},
+                                    room_type_id: {} 
                                 }
                             }
                         },
@@ -62,7 +66,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             params: undefined,
                             namespace: 'results',
                             store: {
-                                data: {},
+                                data: [],
                                 index: {
                                     id: {}
                                 }
@@ -74,7 +78,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             params: undefined,
                             namespace: 'results',
                             store: {
-                                data: {},
+                                data: [],
                                 index: {
                                     room_type_id: {}
                                 }
@@ -86,6 +90,23 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     },
                     request = function(klass) {
                         return _.partial(APIs[klass.type], klass.url, klass.params);
+                    },
+                    resolve = function(fn, data) {
+                        var self = this;
+
+                        if(_.has(data, this.namespace) && _.isArray(data[this.namespace])) {
+                            this.store.data = slice.call(data[this.namespace]);
+                        
+                            if(_.has(this.store, 'index')) {
+                                _.each(Object.keys(this.store.index), function(by) {
+                                    var index_by =by;
+
+                                    self.store.index[index_by] = _.indexBy(self.store.data, index_by);
+                                });
+                            }
+                        }
+
+                        return fn();
                     };
                 
                 function dateRangeTransfer(start_date, end_date) {
@@ -100,38 +121,17 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     };
                 }
 
-
-               /* function resolve(config, data) {
-                    config.store.data = data[config.namespace];
-
-                    _.map(_.keys(config.store.index), function(key) {
-                        this.index[key] = _.groupBy(this.data, key);
-                    }.bind(config.store));
-                }*/
-
                 this.load = function(arrival_time) {     
-                        var start_date = new Date(arrival_time - 7200000),
+                    var start_date = new Date(arrival_time - 7200000),
                         end_date = new Date(arrival_time + 86400000),
+                        arrival_times = this.fetchArrivalTimes(15),
                         mt = request(api_config.Maintenance),
                         rt = request(api_config.RoomType),
                         rm = request(api_config.Room),
-                        oc = request(api_config.Occupancy);
+                        oc = request(api_config.Occupancy),
+                        q = $q.defer();
 
                         api_config.Occupancy.params = dateRangeTransfer(start_date, end_date);
-
-                        var resolve = function(fn, data) {
-                            this.store.data = data[this.namespace];
-                            var temp = _.chain(Object.keys(this.store.index))
-                                .map(function(by) {
-                                    var index_by = by.slice(3);
-
-                                    return index_by;
-                                })
-                                .indexBy()
-                                .value();
-
-                            return fn();
-                        }
 
                         mt().then(resolve.bind(api_config.Maintenance, rt))
                             .then(resolve.bind(api_config.RoomType, rm))
@@ -143,52 +143,102 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     room_types = api_config.RoomType,
                                     maintenance = api_config.Maintenance;
 
-                                var o_r = _.chain(occ.store.data).invoke(store.normalizeOccupancy).groupBy('room_id').value();
+                                //var o_r = _.chain(occ.store.data).invoke(store.normalizeOccupancy).groupBy('room_id').value();
 
-                                return {
+                                _.each(room_types.store.data, function(rt) {
+                                    if(rt.id in maintenance.store.index.room_type_id) {
+                                        rt.housekeeping_task_completion_time = maintenance.store.index.room_type_id[rt.id].housekeeping_task_completion_time;
+                                    }
+                                });
+
+                                store.transform({
                                     start_date: start_date,
+                                    end_date: end_date,
+                                    arrival_times: arrival_times,
                                     rooms: rooms.store.data,
-                                    room_types: room_types.store.data
-                                };
+                                    room_types: room_types.store.data,
+                                    occupancy: occ.store.data
+                                });
+
+                                q.resolve(store.payload());
                             }
-                        });
-                
+                        ));
+
+                    return q.promise;
+                };
 
                 //_.extend(api_config.Occupancy.params, configOccParams());
 
-                this.FilterOptions = {
-                    fetchArrivalTimes: function(base_interval) {
-                        var times = [],
-                            day_min = 24 * 60,
-                            q = $q.defer(),
-                            min, cur_time;
+                this.fetchArrivalTimes = function(base_interval) {
+                    var times = [],
+                        day_min = 24 * 60,
+                        min, cur_time;
 
-                        for (var i = 0; i < day_min; i += base_interval) {
-                            min = i % 60;
-                            cur_time = parseInt(i / 60, 10) + ':' + (min === 0 ? '00' : min);
+                    for (var i = 0; i < day_min; i += base_interval) {
+                        min = i % 60;
+                        cur_time = parseInt(i / 60, 10) + ':' + (min === 0 ? '00' : min);
 
-                            times.push(cur_time);
-                        }
+                        times.push(cur_time);
+                    }
 
-                        q.resolve({
-                            arrival_times: times
+                    return times;
+                };
+
+                this.fetchRates = function() {
+                    var q = $q.defer();
+
+                    rvBaseWebSrvV2.getJSON('/api/rates')
+                        .then(function(data) {
+                            q.resolve(data.results);
+                        }, function(data) {
+                            q.reject(data);
                         });
 
-                        return q.promise;
-                    },
-                    fetchRates: function() {
-                        var q = $q.defer();
+                    return q.promise;
+                };
 
-                        rvBaseWebSrvV2.getJSON('/api/rates')
-                            .then(function(data) {
-                                q.resolve(data.results);
-                            }, function(data) {
-                                q.reject(data);
+                this.Availability = function(start_date, end_date, rate_id) {
+                    var ava = api_config.Availability,
+                        q = $q.defer(),
+                        gen_uid = _.uniqueId('available-'); 
+
+                    ava.params = dateRangeTransfer(start_date, end_date);
+                    ava.params.rate_id = rate_id;
+
+                    request(ava)().then(resolve.bind(ava, function() {
+                        var set = _.pick(ava.store.data.shift(), 'availability');
+
+                        if(_.isObject(set) && _.has(set, 'availability')) {
+                            var data = set.availability,
+                                stay_date = data.date,
+                                reference_slot, 
+                                row_item_data, 
+                                row_data,
+                                merge = _.partial(store.mergeAvailableSlots, start_date, end_date, gen_uid, rate_id);
+
+                            data.forEach(function(occupancy) {
+                                reference_slot = merge(occupancy);
+
+                                if (!row_item_data && reference_slot) {
+                                    row_item_data = util.deepCopy(reference_slot);
+                                    row_data = _.findWhere(store.payload().rooms, {
+                                        id: row_item_data.room_id
+                                    });
+                                }
                             });
 
-                        return q.promise;
-                    };
+                            q.resolve({
+                                start_date:     start_date,
+                                end_date:       end_date,
+                                stay_dates:     [data.date],
+                                row_data:       row_data,
+                                row_item_data:  row_item_data
+                            });
 
+                        };
+                    }));
+
+                    return q.promise;
                 };
 
                 this.fetchAvailability = function(start_date, end_date, rate_id, room_type_id) {

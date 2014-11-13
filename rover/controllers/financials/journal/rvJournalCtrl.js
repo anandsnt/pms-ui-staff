@@ -82,6 +82,19 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }, 200);
 	};
 
+    $scope.refreshRevenueTab = function(){
+        $rootScope.$broadcast('REFRESHREVENUECONTENT');
+        $rootScope.$broadcast('UpdateRevenueTabTotal');
+        $scope.data.selectedChargeGroup = 'ALL';
+        $scope.data.selectedChargeCode  = 'ALL';
+    };
+
+    $scope.refreshPaymentTab = function(){
+        $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+        $rootScope.$broadcast('UpdatePaymentTabTotal');
+        $scope.data.selectedPaymentType = 'ALL';
+    };
+
     // On selecting 'All Departments' radio button.
     $scope.selectAllDepartment = function(){
     	$scope.data.filterData.checkedAllDepartments = true;
@@ -90,17 +103,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if($scope.data.activeTab == '0' ){
             $scope.resetRevenueFilters();
-            $rootScope.$broadcast('REFRESHREVENUECONTENT');
-            $scope.data.selectedChargeGroup = 'ALL';
-            $scope.data.selectedChargeCode  = 'ALL';
+            $scope.refreshRevenueTab();
         }
         else if ($scope.data.activeTab == '1' ){
            $scope.resetPaymentFilters();
-           $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-           $scope.data.selectedPaymentType = 'ALL';
+           $scope.refreshPaymentTab();
         }
         $scope.data.filterTitle = "All Departments";
-        
     };
 
     // Clicking each checkbox on Departments
@@ -163,14 +172,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
             if($scope.data.activeTab == '0' ){
                 $scope.filterRevenueByDepartmentsOrEmployees();
-                $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
+                $scope.refreshRevenueTab();
+                
             }
             else if ($scope.data.activeTab == '1' ){
                 $scope.filterPaymentByDepartmentsOrEmployees();
-                $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+                $scope.refreshPaymentTab();
             }
         } 
-        
     };
 
     // To setup Lists of selected ids of employees and departments.
@@ -217,7 +226,28 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         return itemFoundInDeptOrEmpLists;
     };
 
-    // To Filter by Departments or Employees
+
+
+    /*********************************************************************************************
+
+        Flags used for REVENUE DATA and PAYMENTS DATA filters.
+
+        # All flags are of type boolean true/false.
+
+    'show'  :   Used to show / hide each items on Level1 , Level2 and Level 3.
+                We will set this flag as true initially.
+                While apply Department/Employee filter we will set this flag as false
+                for the items we dont want to show.
+
+    'filterFlag': Used to show / hide Level1 and Level2 based on filter flag applied on print box.
+                Initially it will be true for all items.
+
+    'active':   Used for Expand / Collapse status of each tabs on Level1 and Level2.
+                Initially everything will be collapsed , so setting as false.
+
+    ***********************************************************************************************/
+
+    // To Filter by Departments or Employees for REVENUE data.
     $scope.filterRevenueByDepartmentsOrEmployees = function(){
 
         $scope.resetRevenueFilters();
@@ -259,6 +289,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         });
     };
 
+    // To Filter by Departments or Employees for PAYMENT data.
     $scope.filterPaymentByDepartmentsOrEmployees = function(){
 
         $scope.resetPaymentFilters();
@@ -368,7 +399,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             }
             else{
                 angular.forEach(payment_types.transactions,function(transactions, index3) {
-                    transactions.show = false;
+                    transactions.show = true;
                 });
             }
         });
@@ -398,6 +429,25 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	else $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
     	$scope.$broadcast("CLOSEPRINTBOX");
         $scope.data.isActiveRevenueFilter = false;
+    };
+
+    // Utility method use to check data being blank or undefined.
+    $scope.escapeNullData = function(data){
+
+        var returnData = data;
+
+        if((data == "") || (typeof data == 'undefined') || (data == null)){
+            returnData = '-';
+        }
+        
+        return returnData;
+    };
+
+    /* get the time string from the date-time string */
+
+    $scope.getTimeString = function(date, time){
+        var date = $filter('date')(date, $rootScope.dateFormat);
+        return date + ', ' + time;
     };
 
     

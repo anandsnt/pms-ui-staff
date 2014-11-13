@@ -101,6 +101,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		return this.isAM() ? 'AM' : 'PM';
 	};
 	Time.prototype.padZeroes = function(time) {
+		time = +time;
 		return time < 10 ? '0' + time :time;
 	};
 	Time.prototype.toString = function(asAMPM) {

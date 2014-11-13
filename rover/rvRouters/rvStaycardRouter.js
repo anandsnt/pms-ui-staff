@@ -35,8 +35,13 @@ angular.module('stayCardModule', [])
             controller: 'rvDiaryCtrl',
             resolve: {
                 payload: function(rvDiarySrv) {
-                    return rvDiarySrv.load(Date.now());
-                }
+                    var start_date = Date.now();
+
+                    return rvDiarySrv.load(start_date);
+                }//,
+                /*arrival_times: function() {
+                    return rvDiarySrv.fetchArrivalTimes(15);
+                }*/
             }
         });
 

@@ -12,8 +12,10 @@ sntRover
 		'rvDiarySrv', 
 		'rvDiaryMetadata',
 		'rvDiaryUtil',
-		'rvDiaryConfig',
+		//'rvDiaryConfig',
 		'payload',
+		//'arrival_times',
+		'$vault',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -26,8 +28,9 @@ sntRover
 			 rvDiarySrv, 
 			 meta, 
 			 util, 
-			 config,
-			 payload) {
+			 payload,
+			 //arrival_times,
+			 $vault) {
 
 	$scope.$emit('hideLoader');
 
@@ -35,12 +38,14 @@ sntRover
 
 	$scope = _.extend($scope, payload);
 
-	$scope.data 		= $scope.rooms;
-	$scope.stats 		= [];
-	$scope.start_time 	= $scope.start_date.toComponents().time;
-	$scope.end_time 	= $scope.end_date.toComponents().time;
-	
-	delete $scope.rooms;
+	$scope.data 		 = $scope.rooms;
+	$scope.stats 		 = [];
+	$scope.start_time 	 = $scope.start_date.toComponents().time;
+	$scope.end_time 	 = $scope.end_date.toComponents().time;
+	//$scope.arrival_times = filter.arrival_times;
+	//$scope.rates 		 = filters.rates;
+
+	//delete $scope.rooms;
 
 	$scope.selectedReservations = [];
 
@@ -234,7 +239,7 @@ sntRover
 		    		break;	 
 		    	} 
 		    } else {
-		    	copy = util.copyReservation(row_item_data);
+		    	copy = util.shallowCopy({}, row_item_data);
 	    		copy.selected = selected;
 
 	    		util.updateReservation(row_data, copy);
@@ -350,9 +355,9 @@ sntRover
 							   start.getHours()  + time_span.hours,
 							   start.getMinutes() + time_span.minutes,
 							   0, 0),
-				rt_filter = _.isEmpty(filter.room_type) ? (filter.room_type = _.range($scope.room_types.length)) : filter.room_type.id;
+				rt_filter = _.isEmpty(filter.room_type) ? (filter.room_type = _.pluck($scope.room_types, 'id')) : filter.room_type.id;
 
-			rvDiarySrv.fetchAvailability(start, end, 389, rt_filter)
+			rvDiarySrv.Availability(start, end, 417, rt_filter)
 			.then($scope.initPassiveEditMode, responseError)
 			.then($scope.renderGrid, responseError);
 		};
@@ -384,7 +389,7 @@ sntRover
             }, responseError);  
         }, 500);
 
-		$scope.reserveRooms = function(row_data, row_item_data) {
+		/*$scope.reserveRooms = function(row_data, row_item_data) {
 			var props = $scope.gridProps;
 			
 			util.updateReservation(row_data, row_item_data);
@@ -395,7 +400,7 @@ sntRover
 	    	props.currentResizeItemRow 	= undefined;
 
 	    	$scope.renderGrid();
-		};
+		};*/
 
 	    /*_________________________________________________________*/
 		/*END PROTOTYPE EVENT HOOKS -- */
@@ -576,13 +581,14 @@ sntRover
 			conflicting_reservation,
 			m_start = meta.occupancy.start_date,
 			m_end = meta.occupancy.end_date,
+			m_id = meta.occupancy.id,
 			maintenance_span = $scope.gridProps.display.maintenance_span_int * $scope.gridProps.display.px_per_int / $scope.gridProps.display.px_per_ms;
 
 			reservations.forEach(function(reservation, idx) {
 				var res_end_date = reservation[m_end] + maintenance_span,
 					new_end_date = orig_reservation[m_end] + maintenance_span;
 
-				if(reservation.id !== orig_reservation.id) {
+				if(reservation[m_id] !== orig_reservation[m_id]) {
 					if((orig_reservation[m_start] >= reservation[m_start] && orig_reservation[m_start] <= res_end_date) ||
 					   (reservation[m_start] >= orig_reservation[m_start] && res_end_date <= new_end_date) ||
 					   (orig_reservation[m_start] >= reservation[m_start] && new_end_date <= res_end_date) ||

@@ -4,7 +4,7 @@ sntRover
 		room: {
 			id: 'id',
 			number: 'room_no',
-			type: 'room_type',
+			type: 'room_type_name',
 			type_id: 'room_type_id',
 			row_children: 'occupancy',
 			status: 'room_status'
@@ -13,7 +13,8 @@ sntRover
 			id: 'reservation_id',
 			room_id: 'room_id',
 			room_type: 'room_type',
-			status: 'reservatopm_status',
+			status: 'reservation_status',
+			room_status: 'room_service_status',
 			guest: 'reservation_primary_guest_full_name',
 			start_date: 'arrival',
 			end_date: 'departure',

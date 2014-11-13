@@ -79,5 +79,15 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+        this.fetchMinTime = function(){
+        	var deferred = $q.defer();
+            var url = '/api/hourly_rate_min_hours';
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

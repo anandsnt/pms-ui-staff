@@ -40,9 +40,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 		this.cacheDirty = true;
 
 		var roomList = {};
-		this.fetchRoomList = function(businessDate) {
+		this.fetchRoomList = function(params) {
 			var deferred = $q.defer();
-			var url = '/house/search.json?date=' + businessDate;
+			var url = '/house/search.json?date=' + params.businessDate;
 
 
 			/**
@@ -435,9 +435,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 				return false;
 			};
 
-			if (room.assignee_maid) {
+			if ( !!room.assignee_maid.id ) {
 				return {
-					'name': angular.copy(room.assignee_maid),
+					'name': angular.copy(room.assignee_maid.name),
 					'class': 'assigned'
 				}
 			} else {

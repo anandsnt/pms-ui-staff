@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.isSubmitButtonEnabled = false;
@@ -88,13 +88,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.init = function() {
 			$scope.data = {};
 			if ($stateParams.reservation == "HOURLY") {
-
+				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
 
 				if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
 					var getRoomsSuccess = function(data) {
+
 						var roomsArray = {};
 						angular.forEach(data.rooms, function(value, key) {
 							var roomKey = value.id;
@@ -131,10 +132,45 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}, 1500);
 		};
 
+		var ratesFetched = function(data) {
+			$scope.otherData.taxesMeta = data.tax_codes;
+			$scope.reservationData.totalTax = 0;
+			_.each($scope.reservationData.rooms, function(room, roomNumber) {
+				var taxes = _.where(data.tax_information, {
+					rate_id: parseInt(room.rateId)
+				});
+
+				/**
+				 * Need to calculate taxes IIF the taxes are configured for the rate selected for the room (as there could be more than one room for multiple reservations)
+				 */
+
+				if (taxes.length > 0) {
+					/**
+					 * Calculating taxApplied just for the arrival date, as this being the case for hourly reservations.
+					 */
+					var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes[0].tax, roomNumber);
+					_.each(taxApplied.taxDescription, function(description, index) {
+						if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+                            $scope.reservationData.taxDetails[description.id] = description;
+                        } else {
+                        	$scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
+                        }
+					});
+					$scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+					$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
+				}
+			});
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 500);
+		};
+
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
+
 			angular.forEach(temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
 				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
+				value['roomNumber'] = roomsArray[value.room_id].room_no;
 			});
 			$scope.reservationData.rooms = [];
 			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
@@ -150,9 +186,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
 
 			$scope.reservationData.totalStayCost = 0;
-
+			var rateIdSet = [];
 			_.each($scope.reservationData.rooms, function(room) {
 				room.stayDates = {};
+				rateIdSet.push(room.rateId);
 				room.rateTotal = room.amount;
 				$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.amount);
 				var success = function(data) {
@@ -175,6 +212,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					};
 				}
 			});
+
+			$scope.invokeApi(RVReservationSummarySrv.getTaxDetails, {
+				rate_ids: rateIdSet
+			}, ratesFetched);
 		};
 
 		/**
@@ -357,10 +398,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			//              }
 			//          $scope.reservationData.rooms[0].room_id = 324;
 			// $scope.reservationData.rooms.push(room);
-			// data.room_id = [];
-			// angular.forEach($scope.reservationData.rooms, function(room, key) {
-			//   data.room_id.push(room.room_id);
-			// });
+			data.room_id = [];
+			angular.forEach($scope.reservationData.rooms, function(room, key) {
+			  data.room_id.push(room.room_id);
+			});
 			//to delete ends here
 			return data;
 
@@ -368,8 +409,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.proceedCreatingReservation = function() {
 			var postData = computeReservationDataToSave();
-			console.log("----------------POST DATA-----------------------");
-			console.log(postData);
 			// return false;
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');
@@ -396,6 +435,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				} else {
 					$scope.reservationData.reservationId = data.id;
 					$scope.reservationData.confirmNum = data.confirm_no;
+					$scope.reservationData.rooms[0].confirm_no = data.confirm_no;
 					$scope.reservationData.status = data.status;
 					$scope.viewState.reservationStatus.number = data.id;
 				}
@@ -424,8 +464,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.errorMessage = data;
-				// $scope.data.MLIData= {};
+				var showRoomNotAvailableDialog = false;
+				var error = '';
+				angular.forEach(data, function(value, key){
+					if(value == "Room not available for the selected number of hours. Please choose another room"){
+						showRoomNotAvailableDialog = true;
+						error = value;
+					}
+					
+				});
+				if(showRoomNotAvailableDialog){
+					$scope.showRoomNotAvailableDialog(error);
+				} else {
+					$scope.errorMessage = data;
+				}
+				
+				
+
 			};
 
 			var updateSuccess = function(data) {
@@ -445,6 +500,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//updating reservation
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
 			}
+		};
+		$scope.showRoomNotAvailableDialog = function(errorMessage){
+			
+				$scope.status = "error";
+				$scope.popupMessage = errorMessage;
+				ngDialog.open({
+		    		template: '/assets/partials/reservation/rvShowRoomNotAvailableMessage.html',
+		    		controller: 'RVShowRoomNotAvailableCtrl',
+		    		className: '',
+		    		scope: $scope
+		    	});
+			
 		};
 
 		/**
@@ -500,6 +567,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * Creates the reservation and on success, goes to the confirmation screen
 		 */
 		$scope.submitReservation = function() {
+			
 			$scope.errorMessage = [];
 			// CICO-9794
 			if (($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email == "") || ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail == "")) {

@@ -26,8 +26,10 @@ sntRover
                 formatIncomingTimeData,
                 mergeOccupanciesInASCTime;
 
-            /*normalizeRooms = function(room_types, rooms) {
+            normalizeRooms = function(room_types, rooms) {
 				var normalize = _.partial(normalizeRoom, room_types);
+
+                room_types.unshift({ id: 'All', name: 'All', description:'All' });
 
 				rooms.forEach(function(room) {
 					rooms = normalize(room);
@@ -35,7 +37,13 @@ sntRover
 			};
 
 			normalizeRoom = function(room_types, room) {
-				var rt = _.findWhere(room_types, {
+				var rt;
+
+                room.id = +room.id;
+                room.room_no = +room.room_no;
+                room.room_type_id = +room.room_type_id; 
+
+                rt = _.findWhere(room_types, {
 					id: room.room_type_id
 				});
 
@@ -60,7 +68,7 @@ sntRover
 				occupancies.forEach(function(occupancy) {
 					normalize(occupancy);
 				});
-			};*/
+			};
 
             normalizeOccupancy = function(room_types, occupancy) {
                 var m = meta.occupancy,
@@ -74,7 +82,7 @@ sntRover
                     occupancy.arrival_time);
                 occupancy[m.end_date] = normalizeTime(occupancy.departure_date,
                     occupancy.departure_time);
-                occupancy[m.maintenance] = normalizeMaintenanceInterval(room_type.departure_cleanning_time, 15);
+                occupancy[m.maintenance] = normalizeMaintenanceInterval(room_type.housekeeping_task_completion_time, 15);
 
                 occupancy[m.room_type] = room_type.name; //room_type.name;
             };
@@ -111,8 +119,11 @@ sntRover
 
             normalizeAvailableOccupancy = function(start_date, end_date, rate_id, gen_uid, slot) {
                 var rooms = store.rooms,
-                    room, room_types = store.room_types,
+                    room, 
+                    room_types = store.room_types,
                     pos = -1;
+
+                slot.id = +slot.id;
 
                 room = _.findWhere(rooms, {
                     id: slot.id
@@ -120,8 +131,8 @@ sntRover
 
                 if (room) {
                     slot.temporary = true;
-                    slot.room_id = room.id;
-                    slot.room_type_id = room.room_type_id;
+                    slot.room_id = +room.id;
+                    slot.room_type_id = +room.room_type_id;
                     slot.reservation_status = 'available';
                     slot.room_service_status = '';
                     slot.reservation_id = gen_uid;
@@ -165,12 +176,10 @@ sntRover
             };
 
             normalizeMaintenanceInterval = function(time) {
-                var t_a = +time.slice(0, -3),
-                    t_b = +time.slice(-2),
-                    intervals = t_b / 15,
-                    intervals_per_hr = 60 / 15;
+                var intervals = +time / 15,
+                    intervals_per_hr = 4;
 
-                return intervals_per_hr * t_a + parseInt(intervals);
+                return parseInt(intervals); //intervals_per_hr * t_a + parseInt(intervals);
             };
 
             linkRooms = function(rooms, occupancies) {
@@ -222,18 +231,15 @@ sntRover
                 payload: function() {
                     return store;
                 },
-                normalizeOuccupancy: normalizeOccupancy,
-                normalizeAvailableOccupancy: normalizeAvailableOccupancy,
                 transform: function(payload, filterData) {
                     compile(_.extend(store, util.mixin.apply(null, slice.call(arguments))));
                 },
                 mergeAvailableSlots: function(start_date, end_date, guid, rate_id, slot) {
                     return normalizeAvailableOccupancy(start_date, end_date, rate_id, guid, slot);
                 },
-                mergeOccupancis: function(occupancies) {
+                mergeOccupancies: function(occupancies) {
                     mergeOccupanciesInASCTime(occupancies);
-                },
-                normalizeMaintenanceInterval: normalizeMaintenanceInterval
+                }
             };
   }
 

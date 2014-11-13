@@ -36,6 +36,11 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 }
             }                      
         });
+        /**
+        * IMPORTANT: 'rover.dashboardFromAdmin' state points to dashboard screen
+        * It is needed for opening sub-menu popup actions('EOD' and 'postcharge') on navigating from admin to rover.
+        * All future changes made in 'rover.dashboard' state are required for that state too
+        **/
         $stateProvider.state('rover.dashboard', {
             url: '/dashboard',   
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
@@ -60,5 +65,35 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             url: '/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
             controller: 'RVhouseKeepingDashboardController',                       
-        });           
+        });  
+
+        /**
+        * adding extra state to be initiated when user is in admin screens
+        **/
+        $stateProvider.state('rover.dashboardFromAdmin', {
+            url: '/dashboard/:type',    
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            controller: 'RVdashboardController',
+            resolve: {
+                dashBoarddata: function(RVDashboardSrv) {
+                    return RVDashboardSrv.fetchDashboardDetails();
+                }
+            } ,
+             onEnter: function (ngDialog,$stateParams) {
+
+               if($stateParams.type === 'changeBussinessDate'){
+                    ngDialog.open({
+                        template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+                        controller: 'RVEndOfDayModalController'
+                    });
+               }
+               else if($stateParams.type === 'postCharge'){
+                     ngDialog.open({
+                        template: '/assets/partials/postCharge/outsidePostCharge.html',
+                        controller: 'RVOutsidePostChargeController',
+                    });
+               }    
+
+            }                                   
+        });    
 });

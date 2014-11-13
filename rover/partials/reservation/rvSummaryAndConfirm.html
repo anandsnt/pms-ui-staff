@@ -99,7 +99,7 @@
                 <div class="rooms" ng-repeat="room in reservationData.rooms">
                     <div class="title">
                         <span translate>ROOM</span>
-                        {{$index + 1}}
+                        {{room.roomNumber}}
                         <div class="count">
                             <span><span class="label" translate>ADULTS</span>{{room.numAdults}}</span>
                             <span><span class="label" translate>CHILDREN</span>{{room.numChildren}}</span>
@@ -159,16 +159,14 @@
                     
                     <label for="email" translate>GUEST_EMAIL_ADDRESS</label>
                     <label class="checkbox inline">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestPrimaryEmailChecked}"></span>
-                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestPrimaryEmailChecked"/>
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestPrimaryEmailChecked}" ng-click= "otherData.isGuestPrimaryEmailChecked = !otherData.isGuestPrimaryEmailChecked;"></span>
                         <span>&nbsp;</span>
                     </label>
                     <input class="summary_email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()">
 
                     <label for="email" translate>ADDITIONAL_EMAIL_ADDRESS</label>
                     <label class="checkbox inline">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestAdditionalEmailChecked}"></span>
-                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestAdditionalEmailChecked"/>
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestAdditionalEmailChecked}" ng-click="otherData.isGuestAdditionalEmailChecked = !otherData.isGuestAdditionalEmailChecked"></span>
                         <span>&nbsp;</span>
                     </label>
                     <input class="summary_email" ng-model="otherData.additionalEmail">

@@ -101,31 +101,31 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
 
   //Function to be deleted - CICO-9433 - Sample button in dashboard screen
   $scope.setReservationDataFromDiaryScreen = function() {
-
+    console.log('hello');
     //$rootScope.temporaryReservationDataFromDiaryScreen = {
     var temporaryReservationDataFromDiaryScreen = {
-      "is_from_diary_screen": true,
+
       "arrival_date": "2014-07-15",
       "departure_date": "2014-07-16",
       "arrival_time": "04:30 AM",
       "departure_time": "09:15 PM",
       "rooms": [{
-        "room_id": "268",
-        "rateId": "226",
-        "numAdults": "2",
+        "room_id": "265",
+        "rateId": "382",
+        "numAdults": "1",
         "numChildren": "2",
         "numInfants": "4",
         "amount": 300
       }, {
-        "room_id": "269",
-        "rateId": "227",
+        "room_id": "270",
+        "rateId": "382",
         "numAdults": "2",
         "numChildren": "2",
         "numInfants": "4",
         "amount": 250
       }, {
-        "room_id": "270",
-        "rateId": "228",
+        "room_id": "295",
+        "rateId": "382",
         "numAdults": "2",
         "numChildren": "2",
         "numInfants": "4",
