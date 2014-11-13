@@ -4,8 +4,8 @@ sntRover.controller('RVOutsidePostChargeController',
 		'$scope',
 		'RVChargeItems',
 		'RVSearchSrv',
-		'$timeout',
-		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout) {
+		'$timeout','ngDialog',
+		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout,ngDialog) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
@@ -32,11 +32,28 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.chargePosted = false;
 				$scope.cardAttached = {};
 			};
+
+			$scope.closeDialog = function(){
+  				ngDialog.close();
+  			};
 			
 			var oldSearchGuestText = '';
 			var oldSearchRoomValue = '';
-			
-			$scope.init();
+			var fetchAllItemsSuccessCallback = function(data){
+				$scope.$emit('hideLoader');
+				$scope.fetchedData = data;
+				$scope.init();
+			}
+			/**
+			* $scope.fetchedData will be undefined incase the controller is initiated 
+			* from admin side.So call service and assign response data.
+			*/
+			if($scope.fetchedData){
+				$scope.init();
+			}
+			else{
+				 $scope.invokeApi(RVChargeItems.fetchAllItems, '', fetchAllItemsSuccessCallback);
+			}
 			$scope.setScroller('result_showing_area_post_charg');
 			$scope.roomSearchStatus = false;
 			$scope.guestCompanySearchStatus = false;

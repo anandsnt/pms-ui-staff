@@ -3,7 +3,7 @@
                             <div class="sort">
                                 <span class="reorder" ng-show="content.children.length > 0" ng-click= "toggleExpansion($index)"></span>
                                 <a  ng-click = "componentSelected(content.component_type, content.id)" class="cms-name">{{content.name}}</a>
-                                <span class="cms-type">{{content.component_type}}</span>
+                                <span class="cms-type cms-content-type">{{content.component_type == 'PAGE'? 'ITEM_LABEL' : content.component_type | translate}}</span>
                                 <em class="cms-date">{{getFormattedTime(content.updated_at)}}</em>
                                 <div class="cms-activate">
                                     <div class="switch-button" ng-class="{'on':content.status}">
