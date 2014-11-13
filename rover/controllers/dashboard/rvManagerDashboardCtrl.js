@@ -104,7 +104,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     console.log('hello');
     //$rootScope.temporaryReservationDataFromDiaryScreen = {
     var temporaryReservationDataFromDiaryScreen = {
-      "is_from_diary_screen": true,
+
       "arrival_date": "2014-07-15",
       "departure_date": "2014-07-16",
       "arrival_time": "04:30 AM",
@@ -112,27 +112,24 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
       "rooms": [{
         "room_id": "265",
         "rateId": "382",
-        "numAdults": "2",
+        "numAdults": "1",
         "numChildren": "2",
         "numInfants": "4",
-        "amount": 300,
-        "confirm_no": 6746
+        "amount": 300
       }, {
         "room_id": "270",
         "rateId": "382",
         "numAdults": "2",
         "numChildren": "2",
         "numInfants": "4",
-        "amount": 250,
-        "confirm_no": 6746
+        "amount": 250
       }, {
         "room_id": "295",
         "rateId": "382",
         "numAdults": "2",
         "numChildren": "2",
         "numInfants": "4",
-        "amount": 450,
-        "confirm_no": 6746
+        "amount": 450
       }]
     };
     $vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(temporaryReservationDataFromDiaryScreen));
