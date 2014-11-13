@@ -803,14 +803,13 @@ q:before, q:after {content: ""}
                 .grid-header {
                     width: 100%;
                     padding: 0 40px 0 10px;
-                    background-color: @textColor; 
+                    background: @grey1;
                     .float;
 
                     li {
                         font-size: 14px;
                         font-weight: 600;
                         text-transform: uppercase;
-                        color: #fff;
                         line-height: 40px;
                         margin: 0 20px 0 0;
                         .pull-left;
@@ -835,7 +834,6 @@ q:before, q:after {content: ""}
                     font-weight: 600;
                     text-transform: uppercase;
                     line-height: 40px;
-                    background-color: @grey2;
                     margin: 0;
                     
                     &.payment {
@@ -852,6 +850,7 @@ q:before, q:after {content: ""}
                     line-height: 40px;
                     padding: 0 10px;
                     margin: 0;
+                    page-break-inside: avoid;
                     .show;
                     .float;
 
@@ -873,8 +872,7 @@ q:before, q:after {content: ""}
                     display: inline;
 
                     > .toggle {
-                        background-color: @grey1;
-                        margin-bottom: 10px;
+                        border-bottom: 1px solid @grey3;
 
                         &.revenue-title {
                             .name { .calc-width(100, 100); }
@@ -893,9 +891,7 @@ q:before, q:after {content: ""}
                     .hide;
 
                     > .toggle {
-                        color: #fff;
-                        background-color: @grey4;
-                        margin: 0;
+                        border-bottom: 1px solid @grey3;
 
                         .code { width: 80px; }
                         .name { .calc-width(100, 200); }
@@ -929,33 +925,26 @@ q:before, q:after {content: ""}
                             white-space: normal;
                             padding: 8pt 4pt;
                         }
+
+                        td { border-bottom: 1px solid @grey3; }
                     }
 
                     thead {
                         th { 
-                            color: @textColor;
-                            background: @grey2; 
-                            font-weight: 600;
-                        }
-                    }
-
-                    tbody {
-                        tr {
-                            &:nth-child(even) {
-                                td { 
-                                    background-color: @grey1;
-                                }
-                            }
+                            font-weight: 400;
+                            color: @grey3;
+                            border-bottom: 1px solid @grey3;
                         }
                     }
                 }
 
                 &.print-details {
+                    .grid-header { background: transparent; }
+                    
                     .grid-group {
                         > .toggle {
-                            color: #fff;
-                            background-color: @textColor; 
-                            margin-bottom: 0;
+                            background: @grey1;
+                            border-bottom: 0;
                         }
                     }
 
