@@ -35,18 +35,24 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 
     /** Handle Expand/Collapse on Level1 **/
     $scope.clickedFirstLevel = function(index1){
-        var toggleData = $scope.data.revenueData.charge_groups[index1];
+        var toggleItem = $scope.data.revenueData.charge_groups[index1];
         if($scope.checkHasArrowLevel1(index1)){
-            toggleData.active = !toggleData.active;
-            refreshRevenueScroller(); 
+            toggleItem.active = !toggleItem.active;
+            refreshRevenueScroller();
+            // When the system is in detailed view and we are collapsing each first Level
+            // We have to toggle Details to Summary on print box.
+            if(!toggleItem.active && !$scope.data.isRevenueToggleSummaryActive){
+                if($scope.isAllRevenuesCollapsed())
+                    $scope.data.isRevenueToggleSummaryActive = true;
+            }
         }
     };
     
     /** Handle Expand/Collapse on Level2 **/
     $scope.clickedSecondLevel = function(index1, index2){
-        var toggleData = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
+        var toggleItem = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
         if($scope.checkHasArrowLevel2(index1, index2)){
-            toggleData.active = !toggleData.active;
+            toggleItem.active = !toggleItem.active;
             refreshRevenueScroller();
         }
     };
@@ -112,5 +118,14 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             $scope.data.revenueData.total_revenue = total;
         }, 100);
     });
+
+    // To check whether all revenue tabs are collpased or not.
+    $scope.isAllRevenuesCollapsed = function(){
+        var isAllTabsCollapsed = true;
+        angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, key) {
+            if(charge_groups.active) isAllTabsCollapsed = false;
+        });
+        return isAllTabsCollapsed;
+    };
 
 }]);

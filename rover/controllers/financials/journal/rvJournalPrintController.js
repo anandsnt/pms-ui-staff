@@ -236,7 +236,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	            });
         	}
         	else{
-        		if(isDetailView){
+        		if(isDetailView && payment_types.transactions.length >0){
         			payment_types.active = true;
         		}
         		else{
