@@ -135,9 +135,9 @@
 "IMAGE_SPEC": "(680x320px in size)",
 "DETAILS_LABEL": "details",
 
-"ASSIGN_LABEL": "Assign",
-"TO_SECTION_LABEL": "to section",
-"TO_CATEGORY_LABEL": "to category",
+"ASSIGN_LABEL": "Assign ",
+"TO_SECTION_LABEL": "Assign to section",
+"TO_CATEGORY_LABEL": "Assign to category",
 
 "CONFIRM_LABEL":"Confirm",
 "SELECT_SECTION_LABEL": "Select section",
