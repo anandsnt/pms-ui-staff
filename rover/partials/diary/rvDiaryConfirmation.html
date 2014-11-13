@@ -1,0 +1,40 @@
+<div role="dialog" id="modal" class="modal-show">
+    <div ng-cloak class="modal-content diary-confirmation">
+    <!--<form method="post" action="" id="confirm-diary-reservation" name="confirm-diary-reservation" class="modal-content diary-confirmation">-->
+        <button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+        <span id="diary-modal-title" class="h2 message">
+            Reserve <span>{{title}}</span>?
+        </span>
+
+        <div class="diary-reserved">
+            <ul class="details">
+                <li class="arrival">
+                    <span>{{arrival_time}}</span>
+                    {{arrival_date}}
+                </li>
+                <li class="departure">
+                    <span>{{departure_time}}</span>
+                    {{departure_date}}
+                </li>
+            </ul>
+            <div id="rooms-reserved" class="rooms scrollable">
+                <ul class="wrapper">
+                    <li ng-repeat="room in rooms"> 
+                        <span class="type">{{room.room_type}}</span>
+                        <span class="room">{{room.room_no}}</span>
+                        <span class="price">{{occupancy.amount}}</span>
+                        <span class="icons icon-remove-10" ng-show="selectedReservations.length > 0">-</span> 
+                        <!-- Don't show remove button when only one room selected -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="button orange" type="button" ng-click="selectAdditional()">Select Additional Cabin</button>
+            <button class="button green" type="button" ng-click="reserveRooms()">Reserve {{title}}</button>
+            <button class="button blank" type="button" ng-click="selectAdditional()">Cancel</button>
+        </div>
+    </div>  
+    <!--</form>-->
+</div>

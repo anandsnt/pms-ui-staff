@@ -161,7 +161,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "createReservation"
           }, {
             title: "MENU_ROOM_ASSIGNMENT",
-            action: ""
+            action: "rover.diary.reservations",
+            standAlone: true,
+            menuIndex: 'diary'
           }, {
             title: "MENU_POST_CHARGES",
             action: "",
@@ -169,7 +171,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "postcharges"
           }, {
             title: "MENU_CASHIER",
-            action: ""
+            action: "rover.financials.journal({ id: 2 })",
+            menuIndex:"cashier"
           }, {
             title: "MENU_END_OF_DAY",
             action: "",
@@ -228,10 +231,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           title: "MENU_FINANCIALS",
           //hidden: true,
           action: "",
-          iconClass: "icon-finance",
+          iconClass: "icon-financials",
           submenu: [{
-            title: "MENU_REVENUE",
-            action: ""
+            title: "MENU_JOURNAL",
+            action: "rover.financials.journal({ id : 0})",
+            menuIndex:"journals"
           }, {
             title: "MENU_ACCOUNTING",
             action: ""
@@ -591,9 +595,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
+
     /**
      * Handles the bussiness date change in progress
      */
+
+    var LastngDialogId = "";
+    
+    $scope.closeBussinnesDatePopup = function(){
+      ngDialog.close(LastngDialogId,"");
+    }
+
+    $rootScope.$on('ngDialog.opened', function (e, $dialog) {
+      LastngDialogId = $dialog.attr('id');
+    });
+
     $rootScope.showBussinessDateChangingPopup = function() {
 
       // Hide loading message
@@ -601,13 +617,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       //if already shown no need to show again and again
       if (!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone && !$rootScope.isCurrentUserChangingBussinessDate) {
         $rootScope.isBussinessDateChanging = true;
-        ngDialog.open({
+        var $dialog =  ngDialog.open({
           template: '/assets/partials/common/bussinessDateChangingPopup.html',
           className: 'ngdialog-theme-default1 modal-theme1',
           controller: 'bussinessDateChangingCtrl',
           closeByDocument: false,
           scope: $scope
-        });
+        });       
       }
     };
 
@@ -649,7 +665,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($rootScope.default_dashboard != 'HOUSEKEEPING') {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
-          'type': type
+          'type': type,
+          'from_page': 'DASHBOARD'
         });
       }
     };
@@ -661,7 +678,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       } else {
         $state.go('rover.search', {
-          'type': 'QUEUED_ROOMS'
+          'type': 'QUEUED_ROOMS',
+          'from_page': 'DASHBOARD'
         });
       }
     };

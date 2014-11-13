@@ -152,6 +152,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }, fetchBasedonSuccess);
         }
         var manipulateAdditionalDetails = function(data) {
+            // hourly rate?
+            $scope.rateData.is_hourly_rate = data.is_hourly_rate;
+
             // rules and restrictions
             $scope.rateData.min_advanced_booking = data.min_advanced_booking;
             $scope.rateData.max_advanced_booking = data.max_advanced_booking;
