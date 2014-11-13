@@ -3,7 +3,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 												 '$state', 
 												 '$vault', 
 												 'ngDialog',
-	function($scope, $rootScope, $state, $valut, ngDialog) {
+	function($scope, $rootScope, $state, $vault, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.rooms 			= _.pluck($scope.selectedReservations, 'room');
