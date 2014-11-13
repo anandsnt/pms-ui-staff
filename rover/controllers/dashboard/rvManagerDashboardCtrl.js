@@ -105,10 +105,10 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     //$rootScope.temporaryReservationDataFromDiaryScreen = {
     var temporaryReservationDataFromDiaryScreen = {
       "is_from_diary_screen": true,
-      "arrival_date": "2014-07-15",
-      "departure_date": "2014-07-16",
-      "arrival_time": "04:30 AM",
-      "departure_time": "09:15 PM",
+      "arrival_date": "2014-11-14",
+      "departure_date": "2014-11-15",
+      "arrival_time": "04:00 PM",
+      "departure_time": "09:00 PM",
       "rooms": [{
         "room_id": "265",
         "rateId": "382",
