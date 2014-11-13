@@ -204,18 +204,16 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			return false;
 		};
 
-		var successOfAllCheckin = function(data) {
+		var successOfAllCheckin = function(data) {		
 			$scope.$emit("hideLoader");
 			$scope.successMessage = 'Successful checking in.';
 		};
 
-		var failureOfCheckin = function(errorMessage){
+		var failureOfCheckin = function(errorMessage){			
 			$scope.$emit("hideLoader");
 			$scope.errorMessage = errorMessage;
-		};
-		var successOfEachCheckin = function(data){
+		};		
 
-		};
 		$scope.checkin = function(){
 			/*
 				Please one min..
@@ -225,12 +223,14 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			var confirmationIDs = [];
 			var promises = [];
 			var data = null;
+			$scope.$emit("showLoader");
 			for(var i = 0; i < $scope.reservationData.rooms.length; i++){
 				confirmationIDs.push($scope.reservationData.rooms[i].confirm_no);
 				data = {
 					'reservation_id' : $scope.reservationData.rooms[i].confirm_no
 				};
-				promises.push($scope.invokeApi(RVBillCardSrv.completeCheckin, data, successOfEachCheckin));
+				//directly calling without base ctrl
+				promises.push(RVBillCardSrv.completeCheckin(data));
 			}
 			$q.all(promises).then(successOfAllCheckin, failureOfCheckin);					
 		};
