@@ -102,8 +102,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			}
        	});
        	$scope.data.selectedChargeCode = 'ALL';
-
-       	$scope.calcRevenueTotal();
 	};
 
 	// On changing charge code on PRINT filter
@@ -174,6 +172,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             		if(charge_codes.transactions.length > 0) charge_codes.active = true;
             	}
             	else{
+            		charge_groups.active =  false;
             	 	charge_codes.active = false;
             	}
             });
@@ -212,8 +211,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	        	payment_types.filterFlag = false;
 	        }
         });
-
-        $scope.calcPaymentTotal();
 	};
 
 	/*
@@ -233,6 +230,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	            		if(credit_cards.transactions.length >0) credit_cards.active = true;
 	            	}
 	            	else{
+	            		payment_types.active = false;
 	            		credit_cards.active = false;
 	            	}
 	            });
@@ -288,36 +286,5 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
 	     */
 	};
-
-	// To calculate Total revenue amount.
-	$scope.calcRevenueTotal = function(){
-        var total = 0;
-        angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
-            if(charge_groups.filterFlag && charge_groups.show){
-                total+= charge_groups.total;
-            }
-        });
-        $scope.data.revenueData.calculatedTotalAmount = total;
-    };
-
-    // To calculate Total payment amount.
-    $scope.calcPaymentTotal = function(){
-        var total = 0;
-        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-            if( payment_types.show && payment_types.filterFlag ){
-                total+= payment_types.amount;
-            }
-        });
-        $scope.data.paymentData.calculatedTotalAmount = total;
-    };
-
-    $scope.$on('UPDATEREVENUETOTAL',function(){
-    	$scope.calcRevenueTotal();
-    });
-
-    $scope.$on('UPDATEPAYMENTTOTAL',function(){
-    	$scope.calcPaymentTotal();
-    });
-
 
 }]);
