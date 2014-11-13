@@ -6,11 +6,6 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 												 'ngDialog',
 	function($scope, $rootScope, $state, $stateParams, rvDiaryStoreSrv, ngDialog) {
 		BaseCtrl.call(this, $scope);
-
-		$scope.rooms.forEach(function(room, idx) {
-
-		});
-
 		$scope.title = ($scope.rooms.length > 1 ? 'these cabins' : 'this cabin');
 
 		(function() {
@@ -29,6 +24,16 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 			$scope.departure_time 	= compB.time.toString(true);
 			$scope.departure_date 	= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year;
 
+			$scope.selectedReservations.forEach(function(slot, idx) {
+				$scope.selectionsForVault.push({       
+					room_id: slot.room.id,
+			        rateId: slot.reservation.rate_id,
+			        numAdults: 1,
+			        numChildren: 0,
+			        numInfants: 0,
+			        amount: slot.reservation.amount
+				});
+			});
 		})();
 
 		$scope.selectAdditional = function() {
@@ -43,14 +48,19 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 			/*$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
 				reservation: $scope.selectedReservations
 			});*/
-			$state.go('reservations/hourly', {
-				rooms: $scope.rooms,
-				reservations: $scope.reservations
+			$scope.selectionsForVault.arrival_date ='2014-07-15';
+	      	$scope.selectionsForVault.departure_date ='2014-07-16';
+	      	$scope.selectionsForVault.arrival_time = '04:30 AM';
+	      	$scope.selectionsForVault.departure_time = '09:15 PM';
+
+			$state.go('rover.reservations.mainCard.stayCard.summaryAndConfirm', {
+				reservation: 'HOURLY'
 			});
 		};
 
 		$scope.closeDialog = function() {
 			ngDialog.close();
 		};
-	}
-]);
+
+		$scope.selectionsForVault = [];
+}]);

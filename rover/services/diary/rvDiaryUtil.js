@@ -1,5 +1,5 @@
 sntRover
-.factory('rvDiaryUtilSrv', ['rvDiaryMetadata',
+.factory('rvDiaryUtil', ['rvDiaryMetadata',
     function (rvDiaryMetadata) {
     	var meta = rvDiaryMetadata,
     		occ_meta = meta.occupancy,
@@ -20,7 +20,13 @@ sntRover
     		shallowCopy,
     		deepCopy,
     		copyArray,
-    		mixin;
+    		mixin,
+            inherit;
+
+        inherit = function(child, base) {
+            child.prototype = Object.create(base.prototype);
+            child.prototype.constructor = child;
+        };
 
 		mixin = function() {
 			var objects = slice.call(arguments),

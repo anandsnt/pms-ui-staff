@@ -11,7 +11,8 @@ sntRover
 		'RVGuestCardSrv',
 		'rvDiarySrv', 
 		'rvDiaryMetadata',
-		'rvDiaryUtilSrv',
+		'rvDiaryUtil',
+		'rvDiaryConfig',
 		'payload',
 	function($scope, 
 			 $rootScope, 
@@ -25,6 +26,7 @@ sntRover
 			 rvDiarySrv, 
 			 meta, 
 			 util, 
+			 config,
 			 payload) {
 
 	$scope.$emit('hideLoader');
@@ -34,6 +36,7 @@ sntRover
 	$scope = _.extend($scope, payload);
 
 	$scope.data 		= $scope.rooms;
+	$scope.stats 		= [];
 	$scope.start_time 	= $scope.start_date.toComponents().time;
 	$scope.end_time 	= $scope.end_date.toComponents().time;
 	
