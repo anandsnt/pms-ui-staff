@@ -44,60 +44,50 @@ sntRover.service('RVHkRoomStatusSrv', [
 			var deferred = $q.defer();
 			var url = '/house/search.json?date=' + params.businessDate;
 
+			$http.get(url)
+				.success(function(response, status) {
+					if (response.status == "success") {
+						roomList = response.data;
 
-			/**
-			 * CICO-8620 Caching is turned OFF for now
-			 * TODO : Need to turn it on later.. Use the cacheDirty flag at the Workmanagement and staycard controller
-			 * [Assuming they are the places where the stuff gets changed]
-			 */
-			if (roomList.hasOwnProperty('rooms') && roomList.rooms.length && !this.cacheDirty) {
-				deferred.resolve(roomList);
-			} else {
-				$http.get(url)
-					.success(function(response, status) {
-						if (response.status == "success") {
-							roomList = response.data;
+						for (var i = 0, j = roomList.rooms.length; i < j; i++) {
+							var room = roomList.rooms[i];
 
-							for (var i = 0, j = roomList.rooms.length; i < j; i++) {
-								var room = roomList.rooms[i];
+							// lets set this so that we can avoid
+							room.display_room = true;
 
-								// lets set this so that we can avoid
-								room.display_room = true;
+							// reduce scope search
+							room.description = room.hk_status.description;
 
-								// reduce scope search
-								room.description = room.hk_status.description;
+							room.is_occupied = room.is_occupied == 'true' ? true : false;
+							room.is_vip = room.is_vip == 'true' ? true : false;
 
-								room.is_occupied = room.is_occupied == 'true' ? true : false;
-								room.is_vip = room.is_vip == 'true' ? true : false;
+							// single calculate the class required
+							// will require additional call from details page
+							that.setRoomStatusClass(room, roomList.checkin_inspected_only);
 
-								// single calculate the class required
-								// will require additional call from details page
-								that.setRoomStatusClass(room, roomList.checkin_inspected_only);
+							// set the leaveStatusClass or enterStatusClass value
+							that.setReservationStatusClass(room);
 
-								// set the leaveStatusClass or enterStatusClass value
-								that.setReservationStatusClass(room);
+							room.timeOrIn = calculateTimeOrIn(room);
+							room.timeOrOut = calculateTimeOrOut(room);
 
-								room.timeOrIn = calculateTimeOrIn(room);
-								room.timeOrOut = calculateTimeOrOut(room);
+							room.assigned_staff = calculateAssignedStaff(room);
 
-								room.assigned_staff = calculateAssignedStaff(room);
-
-								room.ooOsTitle = calculateOoOsTitle(room);
-							}
-
-							deferred.resolve(roomList);
+							room.ooOsTitle = calculateOoOsTitle(room);
 						}
-					}.bind(this))
-					.error(function(response, status) {
-						if (status == 401) {
-							// 401- Unauthorized
-							// so lets redirect to login page
-							$window.location.href = '/house/logout';
-						} else {
-							deferred.reject(response);
-						}
-					});
-			}
+
+						deferred.resolve(roomList);
+					}
+				}.bind(this))
+				.error(function(response, status) {
+					if (status == 401) {
+						// 401- Unauthorized
+						// so lets redirect to login page
+						$window.location.href = '/house/logout';
+					} else {
+						deferred.reject(response);
+					}
+				});
 
 			return deferred.promise;
 		}
