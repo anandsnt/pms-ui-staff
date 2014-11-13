@@ -786,8 +786,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var diff = (nowY - startY);
 
 				// we move with the swipe
-				$rooms.style.webkitTransform = 'translateY(' + diff + 'px)';
-				$notify.style.webkitTransform = 'translateY(' + diff + 'px)';
+				$rooms.style.webkitTransform = 'translate3d(0, ' + diff + 'px, 0)';
+				$notify.style.webkitTransform = 'translate3d(0, ' + diff + 'px, 0)';
 
 				loadNotify(diff);
 			};
@@ -808,6 +808,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				$rooms.style.WebkitTransition = '';
 				$notify.style.WebkitTransition = '';
+
+				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
+				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
 
 				$notify.classList.add('show');
 
@@ -862,8 +865,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$rooms.style.WebkitTransition = '-webkit-transform 0.3s';
 				$notify.style.WebkitTransition = '-webkit-transform 0.3s';
 
-				$rooms.style.webkitTransform = 'translateY(0)';
-				$notify.style.webkitTransform = 'translateY(0)';
+				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
+				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
 
 				// 'touchmove' handler is not necessary
 				$rooms.removeEventListener(touchMoveHandler);
