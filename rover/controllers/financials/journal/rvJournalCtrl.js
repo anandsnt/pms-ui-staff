@@ -82,6 +82,19 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }, 200);
 	};
 
+    $scope.refreshRevenueTab = function(){
+        $rootScope.$broadcast('REFRESHREVENUECONTENT');
+        $rootScope.$broadcast('UpdateRevenueTabTotal');
+        $scope.data.selectedChargeGroup = 'ALL';
+        $scope.data.selectedChargeCode  = 'ALL';
+    };
+
+    $scope.refreshPaymentTab = function(){
+        $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+        $rootScope.$broadcast('UpdatePaymentTabTotal');
+        $scope.data.selectedPaymentType = 'ALL';
+    };
+
     // On selecting 'All Departments' radio button.
     $scope.selectAllDepartment = function(){
     	$scope.data.filterData.checkedAllDepartments = true;
@@ -90,17 +103,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if($scope.data.activeTab == '0' ){
             $scope.resetRevenueFilters();
-            $rootScope.$broadcast('REFRESHREVENUECONTENT');
-            $scope.data.selectedChargeGroup = 'ALL';
-            $scope.data.selectedChargeCode  = 'ALL';
+            $scope.refreshRevenueTab();
         }
         else if ($scope.data.activeTab == '1' ){
            $scope.resetPaymentFilters();
-           $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-           $scope.data.selectedPaymentType = 'ALL';
+           $scope.refreshPaymentTab();
         }
         $scope.data.filterTitle = "All Departments";
-        
     };
 
     // Clicking each checkbox on Departments
@@ -163,16 +172,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
             if($scope.data.activeTab == '0' ){
                 $scope.filterRevenueByDepartmentsOrEmployees();
-                $rootScope.$broadcast('REFRESHREVENUECONTENT');
-                $scope.$broadcast('UPDATEREVENUETOTAL');
+                $scope.refreshRevenueTab();
+                
             }
             else if ($scope.data.activeTab == '1' ){
                 $scope.filterPaymentByDepartmentsOrEmployees();
-                $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-                $scope.$broadcast('UPDATEPAYMENTTOTAL');
+                $scope.refreshPaymentTab();
             }
         } 
-        
     };
 
     // To setup Lists of selected ids of employees and departments.
@@ -392,7 +399,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             }
             else{
                 angular.forEach(payment_types.transactions,function(transactions, index3) {
-                    transactions.show = false;
+                    transactions.show = true;
                 });
             }
         });

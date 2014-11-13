@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv',function($scope, $rootScope, RVJournalSrv) {
+sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
 
@@ -10,6 +10,8 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 	$scope.initRevenueData = function(){
 		var successCallBackFetchRevenueData = function(data){
 			$scope.data.revenueData = {};
+            $scope.data.selectedChargeGroup = 'ALL';
+            $scope.data.selectedChargeCode  = 'ALL';
 			$scope.data.revenueData = data;
 			$scope.$emit('hideLoader');
             $scope.errorMessage = "";
@@ -80,5 +82,35 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         }
         return hasArrow;
     };
-    
+
+    // To get total amount of Level1 - each charge group.
+    $scope.getTotalAmountOfGroupItem = function(index){
+        var item = $scope.data.revenueData.charge_groups[index].charge_codes;
+        var total = 0;
+        if((typeof item !== 'undefined') && (item.length >0)){
+            angular.forEach( item ,function(charge_codes, index2) {
+                if(charge_codes.show && charge_codes.filterFlag) total += charge_codes.total;
+            });
+        }
+        $scope.data.revenueData.charge_groups[index].total = total;
+        return total;
+    };
+
+    // To get total revenue amount by adding up charge group amounts.
+    $scope.getTotalOfAllChargeGroups = function(){
+        var revenueTotal = 0;
+        angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+            if(charge_groups.show && charge_groups.filterFlag) revenueTotal += charge_groups.total;
+        });
+        return revenueTotal;
+    };
+
+    // Update amount on Revenue Tab header.
+    $rootScope.$on('UpdateRevenueTabTotal',function(){
+        $timeout(function() {
+            var total = $scope.getTotalOfAllChargeGroups();
+            $scope.data.revenueData.total_revenue = total;
+        }, 100);
+    });
+
 }]);

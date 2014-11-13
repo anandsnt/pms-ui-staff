@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv',function($scope, $rootScope, RVJournalSrv) {
+sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
     
@@ -14,6 +14,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 	$scope.initPaymentData = function(){
 		var successCallBackFetchPaymentData = function(data){
 			$scope.data.paymentData = {};
+            $scope.data.selectedPaymentType = 'ALL';
 			$scope.data.paymentData = data;
 			$scope.$emit('hideLoader');
             $scope.errorMessage = "";
@@ -32,7 +33,13 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         if($scope.checkHasArrowLevel1(index1)){
             var toggleItem = $scope.data.paymentData.payment_types[index1];
             toggleItem.active = !toggleItem.active;
-            refreshPaymentScroll(); 
+            refreshPaymentScroll();
+            // When the system is in detailed view and we collapsing each Level1
+            // We have to toogle details toogle to Summary.
+            /*if(!toggleItem.active && !$scope.data.isPaymentToggleSummaryActive){
+                if($scope.isAllPaymentsCollapsed(index1))
+                    $scope.data.isPaymentToggleSummaryActive = true;
+            }*/
         }
     };
     /** Handle Expand/Collapse of Level2 **/
@@ -83,6 +90,36 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)) hasArrow = true;
         return hasArrow;
+    };
+
+    // To get total payements amount by adding up payment type amounts.
+    $scope.getTotalOfAllPayments = function(){
+        var paymentTotal = 0;
+        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
+            if( payment_types.show && payment_types.filterFlag ){
+                paymentTotal += payment_types.amount;
+            }
+        });
+        return paymentTotal;
+    };  
+
+    // Update amount on Payment Tab header.
+    $rootScope.$on('UpdatePaymentTabTotal',function(){
+        $timeout(function() {
+            var total = $scope.getTotalOfAllPayments();
+            $scope.data.paymentData.total_payment = total;
+        }, 100);
+    });
+
+    // To check whether all paymnt tabs are collpased or not, except the clicked index item.
+    $scope.isAllPaymentsCollapsed = function(index){
+        var isAllTabsCollapsed = true;
+        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, key) {
+            console.log("payment_types.active"+payment_types.active+"***"+key);
+            if((index == key) || !payment_types.active) console.log("ignore");
+            else isAllTabsCollapsed = false;
+        });
+        return isAllTabsCollapsed;
     };
 
 }]);
