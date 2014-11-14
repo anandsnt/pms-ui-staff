@@ -15,6 +15,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
             BaseWebSrvV2.getJSON(url,data).then(function (data) {
                 that.filterData.cashiers = data.cashiers;
                 that.filterData.selectedCashier = data.current_user_id;
+                that.filterData.cashierStatus = data.status;
                 deferred.resolve(that.filterData);
             }, function (data) {
                 deferred.reject(data);

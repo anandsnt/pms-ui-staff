@@ -120,4 +120,12 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         return isAllTabsCollapsed;
     };
 
+    // To hanlde click inside payment tab.
+    $scope.clickedOnPayment = function($event){
+        $event.stopPropagation();
+        if($scope.data.isDrawerOpened){
+            $rootScope.$broadcast("CLOSEPRINTBOX");
+        }
+    };
+
 }]);

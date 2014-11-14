@@ -47,10 +47,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		// internal variables
-		var $_roomList,
-			$_defaultWorkType,
-			$_defaultEmp,
-			$_hasActiveWorkSheet;
+		var $_roomList = {},
+			$_defaultWorkType = '',
+			$_defaultEmp = '';
 
 		// filter open or close
 		$scope.filterOpen = false;
@@ -74,6 +73,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// common to all typr of PMS 
 		$scope.roomTypes = roomTypes;
 		$scope.floors = floors;
+
+		// keeping these withing the scope
+		$scope.isStandAlone = $rootScope.isStandAlone;
+		$scope.isMaintenanceStaff = $rootScope.isMaintenanceStaff;
+		$scope.hasActiveWorkSheet = false;
+
+
+
 
 		// first process rooms
 		$_fetchRoomListCallback(roomList);
@@ -109,8 +116,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				};
 
 				var _preHasActiveWorkSheet = function() {
-					$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
-					$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
+					if ( $rootScope.isMaintenanceStaff ) {
+						$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
+						$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
+					};
 
 					// time to decide if this is an employee
 					// who has an active work sheets
@@ -150,7 +159,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.topFilter.byWorkType = $_defaultWorkType;
 					$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
 
-					// $scope.$emit('hideLoader');
 					$scope.hasActiveWorkSheet = !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
 
 					// set an active user in filterByEmployee, set the mobile tab to to summary
@@ -824,18 +832,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
 						businessDate: $rootScope.businessDate,
 						refresh: true
-					}, function(data) {
-						roomList = data;
-						if ($rootScope.isStandAlone) {
-							// time to decide if this is an employee
-							// who has an active work sheets
-							$_checkHasActiveWorkSheet();
-						} else {
-							$timeout(function() {
-								$_postProcessRooms(roomList);
-							}, 10);
-						};
-					});
+					}, $_fetchRoomListCallback);
 				}
 
 				// for the smooth transition back
