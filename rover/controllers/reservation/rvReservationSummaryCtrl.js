@@ -12,6 +12,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.isIframeVisible = false;
 		$scope.isCallInOnsiteButtonVisible = false;
 		$scope.isMLICreditCardVisible = false;
+		if($scope.reservationData.paymentType.type.value === 'CC'){
+			$scope.isMLICreditCardVisible = true;
+		}
 		$scope.isOnsiteActive = false;
 		if($rootScope.paymentGateway === "sixpayments"){
 			$scope.isCallInOnsiteButtonVisible = true;
