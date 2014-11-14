@@ -83,7 +83,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 	    // read data from $vault
 	    // @param {String} - 'key', the name
 	    // @return {Object} - parsed, saved value from $value
-	    $scope.ReadFromVault = function(key) {
+	    $scope.readFromVault = function(key) {
 	    	return !!$vault.get( key ) ? JSON.parse( $vault.get(key) ) : false; 
 	    };
 
