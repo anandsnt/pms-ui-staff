@@ -1,8 +1,8 @@
 <!-- Content PAYMENTS-->
-<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalPaymentController" ng-iscroll='payment-content' ng-iscroll-delay='100' ng-click="clickedOnPayment($event)">
+<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalPaymentController" ng-iscroll='payment_content' ng-click="clickedOnPayment($event)">
+    
     <div class="wrapper">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
         <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isPaymentToggleSummaryActive}">
 
             <ul class="grid-header payment">

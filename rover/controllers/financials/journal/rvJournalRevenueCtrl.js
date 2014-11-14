@@ -1,10 +1,10 @@
 sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
-
-	$scope.setScroller('revenue-content');
+   
+	$scope.setScroller('revenue_content',{});
     var refreshRevenueScroller = function(){
-        setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
+        $timeout(function(){$scope.refreshScroller('revenue_content');}, 500);
     };
 
 	$scope.initRevenueData = function(){
