@@ -42,24 +42,11 @@ sntRover
 	$scope.stats 		 = [];
 	$scope.start_time 	 = $scope.start_date.toComponents().time;
 	$scope.end_time 	 = $scope.end_date.toComponents().time;
-	//$scope.arrival_times = filter.arrival_times;
-	//$scope.rates 		 = filters.rates;
-
-	//delete $scope.rooms;
-
+	delete $scope.rooms;
 	$scope.selectedReservations = [];
 
 	$scope.companySearchText = '';
 	$scope.companyCardResults = [];
-
-	/*DATE UI CONFIG*/
-	$scope.dateOptions = {
-    	showOn: 'button',
-    	dateFormat: $rootScope.dateFormat,
-    	numberOfMonths: 1,
-    	minDate: new tzIndependentDate($rootScope.businessDate),
-    	yearRange: '-0:'
-    };
 
 	/*--------------------------------------------------*/
 	/* BEGIN UTILITY METHOD SECTION */
@@ -68,13 +55,19 @@ sntRover
 		console.log(err);
 	}
 	/*--------------------------------------------------*/
-	/*BEGIN INITIALIZATION METHOD IN PROTECTED SCOPE*/
+	/*BEGIN CONFIGURATION 
 	/*--------------------------------------------------*/
+	/*DATE UI CONFIG*/
+		$scope.dateOptions = {
+	    	showOn: 'button',
+	    	dateFormat: $rootScope.dateFormat,
+	    	numberOfMonths: 1,
+	    	minDate: new tzIndependentDate($rootScope.businessDate),
+	    	yearRange: '-0:'
+	    };
 
 	/*Initial Values and Default Settings for React Grid*/
 	/*Initialization of React/Angular hooks and callbacks*/
-	/*Mock data currently in use*/
-
 		$scope.gridProps = {
 			viewport: {
 				hours: 						12,
@@ -158,7 +151,7 @@ sntRover
 		};
 
 		/*_________________________________________________________*/
-		/*BEGIN GIRD COMPONENT STANDARD EVENT HOOK INTERFACE -- */
+		/*BEGIN GRID COMPONENT STANDARD EVENT HOOK INTERFACE -- */
 		/*_________________________________________________________*/
 		(function() {    /*React callbacks for grid events*/
 			var prevRoom, prevTime;
@@ -331,6 +324,7 @@ sntRover
 	    	$scope.renderGrid();
 	    };
 
+	    //
 	    $scope.fetchAvailability = function(display, filter, data) {
 				var time = Time({ hours: display.new_reservation_time_span });
 
@@ -396,19 +390,6 @@ sntRover
 				$scope.companyCardResults = data.accounts;
             }, responseError);  
         }, 500);
-
-		/*$scope.reserveRooms = function(row_data, row_item_data) {
-			var props = $scope.gridProps;
-			
-			util.updateReservation(row_data, row_item_data);
-
-	    	props.edit 					= _.extend({}, props.edit);
-	    	props.edit.active 			= false;
-	    	props.currentResizeItem 	= undefined;
-	    	props.currentResizeItemRow 	= undefined;
-
-	    	$scope.renderGrid();
-		};*/
 
 	    /*_________________________________________________________*/
 		/*END PROTOTYPE EVENT HOOKS -- */
@@ -563,9 +544,6 @@ sntRover
 			}		
 		}	
 	});
-	/*--------------------------------------------------*/
-	/*END INITIALIZATION METHOD IN PROTECTED SCOPE*/
-	/*--------------------------------------------------*/
 
 	function parseArrivalTime(arrival_time) {
 		var pos = arrival_time.indexOf(':'),

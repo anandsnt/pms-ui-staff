@@ -30,10 +30,10 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 				arrivalTimeComp 	= compA.time,
 				departureTimeComp 	= compB.time;
 
-			$scope.arrival_time 		= compA.time.toString(true),
-			$scope.arrival_date 		= compA.date.day + ' ' + compA.date.monthName + ' ' + compA.date.year,
-			$scope.departure_time 		= compB.time.toString(true),
-			$scope.departure_date 		= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year
+			$scope.arrival_time 		= compA.time.toString(true);
+			$scope.arrival_date 		= compA.date.day + ' ' + compA.date.monthName + ' ' + compA.date.year;
+			$scope.departure_time 		= compB.time.toString(true);
+			$scope.departure_date 		= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year;
 
 			vaultSelections.arrival_date 	= compA.date.year + ' ' + compA.date.monthName + ' ' + compA.date.day;
 	      	vaultSelections.departure_date 	= compB.date.year + ' ' + compB.date.monthName + ' ' + compB.date.day;
@@ -60,10 +60,10 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 			$scope.selectedReservations.splice(idx, 1);
 		};
 
-		$scope.reserveRooms = function() {
+		$scope.routeToSummary = function() {
 			$scope.saveToVault('temporaryReservationDataFromDiaryScreen', vaultSelections);
-
-			$state.go('rover.reservations.mainCard.stayCard.summaryAndConfirm', {
+			
+			$state.go('rover.reservation.mainCard.stayCard.summaryAndConfirm', {
 				reservation: 'HOURLY'
 			});
 		};

@@ -10,9 +10,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         rate_id: undefined,
                         room_type_id: undefined
                     },
-                    hops = Object.prototype.hasOwnProperty,
                     slice = Array.prototype.slice,
-                    define = Object.defineProperty,
                     api_config = {
                         Availability: {
                             type: 'GET',
@@ -83,6 +81,17 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     room_type_id: {}
                                 }
                             }
+                        },
+                        Rate: {
+                            type: 'GET',
+                            params: undefined,
+                            namespace: 'rates',
+                            store: {
+                                data: [],
+                                index: {
+                                    rate_id: {}
+                                }
+                            }
                         }
                     },
                     APIs = {
@@ -129,6 +138,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         rt = request(api_config.RoomType),
                         rm = request(api_config.Room),
                         oc = request(api_config.Occupancy),
+                        ar = request(api_Config.Rate),
                         q = $q.defer();
 
                         api_config.Occupancy.params = dateRangeTransfer(start_date, end_date);
