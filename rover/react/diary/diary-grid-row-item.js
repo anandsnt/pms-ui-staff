@@ -38,13 +38,13 @@ var GridRowItem = React.createClass({
 			});
 		}
 
-		var pct_diff = Math.abs(this.props.display.px_per_ms - nextProps.display.px_per_ms) / this.props.display.px_per_ms;
+		/*var pct_diff = Math.abs(this.props.display.px_per_ms - nextProps.display.px_per_ms) / this.props.display.px_per_ms;
 		
 		if(this.state.pct_diff !== pct_diff && pct_diff > 0.1) {
 			this.setState({
 				scaleResizeItem: pct_diff + 1
 			});
-		}
+		}*/
 	},
 	render: function() {
 		var props 					= this.props,
@@ -56,8 +56,8 @@ var GridRowItem = React.createClass({
 			data 					= props.data,
 			row_data 				= props.row_data,
 			res_meta                = props.meta.occupancy,
-			start_time_ms 			= !state.resizing ? data[res_meta.start_date] : state.currentResizeItem.left * this.state.pct_diff,
-			end_time_ms 			= !state.resizing ? data[res_meta.end_date] : state.currentResizeItem.right * this.state.pct_diff,
+			start_time_ms 			= !state.resizing ? data[res_meta.start_date] : state.currentResizeItem.left,// * this.state.pct_diff,
+			end_time_ms 			= !state.resizing ? data[res_meta.end_date] : state.currentResizeItem.right, // * this.state.pct_diff,
 			time_span_ms 			= end_time_ms - start_time_ms,
 			maintenance_time_span 	= data[res_meta.maintenance] * px_per_int, //display.maintenance_span_int * display.px_per_int,
 			reservation_time_span 	= ((!state.resizing) ? time_span_ms * px_per_ms : time_span_ms),
