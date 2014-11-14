@@ -8,6 +8,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
 
          var fetchDetailsSuccessCallback = function(data){
             $scope.$emit('hideLoader');
+            $scope.lastCashierId = data.last_cashier_period_id;
             $scope.detailsList = data.history;      
             $scope.selectedHistory = ($scope.detailsList.length>0) ? 0:"";
             $scope.details = ($scope.detailsList.length>0) ?  $scope.detailsList[0] : {};//set first one as selected
@@ -23,6 +24,12 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
 
     $scope.isDateBeforeBusinnesDate = function(date){
         return ($rootScope.businessDate  !== date)?true:false;
+    }
+
+    $scope.isLastCashierPeriod = function(date){
+        console.log($scope.lastCashierId)
+        console.log($scope.details.id)
+        return ( parseInt($scope.lastCashierId) === parseInt($scope.details.id))?true:false;
     }
 
     //init
