@@ -83,8 +83,7 @@
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">
             <!-- Show only if room is assigned -->
-            <span bo-if="room.assignee_maid.id" bo-text="room.assignee_maid.name" bo-class="room.assignee_maid.class"></span>
-            <span bo-if="!room.assignee_maid.id" bo-text="'UNASSIGNED'" bo-class="room.assignee_maid.class"></span>
+            <span bo-if="isStandAlone" bo-text="room.assigned_staff.name" bo-class="room.assigned_staff.class"></span>
             <!-- Show only if room is not in service -->
             <span bo-if="room.ooOsTitle" bo-text="room.ooOsTitle" class="service-status"></span>
           </div>
