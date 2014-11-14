@@ -1,10 +1,12 @@
 sntRover.controller('RVJournalDatePickerController',['$scope','$rootScope','ngDialog','dateFilter',function($scope,$rootScope,ngDialog,dateFilter){
 
+    var minDateSelected = '';
     if($scope.clickedOn === 'FROM'){
         $scope.date = $scope.data.fromDate;
     } 
     else if($scope.clickedOn === 'TO'){
         $scope.date = $scope.data.toDate;
+        minDateSelected = tzIndependentDate($scope.data.fromDate);
     } 
     else if($scope.clickedOn === 'CASHIER'){
         $scope.date = $scope.data.cashierDate;
@@ -17,6 +19,7 @@ sntRover.controller('RVJournalDatePickerController',['$scope','$rootScope','ngDi
         $scope.dateOptions = {
            changeYear: true,
            changeMonth: true,
+           minDate: minDateSelected,
            maxDate: tzIndependentDate($rootScope.businessDate),
            yearRange: "-100:+0",
            onSelect: function(dateText, inst) {
