@@ -8,7 +8,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 
 		$scope.rooms 			= _.pluck($scope.selectedReservations, 'room');
 		$scope.occupancy 	    = _.pluck($scope.selectedReservations, 'occupancy');
-		
+
 		var vaultSelections = {
 			arrival_date: undefined,
 			arrival_time: undefined,
@@ -63,7 +63,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 		$scope.routeToSummary = function() {
 			$scope.saveToVault('temporaryReservationDataFromDiaryScreen', vaultSelections);
 			
-			$state.go('rover.reservation.mainCard.stayCard.summaryAndConfirm', {
+			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
 				reservation: 'HOURLY'
 			});
 		};
