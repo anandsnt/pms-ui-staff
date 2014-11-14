@@ -86,7 +86,9 @@
                 </tbody>
             </table>
             <button type="button" class="button green" translate ng-hide="details.status ==='CLOSED' || detailsList.length == 0 || isLoading" ng-click="closeShift()">CLOSE_SHIFT</button>
-            <button type="button" class="button green" translate ng-hide="details.status ==='OPEN' || detailsList.length === 0 || isLoading ||isDateBeforeBusinnesDate(details.date)" ng-click="reOpen()">RE_OPEN</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='OPEN' || detailsList.length === 0 || isLoading ||isDateBeforeBusinnesDate(details.date) || data.filterData.cashierStatus !== 'CLOSED' ||!isLastCashierPeriod()" ng-click="reOpen()">RE_OPEN</button>
+
+            {{parseInt(lastCashierId)}}{{parseInt(details.id)}}
             <!-- adding extra empty tag to solve scroll not showing bottom part -->
             <div style="height:20%;"></div>
         </div> 
