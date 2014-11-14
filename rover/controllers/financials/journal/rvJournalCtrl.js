@@ -3,12 +3,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
     
-    if($stateParams.id == 0){
-        $scope.$emit("updateRoverLeftMenu", "journals");
-    }
-    else{
-        $scope.$emit("updateRoverLeftMenu", "cashier"); 
-    }
+    
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 	$scope.data = {};
@@ -28,12 +23,26 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	 *	Setting Revenue & Payment date pickers.
 	 *	All date fields should default to yesterday's date.
 	 */
-	var yesterday = tzIndependentDate($rootScope.businessDate);
-	yesterday.setDate(yesterday.getDate()-1);
-	$scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
-	$scope.data.toDate 	 = $filter('date')(yesterday, 'yyyy-MM-dd');
-	$scope.data.paymentDate = $rootScope.businessDate;
-    $scope.data.cashierDate = $rootScope.businessDate;
+    var yesterday = tzIndependentDate($rootScope.businessDate);
+    yesterday.setDate(yesterday.getDate()-1);
+
+    if($stateParams.id == 0){
+        $scope.$emit("updateRoverLeftMenu", "journals");
+        // Setting up the default Date as yesterday's business date.
+        $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.paymentDate = $filter('date')(yesterday, 'yyyy-MM-dd');;
+        $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');;
+    }
+    else{
+        $scope.$emit("updateRoverLeftMenu", "cashier"); 
+        // Setting up the default Date as business date.
+        $scope.data.fromDate = $rootScope.businessDate;
+        $scope.data.toDate   = $rootScope.businessDate;
+        $scope.data.paymentDate = $rootScope.businessDate;
+        $scope.data.cashierDate = $rootScope.businessDate;
+    }
+	
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeCodes = [];
     $scope.data.selectedDepartmentList = [];
