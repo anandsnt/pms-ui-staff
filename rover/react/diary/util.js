@@ -116,12 +116,21 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		}
 		return this.hours + ':' + this.minutes + ampm;
 	};
-	Time.prototype.toReservationFormat = function() {
-		return {
+	Time.prototype.toReservationFormat = function(asObject) {
+		var ret;
+
+		
+		 ret = {
 			hh: this.padZeroes(this.hours % 12),
 			mm: this.padZeroes(this.minutes),
 			amPM: this.AMPM()
 		};
+
+		if(asObject) {
+			return ret;
+		}else{
+			return ret.hh + ':' + ret.mm + ' ' + ret.amPM;
+		}
 	};
 	Time.prototype.constructor = Time;
 

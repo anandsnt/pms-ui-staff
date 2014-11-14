@@ -35,10 +35,10 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 			$scope.departure_time 		= compB.time.toString(true);
 			$scope.departure_date 		= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year;
 
-			vaultSelections.arrival_date 	= compA.date.year + ' ' + compA.date.monthName + ' ' + compA.date.day;
-	      	vaultSelections.departure_date 	= compB.date.year + ' ' + compB.date.monthName + ' ' + compB.date.day;
-	      	vaultSelections.arrival_time 	= $scope.arrival_time;
-	      	vaultSelections.departure_time 	= $scope.departure_time;			
+			vaultSelections.arrival_date 	= compA.date.year + '-' + compA.date.month + '-' + compA.date.day;
+	      	vaultSelections.departure_date 	= compB.date.year + '-' + compB.date.month + '-' + compB.date.day;
+	      	vaultSelections.arrival_time 	= compA.time.toReservationFormat(false);
+	      	vaultSelections.departure_time 	= compB.time.toReservationFormat(false);			
 
 			$scope.selectedReservations.forEach(function(slot, idx) {
 				vaultSelections.rooms.push({       
@@ -66,6 +66,8 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
 				reservation: 'HOURLY'
 			});
+
+			ngDialog.close();
 		};
 
 	    // save data to $vault

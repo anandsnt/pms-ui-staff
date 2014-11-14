@@ -127,14 +127,20 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         rt = request(api_config.RoomType),
                         rm = request(api_config.Room),
                         oc = request(api_config.Occupancy),
+                        std_rate,
                         q = $q.defer();
 
                         api_config.Occupancy.params = dateRangeTransfer(start_date, end_date);
 
-                        mt().then(resolve.bind(api_config.Maintenance, rt))
-                            .then(resolve.bind(api_config.RoomType, rm))
-                            .then(resolve.bind(api_config.Room, oc))
-                            .then(resolve.bind(api_config.Occupancy, 
+                        this.fetchRates().then(function(data) {
+                            std_rate = data;
+
+                            return mt();
+                        })
+                        .then(resolve.bind(api_config.Maintenance, rt))
+                        .then(resolve.bind(api_config.RoomType, rm))
+                        .then(resolve.bind(api_config.Room, oc))
+                        .then(resolve.bind(api_config.Occupancy, 
                             function() {
                                 var occ = api_config.Occupancy,
                                     rooms = api_config.Room,
@@ -155,7 +161,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     arrival_times: arrival_times,
                                     rooms: rooms.store.data,
                                     room_types: room_types.store.data,
-                                    occupancy: occ.store.data
+                                    occupancy: occ.store.data,
+                                    std_rate: std_rate
                                 });
 
                                 q.resolve(store.payload());
@@ -194,7 +201,9 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     rvBaseWebSrvV2.getJSON('/api/rates')
                         .then(function(data) {
-                            q.resolve(data.results);
+                            var rate = _.findWhere(data.results, { is_hourly_rate: true });
+
+                            q.resolve(rate);
                         }, function(data) {
                             q.reject(data);
                         });

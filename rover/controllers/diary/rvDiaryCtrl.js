@@ -358,7 +358,7 @@ sntRover
 							   0, 0),
 				rt_filter = _.isEmpty(filter.room_type) ? (filter.room_type = _.pluck($scope.room_types, 'id')) : filter.room_type.id;
 
-			rvDiarySrv.Availability(start, end, 417, rt_filter)
+			rvDiarySrv.Availability(start, end, $scope.std_rate.id, rt_filter)
 			.then($scope.initPassiveEditMode, responseError)
 			.then($scope.renderGrid, responseError);
 		};
@@ -375,7 +375,7 @@ sntRover
 	    	$scope.gridProps.filter.show_all_rooms = state; //(state === 'on');
 
 	    	if($scope.gridProps.filter.show_all_rooms === 'on') {
-	    		util.clearRowClasses(this.rooms);
+	    		util.clearRowClasses($scope.gridProps.data.rooms);
 	    	} else {
 	    		updateRowClasses(current_scroll_pos);
 			}

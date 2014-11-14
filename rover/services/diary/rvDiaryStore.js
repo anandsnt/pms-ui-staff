@@ -6,6 +6,7 @@ sntRover
                     end_date: undefined,
                     arrival_times: [],
                     rates: [],
+                    std_rate: undefined,
                     rate_types: [],
                     room_types: [],
                     rooms: [],
