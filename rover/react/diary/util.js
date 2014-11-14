@@ -100,10 +100,15 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	Time.prototype.AMPM = function() {
 		return this.isAM() ? 'AM' : 'PM';
 	};
+	Time.prototype.padZeroes = function(time) {
+		time = +time;
+		return time < 10 ? '0' + time :time;
+	};
 	Time.prototype.toString = function(asAMPM) {
-		var hours = (this.hours < 10 ? '0' + this.hours : this.hours), 
-			min = (this.minutes < 10 ? '0' + this.minutes : this.minutes), 
-			ampm = ''; // = ' ' + (this.hours > 11) ? 'PM' : 'AM';
+		var hours = this.padZeroes(this.hours),  //(this.hours < 10 ? '0' + this.hours : this.hours), 
+			min = this.padZeroes(this.minutes),
+			ampm = '';   //(this.minutes < 10 ? '0' + this.minutes : this.minutes), 
+			//ampm = this.AMPM(); ; // = ' ' + (this.hours > 11) ? 'PM' : 'AM';
 
 		if(asAMPM) {
 			hours = hours % 12;
@@ -111,10 +116,37 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		}
 		return this.hours + ':' + this.minutes + ampm;
 	};
-
+	Time.prototype.toReservationFormat = function() {
+		return {
+			hh: this.padZeroes(this.hours % 12),
+			mm: this.padZeroes(this.minutes),
+			amPM: this.AMPM()
+		};
+	};
 	Time.prototype.constructor = Time;
 
-if(typeof Date.prototype.toComponents === 'undefined') {
+//if(typeof String.prototype.toTimeComponent === 'undefined') {
+	String.prototype.toTimeComponent = function(time) {
+		var pos = time.indexOf(':'),
+		    hours, minutes;
+
+		if(pos > -1) {
+			hours = time.substr(0, pos);
+
+			if(pos < time.length) {
+				minutes = time.substr(pos + 1);
+			}
+		}
+
+		if(hours && minutes) {
+			return Time({hours: hours, minutes: minutes});
+		}
+
+		return;
+	};
+
+
+//if(typeof Date.prototype.toComponents === 'undefined') {
 	Date.prototype.toComponents = function() {
 		var __DAYS = ['Monday', 
 					  'Tuesday', 
@@ -159,5 +191,5 @@ if(typeof Date.prototype.toComponents === 'undefined') {
 				hours: this.getHours()
 			})
 		};
-	};
-}
+	//};
+};
