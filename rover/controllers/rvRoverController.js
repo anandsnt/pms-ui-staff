@@ -68,6 +68,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
 	
 
@@ -83,7 +84,29 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    $rootScope.isMaintenanceStaff = hotelDetails.current_user.default_dashboard == 'HOUSEKEEPING' ? true : false;
+
+    // self executing check
+    $rootScope.isMaintenanceStaff = (function(roles) {
+      // Values taken form DB
+      var FLO_MGR = 'floor_&_maintenance_manager',
+          FLO_STF = 'floor_&_maintenance_staff',
+          FLO_MGR_ID = 10,
+          FLO_STF_ID = 11
+          isFloMgr = false,
+          isFloStf = false;
+
+      isFloMgr = _.find(roles, function(item) {
+        return item.id === FLO_MGR_ID || item.name === FLO_MGR;
+      });
+
+      isFloStf = _.find(roles, function(item) {
+        return item.id === FLO_STF_ID || item.name === FLO_STF;
+      });
+
+      return isFloMgr || isFloStf ? true : false;
+    })(hotelDetails.current_user.roles);
+
+
 
     $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
       $scope.userInfo.business_date = newBussinessDate;
@@ -161,9 +184,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "createReservation"
           }, {
             title: "MENU_ROOM_ASSIGNMENT",
-            action: "rover.diary.reservations",
+            action: 'rover.reservation.diary',
             standAlone: true,
-            menuIndex: 'diary'
+            menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
             action: "",
@@ -404,10 +427,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
+     var routeChange = function(event, newURL) {
+       event.preventDefault();
+       return;
+     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile

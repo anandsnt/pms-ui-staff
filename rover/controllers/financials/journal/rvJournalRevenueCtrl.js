@@ -128,4 +128,12 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         return isAllTabsCollapsed;
     };
 
+    // To hanlde click inside revenue tab.
+    $scope.clickedOnRevenue = function($event){
+        $event.stopPropagation();
+        if($scope.data.isDrawerOpened){
+            $rootScope.$broadcast("CLOSEPRINTBOX");
+        }
+    };
+
 }]);
