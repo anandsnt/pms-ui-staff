@@ -168,7 +168,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 */
 		$scope.decloneUnwantedKeysFromContactInfo = function() {
 
-			var unwantedKeys = ["address", "birthday", "country",
+			var unwantedKeys = ["birthday", "country",
 				"is_opted_promotion_email", "job_title",
 				"mobile", "passport_expiry",
 				"passport_number", "postal_code",
