@@ -68,6 +68,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
 	
 
@@ -183,9 +184,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "createReservation"
           }, {
             title: "MENU_ROOM_ASSIGNMENT",
-            action: "rover.diary.reservations",
+            action: 'rover.reservation.diary',
             standAlone: true,
-            menuIndex: 'diary'
+            menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
             action: "",
@@ -426,10 +427,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
+     var routeChange = function(event, newURL) {
+       event.preventDefault();
+       return;
+     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile

@@ -1,299 +1,261 @@
-sntRover
-.service('rvDiarySrv', ['$q', 
-						'RVBaseWebSrv', 
-						'rvBaseWebSrvV2',  
-						'rvDiaryMetadata', 
-						'rvDiaryUtilSrv',
-    function ($q, 
-    		  RVBaseWebSrv, 
-    		  rvBaseWebSrvV2,  
-    		  rvDiaryMetadata, 
-    		  rvDiaryUtilSrv) {
-    	var meta 	= rvDiaryMetadata,
-    		hops 	= Object.prototype.hasOwnProperty,
-    		slice 	= Array.prototype.slice,
-    		define 	= Object.defineProperty,
-    		util 	= rvDiaryUtilSrv;
+sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryStore', 'rvDiaryUtil',
+        function($q, RVBaseWebSrv, rvBaseWebSrvV2, store, util) {
+                var std_params = {
+                        begin_date: undefined,
+                        begin_time: undefined,
+                        end_date: undefined,
+                        end_time: undefined
+                    },
+                    std_params_addl = {
+                        rate_id: undefined,
+                        room_type_id: undefined
+                    },
+                    slice = Array.prototype.slice,
+                    api_config = {
+                        Availability: {
+                            type: 'GET',
+                            url: 'api/hourly_availability',
+                            params: _.extend({}, std_params, std_params_addl),
+                            namespace: 'results',
+                            store: {
+                                data: []
+                            }
+                        },
+                        AvailabilityCount: {
+                            type: 'GET',
+                            url: 'api/hourly_availability_count',
+                            params: _.extend({}, std_params, std_params_addl),
+                            namespace: 'availability_count_per_hour',
+                            store: {
+                                data: []
+                            }
+                        },
+                        Occupancy: {
+                            type: 'GET',
+                            url: 'api/hourly_occupancy',
+                            params: dateRangeTransfer,
+                            namemspace: 'reservations',
+                            store: {
+                                data: [],
+                                index: {
+                                    reservation_d: {},
+                                    room_id: {},
+                                    room_type: {}
+                                }
+                            }
+                        },
+                        Room: {
+                            type: 'GET',
+                            url: 'api/rooms',
+                            params: undefined,
+                            namespace: 'rooms',
+                            store: {
+                                data: [],
+                                index: {
+                                    id: {},
+                                    room_no: {},
+                                    room_type_id: {} 
+                                }
+                            }
+                        },
+                        RoomType: {
+                            type: 'GET',
+                            url: '/api/room_types.json?is_exclude_pseudo=true',
+                            params: undefined,
+                            namespace: 'results',
+                            store: {
+                                data: [],
+                                index: {
+                                    id: {}
+                                }
+                            }
+                        },
+                        Maintenance: {
+                            type: 'GET',
+                            url: '/api/room_types_task_completion_time?exclude_pseudo=true',
+                            params: undefined,
+                            namespace: 'results',
+                            store: {
+                                data: [],
+                                index: {
+                                    room_type_id: {}
+                                }
+                            }
+                        },
+                        Rate: {
+                            type: 'GET',
+                            params: undefined,
+                            namespace: 'rates',
+                            store: {
+                                data: [],
+                                index: {
+                                    rate_id: {}
+                                }
+                            }
+                        }
+                    },
+                    APIs = {
+                        GET: rvBaseWebSrvV2.getJSON.bind(rvBaseWebSrvV2)
+                    },
+                    request = function(klass) {
+                        return _.partial(APIs[klass.type], klass.url, klass.params);
+                    },
+                    resolve = function(fn, data) {
+                        var self = this;
 
-    	/*INITIALIZE CONFIGURATION FOR API CALLS*/
-    	(function() { 
-    		var defaults = function(url, type) {
-    			var define = function(val) {
-	    			return {
-	    				enumerable: true,
-	    				value: val
-	    			};
-	    		};
+                        if(_.has(data, this.namespace) && _.isArray(data[this.namespace])) {
+                            this.store.data = slice.call(data[this.namespace]);
+                        
+                            if(_.has(this.store, 'index')) {
+                                _.each(Object.keys(this.store.index), function(by) {
+                                    var index_by =by;
 
-    			return { 
-    				value: Object.create(null, {
-		    			url: {
-		    				enumerable: true,
-		    				value: url
-		    			},
-		    			type: {
-		    				enumerable: true,
-		    				value: type
-		    			} 
-		    		})
-    			};
-    		};
+                                    self.store.index[index_by] = _.indexBy(self.store.data, index_by);
+                                });
+                            }
+                        }
 
-	    	this.api_types = Object.create(null, {
-	    		availability: 		defaults('api/hourly_availability', 'data'),
-	    		availability_count: defaults('api/hourly_availability', 'count'),
-	    		occupancy: 			defaults('api/hourly_occupancy', 'data')
-	    	});
-    	}).call(this);
-    	/*INITIALIZE CONFIGURATION FOR API CALLS*/
+                        return fn();
+                    };
+                
+                function dateRangeTransfer(start_date, end_date) {
+                    var s_comp = start_date.toComponents(),
+                        e_comp = end_date.toComponents();
 
-		this.normalizeOccupancy = function(room_types, occupancy) {
-    		var m = meta.occupancy, 
-				room_type = _.findWhere(room_types, { id: occupancy.room_type_id }); 
+                    return {
+                        begin_time: s_comp.time.toString(),
+                        end_time: e_comp.time.toString(),
+                        begin_date: s_comp.date.toDateString(),
+                        end_date: e_comp.date.toDateString()
+                    };
+                }
 
-			occupancy.key 				= _.uniqueId('oc-' + occupancy[meta.occupancy.id] + '-');
+                this.load = function(arrival_time) {     
+                    var start_date = new Date(arrival_time - 7200000),
+                        end_date = new Date(arrival_time + 86400000),
+                        arrival_times = this.fetchArrivalTimes(15),
+                        mt = request(api_config.Maintenance),
+                        rt = request(api_config.RoomType),
+                        rm = request(api_config.Room),
+                        oc = request(api_config.Occupancy),
+                        ar = request(api_Config.Rate),
+                        q = $q.defer();
 
-			occupancy[m.start_date] 	= this.normalizeTime(occupancy.arrival_date, 
-															 occupancy.arrival_time);
-		    occupancy[m.end_date] 	    = this.normalizeTime(occupancy.departure_date, 
-		    											     occupancy.departure_time);
-		    occupancy[m.maintenance] 	= this.normalizeMaintenanceInterval(room_type.departure_cleanning_time, 15);
+                        api_config.Occupancy.params = dateRangeTransfer(start_date, end_date);
 
-		    occupancy[m.room_type] 		= room_type.name;
-    	};
+                        mt().then(resolve.bind(api_config.Maintenance, rt))
+                            .then(resolve.bind(api_config.RoomType, rm))
+                            .then(resolve.bind(api_config.Room, oc))
+                            .then(resolve.bind(api_config.Occupancy, 
+                            function() {
+                                var occ = api_config.Occupancy,
+                                    rooms = api_config.Room,
+                                    room_types = api_config.RoomType,
+                                    maintenance = api_config.Maintenance;
 
-    	this.normalizeOccupanices = function(room_types, occupancies) {
-    		for(var i = 0, len = occupancies.length; i < len; i++) {
-    			this.normalizeOccupancy(room_types, occupancies[i]);
-    		}
-    	};
+                                //var o_r = _.chain(occ.store.data).invoke(store.normalizeOccupancy).groupBy('room_id').value();
 
-    	this.normalizeRooms = function(rooms, room_types) {
-    		for(var i = 0, len = rooms.length; i < len; i++) {
-    			rooms[i] = this.normalizeRoom(rooms[i], room_types);
-    		}
-    	};
+                                _.each(room_types.store.data, function(rt) {
+                                    if(rt.id in maintenance.store.index.room_type_id) {
+                                        rt.housekeeping_task_completion_time = maintenance.store.index.room_type_id[rt.id].housekeeping_task_completion_time;
+                                    }
+                                });
 
-    	this.normalizeRoom = function(room, room_types) {
-    		var rt = _.findWhere(room_types, { id: room.room_type_id }); 
+                                store.transform({
+                                    start_date: start_date,
+                                    end_date: end_date,
+                                    arrival_times: arrival_times,
+                                    rooms: rooms.store.data,
+                                    room_types: room_types.store.data,
+                                    occupancy: occ.store.data
+                                });
 
-    		room.key 	   = _.uniqueId('rm-' + room[meta.room.id] + '-');	
-			room.room_type = (rt ? rt.name : '');
- 			
-			if(!hops.call(room, 'occupancy')) {
-				define(room, 'occupancy', {
-					enumerable: true,
-					configurable: true,
-					writable: true,
-					value: []
-				});
-			}	
+                                q.resolve(store.payload());
+                            }
+                        ));
 
-			return room;		
-    	};
+                    return q.promise;
+                };
 
-    	this.normalizeMaintenanceInterval = function(time, base_interval) {
-    		var t_a = +time.slice(0, -3),
-    			t_b = +time.slice(-2),
-    			intervals = t_b / base_interval,
-    			intervals_per_hr = 60 / base_interval;
+                //_.extend(api_config.Occupancy.params, configOccParams());
 
-    		return intervals_per_hr * t_a + parseInt(intervals);
-    	};
+                this.fetchArrivalTimes = function(base_interval, offset) {
+                    var times = [],
+                        day_min = 24 * 60,
+                        min, cur_time;
 
-    	this.normalizeTime = function(date, time) {
-    		var std = (time.indexOf('am') > -1 || time.indexOf('pm') > -1),
-    			t_a = time.slice(0, -3),
-    			t_b = time.slice(-2);
+                    if(!offset) {
+                        offset = {
+                            hours: 0,
+                            min: 0
+                        };
+                    }
 
-    		return Date.parse(date + ' ' + (std ? t_a + ' ' + t_b : time));
-    	};
+                    for (var i = 0; i < day_min; i += base_interval) {
+                        min = offset.min + (i % 60);
+                        cur_time = offset.hours + parseInt(i / 60, 10) + ':' + (min === 0 ? '00' : min);
 
-    	this.linkRooms = function(rooms, occupancies) {
-    		occupancies.forEach(function(occupancy, idx) {
-    			var room = _.findWhere(rooms, { id: occupancy.room_id });
+                        times.push(cur_time);
+                    }
 
-    			if(room){
-    				if(!_.findWhere(room.occupancy, { reservation_id: occupancy.reservation_id })) {
-    					room.occupancy.push(occupancy);
-    					console.log(room.id + ' ' + occupancy);
-    				}
-    			}
-    		});
+                    return times;
+                };
 
-    		return rooms;
-    	};
+                this.fetchRates = function() {
+                    var q = $q.defer();
 
-    	this.init = function(start_date, end_date) {
-			var self = this, 
-				q=  $q.defer(), 
-				slice = Array.prototype.slice,
-				room_types,
-				rooms,
-				occupancy;
+                    rvBaseWebSrvV2.getJSON('/api/rates')
+                        .then(function(data) {
+                            q.resolve(data.results);
+                        }, function(data) {
+                            q.reject(data);
+                        });
 
-			start_date.setHours(0,0,0,0);
+                    return q.promise;
+                };
 
-			this.fetchData(start_date, end_date, this.api_types.occupancy)
-			.then(function(data) {
-				
-				room_types = util.copyArray(data.room_types, room_types);
+                this.Availability = function(start_date, end_date, rate_id) {
+                    var ava = api_config.Availability,
+                        q = $q.defer(),
+                        gen_uid = _.uniqueId('available-'); 
 
-				room_types.unshift({ id: 'All', name: 'All', description: 'All' });
-			
-				rooms = util.copyArray(data.rooms, rooms);
+                    ava.params = dateRangeTransfer(start_date, end_date);
+                    ava.params.rate_id = rate_id;
 
-				self.normalizeRooms(rooms, room_types);		
+                    request(ava)().then(resolve.bind(ava, function() {
+                        var set = _.pick(ava.store.data.shift(), 'availability');
 
-				occupancy = util.copyArray(data.occupancy);
+                        if(_.isObject(set) && _.has(set, 'availability')) {
+                            var data = set.availability,
+                                stay_date = data.date,
+                                reference_slot, 
+                                row_item_data, 
+                                row_data,
+                                merge = _.partial(store.mergeAvailableSlots, start_date, end_date, gen_uid, rate_id);
 
-				self.normalizeOccupanices(room_types, occupancy);
-		
-				console.log(self.linkRooms(rooms, occupancy));
+                            data.forEach(function(occupancy) {
+                                reference_slot = merge(occupancy);
 
-				q.resolve({
-					start_date: start_date,
-					rooms: 		rooms,
-					occupancy: 	occupancy,
-					room_types: room_types
-				});
-			}, function(err) {
-				q.reject(err);
-			});
+                                if (!row_item_data && reference_slot) {
+                                    row_item_data = util.deepCopy(reference_slot);
+                                    row_data = _.findWhere(store.payload().rooms, {
+                                        id: row_item_data.room_id
+                                    });
+                                }
+                            });
 
-    		return q.promise;
-    	};
+                            q.resolve({
+                                start_date:     start_date,
+                                end_date:       end_date,
+                                stay_dates:     [data.date],
+                                row_data:       row_data,
+                                row_item_data:  row_item_data
+                            });
 
-    	this.fetchOccupancy = function(start_date, end_date) {
-    		var self = this, 
-    			q=  $q.defer();
+                        };
+                    }));
 
-			this.fetchData(start_date, end_date, this.api_types.occupancy)
-			.then(function(data) {
-				q.resolve(util.deepCopy(data.occupancy));
-			}, function(err) {
-				q.reject(err);
-			});
-
-    		return q.promise;
-    	};
-
-    	this.injectAvailability = function(start_date, end_date, rate_id, room_type_id) {
-    		var q = $q.defer();
-
-    		this.fetchAvailability.apply(this, Array.prototype.slice.call(arguments))
-    		.then(function(data) {
-    			console.log('AVAILABILITY CONTENTS', data);
-    		});
-    	};
-
-    	this.fetchAvailability = function(start_date, end_date, rate_id, room_type_id) {
-    		var self = this, 
-    			q = $q.defer(), 
-    			availability = [],
-    			gen_uid = _.uniqueId('available-');
-
-			this.fetchData(start_date, end_date, self.api_types.availability, rate_id, room_type_id)
-			.then(function(payload) {
-		   		var data 	= payload.results[0].availability;
-		   			
-
-		   		if(_.isArray(data)) {
-			   		for(var i = 0, len = data.length; i < len; i++) {
-						self.normalizeAvailableOccupancy(gen_uid, self.rooms, self.room_types, util.deepCopy(data[i]), start_date, end_date, rate_id);
-			   		}		
-			   	}
-
-			   	q.resolve({ row_data: self.rooms[0], row_item_data: self.rooms[0].occupancy[0] });
-		   }, function(err) {
-		   		q.reject(err);
-		   });
-
-			return q.promise;
-    	};
-
-    	this.formatIncomingTimeData = function(obj, date, prefix) {
-    		var comp    = date.toComponents(),
-    			s_date  = comp.date,
-		   		s_time  = comp.time;
-
-		   	obj[prefix + '_date'] = s_date.toDateString();
-		   	obj[prefix + '_time'] = s_time.toString();
-    	};
-
-    	this.normalizeAvailableOccupancy = function(gen_uid, rooms, room_types, slot, start_date, end_date, rate_id) {
-   			room = _.findWhere(rooms, { id: slot.id });
-   			
-   			if(room) {
-	   			slot.temporary 				= true;
-	   			slot.room_id 				= slot.id;
-	   			slot.reservatopm_status 	= 'available';
-	   			slot.room_service_status 	= '';
-	   			slot.reservation_id 		= gen_uid;
-	   			this.formatIncomingTimeData(slot, start_date, 'arrival');
-	   			this.formatIncomingTimeData(slot, end_date, 'departure');
-	   			slot.rate_id = rate_id;
-	   			
-	   			if(Object.prototype.hasOwnProperty.call(room, 'occupancy')) {
-	   				room.occupancy = Array.prototype.slice.call(room.occupancy).concat([slot]);
-	   			} else {
-	   				room.occupancy = [];
-	   				room.occupancy.concat([slot]);
-	   			}
-
-	   			this.normalizeOccupanices(room_types, room.occupancy);
-	   		}
-    	};
-
-    	this.fetchAvailabilityCount = function(start_date, end_date) {
-    		var self = this, 
-    			q = $q.defer();
-
-			this.fetchData(start_date, end_date, this.api_types.availability_count)
-		   	.then(function(data) {		   		
-		   		q.resolve(copyArray(availability_count, data));	   	
-		   	}, function(err) {
-		   		q.reject(err);
-		   	});
-    		
-			return q.promise;
-    	};
-
-        this.fetchData = function (start_date, end_date, type_config, rate_id, room_type_id) {
-            var deferred 	= $q.defer (),
-            	s_comp  	= start_date.toComponents(),
-            	e_comp 	    = end_date.toComponents(),
-            	//begin 		= s_comp.date.toDateString(), //start_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
-            	//end 		= e_comp.date.toDateString(), //end_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
-            	dto = { 
-            		begin_time: s_comp.time.toString(), //start_time.hours + ':' + (start_time.minutes < 10 ? '0' + start_time.minutes : start_time.minutes),
-					end_time: 	e_comp.time.toString(), //end_time.hours + ':' + (end_time.minutes < 10 ? '0' + end_time.minutes : end_time.minutes),
-					begin_date: s_comp.date.toDateString(), //begin.shift() + '-' + begin.reverse().join('-'),
-					end_date: 	e_comp.date.toDateString(), //end.shift() + '-' + end.reverse().join('-'),
-					type: 		type_config.type		
-            	};
-
-            if(rate_id) {
-            	dto.rate_id = rate_id;				
-            }
-
-            if(room_type_id) {
-            	dto.room_type_id = room_type_id;
-            }
-
-			rvBaseWebSrvV2.getJSON(type_config.url, dto)
-			.then(function(data) {
-				deferred.resolve(data);
-			}, function(data) {
-				deferred.reject(data);
-			});
-
-            return deferred.promise;
-        };
-
-        this.set = function (field, value) {
-    		if(!Object.prototype.hasOwnProperty.call(this, field)) {
-    			this[field] = value;
-    		}
-    	};
-}]);
+                    return q.promise;
+                };
+            }]);
+                //------------------------------------------------------------------

@@ -20,19 +20,18 @@
             </ul>
             <div id="rooms-reserved" class="rooms scrollable">
                 <ul class="wrapper">
-                    <li ng-repeat="room in rooms"> 
+                    <li ng-repeat="room in rooms track by $index"> 
                         <span class="type">{{room.room_type}}</span>
                         <span class="room">{{room.room_no}}</span>
                         <span class="price">{{occupancy.amount}}</span>
-                        <span class="icons icon-remove-10" ng-show="selectedReservations.length > 0">-</span> 
-                        <!-- Don't show remove button when only one room selected -->
+                        <span class="icons icon-remove-10" ng-show="selectedReservations.length > 0" ng-click="removeSelectedOccupancy($index)">-</span>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="actions">
             <button class="button orange" type="button" ng-click="selectAdditional()">Select Additional Cabin</button>
-            <button class="button green" type="button" ng-click="reserveRooms()">Reserve {{title}}</button>
+            <button class="button green" type="button" ng-click="routeToSummary()">Reserve {{title}}</button>
             <button class="button blank" type="button" ng-click="selectAdditional()">Cancel</button>
         </div>
     </div>  
