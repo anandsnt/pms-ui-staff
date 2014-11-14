@@ -20,6 +20,11 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
         $scope.invokeApi(RVJournalSrv.fetchCashierDetails, data, fetchDetailsSuccessCallback);  
     };
 
+
+    $scope.isDateBeforeBusinnesDate = function(date){
+        return ($rootScope.businessDate  !== date)?true:false;
+    }
+
     //init
     var init = function(){
 
