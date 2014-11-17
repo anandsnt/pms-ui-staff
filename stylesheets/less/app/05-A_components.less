@@ -10264,6 +10264,13 @@
                                 &.number { .calc-width(20, 20); }
                             }
                         }
+
+                        &.revenue {
+                            li {
+                                &.name { .calc-width(80, 60); }
+                                &.number { .calc-width(20, 60); }
+                            }
+                        }
                     }
 
                     .grid-footer {
@@ -10314,7 +10321,8 @@
                             .box-shadow();
 
                             &.revenue-title {
-                                .name { .calc-width(100, 110); }
+                                .name { .calc-width(80, 60); }
+                                .number { .calc-width(20, 70); }
                             }
 
                             &.payment-title {
