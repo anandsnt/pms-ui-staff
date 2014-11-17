@@ -802,7 +802,7 @@ q:before, q:after {content: ""}
 
                 .grid-header {
                     width: 100%;
-                    padding: 0 40px 0 10px;
+                    padding: 0 10px;
                     background: @grey1;
                     .float;
 
@@ -825,6 +825,13 @@ q:before, q:after {content: ""}
                             &.name { .calc-width(40, 30); }
                             &.code { .calc-width(30, 30); }
                             &.number { .calc-width(20, 30); }
+                        }
+                    }
+
+                    &.revenue {
+                        li {
+                            &.name { .calc-width(80, 60); }
+                            &.number { .calc-width(20, 60); }
                         }
                     }
                 }
@@ -875,14 +882,15 @@ q:before, q:after {content: ""}
                         border-bottom: 1px solid @grey3;
 
                         &.revenue-title {
-                            .name { .calc-width(100, 100); }
+                            .name { .calc-width(80, 60); }
+                            .number { .calc-width(20, 60); }
                         }
 
                         &.payment-title {
-                            .name { .calc-width(40, 40); }
-                            .code { .calc-width(30, 40); }
-                            .number { .calc-width(20, 40); }
-                        }                      
+                            .name { .calc-width(40, 30); }
+                            .code { .calc-width(30, 30); }
+                            .number { .calc-width(20, 30); }
+                        }                       
                     }
                 }  
 
@@ -968,7 +976,13 @@ q:before, q:after {content: ""}
                 .pull-left;
 
                 .shift-details {
-                    
+                    margin: 0;
+                    width: 100%;
+                    text-transform: uppercase;
+                    table-layout: auto;
+                    border-collapse: collapse; 
+                    border-spacing: 0;
+
                     caption {
                         font-size: 10pt;
                         color: @grey3;
@@ -980,17 +994,32 @@ q:before, q:after {content: ""}
                     }
 
                     tr {
+                        page-break-after: always;
+                        page-break-inside: avoid;
 
                         th,
-                        td { line-height: 18pt; }
+                        td { 
+                            font-size: 10pt;
+                            line-height: 18pt; 
+                            vertical-align: top;
+                            text-align: left;
+                            page-break-after: always;
+                            page-break-inside: avoid;
+                            white-space: normal;
+                            padding: 8pt 4pt;
+                        }
 
-                        th { width: 80%; }
+                        th { 
+                            width: 80%; 
+                            white-space: normal;
+                        }
 
                         td {
                             width: 20%;
                             font-size: 18pt;
                             font-weight: 600;
                             text-align: right;
+                            border-bottom: 1px solid @grey3;
 
                             &.entry { 
                                 font-size: 10pt;
