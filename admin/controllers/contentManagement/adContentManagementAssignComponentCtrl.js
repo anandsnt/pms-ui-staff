@@ -7,6 +7,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
 	$scope.sections = [];
 	$scope.selectedCategories = [];
 	$scope.selectedSections = [];
+  $scope.isDataFetched = false;
 	
    /*Function to fetch the components, 
     *to provide the option to assign parent
@@ -15,7 +16,8 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
    		var successCallComponentFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.componentList = data;
-			$scope.setUpLists();			
+			$scope.setUpLists();	
+      $scope.isDataFetched = true;		
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallComponentFetch);
    }

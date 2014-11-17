@@ -1,10 +1,10 @@
 sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
-
-	$scope.setScroller('revenue-content');
+   
+	$scope.setScroller('revenue_content',{});
     var refreshRevenueScroller = function(){
-        setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
+        $timeout(function(){$scope.refreshScroller('revenue_content');}, 500);
     };
 
 	$scope.initRevenueData = function(){
@@ -126,6 +126,14 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             if(charge_groups.active) isAllTabsCollapsed = false;
         });
         return isAllTabsCollapsed;
+    };
+
+    // To hanlde click inside revenue tab.
+    $scope.clickedOnRevenue = function($event){
+        $event.stopPropagation();
+        if($scope.data.isDrawerOpened){
+            $rootScope.$broadcast("CLOSEPRINTBOX");
+        }
     };
 
 }]);
