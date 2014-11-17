@@ -27,20 +27,23 @@ sntRover
 			 meta, 
 			 util, 
 			 payload,
-			 //arrival_times,
 			 $vault) {
 
 	$scope.$emit('hideLoader');
 
 	BaseCtrl.call(this, $scope);
 
-	$scope = _.extend($scope, payload);
+	$scope = _.extend($scope, payload); //copy incoming data on load
 
-	$scope.data 		 = $scope.rooms;
-	$scope.stats 		 = [];
-	$scope.start_time 	 = $scope.start_date.toComponents().time;
-	$scope.end_time 	 = $scope.end_date.toComponents().time;
-	delete $scope.rooms;
+	$scope.data 		 = $scope.room;
+	$scope.stats 		 = $scope.availability_count;
+	$scope.room_types 	 = $scope.room_type;
+	$scope.room_types.unshift({ id: 'All', room_type_name: 'All', description: 'All' });
+	//$scope.start_time 	 = $scope.start_date.toComponents().time;
+	//$scope.end_time 	 = $scope.end_date.toComponents().time;
+
+	//delete $scope.rooms;
+
 	$scope.selectedReservations = [];
 
 	$scope.companySearchText = '';
@@ -81,6 +84,11 @@ sntRover
 				}
 			},
 			display: {
+				x_0: 						undefined,
+				x_nL:                       $scope.past_date.getTime(),
+				x_nL_time:                  $scope.past_date.toComponents().time.convertToReferenceInterval(15),
+				x_nR: 	                    $scope.end_date.getTime(),
+				x_nR_time:                  $scope.end_date.toComponents().time.convertToReferenceInterval(15),
 				width: 						undefined,
 				height: 					undefined,
 				hours: 						48,
@@ -105,12 +113,12 @@ sntRover
 			filter: {						//top filter
 		    	arrival_date: 				$scope.start_date,
 		    	enable_resize: 				false,
-		    	arrival_time: 				$scope.start_time,
+		    	arrival_time: 				$scope.arrival_time,
 		    	hours_days: 				'h',
 		    	range: 						12,
 		    	rate_type: 					'Standard',
-		    	rate_type_details: 			Object.create(null),
-		    	room_type: 					undefined,
+		    	rate_type_details: 			[],
+		    	room_type: 					($scope.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[$scope.room_type_id] : undefined,
 		    	show_all_rooms: 			'on',
 		    	toggleHoursDays: function() {
 		    		this.hours_days = (this.hours_days === 'h') ? 'd' : 'h';
@@ -127,6 +135,7 @@ sntRover
 					props.display.row_height_margin = (hourFormat12) ? 0 : 5;
 
 					props.display.width 		= props.display.hours / props.viewport.hours * props.viewport.width;
+					props.display.height        = props.display.row_height + props.display.row_height_margin;
 					props.display.px_per_hr 	= props.viewport.width / props.viewport.hours;
 					props.display.px_per_int 	= props.display.px_per_hr / props.display.intervals_per_hour;
 					props.display.px_per_ms 	= props.display.px_per_int / 900000;
@@ -145,7 +154,8 @@ sntRover
 					}
 				}
 		    },
-		    data: $scope.data
+		    data: $scope.data,
+		    stats: $scope.stats
 		};
 
 		/*_________________________________________________________*/
@@ -304,7 +314,10 @@ sntRover
 			ngDialog.open({
 				template: 'assets/partials/diary/RVDiaryRoomTransferConfirmation.html',
 				controller: 'RVDiaryRoomTransferConfirmationCtrl',
-				scope: $scope
+				scope: {
+					selectedReservations: $scope.selectedReservations,
+					dataStore: rvDiarySrv.data_Store
+				}
 			});	    	
 	    };
 
@@ -332,7 +345,7 @@ sntRover
 				$scope.gridProps.edit = util.deepCopy($scope.gridProps.edit);
 
 				$scope.gridProps.edit.passive = false;
-				$scope.gridProps.group_id = undefined
+				$scope.gridProps.group_id = undefined;
 				$scope.gridProps.edit.currentResizeItem = undefined;
 				$scope.gridProps.edit.currentResizeItemRow = undefined;
 
@@ -356,12 +369,12 @@ sntRover
 							   start.getHours()  + time_span.hours,
 							   start.getMinutes() + time_span.minutes,
 							   0, 0),
-				rt_filter = _.isEmpty(filter.room_type) ? (filter.room_type = _.pluck($scope.room_types, 'id')) : filter.room_type.id;
+				rt_filter = _.isEmpty(filter.room_type) ? (filter.room_type = _.pluck($scope.room_type, 'id')) : filter.room_type.id;
 
 			rvDiarySrv.Availability(start, end, $scope.std_rate.id, rt_filter)
 			.then($scope.initPassiveEditMode, responseError)
 			.then($scope.renderGrid, responseError);
-		};
+		}
 
         $scope.companySearchTextEntered = function() {
             if($scope.companySearchText.length === 1) {
@@ -375,7 +388,7 @@ sntRover
 	    	$scope.gridProps.filter.show_all_rooms = state; //(state === 'on');
 
 	    	if($scope.gridProps.filter.show_all_rooms === 'on') {
-	    		util.clearRowClasses($scope.gridProps.data.rooms);
+	    		util.clearRowClasses($scope.gridProps.data);
 	    	} else {
 	    		updateRowClasses(current_scroll_pos);
 			}
@@ -386,7 +399,7 @@ sntRover
 		var displayFilteredResults = _.debounce(function () {
         	RVCompanyCardSrv.fetchCompanyCard({ query: $scope.companySearchText.trim() })
             .then(function(data) {
-				$scope.companyCardResults = data.accounts;
+				$scope.gridProps.filter.rate_type_details = data.accounts; //companyCardResults = data.accounts;
             }, responseError);  
         }, 500);
 
@@ -497,22 +510,31 @@ sntRover
 	});
 
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
-		var filter 	= $scope.gridProps.filter,
-			display = $scope.gridProps.display,
+		var props = $scope.gridProps,
+			filter 	= props.filter,
+			display = props.display,
 			arrival_ms = filter.arrival_date.getTime(),
-            x_0, 
-            x_N; 
+			time_set; 
 
-		if(newValue !== oldValue) {
-			x_0 = new Date(arrival_ms - 7200000);
+		if(newValue !== oldValue) {	
+			time_set = util.gridTimeComponents(arrival_ms, 48, $scope.gridProps.display);
+
+			/*x_0 = new Date(arrival_ms - 7200000);
+			x_nT = new Date(x_0.getTime() - x_0.getComponents().time.getTotalMilliseconds()),
 			x_N = new Date(arrival_ms + 86400000);
 
 			display = _.extend({}, $scope.gridProps.display);
 
 			display.x_origin 			 = x_0.getTime(); 
 			display.x_origin_start_time  = x_N.toComponents().time; 
+			dipslay.x_nT 				 = x_nT.getTime();
+			display.x_nT_start_time  	 = x_nT.toComponents().time;
+			display.x_N  				 = x_N.getTIme();
+			display.x_N_start_time       = x_N.toComponents().time;*/
 
-			rvDiarySrv.fetchOccupancy(x_0, x_N).then($scope.renderGrid, responseError);	
+			//rvDiarySrv.fetchArrivalTimes(15); //, { offset: hours})
+
+			rvDiarySrv.fetchOccupancy(time_set.x_nL, time_set.x_nR).then($scope.renderGrid, responseError);	
 		}
 	});
 

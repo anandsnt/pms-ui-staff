@@ -3,53 +3,66 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 												 '$state', 
 												 '$vault', 
 												 'ngDialog',
-	function($scope, $rootScope, $state, $vault, ngDialog) {
+												 'rvDiarySrv',
+	function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.rooms 			= _.pluck($scope.selectedReservations, 'room');
-		$scope.occupancy 	    = _.pluck($scope.selectedReservations, 'occupancy');
-
-		var vaultSelections = {
-			arrival_date: undefined,
-			arrival_time: undefined,
-			departure_date: undefined,
-			departure_time: undefined,
-			rooms: []
-		};
-
-		$scope.title = ($scope.rooms.length > 1 ? 'these cabins' : 'this cabin');
+		$scope.title = ($scope.selectedReservations.length > 1 ? 'these cabins' : 'this cabin');
 
 		(function() {
-			var resSample 			= $scope.occupancy[0],
-				arrival 			= new Date(resSample.arrival),
-				departure 			= new Date(resSample.departure),
-				compA 				= arrival.toComponents(),
-				compB 				= departure.toComponents(),
-				arrivalDateComp 	= compA.date,
-				departureDateComp 	= compB.date,
-				arrivalTimeComp 	= compA.time,
-				departureTimeComp 	= compB.time;
+				var convertTimeFormat = function(fn, obj){
+					var arrival 			= new Date(obj.arrival),
+						departure 			= new Date(obj.departure);
 
-			$scope.arrival_time 		= compA.time.toString(true);
-			$scope.arrival_date 		= compA.date.day + ' ' + compA.date.monthName + ' ' + compA.date.year;
-			$scope.departure_time 		= compB.time.toString(true);
-			$scope.departure_date 		= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year;
+						return fn(arrival.toComponents(),  
+								  departure.toComponents());
+				},
+				dFormat = function(arrival, departure) {
+					return {
+						arrival_time:   arrival.time.toString(true),
+						arrival_date:   arrival.date.day + ' ' + arrival.date.monthName + ' ' + arrival.date.year,
+						departure_time: departure.time.toString(true),
+						departure_date: departure.date.day + ' ' + departure.date.monthName + ' ' + departure.date.year
+					};
+				},
+				vFormat = function(arrival, departure) {
+					return {
+	      				arrival_date: arrival.date.year + '-' + (arrival.date.month + 1) + '-' + arrival.date.day,
+	      				arrival_time: arrival.time.toReservationFormat(false),
+	      				departure_date: departure.date.year + '-' + (departure.date.month + 1) + '-' + departure.date.day,
+	      				departure_time: departure.time.toReservationFormat(false)
+					};
+				}, 
+				occupancy = $scope.selectedReservations[0].occupancy;
 
-			vaultSelections.arrival_date 	= compA.date.year + '-' + compA.date.month + '-' + compA.date.day;
-	      	vaultSelections.departure_date 	= compB.date.year + '-' + compB.date.month + '-' + compB.date.day;
-	      	vaultSelections.arrival_time 	= compA.time.toReservationFormat(false);
-	      	vaultSelections.departure_time 	= compB.time.toReservationFormat(false);			
+			$scope.selection 		= {
+				rooms: []
+			};
 
-			$scope.selectedReservations.forEach(function(slot, idx) {
-				vaultSelections.rooms.push({       
-					room_id: 		slot.room.id,
-			        rateId: 		slot.occupancy.rate_id,
-			        numAdults: 		1,
-			        numChildren: 	0,
-			        numInfants: 	0,
-			        amount: 		slot.occupancy.amount
-				});
-			});
+			$scope.vaultSelections = {
+				rooms: []
+			};
+
+			$scope.reservationsSettings = rvDiarySrv.ArrivalFromCreateReservation();
+
+			_.extend($scope.vaultSelections, convertTimeFormat(vFormat, occupancy));
+			_.extend($scope.selection, convertTimeFormat(dFormat, occupancy)); 
+
+			_.each($scope.selectedReservations, function(obj, idx, list) {
+				var item = {
+					room_id: obj.room.id,
+					room_no: obj.room_no,
+					room_type: obj.room_type_name,
+					amount: obj.occupancy.amount,
+					rate_id: obj.occupancy.rate_id,
+					numAdults: 		(_.has($scope.reservationsSettings, 'adults') ? $scope.reservationsSettings.adults : 1),
+			        numChildren: 	(_.has($scope.reservationsSettings, 'children') ? $scope.reservationsSettings.children : 0),
+			        numInfants: 	(_.has($scope.reservationsSettings, 'infants') ? $scope.reservationsSettings.infants : 0)
+			    };
+
+			    $scope.vaultSelections.push(item);
+				$scope.selection.push(item); 
+			})
 		})();
 
 		$scope.selectAdditional = function() {

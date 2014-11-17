@@ -1,7 +1,7 @@
 var GridRowItem = React.createClass({
 	getInitialState: function() {
 		return {
-			pct_diff: 1,
+			//pct_diff: 1,
 			editing: this.props.edit.active,
 			resizing: this.props.resizing,
 			currentResizeItem: this.props.currentResizeItem,
@@ -52,7 +52,7 @@ var GridRowItem = React.createClass({
 			display 				= props.display,
 			px_per_ms               = display.px_per_ms,
 			px_per_int 				= display.px_per_int,
-			x_origin   				= display.x_origin,
+			x_origin   				= display.x_nL, //display.x_origin,
 			data 					= props.data,
 			row_data 				= props.row_data,
 			res_meta                = props.meta.occupancy,
@@ -85,7 +85,7 @@ var GridRowItem = React.createClass({
 			__onDragStop: 		props.__onDragStop,
 			currentDragItem:    props.currentResizeItem,
 			style: 			   _.extend({
-				left: 		   (!state.resizing ? (start_time_ms - display.x_origin) * px_per_ms : start_time_ms) + 'px'
+				left: 		   (!state.resizing ? (start_time_ms - /*display.*/ x_origin) * px_per_ms : start_time_ms) + 'px'
 			}, style)	
 		}, 
 		React.DOM.span({
