@@ -294,6 +294,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room_type[meta.maintenance.time_span] = maintenance[meta.maintenance.time_span];
                     }
                     room.room_type = room_type;
+                    room.occupancy = [];
 
                     return room;
                 }),
@@ -332,7 +333,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return maintenance;
                 }), 
                 
-
                 /* OCCUPANCY Configuration Adapter */
                 Occupancy =  Config({
                     id: meta.occupancy.id,
@@ -470,7 +470,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                               end_date:         create_reservation_data.end_date,
                                               room_type_id:     create_reservation_data.room_type_id, 
                                               company_id:       create_reservation_data.company_id, 
-                                              travel_agent_id:  create_reservation_data.travel_agent_id })
+                                              travel_agent_id:  create_reservation_data.travel_agent_id });
                         } else {
                             _data_Store.set({ past_date: past_date,
                                               start_date: start_date, 
@@ -567,7 +567,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         }
 
                         if(min >= 60) {
-                            min = 0
+                            min = 0;
                             hour += 1;
                         }
 

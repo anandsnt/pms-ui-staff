@@ -155,7 +155,7 @@ var TimelineResizeGrip = React.createClass({
 			}
 		} 
 	},
-	shouldComponentUpdate: function(nextProps, nextState) {
+	//shouldComponentUpdate: function(nextProps, nextState) {
 		//if(nextState.resizing && nextState.mouse_down) {
 		/*if(!this.props.currentResizeItem && nextProps.currentResizeItem) {
 			return true;
@@ -166,8 +166,8 @@ var TimelineResizeGrip = React.createClass({
 		} else {
 			if(nextProps.currentResizeItem)
 		}*/
-		return true;
-	},
+		//return true;
+	//},
 	render: function() {
 		var self = this,
 			props = this.props,

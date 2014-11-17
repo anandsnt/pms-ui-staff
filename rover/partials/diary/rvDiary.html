@@ -72,8 +72,8 @@
                             <ul>
                                 <li ng-repeat="details in gridProps.filter.rate_type_details track by $index">
                                     {{details.name}}
-                                    <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
-                                    <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
+                                    <span id="confirm-rate" class="icons icon-ok-20" ng-click="confirmRateSelection($index)">Confirm rate</span>
+                                    <span id="remove-rate" class="icons icon-remove-20" ng-click="discardRateSelection($index)">Remove rate</span>
                                 </li>
                             </ul>      
                         </label>   
