@@ -21,7 +21,7 @@
             <div id="rooms-reserved" class="rooms scrollable">
                 <ul class="wrapper">
                     <li ng-repeat="room in selection.rooms track by $index"> 
-                        <span class="type">{{room.room_type_name}}</span>
+                        <span class="type">{{room.room_name}}</span>
                         <span class="room">{{room.room_no}}</span>
                         <span class="price">{{room.amount}}</span>
                         <span class="icons icon-remove-10" ng-show="selectedReservations.length > 0" ng-click="removeSelectedOccupancy($index)">-</span>

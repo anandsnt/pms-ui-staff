@@ -122,6 +122,12 @@ sntRover
 		    	show_all_rooms: 			'on',
 		    	toggleHoursDays: function() {
 		    		this.hours_days = (this.hours_days === 'h') ? 'd' : 'h';
+
+		    		if(this.hours_days === 'd') {
+		    			$state.go('rover.reservations.search', {
+		    				fromState: 'DIARY'
+		    			});
+		    		}
 		    	},
 		    	toggleRange: function() {
 		    		var hourFormat12 = ($scope.gridProps.viewport.hours === 12),
@@ -454,7 +460,7 @@ sntRover
 	    		meta 				= $scope.gridProps.meta,
 	    		data 				= $scope.data,
 	    		display 			= $scope.gridProps.display,
-	    		maintenance_span 	= display.maintenance_span_int * display.px_per_int / display.px_per_ms,
+	    		//maintenance_span 	= display.maintenance_span_int * display.px_per_int / display.px_per_ms,
 	    		maintenance_end_date; 
 
 	    	current_scroll_pos = parseInt(current_scroll_pos, 10);
@@ -464,6 +470,7 @@ sntRover
 
 	    		for(var j = 0, rlen = reservations.length; j < rlen; j++) {
 	    			reservation = reservations[j];
+	    			maintenance_span = reservation[meta.occupancy.maintenance];
 	    			maintenance_end_date = reservation[meta.occupancy.end_date] + maintenance_span;
 
 	    			if(current_scroll_pos >= reservation[meta.occupancy.start_date] && 
@@ -518,21 +525,6 @@ sntRover
 
 		if(newValue !== oldValue) {	
 			time_set = util.gridTimeComponents(arrival_ms, 48, $scope.gridProps.display);
-
-			/*x_0 = new Date(arrival_ms - 7200000);
-			x_nT = new Date(x_0.getTime() - x_0.getComponents().time.getTotalMilliseconds()),
-			x_N = new Date(arrival_ms + 86400000);
-
-			display = _.extend({}, $scope.gridProps.display);
-
-			display.x_origin 			 = x_0.getTime(); 
-			display.x_origin_start_time  = x_N.toComponents().time; 
-			dipslay.x_nT 				 = x_nT.getTime();
-			display.x_nT_start_time  	 = x_nT.toComponents().time;
-			display.x_N  				 = x_N.getTIme();
-			display.x_N_start_time       = x_N.toComponents().time;*/
-
-			//rvDiarySrv.fetchArrivalTimes(15); //, { offset: hours})
 
 			rvDiarySrv.fetchOccupancy(time_set.x_nL, time_set.x_nR).then($scope.renderGrid, responseError);	
 		}

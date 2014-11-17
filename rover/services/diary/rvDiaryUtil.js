@@ -47,9 +47,9 @@ sntRover
                 display.x_origin                = x_origin;
                 display.x_origin_start_time     = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
                 display.x_nL                    = x_left;
-                display.x_nT_time               = x_nL.toComponents().time.convertToReferenceInterval(15);
+                display.x_nL_time               = ret.x_nL.toComponents().time.convertToReferenceInterval(15);
                 display.x_nR                    = x_right;
-                display.x_nR_time               = x_nR.toComponents().time.convertToReferenceInterval(15);
+                display.x_nR_time               = ret.x_nR.toComponents().time.convertToReferenceInterval(15);
 
                ret.display = display;
             }

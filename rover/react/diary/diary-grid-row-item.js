@@ -89,7 +89,7 @@ var GridRowItem = React.createClass({
 			}, style)	
 		}, 
 		React.DOM.span({
-			className: ((!is_temp_reservation) ? 'occupied ' : '') + data[res_meta.status] + (state.editing ? ' editing' : '') + (is_temp_reservation && data.selected ? ' reserved' : ''),
+			className: ((!is_temp_reservation) ? 'occupied ' : '') + angular.lowercase(data[res_meta.status]) + (state.editing ? ' editing' : '') + (is_temp_reservation && data.selected ? ' reserved' : ''),
 			style: { 
 				width: reservation_time_span + 'px' 
 			}

@@ -252,7 +252,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         return Date.parse(date + ' ' + (std ? t_a + ' ' + t_b : time));
                     },
                     normalizeMaintenanceInterval: function(time) {
-                        var intervals = +time / 15,
+                        var intervals = time / 15,
                             intervals_per_hr = 4;
 
                         return parseInt(intervals); 
@@ -352,7 +352,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     occupancy[m.start_date]     = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
                     occupancy[m.end_date]       = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
-                    occupancy[m.maintenance]    = this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
+                    occupancy[m.maintenance]    = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
 
                     occupancy[m.room_type]      = room_type.name; 
 
@@ -621,8 +621,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         data = JSON.parse(data);
                     }
 
-                    if(_.has(data, fromData)) {
-                        if(data.fromData === data.toDate) {
+                    if(data) {
+                        if(data.fromDate === data.toDate) {
                             var start_date  = parseDate(data.fromDate, data.arrivalTime),
                                 end_date    = parseDate(data.toDate, data.departureTime);
 

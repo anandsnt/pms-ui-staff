@@ -208,8 +208,9 @@ var DiaryContent = React.createClass({
 		display.px_per_int  		= display.px_per_hr / display.intervals_per_hour;
 		display.px_per_ms 			= display.px_per_int / 900000;
 		display.x_0 				= viewport.row_header_right;                 
-		display.x_origin 			= filter.arrival_date.getTime();
-		display.x_origin_start_time = filter.arrival_time;
+		//display.x_origin 			= filter.arrival_date.getTime();
+		
+        display.x_origin_start_time = filter.arrival_time;
         display.scrollTo            = (display.x_origin - display.x_nL) * display.px_per_ms;
 
 		return _.extend(s_0, scope.gridProps);

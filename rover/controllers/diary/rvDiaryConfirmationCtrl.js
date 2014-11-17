@@ -50,18 +50,18 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 
 			_.each($scope.selectedReservations, function(obj, idx, list) {
 				var item = {
-					room_id: obj.room.id,
-					room_no: obj.room_no,
-					room_type: obj.room_type_name,
-					amount: obj.occupancy.amount,
-					rate_id: obj.occupancy.rate_id,
-					numAdults: 		(_.has($scope.reservationsSettings, 'adults') ? $scope.reservationsSettings.adults : 1),
-			        numChildren: 	(_.has($scope.reservationsSettings, 'children') ? $scope.reservationsSettings.children : 0),
-			        numInfants: 	(_.has($scope.reservationsSettings, 'infants') ? $scope.reservationsSettings.infants : 0)
+					room_id: 		obj.room.id,
+					room_no: 		obj.room.room_no,
+					room_type: 		obj.room.room_type_name,
+					amount: 		obj.occupancy.amount,
+					rate_id: 		obj.occupancy.rate_id,
+					numAdults: 		($scope.reservationsSettings ? $scope.reservationsSettings.adults : 1),
+			        numChildren: 	($scope.reservationsSettings ? $scope.reservationsSettings.children : 0),
+			        numInfants: 	($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0)
 			    };
 
-			    $scope.vaultSelections.push(item);
-				$scope.selection.push(item); 
+			    $scope.vaultSelections.rooms.push(item);
+				$scope.selection.rooms.push(item); 
 			})
 		})();
 
