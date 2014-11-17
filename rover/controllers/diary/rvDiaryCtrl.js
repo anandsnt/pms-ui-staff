@@ -39,7 +39,7 @@ sntRover
 	$scope.stats 		 = $scope.availability_count;
 	$scope.room_types 	 = $scope.room_type;
 	$scope.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
-	
+
 	//$scope.start_time 	 = $scope.start_date.toComponents().time;
 	//$scope.end_time 	 = $scope.end_date.toComponents().time;
 
@@ -260,7 +260,7 @@ sntRover
 		    			var i = 0, len = $scope.selectedReservations.length;
 
 		    			for(; i < len; i++) {
-		    				if($scope.selectedReservations.occupancy.key  === copy.key) {
+		    				if($scope.selectedReservations[i].occupancy.key  === copy.key) {
 		    					return $scope.selectedReservations.splice(i, 1);
 		    				}
 		    			}
@@ -321,10 +321,7 @@ sntRover
 			ngDialog.open({
 				template: 'assets/partials/diary/RVDiaryRoomTransferConfirmation.html',
 				controller: 'RVDiaryRoomTransferConfirmationCtrl',
-				scope: {
-					selectedReservations: $scope.selectedReservations,
-					dataStore: rvDiarySrv.data_Store
-				}
+				scope: $scope
 			});	    	
 	    };
 
