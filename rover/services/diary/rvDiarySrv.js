@@ -549,7 +549,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.fetchArrivalTimes = function(base_interval, offset) {
                     var times = [],
                         day_min = 24 * 60,
-                        min, cur_time;
+                        min, hour, cur_time;
 
                     if(!offset) {
                         offset = {
@@ -560,7 +560,17 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     for (var i = 0; i < day_min; i += base_interval) {
                         min = offset.min + (i % 60);
-                        cur_time = (offset.hours + parseInt(i / 60, 10)) + ':' + (min === 0 ? '00' : min);
+                        hour = (offset.hours + parseInt(i / 60, 10));
+
+                        if(cur_time >= 24) {
+                            cur_time = 0;
+                        }
+
+                        if(min >= 60) {
+                            min = 0
+                        }
+
+                        cur_time =  hour + ':' + (min === 0 ? '00' : min);
 
                         times.push(cur_time);
                     }
