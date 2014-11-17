@@ -54,7 +54,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 					room_no: 		obj.room.room_no,
 					room_type: 		obj.room.room_type_name,
 					amount: 		obj.occupancy.amount,
-					rate_id: 		obj.occupancy.rate_id,
+					rateId: 		obj.occupancy.rate_id,
 					numAdults: 		($scope.reservationsSettings ? $scope.reservationsSettings.adults : 1),
 			        numChildren: 	($scope.reservationsSettings ? $scope.reservationsSettings.children : 0),
 			        numInfants: 	($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0)
@@ -74,7 +74,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 		};
 
 		$scope.routeToSummary = function() {
-			$scope.saveToVault('temporaryReservationDataFromDiaryScreen', vaultSelections);
+			$scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
 			
 			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
 				reservation: 'HOURLY'
