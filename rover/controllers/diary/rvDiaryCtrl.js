@@ -38,7 +38,8 @@ sntRover
 	$scope.data 		 = $scope.room;
 	$scope.stats 		 = $scope.availability_count;
 	$scope.room_types 	 = $scope.room_type;
-	$scope.room_types.unshift({ id: 'All', room_type_name: 'All', description: 'All' });
+	$scope.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
+	
 	//$scope.start_time 	 = $scope.start_date.toComponents().time;
 	//$scope.end_time 	 = $scope.end_date.toComponents().time;
 
