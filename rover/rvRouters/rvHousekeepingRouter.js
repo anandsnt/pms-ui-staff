@@ -31,25 +31,22 @@ angular.module('housekeepingModule', [])
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
 
-                        RVHkRoomStatusSrv.searchOnSubset = true;
                         return RVHkRoomStatusSrv.fetchRoomList({
                             businessDate: $rootScope.businessDate,
-                            page: 1,
-                            perPage: 50
+                            page: $stateParams.page || 1,
+                            perPage: $stateParams.perPage || 50
                         });
                     } else if (!!$stateParams && !!$stateParams.businessDate) {
-                        RVHkRoomStatusSrv.searchOnSubset = true;
                         return RVHkRoomStatusSrv.fetchRoomList({
                             businessDate: $stateParams.businessDate,
-                            page: 1,
-                            perPage: 50
+                            page: $stateParams.page || 1,
+                            perPage: $stateParams.perPage || 50
                         });
                     } else {
-                        RVHkRoomStatusSrv.searchOnSubset = false;
                         return RVHkRoomStatusSrv.fetchRoomList({
                             businessDate: $rootScope.businessDate,
-                            page: 1,
-                            perPage: 50
+                            page: $stateParams.page || 1,
+                            perPage: $stateParams.perPage || 50
                         });
                     }
                 },

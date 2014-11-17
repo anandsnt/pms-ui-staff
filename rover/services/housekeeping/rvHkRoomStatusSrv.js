@@ -34,14 +34,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 			};
 		}
 
-		/**
-		 * [searchSubset : this public variable will be used to distinguish between the search on the rooms
-		 * 	1. Search on the entire rooms list
-		 * 	2. Search on the subset of fetched rooms ]
-		 * @type {Boolean}
-		 */
-		this.searchOnSubset = false;
-
 		this.currentFilters = this.initFilters();
 
 		var that = this;
