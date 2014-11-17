@@ -84,7 +84,29 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    $rootScope.isMaintenanceStaff = hotelDetails.current_user.default_dashboard == 'HOUSEKEEPING' ? true : false;
+
+    // self executing check
+    $rootScope.isMaintenanceStaff = (function(roles) {
+      // Values taken form DB
+      var FLO_MGR = 'floor_&_maintenance_manager',
+          FLO_STF = 'floor_&_maintenance_staff',
+          FLO_MGR_ID = 10,
+          FLO_STF_ID = 11
+          isFloMgr = false,
+          isFloStf = false;
+
+      isFloMgr = _.find(roles, function(item) {
+        return item.id === FLO_MGR_ID || item.name === FLO_MGR;
+      });
+
+      isFloStf = _.find(roles, function(item) {
+        return item.id === FLO_STF_ID || item.name === FLO_STF;
+      });
+
+      return isFloMgr || isFloStf ? true : false;
+    })(hotelDetails.current_user.roles);
+
+
 
     $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
       $scope.userInfo.business_date = newBussinessDate;

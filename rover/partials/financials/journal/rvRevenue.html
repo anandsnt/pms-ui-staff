@@ -1,8 +1,8 @@
 <!-- Content REVENUE-->
-<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue-content' ng-iscroll-delay='100' style="height:90%;">
+<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue_content' ng-click="clickedOnRevenue($event)">
+    
     <div class="wrapper">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
         <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isRevenueToggleSummaryActive}">
 
                 <!-- First level - charge groups -->

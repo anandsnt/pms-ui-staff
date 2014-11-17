@@ -2,9 +2,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
     
-	$scope.setScroller('payment-content');
+	$scope.setScroller('payment_content', {});
     var refreshPaymentScroll = function(){
-        setTimeout(function(){$scope.refreshScroller('payment-content');}, 200);
+        setTimeout(function(){$scope.refreshScroller('payment_content');}, 500);
     };
 
     $rootScope.$on('REFRESHPAYMENTCONTENT',function(){
@@ -118,6 +118,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             if(payment_types.active) isAllTabsCollapsed = false;
         });
         return isAllTabsCollapsed;
+    };
+
+    // To hanlde click inside payment tab.
+    $scope.clickedOnPayment = function($event){
+        $event.stopPropagation();
+        if($scope.data.isDrawerOpened){
+            $rootScope.$broadcast("CLOSEPRINTBOX");
+        }
     };
 
 }]);
