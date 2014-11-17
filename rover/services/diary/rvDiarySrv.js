@@ -568,6 +568,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                         if(min >= 60) {
                             min = 0
+                            hour += 1;
                         }
 
                         cur_time =  hour + ':' + (min === 0 ? '00' : min);
