@@ -28,6 +28,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $rootScope.isHourlyRatesEnabled = !!$scope.reservationSettingsData.is_hourly_rate_on;        
         $scope.$emit("refreshLeftMenu");
         $scope.$emit('hideLoader');
+        $scope.goBackToPreviousState();
       };
       var saveChangesFailureCallback = function(data) {
         $scope.errorMessage = data;
