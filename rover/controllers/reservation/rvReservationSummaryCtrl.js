@@ -88,12 +88,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.init = function() {
 			$scope.data = {};
 			if ($stateParams.reservation == "HOURLY") {
-				$scope.$emit('showLoader');
+				console.log("hhhhhhhhhhhhhhhhhh")
+;;				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
 
-				if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
+				if (temporaryReservationDataFromDiaryScreen) {
 					var getRoomsSuccess = function(data) {
 
 						var roomsArray = {};

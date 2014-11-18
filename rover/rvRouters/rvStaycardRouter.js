@@ -37,7 +37,7 @@ angular.module('stayCardModule', [])
                 payload: function(rvDiarySrv) {
                     var start_date = Date.now();
 
-                    return rvDiarySrv.load(start_date);
+                    return rvDiarySrv.load(start_date, rvDiarySrv.ArrivalFromCreateReservation());
                 }
             }
         });
