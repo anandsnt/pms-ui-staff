@@ -14,7 +14,7 @@ var Resizable = React.createClass({
 			key: 				  'resize-left-00',
 			display: 			  props.display,
 			iscroll: 			  props.iscroll,
-			itemProp: 			 'left',
+			itemProp: 			 'arrival', //left',
 			edit:                 props.edit,
 			meta:                 props.meta,
 			__onResizeCommand:    props.__onResizeCommand,
@@ -27,7 +27,7 @@ var Resizable = React.createClass({
 			key: 				  'resize-right-01',
 			display: 			  props.display,
 			iscroll: 			  props.iscroll,
-			itemProp: 			  'right',
+			itemProp: 			  'departure', //'right'
 			edit:                 props.edit,
 			meta:                 props.meta,
 			__onResizeCommand:    props.__onResizeCommand,

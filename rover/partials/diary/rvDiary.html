@@ -6,6 +6,7 @@
                 <h1>{{gridProps.edit.originalItem.guest_name}}</h1>
             </div>
             <div class="actions">
+                <button id="edit-staycard" class="button white" ng-click="openStayCard()">StayCard</button>
                 <button id="edit-save" class="button green" ng-click="editSave()">Save</button>
                 <button id="edit-cancel" class="button gray" ng-click="editCancel()">Cancel</button>
             </div>
@@ -71,9 +72,9 @@
                             <span>Select Account</span>
                             <ul>
                                 <li ng-repeat="details in gridProps.filter.rate_type_details track by $index">
-                                    {{details.name}}
-                                    <span id="confirm-rate" class="icons icon-ok-20" ng-click="confirmRateSelection($index)">Confirm rate</span>
-                                    <span id="remove-rate" class="icons icon-remove-20" ng-click="discardRateSelection($index)">Remove rate</span>
+                                    {{details.account_name}}
+                                    <span id="confirm-rate" class="icons icon-ok-20" ng-click="confirmRateSelection($index)">Confirm</span>
+                                    <span id="remove-rate" class="icons icon-remove-20" ng-click="discardRateSelection($index)">Remove</span>
                                 </li>
                             </ul>      
                         </label>   

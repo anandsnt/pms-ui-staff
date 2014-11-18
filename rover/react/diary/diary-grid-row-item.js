@@ -1,7 +1,6 @@
 var GridRowItem = React.createClass({
 	getInitialState: function() {
 		return {
-			//pct_diff: 1,
 			editing: this.props.edit.active,
 			resizing: this.props.resizing,
 			currentResizeItem: this.props.currentResizeItem,
@@ -9,8 +8,7 @@ var GridRowItem = React.createClass({
 		};
 	},
 	componentWillReceiveProps: function(nextProps) {
-		var copy = {},
-			meta_id = this.props.meta.occupancy.id,
+		var meta_id = this.props.meta.occupancy.id,
 			edit = nextProps.edit,
 			editing = edit.active,
 			creating;
@@ -47,20 +45,12 @@ var GridRowItem = React.createClass({
 			x_origin   				= display.x_nL, //display.x_origin,
 			data 					= props.data,
 			row_data 				= props.row_data,
-			res_meta                = props.meta.occupancy,
-			start_time_ms 			= !state.resizing ? data[res_meta.start_date] : state.currentResizeItem.left,// * this.state.pct_diff,
-			end_time_ms 			= !state.resizing ? data[res_meta.end_date] : state.currentResizeItem.right, // * this.state.pct_diff,
-			time_span_ms 			= end_time_ms - start_time_ms,
-			maintenance_time_span 	= data[res_meta.maintenance] * px_per_int, 
-			reservation_time_span 	= ((!state.resizing) ? time_span_ms * px_per_ms : time_span_ms),
-			is_temp_reservation 	= props.angular_evt.isAvailable(row_data, data),
-			style 					= {},
-			display_filter 			= props.angular_evt.displayFilter(props.filter, row_data, data),
-			self = this;
-
-		if(!display_filter) {
-			style.display = 'none';
-		}
+			m                		= props.meta.occupancy,
+			start_time_ms 			= !state.resizing ? data[m.start_date] : state.currentResizeItem[m.start_date],
+			end_time_ms 			= !state.resizing ? data[m.end_date] : state.currentResizeItem[m.end_date],
+			maintenance_time_span 	= data[m.maintenance] * px_per_int, 
+			reservation_time_span 	= (end_time_ms - start_time_ms) * px_per_ms,  
+			is_temp_reservation 	= data[m.status] === 'available'; //props.angular_evt.isAvailable(row_data, data);
 
 		return GridRowItemDrag({
 			key: 				data.key,
@@ -76,16 +66,17 @@ var GridRowItem = React.createClass({
 			__onDragStart:  	props.__onDragStart,
 			__onDragStop: 		props.__onDragStop,
 			currentDragItem:    props.currentResizeItem,
-			style: 			   _.extend({
-				left: 		   (!state.resizing ? (start_time_ms - /*display.*/ x_origin) * px_per_ms : start_time_ms) + 'px'
-			}, style)	
+			style: 			   { 
+				display: 'block', //(props.angular_evt.displayFilter(props.filter, row_data, data) ? 'block' : 'none'),
+				left: (start_time_ms - x_origin) * px_per_ms + 'px'
+			}
 		}, 
 		React.DOM.span({
-			className: ((!is_temp_reservation) ? 'occupied ' : '') + angular.lowercase(data[res_meta.status]) + (state.editing ? ' editing' : '') + (is_temp_reservation && data.selected ? ' reserved' : ''),
+			className: ((!is_temp_reservation) ? 'occupied ' : '') + data[m.status] + (state.editing ? ' editing' : '') + (is_temp_reservation && data.selected ? ' reserved' : ''),
 			style: { 
 				width: reservation_time_span + 'px' 
 			}
-		}, is_temp_reservation ? data[res_meta.rate] + '|' + data[res_meta.room_type] : data[res_meta.guest_name]),
+		}, is_temp_reservation ? data[m.rate] + '|' + data[m.room_type] : data[m.guest_name]),
 		React.DOM.span({
 			className: 'maintenance',
 			style: { 
