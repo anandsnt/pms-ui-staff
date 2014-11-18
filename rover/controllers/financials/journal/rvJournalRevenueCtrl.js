@@ -1,15 +1,17 @@
-sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv',function($scope, $rootScope, RVJournalSrv) {
+sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
-
-	$scope.setScroller('revenue-content');
+   
+	$scope.setScroller('revenue_content',{});
     var refreshRevenueScroller = function(){
-        setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
+        $timeout(function(){$scope.refreshScroller('revenue_content');}, 500);
     };
 
 	$scope.initRevenueData = function(){
 		var successCallBackFetchRevenueData = function(data){
 			$scope.data.revenueData = {};
+            $scope.data.selectedChargeGroup = 'ALL';
+            $scope.data.selectedChargeCode  = 'ALL';
 			$scope.data.revenueData = data;
 			$scope.$emit('hideLoader');
             $scope.errorMessage = "";
@@ -33,18 +35,24 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 
     /** Handle Expand/Collapse on Level1 **/
     $scope.clickedFirstLevel = function(index1){
-        var toggleData = $scope.data.revenueData.charge_groups[index1];
+        var toggleItem = $scope.data.revenueData.charge_groups[index1];
         if($scope.checkHasArrowLevel1(index1)){
-            toggleData.active = !toggleData.active;
-            refreshRevenueScroller(); 
+            toggleItem.active = !toggleItem.active;
+            refreshRevenueScroller();
+            // When the system is in detailed view and we are collapsing each first Level
+            // We have to toggle Details to Summary on print box.
+            if(!toggleItem.active && !$scope.data.isRevenueToggleSummaryActive){
+                if($scope.isAllRevenuesCollapsed())
+                    $scope.data.isRevenueToggleSummaryActive = true;
+            }
         }
     };
     
     /** Handle Expand/Collapse on Level2 **/
     $scope.clickedSecondLevel = function(index1, index2){
-        var toggleData = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
+        var toggleItem = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
         if($scope.checkHasArrowLevel2(index1, index2)){
-            toggleData.active = !toggleData.active;
+            toggleItem.active = !toggleItem.active;
             refreshRevenueScroller();
         }
     };
@@ -80,5 +88,52 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         }
         return hasArrow;
     };
-    
+
+    // To get total amount of Level1 - each charge group.
+    $scope.getTotalAmountOfGroupItem = function(index){
+        var item = $scope.data.revenueData.charge_groups[index].charge_codes;
+        var total = 0;
+        if((typeof item !== 'undefined') && (item.length >0)){
+            angular.forEach( item ,function(charge_codes, index2) {
+                if(charge_codes.show && charge_codes.filterFlag) total += charge_codes.total;
+            });
+        }
+        $scope.data.revenueData.charge_groups[index].total = total;
+        return total;
+    };
+
+    // To get total revenue amount by adding up charge group amounts.
+    $scope.getTotalOfAllChargeGroups = function(){
+        var revenueTotal = 0;
+        angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+            if(charge_groups.show && charge_groups.filterFlag) revenueTotal += charge_groups.total;
+        });
+        return revenueTotal;
+    };
+
+    // Update amount on Revenue Tab header.
+    $rootScope.$on('UpdateRevenueTabTotal',function(){
+        $timeout(function() {
+            var total = $scope.getTotalOfAllChargeGroups();
+            $scope.data.revenueData.total_revenue = total;
+        }, 100);
+    });
+
+    // To check whether all revenue tabs are collpased or not.
+    $scope.isAllRevenuesCollapsed = function(){
+        var isAllTabsCollapsed = true;
+        angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, key) {
+            if(charge_groups.active) isAllTabsCollapsed = false;
+        });
+        return isAllTabsCollapsed;
+    };
+
+    // To hanlde click inside revenue tab.
+    $scope.clickedOnRevenue = function($event){
+        $event.stopPropagation();
+        if($scope.data.isDrawerOpened){
+            $rootScope.$broadcast("CLOSEPRINTBOX");
+        }
+    };
+
 }]);

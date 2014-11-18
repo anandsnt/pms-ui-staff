@@ -52,7 +52,7 @@ var GridRowItemDrag = React.createClass({
 		var state 		= this.state,
 			props 		= this.props,
 			display 	= props.display,
-			delta_x 	= e.pageX - state.origin_x, 
+			delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
 			delta_y 	= e.pageY - state.origin_y - state.offset_y, 
 			adj_height 	= display.row_height + display.row_height_margin,
 			model;

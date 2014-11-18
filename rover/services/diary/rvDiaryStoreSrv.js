@@ -1,5 +1,0 @@
-sntRover
-.service('rvDiaryStoreSrv',  
-		function() {
-
-});

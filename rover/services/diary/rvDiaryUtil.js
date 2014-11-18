@@ -1,5 +1,5 @@
 sntRover
-.factory('rvDiaryUtilSrv', ['rvDiaryMetadata',
+.factory('rvDiaryUtil', ['rvDiaryMetadata',
     function (rvDiaryMetadata) {
     	var meta = rvDiaryMetadata,
     		occ_meta = meta.occupancy,
@@ -19,7 +19,66 @@ sntRover
     		clearRowClasses,
     		shallowCopy,
     		deepCopy,
-    		copyArray;
+    		copyArray,
+    		mixin,
+            inherit,
+            gridTimeComponents;
+
+        gridTimeComponents = function(arrival_ms, display_total_hours, gridProps) {
+            var ret,
+                ms_per_day = 43200000,
+                ms_per_hr = 3600000,
+                //base = (new Date(arrival_ms)).toComponents(),
+                //time_offset = base.time.convertToReferenceInterval(15),
+                x_origin = (new Date(arrival_ms)).setMinutes(0,0),//time_offset.minutes, 0),
+                resolving_dist = ((display_total_hours - 2) * ms_per_hr), 
+                x_right = x_origin + resolving_dist, 
+                x_left = x_origin - (ms_per_hr << 1); 
+
+            ret = {
+                start_date: new Date(x_origin),
+                x_0:  new Date(x_origin),
+                x_nL: new Date(x_left),
+                x_nR: new Date(x_right)
+            };
+
+            if(gridProps) {
+                display = _.extend({}, gridProps.display);
+                display.x_origin                = x_origin;
+                display.x_origin_start_time     = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
+                display.x_nL                    = x_left;
+                display.x_nL_time               = ret.x_nL.toComponents().time.convertToReferenceInterval(15);
+                display.x_nR                    = x_right;
+                display.x_nR_time               = ret.x_nR.toComponents().time.convertToReferenceInterval(15);
+
+               ret.display = display;
+            }
+
+            return ret;
+        };
+
+        inherit = function(child, base) {
+            child.prototype = Object.create(base.prototype);
+            child.prototype.constructor = child;
+        };
+
+		mixin = function() {
+			var objects = slice.call(arguments),
+				i = 0,
+				k,
+				len = objects.length,
+				base = Object.create(null);
+
+			for(; i < len; i++) {
+				for(k in objects[i]) {
+					if(hops.call(objects[i], k)) {
+						base[k] = objects[i][k];
+					}
+				}
+			}
+				
+			return base;
+		};	
 
 		copyArray = function(src, dest){
     		var val; 
@@ -104,28 +163,6 @@ sntRover
 			return shallowCopy({}, reservation);
 		};
 
-		/*copyRoom = function(room) {
-			var rc_meta = rom_meta.row_children,
-				newRoom = {}, 
-				children,
-				len = (_.isArray(room.occupancy) ? room.occupancy.length : 0);
-
-			shallowCopy(newRoom, room);
-
-			Object.defineProperty(newRoom, rc_meta, {
-				configurable: true,
-				value: []
-			});
-
-			children = newRoom[rc_meta];
-
-			for(var i = 0; i < len; i++) {
-				children.push(copyReservation(room[rc_meta][i]));
-			}
-
-			return newRoom;
-		};*/
-
 		copyRoom = function(room) {
 			return deepCopy(room);
 		};
@@ -164,31 +201,6 @@ sntRover
 				room = deepCopy(room);							 
 			}
 		};
-		
-		/*clearRoomQuery = function(rooms) {
-			var room, 
-				children = meta.room.row_children,
-				cur,
-				occupancy = [];
-
-			if(!_.isArray(rooms)) {
-				return;
-			}
-
-			for(var i = 0, len = rooms.length; i < len; i++) {
-				room = rooms[i];
-
-				for(var j = 0, jlen = room[children].length; j < jlen; j++) {
-					if(!room[children][j].temporary) {
-						occupancy.push(room[children][i]);
-					}
-				}
-
-				room[children] = occupancy;
-
-				room = copyRoom(room);
-			}			
-		}; */ 
 
 	 	reservationRoomTransfer = function(rooms, nextRoom, room, reservation) { //, commit) {
 			var data = rooms,
@@ -231,7 +243,22 @@ sntRover
 	    	}
 	    };
 
+	    registerNotifictions = function(obj) {
+	    	if(_.isObject(obj)) {
+	    		for(var k in obj) {
+	    			if(hops.call(obj, k)) {
+	    				switch(typeof obj[k]) {
+	    					case 'function':
+	    						
+	    					break;
+	    				}
+	    			}
+	    		}
+	    	}
+	    };
+
 		return {
+            gridTimeComponents: gridTimeComponents,
 			clearRoomQuery: clearRoomQuery,
 			removeReservation: removeReservation,
 			updateReservation: updateReservation,
@@ -244,7 +271,8 @@ sntRover
 			clearRowClasses: clearRowClasses,
 			shallowCopy: shallowCopy,
 			copyArray: copyArray,
-			deepCopy: deepCopy
+			deepCopy: deepCopy,
+			mixin: mixin
 		}; 	
 	}
 ]);
