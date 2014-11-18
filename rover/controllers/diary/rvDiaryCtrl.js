@@ -122,7 +122,7 @@ sntRover
 		    		this.hours_days = (this.hours_days === 'h') ? 'd' : 'h';
 
 		    		if(this.hours_days === 'd') {
-		    			$state.go('rover.reservations.search', {
+		    			$state.go('rover.reservation.search', {
 		    				fromState: 'DIARY'
 		    			});
 		    		}
@@ -199,10 +199,13 @@ sntRover
 	    };
 
 	    $scope.onResizeEnd = function(row_data, row_item_data) {
-	    	//var display =$scope.gridProps.display, occ_meta = meta.occupancy;
-
-	        //row_item_data[occ_meta.start_date] 	 = row_item_data.left / display.px_per_ms + display.x_nL;
-	    	//row_item_data[occ_meta.end_date] 	 = row_item_data.right / display.px_per_ms + display.x_nL; 
+	    	rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
+	    	.then(function(data) {
+	    		console.log(data);
+	    		console.log(rvDiarySrv.data_Store.get('_room.values.id'));
+	    	}, function(err) {
+	    		console.log(err);
+	    	});
 	    };    
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
@@ -363,26 +366,6 @@ sntRover
 	    	}
 	    };
 
-	    $scope.displayFilter = function(filter, room, reservation) {
-			var m_type = meta.occupancy.room_type;
-
-			try{
-		    	if($scope.isAvailable(room, reservation)) {
-		    		if(filter.room_type) {
-		    			var name = angular.lowercase(filter.room_type.name);
-
-			    		if(name === 'all' || 
-			    		   name === reservation[m_type]) {
-			    			return true;
-			    		} else {
-			    			return false;
-			    		}
-			    	}
-		    	} 	    	
-		    	return true;
-		    }catch(e) { }													
-	    };
-
 	    function updateRowClasses(current_scroll_pos) {
 	    	var reservations,
 	    		reservation,
@@ -458,22 +441,19 @@ sntRover
 				this.edit.passive 			= true;
 				this.edit.mode 				= data.row_item_data[meta.occupancy.id];
 				this.currentResizeItem 		= util.copyReservation(data.row_item_data);
-				this.currentResizeItemRow 	= undefined; //util.copyRoom(data.row_data);		
+				this.currentResizeItemRow 	= util.copyRoom(data.row_data);		
 			}
 		}).bind($scope.gridProps, meta, util);
 
 	    $scope.editSave = function() {
 	    	var props 			= $scope.gridProps,
-	    		meta 			= props.meta,
-	    		m_start_date 	= meta.occupancy.start_date,
-	    		m_end_date 		= meta.occupancy.end_date,
 	    		row_data 		= util.copyRoom(props.currentResizeItemRow),
 	    		row_item_data 	= util.copyReservation(props.currentResizeItem),
 	    		px_per_ms 		= props.display.px_per_ms,
 	    		x_origin 		= props.display.x_origin;
 
-	    	row_item_data[m_start_date] = row_item_data.left / px_per_ms + x_origin;
-	    	row_item_data[m_end_date] 	= row_item_data.right / px_per_ms + x_origin; 
+	    	row_item_data[meta.occupancy.start_date] = row_item_data.left / px_per_ms + x_origin;
+	    	row_item_data[meta.occupancy.end_date] 	 = row_item_data.right / px_per_ms + x_origin; 
 
 	    	$scope.roomXfer = {
 	    		current: {
@@ -496,15 +476,9 @@ sntRover
  		$scope.editCancel = function() {
 	    	var props = $scope.gridProps;
 	    	
-	    	util.reservationRoomTransfer(props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
+	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
 
-	    	props.edit 					= _.extend({}, props.edit);
-	    	props.edit.active 			= false;
-	    	props.edit.originalItem 	= undefined;
-	    	props.edit.originalRowItem 	= undefined;
-	    	props.currentResizeItem 	= undefined;
-	    	props.currentResizeItemRow 	= undefined;
-
+	    	$scop.resetEdit();
 	    	$scope.renderGrid();
 	    };
 
@@ -520,56 +494,88 @@ sntRover
 			$scope.gridProps.edit.currentResizeItemRow = undefined; //Planned to transfer the non-namespaced currentResizeItem/Row to here
 	    };
 
-	    $scope.fetchAvailability = function(display, filter, data) {
-				var time = Time({ hours: $scope.min_hours }); //display.new_reservation_time_span });
+	   	$scope.clearAvailability = function() {
+			var rooms = $scope.data,
+				room,
+                m_status = meta.occupancy.status,
+				reject = function(child) {
+					return $scope.isAvailable(undefined, child); //angular.lowercase(child[m_status]) === 'available'; 
+				};
 
-				util.clearRoomQuery(data);
+			for(var i = 0, len = rooms.length; i < len; i++) {
+				room 			= rooms[i];
+				room.occupancy 	= _.reject(room.occupancy, reject);	
+				room 			= util.deepCopy(room);							 
+			}
+		};
 
-				$scope.resetEdit();
+	    $scope.Availability = function() {	
+    		$scope.clearAvailability();
+			$scope.resetEdit();
+			$scope.renderGrid();
+	
+			rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
+			.then(function(data) {
+				var row_item_data = data.length > 0 ? data[0]: undefined,
+					start_date = new Date(row_item_data[meta.occupancy.start_date]),
+					end_date = new Date(row_item_data[meta.occupancy.end_date]);
+
+				if(row_item_data) { 
+					$scope.initPassiveEditMode({
+	                    start_date:     start_date,
+	                    end_date:       end_date,
+	                    stay_dates:     start_date.toComponents().date.toDateString(),
+	                    row_data:       rvDiarySrv.data_Store.get('_room.values.id')[row_item_data.room_id],
+	                    row_item_data:  row_item_data
+	                });
+				}
 
 				$scope.renderGrid();
-
-				//mergeAvailableTimeSlots(time, filter, data);
-
-				(function mergeAvailableTimeSlots(time_span, filter, data) {
-					function parseArrivalTime(arrival_time) {
-						var pos = arrival_time.indexOf(':'),
-							hours, minutes;
-
-						if(pos > -1) {
-							hours = arrival_time.substr(0, pos);
-
-							if(pos < arrival_time.length) {
-								minutes = arrival_time.substr(pos + 1);
-							}
-						}
-
-						if(hours && minutes) {
-							return Time({hours: hours, minutes: minutes});
-						}
-					}
-
-					var start_date = filter.arrival_date,
-						start_time = parseArrivalTime(filter.arrival_time),
-						start = new Date(start_date.getFullYear(),
-										 start_date.getMonth(),
-										 start_date.getDate(),
-										 start_time.hours,
-										 start_time.minutes, 
-										 0, 0),
-						end = new Date(start.getFullYear(),
-									   start.getMonth(),
-									   start.getDate(),
-									   start.getHours()  + time_span.hours,
-									   start.getMinutes() + time_span.minutes,
-									   0, 0),
-						rt_filter = _.isEmpty(filter.room_type) ? undefined : filter.room_type.id;
-
-					rvDiarySrv.Availability(start, end, rt_filter) 
-					.then($scope.initPassiveEditMode, responseError)
-					.then($scope.renderGrid, responseError);
-				})(time, filter, data);
+			}, responseError);
 		};
+
+	$scope.getArrivalTimes = function() {
+		function parseArrivalTime(arrival_time, bNextDay) {
+			var pos = arrival_time.indexOf(':'),
+				hours, minutes;
+
+			if(pos > -1) {
+				hours = arrival_time.substr(0, pos);
+
+				if(pos < arrival_time.length) {
+					minutes = arrival_time.substr(pos + 1);
+				}
+			}
+
+			if(hours && minutes) {
+				return Time({hours: hours, minutes: minutes});
+			}
+		}
+
+		var filter = _.extend({}, $scope.gridProps.filter),
+			time_span = Time({ hours: $scope.min_hours }),
+			start_date = filter.arrival_date,
+			start_time = parseArrivalTime(filter.arrival_time),
+			start = new Date(start_date.getFullYear(),
+							 start_date.getMonth(),
+							 start_date.getDate(),
+							 start_time.hours,
+							 start_time.minutes, 
+							 0, 0),
+			end = new Date(start.getFullYear(),
+						   start.getMonth(),
+						   start.getDate(),
+						   start.getHours()  + time_span.hours,
+						   start.getMinutes() + time_span.minutes,
+						   0, 0),
+			rt_filter = _.isEmpty(filter.room_type) ? undefined : filter.room_type.id;
+
+		return [
+			start,
+			end,
+			rt_filter
+		];
+	};
 
 	/*WATCHERS*/
 	$scope.$watch('selectedReservations.length', function(newValue, oldValue) {
@@ -585,37 +591,33 @@ sntRover
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
 			filter 	= props.filter,
-			display = props.display,
 			arrival_ms = filter.arrival_date.getTime(),
-			edit = props.edit,
 			time_set; 
 
 		if(newValue !== oldValue) {	
-			time_set = util.gridTimeComponents(arrival_ms, 50, $scope.gridProps.display);
+            time_set = util.gridTimeComponents(arrival_ms, 50, $scope.gridProps.display);
 
-			$scope.gridProps.display = time_set.display;
+            $scope.gridProps.display = time_set.display;
 
 			$scope.renderGrid();
 
-			if(edit.active) {
-				
-			} else if(edit.passive) {
-				$scope.fetchAvailability($scope.gridProps.display,  
-				                         _.extend({}, $scope.gridProps.filter), 
-				                         $scope.data);
+			if($scope.gridProps.edit.active || $scope.gridProps.edit.passive) {
+				$scope.Availability();
 			}
 
-			rvDiarySrv.Occupancy(new Date(time_set.x_nL.setHours(0,0,0)), new Date(time_set.x_nR.setHours(23,59,0)))
-			.then($scope.renderGrid, responseError);	
+			rvDiarySrv.Occupancy(new Date(time_set.x_nL.setHours(0,0,0)), 
+								 new Date(time_set.x_nR.setHours(23,59,0)))
+			.then(function(data) {
+				console.log(data);
+				$scope.renderGrid();
+			}, responseError);	
 		}
 	});
 
 	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if(!$scope.gridProps.edit.active) {
-				$scope.fetchAvailability($scope.gridProps.display,  
-				                         _.extend({}, $scope.gridProps.filter), 
-				                         $scope.data);
+				$scope.Availability();
 			}
 		}
 	});
@@ -623,9 +625,7 @@ sntRover
 	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if (!$scope.gridProps.edit.active) {
-				$scope.fetchAvailability($scope.gridProps.display,  
-				                         _.extend({}, $scope.gridProps.filter), 
-				                         $scope.data);
+				$scope.Availability();
 			}
 		}
 	});
@@ -633,29 +633,10 @@ sntRover
 	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if (!$scope.gridProps.edit.active) {
-				$scope.fetchAvailability($scope.gridProps.display,  
-				                         _.extend({}, $scope.gridProps.filter), 
-				                         $scope.data);
+				$scope.Availability();
 			}		
 		}	
 	});
-
-	function parseArrivalTime(arrival_time) {
-		var pos = arrival_time.indexOf(':'),
-			hours, minutes;
-
-		if(pos > -1) {
-			hours = arrival_time.substr(0, pos);
-
-			if(pos < arrival_time.length) {
-				minutes = arrival_time.substr(pos + 1);
-			}
-		}
-
-		if(hours && minutes) {
-			return Time({hours: hours, minutes: minutes});
-		}
-	}
 
 	function determineAvailability(reservations, orig_reservation) {
 		var range_validated = true, 

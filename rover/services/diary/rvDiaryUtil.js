@@ -28,7 +28,7 @@ sntRover
             var ret,
                 ms_per_day = 43200000,
                 ms_per_hr = 3600000,
-                x_origin = (new Date(arrival_ms)).setMinutes(0,0),
+                x_origin = arrival_ms, //(tzIndependentDate(arrival_ms)).setMinutes(0,0),
                 resolving_dist = ((display_total_hours) * ms_per_hr), 
                 x_right = x_origin + resolving_dist, 
                 x_left = x_origin - (ms_per_hr << 1); 
@@ -134,8 +134,8 @@ sntRover
 		roomIndex = function(rooms, room) {
 			var idx = -1;
 
-			for(var i = 0, len = data.length; i < len; i++){
-				if(data[i].id === room.id) {
+			for(var i = 0, len = rooms.length; i < len; i++){
+				if(rooms[i].id === room.id) {
 					idx = i;
 					return idx;
 				}
@@ -220,8 +220,8 @@ sntRover
 				updateReservation(oldRoom, reservation);
 			}
 
-			idxOldRoom = roomIndex(oldRoom);
-			idxNewRoom = roomIndex(newRoom);
+			idxOldRoom = roomIndex(rooms, oldRoom);
+			idxNewRoom = roomIndex(rooms, newRoom);
 
 			//if(commit) {
 			if(idxOldRoom > -1 && idxOldRoom < data.length) {

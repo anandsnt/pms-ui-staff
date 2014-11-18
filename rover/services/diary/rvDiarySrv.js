@@ -109,11 +109,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             result = [];
                         
                         if(diff.length > 0) {
-                            result = _.filter(diff, function(id) { 
-                                return _.findWhere(incoming, { 
-                                    reservation_id: id 
-                                }) 
-                            });
+                            result = _.filter(incoming, function(id) { return diff.indexOf(id); });
                         }
 
                         return result;
@@ -531,11 +527,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                                  'arrival_time',
                                                  'room',
                                                  'room_type',
-                                                 'occupancy',
+                                                 //'occupancy',
                                                  'availability_count',
-                                                 //'rate',
-                                                 //'std_rate',
                                                  'min_hours',
+                                                 'reservation_defaults',
                                                  'rate_id',
                                                  'room_type_id',
                                                  'company_id', 
@@ -587,7 +582,22 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     .then(function(data) {
                         Occupancy.resolve(data);
 
-                        q.resolve();
+                        q.resolve(Occupancy.store.data);
+                    }, function(err) {
+                        q.reject(err);
+                    });
+
+                    return q.promise;
+                };
+
+                this.AvailabilityCount = function(start_date, end_date) {
+                    var q = $q.defer();
+
+                    AvailabilityCount.read(dateRange(start_date, end_date))
+                    .then(function(data) {
+                        AvailabilityCount.resolve(data);
+
+                        q.resolve(AvailabilityCount.store.data);
                     }, function(err) {
                         q.reject(err);
                     });
@@ -610,13 +620,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 false
                             ]);
 
-                            q.resolve({
-                                start_date:     start_date,
-                                end_date:       end_date,
-                                stay_dates:     start_date.toComponents().date.toDateString(),
-                                row_data:       (Availability.store.data.length > 0) ? _data_Store.get('_room.values.id')[Availability.store.data[0].room_id] : undefined,
-                                row_item_data:  Availability.store.data.length > 0 ? Availability.store.data[0]: undefined
-                            });
+                            q.resolve(Availability.store.data);
                        }
                     });
 
