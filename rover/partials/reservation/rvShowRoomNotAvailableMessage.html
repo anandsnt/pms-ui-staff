@@ -1,0 +1,15 @@
+<div role="dialog" id="modal" class="modal-show">
+	<div class="modal-content">
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		
+		<div class="h3 message"  >
+			{{popupMessage}}
+		</div>
+		
+		<button id="ok" class="button modal-close red" ng-click="okButtonClicked()">
+			Ok
+		</button>
+	</div>
+</div>

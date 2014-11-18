@@ -14,8 +14,9 @@ var sntRover = angular.module('sntRover',[
 		'companyCardModule', 
 		'stayCardModule', 
 		'housekeepingModule', 
-		'reportsModule',
-		'FinancialsModule', 
+		'reportsModule', 
+		'diaryModule',
+		'FinancialsModule',
 		'cacheVaultModule', 
 		'twoMonthscalendar',
 		'acute.select', 
@@ -26,7 +27,8 @@ var sntRover = angular.module('sntRover',[
 		'orientationInputBlurModule',  
 		'multi-select', 		
 		'ngDragDrop',
-		'iscrollStopPropagation']);
+		'iscrollStopPropagation',
+		'ngReact']);
 
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed

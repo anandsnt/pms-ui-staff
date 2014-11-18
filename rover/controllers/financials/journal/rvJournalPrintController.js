@@ -120,8 +120,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 					else{
 						charge_codes.filterFlag = false;
 					}
-
-					//$scope.toggleRevenueTransactions();
 				}
 				else{
 					charge_codes.filterFlag = false;
@@ -132,9 +130,9 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	$scope.toggleRevenueTransactions = function(){
 		if($scope.data.isRevenueToggleSummaryActive)
-			$scope.showRevenueByLevels(true,true,false);
+			$scope.showRevenueDetailView(false);
 		else
-			$scope.showRevenueByLevels(true,true,true);
+			$scope.showRevenueDetailView(true);
 	};
 
 	// To handle Summary/Details toggle button click - REVENUE
@@ -146,9 +144,9 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	$scope.togglePaymentTransactions = function(){
 		if($scope.data.isPaymentToggleSummaryActive)
-			$scope.showPaymentByLevels(true,true,false);
+			$scope.showPaymentDetailView(false);
 		else
-			$scope.showPaymentByLevels(true,true,true);
+			$scope.showPaymentDetailView(true);
 	};
 
 	// To handle Summary/Details toggle button click - PAYMENT
@@ -159,19 +157,22 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	};
 
 	/*
-     *	To hanlde show/hide each Levels on Revenue list.
+     *	To handle Summary/Details view for Revenue filter.
 	 */
-	$scope.showRevenueByLevels = function(level1,level2,level3){
-		// Adding Show status flag to each item.
+	$scope.showRevenueDetailView = function(isDetailView){
+		
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
             	
-            	if(level3 && charge_codes.filterFlag){
-            		charge_codes.active = true;
+            	if(isDetailView && charge_codes.filterFlag){
+            		//Expanding Level1 and Level2 to show detailed view.
             		charge_groups.active = true;
+            		// If charge code is having items inside, expand it.
+            		if(charge_codes.transactions.length > 0) charge_codes.active = true;
             	}
             	else{
+            		charge_groups.active =  false;
             	 	charge_codes.active = false;
             	}
             });
@@ -213,26 +214,29 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	};
 
 	/*
-     *	To hanlde show/hide each Levels on payments list.
+     *	To handle Summary/Details view for Payments filter.
 	 */
-	$scope.showPaymentByLevels = function(level1,level2,level3){
-		// Adding Show status flag to each item.
+	$scope.showPaymentDetailView = function(isDetailView){
+		
 		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
 
 			if(payment_types.payment_type == "Credit Card"){
 	            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 	            	
-	            	if(level3 && credit_cards.filterFlag){
+	            	if(isDetailView && credit_cards.filterFlag){
+	            		// Expanding Level1 and Level2 to show detailed view for Credit Cards.
 	            		payment_types.active = true;
-	            		credit_cards.active = true;
+	            		// If cards having data inside , expand it.
+	            		if(credit_cards.transactions.length >0) credit_cards.active = true;
 	            	}
 	            	else{
+	            		payment_types.active = false;
 	            		credit_cards.active = false;
 	            	}
 	            });
         	}
         	else{
-        		if(level3){
+        		if(isDetailView && payment_types.transactions.length >0){
         			payment_types.active = true;
         		}
         		else{
@@ -282,6 +286,5 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
 	     */
 	};
-
 
 }]);

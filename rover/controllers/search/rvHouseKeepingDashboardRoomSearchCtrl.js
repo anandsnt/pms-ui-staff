@@ -79,8 +79,9 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			if ( $scope.rooms.length == 0) {
 				$scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetchRoomList($rootScope.businessDate)
-					.then(function(data) {
+				RVHkRoomStatusSrv.fetchRoomList({
+					businessDate: $rootScope.businessDate
+				}).then(function(data) {
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
 						$scope.showQueued = data.is_queue_rooms_on;

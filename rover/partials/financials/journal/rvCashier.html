@@ -1,10 +1,10 @@
 <!-- Content CASHIER -->
-<div id="journal-content" class="journal-content" ng-controller="RVJournalCashierController" ng-click="clearErrorMessage()">
+<div id="journal-content" class="journal-content" ng-controller="RVJournalCashierController" ng-click="clearErrorMessage()" ng-cloak>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div id="cashier-history" class="journal-history scrollable" ng-iscroll='cashier_history'>
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="wrapper">
             <h2 ng-show="detailsList.length>0" translate>HISTORY</h2>
-            <h2 ng-hide="detailsList.length>0" translate>NO_HISTORY</h2>
+            <h2 ng-hide="detailsList.length>0 || isLoading" translate>NO_HISTORY</h2>
             <ul class="shift-history">
                 <!-- Closed -->
                 <li ng-repeat="history in detailsList" ng-class="{'active':selectedHistory ===$index}" ng-click="historyClicked($index)">
@@ -85,8 +85,8 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="button green" translate ng-hide="details.status ==='CLOSED' || detailsList.length == 0" ng-click="closeShift()">CLOSE_SHIFT</button>
-            <button type="button" class="button green" translate ng-hide="details.status ==='OPEN' || detailsList.length === 0" ng-click="reOpen()">RE_OPEN</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='CLOSED' || detailsList.length == 0 || isLoading" ng-click="closeShift()">CLOSE_SHIFT</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='OPEN' || detailsList.length === 0 || isLoading ||isDateBeforeBusinnesDate(details.date) || data.filterData.cashierStatus !== 'CLOSED' ||!isLastCashierPeriod()" ng-click="reOpen()">RE_OPEN</button>
             <!-- adding extra empty tag to solve scroll not showing bottom part -->
             <div style="height:20%;"></div>
         </div> 

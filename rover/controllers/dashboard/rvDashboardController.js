@@ -1,7 +1,7 @@
 
 sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state',  
                   function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state){
-	
+  
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
 
@@ -15,42 +15,40 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     BaseCtrl.call(this, $scope);
 
     var init =  function(){
-	
-		
+  
+    
           //setting the heading of the screen
         $scope.heading = "DASHBOARD_HEADING";
-
-        $scope.dashboardData = dashBoarddata.dashboardData;
-        $scope.userDetails   = dashBoarddata.userDetails;
+        $scope.userDetails   = RVDashboardSrv.getUserDetails();
         $scope.statisticsData = dashBoarddata.dashboardStatistics;
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
-        $rootScope.adminRole = dashBoarddata.userDetails.user_role;
+        $rootScope.adminRole = $scope.userDetails.user_role;
 
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
         $scope.$emit("closeDrawer");
         var scrollerOptions = {click: true, preventDefault: false};
         $scope.setScroller('dashboard_scroller', scrollerOptions);
-       	//Display greetings message based on current time
-       	var d = new Date();
-      	var time = d.getHours();
-      	$scope.greetingsMessage = "";
-      	if (time < 12){
-      		$scope.greetingsMessage = 'GREETING_MORNING';
-      	}
-      	else if (time >= 12 && time < 16){
-      		$scope.greetingsMessage = 'GREETING_AFTERNOON';
-      	}
-      	else{
-      		$scope.greetingsMessage = 'GREETING_EVENING';
-      	}
-      	//ADDED Time out since translation not working without time out
+        //Display greetings message based on current time
+        var d = new Date();
+        var time = d.getHours();
+        $scope.greetingsMessage = "";
+        if (time < 12){
+          $scope.greetingsMessage = 'GREETING_MORNING';
+        }
+        else if (time >= 12 && time < 16){
+          $scope.greetingsMessage = 'GREETING_AFTERNOON';
+        }
+        else{
+          $scope.greetingsMessage = 'GREETING_EVENING';
+        }
+        //ADDED Time out since translation not working without time out
         setTimeout(function(){
-        	var title = "Showing Dashboard";	
+          var title = "Showing Dashboard";  
            $scope.refreshScroller('dashboard_scroller');
-			     $scope.setTitle(title);
+           $scope.setTitle(title);
         }, 2000);
-		
+    
         //TODO: Add conditionally redirecting from API results
 
         reddirectToDefaultDashboard();
@@ -91,8 +89,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
 
    $scope.gotosearch = function(){
-   	$state.go("rover.search");
-   	// rover.search({type:'DUEIN'});
+    $state.go("rover.search");
+    // rover.search({type:'DUEIN'});
    };
 
 
@@ -113,7 +111,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     * function to handle click on backbutton in the header section
     * will broadcast an event, the logic of backbutto should be handled there
     */              
-	 $scope.headerBackButtonClicked = function(){
+   $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
    };
 

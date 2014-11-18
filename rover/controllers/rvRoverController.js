@@ -68,6 +68,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
 	
 
@@ -83,7 +84,29 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    $rootScope.isMaintenanceStaff = hotelDetails.current_user.default_dashboard == 'HOUSEKEEPING' ? true : false;
+
+    // self executing check
+    $rootScope.isMaintenanceStaff = (function(roles) {
+      // Values taken form DB
+      var FLO_MGR = 'floor_&_maintenance_manager',
+          FLO_STF = 'floor_&_maintenance_staff',
+          FLO_MGR_ID = 10,
+          FLO_STF_ID = 11
+          isFloMgr = false,
+          isFloStf = false;
+
+      isFloMgr = _.find(roles, function(item) {
+        return item.id === FLO_MGR_ID || item.name === FLO_MGR;
+      });
+
+      isFloStf = _.find(roles, function(item) {
+        return item.id === FLO_STF_ID || item.name === FLO_STF;
+      });
+
+      return isFloMgr || isFloStf ? true : false;
+    })(hotelDetails.current_user.roles);
+
+
 
     $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
       $scope.userInfo.business_date = newBussinessDate;
@@ -161,7 +184,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "createReservation"
           }, {
             title: "MENU_ROOM_ASSIGNMENT",
-            action: ""
+            action: 'rover.reservation.diary',
+            standAlone: true,
+            hidden: !$rootScope.isHourlyRateOn,
+            menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
             action: "",
@@ -342,7 +368,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.hasLoader = false;
     });
 
-
+    /**
+    * in case of we want to reinitialize left menu based on new $rootScope values or something
+    * which set during it's creation, we can use
+    */    
+    $scope.$on('refreshLeftMenu', function(event){
+      setupLeftMenu();
+    }); 
+    
     $scope.init = function() {
       BaseCtrl.call(this, $scope);
       $rootScope.adminRole = '';
@@ -402,10 +435,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
+     var routeChange = function(event, newURL) {
+       event.preventDefault();
+       return;
+     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
@@ -593,9 +626,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
+
     /**
      * Handles the bussiness date change in progress
      */
+
+    var LastngDialogId = "";
+    
+    $scope.closeBussinnesDatePopup = function(){
+      ngDialog.close(LastngDialogId,"");
+    }
+
+    $rootScope.$on('ngDialog.opened', function (e, $dialog) {
+      LastngDialogId = $dialog.attr('id');
+    });
+
     $rootScope.showBussinessDateChangingPopup = function() {
 
       // Hide loading message
@@ -603,13 +648,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       //if already shown no need to show again and again
       if (!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone && !$rootScope.isCurrentUserChangingBussinessDate) {
         $rootScope.isBussinessDateChanging = true;
-        ngDialog.open({
+        var $dialog =  ngDialog.open({
           template: '/assets/partials/common/bussinessDateChangingPopup.html',
           className: 'ngdialog-theme-default1 modal-theme1',
           controller: 'bussinessDateChangingCtrl',
           closeByDocument: false,
           scope: $scope
-        });
+        });       
       }
     };
 

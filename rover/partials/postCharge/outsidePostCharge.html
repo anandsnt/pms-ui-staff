@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-cloak>
 	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended extended-post-charge">
 	    <button class="modal-close dark-title" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close"></span></button>
 	
@@ -155,7 +155,7 @@
 		</div>
 	</div>
 	    
-	    <span ng-controller="RVPostChargeController">
+	    <span ng-controller="RVPostChargeController" ng-if="fetchedItems">
 	    <fieldset class="content-left">
 			<div role="search" class="search-form">
 				<div class="select">
@@ -248,7 +248,7 @@
 				<p id="total-charge" class="offset-2">
 					{{'RESV_TOTAL' | translate}} <span class="price">{{ currencySymbol }} <span class="value">{{ net_total_price | number : 2 }}</span></span>
 				</p>
-				<div id="numpad" ng-show="selectedChargeItem.item_name || selectedChargeItem.charge_code">
+				<div id="numpad" class = "numpad-with-bottom-space" ng-show="selectedChargeItem.item_name || selectedChargeItem.charge_code">
 					<div id="numpad-numbers">
 						<button value="1" type="button" class="button white" ng-click="calNumAction(1)">
 							1
