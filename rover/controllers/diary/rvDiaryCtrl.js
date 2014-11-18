@@ -41,11 +41,6 @@ sntRover
 	$scope.room_types 	 = $scope.room_type;
 	$scope.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
 
-	//$scope.start_time 	 = $scope.start_date.toComponents().time;
-	//$scope.end_time 	 = $scope.end_date.toComponents().time;
-
-	//delete $scope.rooms;
-
 	$scope.selectedReservations = [];
 
 	$scope.companySearchText = '';
@@ -598,10 +593,16 @@ sntRover
 		if(newValue !== oldValue) {	
 			time_set = util.gridTimeComponents(arrival_ms, 48, $scope.gridProps.display);
 
-			if(edit.active) {
-				//rvDiarySrv.Availability().read();
-			} else if(edit.passive) {
+			$scope.gridProps.display = time_set.display;
 
+			$scope.renderGrid();
+
+			if(edit.active) {
+				
+			} else if(edit.passive) {
+				$scope.fetchAvailability($scope.gridProps.display,  
+				                         _.extend({}, $scope.gridProps.filter), 
+				                         $scope.data);
 			}
 
 			rvDiarySrv.Occupancy(time_set.x_nL, time_set.x_nR)

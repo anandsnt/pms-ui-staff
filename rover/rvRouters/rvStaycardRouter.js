@@ -34,9 +34,9 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'rvDiaryCtrl',
             resolve: {
-                payload: function(rvDiarySrv) {
+                payload: function(rvDiarySrv, $stateParams) {
                     var start_date = Date.now();
-
+                           
                     return rvDiarySrv.load(start_date, rvDiarySrv.ArrivalFromCreateReservation());
                 }
             }

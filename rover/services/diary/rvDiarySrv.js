@@ -167,11 +167,11 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         GET: rvBaseWebSrvV2.getJSON.bind(rvBaseWebSrvV2)
                     },
                     read: function(params) {
-                        if(this.cache && this.loaded) {
-                            return $q.when(this.dataStore.get(this.name));
-                        } else {
+                        //if(this.cache && this.loaded) {
+                            //return $q.when(this.dataStore.get(this.name));
+                        //} else {
                             return this.request('GET', params)();
-                        }
+                        //}
                     },
                     request: function(type, params) {
                         return _.partial(this.apis[type], this.url, params);
@@ -455,10 +455,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.load = function(arrival_time, create_reservation_data) {     
                     var _data_Store     = this.data_Store,
                         time_settings   = util.gridTimeComponents(arrival_time, 48),
-                        start_date      = time_settings.x_0,
-                        past_date       = time_settings.x_nL,
-                        end_date        = time_settings.x_nR,
-                        start_time      = start_date.toComponents().time,
+                        start_time      = time_settings.x_0.toComponents().time,
                         arrival_times   = this.fetchArrivalTimes(15, { 
                             hours: start_time.hours, 
                             min: (start_time.minutes / 15).toFixed() * 15 
@@ -478,17 +475,28 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         });
 
                         if(create_reservation_data) {
-                            _data_Store.set({ start_date:       create_reservation_data.start_date,
-                                              end_date:         create_reservation_data.end_date,
+                            time_settings = util.gridTimeComponents(create_reservation_data.start_date, 48);
+
+                            _data_Store.set({ past_date:        time_settings.x_nL,
+                                              start_date:       time_settings.x_0, 
+                                              end_date:         time_settings.x_nR, 
+                                              arrival_times:    arrival_times,
+                                              arrival_time:     (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
+                                              min_hours:        (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
                                               room_type_id:     create_reservation_data.room_type_id, 
                                               company_id:       create_reservation_data.company_id, 
-                                              travel_agent_id:  create_reservation_data.travel_agent_id });
+                                              travel_agent_id:  create_reservation_data.travel_agent_id,
+                                              reservation_defaults: {
+                                                adults: create_reservation_data.adults,
+                                                children: create_reservation_data.children,
+                                                infants: create_reservation_data.infants
+                                              } });
                         } else {
                             _data_Store.set({ past_date:        time_settings.x_nL,
                                               start_date:       time_settings.x_0, 
                                               end_date:         time_settings.x_nR, 
                                               arrival_times:    arrival_times,
-                                              arrival_time:     time_settings.x_0.toComponents().time 
+                                              arrival_time:     time_settings.x_0.toComponents().time.toString() 
                             });
                         }
 
@@ -507,18 +515,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         })
                         .then(function(data) {
                             HourlyRate.resolve(data);
-
-/*                            delete Maintenance.store.index.descr;
-                            delete Maintenance.store.index.values;
-                            delete Maintenance.store.group.values;
-                            delete Maintenance.store.group.descr;
-
-                            delete RoomType.store.index.descr;
-                            delete RoomType.store.index.values;
-                            delete RoomType.store.group.values;
-                            delete RoomType.store.group.descr;*/
-
-                            //delete Rate.store.group.is_hourly_rate.false;
 
                             q.resolve(_data_Store.get(
                                                  'past_date',
@@ -621,7 +617,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 };
 
                 this.ArrivalFromCreateReservation = function() {
-                    var data = $vault.get('reservations');
+                    var data = $vault.get('searchReservationData');
 
                     if(data) {
                         data = JSON.parse(data);
@@ -658,7 +654,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                         t_b = parseInt(timeObj.mm, 10) * 60000;
 
-                        return t_a + t_b;
+                        return t_a + t_b + ms;
                     }
                 };
             }]);

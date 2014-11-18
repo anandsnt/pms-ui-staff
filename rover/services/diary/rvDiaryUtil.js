@@ -24,13 +24,11 @@ sntRover
             inherit,
             gridTimeComponents;
 
-        gridTimeComponents = function(arrival_ms, display_total_hours, gridProps) {
+        gridTimeComponents = function(arrival_ms, display_total_hours, display) {
             var ret,
                 ms_per_day = 43200000,
                 ms_per_hr = 3600000,
-                //base = (new Date(arrival_ms)).toComponents(),
-                //time_offset = base.time.convertToReferenceInterval(15),
-                x_origin = (new Date(arrival_ms)).setMinutes(0,0),//time_offset.minutes, 0),
+                x_origin = (new Date(arrival_ms)).setMinutes(0,0),
                 resolving_dist = ((display_total_hours - 2) * ms_per_hr), 
                 x_right = x_origin + resolving_dist, 
                 x_left = x_origin - (ms_per_hr << 1); 
@@ -42,8 +40,8 @@ sntRover
                 x_nR: new Date(x_right)
             };
 
-            if(gridProps) {
-                display = _.extend({}, gridProps.display);
+            if(display) {
+                display                         = _.extend({}, display);
                 display.x_origin                = x_origin;
                 display.x_origin_start_time     = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
                 display.x_nL                    = x_left;
