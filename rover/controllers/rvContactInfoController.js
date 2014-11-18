@@ -8,7 +8,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
      * storing to check if data will be updated
      */
     var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-    presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+  //  presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
     $scope.errorMessage = "";
 
     $scope.$on('clearNotifications', function() {
@@ -105,13 +105,13 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
        * change date format for API call
        */
       var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-      dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
-
       var dataUpdated = false;
       if (angular.equals(dataToUpdate, presentContactInfo)) {
         dataUpdated = true;
       } else {
-        presentContactInfo = dataToUpdate;
+        presentContactInfo = JSON.parse(JSON.stringify(dataToUpdate));;
+        //change date format to be send to API
+        dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
         var unwantedKeys = ["avatar", "vip"]; // remove unwanted keys for API
         dataToUpdate = dclone(dataToUpdate, unwantedKeys);
       };
