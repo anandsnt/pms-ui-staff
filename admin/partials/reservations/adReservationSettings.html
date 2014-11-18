@@ -50,10 +50,13 @@
 				<!-- max guest counts ends here -->
 
 				<fieldset class="holder left">
-					<div style="height:20px;"></div>
-					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>		
-				</fieldset>
+					<div class="entry full-width"> 
+						<div style="height:20px;"></div>
+						<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
+						<ad-toggle-button label="Add-Ons for Reservations" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
+					</div>
 
+				</fieldset>
 
 			</fieldset>
 			<div class="actions float">
