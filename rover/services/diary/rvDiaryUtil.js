@@ -191,8 +191,9 @@ sntRover
 
 		clearRoomQuery = function(rooms) {
 			var room,
+                m_status = meta.occupancy.status,
 				reject = function(child) {
-					return child.temporary === true;
+					return angular.lowercase(child[m_status]) === 'available'; //child.temporary === true;
 				};
 
 			for(var i = 0, len = rooms.length; i < len; i++) {
