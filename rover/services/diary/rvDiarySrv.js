@@ -109,7 +109,11 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             result = [];
                         
                         if(diff.length > 0) {
-                            result = _.filter(diff, function(id) { return incoming.reservation_id === id; });
+                            result = _.filter(diff, function(id) { 
+                                return _.findWhere(incoming, { 
+                                    reservation_id: id 
+                                }) 
+                            });
                         }
 
                         return result;
@@ -208,7 +212,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 }
 
                                 for(var k in datum) {
-                                    if(_.has(datum, k)) {
+                                    if(_.has(datum, k) && k !== 'room_no') {
                                         if(/^\d+\.?\d*$/.test(datum[k])) {
                                             datum[k] = +datum[k];
                                         }
@@ -368,6 +372,11 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     occupancy[m.maintenance]    = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
 
                     occupancy[m.room_type]      = angular.lowercase(room_type.name); 
+                    occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
+
+                    if(occupancy[m.status] === 'reserved') {
+                        occupancy[m.status] = 'check-in';
+                    }
 
                     delete occupancy.arrival_time;
                     delete occupancy.arrival_date;
@@ -451,7 +460,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 /*ROUTER RESOLVE - LOADING POINT FOR DIARY*/
                 this.load = function(arrival_time, create_reservation_data) {     
                     var _data_Store     = this.data_Store,
-                        time_settings   = util.gridTimeComponents(arrival_time, 48),
+                        time_settings   = util.gridTimeComponents(arrival_time, 50),
                         start_time      = time_settings.x_0.toComponents().time,
                         arrival_times   = this.fetchArrivalTimes(15, { 
                             hours: start_time.hours, 
@@ -472,7 +481,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         });
 
                         if(create_reservation_data) {
-                            time_settings = util.gridTimeComponents(create_reservation_data.start_date, 48);
+                            time_settings = util.gridTimeComponents(create_reservation_data.start_date, 50);
 
                             _data_Store.set({ past_date:        time_settings.x_nL,
                                               start_date:       time_settings.x_0, 
@@ -500,7 +509,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         $q.all([Maintenance.read(),
                                 RoomType.read(),
                                 Room.read(), 
-                                Occupancy.read(dateRange(time_settings.x_nL, time_settings.x_nR)),
+                                Occupancy.read(dateRange(new Date(time_settings.x_nL.setHours(0,0,0)), 
+                                                         new Date(time_settings.x_nR.setHours(23,59,0)))),
                                 AvailabilityCount.read(dateRange(time_settings.x_nL, time_settings.x_nR))])
                         .then(function(data_array) {
                             _.reduce([Maintenance, RoomType, Room, Occupancy, AvailabilityCount], //Rate],

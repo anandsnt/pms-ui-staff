@@ -88,7 +88,7 @@ sntRover
 				x_nR_time:                  $scope.end_date.toComponents().time.convertToReferenceInterval(15),
 				width: 						undefined,
 				height: 					undefined,
-				hours: 						48,
+				hours: 						50,
 				row_height: 				60,
 				row_height_margin: 			5,
 				intervals_per_hour: 		4, 
@@ -228,14 +228,11 @@ sntRover
 		    	switch(command_message) {
 
 		    		case 'edit': 
-
 			    		if(!edit.active) {
-				    		edit 					= util.shallowCopy({}, edit);
-				    		edit.active 			= true;
-				    		edit.originalItem 		= util.copyReservation(row_item_data);
-				    		edit.originalRowItem 	= util.copyRoom(row_data);
-				    		currentResizeItem 		= util.copyReservation(row_item_data);
-				    		currentResizeItemRow 	= util.copyRoom(row_data);
+				    		$scope.initActiveEditMode({ 
+				    			row_data: row_data, 
+				    			row_item_data: row_item_data 
+				    		});
 
 				    		$scope.renderGrid();
 				    	}
@@ -440,6 +437,7 @@ sntRover
 			if(this.edit.passive) {
 				throw Error('Active/Passive edit mode mutually exclusive.');
 			}
+
 			this.edit 					= util.deepCopy(this.edit);
 			this.edit.active 			= true;
 			this.edit.passive  			= false;
@@ -454,6 +452,7 @@ sntRover
 				if(this.edit.active) { 
 					throw Error('Active/Passive edit mode mutually exclusive.');
 				}
+
 				this.edit 					= util.deepCopy(this.edit);
 				this.edit.active 			= false;
 				this.edit.passive 			= true;
@@ -512,6 +511,7 @@ sntRover
 	    $scope.resetEdit = function() { 
 			$scope.gridProps.edit = util.deepCopy($scope.gridProps.edit);
 
+			$scope.gridProps.edit.active = false;
 			$scope.gridProps.edit.passive = false;
 			$scope.gridProps.mode = undefined;
 			$scope.gridProps.currentResizeItem = undefined;
@@ -591,7 +591,7 @@ sntRover
 			time_set; 
 
 		if(newValue !== oldValue) {	
-			time_set = util.gridTimeComponents(arrival_ms, 48, $scope.gridProps.display);
+			time_set = util.gridTimeComponents(arrival_ms, 50, $scope.gridProps.display);
 
 			$scope.gridProps.display = time_set.display;
 
@@ -605,7 +605,7 @@ sntRover
 				                         $scope.data);
 			}
 
-			rvDiarySrv.Occupancy(time_set.x_nL, time_set.x_nR)
+			rvDiarySrv.Occupancy(new Date(time_set.x_nL.setHours(0,0,0)), new Date(time_set.x_nR.setHours(23,59,0)))
 			.then($scope.renderGrid, responseError);	
 		}
 	});

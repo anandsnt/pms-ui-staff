@@ -29,7 +29,7 @@ sntRover
                 ms_per_day = 43200000,
                 ms_per_hr = 3600000,
                 x_origin = (new Date(arrival_ms)).setMinutes(0,0),
-                resolving_dist = ((display_total_hours - 2) * ms_per_hr), 
+                resolving_dist = ((display_total_hours) * ms_per_hr), 
                 x_right = x_origin + resolving_dist, 
                 x_left = x_origin - (ms_per_hr << 1); 
 
