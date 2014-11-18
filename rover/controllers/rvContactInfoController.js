@@ -15,6 +15,14 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
       $scope.successMessage = "";
       $scope.$emit('contactInfoError', false);
     });
+    //to reset current data in contcat info for determining any change
+     $scope.$on('RESETCONTACTINFO', function(event, data) {
+      presentContactInfo.address = data.address;
+      presentContactInfo.phone = data.phone;
+      presentContactInfo.email = data.email;
+      presentContactInfo.first_name = data.first_name;
+      presentContactInfo.last_name =  data.last_name;
+    });
 
     $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
@@ -34,6 +42,8 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
 
         var avatarImage = getAvatharUrl(dataToUpdate.title);
         $scope.$emit("CHANGEAVATAR", avatarImage);
+        //to reset current data in header info for determining any change
+        $scope.$emit("RESETHEADERDATA", $scope.guestCardData.contactInfo);
 
         updateSearchCache(avatarImage);
         $scope.$emit('hideLoader');
