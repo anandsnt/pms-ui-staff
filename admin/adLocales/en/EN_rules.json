@@ -52,4 +52,6 @@
     "MAX_ADULTS":"Max Adults",
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
-    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display",
+    "CANCELLATION_CHARGE_CODE":"Cancellation Charge Code",
+    "SELECT_CHARGE_CODE":"Select Charge Code"

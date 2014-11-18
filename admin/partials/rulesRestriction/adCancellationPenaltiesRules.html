@@ -120,6 +120,14 @@
 									</div>
 								</div>
 							</div>
+							<div class="entry margin">
+								<label translate>CANCELLATION_CHARGE_CODE</label>
+								<div class="select">
+									<select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as (charge_code.value+' '+charge_code.description) for charge_code in chargeCodes">
+										<option value="" translate>SELECT_CHARGE_CODE</option>
+									</select>
+								</div>
+							</div>
 
 							<div class="entry full-width radio-check">
 								<label class="checkbox">
