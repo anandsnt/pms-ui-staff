@@ -1,7 +1,7 @@
 angular.module('dashboardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
 
         $stateProvider.state('rover.search', {
-            url: '/search/:type',
+            url: '/search/:type/:from_page',
             templateUrl: '/assets/partials/search/rvSearchReservation.html', 
             controller: 'rvReservationSearchController',
             resolve: {
@@ -21,8 +21,11 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         else{
                             dataDict.status = oldType;
                         }
+                        //The pagination should be set to page=1. for navigations from dashboard buttons.
+                        if($stateParams.from_page == "DASHBOARD"){
+                            RVSearchSrv.page = 1;
+                        }
                         //calling the webservice
-                        RVSearchSrv.page = 1;
                         return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
                     } else if ( !!$stateParams.useCache && oldType !="RESET") {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
