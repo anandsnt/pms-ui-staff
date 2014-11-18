@@ -126,6 +126,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchMinTime,{}, fetchMinTimeSucess);
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime,{}, fetchCurrentTimeSucess);
 			} else {
+                $scope.isNightsActive = true;
 				$scope.shouldShowNights = true;
 				$scope.shouldShowHours = false;
 				$scope.shouldShowToggle = false;
