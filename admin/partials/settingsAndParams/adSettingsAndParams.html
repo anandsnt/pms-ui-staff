@@ -16,6 +16,15 @@
 
 						<!-- Switch -->
 						<ad-toggle-button is-checked=" data.is_auto_change_bussiness_date" label="Auto Change Business Date"></ad-toggle-button>
+
+						<div class="entry margin">
+								<label translate>NO_SHOW_CHARGE_CODE</label>
+								<div class="select">
+									<select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as (charge_code.value+' '+charge_code.description) for charge_code in chargeCodes">
+										<option value="" translate>SELECT_CHARGE_CODE</option>
+									</select>
+								</div>
+						</div>
 					</fieldset>
 					<fieldset class="holder right">
 
