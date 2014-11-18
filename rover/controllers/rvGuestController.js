@@ -185,6 +185,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
 		var currentGuestCardHeaderData = declonedData;
 		$scope.current = 'guest-contact';
+		
+		/**
+		*
+		*to reset current data in header info for determining any change
+		**/
+		$scope.$on('RESETHEADERDATA', function(event, data) {
+			currentGuestCardHeaderData.address = data.address;
+			currentGuestCardHeaderData.phone = data.phone;
+			currentGuestCardHeaderData.email = data.email;
+			currentGuestCardHeaderData.first_name = data.first_name;
+			currentGuestCardHeaderData.last_name =  data.last_name;
+		});
 
 		/**
 		 * tab actions
@@ -221,13 +233,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var that = this;
 			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
+				$scope.$emit('hideLoader');
 				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
 				updateSearchCache();
-				$scope.$emit('hideLoader');
-			};
-			var saveUserInfoFailureCallback = function(data) {
-				$scope.$emit('hideLoader');
+				//to reset current data in contcat info for determining any change
+				$scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
 			};
 			// check if there is any chage in data.if so call API for updating data
 			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
@@ -236,7 +247,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
-				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
 			}
 		};
 
