@@ -1,7 +1,7 @@
 var GridRowItem = React.createClass({
 	getInitialState: function() {
 		return {
-			pct_diff: 1,
+			//pct_diff: 1,
 			editing: this.props.edit.active,
 			resizing: this.props.resizing,
 			currentResizeItem: this.props.currentResizeItem,
@@ -38,13 +38,13 @@ var GridRowItem = React.createClass({
 			});
 		}
 
-		var pct_diff = Math.abs(this.props.display.px_per_ms - nextProps.display.px_per_ms) / this.props.display.px_per_ms;
+		/*var pct_diff = Math.abs(this.props.display.px_per_ms - nextProps.display.px_per_ms) / this.props.display.px_per_ms;
 		
 		if(this.state.pct_diff !== pct_diff && pct_diff > 0.1) {
 			this.setState({
 				scaleResizeItem: pct_diff + 1
 			});
-		}
+		}*/
 	},
 	render: function() {
 		var props 					= this.props,
@@ -52,12 +52,12 @@ var GridRowItem = React.createClass({
 			display 				= props.display,
 			px_per_ms               = display.px_per_ms,
 			px_per_int 				= display.px_per_int,
-			x_origin   				= display.x_origin,
+			x_origin   				= display.x_nL, //display.x_origin,
 			data 					= props.data,
 			row_data 				= props.row_data,
 			res_meta                = props.meta.occupancy,
-			start_time_ms 			= !state.resizing ? data[res_meta.start_date] : state.currentResizeItem.left * this.state.pct_diff,
-			end_time_ms 			= !state.resizing ? data[res_meta.end_date] : state.currentResizeItem.right * this.state.pct_diff,
+			start_time_ms 			= !state.resizing ? data[res_meta.start_date] : state.currentResizeItem.left,// * this.state.pct_diff,
+			end_time_ms 			= !state.resizing ? data[res_meta.end_date] : state.currentResizeItem.right, // * this.state.pct_diff,
 			time_span_ms 			= end_time_ms - start_time_ms,
 			maintenance_time_span 	= data[res_meta.maintenance] * px_per_int, //display.maintenance_span_int * display.px_per_int,
 			reservation_time_span 	= ((!state.resizing) ? time_span_ms * px_per_ms : time_span_ms),
@@ -85,11 +85,11 @@ var GridRowItem = React.createClass({
 			__onDragStop: 		props.__onDragStop,
 			currentDragItem:    props.currentResizeItem,
 			style: 			   _.extend({
-				left: 		   (!state.resizing ? (start_time_ms - display.x_origin) * px_per_ms : start_time_ms) + 'px'
+				left: 		   (!state.resizing ? (start_time_ms - /*display.*/ x_origin) * px_per_ms : start_time_ms) + 'px'
 			}, style)	
 		}, 
 		React.DOM.span({
-			className: ((!is_temp_reservation) ? 'occupied ' : '') + data[res_meta.status] + (state.editing ? ' editing' : '') + (is_temp_reservation && data.selected ? ' reserved' : ''),
+			className: ((!is_temp_reservation) ? 'occupied ' : '') + angular.lowercase(data[res_meta.status]) + (state.editing ? ' editing' : '') + (is_temp_reservation && data.selected ? ' reserved' : ''),
 			style: { 
 				width: reservation_time_span + 'px' 
 			}

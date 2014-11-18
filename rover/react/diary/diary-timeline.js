@@ -9,7 +9,7 @@ var Timeline = React.createClass({
 			interval_spans,
 			px_per_int = display.px_per_int + 'px',
 			px_per_hr = display.px_per_hr + 'px',
-			start_time = display.x_origin_start_time,
+			start_time = display.x_nL_time, //display.x_origin_start_time,
 			self = this;
 
 		(function() {
@@ -50,7 +50,8 @@ var Timeline = React.createClass({
 		return React.DOM.div({
 			className: 'wrapper',
 			style: {
-				width: display.width
+				width: display.width + 'px'//,
+				//left: -1 * (display.x_origin - display.x_nL * display.px_per_ms) + 'px'
 			},
 		}, React.DOM.div({
 			className: 'hours'

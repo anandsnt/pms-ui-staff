@@ -1,101 +1,143 @@
 sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', 
-												 '$rootScope', 
-												 '$state', 
-												 '$vault', 
-												 'ngDialog',
-	function($scope, $rootScope, $state, $vault, ngDialog) {
-		BaseCtrl.call(this, $scope);
+                                                 '$rootScope', 
+                                                 '$state', 
+                                                 '$vault', 
+                                                 'ngDialog',
+                                                 'rvDiarySrv',
+    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv) {
+        BaseCtrl.call(this, $scope);
 
-		$scope.rooms 			= _.pluck($scope.selectedReservations, 'room');
-		$scope.occupancy 	    = _.pluck($scope.selectedReservations, 'occupancy');
+        $scope.title = ($scope.selectedReservations.length > 1 ? 'these rooms' : 'this room');
 
-		var vaultSelections = {
-			arrival_date: undefined,
-			arrival_time: undefined,
-			departure_date: undefined,
-			departure_time: undefined,
-			rooms: []
-		};
+        $scope.initSelections = function() {
+            (function() {
+                    var convertTimeFormat = function(fn, obj){
+                        var arrival             = new Date(obj.arrival),
+                            departure           = new Date(obj.departure);
 
-		$scope.title = ($scope.rooms.length > 1 ? 'these cabins' : 'this cabin');
+                            return fn(arrival.toComponents(),  
+                                      departure.toComponents());
+                    },
+                    dFormat = function(arrival, departure) {
+                        return {
+                            arrival_time:   arrival.time.toString(true),
+                            arrival_date:   arrival.date.day + ' ' + arrival.date.monthName + ' ' + arrival.date.year,
+                            departure_time: departure.time.toString(true),
+                            departure_date: departure.date.day + ' ' + departure.date.monthName + ' ' + departure.date.year
+                        };
+                    },
+                    vFormat = function(arrival, departure) {
+                        return {
+                            arrival_date: arrival.date.year + '-' + (arrival.date.month + 1) + '-' + arrival.date.day,
+                            arrival_time: arrival.time.toReservationFormat(false),
+                            departure_date: departure.date.year + '-' + (departure.date.month + 1) + '-' + departure.date.day,
+                            departure_time: departure.time.toReservationFormat(false)
+                        };
+                    }, 
+                    occupancy = ($scope.selectedReservations.length > 0 ) ? $scope.selectedReservations[0].occupancy : undefined;
 
-		(function() {
-			var resSample 			= $scope.occupancy[0],
-				arrival 			= new Date(resSample.arrival),
-				departure 			= new Date(resSample.departure),
-				compA 				= arrival.toComponents(),
-				compB 				= departure.toComponents(),
-				arrivalDateComp 	= compA.date,
-				departureDateComp 	= compB.date,
-				arrivalTimeComp 	= compA.time,
-				departureTimeComp 	= compB.time;
+                $scope.selection        = {
+                    rooms: []
+                };
 
-			$scope.arrival_time 		= compA.time.toString(true);
-			$scope.arrival_date 		= compA.date.day + ' ' + compA.date.monthName + ' ' + compA.date.year;
-			$scope.departure_time 		= compB.time.toString(true);
-			$scope.departure_date 		= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year;
+                $scope.vaultSelections = {
+                    rooms: []
+                };
 
-			vaultSelections.arrival_date 	= compA.date.year + ' ' + compA.date.monthName + ' ' + compA.date.day;
-	      	vaultSelections.departure_date 	= compB.date.year + ' ' + compB.date.monthName + ' ' + compB.date.day;
-	      	vaultSelections.arrival_time 	= $scope.arrival_time;
-	      	vaultSelections.departure_time 	= $scope.departure_time;			
+                if(occupancy) {
+                    $scope.reservationsSettings = rvDiarySrv.ArrivalFromCreateReservation();
 
-			$scope.selectedReservations.forEach(function(slot, idx) {
-				vaultSelections.rooms.push({       
-					room_id: 		slot.room.id,
-			        rateId: 		slot.occupancy.rate_id,
-			        numAdults: 		1,
-			        numChildren: 	0,
-			        numInfants: 	0,
-			        amount: 		slot.occupancy.amount
-				});
-			});
-		})();
+                    _.extend($scope.vaultSelections, convertTimeFormat(vFormat, occupancy));
+                    _.extend($scope.selection, convertTimeFormat(dFormat, occupancy)); 
 
-		$scope.selectAdditional = function() {
-			ngDialog.close();
-		};
+                    _.each($scope.selectedReservations, function(obj, idx, list) {
+                        var item = {
+                            room_id:        obj.room.id,
+                            room_no:        obj.room.room_no,
+                            room_type:      obj.room.room_type_name,
+                            amount:         obj.occupancy.amount,
+                            rateId:         obj.occupancy.rate_id,
+                            numAdults:      ($scope.reservationsSettings ? $scope.reservationsSettings.adults : 1),
+                            numChildren:    ($scope.reservationsSettings ? $scope.reservationsSettings.children : 0),
+                            numInfants:     ($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0)
+                        };
 
-		$scope.removeSelectedOccupancy = function(idx) {
-			$scope.selectedReservations.splice(idx, 1);
-		};
+                        $scope.vaultSelections.rooms.push(item);
+                        $scope.selection.rooms.push(item); 
+                    })
+                }
+            })();
+        };
 
-		$scope.routeToSummary = function() {
-			$scope.saveToVault('temporaryReservationDataFromDiaryScreen', vaultSelections);
-			
-			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
-				reservation: 'HOURLY'
-			});
-		};
+        $scope.initSelections();
 
-	    // save data to $vault
-	    // @param {String} - 'key', the name
-	    // @param {Object} - 'value', to be saved
-	    // @return {String} - saved value in $vault
-	    $scope.saveToVault = function(key, value) {
-	    	// $vault.set will only accept numbers & strings
-	    	$vault.set( key, JSON.stringify(value) );
+        $scope.selectAdditional = function() {
+            ngDialog.close();
+        };
 
-	    	// return the same value string back
-	    	return $vault.get( key ) || false;
-	    };
+        $scope.removeSelectedOccupancy = function(idx) {
+            var removed = $scope.selectedReservations.splice(idx, 1);
 
-	    // read data from $vault
-	    // @param {String} - 'key', the name
-	    // @return {Object} - parsed, saved value from $value
-	    $scope.ReadFromVault = function(key) {
-	    	return !!$vault.get( key ) ? JSON.parse( $vault.get(key) ) : false; 
-	    };
+            removed[0].occupancy.selected = false;
 
-	    // may be moved to utils or to a deeper scope into react
-	    $scope.dateToMs = function(date) {
-	    	return	Object.prototype.toString.apply( date ) == '[object Date]' ? date.getTime() : false;
-	    };
-	    $scope.msToDate = function(ms) {
-	    	return Object.prototype.toString.apply( new Date(ms) ) == '[object Date]' ? new Date(ms) : false;
-	    };
+            if($scope.selectedReservations.length === 0) {
+                ngDialog.close();
+            } else {
+                this.initSelections();
+            }
 
-		$scope.closeDialog = function() {
-			ngDialog.close();
-		};
+            $scope.renderGrid();
+        };
+
+        $scope.routeToSummary = function() {
+            $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
+            
+            $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
+                reservation: 'HOURLY'
+            });
+
+            ngDialog.close();
+        };
+
+        // save data to $vault
+        // @param {String} - 'key', the name
+        // @param {Object} - 'value', to be saved
+        // @return {String} - saved value in $vault
+        $scope.saveToVault = function(key, value) {
+            // $vault.set will only accept numbers & strings
+            $vault.set( key, JSON.stringify(value) );
+
+            // return the same value string back
+            return $vault.get( key ) || false;
+        };
+
+        // read data from $vault
+        // @param {String} - 'key', the name
+        // @return {Object} - parsed, saved value from $value
+        $scope.readFromVault = function(key) {
+            return !!$vault.get( key ) ? JSON.parse( $vault.get(key) ) : false; 
+        };
+
+        // may be moved to utils or to a deeper scope into react
+        $scope.dateToMs = function(date) {
+            return  Object.prototype.toString.apply( date ) == '[object Date]' ? date.getTime() : false;
+        };
+        $scope.msToDate = function(ms) {
+            return Object.prototype.toString.apply( new Date(ms) ) == '[object Date]' ? new Date(ms) : false;
+        };
+
+        $scope.cancelSelection = function() {
+             var removed = $scope.selectedReservations.pop();
+
+            removed.occupancy.selected = false;
+
+            ngDialog.close();
+
+            $scope.renderGrid();                   
+        };
+
+        $scope.closeDialog = function() {
+            ngDialog.close();
+            $scope.renderGrid();
+        };
 }]);

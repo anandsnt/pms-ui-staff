@@ -425,7 +425,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				return false;
 			};
 
-			if ( !!room.assignee_maid.id ) {
+			if ( !!room.assignee_maid.name ) {
 				return {
 					'name': angular.copy(room.assignee_maid.name),
 					'class': 'assigned'

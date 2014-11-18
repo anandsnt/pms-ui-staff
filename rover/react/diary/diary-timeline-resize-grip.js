@@ -3,14 +3,12 @@ var TimelineResizeGrip = React.createClass({
 	__onMouseDown: function(e) {
 		var page_offset, model, props = this.props;
 
-		props.iscroll.timeline.disable();
-		props.iscroll.grid.disable();	
-
 		e.preventDefault();
 		e.stopPropagation();
 
 		if(e.button === 0 || e.button === 2) {
-			props.iscroll.grid.disable();
+			props.iscroll.timeline.disable();
+			props.iscroll.grid.disable();	
 
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__onMouseMove);
@@ -29,7 +27,7 @@ var TimelineResizeGrip = React.createClass({
 			state = 		this.state,
 			display = 		props.display,
 			delta_x = 		e.pageX - state.origin_x, 
-			x_origin = 		display.x_origin,
+			x_origin = 		display.x_nL, //display.x_origin,
 			px_per_int = 	display.px_per_int,
 			px_per_ms = 	display.px_per_ms,
 			model = 		state.currentResizeItem, 
@@ -68,7 +66,7 @@ var TimelineResizeGrip = React.createClass({
 			delta_x = 		e.pageX - state.origin_x, 
 			px_per_int = 	display.px_per_int,
 			px_per_ms =     display.px_per_ms,
-			x_origin =      display.x_origin,
+			x_origin =      display.x_nL, //display.x_origin,
 			model = 		state.currentResizeItem,
 			res_meta =      props.meta.occupancy,
 			direction = 	props.itemProp;
@@ -79,6 +77,9 @@ var TimelineResizeGrip = React.createClass({
 		model[direction] = ((state.element_x + delta_x) / px_per_int).toFixed() * px_per_int;
 
 		if(this.state.resizing) {
+			props.iscroll.timeline.enable();
+			props.iscroll.grid.enable();	
+
 			this.setState({
 				left: model[direction],
 				mouse_down: false,
@@ -91,9 +92,6 @@ var TimelineResizeGrip = React.createClass({
 				props.__onResizeEnd(state.row, model);
 				
 				props.__onResizeCommand(model);
-				
-				props.iscroll.timeline.enable();
-				props.iscroll.grid.enable();		
 			});
 		}
 
@@ -123,7 +121,7 @@ var TimelineResizeGrip = React.createClass({
 			display = props.display, 
 			direction = this.props.itemProp,
 			px_per_ms = display.px_per_ms,
-			x_origin = display.x_origin,
+			x_origin = display.x_nL, //display.x_origin,
 			res_meta = props.meta.occupancy;
 
 		if(!this.state.resizing) {
@@ -183,6 +181,6 @@ var TimelineResizeGrip = React.createClass({
 				left: (currentResizeItem ? currentResizeItem[direction] : 0) + 'px'		
 			},
 			onMouseDown: self.__onMouseDown
-		}, (currentResizeItem ? (new Date(currentResizeItem[direction] / display.px_per_ms + display.x_origin)).toLocaleTimeString() : '')));
+		}, (currentResizeItem ? (new Date(currentResizeItem[direction] / display.px_per_ms + display.x_nL /*display.x_origin*/)).toLocaleTimeString() : '')));
 	}
 });

@@ -797,6 +797,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
 				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
 
+				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
+				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
+
 				$notify.classList.add('show');
 
 				// only bind 'touchmove' when required
