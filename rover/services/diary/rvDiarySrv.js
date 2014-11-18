@@ -587,7 +587,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     .then(function(data) {
                         Occupancy.resolve(data);
 
-                        q.resolve(Occupancy.store.group.values);
+                        q.resolve();
                     }, function(err) {
                         q.reject(err);
                     });
