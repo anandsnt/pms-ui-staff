@@ -1,6 +1,10 @@
 admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', 'ADUserRolesSrv', function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv){
 	
 	BaseCtrl.call(this, $scope);
+	//navigate back to user list if no id
+	if(!$stateParams.id && !$stateParams.page =='add'){
+			$state.go('admin.users');
+	}
 	$scope.mod = "";
 	$scope.image = "";
 	$scope.$emit("changedSelectedMenu", 0);

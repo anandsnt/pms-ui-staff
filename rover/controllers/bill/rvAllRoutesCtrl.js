@@ -46,7 +46,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
 
             var data = {};

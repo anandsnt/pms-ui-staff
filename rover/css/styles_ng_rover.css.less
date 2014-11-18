@@ -384,11 +384,6 @@ height: 410px;
 }
 
 
-
-.grey{
-  color:grey;
-}
-
 // CICO-609 'Accompany' in Search- Multiple images
 .guest-image img{
     &.first-image {
@@ -641,7 +636,8 @@ Padding for the ows error popup
 }
 
 /* Rooms page               ==============================*/
-.content#rooms {
+.content#rooms,
+.content#filter-options {
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling:touch;
@@ -670,7 +666,6 @@ Padding for the ows error popup
 }
 
 .content#filter-options {
-
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
@@ -865,6 +860,9 @@ Padding for the ows error popup
   padding:0 !important;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 .guest-bill-edit-buttons{
   width:100% !important;
 }
@@ -1203,4 +1201,23 @@ Padding for the ows error popup
 /* CICO-10309 */
 .no-margin-right {
   margin-right:0px !important;
+}
+
+/* CICO-6105 */
+.short-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* CICO-10508 */
+#modal .modal-content .message .select-stand-alone{
+  width:auto !important;
+}
+
+#modal .modal-content .message .select-stand-alone:after{
+  width: 14px !important;
+}
+
+/* CICO-10647 */
+.numpad-with-bottom-space {
+  top: 294px !important;
 }

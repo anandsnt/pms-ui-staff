@@ -1,0 +1,86 @@
+<section class="content current" ng-click="clearErrorMessage()">
+    <header class="content-title">
+        <h2 ng-show="!isAddMode" ><span translate>EDIT_CATEGORY_LABEL</span> <span>{{data.name}}</span></h2>
+        <h2 ng-show="isAddMode" translate>ADD_CATEGORY_LABEL</h2>
+        <a ng-click="goBack()" class="action back" translate>BACK</a>
+        <a class="action remove" ng-hide="!data.id " ng-click="deleteItem(data.id)" translate>DELETE_CATEGORY_LABEL</a>
+    </header>
+
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <form method="post" class="form float">
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3><span translate>CATEGORY_LABEL</span> <span translate>DETAILS_LABEL</span></h3>
+                    <em class="status" ><span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong><span translate>MANDATORY_FIELDS_MESSAGE2</span></em>
+                </div>
+                <div class="entry full-width">
+                    <label for="category-availability" ><span translate>AVAILABILITY_STATUS_LABEL</span><strong>*</strong></label>
+                    <div class="switch-button" ng-class="{'on':data.status}">
+                        <input name="category-availability" id="category-availability" value="1" type="checkbox" ng-model="data.status" />
+                        <span class="switch-icon"></span>
+                    </div>
+                </div> 
+                <div class="entry">
+                    <label for="category-name"><span translate>CATEGORY_NAME_LABEL</span> <strong>*</strong></label>
+                    <input type="text" name="category-name" id="category-name" placeholder="Enter category name" ng-model= "data.name" required />
+                </div>
+                <div class="entry full-width">
+                    <label for="category-icon" > <span translate>CATEGORY_ICON_LABEL</span> <span translate>ICON_SPEC</span></label>
+                    <div class="file-upload with-preview small-preview">
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" name="category-icon" ng-model = "data.icon" app-filereader id="category-icon" />
+                        <button type="button" class="button brand-colors">Replace icon</button>
+                    </div>
+                    <span class="file-preview small-preview">
+                        <img src="{{data.icon}}" alt="" />
+                    </span>
+                </div>     
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title">
+                    <h3><span translate>TO_SECTION_LABEL</span></h3>
+                </div>
+                <div class="entry full-width">
+                    <ul class="boxes cms-tree">
+                        <li class="section" ng-repeat="section in data.parent_section">
+                            <div class="sort">
+                                <span class="cms-name">{{section.name}}</span>
+                                <div class="cms-delete">
+                                    <a class="icons icon-delete" ng-click="deleteParentSection($index)">Delete</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="add">
+                            <a  class="add-new-button open-modal" ng-click= "openAddParentModal(true)" translate>ADD_SECTION_LABEL</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-title">
+                    <h3><span translate>TO_CATEGORY_LABEL</span></h3>
+                </div>
+                <div class="entry full-width">
+                    <ul class="boxes cms-tree">
+                        <li class="category" ng-repeat="category in data.parent_category">
+                            <div class="sort">
+                                <span class="cms-name">{{category.name}}</span>
+                                <div class="cms-delete">
+                                    <a class="icons icon-delete" ng-click="deleteParentCategory($index)">Delete</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="add">
+                            <a class="add-new-button open-modal" ng-click= "openAddParentModal(false)" translate>ADD_CATEGORY_LABEL</a>
+                        </li>
+                    </ul> 
+                </div>        
+            </fieldset>
+            <div class="actions float">
+                <button type="button" ng-click="goBack()" class="button blank" translate>CANCEL</button>
+                <button type="button" ng-click="saveCategory()" class="button green" translate>SAVE_CHANGES</button>  
+            </div>
+        </form>
+    </section>
+</section>

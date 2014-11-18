@@ -7,6 +7,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	$scope.saveData.credit_card  =  "";
 	$scope.saveData.name_on_card =  "";
 	$scope.saveData.payment_type =  "";
+	$scope.saveData.payment_type_description =  "";
 	$scope.saveData.card_expiry_month = "";
 	$scope.saveData.card_expiry_year = "";
 	/**
@@ -44,7 +45,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
            
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback, errorCallback);
@@ -74,7 +75,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			 		$scope.savePayment();// call save payment details WS		 		
 			 	}
 			 	else{
-			 		$scope.errorMessage = ["There is a problem with your credit card"];
+			 		$scope.$emit('displayErrorMessage',["There is a problem with your credit card"]); 
 			 	}			
 			 	$scope.$apply(); 	
 			 };
@@ -84,28 +85,35 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			    $scope.$emit("showLoader");
 			}
 			catch(err) {
-			   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+			   $scope.$emit('displayErrorMessage',["There was a problem connecting to the payment gateway."]);
 			};
 			 		
 		};
 		/**
-	    * function to save a new payment type for the reservation
+	    * function to save a new payment type 
 	    */
 		$scope.savePayment = function(){
 			
-			var successCallback = function(data) {
-                $scope.showPaymentList();
-                $scope.$parent.fetchAttachedPaymentTypes();                
-            };
-            var errorCallback = function(errorMessage) {
-                $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage[0];
-            };
+			
 			$scope.saveData.reservation_id = $scope.reservationData.reservation_id;
 			$scope.saveData.session_id = MLISessionId;
-			var expiry_year =  2000 + parseInt($scope.saveData.card_expiry_year) ;
-			$scope.saveData.card_expiry = expiry_year + "-"+ $scope.saveData.card_expiry_month+"-01";
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, $scope.saveData, successCallback, errorCallback);
+			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);			
+			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
+			
+			$scope.paymentAdded($scope.saveData);
+
 		};
+		/**
+	    * function to set the selected payment type
+	    */
+		$scope.selectPaymentType = function(){
+			for(var i = 0; i < $scope.availablePaymentTypes.length; i++){
+				if($scope.availablePaymentTypes[i].name == $scope.saveData.payment_type){
+					$scope.saveData.payment_type_description = $scope.availablePaymentTypes[i].description;
+				}
+			}
+			$scope.refreshScroller('newpaymentview');
+
+		}
 	
 }]);

@@ -209,11 +209,34 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/checkout'
 		});
 
+		$stateProvider.state('admin.cmscomponentSettings', {
+			templateUrl: '/assets/partials/contentManagement/adContentManagement.html',
+			controller: 'ADContentManagementCtrl',
+			url : '/contentManagement'
+		});
 
-		$stateProvider.state('admin.checkinCheckoutEmail', {
+		$stateProvider.state('admin.contentManagementSectionDetails', {
+			templateUrl: '/assets/partials/contentManagement/adContentManagementSectionDetail.html',
+			controller: 'ADContentManagementSectionDetailCtrl',
+			url : '/contentManagement/section/:id'
+		});
+
+		$stateProvider.state('admin.contentManagementCategoryDetails', {
+			templateUrl: '/assets/partials/contentManagement/adContentManagementCategoryDetail.html',
+			controller: 'ADContentManagementCategoryDetailCtrl',
+			url : '/contentManagement/category/:id'
+		});
+		$stateProvider.state('admin.contentManagementItemDetails', {
+			templateUrl: '/assets/partials/contentManagement/adContentManagementItemDetail.html',
+			controller: 'ADContentManagementItemDetailCtrl',
+			url : '/contentManagement/item/:id'
+		});
+
+
+		$stateProvider.state('admin.checkinEmail', {
 			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
-			controller: 'ADCheckinCheckoutCtrl',
-			url : '/checkinCheckoutEmail/:from'
+			controller: 'ADCheckinEmailCtrl',
+			url : '/checkinEmail'
 		});
         $stateProvider.state('admin.maintenanceReasons', {
 			templateUrl: '/assets/partials/maintenanceReasons/adMaintenanceReasons.html',
@@ -340,4 +363,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
         	controller: 'ADDailyWorkAssignmentCtrl',
         	url: '/daily_work_assignment'
         });
+		$stateProvider.state('admin.checkoutEmail', {
+			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
+			controller: 'ADCheckoutEmailCtrl',
+			url : '/checkoutEmail'
+		});
+		
+		$stateProvider.state('admin.deviceMapping', {
+			templateUrl: '/assets/partials/deviceMapping/adDeviceMappingList.html',
+			controller: 'ADDeviceMappingsCtrl',
+			url : '/deviceMappingsList'
+		});
 });

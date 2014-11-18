@@ -4,6 +4,23 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     $scope.$emit("changedSelectedMenu", 2);
     $scope.upsellData = {};
 	
+
+var setUpList = function(){
+   //remove the selected item from drop down
+  var selectedIds = [];
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+    if(item.max_late_checkouts !== ''){
+       selectedIds.push(item.id);
+    }
+  });
+  angular.forEach(selectedIds,function(id, index1) {
+  angular.forEach($scope.upsellData.room_types_list,function(room_types_list, index) {
+        if(room_types_list.value == id){
+           $scope.upsellData.room_types_list.splice(index,1);
+        }
+    });
+  });
+}
 /**
 * To fetch upsell details
 *
@@ -12,6 +29,7 @@ $scope.fetchUpsellDetails = function(){
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.$emit('hideLoader');
        $scope.upsellData = data;
+       setUpList();
        $scope.upsellData.deleted_room_types = [];
        isRoomTypesSelected();
        $scope.currency_code = getCurrencySign($scope.upsellData.currency_code);   		

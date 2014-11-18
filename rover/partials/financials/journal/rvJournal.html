@@ -1,0 +1,114 @@
+
+<!-- Content -->
+<section id="journal" class="content" role="main">
+    
+    <!-- Header -->
+    <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
+        <div class="entry filter" ng-hide="data.activeTab==2">
+            <label for="revenue-departments" translate>EMPLOYEE / DEPARTMENT / HOUSE</label>
+            <div class="faux-select" ng-class="{'active':data.isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();">
+                {{data.filterTitle}}
+            </div>
+        </div>
+        <div id="revenue-filters" class="faux-select-options" ng-show="data.isActiveRevenueFilter">
+            <button id="select-filters" type="button" ng-click="clickedSelectButton()" ng-class="{ 'green': data.filterData.isSelectButtonActive, 'grey': !data.filterData.isSelectButtonActive }" class="button" translate>SELECT</button>
+            <div class="header">
+                <label class="radio inline" ng-click="selectAllDepartment()">
+                    <span class="icon-form icon-radio" ng-class="{'checked':data.filterData.checkedAllDepartments}"></span>
+                    <input name="revenue-departments" id="revenue-departments" value="all-departments" type="radio" checked />
+                    {{'ALL_DEPARTMENTS' | translate}}
+                </label>
+                <strong class="h5" translate>EMPLOYEES</strong>
+            </div>
+            <div id="faux-revenue-departments" class="holder scrollable" ng-iscroll='department-content' ng-iscroll-delay='1000' style="height:75%;">
+                <div class="wrapper">
+                    <label class="checkbox inline" ng-click="clickedDepartment($index)" ng-repeat="department in data.filterData.departments">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':department.checked}" ></span>
+                        <input name="revenue-departments" value="{{department.id}}" type="checkbox" />
+                        {{department.name}}
+                    </label>
+                </div>
+            </div>
+            <div id="faux-revenue-employees" class="holder scrollable" ng-iscroll='employee-content' ng-iscroll-delay='1000' style="height:75%;">
+                <div class="wrapper" ng-model="data.filterData.selectedEmployee">
+                    <label class="checkbox inline" ng-click="clickedEmployees($index)" ng-repeat="employee in data.filterData.employees">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':employee.checked}"></span>
+                        <input name="revenue-employees" value="{{employee.id}}" type="checkbox" />
+                        {{employee.name}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="entry filter" ng-show="data.activeTab==2">
+            <label for="select-cashier" translate>CASHIER</label>
+            <div class="select">
+                <select ng-model="data.filterData.selectedCashier" ng-options="cashier.id as cashier.name for cashier in data.filterData.cashiers" ng-change="cashierFilterChanged()"></select>
+            </div>
+        </div>
+        <!-- Datepicker for revenue tab (from date)-->
+        <div class="entry date" ng-click="clickedFromDate()" ng-show="data.activeTab==0">
+            <label for="revenue-from-date" translate>DATE_FROM</label>
+            <div class="entry-data">
+                <input name="revenue-from-date" id="revenue-from-date" type="text" class="datepicker" value="{{data.fromDate | date:dateFormat }}" readonly />
+                <strong id="revenue-from-date-day" class="day">{{data.fromDate | date:'d'}}</strong>
+                <span id="revenue-from-date-month" class="month">{{data.fromDate | date:'MMMM'}}</span>
+                <span id="revenue-from-date-year" class="year">{{data.fromDate | date:'y'}}</span>
+            </div>
+        </div>
+        <!-- Datepicker for revenue tab (to date)-->
+        <div class="entry date" ng-click="clickedToDate()" ng-show="data.activeTab==0">
+            <label for="revenue-to-date" translate>DATE_TO</label>
+            <div class="entry-data">
+                <input name="revenue-to-date" id="revenue-to-date" type="text" class="datepicker"  value="{{data.toDate | date:dateFormat}}" readonly />
+                <strong id="revenue-to-date-day" class="day">{{data.toDate | date:'d'}}</strong>
+                <span id="revenue-to-date-month" class="month">{{data.toDate | date:'MMMM'}}</span>
+                <span id="revenue-to-date-year" class="year">{{data.toDate | date:'y'}}</span>
+            </div>
+        </div>
+        <!-- Datepicker for payment tab-->
+        <div class="entry date" ng-click="clickedPaymentDate()" ng-show="data.activeTab==1">
+            <label id="revenue-date-label" for="revenue-date" translate>DATE</label>
+            <div class="entry-data">
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" readonly />
+                <strong id="revenue-date-day" class="day">{{data.paymentDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{data.paymentDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{data.paymentDate | date:'y'}}</span>
+            </div>
+        </div>
+        <!-- Datepicker for cashier tab-->
+        <div class="entry date" ng-click="clickedCashierDate()" ng-show="data.activeTab==2">
+            <label id="revenue-date-label" for="revenue-date" translate>DATE</label>
+            <div class="entry-data">
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" readonly />
+                <strong id="revenue-date-day" class="day">{{data.cashierDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{data.cashierDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{data.cashierDate | date:'y'}}</span>
+            </div>
+        </div>
+        <!--Tabs -->
+        <ul id="journal-options" class="display">
+            <li id="show-revenue" ng-class="{'active':data.activeTab==0}" ng-click="activatedTab(0)">
+                <span class="icons icon-navbar icon-revenue" translate>REVENUE</span>{{currencySymbol}}{{data.revenueData.total_revenue | number: precisonTwo}}</li>
+            <li id="show-payments" ng-class="{'active':data.activeTab==1}" ng-click="activatedTab(1)">
+                <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span>{{currencySymbol}}{{data.paymentData.total_payment | number: precisonTwo}}</li>
+            <li id="show-cashier" ng-class="{'active':data.activeTab==2}" ng-click="activatedTab(2)">
+                <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{{data.filterData.cashierStatus}}</li>
+        </ul>
+    </form>
+
+    <form ng-controller="RVJournalPrintController" method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
+        <div ng-include="'/assets/partials/financials/journal/rvPrintBox.html'"></div>
+    </form> 
+
+    <!-- Content REVENUE-->
+    <div ng-show="data.activeTab==0" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></div>
+
+    <!-- Content PAYMENTS-->
+    <div ng-show="data.activeTab==1" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></div>
+
+    <!-- Content CASHIER-->
+    <div ng-show="data.activeTab==2" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></div>
+    
+
+
+</section>

@@ -66,8 +66,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-    $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
+	
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
@@ -81,7 +84,29 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    $rootScope.isMaintenanceStaff = hotelDetails.current_user.default_dashboard == 'HOUSEKEEPING' ? true : false;
+
+    // self executing check
+    $rootScope.isMaintenanceStaff = (function(roles) {
+      // Values taken form DB
+      var FLO_MGR = 'floor_&_maintenance_manager',
+          FLO_STF = 'floor_&_maintenance_staff',
+          FLO_MGR_ID = 10,
+          FLO_STF_ID = 11
+          isFloMgr = false,
+          isFloStf = false;
+
+      isFloMgr = _.find(roles, function(item) {
+        return item.id === FLO_MGR_ID || item.name === FLO_MGR;
+      });
+
+      isFloStf = _.find(roles, function(item) {
+        return item.id === FLO_STF_ID || item.name === FLO_STF;
+      });
+
+      return isFloMgr || isFloStf ? true : false;
+    })(hotelDetails.current_user.roles);
+
+
 
     $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
       $scope.userInfo.business_date = newBussinessDate;
@@ -159,7 +184,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "createReservation"
           }, {
             title: "MENU_ROOM_ASSIGNMENT",
-            action: ""
+            action: 'rover.reservation.diary',
+            standAlone: true,
+            menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
             action: "",
@@ -167,7 +194,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "postcharges"
           }, {
             title: "MENU_CASHIER",
-            action: ""
+            action: "rover.financials.journal({ id: 2 })",
+            menuIndex:"cashier"
           }, {
             title: "MENU_END_OF_DAY",
             action: "",
@@ -226,10 +254,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           title: "MENU_FINANCIALS",
           //hidden: true,
           action: "",
-          iconClass: "icon-finance",
+          iconClass: "icon-financials",
           submenu: [{
-            title: "MENU_REVENUE",
-            action: ""
+            title: "MENU_JOURNAL",
+            action: "rover.financials.journal({ id : 0})",
+            menuIndex:"journals"
           }, {
             title: "MENU_ACCOUNTING",
             action: ""
@@ -315,7 +344,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
-    }
+    };
 
     $scope.$on("updateSubMenu", function(idx, item) {
       $rootScope.updateSubMenu(idx, item);
@@ -398,10 +427,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
+     var routeChange = function(event, newURL) {
+       event.preventDefault();
+       return;
+     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
@@ -505,7 +534,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 				    }, 2000);
 	      	}
         }	
-    };
+     };
 
     /*
      * Start Card reader now!.
@@ -589,9 +618,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
+
     /**
      * Handles the bussiness date change in progress
      */
+
+    var LastngDialogId = "";
+    
+    $scope.closeBussinnesDatePopup = function(){
+      ngDialog.close(LastngDialogId,"");
+    }
+
+    $rootScope.$on('ngDialog.opened', function (e, $dialog) {
+      LastngDialogId = $dialog.attr('id');
+    });
+
     $rootScope.showBussinessDateChangingPopup = function() {
 
       // Hide loading message
@@ -599,13 +640,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       //if already shown no need to show again and again
       if (!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone && !$rootScope.isCurrentUserChangingBussinessDate) {
         $rootScope.isBussinessDateChanging = true;
-        ngDialog.open({
+        var $dialog =  ngDialog.open({
           template: '/assets/partials/common/bussinessDateChangingPopup.html',
           className: 'ngdialog-theme-default1 modal-theme1',
           controller: 'bussinessDateChangingCtrl',
           closeByDocument: false,
           scope: $scope
-        });
+        });       
       }
     };
 
@@ -647,7 +688,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($rootScope.default_dashboard != 'HOUSEKEEPING') {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
-          'type': type
+          'type': type,
+          'from_page': 'DASHBOARD'
         });
       }
     };
@@ -659,7 +701,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       } else {
         $state.go('rover.search', {
-          'type': 'QUEUED_ROOMS'
+          'type': 'QUEUED_ROOMS',
+          'from_page': 'DASHBOARD'
         });
       }
     };

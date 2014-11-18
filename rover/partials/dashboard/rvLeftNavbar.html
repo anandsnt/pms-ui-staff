@@ -7,7 +7,7 @@
 		<ul id="large-menu" class="main">
 			<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" ng-click="updateSubMenu($index,menuItem)">
 				<a class="icon-menu {{menuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}"></a>
-				<div class="icon-menu {{menuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action == ''"></div>
+				<a class="icon-menu {{menuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action == ''"></a>
 			</li>
 			<li id="settings">
 				<a ng-click="settingsClicked()" class="icon-menu icon-settings">Settings</a>

@@ -37,27 +37,29 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
         // adding extra function to reset time
         $scope.clearArrivalAndDepartureTime = function() {
-            $scope.reservationData.checkinTime =  {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                };
-            $scope.reservationData.checkoutTime =  {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                };
+            $scope.reservationData.checkinTime = {
+                hh: '',
+                mm: '00',
+                ampm: 'AM'
+            };
+            $scope.reservationData.checkoutTime = {
+                hh: '',
+                mm: '00',
+                ampm: 'AM'
+            };
 
-        }
+        };
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
             // intialize reservation object
             $scope.reservationData = {
+                isHourly: false,
                 arrivalDate: '',
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
                 stayDays: [],
+                resHours: '',
                 checkinTime: {
                     hh: '',
                     mm: '00',
@@ -209,8 +211,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     futureReservations: 0
                 }
             };
-        }
-
+        };
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
             $scope.reservationDetails.guestCard.id = "";
@@ -219,7 +220,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationDetails.companyCard.futureReservations = 0;
             $scope.reservationDetails.travelAgent.id = "";
             $scope.reservationDetails.travelAgent.futureReservations = 0;
-        }
+        };
 
 
         $scope.getEmptyAccountData = function() {
@@ -250,8 +251,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     "contact_email": null
                 },
                 "future_reservation_count": 0
-            }
-        }
+            };
+        };
 
 
 
@@ -284,7 +285,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 });
             }
             return rateConfigured;
-        }
+        };
 
         $scope.checkOccupancyLimit = function(date) {
             var roomIndex = 0;
@@ -355,7 +356,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.resetRoomSelection = function(roomIndex) {
             $scope.editRoomRates(roomIndex);
             $scope.closeDialog();
-        }
+        };
 
         /*
          * This method will return the tax details for the amount and the tax provided
@@ -426,7 +427,28 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
                     taxesLookUp[taxData.id] = taxCalculated;
                     if (forAddons && taxData.post_type == 'NIGHT') {
-                        taxesLookUp[taxData.id] = parseFloat(taxCalculated) * parseFloat(nights);
+                        /**
+                         * CICO-9576
+                         * QA Comment
+                         * 1. the tax amount seems to multiply twice with the number of nights. It shows correctly for 1 nights stays, but for 2 nights it is x4, for 3 nights x6 etc.
+                         * 1 adult 3 nights
+                         * Room per night $100, add on per night $20 .. 
+                         * Both room and addon have charge codes of 12.5% and 2% on base +12.5% and have post type night
+                         *
+                         * Hence the multiplication as reported by Nicole.
+                         * tax for $300 12.5% should be: 37.50
+                           tax for $60 breakfast 12.5% should be: 7.50
+                           so total $45
+                           but it shows $60 because it takes the 7.50 *3
+                           (resv is for 3 nights)
+                           if I make a resv for 1 night it shows correctly
+                           same for the 2% tax
+                         *
+                         * Hence not multiplying the nights with the price in the case of the addon
+                         * // taxesLookUp[taxData.id] = parseFloat(taxCalculated) * parseFloat(nights);
+                         */
+
+                        taxesLookUp[taxData.id] = parseFloat(taxCalculated);
                     }
 
                     if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
@@ -459,7 +481,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 stayExclusive: taxExclusiveStayTotal,
                 taxDescription: taxDescription
             };
-        }
+        };
 
 
         $scope.computeTotalStayCost = function() {
@@ -554,13 +576,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             });
             _.each(exclusiveStayTaxes, function(description, index) {
                 totalTaxes = parseFloat(totalTaxes) + parseFloat(description.amount);
-            })
+            });
 
             _.each($scope.reservationData.taxDetails, function(description, index) {
                 if (description.postType == 'STAY') {
                     taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(description.amount);
                 }
-            })
+            });
 
 
 
@@ -599,7 +621,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                         return baseRate * parseInt(numAdults);
                     }
                     return baseRate;
-                }
+                };
 
                 if (addon.postType.value == "NIGHT" && parseInt($scope.reservationData.numNights) > 1) {
                     var cumulativeRate = 0
@@ -658,7 +680,27 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                             // Note Got to multiply with the number of days as this is a per night tax                            
                             var nights = $scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights;
                             if (addon.postType.value == "STAY") nights = 1; // Based on Nicole's comments the addons override their taxes in the post type dimension
-                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
+                            /**
+                                 * CICO-9576
+                                 * QA Comment
+                                 * 1. the tax amount seems to multiply twice with the number of nights. It shows correctly for 1 nights stays, but for 2 nights it is x4, for 3 nights x6 etc.
+                                 * 1 adult 3 nights
+                                 * Room per night $100, add on per night $20 .. 
+                                 * Both room and addon have charge codes of 12.5% and 2% on base +12.5% and have post type night
+                                 *
+                                 * Hence the multiplication as reported by Nicole.
+                                 * tax for $300 12.5% should be: 37.50
+                                   tax for $60 breakfast 12.5% should be: 7.50
+                                   so total $45
+                                   but it shows $60 because it takes the 7.50 *3
+                                   (resv is for 3 nights)
+                                   if I make a resv for 1 night it shows correctly
+                                   same for the 2% tax
+                                 *
+                                 * Hence not multiplying the nights with the price in the case of the addon
+                                 * // $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
+                                 */
+                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
                         }
                         taxAmount = parseFloat(nights * taxApplied.exclusive);
                         taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive); // CICO-10161
@@ -688,7 +730,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative) + parseFloat(totalTaxes);
             $scope.reservationData.totalTax = taxesInclusiveExclusive; // CICO-10161
 
-        }
+        };
 
 
         $scope.editRoomRates = function(roomIdx) {
@@ -704,8 +746,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
                 $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')].rate = {
                     id: ''
-                }
-            }
+                };
+            };
 
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,
@@ -714,7 +756,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 company_id: $scope.reservationData.company.id,
                 travel_agent_id: $scope.reservationData.travelAgent.id
             });
-        }
+        };
 
         $scope.updateOccupancy = function(roomIdx) {
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
@@ -723,8 +765,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     children: parseInt($scope.reservationData.rooms[roomIdx].numChildren),
                     infants: parseInt($scope.reservationData.rooms[roomIdx].numInfants)
                 }
-            }
-        }
+            };
+        };
 
         /*
             This function is called once the stay card loads and 
@@ -827,16 +869,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     day: dateFilter(new tzIndependentDate(item.date), 'dd')
                 });
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
-                    guests: {
-                        adults: item.adults,
-                        children: item.children,
-                        infants: item.infants
-                    },
-                    rate: {
-                        id: item.rate_id
+                        guests: {
+                            adults: item.adults,
+                            children: item.children,
+                            infants: item.infants
+                        },
+                        rate: {
+                            id: item.rate_id
+                        }
                     }
-                }
-                // TODO : Extend for each stay dates
+                    // TODO : Extend for each stay dates
                 $scope.reservationData.rooms[0].rateId.push(item.rate_id);
                 if (index == 0) {
                     $scope.reservationData.rooms[0].roomTypeId = item.room_type_id;

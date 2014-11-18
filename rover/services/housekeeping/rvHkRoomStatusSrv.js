@@ -37,6 +37,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		var that = this;
 
+		this.cacheDirty = true;
 
 		var roomList = {};
 		this.fetchRoomList = function(params) {

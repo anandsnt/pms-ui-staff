@@ -1,0 +1,13 @@
+<div id="modal" class="modal-show" role="dialog">
+<form  id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-cloak>
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+    
+    <!-- 1. Cancel Options screen -->
+    <fieldset id="cancel-options">
+        <span class="text">{{'PENALTY_WARNING_MSG1' |translate}} '{{currencySymbol}}{{ngDialogData.deposit | number:2}}' {{'PENALTY_WARNING_MSG2' |translate}}</span>
+        <div class="actions">
+            <button type="button" class="button green" ng-click="showPenaltyPopup()" translate>OK</button>           
+        </div>
+    </fieldset>
+</form>
+</div>

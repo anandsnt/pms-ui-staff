@@ -24,6 +24,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		//showSearchResultsAre
 		$scope.showSearchResultsArea = false;
+		$scope.searchResultsFetchDone = false;
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 
@@ -124,6 +125,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			//$scope.firstSearch = false;
 			$scope.searchType = "default";
 			$scope.isTyping = false;
+			$scope.searchResultsFetchDone = true;
 
 			if ($scope.results.length > 0) { //if there is any result then only we want to filter
 				applyFilters();
@@ -154,7 +156,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.$emit('hideLoader');
 			$scope.searchType = "default";
 			$scope.errorMessage = errorMessage;
-
+			$scope.searchResultsFetchDone = true;
 			setTimeout(function() {
 				refreshScroller();
 				$scope.$apply(function() {
@@ -169,9 +171,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.$on("updateDataFromOutside", function(event, data) {
 			$scope.disableNextButton = false;
 			$scope.results = data;
-			for (var i = 0; i < $scope.results.length; i++) {
-				$scope.results[i].is_row_visible = true;
-			}
+
 			$scope.start = ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) + $scope.start;
 			$scope.end = $scope.start + $scope.results.length - 1;
 			refreshScroller();
@@ -223,9 +223,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			//setting first letter as captial: soumya
 			$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
-			/*if($scope.fetchTerm == ""){
-		    $scope.fetchTerm = $scope.textInQueryBox;
-		}*/
 
 			if ($scope.textInQueryBox.length == 0 && $scope.searchType == "default") {
 				$scope.clearResults();
@@ -320,13 +317,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					//var isLocalFiltering = true;
 					//applyFilters(isLocalFiltering);
 					applyFilters();
+
 				} else {
 					RVSearchSrv.page = 1;
 					$scope.start = 1;
 					$scope.end = $scope.start + $scope.results.length - 1;
 					$scope.nextAction = false;
 					$scope.prevAction = false;
-					fetchSearchResults();					
+					fetchSearchResults();		
 				}
 				// we have changed data, so we are refreshing the scrollerbar
 				refreshScroller();
@@ -351,6 +349,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			$scope.firstSearch = false;
 			$scope.fetchTerm = $scope.textInQueryBox;
+			$scope.searchResultsFetchDone = false;
+
 			
 			$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
 
@@ -403,19 +403,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			return viewStatus;
 		};
-
-		//Map the room status to the view expected format
-		// $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus){
-		// var mappedStatus = "room-number";
-		// if(reservation_status == 'CHECKING_IN'){
-		// if(roomstatus == "READY" && fostatus == "VACANT"){
-		// mappedStatus +=  " ready";
-		// }else{
-		// mappedStatus += " not-ready";
-		// }
-		// }
-		// return mappedStatus;
-		// };
 
 		//Map the room status to the view expected format
 		$scope.getRoomStatusMapped = function(roomstatus, fostatus) {
@@ -489,6 +476,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.goToReservationDetails = function(reservationID, confirmationID) {
 			$scope.currentReservationID = reservationID;
 			$scope.currentConfirmationID = confirmationID;
+			RVSearchSrv.data = $scope.results;
 			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
@@ -556,12 +544,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				if (isSwiped && resultLength == 0) {
 					showNoMatchesMessage = true;
 				} else {
-					if (resultLength == 0 && queryLength >= 3 && !isTyping) {
+					if ($scope.searchResultsFetchDone && resultLength == 0 && queryLength >= 3 && !isTyping) {
 						showNoMatchesMessage = true;
 					}
 				}
 			}
-			if(!showNoMatchesMessage && !$scope.firstSearch){
+			if(!showNoMatchesMessage && resultLength > 0){
+			//TODO: verify which condition check to chose
+			//if(!showNoMatchesMessage && !$scope.firstSearch){
 				var totalCountOfFound = 0;
 				for(var i = 0; i < results.length; i++){
 					if(results[i].is_row_visible)
