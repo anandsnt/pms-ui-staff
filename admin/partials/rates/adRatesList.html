@@ -11,9 +11,8 @@
 				<div class="filter select">
 					<div class="entry">
 						<div class="select">
-							<select class="placeholder" ng-model="filterType">
-								<option value="">Filter by Rate Type</option>
-								<option ng-repeat="opt in filterList" value="opt.id">{{opt.name}}</option>
+							<select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList">
+								<option value="">Filter by Rate Type</option>						
 							</select>
 						</div>
 					</div>
