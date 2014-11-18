@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
-    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
 
         BaseCtrl.call(this, $scope);
 
@@ -37,18 +37,20 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
         // adding extra function to reset time
         $scope.clearArrivalAndDepartureTime = function() {
-            $scope.reservationData.checkinTime =  {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                };
-            $scope.reservationData.checkoutTime =  {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                };
+            $scope.reservationData.checkinTime = {
+                hh: '',
+                mm: '00',
+                ampm: 'AM'
+            };
+            $scope.reservationData.checkoutTime = {
+                hh: '',
+                mm: '00',
+                ampm: 'AM'
+            };
 
         }
+
+        $scope.otherData = {};
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
@@ -155,36 +157,38 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             };
             // default max value if max_adults, max_children, max_infants is not configured
             var defaultMaxvalue = 5;
-            var guestMaxSettings = baseSearchData.settings.max_guests;
-            $scope.otherData = {
-                taxesMeta: [],
-                marketsEnabled: baseData.demographics.is_use_markets,
-                markets: baseData.demographics.markets,
-                sourcesEnabled: baseData.demographics.is_use_sources,
-                sources: baseData.demographics.sources,
-                originsEnabled: baseData.demographics.is_use_origins,
-                origins: baseData.demographics.origins,
-                reservationTypes: baseData.demographics.reservationTypes,
-                promotionTypes: [{
-                    value: "v1",
-                    description: "The first"
-                }, {
-                    value: "v2",
-                    description: "The Second"
-                }],
-                maxAdults: (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults,
-                maxChildren: (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children,
-                maxInfants: (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants,
-                roomTypes: baseSearchData.roomTypes,
-                fromSearch: false,
-                recommendedRateDisplay: baseSearchData.settings.recommended_rate_display,
-                defaultRateDisplayName: baseSearchData.settings.default_rate_display_name,
-                businessDate: baseSearchData.businessDate,
-                additionalEmail: "",
-                isGuestPrimaryEmailChecked: false,
-                isGuestAdditionalEmailChecked: false,
-                reservationCreated: false
-            };
+            var guestMaxSettings = baseSearchData.settings.max_guests;            
+            
+            /**
+             *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+             *   to the states where it actually requires it.
+             *
+             *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' (last method).
+             *
+             *   Once that state controller fetch 'baseData', it will find this controller
+             *   by climbing the $socpe.$parent ladder and will call 'callFromChildCtrl' method.
+             */
+
+            $scope.otherData.taxesMeta = [];
+            $scope.otherData.promotionTypes = [{
+                value: "v1",
+                description: "The first"
+            }, {
+                value: "v2",
+                description: "The Second"
+            }];
+            $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
+            $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
+            $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
+            $scope.otherData.roomTypes = baseSearchData.roomTypes;
+            $scope.otherData.fromSearch = false;
+            $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
+            $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;
+            $scope.otherData.businessDate = baseSearchData.businessDate;
+            $scope.otherData.additionalEmail = "";
+            $scope.otherData.isGuestPrimaryEmailChecked = false;
+            $scope.otherData.isGuestAdditionalEmailChecked = false;
+            $scope.otherData.reservationCreated = false;    
 
             $scope.guestCardData = {};
             $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
@@ -426,7 +430,28 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
                     taxesLookUp[taxData.id] = taxCalculated;
                     if (forAddons && taxData.post_type == 'NIGHT') {
-                        taxesLookUp[taxData.id] = parseFloat(taxCalculated) * parseFloat(nights);
+                        /**
+                         * CICO-9576
+                         * QA Comment
+                         * 1. the tax amount seems to multiply twice with the number of nights. It shows correctly for 1 nights stays, but for 2 nights it is x4, for 3 nights x6 etc.
+                         * 1 adult 3 nights
+                         * Room per night $100, add on per night $20 .. 
+                         * Both room and addon have charge codes of 12.5% and 2% on base +12.5% and have post type night
+                         *
+                         * Hence the multiplication as reported by Nicole.
+                         * tax for $300 12.5% should be: 37.50
+                           tax for $60 breakfast 12.5% should be: 7.50
+                           so total $45
+                           but it shows $60 because it takes the 7.50 *3
+                           (resv is for 3 nights)
+                           if I make a resv for 1 night it shows correctly
+                           same for the 2% tax
+                         *
+                         * Hence not multiplying the nights with the price in the case of the addon
+                         * // taxesLookUp[taxData.id] = parseFloat(taxCalculated) * parseFloat(nights);
+                         */
+
+                        taxesLookUp[taxData.id] = parseFloat(taxCalculated);
                     }
 
                     if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
@@ -658,7 +683,27 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                             // Note Got to multiply with the number of days as this is a per night tax                            
                             var nights = $scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights;
                             if (addon.postType.value == "STAY") nights = 1; // Based on Nicole's comments the addons override their taxes in the post type dimension
-                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
+                            /**
+                                 * CICO-9576
+                                 * QA Comment
+                                 * 1. the tax amount seems to multiply twice with the number of nights. It shows correctly for 1 nights stays, but for 2 nights it is x4, for 3 nights x6 etc.
+                                 * 1 adult 3 nights
+                                 * Room per night $100, add on per night $20 .. 
+                                 * Both room and addon have charge codes of 12.5% and 2% on base +12.5% and have post type night
+                                 *
+                                 * Hence the multiplication as reported by Nicole.
+                                 * tax for $300 12.5% should be: 37.50
+                                   tax for $60 breakfast 12.5% should be: 7.50
+                                   so total $45
+                                   but it shows $60 because it takes the 7.50 *3
+                                   (resv is for 3 nights)
+                                   if I make a resv for 1 night it shows correctly
+                                   same for the 2% tax
+                                 *
+                                 * Hence not multiplying the nights with the price in the case of the addon
+                                 * // $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
+                                 */
+                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
                         }
                         taxAmount = parseFloat(nights * taxApplied.exclusive);
                         taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive); // CICO-10161
@@ -1021,5 +1066,30 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.$on('REFRESHACCORDIAN', function() {
             $scope.$broadcast('GETREFRESHACCORDIAN');
         });
+
+
+        /**
+         *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+         *   to the states where it actually requires it.
+         *
+         *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' method here.
+         *
+         *   Once that state controller fetch 'baseData', it will find this controller
+         *   by climbing the $socpe.$parent ladder and will call this method.
+         */
+        $scope.callFromChildCtrl = function(baseData) {
+
+            // update these datas.
+            $scope.otherData.marketsEnabled = baseData.demographics.is_use_markets;
+            $scope.otherData.markets = baseData.demographics.markets;
+            $scope.otherData.sourcesEnabled = baseData.demographics.is_use_sources;
+            $scope.otherData.sources = baseData.demographics.sources;
+            $scope.otherData.originsEnabled = baseData.demographics.is_use_origins;
+            $scope.otherData.origins = baseData.demographics.origins;
+            $scope.otherData.reservationTypes = baseData.demographics.reservationTypes;
+
+            // call this. no sure how we can pass date from here
+            $scope.checkOccupancyLimit();
+        };
     }
 ]);
