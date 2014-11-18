@@ -10,20 +10,20 @@
         <div class="diary-reserved">
             <ul class="details">
                 <li class="arrival">
-                    <span>{{arrival_time}}</span>
-                    {{arrival_date}}
+                    <span>{{selection.arrival_time}}</span>
+                    {{selection.arrival_date}}
                 </li>
                 <li class="departure">
-                    <span>{{departure_time}}</span>
-                    {{departure_date}}
+                    <span>{{selection.departure_time}}</span>
+                    {{selection.departure_date}}
                 </li>
             </ul>
             <div id="rooms-reserved" class="rooms scrollable">
                 <ul class="wrapper">
-                    <li ng-repeat="room in rooms track by $index"> 
+                    <li ng-repeat="room in selection.rooms track by $index"> 
                         <span class="type">{{room.room_type}}</span>
                         <span class="room">{{room.room_no}}</span>
-                        <span class="price">{{occupancy.amount}}</span>
+                        <span class="price">{{room.amount}}</span>
                         <span class="icons icon-remove-10" ng-show="selectedReservations.length > 0" ng-click="removeSelectedOccupancy($index)">-</span>
                     </li>
                 </ul>
@@ -32,7 +32,7 @@
         <div class="actions">
             <button class="button orange" type="button" ng-click="selectAdditional()">Select Additional Cabin</button>
             <button class="button green" type="button" ng-click="routeToSummary()">Reserve {{title}}</button>
-            <button class="button blank" type="button" ng-click="selectAdditional()">Cancel</button>
+            <button class="button blank" type="button" ng-click="cancelSelection()">Cancel</button>
         </div>
     </div>  
     <!--</form>-->

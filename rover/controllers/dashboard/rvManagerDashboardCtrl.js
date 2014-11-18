@@ -109,28 +109,31 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
       "departure_date": "2014-07-16",
       "arrival_time": "04:30 AM",
       "departure_time": "09:15 PM",
+
       "rooms": [{
-        "room_id": "265",
+        "room_id": "245",
         "rateId": "382",
         "numAdults": "1",
         "numChildren": "2",
         "numInfants": "4",
         "amount": 300
-      }, {
-        "room_id": "270",
-        "rateId": "382",
-        "numAdults": "2",
-        "numChildren": "2",
-        "numInfants": "4",
-        "amount": 250
-      }, {
-        "room_id": "295",
-        "rateId": "382",
-        "numAdults": "2",
-        "numChildren": "2",
-        "numInfants": "4",
-        "amount": 450
-      }]
+      }
+      // , {
+        // "room_id": "270",
+        // "rateId": "382",
+        // "numAdults": "2",
+        // "numChildren": "2",
+        // "numInfants": "4",
+        // "amount": 250
+      // }, {
+        // "room_id": "295",
+        // "rateId": "382",
+        // "numAdults": "2",
+        // "numChildren": "2",
+        // "numInfants": "4",
+        // "amount": 450
+      // }
+      ]
     };
     $vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(temporaryReservationDataFromDiaryScreen));
     $state.go("rover.reservation.staycard.mainCard.summaryAndConfirm", {

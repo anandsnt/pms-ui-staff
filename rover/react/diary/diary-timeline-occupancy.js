@@ -14,7 +14,7 @@ var TimelineOccupancy = React.createClass({
 				style: {
 					width: px_per_hr
 				}
-			}, item);
+			}, item.count);
 		}));
 	}
 });

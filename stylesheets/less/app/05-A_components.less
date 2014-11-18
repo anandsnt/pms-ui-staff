@@ -10980,7 +10980,7 @@
                         width: 100%;
                         .calc-height(100, 5);
 
-                        .set-times {
+                        a.set-times {
                             position: absolute;
                             z-index: 11000;
                             font-size: 12px;
@@ -10992,6 +10992,10 @@
                             .size(40px, 60px);
                             .gradient(@orangeStart, @orangeEnd);
                             #border-radius > .rounded(6px);
+                            -webkit-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                            -moz-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                            -ms-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                            -o-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
 
                             span { 
                                 font-size: 14px;
