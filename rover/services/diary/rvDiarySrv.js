@@ -105,12 +105,11 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     },
                     /* Calculate the difference between sets */
                     difference: function(existing, incoming, itr, isAvailability) {
-                        var index   = (!isAvailability ? this.get('_occupancy.values.id') : _.indexBy(incoming, 'id')),
-                            diff    = _.difference(_.pluck(incoming, itr), _.pluck(existing, itr)),
+                        var diff    = _.difference(_.pluck(incoming, itr), _.pluck(existing, itr)),
                             result = [];
                         
                         if(diff.length > 0) {
-                            result = _.filter(diff, function(id) { return _.every(index, function(data) { return data.reservation_id === id; }); });
+                            result = _.filter(diff, function(id) { return incoming.reservation_id === id; });
                         }
 
                         return result;
@@ -419,8 +418,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     slot[m.maintenance]         = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
                     slot[m.room_type]           = angular.lowercase(room_type.name); 
 
-                    //delete slot.id;
-
                     return slot;
                 },
                 function(incoming) {
@@ -556,8 +553,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         min = offset.min + (i % 60);
                         hour = (offset.hours + parseInt(i / 60, 10));
 
-                        if(cur_time >= 24) {
-                            cur_time = 0;
+                        if(hour >= 24) {
+                            hour = 0;
                         }
 
                         if(min >= 60) {
