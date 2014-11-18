@@ -98,14 +98,11 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.clearAllEmployeeSelection();
         $scope.getSelectButtonStatus();
 
-        if($scope.data.activeTab == '0' ){
-            $scope.resetRevenueFilters();
-            $scope.refreshRevenueTab();
-        }
-        else if ($scope.data.activeTab == '1' ){
-           $scope.resetPaymentFilters();
-           $scope.refreshPaymentTab();
-        }
+        $scope.resetRevenueFilters();
+        $scope.refreshRevenueTab();
+        $scope.resetPaymentFilters();
+        $scope.refreshPaymentTab();
+
         $scope.data.filterTitle = "All Departments";
     };
 
@@ -174,20 +171,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             $scope.setupDeptAndEmpList();
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
 
-            if($scope.data.activeTab == '0' ){
-                $scope.filterRevenueByDepartmentsOrEmployees();
-                $scope.refreshRevenueTab();
-            }
-            else if ($scope.data.activeTab == '1' ){
-                $scope.filterPaymentByDepartmentsOrEmployees();
-                $scope.refreshPaymentTab();
-            }
-            else{
-                $scope.filterRevenueByDepartmentsOrEmployees();
-                $scope.refreshRevenueTab();
-                $scope.filterPaymentByDepartmentsOrEmployees();
-                $scope.refreshPaymentTab();
-            }
+            $scope.filterRevenueByDepartmentsOrEmployees();
+            $scope.refreshRevenueTab();
+            $scope.filterPaymentByDepartmentsOrEmployees();
+            $scope.refreshPaymentTab();
         } 
     };
 
