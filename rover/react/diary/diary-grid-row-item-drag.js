@@ -98,7 +98,7 @@ var GridRowItemDrag = React.createClass({
 			}, function() {
 				//var data = (props.edit.passive ? props.currentDragItem : props.data);
 
-				data.selected = !state.selected;
+				props.data.selected = !state.selected;
 
 				props.iscroll.grid.enable();
 
@@ -144,7 +144,7 @@ var GridRowItemDrag = React.createClass({
 				left: state.left,
 				top: state.top
 			}; 
-			className = ' dragstate'; //'occupancy-block dragstate';
+			className = ' dragstate'; 
 		} else {
 			className = '';
 		}

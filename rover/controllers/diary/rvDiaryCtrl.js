@@ -95,6 +95,7 @@ sntRover
 				px_per_ms: 					undefined,
 				px_per_int: 				undefined,
 				px_per_hr: 					undefined,
+				currency_symbol:            $rootScope.currency_symbol,
 				new_reservation_time_span: 	$scope.min_hours
 			},
 			meta: 							meta, 
@@ -116,6 +117,7 @@ sntRover
 		    	rate_type: 					'Standard',
 		    	rate_type_details: 			[],
 		    	rate:                        undefined,
+		    	min_hours:                  $scope.min_hours,
 		    	room_type: 					($scope.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[$scope.room_type_id] : undefined,
 		    	show_all_rooms: 			'on',
 		    	toggleHoursDays: function() {
@@ -299,7 +301,7 @@ sntRover
 	    };
 
 		var displayFilteredResults = _.debounce(function () {
-			var DS = rvDiarySrv.data_Store;
+			var DS = rvDiarySrv.data_Store, hourly_rates = [];
 
         	RMFilterOptionsSrv.fetchCompanyCard({ 
         		query: $scope.companySearchText.trim() 
@@ -310,7 +312,7 @@ sntRover
             			hourly_rates;
 
             		if(_.isObject(contract) && _.has(contract, 'id')) {
-            			hourly_rates = DS.get('__rates.groups.values.is_hourly_rate.true');
+            			hourly_rates.push(contact);
 
             			return _.findWhere(hourly_rates, { id: contract.id });
             		}
@@ -338,7 +340,6 @@ sntRover
 	    };
 
 	    $scope.isAvailable = function(room, reservation) {
-	    	//return Object.prototype.hasOwnProperty.call(reservation, 'temporary') && reservation.temporary === true;
 	    	return angular.lowercase(reservation[meta.occupancy.status]) === 'available';
 	    };
 
@@ -535,7 +536,7 @@ sntRover
 		};
 
 	$scope.getArrivalTimes = function() {
-		function parseArrivalTime(arrival_time, bNextDay) {
+		/*function parseArrivalTime(arrival_time, bNextDay) {
 			var pos = arrival_time.indexOf(':'),
 				hours, minutes;
 
@@ -550,12 +551,12 @@ sntRover
 			if(hours && minutes) {
 				return Time({hours: hours, minutes: minutes});
 			}
-		}
+		}*/
 
-		var filter = _.extend({}, $scope.gridProps.filter),
-			time_span = Time({ hours: $scope.min_hours }),
-			start_date = filter.arrival_date,
-			start_time = parseArrivalTime(filter.arrival_time),
+		var filter 		= _.extend({}, $scope.gridProps.filter),
+			time_span 	= Time({ hours: $scope.min_hours }),
+			start_date 	= filter.arrival_date,
+			start_time 	= (new Date($scope.arrival_times.indexOf(filter.arrival_time) * 900000)).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),

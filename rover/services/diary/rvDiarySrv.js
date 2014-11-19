@@ -79,20 +79,22 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         --LSR (left spatial resolution -> how far we see into the past) and similary for RSD
                     */
                     mergeOccupancies: function(room_oc_groups, isAvailability) {
-                        var index = this.get('_room').values.id,
+                        var idx,
+                            r,
                             existing,
                             incoming,
                             set_difference,
                             room_ids    = _.keys(room_oc_groups);
 
                         for(var i = 0, len = room_ids.length; i < len; i++) {
-                            var r = _.findWhere(this.get('room'), { id: +room_ids[i] });
+                            idx = +room_ids[i];
+
+                            r = _.findWhere(this.get('room'), { id: idx });
 
                             existing = util.copyArray(r.occupancy, existing); //index[room_ids[i]].occupancy;
-                            incoming = _.sortBy(room_oc_groups[room_ids[i]], 'arrival');
+                            incoming = _.sortBy(room_oc_groups[idx], 'arrival');
 
                             if(existing.length === 0) {
-                                /*index[room_ids[i]].occupancy*/  //= _.toArray(existing.concat(incoming));
                                 r.occupancy = util.copyArray(existing.concat(incoming), r.occupancy);
                             } else {
                                 set_difference = this.difference(existing, incoming, 'reservation_id');
@@ -102,6 +104,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                                           _.sortBy(set_difference, 'arrival'), 
                                                           [], 
                                                           'arrival');
+
+                                    r.occupancy = util.copyArray(existing, r.occupancy);
                                 }     
                             }
                         }
@@ -546,8 +550,9 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 };
 
                 this.fetchArrivalTimes = function(base_interval, offset) {
-                    var times = [],
+                    var times   = [],
                         day_min = 24 * 60,
+                        int_ms  = 900000,
                         min, hour, cur_time;
 
                     if(!offset) {
@@ -561,18 +566,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         min = offset.min + (i % 60);
                         hour = (offset.hours + parseInt(i / 60, 10));
 
-                        if(hour >= 24) {
-                            hour = 0;
-                        }
-
                         if(min >= 60) {
                             min = 0;
                             hour += 1;
                         }
 
+                        hour = hour - hour / 24 * (hour % 24 === 0 ? 1 : 0);
                         cur_time =  hour + ':' + (min === 0 ? '00' : min);
 
-                        times.push(cur_time);
+                        times.push( cur_time );
                     }
 
                     return times;

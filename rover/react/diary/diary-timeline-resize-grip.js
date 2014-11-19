@@ -8,7 +8,6 @@ var TimelineResizeGrip = React.createClass({
 
 		if(e.button === 0 || e.button === 2) {
 			props.iscroll.timeline.disable();
-			props.iscroll.grid.disable();	
 
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__onMouseMove);
@@ -31,7 +30,8 @@ var TimelineResizeGrip = React.createClass({
 			px_per_int = 	display.px_per_int,
 			px_per_ms = 	display.px_per_ms,
 			model = 		state.currentResizeItem, 
-			direction = 	props.itemProp;
+			direction = 	props.itemProp,
+			last_left;
 
 		e.stopPropagation();
 		e.preventDefault();
@@ -49,11 +49,13 @@ var TimelineResizeGrip = React.createClass({
 
 			this.props.__onResizeCommand(model);
 		} else if(state.resizing) {		
+			last_left = model[direction];
 
 			model[direction] = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000; 
 								//((state.element_x + delta_x) / px_per_int).toFixed() * px_per_int;
 
 			this.setState({
+				last_left: last_left,
 				currentResizeItem: model			
 			}, function() {
 				props.__onResizeCommand(model);
@@ -75,22 +77,18 @@ var TimelineResizeGrip = React.createClass({
 		document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__onMouseMove);
 			
-		//model[direction] = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 90000).toFixed() * 90000;
-							//((state.element_x + delta_x) / px_per_int).toFixed() * px_per_int;
-
 		if(this.state.resizing) {
 			props.iscroll.timeline.enable();
-			props.iscroll.grid.enable();	
 
 			setTimeout(function() {
-				props.iscroll.timeline.refresh();
-				props.iscroll.grid.refresh();					
+				props.iscroll.timeline.refresh();				
 			}, 250);
 
 			this.setState({
 				mouse_down: 		false,
 				resizing: 			false,
-				currentResizeItem: 	model
+				currentResizeItem: 	model,
+				last_left: 			model[this.props.itemProp]
 			}, function() {
 				props.__onResizeEnd(state.row, model);
 
@@ -153,37 +151,30 @@ var TimelineResizeGrip = React.createClass({
 			}
 		} 
 	},
-	//shouldComponentUpdate: function(nextProps, nextState) {
-		//if(nextState.resizing && nextState.mouse_down) {
-		/*if(!this.props.currentResizeItem && nextProps.currentResizeItem) {
-			return true;
-		}
-
-		if(this.state.currentResizeItem[this.props.itemProp] !== nextState.currentResizeItem[this.props.itemProp]) {
-			return true;
-		} else {
-			if(nextProps.currentResizeItem)
-		}*/
-		//return true;
-	//},
 	render: function() {
 		var self = this,
 			props 				= this.props,
 			direction 			= props.itemProp,
 			currentResizeItem 	= this.state.currentResizeItem,
 			x_origin 			= props.display.x_nL,
+			opposite 			= ((direction === 'departure') ? 'arrival' : 'departure'),
 			px_per_ms 			= props.display.px_per_ms,
+			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
+			right 				= (currentResizeItem ? (currentResizeItem[opposite] - x_origin) * px_per_ms : 0),
 			grip_text = '';
+
+		if(currentResizeItem && (Math.abs(left - right) < (props.filter.min_hours * props.display.px_per_int * 4 ))) {
+			left = this.state.last_left;
+		}
 
 		if(currentResizeItem) {
 		 	grip_text = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
-		 	//new Date((currentResizeItem[direction] / this.props.display.px_per_ms * this.state.scale + this.props.display.x_nL)).toComponents().time;
-		 }
+		}
 
 		return this.transferPropsTo(React.DOM.a({
 			className: 'set-times',
 			style: {
-				left: (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0) + 'px'		
+				left: left + 'px'		
 			},
 			onMouseDown: self.__onMouseDown
 		}, grip_text));
