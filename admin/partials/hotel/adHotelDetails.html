@@ -191,7 +191,7 @@
 			</div>
 			
 			<div class="entry hotel-pms-type" ng-show="isAdminSnt">
-				<label for="hotel-pms-type"> PMS Type </label>
+				<label for="hotel-pms-type"> PMS Type</label>
 				<div class="select">
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 						<option value=""> PMS Type </option>
@@ -211,7 +211,7 @@
 				<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 				<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
 			</div>
-			<div class="entry date has-datepicker" ng-if="isAdminSnt">
+			<div class="entry date has-datepicker" ng-if="isAdminSnt && data.hotel_pms_type!=''">
 				<label for="auto-logout"> PMS Start Date  </label>
 				<input type="text" ng-model="data.pms_start_date" placeholder="Enter PMS start Date" name="pms-start-date" id="pms-start-date" readonly ng-click="setPmsStartDate()">
 				<button ng-click="setPmsStartDate()" class="ui-datepicker-trigger" type="button">
