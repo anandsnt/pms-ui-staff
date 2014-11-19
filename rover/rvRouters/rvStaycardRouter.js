@@ -35,7 +35,7 @@ angular.module('stayCardModule', [])
             controller: 'rvDiaryCtrl',
             resolve: {
                 payload: function($rootScope, rvDiarySrv, $stateParams) {
-                    var start_date = tzIndependentDate($rootScope.businessDate); //Date.now();
+                    var start_date = new tzIndependentDate($rootScope.businessDate); //Date.now();
                            
                     return rvDiarySrv.load(start_date, rvDiarySrv.ArrivalFromCreateReservation());
                 }

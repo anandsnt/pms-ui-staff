@@ -200,9 +200,9 @@ sntRover
 	    };
 
 	    $scope.onResizeEnd = function(row_data, row_item_data) {
-	    	var filter = _.extend({}, $scope.gridProps.filter);
+/*	    	var filter = _.extend({}, $scope.gridProps.filter);
 
-	    	filter.min_hours = (row_item_Data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
+	    	filter.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
 
 	    	rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
 	    	.then(function(data) {
@@ -212,7 +212,7 @@ sntRover
 	    		$scope.renderGrid();
 	    	}, function(err) {
 	    		console.log(err);
-	    	});
+	    	});*/
 	    };    
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
@@ -483,7 +483,7 @@ sntRover
 	    	
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
 
-	    	$scop.resetEdit();
+	    	$scope.resetEdit();
 	    	$scope.renderGrid();
 	    };
 
@@ -583,19 +583,25 @@ sntRover
 			time_set; 
 
 		if(newValue !== oldValue) {	
-            time_set = util.gridTimeComponents(arrival_ms, 50, $scope.gridProps.display);
+            time_set = util.gridTimeComponents(arrival_ms, 50, _.extend({}, $scope.gridProps.display));
 
-            $scope.gridProps.display = time_set.display;
+            $scope.gridProps.display = _.extend({}, time_set.display);
 
 			$scope.renderGrid();
 
 			if($scope.gridProps.edit.active || $scope.gridProps.edit.passive) {
-				$scope.Availability();
+				//$scope.Availability();
 			}
 
 			rvDiarySrv.Occupancy(new Date(time_set.x_nL.setHours(0,0,0)), 
 								 new Date(time_set.x_nR.setHours(23,59,0)))
 			.then(function(data) {
+
+				$scope.gridProps.filter = _.extend({}, $scope.gridProps.filter);
+				$scope.gridProps.filter.arrival_times = util.copyArray(rvDiarySrv.fetchArrivalTimes(15), $scope.gridProps.filter);
+				$scope.gridProps.filter.arrival_time = $scope.gridProps.filter.arrival_times[0];
+				$scope.$apply();
+
 				$scope.renderGrid();
 			}, responseError);	
 		}
