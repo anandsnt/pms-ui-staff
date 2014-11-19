@@ -66,9 +66,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
-	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+  	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+  	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+  	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+    $rootScope.isAddonOn = hotelDetails.is_addon_on;
 
 	
 

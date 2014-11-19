@@ -459,10 +459,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		$scope.enhanceStay = function() {
-			$state.go('rover.reservation.staycard.mainCard.addons', {
-				"from_date": $scope.reservationData.arrivalDate,
-				"to_date": $scope.reservationData.departureDate
-			});
+			// CICO-9429: Show Addon step only if its been set ON in admin
+			if($rootScope.isAddonOn){
+				$state.go('rover.reservation.staycard.mainCard.addons', {
+					"from_date": $scope.reservationData.arrivalDate,
+					"to_date": $scope.reservationData.departureDate
+				});
+			}
+				
 		}
 
 		var updateSupressedRatesFlag = function() {
