@@ -17,6 +17,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
         
+         var setDepartureDateBasedOnHours = function(hours){
+            var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
+            if(hours !== '' && !isNaN(hours)){
+                newDate.setHours(hours);
+            }
+            $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');   
+        };
     
        /*
         * To setup departure time based on arrival time and hours selected
@@ -29,6 +36,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var checkinAmPm   = $scope.reservationData.checkinTime.ampm;
             var checkoutAmPm  = $scope.reservationData.checkoutTime.ampm;
             var selectedHours = parseInt($scope.reservationData.resHours);
+            var extraHours =  (checkinHour+selectedHours);
+            //set departure date based on selected hours
+            if(checkinAmPm === 'PM' && (checkinHour+selectedHours>=12)){
+                setDepartureDateBasedOnHours(extraHours+12);
+            }else{
+                setDepartureDateBasedOnHours(extraHours);
+            };
+
             //if selected hours is greater than a day
             if((checkinHour + selectedHours)>24){
                 var extraHours = (checkinHour +selectedHours)%24;
