@@ -4,7 +4,8 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
                                                  '$vault', 
                                                  'ngDialog',
                                                  'rvDiarySrv',
-    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv) {
+                                                 'rvDiaryUtil',
+    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv, util) {
         BaseCtrl.call(this, $scope);
 
         $scope.title = ($scope.selectedReservations.length > 1 ? 'these rooms' : 'this room');
@@ -60,10 +61,14 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
                             numAdults:      ($scope.reservationsSettings ? $scope.reservationsSettings.adults : 1),
                             numChildren:    ($scope.reservationsSettings ? $scope.reservationsSettings.children : 0),
                             numInfants:     ($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0)
-                        };
+                        },
+                        local_version = util.shallowCopy({}, item);
 
                         $scope.vaultSelections.rooms.push(item);
-                        $scope.selection.rooms.push(item); 
+
+                        local_version.amount = $scope.currencySymbol + ' ' + local_version.amount;
+
+                        $scope.selection.rooms.push(local_version); 
                     })
                 }
             })();

@@ -623,7 +623,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     return baseRate;
                 };
 
-                if (addon.postType.value == "NIGHT" && parseInt($scope.reservationData.numNights) > 1) {
+                if (addon.postType.value == "STAY" && parseInt($scope.reservationData.numNights) > 1) {
                     var cumulativeRate = 0
                     _.each(currentRoom.stayDates, function(stayDate, date) {
                         if (date !== $scope.reservationData.departureDate)

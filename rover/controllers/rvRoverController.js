@@ -187,6 +187,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             title: "MENU_ROOM_ASSIGNMENT",
             action: 'rover.reservation.diary',
             standAlone: true,
+            hidden: !$rootScope.isHourlyRateOn,
             menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
@@ -368,7 +369,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.hasLoader = false;
     });
 
-
+    /**
+    * in case of we want to reinitialize left menu based on new $rootScope values or something
+    * which set during it's creation, we can use
+    */    
+    $scope.$on('refreshLeftMenu', function(event){
+      setupLeftMenu();
+    }); 
+    
     $scope.init = function() {
       BaseCtrl.call(this, $scope);
       $rootScope.adminRole = '';
