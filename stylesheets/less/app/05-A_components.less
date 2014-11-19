@@ -6522,7 +6522,7 @@
 /* Reservations             ==============================*/
     .create-reservation {
         position: relative;
-        .calc-height(100, 60); /* %, px */
+        .calc-height(100, 60);
 
         > .wrapper { 
             margin: 0 auto;
@@ -6551,8 +6551,7 @@
                 select {
                     font-size: 36px;
                     min-height: 60px;
-                    height: 60px;
-                    width: 100%;
+                    .size(60px, 100%);
                 }
 
                 input { line-height: 60px; }
@@ -6603,9 +6602,7 @@
 
                             .day,
                             .month,
-                            .year {
-                                position: absolute;
-                            }
+                            .year {  position: absolute; }
 
                             .month,
                             .year {
@@ -6623,19 +6620,18 @@
                             .month { top: 10px; }
                             .year { top: 30px; }
 
-                            @media @highdpi {
-                                background-image: @calendar2x;
-                            }
+                            @media @highdpi { background-image: @calendar2x; }
 
-                            &:hover {
-                                background-position: 90% -30px;
-                            }
+                            &:hover { background-position: 90% -30px; }
                         
                         }             
                     }
 
                     &#arriving { color: @green; }
-                    &#departing { color: @red; }
+                    &#departing { 
+                        color: @red; 
+                        margin-right: 0;
+                    }
 
                     &#nights {
                         position: relative;
@@ -6826,7 +6822,7 @@
                                 vertical-align: middle;
                                 position: relative;
                                 font-size: 18px;
-                                padding: 18px 10px 10px 65px;
+                                padding: 12px 10px 10px 65px;
 
                                 option { font-size: 16px; }
                             }
@@ -7148,6 +7144,7 @@
                     min-width: 60px;
                     max-width: 120px;
                     padding: 0 5px;
+                    cursor: pointer;
                     .faux-clickable;
                     .pull-left;
 
@@ -7184,7 +7181,10 @@
                         }
                     }
 
-                    &.locked { .opacity(30); }
+                    &.locked { 
+                        cursor: default;
+                        .opacity(30); 
+                    }
 
                     &.booked {
                         color: @textColor;
@@ -7196,6 +7196,8 @@
                         color: @white;
                         text-shadow: 1px 1px 0 rgba(0,0,0,.15);
                         .gradient(@logoGradientStart, @logoGradientEnd);
+
+                        &.locked { .opacity(100); }
                     }
 
                     &.check-in,
@@ -7223,7 +7225,6 @@
             
             .select {
                 height: 40px;
-                margin-right: 20px;
                 .size(40px, 180px);
                 .pull-left;
 
@@ -7707,21 +7708,12 @@
                             .options {
                                 text-align: right;
                                 margin-bottom: 10px;
-
                                 .float;
 
                                 .button {
                                     display: inline-block;
 
-                                    &.white {
-                                        margin-right: 10px;
-                                    }
-
-                                    &.green {
-                                        text-align: left;
-                                        padding-right: 40px;
-                                        line-height: 42px;
-                                    }
+                                    &.white { margin-right: 10px; }
                                 }
                             }
 
@@ -7958,7 +7950,11 @@
                 #pixel-to-percent > .width(980, 2038);
 
                 > .wrapper { padding: 40px; }
-                > .iScrollVerticalScrollbar { right: 10px; }
+                > .iScrollVerticalScrollbar { 
+                    right: 10px;
+
+                    .iScrollIndicator { background: rgba(0,0,0,.1); }
+                }
 
                 h2 {
                     text-align: center;
@@ -8045,6 +8041,7 @@
                 }
 
                 .rooms {
+                    text-align: center;
                     margin-bottom: 20px;
                     .faux-clickable;
 
@@ -8052,6 +8049,7 @@
                         font-size: 14px;
                         line-height: 18px;
                         text-transform: uppercase;
+                        text-align: left;
                         padding: 10px;
                         background-color: @grey1;
                         position: relative;
@@ -8074,6 +8072,7 @@
                     }
 
                     .room-type {
+                        text-align: left;
                         margin: 10px 10px 20px 10px;
                         .float;
 
@@ -8094,6 +8093,7 @@
                     }
 
                     .rate-and-enhancements {
+                        text-align: left;
                         margin: 0 10px 10px 10px;
 
                         li {
@@ -8144,6 +8144,20 @@
                         }
                     }
 
+                    .actions {
+                        margin: 0 10px;
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+
+                        .button { 
+                            margin-bottom: 0;
+
+                            &.white { background-color: @grey1; } 
+
+                            &:first-child { margin-right: 10px; }
+                        }
+                    }
+
                     .add-new-button {
                         cursor: pointer;
                         line-height: 40px;
@@ -8154,6 +8168,7 @@
                     }
 
                     .form {
+                        text-align: left;
                         margin: 10px;
                         padding: 10px;
                         .faux-clickable;
@@ -8180,14 +8195,16 @@
                     }
 
                     .guests {
+                        text-align: left;
                         margin: 0 10px;
 
                         h5 {
                             font-size: 18px;
+                            margin-bottom: 10px;
                         }
 
                         .accompanying-guests {
-                            margin: 10px 0;
+                            margin-bottom: 10px;
                             padding: 10px;
                             .faux-clickable;
                             background-color: @grey1;
@@ -8214,10 +8231,8 @@
                             }
                         }
                     }
-                     .button{
-                        margin-bottom: 10px;
-                        margin-left:170px;
-                    }
+                    
+                    .button { margin-bottom: 10px; }
                 }
 
                 .total-stay-cost {
@@ -8255,73 +8270,34 @@
                 > .wrapper { padding: 20px; }
                 > .iScrollVerticalScrollbar { right: 5px; }
 
-                .entry {
-                    #pixel-to-percent > .width(509, 1058);
-
-                    label { 
-                        margin-bottom: 0; 
-                    }
-                    
-                    input[size] {
-                        text-align: center;
-                        margin-right: 5px;
-
-                        &:last-child { margin-right: 0; }
-                    }
-
-                    &.margin { #pixel-to-percent > .right-margin(40, 1058); }
-
-                    &.card-number-large { #pixel-to-percent > .width(649, 1058); }
-                    &.card-number-small { #pixel-to-percent > .width(369, 1058); }
-
-                    &.full-width {
-                        float: none;
-                        clear: both;
-                        width: 100%;
-                    }
-                }
-
-                .actions {
-                    margin-top: 20px;
-                    padding-top: 20px;
-                    border-top: 1px solid rgba(0,0,0,.1);
-
-                    .button { 
-                        font-size: 18px;
-                        line-height: 24px;
-                        padding: 15px 40px;
-                        margin: 0 auto;
-                        .show;
-                    }
-                }
-
                 .reservation-completed {
-                    #pixel-to-percent > .side-padding(150, 1058);
-                    
+                    #pixel-to-percent > .side-padding(100, 1058);
+
                     h2 {
                         font-size: 28px;
                         font-weight: 600;
                         text-transform: uppercase;
                         text-align: center;
-                        margin: 60px 0 30px 0;
+                        margin: 40px 0 20px;
                     }
 
-                    .button { 
-                        font-size: 18px;
-                        line-height: 24px;
-                        padding: 15px 40px;
-                        width: 100%;
-                        .show;
+                    p { 
+                        text-transform: uppercase;
+                        text-align: center;
+                        color: @grey3;
                     }
 
-                    .entry {
-                        .button { margin-top: 10px; }
-                    }
+                    label { margin-bottom: 0; }
 
                     .actions {
                         .button {
-                            margin-bottom: 10px;
-
+                            font-size: 18px;
+                            line-height: 24px;
+                            padding: 15px 40px;
+                            margin: 0 auto 10px;
+                            width: 100%;
+                            .show;
+                           
                             &:last-child { margin-bottom: 0; }
                         }
                     }
@@ -8333,67 +8309,6 @@
                 .reservation-content {
                     &.rooms-and-rates-content { .calc-height(100, 130); }
                     &.addons-content { .calc-height(100, 50); }
-                }
-            }
-        }
-    }
-
-    /* Select with grey lables need extra adjustment for Firefox ***/
-    @-moz-document url-prefix() { 
-        .create-reservation {
-            .row {
-                &#rooms {
-                    .entry {
-                        .entry-data {
-                            .select {
-                                select {  padding-top: 6px; }
-
-                                &.room-type {
-                                    select { padding-top: 18px; }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        #reservations-settings {
-            .settings-content {
-                .entry {
-                    .select {
-                        &.adults,
-                        &.children,
-                        &.infants {
-                            .label { top: 7px; }
-                            select { padding: 5px 10px 5px 150px; }
-                        }
-                    }
-                }
-            }
-        }
-
-        .reservations-inner {
-            .reservations-content-wrapper {
-                .reservation-content {
-
-                    /* Enhance Stay ***/
-                    &.addons-content { 
-                        .addons {
-                            .addon-items {
-                                .addon-tab {
-                                    li {
-                                        .add-enhancement {
-                                            .select {
-                                                .label { top: 7px; }
-                                                select { padding: 5px 10px 0 80px; }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -10553,1058 +10468,1059 @@
     }
     
 /* Room Diary                ==============================*/
-.diary-content {
-    
-    .diary-header {
-        position: relative;
-        height: 90px;
-        background: rgba(0,0,0,.1);
-        .float;
+    .diary-content {
+        
+        .diary-header {
+            position: relative;
+            height: 90px;
+            background: rgba(0,0,0,.1);
+            .float;
 
-        .entry {
-            padding: 10px 0 0 10px;
-            .pull-left;
+            .entry {
+                padding: 10px 0 0 10px;
+                .pull-left;
 
-            label:not(.checkbox):not(.radio) {
-                font-size: 14px;
-                line-height: 1em;
-                text-transform: uppercase;
-                .show;
-            }
-
-            .faux-select,
-            select,
-            input {
-                font-size: 18px;
-                height: 50px;
-            }
-
-            select { padding: 12px 10px; }
-
-            &.date { 
-                #pixel-to-percent > .width(380, 2048); 
-
-                .entry-data {
-                    background: @white @calendar no-repeat 92% 16px;
-                    background-size: 20px;
-                    position: relative;
-                    #border-radius > .rounded();
-                    .box-shadow();
-                    .size(50px, 100%);
+                label:not(.checkbox):not(.radio) {
+                    font-size: 14px;
+                    line-height: 1em;
+                    text-transform: uppercase;
                     .show;
+                }
 
-                    input { .hide; }
+                .faux-select,
+                select,
+                input {
+                    font-size: 18px;
+                    height: 50px;
+                }
 
-                    .ui-datepicker-trigger {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        z-index: 99;
-                        cursor: pointer;
-                        .square(100%);
-                        .opacity(0);
-                    }
+                select { padding: 12px 10px; }
 
-                    .day,
-                    .month,
-                    .year { position: absolute; }
+                &.date { 
+                    #pixel-to-percent > .width(380, 2048); 
 
-                    .month,
-                    .year {
-                        left: 65px;
-                        font-size: 16px;
-                        line-height: 1em;
-                    }
+                    .entry-data {
+                        background: @white @calendar no-repeat 92% 16px;
+                        background-size: 20px;
+                        position: relative;
+                        #border-radius > .rounded();
+                        .box-shadow();
+                        .size(50px, 100%);
+                        .show;
 
-                    .day {
-                        top: 15px;
-                        left: 10px;
-                        font-size: 40px;
-                    }
+                        input { .hide; }
 
-                    .month { top: 10px; }
-                    .year { top: 24px; }
+                        .ui-datepicker-trigger {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            z-index: 99;
+                            cursor: pointer;
+                            .square(100%);
+                            .opacity(0);
+                        }
 
-                    @media @highdpi {
-                        background-image: @calendar2x;
-                    }
+                        .day,
+                        .month,
+                        .year { position: absolute; }
 
-                    &:hover { background-position: 92% -34px; }
-                } 
-            }
+                        .month,
+                        .year {
+                            left: 65px;
+                            font-size: 16px;
+                            line-height: 1em;
+                        }
 
-            &.time { 
-                #pixel-to-percent > .width(300, 2048); 
+                        .day {
+                            top: 15px;
+                            left: 10px;
+                            font-size: 40px;
+                        }
 
-                select {
-                    font-size: 24px;
-                    font-weight: 600;
-                    padding: 0 10px;
+                        .month { top: 10px; }
+                        .year { top: 24px; }
 
-                    option { 
-                        font-size: 16px; 
-                        font-weight: 400;
+                        @media @highdpi {
+                            background-image: @calendar2x;
+                        }
+
+                        &:hover { background-position: 92% -34px; }
+                    } 
+                }
+
+                &.time { 
+                    #pixel-to-percent > .width(300, 2048); 
+
+                    select {
+                        font-size: 24px;
+                        font-weight: 600;
+                        padding: 0 10px;
+
+                        option { 
+                            font-size: 16px; 
+                            font-weight: 400;
+                        }
                     }
                 }
-            }
 
-            &.room { #pixel-to-percent > .width(380, 2048); }
+                &.room { #pixel-to-percent > .width(380, 2048); }
 
-            &.rate { 
-                position: relative;
-                #pixel-to-percent > .width(498, 2048);
-
-                .faux-select { 
+                &.rate { 
                     position: relative;
-                    padding: 0 10px;
-                    line-height: 50px;
-                    cursor: pointer;
-                    z-index: 1030;
-                    .faux-clickable;
+                    #pixel-to-percent > .width(498, 2048);
 
-                    &:after {
-                        content: "";
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        background: @white @selectArrow no-repeat 50% 50%;
-                        background-size: 6px 4px;
-                        pointer-events: none;
-                        z-index: 999;
-                        .size(100%, 25px);
-                        #border-radius > .right();
+                    .faux-select { 
+                        position: relative;
+                        padding: 0 10px;
+                        line-height: 50px;
+                        cursor: pointer;
+                        z-index: 1030;
+                        .faux-clickable;
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            background: @white @selectArrow no-repeat 50% 50%;
+                            background-size: 6px 4px;
+                            pointer-events: none;
+                            z-index: 999;
+                            .size(100%, 25px);
+                            #border-radius > .right();
+                        }
+                    }
+                }
+
+                &.switch { 
+                    #pixel-to-percent > .width(240, 2048); 
+
+                    .switch-button {
+                        #border-radius > .rounded();
+                        .size(50px, 100%);
+                        .show;
+
+                        .data-off,
+                        .data-on {
+                            font-size: 24px;
+                            
+                            line-height: 40px;
+                            height: 40px;
+                            
+                            .switch-icon { #border-radius > .rounded(); }
+
+                            .value { font-weight: 600; }
+
+                            &.data-off { 
+                                left: auto;
+                                right: 0;
+
+                                .switch-icon { margin: 0 5px 0 0; }
+                            }
+                            
+                            &.data-on { 
+                                left: auto;
+                                right: 100%;
+
+                                .switch-icon { margin: 0 0 0 5px; }
+                            }
+                        }
+
+                        &.on {
+                            .data-off { left: auto; right: -100%; }
+                            .data-on { left: auto; right: 0; }
+                        }
+                    }
+
+                    &.display {
+                        .switch-button {
+                            .data-off,
+                            .data-on {
+                                .switch-icon { .gradient(@blueStart, @blueEnd); }
+                            }
+                        }
+                    }
+                }
+
+                &.edit {
+                    width: 100%;
+                    padding-right: 5px;
+
+                    .guest {
+                        float: left;
+
+                        h1 {
+                            color: #fff;
+                        }
+                    }
+
+                    .actions {
+                        float: right;
+                        text-align: center;
                     }
                 }
             }
 
-            &.switch { 
-                #pixel-to-percent > .width(240, 2048); 
+            /* Rate type search **/
+            .faux-select-options {
+                position: absolute;
+                top: 80px;
+                left: 10px;
+                z-index: 1199;
+                .calc-width(100, 10);
+                .faux-clickable;
+                .transition;
+                #fade > .in();
+
+                .header {
+                    .radio {
+                        margin: 0;
+                        padding: 5px 0 5px 40px;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+                        text-overflow: clip;
+                        .show;
+
+                        .icon-form { 
+                            top: 15px;
+                            left: 10px; 
+                        }
+
+                        .placeholder { 
+                            color: @grey3;
+                            font-style: italic;
+                            .hide;
+
+                            &.active {
+                                color: @logoPrimary;
+                                font-weight: 600;
+                                font-style: normal;
+                            }
+                        }
+
+                        .active {
+                            background-color: @logoPrimary;
+                            font-weight: 600;
+                            font-style: normal;
+                        }
+
+                        .icons {
+                            position: absolute;
+                            top: 0;
+                            background-color: @white;
+                            .square(50px);
+                            z-index: 99;
+                            
+                            &.icon-ok-10 { 
+                                right: 50px; 
+                                background-position: 20px -5840px;
+                            }
+
+                            &.icon-remove-10 { 
+                                right: 0; 
+                                background-position: 20px -3920px;
+                            }
+                        }
+
+                        &:last-child { border-bottom: 0; }
+                    }
+                }           
+
+                &.showing-search {
+                    width: 420px;
+
+                    .header {
+                        .radio {
+                            .placeholder { display: inline-block; }
+                        }
+                    }
+
+                    .entry {
+                        position: relative;
+                        float: none;
+                        margin: 0;
+                        .size(50px, 100%);
+
+                        .icon-search {
+                            position: absolute;
+                            top: 15px;
+                            left: 15px;
+                            z-index: 99;
+                        }
+
+                        .query {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            font-size: 21px;
+                            font-weight: 700;
+                            line-height: 50px;
+                            padding-left: 40px;
+                            color: @logoPrimary; 
+                            z-index: 9;
+                            background: @grey1;
+                            .placeholder-text(18px, 50px, 600, @grey4, normal);
+                            .box-shadow(none);
+                            #border-radius > .rounded(0);
+
+                            &:focus,
+                            &:active { background: darken(@grey1, 10); }
+                        }
+
+                        .clear-query {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            z-index: 99;
+                            visibility: hidden;
+                            .square(50px);
+
+                            .icons {
+                                position: absolute;
+                                top: 15px;
+                                right: 15px;
+                                background-color: @grey3;
+                                background-position: 6px -693px;
+                                .hide-text;
+                                .square(20px);
+                                .opacity(0);
+                                .show;
+                                #fade > .out();
+                                #border-radius > .rounded(20px);
+                            }
+
+                            &.visible { 
+                                visibility: visible;
+
+                                .icons {
+                                    .opacity(100); 
+                                    #fade > .in(); 
+                                }
+                            }
+
+                            &:hover,
+                            &.active { 
+                                .icons { background-color: @logoPrimary; }
+                            }
+                        }
+                    } 
+                }
+
+                &.hidden { #fade > .out(); }
+            }
+
+            &.editing {
+                height: 150px;
+                background: @purpleStart;
+
+                .reservation-details {
+                    padding: 10px 10px 0 10px;
+                    .pull-left;
+                    .size(60px, 100%);
+
+                    p {
+                        font-size: 20px;
+                        line-height: 50px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        color: @white;
+                        width: 70%;
+                        .pull-left;
+
+                        strong { 
+                            font-weight: 600;
+                            margin-right: 15px; 
+                        }
+
+                        span { margin: 0 5px; }
+                    }
+
+                    .actions {
+                        width: 30%;
+                        .pull-left;
+                       
+                        .button {
+                            line-height: 48px;
+                            margin-right: 10px;
+
+                            &.green {
+                                padding: 0 40px;
+                            }
+
+                            &.blank {
+                                margin-right: 0;
+                                color: rgba(0,0,0,.5);
+
+                                &:hover,
+                                &:active { color: @white; }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+        .diary-container {
+            position: relative;
+            overflow: hidden;
+            .calc-height(100, 90);
+            .float; 
+
+            .diary-timeline {
+                position: absolute;
+                top: 0;
+                left: 120px;
+                z-index: 1099;
+                height: 80px;
+                background: darken(@darkBlue, 40);
+                cursor: default;
+                .box-shadow(~'inset 0 -20px 0 #fcfcfc, 0 1px 2px rgba(0,0,0,.15)');
+                .calc-width(100, 120);
+
+                .outer-wrapper {
+                    height: 100%;
+
+                    .wrapper {
+                        color: @white;
+                        .gradient-horizontal-three-colors(darken(@darkBlue, 40), @blue, darken(@darkBlue, 40));
+                        .size(60px, 100%);
+                        .float;
+
+                        .stay-range {
+                            position: absolute;
+                            top: 5px;
+                            left: 0;
+                            width: 100%;
+                            .calc-height(100, 5);
+
+                            a.set-times {
+                                position: absolute;
+                                z-index: 11000;
+                                font-size: 12px;
+                                line-height: 16px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                color: @white;
+                                padding: 5px;
+                                .size(40px, 60px);
+                                .gradient(@orangeStart, @orangeEnd);
+                                #border-radius > .rounded(6px);
+                                -webkit-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                                -moz-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                                -ms-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                                -o-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+
+                                span { 
+                                    font-size: 14px;
+                                    .show;
+                                }
+
+                                &:after {
+                                    content: "";
+                                    position: absolute;
+                                    bottom: -5px;
+                                    left: 0;
+                                    .square(0px);
+                                    border-top: 5px solid transparent;
+                                    border-bottom: 5px solid transparent;
+                                    border-left: 5px solid @orangeEnd;
+                                }
+
+                                &.editing { 
+                                    .gradient(@purpleStart, @purpleEnd); 
+
+                                    &:after { border-left: 5px solid @purpleEnd; }
+                                }
+                            }
+                        }
+
+                        .hours {
+                            width: 100%;
+
+                            .segment { 
+                                position: relative;
+                                font-size: 14px;
+                                line-height: 60px;
+                                font-weight: 600;
+                                vertical-align: middle;
+                                text-indent: 5px;
+                                height: 100%;
+                                .pull-left;
+
+                                span {
+                                    position: absolute;
+                                    bottom: 0;
+                                    width: 25%;
+                                    z-index: 1;
+
+                                    &.interval-1 { 
+                                        left: 0;
+                                        border-left: 2px solid rgba(255,255,255,.5);
+                                        height: 20px;
+                                    }
+
+                                    &.interval-2 { 
+                                        left: 25%;
+                                        border-left: 1px solid rgba(255,255,255,.3);
+                                        height: 10px; 
+                                    }
+                                    
+                                    &.interval-3 { 
+                                        left: 50%;
+                                        border-left: 1px solid rgba(255,255,255,.3);
+                                        height: 16px; 
+                                    }
+
+                                    &.interval-4 { 
+                                        left: 75%;
+                                        border-left: 1px solid rgba(255,255,255,.3);
+                                        height: 10px; 
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .resize-wrapper {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        position: relative;
+                        top: 0px;
+                        left: 0px;
+
+                        .resize-control {                   
+                            position: absolute;
+                            width: 50px;
+                            height: 100%;
+                            background-color: #fff;
+                            z-index: 9000;
+                        }
+                    }
+
+                    > .occupancy {
+                        li {
+                            float: left;
+                            height: 20px;
+                            margin-bottom: 0px;
+                        }
+
+                        &::after {
+                            content: '';
+                            clear: both;
+                        }
+                    }
+                }
+            }
+
+            .diary-toggle {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 10px;
+                background: @grey1;
+                z-index: 1099; //9990; CHANGED
+                .box-shadow(2px 5px 5px rgba(0,0,0,.15));
+                .size(90px, 120px);
 
                 .switch-button {
                     #border-radius > .rounded();
-                    .size(50px, 100%);
-                    .show;
+                    .size(70px, 100px);
+
+                    input {
+                        min-height: 70px;
+                        line-height: 70px;
+                    }
 
                     .data-off,
                     .data-on {
-                        font-size: 24px;
-                        
-                        line-height: 40px;
-                        height: 40px;
-                        
-                        .switch-icon { #border-radius > .rounded(); }
+                        padding: 5px;
+                        line-height: 30px;
+                        .size(70px, 100px);
 
-                        .value { font-weight: 600; }
-
-                        &.data-off { 
-                            left: auto;
-                            right: 0;
-
-                            .switch-icon { margin: 0 5px 0 0; }
+                        .switch-icon,
+                        .value {
+                            text-transform: uppercase;
+                            text-align: center;
+                            float: none;
+                            margin: 0;
+                            .show;
+                            #border-radius > .rounded();
+                            .size(30px, 100%);
                         }
-                        
-                        &.data-on { 
-                            left: auto;
-                            right: 100%;
 
-                            .switch-icon { margin: 0 0 0 5px; }
+                        &.data-off {
+                            left: 0;
+                            right: 0;
+                            top: 0;
+                        } 
+
+                        &.data-on {
+                            left: 0;
+                            right: 0;
+                            top: 100%;
                         }
                     }
 
                     &.on {
-                        .data-off { left: auto; right: -100%; }
-                        .data-on { left: auto; right: 0; }
-                    }
-                }
+                        .data-off {
+                            left: 0;
+                            right: 0;
+                            top: -100%;
+                        }
 
-                &.display {
-                    .switch-button {
-                        .data-off,
                         .data-on {
-                            .switch-icon { .gradient(@blueStart, @blueEnd); }
+                            left: 0;
+                            right: 0;
+                            top: 0;
                         }
                     }
                 }
             }
 
-            &.edit {
-                width: 100%;
-                padding-right: 5px;
+            .diary-rooms {
+                position: absolute;
+                top: 90px;
+                left: 0;
+                width: 120px;
+                background: @grey1;
+                z-index: 1099;
+                cursor: default;
+                .box-shadow(2px 5px 5px rgba(0,0,0,.15));
+                .calc-height(100, 90);
+                .show; 
 
-                .guest {
-                    float: left;
-
-                    h1 {
-                        color: #fff;
-                    }
+                > .iScrollVerticalScrollbar {
+                    right: auto;
+                    top: 0;
+                    bottom: 10px;
+                    left: 10px;
                 }
 
-                .actions {
-                    float: right;
-                    text-align: center;
-                }
-            }
-        }
-
-        /* Rate type search **/
-        .faux-select-options {
-            position: absolute;
-            top: 80px;
-            left: 10px;
-            z-index: 1199;
-            .calc-width(100, 10);
-            .faux-clickable;
-            .transition;
-            #fade > .in();
-
-            .header {
-                .radio {
-                    margin: 0;
-                    padding: 5px 0 5px 40px;
-                    border-bottom: 1px solid rgba(0,0,0,.1);
-                    text-overflow: clip;
-                    .show;
-
-                    .icon-form { 
-                        top: 15px;
-                        left: 10px; 
-                    }
-
-                    .placeholder { 
-                        color: @grey3;
-                        font-style: italic;
-                        .hide;
-
-                        &.active {
-                            color: @logoPrimary;
-                            font-weight: 600;
-                            font-style: normal;
-                        }
-                    }
-
-                    .active {
-                        background-color: @logoPrimary;
-                        font-weight: 600;
-                        font-style: normal;
-                    }
-
-                    .icons {
-                        position: absolute;
-                        top: 0;
-                        background-color: @white;
-                        .square(50px);
-                        z-index: 99;
-                        
-                        &.icon-ok-10 { 
-                            right: 50px; 
-                            background-position: 20px -5840px;
-                        }
-
-                        &.icon-remove-10 { 
-                            right: 0; 
-                            background-position: 20px -3920px;
-                        }
-                    }
-
-                    &:last-child { border-bottom: 0; }
-                }
-            }           
-
-            &.showing-search {
-                width: 420px;
-
-                .header {
-                    .radio {
-                        .placeholder { display: inline-block; }
-                    }
-                }
-
-                .entry {
-                    position: relative;
-                    float: none;
-                    margin: 0;
-                    .size(50px, 100%);
-
-                    .icon-search {
-                        position: absolute;
-                        top: 15px;
-                        left: 15px;
-                        z-index: 99;
-                    }
-
-                    .query {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        font-size: 21px;
-                        font-weight: 700;
-                        line-height: 50px;
-                        padding-left: 40px;
-                        color: @logoPrimary; 
-                        z-index: 9;
-                        background: @grey1;
-                        .placeholder-text(18px, 50px, 600, @grey4, normal);
-                        .box-shadow(none);
-                        #border-radius > .rounded(0);
-
-                        &:focus,
-                        &:active { background: darken(@grey1, 10); }
-                    }
-
-                    .clear-query {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        z-index: 99;
-                        visibility: hidden;
-                        .square(50px);
-
-                        .icons {
-                            position: absolute;
-                            top: 15px;
-                            right: 15px;
-                            background-color: @grey3;
-                            background-position: 6px -693px;
-                            .hide-text;
-                            .square(20px);
-                            .opacity(0);
-                            .show;
-                            #fade > .out();
-                            #border-radius > .rounded(20px);
-                        }
-
-                        &.visible { 
-                            visibility: visible;
-
-                            .icons {
-                                .opacity(100); 
-                                #fade > .in(); 
-                            }
-                        }
-
-                        &:hover,
-                        &.active { 
-                            .icons { background-color: @logoPrimary; }
-                        }
-                    }
-                } 
-            }
-
-            &.hidden { #fade > .out(); }
-        }
-
-        &.editing {
-            height: 150px;
-            background: @purpleStart;
-
-            .reservation-details {
-                padding: 10px 10px 0 10px;
-                .pull-left;
-                .size(60px, 100%);
-
-                p {
-                    font-size: 20px;
-                    line-height: 50px;
-                    text-transform: uppercase;
-                    font-weight: 600;
-                    color: @white;
-                    width: 70%;
-                    .pull-left;
-
-                    strong { 
-                        font-weight: 600;
-                        margin-right: 15px; 
-                    }
-
-                    span { margin: 0 5px; }
-                }
-
-                .actions {
-                    width: 30%;
-                    .pull-left;
-                   
-                    .button {
-                        line-height: 48px;
-                        margin-right: 10px;
-
-                        &.green {
-                            padding: 0 40px;
-                        }
-
-                        &.blank {
-                            margin-right: 0;
-                            color: rgba(0,0,0,.5);
-
-                            &:hover,
-                            &:active { color: @white; }
-                        }
-                    }
-                }
-            }
-        }
-
-
-    }
-
-    .diary-container {
-        position: relative;
-        overflow: hidden;
-        .calc-height(100, 90);
-        .float; 
-
-        .diary-timeline {
-            position: absolute;
-            top: 0;
-            left: 120px;
-            z-index: 1099;
-            height: 80px;
-            background: darken(@darkBlue, 40);
-            cursor: default;
-            .box-shadow(~'inset 0 -20px 0 #fcfcfc, 0 1px 2px rgba(0,0,0,.15)');
-            .calc-width(100, 120);
-
-            .outer-wrapper {
-                height: 100%;
-
-                .wrapper {
-                    color: @white;
-                    .gradient-horizontal-three-colors(darken(@darkBlue, 40), @blue, darken(@darkBlue, 40));
-                    .size(60px, 100%);
-                    .float;
-
-                    .stay-range {
-                        position: absolute;
-                        top: 5px;
-                        left: 0;
-                        width: 100%;
-                        .calc-height(100, 5);
-
-                        a.set-times {
-                            position: absolute;
-                            z-index: 11000;
-                            font-size: 12px;
-                            line-height: 16px;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            color: @white;
-                            padding: 5px;
-                            .size(40px, 60px);
-                            .gradient(@orangeStart, @orangeEnd);
-                            #border-radius > .rounded(6px);
-                            -webkit-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
-                            -moz-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
-                            -ms-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
-                            -o-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
-
-                            span { 
-                                font-size: 14px;
-                                .show;
-                            }
-
-                            &:after {
-                                content: "";
-                                position: absolute;
-                                bottom: -5px;
-                                left: 0;
-                                .square(0px);
-                                border-top: 5px solid transparent;
-                                border-bottom: 5px solid transparent;
-                                border-left: 5px solid @orangeEnd;
-                            }
-
-                            &.editing { 
-                                .gradient(@purpleStart, @purpleEnd); 
-
-                                &:after { border-left: 5px solid @purpleEnd; }
-                            }
-                        }
-                    }
-
-                    .hours {
-                        width: 100%;
-
-                        .segment { 
-                            position: relative;
-                            font-size: 14px;
-                            line-height: 60px;
-                            font-weight: 600;
-                            vertical-align: middle;
-                            text-indent: 5px;
-                            height: 100%;
-                            .pull-left;
-
-                            span {
-                                position: absolute;
-                                bottom: 0;
-                                width: 25%;
-                                z-index: 1;
-
-                                &.interval-1 { 
-                                    left: 0;
-                                    border-left: 2px solid rgba(255,255,255,.5);
-                                    height: 20px;
-                                }
-
-                                &.interval-2 { 
-                                    left: 25%;
-                                    border-left: 1px solid rgba(255,255,255,.3);
-                                    height: 10px; 
-                                }
-                                
-                                &.interval-3 { 
-                                    left: 50%;
-                                    border-left: 1px solid rgba(255,255,255,.3);
-                                    height: 16px; 
-                                }
-
-                                &.interval-4 { 
-                                    left: 75%;
-                                    border-left: 1px solid rgba(255,255,255,.3);
-                                    height: 10px; 
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .resize-wrapper {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-                    position: relative;
-                    top: 0px;
-                    left: 0px;
-
-                    .resize-control {                   
-                        position: absolute;
-                        width: 50px;
-                        height: 100%;
-                        background-color: #fff;
-                        z-index: 9000;
-                    }
-                }
-
-                > .occupancy {
-                    li {
-                        float: left;
-                        height: 20px;
-                        margin-bottom: 0px;
-                    }
-
-                    &::after {
-                        content: '';
-                        clear: both;
-                    }
-                }
-            }
-        }
-
-        .diary-toggle {
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 10px;
-            background: @grey1;
-            z-index: 1099; //9990; CHANGED
-            .box-shadow(2px 5px 5px rgba(0,0,0,.15));
-            .size(90px, 120px);
-
-            .switch-button {
-                #border-radius > .rounded();
-                .size(70px, 100px);
-
-                input {
-                    min-height: 70px;
-                    line-height: 70px;
-                }
-
-                .data-off,
-                .data-on {
-                    padding: 5px;
-                    line-height: 30px;
-                    .size(70px, 100px);
-
-                    .switch-icon,
-                    .value {
-                        text-transform: uppercase;
-                        text-align: center;
-                        float: none;
-                        margin: 0;
-                        .show;
-                        #border-radius > .rounded();
-                        .size(30px, 100%);
-                    }
-
-                    &.data-off {
-                        left: 0;
-                        right: 0;
-                        top: 0;
-                    } 
-
-                    &.data-on {
-                        left: 0;
-                        right: 0;
-                        top: 100%;
-                    }
-                }
-
-                &.on {
-                    .data-off {
-                        left: 0;
-                        right: 0;
-                        top: -100%;
-                    }
-
-                    .data-on {
-                        left: 0;
-                        right: 0;
-                        top: 0;
-                    }
-                }
-            }
-        }
-
-        .diary-rooms {
-            position: absolute;
-            top: 90px;
-            left: 0;
-            width: 120px;
-            background: @grey1;
-            z-index: 1099;
-            cursor: default;
-            .box-shadow(2px 5px 5px rgba(0,0,0,.15));
-            .calc-height(100, 90);
-            .show; 
-
-            > .iScrollVerticalScrollbar {
-                right: auto;
-                top: 0;
-                bottom: 10px;
-                left: 10px;
-            }
-
-            > .wrapper {
-                position: relative; //CHANGED
-                height: auto;
-                overflow: hidden;
-
-                > .room-title {
-                    margin: 5px 0 5px 10px;
-                    text-align: right;
-                    text-transform: uppercase;
-                    background: @white;
+                > .wrapper {
+                    position: relative; //CHANGED
+                    height: auto;
                     overflow: hidden;
 
-                    &.occupied { 
-                        color: @grey2;
-                        background: @grey1; }
-                    
-                    &.dirty { 
-                        color: @red;
-                        background: lighten(@red, 30); 
-                    }                
-
-                    &:first-child { margin-top: 0; }
-                    &:last-child { margin-bottom: 0; }
-                } 
-            }          
-        }
-
-        .diary-grid {
-            position: absolute;
-            top: 90px;
-            left: 120px;
-            z-index: 1049; //1099; CHANGED
-            .calc-height(100, 90);
-            .calc-width(100, 120);
-
-            > .wrapper {
-                position: absolute; //CHANGED
-                overflow: hidden;
-                height: 100%;
-
-                > .iScrollVerticalScrollbar { display: none; }
-                > .iScrollHorizontalScrollbar {                 
-                    top: auto !important;
-                    bottom: 10px !important;
-                    left: 10px;
-                    right: 10px; //CHANGED
-                }
-                
-                > .grid {
-                    position: absolute; //relative; CHANGED
-                    height: auto;
-
-                    > .grid-row {
-                        position: relative; 
-                        margin: 5px 0;
+                    > .room-title {
+                        margin: 5px 0 5px 10px;
+                        text-align: right;
+                        text-transform: uppercase;
                         background: @white;
                         overflow: hidden;
-                        width: 100%;
-                        .float;
 
-                        .occupancy-block {
-                            position: absolute;
-                            z-index: 1099; //1149; CHANGED
-                            .show;
+                        &.occupied { 
+                            color: @grey2;
+                            background: @grey1; }
+                        
+                        &.dirty { 
+                            color: @red;
+                            background: lighten(@red, 30); 
+                        }                
+
+                        &:first-child { margin-top: 0; }
+                        &:last-child { margin-bottom: 0; }
+                    } 
+                }          
+            }
+
+            .diary-grid {
+                position: absolute;
+                top: 90px;
+                left: 120px;
+                z-index: 1049; //1099; CHANGED
+                .calc-height(100, 90);
+                .calc-width(100, 120);
+
+                > .wrapper {
+                    position: absolute; //CHANGED
+                    overflow: hidden;
+                    height: 100%;
+
+                    > .iScrollVerticalScrollbar { display: none; }
+                    > .iScrollHorizontalScrollbar {                 
+                        top: auto !important;
+                        bottom: 10px !important;
+                        left: 10px;
+                        right: 10px; //CHANGED
+                    }
+                    
+                    > .grid {
+                        position: absolute; //relative; CHANGED
+                        height: auto;
+
+                        > .grid-row {
+                            position: relative; 
+                            margin: 5px 0;
+                            background: @white;
+                            overflow: hidden;
+                            width: 100%;
                             .float;
 
-                            &.dragstate {
-                                z-index: 1149;
-                                opacity: 0.45;
-                            }
-
-                            span {
-                                font-weight: 600;
-                                text-transform: uppercase;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                .pull-left; 
+                            .occupancy-block {
+                                position: absolute;
+                                z-index: 1099; //1149; CHANGED
                                 .show;
+                                .float;
 
-                                &.occupied {
-                                    position: relative;
-                                    color: @white;
-                                    cursor: @draggable, pointer;
-                                    cursor: @draggable 16 16, pointer;
-                                    /*cursor: @dragging, move;
-                                    cursor: @dragging 16 16, move;*/
+                                &.dragstate {
+                                    z-index: 1149;
+                                    opacity: 0.45;
+                                }
 
-                                    &:after,
-                                    &:before {
-                                        content: "";
-                                        position: absolute;
-                                        background-image: @icons;
-                                        background-repeat: no-repeat;
-                                        .show;
+                                span {
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    .pull-left; 
+                                    .show;
 
-                                        @media @highdpi {
-                                            background-image: @icons2x;
-                                            background-size: 120px;
+                                    &.occupied {
+                                        position: relative;
+                                        color: @white;
+                                        cursor: @draggable, pointer;
+                                        cursor: @draggable 16 16, pointer;
+                                        /*cursor: @dragging, move;
+                                        cursor: @dragging 16 16, move;*/
+
+                                        &:after,
+                                        &:before {
+                                            content: "";
+                                            position: absolute;
+                                            background-image: @icons;
+                                            background-repeat: no-repeat;
+                                            .show;
+
+                                            @media @highdpi {
+                                                background-image: @icons2x;
+                                                background-size: 120px;
+                                            }
                                         }
-                                    }
 
-                                    &:before { 
-                                        .hide;
-                                        #fade > .out();
-                                        .icons > .icon-diary-move-reservation();
-                                    }
-
-                                    &:hover { 
                                         &:before { 
-                                            .show; 
-                                            #fade > .in(); 
+                                            .hide;
+                                            #fade > .out();
+                                            .icons > .icon-diary-move-reservation();
                                         }
-                                    }
 
-                                    &.check-in {
-                                        .gradient(@greenStart, @greenEnd);
-                                        
-                                        &:after {
-                                            .guest-status > .check-in;
-                                            background-color: transparent;
-                                        }
-                                    }
-
-                                    &.inhouse {
-                                        .gradient(@blueStart, @blueEnd);
-
-                                        &:after {
-                                            .guest-status > .inhouse;
-                                            background-color: transparent;
-                                        }
-                                    }
-
-                                    &.check-out {
-                                        .gradient(@redStart, @redEnd);
-
-                                        &:after {
-                                            .guest-status > .check-out;
-                                            background-color: transparent;
-                                        }
-                                    }
-
-                                    &.check-in,
-                                    &.inhouse,
-                                    &.check-out {
-                                        //-webkit-transform: translateZ(0); CHANGED
-
-                                        &.editing { 
-                                            .gradient(@purpleStart, @purpleEnd); 
-
-                                            &:before {
+                                        &:hover { 
+                                            &:before { 
                                                 .show; 
-                                                #fade > .in();
-                                                .icons > .icon-diary-edit-reservation();
+                                                #fade > .in(); 
+                                            }
+                                        }
+
+                                        &.check-in {
+                                            .gradient(@greenStart, @greenEnd);
+                                            
+                                            &:after {
+                                                .guest-status > .check-in;
+                                                background-color: transparent;
+                                            }
+                                        }
+
+                                        &.inhouse {
+                                            .gradient(@blueStart, @blueEnd);
+
+                                            &:after {
+                                                .guest-status > .inhouse;
+                                                background-color: transparent;
+                                            }
+                                        }
+
+                                        &.check-out {
+                                            .gradient(@redStart, @redEnd);
+
+                                            &:after {
+                                                .guest-status > .check-out;
+                                                background-color: transparent;
+                                            }
+                                        }
+
+                                        &.check-in,
+                                        &.inhouse,
+                                        &.check-out {
+                                            //-webkit-transform: translateZ(0); CHANGED
+
+                                            &.editing { 
+                                                .gradient(@purpleStart, @purpleEnd); 
+
+                                                &:before {
+                                                    .show; 
+                                                    #fade > .in();
+                                                    .icons > .icon-diary-edit-reservation();
+                                                }
                                             }
                                         }
                                     }
-                                }
 
-                                &.available {
-                                    color: @white;
-                                    cursor: pointer;
-                                    .gradient(@orangeStart, @orangeEnd);
-                                    
+                                    &.available {
+                                        color: @white;
+                                        cursor: pointer;
+                                        .gradient(@orangeStart, @orangeEnd);
+                                        
 
-                                    &.reserved { 
-                                        cursor: default;
+                                        &.reserved { 
+                                            cursor: default;
+
+                                            &:after {
+                                                content: "";
+                                                position: absolute;
+                                                top: 0;
+                                                left: 0;
+                                                right: 0;
+                                                bottom: 0;
+                                                .candystripe(rgba(255,118,37,.5), -45deg);
+                                                #move > .candystripe();
+                                            }
+                                        }
+                                    }
+
+                                    &.maintenance { 
+                                        position: relative;
+                                        .gradient(@grey4, @gcard); 
 
                                         &:after {
                                             content: "";
                                             position: absolute;
-                                            top: 0;
-                                            left: 0;
-                                            right: 0;
-                                            bottom: 0;
-                                            .candystripe(rgba(255,118,37,.5), -45deg);
-                                            #move > .candystripe();
+                                            background-image: @icons;
+                                            background-repeat: no-repeat;
+                                            .icons > .icon-diary-maintenance;
+                                            .show;
+
+                                            @media @highdpi {
+                                                background-image: @icons2x;
+                                                background-size: 120px;
+                                            }
                                         }
+                                    }                        
+                                }
+                            }
+
+                            .hour {
+                                border-right: 1px solid #aaa; //rgba(0,0,0,.2); CHANGED
+                                background-size: 100%;
+                                background-image: -moz-linear-gradient(0px 50%, transparent 25%, rgba(0,0,0,.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,.1) 75%, transparent 76%);
+                                background-image: -ms-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);                   
+                                background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, transparent), color-stop(25%,rgba(0,0,0,0.1)), color-stop(26%, transparent), color-stop(50%, transparent), color-stop(50%,rgba(0,0,0,0.1)), color-stop(51%, transparent), color-stop(75%, transparent), color-stop(75%,rgba(0,0,0,0.1)), color-stop(76%, transparent));
+                                background-image: -webkit-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                                background-image: -o-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                                background-image: linear-gradient(to right, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                                background-repeat: no-repeat;
+                                .pull-left; 
+
+                                &:nth-child(odd) { background-color: @grey1; }
+                            }
+
+                            &.occupied { 
+                                background: @grey2; 
+
+                                .hour { 
+                                    &:nth-child(odd) { background-color: transparent; }
+                                }
+                            }
+
+                            &.dirty { 
+                                background: lighten(@red, 30); 
+
+                                .hour { 
+                                    &:nth-child(odd) { background-color: transparent; }
+                                }
+                            }
+
+                            &:first-child { margin-top: 0; }
+                            &:last-child { margin-bottom: 0; }
+
+                            &:before {
+                                content: "";
+                                position: absolute;
+                                left: 0px;
+                                top: 0px;
+                                right: 0px;
+                                bottom: 0px;
+                                z-index: 1399;
+                                pointer-events: none;
+                                .square(100%);
+                                .show;
+                                border-bottom: 1px solid #ddd;
+                                //.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15)); CHANGED
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Reservation edit ***/
+            &.editing { .calc-height(100, 150); }
+
+            /* 12 hours grid ***/
+            &.hours-12 {
+
+                .diary-rooms {
+                    li {
+                        padding: 10px 5px;
+                        height: 60px;
+
+                        span {
+                            line-height: 1em;
+                            .show;    
+
+                            &.number { 
+                                font-size: 20px; 
+                                font-weight: 600;
+                            }
+
+                            &.type { font-size: 13px; }
+                        }
+                    }
+                }
+
+                .diary-grid {
+                    li {
+                        line-height: 60px;
+                        height: 60px;
+
+                        span { height: 60px; }
+
+                        .occupancy-block {
+                            span {
+                                line-height: 60px;
+
+                                &.occupied,
+                                &.available { padding: 0 10px; }
+
+                                &.occupied { 
+                                    text-indent: 30px; 
+
+                                    &:after {
+                                        top: 15px;
+                                        left: 5px;
+                                        .square(30px);
+                                    }
+
+                                    &:before { 
+                                        top: 15px;
+                                        right: 5px;
+                                        .square(30px);
+                                    }                           
+                                }
+
+                                &.available {
+                                    &.reserved { 
+                                        &:after { background-size: 40px 40px; }
                                     }
                                 }
 
                                 &.maintenance { 
-                                    position: relative;
-                                    .gradient(@grey4, @gcard); 
-
                                     &:after {
-                                        content: "";
-                                        position: absolute;
-                                        background-image: @icons;
-                                        background-repeat: no-repeat;
-                                        .icons > .icon-diary-maintenance;
-                                        .show;
-
-                                        @media @highdpi {
-                                            background-image: @icons2x;
-                                            background-size: 120px;
-                                        }
+                                        #calc-position > .left(50, 15);
+                                        #calc-position > .top-minus(50, 12);
+                                        .square(30px);
                                     }
                                 }                        
                             }
-                        }
-
-                        .hour {
-                            border-right: 1px solid #aaa; //rgba(0,0,0,.2); CHANGED
-                            background-size: 100%;
-                            background-image: -moz-linear-gradient(0px 50%, transparent 25%, rgba(0,0,0,.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,.1) 75%, transparent 76%);
-                            background-image: -ms-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);                   
-                            background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, transparent), color-stop(25%,rgba(0,0,0,0.1)), color-stop(26%, transparent), color-stop(50%, transparent), color-stop(50%,rgba(0,0,0,0.1)), color-stop(51%, transparent), color-stop(75%, transparent), color-stop(75%,rgba(0,0,0,0.1)), color-stop(76%, transparent));
-                            background-image: -webkit-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                            background-image: -o-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                            background-image: linear-gradient(to right, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                            background-repeat: no-repeat;
-                            .pull-left; 
-
-                            &:nth-child(odd) { background-color: @grey1; }
-                        }
-
-                        &.occupied { 
-                            background: @grey2; 
-
-                            .hour { 
-                                &:nth-child(odd) { background-color: transparent; }
-                            }
-                        }
-
-                        &.dirty { 
-                            background: lighten(@red, 30); 
-
-                            .hour { 
-                                &:nth-child(odd) { background-color: transparent; }
-                            }
-                        }
-
-                        &:first-child { margin-top: 0; }
-                        &:last-child { margin-bottom: 0; }
-
-                        &:before {
-                            content: "";
-                            position: absolute;
-                            left: 0px;
-                            top: 0px;
-                            right: 0px;
-                            bottom: 0px;
-                            z-index: 1399;
-                            pointer-events: none;
-                            .square(100%);
-                            .show;
-                            border-bottom: 1px solid #ddd;
-                            //.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15)); CHANGED
-                        }
-                    }
-                }
-            }
-        }
-
-        /* Reservation edit ***/
-        &.editing { .calc-height(100, 150); }
-
-        /* 12 hours grid ***/
-        &.hours-12 {
-
-            .diary-rooms {
-                li {
-                    padding: 10px 5px;
-                    height: 60px;
-
-                    span {
-                        line-height: 1em;
-                        .show;    
-
-                        &.number { 
-                            font-size: 20px; 
-                            font-weight: 600;
-                        }
-
-                        &.type { font-size: 13px; }
+                        }                    
                     }
                 }
             }
 
-            .diary-grid {
-                li {
-                    line-height: 60px;
-                    height: 60px;
+            /* 24-hours grid ***/
+            &.hours-24 {
 
-                    span { height: 60px; }
+                .diary-rooms {
+                    .room-title {
+                        height: 24px;
+                        padding: 0 5px;
+                        margin: 0;
+                        .float;
 
-                    .occupancy-block {
                         span {
-                            line-height: 60px;
+                            line-height: 24px;
 
-                            &.occupied,
-                            &.available { padding: 0 10px; }
-
-                            &.occupied { 
-                                text-indent: 30px; 
-
-                                &:after {
-                                    top: 15px;
-                                    left: 5px;
-                                    .square(30px);
-                                }
-
-                                &:before { 
-                                    top: 15px;
-                                    right: 5px;
-                                    .square(30px);
-                                }                           
+                            &.number { 
+                                font-size: 16px;
+                                font-weight: 600;
+                                width: 35%;
+                                .pull-right;
                             }
 
-                            &.available {
-                                &.reserved { 
-                                    &:after { background-size: 40px 40px; }
-                                }
+                            &.type { 
+                                width: 65%;
+                                font-size: 12px; 
+                                .pull-left;
                             }
-
-                            &.maintenance { 
-                                &:after {
-                                    #calc-position > .left(50, 15);
-                                    #calc-position > .top-minus(50, 12);
-                                    .square(30px);
-                                }
-                            }                        
-                        }
-                    }                    
-                }
-            }
-        }
-
-        /* 24-hours grid ***/
-        &.hours-24 {
-
-            .diary-rooms {
-                .room-title {
-                    height: 24px;
-                    padding: 0 5px;
-                    margin: 0;
-                    .float;
-
-                    span {
-                        line-height: 24px;
-
-                        &.number { 
-                            font-size: 16px;
-                            font-weight: 600;
-                            width: 35%;
-                            .pull-right;
-                        }
-
-                        &.type { 
-                            width: 65%;
-                            font-size: 12px; 
-                            .pull-left;
                         }
                     }
                 }
-            }
 
-            .diary-grid {
-                > .wrapper {
-                    > .grid {
-                        > .grid-row {
-                            line-height: 24px;
-                            height: 24px;
-                            margin: 0;
+                .diary-grid {
+                    > .wrapper {
+                        > .grid {
+                            > .grid-row {
+                                line-height: 24px;
+                                height: 24px;
+                                margin: 0;
 
-                            span { height: 24px; }
+                                span { height: 24px; }
 
-                            .occupancy-block {
-                                span {
-                                    font-size: 12px;
-                                    line-height: 24px;
+                                .occupancy-block {
+                                    span {
+                                        font-size: 12px;
+                                        line-height: 24px;
 
-                                    &.occupied,
-                                    &.available { padding: 0 5px; }
+                                        &.occupied,
+                                        &.available { padding: 0 5px; }
 
-                                    &.occupied {
-                                        text-indent: 20px;
+                                        &.occupied {
+                                            text-indent: 20px;
 
-                                        &:after {
-                                            top: 0;
-                                            left: 5px;
-                                            background-size: 80px;
-                                            .square(24px);
-                                        }
+                                            &:after {
+                                                top: 0;
+                                                left: 5px;
+                                                background-size: 80px;
+                                                .square(24px);
+                                            }
 
-                                        &:before { 
-                                            top: 0;
-                                            right: 5px;
-                                            background-size: 80px;
-                                            .square(24px);
-                                        }
+                                            &:before { 
+                                                top: 0;
+                                                right: 5px;
+                                                background-size: 80px;
+                                                .square(24px);
+                                            }
 
-                                        &.check-in {
-                                            &:after { background-position: 5px -73px; }
-                                        }
+                                            &.check-in {
+                                                &:after { background-position: 5px -73px; }
+                                            }
 
-                                        &.inhouse {
-                                            &:after { background-position:  5px -126px; }
-                                        }
+                                            &.inhouse {
+                                                &:after { background-position:  5px -126px; }
+                                            }
 
-                                        &.check-out {
-                                            &:after { background-position: 5px -100px; }
-                                        }
-                                    }      
+                                            &.check-out {
+                                                &:after { background-position: 5px -100px; }
+                                            }
+                                        }      
 
-                                    &.available {
-                                        &.reserved {                                   
-                                            &:after { background-size: 20px 20px; }
-                                        }
-                                    }   
+                                        &.available {
+                                            &.reserved {                                   
+                                                &:after { background-size: 20px 20px; }
+                                            }
+                                        }   
 
-                                    &.maintenance { 
-                                        &:after {
-                                            top: 0;
-                                            background-size: 60px;
-                                            background-position: 5px -2955px;
-                                            #calc-position > .left(50, 12);
-                                            .square(24px);
-                                        }
-                                    }               
+                                        &.maintenance { 
+                                            &:after {
+                                                top: 0;
+                                                background-size: 60px;
+                                                background-position: 5px -2955px;
+                                                #calc-position > .left(50, 12);
+                                                .square(24px);
+                                            }
+                                        }               
+                                    }
                                 }
                             }
                         }
@@ -11613,7 +11529,6 @@
             }
         }
     }
-}
 
 /* 6. IE
 ==========================================================*/
