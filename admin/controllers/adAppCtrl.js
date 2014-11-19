@@ -93,7 +93,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}, {
 						title: "MENU_ROOM_ASSIGNMENT",
 						action: "staff#/staff/diary/reservations",
-						standAlone: true
+						standAlone: true,
+						hidden: !$rootScope.isHourlyRatesEnabled
 					}, {
 						title: "MENU_POST_CHARGES",
 						action: "staff#/staff/dashboard/postCharge"
@@ -172,7 +173,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-reports",
 					submenu: []
 				}];
-
 				// menu for mobile views
 				$scope.mobileMenu = [{
 				  title: "MENU_DASHBOARD",
@@ -229,7 +229,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}
 		};
 		
-		
+		/**
+		* in case of we want to reinitialize left menu based on new $rootScope values or something
+		* which set during it's creation, we can use
+		*/		
+		$scope.$on('refreshLeftMenu', function(event){
+			setupLeftMenu();
+		});	
 
 		$scope.$on("updateSubMenu", function(idx, item) {
 			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
@@ -428,12 +434,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				
 			//set flag if standalone PMS
 			if (data.pms_type === null)
-				$scope.isStandAlone = true;
-			setupLeftMenu();
+				$scope.isStandAlone = true;			
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
+			setupLeftMenu();
 
 		};
 		/*

@@ -121,12 +121,17 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		return time < 10 ? '0' + time :time;
 	};
 	Time.prototype.toString = function(asAMPM) {
-		var hours = this.padZeroes(this.hours),  //(this.hours < 10 ? '0' + this.hours : this.hours), 
+		var hours = this.padZeroes(this.hours), 
 			min = this.padZeroes(this.minutes),
 			ampm = '';
 
 		if(asAMPM) {
 			hours = hours % 12;
+
+			if(hours === 0) {
+				hours = 12;
+			}
+
 			ampm = this.AMPM();
 		}
 		
@@ -149,7 +154,6 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	};
 	Time.prototype.constructor = Time;
 
-//if(typeof String.prototype.toTimeComponent === 'undefined') {
 	String.prototype.toTimeComponent = function(time) {
 		var pos = time.indexOf(':'),
 		    hours, minutes;
@@ -169,8 +173,6 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		return;
 	};
 
-
-//if(typeof Date.prototype.toComponents === 'undefined') {
 	Date.prototype.toComponents = function() {
 		var __DAYS = ['Monday', 
 					  'Tuesday', 
@@ -215,5 +217,4 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				hours: this.getHours()
 			})
 		};
-	//};
 };
