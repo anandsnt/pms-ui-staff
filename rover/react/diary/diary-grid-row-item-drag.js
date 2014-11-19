@@ -45,6 +45,7 @@ var GridRowItemDrag = React.createClass({
 			},
 			function() {
 				props.iscroll.grid.disable();
+				props.iscroll.timeline.disable();
 			});
 		}
 	},
@@ -81,7 +82,9 @@ var GridRowItemDrag = React.createClass({
 		document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__dbMouseMove);
 
-		props.iscroll.grid.enable();
+		
+		e.stopPropagation();
+		e.preventDefault();
 
 		if(state.dragging) {
 			this.setState({
@@ -90,7 +93,7 @@ var GridRowItemDrag = React.createClass({
 				left: state.left,
 				top: state.top
 			}, function() {
-				//props.iscroll.grid.enable();
+				props.iscroll.grid.enable();
 				props.__onDragStop(e, state.left, item);
 			});
 		} else if(this.state.mouse_down) {
@@ -98,16 +101,16 @@ var GridRowItemDrag = React.createClass({
 				mouse_down: false,
 				selected: !state.selected
 			}, function() {
-				//var data = (props.edit.passive ? props.currentDragItem : props.data);
+				var data = (props.edit.passive ? props.currentDragItem : props.data);
 
-				props.data.selected = !state.selected;	
-
-				props.angular_evt.onSelect(props.row_data, props.data, props.data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
+				props.iscroll.grid.enable();			
+				props.iscroll.timeline.enable();
+				
+				props.angular_evt.onSelect(props.row_data, data, !state.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}
 
-		e.stopPropagation();
-		e.preventDefault();
+
 	},
 	componentWillReceiveProps: function(nextProps) {
 		var id_meta = this.props.meta.occupancy.id;
