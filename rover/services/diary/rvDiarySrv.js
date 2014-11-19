@@ -71,7 +71,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         1) Maintain ascending sorted order by 'arrival' time in ms for each occupancy
                            (Why?  When scrolling, or jumping calendar dates, memory usage can be minimized
                             by chomping left side of occupancy collection at the point were the
-                            ( scroll position / display.px_per_ms ) at x_origin +- resolving distance)
+                            ( scroll position / time.px_per_ms ) at x_origin +- resolving distance)
 
                       See also:
                         Coordinate system and Viewport composition
@@ -463,32 +463,31 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 /*ROUTER RESOLVE - LOADING POINT FOR DIARY*/
                 this.load = function(arrival_time, create_reservation_data) {     
                     var _data_Store     = this.data_Store,
-                        time_settings   = util.gridTimeComponents(arrival_time, 50),
-                        start_time      = time_settings.x_0.toComponents().time,
-                        arrival_times   = this.fetchArrivalTimes(15, { 
+                        time            = util.gridTimeComponents(arrival_time, 50),
+                        start_time      = time.x_0.toComponents().time,
+                        arrival_times   = this.fetchArrivalTimes(15), 
+                        arrival_time    = { 
                             hours: start_time.hours, 
                             min: (start_time.minutes / 15).toFixed() * 15 
-                        }),
+                        },
                         q = $q.defer();
 
                         _data_Store.set({
-                                company_id: undefined,
-                                travel_Agent_id: undefined,
-                                guest_first_name: undefined,
-                                guest_last_name: undefined,
+                                company_id:         undefined,
+                                travel_Agent_id:    undefined,
+                                guest_first_name:   undefined,
+                                guest_last_name:    undefined,
                                 reservation_defaults: {
-                                    adults: 1,
-                                    children: 0,
-                                    infants: 0
+                                    adults:     1,
+                                    children:   0,
+                                    infants:    0
                                 }
                         });
 
                         if(create_reservation_data) {
-                            time_settings = util.gridTimeComponents(create_reservation_data.start_date, 50);
+                            time = util.gridTimeComponents(create_reservation_data.start_date, 50);
 
-                            _data_Store.set({ past_date:        time_settings.x_nL,
-                                              start_date:       time_settings.x_0, 
-                                              end_date:         time_settings.x_nR, 
+                            _data_Store.set({ 
                                               arrival_times:    arrival_times,
                                               arrival_time:     (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
                                               min_hours:        (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
@@ -496,25 +495,29 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                               company_id:       create_reservation_data.company_id, 
                                               travel_agent_id:  create_reservation_data.travel_agent_id,
                                               reservation_defaults: {
-                                                adults: create_reservation_data.adults,
-                                                children: create_reservation_data.children,
-                                                infants: create_reservation_data.infants
+                                                adults:     create_reservation_data.adults,
+                                                children:   create_reservation_data.children,
+                                                infants:    create_reservation_data.infants
                                               } });
                         } else {
-                            _data_Store.set({ past_date:        time_settings.x_nL,
-                                              start_date:       time_settings.x_0, 
-                                              end_date:         time_settings.x_nR, 
-                                              arrival_times:    arrival_times,
-                                              arrival_time:     time_settings.x_0.toComponents().time.toString() 
+                            _data_Store.set({ arrival_times:    arrival_times,
+                                              arrival_time:     time.x_0.toComponents().time.toString() 
                             });
                         }
+
+                        _data_Store.set({
+                            x_n:        time.x_n,
+                            x_origin:   time.x_0, 
+                            x_p:        time.x_p, 
+                            x_offset:   time.x_offset
+                        });
 
                         $q.all([Maintenance.read(),
                                 RoomType.read(),
                                 Room.read(), 
-                                Occupancy.read(dateRange(new Date(new Date(time_settings.x_nL).setHours(0, 0, 0)), 
-                                                         new Date(new Date(time_settings.x_nR).setHours(23, 59, 0)))),
-                                AvailabilityCount.read(dateRange(time_settings.x_nL, time_settings.x_nR))])
+                                Occupancy.read(dateRange(new Date(new Date(time.x_n).setHours(0, 0, 0)), 
+                                                         new Date(new Date(time.x_p).setHours(23, 59, 0)))),
+                                AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                         .then(function(data_array) {
                             _.reduce([Maintenance, RoomType, Room, Occupancy, AvailabilityCount], //Rate],
                                 function(memo, obj, idx) {  
@@ -527,9 +530,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             HourlyRate.resolve(data);
 
                             q.resolve(_data_Store.get(
-                                                 'past_date',
-                                                 'start_date', 
-                                                 'end_date', 
+                                                 'x_n',
+                                                 'x_offset',
+                                                 'x_origin', 
+                                                 'x_p', 
                                                  'arrival_times',
                                                  'arrival_time',
                                                  'room',
@@ -551,7 +555,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.fetchArrivalTimes = function(base_interval, offset) {
                     var times   = [],
                         day_min = 24 * 60,
-                        int_ms  = 900000,
                         min, hour, cur_time;
 
                     if(!offset) {
@@ -567,10 +570,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                         if(min >= 60) {
                             min = 0;
-                            hour += 1;
                         }
 
-                        hour = hour - hour / 24 * (hour % 24 === 0 ? 1 : 0);
                         cur_time =  hour + ':' + (min === 0 ? '00' : min);
 
                         times.push( cur_time );
