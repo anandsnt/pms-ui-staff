@@ -550,7 +550,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
      * @param {{object}} - payment data - used for swipe
      */
-    $scope.showAddNewPaymentModal = function(passData, paymentData) {
+   /* $scope.showAddNewPaymentModal = function(passData, paymentData) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
       $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
@@ -559,7 +559,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         controller: 'RVPaymentMethodCtrl',
         scope: $scope
       });
-    };
+    };*/
     /*
      * Call payment after CONTACT INFO
      */
@@ -715,5 +715,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
 
     });
+    
+    $scope.openPaymentDialogModal = function(passData, paymentData) {
+      $scope.passData = passData;
+      $scope.paymentData = paymentData;
+      $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
+      ngDialog.open({
+        template: '/assets/partials/roverPayment/rvAddPayment.html',
+        controller: 'RVPaymentMethodCtrl',
+        scope: $scope
+      });
+    };
   }
 ]);

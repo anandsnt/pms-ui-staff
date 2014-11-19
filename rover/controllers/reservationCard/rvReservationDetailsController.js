@@ -208,7 +208,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.$emit('passReservationParams', passData);
 
 
-		$scope.openAddNewPaymentModel = function(data) {
+		/*$scope.openAddNewPaymentModel = function(data) {
 			if (data === undefined) {
 				var passData = {
 					"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -265,7 +265,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			}
 
-		};
+		};*/
 
 		$rootScope.$on('clearErroMessages', function() {
 			$scope.errorMessage = "";
@@ -423,6 +423,26 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		};
+		
+		
+		
+		
+		$scope.showAddNewPaymentModel = function(){
+			var passData = {
+				"reservationId": $scope.reservationData.reservation_card.reservation_id,
+				"fromView": "staycard",
+				"is_swiped": false
+			};
+			var paymentData = $scope.reservationData;
+			
+			$scope.openPaymentDialogModal(passData, paymentData);
+		};
+		
+		
+		
+		
+		
+		
 	}
 
 ]);
