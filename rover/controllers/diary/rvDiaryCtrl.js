@@ -199,13 +199,13 @@ sntRover
 	    };
 
 	    $scope.onResizeEnd = function(row_data, row_item_data) {
-	    	rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
+	    	/*rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
 	    	.then(function(data) {
 	    		console.log(data);
 	    		console.log(rvDiarySrv.data_Store.get('_room.values.id'));
 	    	}, function(err) {
 	    		console.log(err);
-	    	});
+	    	});*/
 	    };    
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
@@ -499,12 +499,12 @@ sntRover
 				room,
                 m_status = meta.occupancy.status,
 				reject = function(child) {
-					return $scope.isAvailable(undefined, child); //angular.lowercase(child[m_status]) === 'available'; 
+					return angular.lowercase(child[m_status]) === 'available'; 
 				};
 
 			for(var i = 0, len = rooms.length; i < len; i++) {
 				room 			= rooms[i];
-				room.occupancy 	= _.reject(room.occupancy, reject);	
+				room.occupancy 	= util.copyArray(_.reject(room.occupancy, reject), room.occupancy);	
 				room 			= util.deepCopy(room);							 
 			}
 		};

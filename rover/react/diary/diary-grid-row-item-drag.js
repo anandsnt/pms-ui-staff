@@ -96,13 +96,13 @@ var GridRowItemDrag = React.createClass({
 				mouse_down: false,
 				selected: !state.selected
 			}, function() {
-				var data = (props.edit.passive ? props.currentDragItem : props.data);
+				//var data = (props.edit.passive ? props.currentDragItem : props.data);
 
 				data.selected = !state.selected;
 
 				props.iscroll.grid.enable();
 
-				props.angular_evt.onSelect(props.row_data, data, !state.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
+				props.angular_evt.onSelect(props.row_data, props.data, !state.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}
 	},

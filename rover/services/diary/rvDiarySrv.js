@@ -86,11 +86,14 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             room_ids    = _.keys(room_oc_groups);
 
                         for(var i = 0, len = room_ids.length; i < len; i++) {
-                            existing = index[room_ids[i]].occupancy;
+                            var r = _.findWhere(this.get('room'), { id: +room_ids[i] });
+
+                            existing = util.copyArray(r.occupancy, existing); //index[room_ids[i]].occupancy;
                             incoming = _.sortBy(room_oc_groups[room_ids[i]], 'arrival');
 
                             if(existing.length === 0) {
-                                index[room_ids[i]].occupancy = _.toArray(existing.concat(incoming));
+                                /*index[room_ids[i]].occupancy*/  //= _.toArray(existing.concat(incoming));
+                                r.occupancy = util.copyArray(existing.concat(incoming), r.occupancy);
                             } else {
                                 set_difference = this.difference(existing, incoming, 'reservation_id');
 
