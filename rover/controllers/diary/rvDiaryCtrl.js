@@ -271,13 +271,13 @@ sntRover
 		$scope.confirmRateSelection = function(idx) {
 			var details = $scope.gridProps.filter.rate_type_details;
 
-
+			$scope.gridProps.filter.rate = $scope.gridProps.filter.rate_type_details[idx];
 		};
 
 		$scope.discardRateSelection = function(idx) {
-			var details = $scope.gridProps.filter.rate_type_details;
-
-
+			//var details = $scope.gridProps.filter.rate_type_details;
+			$scope.gridProps.filter.rate_type_details = [];
+			$scope.gridProps.filter.rate = undefined;
 		};
 
         $scope.companySearchTextEntered = function() {
@@ -373,7 +373,6 @@ sntRover
 	    		meta 				= $scope.gridProps.meta,
 	    		data 				= $scope.data,
 	    		display 			= $scope.gridProps.display,
-	    		//maintenance_span 	= display.maintenance_span_int * display.px_per_int / display.px_per_ms,
 	    		maintenance_end_date; 
 
 	    	current_scroll_pos = parseInt(current_scroll_pos, 10);
@@ -536,27 +535,10 @@ sntRover
 		};
 
 	$scope.getArrivalTimes = function() {
-		/*function parseArrivalTime(arrival_time, bNextDay) {
-			var pos = arrival_time.indexOf(':'),
-				hours, minutes;
-
-			if(pos > -1) {
-				hours = arrival_time.substr(0, pos);
-
-				if(pos < arrival_time.length) {
-					minutes = arrival_time.substr(pos + 1);
-				}
-			}
-
-			if(hours && minutes) {
-				return Time({hours: hours, minutes: minutes});
-			}
-		}*/
-
 		var filter 		= _.extend({}, $scope.gridProps.filter),
 			time_span 	= Time({ hours: $scope.min_hours }),
 			start_date 	= filter.arrival_date,
-			start_time 	= (new Date($scope.arrival_times.indexOf(filter.arrival_time) * 900000)).toComponents().time,
+			start_time 	= new Date($scope.arrival_times.indexOf($scope.gridProps.filter.arrival_time) * 900000 + filter.arrival_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
@@ -569,7 +551,7 @@ sntRover
 						   start.getHours()  + time_span.hours,
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
-			rt_filter = _.isEmpty(filter.room_type) ? undefined : filter.room_type.id;
+			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id);
 
 		return [
 			start,
@@ -609,7 +591,6 @@ sntRover
 			rvDiarySrv.Occupancy(new Date(time_set.x_nL.setHours(0,0,0)), 
 								 new Date(time_set.x_nR.setHours(23,59,0)))
 			.then(function(data) {
-				console.log(data);
 				$scope.renderGrid();
 			}, responseError);	
 		}

@@ -31,6 +31,7 @@ var TimelineResizeGrip = React.createClass({
 			px_per_ms = 	display.px_per_ms,
 			model = 		state.currentResizeItem, 
 			direction = 	props.itemProp,
+			opposite =      ((direction === 'departure') ? 'arrival' : 'departure'),
 			last_left;
 
 		e.stopPropagation();
@@ -51,12 +52,17 @@ var TimelineResizeGrip = React.createClass({
 		} else if(state.resizing) {		
 			last_left = model[direction];
 
+			//if(Math.abs(model[direction]-model[opposite]) >= props.display.min_hours * 3600000) {
 			model[direction] = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000; 
-								//((state.element_x + delta_x) / px_per_int).toFixed() * px_per_int;
-
+			
+			if(Math.abs(model[direction]-model[opposite]) < props.display.min_hours * 3600000) {
+				model[direction] = last_left;
+			}
+			//} else{
+				//model[direction] = last_left;
+			//}
 			this.setState({
-				last_left: last_left,
-				currentResizeItem: model			
+				currentResizeItem: 	model			
 			}, function() {
 				props.__onResizeCommand(model);
 			});		
@@ -106,6 +112,7 @@ var TimelineResizeGrip = React.createClass({
 	},
 	getInitialState: function() {
 		return {
+			stop_resize: false,
 			resizing: false,
 			mode: undefined,
 			mouse_down: false,
@@ -157,15 +164,9 @@ var TimelineResizeGrip = React.createClass({
 			direction 			= props.itemProp,
 			currentResizeItem 	= this.state.currentResizeItem,
 			x_origin 			= props.display.x_nL,
-			opposite 			= ((direction === 'departure') ? 'arrival' : 'departure'),
 			px_per_ms 			= props.display.px_per_ms,
 			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
-			right 				= (currentResizeItem ? (currentResizeItem[opposite] - x_origin) * px_per_ms : 0),
 			grip_text = '';
-
-		if(currentResizeItem && (Math.abs(left - right) < (props.filter.min_hours * props.display.px_per_int * 4 ))) {
-			left = this.state.last_left;
-		}
 
 		if(currentResizeItem) {
 		 	grip_text = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);

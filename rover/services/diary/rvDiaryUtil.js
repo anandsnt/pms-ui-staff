@@ -29,7 +29,7 @@ sntRover
                 ms_per_day      = 43200000,
                 ms_per_hr       = 3600000,
                 x_origin        = arrival_ms, 
-                resolving_dist  = ((display_total_hours - 2) * ms_per_hr), 
+                resolving_dist  = ((display_total_hours - 4) * ms_per_hr), 
                 x_right         = x_origin + resolving_dist, 
                 x_left          = x_origin - (ms_per_hr << 1); 
 
@@ -216,21 +216,23 @@ sntRover
 				removeReservation(oldRoom, reservation);
 
 				newRoom.occpuancy.push(copyReservation(reservation));
+
+                idxOldRoom = roomIndex(rooms, oldRoom);
+                idxNewRoom = roomIndex(rooms, newRoom);
+
+                //if(commit) {
+                if(idxOldRoom > -1 && idxOldRoom < data.length) {
+                    data[idxOldRoom] = oldRoom;
+                }
+
+                if(idxNewRoom > -1 && idxNewRoom < data.length) {
+                    data[idxNewRoom] = newRoom;
+                }
 			} else {
 				updateReservation(oldRoom, reservation);
 			}
 
-			idxOldRoom = roomIndex(rooms, oldRoom);
-			idxNewRoom = roomIndex(rooms, newRoom);
 
-			//if(commit) {
-			if(idxOldRoom > -1 && idxOldRoom < data.length) {
-				data[idxOldRoom] = oldRoom;
-			}
-
-			if(idxNewRoom > -1 && idxNewRoom < data.length) {
-				data[idxNewRoom] = newRoom;
-			}
 		};
 
 		clearRowClasses = function(rooms) {
