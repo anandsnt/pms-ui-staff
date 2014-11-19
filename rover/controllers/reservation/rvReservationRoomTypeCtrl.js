@@ -466,7 +466,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					"to_date": $scope.reservationData.departureDate
 				});
 			}
-				
+			else{
+				$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+			}	
 		}
 
 		var updateSupressedRatesFlag = function() {

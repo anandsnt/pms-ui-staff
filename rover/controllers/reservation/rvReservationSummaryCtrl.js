@@ -75,14 +75,30 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		// set the previous state -- 
 
 		if ($stateParams.reservation != "HOURLY") {
-			$rootScope.setPrevState = {
-				title: $filter('translate')('ENHANCE_STAY'),
-				name: 'rover.reservation.staycard.mainCard.addons',
-				param: {
-					from_date: $scope.reservationData.arrivalDate,
-					to_date: $scope.reservationData.departureDate
-				}
-			};
+			if($rootScope.isAddonOn){
+				$rootScope.setPrevState = {
+					title: $filter('translate')('ENHANCE_STAY'),
+					name: 'rover.reservation.staycard.mainCard.addons',
+					param: {
+						from_date: $scope.reservationData.arrivalDate,
+						to_date: $scope.reservationData.departureDate
+					}
+				};
+			}
+			else{
+				$rootScope.setPrevState = {
+		            title: $filter('translate')('ROOM_RATES'),
+		            name: 'rover.reservation.staycard.mainCard.roomType',
+		            param: {
+		                from_date: $scope.reservationData.arrivalDate,
+		                to_date: $scope.reservationData.departureDate,
+		                view: "ROOM_RATE",
+		                company_id: null,
+		                travel_agent_id: null,
+		                fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
+		            }
+		        }
+			}
 		}
 
 		$scope.init = function() {
