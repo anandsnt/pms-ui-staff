@@ -27,13 +27,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             }
         };
 
-        var successCallbackOfCountryListFetch = function(data) {
-            $scope.countries = data;
-        };
+        // var successCallbackOfCountryListFetch = function(data) {
+        //     $scope.countries = data;
+        // };
 
         //fetching country list
         //Commenting - Another call is happening to fetch countries
-        $scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
+        //$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
 
         // adding extra function to reset time
         $scope.clearArrivalAndDepartureTime = function() {
