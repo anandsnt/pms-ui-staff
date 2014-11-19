@@ -57,11 +57,35 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.checkoutTime.mm = $scope.reservationData.checkinTime.mm;            
         };
 
+
+
+        // strip $scope.fullCheckinTime to generate hh, mm, ampm
+        // map $scope.fullCheckinTime to $scope.reservationData.checkinTime
+        $scope.mapToCheckinTime = function() {
+
+            // strip 'fullCheckinTime' to generate hh, mm, ampm
+            var ampm = $scope.fullCheckinTime.split(' ')[1];
+            var time = $scope.fullCheckinTime.split(' ')[0];
+            var hh   = time.length ? time.split(':')[0] : '';
+            var mm   = time.length ? time.split(':')[1] : '';
+
+            // map fullCheckinTime to $scope.reservationData.checkinTime
+            $scope.reservationData.checkinTime.hh = isNaN(parseInt(hh)) ? '' : parseInt(hh) < 10 ? '0'+hh : hh;
+            $scope.reservationData.checkinTime.mm = mm || '';
+            $scope.reservationData.checkinTime.ampm = ampm || '';
+
+            $scope.setDepartureHours();
+        };
+
+
+
       /*
         * To setup arrival time based on hotel time 
         *
         */
         var fetchCurrentTimeSucess = function(data){
+            var ct, hh, mm, ampm;
+
              //To convert 24 hour format and round off to next hour 
             //incase it past the existing hour even by one second.
             data.hotel_time.hh = (parseInt(data.hotel_time.mm)> 0)?parseInt(data.hotel_time.hh)+1: parseInt(data.hotel_time.hh);
@@ -72,8 +96,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.checkinTime.hh = ($scope.reservationData.checkinTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkinTime.hh):$scope.reservationData.checkinTime.hh;     
             //rounding off minutes to '00'
             $scope.reservationData.checkinTime.mm = "00";
-            $scope.setDepartureHours();
 
+
+
+
+            // map the fetched time to $scope.fullChekinTime
+            ct = $scope.reservationData.checkinTime
+            hh = parseInt(ct.hh.charAt(0)) < 1 ? ct.hh.charAt(1) : ct.hh;
+            mm = ct.mm;
+            ampm = ct.ampm
+            $scope.fullCheckinTime = hh + ':' + mm + ' ' + ampm;
+
+
+
+            $scope.setDepartureHours();
         };
         var fetchMinTimeSucess = function(data){
         	$scope.reservationData.resHours = data.min_hours;
@@ -400,19 +436,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // check whether guest card attached and remove if attached.
             $scope.reservationDetails.guestCard.id = '';
         };
-        $scope.clickedNights = function(){
-        	$scope.isNightsActive = true;
-        	$scope.shouldShowNights = true;
-        	$scope.shouldShowHours = false;
+        $scope.switchNightsHours = function() {
+            $scope.isNightsActive = $scope.isNightsActive ? false : true;
+            $scope.shouldShowNights = $scope.shouldShowNights ? false : true;
+            $scope.shouldShowHours = $scope.shouldShowHours ? false : true;
         };
-        $scope.clickedHours = function(){
-        	$scope.isNightsActive = false;
-        	$scope.shouldShowNights = false;
-        	$scope.shouldShowHours = true;
-        };
-
-
-
     }
 ]);
 
