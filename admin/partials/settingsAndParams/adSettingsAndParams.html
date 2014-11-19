@@ -20,8 +20,9 @@
 						<div class="entry margin">
 								<label translate>NO_SHOW_CHARGE_CODE</label>
 								<div class="select">
-									<select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as (charge_code.value+' '+charge_code.description) for charge_code in chargeCodes">
+									<select class="placeholder" ng-model="selected_charge_code">
 										<option value="" translate>SELECT_CHARGE_CODE</option>
+										<option value="{{charge_code.value}}" ng-repeat="charge_code in chargeCodes" >{{charge_code.value+' '+charge_code.description}}</option>
 									</select>
 								</div>
 						</div>

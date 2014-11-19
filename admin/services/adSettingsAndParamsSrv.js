@@ -22,9 +22,8 @@ admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWeb
     */	
 	this.saveSettingsAndParamsSrv = function(data){
 		var deferred = $q.defer();
-		var updateData = {"business_date":data};
-		var url = "/api/hotel_settings/change_settings";		
-		ADBaseWebSrvV2.postJSON(url,updateData).then(function(data) {
+		var url = "/api/hotel_settings/change_settings";	
+		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

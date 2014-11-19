@@ -7,6 +7,7 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
 
     $scope.data = settingsAndParamsData.business_date;
     $scope.chargeCodes = chargeCodes.charge_codes;
+    $scope.selected_charge_code = settingsAndParamsData.charge_code;
 
  /**
     * To handle save button action
@@ -18,8 +19,10 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
              $scope.$emit('hideLoader');
              $scope.goBackToPreviousState();
         }
-    
-        $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, $scope.data,saveDetailsSuccessCallback);
+        var selectedChargeCode = ( typeof $scope.selected_charge_code == 'undefined' ) ? "" : $scope.selected_charge_code;
+        var dataToSend = { "charge_code" : selectedChargeCode , "business_date" : $scope.data };
+        
+        $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend ,saveDetailsSuccessCallback);
     };
 
 
