@@ -15,7 +15,7 @@
 				<tbody ng-repeat="payment in data.payments">
 					
 					<tr>
-						<td ng-if="payment.is_system_defined">
+						<td ng-if="payment.is_system_defined" ng-click="editPaymentMethod($index)" ng-hide="currentClickedElement == $index">
 							<strong>{{payment.description}}</strong>
 							<em ng-if="payment.is_system_defined" translate>SYSTEM_DEFINED</em>
 						</td>

@@ -98,7 +98,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 */
 	$scope.editPaymentMethod = function(index) {
 		$scope.currentClickedElement = index;
-		$scope.editData = dclone($scope.data.payments[index],["is_active","is_system_defined"]);
+		$scope.editData = dclone($scope.data.payments[index],["is_active"]);
 	};
 
 	/*
