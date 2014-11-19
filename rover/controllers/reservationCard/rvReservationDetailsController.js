@@ -430,7 +430,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		
 		
 		$scope.showDiaryScreen = function(){
-			$state.go('rover.reservation.diary');
+			$state.go('rover.reservation.diary', {reservation_id: $scope.reservationData.reservation_card.reservation_id});
 		};
 	}
 
