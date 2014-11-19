@@ -52,4 +52,5 @@
     "MAX_ADULTS":"Max Adults",
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
-    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display",
+    "ADDONS_FOR_RESERVATIONS":"Add-Ons for Reservations"
