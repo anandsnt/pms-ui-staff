@@ -6,8 +6,7 @@ sntRover
 		'$stateParams', 
 		'$filter', 
 		'$window', 
-		'ngDialog', 
-		//'RVCompanyCardSrv', 
+		'ngDialog',  
 		'RMFilterOptionsSrv',
 		'RVGuestCardSrv',
 		'rvDiarySrv', 
@@ -201,10 +200,16 @@ sntRover
 	    };
 
 	    $scope.onResizeEnd = function(row_data, row_item_data) {
-	    	/*rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
+/*	    	var filter = _.extend({}, $scope.gridProps.filter);
+
+	    	filter.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
+
+	    	rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
 	    	.then(function(data) {
 	    		console.log(data);
-	    		console.log(rvDiarySrv.data_Store.get('_room.values.id'));
+	    		console.log(rvDiarySrv.data_Store.get('room'));
+
+	    		$scope.renderGrid();
 	    	}, function(err) {
 	    		console.log(err);
 	    	});*/
@@ -478,7 +483,7 @@ sntRover
 	    	
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
 
-	    	$scop.resetEdit();
+	    	$scope.resetEdit();
 	    	$scope.renderGrid();
 	    };
 
@@ -509,34 +514,34 @@ sntRover
 			}
 		};
 
-	    $scope.Availability = function() {	
-    		$scope.clearAvailability();
-			$scope.resetEdit();
+    $scope.Availability = function() {	
+		$scope.clearAvailability();
+		$scope.resetEdit();
+		$scope.renderGrid();
+
+		rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
+		.then(function(data) {
+			var row_item_data = data.length > 0 ? data[0]: undefined,
+				start_date = new Date(row_item_data[meta.occupancy.start_date]),
+				end_date = new Date(row_item_data[meta.occupancy.end_date]);
+
+			if(row_item_data) { 
+				$scope.initPassiveEditMode({
+                    start_date:     start_date,
+                    end_date:       end_date,
+                    stay_dates:     start_date.toComponents().date.toDateString(),
+                    row_data:       rvDiarySrv.data_Store.get('_room.values.id')[row_item_data.room_id],
+                    row_item_data:  row_item_data
+                });
+			}
+
 			$scope.renderGrid();
-	
-			rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
-			.then(function(data) {
-				var row_item_data = data.length > 0 ? data[0]: undefined,
-					start_date = new Date(row_item_data[meta.occupancy.start_date]),
-					end_date = new Date(row_item_data[meta.occupancy.end_date]);
-
-				if(row_item_data) { 
-					$scope.initPassiveEditMode({
-	                    start_date:     start_date,
-	                    end_date:       end_date,
-	                    stay_dates:     start_date.toComponents().date.toDateString(),
-	                    row_data:       rvDiarySrv.data_Store.get('_room.values.id')[row_item_data.room_id],
-	                    row_item_data:  row_item_data
-	                });
-				}
-
-				$scope.renderGrid();
-			}, responseError);
-		};
+		}, responseError);
+	};
 
 	$scope.getArrivalTimes = function() {
 		var filter 		= _.extend({}, $scope.gridProps.filter),
-			time_span 	= Time({ hours: $scope.min_hours }),
+			time_span 	= Time({ hours: $scope.gridProps.filter.min_hours }),
 			start_date 	= filter.arrival_date,
 			start_time 	= new Date($scope.arrival_times.indexOf($scope.gridProps.filter.arrival_time) * 900000 + filter.arrival_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
@@ -578,19 +583,25 @@ sntRover
 			time_set; 
 
 		if(newValue !== oldValue) {	
-            time_set = util.gridTimeComponents(arrival_ms, 50, $scope.gridProps.display);
+            time_set = util.gridTimeComponents(arrival_ms, 50, _.extend({}, $scope.gridProps.display));
 
-            $scope.gridProps.display = time_set.display;
+            $scope.gridProps.display = _.extend({}, time_set.display);
 
 			$scope.renderGrid();
 
 			if($scope.gridProps.edit.active || $scope.gridProps.edit.passive) {
-				$scope.Availability();
+				//$scope.Availability();
 			}
 
 			rvDiarySrv.Occupancy(new Date(time_set.x_nL.setHours(0,0,0)), 
 								 new Date(time_set.x_nR.setHours(23,59,0)))
 			.then(function(data) {
+
+				$scope.gridProps.filter = _.extend({}, $scope.gridProps.filter);
+				$scope.gridProps.filter.arrival_times = util.copyArray(rvDiarySrv.fetchArrivalTimes(15), $scope.gridProps.filter);
+				$scope.gridProps.filter.arrival_time = $scope.gridProps.filter.arrival_times[0];
+				$scope.$apply();
+
 				$scope.renderGrid();
 			}, responseError);	
 		}

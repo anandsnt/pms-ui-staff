@@ -55,9 +55,9 @@ var TimelineResizeGrip = React.createClass({
 			//if(Math.abs(model[direction]-model[opposite]) >= props.display.min_hours * 3600000) {
 			model[direction] = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000; 
 			
-			if(Math.abs(model[direction]-model[opposite]) < props.display.min_hours * 3600000) {
-				model[direction] = last_left;
-			}
+			//if(Math.abs(model[direction]-model[opposite]) < props.display.min_hours * 3600000) {
+			//	model[direction] = last_left;
+			//}
 			//} else{
 				//model[direction] = last_left;
 			//}

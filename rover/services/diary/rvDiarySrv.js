@@ -512,8 +512,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         $q.all([Maintenance.read(),
                                 RoomType.read(),
                                 Room.read(), 
-                                Occupancy.read(dateRange(new Date(time_settings.x_nL.setHours(0,0,0)), 
-                                                         new Date(time_settings.x_nR.setHours(23,59,0)))),
+                                Occupancy.read(dateRange(new Date(new Date(time_settings.x_nL).setHours(0, 0, 0)), 
+                                                         new Date(new Date(time_settings.x_nR).setHours(23, 59, 0)))),
                                 AvailabilityCount.read(dateRange(time_settings.x_nL, time_settings.x_nR))])
                         .then(function(data_array) {
                             _.reduce([Maintenance, RoomType, Room, Occupancy, AvailabilityCount], //Rate],
@@ -534,7 +534,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                                  'arrival_time',
                                                  'room',
                                                  'room_type',
-                                                 //'occupancy',
                                                  'availability_count',
                                                  'min_hours',
                                                  'reservation_defaults',
