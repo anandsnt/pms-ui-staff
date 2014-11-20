@@ -49,7 +49,21 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
 
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
-            $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+            /**
+             * CICO-10321
+             * Move check for guest / company / ta card attached to the screen before the reservation summary screen.
+             * This may either be the rooms and rates screen or the Add on screen when turned on.
+             */
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+                console.log({
+                    guest: $scope.reservationData.guest.id,
+                    company: $scope.reservationData.company.id,
+                    agent: $scope.reservationData.travelAgent.id
+                });
+                $scope.$emit('PROMPTCARD');
+            } else {
+                $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+            }
         }
 
         $scope.selectAddonCategory = function(category, event) {

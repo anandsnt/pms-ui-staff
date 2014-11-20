@@ -1063,5 +1063,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.$on('REFRESHACCORDIAN', function() {
             $scope.$broadcast('GETREFRESHACCORDIAN');
         });
+
+        $scope.$on('PROMPTCARD', function() {
+            $scope.$broadcast('PROMPTCARD');
+        });
     }
 ]);
