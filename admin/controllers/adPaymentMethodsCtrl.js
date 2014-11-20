@@ -73,8 +73,13 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 			
 			if($scope.currentClickedElement === "new"){
 				$scope.addData.id = data.id;
-				var obj = { 'id': data.id , 'description' : data.name , 'value': data.value,'is_cc':data.is_cc,'is_offline':data.is_offline,'is_rover_only':data.is_rover_only,'is_web_only':data.is_web_only};
-				$scope.data.payments.push(obj);
+				var obj = { 'id': data.id , 'description' : data.name , 'value': data.value, 'is_system_defined': false, 'is_cc':data.is_cc,'is_offline':data.is_offline,'is_rover_only':data.is_rover_only,'is_web_only':data.is_web_only};
+				if(data.is_cc){
+					$scope.data.credit_card_types.push(obj);
+				}
+				else{
+					$scope.data.payments.push(obj);
+				}
 			}
 			else{
 				//To update data with new value
@@ -84,6 +89,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_offline =data.is_offline;
 		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_rover_only = data.is_rover_only;
 		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_web_only = data.is_web_only;
+		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_system_defined = data.is_system_defined;
 	    	}	
     		$scope.$emit('hideLoader');
     		$scope.currentClickedElement = -1;
