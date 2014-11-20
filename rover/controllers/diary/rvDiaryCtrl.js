@@ -526,22 +526,24 @@ sntRover
 		if($scope.gridProps.filter.arrival_time) {
 			rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
 			.then(function(data) {
-				var row_item_data = data.length > 0 ? data[0]: undefined,
-					start_date 	= new Date(row_item_data[meta.occupancy.start_date]),
-					end_date 	= new Date(row_item_data[meta.occupancy.end_date]);
+				var row_item_data;
 
-				if(row_item_data) { 
+				if(data.length) {
+					row_item_data 	= data[0];
+				
 					$scope.initPassiveEditMode({
-	                    start_date:     start_date,
-	                    end_date:       end_date,
+	                    start_date:     new Date(row_item_data[meta.occupancy.start_date]),
+	                    end_date:       new Date(row_item_data[meta.occupancy.end_date]),
 	                    stay_dates:     start_date.toComponents().date.toDateString(),
-	                    row_data:       rvDiarySrv.data_Store.get('_room.values.id')[row_item_data.room_id],
-	                    row_item_data:  row_item_data
+	                    row_item_data:  row_item_data,
+	                    row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id }), //rvDiarySrv.data_Store.get('/room.values.id')[row_item_data.room_id],   
 	                });
 				}
 
 				$scope.renderGrid();
-			}, responseError);
+
+			}, 
+			responseError);
 		}
 	};
 
