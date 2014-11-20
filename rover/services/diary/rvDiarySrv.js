@@ -379,6 +379,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     if(occupancy[m.status] === 'reserved') {
                         occupancy[m.status] = 'check-in';
+                    } else if(occupancy[m.status] === 'checkedin') {
+                        occupancy[m.status] = 'inhouse';
                     }
 
                     delete occupancy.arrival_time;
