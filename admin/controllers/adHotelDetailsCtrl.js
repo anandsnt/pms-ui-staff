@@ -119,7 +119,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		ngDialog.open({
             template: '/assets/partials/hotel/adPmsStartDateCalendarPopup.html',
             className: 'ngdialog ngdialog-theme-default calendar-single1',
-            closeByDocument: false,
+            closeByDocument: true,
             scope: $scope
         });
 	};
