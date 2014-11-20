@@ -3,33 +3,17 @@ sntRover.controller('RVHKRoomTabCtrl', [
 	'$rootScope',
 	'$state',
 	'$stateParams',
-	'RVHkRoomDetailsSrv',
 	'$filter',
-	'RVHkRoomStatusSrv',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter, RVHkRoomStatusSrv) {
-
+	'RVHkRoomDetailsSrv',
+	function(
+		$scope,
+		$rootScope,
+		$state,
+		$stateParams,		
+		$filter,
+		RVHkRoomDetailsSrv
+	) {
 		BaseCtrl.call(this, $scope);
-
-		// keep ref to room details in local scope
-		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
-		$scope.roomDetails = $scope.$parent.roomDetails;
-
-		// oo/os save request param object
-		$scope.roomServices = {
-			room_id: $scope.roomDetails.id
-		};
-
-		// original room status when user opened room tab
-		var originalStatusId = $scope.roomDetails.room_reservation_hk_status;
-
-		// in service id, what if it changes in future?
-		var inServiceId = 1;
-
-		// by default lets assume room is in service
-		$scope.inService = true;
-
-		// by default dont show the form
-		$scope.showForm = false;
 
 		// scroll
 		$scope.setScroller('room-tab-scroll', {
@@ -37,50 +21,179 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			preventDefault: false
 		});
 
-		// fetch room service status list
-		$scope.roomServiceStatusList = [];
-		var rsslCallback = function(data) {
+
+
+
+
+		/* ***** ***** ***** ***** ***** */
+
+
+
+
+
+		// keep ref to room details in local scope
+		$scope.roomDetails = $scope.$parent.roomDetails;
+
+		// low level method to update the top bar color
+		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
+
+		// original room status when user opened room tab
+		var $_originalStatusId = $scope.roomDetails.room_reservation_hk_status;
+
+		// in service id, copy paste from server; what if it changes in future?
+		var $_inServiceId = 1;
+
+		// by default lets assume room is in service
+		$scope.inService = true;
+
+		// by default dont show the form
+		$scope.showForm = false;
+
+		// by default dont show the details (disabled) form
+		$scope.showSaved = false;
+
+		// list of all posible service statuses
+		$scope.allServiceStatus = [];
+
+		// list of all possible maintainace reasons
+		$scope.maintenanceReasonsList = [];
+
+		// param: update the new oo/os status
+		// $scope.updateService.room_service_status_id serves as the model for the top dropdown
+		$scope.updateService = {
+			room_id:                 $scope.roomDetails.id,
+			from_date:               $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+			to_date:                 $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+			room_service_status_id:  $_originalStatusId
+		};
+
+		// captures the oo/os status details in this
+		$scope.editService = {};
+
+
+
+
+		
+		/* ***** ***** ***** ***** ***** */
+
+
+
+
+
+		// fetch call back of saved oo/os details
+		function $_fetchSavedStausCallback (data) {
 			$scope.$emit('hideLoader');
-			$scope.roomServiceStatusList = data;
 
-			var item = _.find($scope.roomServiceStatusList, function(item) {
-				return item.id == originalStatusId;
-			});
+			$scope.editService           = data;
+			$scope.editService.from_date = $filter('date')(tzIndependentDate($scope.editService.from_date), 'yyyy-MM-dd');
+			$scope.editService.to_date   = $filter('date')(tzIndependentDate($scope.editService.to_date), 'yyyy-MM-dd');
 
-			// set the default value for server status in dropdown
-			$scope.roomServices.room_service_status_id = originalStatusId;
+			$scope.showForm = false;
+			$scope.showSaved = true;
+
+			$scope.refreshScroller('room-tab-scroll');
+		};
+
+		// fetch callback of all service status
+		function $_allServiceStatusCallback (data) {
+			$scope.$emit('hideLoader');
+			$scope.allServiceStatus = data;
 
 			// find and update ooOsTitle
+			var item = _.find($scope.allServiceStatus, function(item) {
+				return item.id == $_originalStatusId;
+			});
 			$scope.ooOsTitle = item.description;
 
 			// check and update if room in service
-			$scope.inService = $scope.roomServices.room_service_status_id != inServiceId ? false : true;
-			$scope.refreshScroller('room-tab-scroll');
+			$scope.inService = $scope.updateService.room_service_status_id != $_inServiceId ? false : true;
+
+			// if not in service, go fetch the oo/os saved details
+			if ( !$scope.inService ) {
+				$scope.invokeApi(RVHkRoomDetailsSrv.getRoomServiceStatus, {roomId: $scope.roomDetails.id}, $_fetchSavedStausCallback);
+			} else {
+				$scope.refreshScroller( 'room-tab-scroll' );
+			};
 		};
-		$scope.invokeApi(RVHkRoomDetailsSrv.fetchRoomServiceStatusList, {}, rsslCallback);
 
+		$scope.invokeApi(RVHkRoomDetailsSrv.fetchAllServiceStatus, {}, $_allServiceStatusCallback);
 
-
-		// fetch maintenance reasons list
-		$scope.maintenanceReasonsList = [];
-		var mrlCallback = function(data) {
+		// fetch callback of maintenance reasons
+		function $_maintenanceReasonsCallback (data) {
 			$scope.$emit('hideLoader');
 			$scope.maintenanceReasonsList = data;
 			$scope.refreshScroller('room-tab-scroll');
 		};
-		$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasonsList, {}, mrlCallback);
 
+		$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasons, {}, $_maintenanceReasonsCallback);
 
+		// when user changes the room status from top dropdown
+		$scope.statusChange = function() {
+			var item = _.find($scope.allServiceStatus, function(item) {
+				return item.id == $scope.updateService.room_service_status_id;
+			});
+			$scope.ooOsTitle = item.description;
 
-		// set the default dates for from date
-		$scope.roomServices.from_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+			// check if user just set it to in service
+			$scope.inService = $scope.updateService.room_service_status_id != $_inServiceId ? false : true;
 
-		// set the default dates for to date
-		$scope.roomServices.to_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+			// show update form only when the user chooses a status that is not update yet
+			// eg: if original status was OO them show form only when user choose OS
+			if ( !$scope.inService ) {
+				if ( $_originalStatusId !== $scope.updateService.room_service_status_id ) {
 
-		$scope.fromDateChanged = function() {
-			$scope.roomServices.to_date = $filter('date')(tzIndependentDate($scope.roomServices.from_date), 'yyyy-MM-dd');
+					// show the update form
+					$scope.showForm = true;
+					$scope.showSaved = false;
+
+					// reset dates and reason and comment
+					$scope.updateStatus = {
+						from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+						to_date:   $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+						reason_id: '',
+						comment: ''
+					};
+				} else {
+
+					// fetch and show the saved details
+					$scope.showForm = false;
+					$scope.invokeApi(RVHkRoomDetailsSrv.getRoomServiceStatus, {roomId: $scope.roomDetails.id}, $_fetchSavedStausCallback);
+				}
+			} else {
+				$scope.showForm = false;
+				$scope.showSaved = false;
+
+				var _params = {
+					roomId:      $scope.roomDetails.id,
+					inServiceID: 1
+				};
+
+				var _callback = function() {
+					$scope.$emit('hideLoader');
+					$scope.showSaved = false;
+
+					// change the original status
+					$_originalStatusId = $scope.updateService.room_service_status_id;
+					$_updateRoomDetails('room_reservation_hk_status', 1);
+				};
+
+				// only "put" in service if original status was not inService
+				if ( $_originalStatusId !== $scope.updateService.room_service_status_id ) {
+					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _callback);
+				}
+			};
+
+			$scope.refreshScroller('room-tab-scroll');
 		};
+
+
+
+
+
+		/* ***** ***** ***** ***** ***** */
+
+
+
 
 		// from date options for date picker
 		$scope.fromDateOptions = {
@@ -106,77 +219,79 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				numberOfMonths: 1,
 				changeYear: true,
 				changeMonth: true,
-				minDate: tzIndependentDate($scope.roomServices.from_date)
+				minDate: tzIndependentDate($scope.updateService.from_date)
 			}
 		};
 
-
-		// when the user try to change the server status in dropdown
-		$scope.statusChange = function() {
-			var item = _.find($scope.roomServiceStatusList, function(item) {
-				return item.id == $scope.roomServices.room_service_status_id;
-			});
-			$scope.ooOsTitle = item.description;
-
-			// check if user just set it to in service
-			$scope.inService = $scope.roomServices.room_service_status_id != inServiceId ? false : true;
-
-			// show form only for the other OO or OS
-			// eg: if original status was OO them show form only when user choose OS
-			if (!$scope.inService) {
-				$scope.showForm = $scope.roomServices.room_service_status_id != originalStatusId ? true : false;
-			} else {
-				$scope.showForm = false;
-
-				var callback = function() {
-					$scope.$emit('hideLoader');
-
-					// change the original status and update the 'room_reservation_hk_status' in parent
-					originalStatusId = $scope.roomServices.room_service_status_id;
-					$_updateRoomDetails('room_reservation_hk_status', 1);
-				};
-
-				$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, {
-					roomId: $scope.roomDetails.id,
-					inServiceID: 1
-				}, callback);
-			}
-			$scope.refreshScroller('room-tab-scroll');
+		$scope.fromDateChanged = function() {
+			$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
 		};
 
-		// when user try to save a oo/os form
-		$scope.submit = function() {
-			var onError = function(errorMessage) {
+
+
+
+
+		/* ***** ***** ***** ***** ***** */
+
+
+
+
+
+		$scope.update = function() {
+			var _error = function() {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 				if ($scope.$parent.myScroll['room-tab-scroll'] && $scope.$parent.myScroll['room-tab-scroll'].scrollTo)
 					$scope.$parent.myScroll['room-tab-scroll'].scrollTo(0, 0);
 				$scope.refreshScroller('room-tab-scroll');
-			}
-			var callback = function(data) {
+			};
+
+			var _callback = function() {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = '';
+
 				// form submitted, so hide it
-				$scope.showForm = false;
+				$scope.showForm  = false;
 
 				// room is defnetly not in service
 				$scope.inService = false;
 
 				// change the original status and update the 'room_reservation_hk_status' in parent
-				originalStatusId = $scope.roomServices.room_service_status_id;
-				$_updateRoomDetails('room_reservation_hk_status', $scope.roomServices.room_service_status_id);
+				$_originalStatusId = $scope.updateService.room_service_status_id;
+
+				// copy update details to edit details, show details
+				// $scope.editService = angular.copy($scope.updateStatus);
+				// $scope.showSaved = true;
+
+				_.extend($scope.editService, $scope.updateService);
+				$scope.showSaved = true;
 
 				// reset dates and reason and comment
-				$scope.roomServices.from_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
-				$scope.roomServices.to_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
-				$scope.roomServices.reason_id = '';
-				$scope.roomServices.comment = '';
-				$scope.refreshScroller('room-tab-scroll');
-
+				$scope.updateStatus = {
+					room_id:   $scope.roomDetails.id,
+					from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+					to_date:   $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
+				};
 			};
-			$scope.roomServices.from_date = $filter('date')(tzIndependentDate($scope.roomServices.from_date), 'yyyy-MM-dd');
-			$scope.roomServices.to_date = $filter('date')(tzIndependentDate($scope.roomServices.to_date), 'yyyy-MM-dd');
-			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.roomServices, callback, onError);
+
+			// update the dates to backend system format
+			$scope.updateService.from_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
+			$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.to_date), 'yyyy-MM-dd');
+
+			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.updateService, _callback, _error);
+		};
+
+		$scope.edit = function() {
+			$scope.showForm  = true;
+			$scope.showSaved = false;
+
+			_.extend($scope.updateService, $scope.editService);
+
+			$scope.editStatus = {
+				room_id:   $scope.roomDetails.id,
+				from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+				to_date:   $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
+			};
 		};
 	}
 ]);

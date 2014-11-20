@@ -61,18 +61,18 @@ sntRover.service('RVHkRoomDetailsSrv', [
 		/* NOTE: using the new API structure */
 
 		// room service status list (will be cached)
-		var roomServiceStatusList = [];
-		this.fetchRoomServiceStatusList = function() {
+		var allServiceStatus = [];
+		this.fetchAllServiceStatus = function() {
 			var deferred = $q.defer(),
 				url = 'api/room_services/status_list';
 
-			if ( roomServiceStatusList.length ) {
-				deferred.resolve(roomServiceStatusList);
+			if ( allServiceStatus.length ) {
+				deferred.resolve(allServiceStatus);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-						roomServiceStatusList = data.results;
-						deferred.resolve(roomServiceStatusList);
+						allServiceStatus = data.results;
+						deferred.resolve(allServiceStatus);
 					}.bind(this), function(data){
 						deferred.reject(data);
 					});
@@ -82,22 +82,47 @@ sntRover.service('RVHkRoomDetailsSrv', [
 		};
 
 		// maintenance reasons (will be cached)
-		var maintenanceReasonsList = [];
-		this.fetchMaintenanceReasonsList = function() {
+		var maintenanceReasons = [];
+		this.fetchMaintenanceReasons = function() {
 			var deferred = $q.defer(),
 				url = 'api/maintenance_reasons';
 
-			if ( maintenanceReasonsList.length ) {
-				deferred.resolve(maintenanceReasonsList);
+			if ( maintenanceReasons.length ) {
+				deferred.resolve(maintenanceReasons);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-						maintenanceReasonsList = data.maintenance_reasons;
-						deferred.resolve(maintenanceReasonsList);
+						maintenanceReasons = data.maintenance_reasons;
+						deferred.resolve(maintenanceReasons);
 					}.bind(this), function(data){
 						deferred.reject(data);
 					});
 			};
+
+			return deferred.promise;
+		};
+
+		// fetch oo/os details from server
+		this.getRoomServiceStatus = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/room_services/' + params.roomId;
+
+			// rvBaseWebSrvV2.getJSON(url)
+			// 	.then(function(data) {
+			// 		deferred.resolve(data);
+			// 	}.bind(this), function(data){
+			// 		deferred.reject(data);
+			// 	});
+			
+			var data = {
+				room_service_status_id: 3,
+				from_date: '2014-08-15',
+				to_date: '2014-08-15',
+				reason_id: 43,
+				comment: 'some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment '
+			};
+
+			deferred.resolve(data);
 
 			return deferred.promise;
 		};
