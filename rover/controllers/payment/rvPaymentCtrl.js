@@ -45,7 +45,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		// }, 500);
 	// };
 
-	
 	/*
 	 * Render success callback
 	 * Populates API with dropdown values
@@ -223,6 +222,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			if($scope.passData.is_swiped){
 				$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = true;
 			}
+			$scope.paymentData.bills[billNumber].credit_card_details.payment_type = $scope.saveData.payment_type;
 			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardCode.toLowerCase();
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
@@ -251,7 +251,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 			}
 		}
-		$rootScope.$broadcast('paymentTypeUpdated');
+		//$rootScope.$broadcast('paymentTypeUpdated');
 		//To be implemented once the feature ready for the standalone
 		// if($scope.passData.showDoNotAuthorize){
 		// 	$rootScope.$broadcast('cc_auth_updated', $scope.do_not_cc_auth);
