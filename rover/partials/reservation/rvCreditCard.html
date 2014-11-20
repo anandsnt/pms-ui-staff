@@ -1,0 +1,71 @@
+<div id="credit-card-options" ng-show="reservationData.paymentType.type.value=='CC'"> <!-- If hidden by default, add class="hidden" -->
+    
+    <!-- Card toggle - Use only if there are exsiting cards on file -->
+    <ul class="card-toggle">
+        <li class="active">Existing Cards</li>
+        <li>Add New Card</li>
+    </ul>
+    
+    <!-- Booking source - Use only when creating new reservation -->
+    <div class="entry"> <!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
+        <label for="booking-source">Guest Location</label>
+        <div class="switch-button on">
+            <input name="booking-source" id="booking-source" value="booking-source" type="checkbox" checked />
+            <label class="data-off">
+                <span class="value">On-Site</span>
+                <span class="switch-icon">Call-In</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">On-Site</span>
+                <span class="value">Call-In</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Exsiting cards - use only when they exsit -->
+    <div id="cc-exsiting-card" class="cards-list scrollable">
+        <div class="wrapper">
+            <label class="active-item item-payment"> <!-- Add class "primary" when selected -->
+                <figure class="card-logo">
+                    <img src="{card-logo}" alt="" />
+                </figure>
+                <span class="number">Ending with <span class="value number">{number}</span></span>
+                <span class="date">Date <span class="value date">{mm}/{yy</span></span>
+                <!-- Add when selected: <span class="icons icon-ok-10"></span> -->
+            </label>
+            ... repeat            
+        </div>
+    </div>
+    
+    <!-- New card: On-Site -->
+    <div id="cc-new-card" class="new-card"> <!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
+        <div class="entry card-number">
+            <label for="card-number">Card number (<span>No spaces</span>)</label>
+            <input name="card-number" id="card-number" placeholder="Enter Card number" value="" maxlength="15" type="text" />
+        </div>
+        <div class="entry card-expiry">
+            <label for="expiry-month">Expires (<span>Month/Year</span>)</label>
+            <input name="expiry-month" id="expiry-month" placeholder="MM" value="" maxlength="2" size="3" type="text" />
+            <input name="expiry-year" id="expiry-year" placeholder="YY"  value="" maxlength="2" size="3" type="text" />
+        </div>
+        <div class="entry card-name">
+            <label for="name-on-card">Name on card</label>
+            <input name="name-on-card" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
+        </div>  
+        <div class="entry card-ccv">
+            <label for="ccv">CCV</label>
+            <input name="ccv" id="ccv" placeholder="CCV" value="" maxlength="3" size="4" type="text" />
+        </div>
+        <div class="entry card-action">
+            <button type="button" class="button blue">Add</button>
+        </div>
+    </div>
+
+    <!-- New card: Call-In -->
+    <iframe class="payment-iframe" src="{payment.html}" seamless></iframe>
+
+    <!-- Show only when creating reservation or paying the bill -->
+    <div class="actions">
+		<button type="button" class="button blank">Cancel Card selection</button> 
+    </div>
+</div>

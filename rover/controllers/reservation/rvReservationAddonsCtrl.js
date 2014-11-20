@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout',
-    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout) {
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout', 'RVReservationSummarySrv',
+    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv) {
 
         // set the previous state
         $rootScope.setPrevState = {
@@ -62,7 +62,73 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
                 });
                 $scope.$emit('PROMPTCARD');
             } else {
-                $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+                /**
+                 * CICO-10321
+                 * 3. Once hitting the BOOK button and cards have been attached, issue the confirmation number and move to reservation summary screen
+                 * NOTE :
+                 *     Exisiting implementation : Confirmation number gets generated when the submit reservation button in the summary screen is clicked
+                 */
+                
+                var postData = $scope.computeReservationDataforUpdate(true);
+                var saveSuccess = function(data) {
+                    if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
+
+                        angular.forEach(data.reservations, function(reservation, key) {
+                            angular.forEach($scope.reservationData.rooms, function(room, key) {
+                                if (parseInt(reservation.room_id) === parseInt(room.room_id)) {
+                                    room.confirm_no = reservation.confirm_no;
+                                }
+                            });
+                        });
+                        $scope.reservationData.reservations = data.reservations;
+                        $scope.reservationData.reservationId = $scope.reservationData.reservations[0].id;
+                        $scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
+                        $scope.reservationData.status = $scope.reservationData.reservations[0].status;
+                        $scope.viewState.reservationStatus.number = $scope.reservationData.reservations[0].id;
+                    } else {
+                        $scope.reservationData.reservationId = data.id;
+                        $scope.reservationData.confirmNum = data.confirm_no;
+                        $scope.reservationData.rooms[0].confirm_no = data.confirm_no;
+                        $scope.reservationData.status = data.status;
+                        $scope.viewState.reservationStatus.number = data.id;
+                    }
+                    /*
+                     * TO DO:ends here
+                     */
+
+                    $scope.viewState.reservationStatus.confirm = true;
+                    $scope.reservationData.is_routing_available = false;
+                    // Change mode to stay card as the reservation has been made!
+                    $scope.viewState.identifier = "CONFIRM";
+
+                    $scope.reservation = {
+                        reservation_card: {}
+                    };
+
+                    $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
+                    $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
+                    $scope.$emit('hideLoader');
+                    console.log("*************************", $scope.reservationData.reservationId);
+                    $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+                }
+                var saveFailure = function(data) {
+                    $scope.errorMessage = data;
+                    $scope.$emit('hideLoader');
+                }
+
+                var updateSuccess = function(data) {
+                    console.log("*************************", $scope.reservationData.reservationId);
+                    $scope.viewState.identifier = "UPDATED";
+                    $scope.reservationData.is_routing_available = data.is_routing_available;
+                    $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+                };
+
+                if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
+                    postData.reservationId = $scope.reservationData.reservationId;
+                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
+                } else {
+                    $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
+                }
             }
         }
 

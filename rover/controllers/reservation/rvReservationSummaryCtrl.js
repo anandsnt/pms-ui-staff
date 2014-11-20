@@ -88,8 +88,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.init = function() {
 			$scope.data = {};
 			if ($stateParams.reservation == "HOURLY") {
-				console.log("hhhhhhhhhhhhhhhhhh")
-;;				$scope.$emit('showLoader');
+				console.log("hhhhhhhhhhhhhhhhhh");;
+				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
@@ -152,10 +152,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes[0].tax, roomNumber);
 					_.each(taxApplied.taxDescription, function(description, index) {
 						if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
-                            $scope.reservationData.taxDetails[description.id] = description;
-                        } else {
-                        	$scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
-                        }
+							$scope.reservationData.taxDetails[description.id] = description;
+						} else {
+							$scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
+						}
 					});
 					$scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
 					$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
@@ -224,7 +224,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		var fetchPaymentMethods = function() {
 			var paymentFetchSuccess = function(data) {
-				$scope.reservationData.paymentMethods = data;				
+				$scope.reservationData.paymentMethods = data;
 				$scope.$emit('hideLoader');
 				var payments = _.where(data, {
 					value: $scope.reservationData.paymentType.type.value
@@ -250,7 +250,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.guest.sendConfirmMailTo = $scope.reservationData.guest.email;
 			}
 			$scope.refreshPaymentScroller();
-		};		
+		};
+
+		$scope.confirmReservation = function() {			
+			$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+				"id": $scope.reservationData.reservationId,
+				"confirmationId": $scope.reservationData.confirmNum
+			});
+		}
 
 		$scope.proceedCreatingReservation = function() {
 			var postData = $scope.computeReservationDataforUpdate();
@@ -311,20 +318,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit('hideLoader');
 				var showRoomNotAvailableDialog = false;
 				var error = '';
-				angular.forEach(data, function(value, key){
-					if(value == "Room not available for the selected number of hours. Please choose another room"){
+				angular.forEach(data, function(value, key) {
+					if (value == "Room not available for the selected number of hours. Please choose another room") {
 						showRoomNotAvailableDialog = true;
 						error = value;
 					}
-					
+
 				});
-				if(showRoomNotAvailableDialog){
+				if (showRoomNotAvailableDialog) {
 					$scope.showRoomNotAvailableDialog(error);
 				} else {
 					$scope.errorMessage = data;
 				}
-				
-				
+
+
 
 			};
 
@@ -346,17 +353,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
 			}
 		};
-		$scope.showRoomNotAvailableDialog = function(errorMessage){
-			
-				$scope.status = "error";
-				$scope.popupMessage = errorMessage;
-				ngDialog.open({
-		    		template: '/assets/partials/reservation/rvShowRoomNotAvailableMessage.html',
-		    		controller: 'RVShowRoomNotAvailableCtrl',
-		    		className: '',
-		    		scope: $scope
-		    	});
-			
+		$scope.showRoomNotAvailableDialog = function(errorMessage) {
+
+			$scope.status = "error";
+			$scope.popupMessage = errorMessage;
+			ngDialog.open({
+				template: '/assets/partials/reservation/rvShowRoomNotAvailableMessage.html',
+				controller: 'RVShowRoomNotAvailableCtrl',
+				className: '',
+				scope: $scope
+			});
+
 		};
 
 		/**
@@ -412,7 +419,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * Creates the reservation and on success, goes to the confirmation screen
 		 */
 		$scope.submitReservation = function() {
-			
+
 			$scope.errorMessage = [];
 			// CICO-9794
 			if (($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email == "") || ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail == "")) {

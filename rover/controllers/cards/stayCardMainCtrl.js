@@ -3,7 +3,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
-		if($scope.guestCardData.cardHeaderImage == undefined || $scope.guestCardData.cardHeaderImage == ""){
+		if ($scope.guestCardData.cardHeaderImage == undefined || $scope.guestCardData.cardHeaderImage == "") {
 			$scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
 		}
 		$scope.pendingRemoval = {
@@ -377,7 +377,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		// Note: The payment and the confirmation mails related information is not computed in this call now, as that would require moving a few variables from the 
 		// scope of RVReservationSummaryCtrl to stayCardMainCtrl
 
-		$scope.computeReservationDataforUpdate = function() {
+		$scope.computeReservationDataforUpdate = function(skipPaymentData) {
 			var data = {};
 			data.is_hourly = $scope.reservationData.isHourly;
 			data.arrival_date = $scope.reservationData.arrivalDate;
@@ -412,26 +412,25 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
-			data.payment_type = {};
 
-			if ($scope.reservationData.paymentType.type.value !== null) {
-				//console.log("===================="+$scope.reservationData.paymentType.type.value);
-				angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
-					if ($scope.reservationData.paymentType.type.value == item.value) {
-						data.payment_type.type_id = item.id;
-					}
-				});
-				//console.log("=========++++++==========="+data.payment_type.type_id);
-				//TODO: verify
-				//data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
-				data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
-					$scope.reservationData.paymentType.ccDetails.expMonth + "-01";
-				data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+			if (!skipPaymentData) {
+				data.payment_type = {};
+				if ($scope.reservationData.paymentType.type.value !== null) {
+					//console.log("===================="+$scope.reservationData.paymentType.type.value);
+					angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
+						if ($scope.reservationData.paymentType.type.value == item.value) {
+							data.payment_type.type_id = item.id;
+						}
+					});
+					data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
+						$scope.reservationData.paymentType.ccDetails.expMonth + "-01";
+					data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+				}
 			}
 
-			/**			
-			 * CICO-7077 Confirmation Mail to have tax details
-			 */
+
+			// CICO-7077 Confirmation Mail to have tax details
+
 
 			data.tax_details = [];
 			_.each($scope.reservationData.taxDetails, function(taxDetail) {
@@ -449,15 +448,17 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
 
-			// MLI Integration.
-			if ($rootScope.paymentGateway === "sixpayments") {
-				data.payment_type.token = $scope.six_token;
-				data.payment_type.isSixPayment = true;
-			} else {
-				data.payment_type.isSixPayment = false;
-				if ($scope.reservationData.paymentType.type !== null) {
-					if ($scope.reservationData.paymentType.type.value === "CC") {
-						data.payment_type.session_id = $scope.data.MLIData.session;
+			if (!skipPaymentData) {
+				// MLI Integration.
+				if ($rootScope.paymentGateway === "sixpayments") {
+					data.payment_type.token = $scope.six_token;
+					data.payment_type.isSixPayment = true;
+				} else {
+					data.payment_type.isSixPayment = false;
+					if ($scope.reservationData.paymentType.type !== null) {
+						if ($scope.reservationData.paymentType.type.value === "CC") {
+							data.payment_type.session_id = $scope.data.MLIData.session;
+						}
 					}
 				}
 			}
@@ -523,7 +524,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// $scope.reservationData.rooms.push(room);
 			data.room_id = [];
 			angular.forEach($scope.reservationData.rooms, function(room, key) {
-			  data.room_id.push(room.room_id);
+				data.room_id.push(room.room_id);
 			});
 			//to delete ends here
 			return data;

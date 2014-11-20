@@ -127,8 +127,23 @@
                                 <span translate>EACH</span>
                                 <span class="total">{{currencySymbol}}{{ addon.effectivePrice | number : 2}}</span>
                             </span>
-                        </li>
+                        </li>                        
                     </ul>
+                    <div class="actions">
+                        <button type="button" class="button white blue-text">Billing Information</a>
+                        <button type="button" class="button white brand-text">Demographics</a>
+                    </div>
+                    <button class="add-new-button" ng-hide="true">+ Accompanying Guest</button>
+                    <form action="{action}" id="room-1-accompany" class="form hidden"> <!-- Remove class hidden when button above clicked -->
+                        <div class="entry">
+                            <label for="room-1-acc-1-firstname">Accompanying guest</label>
+                            <input name="room-1-acc-1-firstname" id="room-1-acc-1-firstname" placeholder="First Name" value="" type="text" />
+                            <input name="room-1-acc-1-lastname" id="room-1-acc-1-lastname" placeholder="Last Name" value="" type="text" />
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="button blank">Cancel</button>
+                        </div>
+                    </form>
                 </div>
                 <ul class="total-stay-cost">                	
                 	<li ng-repeat="row in reservationData.taxDetails">
@@ -154,6 +169,7 @@
         <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <section ng-hide="true">
                 <div class="entry full-width">
                     <label translate>SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
                     
@@ -233,6 +249,77 @@
                 <div class="actions">
                     <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonEnabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonEnabled">SUBMIT_RESERVATION</button>
                     <button class="button blank" type="button" ng-click="cancelButtonClicked()" translate>CANCEL</button>
+                </div>
+            </section>
+            <div id="set-payment" class="payment-form for-reservation"> 
+                <div class="entry full-width">
+                    <label for="payment-type" translate>PAYMENT_TYPE </label>
+                    <div class="select">
+
+                        <select class="placeholder" ng-model="reservationData.paymentType.type.value"
+                            ng-options="paymentMethod.value as paymentMethod.description for paymentMethod in reservationData.paymentMethods" ng-change="changePaymentType()">
+                            <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
+                        </select>
+                    </div>
+                </div>
+
+                    <!-- Credit card options - hidden until CC set as payment type -->
+                    <div ng-include="'/assets/partials/reservation/rvCreditCard.html'"></div>
+
+                    <!-- Checkboxes -->
+                    <div class="entry margin">
+                        <label class="checkbox inline" for="add-in-guest-card">
+                            <span class="icon-form icon-checkbox"></span>
+                            <input name="checkin" id="add-in-guest-card" value="1" type="checkbox" />
+                            Add to Guest Card
+                        </label>
+                    </div>
+                    <div class="entry"> <!-- Show only when payment type is defined as CC -->
+                        <label class="checkbox inline" for="authorize-card">
+                            <span class="icon-form icon-checkbox"></span>
+                            <input name="authorize-card" id="authorize-card" value="1" type="checkbox" />
+                            Do Not Authorize Card
+                        </label>
+                    </div>
+
+                    <!-- Use only if deposit is required -->
+                    <div class="notice deposit">
+                        <p>Deposit required: <strong>10% of the stay</strong>.</p>
+
+                        <!-- Payment fields -->
+                        <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>
+
+                        <!-- Buttons - remove class "hidden" when payment type is defined-->
+                        <div class="actions hidden">
+                            <button type="button" class="button blue">Pay deposit later</button>
+                            <button type="button" class="button green">Pay deposit now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deposit paid succesfully 
+                <div class="feedback">
+                    <div class="notice success">Deposit payed successfully!</div>
+                    <ul class="transaction">
+                        <li>Your Authorize code is: <span class="auth">{auth.code}</span></li>
+                        <li>Amount paid: <span class="value">${value}</span>
+                        </li>
+                    </ul>
+                </div>-->
+
+                <!-- Deposit payment failed
+                <div class="feedback">
+                    <div class="notice error">Payment failed. Try again or change payment method.</div>
+                </div> -->
+
+                <div class="actions">
+                    <button type="button" class="button blank">Cancel Reservation</button>
+
+                    <!-- Show when deposit paid succesfully. If deposit not required, then show when payment method added  -->
+                    <button type="button" class="button green" ng-click="confirmReservation()">Continue</button>
+
+                    <!-- Show when deposit payment fails 
+                    <button type="button" class="button blue">Try Again</button> -->
                 </div>
             </div> 
         </form>
