@@ -1,6 +1,6 @@
 admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWebSrv', function($http, $q, ADBaseWebSrvV2,ADBaseWebSrv){
 
- /*
+ 	/*
     * To fetch settings and params
     * @return {object} 
     */	
@@ -16,7 +16,7 @@ admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWeb
 		return deferred.promise;
 	};
 
- /*
+ 	/*
     * To save settings and params
     * @return {object} 
     */	
@@ -31,14 +31,14 @@ admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWeb
 		return deferred.promise;
 	};
 
-/**
+	/**
     *   A getter method to return the charge codes list
     */
     this.fetchChargeCodes = function(){
         var deferred = $q.defer();
-        var url = '/admin/charge_codes/list.json';
+        var url = '/admin/charge_codes/minimal_list.json';
         
-        ADBaseWebSrv.getJSON(url).then(function(data) {
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);

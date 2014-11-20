@@ -51,7 +51,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             });
 
             $scope.invokeApi(ADRulesRestrictionSrv.fetchChargeCodes, {}, function(data) {
-                $scope.chargeCodes = data.charge_codes;
+                $scope.chargeCodes = data;
                 $scope.$emit('hideLoader');
             });
         };

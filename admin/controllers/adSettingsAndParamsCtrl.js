@@ -6,10 +6,10 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
 
 
     $scope.data = settingsAndParamsData.business_date;
-    $scope.chargeCodes = chargeCodes.charge_codes;
+    $scope.chargeCodes = chargeCodes;
     $scope.selected_charge_code = settingsAndParamsData.no_show_charge_code_id;
-
- /**
+  
+    /**
     * To handle save button action
     *
     */ 

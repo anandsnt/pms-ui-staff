@@ -191,14 +191,14 @@ admin.service('ADRulesRestrictionSrv', [
       };
 
 
-  /**
+    /**
     *   A getter method to return the charge codes list
     */
     this.fetchChargeCodes = function(){
         var deferred = $q.defer();
-        var url = '/admin/charge_codes/list.json';
+        var url = '/admin/charge_codes/minimal_list.json';
         
-        ADBaseWebSrv.getJSON(url).then(function(data) {
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);
