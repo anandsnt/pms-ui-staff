@@ -101,7 +101,7 @@ var GridRowItemDrag = React.createClass({
 				mouse_down: false,
 				selected: !state.selected
 			}, function() {
-				var data = (props.edit.passive ? props.currentDragItem : props.data);
+				var data = (props.edit.passive && props.data[props.meta.id] === props.data[props.meta.id]? props.currentDragItem : props.data);
 
 				props.iscroll.grid.enable();			
 				props.iscroll.timeline.enable();

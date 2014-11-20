@@ -26,7 +26,7 @@ var TimelineResizeGrip = React.createClass({
 			state = 		this.state,
 			display = 		props.display,
 			delta_x = 		e.pageX - state.origin_x, 
-			x_origin = 		display.x_nL, 
+			x_origin = 		display.x_n, 
 			px_per_int = 	display.px_per_int,
 			px_per_ms = 	display.px_per_ms,
 			model = 		state.currentResizeItem, 
@@ -55,9 +55,9 @@ var TimelineResizeGrip = React.createClass({
 			//if(Math.abs(model[direction]-model[opposite]) >= props.display.min_hours * 3600000) {
 			model[direction] = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000; 
 			
-			if(Math.abs(model[direction]-model[opposite]) < props.display.min_hours * 3600000) {
-				model[direction] = last_left;
-			}
+			//if(Math.abs(model[direction]-model[opposite]) < props.display.min_hours * 3600000) {
+			//	model[direction] = last_left;
+			//}
 			//} else{
 				//model[direction] = last_left;
 			//}
@@ -75,7 +75,7 @@ var TimelineResizeGrip = React.createClass({
 			delta_x = 		e.pageX - state.origin_x, 
 			px_per_int = 	display.px_per_int,
 			px_per_ms =     display.px_per_ms,
-			x_origin =      display.x_nL, 
+			x_origin =      display.x_n, 
 			model = 		state.currentResizeItem,
 			m =      		props.meta.occupancy,
 			direction = 	props.itemProp;
@@ -129,7 +129,7 @@ var TimelineResizeGrip = React.createClass({
 			display 	= props.display, 
 			direction 	= this.props.itemProp,
 			px_per_ms 	= display.px_per_ms,
-			x_origin 	= display.x_nL, 
+			x_origin 	= display.x_n, 
 			m 			= props.meta.occupancy;
 
 		if(!this.state.resizing) {
@@ -163,7 +163,7 @@ var TimelineResizeGrip = React.createClass({
 			props 				= this.props,
 			direction 			= props.itemProp,
 			currentResizeItem 	= this.state.currentResizeItem,
-			x_origin 			= props.display.x_nL,
+			x_origin 			= props.display.x_n,
 			px_per_ms 			= props.display.px_per_ms,
 			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
 			grip_text = '';
