@@ -69,8 +69,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
 	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
-
-	
+// 
+try {
+      sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
+    }
+catch(err) {};
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
@@ -435,13 +438,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-     var routeChange = function(event, newURL) {
-       event.preventDefault();
-       return;
-     };
+    //  var routeChange = function(event, newURL) {
+    //    event.preventDefault();
+    //    return;
+    //  };
 
-    $rootScope.$on('$locationChangeStart', routeChange);
-    window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+    // $rootScope.$on('$locationChangeStart', routeChange);
+    // window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
     //
     // DEPRICATED!
