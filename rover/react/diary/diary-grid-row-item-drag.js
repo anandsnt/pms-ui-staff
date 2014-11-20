@@ -45,6 +45,7 @@ var GridRowItemDrag = React.createClass({
 			},
 			function() {
 				props.iscroll.grid.disable();
+				props.iscroll.timeline.disable();
 			});
 		}
 	},
@@ -81,6 +82,10 @@ var GridRowItemDrag = React.createClass({
 		document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__dbMouseMove);
 
+		
+		e.stopPropagation();
+		e.preventDefault();
+
 		if(state.dragging) {
 			this.setState({
 				dragging: false,
@@ -96,15 +101,16 @@ var GridRowItemDrag = React.createClass({
 				mouse_down: false,
 				selected: !state.selected
 			}, function() {
-				var data = (props.edit.passive ? props.currentDragItem : props.data);
+				var data = (props.edit.passive && props.data[props.meta.id] === props.data[props.meta.id]? props.currentDragItem : props.data);
 
-				data.selected = !state.selected;
-
-				props.iscroll.grid.enable();
-
+				props.iscroll.grid.enable();			
+				props.iscroll.timeline.enable();
+				
 				props.angular_evt.onSelect(props.row_data, data, !state.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}
+
+
 	},
 	componentWillReceiveProps: function(nextProps) {
 		var id_meta = this.props.meta.occupancy.id;
@@ -144,7 +150,7 @@ var GridRowItemDrag = React.createClass({
 				left: state.left,
 				top: state.top
 			}; 
-			className = ' dragstate'; //'occupancy-block dragstate';
+			className = ' dragstate'; 
 		} else {
 			className = '';
 		}

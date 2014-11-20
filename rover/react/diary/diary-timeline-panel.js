@@ -53,12 +53,15 @@ var TimelinePanel = React.createClass({
 			id: 'timeline-outer-wrapper',
 			className: 'outer-wrapper',
 			style: {
-				width: props.display.width + 'px'
+				position: 'relative',
+				width: props.display.width + 'px'//,
+				//left: -1 * (this.props.display.x_offset - this.props.display.x_n) * this.props.display.px_per_ms + 'px'
 			}
 		},
 		Timeline({
 			display:                props.display,
 			iscroll:                props.iscroll,
+			filter:                 props.filter,
 			edit:    			    props.edit,
 			meta:                   props.meta,
 			__onResizeCommand:      props.__onResizeCommand,

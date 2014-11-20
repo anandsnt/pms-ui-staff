@@ -42,7 +42,7 @@ var GridRowItem = React.createClass({
 			display 				= props.display,
 			px_per_ms               = display.px_per_ms,
 			px_per_int 				= display.px_per_int,
-			x_origin   				= display.x_nL, //display.x_origin,
+			x_origin   				= display.x_n, 
 			data 					= props.data,
 			row_data 				= props.row_data,
 			m                		= props.meta.occupancy,
@@ -76,7 +76,7 @@ var GridRowItem = React.createClass({
 			style: { 
 				width: reservation_time_span + 'px' 
 			}
-		}, is_temp_reservation ? data[m.rate] + '|' + data[m.room_type] : data[m.guest_name]),
+		}, is_temp_reservation ? data[m.rate] + ' | ' + data[m.room_type] : data[m.guest]),
 		React.DOM.span({
 			className: 'maintenance',
 			style: { 
