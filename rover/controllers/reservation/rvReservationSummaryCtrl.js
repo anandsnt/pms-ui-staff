@@ -23,29 +23,40 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?amount=" + $filter('number')($scope.reservationData.totalStayCost, 2) + '&card_holder_first_name=' + $scope.guestCardData.contactInfo.first_name + '&card_holder_last_name=' + $scope.guestCardData.contactInfo.last_name + '&service_action=createtoken';
-		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-		var eventer = window[eventMethod];
-		// Now...
-		// if 
-		//    "attachEvent", then we need to select "onmessage" as the event. 
-		// if 
-		//    "addEventListener", then we need to select "message" as the event
+		// var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+		// var eventer = window[eventMethod];
+		// // Now...
+		// // if 
+		// //    "attachEvent", then we need to select "onmessage" as the event. 
+		// // if 
+		// //    "addEventListener", then we need to select "message" as the event
 
-		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+		// var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
-		// Listen to message from child IFrame window
-		eventer(messageEvent, function(e) {
-			var responseData = e.data;
-			if (responseData.response_message == "token_created") {
-				console.log("event listener==============");
-				$scope.isSubmitButtonEnabled = true;
-				var unwantedKeys = ["response_message"]; // remove unwanted keys for API
-				//responseData = dclone(responseData, unwantedKeys);
-				//console.log(JSON.stringify(responseData));
-				$scope.six_token = responseData.token;
-				//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
-			}
-		}, false);
+		// // Listen to message from child IFrame window
+		// eventer(messageEvent, function(e) {
+		// 	var responseData = e.data;
+		// 	if (responseData.response_message == "token_created") {
+		// 		console.log("event listener==============");
+		// 		$scope.isSubmitButtonEnabled = true;
+		// 		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
+		// 		//responseData = dclone(responseData, unwantedKeys);
+		// 		//console.log(JSON.stringify(responseData));
+		// 		$scope.six_token = responseData.token;
+		// 		//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
+		// 	}
+		// }, false);
+
+		$rootScope.$on('six_token_recived',function(e,data){
+			console.log(data);
+			$scope.isSubmitButtonEnabled = true;
+			// var unwantedKeys = ["response_message"]; // remove unwanted keys for API
+			// responseData = dclone(responseData, unwantedKeys);
+			// console.log(JSON.stringify(responseData));
+			$scope.six_token = data.six_token;
+			console.log($scope.six_token)
+			//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
+		});
 
 		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
 
