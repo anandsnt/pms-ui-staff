@@ -70,7 +70,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
 	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
-	
+  try {
+        sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
+      }
+  catch(err) {};
+
+  var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+  var eventer = window[eventMethod];
+  var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+  eventer(messageEvent, function(e) {
+    var responseData = e.data;
+    if (responseData.response_message == "token_created") {
+      $rootScope.$broadcast('six_token_recived',{'six_token':responseData.token_no});
+  }
+  }, false);
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
@@ -186,6 +199,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             title: "MENU_ROOM_ASSIGNMENT",
             action: 'rover.reservation.diary',
             standAlone: true,
+            hidden: !$rootScope.isHourlyRateOn,
             menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
@@ -367,7 +381,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.hasLoader = false;
     });
 
-
+    /**
+    * in case of we want to reinitialize left menu based on new $rootScope values or something
+    * which set during it's creation, we can use
+    */    
+    $scope.$on('refreshLeftMenu', function(event){
+      setupLeftMenu();
+    }); 
+    
     $scope.init = function() {
       BaseCtrl.call(this, $scope);
       $rootScope.adminRole = '';
