@@ -84,9 +84,9 @@ sntRover
 				x_0: 					   undefined,
 				x_origin:                  $scope.x_origin.getTime(),
 				x_n:                       $scope.x_n.getTime(),
-				x_n_time:                  $scope.x_n_time,  //.toComponents().time.convertToReferenceInterval(15),
+				x_n_time:                  (!$scope.x_n_time ? $scope.x_n.toComponents().time.convertToReferenceInterval(15) : $scope.x_n_time),
 				x_p: 	                   $scope.x_p.getTime(),
-				x_p_time:                  $scope.x_p_time, //toComponents().time.convertToReferenceInterval(15),
+				x_p_time:                  (!$scope.x_p_time ? $scope.x_p.toComponents().time.convertToReferenceInterval(15) : $scope.x_p_time), //toComponents().time.convertToReferenceInterval(15),
 				width: 						undefined,
 				height: 					undefined,
 				hours: 						50,
@@ -112,6 +112,7 @@ sntRover
 			filter: {						//top filter
 		    	arrival_date: 				$scope.x_origin,
 		    	enable_resize: 				false,
+		    	arrival_times:              $scope.arrival_times,
 		    	arrival_time: 				$scope.arrival_time,
 		    	hours_days: 				'h',
 		    	range: 						12,
@@ -598,8 +599,8 @@ sntRover
 				//$scope.Availability();
 			}
 
-			rvDiarySrv.Occupancy(new Date(new Date(time_set.x_n).setHours(0,0,0)), 
-								 new Date(new Date(time_set.x_p.setHours(23,59,0))))
+			rvDiarySrv.Occupancy(time_set.toStartDate(), time_set.toEndDate())//new Date(new Date(time_set.x_n).setHours(0,0,0)), 
+								 //new Date(new Date(time_set.x_p.setHours(23,59,0))))
 			.then(function(data) {
 
 				//$scope.gridProps.filter = _.extend({}, $scope.gridProps.filter);
