@@ -183,7 +183,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//Restructure rates for easy selection
 			var rates = [];
 
-			$scope.days = roomRates.results.length;
+			$scope.days = roomRates.results.length;			
+			
 
 			//Reset isSupressedField
 			$scope.stateCheck.suppressedRates = [];
@@ -195,6 +196,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 			$scope.displayData.allRates = rates;
+
+			$scope.reservationData.ratesMeta = rates;
 
 			$scope.roomAvailability = $scope.getAvailability(roomRates);
 

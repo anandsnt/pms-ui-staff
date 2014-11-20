@@ -87,6 +87,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.init = function() {
 			$scope.data = {};
+			$scope.data.isDepositRequired = !!$scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.id;
 			if ($stateParams.reservation == "HOURLY") {
 				console.log("hhhhhhhhhhhhhhhhhh");;
 				$scope.$emit('showLoader');
