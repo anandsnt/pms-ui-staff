@@ -548,8 +548,8 @@ sntRover
 	$scope.getArrivalTimes = function() {
 		var filter 		= _.extend({}, $scope.gridProps.filter),
 			time_span 	= Time({ hours: $scope.min_hours }), //$scope.gridProps.filter.min_hours }),
-			start_date 	= filter.arrival_date,
-			start_time 	= new Date($scope.arrival_times.indexOf($scope.gridProps.filter.arrival_time) * 900000 + filter.arrival_date.getTime()).toComponents().time,
+			start_date 	= new Date($scope.gridProps.display.x_n), //filter.arrival_date,
+			start_time 	= new Date($scope.arrival_times.indexOf($scope.gridProps.filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),

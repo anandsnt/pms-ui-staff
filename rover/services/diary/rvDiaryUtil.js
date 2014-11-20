@@ -43,10 +43,10 @@ sntRover
                 x_n: new Date(x_left),
                 x_p: new Date(x_right),
                 toStartDate: function() {
-                    return new Date(new Date(time.x_n).setHours(0, 0, 0));
+                    return new Date(new Date(x_left).setHours(0, 0, 0));
                 },
                 toEndDate: function() {
-                    return new Date(new Date(time.x_p).setHours(23, 59, 0));
+                    return new Date(new Date(x_right).setHours(23, 59, 0));
                 }
             };
 
