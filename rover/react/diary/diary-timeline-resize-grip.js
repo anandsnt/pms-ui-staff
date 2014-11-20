@@ -130,6 +130,7 @@ var TimelineResizeGrip = React.createClass({
 			direction 	= this.props.itemProp,
 			px_per_ms 	= display.px_per_ms,
 			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			label       = (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
 			m 			= props.meta.occupancy;
 
 		if(!this.state.resizing) {
@@ -169,7 +170,7 @@ var TimelineResizeGrip = React.createClass({
 			grip_text = '';
 
 		if(currentResizeItem) {
-		 	grip_text = angular.uppercase(direction) + ' ' + (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+		 	grip_text = label + ' ' + (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
 		}
 
 		return this.transferPropsTo(React.DOM.a({
