@@ -9,16 +9,13 @@
 		<div id="set-payment" class="payment-form">
 
 			<!-- Payment type -->
-			<div class="entry full-width" ng-hide="true">
+			<div class="entry full-width" >
 				<label for="payment-type">Payment type</label>
 				<div class="select">
-					<select name="payment-type" id="payment-type" class="placeholder">
+					<select name="payment-type" ng-change="changePaymentType()" ng-model="dataToSave.paymentType" class="placeholder">
 						<option value="" selected>Select Payment Type</option>
-						<option value="cash">Cash Payment</option>
-						<option value="check">Check Payment</option>
-						<option value="credit-card">Credit card</option>
-						<option value="direct-bill">Direct Bill</option>
-						...
+						<option ng-repeat="paymentOptions in renderData" value="{{paymentOptions.name}}">{{paymentOptions.description}}</option>
+						
 					</select>
 				</div>
 			</div>
@@ -27,12 +24,12 @@
 			
 
 			<!-- Checkboxes -->
-			<div class="entry margin" ng-hide="true">
+			<div class="entry margin" ng-show="showInitialScreen">
 				<label class="checkbox inline" for="add-in-guest-card"> <span class="icon-form icon-checkbox"></span>
 					<input name="checkin" id="add-in-guest-card" value="1" type="checkbox" />
 					Add to Guest Card </label>
 			</div>
-			<div class="entry" ng-hide="true">
+			<div class="entry" ng-show="showInitialScreen">
 				<!-- Show only when payment type is defined as CC -->
 				<label class="checkbox inline" for="authorize-card"> <span class="icon-form icon-checkbox"></span>
 					<input name="authorize-card" id="authorize-card" value="1" type="checkbox" />
@@ -41,7 +38,7 @@
 
 			<!-- Buttons -->
 			<div class="actions">
-				<button type="button" class="button blank modal-close">
+				<button type="button" class="button blank modal-close" ng-click="closeDialog()">
 					Close
 				</button>
 				<button type="button" class="button green">

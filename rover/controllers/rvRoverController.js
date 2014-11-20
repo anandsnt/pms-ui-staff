@@ -719,10 +719,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.openPaymentDialogModal = function(passData, paymentData) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
-      $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
+     // $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
       ngDialog.open({
         template: '/assets/partials/roverPayment/rvAddPayment.html',
-        controller: 'RVPaymentMethodCtrl',
+        controller: 'RVPaymentAddPaymentCtrl',
         scope: $scope
       });
     };
