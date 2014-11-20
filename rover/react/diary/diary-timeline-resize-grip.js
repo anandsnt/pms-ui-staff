@@ -93,8 +93,7 @@ var TimelineResizeGrip = React.createClass({
 			this.setState({
 				mouse_down: 		false,
 				resizing: 			false,
-				currentResizeItem: 	model//,
-				//last_left: 			model[this.props.itemProp]
+				currentResizeItem: 	model
 			}, function() {
 				props.__onResizeEnd(state.row, model);
 
@@ -165,7 +164,7 @@ var TimelineResizeGrip = React.createClass({
 			currentResizeItem 	= this.state.currentResizeItem,
 			x_origin 			= props.display.x_n,
 			px_per_ms 			= props.display.px_per_ms,
-			label       = (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
+			label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
 			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
 			grip_text = '';
 
