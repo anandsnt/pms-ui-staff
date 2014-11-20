@@ -108,6 +108,12 @@
                     </div>
                     <div class="room-type">
                         <h4>{{room.roomTypeName}}<span></span></h4>
+                        <div class="confirmation" ng-hide="room.confirm_no"> <!-- Show confirmation number -->
+                            <span class="label">Confirmation #</span>{{reservationData.confirmNum}}
+                        </div>
+                        <div class="confirmation" ng-show="room.confirm_no"> <!-- Show confirmation number -->
+                            <span class="label">Confirmation #</span>{{room.confirm_no}}
+                        </div>
                     </div>
                     <ul class="rate-and-enhancements">
                         <li>
@@ -130,8 +136,8 @@
                         </li>                        
                     </ul>
                     <div class="actions">
-                        <button type="button" class="button white blue-text">Billing Information</a>
-                        <button type="button" class="button white brand-text">Demographics</a>
+                        <button type="button" class="button white blue-text" ng-click = "openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</a>
+                        <button type="button" class="button white brand-text" ng-click="setDemographics()">Demographics</a>
                     </div>
                     <button class="add-new-button" ng-hide="true">+ Accompanying Guest</button>
                     <form action="{action}" id="room-1-accompany" class="form hidden"> <!-- Remove class hidden when button above clicked -->

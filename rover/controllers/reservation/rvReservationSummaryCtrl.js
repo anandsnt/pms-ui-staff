@@ -561,6 +561,80 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			});
 
 		};
+
+		/*
+		 * Get the title for the billing info button,
+		 * on the basis of routes available or not
+		 */
+		$scope.getBillingInfoTitle = function() {
+			if ($scope.reservationData.is_routing_available)
+				return $filter('translate')('BILLING_INFO_TITLE');
+			else
+				return $filter('translate')('ADD_BILLING_INFO_TITLE');
+		}
+
+
+		/**
+		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also. 
+		 So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
+		 */
+
+		$scope.openBillingInformation = function(confirm_no) {
+			//incase of multiple reservations we need to check the confirm_no to access billing 
+			//information
+			if (confirm_no) {
+				angular.forEach($scope.reservationData.reservations, function(reservation, key) {
+					if (reservation.confirm_no === confirm_no) {
+						$scope.reservationData.confirm_no = reservation.confirm_no;
+						$scope.reservationData.reservation_id = reservation.id;
+						$scope.reservationData.reservation_status = reservation.status;
+					}
+				});
+			} else {
+				$scope.reservationData.confirm_no = $scope.reservationData.confirmNum;
+				$scope.reservationData.reservation_id = $scope.reservationData.reservationId;
+				$scope.reservationData.reservation_status = $scope.reservationData.status;
+			}
+
+			if ($scope.reservationData.guest.id != null) {
+				$scope.reservationData.user_id = $scope.reservationData.guest.id;
+			} else {
+				$scope.reservationData.user_id = $scope.reservationData.company.id;
+			}
+
+			ngDialog.open({
+				template: '/assets/partials/bill/rvBillingInformationPopup.html',
+				controller: 'rvBillingInformationPopupCtrl',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		}
+
+		$scope.updateAdditionalDetails = function() {
+			var updateSuccess = function(data) {
+				$scope.$emit('hideLoader');
+			};
+
+			var updateFailure = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data;
+			};
+
+			$scope.errorMessage = [];
+
+			var postData = $scope.computeReservationDataforUpdate(true);
+			postData.reservationId = $scope.reservationData.reservationId;
+			$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+		}
+
+		$scope.setDemographics = function() {
+			ngDialog.open({
+				template: '/assets/partials/reservation/rvReservationDemographicsPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		}
+
 		$scope.init();
 	}
 ]);
