@@ -93,8 +93,8 @@ var TimelineResizeGrip = React.createClass({
 			this.setState({
 				mouse_down: 		false,
 				resizing: 			false,
-				currentResizeItem: 	model,
-				last_left: 			model[this.props.itemProp]
+				currentResizeItem: 	model//,
+				//last_left: 			model[this.props.itemProp]
 			}, function() {
 				props.__onResizeEnd(state.row, model);
 

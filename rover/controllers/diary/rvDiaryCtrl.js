@@ -546,7 +546,7 @@ sntRover
 
 	$scope.getArrivalTimes = function() {
 		var filter 		= _.extend({}, $scope.gridProps.filter),
-			time_span 	= Time({ hours: $scope.gridProps.filter.min_hours }),
+			time_span 	= Time({ hours: $scope.min_hours }), //$scope.gridProps.filter.min_hours }),
 			start_date 	= filter.arrival_date,
 			start_time 	= new Date($scope.arrival_times.indexOf($scope.gridProps.filter.arrival_time) * 900000 + filter.arrival_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
@@ -598,16 +598,13 @@ sntRover
 				//$scope.Availability();
 			}
 
-			rvDiarySrv.Occupancy(new Date(time_set.x_n.setHours(0,0,0)), 
-								 new Date(time_set.x_p.setHours(23,59,0)))
+			rvDiarySrv.Occupancy(new Date(new Date(time_set.x_n).setHours(0,0,0)), 
+								 new Date(new Date(time_set.x_p.setHours(23,59,0))))
 			.then(function(data) {
 
-				$scope.gridProps.filter = _.extend({}, $scope.gridProps.filter);
-
-				$scope.$apply(function() {
-					$scope.gridProps.filter.arrival_time = $scope.gridProps.filter.arrival_times[0];
-				});
-
+				//$scope.gridProps.filter = _.extend({}, $scope.gridProps.filter);
+				//$scope.gridProps.filter.arrival_time = $scope.gridProps.filter.arrival_times[0];
+				
 				$scope.renderGrid();
 			}, responseError);	
 		}

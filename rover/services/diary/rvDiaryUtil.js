@@ -55,14 +55,15 @@ sntRover
             ret.x_p_time = ret.x_p.toComponents().time.convertToReferenceInterval(15);
 
             if(display) {
-                _.extend(display, ret);
-                /*display.x_offset                = x_offset;
+                
+                display.x_offset                = x_offset;
                 display.x_origin                = x_origin;
                 display.x_origin_start_time     = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
                 display.x_n                     = x_left;
+                display.x_0                     = ret.x_n.getTime();
                 display.x_n_time                = ret.x_n.toComponents().time.convertToReferenceInterval(15);
                 display.x_p                     = x_right;
-                display.x_p_time                = ret.x_p.toComponents().time.convertToReferenceInterval(15);*/
+                display.x_p_time                = ret.x_p.toComponents().time.convertToReferenceInterval(15);
 
                ret.display = display;
             }
