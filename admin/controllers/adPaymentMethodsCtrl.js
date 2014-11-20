@@ -62,6 +62,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 */
 	$scope.clickCancel = function() {
 		$scope.currentClickedElement = -1;
+		$scope.currentClickedElementCC = -1;
 	};
 
 	/*
@@ -72,27 +73,40 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		var successCallbackSave = function(data){
 			
 			if($scope.currentClickedElement === "new"){
-				$scope.addData.id = data.id;
-				var obj = { 'id': data.id , 'description' : data.name , 'value': data.value, 'is_system_defined': false, 'is_cc':data.is_cc,'is_offline':data.is_offline,'is_rover_only':data.is_rover_only,'is_web_only':data.is_web_only};
 				if(data.is_cc){
-					$scope.data.credit_card_types.push(obj);
+					// Added new credit card type item ( ie,'is_cc = true' )
+					$scope.data.credit_card_types.push(data);
 				}
 				else{
-					$scope.data.payments.push(obj);
+					// Added new payment item ( ie,'is_cc = false' ).
+					$scope.data.payments.push(data);
 				}
 			}
-			else{
-				//To update data with new value
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].description = data.name;
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].value = data.value;
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_cc = data.is_cc;
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_offline =data.is_offline;
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_rover_only = data.is_rover_only;
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_web_only = data.is_web_only;
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].is_system_defined = data.is_system_defined;
-	    	}	
+			else if(!data.is_cc && $scope.currentClickedElement != -1){
+				// Edited from 'payments list' with 'is_cc = false'.
+				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
+	    	}
+	    	else if(data.is_cc && $scope.currentClickedElement != -1){
+	    		// Edited from 'payments list' - made as 'is_cc = true' : moving data to 'credit card type list'.
+	    		// Remove data from $scope.data.payments[] list.
+	    		// push this data to $scope.data.credit_card_types[] list.
+	    		$scope.data.payments.splice( $scope.currentClickedElement, 1 );
+	    		$scope.data.credit_card_types.push(data);
+	    	}
+	    	else if(data.is_cc && $scope.currentClickedElementCC != -1){
+	    		// Edited from 'credit card type list' with 'is_cc = true'.
+	    		$scope.data.credit_card_types[parseInt($scope.currentClickedElementCC)] = data;
+	    	}
+	    	else if(!data.is_cc && $scope.currentClickedElementCC != -1){
+	    		// Edited from 'credit card type list'  - made as 'is_cc = false' : moving data to 'payments list'.
+	    		// Remove data from $scope.data.credit_card_types[] list.
+	    		// push this data to $scope.data.payments[] list.
+	    		$scope.data.credit_card_types.splice( $scope.currentClickedElementCC, 1 );
+	    		$scope.data.payments.push(data);
+	    	}
     		$scope.$emit('hideLoader');
     		$scope.currentClickedElement = -1;
+    		$scope.currentClickedElementCC = -1;
     	};
     	if($scope.currentClickedElement === "new"){
 			var data = $scope.addData;
@@ -111,6 +125,11 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		$scope.editData = dclone($scope.data.payments[index],["is_active"]);
 	};
 
+	$scope.editPaymentMethodCC = function(index) {
+		$scope.currentClickedElementCC = index;
+		$scope.editData = dclone($scope.data.credit_card_types[index],["is_active"]);
+	};
+
 	/*
 	 * To get the template of edit screen
 	 * @param {int} index of the selected payment method
@@ -119,6 +138,14 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		if ( typeof index === "undefined")
 			return "";
 		if ($scope.currentClickedElement == index) {
+			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
+		}
+	};
+
+	$scope.getTemplateUrlCC = function(index) {
+		if ( typeof index === "undefined")
+			return "";
+		if ($scope.currentClickedElementCC == index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};
