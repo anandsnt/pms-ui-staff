@@ -397,12 +397,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			if ($scope.displayData.availableRates && $scope.displayData.availableRates.length > 1) {
 				var ratesCopy = angular.copy($scope.displayData.availableRates);
 				for (i = ratesCopy.length; i > 0; i--) {
-					var currentRate = ratesCopy[i-1].rate;
-					if(currentRate.account_id !=null){
-						arraymove($scope.displayData.availableRates, i-1, 0);
+					var currentRate = ratesCopy[i - 1].rate;
+					if (currentRate.account_id != null) {
+						arraymove($scope.displayData.availableRates, i - 1, 0);
 					}
 				}
-			}			
+			}
 		}
 
 		var populateStayDates = function(rateId) {
@@ -520,8 +520,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.reservationData.rooms[$scope.activeRoom].rateId = rateId;
 				$scope.reservationData.rooms[$scope.activeRoom].isSuppressed = $scope.displayData.allRates[rateId].is_suppress_rate_on;
 				$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
-				$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id;
-				$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id;
+				$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id == null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
+				$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id == null ? "" : $scope.displayData.allRates[rateId].source.id;
 				$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomId].total[rateId].average;
 				$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
 
