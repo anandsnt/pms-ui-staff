@@ -1,3 +1,7 @@
 
 	"PAYMENT_METHODS": "Payment Methods",
-	"SYSTEM_DEFINED": "(System defined)"
+	"SYSTEM_DEFINED": "(System defined)",
+	"CC":"Credit Card",
+	"OFFLINE":"Offline",
+	"ROVER_ONLY":"Rover Payments Only",
+	"WEB_ONLY":"Web Payments Only"
