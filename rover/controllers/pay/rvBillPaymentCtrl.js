@@ -30,15 +30,18 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.showAddNewPaymentScreen = false;
 	$scope.newPaymentInfo.isSwiped = false;
 	$scope.showOnlyAddCard = false;
+//to delete
+$scope.passData = {};
+$scope.passData.details ={};
+$scope.passData.details.firstName = "cfef";
+$scope.passData.details.lastName = "dewr3";
+$scope.shouldShowAddNewCard = true;
+$scope.shouldShowExistingCards = true;
+$scope.paymentGateway == 'sixpayments';
+//to delete
 	//Set scroller
 	$scope.setScroller('cardsList');
 	//To set merchant id
-	try 
-	{
-		HostedForm.setMerchant($rootScope.MLImerchantId);
-	}
-	catch(err) {
-	};
 	/*
 	 * Initial function - To render screen with data
 	 * Initial screen - filled with deafult amount on bill
@@ -190,16 +193,32 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	 * Show guest credit card list
 	 */
 	$scope.showGuestCreditCardList = function(){
+
+		//TO DELETE
+
+		$scope.showCCPage = true;
 		if($scope.guestPaymentList.length >0){
-			$scope.showInitalPaymentScreen = false;
+			// $scope.showInitalPaymentScreen = false;
 			$scope.showExistingAndAddNewPayments = true;
 			$scope.showExistingGuestPayments = true;
 			$scope.showOnlyAddCard = false;
+			$scope.cardsList = $scope.guestPaymentList;
 			$scope.refreshScroller('cardsList');
 		} else {
 			$scope.showOnlyAddCard = true;
-			$scope.showAddNewCreditCard();
+			//$scope.showAddNewCreditCard();
 		}
+		//TO DELETE
+		// if($scope.guestPaymentList.length >0){
+		// 	$scope.showInitalPaymentScreen = false;
+		// 	$scope.showExistingAndAddNewPayments = true;
+		// 	$scope.showExistingGuestPayments = true;
+		// 	$scope.showOnlyAddCard = false;
+		// 	$scope.refreshScroller('cardsList');
+		// } else {
+		// 	$scope.showOnlyAddCard = true;
+		// 	$scope.showAddNewCreditCard();
+		// }
 		
 	};
 	/*
@@ -276,38 +295,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			
 		}
 	};
-	var MLISessionId = "";
-	/*
-	 * To fetch MLI sessionId
-	 */
-	$scope.fetchMLISessionId = function(){
-		 var sessionDetails = {};
-		 sessionDetails.cardNumber = $scope.newPaymentInfo.cardNumber;
-		 sessionDetails.cardSecurityCode = $scope.newPaymentInfo.cardCCV;
-		 sessionDetails.cardExpiryMonth = $scope.newPaymentInfo.cardExpiryMonth;
-		 sessionDetails.cardExpiryYear = $scope.newPaymentInfo.cardExpiryYear;
-		
-		 var callback = function(response){
-		 	$scope.$emit("hideLoader");
-		 	if(response.status ==="ok"){
-		 		MLISessionId = response.session;
-		 		$scope.savePayment();
-		 	}
-		 	else{
-		 		$scope.errorMessage = ["There is a problem with your credit card"];
-		 	}			
-		 	$scope.$apply(); 	
-		 };
 
-		try {
-		    HostedForm.updateSession(sessionDetails, callback);	
-		    $scope.$emit("showLoader");
-		}
-		catch(err) {
-		   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
-		};
-		 		
-	};
+	/*
 	var token = "";
 	var swipedCardData = "";
 	/*
@@ -425,12 +414,27 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		});
 		$scope.guestPaymentList[index].isSelected = true;
 		$scope.saveData.payment_type_id =  $scope.guestPaymentList[index].id;
-		$scope.showInitialScreen();
+		// $scope.showInitialScreen();
+		$scope.showCCPage = false;
 	};
 	$scope.handleCloseDialog = function(){
 		$scope.paymentModalOpened = false;
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
 	};
+
+	$scope.$on('cardSelected',function(e,data){
+		$scope.setCreditCardFromList(data.index);
+	});
+
+	$scope.$on('MLIfailureCallBack',function(e){
+		$scope.errorMessage = ["There is a problem with your credit card"];
+	});
+	$scope.$on("TOKEN_CREATED", function(e,data){
+		console.log(data);
+	});
+	$scope.$on('MLIGatewayFailure',function(e){
+		$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+	});
 	
 }]);

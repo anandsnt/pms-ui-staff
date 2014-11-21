@@ -59,16 +59,24 @@ sntRover.controller('RVCardOptionsCtrl',
 			};
 			var failureCallBack = function(data){
 				$scope.$emit("hideLoader");
-				$scope.errorMessage = ["There is a problem with your credit card"];
+				// $scope.errorMessage = ["There is a problem with your credit card"];
+				$scope.$emit('MLIfailureCallBack');
 				$scope.$apply(); 
 			};
-			try {
+
+			if(sessionDetails.cardNumber.length > 0 ){
+				try {
 				sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,successCallBack,failureCallBack);
 				$scope.$emit("showLoader");
+				}
+				catch(err) {
+					$scope.$emit('MLIGatewayFailure');
+				};
 			}
-			catch(err) {
-				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+			else{
+				$scope.$emit('MLIfailureCallBack');
 			};
+			
 		};
 
 		/*
@@ -78,5 +86,10 @@ sntRover.controller('RVCardOptionsCtrl',
 		$rootScope.$on('six_token_recived',function(e,data){
 			notifyParent(data.six_payment_data.token_no);
 		});
+
+
+		$scope.setCreditCardFromList = function(index){
+			$scope.$emit('cardSelected',{'index':index});
+		};
 		
 }]);
