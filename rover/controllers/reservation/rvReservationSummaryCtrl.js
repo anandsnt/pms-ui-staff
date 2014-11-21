@@ -37,23 +37,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
 		// Listen to message from child IFrame window
-<<<<<<< HEAD
-		eventer(messageEvent, function(e) {
-			var responseData = e.data;
-			if (responseData.response_message == "token_created") {
-				console.log("event listener==============");
-				$scope.isSubmitButtonEnabled = true;
-				var unwantedKeys = ["response_message"]; // remove unwanted keys for API
-				//responseData = dclone(responseData, unwantedKeys);
-				//console.log(JSON.stringify(responseData));
-				$scope.six_token = responseData.token;
-				//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
-			}
-		}, false);
 
-		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
-
-=======
 		eventer(messageEvent, function (e) {
 			
 			   var responseData = e.data;
@@ -70,7 +54,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		}, false);   
 		
 		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled){
->>>>>>> CICO-10579
 			var buttonClass = "grey";
 			if (isSubmitButtonEnabled) {
 				buttonClass = "green";
@@ -474,16 +457,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$state.go('rover.reservation.search');
 			}
 		};
-<<<<<<< HEAD
 
-		$scope.changePaymentType = function() {
-			if ($scope.reservationData.paymentType.type.value === 'CC') {
-				if ($rootScope.paymentGateway === "sixpayments") {
-=======
 		$scope.changePaymentType = function(){
 			if($scope.reservationData.paymentType.type.value === 'CC'){
 				if($rootScope.paymentGateway === "sixpayments"){
->>>>>>> CICO-10579
 					$scope.isSixPaymentGatewayVisible = true;
 					if ($scope.isOnsiteActive) {
 						$scope.isMLICreditCardVisible = false;
@@ -577,12 +554,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"currency_code": ""
 			};
 			RVReservationSummarySrv.startPayment(data).then(function(response) {
-<<<<<<< HEAD
-				console.log(response);
-			}, function() {
-=======
+
 			},function(){
->>>>>>> CICO-10579
 				$rootScope.netWorkError = true;
 				$scope.isPosting = false;
 			});
