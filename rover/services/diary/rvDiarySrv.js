@@ -405,6 +405,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         occupancy[m.status] = 'inhouse';
                     } else if(occupancy[m.status] === 'checkedout') {
                         occupancy[m.status] = 'check-out';
+                    } else if(occupancy[m.status] === 'checking_out') {
+                        occupancy[m.status] = 'check-out';
                     }
 
                     room = _.findWhere(Room.store.data, { id: occupancy.room_id });
@@ -548,14 +550,17 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         $q.all([Maintenance.read(), 
                                 RoomType.read(), 
                                 Room.read(), 
-                                Occupancy.read(dateRange(time.toStartDate(), time.toEndDate())),              
+                                Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
                                 AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
-                        .then(function(data_array) {
-                            _.reduce([Maintenance, 
-                                      RoomType, 
-                                      Room, 
-                                      Occupancy, 
-                                      AvailabilityCount], 
+                                .then(function(data_array) {
+                                    _.reduce([
+                                          Maintenance, 
+                                          RoomType, 
+                                          Room, 
+                                          Occupancy, 
+                                          Occupancy,
+                                          Occupancy,
+                                          AvailabilityCount], 
                                 function(memo, obj, idx) {  
                                     obj.resolve(data_array[idx]);
                             }, data_array);

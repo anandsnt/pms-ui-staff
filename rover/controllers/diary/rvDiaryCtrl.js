@@ -137,7 +137,7 @@ sntRover
 			x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
 			width: 						undefined,
 			height: 					undefined,
-			hours: 						48,
+			hours: 						24,
 			row_height: 				60,
 			row_height_margin: 			5,
 			intervals_per_hour: 		4, 
@@ -376,7 +376,7 @@ sntRover
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
 
 					if(availability) {
-				    	util.reservationRoomTransfer(nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
+				    	util.reservationRoomTransfer($scope.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
 					    
 				    	$scope.gridProps.currentResizeItemRow = nextRoom;
 
@@ -391,7 +391,7 @@ sntRover
 	    };
 
 	    $scope.debug = function() {
-	    	for(var  i = 0, len = $scope.data; i < len ; i++) {
+	    	for(var  i = 0, len = $scope.data.length; i < len ; i++) {
 	    		if($scope.data[i].occupancy.length > 0) {
 	    			console.log($scope.data[i].room_no, $scope.data[i].occupancy);
 	    		}
@@ -606,11 +606,11 @@ sntRover
 	    	$scope.roomXfer = {
 	    		current: {
 		    		room: 		 props.edit.originalRowItem,
-		    		reservation: props.edit.originalItem
+		    		occupancy: props.edit.originalItem
 		    	},
 		    	next: {
 		    		room: 		 row_data,
-		    		reservation: row_item_data
+		    		occupancy: row_item_data
 	    		}
 	    	};
 
@@ -753,9 +753,9 @@ sntRover
 			time_set; 
 
 		if(newValue !== oldValue) {	
-            time_set = util.gridTimeComponents(arrival_ms, 48, _.extend({}, $scope.gridProps.display));
+            time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
 
-            $scope.gridProps.display = _.extend({}, time_set.display);
+            $scope.gridProps.display = util.deepCopy(time_set.display);
 
 			$scope.renderGrid();
 
@@ -763,8 +763,7 @@ sntRover
 				//$scope.Availability();
 			}
 
-			rvDiarySrv.Occupancy(time_set.toStartDate(), time_set.toEndDate())
-								
+			rvDiarySrv.Occupancy(time_set.toStartDate(), time_set.toEndDate())					
 			.then(function(data) {
 				$scope.renderGrid();
 			}, responseError);	
