@@ -443,6 +443,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			    "details": {
 			    	"firstName": $scope.data.guest_details.first_name,
 			    	"lastName": $scope.data.guest_details.last_name,
+			    	
 			    }
 			};
 			var paymentData = $scope.reservationData;

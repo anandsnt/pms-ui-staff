@@ -389,7 +389,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.$apply(); 
 			};
 			var failureCallBack = function(data){
-				console.log("fail")
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = ["There is a problem with your credit card"];
 				$scope.$apply(); 

@@ -28,11 +28,11 @@ sntRover.controller('RVCardOptionsCtrl',
 		
 		};
 
-		var notifyParent = function(token){
+		var notifyParent = function(tokenDetails){
 
 			var payementData = {};
 			payementData.cardDetails = $scope.cardData;
-			payementData.token = token;
+			payementData.tokenDetails = tokenDetails;
 			console.log(payementData);
 			$scope.$emit("TOKEN_CREATED", payementData);
 		};
@@ -54,7 +54,11 @@ sntRover.controller('RVCardOptionsCtrl',
 			var sessionDetails = setUpSessionDetails();
 			var successCallBack = function(response){
 				$scope.$emit("hideLoader");
-				notifyParent(response.session);
+				
+				response.isSixPayment = false;
+				console.log("===========")
+				console.log(response)
+				notifyParent(response);
 				$scope.$apply(); 
 			};
 			var failureCallBack = function(data){
@@ -66,8 +70,8 @@ sntRover.controller('RVCardOptionsCtrl',
 
 			if(sessionDetails.cardNumber.length > 0 ){
 				try {
-				sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,successCallBack,failureCallBack);
-				$scope.$emit("showLoader");
+					sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,successCallBack,failureCallBack);
+					$scope.$emit("showLoader");
 				}
 				catch(err) {
 					$scope.$emit('MLIGatewayFailure');
@@ -84,7 +88,8 @@ sntRover.controller('RVCardOptionsCtrl',
 		 */
 
 		$rootScope.$on('six_token_recived',function(e,data){
-			notifyParent(data.six_payment_data.token_no);
+			data.isSixPayment = true;
+			notifyParent(data.six_payment_data);
 		});
 
 
