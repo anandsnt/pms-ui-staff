@@ -48,13 +48,35 @@ sntRover
 	$scope = _.extend($scope, _.omit(payload, 
 									 'display', 
 									 'filter', 
-									 'common_registration_date')); //copy incoming data on load
+									 'common_registration_data')); //copy incoming data on load
+	/*
+		Primary Data Models
+		1)$scope.data -> room - occupancy data structure read by React
+		2)$scope.stats -> 1D Array of availability stats per hour for a given time range
+						   Also read by React
 
+	    Both models are affixed to $scope.gridProps
+
+	    gridProps contains all the data necessary for angular to communicate with React
+	    and vice versa
+
+	*/
 	$scope.data 		 = $scope.room;
 	$scope.stats 		 = $scope.availability_count;
-	$scope.room_types 	 = $scope.room_type;
+		
 
-	$scope.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
+	/*
+		Room selection array
+		Each selection pushed contains the selected room object
+		and the corresponding occupancy object
+		ie. { room: row_data , occupancy: row_item_data }
+	*/
+	$scope.selectedReservations = [];
+
+	$scope.companySearchText = '';
+	$scope.companyCardResults = [];
+
+	
 
 /*Initial Values and Default Settings for React Grid*/
 /*Initialization of React/Angular hooks and callbacks*/
@@ -106,25 +128,25 @@ sntRover
 			time span.
 		*/
 		display: {
-			x_offset: 				   $scope.display.x_offset.getTime(),
+			x_offset: 				   payload.display.x_offset.getTime(),
 			x_0: 					   undefined,
-			x_origin:                  $scope.display.x_origin.getTime(),
-			x_n:                       $scope.display.x_n.getTime(),
-			x_n_time:                  (!$scope.display.x_n_time ? $scope.display.x_n.toComponents().time.convertToReferenceInterval(15) : $scope.display.x_n_time),
-			x_p: 	                   $scope.display.x_p.getTime(),
-			x_p_time:                  (!$scope.display.x_p_time ? $scope.display.x_p.toComponents().time.convertToReferenceInterval(15) : $scope.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
+			x_origin:                  payload.display.x_origin.getTime(),
+			x_n:                       payload.display.x_n.getTime(),
+			x_n_time:                  (!payload.display.x_n_time ? payload.display.x_n.toComponents().time.convertToReferenceInterval(15) : payload.display.x_n_time),
+			x_p: 	                   payload.display.x_p.getTime(),
+			x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
 			width: 						undefined,
 			height: 					undefined,
-			hours: 						_.constant(48),
-			row_height: 				_.constant(60),
-			row_height_margin: 			_.constant(5),
-			intervals_per_hour: 		_.constant(4), 
-			ms_15:                      _.constant(900000),
+			hours: 						48,
+			row_height: 				60,
+			row_height_margin: 			5,
+			intervals_per_hour: 		4, 
+			ms_15:                      900000,
 			px_per_ms: 					undefined,
 			px_per_int: 				undefined,
 			px_per_hr: 					undefined,
-			currency_symbol:            $rootScope.currency,
-			min_hours: 					$scope.display.min_hours
+			currency_symbol:            $rootScope.currencySymbol,
+			min_hours: 					payload.display.min_hours
 		},
 		/* 
 		   Edit command object.  When we need to edit an existing reservation, this is how we setup the
@@ -183,150 +205,112 @@ sntRover
 	            4) Grid size display hours 
 		*/
 		filter: {						
-	    	arrival_date: 				$scope.display.x_n,
-	    	//enable_resize: 				false,
-	    	arrival_times:              Array.prototype.slice.call($scope.filter.arrival_times),
-	    	arrival_time: 				$scope.filter.arrival_time,
+	    	arrival_date: 				payload.display.x_n,
+	    	arrival_times:              Array.prototype.slice.call(payload.filter.arrival_times),
+	    	arrival_time: 				payload.filter.arrival_time,
 	    	reservation_format: 		'h',
 	    	range: 						12,
-	    	rate_type: 					'Standard',
+	    	rate_type: 					payload.filter.rate_type,
 	    	rate_type_details: 			[],
 	    	rate:                        undefined,
-	    	room_type: 					($scope.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[$scope.room_type_id] : undefined,
-	    	show_all_rooms: 			'on'
+	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.room_type_id] : undefined,
+	    	room_types:                 payload.filter.room_type,
+	    	show_all_rooms: 			'on',
+			toggleHoursDays: function() {
+	    		this.reservation_format = (this.reservation_format === 'h') ? 'd' : 'h';
+
+	    		if(this.reservation_format === 'd') {
+	    			$state.go('rover.reservation.search', {
+	    				fromState: 'DIARY'
+	    			});
+	    		}
+    		},
+    		toggleRates: function() {
+				var rateMenu = $('.faux-select-options');
+
+				if(rateMenu.length > 0) {
+					if(rateMenu.hasClass('hidden')) {
+						rateMenu.removeClass('hidden');
+					}else {
+						rateMenu.addClass('hidden');
+					}
+				}
+			},
+			toggleRange: function() {
+	    		var hourFormat12 = ($scope.gridProps.viewport.hours === 12);
+
+	    		$scope.gridProps.viewport = util.deepCopy($scope.gridProps.viewport);
+	    		$scope.gridProps.display  = util.deepCopy($scope.gridProps.display);
+
+				$scope.gridProps.viewport.hours 			= (hourFormat12) ? 24 : 12;
+				$scope.gridProps.display.row_height 		= (hourFormat12) ? 24 : 60;
+				$scope.gridProps.display.row_height_margin 	= (hourFormat12) ? 0 : 5;
+
+				$scope.gridProps.display.width 				= $scope.gridProps.display.hours / $scope.gridProps.viewport.hours * $scope.gridProps.viewport.width;
+				$scope.gridProps.display.height      		= $scope.gridProps.display.row_height + $scope.gridProps.display.row_height_margin;
+				$scope.gridProps.display.px_per_hr 			= $scope.gridProps.viewport.width / $scope.gridProps.viewport.hours;
+				$scope.gridProps.display.px_per_int 	    = $scope.gridProps.display.px_per_hr / $scope.gridProps.display.intervals_per_hour;
+				$scope.gridProps.display.px_per_ms 			= $scope.gridProps.display.px_per_int / $scope.gridProps.display.ms_15;
+
+				$scope.renderGrid(); 
+			}
 	    }
 	};
 
-	$scope.selectedReservations = [];
+	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
 
-	$scope.companySearchText = '';
-	$scope.companyCardResults = [];
+		/*--------------------------------------------------*/
+		/* BEGIN UTILITY METHOD SECTION */
+		/*--------------------------------------------------*/
+		function responseError(err) {
+			console.log(err);
+		}
+		/*--------------------------------------------------*/
+		/* END UTILITY METHOD SECTION */
+		/*--------------------------------------------------*/
 
-	/*--------------------------------------------------*/
-	/* BEGIN UTILITY METHOD SECTION */
-	/*--------------------------------------------------*/
-	function responseError(err) {
-		console.log(err);
-	}
+		/*_________________________________________________________
+			END SECTION -> Angular Grid Filter callbacks 
+		  ________________________________________________________
+		*/
 
+		/*_________________________________________________________
+			END SECTION -> Angular Grid Filter callbacks 
+		  ________________________________________________________
+		*/
 
-	
+	   	/*_________________________________________________________
+		    BEGIN CORPORATE RATE METHODS 
+		  ________________________________________________________
+		*/
+		$scope.confirmRateSelection = function(idx) {
+			var details = $scope.gridProps.filter.rate_type_details;
 
-		//BEGIN SECTION -> Angular Grid Filter callbacks 
-
-		/*Redirects to normal create reservation screen*/
-	    $scope.toggleHoursDays = function() {
-    		this.reservation_format = (this.reservation_format === 'h') ? 'd' : 'h';
-
-    		if(this.reservation_format === 'd') {
-    			$state.go('rover.reservation.search', {
-    				fromState: 'DIARY'
-    			});
-    		}
-    	};
-
-    	/*Shift between 12 and 24 display formats*/
-	    $scope.toggleRange = function() {
-    		var hourFormat12 = ($scope.gridProps.viewport.hours === 12),
-    			props = $scope.gridProps,
-    			viewport = props.viewport,
-    			display  = props.display;
-
-    		viewport = _.extend({}, viewport);
-    		display  = _.extend({}, display);
-
-			viewport.hours 				= (hourFormat12) ? 24 : 12;
-			display.row_height 			= (hourFormat12) ? 24 : 60;
-			display.row_height_margin 	= (hourFormat12) ? 0 : 5;
-
-			display.width 				= display.hours / viewport.hours * viewport.width;
-			display.height      		= display.row_height + display.row_height_margin;
-			display.px_per_hr 			= viewport.width / viewport.hours;
-			display.px_per_int 			= display.px_per_hr / display.intervals_per_hour;
-			display.px_per_ms 			= display.px_per_int / display.ms_15;
-
-			$scope.renderGrid(); 
+			$scope.gridProps.filter.rate = $scope.gridProps.filter.rate_type_details[idx];
 		};
 
-		/*Rate menu logic*/
-		$scope.toggleRates = function() {
-			var rateMenu = $('.faux-select-options');
-
-			if(rateMenu.length > 0) {
-				if(rateMenu.hasClass('hidden')) {
-					rateMenu.removeClass('hidden');
-				}else {
-					rateMenu.addClass('hidden');
-				}
-			}
+		$scope.discardRateSelection = function(idx) {
+			//var details = $scope.gridProps.filter.rate_type_details;
+			$scope.gridProps.filter.rate_type_details = [];
+			$scope.gridProps.filter.rate = undefined;
 		};
 
-		//END SECTION -> Angular Grid Filter callbacks 
+        $scope.companySearchTextEntered = function() {
+            if($scope.companySearchText.length === 1) {
+                $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
+            } else if($scope.companySearchText.length > 2){
+                displayFilteredResults();
+            }
+        };
+	   	/*_________________________________________________________
+		    END CORPORATE RATE METHODS 
+		  ________________________________________________________
+		*/
 
-		/*_________________________________________________________*/
-		/*BEGIN GRID COMPONENT STANDARD EVENT HOOK INTERFACE -- */
-		/*_________________________________________________________*/
-		(function() {    /*React callbacks for grid events*/
-			var prevRoom, prevTime;
-
-		    $scope.onDragStart = function(room, reservation) {
-		    	prevRoom = room;
-		    	prevTime = reservation[meta.occupancy.start_date];
-
-		    	if($scope.gridProps.edit.active) {
-		    		console.log('Reservation room transfer initiated:  ', room, reservation);
-		    	}
-		    };
-
-		    $scope.onDragEnd = function(nextRoom, reservation) {
-		    	var availability;
-
-		    	if($scope.gridProps.edit.active) {
-			    	availability = determineAvailability(nextRoom.reservations, reservation).shift();
-
-					if(availability) {
-				    	reservationRoomTransfer(nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
-					    
-				    	$scope.gridProps.currentResizeItemRow = nextRoom;
-
-				    	$scope.renderGrid();
-				    }
-				}
-		    };
-		})();
-
-	    $scope.onResizeStart = function(row_data, row_item_data) {
-			  	
-	    };
-
-	    $scope.onResizeEnd = function(row_data, row_item_data) {
-/*	    	var filter = _.extend({}, $scope.gridProps.filter);
-
-	    	filter.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
-
-	    	rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
-	    	.then(function(data) {
-	    		console.log(data);
-	    		console.log(rvDiarySrv.data_Store.get('room'));
-
-	    		$scope.renderGrid();
-	    	}, function(err) {
-	    		console.log(err);
-	    	});*/
-	    };    
-
-	    $scope.onScrollEnd = function(current_scroll_pos) {
-	    	$scope.toggleRows($scope.gridProps.filter.show_all_rooms, current_scroll_pos);
-	    };
-
-	    /* FOR LATER USE
-	    $scope.onScrollLoadTriggerRight = function(component, data, event) {
-
-	    };
-			FIR LATER USE
-	    $scope.onScrollLoadTriggerLeft = function(component) {
-			
-	    };*/
+	    /*_________________________________________________________
+		    BEGIN EVENT HOOKS 
+		  ________________________________________________________
+		*/
 
 	    $scope.onSelect = function(row_data, row_item_data, selected, command_message) {
 	    	var copy,
@@ -373,26 +357,76 @@ sntRover
 		    }
 	    };
 
-		$scope.confirmRateSelection = function(idx) {
-			var details = $scope.gridProps.filter.rate_type_details;
+		(function() {    /*React callbacks for grid events*/
+			var prevRoom, prevTime;
 
-			$scope.gridProps.filter.rate = $scope.gridProps.filter.rate_type_details[idx];
-		};
+		    $scope.onDragStart = function(room, reservation) {
+		    	prevRoom = room;
+		    	prevTime = reservation[meta.occupancy.start_date];
 
-		$scope.discardRateSelection = function(idx) {
-			//var details = $scope.gridProps.filter.rate_type_details;
-			$scope.gridProps.filter.rate_type_details = [];
-			$scope.gridProps.filter.rate = undefined;
-		};
+		    	if($scope.gridProps.edit.active) {
+		    		console.log('Reservation room transfer initiated:  ', room, reservation);
+		    	}
+		    };
 
-        $scope.companySearchTextEntered = function() {
-            if($scope.companySearchText.length === 1) {
-                $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
-            } else if($scope.companySearchText.length > 2){
-                displayFilteredResults();
-            }
-        };
+		    $scope.onDragEnd = function(nextRoom, reservation) {
+		    	var availability;
 
+		    	if($scope.gridProps.edit.active) {
+			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
+
+					if(availability) {
+				    	util.reservationRoomTransfer(nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
+					    
+				    	$scope.gridProps.currentResizeItemRow = nextRoom;
+
+				    	$scope.renderGrid();
+				    }
+				}
+		    };
+		})();
+
+	 	$scope.onResizeStart = function(row_data, row_item_data) {
+			  	
+	    };
+
+	    $scope.debug = function() {
+	    	for(var  i = 0, len = $scope.data; i < len ; i++) {
+	    		if($scope.data[i].occupancy.length > 0) {
+	    			console.log($scope.data[i].room_no, $scope.data[i].occupancy);
+	    		}
+	    	}
+	    }
+
+	    $scope.onResizeEnd = function(row_data, row_item_data) {
+	    	$scope.gridProps.filter = util.deepCopy($scope.gridProps.filter);
+	    	$scope.gridProps.display = util.deepCopy($scope.gridProps.display);
+
+	    	$scope.gridProps.display.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
+
+	    	rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
+	    	.then(function(data) {
+	    		console.log(data);
+	    		console.log(rvDiarySrv.data_Store.get('room'));
+
+	    		$scope.renderGrid();
+	    	}, function(err) {
+	    		console.log(err);
+	    	});
+	    };    
+
+	    $scope.onScrollEnd = function(current_scroll_pos) {
+	    	$scope.toggleRows($scope.gridProps.filter.show_all_rooms, current_scroll_pos);
+	    };
+
+	    /* FOR LATER USE
+	    $scope.onScrollLoadTriggerRight = function(component, data, event) {
+
+	    };
+			FIR LATER USE
+	    $scope.onScrollLoadTriggerLeft = function(component) {
+			
+	    };*/
 	    $scope.toggleRows = function(state, current_scroll_pos) {
 	    	$scope.gridProps.filter.show_all_rooms = state; //(state === 'on');
 
@@ -427,9 +461,10 @@ sntRover
             }, responseError);  
         }, 500);
 
-	    /*_________________________________________________________*/
-		/*END PROTOTYPE EVENT HOOKS -- */
-		/*_________________________________________________________*/
+	    /*_________________________________________________________
+		    END  EVENT HOOKS 
+		  ________________________________________________________
+		*/
 
 		$scope.renderGrid = function(params) {
 			var args = params || {};
@@ -438,6 +473,8 @@ sntRover
 				DiaryContent(_.extend(args, $scope.gridProps)),
 				document.getElementById('component-wrapper')
 			);	
+
+			$scope.debug();
 		};
 
 	    $scope.isSelected = function(room, reservation) {
@@ -521,6 +558,12 @@ sntRover
 	    	//console.log('Room status refresh time', Date.now() - time_start);
 	    }
 		
+
+		/*
+			----------------------------------------------------------------
+			BEGIN EDIT METHODS
+			----------------------------------------------------------------
+		*/
 		$scope.initActiveEditMode = (function(meta, util, data) {
 			if(this.edit.passive) {
 				throw Error('Active/Passive edit mode mutually exclusive.');
@@ -552,21 +595,21 @@ sntRover
 
 	    $scope.editSave = function() {
 	    	var props 			= $scope.gridProps,
-	    		row_data 		= util.copyRoom(props.currentResizeItemRow),
-	    		row_item_data 	= util.copyReservation(props.currentResizeItem),
+	    		row_data 		= props.currentResizeItemRow, //util.copyRoom(props.currentResizeItemRow),
+	    		row_item_data 	= props.currentResizeItem, //util.copyReservation(props.currentResizeItem),
 	    		px_per_ms 		= props.display.px_per_ms,
-	    		x_origin 		= props.display.x_origin;
+	    		x_origin 		= props.display.x_n;
 
-	    	row_item_data[meta.occupancy.start_date] = row_item_data.left / px_per_ms + x_origin;
-	    	row_item_data[meta.occupancy.end_date] 	 = row_item_data.right / px_per_ms + x_origin; 
+	    	//row_item_data[meta.occupancy.start_date] = row_item_data.left / px_per_ms + x_origin;
+	    	//row_item_data[meta.occupancy.end_date] 	 = row_item_data.right / px_per_ms + x_origin; 
 
 	    	$scope.roomXfer = {
 	    		current: {
-		    		room: 		 edit.originalRowItem,
-		    		reservation: edit.originalItem
+		    		room: 		 props.edit.originalRowItem,
+		    		reservation: props.edit.originalItem
 		    	},
 		    	next: {
-		    		room: 		 row_date,
+		    		room: 		 row_data,
 		    		reservation: row_item_data
 	    		}
 	    	};
@@ -599,25 +642,37 @@ sntRover
 			$scope.gridProps.edit.currentResizeItemRow = undefined; //Planned to transfer the non-namespaced currentResizeItem/Row to here
 	    };
 
-	   	$scope.clearAvailability = function() {
-			var rooms = $scope.data,
-				room,
-                m_status = meta.occupancy.status,
-				reject = function(child) {
-					return angular.lowercase(child[m_status]) === 'available'; 
-				};
+	/*
+		----------------------------------------------------------------
+		END EDIT METHODS
+		----------------------------------------------------------------
+	*/
 
-			for(var i = 0, len = rooms.length; i < len; i++) {
-				room 			= rooms[i];
-				room.occupancy 	= util.copyArray(_.reject(room.occupancy, reject), room.occupancy);	
-				room 			= util.deepCopy(room);							 
-			}
-		};
+	/*
+		----------------------------------------------------------------
+		BEGIN AVAILABILITY METHODS
+		----------------------------------------------------------------
+	*/
 
-    $scope.Availability = function() {	
+   	$scope.clearAvailability = function() {
+		var rooms = $scope.data,
+			room,
+            m_status = meta.occupancy.status,
+			reject = function(child) {
+				return angular.lowercase(child[m_status]) === 'available'; 
+			};
+
+		for(var i = 0, len = rooms.length; i < len; i++) {
+			room 			= rooms[i];
+			room.occupancy 	= _.reject(room.occupancy, reject);	//util.copyArray(_.reject(room.occupancy, reject), room.occupancy);	
+			room 			= util.deepCopy(room);							 
+		}
+	};
+
+    $scope.Availability = function(cleanCycle) {	
 		$scope.clearAvailability();
 		$scope.resetEdit();
-		$scope.renderGrid();
+		if(cleanCycle) $scope.renderGrid();
 
 		if($scope.gridProps.filter.arrival_time) {
 			rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
@@ -630,7 +685,7 @@ sntRover
 					$scope.initPassiveEditMode({
 	                    start_date:     new Date(row_item_data[meta.occupancy.start_date]),
 	                    end_date:       new Date(row_item_data[meta.occupancy.end_date]),
-	                    stay_dates:     start_date.toComponents().date.toDateString(),
+	                    //stay_dates:     start_date.toComponents().date.toDateString(),
 	                    row_item_data:  row_item_data,
 	                    row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id }), //rvDiarySrv.data_Store.get('/room.values.id')[row_item_data.room_id],   
 	                });
@@ -645,9 +700,9 @@ sntRover
 
 	$scope.getArrivalTimes = function() {
 		var filter 		= _.extend({}, $scope.gridProps.filter),
-			time_span 	= Time({ hours: $scope.min_hours }), //$scope.gridProps.filter.min_hours }),
-			start_date 	= new Date($scope.gridProps.display.x_n), //filter.arrival_date,
-			start_time 	= new Date($scope.arrival_times.indexOf($scope.gridProps.filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
+			time_span 	= Time({ hours: $scope.gridProps.display.min_hours }), 
+			start_date 	= new Date($scope.gridProps.display.x_n), 
+			start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
@@ -665,11 +720,22 @@ sntRover
 		return [
 			start,
 			end,
-			rt_filter
+			rt_filter,
+			filter.rate_type
 		];
 	};
 
-	/*WATCHERS*/
+	/*
+		----------------------------------------------------------------
+		END AVAILABILITY METHODS
+		----------------------------------------------------------------
+	*/
+
+	/*
+		----------------------------------------------------------------
+		BEGIN WATCHERS
+		----------------------------------------------------------------
+	*/
 	$scope.$watch('selectedReservations.length', function(newValue, oldValue) {
 		if(newValue > oldValue) {
 			ngDialog.open({
@@ -697,8 +763,8 @@ sntRover
 				//$scope.Availability();
 			}
 
-			rvDiarySrv.Occupancy(time_set.toStartDate(), time_set.toEndDate())//new Date(new Date(time_set.x_n).setHours(0,0,0)), 
-								 //new Date(new Date(time_set.x_p.setHours(23,59,0))))
+			rvDiarySrv.Occupancy(time_set.toStartDate(), time_set.toEndDate())
+								
 			.then(function(data) {
 				$scope.renderGrid();
 			}, responseError);	
@@ -728,33 +794,45 @@ sntRover
 			}		
 		}	
 	});
+	/*
+		----------------------------------------------------------------
+		END WATCHERS
+		----------------------------------------------------------------
+	*/
 
+
+	/*
+		ORIGINAL PROTOTYPE METHOD FOR Determining availability after drag/drop
+		to a certain location.  Check to see if occupancy is there, etc.
+	*/
 	function determineAvailability(reservations, orig_reservation) {
 		var range_validated = true, 
+			current_room_type = $scope.gridProps.filter.room_type,
 			conflicting_reservation,
 			m_start = meta.occupancy.start_date,
+			m_maintenance = meta.occupancy.maintenance,
 			m_end = meta.occupancy.end_date,
-			m_id = meta.occupancy.id,
-			maintenance_span = $scope.gridProps.display.maintenance_span_int * $scope.gridProps.display.px_per_int / $scope.gridProps.display.px_per_ms;
+			m_id = meta.occupancy.id;
 
-			reservations.forEach(function(reservation, idx) {
-				var res_end_date = reservation[m_end] + maintenance_span,
-					new_end_date = orig_reservation[m_end] + maintenance_span;
+			if(reservations) {
+				reservations.forEach(function(reservation, idx) {
+					var res_end_date = reservation[m_end] + reservation[m_maintenance],
+						new_end_date = orig_reservation[m_end] + orig_reservation[m_maintenance];
 
-				if(reservation[m_id] !== orig_reservation[m_id]) {
-					if((orig_reservation[m_start] >= reservation[m_start] && orig_reservation[m_start] <= res_end_date) ||
-					   (reservation[m_start] >= orig_reservation[m_start] && res_end_date <= new_end_date) ||
-					   (orig_reservation[m_start] >= reservation[m_start] && new_end_date <= res_end_date) ||
-					   (new_end_date >= reservation[m_start] && new_end_date <= res_end_date)) {
+					if(reservation[m_id] !== orig_reservation[m_id]) {
+						if((orig_reservation[m_start] >= reservation[m_start] && orig_reservation[m_start] <= res_end_date) ||
+						   (reservation[m_start] >= orig_reservation[m_start] && res_end_date <= new_end_date) ||
+						   (orig_reservation[m_start] >= reservation[m_start] && new_end_date <= res_end_date) ||
+						   (new_end_date >= reservation[m_start] && new_end_date <= res_end_date)) {
 
-					   	conflicting_reservation = reservation;
-						range_validated = false;
+						   	conflicting_reservation = reservation;
+							range_validated = false;
 
-						return;
+							return;
+						}
 					}
-				}
-			});
-		
+				});
+			}
 
 		return [range_validated, conflicting_reservation];
 	}
