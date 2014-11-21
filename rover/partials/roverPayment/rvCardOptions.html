@@ -45,26 +45,26 @@
 					<!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
 					<div class="entry card-number">
 						<label for="card-number">Card number (<span>No spaces</span>)</label>
-						<input name="card-number" id="card-number" placeholder="Enter Card number" value="" maxlength="15" type="text" />
+						<input name="card-number" ng-model="cardData.cardNumber" placeholder="Enter Card number" value="" maxlength="15" type="text" />
 					</div>
 					<div class="entry card-expiry">
 						<label for="expiry-month">Expires (<span>Month/Year</span>)</label>
-						<input name="expiry-month" id="expiry-month" placeholder="MM" value="" maxlength="2" size="3" type="text" />
-						<input name="expiry-year" id="expiry-year" placeholder="YY"  value="" maxlength="2" size="3" type="text" />
+						<input name="expiry-month" ng-model="cardData.expiryMonth" id="expiry-month" placeholder="MM" value="" maxlength="2" size="3" type="text" />
+						<input name="expiry-year" ng-model="cardData.expiryYear" id="expiry-year" placeholder="YY"  value="" maxlength="2" size="3" type="text" />
 					</div>
 					<div class="entry card-name">
 						<label for="name-on-card">Name on card</label>
-						<input name="name-on-card" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
+						<input name="name-on-card" ng-model="cardData.expiryName" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
 					</div>
 					<div class="entry card-ccv">
 						<label for="ccv">CCV</label>
-						<input name="ccv" id="ccv" placeholder="CCV" value="" maxlength="3" size="4" type="text" />
+						<input name="ccv" id="ccv" ng-model="cardData.CCV" placeholder="CCV" value="" maxlength="3" size="4" type="text" />
 					</div>
-					<!-- <div class="entry card-action">
-						<button type="button" class="button blue">
+					<div class="entry card-action">
+						<button type="button" class="button blue" ng-click="getToken()">
 							Add
 						</button>
-					</div> -->
+					</div>
 				</div>
 
 				<!-- New card: Call-In -->

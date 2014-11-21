@@ -16,6 +16,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		//console.log(JSON.stringify($scope.renderData));
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
+	/*
+	 * change payment type action - initial add payment screen
+	 */
 	$scope.changePaymentType = function(){
 		if($scope.dataToSave.paymentType == "CC"){
 			$scope.shouldShowAddNewCard    = true;
@@ -25,6 +28,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.showInitialScreen       = true; 
 		}
 	};
+	
 	
 	
 }]);
