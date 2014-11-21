@@ -30,5 +30,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 	
 	
+	$scope.$on("MLI_TOKEN_CREATED", function(mliData){
+		
+	});
+	
 	
 }]);

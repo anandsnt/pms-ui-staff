@@ -41,17 +41,13 @@ sntRover.controller('RVCardOptionsCtrl',
 			 sessionDetails.cardExpiryMonth = $scope.cardData.expiryMonth;
 			 sessionDetails.cardExpiryYear = $scope.cardData.expiryYear;
 			var successCallBack = function(response){
-				console.log("successCallBack");
-				console.log("success"+response.session);
 				$scope.$emit("hideLoader");
 				
 				MLISessionId = response.session;
-				console.log("sess==="+MLISessionId);
 				var mliData = {
 					"token": MLISessionId,
 					"cardDetails": $scope.cardData
-				}
-				console.log(mliData);
+				};
 				$scope.$emit("MLI_TOKEN_CREATED", mliData);
 			};
 			var failureCallBack = function(data){
