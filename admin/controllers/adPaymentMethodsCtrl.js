@@ -3,7 +3,8 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.editData = {};
-	
+	$scope.currentClickedElementCC = -1
+
 	var fetchSuccess = function(data) {
 		$scope.data = data;
 		$scope.$emit('hideLoader');
@@ -69,12 +70,18 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * To save/Update payment method details
 	 */
 	$scope.savePaymentMethod = function() {
-		
-		var successCallbackSave = function(data){
-			
+
+		var successCallbackSaveCC = function(data){
+			$scope.data.credit_card_types[parseInt($scope.currentClickedElementCC)] = data;
+			$scope.$emit('hideLoader');
+    		$scope.currentClickedElementCC = -1;
+		};
+
+		var successCallbackSavePaymentMethod = function(data){
+
 			if($scope.currentClickedElement === "new"){
 				if(data.is_cc){
-					// Added new credit card type item ( ie,'is_cc = true' )
+				// Added new credit card type item ( ie,'is_cc = true' )
 					$scope.data.credit_card_types.push(data);
 				}
 				else{
@@ -108,21 +115,31 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
     		$scope.currentClickedElement = -1;
     		$scope.currentClickedElementCC = -1;
     	};
-    	if($scope.currentClickedElement === "new"){
-			var data = $scope.addData;
+
+    	var dataToSend = {};
+
+    	if($scope.currentClickedElement === "new") dataToSend = $scope.addData;
+		else dataToSend = $scope.editData;
+		
+		// If we edit system defined credit card type - call api to update credit card.
+		if( $scope.currentClickedElementCC != -1 && dataToSend.is_system_defined ){
+			$scope.invokeApi(ADPaymentMethodsSrv.saveCreditCardMethod, dataToSend , successCallbackSaveCC);
 		}
+		// Else we call api to update payment types.
 		else{
-			var data = $scope.editData;
+			$scope.invokeApi(ADPaymentMethodsSrv.savePaymentMethod, dataToSend , successCallbackSavePaymentMethod);
 		}
-		$scope.invokeApi(ADPaymentMethodsSrv.savePaymentMethod, data , successCallbackSave);
 	};
+
 	/*
 	 * To render edit payment method screen
 	 * @param {index} index of selected payment method
 	 */
 	$scope.editPaymentMethod = function(index) {
-		$scope.currentClickedElement = index;
-		$scope.editData = dclone($scope.data.payments[index],["is_active"]);
+		if($scope.data.payments[index].value !== 'CC'){
+			$scope.currentClickedElement = index;
+			$scope.editData = dclone($scope.data.payments[index],["is_active"]);
+		}
 	};
 
 	$scope.editPaymentMethodCC = function(index) {
