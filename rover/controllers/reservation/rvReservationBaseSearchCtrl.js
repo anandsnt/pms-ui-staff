@@ -76,6 +76,25 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var fetchMinTimeSucess = function(data) {
             $scope.reservationData.resHours = (data.min_hours != null) ? parseInt(data.min_hours) : 1;
         };
+
+        /**
+        *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+        *   to the state where this controller is set as the state controller
+        *
+        *   Now we do want the original parent controller 'RVReservationMainCtrl' to bind that data
+        *   so we have created a 'callFromChildCtrl' method on the 'RVReservationMainCtrl' $scope.
+        *
+        *   Once we fetch the baseData here we are going call 'callFromChildCtrl' method
+        *   while passing the data, this way all the things 'RVReservationMainCtrl' was doing with
+        *   'baseData' will be processed again
+        *
+        *   The number of '$parent' used is based on how deep this state is wrt 'rover.reservation' state
+        */
+        var rvReservationMainCtrl = $scope.$parent.$parent;
+        rvReservationMainCtrl.callFromChildCtrl(baseData);
+
+
+
         var init = function() {
             $scope.viewState.identifier = "CREATION";
             $scope.reservationData.rateDetails = [];
