@@ -21,7 +21,11 @@ var TimelinePanel = React.createClass({
 
 		setTimeout(function () {
 	        iscroll.timeline.refresh();
-	    }.bind(this), 0);
+	        
+	        if(_.isNumber(this.props.display.scrollTo)) {
+	        	//scroll.timeline.scrollTo(this.props.display.scrollTo, 0);
+	        }
+	    }.bind(this), 1000);
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.timeline.destroy();
@@ -55,6 +59,7 @@ var TimelinePanel = React.createClass({
 		Timeline({
 			display:                props.display,
 			iscroll:                props.iscroll,
+			filter:                 props.filter,
 			edit:    			    props.edit,
 			meta:                   props.meta,
 			__onResizeCommand:      props.__onResizeCommand,

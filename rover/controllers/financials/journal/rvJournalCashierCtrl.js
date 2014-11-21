@@ -1,5 +1,6 @@
 sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$rootScope',function($scope,RVJournalSrv,$rootScope) {
 	
+   
     /**
     * fetch history details corresponding to selected user
     * 
@@ -13,24 +14,14 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
             $scope.selectedHistory = ($scope.detailsList.length>0) ? 0:"";
             $scope.details = ($scope.detailsList.length>0) ?  $scope.detailsList[0] : {};//set first one as selected
             $scope.selectedHistoryId = ($scope.detailsList.length>0) ? $scope.detailsList[0].id :"";            
-            setTimeout(function(){$scope.refreshScroller('cashier_shift');}, 500);
             $scope.isLoading = false;
+            setTimeout(function(){$scope.refreshScroller('cashier_history');}, 200);
+            setTimeout(function(){$scope.refreshScroller('cashier_shift');}, 200);
         };
         
         var data =  {"user_id":$scope.data.filterData.selectedCashier,"date":$scope.data.cashierDate,"report_type_id":$scope.data.reportType};
         $scope.invokeApi(RVJournalSrv.fetchCashierDetails, data, fetchDetailsSuccessCallback);  
     };
-
-
-    $scope.isDateBeforeBusinnesDate = function(date){
-        return ($rootScope.businessDate  !== date)?true:false;
-    }
-
-    $scope.isLastCashierPeriod = function(date){
-        console.log($scope.lastCashierId)
-        console.log($scope.details.id)
-        return ( parseInt($scope.lastCashierId) === parseInt($scope.details.id))?true:false;
-    }
 
     //init
     var init = function(){
@@ -40,12 +31,20 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
         $scope.selectedHistory = 0;
         $scope.setScroller('cashier_history', {});
         $scope.setScroller('cashier_shift', {});
-        setTimeout(function(){$scope.refreshScroller('cashier_history');}, 500);
         $scope.isLoading = true;
         fetchHistoryDetails();
     };
 
-    init();	
+    init(); 
+
+
+    $scope.isDateBeforeBusinnesDate = function(date){
+        return ($rootScope.businessDate  !== date)?true:false;
+    };
+
+    $scope.isLastCashierPeriod = function(date){
+        return ( parseInt($scope.lastCashierId) === parseInt($scope.details.id))?true:false;
+    };
 	
     
     /**
@@ -68,6 +67,8 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
             $scope.$emit('hideLoader');
             $scope.detailsList[$scope.selectedHistory] = data;
             $scope.details = data;
+            $scope.lastCashierId = $scope.details.id;
+            $scope.data.filterData.cashierStatus = 'CLOSED';
         };
         var updateData = {};
         updateData.id = $scope.selectedHistoryId;
@@ -88,6 +89,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
             $scope.$emit('hideLoader');
             $scope.detailsList[$scope.selectedHistory] = data;
             $scope.details = data;
+            $scope.data.filterData.cashierStatus = 'OPEN';
         };
         var updateData = {};
         updateData.id = $scope.selectedHistoryId;

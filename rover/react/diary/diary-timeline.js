@@ -1,16 +1,16 @@
 var Timeline = React.createClass({
 	render: function() {
-		var props = this.props,
-			state = this.state,
-			display = props.display,
+		var props 					= this.props,
+			state 					= this.state,
+			display 				= props.display,
 			timeline,
-			hourly_spans = [],
-			segment_hour_display = [],
+			hourly_spans 			= [],
+			segment_hour_display 	= [],
 			interval_spans,
-			px_per_int = display.px_per_int + 'px',
-			px_per_hr = display.px_per_hr + 'px',
-			start_time = display.x_origin_start_time,
-			self = this;
+			px_per_int 				= display.px_per_int + 'px',
+			px_per_hr 				= display.px_per_hr + 'px',
+			start_time 				= display.x_nL_time, 
+			self 					= this;
 
 		(function() {
 			var time = start_time.hours;
@@ -50,7 +50,7 @@ var Timeline = React.createClass({
 		return React.DOM.div({
 			className: 'wrapper',
 			style: {
-				width: display.width
+				width: display.width + 'px'
 			},
 		}, React.DOM.div({
 			className: 'hours'
@@ -58,6 +58,7 @@ var Timeline = React.createClass({
 		Resizable({
 			display:               display,
 			edit:                  props.edit,
+			filter:                props.filter,
 			iscroll:               props.iscroll,
 			meta:                  props.meta,
 			__onResizeCommand:     props.__onResizeCommand,

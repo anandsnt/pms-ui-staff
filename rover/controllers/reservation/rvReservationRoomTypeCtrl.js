@@ -353,8 +353,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							$scope.displayData.availableRates.push(d);
 							d.preferredType = d.rooms[0].id;
 						} else if (_.where(d.rooms, {
-							id: parseInt($scope.stateCheck.preferredType)
-						}).length > 0) {
+								id: parseInt($scope.stateCheck.preferredType)
+							}).length > 0) {
 							d.preferredType = parseInt($scope.stateCheck.preferredType);
 							d.rooms.sort(function(a, b) {
 								if (a.total[d.rate.id].average < b.total[d.rate.id].average)
@@ -378,28 +378,37 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				return 0;
 			});
 
+			/**
+			 * A simple utility function to move an element from one position to next in an array
+			 * @param  {Array} arr
+			 * @param  {Integer} fromIndex
+			 * @param  {Integer} toIndex
+			 */
+			function arraymove(arr, fromIndex, toIndex) {
+				var element = arr[fromIndex]
+				arr.splice(fromIndex, 1);
+				arr.splice(toIndex, 0, element);
+			}
+
 			// CICO-7792: Put contracted / corporate rates on top
-			$scope.displayData.availableRates.sort(function(a, b) {
-				if (a.rate.account_id != null && b.rate.account_id != null) {
-					if (parseInt(a.rate.account_id) == parseInt($scope.reservationDetails.companyCard.id)) {
-						return -1;
-					}
-					if (parseInt(b.rate.account_id) == parseInt($scope.reservationDetails.companyCard.id)) {
-						return 1;
+			// CICO-10455
+			// Iterate from last till first in the array and put the element with account_id upfront
+
+			if ($scope.displayData.availableRates && $scope.displayData.availableRates.length > 1) {
+				var ratesCopy = angular.copy($scope.displayData.availableRates);
+				for (i = ratesCopy.length; i > 0; i--) {
+					var currentRate = ratesCopy[i - 1].rate;
+					if (currentRate.account_id != null) {
+						arraymove($scope.displayData.availableRates, i - 1, 0);
 					}
 				}
-				if (a.rate.account_id != null)
-					return -1;
-				if (b.rate.account_id != null)
-					return 1;
-				return 0;
-			});
+			}
 		}
 
 		var populateStayDates = function(rateId) {
 			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(details, date) {
 				details.rate.id = rateId,
-				details.rate.name = $scope.displayData.allRates[rateId].name;
+					details.rate.name = $scope.displayData.allRates[rateId].name;
 			});
 		}
 
@@ -476,7 +485,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			 */
 			// CICO-9727: Reservations - Error thrown when user chooses SR rates for another room type
 			// bypass rate selection from room type other than $scope.stateCheck.preferredType
-			if($scope.stateCheck.preferredType > 0 && roomId !== $scope.stateCheck.preferredType){
+			if ($scope.stateCheck.preferredType > 0 && roomId !== $scope.stateCheck.preferredType) {
 				return false;
 			}
 			if ($scope.stateCheck.stayDatesMode) {
@@ -511,8 +520,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.reservationData.rooms[$scope.activeRoom].rateId = rateId;
 				$scope.reservationData.rooms[$scope.activeRoom].isSuppressed = $scope.displayData.allRates[rateId].is_suppress_rate_on;
 				$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
-				$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id;
-				$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id;
+				$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id == null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
+				$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id == null ? "" : $scope.displayData.allRates[rateId].source.id;
 				$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomId].total[rateId].average;
 				$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
 
@@ -553,20 +562,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.selectedRoomType = $scope.selectedRoomType == val.id ? -1 : val.id;
 			$scope.refreshScroll();
 		}
-		
+
 		// Fix for CICO-9536
 		// Expected Result: Only one single room type can be applied to a reservation.
 		// However, the user should be able to change the room type for the first night on the Stay Dates screen,
 		// while the reservation is not yet checked in. The control should be disabled for any subsequent nights.
-		$scope.resetRates = function(){
+		$scope.resetRates = function() {
 			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate, idx) {
 				stayDate.rate.id = '';
-                stayDate.rate.name ='';
-            });
-            $scope.stateCheck.rateSelected.allDays = false;
-            // reset value, else rate selection will get bypassed 
-            // check $scope.handleBooking method
-            $scope.stateCheck.rateSelected.oneDay = false;
+				stayDate.rate.name = '';
+			});
+			$scope.stateCheck.rateSelected.allDays = false;
+			// reset value, else rate selection will get bypassed 
+			// check $scope.handleBooking method
+			$scope.stateCheck.rateSelected.oneDay = false;
 		}
 
 		$scope.filterRooms = function() {
