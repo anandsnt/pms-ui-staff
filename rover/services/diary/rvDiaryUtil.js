@@ -43,26 +43,26 @@ sntRover
                 x_n: new Date(x_left),
                 x_p: new Date(x_right),
                 toStartDate: function() {
-                    return new Date(new Date(time.x_n).setHours(0, 0, 0));
+                    return new Date(new Date(x_left).setHours(0, 0, 0));
                 },
                 toEndDate: function() {
-                    return new Date(new Date(time.x_p).setHours(23, 59, 0));
+                    return new Date(new Date(x_right).setHours(23, 59, 0));
                 }
             };
 
-            ret.x_origin_start_time = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
+            ret.x_origin_start_time = ret.x_origin.toComponents().time.convertToReferenceInterval(15); 
             ret.x_n_time = ret.x_n.toComponents().time.convertToReferenceInterval(15);
             ret.x_p_time = ret.x_p.toComponents().time.convertToReferenceInterval(15);
 
             if(display) {
-                _.extend(display, ret);
-                /*display.x_offset                = x_offset;
+                display.x_offset                = x_offset;
                 display.x_origin                = x_origin;
                 display.x_origin_start_time     = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
                 display.x_n                     = x_left;
+                display.x_0                     = x_origin; //ret.x_n.getTime();
                 display.x_n_time                = ret.x_n.toComponents().time.convertToReferenceInterval(15);
                 display.x_p                     = x_right;
-                display.x_p_time                = ret.x_p.toComponents().time.convertToReferenceInterval(15);*/
+                display.x_p_time                = ret.x_p.toComponents().time.convertToReferenceInterval(15);
 
                ret.display = display;
             }

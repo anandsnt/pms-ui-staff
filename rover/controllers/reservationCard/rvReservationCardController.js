@@ -13,7 +13,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 
 		var title = "Staycard";
 		$scope.setTitle(title);
-
+		$scope.prevTimeLineEmpty = false;
 		$scope.reservationCardClick = function() {
 			$scope.$emit('reservationCardClicked');
 		};
@@ -113,18 +113,27 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				$scope.reservationList = $scope.data.reservation_list.history_reservations_arr;
 				count = $scope.countHistory;
 			}
+			
+			//prevTimeLineEmpty - flag indicates if the "FROM timeline" was empty 
+			//Bug fix CICO-10184
+			if(count > 0 && !$scope.prevTimeLineEmpty){
+				$scope.reservationDisplayStatus = true;
+			} else {
+				$scope.reservationDisplayStatus = false;
+			}
+
 			if (count>0){
+				$scope.prevTimeLineEmpty = false;
 				$scope.currentReservationId = $scope.reservationList[0].confirmation_num;
 				$scope.getReservationDetails($scope.reservationList[0].confirmation_num, $scope.reservationList[0].id)
 			}
 			else {
+				$scope.prevTimeLineEmpty = true;
 				$scope.currentReservationId = "";
 				$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
 
 			$scope.$broadcast('RESERVATIONLISTUPDATED');
-			//This status is used to show appr message if count of reservations in selected time line is zero
-			$scope.reservationDisplayStatus = (count > 0) ? true : false;
 			
 		};
 		$scope.$on("REFRESH_LIST_SCROLL", function(){

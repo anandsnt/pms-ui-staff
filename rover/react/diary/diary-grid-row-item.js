@@ -50,7 +50,7 @@ var GridRowItem = React.createClass({
 			end_time_ms 			= !state.resizing ? data[m.end_date] : state.currentResizeItem[m.end_date],
 			maintenance_time_span 	= data[m.maintenance] * px_per_int, 
 			reservation_time_span 	= (end_time_ms - start_time_ms) * px_per_ms,  
-			is_temp_reservation 	= data[m.status] === 'available'; //props.angular_evt.isAvailable(row_data, data);
+			is_temp_reservation 	= data[m.status] === 'available';
 
 		return GridRowItemDrag({
 			key: 				data.key,
@@ -67,7 +67,7 @@ var GridRowItem = React.createClass({
 			__onDragStop: 		props.__onDragStop,
 			currentDragItem:    props.currentResizeItem,
 			style: 			   { 
-				display: 'block', //(props.angular_evt.displayFilter(props.filter, row_data, data) ? 'block' : 'none'),
+				display: 'block',
 				left: (start_time_ms - x_origin) * px_per_ms + 'px'
 			}
 		}, 
