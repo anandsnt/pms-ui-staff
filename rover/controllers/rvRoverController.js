@@ -69,6 +69,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
 	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+  $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
 
 	
 

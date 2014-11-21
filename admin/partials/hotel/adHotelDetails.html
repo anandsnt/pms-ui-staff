@@ -89,13 +89,11 @@
 			
 			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{readOnly}}"></ad-textbox>
 
-			<div class="entry">
-				<label for="hotel-currency"> Hotel Currency <strong>*</strong> </label>
-				<div class="select">
-					<select ng-model="data.default_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
-						<option value=""> Hotel Currency </option>
-						<option ng-model="currency.id" ng-repeat="currency in data.currency_list" ng-selected="currency.id==data.default_currency" value="{{currency.id}}">{{currency.code}}</option>
-					</select>
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
+				<label>Enable single digit room number search</label>
+				<div class="switch-button single" ng-class="{ on : data.is_single_digit_search == 'true' }" ng-click="toggleSingleDigitSearch()">
+					<input type="checkbox" value="{{data.is_single_digit_search}}" id="is-single-digit-search">
+					<span class="switch-icon"></span>
 				</div>
 			</div>
 
@@ -196,6 +194,15 @@
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 						<option value=""> PMS Type </option>
 						<option ng-repeat="pms_types in data.pms_types" value="{{pms_types.value}}" ng-selected="pms_types.value==data.hotel_pms_type">{{pms_types.value}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="entry">
+				<label for="hotel-currency"> Hotel Currency <strong>*</strong> </label>
+				<div class="select">
+					<select ng-model="data.default_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
+						<option value=""> Hotel Currency </option>
+						<option ng-model="currency.id" ng-repeat="currency in data.currency_list" ng-selected="currency.id==data.default_currency" value="{{currency.id}}">{{currency.code}}</option>
 					</select>
 				</div>
 			</div>
