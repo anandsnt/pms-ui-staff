@@ -16,14 +16,22 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 *   A post method to activate/inactivate hotel payments
 	 *   @param {String} index value for the credit card list.
 	 */
-	$scope.toggleClickedPayment = function(index) {
-		var toggleOn = $scope.data.payments[index].is_active == 'true' ? 'false' : 'true';
+	$scope.toggleClickedPayment = function(index,isFromCCGroup) {
+		
+		if(isFromCCGroup){
+			var item = $scope.data.credit_card_types[index];
+		}
+		else{
+			var item = $scope.data.payments[index];
+		}
+
+		var toggleOn = item.is_active == 'true' ? 'false' : 'true';
 		var data = {
-			'id' : $scope.data.payments[index].id,
+			'id' : item.id,
 			'set_active' : toggleOn
 		};
 		var postSuccess = function() {
-			$scope.data.payments[index].is_active = ($scope.data.payments[index].is_active == 'true') ? 'false' : 'true';
+			item.is_active = toggleOn;
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADPaymentMethodsSrv.toggleSwitchPayment, data, postSuccess);
