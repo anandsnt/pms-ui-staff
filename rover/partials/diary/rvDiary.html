@@ -102,7 +102,7 @@
                 </div>
                 <div class="entry results">
                     <ul class="search-list" ng-hide="companyCardResults.length === 0">
-                        <li ng-repeat="name_card in companyCardResults track by $index">
+                        <li ng-repeat="name_card in gridProps.filter.rate_type_details track by $index">
                             <div class="icon company-card" ng-if="name_card.account_type === 'COMPANY' && name_card.company_logo === ''"></div>
                             <div class="icon travel-agent" ng-if="name_card.account_type === 'TRAVELAGENT' && name_card.company_logo == ''"></div>
                             <img ng-src="{{name_card.company_logo}}" alt="" ng-if="name_card.company_logo !== ''" />
