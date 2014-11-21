@@ -59,7 +59,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
                 stayDays: [],
-                resHours: '',
+                resHours: 1,
                 checkinTime: {
                     hh: '',
                     mm: '00',
@@ -623,7 +623,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     return baseRate;
                 };
 
-                if (addon.postType.value == "NIGHT" && parseInt($scope.reservationData.numNights) > 1) {
+                if (addon.postType.value == "STAY" && parseInt($scope.reservationData.numNights) > 1) {
                     var cumulativeRate = 0
                     _.each(currentRoom.stayDates, function(stayDate, date) {
                         if (date !== $scope.reservationData.departureDate)
@@ -739,8 +739,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.rooms[roomIdx].roomTypeName = '';
             $scope.reservationData.rooms[roomIdx].rateId = '';
             $scope.reservationData.rooms[roomIdx].rateName = '';
-            $scope.reservationData.demographics.market = '';
-            $scope.reservationData.demographics.source = '';
+            $scope.reservationData.demographics = {
+                market: '',
+                source: '',
+                reservationType: '',
+                origin: ''
+            };
 
             // Redo the staydates array
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {

@@ -76,7 +76,23 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 			});			
 		}).call(this, obj);
 	}
+	Time.prototype.convertToReferenceInterval = function(interval) {
+		var time_shift;
 
+		time_shift = (this.minutes / interval).toFixed() * interval;
+
+		if(this.minutes > 45.0) {
+			this.hours += 1;
+			this.minutes = 0;
+		} else {
+			this.minutes = time_shift;
+		}
+
+		this.seconds = 0;
+		this.milliseconds = 0;
+
+		return this;
+	};
 	Time.prototype.getOffsetFromReference = function(reference_time) {
 		var sec_delta;
 
@@ -105,27 +121,39 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		return time < 10 ? '0' + time :time;
 	};
 	Time.prototype.toString = function(asAMPM) {
-		var hours = this.padZeroes(this.hours),  //(this.hours < 10 ? '0' + this.hours : this.hours), 
+		var hours = this.padZeroes(this.hours), 
 			min = this.padZeroes(this.minutes),
-			ampm = '';   //(this.minutes < 10 ? '0' + this.minutes : this.minutes), 
-			//ampm = this.AMPM(); ; // = ' ' + (this.hours > 11) ? 'PM' : 'AM';
+			ampm = '';
 
 		if(asAMPM) {
 			hours = hours % 12;
+
+			if(hours === 0) {
+				hours = 12;
+			}
+
 			ampm = this.AMPM();
 		}
-		return this.hours + ':' + this.minutes + ampm;
+		
+		return hours + ':' + min + ampm;
 	};
-	Time.prototype.toReservationFormat = function() {
-		return {
+	Time.prototype.toReservationFormat = function(asObject) {
+		var ret;
+
+		 ret = {
 			hh: this.padZeroes(this.hours % 12),
 			mm: this.padZeroes(this.minutes),
 			amPM: this.AMPM()
 		};
+
+		if(asObject) {
+			return ret;
+		}else{
+			return ret.hh + ':' + ret.mm + ' ' + ret.amPM;
+		}
 	};
 	Time.prototype.constructor = Time;
 
-//if(typeof String.prototype.toTimeComponent === 'undefined') {
 	String.prototype.toTimeComponent = function(time) {
 		var pos = time.indexOf(':'),
 		    hours, minutes;
@@ -145,8 +173,6 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		return;
 	};
 
-
-//if(typeof Date.prototype.toComponents === 'undefined') {
 	Date.prototype.toComponents = function() {
 		var __DAYS = ['Monday', 
 					  'Tuesday', 
@@ -191,5 +217,4 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				hours: this.getHours()
 			})
 		};
-	//};
 };

@@ -46,7 +46,7 @@
             </div>
         </div>
         <!-- Datepicker for revenue tab (from date)-->
-        <div class="entry date" ng-click="clickedFromDate()" ng-show="data.activeTab==0">
+        <div class="entry date" ng-click="clickedFromDate()" ng-hide="data.activeTab==2">
             <label for="revenue-from-date" translate>DATE_FROM</label>
             <div class="entry-data">
                 <input name="revenue-from-date" id="revenue-from-date" type="text" class="datepicker" value="{{data.fromDate | date:dateFormat }}" readonly />
@@ -55,24 +55,14 @@
                 <span id="revenue-from-date-year" class="year">{{data.fromDate | date:'y'}}</span>
             </div>
         </div>
-        <!-- Datepicker for revenue tab (to date)-->
-        <div class="entry date" ng-click="clickedToDate()" ng-show="data.activeTab==0">
+        <!-- Datepicker for revenue/payment tab (to date)-->
+        <div class="entry date" ng-click="clickedToDate()" ng-hide="data.activeTab==2">
             <label for="revenue-to-date" translate>DATE_TO</label>
             <div class="entry-data">
                 <input name="revenue-to-date" id="revenue-to-date" type="text" class="datepicker"  value="{{data.toDate | date:dateFormat}}" readonly />
                 <strong id="revenue-to-date-day" class="day">{{data.toDate | date:'d'}}</strong>
                 <span id="revenue-to-date-month" class="month">{{data.toDate | date:'MMMM'}}</span>
                 <span id="revenue-to-date-year" class="year">{{data.toDate | date:'y'}}</span>
-            </div>
-        </div>
-        <!-- Datepicker for payment tab-->
-        <div class="entry date" ng-click="clickedPaymentDate()" ng-show="data.activeTab==1">
-            <label id="revenue-date-label" for="revenue-date" translate>DATE</label>
-            <div class="entry-data">
-                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" readonly />
-                <strong id="revenue-date-day" class="day">{{data.paymentDate | date:'d'}}</strong>
-                <span id="revenue-date-month" class="month">{{data.paymentDate | date:'MMMM'}}</span>
-                <span id="revenue-date-year" class="year">{{data.paymentDate | date:'y'}}</span>
             </div>
         </div>
         <!-- Datepicker for cashier tab-->

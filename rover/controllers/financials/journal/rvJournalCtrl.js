@@ -39,9 +39,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.clickedToDate = function(){
 		$scope.popupCalendar('TO');
 	};
-	$scope.clickedPaymentDate = function(){
-		$scope.popupCalendar('PAYMENT');
-	};
 	$scope.clickedCashierDate = function(){
 		$scope.popupCalendar('CASHIER');
 	};
@@ -98,14 +95,11 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.clearAllEmployeeSelection();
         $scope.getSelectButtonStatus();
 
-        if($scope.data.activeTab == '0' ){
-            $scope.resetRevenueFilters();
-            $scope.refreshRevenueTab();
-        }
-        else if ($scope.data.activeTab == '1' ){
-           $scope.resetPaymentFilters();
-           $scope.refreshPaymentTab();
-        }
+        $scope.resetRevenueFilters();
+        $scope.refreshRevenueTab();
+        $scope.resetPaymentFilters();
+        $scope.refreshPaymentTab();
+
         $scope.data.filterTitle = "All Departments";
     };
 
@@ -174,20 +168,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             $scope.setupDeptAndEmpList();
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
 
-            if($scope.data.activeTab == '0' ){
-                $scope.filterRevenueByDepartmentsOrEmployees();
-                $scope.refreshRevenueTab();
-            }
-            else if ($scope.data.activeTab == '1' ){
-                $scope.filterPaymentByDepartmentsOrEmployees();
-                $scope.refreshPaymentTab();
-            }
-            else{
-                $scope.filterRevenueByDepartmentsOrEmployees();
-                $scope.refreshRevenueTab();
-                $scope.filterPaymentByDepartmentsOrEmployees();
-                $scope.refreshPaymentTab();
-            }
+            $scope.filterRevenueByDepartmentsOrEmployees();
+            $scope.refreshRevenueTab();
+            $scope.filterPaymentByDepartmentsOrEmployees();
+            $scope.refreshPaymentTab();
         } 
     };
 
@@ -426,7 +410,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         yesterday.setDate(yesterday.getDate()-1);
         $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
-        $scope.data.paymentDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
     }
     else if($stateParams.id == 2){
@@ -437,7 +420,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         // c) All date fields should default to Business Date
         $scope.data.fromDate = $rootScope.businessDate;
         $scope.data.toDate   = $rootScope.businessDate;
-        $scope.data.paymentDate = $rootScope.businessDate;
         $scope.data.cashierDate = $rootScope.businessDate;
         // b) All employee fields should default to logged in user
         $timeout(function(){

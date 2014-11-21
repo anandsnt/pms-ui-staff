@@ -6522,12 +6522,12 @@
 /* Reservations             ==============================*/
     .create-reservation {
         position: relative;
-        .calc-height(100, 60); /* %, px */
+        .calc-height(100, 60);
 
         > .wrapper { 
             margin: 0 auto;
             padding: 60px 0 20px; 
-            #pixel-to-percent > .width(1210, 2048);
+            #pixel-to-percent > .width(1228, 2048);
             .float; 
         }
 
@@ -6551,8 +6551,7 @@
                 select {
                     font-size: 36px;
                     min-height: 60px;
-                    height: 60px;
-                    width: 100%;
+                    .size(60px, 100%);
                 }
 
                 input { line-height: 60px; }
@@ -6582,7 +6581,7 @@
                     
                     &#arriving,
                     &#departing {
-                        #pixel-to-percent > .width(440, 1210);
+                        #pixel-to-percent > .width(400, 1230);
 
                         .entry-data {
                             background: @white @calendar no-repeat 90% 20px;
@@ -6603,62 +6602,120 @@
 
                             .day,
                             .month,
-                            .year {
-                                position: absolute;
-                            }
+                            .year { position: absolute; }
 
                             .month,
                             .year {
-                                left: 80px;
+                                left: 70px;
                                 font-size: 18px;
                                 line-height: 1em;
                             }
 
                             .day {
                                 top: 20px;
-                                left: 15px;
+                                left: 10px;
                                 font-size: 48px;
                             }
 
                             .month { top: 10px; }
                             .year { top: 30px; }
 
-                            @media @highdpi {
-                                background-image: @calendar2x;
-                            }
+                            @media @highdpi { background-image: @calendar2x; }
 
-                            &:hover {
-                                background-position: 90% -30px;
-                            }
-                        
+                            &:hover { background-position: 90% -30px; }
                         }             
                     }
 
                     &#arriving { color: @green; }
-                    &#departing { color: @red; }
+                    &#departing { 
+                        color: @red; 
+                        margin-right: 0;
+                    }
 
-                    &#nights {
+                    &#type {
                         position: relative;
-                        #pixel-to-percent > .width(244, 1210);
+                        #pixel-to-percent > .width(349, 1230);
 
                         .entry-data {
                             .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
 
-                            .label {
-                                position: absolute;
-                                top: 45px;
-                                left: 15px;
-                                z-index: 0;
-                            }
-
                             input { 
                                 position: relative;
-                                padding-left: 70px; 
+                                padding-right: 90px;
+                                text-align: center;
+                            }
+                        }
+
+                        .switch-button {
+                            position: absolute;
+                            top: 25px;
+                            right: 0px;
+                            background: @grey2;
+                            .size(60px, 80px);
+                            #border-radius > .rounded(0px);
+
+                            .data-off,
+                            .data-on { 
+                                font-size: 16px;
+                                padding: 5px;
+                                line-height: 25px;
+                                font-weight: 600;
+                                .size(60px, 80px);
+
+                                .switch-icon {
+                                    color: @grey3;
+                                    text-align: center;
+                                    float: none;
+                                    margin: 0;
+                                    text-shadow: none;
+                                    .clickable;
+                                    background: @white;
+                                    .size(25px, 100%);
+                                }
+
+                                .value {
+                                    color: @white;
+                                    font-weight: 600;
+                                    .size(25px, 100%);
+                                }
+
+                                &.data-off {
+                                    left: 0;
+                                    right: 0;
+                                    top: 0;
+                                } 
+
+                                &.data-on {
+                                    left: 0;
+                                    right: 0;
+                                    top: 100%;
+                                }
+                            }
+
+                            &.on {
+                                .data-off {
+                                    left: 0;
+                                    right: 0;
+                                    top: -100%;
+                                }
+
+                                .data-on {
+                                    left: 0;
+                                    right: 0;
+                                    top: 0;
+                                }
                             }
                         }
                     }
 
-                    &:last-child { margin-right: 0; }           
+                    &#arriving-time {
+                        margin-right: 0;
+                        #pixel-to-percent > .width(400, 1230);
+
+                        select { 
+                            option { font-size: 16px; }
+                        }
+                    }          
                 }
             }
 
@@ -6688,7 +6745,7 @@
                             }
 
                             &.adults {
-                                #pixel-to-percent > .width(250, 1210);
+                                #pixel-to-percent > .width(250, 1230);
 
                                 label { left: 15px; }
                                 select { padding-left: 65px; }
@@ -6696,7 +6753,7 @@
                             }
 
                             &.children { 
-                                #pixel-to-percent > .width(270, 1210);
+                                #pixel-to-percent > .width(270, 1230);
 
                                 label { left: 10px; }
                                 select { padding-left: 75px; }
@@ -6704,7 +6761,7 @@
                             }
                             
                             &.infants { 
-                                #pixel-to-percent > .width(250, 1210);
+                                #pixel-to-percent > .width(250, 1230);
 
                                 label { left: 10px; }
                                 select { padding-left: 65px; }
@@ -6712,7 +6769,7 @@
                             }
 
                             &.room-type {
-                                #pixel-to-percent > .width(440, 1210);
+                                #pixel-to-percent > .width(440, 1230);
 
                                 select {
                                     padding-left: 10px;
@@ -6764,7 +6821,7 @@
                 .float;
 
                 .entry {
-                    #pixel-to-percent > .width(585, 1210);
+                    #pixel-to-percent > .width(585, 1230);
                     .pull-left;
 
                     input {
@@ -6773,7 +6830,7 @@
                     }
 
                     &.no-label {
-                        #pixel-to-percent > .left-margin(40, 1210);
+                        #pixel-to-percent > .left-margin(40, 1230);
 
                         input { margin-top: 25px; }
                     }
@@ -6804,7 +6861,7 @@
 
                         input {
                             font-size: 24px;
-                            #pixel-to-percent > .width(550, 1210);
+                            #pixel-to-percent > .width(550, 1230);
                             .placeholder-text(24px, 60px, 700, @grey3, normal);
                             .pull-left;
                         }
@@ -6812,7 +6869,7 @@
                         .select {
                             position: relative;
                             width: 70%;
-                            #pixel-to-percent > .width(600, 1210);
+                            #pixel-to-percent > .width(600, 1230);
                             .pull-right;
 
                             .label {
@@ -6826,7 +6883,7 @@
                                 vertical-align: middle;
                                 position: relative;
                                 font-size: 18px;
-                                padding: 18px 10px 10px 65px;
+                                padding: 12px 10px 10px 65px;
 
                                 option { font-size: 16px; }
                             }
@@ -6842,7 +6899,7 @@
                 .button {
                     font-size: 24px;
                     line-height: 70px;
-                    #pixel-to-percent > .width(585, 1210);
+                    #pixel-to-percent > .width(585, 1230);
                 }
             }
         }
@@ -8333,67 +8390,6 @@
                 .reservation-content {
                     &.rooms-and-rates-content { .calc-height(100, 130); }
                     &.addons-content { .calc-height(100, 50); }
-                }
-            }
-        }
-    }
-
-    /* Select with grey lables need extra adjustment for Firefox ***/
-    @-moz-document url-prefix() { 
-        .create-reservation {
-            .row {
-                &#rooms {
-                    .entry {
-                        .entry-data {
-                            .select {
-                                select {  padding-top: 6px; }
-
-                                &.room-type {
-                                    select { padding-top: 18px; }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        #reservations-settings {
-            .settings-content {
-                .entry {
-                    .select {
-                        &.adults,
-                        &.children,
-                        &.infants {
-                            .label { top: 7px; }
-                            select { padding: 5px 10px 5px 150px; }
-                        }
-                    }
-                }
-            }
-        }
-
-        .reservations-inner {
-            .reservations-content-wrapper {
-                .reservation-content {
-
-                    /* Enhance Stay ***/
-                    &.addons-content { 
-                        .addons {
-                            .addon-items {
-                                .addon-tab {
-                                    li {
-                                        .add-enhancement {
-                                            .select {
-                                                .label { top: 7px; }
-                                                select { padding: 5px 10px 0 80px; }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -10264,6 +10260,13 @@
                                 &.number { .calc-width(20, 20); }
                             }
                         }
+
+                        &.revenue {
+                            li {
+                                &.name { .calc-width(80, 60); }
+                                &.number { .calc-width(20, 60); }
+                            }
+                        }
                     }
 
                     .grid-footer {
@@ -10314,7 +10317,8 @@
                             .box-shadow();
 
                             &.revenue-title {
-                                .name { .calc-width(100, 110); }
+                                .name { .calc-width(80, 60); }
+                                .number { .calc-width(20, 70); }
                             }
 
                             &.payment-title {
@@ -10972,7 +10976,7 @@
                         width: 100%;
                         .calc-height(100, 5);
 
-                        .set-times {
+                        a.set-times {
                             position: absolute;
                             z-index: 11000;
                             font-size: 12px;
@@ -10984,6 +10988,10 @@
                             .size(40px, 60px);
                             .gradient(@orangeStart, @orangeEnd);
                             #border-radius > .rounded(6px);
+                            -webkit-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                            -moz-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                            -ms-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
+                            -o-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
 
                             span { 
                                 font-size: 14px;
@@ -11317,8 +11325,6 @@
                                     &.check-in,
                                     &.inhouse,
                                     &.check-out {
-                                        //-webkit-transform: translateZ(0); CHANGED
-
                                         &.editing { 
                                             .gradient(@purpleStart, @purpleEnd); 
 

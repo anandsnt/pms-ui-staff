@@ -22,7 +22,7 @@ var Grid = React.createClass({
 																																																																			
 		setTimeout(function () {
 	        iscroll.grid.refresh();
-	    }.bind(this), 0);
+	    }.bind(this), 1000);
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.grid.destroy();
@@ -42,7 +42,8 @@ var Grid = React.createClass({
 				React.DOM.ul({ 
 					className: 'grid',
 					style: {
-						width: grid_width
+						width: grid_width//, 
+						//left: -1 * (display.x_offset - display.x_n) * display.px_per_ms + 'px'
 					}
 				}, 
 				_.map(this.props.data, function(row, idx) {
