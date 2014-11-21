@@ -42,6 +42,12 @@ sntRover
                 x_0:  new Date(x_origin),
                 x_n: new Date(x_left),
                 x_p: new Date(x_right),
+                toShijuBugStartDate: function(start) {
+                    return new Date(new Date(x_left).setHours(start,0,0));
+                },
+                toShijuBugEndDate: function(end) {
+                    return new Date(new Date(x_right).setHours(end, 0, 0));
+                },
                 toStartDate: function() {
                     return new Date(new Date(x_left).setHours(0, 0, 0));
                 },
@@ -57,12 +63,12 @@ sntRover
             if(display) {
                 display.x_offset                = x_offset;
                 display.x_origin                = x_origin;
-                display.x_origin_start_time     = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
+                display.x_origin_start_time     = ret.x_origin_start_time;
                 display.x_n                     = x_left;
-                display.x_0                     = x_origin; //ret.x_n.getTime();
-                display.x_n_time                = ret.x_n.toComponents().time.convertToReferenceInterval(15);
+                display.x_0                     = x_origin;
+                display.x_n_time                = ret.x_n_time;
                 display.x_p                     = x_right;
-                display.x_p_time                = ret.x_p.toComponents().time.convertToReferenceInterval(15);
+                display.x_p_time                = ret.x_p_time;
 
                ret.display = display;
             }
