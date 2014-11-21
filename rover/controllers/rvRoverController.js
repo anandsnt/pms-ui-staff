@@ -66,24 +66,27 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
-	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+  	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+  	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+  	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
-  try {
-        sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
+    //set MLI Merchant Id
+    try {
+          sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
+        }
+    catch(err) {};
+
+    //handle six payment iFrame communication
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var eventer = window[eventMethod];
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    
+    eventer(messageEvent, function(e) {
+      var responseData = e.data;
+      if (responseData.response_message == "token_created") {
+        $rootScope.$broadcast('six_token_recived',{'six_token':responseData.token_no});
       }
-  catch(err) {};
-
-  var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-  var eventer = window[eventMethod];
-  var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
-  eventer(messageEvent, function(e) {
-    var responseData = e.data;
-    if (responseData.response_message == "token_created") {
-      $rootScope.$broadcast('six_token_recived',{'six_token':responseData.token_no});
-  }
-  }, false);
+    }, false);
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
