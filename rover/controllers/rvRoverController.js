@@ -84,7 +84,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     eventer(messageEvent, function(e) {
       var responseData = e.data;
       if (responseData.response_message == "token_created") {
-        $rootScope.$broadcast('six_token_recived',{'six_token':responseData.token_no});
+        $rootScope.$broadcast('six_token_recived',{'six_payment_data':responseData});
       }
     }, false);
 

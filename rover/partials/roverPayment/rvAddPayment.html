@@ -25,13 +25,14 @@
 
 			<!-- Checkboxes -->
 			<div class="entry margin" ng-show="showInitialScreen">
-				<label class="checkbox inline" for="add-in-guest-card"> <span class="icon-form icon-checkbox"></span>
-					<input name="checkin" id="add-in-guest-card" ng-model="savePayment.addToGuest" value="1" type="checkbox" />
+				<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': savePayment.addToGuest}"> 
+					<span class="icon-form icon-checkbox" ng-class="{'checked': savePayment.addToGuest}"></span>
+					<input name="checkin" id="add-in-guest-card" ng-model="savePayment.addToGuest" type="checkbox" />
 					Add to Guest Card </label>
 			</div>
 			<div class="entry" ng-show="showInitialScreen">
 				<!-- Show only when payment type is defined as CC -->
-				<label class="checkbox inline" for="authorize-card"> <span class="icon-form icon-checkbox"></span>
+				<label class="checkbox inline" for="authorize-card" > <span class="icon-form icon-checkbox"></span>
 					<input name="authorize-card" id="authorize-card" value="1" type="checkbox" />
 					Do Not Authorize Card </label>
 			</div>

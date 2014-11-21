@@ -11,6 +11,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.shouldShowAddNewCard    = false;
 	$scope.showInitialScreen       = true; 
 	$scope.savePayment = {};
+	console.log($scope);
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
 		$scope.renderData = data;
@@ -31,16 +32,27 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 	
 	
-	$scope.$on("TOKEN_CREATED", function(mliData){
-		$scope.mliData = mliData;
+	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
+		console.log(tokenDetails);
+		$scope.cardDetails = tokenDetails;
 		
 	});
 	$scope.saveNewCard = function(){
-		console.log(">>>"+$scope.savePayment.addToGuest);
-		var data = {
-			
-		};
-		//$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
+		
+		if(!$scope.cardDetails.tokenDetails.isSixPayment){
+			console.log("++++++++++++++++++");
+			console.log($scope.cardDetails);
+			var creditCardType = getCreditCardType($scope.cardDetails.tokenDetails.cardBrand);
+			var data = {
+				"add_to_guest_card": $scope.savePayment.addToGuest,
+				"token": $scope.cardDetails.tokenDetails.session,
+				"reservation_id": $scope.passData.reservationId,
+				"credit_card": creditCardType,
+				"payment_type": $scope.dataToSave.paymentType
+			};
+		}
+		
+		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data);
 	};
 	
 	

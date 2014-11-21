@@ -84,9 +84,9 @@ sntRover
 				x_0: 					   undefined,
 				x_origin:                  $scope.x_origin.getTime(),
 				x_n:                       $scope.x_n.getTime(),
-				x_n_time:                  $scope.x_n_time,  //.toComponents().time.convertToReferenceInterval(15),
+				x_n_time:                  (!$scope.x_n_time ? $scope.x_n.toComponents().time.convertToReferenceInterval(15) : $scope.x_n_time),
 				x_p: 	                   $scope.x_p.getTime(),
-				x_p_time:                  $scope.x_p_time, //toComponents().time.convertToReferenceInterval(15),
+				x_p_time:                  (!$scope.x_p_time ? $scope.x_p.toComponents().time.convertToReferenceInterval(15) : $scope.x_p_time), //toComponents().time.convertToReferenceInterval(15),
 				width: 						undefined,
 				height: 					undefined,
 				hours: 						50,
@@ -112,6 +112,7 @@ sntRover
 			filter: {						//top filter
 		    	arrival_date: 				$scope.x_origin,
 		    	enable_resize: 				false,
+		    	arrival_times:              $scope.arrival_times,
 		    	arrival_time: 				$scope.arrival_time,
 		    	hours_days: 				'h',
 		    	range: 						12,
@@ -525,30 +526,32 @@ sntRover
 		if($scope.gridProps.filter.arrival_time) {
 			rvDiarySrv.Availability.apply(this, $scope.getArrivalTimes()) 
 			.then(function(data) {
-				var row_item_data = data.length > 0 ? data[0]: undefined,
-					start_date 	= new Date(row_item_data[meta.occupancy.start_date]),
-					end_date 	= new Date(row_item_data[meta.occupancy.end_date]);
+				var row_item_data;
 
-				if(row_item_data) { 
+				if(data.length) {
+					row_item_data 	= data[0];
+				
 					$scope.initPassiveEditMode({
-	                    start_date:     start_date,
-	                    end_date:       end_date,
+	                    start_date:     new Date(row_item_data[meta.occupancy.start_date]),
+	                    end_date:       new Date(row_item_data[meta.occupancy.end_date]),
 	                    stay_dates:     start_date.toComponents().date.toDateString(),
-	                    row_data:       rvDiarySrv.data_Store.get('_room.values.id')[row_item_data.room_id],
-	                    row_item_data:  row_item_data
+	                    row_item_data:  row_item_data,
+	                    row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id }), //rvDiarySrv.data_Store.get('/room.values.id')[row_item_data.room_id],   
 	                });
 				}
 
 				$scope.renderGrid();
-			}, responseError);
+
+			}, 
+			responseError);
 		}
 	};
 
 	$scope.getArrivalTimes = function() {
 		var filter 		= _.extend({}, $scope.gridProps.filter),
-			time_span 	= Time({ hours: $scope.gridProps.filter.min_hours }),
-			start_date 	= filter.arrival_date,
-			start_time 	= new Date($scope.arrival_times.indexOf($scope.gridProps.filter.arrival_time) * 900000 + filter.arrival_date.getTime()).toComponents().time,
+			time_span 	= Time({ hours: $scope.min_hours }), //$scope.gridProps.filter.min_hours }),
+			start_date 	= new Date($scope.gridProps.display.x_n), //filter.arrival_date,
+			start_time 	= new Date($scope.arrival_times.indexOf($scope.gridProps.filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
@@ -598,16 +601,13 @@ sntRover
 				//$scope.Availability();
 			}
 
-			rvDiarySrv.Occupancy(new Date(time_set.x_n.setHours(0,0,0)), 
-								 new Date(time_set.x_p.setHours(23,59,0)))
+			rvDiarySrv.Occupancy(time_set.toStartDate(), time_set.toEndDate())//new Date(new Date(time_set.x_n).setHours(0,0,0)), 
+								 //new Date(new Date(time_set.x_p.setHours(23,59,0))))
 			.then(function(data) {
 
-				$scope.gridProps.filter = _.extend({}, $scope.gridProps.filter);
-
-				$scope.$apply(function() {
-					$scope.gridProps.filter.arrival_time = $scope.gridProps.filter.arrival_times[0];
-				});
-
+				//$scope.gridProps.filter = _.extend({}, $scope.gridProps.filter);
+				//$scope.gridProps.filter.arrival_time = $scope.gridProps.filter.arrival_times[0];
+				
 				$scope.renderGrid();
 			}, responseError);	
 		}

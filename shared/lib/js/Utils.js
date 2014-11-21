@@ -253,6 +253,20 @@ function getAvatharUrl(title){
     }
 }
 
+var creditCardTypes = {
+      "AMEX": 'AX',
+      "DINERS_CLUB": 'DC',
+      "DISCOVER": 'DS',
+      "JCB": 'JCB',
+      "MASTERCARD": 'MC',
+      "VISA": 'VA'
+};
+
+function getCreditCardType(cardBrand){
+    var card = cardBrand.toUpperCase();
+    return creditCardTypes[card];
+}
+
 /**
 * utils function convert any number to number with two decimal points.
 */

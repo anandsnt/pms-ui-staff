@@ -20,12 +20,16 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             $scope.errorMessage = "";
 			refreshPaymentScroll();
 		};
-		$scope.invokeApi(RVJournalSrv.fetchPaymentData, { "date":$scope.data.paymentDate }, successCallBackFetchPaymentData);
+		$scope.invokeApi(RVJournalSrv.fetchPaymentData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchPaymentData);
 	};
 	$scope.initPaymentData();
 
-    $rootScope.$on('paymentDateChanged',function(){
-    	$scope.initPaymentData();
+    $rootScope.$on('fromDateChanged',function(){
+        $scope.initPaymentData();
+    });
+
+    $rootScope.$on('toDateChanged',function(){
+        $scope.initPaymentData();
     });
 
     /** Handle Expand/Collapse of Level1 **/

@@ -27,47 +27,63 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.shouldShowIframe = !$scope.shouldShowIframe;
 		
 		};
-		/*
-		 * Function to get MLI token on click 'Add' button in form
-		 */
-		$scope.getToken = function(){
-			console.log("----------+++-----------");
+
+		var notifyParent = function(tokenDetails){
+
+			var payementData = {};
+			payementData.cardDetails = $scope.cardData;
+			payementData.tokenDetails = tokenDetails;
+			console.log(payementData);
+			$scope.$emit("TOKEN_CREATED", payementData);
+		};
+
+		var setUpSessionDetails = function(){
+			
 			 var sessionDetails = {};
-			 
-			 console.log($scope.cardData.cardNumber);
-			 
 			 sessionDetails.cardNumber = $scope.cardData.cardNumber;
 			 sessionDetails.cardSecurityCode = $scope.cardData.CCV;
 			 sessionDetails.cardExpiryMonth = $scope.cardData.expiryMonth;
 			 sessionDetails.cardExpiryYear = $scope.cardData.expiryYear;
+			 return sessionDetails;
+		};
+		/*
+		 * Function to get MLI token on click 'Add' button in form
+		 */
+		$scope.getToken = function(){
+
+			var sessionDetails = setUpSessionDetails();
 			var successCallBack = function(response){
 				$scope.$emit("hideLoader");
 				
-				MLISessionId = response.session;
-				var mliData = {
-					"token": MLISessionId,
-					"cardDetails": $scope.cardData
-				};
-				$scope.$emit("MLI_TOKEN_CREATED", mliData);
+				response.isSixPayment = false;
+				console.log("===========")
+				console.log(response)
+				notifyParent(response);
+				$scope.$apply(); 
 			};
 			var failureCallBack = function(data){
-					console.log("failureCallBack");
-					console.log(data);
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = ["There is a problem with your credit card"];
 				$scope.$apply(); 
 			};
 			try {
-				console.log("try");
+				console.log("try")
 				sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,successCallBack,failureCallBack);
 				$scope.$emit("showLoader");
 			}
 			catch(err) {
-				console.log("ctach");
+				console.log("catch"+err)
 				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 			};
 		};
-			
 
-	
+		/*
+		 * Function to recieve six payment token on click 'Add' button in form
+		 */
+
+		$rootScope.$on('six_token_recived',function(e,data){
+			data.isSixPayment = true;
+			notifyParent(data.six_payment_data);
+		});
+		
 }]);

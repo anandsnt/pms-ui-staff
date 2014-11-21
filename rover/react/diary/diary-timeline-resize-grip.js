@@ -26,7 +26,7 @@ var TimelineResizeGrip = React.createClass({
 			state = 		this.state,
 			display = 		props.display,
 			delta_x = 		e.pageX - state.origin_x, 
-			x_origin = 		display.x_n, 
+			x_origin = 		(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			px_per_int = 	display.px_per_int,
 			px_per_ms = 	display.px_per_ms,
 			model = 		state.currentResizeItem, 
@@ -93,8 +93,7 @@ var TimelineResizeGrip = React.createClass({
 			this.setState({
 				mouse_down: 		false,
 				resizing: 			false,
-				currentResizeItem: 	model,
-				last_left: 			model[this.props.itemProp]
+				currentResizeItem: 	model
 			}, function() {
 				props.__onResizeEnd(state.row, model);
 
@@ -129,7 +128,7 @@ var TimelineResizeGrip = React.createClass({
 			display 	= props.display, 
 			direction 	= this.props.itemProp,
 			px_per_ms 	= display.px_per_ms,
-			x_origin 	= display.x_n, 
+			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			m 			= props.meta.occupancy;
 
 		if(!this.state.resizing) {
@@ -165,11 +164,12 @@ var TimelineResizeGrip = React.createClass({
 			currentResizeItem 	= this.state.currentResizeItem,
 			x_origin 			= props.display.x_n,
 			px_per_ms 			= props.display.px_per_ms,
+			label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
 			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
 			grip_text = '';
 
 		if(currentResizeItem) {
-		 	grip_text = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+		 	grip_text = label + ' ' + (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
 		}
 
 		return this.transferPropsTo(React.DOM.a({
