@@ -10,6 +10,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.shouldShowExistingCards = false;
 	$scope.shouldShowAddNewCard    = false;
 	$scope.showInitialScreen       = true; 
+	$scope.savePayment = {};
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
 		$scope.renderData = data;
@@ -30,9 +31,18 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 	
 	
-	$scope.$on("MLI_TOKEN_CREATED", function(mliData){
+	$scope.$on("TOKEN_CREATED", function(mliData){
+		$scope.mliData = mliData;
 		
 	});
+	$scope.saveNewCard = function(){
+		console.log(">>>"+$scope.savePayment.addToGuest);
+		var data = {
+			
+		};
+		//$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
+	};
+	
 	
 	
 }]);
