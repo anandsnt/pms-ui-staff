@@ -8,7 +8,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     '$timeout',
     '$stateParams',
     '$vault',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault) {
+    'baseData',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
