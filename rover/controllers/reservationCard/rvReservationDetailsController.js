@@ -197,6 +197,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, data, $scope.reservationDetailsFetchSuccessCallback);
 			} else {
 				$scope.reservationData = {};
+				$scope.reservationData.reservation_card = {};
 			}
 
 		});
