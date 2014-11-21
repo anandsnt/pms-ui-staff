@@ -47,10 +47,16 @@ sntRover.controller('RVCardOptionsCtrl',
 				
 				MLISessionId = response.session;
 				console.log("sess==="+MLISessionId);
+				var mliData = {
+					"token": MLISessionId,
+					"cardDetails": $scope.cardData
+				}
+				console.log(mliData);
 				$scope.$emit("MLI_TOKEN_CREATED", mliData);
 			};
 			var failureCallBack = function(data){
 					console.log("failureCallBack");
+					console.log(data);
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = ["There is a problem with your credit card"];
 				$scope.$apply(); 
