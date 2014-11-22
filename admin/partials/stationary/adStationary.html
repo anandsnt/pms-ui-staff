@@ -16,24 +16,19 @@
 			</div>
 			<div class="entry full-width">
 				<label for="guest-bill-template" translate>GUEST_BILL_TEMPLATE </label>
-				<div class="select">
+				<div class="select" ng-model="data.selected_guest_bill_template">
 					<select  name="guest-bill-template" class="placeholder">
 						<option value="" translate> SELECT_GUEST_BILL </option>
-						<!-- <option ng-model="" ng-repeat="" value="" ng-selected=""></option> -->
-
+						<option ng-repeat="item in data.guest_bill_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill_template"></option>
 					</select>
 				</div>
 			</div>
 			<div class="entry full-width">
 				<label for="hotel-logo" translate> HOTEL_LOGO </label>
-				<div class="select">
+				<div class="select" ng-model="data.logo_type">
 					<select  name="hotel-logo" class="placeholder">
-						<option value=""> Use Hotel Logo Image for Rover </option>
-						<option value=""> Use Hotel Logo Image for Template </option>
-						<option value=""> No Logo </option>
-
-						<!-- <option ng-model="" ng-repeat="" value="" ng-selected=""></option> -->
-
+						<option value="" translate> SELECT_LOGO_TYPE </option>
+						<option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type"></option>
 					</select>
 				</div>
 			</div>
@@ -43,8 +38,10 @@
 			<div class="entry"></div>
 			<div class="entry full-width">
 				<label translate>CUSTOM_TEXT</label>
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="" label = "{{'HEADER'| translate}} " placeholder = "{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}" ></ad-textarea>
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="" label = "{{'FOOTER'| translate}} " placeholder = "{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}" ></ad-textarea>
+
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_header" label = "{{'HEADER'| translate}} " placeholder = "{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}" ></ad-textarea>
+
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_footer" label = "{{'FOOTER'| translate}} " placeholder = "{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}" ></ad-textarea>
 				
 			</div>
 		</fieldset>
