@@ -3,7 +3,8 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.editData = {};
-	$scope.currentClickedElementCC = -1
+	$scope.currentClickedElementCC = -1;
+	$scope.currentClickedElement = -1;
 
 	var fetchSuccess = function(data) {
 		$scope.data = data;
@@ -74,6 +75,12 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		$scope.currentClickedElementCC = -1;
 	};
 
+	$scope.activeCCTab = function(){
+		angular.forEach($scope.data.payments,function(item, index) {
+			if(item.value == "CC" && item.is_active == "false")
+				$scope.toggleClickedPayment(index,false);
+		});
+	};
 	/*
 	 * To save/Update payment method details
 	 */
@@ -107,6 +114,8 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	    		// push this data to $scope.data.credit_card_types[] list.
 	    		$scope.data.payments.splice( $scope.currentClickedElement, 1 );
 	    		$scope.data.credit_card_types.push(data);
+	    		// Active the toggle button for payment method -Credit card.
+	    		$scope.activeCCTab();
 	    	}
 	    	else if(data.is_cc && $scope.currentClickedElementCC != -1){
 	    		// Edited from 'credit card type list' with 'is_cc = true'.
