@@ -61,19 +61,29 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	});
 	$scope.saveNewCard = function(){
 		
-		if(!$scope.cardDetails.tokenDetails.isSixPayment){
-			console.log("++++++++++MLI++++++++");
 			console.log($scope.cardDetails);
-			var creditCardType = getCreditCardType($scope.cardData.tokenDetails.cardBrand);
-			var data = {
-				"add_to_guest_card": $scope.savePayment.addToGuest,
-				"token": $scope.cardData.tokenDetails.session,
-				"reservation_id": $scope.passData.reservationId,
-				"credit_card": creditCardType,
-				"payment_type": $scope.dataToSave.paymentType
-			};
-		}
-		
+			var creditCardType = '';
+			if(!$scope.cardData.tokenDetails.isSixPayment){
+				creditCardType = getCreditCardType($scope.cardData.tokenDetails.cardBrand);
+				var data = {
+					"add_to_guest_card": $scope.savePayment.addToGuest,
+					"token": $scope.cardData.tokenDetails.session,
+					"reservation_id": $scope.passData.reservationId,
+					//"credit_card": creditCardType,
+					//"payment_type": $scope.dataToSave.paymentType
+				};
+			} else {
+				creditCardType = getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
+				var data = {
+					"add_to_guest_card": $scope.savePayment.addToGuest,
+					"token": $scope.cardData.tokenDetails.token_no,
+					"reservation_id": $scope.passData.reservationId,
+					//"credit_card": creditCardType,
+					//"payment_type": $scope.dataToSave.paymentType
+				};
+			}
+			
+	
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data);
 	};
 	

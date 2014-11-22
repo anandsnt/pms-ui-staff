@@ -16,8 +16,8 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.cardData.CCV = "";
 		$scope.cardData.expiryMonth ="";
 		$scope.cardData.expiryYear = "";
-	
-		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.passData.details.firstName + "&card_holder_last_name=" + $scope.passData.details.lastName + "&service_action=createtoken";
+		var time = new Date().getTime();
+		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.passData.details.firstName + "&card_holder_last_name=" + $scope.passData.details.lastName + "&service_action=createtoken&time="+time;
 		$scope.shouldShowIframe = false;	
 		
 		/*
