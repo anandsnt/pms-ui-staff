@@ -38,8 +38,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isTyping = false;
 		$scope.isSwiped = false;
 		$scope.firstSearch = true;
-		
-
 
 		$scope.showAddNewGuestButton = false; //read cooment below :(
 		/**
@@ -296,9 +294,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * if not fouund in the data, it will request for webservice
 		 */
 		var displayFilteredResults = function() {
+
 			//$scope.disableNextButton = false;
 			//if the entered text's length < 3, we will show everything, means no filtering    
-			if ($scope.textInQueryBox.length < 3) {
+			if ($scope.textInQueryBox.length < 3 && !$rootScope.isSingleDigitSearch) {
 				//based on 'is_row_visible' parameter we are showing the data in the template      
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;
@@ -308,14 +307,16 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}, 500);
 				refreshScroller();
 			} else {
+
 				//see if the new query is the substring of fetch term & the fetched results count < per_page param(which is set to be 100 now)
 				//If so we will do local filtering
 				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 
 					&& !$scope.firstSearch && $scope.results.length > 0 
 					&& RVSearchSrv.totalSearchResults <= $scope.searchPerPage) {
+
 					//RVSearchSrv.page = 1;
 					//var isLocalFiltering = true;
-					//applyFilters(isLocalFiltering);
+					//applyFilters(isLocalFilte	`ring);
 					applyFilters();
 
 				} else {
@@ -452,6 +453,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.textInQueryBox = "";
 			$scope.fetchTerm = "";
 			$scope.firstSearch = true;
+			RVSearchSrv.totalSearchResults = 0;
 			//$scope.start = 1;
 			//$scope.end = 100;
 
