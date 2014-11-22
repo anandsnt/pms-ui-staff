@@ -16,8 +16,8 @@
 			</div>
 			<div class="entry full-width">
 				<label for="guest-bill-template" translate>GUEST_BILL_TEMPLATE </label>
-				<div class="select" ng-model="data.selected_guest_bill_template">
-					<select  name="guest-bill-template" class="placeholder">
+				<div class="select" >
+					<select ng-model="data.selected_guest_bill_template" name="guest-bill-template" class="placeholder">
 						<option value="" translate> SELECT_GUEST_BILL </option>
 						<option ng-repeat="item in data.guest_bill_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill_template">{{item.name}}</option>
 					</select>
@@ -25,8 +25,8 @@
 			</div>
 			<div class="entry full-width">
 				<label for="hotel-logo" translate> HOTEL_LOGO </label>
-				<div class="select" ng-model="data.logo_type">
-					<select  name="hotel-logo" class="placeholder">
+				<div class="select" >
+					<select ng-model="data.logo_type" name="hotel-logo" class="placeholder">
 						<option value="" translate> SELECT_LOGO_TYPE </option>
 						<option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type">{{item.name}}</option>
 					</select>
