@@ -40,6 +40,10 @@ sntRover.controller('RVCardOptionsCtrl',
 				$scope.cardData.expiryYear = "";
 		};
 
+		$scope.$on("clearCardDetails",function(){
+				emptySessionDetails();
+		});
+
 		var notifyParent = function(tokenDetails){
 
 			var payementData = {};
@@ -50,7 +54,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			console.log("shouldShowIframe=============="+$scope.shouldShowIframe);
 			$scope.$emit("TOKEN_CREATED", payementData);
 			$scope.$digest();
-			emptySessionDetails();
+			
 		};
 		// $scope.$watch('shouldShowIframe', function(o,n){
 			// console.log(o+"========*********======="+n);

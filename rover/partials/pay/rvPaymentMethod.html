@@ -1,5 +1,5 @@
 <form method="post" action="pay-bill" id="pay-bill" name="pay-bill" class="modal-content form pay-bill" ng-click="clearErrorMessage()"> <!-- Add class "select-card" when you define CC as payment method. If payment method is than changed to something else, remove class "select-card" -->
-    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></button>
+    <button id="modal-close" type="button" class="modal-close" ng-click="handleCloseDialog()"><span class="icons icon-close invert"></button>
     <!-- Title when not paying from bill screen -->
     <strong class="h2 message">
         {{'PAY_BILL' | translate}}
