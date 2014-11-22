@@ -30,7 +30,7 @@
 				</div>
 
 				<!-- Exsiting cards - use only when they exsit -->
-				<div id="cc-exsiting-card" class="cards-list scrollable" ng-show="shouldShowExistingCards && !addmode">
+				<div id="cc-exsiting-card" class="cards-list scrollable" ng-show="shouldShowExistingCards && !addmode" ng-iscroll="cardsList">
 					<div class="wrapper">
 
 						<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList"> <!-- Add class "primary" when selected -->
@@ -57,7 +57,7 @@
 					</div>
 					<div class="entry card-name">
 						<label for="name-on-card">Name on card</label>
-						<input name="name-on-card" ng-model="cardData.expiryName" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
+						<input name="name-on-card" ng-model="cardData.userName" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
 					</div>
 					<div class="entry card-ccv">
 						<label for="ccv">CCV</label>
@@ -72,8 +72,15 @@
 
 				<!-- New card: Call-In -->
 					<iframe ng-show="shouldShowIframe && addmode" class="payment-iframe" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
+					<div class="entry full-width" ng-show="showAddtoGuestCard && addmode">
+						<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.addToGuestCard}">
+							<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.addToGuestCard}"></span>
+							<input ng-model="cardData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
+							{{'ADD_TO_GUEST_CARD' | translate}}
+						</label>
+					</div>  
 				<!-- Show only when creating reservation or paying the bill -->
-				<div class="actions" ng-hide="true">
+				<div class="actions" ng-show="showCancelCardSelection">
 					<button type="button" class="button blank">
 						Cancel Card selection
 					</button>

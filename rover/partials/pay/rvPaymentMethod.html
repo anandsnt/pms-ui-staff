@@ -44,10 +44,20 @@
         <div class="entry full-width" ng-hide="showCCPage">
             <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
             <input value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
-        </div>      
+        </div>    
+        <!-- <div class="entry full-width" ng-hide="!showCCPage || !addmode">
+            <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': newPaymentInfo.addToGuestCard}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': newPaymentInfo.addToGuestCard}"></span>
+                <input ng-model="newPaymentInfo.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
+                {{'ADD_TO_GUEST_CARD' | translate}}
+            </label>
+        </div>   -->
         <div class="actions" ng-hide="showCCPage">
             <button type="button" id="pay" class="button green modal-close" ng-click="submitPayment()" translate>SUBMIT_PAYMENT</button>
             <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
+        </div>
+        <div class="actions" ng-show="showCCPage">
+            <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="hideCC()">CANCEL CARD SELECTION</button>
         </div>
     </div>
 </form>

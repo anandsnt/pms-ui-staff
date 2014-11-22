@@ -33,17 +33,24 @@ sntRover.controller('RVCardOptionsCtrl',
 		
 		};
 
+		var emptySessionDetails = function(){
+				$scope.cardData.cardNumber = "";
+				$scope.cardData.CCV = "";
+				$scope.cardData.expiryMonth = "";
+				$scope.cardData.expiryYear = "";
+		};
+
 		var notifyParent = function(tokenDetails){
 
 			var payementData = {};
-			payementData.cardDetails = $scope.cardData;
+			payementData.cardDetails = angular.copy($scope.cardData);
 			payementData.tokenDetails = tokenDetails;
 			console.log(payementData);
 			$scope.shouldShowIframe = false;
 			console.log("shouldShowIframe=============="+$scope.shouldShowIframe);
 			$scope.$emit("TOKEN_CREATED", payementData);
 			$scope.$digest();
-			
+			emptySessionDetails();
 		};
 		// $scope.$watch('shouldShowIframe', function(o,n){
 			// console.log(o+"========*********======="+n);
@@ -66,7 +73,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		 * Function to get MLI token on click 'Add' button in form
 		 */
 		$scope.getToken = function(){
-
+			
 			var sessionDetails = setUpSessionDetails();
 			var successCallBack = function(response){		
 				response.isSixPayment = false;
