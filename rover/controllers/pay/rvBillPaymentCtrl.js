@@ -24,6 +24,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.setScroller('cardsList');
 		$scope.addmode = true;
 		$scope.showAddtoGuestCard = true;
+		$scope.showCancelCardSelection = true;
 	};
 
 	$scope.handleCloseDialog = function(){
@@ -32,9 +33,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.closeDialog();
 	};
 
-	$scope.hideCC = function(){
-		$scope.showCCPage = false;
-	};
+	// $scope.hideCC = function(){
+	// 	$scope.showCCPage = false;
+	// };
 
 	/*
 	* Show guest credit card list
@@ -283,6 +284,10 @@ $scope.$on("TOKEN_CREATED", function(e,data){
 
 $scope.$on("MLI_ERROR", function(e,data){
 	$scope.errorMessage = data;
+});
+$scope.$on('cancelCardSelection',function(e,data){
+	console.log(data+"-------------------------");
+	$scope.showCCPage = false;
 });
 
 }]);
