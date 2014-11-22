@@ -15,9 +15,19 @@
 					<select name="payment-type" ng-change="changePaymentType()" ng-model="dataToSave.paymentType" class="placeholder">
 						<option value="" selected>Select Payment Type</option>
 						<option ng-repeat="paymentOptions in renderData" value="{{paymentOptions.name}}">{{paymentOptions.description}}</option>
-						
 					</select>
 				</div>
+			</div>
+			<div class="entry full-width" id="selected-card">
+				<label>Credit Card (<span>Tap to change</span>)</label>
+			    <label class="active-item item-payment" id="pay-with-amex">
+			    	<figure class="card-logo">
+			    		<img alt="" src="http://stayntouch.perceptiveinteractive.com/standalone//images/amex.png"></figure>
+			    	<span class="number">Ending with 
+			    		<span class="value number">2757</span></span>
+			    		<span class="date">Date <span class="value date">12/14</span>
+			    		</span>
+			    </label>
 			</div>
 			
 			<div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ></div>

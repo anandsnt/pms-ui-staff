@@ -33,7 +33,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	
 	
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
-		console.log(tokenDetails);
 		$scope.cardDetails = tokenDetails;
 		
 	});
