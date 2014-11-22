@@ -87,5 +87,9 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.setCreditCardFromList = function(index){
 			$scope.$emit('cardSelected',{'index':index});
 		};
+
+	    $scope.cancelCardSelection = function(){
+	    	$scope.$emit('cancelCardSelection');
+	    };
 		
 }]);
