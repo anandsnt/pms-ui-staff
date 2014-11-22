@@ -27,7 +27,7 @@
 							<div class="entry">
 								<td class="activate" ng-hide="currentClickedElement == $index">
 									<div class="entry" >
-										<div class="switch-button single"  ng-class="{ on : payment.is_active == 'true' }" ng-click="toggleClickedPayment($index)">
+										<div class="switch-button single"  ng-class="{ on : payment.is_active == 'true' }" ng-click="toggleClickedPayment($index,false)">
 											<input type="checkbox">
 											<span class="switch-icon"></span>
 										</div>
@@ -52,7 +52,11 @@
 										</td>
 										<td class="activate" ng-hide="currentClickedElementCC == $index">
 											<div class="entry" >
-												<div class="switch-button single"  ng-class="{ on : cc.is_active == 'true' }" ng-click="toggleClickedCC($index)">
+												<div ng-if="cc.is_system_defined" class="switch-button single"  ng-class="{ on : cc.is_active == 'true' }" ng-click="toggleClickedCC($index)">
+													<input type="checkbox">
+													<span class="switch-icon"></span>
+												</div>
+												<div ng-if="!cc.is_system_defined" class="switch-button single"  ng-class="{ on : cc.is_active == 'true' }" ng-click="toggleClickedPayment($index,true)">
 													<input type="checkbox">
 													<span class="switch-icon"></span>
 												</div>
