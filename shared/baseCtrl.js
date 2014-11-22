@@ -183,4 +183,40 @@ function BaseCtrl($scope) {
     	}, $scope.timeOutForScrollerRefresh);   	
     };
 
+    /*
+    * MLI integration
+    */
+
+    $scope.fetchMLI = function(sessionDetails,successCallback,failureCallback){
+
+		var success = function(response){
+			$scope.$emit("hideLoader");
+			successCallback(response);
+			$scope.$apply(); 
+		};
+		var failure = function(data){
+			$scope.$emit("hideLoader");
+			var errorMessage = ["There is a problem with your credit card"];
+			failureCallback(errorMessage); 
+			$scope.$apply();
+		};
+
+		if(sessionDetails.cardNumber.length > 0 ){
+				try {
+					$scope.$emit('showLoader');
+					sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,success,failure);
+				}
+				catch(err) {
+					$scope.$emit("hideLoader");
+					var errorMessage = ["There was a problem connecting to the payment gateway."];
+					failureCallback(errorMessage);
+				};
+			}
+		else{
+				var errorMessage = ["There is a problem with your credit card"];
+				failureCallback(errorMessage);
+		};
+		
+	};
+
 }

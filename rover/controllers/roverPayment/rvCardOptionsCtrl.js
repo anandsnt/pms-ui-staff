@@ -37,6 +37,10 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.$emit("TOKEN_CREATED", payementData);
 		};
 
+		var notifyParentError = function(errorMessage){
+			$scope.$emit("MLI_ERROR", errorMessage);
+		};
+
 		var setUpSessionDetails = function(){
 			
 			 var sessionDetails = {};
@@ -52,35 +56,14 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.getToken = function(){
 
 			var sessionDetails = setUpSessionDetails();
-			var successCallBack = function(response){
-				$scope.$emit("hideLoader");
-				
+			var successCallBack = function(response){		
 				response.isSixPayment = false;
-				console.log("===========")
-				console.log(response)
 				notifyParent(response);
-				$scope.$apply(); 
 			};
-			var failureCallBack = function(data){
-				$scope.$emit("hideLoader");
-				// $scope.errorMessage = ["There is a problem with your credit card"];
-				$scope.$emit('MLIfailureCallBack');
-				$scope.$apply(); 
+			var failureCallback = function(errorMessage){
+				notifyParentError(errorMessage);
 			};
-
-			if(sessionDetails.cardNumber.length > 0 ){
-				try {
-					sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,successCallBack,failureCallBack);
-					$scope.$emit("showLoader");
-				}
-				catch(err) {
-					$scope.$emit('MLIGatewayFailure');
-				};
-			}
-			else{
-				$scope.$emit('MLIfailureCallBack');
-			};
-			
+			$scope.fetchMLI (sessionDetails,successCallBack,failureCallback);	//Base Ctrl function		
 		};
 
 		/*
