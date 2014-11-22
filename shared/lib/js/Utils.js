@@ -266,6 +266,21 @@ function getCreditCardType(cardBrand){
     var card = cardBrand.toUpperCase();
     return creditCardTypes[card];
 }
+var sixCreditCardTypes = {
+      "AX": 'AX',
+      "DC": 'DC',
+      "DS": 'DI',
+      "JCB": 'JCB',
+      "MC": 'MC',
+      "VS": 'VA'
+};
+
+function getSixCreditCardType(cardCode){
+    var card = cardCode.toUpperCase();
+    return sixCreditCardTypes[card];
+}
+
+
 
 /**
 * utils function convert any number to number with two decimal points.

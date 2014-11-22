@@ -4,8 +4,9 @@ sntRover.controller('RVCardOptionsCtrl',
 	 '$state', 
 	 'ngDialog',
 	 '$location',
+	 '$document',
 	 'RVPaymentSrv', 
-	function($rootScope, $scope, $state, ngDialog, $location, RVPaymentSrv){
+	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
 		BaseCtrl.call(this, $scope);
 		
 		var absoluteUrl = $location.$$absUrl;
@@ -25,6 +26,10 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.clickedOnSiteCallIn = function(){
 			
 			$scope.shouldShowIframe = !$scope.shouldShowIframe;
+			if($scope.shouldShowIframe) { 
+            	var iFrame = $document.find("sixIframe");
+			    iFrame.attr("src", $scope.iFrameUrl);
+			};
 		
 		};
 
@@ -34,8 +39,15 @@ sntRover.controller('RVCardOptionsCtrl',
 			payementData.cardDetails = $scope.cardData;
 			payementData.tokenDetails = tokenDetails;
 			console.log(payementData);
+			$scope.shouldShowIframe = false;
+			console.log("shouldShowIframe=============="+$scope.shouldShowIframe);
 			$scope.$emit("TOKEN_CREATED", payementData);
+			$scope.$digest();
+			
 		};
+		// $scope.$watch('shouldShowIframe', function(o,n){
+			// console.log(o+"========*********======="+n);
+		// });
 
 		var notifyParentError = function(errorMessage){
 			$scope.$emit("MLI_ERROR", errorMessage);
@@ -71,7 +83,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		 */
 
 		$rootScope.$on('six_token_recived',function(e,data){
-			data.isSixPayment = true;
+			data.six_payment_data.isSixPayment = true;
 			notifyParent(data.six_payment_data);
 		});
 

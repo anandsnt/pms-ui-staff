@@ -18,16 +18,20 @@
 					</select>
 				</div>
 			</div>
-			<div class="entry full-width" id="selected-card">
+			
+			<div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard">
 				<label>Credit Card (<span>Tap to change</span>)</label>
-			    <label class="active-item item-payment" id="pay-with-amex">
-			    	<figure class="card-logo">
-			    		<img alt="" src="http://stayntouch.perceptiveinteractive.com/standalone//images/amex.png"></figure>
-			    	<span class="number">Ending with 
-			    		<span class="value number">2757</span></span>
-			    		<span class="date">Date <span class="value date">12/14</span>
-			    		</span>
-			    </label>
+				<label class="active-item item-payment" id="pay-with-amex">
+					<figure class="card-logo">
+						<img src="/assets/{{renderData.creditCardType}}.png" alt="">
+					</figure>
+					<span class="number">Ending with 
+						<span class="value number">{{renderData.endingWith}}</span>
+					</span>
+					<span class="date">Date 
+						<span class="value date">{{renderData.cardExpiry}}</span>
+					</span>
+				</label>
 			</div>
 			
 			<div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ></div>
@@ -40,7 +44,7 @@
 					<input name="checkin" id="add-in-guest-card" ng-model="savePayment.addToGuest" type="checkbox" />
 					Add to Guest Card </label>
 			</div>
-			<div class="entry" ng-show="showInitialScreen">
+			<div class="entry" ng-show="false">
 				<!-- Show only when payment type is defined as CC -->
 				<label class="checkbox inline" for="authorize-card" > <span class="icon-form icon-checkbox"></span>
 					<input name="authorize-card" id="authorize-card" value="1" type="checkbox" />
@@ -48,7 +52,7 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="actions">
+			<div class="actions"  ng-show="showInitialScreen">
 				<button type="button" class="button blank modal-close" ng-click="closeDialog()">
 					Close
 				</button>
