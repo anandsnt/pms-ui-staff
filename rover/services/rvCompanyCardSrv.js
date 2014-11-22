@@ -23,14 +23,22 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		/**
 		 * service function used for retreive country list
 		 */
+		var _countryList = [];
 		this.fetchCountryList = function() {
 			var deferred = $q.defer();
 			var url = '/ui/country_list';
-			rvBaseWebSrvV2.getJSON(url).then(function(data) {
-				deferred.resolve(data);
-			}, function(data) {
-				deferred.reject(data);
-			});
+			
+			if ( _countryList.length ) {
+				deferred.resolve(_countryList);
+			} else {
+				rvBaseWebSrvV2.getJSON(url).then(function(data) {
+					_countryList = data;
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			};
+			
 			return deferred.promise;
 		};
 
