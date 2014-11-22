@@ -30,7 +30,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.diary', {
-            url: '/diary',
+            url: '/diary/:reservation_id',
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'rvDiaryCtrl',
             resolve: {

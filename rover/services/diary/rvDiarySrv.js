@@ -391,7 +391,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 function(incoming) {
                     this.dataStore.mergeOccupancies(this.store.group.values.room_id); 
                 }),
-                
+               
                 /*AVAILABILITY Configuration Adapter */
                 Availability = Config({
                     id:         meta.availability.id, 
@@ -400,7 +400,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     key_prefix: 'av-',
                     namespace:  'availability' 
                 }, 
-                ['start_date', 'end_date', 'room_type_id'], 
+                ['start_date', 'end_date', 'room_type_id', 'rate_type', 'account_id'], 
                 undefined, 
                 ['id'],
                 this.data_Store,
@@ -610,12 +610,22 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return q.promise;
                 };
 
-                this.Availability = function(start_date, end_date, room_type_id) { 
+                this.Availability = function(start_date, end_date, room_type_id, rate_type, account_id) { 
                     var _data_Store = this.data_Store,
                         q = $q.defer(),
-                        guid = _.uniqueId('available-'); 
+                        guid = _.uniqueId('available-'),
+                        params = dateRange(start_date, end_date, room_type_id);
+                    
+                    //If rate_type is available
+                    if(rate_type) {
+                        _.extend(params, { rate_type: rate_type });
 
-                    Availability.read(dateRange(start_date, end_date, room_type_id)) 
+                        if(account_id){
+                            _.extend(params, { account_id: account_id });
+                        }
+                    }
+
+                    Availability.read(params) 
                     .then(function(data) {
                         if(data && data.results) {
                             Availability.resolve(data.results.shift(), [
