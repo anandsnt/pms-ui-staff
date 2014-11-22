@@ -451,6 +451,19 @@
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
 
+	"STATIONARY":"Stationary",
+	"CUSTOMIZE":"Customize",
+	"GUEST_BILL_TITLE": "Guest Bill",
+	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
+	"HOTEL_LOGO":"Hotel Logo",
+	"SELECT_GUEST_BILL":"Select Guest Bill",
+	"SHOW_HOTEL_ADDRESS":"Show Hotel Address",
+	"CUSTOM_TEXT":"Custom Text",
+	"HEADER":"Header",
+	"FOOTER":"Footer",
+	"CUSTOM_TEXT_PLACEHOLDER":"Add custom text, hotel name / address etc"
+,
+
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
 "SEND_CHECKOUT_EMAIL":"Send Checkout Email",
