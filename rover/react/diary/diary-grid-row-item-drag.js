@@ -45,6 +45,7 @@ var GridRowItemDrag = React.createClass({
 			},
 			function() {
 				props.iscroll.grid.disable();
+				props.iscroll.timeline.disable();
 			});
 		}
 	},
@@ -52,13 +53,13 @@ var GridRowItemDrag = React.createClass({
 		var state 		= this.state,
 			props 		= this.props,
 			display 	= props.display,
-			delta_x 	= e.pageX - state.origin_x, 
+			delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
 			delta_y 	= e.pageY - state.origin_y - state.offset_y, 
 			adj_height 	= display.row_height + display.row_height_margin,
 			model;
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
-			model = this._update(props.currentDragItem); //props.data);
+			model = this._update(props.currentDragItem); 
 
 			this.setState({
 				dragging: true,
@@ -68,7 +69,7 @@ var GridRowItemDrag = React.createClass({
 			});
 		} else if(state.dragging) {	
 			this.setState({
-				left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
+				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
 				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
 			});
 		}
@@ -80,6 +81,10 @@ var GridRowItemDrag = React.createClass({
 
 		document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__dbMouseMove);
+
+		
+		e.stopPropagation();
+		e.preventDefault();
 
 		if(state.dragging) {
 			this.setState({
@@ -96,10 +101,17 @@ var GridRowItemDrag = React.createClass({
 				mouse_down: false,
 				selected: !state.selected
 			}, function() {
-				props.iscroll.grid.enable();
-				props.angular_evt.onSelect(props.row_data, props.data, !state.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
+				//var data = (props.edit.passive && props.data[props.meta.id] === props.data[props.meta.id]? props.currentDragItem : props.data);
+				var data = (_.has(props.data, 'selected') ? props.data : props.currentDragItem);
+
+				props.iscroll.grid.enable();			
+				props.iscroll.timeline.enable();
+				
+				props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}
+
+
 	},
 	componentWillReceiveProps: function(nextProps) {
 		var id_meta = this.props.meta.occupancy.id;
@@ -139,7 +151,7 @@ var GridRowItemDrag = React.createClass({
 				left: state.left,
 				top: state.top
 			}; 
-			className = ' dragstate'; //'occupancy-block dragstate';
+			className = ' dragstate'; 
 		} else {
 			className = '';
 		}

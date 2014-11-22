@@ -132,19 +132,21 @@
 "CATEGORY_ICON_LABEL": "Category icon",
 "ITEM_IMAGE_LABEL": "Image",
 "ICON_SPEC": "(Transparent PNG, 128x128px in size)",
-"IMAGE_SPEC": "(680x320px in size)",
+"IMAGE_SPEC": "(960x600px in size)",
 "DETAILS_LABEL": "details",
 
-"ASSIGN_LABEL": "Assign",
-"TO_SECTION_LABEL": "to section",
-"TO_CATEGORY_LABEL": "to category",
+"ASSIGN_LABEL": "Assign ",
+"TO_SECTION_LABEL": "Assign to section",
+"TO_CATEGORY_LABEL": "Assign to category",
 
 "CONFIRM_LABEL":"Confirm",
 "SELECT_SECTION_LABEL": "Select section",
 "SELECT_CATEGORY_LABEL": "Select category",
 
 "SURE_LABEL": "Are you sure?",
-"CONTENT_NOTIFICATION_LABEL": "The following content is assigned to this section and will be marked as unassigned:"
+"CONTENT_NOTIFICATION_LABEL": "The following content is assigned to this section and will be marked as unassigned:",
+"NO_SECTION_MESSAGE": "Sections are not available",
+"NO_CATEGORY_MESSAGE": "Categories are not available"
 
 ,
 
@@ -268,8 +270,11 @@
 	"WORKSTATIONS":"Work Stations"
 ,
 	"PAYMENT_METHODS": "Payment Methods",
-	"SYSTEM_DEFINED": "(System defined)"
-,
+	"SYSTEM_DEFINED": "(System defined)",
+	"CC":"Credit Card",
+	"OFFLINE":"Offline",
+	"ROVER_ONLY":"Rover Payments Only",
+	"WEB_ONLY":"Web Payments Only",
 
 
 "DAILY_UPSELL_SETUP":"Daily Upsell Setup",

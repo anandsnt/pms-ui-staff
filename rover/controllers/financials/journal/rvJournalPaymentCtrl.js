@@ -2,9 +2,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
     
-	$scope.setScroller('payment-content');
+	$scope.setScroller('payment_content', {});
     var refreshPaymentScroll = function(){
-        setTimeout(function(){$scope.refreshScroller('payment-content');}, 200);
+        setTimeout(function(){$scope.refreshScroller('payment_content');}, 500);
     };
 
     $rootScope.$on('REFRESHPAYMENTCONTENT',function(){
@@ -20,12 +20,16 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             $scope.errorMessage = "";
 			refreshPaymentScroll();
 		};
-		$scope.invokeApi(RVJournalSrv.fetchPaymentData, { "date":$scope.data.paymentDate }, successCallBackFetchPaymentData);
+		$scope.invokeApi(RVJournalSrv.fetchPaymentData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchPaymentData);
 	};
 	$scope.initPaymentData();
 
-    $rootScope.$on('paymentDateChanged',function(){
-    	$scope.initPaymentData();
+    $rootScope.$on('fromDateChanged',function(){
+        $scope.initPaymentData();
+    });
+
+    $rootScope.$on('toDateChanged',function(){
+        $scope.initPaymentData();
     });
 
     /** Handle Expand/Collapse of Level1 **/
@@ -34,12 +38,12 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             var toggleItem = $scope.data.paymentData.payment_types[index1];
             toggleItem.active = !toggleItem.active;
             refreshPaymentScroll();
-            // When the system is in detailed view and we collapsing each Level1
-            // We have to toogle details toogle to Summary.
-            /*if(!toggleItem.active && !$scope.data.isPaymentToggleSummaryActive){
-                if($scope.isAllPaymentsCollapsed(index1))
+            // When the system is in detailed view and we are collapsing each first Level
+            // We have to toggle Details to Summary on print box.
+            if(!toggleItem.active && !$scope.data.isPaymentToggleSummaryActive){
+                if($scope.isAllPaymentsCollapsed())
                     $scope.data.isPaymentToggleSummaryActive = true;
-            }*/
+            }
         }
     };
     /** Handle Expand/Collapse of Level2 **/
@@ -112,14 +116,20 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     });
 
     // To check whether all paymnt tabs are collpased or not, except the clicked index item.
-    $scope.isAllPaymentsCollapsed = function(index){
+    $scope.isAllPaymentsCollapsed = function(){
         var isAllTabsCollapsed = true;
         angular.forEach($scope.data.paymentData.payment_types,function(payment_types, key) {
-            console.log("payment_types.active"+payment_types.active+"***"+key);
-            if((index == key) || !payment_types.active) console.log("ignore");
-            else isAllTabsCollapsed = false;
+            if(payment_types.active) isAllTabsCollapsed = false;
         });
         return isAllTabsCollapsed;
+    };
+
+    // To hanlde click inside payment tab.
+    $scope.clickedOnPayment = function($event){
+        $event.stopPropagation();
+        if($scope.data.isDrawerOpened){
+            $rootScope.$broadcast("CLOSEPRINTBOX");
+        }
     };
 
 }]);

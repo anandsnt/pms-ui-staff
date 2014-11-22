@@ -171,7 +171,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             		// If charge code is having items inside, expand it.
             		if(charge_codes.transactions.length > 0) charge_codes.active = true;
             	}
-            	else{
+            	else if(!isDetailView){
             		charge_groups.active =  false;
             	 	charge_codes.active = false;
             	}
@@ -229,17 +229,17 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	            		// If cards having data inside , expand it.
 	            		if(credit_cards.transactions.length >0) credit_cards.active = true;
 	            	}
-	            	else{
+	            	else if(!isDetailView){
 	            		payment_types.active = false;
 	            		credit_cards.active = false;
 	            	}
 	            });
         	}
         	else{
-        		if(isDetailView){
+        		if(isDetailView && payment_types.transactions.length >0){
         			payment_types.active = true;
         		}
-        		else{
+        		else if(!isDetailView){
         			payment_types.active = false;
         		}
         	}
