@@ -45,27 +45,33 @@ sntRover
 	    	yearRange: '-0:'
 	    };
 
-		$scope.gridProps = {
-		/* Meta data object - allows us to use a single point of reference for various object properties.
-	       If a property name expected changes, update it here so it will propagate throughout the application.
-	    */
-	    meta: meta,  
-	    /*
-	    	Rooms array <- single data structure maintained in Angular, processed by React
-	      	NOTE: if the format/construction/etc of this data model becomes incorrect, React
-	      	may display garbage.  When there is a display issue, look here 
-	      	first - this is where 99.9999% of the problems arise. 
-	    */        
-	    data: $scope.data, 
-	    /*
-	    	Stats correspond to the occupancy counts found at the bottom of the timeline.
-	    */
-	    stats: $scope.stats,
-	    /*
-			Viewport - frames viewable portion of grid.  Constains offsets necessary
-						for correct display and obtaining current window size.
+	    _.extend($scope, payload);
 
-	    */ 
+	    $scope.data 	= $scope.room;
+	    $scope.stats 	= $scope.availability_count;
+	    $scope.selectedReservations = [];
+
+		$scope.gridProps = {
+			/* Meta data object - allows us to use a single point of reference for various object properties.
+		       If a property name expected changes, update it here so it will propagate throughout the application.
+		    */
+		    meta: meta,  
+		    /*
+		    	Rooms array <- single data structure maintained in Angular, processed by React
+		      	NOTE: if the format/construction/etc of this data model becomes incorrect, React
+		      	may display garbage.  When there is a display issue, look here 
+		      	first - this is where 99.9999% of the problems arise. 
+		    */        
+		    data: $scope.data, 
+		    /*
+		    	Stats correspond to the occupancy counts found at the bottom of the timeline.
+		    */
+		    stats: $scope.stats,
+		    /*
+				Viewport - frames viewable portion of grid.  Constains offsets necessary
+							for correct display and obtaining current window size.
+
+		    */ 
 			viewport: {
 				hours: 						12,
 				width: 						angular.element($window).width() - 120,
@@ -79,7 +85,7 @@ sntRover
 					return $('.diary-grid .wrapper');
 				}
 			},
-		/*
+		/*h
 			Display is a configuration/state object that holds 
 			background grid temporal and spatial parameters.  
 			Such as:
@@ -93,25 +99,25 @@ sntRover
 			time span.
 		*/
 			display: {
-			x_offset: 				   payload.display.x_offset.getTime(),
+				x_offset: 				   payload.display.x_offset.getTime(),
 				x_0: 					   undefined,
-			x_origin:                  payload.display.x_origin.getTime(),
-			x_n:                       payload.display.x_n.getTime(),
-			x_n_time:                  (!payload.display.x_n_time ? payload.display.x_n.toComponents().time.convertToReferenceInterval(15) : payload.display.x_n_time),
-			x_p: 	                   payload.display.x_p.getTime(),
-			x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
+				x_origin:                  payload.display.x_origin.getTime(),
+				x_n:                       payload.display.x_n.getTime(),
+				x_n_time:                  (!payload.display.x_n_time ? payload.display.x_n.toComponents().time.convertToReferenceInterval(15) : payload.display.x_n_time),
+				x_p: 	                   payload.display.x_p.getTime(),
+				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
 				width: 						undefined,
 				height: 					undefined,
-			hours: 						24,
+				hours: 						48,
 				row_height: 				60,
 				row_height_margin: 			5,
 				intervals_per_hour: 		4, 
-			ms_15:                      900000,
+				ms_15:                      900000,
 				px_per_ms: 					undefined,
 				px_per_int: 				undefined,
 				px_per_hr: 					undefined,
-			currency_symbol:            $rootScope.currencySymbol,
-			min_hours: 					payload.display.min_hours
+				currency_symbol:            $rootScope.currencySymbol,
+				min_hours: 					payload.display.min_hours
 			},
 		/* 
 		   Edit command object.  When we need to edit an existing reservation, this is how we setup the
@@ -150,13 +156,13 @@ sntRover
 			edit: {								
 				active: 					false,
 				passive:                    false, 
-			mode:    					undefined,
+				mode:    					undefined,
 				resizing:                   { enabled: false },
-			dragging:     				{ enabled: false, direction: 0x01 },
+				dragging:     				{ enabled: false, direction: 0x01 },
 				originalItem: 				undefined,
-			originalRowItem: 			undefined,
-			currentResizeItem:          undefined,
-			currentResizeItemRow:       undefined
+				originalRowItem: 			undefined,
+				currentResizeItem:          undefined,
+				currentResizeItemRow:       undefined
 			},
 		/*
 			Filter options found above the React grid.   This section is mainly Angular controlled, however,
@@ -174,38 +180,38 @@ sntRover
 	    	arrival_times:              Array.prototype.slice.call(payload.filter.arrival_times),
 	    	arrival_time: 				payload.filter.arrival_time,
 	    	reservation_format: 		'h',
-		    	range: 						12,
+		    range: 						12,
 	    	rate_type: 					payload.filter.rate_type,
-		    	rate_type_details: 			[],
-		    	rate:                        undefined,
+		    rate_type_details: 			[],
+		    rate:                        undefined,
 	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
-		    	show_all_rooms: 			'on',
-		    	toggleHoursDays: function() {
+		    show_all_rooms: 			'on',
+		    toggleHoursDays: function() {
 	    		this.reservation_format = (this.reservation_format === 'h') ? 'd' : 'h';
 
 	    		if(this.reservation_format === 'd') {
-		    			$state.go('rover.reservation.search', {
-		    				fromState: 'DIARY'
-		    			});
-		    		}
-		    	},
+	    			$state.go('rover.reservation.search', {
+	    				fromState: 'DIARY'
+	    			});
+	    		}
+	    	},
     		toggleRates: function() {
-			var rateMenu = $('.faux-select-options');
+				var rateMenu = $('.faux-select-options');
 
-			if(rateMenu.length > 0) {
-				if(rateMenu.hasClass('hidden')) {
-					rateMenu.removeClass('hidden');
-				}else {
-					rateMenu.addClass('hidden');
+				if(rateMenu.length > 0) {
+					if(rateMenu.hasClass('hidden')) {
+						rateMenu.removeClass('hidden');
+					}else {
+						rateMenu.addClass('hidden');
+					}
 				}
-			}
 			},
 			toggleRange: function() {
-	    		var hourFormat12 = ($scope.gridProps.viewport.hours === 12);
+	    		var hourFormat12 							= ($scope.gridProps.viewport.hours === 12);
 
-	    		$scope.gridProps.viewport = util.deepCopy($scope.gridProps.viewport);
-	    		$scope.gridProps.display  = util.deepCopy($scope.gridProps.display);
+	    		$scope.gridProps.viewport 					= _.extend({}, $scope.gridProps.viewport);
+	    		$scope.gridProps.display  					= util.deepCopy($scope.gridProps.display);
 
 				$scope.gridProps.viewport.hours 			= (hourFormat12) ? 24 : 12;
 				$scope.gridProps.display.row_height 		= (hourFormat12) ? 24 : 60;
@@ -217,10 +223,10 @@ sntRover
 				$scope.gridProps.display.px_per_int 	    = $scope.gridProps.display.px_per_hr / $scope.gridProps.display.intervals_per_hour;
 				$scope.gridProps.display.px_per_ms 			= $scope.gridProps.display.px_per_int / $scope.gridProps.display.ms_15;
 
-				    	$scope.renderGrid();
-				    }
-				}
-		    };
+				 $scope.renderGrid();
+			}
+		}
+	};
 
 	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
 			  	
@@ -352,19 +358,18 @@ sntRover
 		})();
 
 	 	$scope.onResizeStart = function(row_data, row_item_data) {
-			  	
 	    };
 
 	    $scope.debug = function() {
 	    	for(var  i = 0, len = $scope.data.length; i < len ; i++) {
 	    		if($scope.data[i].occupancy.length > 0) {
 	    			console.log($scope.data[i].room_no, $scope.data[i].occupancy);
-            }
+            	}
 	    	}
 	    }
 
 	    $scope.onResizeEnd = function(row_data, row_item_data) {
-	    	$scope.gridProps.filter = util.deepCopy($scope.gridProps.filter);
+	    	/*$scope.gridProps.filter = util.deepCopy($scope.gridProps.filter);
 	    	$scope.gridProps.display = util.deepCopy($scope.gridProps.display);
 
 	    	$scope.gridProps.display.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
@@ -377,7 +382,7 @@ sntRover
 	    		$scope.renderGrid();
 	    	}, function(err) {
 	    		console.log(err);
-	    	});
+	    	});*/
 	    };    
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {

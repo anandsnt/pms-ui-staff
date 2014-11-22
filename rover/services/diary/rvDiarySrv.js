@@ -399,21 +399,24 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     occupancy[m.room_type]      = angular.lowercase(room_type.name); 
                     occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
 
-                    if(occupancy[m.status] === 'reserved') {
-                        occupancy[m.status] = 'check-in';
-                    } else if(occupancy[m.status] === 'checkedin') {
-                        occupancy[m.status] = 'inhouse';
-                    } else if(occupancy[m.status] === 'checkedout') {
-                        occupancy[m.status] = 'check-out';
-                    } else if(occupancy[m.status] === 'checking_out') {
-                        occupancy[m.status] = 'check-out';
+                    if(occupancy[m.status]          === 'reserved') {
+                        occupancy[m.status]         = 'check-in';
+                    } else if(occupancy[m.status]   === 'checkedin') {
+                        occupancy[m.status]         = 'inhouse';
+                    } else if(occupancy[m.status]   === 'checkedout') {
+                        occupancy[m.status]         = 'check-out';
+                    } else if(occupancy[m.status]   === 'checking_out') {
+                        occupancy[m.status]         = 'check-out';
+                    } else if(occupancy[m.status]    ===  'checked_in') {
+                        occupancy[m.status]         = 'check-in';
                     }
 
                     room = _.findWhere(Room.store.data, { id: occupancy.room_id });
 
-                    if(room) {
-                        room[r.status] = occupancy[m.room_status];
-                    }
+                    //if(room) {
+                      //  room.hk_status
+                        //room[r.status] = occupancy[m.room_status];
+                    //}
 
                     delete occupancy.arrival_time;
                     delete occupancy.arrival_date;
@@ -558,8 +561,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                           RoomType, 
                                           Room, 
                                           Occupancy, 
-                                          Occupancy,
-                                          Occupancy,
                                           AvailabilityCount], 
                                 function(memo, obj, idx) {  
                                     obj.resolve(data_array[idx]);

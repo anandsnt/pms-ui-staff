@@ -26,9 +26,9 @@ sntRover
 
         gridTimeComponents = function(arrival_ms, display_total_hours, display) {
             var ret,
-                ms_per_day      = 43200000,
-                ms_per_hr       = 3600000,
-                perspective_offset = (arrival_ms instanceof Date ? new Date(Date.now()).toComponents().time.hours : 0),
+                ms_per_day          = 43200000,
+                ms_per_hr           = 3600000,
+                perspective_offset  = (arrival_ms instanceof Date ? new Date(Date.now()).toComponents().time.hours : 0),
                 x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(Date.now()).toComponents().time.hours,0,0) : arrival_ms), 
                 x_max               = (display_total_hours - perspective_offset) * ms_per_hr, 
                 x_min               = (display_total_hours * ms_per_hr - x_max),
@@ -252,17 +252,17 @@ sntRover
 			} else {
 				updateReservation(oldRoom, reservation);
 			}
-
-
 		};
 
 		clearRowClasses = function(rooms) {
 	    	var data = rooms;
 
-	    	for(var i = 0, len = data.length; i < len; i++) {
-	    		data[i] = deepCopy(data[i]);
-	    		data[i][meta.room.status] = '';
-	    	}
+            if(data) {
+    	    	for(var i = 0, len = data.length; i < len; i++) {
+    	    		data[i] = deepCopy(data[i]);
+    	    		data[i][meta.room.status] = '';
+    	    	}
+            }
 	    };
 
 	    registerNotifictions = function(obj) {
