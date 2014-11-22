@@ -97,7 +97,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 				$scope.paymentData.reservation_card.payment_details.card_number = $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4);
 				$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.cardData.tokenDetails.expiry_month+" / "+$scope.cardData.tokenDetails.expiry_year;;
 			}
-			closeDialog();
+			$scope.closeDialog();
 			
 	};
 	
