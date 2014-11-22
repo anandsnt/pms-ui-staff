@@ -46,12 +46,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;
 		if(!$scope.cardData.tokenDetails.isSixPayment){
-			console.log("MLI")
 			$scope.renderData.creditCardType = getCreditCardType($scope.cardData.tokenDetails.cardBrand).toLowerCase();
 			$scope.renderData.cardExpiry = $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
 			$scope.renderData.endingWith = $scope.cardData.cardDetails.cardNumber.substr($scope.cardData.cardDetails.cardNumber.length - 4);
 		} else {
-			console.log("IFRAME==")
 			
 			$scope.renderData.creditCardType = getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 			$scope.renderData.cardExpiry = $scope.cardData.tokenDetails.expiry_month+" / "+$scope.cardData.tokenDetails.expiry_year;
@@ -59,10 +57,11 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		}
 		$scope.$digest();
 	});
+	var creditCardType = '';
 	$scope.saveNewCard = function(){
 		
 			console.log($scope.cardDetails);
-			var creditCardType = '';
+			
 			if(!$scope.cardData.tokenDetails.isSixPayment){
 				creditCardType = getCreditCardType($scope.cardData.tokenDetails.cardBrand);
 				var data = {
@@ -84,7 +83,22 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			}
 			
 	
-		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data);
+		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess);
+	};
+	$scope.saveSuccess = function(){
+		
+			$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
+			//$scope.paymentData.reservation_card.payment_method_description = data.payment_type;
+			$scope.paymentData.reservation_card.payment_details.card_type_image = creditCardType.toLowerCase()+".png";
+			if(!$scope.cardData.tokenDetails.isSixPayment){
+				$scope.paymentData.reservation_card.payment_details.card_number = $scope.cardData.cardDetails.cardNumber.substr($scope.cardData.cardDetails.cardNumber.length - 4);
+				$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
+			} else {
+				$scope.paymentData.reservation_card.payment_details.card_number = $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4);
+				$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.cardData.tokenDetails.expiry_month+" / "+$scope.cardData.tokenDetails.expiry_year;;
+			}
+			$scope.closeDialog();
+			
 	};
 	
 	
