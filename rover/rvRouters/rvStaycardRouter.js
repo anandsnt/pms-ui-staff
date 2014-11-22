@@ -20,9 +20,15 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/staycard/rvStaycard.html',
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
-                baseData: function(RVReservationSummarySrv) {
-                    return RVReservationSummarySrv.fetchInitialData();
-                },
+                /**
+                *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+                *   to the states where it actually requires it.
+                *
+                *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' method on 'RVReservationMainCtrl'.
+                *
+                *   Once that state controller fetch 'baseData', it will find 'RVReservationMainCtrl' controller
+                *   by climbing the $socpe.$parent ladder and will call 'callFromChildCtrl' method.
+                */
                 baseSearchData: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchBaseSearchData();
                 }
@@ -35,7 +41,7 @@ angular.module('stayCardModule', [])
             controller: 'rvDiaryCtrl',
             resolve: {
                 payload: function($rootScope, rvDiarySrv, $stateParams) {
-                    var start_date = tzIndependentDate($rootScope.businessDate); //Date.now();
+                    var start_date = new tzIndependentDate($rootScope.businessDate); //Date.now();
                            
                     return rvDiarySrv.load(start_date, rvDiarySrv.ArrivalFromCreateReservation());
                 }
@@ -46,7 +52,12 @@ angular.module('stayCardModule', [])
         $stateProvider.state('rover.reservation.search', {
             url: '/search',
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
-            controller: 'RVReservationBaseSearchCtrl'
+            controller: 'RVReservationBaseSearchCtrl',
+            resolve: {
+                baseData: function(RVReservationSummarySrv) {
+                    return RVReservationSummarySrv.fetchInitialData();
+                }
+            }
         });
 
         $stateProvider.state('rover.reservation.staycard', {
@@ -148,6 +159,9 @@ angular.module('stayCardModule', [])
                         "isRefresh": $stateParams.isrefresh
                     };
                     return RVReservationCardSrv.fetchReservationDetails(data);
+                },
+                baseData: function(RVReservationSummarySrv) {
+                    return RVReservationSummarySrv.fetchInitialData();
                 }
             }
         });

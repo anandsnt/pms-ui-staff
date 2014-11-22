@@ -42,7 +42,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
         };
 
         // fetch employees deatils
-        var url = "/api/users/active.json";
+        var url = "/api/users/active.json?journal=true";
         BaseWebSrvV2.getJSON(url).then(function (data) {
             that.filterData.employees = data;
             angular.forEach(that.filterData.employees,function(item, index) {
@@ -118,7 +118,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchPaymentData = function(params){
 		var deferred = $q.defer();
-		var url = '/api/financial_transactions/payments?date='+params.date;
+		//var url = '/api/financial_transactions/payments?date='+params.date;
+		var url = '/api/financial_transactions/payments?from_date='+params.from+'&to_date='+params.to;
 		//var url = '/sample_json/journal/journal_payments.json';
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			this.paymentData = data;
