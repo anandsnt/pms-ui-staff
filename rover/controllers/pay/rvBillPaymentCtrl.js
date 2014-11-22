@@ -23,6 +23,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.shouldShowExistingCards = true;
 		$scope.setScroller('cardsList');
 		$scope.addmode = true;
+		$scope.showAddtoGuestCard = true;
 	};
 
 	$scope.handleCloseDialog = function(){
