@@ -5,7 +5,6 @@ admin.service('ADStationarySrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
     * @return {object} details of stationary details json
     */
 	this.fetch = function(){
-		
 		var deferred = $q.defer();
 		var url = '/api/stationary';
 
