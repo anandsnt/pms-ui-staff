@@ -50,7 +50,11 @@ var GridRowItem = React.createClass({
 			end_time_ms 			= !state.resizing ? data[m.end_date] : state.currentResizeItem[m.end_date],
 			maintenance_time_span 	= data[m.maintenance] * px_per_int, 
 			reservation_time_span 	= (end_time_ms - start_time_ms) * px_per_ms,  
-			is_temp_reservation 	= data[m.status] === 'available';
+			is_temp_reservation 	= data[m.status] === 'available',
+			innerText 				= (is_temp_reservation ? display.currency_symbol + ' ' + data[m.rate] + ' | ' + data[m.room_type] : data[m.guest]),
+			className 				= (!is_temp_reservation ? 'occupied ' : '') + 
+																data[m.status] + (state.editing ? ' editing' : '') + 
+																(is_temp_reservation && data.selected ? ' reserved' : '');
 
 		return GridRowItemDrag({
 			key: 				data.key,
@@ -72,11 +76,11 @@ var GridRowItem = React.createClass({
 			}
 		}, 
 		React.DOM.span({
-			className: ((!is_temp_reservation) ? 'occupied ' : '') + data[m.status] + (state.editing ? ' editing' : '') + (is_temp_reservation && data.selected ? ' reserved' : ''),
+			className: className,
 			style: { 
 				width: reservation_time_span + 'px' 
 			}
-		}, is_temp_reservation ? data[m.rate] + ' | ' + data[m.room_type] : data[m.guest]),
+		}, innerText),
 		React.DOM.span({
 			className: 'maintenance',
 			style: { 

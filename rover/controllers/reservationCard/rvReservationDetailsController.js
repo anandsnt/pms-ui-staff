@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData) {
 
 		// pre setups for back button
 		var backTitle,
@@ -49,6 +49,23 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
+
+		/**
+		*	We have moved the fetching of 'baseData' form 'rover.reservation' state
+		*	to the state where this controller is set as the state controller
+		*
+		*	Now we do want the original parent controller 'RVReservationMainCtrl' to bind that data
+		*	so we have created a 'callFromChildCtrl' method on the 'RVReservationMainCtrl' $scope.
+		*
+		*	Once we fetch the baseData here we are going call 'callFromChildCtrl' method
+		*	while passing the data, this way all the things 'RVReservationMainCtrl' was doing with
+		*	'baseData' will be processed again
+		*
+		*	The number of '$parent' used is based on how deep this state is wrt 'rover.reservation' state
+		*/
+		var rvReservationMainCtrl = $scope.$parent.$parent.$parent.$parent;
+		rvReservationMainCtrl.callFromChildCtrl(baseData);
+
 
 		BaseCtrl.call(this, $scope);
 

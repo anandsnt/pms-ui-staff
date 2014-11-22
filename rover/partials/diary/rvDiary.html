@@ -3,7 +3,7 @@
     <form method="post" action="" id="diary-header" name="diary-header" class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
         <div class="entry edit" ng-show="gridProps.edit.active">
             <div class="guest">
-                <h1>{{gridProps.edit.originalItem.guest_name}}</h1>
+                <h1>{{gridProps.edit.originalItem.reservation_primary_guest_full_name}}</h1>
             </div>
             <div class="actions">
                 <button id="edit-staycard" class="button white" ng-click="openStayCard()">StayCard</button>
@@ -26,7 +26,7 @@
                 <select id="arrival-time" 
                         name="arrival-time" 
                         ng-model="gridProps.filter.arrival_time" 
-                        ng-options="arrival_time as arrival_time for arrival_time in arrival_times">
+                        ng-options="arrival_time as arrival_time for arrival_time in gridProps.filter.arrival_times">
                     <option value="" disabled selected="selected">Select</option>
                     <!--<option value={{arrival_time}}>{{arrival_time}}</option> -->
                 </select>
@@ -38,19 +38,18 @@
                 <select id="room-type" 
                         name="room-type" 
                         ng-model="gridProps.filter.room_type" 
-                        ng-options="room_type as room_type.name for room_type in room_types">
+                        ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types">
                     <option value="" disabled selected="selected">Select</option>
                 </select>
             </div>
         </div>
         <div class="entry rate">
             <label for="rate-type">Rate Type</label>
-            <div class="faux-select" ng-click="toggleRates()">
+            <div class="faux-select" ng-click="gridProps.filter.toggleRates()">
                 {{gridProps.filter.rate_type}}
             </div>
             <div id="diary-rates" class="faux-select-options hidden">
                 <div class="header">
-                    <!-- Standard Rate -->
                     <div>
                         <label class="radio inline">
                             <span class="icon-form" ng-class="{active: gridProps.filter.rate_type === 'Standard'}"></span>
@@ -101,8 +100,8 @@
                     <input name="diary-corporate-query" id="diary-corporate-query" class="query" placeholder="Type Company or Travel Agent Name" type="search" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
                 </div>
                 <div class="entry results">
-                    <ul class="search-list" ng-hide="companyCardResults.length === 0">
-                        <li ng-repeat="name_card in companyCardResults track by $index">
+                    <ul class="search-list" ng-hide="gridProps.filter.rate_type_details.length === 0">
+                        <li ng-repeat="name_card in gridProps.filter.rate_type_details track by $index">
                             <div class="icon company-card" ng-if="name_card.account_type === 'COMPANY' && name_card.company_logo === ''"></div>
                             <div class="icon travel-agent" ng-if="name_card.account_type === 'TRAVELAGENT' && name_card.company_logo == ''"></div>
                             <img ng-src="{{name_card.company_logo}}" alt="" ng-if="name_card.company_logo !== ''" />
