@@ -19,7 +19,7 @@
 				<div class="select" ng-model="data.selected_guest_bill_template">
 					<select  name="guest-bill-template" class="placeholder">
 						<option value="" translate> SELECT_GUEST_BILL </option>
-						<option ng-repeat="item in data.guest_bill_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill_template"></option>
+						<option ng-repeat="item in data.guest_bill_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill_template">{{item.name}}</option>
 					</select>
 				</div>
 			</div>
@@ -28,7 +28,7 @@
 				<div class="select" ng-model="data.logo_type">
 					<select  name="hotel-logo" class="placeholder">
 						<option value="" translate> SELECT_LOGO_TYPE </option>
-						<option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type"></option>
+						<option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type">{{item.name}}</option>
 					</select>
 				</div>
 			</div>

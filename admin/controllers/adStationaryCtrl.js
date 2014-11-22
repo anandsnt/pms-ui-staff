@@ -1,12 +1,12 @@
 admin.controller('ADStationaryCtrl',['$scope','ADStationarySrv',function($scope,ADStationarySrv){
 
 	BaseCtrl.call(this, $scope);
-	
+	$scope.errorMessage = '';
+
 	$scope.init = function(){
 		var successCallbackOfFetch = function(data){
 			$scope.data = {};
 			$scope.data = data;
-			$scope.data.show_hotel_address = false;
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADStationarySrv.fetch, {}, successCallbackOfFetch);
@@ -17,12 +17,12 @@ admin.controller('ADStationaryCtrl',['$scope','ADStationarySrv',function($scope,
 	$scope.toggleShowHotelAddress = function(){
 		$scope.data.show_hotel_address = !$scope.data.show_hotel_address;
 	};
-
 	/*
 	* success call back of details web service call
 	*/
 	var successCallbackOfSaveDetails = function(data){
 		$scope.$emit('hideLoader');	
+		$scope.errorMessage = '';
 	};
 	// Save changes button actions.
 	$scope.clickedSave = function(){
