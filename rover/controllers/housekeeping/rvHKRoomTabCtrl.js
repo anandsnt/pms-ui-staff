@@ -96,8 +96,6 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			$scope.editService.reason_id = data.maintenance_reason_id;
 			$scope.editService.comment   = data.comments;
 
-			console.log($scope.editService)
-
 			$scope.showForm = false;
 			$scope.showSaved = true;
 
@@ -285,7 +283,12 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			$scope.updateService.from_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
 			$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.to_date), 'yyyy-MM-dd');
 
-			$scope.invokeApi(RVHkRoomDetailsSrv.updateRoomServiceStatus, $scope.updateService, _callback, _error);
+			// POST or PUT (read service to understand better)
+			if ( $_originalStatusId === $_inServiceId ) {
+				$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.updateService, _callback, _error);
+			} else {
+				$scope.invokeApi(RVHkRoomDetailsSrv.putRoomServiceStatus, $scope.updateService, _callback, _error);
+			}
 		};
 
 		$scope.edit = function() {
