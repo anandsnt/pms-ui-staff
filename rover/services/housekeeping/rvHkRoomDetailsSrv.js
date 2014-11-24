@@ -118,11 +118,11 @@ sntRover.service('RVHkRoomDetailsSrv', [
 		};
 
 		// save oo/os to server
-		this.postRoomServiceStatus = function(params) {
+		this.updateRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/room_services';
+				url = 'api/room_services/' + params.room_id;
 
-			rvBaseWebSrvV2.postJSON(url, params)
+			rvBaseWebSrvV2.putJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data){

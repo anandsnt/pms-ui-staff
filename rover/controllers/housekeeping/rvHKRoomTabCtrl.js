@@ -285,7 +285,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			$scope.updateService.from_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
 			$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.to_date), 'yyyy-MM-dd');
 
-			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.updateService, _callback, _error);
+			$scope.invokeApi(RVHkRoomDetailsSrv.updateRoomServiceStatus, $scope.updateService, _callback, _error);
 		};
 
 		$scope.edit = function() {
