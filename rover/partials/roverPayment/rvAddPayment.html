@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-cloak>
 	<form method="post" action="{action}" id="new-payment" name="new-payment" class="modal-content form new-content select-card">
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert">
@@ -56,7 +56,7 @@
 				<button type="button" class="button blank modal-close" ng-click="closeDialog()">
 					Close
 				</button>
-				<button type="button" class="button green" ng-click="saveNewCard()">
+				<button type="button" class="button green" ng-click="addNewPayment()">
 					Add
 				</button>
 			</div>

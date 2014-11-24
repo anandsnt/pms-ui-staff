@@ -14,6 +14,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.addmode                 = true;
 	$scope.savePayment = {};
 	console.log($scope);
+	console.log("---------------------------------++**********-----"+$scope.passData.fromBill);
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
 		$scope.renderData = data;
@@ -57,50 +58,110 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		}
 		$scope.$digest();
 	});
+
+
 	var creditCardType = '';
-	$scope.saveNewCard = function(){
+	var billIndex = parseInt($scope.passData.fromBill);
+	var billNumber = parseInt(billIndex) - parseInt(1);
+	/*
+	* Save CC success bill screen
+	*/
+	var billScreenCCSaveActions = function(data){
 		
+
+		$scope.paymentData.bills[billNumber].credit_card_details.payment_type = $scope.dataToSave.paymentType;
+		$scope.paymentData.bills[billNumber].credit_card_details.card_code = creditCardType.toLowerCase();
+
+		if(!$scope.cardData.tokenDetails.isSixPayment){
+			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.cardData.cardDetails.cardNumber.substr($scope.cardData.cardDetails.cardNumber.length - 4);
+			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
+		} else {
+			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4);
+			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.cardData.tokenDetails.expiry_month+" / "+$scope.cardData.tokenDetails.expiry_year;;
+		};
+		var dataToUpdate = {
+			"balance": data.reservation_balance,
+			"confirm_no" : $scope.paymentData.confirm_no 
+		};
+		// CICO-9739 : To update on reservation card payment section while updating from bill#1 credit card type.
+		if(billNumber == 0){
+			$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.paymentData.bills[billNumber].credit_card_details );
+		};
+		$rootScope.$broadcast('BALANCECHANGED', dataToUpdate);	
+	};
+
+	/*
+	* Save CC success staycard screen
+	*/
+
+	var saveNewCardSuccess = function(data){
+		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
+		//$scope.paymentData.reservation_card.payment_method_description = data.payment_type;
+		$scope.paymentData.reservation_card.payment_details.card_type_image = creditCardType.toLowerCase()+".png";
+		if(!$scope.cardData.tokenDetails.isSixPayment){
+			$scope.paymentData.reservation_card.payment_details.card_number = $scope.cardData.cardDetails.cardNumber.substr($scope.cardData.cardDetails.cardNumber.length - 4);
+			$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
+		} else {
+			$scope.paymentData.reservation_card.payment_details.card_number = $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4);
+			$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.cardData.tokenDetails.expiry_month+" / "+$scope.cardData.tokenDetails.expiry_year;;
+		};		
+	};
+
+	var ccSaveSuccess = function(data){
+		$scope.$emit("hideLoader");
+		(typeof $scope.passData.fromBill == "undefined")?saveNewCardSuccess(data):billScreenCCSaveActions(data);
+		$scope.closeDialog();	
+	};
+	/*
+	* Save CC
+	*/
+	var saveNewCard = function(){
 			console.log($scope.cardDetails);
+			var data =  {
+							"add_to_guest_card": $scope.savePayment.addToGuest,
+							"reservation_id": $scope.passData.reservationId
+					    };
 			
 			if(!$scope.cardData.tokenDetails.isSixPayment){
 				creditCardType = getCreditCardType($scope.cardData.tokenDetails.cardBrand);
-				var data = {
-					"add_to_guest_card": $scope.savePayment.addToGuest,
-					"token": $scope.cardData.tokenDetails.session,
-					"reservation_id": $scope.passData.reservationId,
-					//"credit_card": creditCardType,
-					//"payment_type": $scope.dataToSave.paymentType
-				};
+				 data.token = $scope.cardData.tokenDetails.session;
 			} else {
 				creditCardType = getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
-				var data = {
-					"add_to_guest_card": $scope.savePayment.addToGuest,
-					"token": $scope.cardData.tokenDetails.token_no,
-					"reservation_id": $scope.passData.reservationId,
-					//"credit_card": creditCardType,
-					//"payment_type": $scope.dataToSave.paymentType
-				};
-			}
-			
-	
-		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess);
+				data.token = $scope.cardData.tokenDetails.token_no;
+			};	
+
+			if(typeof $scope.passData.fromBill == "undefined"){
+				data.bill_number = $scope.passData.fromBill;	
+			};			
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
 	};
-	$scope.saveSuccess = function(){
-		
-			$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
-			//$scope.paymentData.reservation_card.payment_method_description = data.payment_type;
-			$scope.paymentData.reservation_card.payment_details.card_type_image = creditCardType.toLowerCase()+".png";
-			if(!$scope.cardData.tokenDetails.isSixPayment){
-				$scope.paymentData.reservation_card.payment_details.card_number = $scope.cardData.cardDetails.cardNumber.substr($scope.cardData.cardDetails.cardNumber.length - 4);
-				$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
-			} else {
-				$scope.paymentData.reservation_card.payment_details.card_number = $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4);
-				$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.cardData.tokenDetails.expiry_month+" / "+$scope.cardData.tokenDetails.expiry_year;;
-			}
-			$scope.closeDialog();
-			
+
+    var savePaymentSuccess = function(data){
+    	$scope.$emit("hideLoader");
+    	(typeof $scope.passData.fromBill == "undefined")?
+    		$scope.paymentData.reservation_card.payment_method_description = data.payment_type:
+    		$scope.paymentData.bills[billNumber].credit_card_details.payment_type_description = data.payment_type;
+    	$scope.closeDialog();
+    };
+    /*
+    * save non CC
+    */
+	var saveNewPayment = function(){
+		var data =  {};
+		data = {
+				"add_to_guest_card": $scope.savePayment.addToGuest,
+				"reservation_id": $scope.passData.reservationId,
+				"payment_type": $scope.dataToSave.paymentType
+			   };
+		if($scope.passData.fromBill){
+			data.bill_number = $scope.passData.fromBill;	
+		};				
+		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data,savePaymentSuccess);
 	};
+
 	
-	
+	$scope.addNewPayment = function(){
+		($scope.dataToSave.paymentType ==='CC') ? saveNewCard():saveNewPayment();
+	};
 	
 }]);
