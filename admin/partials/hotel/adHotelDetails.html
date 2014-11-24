@@ -91,7 +91,7 @@
 
 			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
 				<label>Enable single digit room number search</label>
-				<div class="switch-button single" ng-class="{ on : data.is_single_digit_search == 'true' }" ng-click="toggleSingleDigitSearch()">
+				<div class="switch-button single" ng-class="{ on : data.is_single_digit_search == true }" ng-click="data.is_single_digit_search = !data.is_single_digit_search">
 					<input type="checkbox" value="{{data.is_single_digit_search}}" id="is-single-digit-search">
 					<span class="switch-icon"></span>
 				</div>

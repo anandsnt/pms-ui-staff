@@ -288,6 +288,18 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			
 			$scope.isTyping = false;
 		};
+		/**
+		* Single digit search done based on the settings in admin
+		* The single digit search is done only for numeric characters.
+		* CICO-10323 
+		*/
+		function isSearchOnSingleDigit(searchTerm){
+			if($rootScope.isSingleDigitSearch){
+				return isNaN(searchTerm);
+			} else {
+				return true;
+			}
+		};
 
 		/**
 		 * function to perform filering on results.
@@ -295,9 +307,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		var displayFilteredResults = function() {
 
-			//$scope.disableNextButton = false;
-			//if the entered text's length < 3, we will show everything, means no filtering    
-			if ($scope.textInQueryBox.length < 3 && !$rootScope.isSingleDigitSearch) {
+			//show everything, means no filtering    
+			if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 				//based on 'is_row_visible' parameter we are showing the data in the template      
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;
