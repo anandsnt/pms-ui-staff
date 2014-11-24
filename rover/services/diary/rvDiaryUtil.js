@@ -26,29 +26,49 @@ sntRover
 
         gridTimeComponents = function(arrival_ms, display_total_hours, display) {
             var ret,
-                ms_per_day      = 43200000,
-                ms_per_hr       = 3600000,
-
-                x_origin        = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(Date.now()).toComponents().time.hours,0,0) : arrival_ms), 
-                resolving_dist  = ((display_total_hours - 2) * ms_per_hr), 
-                x_right         = x_origin + resolving_dist, 
-                x_left          = x_origin - (ms_per_hr * 2); 
+                ms_per_day          = 43200000,
+                ms_per_hr           = 3600000,
+                perspective_offset  = (arrival_ms instanceof Date ? new Date(Date.now()).toComponents().time.hours : 0),
+                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(Date.now()).toComponents().time.hours,0,0) : arrival_ms), 
+                x_max               = (display_total_hours - perspective_offset) * ms_per_hr, 
+                x_min               = (display_total_hours * ms_per_hr - x_max),
+                x_right             = x_origin + x_max, 
+                x_left              = x_origin - x_min,
+                x_offset            = x_origin - (ms_per_hr * 2); 
 
             ret = {
-                start_date: new Date(x_origin),
+                x_offset: new Date(x_offset),
+                x_origin: new Date(x_origin),
                 x_0:  new Date(x_origin),
-                x_nL: new Date(x_left),
-                x_nR: new Date(x_right)
+                x_n: new Date(x_left),
+                x_p: new Date(x_right),
+                toShijuBugStartDate: function(start) {
+                    return new Date(new Date(x_left).setHours(start,0,0));
+                },
+                toShijuBugEndDate: function(end) {
+                    return new Date(new Date(x_right).setHours(end, 0, 0));
+                },
+                toStartDate: function() {
+                    return new Date(new Date(x_left).setHours(0, 0, 0));
+                },
+                toEndDate: function() {
+                    return new Date(new Date(x_right).setHours(23, 59, 0));
+                }
             };
 
+            ret.x_origin_start_time = ret.x_origin.toComponents().time.convertToReferenceInterval(15); 
+            ret.x_n_time = ret.x_n.toComponents().time.convertToReferenceInterval(15);
+            ret.x_p_time = ret.x_p.toComponents().time.convertToReferenceInterval(15);
+
             if(display) {
-                display                         = _.extend({}, display);
+                display.x_offset                = x_offset;
                 display.x_origin                = x_origin;
-                display.x_origin_start_time     = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
-                display.x_nL                    = x_left;
-                display.x_nL_time               = ret.x_nL.toComponents().time.convertToReferenceInterval(15);
-                display.x_nR                    = x_right;
-                display.x_nR_time               = ret.x_nR.toComponents().time.convertToReferenceInterval(15);
+                display.x_origin_start_time     = ret.x_origin_start_time;
+                display.x_n                     = x_left;
+                display.x_0                     = x_origin;
+                display.x_n_time                = ret.x_n_time;
+                display.x_p                     = x_right;
+                display.x_p_time                = ret.x_p_time;
 
                ret.display = display;
             }
@@ -232,17 +252,17 @@ sntRover
 			} else {
 				updateReservation(oldRoom, reservation);
 			}
-
-
 		};
 
 		clearRowClasses = function(rooms) {
 	    	var data = rooms;
 
-	    	for(var i = 0, len = data.length; i < len; i++) {
-	    		data[i] = deepCopy(data[i]);
-	    		data[i][meta.room.status] = '';
-	    	}
+            if(data) {
+    	    	for(var i = 0, len = data.length; i < len; i++) {
+    	    		data[i] = deepCopy(data[i]);
+    	    		data[i][meta.room.status] = '';
+    	    	}
+            }
 	    };
 
 	    registerNotifictions = function(obj) {

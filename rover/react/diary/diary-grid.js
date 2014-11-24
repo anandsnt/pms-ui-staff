@@ -42,8 +42,8 @@ var Grid = React.createClass({
 				React.DOM.ul({ 
 					className: 'grid',
 					style: {
-						width: grid_width 
-						//left: -1 * (display.x_origin - display.x_nL) * display.px_per_ms + 'px'
+						width: grid_width//, 
+						//left: -1 * (display.x_offset - display.x_n) * display.px_per_ms + 'px'
 					}
 				}, 
 				_.map(this.props.data, function(row, idx) {

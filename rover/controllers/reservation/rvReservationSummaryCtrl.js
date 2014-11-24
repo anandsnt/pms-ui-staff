@@ -12,6 +12,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.isIframeVisible = false;
 		$scope.isCallInOnsiteButtonVisible = false;
 		$scope.isMLICreditCardVisible = false;
+		if($scope.reservationData.paymentType.type.value === 'CC'){
+			$scope.isMLICreditCardVisible = true;
+		}
 		$scope.isOnsiteActive = false;
 
 		if ($rootScope.paymentGateway === "sixpayments") {
@@ -34,21 +37,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
 		// Listen to message from child IFrame window
-		eventer(messageEvent, function(e) {
-			var responseData = e.data;
-			if (responseData.response_message == "token_created") {
-				console.log("event listener==============");
-				$scope.isSubmitButtonEnabled = true;
-				var unwantedKeys = ["response_message"]; // remove unwanted keys for API
-				//responseData = dclone(responseData, unwantedKeys);
-				//console.log(JSON.stringify(responseData));
-				$scope.six_token = responseData.token;
-				//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
-			}
-		}, false);
 
-		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
-
+		eventer(messageEvent, function (e) {
+			
+			   var responseData = e.data;
+		       if(responseData.response_message == "token_created"){
+		       		$scope.isSubmitButtonEnabled = true;
+		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
+       				//responseData = dclone(responseData, unwantedKeys);
+		       		//console.log(JSON.stringify(responseData));
+		       		$scope.six_token = responseData.token_no;
+		       		
+		       		//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
+		       }
+		    
+		}, false);   
+		
+		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled){
 			var buttonClass = "grey";
 			if (isSubmitButtonEnabled) {
 				buttonClass = "green";
@@ -227,8 +232,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var paymentFetchSuccess = function(data) {
 				$scope.reservationData.paymentMethods = data;
 				$scope.$emit('hideLoader');
+
+				var reservationDataPaymentTypeValue = JSON.stringify($scope.reservationData.paymentType.type.value);
 				var payments = _.where(data, {
-					value: $scope.reservationData.paymentType.type.value
+					value: reservationDataPaymentTypeValue
 				});
 				if (payments.length > 0) {
 					$scope.reservationData.paymentType.type = payments[0];
@@ -383,6 +390,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$apply();
 				if (response.status === "ok") {
 					$scope.data.MLIData = response;
+					$scope.isSubmitButtonEnabled = true;
 				} else {
 					$scope.errorMessage = ["There is a problem with your credit card"];
 					$scope.data.MLIData = {};
@@ -433,7 +441,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					}
 				}
 			}
-
 			if ($scope.errorMessage.length > 0) {
 				return false;
 			}
@@ -459,9 +466,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 		};
 
-		$scope.changePaymentType = function() {
-			if ($scope.reservationData.paymentType.type.value === 'CC') {
-				if ($rootScope.paymentGateway === "sixpayments") {
+		$scope.changePaymentType = function(){
+			if($scope.reservationData.paymentType.type.value === 'CC'){
+				if($rootScope.paymentGateway === "sixpayments"){
 					$scope.isSixPaymentGatewayVisible = true;
 					if ($scope.isOnsiteActive) {
 						$scope.isMLICreditCardVisible = false;
@@ -543,9 +550,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		/*
 		 *
 		 */
-		$scope.startPaymentProcess = function() {
+		$scope.startPaymentProcess = function(){
+			$scope.shouldShowWaiting = true;
 			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvWaitingDialog.html',
+				template: '/assets/partials/reservation/rvWaitingDialog.html',
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
@@ -556,7 +564,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 			RVReservationSummarySrv.startPayment(data).then(function(response) {
 				console.log(response);
-			}, function() {
+				$scope.shouldShowWaiting = false;
+			},function(){
 				$rootScope.netWorkError = true;
 				$scope.isPosting = false;
 			});
