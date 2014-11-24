@@ -53,6 +53,7 @@ var TimelinePanel = React.createClass({
 			id: 'timeline-outer-wrapper',
 			className: 'outer-wrapper',
 			style: {
+				position: 'relative',
 				width: props.display.width + 'px'
 			}
 		},
