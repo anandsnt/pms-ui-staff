@@ -1,6 +1,6 @@
 <div class="entry full-width"><!-- Add class "amount" when fee exsists -->
-    <label for="amount">Amount to pay (<span>$</span>)</label>
-    <input name="amount" id="amount" value="{value}" type="text" />
+    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
+    <input name="amount" id="amount" value="{{depositData.depositValue}}" type="text" />
     <!-- Use only when fee exsists 
     <span class="fee">+ ${fee} fee</span> 
     <span class="total">Total: <strong id="total-deposit-amount" >${value+fee} </strong></span>-->
