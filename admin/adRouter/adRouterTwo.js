@@ -354,6 +354,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve: {
 				settingsAndParamsData: function(settingsAndParamsSrv) {
 					return settingsAndParamsSrv.fetchsettingsAndParams();
+				},
+				chargeCodes: function(settingsAndParamsSrv){
+					return settingsAndParamsSrv.fetchChargeCodes();
 				}
 			}
 		});
