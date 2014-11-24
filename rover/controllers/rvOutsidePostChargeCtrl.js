@@ -79,47 +79,59 @@ sntRover.controller('RVOutsidePostChargeController',
 				});
 				refreshScroller();
 			};
+
+			function isSearchOnSingleDigit(searchTerm){
+				if($rootScope.isSingleDigitSearch){
+					return $scope.search.room.length >= 3;
+				} else {
+					return true;
+				}
+			};
 			
 			$scope.searchForResults = function(){
-				$s = $scope;
 				$scope.showInitialSearchScreen = false;
 				$scope.refreshApi = true;
 
-				if($scope.search.guest_company_agent.length < 3
-					&& ($scope.search.room.length == 0 || ($scope.search.room.length < 3 && !$rootScope.isSingleDigitSearch))){
-					console.log('inside');
+				//single difit search parameter is turned on in admin, room number search is made for single digit
+				//company/TA/guest search will be done for 3 characters.
+				//CICO-10323
+				var search = false;
+				if($scope.search.guest_company_agent.length >= 3){
+					search = true;
+				}
+				if($scope.search.room.length >= 3 && !$rootScope.isSingleDigitSearch){
+					search = true;
+				}
+				if($scope.search.room.length >= 1 && $rootScope.isSingleDigitSearch){
+					search = true;
+				}
 
+				if(!search){
 					return false;
 				}
+						
+				if(oldSearchGuestText.length > 0){
+					if((oldSearchGuestText.length < $scope.search.guest_company_agent.length) && ($scope.search.guest_company_agent.indexOf(oldSearchGuestText) !=-1 )){
+						$scope.refreshApi = false;
+					}
+				}
 				
+				else if(oldSearchRoomValue.length > 0) {
+					if((oldSearchRoomValue.length < $scope.search.room.length) && ($scope.search.room.indexOf(oldSearchRoomValue) !=-1 )){
+						$scope.refreshApi = false;
+					}
+				}
+				var dataToSrv = {
+					"refreshApi": $scope.refreshApi,
+				    "postData": {
+				    	"room_no": $scope.search.room,
+				    	"account": $scope.search.guest_company_agent
+				    }
+				};
 
-				//if($scope.search.guest_company_agent.length > 2 
-					//|| ($scope.search.room.length > 0 && $rootScope.isSingleDigitSearch)
-					//|| $scope.search.room.length > 2){
-						
-						if(oldSearchGuestText.length > 0){
-							if((oldSearchGuestText.length < $scope.search.guest_company_agent.length) && ($scope.search.guest_company_agent.indexOf(oldSearchGuestText) !=-1 )){
-								$scope.refreshApi = false;
-							}
-						}
-						
-						else if(oldSearchRoomValue.length > 0) {
-							if((oldSearchRoomValue.length < $scope.search.room.length) && ($scope.search.room.indexOf(oldSearchRoomValue) !=-1 )){
-								$scope.refreshApi = false;
-							}
-						}
-						var dataToSrv = {
-							"refreshApi": $scope.refreshApi,
-						    "postData": {
-						    	"room_no": $scope.search.room,
-						    	"account": $scope.search.guest_company_agent
-						    }
-						};
-
-						$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, dataToSrv, $scope.searchForResultsSuccess);
-						$scope.itemsVisible = false;
-						$scope.setScroller('search-guests-for-charge-content');
-				//}
+				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, dataToSrv, $scope.searchForResultsSuccess);
+				$scope.itemsVisible = false;
+				$scope.setScroller('search-guests-for-charge-content');
 				
 			};
 			$scope.clickedCancel = function(){
