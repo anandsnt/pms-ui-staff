@@ -711,13 +711,16 @@
                         }
 
                         .confirmation,
-                        .icon-location {
+                        .icons {
                             display: inline;
                             height: 20px;
                             overflow: hidden;
+                            margin-right: 30px;
+
+                            &:last-child { margin-right: 0; }
                         }
 
-                        .icon-location {
+                        .icons {
                             color: @grey3;
                             padding-left: 20px;
                         }
@@ -725,7 +728,6 @@
                         .confirmation { 
                             color: @textColor;
                             font-weight: 600; 
-                            margin-right: 30px;
                         }
 
                         &.no-guest-info {
@@ -743,6 +745,8 @@
                             font-size: 15px;
                             line-height: 20px;
                             padding-left: 24px;
+
+                            &.highlight { padding-left: 0; }
                         }
                     }
 
