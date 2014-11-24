@@ -12,6 +12,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.showInitialScreen       = true; 
 	$scope.showSelectedCreditCard  = false;
 	$scope.addmode                 = true;
+	$scope.shouldShowIframe 	   = false;	
 	$scope.savePayment = {};
 	console.log($scope);
 	$scope.successRender = function(data){
@@ -41,6 +42,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		console.log("----------------TOKEN----------------");
 		console.log(tokenDetails)
 		$scope.cardData = tokenDetails;
+		$scope.shouldShowIframe 	   = false;	
 		$scope.showInitialScreen       = true; 
 		$scope.shouldShowAddNewCard    = false;
 		$scope.showSelectedCreditCard  = true;

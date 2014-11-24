@@ -50,8 +50,6 @@ sntRover.controller('RVCardOptionsCtrl',
 			payementData.cardDetails = angular.copy($scope.cardData);
 			payementData.tokenDetails = tokenDetails;
 			console.log(payementData);
-			$scope.shouldShowIframe = false;
-			console.log("shouldShowIframe=============="+$scope.shouldShowIframe);
 			$scope.$emit("TOKEN_CREATED", payementData);
 			$scope.$digest();
 			
