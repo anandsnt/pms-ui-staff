@@ -66,11 +66,28 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
-	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+  	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+  	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+  	// $rootScope.paymentGateway = "sixpayments";
+  	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
-	
+    //set MLI Merchant Id
+    try {
+          sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
+        }
+    catch(err) {};
+
+    //handle six payment iFrame communication
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var eventer = window[eventMethod];
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    
+    eventer(messageEvent, function(e) {
+      var responseData = e.data;
+      if (responseData.response_message == "token_created") {
+        $rootScope.$broadcast('six_token_recived',{'six_payment_data':responseData});
+      }
+    }, false);
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
@@ -558,7 +575,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
      * @param {{object}} - payment data - used for swipe
      */
-    $scope.showAddNewPaymentModal = function(passData, paymentData) {
+   /* $scope.showAddNewPaymentModal = function(passData, paymentData) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
       $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
@@ -567,7 +584,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         controller: 'RVPaymentMethodCtrl',
         scope: $scope
       });
-    };
+    };*/
     /*
      * Call payment after CONTACT INFO
      */
@@ -723,5 +740,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
 
     });
+    
+    $scope.openPaymentDialogModal = function(passData, paymentData) {
+      $scope.passData = passData;
+      $scope.paymentData = paymentData;
+     // $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
+      ngDialog.open({
+        template: '/assets/partials/roverPayment/rvAddPayment.html',
+        controller: 'RVPaymentAddPaymentCtrl',
+        scope: $scope
+      });
+    };
   }
 ]);

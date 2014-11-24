@@ -253,6 +253,36 @@ function getAvatharUrl(title){
     }
 }
 
+var creditCardTypes = {
+      "AMEX": 'AX',
+      "DINERS_CLUB": 'DC',
+      "DISCOVER": 'DS',
+      "JCB": 'JCB',
+      "MASTERCARD": 'MC',
+      "VISA": 'VA'
+};
+
+function getCreditCardType(cardBrand){
+    var card = cardBrand.toUpperCase();
+    return creditCardTypes[card];
+}
+var sixCreditCardTypes = {
+      "AX": 'AX',
+      "DC": 'DC',
+      "DS": 'DI',
+      "JCB": 'JCB',
+      "MC": 'MC',
+      "VS": 'VA',
+      "MX":'MX'
+};
+
+function getSixCreditCardType(cardCode){
+    var card = cardCode.toUpperCase();
+    return sixCreditCardTypes[card];
+}
+
+
+
 /**
 * utils function convert any number to number with two decimal points.
 */
