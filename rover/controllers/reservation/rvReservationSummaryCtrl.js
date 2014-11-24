@@ -542,9 +542,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		/*
 		 *
 		 */
-		$scope.startPaymentProcess = function() {
+		$scope.startPaymentProcess = function(){
+			$scope.shouldShowWaiting = true;
 			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvWaitingDialog.html',
+				template: '/assets/partials/reservation/rvWaitingDialog.html',
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
@@ -554,7 +555,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"currency_code": ""
 			};
 			RVReservationSummarySrv.startPayment(data).then(function(response) {
-
+				console.log(response);
+				$scope.shouldShowWaiting = false;
 			},function(){
 				$rootScope.netWorkError = true;
 				$scope.isPosting = false;
