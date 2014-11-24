@@ -377,4 +377,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADDeviceMappingsCtrl',
 			url : '/deviceMappingsList'
 		});
+
+		$stateProvider.state('admin.stationary', {
+			templateUrl: '/assets/partials/stationary/adStationary.html',
+			controller: 'ADStationaryCtrl',
+			url : '/stationary'
+		});
 });
