@@ -80,13 +80,23 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 
 
-		// fetch call back of saved oo/os details
+		// fetch callback of saved oo/os details
 		function $_fetchSavedStausCallback (data) {
 			$scope.$emit('hideLoader');
 
-			$scope.editService           = data;
-			$scope.editService.from_date = $filter('date')(tzIndependentDate($scope.editService.from_date), 'yyyy-MM-dd');
-			$scope.editService.to_date   = $filter('date')(tzIndependentDate($scope.editService.to_date), 'yyyy-MM-dd');
+			/***
+			*	Sadly the fetch for server API has
+			*	different key names, so we cant just assign the data
+			*
+			*	we need to map the key from data to 
+			*	out 'editService' object
+			*/
+			$scope.editService.from_date = $filter('date')(tzIndependentDate(data.from_date), 'yyyy-MM-dd');
+			$scope.editService.to_date   = $filter('date')(tzIndependentDate(data.to_date), 'yyyy-MM-dd');
+			$scope.editService.reason_id = data.maintenance_reason_id;
+			$scope.editService.comment   = data.comments;
+
+			console.log($scope.editService)
 
 			$scope.showForm = false;
 			$scope.showSaved = true;
@@ -260,9 +270,6 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$_originalStatusId = $scope.updateService.room_service_status_id;
 
 				// copy update details to edit details, show details
-				// $scope.editService = angular.copy($scope.updateStatus);
-				// $scope.showSaved = true;
-
 				_.extend($scope.editService, $scope.updateService);
 				$scope.showSaved = true;
 

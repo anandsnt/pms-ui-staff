@@ -107,23 +107,13 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer(),
 				url = 'api/room_services/' + params.roomId;
 
-			// rvBaseWebSrvV2.getJSON(url)
-			// 	.then(function(data) {
-			// 		deferred.resolve(data);
-			// 	}.bind(this), function(data){
-			// 		deferred.reject(data);
-			// 	});
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data){
+					deferred.reject(data);
+				});
 			
-			var data = {
-				room_service_status_id: 3,
-				from_date: '2014-08-15',
-				to_date: '2014-08-15',
-				reason_id: 43,
-				comment: 'some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment some comment '
-			};
-
-			deferred.resolve(data);
-
 			return deferred.promise;
 		};
 
