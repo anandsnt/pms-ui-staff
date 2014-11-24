@@ -21,7 +21,7 @@ admin.service('ADStationarySrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
     */
 	this.saveStationary = function(data){
 		var deferred = $q.defer();
-		var url = '/api/stationary';	
+		var url = '/api/stationary/save';	
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
