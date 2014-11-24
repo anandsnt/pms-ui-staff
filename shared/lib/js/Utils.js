@@ -272,7 +272,8 @@ var sixCreditCardTypes = {
       "DS": 'DI',
       "JCB": 'JCB',
       "MC": 'MC',
-      "VS": 'VA'
+      "VS": 'VA',
+      "MX":'MX'
 };
 
 function getSixCreditCardType(cardCode){
