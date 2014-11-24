@@ -540,7 +540,8 @@
     "SHOW_STAY_DATES": "Show Stay Dates",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
-    "INVALID_CREDIT_CARD": "There is a problem with your credit card"
+    "INVALID_CREDIT_CARD": "There is a problem with your credit card",
+    "START_PAYMENT_PROCESS": "Start Payment Process"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
