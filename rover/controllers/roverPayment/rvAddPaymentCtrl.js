@@ -57,7 +57,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 	var retrieveCardNumber = function(){
 		var cardNumber = $scope.cardData.tokenDetails.isSixPayment?
-				$scope.cardData.tokenDetails.token_no.substr($scope.newPaymentInfo.tokenDetails.token_no.length - 4):
+				$scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4):
 				$scope.cardData.cardDetails.cardNumber.slice(-4);
 		return cardNumber;
 	};
