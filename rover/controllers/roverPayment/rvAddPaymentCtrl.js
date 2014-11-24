@@ -146,6 +146,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
     	(typeof $scope.passData.fromBill == "undefined")?
     		$scope.paymentData.reservation_card.payment_method_description = data.payment_type:
     		$scope.paymentData.bills[billNumber].credit_card_details.payment_type_description = data.payment_type;
+    	if(typeof $scope.passData.fromBill !== "undefined"){
+     		$scope.paymentData.bills[billNumber].credit_card_details.payment_type = $scope.dataToSave.paymentType;
+		};
     	$scope.closeDialog();
     };
     /*

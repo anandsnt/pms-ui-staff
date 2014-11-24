@@ -52,7 +52,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			console.log(payementData);
 			console.log("shouldShowIframe=============="+$scope.shouldShowIframe);
 			$scope.$emit("TOKEN_CREATED", payementData);
-			//$scope.shouldShowIframe = false;
+			$scope.shouldShowIframe = false;
 			$scope.$digest();
 			
 		};
