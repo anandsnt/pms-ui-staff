@@ -265,6 +265,16 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		var promptCancel = function(penalty, nights) {
+			var passData = {
+			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+			 		"details":{
+			 			"firstName":$scope.guestCardData.contactInfo.first_name,
+			 			"lastName":$scope.guestCardData.contactInfo.last_name
+			 		}
+			 };
+
+			$scope.passData = passData;
+
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
