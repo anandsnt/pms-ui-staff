@@ -2,12 +2,9 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter) {
 
 		BaseCtrl.call(this, $scope);
-
+		$scope.errorMessage = '';
 		$scope.showCancelCardSelection =true;
 		$scope.showAddtoGuestCard = true;
-
-		
-		var token = "";
 
 		$scope.cancellationData = {
 			selectedCard: -1,
@@ -71,8 +68,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				$scope.cancellationData.expiry_date = retrieveExpiryDate();
 				$scope.cancellationData.card_type = retrieveCardtype();
 				$scope.showCC = false;
-				//$scope.cancelReservation();
-			}
+			};
 			var paymentData = {
 				add_to_guest_card: $scope.newPaymentInfo.cardDetails.addToGuestCard,
 				name_on_card: retrieveName(),
@@ -148,17 +144,15 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		console.log(data);
 		$scope.newPaymentInfo = data;
-		//savePayment(data);
 		savePayment();
 	});
 
 	$scope.$on("MLI_ERROR", function(e,data){
 		$scope.errorMessage = data;
-		console.log(data);
 	});
 
 	$scope.$on('cancelCardSelection',function(e,data){
-		$scope.showCC = false;
+		$scope.ngDialogData.state = 'CONFIRM';
 	});
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);

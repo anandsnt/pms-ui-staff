@@ -43,7 +43,7 @@
             </div>
 
             <div class="entry full-width" ng-hide="showCC"><!-- Add class "amount" when fee exsists -->
-                <label for="amount">Amount to pay (<span>$</span>)</label>
+                <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
                 <input name="amount" id="amount" ng-model="ngDialogData.penalty" type="text" />
             <!-- Use only when fee exsists 
             <span class="fee">+ ${fee} fee</span> 
