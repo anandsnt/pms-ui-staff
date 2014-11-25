@@ -107,7 +107,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.depositData = {};
 			$scope.depositData.isDepositRequired = !!$scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.id;
 			$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;
-			$scope.depositData.depositValue = 0.0;
+			$scope.depositData.depositValue = $scope.reservationData.depositAmount;
 			$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
 			$scope.depositData.depositAttemptFailure = false;
 

@@ -71,8 +71,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
                 
                 var postData = $scope.computeReservationDataforUpdate(true,true);
                 var saveSuccess = function(data) {
+                    $scope.reservationData.depositAmount = data.reservations[0].deposit_amount;
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
-
                         angular.forEach(data.reservations, function(reservation, key) {
                             angular.forEach($scope.reservationData.rooms, function(room, key) {
                                 if (parseInt(reservation.room_id) === parseInt(room.room_id)) {
@@ -118,6 +118,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
 
                 var updateSuccess = function(data) {
                     console.log("*************************", $scope.reservationData.reservationId);
+                    $scope.reservationData.depositAmount = data.deposit_amount;
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
                     $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
