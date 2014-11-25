@@ -38,6 +38,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
 
+	$scope.showCCList = function(){
+		$scope.showCCPage =  true;
+		$scope.addmode = false;
+	};
+
+
 	var retrieveCardtype = function(){
 		var cardType = $scope.cardData.tokenDetails.isSixPayment?
 					getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase():
