@@ -26,9 +26,9 @@ sntRover
 
         gridTimeComponents = function(arrival_ms, display_total_hours, display) {
             var ret,
-                ms_per_day      = 43200000,
-                ms_per_hr       = 3600000,
-                perspective_offset = (arrival_ms instanceof Date ? new Date(Date.now()).toComponents().time.hours : 0),
+                ms_per_day          = 43200000,
+                ms_per_hr           = 3600000,
+                perspective_offset  = (arrival_ms instanceof Date ? new Date(Date.now()).toComponents().time.hours : 0),
                 x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(Date.now()).toComponents().time.hours,0,0) : arrival_ms), 
                 x_max               = (display_total_hours - perspective_offset) * ms_per_hr, 
                 x_min               = (display_total_hours * ms_per_hr - x_max),
@@ -42,6 +42,12 @@ sntRover
                 x_0:  new Date(x_origin),
                 x_n: new Date(x_left),
                 x_p: new Date(x_right),
+                toShijuBugStartDate: function(start) {
+                    return new Date(new Date(x_left).setHours(start,0,0));
+                },
+                toShijuBugEndDate: function(end) {
+                    return new Date(new Date(x_right).setHours(end, 0, 0));
+                },
                 toStartDate: function() {
                     return new Date(new Date(x_left).setHours(0, 0, 0));
                 },
@@ -57,12 +63,12 @@ sntRover
             if(display) {
                 display.x_offset                = x_offset;
                 display.x_origin                = x_origin;
-                display.x_origin_start_time     = ret.x_0.toComponents().time.convertToReferenceInterval(15); 
+                display.x_origin_start_time     = ret.x_origin_start_time;
                 display.x_n                     = x_left;
-                display.x_0                     = x_origin; //ret.x_n.getTime();
-                display.x_n_time                = ret.x_n.toComponents().time.convertToReferenceInterval(15);
+                display.x_0                     = x_origin;
+                display.x_n_time                = ret.x_n_time;
                 display.x_p                     = x_right;
-                display.x_p_time                = ret.x_p.toComponents().time.convertToReferenceInterval(15);
+                display.x_p_time                = ret.x_p_time;
 
                ret.display = display;
             }
@@ -246,17 +252,17 @@ sntRover
 			} else {
 				updateReservation(oldRoom, reservation);
 			}
-
-
 		};
 
 		clearRowClasses = function(rooms) {
 	    	var data = rooms;
 
-	    	for(var i = 0, len = data.length; i < len; i++) {
-	    		data[i] = deepCopy(data[i]);
-	    		data[i][meta.room.status] = '';
-	    	}
+            if(data) {
+    	    	for(var i = 0, len = data.length; i < len; i++) {
+    	    		data[i] = deepCopy(data[i]);
+    	    		data[i][meta.room.status] = '';
+    	    	}
+            }
 	    };
 
 	    registerNotifictions = function(obj) {

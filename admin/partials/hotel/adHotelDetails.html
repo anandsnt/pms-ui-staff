@@ -391,6 +391,31 @@
 				</label>
 				<input type="text" ng-model="data.six_validation_code" value="{{data.six_validation_code}}" placeholder="Enter six payment validation code">
 			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-ipage-url">
+					iPage URL
+				</label>
+				<input type="text" ng-model="data.six_ipage_url" value="{{data.six_ipage_url}}" readonly="readonly">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-server-location-id">
+					Six Payments Location Id
+				</label>
+				<input type="text" ng-model="data.six_server_location_id" value="{{data.six_server_location_id}}">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-server-ipaddress">
+					3CIntegra Server IP
+				</label>
+				<input type="text" ng-model="data.six_server_ipaddress" value="{{data.six_server_ipaddress}}">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-server-port">
+					3CIntegra Server Port
+				</label>
+				<input type="text" ng-model="data.six_server_port" value="{{data.six_server_port}}">
+			</div>
+			
 		</fieldset>
 		<fieldset class="holder right" ng-show="isAdminSnt && data.payment_gateway == 'MLI'" >
 			<div class="form-title">
