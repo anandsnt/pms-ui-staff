@@ -27,148 +27,152 @@ body { overflow: hidden; }
 ==========================================================*/
 
 /* App screens				==============================*/
-	.container {
-		position: relative;
-		overflow: hidden;
-		.square(100%);
-
-		/* Page container ***/
-		.page {
-			position: absolute;
-			top: 0;
-			left: 0;
-			visibility: hidden;
+	@media not print {
+		.container {
+			position: relative;
 			overflow: hidden;
-			z-index: 1;
 			.square(100%);
-			.background(@white);
-			
-			/* Visible pages ***/
-			&.page-current {
-				visibility: visible;
-				z-index: 999;
-				.box-shadow(-1px 0px 2px rgba(0,0,0,.1));
 
-				.nested-view {
-					position: absolute;
-					top: 0;
-					left: 0;
-					z-index: 10;
-					visibility: hidden;
-					.square(100%);
-					.show;
-					.background(@white);
+			/* Page container ***/
+			.page {
+				position: absolute;
+				top: 0;
+				left: 0;
+				visibility: hidden;
+				overflow: hidden;
+				z-index: 1;
+				.square(100%);
+				.background(@white);
+				
+				/* Visible pages ***/
+				&.page-current {
+					visibility: visible;
+					z-index: 999;
+					.box-shadow(-1px 0px 2px rgba(0,0,0,.1));
 
-					&.with-sidebar {
-						.content {
-							left: 5px;
-							.calc-width(100, 5);
+					.nested-view {
+						position: absolute;
+						top: 0;
+						left: 0;
+						z-index: 10;
+						visibility: hidden;
+						.square(100%);
+						.show;
+						.background(@white);
+
+						&.with-sidebar {
+							.content {
+								left: 5px;
+								.calc-width(100, 5);
+							}
+						}
+
+						&.view-current {
+							z-index: 30;
+							visibility: visible;
+
+							&.set-back { z-index: 20; }
+
+							&.move-from-left { 
+								#move > #from > .left(); 
+
+								.nav-bar { .hide; }
+							}
+
+							&.move-from-right { 
+								#move > #from > .right(); 
+								
+								.nav-bar { .hide; }
+							}
 						}
 					}
 
-					&.view-current {
-						z-index: 30;
-						visibility: visible;
+					&.set-back { z-index: 99; }
 
-						&.set-back { z-index: 20; }
+					/* Page transitions ***/
+					&.move-from-left { #move > #from > .left(); }
+					&.move-from-right { #move > #from > .right(); }
+				}
 
-						&.move-from-left { 
-							#move > #from > .left(); 
+				&.page-locked {
 
-							.nav-bar { .hide; }
-						}
+					.nested-view {
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						z-index: 10;
+						visibility: hidden;
+						.show;
+						.background(@white);
+						
+						&.view-current {
+							z-index: 30;
+							visibility: visible;
 
-						&.move-from-right { 
-							#move > #from > .right(); 
-							
-							.nav-bar { .hide; }
+							&.set-back { z-index: 20; }
+
+							&.move-from-left { 
+								#move > #from > .left(); 
+
+								.nav-bar { .hide; }
+							}
+
+							&.move-from-right { 
+								#move > #from > .right(); 
+								
+								.nav-bar { .hide; }
+							}
 						}
 					}
 				}
-
-				&.set-back { z-index: 99; }
-
-				/* Page transitions ***/
-				&.move-from-left { #move > #from > .left(); }
-				&.move-from-right { #move > #from > .right(); }
 			}
 
-			&.page-locked {
+			/* Page inner container ***/
+			.content {
+				position: absolute;
+				left: 0;
+				width: 100%;
+				overflow: hidden;
+				.show;
 
-				.nested-view {
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					z-index: 10;
-					visibility: hidden;
-					.show;
-					.background(@white);
-					
-					&.view-current {
-						z-index: 30;
-						visibility: visible;
-
-						&.set-back { z-index: 20; }
-
-						&.move-from-left { 
-							#move > #from > .left(); 
-
-							.nav-bar { .hide; }
-						}
-
-						&.move-from-right { 
-							#move > #from > .right(); 
-							
-							.nav-bar { .hide; }
-						}
-					}
-				}
+				> #notification-message { margin: 20px 20px 0 20px; }
 			}
-		}
-
-		/* Page inner container ***/
-		.content {
-			position: absolute;
-			left: 0;
-			width: 100%;
-			overflow: hidden;
-			.show;
-
-			> #notification-message { margin: 20px 20px 0 20px; }
 		}
 	}
 
 /* App screen positioning 	==============================*/
-	.content {
-		top: 50px;
-		.calc-height(100, 50);
+	@media not print {
+		.content {
+			top: 50px;
+			.calc-height(100, 50);
 
-		/* HK search ***/
-		&#rooms {
-			top: 170px;
-			.calc-height(100, 170);
-
-			&.no-options {
-				top: 110px;
-				.calc-height(100, 110);
-			}
-
-			&.has-summary {
+			/* HK search ***/
+			&#rooms {
 				top: 170px;
-				.calc-height(100, 210);
+				.calc-height(100, 170);
+
+				&.no-options {
+					top: 110px;
+					.calc-height(100, 110);
+				}
+
+				&.has-summary {
+					top: 170px;
+					.calc-height(100, 210);
+				}
 			}
-		}
 
-		&#filter-rooms {
-			top: 100px;
-			.calc-height(100, 100);
-		}
+			&#filter-rooms {
+				top: 100px;
+				.calc-height(100, 100);
+			}
 
-		&#guest-info {
-			top: 60px;
-			.calc-height(100, 60);
+			&#guest-info {
+				top: 60px;
+				.calc-height(100, 60);
+			}
 		}
 	}
 
@@ -285,94 +289,96 @@ body { overflow: hidden; }
 
 /* App screen transitions 	==============================*/
 
-	.container {	
+	@media not print {
+		.container {	
 
-		/* Page transitions - social lobby filtering ***/
-		&.filter-lobby-open {
-			.search-form {
-				height: 110px;
-				.transition (height, .3s, ease);
-			}
+			/* Page transitions - social lobby filtering ***/
+			&.filter-lobby-open {
+				.search-form {
+					height: 110px;
+					.transition (height, .3s, ease);
+				}
 
-			.content.social-lobby-content:not(#login) {
-				#move > #element > .bottom(openAdvancedSearch);
-				.calc-height(100, 230); /* %, px */
+				.content.social-lobby-content:not(#login) {
+					#move > #element > .bottom(openAdvancedSearch);
+					.calc-height(100, 230); /* %, px */
+				}
 			}
-		}
-		&.filter-lobby-closing {
-			.search-form {
-				height: 60px;
-				.transition (height, .3s, ease);
-			}
+			&.filter-lobby-closing {
+				.search-form {
+					height: 60px;
+					.transition (height, .3s, ease);
+				}
 
-			.content.social-lobby-content:not(#login) {
-				#move > #element > .top(closeAdvancedSearch);
-				.calc-height(100, 120); /* %, px */
-			}
-		}
-
-		/* Page transitions - message filtering ***/
-		&.filter-messages-open {
-			.search-form {
-				height: 110px;
-				.transition (height, .3s, ease);
+				.content.social-lobby-content:not(#login) {
+					#move > #element > .top(closeAdvancedSearch);
+					.calc-height(100, 120); /* %, px */
+				}
 			}
 
-			.content-left .scrollable {
-				#move > #element > .bottom(openAdvancedSearch);
-				.calc-height(100, 120); /*  %, px */
+			/* Page transitions - message filtering ***/
+			&.filter-messages-open {
+				.search-form {
+					height: 110px;
+					.transition (height, .3s, ease);
+				}
+
+				.content-left .scrollable {
+					#move > #element > .bottom(openAdvancedSearch);
+					.calc-height(100, 120); /*  %, px */
+				}
 			}
-		}
-		&.filter-messages-closing {
-			.search-form {
-				height: 60px;
-				.transition (height, .3s, ease);
+			&.filter-messages-closing {
+				.search-form {
+					height: 60px;
+					.transition (height, .3s, ease);
+				}
+
+				.content-left .scrollable {
+					#move > #element > .top(closeAdvancedSearch);
+					.calc-height(100, 60);  /* %, px */
+				}
 			}
 
-			.content-left .scrollable {
-				#move > #element > .top(closeAdvancedSearch);
-				.calc-height(100, 60);  /* %, px */
+			/* Page transitions - opening guests details ***/
+			&.room-attributes-open {
+				#room-assignment {
+					.room-assignment-content {
+						.rooms-listing {
+							.results {
+								.rooms {
+									.calc-width(100, 190); /* %, px */
+									#move > #element > .left(openRoomAttributes);
+								}
+							}
+						}
+					}
+				}			
 			}
-		}
-
-		/* Page transitions - opening guests details ***/
-		&.room-attributes-open {
-			#room-assignment {
-				.room-assignment-content {
-					.rooms-listing {
-						.results {
-							.rooms {
-								.calc-width(100, 190); /* %, px */
-								#move > #element > .left(openRoomAttributes);
+			&.room-attributes-closing {
+				#room-assignment {
+					.room-assignment-content {
+						.rooms-listing {
+							.results {
+								.rooms {
+									#move > #element > .right(closeRoomAttributes);
+									width: 100%;
+								}
 							}
 						}
 					}
 				}
-			}			
-		}
-		&.room-attributes-closing {
-			#room-assignment {
-				.room-assignment-content {
-					.rooms-listing {
-						.results {
-							.rooms {
-								#move > #element > .right(closeRoomAttributes);
-								width: 100%;
-							}
-						}
-					}
-				}
 			}
-		}
 
-		/* Page transitions - loading, signing in and out ***/
-		&.loading {
-			.page-current { #move > #from > .top(); }
-			#login { #move > #from > .top(); }
-		}
-		&.signing-in,
-		&.signing-out {
-			#move > #to > .bottom();
+			/* Page transitions - loading, signing in and out ***/
+			&.loading {
+				.page-current { #move > #from > .top(); }
+				#login { #move > #from > .top(); }
+			}
+			&.signing-in,
+			&.signing-out {
+				#move > #to > .bottom();
+			}
 		}
 	}
 
@@ -1369,132 +1375,134 @@ body { overflow: hidden; }
 	}
 
 /* Reservation header		==============================*/
-	.reservation-header {
-		width: 100%;
-		padding: 10px 20px;
-		overflow: hidden;
-		background: @white;
-		z-index: 90;
-		.box-shadow(0 1px 1px rgba(0,0,0,.1));
-		.show;		
-
-		.actions {
-			.button,
-			.inactive-nights {
-				display: inline-block;
-				display: inline-flex;
-				font-size: 14px;
-				text-shadow: none;
-				line-height: 30px;
-				vertical-align: top;
-				padding: 0 10px;
-				height: 30px;
-				.no-transition;
-
-				.label { 
-					display: inline;
-					float: none;
-					font-size: 12px;
-				}
-
-				&.has-arrow { padding-right: 30px; }
-
-				&.toggle,
-				&.next-view {
-					color: @textColor;
-					background-color: @grey1;
-					background-position: 90% 50%;
-
-					&:hover,
-					&:active { 
-						color: @textColor;
-						background-color: @grey1; 
-					}
-				}
-
-				&.toggle { 
-					margin-right: 10px; 
-
-					&.active {
-						/*CICO-10125 fixes. Updated CSS refering to prototype demo */
-						padding-bottom: 40px;
-						background-position: 90% -webkit-calc(~"50% - 5px");
-						background-position: 90% -moz-calc(~"50% - 5px");
-						background-position: 90% calc(~"50% - 5px");
-						.box-shadow(1px 0 0 rgba(0,0,0,.2));
-						#border-radius > .bottom();
-					}
-				}
-			}
-		}
-	}
-
-	.reservation-header,
-	#reservation-updates {
-		.data { 
-			.icon-group,
-			.date,
-			.nights,
-			.room {
-				font-size: 14px;
-				line-height: 30px;
-				vertical-align: middle;
-				display: inline-block;
-			}
-
-			.icon-group {
-				color: @grey3;
-				padding-left: 20px;
-				margin-right: 20px;
-				background-position: 0 -45px;
-			}
-
-			.date,
-			.nights,
-			.room {
-				margin-right: 20px;
-
-				.guest-status {
-					margin: 5px 5px 5px 0;
-					.square(20px);
-				}
-			}
-
-			.room {
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				max-width: 320px;
-			}
-		}
-	}
-
-	.stay-card-inner {
-		/* Registration header ***/
+	@media not print {
 		.reservation-header {
-			.data { 
-				.pull-right;
-
-				.room-number {
-					font-size: 18px;
-					line-height: 30px;
-					padding-right: 5px;
-				}
-			}
+			width: 100%;
+			padding: 10px 20px;
+			overflow: hidden;
+			background: @white;
+			z-index: 90;
+			.box-shadow(0 1px 1px rgba(0,0,0,.1));
+			.show;		
 
 			.actions {
-				.pull-left; 
+				.button,
+				.inactive-nights {
+					display: inline-block;
+					display: inline-flex;
+					font-size: 14px;
+					text-shadow: none;
+					line-height: 30px;
+					vertical-align: top;
+					padding: 0 10px;
+					height: 30px;
+					.no-transition;
+
+					.label { 
+						display: inline;
+						float: none;
+						font-size: 12px;
+					}
+
+					&.has-arrow { padding-right: 30px; }
+
+					&.toggle,
+					&.next-view {
+						color: @textColor;
+						background-color: @grey1;
+						background-position: 90% 50%;
+
+						&:hover,
+						&:active { 
+							color: @textColor;
+							background-color: @grey1; 
+						}
+					}
+
+					&.toggle { 
+						margin-right: 10px; 
+
+						&.active {
+							/*CICO-10125 fixes. Updated CSS refering to prototype demo */
+							padding-bottom: 40px;
+							background-position: 90% -webkit-calc(~"50% - 5px");
+							background-position: 90% -moz-calc(~"50% - 5px");
+							background-position: 90% calc(~"50% - 5px");
+							.box-shadow(1px 0 0 rgba(0,0,0,.2));
+							#border-radius > .bottom();
+						}
+					}
+				}
 			}
 		}
 
-		> .wrapper { padding: 20px; }
+		.reservation-header,
+		#reservation-updates {
+			.data { 
+				.icon-group,
+				.date,
+				.nights,
+				.room {
+					font-size: 14px;
+					line-height: 30px;
+					vertical-align: middle;
+					display: inline-block;
+				}
 
-		&.check-in {
+				.icon-group {
+					color: @grey3;
+					padding-left: 20px;
+					margin-right: 20px;
+					background-position: 0 -45px;
+				}
+
+				.date,
+				.nights,
+				.room {
+					margin-right: 20px;
+
+					.guest-status {
+						margin: 5px 5px 5px 0;
+						.square(20px);
+					}
+				}
+
+				.room {
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					max-width: 320px;
+				}
+			}
+		}
+
+		.stay-card-inner {
+			/* Registration header ***/
 			.reservation-header {
-				.data {
+				.data { 
+					.pull-right;
+
 					.room-number {
-						&.ready { color: @green; }
-						&.not-ready { color: @red; }
+						font-size: 18px;
+						line-height: 30px;
+						padding-right: 5px;
+					}
+				}
+
+				.actions {
+					.pull-left; 
+				}
+			}
+
+			> .wrapper { padding: 20px; }
+
+			&.check-in {
+				.reservation-header {
+					.data {
+						.room-number {
+							&.ready { color: @green; }
+							&.not-ready { color: @red; }
+						}
 					}
 				}
 			}
@@ -1604,128 +1612,6 @@ body { overflow: hidden; }
                     &.yellow { color: @yellow; }
                     &.orange { color: @logoPrimary; }
                     &.grey { color: @grey3; }
-
-                    &.no-data {
-                        font-size: 1em;
-                        line-height: 30px;
-                        color: @grey4;
-                        text-transform: none;
-                        font-weight: 400;
-                        font-style: italic;
-                    }
-                }
-
-                strong { font-size: 36px; }
-
-                span {
-                    font-size: 30px;
-                    font-weight: 300;                                
-                }
-
-                &:last-child {
-                    padding-bottom: 0;
-                    margin-bottom: 0;
-                    border-bottom: 0;
-                }
-            }
-        }
-	}
-
-	/* 768px+               ==============================*/
-    @media only screen and (min-width: 768px) {
-        .dashboard-block {
-            margin-bottom: 40px;
-            border-bottom: 1px solid rgba(0,0,0,.1);
-            .flex(center);
-            .float;
-
-            ul {
-                li {
-                    margin-bottom: 0;
-                    .pull-left;
-                }
-            }
-
-           	.data,
-           	&.data {
-                li {
-                    text-align: center;
-                    line-height: 1em;
-                    margin: 0 40px 0 0;
-                    border-bottom: 0;
-                    padding-bottom: 0;
-                    color: @grey3;
-                    .calc-width(20, 32);
-
-                    strong,
-                    span {
-                        font-size: 48px;
-                        font-weight: 300;
-                        float: none;
-
-                        &.no-data {
-                            font-size: 16px;
-                            line-height: 1em;
-                            padding: 16px 0;
-                        }
-                    }
-
-                    i { .show; }
-
-                    &:last-child { margin-right: 0; }
-                }
-            }
-        }
-    }
-
-    /* 1360px+               ==============================*/
-    @media only screen and (min-width: 1360px) {
-    	.dashboard-block {
-           	.data,
-           	&.data {
-                li {
-                    i { display: inline; }
-                }
-            }
-        }
-    }
-	
-	.dashboard-block {
-		padding-bottom: 20px;
-	    margin-bottom: 20px;
-
-	    ul {
-	        li {
-	            margin-bottom: 10px;
-	            .show;
-	        }
-
-	        &:not(.actions) { width: 100%; }
-	    }
-
-		.data,
-		&.data {
-            li {
-                line-height: 36px;
-                vertical-align: middle;
-                padding-bottom: 5px;
-                margin-bottom: 5px;
-                text-transform: uppercase;
-                width: 100%;
-                border-bottom: 1px solid rgba(0,0,0,.1);
-
-                strong,
-                span {
-                    line-height: 1em;
-                    color: @textColor;
-                    .show;
-                    .pull-right;
-
-                    &.green { color: @green; }
-                    &.red { color: @red; }
-                    &.blue { color: @blue; }
-                    &.yellow { color: @yellow; }
-                    &.orange { color: @logoPrimary; }
 
                     &.no-data {
                         font-size: 1em;
