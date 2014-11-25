@@ -104,19 +104,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.init = function() {
 			$scope.data = {};
 
-			$scope.depositData = {};
-			$scope.depositData.isDepositRequired = !!$scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.id;
-			$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;
-			$scope.depositData.depositValue = $scope.reservationData.depositAmount;
-			$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
-			$scope.depositData.depositAttemptFailure = false;
+
 
 			$scope.cards = {
-				available : false,
-				activeView : "NEW"
+				available: false,
+				activeView: "NEW"
 			}
 
 			if ($stateParams.reservation == "HOURLY") {
+				$scope.errorMessage = ['Need to attach a card to proceed'];
 				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
@@ -124,7 +120,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 				if (temporaryReservationDataFromDiaryScreen) {
 					var getRoomsSuccess = function(data) {
-
 						var roomsArray = {};
 						angular.forEach(data.rooms, function(value, key) {
 							var roomKey = value.id;
@@ -134,6 +129,19 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					};
 					$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
 				}
+				$scope.depositData = {};
+				$scope.depositData.isDepositRequired = false;
+				$scope.depositData.description = "";
+				$scope.depositData.depositValue = 0.00;
+				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
+				$scope.depositData.depositAttemptFailure = false;
+			} else {
+				$scope.depositData = {};
+				$scope.depositData.isDepositRequired = !!$scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.id;
+				$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;
+				$scope.depositData.depositValue = $scope.reservationData.depositAmount;
+				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
+				$scope.depositData.depositAttemptFailure = false;
 			}
 
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
@@ -189,10 +197,38 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
 				}
 			});
+
+			$scope.saveReservation();
+			
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 500);
 		};
+
+		$scope.$watch("reservationData.guest.id",function(){
+			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+				$scope.errorMessage = ['Need to attach a card to proceed'];
+			}else{
+				$scope.errorMessage = [];
+				$scope.saveReservation();
+			}
+		});
+		$scope.$watch("reservationData.company.id",function(){
+			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+				$scope.errorMessage = ['Need to attach a card to proceed'];
+			}else{
+				$scope.errorMessage = [];
+				$scope.saveReservation();
+			}
+		});
+		$scope.$watch("reservationData.travelAgent.id",function(){
+			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+				$scope.errorMessage = ['Need to attach a card to proceed'];
+			}else{
+				$scope.errorMessage = [];
+				$scope.saveReservation();
+			}
+		});	
 
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
 
