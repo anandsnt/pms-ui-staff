@@ -11113,16 +11113,7 @@
                 > .grid {
                     position: absolute; //relative; CHANGED
                     height: auto;
-
-                    > .grid-row {
-                        position: relative; 
-                        margin: 5px 0;
-                        background: @white;
-                        overflow: hidden;
-                        width: 100%;
-                        .float;
-
-                        .occupancy-block {
+                    .occupancy-block {
                             position: absolute;
                             z-index: 1099; //1149; CHANGED
                             .show;
@@ -11261,6 +11252,15 @@
                                 }                        
                             }
                         }
+                    > .grid-row {
+                        position: relative; 
+                        margin: 5px 0;
+                        background: @white;
+                        overflow: hidden;
+                        width: 100%;
+                        .float;
+
+                        
 
                         .hour {
                             border-right: 1px solid #aaa; //rgba(0,0,0,.2); CHANGED
@@ -11421,14 +11421,8 @@
             .diary-grid {
                 > .wrapper {
                     > .grid {
-                        > .grid-row {
-                            line-height: 24px;
-                            height: 24px;
-                            margin: 0;
 
-                            span { height: 24px; }
-
-                            .occupancy-block {
+                           > .occupancy-block {
                                 span {
                                     font-size: 12px;
                                     line-height: 24px;
@@ -11482,7 +11476,14 @@
                                         }
                                     }               
                                 }
-                            }
+                            }                    
+                        > .grid-row {
+                            line-height: 24px;
+                            height: 24px;
+                            margin: 0;
+
+                            span { height: 24px; }
+
                         }
                     }
                 }

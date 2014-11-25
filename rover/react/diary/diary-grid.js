@@ -26,7 +26,7 @@ var Grid = React.createClass({
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.grid.destroy();
-		this.props.iscroll.grid = null;
+		this.props.iscroll.grid = null; 
 	},
 	render: function() {
 		var props 		= this.props,

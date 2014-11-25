@@ -1,26 +1,30 @@
-sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [ '$scope', '$rootScope', '$state', 'rvDiarySrv', 'ngDialog', 'meta', 
+sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [ '$scope', '$rootScope', '$state', 'rvDiarySrv', 'ngDialog', 'rvDiaryMetadata', 
 	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta) {
+
 		var roomXfer = $scope.roomXfer,
-			current = roomXfer.current,
-			next = roomXfer.next,
+			current = (roomXfer.current),
+			next = (roomXfer.next),
 			m = meta.occupancy,
 			r = meta.room,
-			oldArrivalDateComp 		= current[r.row_children][m.start_date].toComponents(),
-			oldDepartureDateComp 	= current[r.row_children][m.end_date].toComponents(),
-			newArrivalDateComp 		= next[r.row_children][m.start_date].toComponents(),
-			newDepartureDateComp 	= next[r.row_children][m.end_date].toComponents();
+			oldArrivalDateComp 		= new Date(current[r.row_children][m.start_date]).toComponents(),
+			oldDepartureDateComp 	= new Date(current[r.row_children][m.end_date]).toComponents(),
+			newArrivalDateComp 		= new Date(next[r.row_children][m.start_date]).toComponents(),
+			newDepartureDateComp 	= new Date(next[r.row_children][m.end_date]).toComponents();
 
 		BaseCtrl.call(this, $scope);
 
-		current.arrivalTime 	= current.start_date.toLocaleTimeString();
-		current.departureTime 	= current.end_date.toLocaleTimeString();
-		current.arrivalDate 	= oldArrivalDateComp.day + ' ' + oldArrivalDateComp.month + ' ' + oldArrivalDateComp.year;
-		current.departureDate 	= oldDepartureDateComp.day + ' ' + oldDepartureDateComp.month + ' ' + oldDepartureDateComp.year;
 
-		next.arrivalTime 		= next.start_date.toLocaleTimeString();
-		next.departureTime 		= next.end_date.toLocaleTimeString();
-		next.arrivalDate 		= newArrivalDateComp.day + ' ' + newArrivalDateComp.month + ' ' + newArrivalDateComp.year;
-		next.departureDate 		= newDepartureDateComp.day + ' ' + newDepartureDateComp.month + ' ' + newDepartureDateComp.year;
+		current.arrivalTime 	= new Date(current[r.row_children][m.start_date]).toLocaleTimeString();
+		current.departureTime 	= new Date(current[r.row_children][m.end_date]).toLocaleTimeString();		
+		current.arrivalDate 	= oldArrivalDateComp.date.day + ' ' + oldArrivalDateComp.date.month + ' ' + oldArrivalDateComp.date.year;
+		current.departureDate 	= oldDepartureDateComp.date.day + ' ' + oldDepartureDateComp.date.month + ' ' + oldDepartureDateComp.date.year;
+
+
+		next.arrivalTime 		= new Date(next[r.row_children][m.start_date]).toLocaleTimeString();
+		next.departureTime 		= new Date(current[r.row_children][m.end_date]).toLocaleTimeString();
+
+		next.arrivalDate 		= newArrivalDateComp.date.day + ' ' + newArrivalDateComp.date.month + ' ' + newArrivalDateComp.date.year;
+		next.departureDate 		= newDepartureDateComp.date.day + ' ' + newDepartureDateComp.date.month + ' ' + newDepartureDateComp.date.year;
 
 		$scope.selectAdditional = function() {
 			ngDialog.close();

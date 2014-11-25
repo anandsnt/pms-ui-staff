@@ -30,7 +30,7 @@ sntRover
 			 payload,
 			 $vault, $stateParams) {
 
-	$scope.$emit('hideLoader');
+	$scope.$emit('showLoader');
 
 	BaseCtrl.call(this, $scope);
 	/*--------------------------------------------------*/
@@ -284,16 +284,17 @@ sntRover
 		*/
 
 	    $scope.onSelect = function(row_data, row_item_data, selected, command_message) {
-
 	    	var copy,
 	    		selection,
 	    		props = $scope.gridProps,
-	    		edit  = props.edit;    	
+	    		edit  = props.edit;   
+	    	
+	    	
 	    	if(!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch(command_message) {
 
 		    		case 'edit': 
-			    		if(!edit.active) {			    			
+			    		if(!edit.active) {		
 				    		$scope.initActiveEditMode({ 
 				    			row_data: row_data, 
 				    			row_item_data: row_item_data 
@@ -304,7 +305,7 @@ sntRover
 
 		    		break;	 
 		    	} 
-		    } else {
+		    } else {		    	
 		    	copy = util.shallowCopy({}, row_item_data);
 	    		copy.selected = selected;
 
@@ -358,6 +359,8 @@ sntRover
 		})();
 
 	 	$scope.onResizeStart = function(row_data, row_item_data) {
+	 		console.log('onResizeStart');
+	 		console.log($scope.gridProps);
 	    };
 
 	    $scope.debug = function() {
@@ -369,7 +372,7 @@ sntRover
 	    }
 
 	    $scope.onResizeEnd = function(row_data, row_item_data) {
-	    	/*$scope.gridProps.filter = util.deepCopy($scope.gridProps.filter);
+	    	$scope.gridProps.filter = util.deepCopy($scope.gridProps.filter);
 	    	$scope.gridProps.display = util.deepCopy($scope.gridProps.display);
 
 	    	$scope.gridProps.display.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
@@ -382,7 +385,7 @@ sntRover
 	    		$scope.renderGrid();
 	    	}, function(err) {
 	    		console.log(err);
-	    	});*/
+	    	});
 	    };    
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
@@ -442,7 +445,7 @@ sntRover
 				document.getElementById('component-wrapper')
 			);	
 
-			$scope.debug();
+			//$scope.debug();
 		};
 
 		$scope.setAccountID = function(index) {
@@ -551,6 +554,7 @@ sntRover
 			this.edit.originalRowItem 	= util.copyRoom(data.row_data);
 			this.currentResizeItem 		= util.copyReservation(data.row_item_data);
 			this.currentResizeItemRow 	= util.copyRoom(data.row_data);
+			
 		}).bind($scope.gridProps, meta, util);
 
 		$scope.initPassiveEditMode = (function (meta, util, data) {
@@ -588,9 +592,9 @@ sntRover
 		    		occupancy: row_item_data
 	    		}
 	    	};
-
+	    	console.log($scope.roomXfer);
 			ngDialog.open({
-				template: 'assets/partials/diary/RVDiaryRoomTransferConfirmation.html',
+				template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
 				controller: 'RVDiaryRoomTransferConfirmationCtrl',
 				scope: $scope
 			});	    	
@@ -693,6 +697,16 @@ sntRover
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
 			rate_type = $scope.gridProps.filter.rate_type,
 			accound_id = $scope.gridProps.filter.account_id;
+			// if the reservation time slot is editing, we need to change the arrival times, dep. time
+			// to resizable grip's arrival time & dep. tim			
+			if($scope.gridProps.edit.active) {
+				var arrivalTime = new Date($scope.gridProps.currentResizeItem.arrival).toComponents().time;
+				start.setHours(arrivalTime.hours);
+				start.setMinutes(arrivalTime.minutes);
+				var depTime = new Date($scope.gridProps.currentResizeItem.departure).toComponents().time;
+				end.setHours(depTime.hours);
+				end.setMinutes(depTime.minutes);				
+			}
 		return [
 			start,
 			end,
@@ -850,9 +864,7 @@ sntRover
 		return [range_validated, conflicting_reservation];
 	}
 
-	//init function
-	(function(){		
-
+	var switchToEditModeIfPassed = function(){
 		// we are checking for whether we need to find the reservation against ID passed from someother state
 		// and change the diary to edit mode
 		if($stateParams && 'reservation_id' in $stateParams && 
@@ -879,18 +891,27 @@ sntRover
 				
 				if(row_item_data) {					
 					row_data = room_detail;
-				}
-			});
-
-			if(row_data){
-				setTimeout(function(){$scope.$apply(function(){
-					$scope.onSelect(row_data, row_item_data, true, 'edit');					
-				}
-				)}, 1500);
-				
+				}				
+			});						   	
+			if(row_data){	   		
+	   			$scope.$apply(function(){	   			
+	   				$scope.onSelect(row_data, row_item_data, false, 'edit');
+	   			});
 			}
 			
-		}		
-	})();
+		}						
+	}
+
+	$scope.eventAfterRendering = function(){
+		$scope.$apply(function(){
+			$scope.$emit('hideLoader');
+			$scope.resetEdit();
+		});
+		setTimeout(function(){
+			switchToEditModeIfPassed();
+		}, 1000);
+				
+	}
+
 	
 }]);
