@@ -13,7 +13,7 @@
 				</ul>
 
 				<!-- Booking source - Use only when creating new reservation -->
-				<div class="entry" ng-show="shouldShowAddNewCard && paymentGateway == 'sixpayments' && addmode" >
+				<div class="entry" ng-show="paymentGateway == 'sixpayments' && addmode" >
 					<!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
 					<label for="booking-source">Guest Location</label>
 					<div class="switch-button" ng-class="{'on': !shouldShowIframe}">

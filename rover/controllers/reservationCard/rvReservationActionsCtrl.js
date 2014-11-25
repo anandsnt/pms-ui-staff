@@ -437,6 +437,12 @@ sntRover.controller('reservationActionsController', [
 			// $scope.depositBalanceData = data;
 			$scope.depositBalanceData = data;
 			
+			$scope.passData = { 
+			    "details": {
+			    	"firstName": $scope.data.guest_details.first_name,
+			    	"lastName": $scope.data.guest_details.last_name,
+			    }
+			};
 			ngDialog.open({
 					template: '/assets/partials/depositBalance/rvModifiedDepositBalanceModal.html',
 					controller: 'RVDepositBalanceCtrl',
