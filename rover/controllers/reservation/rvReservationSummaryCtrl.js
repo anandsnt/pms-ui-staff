@@ -111,6 +111,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
 			$scope.depositData.depositAttemptFailure = false;
 
+			$scope.cards = {
+				available : false,
+				activeView : "NEW"
+			}
+
 			if ($stateParams.reservation == "HOURLY") {
 				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;

@@ -1,7 +1,7 @@
 <div id="credit-card-options" ng-show="reservationData.paymentType.type.value=='CC'"> <!-- If hidden by default, add class="hidden" -->
     
     <!-- Card toggle - Use only if there are exsiting cards on file -->
-    <ul class="card-toggle">
+    <ul class="card-toggle" ng-show="reservationData.payment" ng-if="cards.available">
         <li class="active">Existing Cards</li>
         <li>Add New Card</li>
     </ul>
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Exsiting cards - use only when they exsit -->
-    <div id="cc-exsiting-card" class="cards-list scrollable">
+    <div id="cc-exsiting-card" class="cards-list scrollable" ng-hide="cards.activeView == 'NEW'">
         <div class="wrapper">
             <label class="active-item item-payment"> <!-- Add class "primary" when selected -->
                 <figure class="card-logo">
@@ -38,7 +38,8 @@
     </div>
     
     <!-- New card: On-Site -->
-    <div id="cc-new-card" class="new-card"> <!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
+    <div id="cc-new-card" class="new-card" ng-show="cards.activeView == 'NEW'"
+    > <!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
         <div class="entry card-number">
             <label for="card-number">Card number (<span>No spaces</span>)</label>
             <input name="card-number" id="card-number" placeholder="Enter Card number" value="" maxlength="15" type="text" />

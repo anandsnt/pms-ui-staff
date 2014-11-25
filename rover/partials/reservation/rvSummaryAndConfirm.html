@@ -280,7 +280,7 @@
                             Add to Guest Card
                         </label>
                     </div>
-                    <div class="entry"> <!-- Show only when payment type is defined as CC -->
+                    <div class="entry" ng-show="reservationData.paymentType.type.value=='CC'"> <!-- Show only when payment type is defined as CC -->
                         <label class="checkbox inline" for="authorize-card">
                             <span class="icon-form icon-checkbox"></span>
                             <input name="authorize-card" id="authorize-card" value="1" type="checkbox" />
