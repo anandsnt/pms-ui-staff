@@ -231,10 +231,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 		if($scope.newPaymentInfo.addToGuestCard){
 			var cardCode = retrieveCardtype();
-			var cardNumber = cardNumber;
+			var cardNumber = retrieveCardNumber();
 			var dataToGuestList = {
 				"card_code": cardCode,
-				"mli_token": retrieveCardNumber,
+				"mli_token": cardNumber,
 				"card_expiry": $scope.newPaymentInfo.cardDetails.expiryMonth+"/"+$scope.newPaymentInfo.cardDetails.expiryYear,
 				"card_name": $scope.newPaymentInfo.cardDetails.userName,
 				"id": data.id,

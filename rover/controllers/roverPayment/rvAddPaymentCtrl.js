@@ -119,9 +119,31 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.renderData.cardExpiry;
 	};
 
+	var addToGuestCard = function(data){
+		var cardCode = retrieveCardtype();
+		var cardNumber = retrieveCardNumber();
+		var cardExpiry = retrieveExpiryDate();
+		var dataToGuestList = {
+			"card_code": creditCardType,
+			"mli_token": cardNumber,
+			"card_expiry":cardExpiry,
+			"card_name": '',
+			"id": data.id,
+			"isSelected": true,
+			"is_primary":false,
+			"payment_type":data.payment_name,
+			"payment_type_id": 1
+		};
+		$scope.cardsList.push(dataToGuestList);
+		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+	};
+
 	var ccSaveSuccess = function(data){
 		$scope.$emit("hideLoader");
 		if(isNewCardAdded){
+			if($scope.savePayment.addToGuest){
+				addToGuestCard(data);
+			};
 			(typeof $scope.passData.fromBill == "undefined")?saveNewCardSuccess(data):billScreenCCSaveActions(data);
 		}
 		else{
