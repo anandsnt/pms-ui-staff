@@ -1,10 +1,9 @@
 <!-- Credit card options - hidden until payment type is set as CC -->
 			<div id="credit-card-options" ng-controller="RVCardOptionsCtrl">
 				<!-- If hidden by default, add class="hidden" -->
-
 				<!-- Card toggle - Use only if there are exsiting cards on file -->
-				<ul class="card-toggle" ng-show="shouldShowExistingCards">
-					<li ng-class="{'active':!addmode}" ng-show="showExistingAndAddNewPayments && !showOnlyAddCard" ng-click="addmode = false">
+				<ul class="card-toggle">
+					<li ng-class="{'active':!addmode}" ng-click="addmode = false">
 						Existing Cards
 					</li>
 					<li ng-class="{'active':showOnlyAddCard ||addmode}" ng-click="addmode = true">
@@ -13,7 +12,7 @@
 				</ul>
 
 				<!-- Booking source - Use only when creating new reservation -->
-				<div class="entry" ng-show="shouldShowAddNewCard && paymentGateway == 'sixpayments' && addmode" >
+				<div class="entry" ng-show="paymentGateway == 'sixpayments' && addmode" >
 					<!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
 					<label for="booking-source">Guest Location</label>
 					<div class="switch-button" ng-class="{'on': !shouldShowIframe}">
@@ -30,7 +29,7 @@
 				</div>
 
 				<!-- Exsiting cards - use only when they exsit -->
-				<div id="cc-exsiting-card" class="cards-list scrollable" ng-show="shouldShowExistingCards && !addmode" ng-iscroll="cardsList" style="max-height:250px;height:auto;">
+				<div id="cc-exsiting-card" class="cards-list scrollable" ng-show="!addmode" ng-iscroll="cardsList" style="max-height:250px;height:auto;">
 					<div class="wrapper">
 
 						<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList"> <!-- Add class "primary" when selected -->
@@ -44,7 +43,7 @@
 				</div>
 
 				<!-- New card: On-Site -->
-				<div id="cc-new-card" class="new-card" ng-show="shouldShowAddNewCard && !shouldShowIframe && addmode">
+				<div id="cc-new-card" class="new-card" ng-show="!shouldShowIframe && addmode">
 					<!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
 					<div class="entry card-number">
 						<label for="card-number">Card number (<span>No spaces</span>)</label>

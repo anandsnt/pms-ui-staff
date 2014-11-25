@@ -20,10 +20,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.passData.details ={};
 		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
 		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
-		$scope.shouldShowAddNewCard = true;
-		$scope.shouldShowExistingCards = true;
 		$scope.setScroller('cardsList');
-		$scope.addmode = false;
 		$scope.showAddtoGuestCard = true;
 		$scope.showCancelCardSelection = true;
 	};

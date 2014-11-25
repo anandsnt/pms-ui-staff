@@ -6,35 +6,21 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	 'RVPaymentSrv', 
 	function($rootScope, $scope, $state, ngDialog, RVPaymentSrv){
 	BaseCtrl.call(this, $scope);
-	
-	$scope.shouldShowExistingCards = false;
-	$scope.shouldShowAddNewCard    = false;
 	$scope.showInitialScreen       = true; 
 	$scope.showSelectedCreditCard  = false;
 	$scope.addmode                 = true;
 	$scope.savePayment = {};
-	console.log($scope);
-	console.log("---------------------------------++**********-----"+$scope.passData.fromBill);
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
 		$scope.renderData = data;
-		//console.log(JSON.stringify($scope.renderData));
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
 	/*
 	 * change payment type action - initial add payment screen
 	 */
 	$scope.changePaymentType = function(){
-		if($scope.dataToSave.paymentType == "CC"){
-			$scope.addmode                 = true;
-			$scope.shouldShowAddNewCard    = true;
-			$scope.showInitialScreen       = false; 
-			$scope.showSelectedCreditCard  = false;
-		} else {
-			$scope.addmode                 = false;
-			$scope.shouldShowAddNewCard    = false;
-			$scope.showInitialScreen       = true; 
-		}
+		$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
+		$scope.addmode =($scope.dataToSave.paymentType == "CC") ? true: false;
 	};
 
 
@@ -67,8 +53,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		console.log("----------------TOKEN----------------");
 		console.log(tokenDetails)
 		$scope.cardData = tokenDetails;
-		$scope.showInitialScreen       = true; 
-		$scope.shouldShowAddNewCard    = false;
+		// $scope.showInitialScreen       = true; 
+		// $scope.shouldShowAddNewCard    = false;
+		$scope.showCCPage = false;
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;			
 		$scope.renderData.creditCardType = retrieveCardtype();
