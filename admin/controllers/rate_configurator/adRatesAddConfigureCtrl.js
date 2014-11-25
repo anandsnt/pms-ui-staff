@@ -525,9 +525,28 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.checkNightly = function(selectedSet, hour) {
             if (!!selectedSet.dawn.hh && !!selectedSet.dawn.hh && !!selectedSet.dusk.hh && !!selectedSet.dusk.hh) {
-                // TODO : check if the hour falls between dusk and dawn
+
                 var dawn = selectedSet.dawn.am == 'AM' ? parseInt(selectedSet.dawn.hh) : (parseInt(selectedSet.dawn.hh) + 12) % 24;
                 var dusk = selectedSet.dusk.am == 'AM' ? parseInt(selectedSet.dusk.hh) : (parseInt(selectedSet.dusk.hh) + 12) % 24;
+
+                /**
+                 * CICO-10644
+                 * Day Rate Check out cut off minus Min Hours.
+                 * Example:
+                 * Night Starts: 3pm
+                 * Day Check out cut off: 9pm
+                 * Min Hours: 4
+                 * Grid should be editable for day rate until 9pm - 4=5pm (inclusive)
+                 */
+
+                // TODO : Calculate the dusk time!
+                if (!!selectedSet.checkout.hh & !!selectedSet.checkout.mm && !!selectedSet.day_min_hours) {
+                    var checkout = selectedSet.checkout.am == 'AM' ? parseInt(selectedSet.checkout.hh) : (parseInt(selectedSet.checkout.hh) + 12) % 24;
+                    dusk = parseInt(checkout) - parseInt(selectedSet.day_min_hours);
+                    // (inclusive)
+                    dusk ++;
+                }
+
                 var nightHours = [];
                 for (var i = 0; i < 24; i++) {
                     if (dawn < dusk) {

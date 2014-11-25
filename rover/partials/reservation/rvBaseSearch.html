@@ -1,135 +1,191 @@
-<!-- Content -->
+<!-- Navbar -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
+
+<!-- Reservations search form -->
 <section id="reservations" class="content create-reservation scrollable" role="main" ng-iscroll="search_reservation" ng-iscroll-delay="1000">
-    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search" iscroll-stop-propagation>
-
+    
+    <form method="get" action="{action}" name="create-reservation" id="create-reservation" class="wrapper" role="search">
+        
+        <!-- Date / Time -->
         <div id="dates" class="row">
-            <div id="arriving" class="entry" ng-class="{'res_arrival': shouldShowToggle}">
+            
+            <!-- Arrival date -->
+            <div id="arriving" class="entry">
                 <label id="check-in-day-label" for="check-in-date">Arriving <span>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></label>
-                <!-- Styled check in date -->
-
                 <div class="entry-data">
                     <input ui-date="arrivalDateOptions" name="check-in-date" id="check-in-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.arrivalDate" ng-change="arrivalDateChanged()"readonly/>
-                    
                     <strong id="check-in-day" class="day">{{reservationData.arrivalDate | date:'dd'}}</strong>
                     <span id="check-in-month" class="month">{{reservationData.arrivalDate | date:'MMMM'}}</span>
                     <span id="check-in-year" class="year">{{reservationData.arrivalDate | date:'yyyy'}}</span>
                 </div>
             </div>
-            <div id="nights" class="entry" ng-class="{'res_nights': shouldShowToggle}">
+
+            <!-- Stay type (nights/hours) -->
+            <div id="type" class="entry">
                 <label for="nights-number">Staying <span>for</span></label>
+                <div class="switch-button on" ng-show="shouldShowToggle" ng-class="{ 'on': !isNightsActive }">
+                    <input name="stay-type" id="stay-type" value="" type="checkbox" ng-model="isNightsActive" ng-click="switchNightsHours()" />
+                    <label class="data-off">
+                        <span class="value">Hours</span>
+                        <span class="switch-icon">Nights</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon">Hours</span>
+                        <span class="value">Nights</span>
+                    </label>
+                </div>
                 <div class="entry-data">
-                	<div class="nights_hours" ng-show="shouldShowToggle">
-	                    <span class="label res_nights_label" ng-class="{'nights_active': isNightsActive}"  ng-click="clickedNights()">Nights</span>
-	                    <span class="label res_hours_label" ng-class="{'hours_active': !isNightsActive}"  ng-click="clickedHours()">Hours</span>
-                    </div>
-                    <span class="label" ng-hide="shouldShowToggle">Nights</span>
-                    <input ng-show="shouldShowNights" name="nights-number" id="nights-number" type="text" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
-                    <input ng-show="shouldShowHours" name="nights-number" id="nights-number" type="text" maxlength="2" ng-model="reservationData.resHours" ng-change="setDepartureHours()" />
-                   
+                    <!-- Option for having 2 separate input fields for nights/hours entry. If nights is default, nights should be hidden until switch button is tapped.
+                    Feel free to use just one input field id you want to -->
+                    <input ng-show="shouldShowNights" name="nights-number" id="nights-number" type="tel" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
+                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-change="setDepartureHours()" />
                 </div>
             </div>
 
-
-            <div id="departing" class="entry"  ng-class="{'res_departure': shouldShowToggle}" >
-                <label id="check-out-day-label" for="check-out-date">Departing <span> {{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
-                <!-- Styled check out date -->
-                <div class="entry-data datepicker-date">
-
+            <!-- Departure date -->
+            <div id="departing" class="entry" ng-class="{ 'hidden': !isNightsActive }">
+                <label id="check-out-day-label" for="check-out-date">Departing <span>{{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
+                <div class="entry-data">
                     <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
                     <strong id="check-out-day" class="day">{{reservationData.departureDate | date:'dd'}}</strong>
                     <span id="check-out-month" class="month">{{reservationData.departureDate | date:'MMMM'}}</span>
                     <span id="check-out-year" class="year">{{reservationData.departureDate | date:'yyyy'}}</span>
                 </div>
             </div>
-        </div>
-        <!-- To be replaced when original design comes -->
-        <div class="row">
-                arrival time
-                <select ng-model="reservationData.checkinTime.hh"  ng-change="setDepartureHours()" style="width:100px;float:left;">
-                        <option value="">HH</option> <!-- Selected if time not set -->
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                </select>
-                 <select ng-model="reservationData.checkinTime.mm"  ng-change="setDepartureHours()"style="width:100px;float:left;">
-                        <option value="">MM</option> <!-- Selected if time not set -->
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                </select>
-                 <select ng-model="reservationData.checkinTime.ampm"  ng-change="setDepartureHours()"style="width:100px;float:left;">
-                        <option value="AM" selected>AM</option>
-                        <option value="PM">PM</option>
-                </select>
+
+            <!-- Arrival time -->
+            <div id="arriving-time" class="entry" ng-class="{ 'hidden': isNightsActive }">
+                <label for="arrival-time">Arrival Time</label>
+                <div class="select">
+                    <select id="arrival-time" name="arrival-time" iscroll-stop-propagation ng-model="fullCheckinTime" ng-change="mapToCheckinTime()">
+                        <option value="12:00 AM">12:00 AM</option>
+                        <option value="12:15 AM">12:15 AM</option>
+                        <option value="12:30 AM">12:30 AM</option>
+                        <option value="12:45 AM">12:45 AM</option>
+
+                        <option value="1:00 AM">1:00 AM</option>
+                        <option value="1:15 AM">1:15 AM</option>
+                        <option value="1:30 AM">1:30 AM</option>
+                        <option value="1:45 AM">1:45 AM</option>
+                        <option value="2:00 AM">2:00 AM</option>
+                        <option value="2:15 AM">2:15 AM</option>
+                        <option value="2:30 AM">2:30 AM</option>
+                        <option value="2:45 AM">2:45 AM</option>
+                        <option value="3:00 AM">3:00 AM</option>
+                        <option value="3:15 AM">3:15 AM</option>
+                        <option value="3:30 AM">3:30 AM</option>
+                        <option value="3:45 AM">3:45 AM</option>
+                        <option value="4:00 AM">4:00 AM</option>
+                        <option value="4:15 AM">4:15 AM</option>
+                        <option value="4:30 AM">4:30 AM</option>
+                        <option value="4:45 AM">4:45 AM</option>
+                        <option value="5:00 AM">5:00 AM</option>
+                        <option value="5:15 AM">5:15 AM</option>
+                        <option value="5:30 AM">5:30 AM</option>
+                        <option value="5:45 AM">5:45 AM</option>
+                        <option value="6:00 AM">6:00 AM</option>
+                        <option value="6:15 AM">6:15 AM</option>
+                        <option value="6:30 AM">6:30 AM</option>
+                        <option value="6:45 AM">6:45 AM</option>
+                        <option value="7:00 AM">7:00 AM</option>
+                        <option value="7:15 AM">7:15 AM</option>
+                        <option value="7:30 AM">7:30 AM</option>
+                        <option value="7:45 AM">7:45 AM</option>
+                        <option value="8:00 AM">8:00 AM</option>
+                        <option value="8:15 AM">8:15 AM</option>
+                        <option value="8:30 AM">8:30 AM</option>
+                        <option value="8:45 AM">8:45 AM</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="9:15 AM">9:15 AM</option>
+                        <option value="9:30 AM">9:30 AM</option>
+                        <option value="9:45 AM">9:45 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="10:15 AM">10:15 AM</option>
+                        <option value="10:30 AM">10:30 AM</option>
+                        <option value="10:45 AM">10:45 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="11:15 AM">11:15 AM</option>
+                        <option value="11:30 AM">11:30 AM</option>
+                        <option value="11:45 AM">11:45 AM</option>
+
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="12:15 PM">12:15 PM</option>
+                        <option value="12:30 PM">12:30 PM</option>
+                        <option value="12:45 PM">12:45 PM</option>
+
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="1:15 PM">1:15 PM</option>
+                        <option value="1:30 PM">1:30 PM</option>
+                        <option value="1:45 PM">1:45 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="2:15 PM">2:15 PM</option>
+                        <option value="2:30 PM">2:30 PM</option>
+                        <option value="2:45 PM">2:45 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="3:15 PM">3:15 PM</option>
+                        <option value="3:30 PM">3:30 PM</option>
+                        <option value="3:45 PM">3:45 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="4:15 PM">4:15 PM</option>
+                        <option value="4:30 PM">4:30 PM</option>
+                        <option value="4:45 PM">4:45 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                        <option value="5:15 PM">5:15 PM</option>
+                        <option value="5:30 PM">5:30 PM</option>
+                        <option value="5:45 PM">5:45 PM</option>
+                        <option value="6:00 PM">6:00 PM</option>
+                        <option value="6:15 PM">6:15 PM</option>
+                        <option value="6:30 PM">6:30 PM</option>
+                        <option value="6:45 PM">6:45 PM</option>
+                        <option value="7:00 PM">7:00 PM</option>
+                        <option value="7:15 PM">7:15 PM</option>
+                        <option value="7:30 PM">7:30 PM</option>
+                        <option value="7:45 PM">7:45 PM</option>
+                        <option value="8:00 PM">8:00 PM</option>
+                        <option value="8:15 PM">8:15 PM</option>
+                        <option value="8:30 PM">8:30 PM</option>
+                        <option value="8:45 PM">8:45 PM</option>
+                        <option value="9:00 PM">9:00 PM</option>
+                        <option value="9:15 PM">9:15 PM</option>
+                        <option value="9:30 PM">9:30 PM</option>
+                        <option value="9:45 PM">9:45 PM</option>
+                        <option value="10:00 PM">10:00 PM</option>
+                        <option value="10:15 PM">10:15 PM</option>
+                        <option value="10:30 PM">10:30 PM</option>
+                        <option value="10:45 PM">10:45 PM</option>
+                        <option value="11:00 PM">11:00 PM</option>
+                        <option value="11:15 PM">11:15 PM</option>
+                        <option value="11:30 PM">11:30 PM</option>
+                        <option value="11:45 PM">11:45 PM</option>
+                    </select>
+                </div>
             </div>
-            <div class="row">
-                departure time
-                <select ng-model="reservationData.checkoutTime.hh"style="width:100px;float:left;">
-                        <option value="">HH</option> <!-- Selected if time not set -->
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                </select>
-                 <select ng-model="reservationData.checkoutTime.mm" style="width:100px;float:left;">
-                        <option value="">MM</option> <!-- Selected if time not set -->
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                </select>
-                 <select ng-model="reservationData.checkoutTime.ampm" style="width:100px;float:left;">
-                        <option value="AM" selected>AM</option>
-                        <option value="PM">PM</option>
-                </select>       
         </div>
-            <!-- To be replaced when original design comes till here-->
+
+        <!-- Room(s) details -->
         <div id="rooms" class="row">
             <div id="room-1" class="entry" ng-repeat="room in reservationData.rooms">
                 <label for="room-1-adults">Room <span>(s)</span></label>
                 <div class="entry-data">
                     <div class="select adults">
                         <label for="room-1-adults" class="label">Adults</label>
-                        <!-- Max Adults -->
                         <select iscroll-stop-propagation name="room-1-adults" id="room-1-adults" ng-model="room.numAdults" ng-change="validateOccupant(room, 'adult')">
                             <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
                         <label for="room-1-children" class="label">Children</label>
-                        <!-- Max Children -->
                         <select iscroll-stop-propagation name="room-1-children" id="room-1-children" ng-model="room.numChildren" ng-change="validateOccupant(room, 'children')">
                             <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
                         </select>
                     </div>
                     <div class="select infants">
                         <label for="room-1-infants" class="label">Infants</label>
-                        <!-- Max Infants -->
                         <select iscroll-stop-propagation name="room-1-infants" id="room-1-infants" ng-model="room.numInfants">
                             <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}"ng-selected="i==room.numInfants">{{i}}</option>
                         </select>
                     </div>
                     <div class="select room-type">
-                        <!-- Hotel Room Types -->
                         <select iscroll-stop-propagation ng-model="room.roomTypeId" ng-options="roomType.id as roomType.name for roomType in otherData.roomTypes">
                           <option value="">All Room Types</option>
                         </select>
@@ -137,6 +193,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Guest info -->
         <div id="guest" class="row">
             <div id="first-name" class="entry">
                 <label for="guest-first-name">Guest <span>(optional)</span></label>
@@ -146,12 +204,33 @@
                 <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" ng-model="searchData.guestCard.guestLastName" ng-change="reservationGuestSearchChanged()" />
             </div>
         </div>
+
+        <!-- Company / Travel Agent -->
         <div id="company-agent" class="row">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
                 <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText"/>
             </div>
         </div>
+
+        <!-- Codes -->
+        <div id="codes" class="row" ng-if="promoCodesToBeImplemented">
+            <div class="entry">
+                <label for="codes-value">Promo Codes <span>(optional)</span></label>
+                <div class="entry-data">
+                    <input name="codes-value" id="codes-value" type="text" placeholder="Code #" value="" />
+                    <div class="select">
+                        <label for="codes-type" class="label">Type</label>
+                        <select name="codes-type" id="codes-type">
+                            <option value="" selected>None</option>
+                            <option value="aaa">AAA</option>
+                            ... repeat for codes
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="actions" class="row">
             <button id="find-rooms-and-rates" type="button" class="button green" ng-click="navigate()">Find Rooms &amp; Rates</button>
         </div>

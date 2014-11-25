@@ -200,7 +200,7 @@
                     <div class="select">
 
                         <select class="placeholder" ng-model="reservationData.paymentType.type.value"
-                            ng-options="paymentMethod.value as paymentMethod.description for paymentMethod in data.paymentMethods" ng-change="changePaymentType()">
+                            ng-options="paymentMethod.value as paymentMethod.description for paymentMethod in reservationData.paymentMethods" ng-change="changePaymentType()">
                             <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
                         </select>
                     </div>

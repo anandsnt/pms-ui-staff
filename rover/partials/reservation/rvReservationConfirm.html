@@ -144,7 +144,9 @@
                         </ul> -->
                     </div>
                     
-                    <a href="" class="button blue" ng-click = "openBillingInformation(room.confirm_no)" >{{getBillingInfoTitle()}}</a>
+                    <a href="" class="button blue" ng-click = "openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</a>
+                    <a href="" class="button brand-colors" ng-click="setDemographics()">Demographics</a>
+
                 </div>
                 <ul class="total-stay-cost">
                 	<li ng-repeat="row in reservationData.taxDetails">

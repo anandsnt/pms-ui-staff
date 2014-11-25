@@ -26,7 +26,8 @@ sntRover
 			start_date: 'arrival',
 			end_date: 'departure',	
 			maintenance: 'maintenance',
-			rate: 'amount'
+			rate: 'amount',
+			room_status: 'room_service_status'
 		},
 		availability: {
 			id: 'reservation_id',
