@@ -461,7 +461,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			 	
 			 	var fetchGuestPaymentDataSuccess = function(data){
 			 		$scope.$emit('hideLoader');
-			 		var cardsList = data.existing_payments;
+			 		var cardsList = _.where(data.existing_payments, {
+										is_credit_card: true
+									});
 					data.existing_payments.forEach(function(card) {
 					   card.mli_token = card.ending_with;
 					   delete card.ending_with;    
