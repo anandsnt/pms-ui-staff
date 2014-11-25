@@ -20,10 +20,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.passData.details ={};
 		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
 		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
-		$scope.shouldShowAddNewCard = true;
-		$scope.shouldShowExistingCards = true;
 		$scope.setScroller('cardsList');
-		$scope.addmode = false;
 		$scope.showAddtoGuestCard = true;
 		$scope.showCancelCardSelection = true;
 	};
@@ -234,10 +231,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 		if($scope.newPaymentInfo.addToGuestCard){
 			var cardCode = retrieveCardtype();
-			var cardNumber = cardNumber;
+			var cardNumber = retrieveCardNumber();
 			var dataToGuestList = {
 				"card_code": cardCode,
-				"mli_token": retrieveCardNumber,
+				"mli_token": cardNumber,
 				"card_expiry": $scope.newPaymentInfo.cardDetails.expiryMonth+"/"+$scope.newPaymentInfo.cardDetails.expiryYear,
 				"card_name": $scope.newPaymentInfo.cardDetails.userName,
 				"id": data.id,

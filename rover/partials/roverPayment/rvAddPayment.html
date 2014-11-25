@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-cloak>
 	<form method="post" action="{action}" id="new-payment" name="new-payment" class="modal-content form new-content select-card">
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert">
@@ -9,7 +9,7 @@
 		<div id="set-payment" class="payment-form">
 
 			<!-- Payment type -->
-			<div class="entry full-width" >
+			<div class="entry full-width" ng-hide="showCCPage" >
 				<label for="payment-type">Payment type</label>
 				<div class="select">
 					<select name="payment-type" ng-change="changePaymentType()" ng-model="dataToSave.paymentType" class="placeholder">
@@ -34,7 +34,7 @@
 				</label>
 			</div>
 			
-			<div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ></div>
+			<div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>
 			
 
 			<!-- Checkboxes -->
@@ -56,7 +56,7 @@
 				<button type="button" class="button blank modal-close" ng-click="closeDialog()">
 					Close
 				</button>
-				<button type="button" class="button green" ng-click="saveNewCard()">
+				<button type="button" class="button green" ng-click="addNewPayment()">
 					Add
 				</button>
 			</div>
