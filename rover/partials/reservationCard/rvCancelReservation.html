@@ -1,7 +1,7 @@
 <div id="modal" class="modal-show" role="dialog">
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-<form method="post" action="cancel-reservation" id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation"><!-- Add class "select-card" when applying penalty charge -->
-    <button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+<form method="post" action="cancel-reservation" id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-class="{'select-card':ngDialogData.state == 'PENALTY'}"><!-- Add class "select-card" when applying penalty charge -->
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
     
     <!-- 1. Cancel Options screen -->
       <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">

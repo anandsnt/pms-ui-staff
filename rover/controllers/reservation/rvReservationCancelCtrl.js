@@ -5,6 +5,8 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.errorMessage = '';
 		$scope.showCancelCardSelection =true;
 		$scope.showAddtoGuestCard = true;
+		$scope.addmode = false;
+		$scope.showCC = false;
 
 		$scope.cancellationData = {
 			selectedCard: -1,
