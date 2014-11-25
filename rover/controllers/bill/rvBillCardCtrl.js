@@ -1,6 +1,6 @@
 
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv', 
-	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv','RVPaymentSrv', 
+	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv,RVPaymentSrv){
 
 	
 	BaseCtrl.call(this, $scope);	
@@ -458,7 +458,20 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				$scope.showAddtoGuestCard = true;
 				$scope.showCancelCardSelection = true;
 				
-			 	$scope.openPaymentDialogModal(passData, paymentData);
+			 	
+			 	var fetchGuestPaymentDataSuccess = function(data){
+			 		$scope.$emit('hideLoader');
+			 		var cardsList = data.existing_payments;
+					data.existing_payments.forEach(function(card) {
+					   card.mli_token = card.ending_with;
+					   delete card.ending_with;    
+					   card.card_expiry = card.expiry_date;
+					   delete card.expiry_date; 
+					});
+			 		$scope.openPaymentDialogModal(passData, paymentData,cardsList);
+			 	};
+			 	var reservationId = $scope.reservationBillData.reservation_id;
+			 	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId,fetchGuestPaymentDataSuccess);
   	 	} else {
   	 		var ksn = data.RVCardReadTrack2KSN;
       		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
