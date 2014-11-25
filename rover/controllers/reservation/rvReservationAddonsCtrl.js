@@ -69,7 +69,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
                  *     Exisiting implementation : Confirmation number gets generated when the submit reservation button in the summary screen is clicked
                  */
                 
-                var postData = $scope.computeReservationDataforUpdate(true);
+                var postData = $scope.computeReservationDataforUpdate(true,true);
                 var saveSuccess = function(data) {
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
 

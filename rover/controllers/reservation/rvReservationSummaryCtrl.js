@@ -112,7 +112,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.depositData.depositAttemptFailure = false;
 
 			if ($stateParams.reservation == "HOURLY") {
-				console.log("hhhhhhhhhhhhhhhhhh");;
 				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');

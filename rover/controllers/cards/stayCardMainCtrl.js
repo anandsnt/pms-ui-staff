@@ -377,7 +377,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		// Note: The payment and the confirmation mails related information is not computed in this call now, as that would require moving a few variables from the 
 		// scope of RVReservationSummaryCtrl to stayCardMainCtrl
 
-		$scope.computeReservationDataforUpdate = function(skipPaymentData) {
+		$scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails) {
 			var data = {};
 			data.is_hourly = $scope.reservationData.isHourly;
 			data.arrival_date = $scope.reservationData.arrivalDate;
@@ -440,12 +440,15 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			data.tax_total = $scope.reservationData.totalTaxAmount;
 
 			// guest emails to which confirmation emails should send
-			data.confirmation_emails = [];
-			if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email != "") {
-				data.confirmation_emails.push($scope.reservationData.guest.email);
-			}
-			if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
-				data.confirmation_emails.push($scope.otherData.additionalEmail);
+
+			if (!skipConfirmationEmails) {
+				data.confirmation_emails = [];
+				if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email != "") {
+					data.confirmation_emails.push($scope.reservationData.guest.email);
+				}
+				if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
+					data.confirmation_emails.push($scope.otherData.additionalEmail);
+				}
 			}
 
 			if (!skipPaymentData) {
