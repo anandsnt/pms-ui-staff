@@ -75,7 +75,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		if(data.length == 0){
 			$scope.guestPaymentList = [];
 		} else {
-			$scope.guestPaymentList = data;
+			var cardsList = [];
+			angular.forEach(data, function(value, key) {
+				if(value.credit_card_type_id !== null){
+					cardsList.push(value);
+				};
+			});
+			$scope.guestPaymentList = cardsList;
 			angular.forEach($scope.guestPaymentList, function(value, key) {
 				value.isSelected = false;
 				if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
@@ -135,8 +141,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			}
 		}
 
-		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount;
-		$scope.renderData.defaultPaymentAmount = defaultAmount;
+		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.length >0 ?
+			$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : "0.00";
+			$scope.renderData.defaultPaymentAmount = defaultAmount;
 
 	};
 	$scope.init();
