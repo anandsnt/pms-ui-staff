@@ -64,7 +64,7 @@
 	                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span> 
 	                    </div>
 
-						<!-- 1. if room is assigned, show this -->
+						<!-- Display the arrival date and Room number-->
 	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKING_IN' || row.reservation_status == 'CHECKEDIN'|| row.reservation_status == 'CHECKING_OUT'|| (row.reservation_status == 'RESERVED' && escapeNull(row.room) !== '' )">
 	                        <!-- this can be either arrival or departure date, depending on reservation status -->
 	                        <div class="arrival-departure">
@@ -100,7 +100,7 @@
 	                        </div>
                     	</div>
 
-                    	
+                    	<!-- Display arrival and departure dates . Do not display the room number -->
 	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKEDOUT' || row.reservation_status == 'NOSHOW'|| row.reservation_status == 'NOSHOW_CURRENT' || row.reservation_status == 'CANCELLED' || (row.reservation_status == 'RESERVED' && escapeNull(row.room) == '' )">
 	                        <!-- this is arrival date -->
 	                        <div class="arrival-departure">
