@@ -933,10 +933,14 @@ q:before, q:after {content: ""}
                             page-break-after: auto;
                             page-break-inside: avoid;
 
-                            th { white-space: normal; }
+                            th { 
+                                white-space: normal; 
+                                font-weight: 600;
+                            }
 
                             th,
                             td {
+                                font-size: 9pt;
                                 line-height: 1em;
                                 vertical-align: top;
                                 text-align: left;
@@ -945,17 +949,9 @@ q:before, q:after {content: ""}
                                 white-space: normal;
                             }
                         }
-
-
-                        th { 
-                            font-size: 11pt; 
-                            font-weight: 600;
-                        }
-
-                        td { font-size: 10pt; }
                     }
 
-                    .invoice-header {
+                    .invoice-logo {
                         height: 3cm;
                         position: relative;
 
@@ -977,7 +973,6 @@ q:before, q:after {content: ""}
 
                     .guest-info {
                         text-transform: none;
-                        margin-bottom: 1cm;
 
                         tr {
                             page-break-after: avoid;
@@ -992,14 +987,25 @@ q:before, q:after {content: ""}
                         }
                     }
 
+                    .invoice-header {
+                        font-size: 9pt;
+                        line-height: 11pt;
+                        text-align: center;
+                        margin: 1cm 0 -1cm 0;
+                    }
+
                     .invoice-body {
+                        margin-top: 2cm;
 
                         .date {
-                            font-size: 10pt;
-                            line-height: 10pt;
+                            font-size: 9pt;
+                            line-height: 11pt;
                             margin: 0;
 
-                            strong { .show; }
+                            strong { 
+                                font-weight: 600;
+                                .show; 
+                            }
                         }
 
                         .invoice-details {
@@ -1008,9 +1014,15 @@ q:before, q:after {content: ""}
                             page-break-after:auto;
                             
                             caption {
-                                font-size: 16pt;
-                                padding: 4pt 0 12pt;
-                                border-top: 1px solid @grey2;
+                                font-size: 14pt;
+                                line-height: 12pt;
+                                padding: 12pt 0 8pt;
+                                border-top: 2px solid @grey2;
+
+                                span { 
+                                    font-size: 9pt;
+                                    .show;
+                                }
                             }
 
                             tr {
@@ -1036,7 +1048,7 @@ q:before, q:after {content: ""}
 
                             tfoot {
                                 padding: 12pt 0 4pt;
-                                border-top: 1px solid @grey2;
+                                border-top: 2px solid @grey2;
 
                                 td { text-align: right; }
 
@@ -1047,6 +1059,11 @@ q:before, q:after {content: ""}
                                 }
                             }
                         }
+                    }
+
+                    .invoice-footer {
+                        font-size: 8pt;
+                        padding-top: 16pt;
                     }
                 }
             }
