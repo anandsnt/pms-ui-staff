@@ -21,7 +21,60 @@ sntRover
     		deepCopy,
     		copyArray,
     		mixin,
-            inherit;
+            inherit,
+            gridTimeComponents;
+
+        gridTimeComponents = function(arrival_ms, display_total_hours, display) {
+            var ret,
+                ms_per_day          = 43200000,
+                ms_per_hr           = 3600000,
+                perspective_offset  = (arrival_ms instanceof Date ? new Date(Date.now()).toComponents().time.hours : 0),
+                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(Date.now()).toComponents().time.hours,0,0) : arrival_ms), 
+                x_max               = (display_total_hours - perspective_offset) * ms_per_hr, 
+                x_min               = (display_total_hours * ms_per_hr - x_max),
+                x_right             = x_origin + x_max, 
+                x_left              = x_origin - x_min,
+                x_offset            = x_origin - (ms_per_hr * 2); 
+
+            ret = {
+                x_offset: new Date(x_offset),
+                x_origin: new Date(x_origin),
+                x_0:  new Date(x_origin),
+                x_n: new Date(x_left),
+                x_p: new Date(x_right),
+                toShijuBugStartDate: function(start) {
+                    return new Date(new Date(x_left).setHours(start,0,0));
+                },
+                toShijuBugEndDate: function(end) {
+                    return new Date(new Date(x_right).setHours(end, 0, 0));
+                },
+                toStartDate: function() {
+                    return new Date(new Date(x_left).setHours(0, 0, 0));
+                },
+                toEndDate: function() {
+                    return new Date(new Date(x_right).setHours(23, 59, 0));
+                }
+            };
+
+            ret.x_origin_start_time = ret.x_origin.toComponents().time.convertToReferenceInterval(15); 
+            ret.x_n_time = ret.x_n.toComponents().time.convertToReferenceInterval(15);
+            ret.x_p_time = ret.x_p.toComponents().time.convertToReferenceInterval(15);
+
+            if(display) {
+                display.x_offset                = x_offset;
+                display.x_origin                = x_origin;
+                display.x_origin_start_time     = ret.x_origin_start_time;
+                display.x_n                     = x_left;
+                display.x_0                     = x_origin;
+                display.x_n_time                = ret.x_n_time;
+                display.x_p                     = x_right;
+                display.x_p_time                = ret.x_p_time;
+
+               ret.display = display;
+            }
+
+            return ret;
+        };
 
         inherit = function(child, base) {
             child.prototype = Object.create(base.prototype);
@@ -102,8 +155,8 @@ sntRover
 		roomIndex = function(rooms, room) {
 			var idx = -1;
 
-			for(var i = 0, len = data.length; i < len; i++){
-				if(data[i].id === room.id) {
+			for(var i = 0, len = rooms.length; i < len; i++){
+				if(rooms[i].id === room.id) {
 					idx = i;
 					return idx;
 				}
@@ -157,8 +210,9 @@ sntRover
 
 		clearRoomQuery = function(rooms) {
 			var room,
+                m_status = meta.occupancy.status,
 				reject = function(child) {
-					return child.temporary === true;
+					return angular.lowercase(child[m_status]) === 'available'; //child.temporary === true;
 				};
 
 			for(var i = 0, len = rooms.length; i < len; i++) {
@@ -183,30 +237,32 @@ sntRover
 				removeReservation(oldRoom, reservation);
 
 				newRoom.occpuancy.push(copyReservation(reservation));
+
+                idxOldRoom = roomIndex(rooms, oldRoom);
+                idxNewRoom = roomIndex(rooms, newRoom);
+
+                //if(commit) {
+                if(idxOldRoom > -1 && idxOldRoom < data.length) {
+                    data[idxOldRoom] = oldRoom;
+                }
+
+                if(idxNewRoom > -1 && idxNewRoom < data.length) {
+                    data[idxNewRoom] = newRoom;
+                }
 			} else {
 				updateReservation(oldRoom, reservation);
-			}
-
-			idxOldRoom = roomIndex(oldRoom);
-			idxNewRoom = roomIndex(newRoom);
-
-			//if(commit) {
-			if(idxOldRoom > -1 && idxOldRoom < data.length) {
-				data[idxOldRoom] = oldRoom;
-			}
-
-			if(idxNewRoom > -1 && idxNewRoom < data.length) {
-				data[idxNewRoom] = newRoom;
 			}
 		};
 
 		clearRowClasses = function(rooms) {
 	    	var data = rooms;
 
-	    	for(var i = 0, len = data.length; i < len; i++) {
-	    		data[i] = deepCopy(data[i]);
-	    		data[i][meta.room.status] = '';
-	    	}
+            if(data) {
+    	    	for(var i = 0, len = data.length; i < len; i++) {
+    	    		data[i] = deepCopy(data[i]);
+    	    		data[i][meta.room.status] = '';
+    	    	}
+            }
 	    };
 
 	    registerNotifictions = function(obj) {
@@ -224,6 +280,7 @@ sntRover
 	    };
 
 		return {
+            gridTimeComponents: gridTimeComponents,
 			clearRoomQuery: clearRoomQuery,
 			removeReservation: removeReservation,
 			updateReservation: updateReservation,

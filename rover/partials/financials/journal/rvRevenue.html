@@ -5,11 +5,18 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isRevenueToggleSummaryActive}">
 
+            <ul class="grid-header revenue">
+                <li class="name" translate>CHARGE_GROUPS</li>
+                <li class="number" translate>NUMBER</li>
+                <li class="value" translate>AMOUNT</li>
+            </ul>
+
                 <!-- First level - charge groups -->
                 <div class="grid-group" ng-repeat="(index1 ,level1) in data.revenueData.charge_groups"  ng-show="level1.show && level1.filterFlag">
 
                     <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="revenue-title toggle">
                         <strong ng-show="level1.show" class="name">{{level1.name}}</strong>
+                        <span ng-show="level1.show" class="number" >{{escapeNullData(level1.number)}}</span>
                         <span ng-show="level1.show" class="value">{{currencySymbol}}{{ getTotalAmountOfGroupItem(index1) | number: precisonTwo}}</span>
                     </a>
 
@@ -42,7 +49,7 @@
                                     <td>{{level3.name}}</td>
                                     <td>{{level3.reservation_number}}</td>
                                     <td>{{level3.type}}</td>
-                                    <td>{{level3.details}}</td>
+                                    <td ng-bind-html="level3.details"></td>
                                     <td>{{getTimeString(level3.date, level3.time)}}</td>
                                     <td>{{currencySymbol}}{{level3.debit | number: precisonTwo}}</td>
                                     <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td> 

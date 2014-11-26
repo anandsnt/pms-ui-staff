@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
-    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
 
         BaseCtrl.call(this, $scope);
 
@@ -27,13 +27,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         };
 
-        var successCallbackOfCountryListFetch = function(data) {
-            $scope.countries = data;
-        };
+        // var successCallbackOfCountryListFetch = function(data) {
+        //     $scope.countries = data;
+        // };
 
         //fetching country list
         //Commenting - Another call is happening to fetch countries
-        $scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
+        //$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
 
         // adding extra function to reset time
         $scope.clearArrivalAndDepartureTime = function() {
@@ -50,6 +50,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
         };
 
+        $scope.otherData = {};
+
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
             // intialize reservation object
@@ -59,7 +61,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
                 stayDays: [],
-                resHours: '',
+                resHours: 1,
                 checkinTime: {
                     hh: '',
                     mm: '00',
@@ -134,7 +136,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 confirmNum: '',
                 isSameCard: false, // Set flag to retain the card details,
                 rateDetails: [], // This array would hold the configuration information of rates selected for each room
-                isRoomRateSuppressed: false // This variable will hold flag to check whether any of the room rates is suppressed?
+                isRoomRateSuppressed: false, // This variable will hold flag to check whether any of the room rates is suppressed?
+                reservation_card : {}
             };
 
             $scope.searchData = {
@@ -157,36 +160,38 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             };
             // default max value if max_adults, max_children, max_infants is not configured
             var defaultMaxvalue = 5;
-            var guestMaxSettings = baseSearchData.settings.max_guests;
-            $scope.otherData = {
-                taxesMeta: [],
-                marketsEnabled: baseData.demographics.is_use_markets,
-                markets: baseData.demographics.markets,
-                sourcesEnabled: baseData.demographics.is_use_sources,
-                sources: baseData.demographics.sources,
-                originsEnabled: baseData.demographics.is_use_origins,
-                origins: baseData.demographics.origins,
-                reservationTypes: baseData.demographics.reservationTypes,
-                promotionTypes: [{
-                    value: "v1",
-                    description: "The first"
-                }, {
-                    value: "v2",
-                    description: "The Second"
-                }],
-                maxAdults: (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults,
-                maxChildren: (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children,
-                maxInfants: (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants,
-                roomTypes: baseSearchData.roomTypes,
-                fromSearch: false,
-                recommendedRateDisplay: baseSearchData.settings.recommended_rate_display,
-                defaultRateDisplayName: baseSearchData.settings.default_rate_display_name,
-                businessDate: baseSearchData.businessDate,
-                additionalEmail: "",
-                isGuestPrimaryEmailChecked: false,
-                isGuestAdditionalEmailChecked: false,
-                reservationCreated: false
-            };
+            var guestMaxSettings = baseSearchData.settings.max_guests;            
+            
+            /**
+             *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+             *   to the states where it actually requires it.
+             *
+             *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' (last method).
+             *
+             *   Once that state controller fetch 'baseData', it will find this controller
+             *   by climbing the $socpe.$parent ladder and will call 'callFromChildCtrl' method.
+             */
+
+            $scope.otherData.taxesMeta = [];
+            $scope.otherData.promotionTypes = [{
+                value: "v1",
+                description: "The first"
+            }, {
+                value: "v2",
+                description: "The Second"
+            }];
+            $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
+            $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
+            $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
+            $scope.otherData.roomTypes = baseSearchData.roomTypes;
+            $scope.otherData.fromSearch = false;
+            $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
+            $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;
+            $scope.otherData.businessDate = baseSearchData.businessDate;
+            $scope.otherData.additionalEmail = "";
+            $scope.otherData.isGuestPrimaryEmailChecked = false;
+            $scope.otherData.isGuestAdditionalEmailChecked = false;
+            $scope.otherData.reservationCreated = false;    
 
             $scope.guestCardData = {};
             $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
@@ -623,7 +628,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     return baseRate;
                 };
 
-                if (addon.postType.value == "NIGHT" && parseInt($scope.reservationData.numNights) > 1) {
+                if (addon.postType.value == "STAY" && parseInt($scope.reservationData.numNights) > 1) {
                     var cumulativeRate = 0
                     _.each(currentRoom.stayDates, function(stayDate, date) {
                         if (date !== $scope.reservationData.departureDate)
@@ -739,8 +744,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.rooms[roomIdx].roomTypeName = '';
             $scope.reservationData.rooms[roomIdx].rateId = '';
             $scope.reservationData.rooms[roomIdx].rateName = '';
-            $scope.reservationData.demographics.market = '';
-            $scope.reservationData.demographics.source = '';
+            $scope.reservationData.demographics = {
+                market: '',
+                source: '',
+                reservationType: '',
+                origin: ''
+            };
 
             // Redo the staydates array
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
@@ -1063,5 +1072,30 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.$on('REFRESHACCORDIAN', function() {
             $scope.$broadcast('GETREFRESHACCORDIAN');
         });
+
+
+        /**
+         *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+         *   to the states where it actually requires it.
+         *
+         *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' method here.
+         *
+         *   Once that state controller fetch 'baseData', it will find this controller
+         *   by climbing the $socpe.$parent ladder and will call this method.
+         */
+        $scope.callFromChildCtrl = function(baseData) {
+
+            // update these datas.
+            $scope.otherData.marketsEnabled = baseData.demographics.is_use_markets;
+            $scope.otherData.markets = baseData.demographics.markets;
+            $scope.otherData.sourcesEnabled = baseData.demographics.is_use_sources;
+            $scope.otherData.sources = baseData.demographics.sources;
+            $scope.otherData.originsEnabled = baseData.demographics.is_use_origins;
+            $scope.otherData.origins = baseData.demographics.origins;
+            $scope.otherData.reservationTypes = baseData.demographics.reservationTypes;
+
+            // call this. no sure how we can pass date from here
+            $scope.checkOccupancyLimit();
+        };
     }
 ]);

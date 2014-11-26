@@ -4,7 +4,7 @@
 			<fieldset class="holder left">
 				<div class="form-title">
 					<h3><span translate>CHARGE_CODE</span> {{'DETAILS' | translate}} </h3>
-					<em class="status"> {{'MANDATORY_FIELDS_MESSAGE1'| translate}} <strong>*</strong>{{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+					<em class="status"> {{'MANDATORY_FIELDS_MESSAGE1'| translate}} <strong>*</strong>{{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>		
 				</div>
 				
 				<ad-textbox value="prefetchData.code" label = "{{'CHARGE_CODE'| translate}}" placeholder = "{{'CHARGE_CODE_PLACEHOLDER'| translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
@@ -19,7 +19,7 @@
 				<div class="entry full-width" required="required" ng-show="prefetchData.selected_charge_code_type == '2'" >
 					<label class="ng-binding" ng-hide="label.length==0" for="" >
 						{{'PAYMENT_TYPE'| translate}}
-						<strong class="" > * </strong>
+						<strong class="" ng-show="isStandAlone"> * </strong>
 					</label>
 				<div class="select">
 					<select name="payment-type" ng-model = "selected_payment_type.id"   ng-change="changeSelectedPaymentType()" >
