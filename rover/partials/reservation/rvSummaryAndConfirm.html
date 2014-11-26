@@ -301,7 +301,7 @@
                     </div>
 
                     <div class="actions">
-                        <button type="button" class="button blank">Cancel Reservation</button>
+                        <button type="button" class="button blank" ng-click="cancelReservation()">Cancel Reservation</button>
                         <!-- Show when deposit paid succesfully. If deposit not required, then show when payment method added  -->
                         <button type="button" class="button green" ng-show="depositData.depositSuccess" ng-click="confirmReservation()">Continue</button>
                         <!-- Show when deposit payment fails  -->

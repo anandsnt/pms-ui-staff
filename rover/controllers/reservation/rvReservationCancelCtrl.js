@@ -106,8 +106,8 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.cancelReservation = function() {
 			var onCancelSuccess = function(data) {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
+					"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
+					"confirmationId": $scope.reservationData.confirmNum ||  $scope.reservationParentData.confirmNum,
 					"isrefresh": false
 				});
 				$scope.closeDialog();
@@ -120,7 +120,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
 				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
-				id: $scope.reservationData.reservation_card.reservation_id
+				id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId
 			}
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
 		}
