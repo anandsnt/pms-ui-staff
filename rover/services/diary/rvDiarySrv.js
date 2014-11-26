@@ -686,6 +686,32 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return q.promise;
                 };
 
+                /**
+                * primary method to get availability against a room
+                * usually used when reservation editing with time slot changing or room changing
+                */
+                this.roomAvailabilityCheckAgainstReservation = function(data){
+                    var params = {
+                        room_id:            data.room_id,
+                        reservation_id:     data.reservation_id,
+                        begin_date:         data.begin_date,
+                        begin_time:         data.begin_time,
+                        end_date:           data.end_date,
+                        end_time:           data.end_time,
+                        rate_type:          data.rate_type,
+                    }
+
+                    //Webservice calling section
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_availability/room';
+                    rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
+                        deferred.resolve(resultFromAPI);                       
+                    },function(error){
+                        deferred.reject(error);
+                    }); 
+                    return deferred.promise;                    
+                };
+
                 /*Process data points set during create reservation that redirects here*/
                 this.ArrivalFromCreateReservation = function() {
                     var data = $vault.get('searchReservationData');
