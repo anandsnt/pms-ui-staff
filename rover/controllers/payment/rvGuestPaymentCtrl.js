@@ -7,8 +7,6 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
     	$scope.successMessage ="";
     });
 
-    console.log($scope.guestCardData.contactInfo);
-
 	/*
 	 * To open new payment modal screen from guest card
 	 */

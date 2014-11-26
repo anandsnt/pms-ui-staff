@@ -44,7 +44,11 @@
         <div class="entry full-width" ng-hide="showCCPage">
             <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
             <input value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
-        </div>    
+        </div> 
+        <div class="entry full-width reference" ng-hide="showCC || !referenceTextAvailable">
+                <label for="reference">Reference</label>
+                <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
+        </div> 
         <!-- <div class="entry full-width" ng-hide="!showCCPage || !addmode">
             <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': newPaymentInfo.addToGuestCard}">
                 <span class="icon-form icon-checkbox" ng-class="{'checked': newPaymentInfo.addToGuestCard}"></span>
