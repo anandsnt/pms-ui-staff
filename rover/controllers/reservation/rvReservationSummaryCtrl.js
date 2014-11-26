@@ -183,14 +183,35 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.arrivalDate = temporaryReservationDataFromDiaryScreen.arrival_date;
 			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;
 			var arrivalTimeSplit = temporaryReservationDataFromDiaryScreen.arrival_time.split(":");
+		
 			$scope.reservationData.checkinTime.hh = arrivalTimeSplit[0];
 			$scope.reservationData.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
+			if($scope.reservationData.checkinTime.mm.length == 1) {
+				$scope.reservationData.checkinTime.mm = "0" + $scope.reservationData.checkinTime.mm;
+			}
 			$scope.reservationData.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
+			if(parseInt($scope.reservationData.checkinTime.hh) > 12) {
+				$scope.reservationData.checkinTime.hh = Math.abs(parseInt($scope.reservationData.checkinTime.hh) - 12) + "";		
+				if($scope.reservationData.checkinTime.hh.length == 1){
+					$scope.reservationData.checkinTime.hh = "0" + $scope.reservationData.checkinTime.hh;
+				}
+				$scope.reservationData.checkinTime.ampm = "PM";
+			}			
+
 			var departureTimeSplit = temporaryReservationDataFromDiaryScreen.departure_time.split(":");
 			$scope.reservationData.checkoutTime.hh = departureTimeSplit[0];
 			$scope.reservationData.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
+			if($scope.reservationData.checkoutTime.mm.length == 1) {
+				$scope.reservationData.checkoutTime.mm = "0" + $scope.reservationData.checkoutTime.mm;
+			}
 			$scope.reservationData.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
-
+			if(parseInt($scope.reservationData.checkoutTime.hh) > 12) {
+				$scope.reservationData.checkoutTime.hh = Math.abs(parseInt($scope.reservationData.checkinTime.hh) - 12) + "";
+				if($scope.reservationData.checkoutTime.hh.length == 1){
+					$scope.reservationData.checkoutTime.hh = "0" + $scope.reservationData.checkoutTime.hh;
+				}
+				$scope.reservationData.checkoutTime.ampm = "PM";
+			}
 			$scope.reservationData.totalStayCost = 0;
 			var rateIdSet = [];
 			_.each($scope.reservationData.rooms, function(room) {
