@@ -656,8 +656,14 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                 /*Primary Method to obtian Available Slots for a given range, room type, and optional 
                   GUID*/
-                this.Availability = function(start_date, end_date, room_type_id, rate_type, account_id, GUID) { 
-                    var _data_Store = this.data_Store,
+                this.Availability = function(params) {
+                    var start_date = params.start_date,
+                        end_date = params.end_date,
+                        room_type_id = params.room_type_id,
+                        rate_type = params.rate_type,
+                        account_id = params.account_id,
+                        GUID = params.GUID,
+                        _data_Store = this.data_Store,
                         q = $q.defer(),
                         guid = GUID || _.uniqueId('avl-'),
                         params = dateRange(start_date, end_date, room_type_id, rate_type);
