@@ -65,8 +65,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 
 	var retrieveExpiryDate = function(){
-		console.log("======================")
-		console.log($scope.cardData.tokenDetails.expiry.split("2"));
+
 		var expiryDate = $scope.cardData.tokenDetails.isSixPayment?
 					$scope.cardData.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardData.tokenDetails.expiry.substring(0, 2):
 					$scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear
