@@ -9,7 +9,7 @@
 		<div id="set-payment" class="payment-form">
 
 			<!-- Payment type -->
-			<div class="entry full-width" >
+			<div class="entry full-width" ng-hide="showCCPage" >
 				<label for="payment-type">Payment type</label>
 				<div class="select">
 					<select name="payment-type" ng-change="changePaymentType()" ng-model="dataToSave.paymentType" class="placeholder">
@@ -19,7 +19,7 @@
 				</div>
 			</div>
 			
-			<div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard">
+			<div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC'" ng-click="showCCList()">
 				<label>Credit Card (<span>Tap to change</span>)</label>
 				<label class="active-item item-payment" id="pay-with-amex">
 					<figure class="card-logo">
@@ -34,16 +34,16 @@
 				</label>
 			</div>
 			
-			<div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ></div>
+			<div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>
 			
 
 			<!-- Checkboxes -->
-			<div class="entry margin" ng-show="showInitialScreen">
+			<!-- <div class="entry margin" ng-show="showInitialScreen">
 				<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': savePayment.addToGuest}"> 
 					<span class="icon-form icon-checkbox" ng-class="{'checked': savePayment.addToGuest}"></span>
 					<input name="checkin" id="add-in-guest-card" ng-model="savePayment.addToGuest" type="checkbox" />
 					Add to Guest Card </label>
-			</div>
+			</div> -->
 			<div class="entry" ng-show="false">
 				<!-- Show only when payment type is defined as CC -->
 				<label class="checkbox inline" for="authorize-card" > <span class="icon-form icon-checkbox"></span>

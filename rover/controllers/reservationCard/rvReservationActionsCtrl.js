@@ -265,6 +265,16 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		var promptCancel = function(penalty, nights) {
+			var passData = {
+			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+			 		"details":{
+			 			"firstName":$scope.guestCardData.contactInfo.first_name,
+			 			"lastName":$scope.guestCardData.contactInfo.last_name
+			 		}
+			 };
+
+			$scope.passData = passData;
+
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
@@ -437,8 +447,14 @@ sntRover.controller('reservationActionsController', [
 			// $scope.depositBalanceData = data;
 			$scope.depositBalanceData = data;
 			
+			$scope.passData = { 
+			    "details": {
+			    	"firstName": $scope.data.guest_details.first_name,
+			    	"lastName": $scope.data.guest_details.last_name,
+			    }
+			};
 			ngDialog.open({
-					template: '/assets/partials/depositBalance/rvDepositBalanceModal.html',
+					template: '/assets/partials/depositBalance/rvModifiedDepositBalanceModal.html',
 					controller: 'RVDepositBalanceCtrl',
 					className: 'ngdialog-theme-default1',
 					closeByDocument: false,

@@ -741,9 +741,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     });
     
-    $scope.openPaymentDialogModal = function(passData, paymentData) {
+    $scope.openPaymentDialogModal = function(passData, paymentData,cardsList) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
+      $scope.cardsList = cardsList;
      // $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
       ngDialog.open({
         template: '/assets/partials/roverPayment/rvAddPayment.html',

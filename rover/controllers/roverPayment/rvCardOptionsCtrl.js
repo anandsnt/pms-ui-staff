@@ -12,12 +12,16 @@ sntRover.controller('RVCardOptionsCtrl',
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
 		$scope.cardData = {};
+		$scope.cardData.addToGuestCard = false;
 		$scope.cardData.cardNumber = "";
 		$scope.cardData.CCV = "";
 		$scope.cardData.expiryMonth ="";
 		$scope.cardData.expiryYear = "";
 		var time = new Date().getTime();
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.passData.details.firstName + "&card_holder_last_name=" + $scope.passData.details.lastName + "&service_action=createtoken&time="+time;
+		if($rootScope.paymentGateway == "sixpayments"){
+			$scope.shouldShowAddNewCard = false;
+		}
 		$scope.shouldShowIframe = false;	
 		
 		/*
@@ -29,6 +33,8 @@ sntRover.controller('RVCardOptionsCtrl',
 			if($scope.shouldShowIframe) { 
             	var iFrame = $document.find("sixIframe");
 			    iFrame.attr("src", $scope.iFrameUrl);
+			} else {
+				$scope.shouldShowAddNewCard = false;
 			};
 		
 		};
@@ -50,7 +56,6 @@ sntRover.controller('RVCardOptionsCtrl',
 			payementData.cardDetails = angular.copy($scope.cardData);
 			payementData.tokenDetails = tokenDetails;
 			console.log(payementData);
-			console.log("shouldShowIframe=============="+$scope.shouldShowIframe);
 			$scope.$emit("TOKEN_CREATED", payementData);
 			$scope.shouldShowIframe = false;
 			$scope.$digest();

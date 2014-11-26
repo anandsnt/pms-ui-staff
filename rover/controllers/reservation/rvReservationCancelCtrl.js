@@ -2,13 +2,11 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter) {
 
 		BaseCtrl.call(this, $scope);
-
-		//Set merchant ID for MLI integration
-		var MLISessionId = "";
-
-		// try {
-		HostedForm.setMerchant($rootScope.MLImerchantId);
-		// } catch (err) {};
+		$scope.errorMessage = '';
+		$scope.showCancelCardSelection =true;
+		$scope.showAddtoGuestCard = true;
+		$scope.addmode = false;
+		$scope.showCC = false;
 
 		$scope.cancellationData = {
 			selectedCard: -1,
@@ -16,17 +14,10 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			viewCardsList: false,
 			existingCard: false,
 			cardId: "",
-			newCard: {
-				cardNumber: "",
-				addToGuest: false,
-				nameOnCard: "",
-				expiryDate: {
-					mm: "",
-					yy: ""
-				},
-				ccv: ""
-			}
-		}
+			cardNumber:"",
+			expiry_date:"",
+			card_type:""
+		};
 
 		$scope.setScroller('cardsList');
 
@@ -34,55 +25,61 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
 			}, 300)
-		}
+		};
+
+		var retrieveCardtype = function(){
+			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+			getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
+			getCreditCardType($scope.newPaymentInfo.tokenDetails.cardBrand).toLowerCase()
+			;
+			return cardType;
+		};
+
+		var retrieveCardNumber = function(){
+			var cardNumber = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+			$scope.newPaymentInfo.tokenDetails.token_no.substr($scope.newPaymentInfo.tokenDetails.token_no.length - 4):
+			$scope.newPaymentInfo.cardDetails.cardNumber.slice(-4);
+			return cardNumber;
+		};
+
+		var retrieveExpiryDate = function(){
+			var expiryDate = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+						$scope.newPaymentInfo.tokenDetails.expiry_month+"/"+$scope.newPaymentInfo.tokenDetails.expiry_year:
+						$scope.newPaymentInfo.cardDetails.expiryMonth+"/"+$scope.newPaymentInfo.cardDetails.expiryYear
+						;
+			return expiryDate;
+		};
+
+		var retrieveName = function(){
+			var cardName = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+						'':$scope.newPaymentInfo.cardDetails.userName;
+			return cardName;
+		};
+
 
 		var savePayment = function() {
+
+			var cardExpiry  = 
+				$scope.newPaymentInfo.tokenDetails.isSixPayment ?'' :
+				($scope.newPaymentInfo.cardDetails.expiryMonth && $scope.newPaymentInfo.cardDetails.expiryYear ? "20" + $scope.newPaymentInfo.cardDetails.expiryYear + "-" + $scope.newPaymentInfo.cardDetails.expiryMonth + "-01" : "");
+			var cardToken = !$scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.session:$scope.newPaymentInfo.tokenDetails.token_no;	
 			var onSaveSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.cancellationData.selectedCard = data.id;
-				$scope.cancelReservation();
-			}
-			var onSaveFailure = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = data;
-			}
+				$scope.cancellationData.cardNumber = retrieveCardNumber();
+				$scope.cancellationData.expiry_date = retrieveExpiryDate();
+				$scope.cancellationData.card_type = retrieveCardtype();
+				$scope.showCC = false;
+			};
 			var paymentData = {
-				add_to_guest_card: $scope.cancellationData.newCard.addToGuest,
-				card_expiry: $scope.cancellationData.newCard.expiryDate.mm && $scope.cancellationData.newCard.expiryDate.yy ? "20" + $scope.cancellationData.newCard.expiryDate.yy + "-" + $scope.cancellationData.newCard.expiryDate.mm + "-01" : "",
-				credit_card: "",
-				name_on_card: $scope.cancellationData.newCard.nameOnCard,
+				add_to_guest_card: $scope.newPaymentInfo.cardDetails.addToGuestCard,
+				name_on_card: retrieveName(),
 				payment_type: "CC",
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
-				session_id: MLISessionId
+				token: cardToken,
+				card_expiry: cardExpiry
 			}
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess, onSaveFailure);
-		}
-
-		var fetchMLISessionId = function() {
-			var sessionDetails = {};
-			sessionDetails.cardNumber = $scope.cancellationData.newCard.cardNumber;
-			sessionDetails.cardSecurityCode = $scope.cancellationData.newCard.ccv;
-			sessionDetails.cardExpiryMonth = $scope.cancellationData.newCard.expiryDate.mm;
-			sessionDetails.cardExpiryYear = $scope.cancellationData.newCard.expiryDate.yy;
-
-			var callback = function(response) {
-				$scope.$emit("hideLoader");
-				if (response.status === "ok") {
-					MLISessionId = response.session;
-					savePayment(); // call save payment details WS		 		
-				} else {
-					$scope.errorMessage = ["There is a problem with your credit card"];
-				}
-				$scope.$apply();
-			};
-
-			try {
-				HostedForm.updateSession(sessionDetails, callback);
-				$scope.$emit("showLoader");
-			} catch (err) {
-				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
-			};
-
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 		};
 
 		var onFetchPaymentsSuccess = function(data) {
@@ -90,18 +87,27 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			$scope.cardsInPaymentMethods = _.where(data.existing_payments, {
 				is_credit_card: true
 			});
+			$scope.cardsInPaymentMethods.forEach(function(card) {
+					   card.mli_token = card.ending_with;
+					   delete card.ending_with;    
+					   card.card_expiry = card.expiry_date;
+					   delete card.expiry_date; 
+			});
 			if ($scope.cardsInPaymentMethods.length > 0) {
 				$scope.ngDialogData.cards = true;
-				$scope.cancellationData.viewCardsList = true;
+				//$scope.cancellationData.viewCardsList = true;
+				$scope.cardsList = $scope.cardsInPaymentMethods;
 				refreshCardsList();
 			}
 			$scope.ngDialogData.state = 'PENALTY';
-		}
+		};
 
 		$scope.applyPenalty = function() {
 			var reservationId = $stateParams.id;
+			$scope.ngDialogData.applyPenalty = true;
+			$scope.showCC = true;
 			$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
-		}
+		};
 
 		$scope.cancelReservation = function() {
 			var onCancelSuccess = function(data) {
@@ -123,22 +129,37 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				id: $scope.reservationData.reservation_card.reservation_id
 			}
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
-		}
+		};
 
-		$scope.chargePenalty = function() {
-			//Clear the error messages if they exist from the previous attempt to charge penalty with a new card
-			$scope.errorMessage = [];
-			if ($scope.cancellationData.viewCardsList) {
-				$scope.cancelReservation();
-			}
-			//If the user is on add card screen && if there is a card Number entered then make call to MLI to check validity of the card			 
-			else if (!$scope.cancellationData.viewCardsList && $scope.cancellationData.newCard.cardNumber.toString().length > 0) {
-				fetchMLISessionId();
-			} else {
-				// Client side validation added to eliminate a false session being retrieved in case of empty card number
-				$scope.errorMessage = [$filter('translate')('CARD_ERROR')];
-			}
-		}
+	$scope.onCardClick = function(){
+		$scope.showCC = true;
+		$scope.addmode = false;
+	};
+	var setCreditCardFromList = function(index){
+		$scope.cancellationData.selectedCard = $scope.cardsList[index].value;
+		$scope.cancellationData.cardNumber = $scope.cardsList[index].mli_token;
+		$scope.cancellationData.expiry_date = $scope.cardsList[index].card_expiry;
+		$scope.cancellationData.card_type = $scope.cardsList[index].card_code;
+		$scope.showCC = false;
+	};
+
+	$scope.$on("TOKEN_CREATED", function(e,data){
+		console.log(data);
+		$scope.newPaymentInfo = data;
+		savePayment();
+	});
+
+	$scope.$on("MLI_ERROR", function(e,data){
+		$scope.errorMessage = data;
+	});
+
+	$scope.$on('cancelCardSelection',function(e,data){
+		$scope.ngDialogData.state = 'CONFIRM';
+	});
+	$scope.$on('cardSelected',function(e,data){
+		setCreditCardFromList(data.index);
+	});
+
 	}
 
 ]);

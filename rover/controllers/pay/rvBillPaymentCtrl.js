@@ -20,10 +20,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.passData.details ={};
 		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
 		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
-		$scope.shouldShowAddNewCard = true;
-		$scope.shouldShowExistingCards = true;
 		$scope.setScroller('cardsList');
-		$scope.addmode = false;
 		$scope.showAddtoGuestCard = true;
 		$scope.showCancelCardSelection = true;
 	};
@@ -78,7 +75,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		if(data.length == 0){
 			$scope.guestPaymentList = [];
 		} else {
-			$scope.guestPaymentList = data;
+			var cardsList = [];
+			angular.forEach(data, function(value, key) {
+				if(value.credit_card_type_id !== null){
+					cardsList.push(value);
+				};
+			});
+			$scope.guestPaymentList = cardsList;
 			angular.forEach($scope.guestPaymentList, function(value, key) {
 				value.isSelected = false;
 				if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
@@ -138,8 +141,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			}
 		}
 
-		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount;
-		$scope.renderData.defaultPaymentAmount = defaultAmount;
+		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.length >0 ?
+			$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : "0.00";
+			$scope.renderData.defaultPaymentAmount = defaultAmount;
 
 	};
 	$scope.init();
@@ -234,10 +238,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 		if($scope.newPaymentInfo.addToGuestCard){
 			var cardCode = retrieveCardtype();
-			var cardNumber = cardNumber;
+			var cardNumber = retrieveCardNumber();
 			var dataToGuestList = {
 				"card_code": cardCode,
-				"mli_token": retrieveCardNumber,
+				"mli_token": cardNumber,
 				"card_expiry": $scope.newPaymentInfo.cardDetails.expiryMonth+"/"+$scope.newPaymentInfo.cardDetails.expiryYear,
 				"card_name": $scope.newPaymentInfo.cardDetails.userName,
 				"id": data.id,
