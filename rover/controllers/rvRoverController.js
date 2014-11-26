@@ -24,7 +24,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
 
-
+    $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
 
     //Used to add precison in amounts
@@ -117,9 +117,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
 
-    $scope.isDepositBalanceScreenOpened = false;
+    $scope.roverFlags.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function() {
-      $scope.isDepositBalanceScreenOpened = true;
+      $scope.roverFlags.isDepositBalanceScreenOpened = true;
     });
     $scope.searchBackButtonCaption = '';
 
