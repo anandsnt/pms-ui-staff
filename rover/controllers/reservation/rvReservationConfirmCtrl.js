@@ -358,11 +358,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			postData.reservationId = $scope.reservationData.reservationId;
 			$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 		}
-
-
 		$scope.init();
-
-
-
 	}
 ]);
