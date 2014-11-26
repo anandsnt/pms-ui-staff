@@ -11341,13 +11341,7 @@
             }
 
             .diary-grid {
-                li {
-                    line-height: 60px;
-                    height: 60px;
-
-                    span { height: 60px; }
-
-                    .occupancy-block {
+            .occupancy-block {
                         span {
                             line-height: 60px;
 
@@ -11377,6 +11371,7 @@
                             }
 
                             &.maintenance { 
+                                height: 60px;
                                 &:after {
                                     #calc-position > .left(50, 15);
                                     #calc-position > .top-minus(50, 12);
@@ -11384,7 +11379,14 @@
                                 }
                             }                        
                         }
-                    }                    
+                    } 
+                li {
+                    line-height: 60px;
+                    height: 60px;
+
+                    span { height: 60px; }
+
+                                       
                 }
             }
         }
@@ -11421,7 +11423,7 @@
             .diary-grid {
                 > .wrapper {
                     > .grid {
-
+                         span { height: 24px; }
                            > .occupancy-block {
                                 span {
                                     font-size: 12px;
@@ -11482,7 +11484,7 @@
                             height: 24px;
                             margin: 0;
 
-                            span { height: 24px; }
+                           
 
                         }
                     }
