@@ -264,5 +264,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.showInitialScreen       = true;
 		setCreditCardFromList(data.index);
 	});
+
+	$scope.$on('cancelCardSelection',function(e,data){
+		$scope.showCCPage = false;
+	});
+
 	
 }]);
