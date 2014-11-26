@@ -13,6 +13,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		BaseCtrl.call(this, $scope);
 		var totalRoomsAvailable = 0;
 
+		$scope.reservationStatus = {
+			confirmed: false // flag to show the action button (Go to staycard etc.) after confirming reservation
+		};
+
 		$scope.init = function() {
 			$scope.heading = 'Reservations';
 			$scope.setHeadingTitle($scope.heading);
@@ -72,10 +76,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 * Call API to send the confirmation email
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
+			//TODO: for now skip sending messages and go to the next screen
+			$scope.reservationStatus.confirmed = true;
+			return false;
 			if ($scope.reservationData.guest.sendConfirmMailTo == "" || !isEmailValid) {
 				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
 				return false;
-
 			}
 			var postData = {};
 			postData.reservationId = $scope.reservationData.reservationId;

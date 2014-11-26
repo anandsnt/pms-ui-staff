@@ -441,12 +441,24 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			 		"reservationId": $scope.reservationBillData.reservation_id,
 			 		"fromView": $scope.fromViewToPaymentPopup,
 			 		"fromBill" : billNumber,
-			 		"is_swiped": false 
+			 		"is_swiped": false ,
+			 		"details":{
+			 			"firstName":$scope.guestCardData.contactInfo.first_name,
+			 			"lastName":$scope.guestCardData.contactInfo.last_name
+			 		}
 			 	};
 			 	passData.showDoNotAuthorize = ($scope.clickedButton == "checkinButton" && $rootScope.isStandAlone);
 			 	
 			 	var paymentData = $scope.reservationBillData;
-			 	$scope.showAddNewPaymentModal(passData, paymentData);
+			 	
+				$scope.shouldShowAddNewCard = true;
+				$scope.shouldShowExistingCards = true;
+				$scope.setScroller('cardsList');
+				$scope.addmode = false;
+				$scope.showAddtoGuestCard = true;
+				$scope.showCancelCardSelection = true;
+				
+			 	$scope.openPaymentDialogModal(passData, paymentData);
   	 	} else {
   	 		var ksn = data.RVCardReadTrack2KSN;
       		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
