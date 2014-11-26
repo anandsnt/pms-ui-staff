@@ -101,11 +101,12 @@
                 </div>
                 <div class="entry results">
                     <ul class="search-list" ng-hide="gridProps.filter.rate_type_details.length === 0">
-                        <li ng-repeat="name_card in gridProps.filter.rate_type_details track by $index">
+                        <li ng-repeat="name_card in gridProps.filter.rate_type_details track by $index" ng-click="setAccountID($index)">
+
                             <div class="icon company-card" ng-if="name_card.account_type === 'COMPANY' && name_card.company_logo === ''"></div>
                             <div class="icon travel-agent" ng-if="name_card.account_type === 'TRAVELAGENT' && name_card.company_logo == ''"></div>
                             <img ng-src="{{name_card.company_logo}}" alt="" ng-if="name_card.company_logo !== ''" />
-                            <h4 ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
+                            <h4 ng-bind-html="name_card.account_name|highlight:companySearchText:false"></h4>
                         </li>
                     </ul>
                 </div>

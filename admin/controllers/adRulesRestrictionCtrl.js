@@ -49,6 +49,11 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.currencySym = data.currency.symbol;
                 $scope.$emit('hideLoader');
             });
+
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchChargeCodes, {}, function(data) {
+                $scope.chargeCodes = data;
+                $scope.$emit('hideLoader');
+            });
         };
 
         $scope.fetchRestrictions();

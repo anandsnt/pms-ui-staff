@@ -354,6 +354,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve: {
 				settingsAndParamsData: function(settingsAndParamsSrv) {
 					return settingsAndParamsSrv.fetchsettingsAndParams();
+				},
+				chargeCodes: function(settingsAndParamsSrv){
+					return settingsAndParamsSrv.fetchChargeCodes();
 				}
 			}
 		});
@@ -373,5 +376,11 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/deviceMapping/adDeviceMappingList.html',
 			controller: 'ADDeviceMappingsCtrl',
 			url : '/deviceMappingsList'
+		});
+
+		$stateProvider.state('admin.stationary', {
+			templateUrl: '/assets/partials/stationary/adStationary.html',
+			controller: 'ADStationaryCtrl',
+			url : '/stationary'
 		});
 });

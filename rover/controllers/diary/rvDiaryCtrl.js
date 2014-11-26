@@ -14,6 +14,7 @@ sntRover
 		'rvDiaryUtil',
 		'payload',
 		'$vault',
+		'$stateParams',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -27,12 +28,11 @@ sntRover
 			 meta, 
 			 util, 
 			 payload,
-			 $vault) {
+			 $vault, $stateParams) {
 
 	$scope.$emit('hideLoader');
 
 	BaseCtrl.call(this, $scope);
-
 	/*--------------------------------------------------*/
 	/*BEGIN CONFIGURATION 
 	/*--------------------------------------------------*/
@@ -284,16 +284,16 @@ sntRover
 		*/
 
 	    $scope.onSelect = function(row_data, row_item_data, selected, command_message) {
+
 	    	var copy,
 	    		selection,
 	    		props = $scope.gridProps,
-	    		edit  = props.edit;
-
+	    		edit  = props.edit;    	
 	    	if(!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch(command_message) {
 
 		    		case 'edit': 
-			    		if(!edit.active) {
+			    		if(!edit.active) {			    			
 				    		$scope.initActiveEditMode({ 
 				    			row_data: row_data, 
 				    			row_item_data: row_item_data 
@@ -417,16 +417,15 @@ sntRover
         	})
             .then(function(data) {
             	var applicable_accounts = _.filter(data.accounts, function(account) {
-            		var contract = account.current_contract,
-            			hourly_rates;
+            		var contract = account.current_contract;
 
             		if(_.isObject(contract) && _.has(contract, 'id')) {
-            			hourly_rates.push(contact);
+            			hourly_rates.push(contract);
 
             			return _.findWhere(hourly_rates, { id: contract.id });
             		}
             	});
-
+            	//$scope.gridProps.filter.rate_type_details = data.accounts;
 				$scope.gridProps.filter.rate_type_details = applicable_accounts;//companyCardResults = data.accounts;
             }, responseError);  
         }, 500);
@@ -438,7 +437,6 @@ sntRover
 
 		$scope.renderGrid = function(params) {
 			var args = params || {};
-
 	 		React.renderComponent(
 				DiaryContent(_.extend(args, $scope.gridProps)),
 				document.getElementById('component-wrapper')
@@ -446,6 +444,13 @@ sntRover
 
 			$scope.debug();
 		};
+
+		$scope.setAccountID = function(index) {
+			if(index < $scope.gridProps.filter.rate_type_details.length)
+				$scope.gridProps.filter.account_id = $scope.gridProps.filter.rate_type_details[index].id;
+			else
+				console.warn('index passed to find is greater than array length of companyCardResults')
+		}
 
 	    $scope.isSelected = function(room, reservation) {
 	    	return _.isBoolean(reservation.selected) && reservation.selected;
@@ -685,13 +690,15 @@ sntRover
 						   start.getHours()  + time_span.hours,
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
-			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id);
-
+			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
+			rate_type = $scope.gridProps.filter.rate_type,
+			accound_id = $scope.gridProps.filter.account_id;
 		return [
 			start,
 			end,
 			rt_filter,
-			filter.rate_type
+			rate_type,
+			accound_id
 		];
 	};
 
@@ -713,6 +720,14 @@ sntRover
 				controller: 'RVDiaryConfirmationCtrl',
 				scope: $scope
 			});
+		}
+	});
+
+	$scope.$watch('gridProps.filter.account_id', function(newValue, oldValue){
+		if(newValue !== oldValue) {
+			if(!$scope.gridProps.edit.active) {
+				$scope.Availability();
+			}
 		}
 	});
 
@@ -834,4 +849,48 @@ sntRover
 
 		return [range_validated, conflicting_reservation];
 	}
+
+	//init function
+	(function(){		
+
+		// we are checking for whether we need to find the reservation against ID passed from someother state
+		// and change the diary to edit mode
+		if($stateParams && 'reservation_id' in $stateParams && 
+			$stateParams.reservation_id !== '') {
+			var reservation_id 		= $stateParams.reservation_id,		
+				rooms 				= payload['room'],
+				row_data 			= null, 
+				row_item_data 		= null, 
+				occpancies 			= null, 
+				reservation_details = null;
+			
+			_.each(rooms, function(room_detail) {
+				occpancies 		= room_detail['occupancy'];	
+
+				// we can use _.findWhere(occpancies, {'reservation_id': reservation_id});
+				// but type checking in underscore creating problem
+				_.each(occpancies,  function(occupancy) {
+					if(_.has(occupancy, 'reservation_id')) {
+						if(occupancy['reservation_id'] == reservation_id){
+							row_item_data = occupancy;
+						}
+					}
+				})				
+				
+				if(row_item_data) {					
+					row_data = room_detail;
+				}
+			});
+
+			if(row_data){
+				setTimeout(function(){$scope.$apply(function(){
+					$scope.onSelect(row_data, row_item_data, true, 'edit');					
+				}
+				)}, 1500);
+				
+			}
+			
+		}		
+	})();
+	
 }]);

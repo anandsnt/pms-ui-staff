@@ -189,7 +189,7 @@
 			</div>
 			
 			<div class="entry hotel-pms-type" ng-show="isAdminSnt">
-				<label for="hotel-pms-type"> PMS Type </label>
+				<label for="hotel-pms-type"> PMS Type</label>
 				<div class="select">
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 						<option value=""> PMS Type </option>
@@ -218,6 +218,13 @@
 				<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 				<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
 			</div>
+			<div class="entry date has-datepicker" ng-if="isAdminSnt">
+				<label for="auto-logout"> PMS Start Date  </label>
+				<input type="text" ng-model="data.pms_start_date" placeholder="Enter PMS start Date" name="pms-start-date" id="pms-start-date" readonly ng-click="setPmsStartDate()">
+				<button ng-click="setPmsStartDate()" class="ui-datepicker-trigger" type="button">
+                         ...
+                </button>
+			</div>			
 			<div class="entry full-width" ng-show="isAdminSnt">
 				<label for="hotel-pms-type"> Language </label>
 				<div class="select">
@@ -398,6 +405,31 @@
 				</label>
 				<input type="text" ng-model="data.six_validation_code" value="{{data.six_validation_code}}" placeholder="Enter six payment validation code">
 			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-ipage-url">
+					iPage URL
+				</label>
+				<input type="text" ng-model="data.six_ipage_url" value="{{data.six_ipage_url}}" readonly="readonly">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-server-location-id">
+					Six Payments Location Id
+				</label>
+				<input type="text" ng-model="data.six_server_location_id" value="{{data.six_server_location_id}}">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-server-ipaddress">
+					3CIntegra Server IP
+				</label>
+				<input type="text" ng-model="data.six_server_ipaddress" value="{{data.six_server_ipaddress}}">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-server-port">
+					3CIntegra Server Port
+				</label>
+				<input type="text" ng-model="data.six_server_port" value="{{data.six_server_port}}">
+			</div>
+			
 		</fieldset>
 		<fieldset class="holder right" ng-show="isAdminSnt && data.payment_gateway == 'MLI'" >
 			<div class="form-title">

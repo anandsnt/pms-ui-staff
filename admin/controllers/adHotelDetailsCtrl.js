@@ -1,4 +1,11 @@
-admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams','$state', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state){
+admin.controller('ADHotelDetailsCtrl', [
+							'$rootScope', 
+							'$scope', 
+							'ADHotelDetailsSrv',
+							'$stateParams',
+							'$state', 
+							'ngDialog',
+							function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state, ngDialog){
 
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
@@ -11,6 +18,15 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.hotel_template_logo_file = $scope.fileName;
 	$scope.certificate = "";
 	$scope.isHotelChainEditable =  true;
+	//pms start date setting calendar options
+	$scope.pmsStartDateOptions = {
+	    changeYear: true,
+	    changeMonth: true,	   
+	    yearRange: "0:+10",
+	    onSelect: function()	 {
+	    	ngDialog.close();
+	    }
+  	};	
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
@@ -95,6 +111,18 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 				$scope.hotel_logo_file = $scope.fileName;
 			}
 		);
+
+	/**
+	* function to open calndar popup for choosing pms start date
+	*/
+	$scope.setPmsStartDate = function(){
+		ngDialog.open({
+            template: '/assets/partials/hotel/adPmsStartDateCalendarPopup.html',
+            className: 'ngdialog ngdialog-theme-default calendar-single1',
+            closeByDocument: true,
+            scope: $scope
+        });
+	};
 
 	/**
     *   A post method for Test MliConnectivity for a hotel

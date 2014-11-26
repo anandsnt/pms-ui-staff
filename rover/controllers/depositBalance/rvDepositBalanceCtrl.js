@@ -256,7 +256,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 
 	$scope.closeDepositModal = function(){
-		$scope.isDepositBalanceScreenOpened = false;
+		$scope.roverFlags.isDepositBalanceScreenOpened = false;
 		$scope.closeDialog();
 	};
 	$scope.successMakePayment = function(){
