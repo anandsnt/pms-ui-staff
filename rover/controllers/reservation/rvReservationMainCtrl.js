@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1257,6 +1257,88 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             return data;
         };
 
+        var cancellationCharge = 0;
+        var nights = false;
+        var depositAmount = 0;
+        var promptCancel = function(penalty, nights) {
+            ngDialog.open({
+                template: '/assets/partials/reservationCard/rvCancelReservation.html',
+                controller: 'RVCancelReservation',
+                scope: $scope,
+                data: JSON.stringify({
+                    state: 'CONFIRM',
+                    cards: false,
+                    penalty: penalty,
+                    penaltyText: (function() {
+                        if (nights) {
+                            return penalty + (penalty > 1 ? " nights" : " night");
+                        } else {
+                            return $rootScope.currencySymbol + $filter('number')(penalty, 2);
+                        }
+                    })()
+                })
+            });
+        };
+
+        $scope.cancelReservation = function() {
+            var checkCancellationPolicy = function() {
+                var onCancellationDetailsFetchSuccess = function(data) {
+                    $scope.$emit('hideLoader');
+
+                    // Sample Response from api/reservations/:id/policies inside the results hash
+                    // calculated_penalty_amount: 40
+                    // cancellation_policy_id: 36
+                    // penalty_type: "percent"
+                    // penalty_value: 20
+
+                    depositAmount = data.results.deposit_amount;
+                    var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id != 'undefined');
+                    if (isOutOfCancellationPeriod) {
+                        if (data.results.penalty_type == 'day') {
+                            // To get the duration of stay
+                            var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
+                            // Make sure that the cancellation value is -lte thatn the total duration
+                            cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
+                            nights = true;
+                        } else {
+                            cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
+                        }
+                        if (parseInt(depositAmount) > 0) {
+                            showDepositPopup(depositAmount, isOutOfCancellationPeriod, cancellationCharge);
+                        } else {
+                            promptCancel(cancellationCharge, nights);
+                        };
+                    } else {
+                        if (parseInt(depositAmount) > 0) {
+                            showDepositPopup(depositAmount, isOutOfCancellationPeriod, '');
+                        } else {
+                            promptCancel('', nights);
+                        };
+                    }
+                    //promptCancel(cancellationCharge, nights);
+
+                };
+                var onCancellationDetailsFetchFailure = function(error) {
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = error;
+                };
+
+                var params = {
+                     id: $scope.reservationData.reservationId
+                };
+
+                $scope.invokeApi(RVReservationCardSrv.fetchCancellationPolicies, params, onCancellationDetailsFetchSuccess, onCancellationDetailsFetchFailure);
+            };
+
+            /**
+             * If the reservation is within cancellation period, no action will take place.
+             * If the reservation is outside of the cancellation period, a screen will display to show the cancellation rule.
+             * [Cancellation period is the date and time set up in the cancellation rule]
+             */
+
+            checkCancellationPolicy();
+        }
+
         var nextState = '';
 
         $scope.saveReservation = function(navigateTo) {
@@ -1321,10 +1403,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
                     $scope.$emit('hideLoader');
                     console.log("*************************", $scope.reservationData.reservationId);
-                    if(nextState){
-                        $state.go(nextState);    
+                    if (nextState) {
+                        $state.go(nextState);
                     }
-                    
+
                 }
                 var saveFailure = function(data) {
                     $scope.errorMessage = data;
@@ -1336,8 +1418,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.depositAmount = data.deposit_amount;
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
-                    if(nextState){
-                        $state.go(nextState);    
+                    if (nextState) {
+                        $state.go(nextState);
                     }
                 };
 
