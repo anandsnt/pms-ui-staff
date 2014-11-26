@@ -449,31 +449,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			 	};
 			 	passData.showDoNotAuthorize = ($scope.clickedButton == "checkinButton" && $rootScope.isStandAlone);
 			 	
-			 	var paymentData = $scope.reservationBillData;
-			 	
-				$scope.shouldShowAddNewCard = true;
-				$scope.shouldShowExistingCards = true;
+			 	var paymentData = $scope.reservationBillData;	 	
+				
 				$scope.setScroller('cardsList');
 				$scope.addmode = false;
-				$scope.showAddtoGuestCard = true;
-				$scope.showCancelCardSelection = true;
-				
+		 		$scope.openPaymentDialogModal(passData, paymentData);
 			 	
-			 	var fetchGuestPaymentDataSuccess = function(data){
-			 		$scope.$emit('hideLoader');
-			 		var cardsList = _.where(data.existing_payments, {
-										is_credit_card: true
-									});
-					data.existing_payments.forEach(function(card) {
-					   card.mli_token = card.ending_with;
-					   delete card.ending_with;    
-					   card.card_expiry = card.expiry_date;
-					   delete card.expiry_date; 
-					});
-			 		$scope.openPaymentDialogModal(passData, paymentData,cardsList);
-			 	};
-			 	var reservationId = $scope.reservationBillData.reservation_id;
-			 	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId,fetchGuestPaymentDataSuccess);
   	 	} else {
   	 		var ksn = data.RVCardReadTrack2KSN;
       		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){

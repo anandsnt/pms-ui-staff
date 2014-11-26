@@ -23,7 +23,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.cardsList = [];
 	$scope.successPaymentList = function(data){
 		$scope.$emit("hideLoader");
-		$scope.cardsList = data.existing_payments;
+		//for accompany guest dont show existing cards for add payment type in bill screen CICO-9719
+		$scope.hasAccompanyguest = data.has_accompanying_guests && (typeof $scope.passData.fromBill !== "undefined");
+		$scope.cardsList = $scope.hasAccompanyguest ? []:data.existing_payments;
 		console.log($scope.cardsList);
 		angular.forEach($scope.cardsList, function(value, key) {
 			
