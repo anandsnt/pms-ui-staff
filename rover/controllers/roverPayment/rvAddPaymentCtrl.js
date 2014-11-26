@@ -196,7 +196,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"id": data.id,
 			"isSelected": true,
 			"is_primary":false,
-			"payment_type":data.payment_name
+			"payment_type":data.payment_name,
+			"card_code": retrieveCardtype()
 		};
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 	};
@@ -249,6 +250,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			};	
 			if($scope.isFromGuestCard){
 				data.add_to_guest_card = true;
+				data.card_code =  retrieveCardtype();
 				data.user_id = $scope.passData.guest_id;
 				data.card_expiry = 	$scope.cardData.tokenDetails.isSixPayment ?'' :
 				($scope.cardData.cardDetails.expiryMonth && $scope.cardData.cardDetails.expiryYear ? "20" + $scope.cardData.cardDetails.expiryYear + "-" + $scope.cardData.cardDetails.expiryMonth + "-01" : "");
