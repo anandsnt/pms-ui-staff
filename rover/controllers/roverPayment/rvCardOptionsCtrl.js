@@ -18,6 +18,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.cardData.expiryMonth ="";
 		$scope.cardData.expiryYear = "";
 		var time = new Date().getTime();
+		$scope.shouldShowAddNewCard = true;
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.passData.details.firstName + "&card_holder_last_name=" + $scope.passData.details.lastName + "&service_action=createtoken&time="+time;
 		if($rootScope.paymentGateway == "sixpayments"){
 			$scope.shouldShowAddNewCard = false;
@@ -33,6 +34,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			if($scope.shouldShowIframe) { 
             	var iFrame = $document.find("sixIframe");
 			    iFrame.attr("src", $scope.iFrameUrl);
+			    $scope.shouldShowAddNewCard = true;
 			} else {
 				$scope.shouldShowAddNewCard = false;
 			};
