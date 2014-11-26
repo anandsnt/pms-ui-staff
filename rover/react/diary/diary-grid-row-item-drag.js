@@ -14,69 +14,52 @@ var GridRowItemDrag = React.createClass({
 		return _.extend({}, row_item_data);
 	},
 	__dbMouseMove: undefined,
-	componentDidMount: function(){
-		
-		$(this.getDOMNode()).draggable({ 
-			helper: 	'clone',
-		    revert: 	'invalid',
-		    appendTo: 	'ul.grid',		    		  
-		    start: 		this.__onDragStart,
-		    drag: 		this.__onMouseMove,
-		    stop: 		this.__onDragStop,
-		});
-	},
-
 	componentWillMount: function() {
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
 	},
-	__onDragStart: function(e, ui) {
-		var props = this.props;
-		props.iscroll.grid.disable();
-		props.iscroll.rooms.disable();
-		props.iscroll.timeline.disable();
-		var page_offset, el, props = this.props, self = this;
+	__onMouseDown: function(e) {
+		var page_offset, el, props = this.props;
 
-		// e.stopPropagation();
-		// e.preventDefault();
+		e.stopPropagation();
+		e.preventDefault();
 
 		if(e.button === 0 || e.button === 2) {
-			//document.addEventListener('mouseup', this.__onMouseUp);
-			//document.addEventListener('mousemove', this.__dbMouseMove);
+			document.addEventListener('mouseup', this.__onMouseUp);
+			document.addEventListener('mousemove', this.__dbMouseMove);
 
-			page_offset = (ui.helper[0]).getBoundingClientRect();
+			page_offset = this.getDOMNode().getBoundingClientRect();
 			
 			el = props.viewport.element();
 
 			this.setState({
-				//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
-				//top: page_offset.top - el.offset().top - el[0].scrollTop,
+				left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+				top: page_offset.top - el.offset().top - el[0].scrollTop,
 				mouse_down: true,
 				selected: true,
 				element: el.parent(),
 				origin_x: e.pageX,
 				origin_y: e.pageY,
-				//offset_x: el.offset().left + props.iscroll.grid.x,
-				//offset_y: el.offset().top + props.iscroll.grid.y,
-				//element_x: page_offset.left,
-				//element_y: page_offset.top
+				offset_x: el.offset().left + props.iscroll.grid.x,
+				offset_y: el.offset().top + props.iscroll.grid.y,
+				element_x: page_offset.left,
+				element_y: page_offset.top
 			},
-			function() {				
-				
+			function() {
+				props.iscroll.grid.disable();
+				props.iscroll.timeline.disable();
 			});
 		}
 	},
-	__onMouseMove: function(e, ui) {
-		//e.stopPropagation();
-		//e.preventDefault();
+	__onMouseMove: function(e) {
 		var state 		= this.state,
 			props 		= this.props,
 			display 	= props.display,
-			//delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
-			//delta_y 	= e.pageY - state.origin_y - state.offset_y, 
+			delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
+			delta_y 	= e.pageY - state.origin_y - state.offset_y, 
 			adj_height 	= display.row_height + display.row_height_margin,
 			model;
 
-		if(!state.dragging ) { //&& (Math.abs(delta_x) + Math.abs(delta_y) > 10 )
+		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
 
 			this.setState({
@@ -88,35 +71,33 @@ var GridRowItemDrag = React.createClass({
 		} else if(state.dragging) {	
 			this.setState({
 				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
-				//top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
+				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
 			});
 		}
 	},
-	__onDragStop: function(e, ui) {
-		// e.stopPropagation();
-		// e.preventDefault();
+	__onMouseUp: function(e) {
 		var state = this.state, 
 			props = this.props,
 			item = this.state.currentDragItem;
-		//document.removeEventListener('mouseup', this.__onMouseUp);
-		//document.removeEventListener('mousemove', this.__dbMouseMove);
+
+		document.removeEventListener('mouseup', this.__onMouseUp);
+		document.removeEventListener('mousemove', this.__dbMouseMove);
 
 		
-		
+		e.stopPropagation();
+		e.preventDefault();
 
 		if(state.dragging) {
 			this.setState({
 				dragging: false,
 				currentDragItem: undefined,
-				//left: state.left,
-				//top: state.top
+				left: state.left,
+				top: state.top
 			}, function() {
-				console.log('this.state')
-				console.log(this.state)
 				props.iscroll.grid.enable();
-				//props.__onDragStop(e, state.left, item);
+				props.__onDragStop(e, state.left, item);
 			});
-		} else if(this.state.mouse_down) {			
+		} else if(this.state.mouse_down) {
 			this.setState({
 				mouse_down: false,
 				selected: !state.selected
@@ -126,7 +107,8 @@ var GridRowItemDrag = React.createClass({
 
 				props.iscroll.grid.enable();			
 				props.iscroll.timeline.enable();
-				props.angular_evt.onSelect(props.row_data, data, !state.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
+				
+				props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}
 
@@ -179,7 +161,7 @@ var GridRowItemDrag = React.createClass({
 			style:       style,
 			className:   props.className + className,
 			children:    props.children,
-			//onMouseDown: this.__onMouseDown,			
+			onMouseDown: this.__onMouseDown
 		}));
 	}
 });
