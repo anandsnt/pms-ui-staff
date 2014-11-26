@@ -185,7 +185,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
-		// get the dadwadadaw d
+		// get the Work Assignments for a particular emp
 		this.fetchWorkAssignments = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/work_assignments';
@@ -435,6 +435,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					'name': 'Unassigned',
 					'class': 'unassigned'
 				}
+				room.canAssign = true;
 			}
 		};
 

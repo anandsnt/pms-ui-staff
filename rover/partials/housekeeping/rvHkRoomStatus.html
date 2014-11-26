@@ -83,7 +83,8 @@
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">
             <!-- if room is assigned -->
-            <span bo-if="isStandAlone" bo-text="room.assigned_staff.name" bo-class="room.assigned_staff.class"></span>
+            <span bo-if="isStandAlone" bo-text="room.assigned_staff.name" bo-class="room.assigned_staff.class" ng-click="assignRoom($event, room.assigned_staff.canAssign)"></span>
+            <span bo-if="isStandAlone && rrom.canAssign" bo-text="room.assigned_staff.name" bo-class="room.assigned_staff.class" ng-click="assignRoom($event)"></span>
             <!-- Show only if room is not in service -->
             <span bo-if="room.ooOsTitle" bo-text="room.ooOsTitle" class="service-status"></span>
           </div>

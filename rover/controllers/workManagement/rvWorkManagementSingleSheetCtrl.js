@@ -163,6 +163,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.singleState.assigned.push(room);
 			summarizeAssignment();
 			refreshView();
+
+			// save it to server
+			$scope.throttleSaveWorkSheet();
 		}
 
 		$scope.unAssignRoom = function(room) {
@@ -172,6 +175,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.singleState.unassigned.push(room);
 			summarizeAssignment();
 			refreshView();
+
+			// save it to server
+			$scope.throttleSaveWorkSheet();
 		}
 
 		$scope.filters = {
@@ -261,6 +267,11 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				}]
 			}, onSaveSuccess, onSaveFailure);
 		}
+
+		// throttle down the multiple calls. DO NOT BIND TO VIEW
+		$scope.throttleSaveWorkSheet = _.throttle($scope.saveWorkSheet, 300);
+			
+
 
 		$scope.startLoader = function() {
 			$scope.$emit('showLoader');

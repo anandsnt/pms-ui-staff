@@ -8,6 +8,38 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			name: 'rover.workManagement.start'
 		};
 
+
+		// flag to know if we interrupted the state change
+		var $_shouldSaveFirst = true,
+			$_afterSave = null;
+
+		// auto save the sheet when moving away
+		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
+			if ( 'rover.workManagement.multiSheet' === fromState.name && $_shouldSaveFirst) {
+				e.preventDefault();
+
+				$_afterSave = function() {
+					$_shouldSaveFirst = false;
+					$state.go(toState, toParams);
+				};
+
+				$scope.saveMultiSheet();
+			};
+		});
+
+		$scope.$watch('multiSheetState.header.work_type_id', function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				$scope.saveMultiSheet(oldVal, 'onWorkTypeChanged');
+			};
+		});
+
+		$scope.$watch('multiSheetState.selectedDate', function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				$scope.saveMultiSheet();
+			};
+		});
+
+
 		$scope.setScroller('unAssignedRoomList');
 		$scope.setScroller("multiSelectEmployees");
 		$scope.setScroller('assignedRoomList-1');
@@ -259,7 +291,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			});
 		}
 
+		// turn off 'save first' and state change
 		$scope.onCancel = function() {
+			$_shouldSaveFirst = false;
 			$state.go('rover.workManagement.start');
 		}
 
@@ -326,7 +360,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		$scope.onDateChanged = function() {
 			updateView(true);
 		}
-
+		
 		$scope.onWorkTypeChanged = function() {
 			updateView(true);
 		}
@@ -351,8 +385,16 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		/**
 		 * Saves the current state of the Multi sheet view
 		 */
-		$scope.saveMultiSheet = function() {
+		$scope.saveMultiSheet = function(workTypeId, callNextMethod) {
 			var assignedRooms = [],
+				assignments   = [],
+				afterAPIcall  = function() {
+					if ( $_shouldSaveFirst && !!$_afterSave ) {
+						$_afterSave();
+					};
+
+					!!$scope[callNextMethod] && $scope[callNextMethod]();
+				},
 				onSaveSuccess = function(data) {
 					$scope.$emit("hideLoader");
 					//Update worksheet Ids
@@ -362,31 +404,46 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						})
 					}
 					$scope.clearErrorMessage();
+
+					afterAPIcall();
 				},
 				onSaveFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 					$scope.$emit("hideLoader");
+
+					afterAPIcall();
 				};
 
-			var assignments = [];
-			_.each($scope.multiSheetState.selectedEmployees, function(employee) {
-				var assignment = {};
-				assignment.assignee_id = employee.id;
-				assignment.work_sheet_id = $scope.multiSheetState.assignments[employee.id].worksheetId;
-				assignment.room_ids = [];
-				_.each($scope.multiSheetState.assignments[employee.id].rooms, function(room) {
-					assignment.room_ids.push(room.id);
-				})
-				assignments.push(assignment);
-			});
 
-			$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
-				"date": $scope.multiSheetState.selectedDate,
-				"task_id": $scope.multiSheetState.header.work_type_id,
-				"order": "",
-				"assignments": assignments
-			}, onSaveSuccess, onSaveFailure);
+			// only post data if we have selected employes
+			console.log($scope.multiSheetState.selectedEmployees);
+			if ( $scope.multiSheetState.selectedEmployees.length ) {
+				_.each($scope.multiSheetState.selectedEmployees, function(employee) {
+					var assignment = {};
+					assignment.assignee_id = employee.id;
+					assignment.work_sheet_id = $scope.multiSheetState.assignments[employee.id].worksheetId;
+					assignment.room_ids = [];
+					_.each($scope.multiSheetState.assignments[employee.id].rooms, function(room) {
+						assignment.room_ids.push(room.id);
+					})
+					assignments.push(assignment);
+				});
+
+				$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
+					"date": $scope.multiSheetState.selectedDate,
+					"task_id": workTypeId || $scope.multiSheetState.header.work_type_id,
+					"order": "",
+					"assignments": assignments
+				}, onSaveSuccess, onSaveFailure);
+			} else {
+				afterAPIcall();
+			}
 		}
+
+		// throttle down the multiple calls. DO NOT BIND TO VIEW
+		$scope.throttleSaveMultiSheet = _.throttle($scope.saveMultiSheet, 300);
+
+
 
 		$scope.printWorkSheet = function() {
 			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo)

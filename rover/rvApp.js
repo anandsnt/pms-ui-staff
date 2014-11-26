@@ -75,6 +75,9 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	}, {
 		fromState: 'rover.reservation.staycard.roomassignment',
 		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
+	}, {
+		fromState: 'rover.workManagement.multiSheet',
+		toState  : 'rover.workManagement.start'
 	}];
 
 
