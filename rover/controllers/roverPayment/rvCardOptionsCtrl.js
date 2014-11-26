@@ -59,7 +59,6 @@ sntRover.controller('RVCardOptionsCtrl',
 			payementData.tokenDetails = tokenDetails;
 			console.log(payementData);
 			$scope.$emit("TOKEN_CREATED", payementData);
-			$scope.shouldShowIframe = false;
 			$scope.$digest();
 			
 		};
@@ -102,6 +101,7 @@ sntRover.controller('RVCardOptionsCtrl',
 
 		$rootScope.$on('six_token_recived',function(e,data){
 			data.six_payment_data.isSixPayment = true;
+			$scope.shouldShowAddNewCard = false;
 			notifyParent(data.six_payment_data);
 		});
 

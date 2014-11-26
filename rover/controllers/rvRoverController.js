@@ -68,7 +68,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
   	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
   	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
-  	// $rootScope.paymentGateway = "sixpayments";
+  	// $rootScope.paymentGateway = "sixpaymentsgh";
   	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
     //set MLI Merchant Id

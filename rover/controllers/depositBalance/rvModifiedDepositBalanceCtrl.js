@@ -29,6 +29,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.cardsList = $scope.depositBalanceData.data.existing_payments;
 	$scope.shouldShowMakePaymentScreen = false;
 	$scope.showAddtoGuestCard      = true;
+	$scope.shouldCardAvailable     = false;
 	
 	$scope.depositBalanceMakePaymentData = {};
 	$scope.depositBalanceMakePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
@@ -53,6 +54,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		          	"add_to_guest_card": $scope.cardValues.cardDetails.addToGuestCard,
 		    };
 		} else {
+			
 			//To render the selected card data
 			$scope.depositBalanceMakePaymentData.card_code = getSixCreditCardType($scope.cardValues.tokenDetails.card_type).toLowerCase();
 			 $scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.tokenDetails.token_no.substr($scope.cardValues.tokenDetails.token_no.length - 4);;
@@ -65,7 +67,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		          
 		    };
 		}
-		$scope.depositBalanceMakePaymentData.card_expiry = cardExpiry;
+		$scope.depositBalanceMakePaymentData.card_expiry = $scope.cardData.tokenDetails.isSixPayment?
+					$scope.cardData.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardData.tokenDetails.expiry.substring(0, 2):
+					$scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
       	$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		
 		
@@ -92,14 +96,15 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * setting payment id 
 	 */
 	$scope.successSavePayment = function(data){
+		$scope.$emit("hideLoader");
 		$scope.shouldShowIframe 	   			 = false;	
 		$scope.shouldShowMakePaymentScreen       = true; 
 		$scope.showAddtoGuestCard    			 = false;
 		$scope.shouldShowExistingCards  		 = false;
 		$scope.addmode                 			 = false;
 		$scope.makePaymentButtonDisabled         = false;
-	
 		$scope.paymentId = data.id;
+		$scope.shouldCardAvailable 				 = true;
 	
 		
 	};
@@ -140,6 +145,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * Card selected from centralized controler 
 	 */
 	$scope.$on('cardSelected',function(e,data){
+		$scope.shouldCardAvailable 				 = true;
 		$scope.setCreditCardFromList(data.index);
 	});
 	/*
@@ -159,5 +165,18 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.ending_with  = $scope.depositBalanceData.data.existing_payments[index].ending_with;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
 	};
+	$scope.showAddCardSection = function(){
+		$scope.shouldShowIframe 	   			 = false;	
+		$scope.shouldShowMakePaymentScreen       = false; 
+		$scope.showAddtoGuestCard    			 = false;
+		$scope.shouldShowExistingCards  		 = true;
+		$scope.addmode                 			 = false;
+		$scope.makePaymentButtonDisabled         = false;
+	};
+	$scope.$on('cancelCardSelection',function(e,data){
+		$scope.shouldShowMakePaymentScreen       = true; 
+		//$scope.shouldShowExistingCards  		 = false;
+		$scope.addmode                 			 = false;
+	});
 
 }]);
