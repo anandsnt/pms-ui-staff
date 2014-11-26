@@ -94,6 +94,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					cardsList.push(value);
 				};
 			});
+			cardsList.forEach(function(card) {
+					   card.is_credit_card = true;
+					   delete card.credit_card_type_id;
+			});
 			$scope.guestPaymentList = cardsList;
 			angular.forEach($scope.guestPaymentList, function(value, key) {
 				value.isSelected = false;

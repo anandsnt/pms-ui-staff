@@ -23,7 +23,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.cardsList = [];
 	$scope.successPaymentList = function(data){
 		$scope.$emit("hideLoader");
-		$scope.cardsList = data.existing_payments;
+		//for accompany guest dont show existing cards for add payment type in bill screen CICO-9719
+		$scope.hasAccompanyguest = data.has_accompanying_guests && (typeof $scope.passData.fromBill !== "undefined");
+		$scope.cardsList = $scope.hasAccompanyguest ? []:data.existing_payments;
 		console.log($scope.cardsList);
 		angular.forEach($scope.cardsList, function(value, key) {
 			
@@ -196,7 +198,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"id": data.id,
 			"isSelected": true,
 			"is_primary":false,
-			"payment_type":data.payment_name
+			"payment_type":data.payment_name,
+			"card_code": retrieveCardtype()
 		};
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 	};
@@ -249,6 +252,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			};	
 			if($scope.isFromGuestCard){
 				data.add_to_guest_card = true;
+				data.card_code =  retrieveCardtype();
 				data.user_id = $scope.passData.guest_id;
 				data.card_expiry = 	$scope.cardData.tokenDetails.isSixPayment ?'' :
 				($scope.cardData.cardDetails.expiryMonth && $scope.cardData.cardDetails.expiryYear ? "20" + $scope.cardData.cardDetails.expiryYear + "-" + $scope.cardData.cardDetails.expiryMonth + "-01" : "");
