@@ -23,6 +23,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.setScroller('cardsList');
 		$scope.showAddtoGuestCard = true;
 		$scope.showCancelCardSelection = true;
+		$scope.renderData.referanceText = "";
 	};
 
 	$scope.handleCloseDialog = function(){
@@ -50,12 +51,24 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		};		
 	};
 
+	var checkReferencetextAvailable = function(){
+		angular.forEach($scope.renderData, function(value, key) {
+			if(value.name == $scope.saveData.paymentType){
+				$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
+			}
+		});
+
+	};
+
 	$scope.showHideCreditCard = function(){
 		if($scope.saveData.paymentType == "CC"){
 			($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
 		} else {
 			$scope.showCreditCardInfo = false;
+			checkReferencetextAvailable();
 		};
+
+		//$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
 	};
 
 	/*
@@ -104,6 +117,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	$scope.init = function(){
 		setupbasicBillData();
+		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
 		$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.guestPaymentListSuccess, '', 'NONE');
@@ -127,6 +141,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				});
 
 				$scope.saveData.paymentType = $scope.defaultPaymentTypeOfBill;
+				checkReferencetextAvailable();
 				if($scope.defaultPaymentTypeOfBill == 'CC'){
 					if(!ccExist){
 						$scope.saveData.paymentType = '';
@@ -185,6 +200,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					"payment_type_id":$scope.saveData.payment_type_id
 				},
 				"reservation_id": $scope.reservationData.reservationId
+			};
+
+			if($scope.referenceTextAvailable){
+				dataToSrv.postData.reference_text = $scope.renderData.referanceText;
 			};
 			if($scope.saveData.paymentType == "CC"){
 				if(!$scope.showCreditCardInfo){
