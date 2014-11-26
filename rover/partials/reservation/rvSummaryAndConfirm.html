@@ -175,8 +175,8 @@
         <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-                <section ng-hide="true">
-                <div class="entry full-width">
+                <!-- <section ng-hide="true"> -->
+                <!-- <div class="entry full-width">
                     <label translate>SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
                     
                     <label for="email" translate>GUEST_EMAIL_ADDRESS</label>
@@ -192,23 +192,10 @@
                         <span>&nbsp;</span>
                     </label>
                     <input class="summary_email" ng-model="otherData.additionalEmail">
-                </div>
+                </div> -->
                 
-                <!-- <div class="entry full-width">
-				    <label for="booking-source">Booking Source</label>
-				    <div class="switch-button on">
-				        <input type="checkbox" checked="" value="booking-source" id="booking-source" name="booking-source">
-				        <label class="data-off">
-				            <span class="value">On-Site</span>
-				            <span class="switch-icon">Call-In</span>
-				        </label>
-				        <label class="data-on">
-				            <span class="switch-icon">On-Site</span>
-				            <span class="value">Call-In</span>
-				        </label>
-				    </div>
-				</div> -->
-				<div class="entry full-width" style="height:50px;width:50%;" ng-show="isCallInOnsiteButtonVisible">
+                
+				<!-- <div class="entry full-width" style="height:50px;width:50%;" ng-show="isCallInOnsiteButtonVisible">
 					<a style="height:50px;width:50%;float:left;" ng-click="clickedOnsite()">
 						<span class="onsite" ng-class="{'onsite-active': isOnsiteActive}" >On-Site</span>
 				     </a>
@@ -216,8 +203,8 @@
 					     <span class="call-in" ng-class="{'onsite-active': !isOnsiteActive}" >Call-In</span>
 					</a>
 				</div>
-				
-                <div class="entry full-width">
+				 -->
+                <!-- <div class="entry full-width">
                     <label for="payment-type" translate>PAYMENT_TYPE </label>
                     <div class="select">
 
@@ -255,11 +242,11 @@
                 <div class="actions">
                     <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonEnabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonEnabled">SUBMIT_RESERVATION</button>
                     <button class="button blank" type="button" ng-click="cancelButtonClicked()" translate>CANCEL</button>
-                </div>
-            </section>
+                </div> -->
+            <!-- </section> -->
             <div id="set-payment" class="payment-form for-reservation"> 
                 <div class="entry full-width">
-                    <label for="payment-type" translate>PAYMENT_TYPE </label>
+                    <label for="payment-type" translate>PAYMENT_TYPE  </label>
                     <div class="select">
 
                         <select class="placeholder" ng-model="reservationData.paymentType.type.value"
@@ -270,7 +257,7 @@
                 </div>
 
                     <!-- Credit card options - hidden until CC set as payment type -->
-                    <div ng-include="'/assets/partials/reservation/rvCreditCard.html'"></div>
+                    <!-- <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="reservationData.paymentType.type.value=='CC'"></div> -->
 
                     <!-- Checkboxes -->
                     <div class="entry margin">
