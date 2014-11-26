@@ -1,5 +1,6 @@
 <div role="dialog" id="modal" class="modal-show" ng-cloak>
 	<form method="post" action="{action}" id="new-payment" name="new-payment" class="modal-content form new-content select-card">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert">
 		</button>
