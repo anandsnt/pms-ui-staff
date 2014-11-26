@@ -12,6 +12,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.shouldShowIframe 	   = false;	
 	$scope.savePayment = {};
 	$scope.showAddtoGuestCard      = true;
+	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
+	
 	var isNewCardAdded = false;
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
@@ -29,7 +31,13 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			value.card_expiry = value.expiry_date;//Same comment above
 		});
 	};
-	$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.passData.reservationId, $scope.successPaymentList);
+	if(!$scope.isFromGuestCard){
+		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.passData.reservationId, $scope.successPaymentList);
+	}
+	else{		
+		$scope.showAddtoGuestCard = false;
+	};
+	
 	/*
 	 * change payment type action - initial add payment screen
 	 */
@@ -160,6 +168,38 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 	};
 
+	var saveCCToGuestCardSuccess = function(data){
+	    $scope.$emit("hideLoader");
+		$scope.closeDialog();
+		var cardNumber = retrieveCardNumber();
+		var cardExpiry  = retrieveExpiryDate();
+		var cardCode = retrieveCardtype();
+		var dataToGuestList = {
+			"card_code": cardCode,
+			"mli_token": cardNumber,
+			"card_expiry":cardExpiry,
+			"card_name": '',
+			"id": data.id,
+			"isSelected": true,
+			"is_primary":false,
+			"payment_type":data.payment_name,
+			"payment_type_id": 1
+		};
+		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+	};
+
+	var saveToGuestCardSuccess = function(data){
+		$scope.$emit("hideLoader");
+		$scope.closeDialog();
+		var dataToGuestList = {
+			"id": data.id,
+			"isSelected": true,
+			"is_primary":false,
+			"payment_type":data.payment_name
+		};
+		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+	};
+
 	var ccSaveSuccess = function(data){
 		$scope.$emit("hideLoader");
 		if(isNewCardAdded){
@@ -206,12 +246,24 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			if(typeof $scope.passData.fromBill !== "undefined"){
 				data.bill_number = $scope.passData.fromBill;	
 			};	
-			if(isNewCardAdded){		
-				$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
-			} else {
-				$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, ccSaveSuccess);  
-				
+			if($scope.isFromGuestCard){
+				data.add_to_guest_card = true;
+				data.user_id = $scope.passData.guest_id;
+				data.card_expiry = 	$scope.cardData.tokenDetails.isSixPayment ?'' :
+				($scope.cardData.cardDetails.expiryMonth && $scope.cardData.cardDetails.expiryYear ? "20" + $scope.cardData.cardDetails.expiryYear + "-" + $scope.cardData.cardDetails.expiryMonth + "-01" : "");
+				$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveCCToGuestCardSuccess);
 			}
+			else{
+				if(isNewCardAdded){	
+					data.card_expiry = 	$scope.cardData.tokenDetails.isSixPayment ?'' :
+						($scope.cardData.cardDetails.expiryMonth && $scope.cardData.cardDetails.expiryYear ? "20" + $scope.cardData.cardDetails.expiryYear + "-" + $scope.cardData.cardDetails.expiryMonth + "-01" : "");	
+					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
+				} else {
+					$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, ccSaveSuccess);  
+					
+				};
+			};
+			
 	};
 
     var savePaymentSuccess = function(data){
@@ -236,8 +288,16 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			   };
 		if($scope.passData.fromBill){
 			data.bill_number = $scope.passData.fromBill;	
-		};				
-		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data,savePaymentSuccess);
+		};			
+
+		if($scope.isFromGuestCard){
+			data.add_to_guest_card = true;
+			data.user_id = $scope.passData.guest_id;
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveToGuestCardSuccess);
+		}
+		else{	
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data,savePaymentSuccess);
+		};
 	};
 
 	
