@@ -1,8 +1,10 @@
-<div class="invoice-header">
+<div class="invoice-logo">
     <h1>Invoice</h1>
     <img ng-if="printData.hotel_logo!=''" ng-src="{{printData.hotel_logo}}" alt="Logo of hotel" />
 </div>
-
+<div class="invoice-header">
+    {{printData.custom_text_header}}
+</div>
 <table class="guest-info">
     <tbody>
         <tr>
@@ -43,7 +45,12 @@
 <div class="invoice-body">
     <p class="date"><strong>Invoice date</strong>{{printData.invoice_date}}</p>
     <table class="invoice-details">
-        <caption>{{printData.hotel_name}}</caption>
+        <caption>
+            {{printData.hotel_name}}
+            <span ng-if="printData.show_hotel_address">
+                {{printData.hotel_address}}
+            </span>
+        </caption>
         <thead>
             <tr>
                 <th>Date of Charge</th>
@@ -97,19 +104,24 @@
             </tr>            
         </tfoot>
 
-        <tr ng-repeat="item in printData.charge_details_list" ng-if="!item.is_tax">
-            <td>{{feesData.date | date:'MM-dd-yyyy'}}</td>
-            <td>{{item.description}}</td>
-            <td class="align-right">{{printData.currency}}{{item.amount | number: precisonTwo}}</td>
-            <td class="align-right"></td>
-        </tr>
-        
-        <tr ng-repeat="item in printData.credit_details_list">
-            <td>{{feesData.date | date:'MM-dd-yyyy'}}</td>
-            <td>{{item.description}}</td>
-            <td class="align-right"></td>
-            <td class="align-right">{{printData.currency}}{{item.amount | number: precisonTwo}}</td>
-        </tr>
+        <tbody>
+            <tr ng-repeat="item in printData.charge_details_list" ng-if="!item.is_tax">
+                <td>{{feesData.date | date:'MM-dd-yyyy'}}</td>
+                <td>{{item.description}}</td>
+                <td class="align-right">{{printData.currency}}{{item.amount | number: precisonTwo}}</td>
+                <td class="align-right"></td>
+            </tr>
+
+            <tr ng-repeat="item in printData.credit_details_list">
+                <td>{{feesData.date | date:'MM-dd-yyyy'}}</td>
+                <td>{{item.description}}</td>
+                <td class="align-right"></td>
+                <td class="align-right">{{printData.currency}}{{item.amount | number: precisonTwo}}</td>
+            </tr>
+        </tbody>
 
     </table>
+</div>
+<div class="invoice-footer">
+    {{printData.custom_text_footer}}
 </div>
