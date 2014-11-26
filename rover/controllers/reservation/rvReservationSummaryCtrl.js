@@ -326,7 +326,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		}
 
 		$scope.proceedCreatingReservation = function() {
-			var postData = $scope.computeReservationDataforUpdate();
+			var postData = $scope.computeReservationDataforUpdate(false, true);
 			// return false;
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');

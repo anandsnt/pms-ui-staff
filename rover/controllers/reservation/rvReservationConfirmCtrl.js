@@ -77,12 +77,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
 			//TODO: for now skip sending messages and go to the next screen
-			$scope.reservationStatus.confirmed = true;
-			return false;
-			if ($scope.reservationData.guest.sendConfirmMailTo == "" || !isEmailValid) {
-				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
+			if (!$scope.otherData.additionalEmail && !$scope.reservationData.guest.email) {
+				$scope.reservationStatus.confirmed = true;
 				return false;
 			}
+
 			var postData = {};
 			postData.reservationId = $scope.reservationData.reservationId;
 			/**
@@ -96,9 +95,15 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			postData.tax_total = $scope.reservationData.totalTax;
 
 			postData.emails = [];
-			postData.emails.push($scope.reservationData.guest.sendConfirmMailTo);
+			if (!!$scope.reservationData.guest.email)
+				postData.emails.push($scope.reservationData.guest.email);
+
+			if (!!$scope.otherData.additionalEmail)
+				postData.emails.push($scope.otherData.additionalEmail);
+
 
 			var emailSentSuccess = function(data) {
+				$scope.reservationStatus.confirmed = true;
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
