@@ -266,14 +266,16 @@ function getCreditCardType(cardBrand){
     var card = cardBrand.toUpperCase();
     return creditCardTypes[card];
 }
+
+
 var sixCreditCardTypes = {
       "AX": 'AX',
-      "DC": 'DC',
-      "DS": 'DI',
-      "JCB": 'JCB',
+      "DI": 'DS',
+      "DN": 'DC',
+      "JC": 'JCB',
       "MC": 'MC',
       "VS": 'VA',
-      "MX":'MX'
+      "MX": 'DS'//Six iframe reurns MX for discover. not good
 };
 
 function getSixCreditCardType(cardCode){
