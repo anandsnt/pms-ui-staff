@@ -27,6 +27,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.searchResultsFetchDone = false;
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
+		$scope.reservationSearch = ($state.current.name == "rover.search");
 
 		$scope.start = 1;
 		$scope.end = RVSearchSrv.searchPerPage;
