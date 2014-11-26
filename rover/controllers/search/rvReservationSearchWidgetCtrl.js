@@ -278,7 +278,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 					($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 					($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
-					($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0) {
+					($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 ||
+					($scope.escapeNull(value.travel_agent).toString()).indexOf($scope.textInQueryBox) >= 0 ||
+					($scope.escapeNull(value.company).toString()).indexOf($scope.textInQueryBox) >= 0)
+				{
 					$scope.results[i].is_row_visible = true;
 					totalCountOfFound++;
 				} else {
@@ -690,7 +693,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 
 sntRover.controller('RVReservationSearchFromDatepickerCtrl', ['$scope', 'ngDialog',
-	function($scope, $rootScope, ngDialog) {
+	function($scope, ngDialog) {
 		$scope.setUpData = function() {
 			$scope.datePicked = $scope.fromDate;
 			$scope.dateOptions = {
@@ -708,7 +711,7 @@ sntRover.controller('RVReservationSearchFromDatepickerCtrl', ['$scope', 'ngDialo
 ]);
 
 sntRover.controller('RVReservationSearchToDatepickerCtrl', ['$scope', 'ngDialog',
-	function($scope, $rootScope, ngDialog) {
+	function($scope, ngDialog) {
 		$scope.setUpData = function() {
 			$scope.datePicked = $scope.toDate;
 			$scope.dateOptions = {
