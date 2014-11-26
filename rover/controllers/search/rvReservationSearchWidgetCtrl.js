@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault',
-	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault) {
+sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog',
+	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog) {
 
 		/*
 		 * Base reservation search, will extend in some place
@@ -27,6 +27,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.searchResultsFetchDone = false;
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
+		//Date picker from date should default to current business date - CICO-8490
+		$scope.fromDate = $rootScope.businessDate;
+		RVSearchSrv.fromDate = $rootScope.businessDate;
 
 		$scope.start = 1;
 		$scope.end = RVSearchSrv.searchPerPage;
@@ -49,6 +52,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * 	and also also we can handle it inside
 		 */
 		$scope.$on("showAddNewGuestButton", function(event, showAddNewGuestButton) {
+			console.log('showAddNewGuestButton');
 			$scope.showAddNewGuestButton = showAddNewGuestButton;
 		});
 
@@ -332,8 +336,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		}; //end of displayFilteredResults
 
 		var fetchSearchResults = function(){
-			var dataDict = {};
+
 			var query = $scope.textInQueryBox.trim();
+			if($scope.escapeNull(query) == "" && $scope.escapeNull($stateParams.type) == ""){
+				return false;
+			}
+			var dataDict = {};
+
 			if(query != ''){
 				dataDict.query = query;
 			}
@@ -562,14 +571,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			return showNoMatchesMessage;
 		};
-		$scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn, reservationStatus) {
-			var queueClass = '';
+		$scope.isReservationQueued = function(isReservationQueued, isQueueRoomsOn, reservationStatus) {
+			var isQueued = false;
 			if(reservationStatus === 'CHECKING_IN' || reservationStatus === 'RESERVED'){
 				if (isReservationQueued == "true" && isQueueRoomsOn == "true") {
-					queueClass = 'queued';
+					isQueued = true;
 				}
 			}
-			return queueClass;
+			return isQueued;
 		};
 
 
@@ -650,5 +659,68 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			return isDisabled;
 		}
+
+		$scope.showCalendar = function(controller) {
+		    ngDialog.open({
+		        template: '/assets/partials/search/rvDatePickerPopup.html',
+		        controller: controller,
+		        className: 'ngdialog-theme-default single-date-picker',
+		        closeByDocument: true,	        
+		        scope: $scope
+		    });
+		}
+		// For dashboard button search(DUEIN, STAYOVER, DUEOUT etc)
+		// the search API is called in router via resolve method.
+		// The scope mismatch for date params would occur.
+		// so the FROM DATE and TO DATE are kept in service. 
+		$scope.onFromDateChanged = function(date){
+			$scope.fromDate = date;
+			fetchSearchResults();
+			RVSearchSrv.fromDate = date;		
+		}
+		$scope.onToDateChanged = function(date){
+			$scope.toDate = date;
+			fetchSearchResults();
+			RVSearchSrv.toDate = date;
+
+		}
+
+	}
+]);
+
+
+sntRover.controller('RVReservationSearchFromDatepickerCtrl', ['$scope', 'ngDialog',
+	function($scope, $rootScope, ngDialog) {
+		$scope.setUpData = function() {
+			$scope.datePicked = $scope.fromDate;
+			$scope.dateOptions = {
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-100:+0",
+				onSelect: function(dateText, inst) {
+					$scope.onFromDateChanged($scope.datePicked);
+					ngDialog.close();
+				}
+			}
+		};
+		$scope.setUpData();
+	}
+]);
+
+sntRover.controller('RVReservationSearchToDatepickerCtrl', ['$scope', 'ngDialog',
+	function($scope, $rootScope, ngDialog) {
+		$scope.setUpData = function() {
+			$scope.datePicked = $scope.toDate;
+			$scope.dateOptions = {
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-100:+0",
+				onSelect: function(dateText, inst) {
+					$scope.onToDateChanged($scope.datePicked);
+					ngDialog.close();
+				}
+			}
+		};
+		$scope.setUpData();
 	}
 ]);

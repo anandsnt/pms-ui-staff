@@ -1,39 +1,33 @@
 <div ng-controller = "rvReservationSearchWidgetController">
 	<form method="get" action="" name="dashboard-search-form" id="dashboard-search-form" class="search-form has-dates" role="search" ng-class="{'enable-adding' :showAddNewGuestButton && showSearchResultsArea}"><!--TODO: verify enable-adding -->	
 	    <div class="entry search">
-	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults()">
+	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
 	    	<input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-focus="focusOnSearchText()"
 	        ng-model="textInQueryBox"  ng-blur="focusOutOnSearchText()" />
-
-	        <!-- <a href="#" id="dashboard-clear-query" class="clear-query" ng-class="{'visible': textInQueryBox!=''}" ng-click="clearResults()"> 
-	            <span class="icons icon-clear-search">Clear query</span>
-	        </a>
-	        <button type="submit" name="submit" class="icons icon-search">Search</button>
-	        <input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="text" autocomplete="off" 
-	        ng-change="queryEntered()" ng-focus="focusOnSearchText()"
-	        ng-model="textInQueryBox"  ng-blur="focusOutOnSearchText()" > -->
 	    </div>
 	    <div class="entry dates">
-            <div class="entry-data has-datepicker">
+            <div class="entry-data has-datepicker" ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')">
                 <label for="dashboard-date-from">From</label>
-                <button id="dashboard-date-from-clear" class="clear-query visible"> <!-- When date is not blank, this should have class "visible" by default -->
+                <button id="dashboard-date-from-clear" class="clear-query" ng-class="{'visible': escapeNull(fromDate) !=''}"> <!-- When date is not blank, this should have class "visible" by default -->
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <input name="dashboard-date-from" id="dashboard-date-from" class="datepicker" value="" readonly="" type="text" />
+                <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : 'dd MMMM yyyy'}}" value="{{fromDate}}"/>
+                <button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
             </div>
-            <div class="entry-data has-datepicker">
+            <div class="entry-data has-datepicker" ng-click="showCalendar('RVReservationSearchToDatepickerCtrl')">
                 <label for="dashboard-date-to">To</label>
-                <button id="dashboard-date-to-clear" class="clear-query">
+                <button id="dashboard-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(toDate) !=''}">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" value="" readonly="" type="text" />
+                <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : 'dd MMMM yyyy'}}" value="{{toDate}}" readonly="" type="text" />
+                <button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
             </div>
         </div>
         <!-- Add reservation -->
-    	<a class="add-new-button" ng-click="addNewGuest($event)" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new</a>
+    	<a class="add-new-button" ng-click="addNewGuest($event)" ng-show="showAddNewGuestButton && showSearchResultsArea">+ New</a>
 	</form>
 	<div class="search-pagination" ng-show="totalSearchResults > searchPerPage && results.length > 0">
 	    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
@@ -74,57 +68,57 @@
 	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKING_IN' || row.reservation_status == 'CHECKEDIN'|| row.reservation_status == 'CHECKING_OUT'|| (row.reservation_status == 'RESERVED' && escapeNull(row.room) !== '' )">
 	                        <!-- this can be either arrival or departure date, depending on reservation status -->
 	                        <div class="arrival-departure">
-	                            <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{reservation-status}</span>
-	                            <!-- If room is queued show this:
-	                            <span class="icons icon-queued">Queued</span>
-	                            -->
+	                            <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
+	                            <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"></span>
+	                            
 	                            <time datetime="{arrival or departure timestamp}">
-	                                <span>{arrival or departure date}</span>
-	                                <span>{arrival or departure time}</span>
-	                            </time>
+	                            	<span ng-if ="(row.reservation_status == 'RESERVED'||row.reservation_status == 'CHECKING_IN')">
+		                                <span>{{row.arrival_date| date : dateFormat}}</span>
+		                                <!-- TODO: Date formating for arrival/departure time -->
+		                                <span>{{row.arrival_time}}</span>
+		                            </span>
+		                            	
+		                            <span ng-if ="(row.reservation_status == 'CHECKEDIN'||row.reservation_status == 'CHECKING_OUT')">
+		                            	
+		                                <span>{{row.departure_date| date : dateFormat}}</span>
+		                                <span ng-hide="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true">{{row.departure_time}}</span>
+		                                <span ng-show="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true">{{row.late_checkout_time}}</span>
+		                            </span>
+
+	                            </time> 
 	                        </div>
 
 	                        <div class="room-info">
-	                            <!-- Arrivals, check ins and pre check ins - room ready -->
-	                            <strong class="room-number ready">{room-number}</strong>
-	                            <!-- Arrivals, check ins and pre check ins - room not ready 
-	                            <strong class="room-number not-ready">{room-number}</strong>
-	                            <span class="room-status">{room-status}</span> -->
+								<!-- Confirm the logic of READY and NOT-READY -->
+	                        	<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
+	                        		<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
+	                        			{{row.room}}
+	                        		</span>			
+	                        	</span>
 
-	                            <!-- For all other scenarios, just show:
-	                            <strong class="room-number">{room-number}</strong> -->
+	                        	<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
 	                        </div>
                     	</div>
 
+                    	
+	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKEDOUT' || row.reservation_status == 'NOSHOW'|| row.reservation_status == 'NOSHOW_CURRENT' || row.reservation_status == 'CANCELLED' || (row.reservation_status == 'RESERVED' && escapeNull(row.room) == '' )">
+	                        <!-- this is arrival date -->
+	                        <div class="arrival-departure">
+	                            <span class="guest-status {reservation-status}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
+	                            <time datetime="{arrival timestamp}">
+	                                <span>{{row.arrival_date| date : dateFormat}}</span>
+	                                <span>{{row.arrival_time}}</span>
+	                            </time>
+	                        </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-						<!-- <div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">				
-							<span class="late-checkout-time" ng-hide="(row.reservation_status!='CHECKING_OUT'||row.reservation_status=='CHECKING_IN')&&row.is_opted_late_checkout==false">
-								{{row.late_checkout_time}}
-							</span>
-							 <span class="pre-checkin-time" ng-show="row.arrival_time && row.is_pre_checkin && row.reservation_status=='CHECKING_IN'" ng-bind="row.arrival_time"></span>
-							<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">
-							</span>
-						</div>	
-						<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
-							<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
-								{{row.room}}
-							</span>			
-						</span>
-						<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span> -->
+	                        <div class="departing">
+	                            <span class="guest-status {reservation-status}">{reservation-status}</span>
+	                            <time datetime="{departure timestamp}">
+	                                <span>{{row.departure_date| date : dateFormat}}</span>
+	                                <span>{{row.departure_time}}</span>
+	                            </time>
+	                        </div>
+	                    </div>
 					</a>
 				</li>
 				<li class="no-content" ng-show="showNoMatches(results, textInQueryBox.trim().length, isTyping, isSwiped)" >
