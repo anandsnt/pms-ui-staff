@@ -127,25 +127,27 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.guestPaymentListSuccess, '', 'NONE');
 	};
 
-	// To calculate fee
+	// CICO-9457 : To calculate fee - for standalone only
 	$scope.calculateFee = function(){
 		
-		var feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
-		var amountSign = "";
-		var zeroAmount = parseFloat("0.00").toFixed(2);
-		if(typeof feesInfo != 'undefined') amountSign = feesInfo.amount_sign;
+		if($scope.isStandAlone){
+			var feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
+			var amountSymbol = "";
+			var zeroAmount = parseFloat("0.00").toFixed(2);
+			if(typeof feesInfo != 'undefined') amountSymbol = feesInfo.amount_symbol;
 
-		var totalAmount = ($scope.renderData.defaultPaymentAmount == "") ? zeroAmount :
-						parseFloat($scope.renderData.defaultPaymentAmount);
-		var feePercent  = parseFloat($scope.renderData.actualFees);
+			var totalAmount = ($scope.renderData.defaultPaymentAmount == "") ? zeroAmount :
+							parseFloat($scope.renderData.defaultPaymentAmount);
+			var feePercent  = parseFloat($scope.renderData.actualFees);
 
-		if($scope.isStandAlone && amountSign == "%"){
-			var calculatedFee = parseFloat(totalAmount * (feePercent/100));
-			$scope.renderData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
-			$scope.renderData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
-		}
-		else{
-			$scope.renderData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+			if($scope.isStandAlone && amountSymbol == "%"){
+				var calculatedFee = parseFloat(totalAmount * (feePercent/100));
+				$scope.renderData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+				$scope.renderData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+			}
+			else{
+				$scope.renderData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+			}
 		}
 	};
 
@@ -187,24 +189,27 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : zeroAmount;
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 
-		var feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
-		console.log("feesInfo :");console.log(feesInfo);
-		if(typeof feesInfo != 'undefined' && feesInfo!= null){
-			
-			var amountSign = feesInfo.amount_sign;
-			var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
-			$scope.renderData.actualFees = feesAmount;
-			
-			if(amountSign == "%") $scope.calculateFee();
-			else{
-				$scope.renderData.calculatedFee = feesAmount;
-				$scope.renderData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+		// CICO-9457 : Setup fees details initilaly - for standalone only
+		if($scope.isStandAlone){
+			var feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
+			console.log("feesInfo :");console.log(feesInfo);
+			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+				
+				var amountSymbol = feesInfo.amount_symbol;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				$scope.renderData.actualFees = feesAmount;
+				
+				if(amountSymbol == "%") $scope.calculateFee();
+				else{
+					$scope.renderData.calculatedFee = feesAmount;
+					$scope.renderData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+				}
 			}
-		}
-		else{
-			$scope.renderData.actualFees = zeroAmount;
-			$scope.renderData.calculatedFee = zeroAmount;
-			$scope.renderData.totalOfValueAndFee = zeroAmount;
+			else{
+				$scope.renderData.actualFees = zeroAmount;
+				$scope.renderData.calculatedFee = zeroAmount;
+				$scope.renderData.totalOfValueAndFee = zeroAmount;
+			}
 		}
 	};
 	$scope.init();

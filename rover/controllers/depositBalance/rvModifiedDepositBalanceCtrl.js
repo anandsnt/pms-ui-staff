@@ -30,7 +30,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.shouldShowMakePaymentScreen = false;
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;
-	
 	$scope.depositBalanceMakePaymentData = {};
 	$scope.depositBalanceMakePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonDisabled = true;
@@ -74,6 +73,60 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		
 		
 	});
+	
+	// CICO-9457 : To calculate fee
+	$scope.calculateFee = function(){
+		if($scope.isStandAlone){
+			//var feesInfo = $scope.depositBalanceData.data.existing_payments[0].fees_information;
+			var feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
+			var amountSymbol = "";
+			var zeroAmount = parseFloat("0.00").toFixed(2);
+			if(typeof feesInfo != 'undefined') amountSymbol = feesInfo.amount_symbol;
+
+			var totalAmount = ($scope.depositBalanceMakePaymentData.amount == "") ? zeroAmount :
+							parseFloat($scope.depositBalanceMakePaymentData.amount);
+			var feePercent  = parseFloat($scope.depositBalanceMakePaymentData.actualFees);
+
+			if($scope.isStandAlone && amountSymbol == "%"){
+				var calculatedFee = parseFloat(totalAmount * (feePercent/100));
+				$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+				$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+			}
+			else{
+				$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+			}
+		}
+	};
+
+	// CICO-9457 : Data for fees details.
+	$scope.setupFeeData = function(){
+		$scope.feeData = {};
+		var feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
+		var zeroAmount = parseFloat("0.00").toFixed(2);
+		var defaultAmount = $scope.depositBalanceMakePaymentData ?
+		 	$scope.depositBalanceMakePaymentData.amount : zeroAmount;
+		console.log("feesInfo :");console.log(feesInfo);
+		if(typeof feesInfo != 'undefined' && feesInfo!= null){
+			
+			var amountSymbol = feesInfo.amount_symbol;
+			var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+			$scope.feeData.actualFees = feesAmount;
+			
+			if(amountSymbol == "%") $scope.calculateFee();
+			else{
+				$scope.feeData.calculatedFee = feesAmount;
+				$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+			}
+		}
+		else{
+			$scope.feeData.actualFees = zeroAmount;
+			$scope.feeData.calculatedFee = zeroAmount;
+			$scope.feeData.totalOfValueAndFee = zeroAmount;
+		}
+	}
+	// CICO-9457 : Data for fees details - standalone only.	
+	if($scope.isStandAlone)	$scope.setupFeeData();
+
 	/*
 	 * call make payment API on clicks select payment
 	 */
