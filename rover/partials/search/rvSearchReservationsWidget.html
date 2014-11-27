@@ -1,5 +1,5 @@
 <div ng-controller = "rvReservationSearchWidgetController" >
-	<form method="get" action="" name="dashboard-search-form" id="dashboard-search-form" class="search-form has-dates" role="search" ng-class="{'enable-adding' :showAddNewGuestButton && showSearchResultsArea}" outside-click-handler><!--TODO: verify enable-adding -->	
+	<form method="get" action="" name="dashboard-search-form" id="dashboard-search-form" class="search-form has-dates" role="search" ng-class="{'enable-adding' :showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0}" outside-click-handler><!--TODO: verify enable-adding -->	
 	    <div class="entry search">
 	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
 	    	    <span class="icons icon-clear-search">Clear query</span>
@@ -28,7 +28,7 @@
             </div>
         </div>
         <!-- Add reservation -->
-    	<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="showAddNewGuestButton && showSearchResultsArea">+ New</a>
+    	<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0">+ New</a>
 	</form>
 	<div class="search-pagination" ng-show="totalSearchResults > searchPerPage && results.length > 0">
 	    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
@@ -129,8 +129,10 @@
 						<span class="h2">Check that you didn't mispell the <strong>Name</strong> or 
 							<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or 
 							<strong>Confirmation</strong> number
+							<span ng-show="results.length==0 && showAddNewGuestButton">, or  </span>  
+							<a ui-sref="rover.reservation.search">Add a New Guest <a/>
 						</span>
-						<span ng-show="results.length==0 && showAddNewGuestButton"> or  <a ui-sref="rover.reservation.search">Add a New Guest <a/> </span>
+
 						.
 					</div>
 				</li>
