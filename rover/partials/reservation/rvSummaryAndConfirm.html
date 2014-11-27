@@ -296,7 +296,7 @@
                         <!-- Buttons - remove class "hidden" when payment type is defined-->
                         <div class="actions" ng-show="!!reservationData.paymentType.type.value">
                             <button type="button" class="button blue" ng-click="confirmReservation()">Pay deposit later</button>
-                            <button type="button" class="button green">Pay deposit now</button>
+                            <button type="button" class="button green" ng-click="payDeposit()">Pay deposit now</button>
                         </div>
                     </div>
 

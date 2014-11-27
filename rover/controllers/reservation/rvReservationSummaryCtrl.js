@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.isSubmitButtonEnabled = false;
@@ -63,6 +63,24 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			console.log($scope.six_token)
 				//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
 		});
+
+		$scope.payDeposit = function(){
+			var onPaymentSuccess = function(data){
+				console.log(data);
+				$scope.$emit('hideLoader');
+			},onPaymentFailure = function(errorMessage){
+				$scope.errorMessage = errorMessage;
+				$scope.$emit('hideLoader');
+			}
+
+			var dataToMakePaymentApi = {
+				// "guest_payment_id": '',
+				"reservation_id": $scope.reservationData.reservationId,
+				"amount": 1
+			};
+			$scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, onPaymentSuccess, onPaymentFailure);
+
+		}
 
 		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
 			var buttonClass = "grey";
