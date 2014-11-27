@@ -378,6 +378,18 @@ sntRover
 	    	callAvailabilityAPI();
 	    }; 
 
+	    $scope.openStayCard = function() {
+	    	var reservation 	= this.currentResizeItem,
+	    		reservationID  	= reservation.reservation_id,
+	    		confirmationID 	= reservation.confirmation_number;
+	    		
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+				id: reservationID,
+				confirmationId: confirmationID,
+				isrefresh: true
+			});
+	    }.bind($scope.gridProps);
+
 	    $scope.editSave = function() {
 	    	var props 			= $scope.gridProps,
 	    		row_data 		= props.currentResizeItemRow, //util.copyRoom(props.currentResizeItemRow),
