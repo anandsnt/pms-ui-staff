@@ -386,18 +386,43 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.refreshScroller('result_showing_area');
 		};
 
+		$scope.getGuestStatusIconForArrival = function(reservationStatus, isLateCheckoutOn, isPrecheckin){
+			var viewStatus = "";
+			if ("RESERVED" == reservationStatus || "CHECKEDOUT" == reservationStatus) {
+				viewStatus = "arrival";
+			}else if (("NOSHOW" == reservationStatus) || ("NOSHOW_CURRENT" == reservationStatus)) {
+				viewStatus = "no-show";
+			}else if ("CANCELED" == reservationStatus) {
+				viewStatus = "cancel";
+			}
+
+			return viewStatus;
+
+		};
+
+		$scope.getGuestStatusIconForDeparture = function(reservationStatus, isLateCheckoutOn, isPrecheckin){
+			if ("RESERVED" == reservationStatus || "CHECKEDOUT" == reservationStatus) {
+				viewStatus = "departed";
+			}else if (("NOSHOW" == reservationStatus) || ("NOSHOW_CURRENT" == reservationStatus)) {
+				viewStatus = "no-show";
+			}else if ("CANCELED" == reservationStatus) {
+				viewStatus = "cancel";
+			}
+			
+			return viewStatus;
+		}
 		/*
 		 * function used in template to map the reservation status to the view expected format
 		 */
-		$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn, isPrechin) {
+		$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn, isPrecheckin) {
 			var viewStatus = "";
 			if (isLateCheckoutOn && "CHECKING_OUT" == reservationStatus) {
 				viewStatus = "late-check-out";
 				return viewStatus;
 			}
-			if ("RESERVED" == reservationStatus && !isPrechin) {
+			if ("RESERVED" == reservationStatus && !isPrecheckin) {
 				viewStatus = "arrival";
-			} else if ("CHECKING_IN" == reservationStatus && !isPrechin) {
+			} else if ("CHECKING_IN" == reservationStatus && !isPrecheckin) {
 				viewStatus = "check-in";
 			} else if ("CHECKEDIN" == reservationStatus) {
 				viewStatus = "inhouse";
@@ -409,7 +434,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				viewStatus = "cancel";
 			} else if (("NOSHOW" == reservationStatus) || ("NOSHOW_CURRENT" == reservationStatus)) {
 				viewStatus = "no-show";
-			} else if (isPrechin) {
+			} else if (isPrecheckin) {
 				viewStatus = "pre-check-in";
 			}
 			return viewStatus;

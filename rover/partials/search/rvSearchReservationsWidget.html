@@ -102,10 +102,10 @@
                     	</div>
 
                     	<!-- Display arrival and departure dates . Do not display the room number -->
-	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKEDOUT' || row.reservation_status == 'NOSHOW'|| row.reservation_status == 'NOSHOW_CURRENT' || row.reservation_status == 'CANCELLED' || (row.reservation_status == 'RESERVED' && escapeNull(row.room) == '' )">
+	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKEDOUT' || row.reservation_status == 'NOSHOW'|| row.reservation_status == 'NOSHOW_CURRENT' || row.reservation_status == 'CANCELED' || (row.reservation_status == 'RESERVED' && escapeNull(row.room) == '' )">
 	                        <!-- this is arrival date -->
 	                        <div class="arrival-departure">
-	                            <span class="guest-status {reservation-status}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
+	                            <span class="guest-status {{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
 	                            <time datetime="{arrival timestamp}">
 	                                <span>{{row.arrival_date| date : dateFormat}}</span>
 	                                <span>{{row.arrival_time}}</span>
@@ -113,7 +113,7 @@
 	                        </div>
 
 	                        <div class="departing">
-	                            <span class="guest-status {reservation-status}">{reservation-status}</span>
+	                            <span class="guest-status {{getGuestStatusIconForDeparture(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForDeparture(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
 	                            <time datetime="{departure timestamp}">
 	                                <span>{{row.departure_date| date : dateFormat}}</span>
 	                                <span>{{row.departure_time}}</span>
