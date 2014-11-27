@@ -134,14 +134,21 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.clickedMakePayment = function(){
 
 
-		var dataToMakePaymentApi = {
-			"guest_payment_id": $scope.paymentId,
-			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-			"amount": $scope.depositBalanceMakePaymentData.amount
+		// var dataToMakePaymentApi = {
+			// "guest_payment_id": $scope.paymentId,
+			// "reservation_id": $scope.reservationData.reservation_card.reservation_id,
+			// "amount": $scope.depositBalanceMakePaymentData.amount
+		// };
+		var dataToSrv = {
+			"postData": {
+				"payment_type": "CC",//FOR NOW - Since there is no drop down to select another payment type
+				"amount": $scope.depositBalanceMakePaymentData.amount,
+				"payment_type_id": $scope.paymentId
+			},
+			"reservation_id": $scope.reservationData.reservation_card.reservation_id
 		};
-
 		//alert(JSON.stringify(dataToMakePaymentApi));
-		$scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
+		$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 
 	};
 	/*

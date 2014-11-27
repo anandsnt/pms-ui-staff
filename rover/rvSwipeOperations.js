@@ -16,9 +16,10 @@ var SwipeOperation = function(){
 			'ksn': swipedCardData.RVCardReadTrack2KSN,
 			'pan': swipedCardData.RVCardReadMaskedPAN,
 			'etb': swipedCardData.RVCardReadETB,
-			'swipeFrom': swipedCardData.swipeFrom
+			'swipeFrom': swipedCardData.swipeFromm,
+			'token': swipedCardData.token
 		};
-		console.log(">>>>")
+		
 		console.log(swipedCardDataToRender);
 		return swipedCardDataToRender;
 		// "credit_card": data.RVCardReadCardType,
@@ -30,6 +31,22 @@ var SwipeOperation = function(){
 						// 'pan': data.RVCardReadMaskedPAN,
 						// 'etb': data.RVCardReadETB,
 						// 'token': tokenData,
+	};
+	
+	this.createSWipedDataToSave = function(swipedCardData){
+		console.log("================TO SAVE===============");
+		console.log(JSON.stringify(swipedCardData));
+		// var swipedCardDataToSave = {
+			// "et2": swipedCardData
+		// };
+// 		
+		// $scope.saveData.et2 = $scope.passData.et2;
+			// $scope.saveData.ksn = $scope.passData.ksn;
+			// $scope.saveData.pan = $scope.passData.pan;
+			// $scope.saveData.mli_token = $scope.passData.token;
+			// if($scope.passData.is_swiped){
+				// $scope.saveData.payment_credit_type = $scope.passData.credit_card;
+				// $scope.saveData.credit_card = $scope.passData.credit_card;
 	};
 
     

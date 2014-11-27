@@ -82,7 +82,8 @@ sntRover.controller('RVCardOptionsCtrl',
 		 */
 		$scope.getToken = function(){
 			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
-				$scope.renderDataFromSwipe($scope.passData.details.swipedDataToRenderInScreen);
+				var swipeOperationObj = new SwipeOperation();
+				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToSave(swipedCardData);
 			} else {
 				var sessionDetails = setUpSessionDetails();
 				var successCallBack = function(response){		
