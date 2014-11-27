@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog','RVPaymentSrv',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog,RVPaymentSrv) {
+
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.isSubmitButtonEnabled = false;
@@ -111,6 +112,35 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			setCreditCardFromList(data.index);
 		});
 
+		$scope.payDeposit = function() {
+			var onPaymentSuccess = function(data) {
+					console.log(data);
+					$scope.depositData.attempted = true;
+					$scope.depositData.depositSuccess = true;
+					$scope.depositData.authorizationCode = data.authorization_code;
+					$scope.$emit('hideLoader');
+				},
+				onPaymentFailure = function(errorMessage) {
+					$scope.depositData.attempted = true;
+					$scope.depositData.depositAttemptFailure = true;
+					$scope.errorMessage = errorMessage;
+					$scope.$emit('hideLoader');
+				}
+
+			var dataToMakePaymentApi = {
+				"postData": {
+					"bill_number": 1,
+					"payment_type": $scope.reservationData.paymentType.type.value,
+					"amount": $scope.depositData.depositValue,
+					"payment_type_id": $scope.reservationData.paymentType.type.id
+				},
+				"reservation_id": $scope.reservationData.reservationId
+			};
+
+			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToMakePaymentApi, onPaymentSuccess, onPaymentFailure);
+
+		}
+
 		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
 			var buttonClass = "grey";
 			if (isSubmitButtonEnabled) {
@@ -171,6 +201,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.depositData.description = "";
 				$scope.depositData.depositValue = 0.00;
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
+				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
 			} else {
 				$scope.depositData = {};
@@ -178,6 +209,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;
 				$scope.depositData.depositValue = $scope.reservationData.depositAmount;
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
+				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
 			}
 
@@ -236,36 +268,36 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			});
 
 			$scope.saveReservation();
-			
+
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 500);
 		};
 
-		$scope.$watch("reservationData.guest.id",function(){
+		$scope.$watch("reservationData.guest.id", function() {
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.errorMessage = ['Need to attach a card to proceed'];
-			}else{
+			} else {
 				$scope.errorMessage = [];
 				$scope.saveReservation();
 			}
 		});
-		$scope.$watch("reservationData.company.id",function(){
+		$scope.$watch("reservationData.company.id", function() {
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.errorMessage = ['Need to attach a card to proceed'];
-			}else{
+			} else {
 				$scope.errorMessage = [];
 				$scope.saveReservation();
 			}
 		});
-		$scope.$watch("reservationData.travelAgent.id",function(){
+		$scope.$watch("reservationData.travelAgent.id", function() {
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.errorMessage = ['Need to attach a card to proceed'];
-			}else{
+			} else {
 				$scope.errorMessage = [];
 				$scope.saveReservation();
 			}
-		});	
+		});
 
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
 
