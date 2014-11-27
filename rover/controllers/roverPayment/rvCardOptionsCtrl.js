@@ -8,6 +8,8 @@ sntRover.controller('RVCardOptionsCtrl',
 	 'RVPaymentSrv', 
 	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
 		BaseCtrl.call(this, $scope);
+
+		console.log("innnnnnnnnnnnnnnnnnnnn")
 		
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
@@ -22,24 +24,13 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.passData.details.firstName + "&card_holder_last_name=" + $scope.passData.details.lastName + "&service_action=createtoken&time="+time;
 		if($rootScope.paymentGateway == "sixpayments"){
 			$scope.shouldShowAddNewCard = false;
+			var iFrame = $document.find("sixIframe");
+			iFrame.attr("src", $scope.iFrameUrl);
 		}
 		$scope.shouldShowIframe = false;	
-		
-		/*
-		 * Handle toggle action onsite/callin
-		 */
-		$scope.clickedOnSiteCallIn = function(){
-			
-			$scope.shouldShowIframe = !$scope.shouldShowIframe;
-			if($scope.shouldShowIframe) { 
-            	var iFrame = $document.find("sixIframe");
-			    iFrame.attr("src", $scope.iFrameUrl);
-			    $scope.shouldShowAddNewCard = true;
-			} else {
-				$scope.shouldShowAddNewCard = false;
-			};
-		
-		};
+
+		console.log("outytttttttttttttttttttt")
+
 
 		var emptySessionDetails = function(){
 				$scope.cardData.cardNumber = "";
@@ -111,6 +102,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		};
 
 	    $scope.cancelCardSelection = function(){
+	    	console.log("cancel");
 	    	$scope.$emit('cancelCardSelection');
 	    };
 		

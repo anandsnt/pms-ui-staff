@@ -175,7 +175,7 @@
         <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-                <section ng-hide="true">
+           <!--      <section ng-hide="true">
                 <div class="entry full-width">
                     <label translate>SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
                     
@@ -192,7 +192,7 @@
                         <span>&nbsp;</span>
                     </label>
                     <input class="summary_email" ng-model="otherData.additionalEmail">
-                </div>
+                </div> -->
                 
                 <!-- <div class="entry full-width">
 				    <label for="booking-source">Booking Source</label>
@@ -208,7 +208,7 @@
 				        </label>
 				    </div>
 				</div> -->
-				<div class="entry full-width" style="height:50px;width:50%;" ng-show="isCallInOnsiteButtonVisible">
+			<!-- 	<div class="entry full-width" style="height:50px;width:50%;" ng-show="isCallInOnsiteButtonVisible">
 					<a style="height:50px;width:50%;float:left;" ng-click="clickedOnsite()">
 						<span class="onsite" ng-class="{'onsite-active': isOnsiteActive}" >On-Site</span>
 				     </a>
@@ -256,9 +256,9 @@
                     <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonEnabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonEnabled">SUBMIT_RESERVATION</button>
                     <button class="button blank" type="button" ng-click="cancelButtonClicked()" translate>CANCEL</button>
                 </div>
-            </section>
+            </section> -->
             <div id="set-payment" class="payment-form for-reservation"> 
-                <div class="entry full-width">
+                <div class="entry full-width" ng-show="!showCC">
                     <label for="payment-type" translate>PAYMENT_TYPE </label>
                     <div class="select">
 
@@ -268,25 +268,25 @@
                         </select>
                     </div>
                 </div>
+                <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && reservationData.paymentType.type.value === 'CC'" ng-click="changePaymentType()">
+                <label>Credit Card (<span>Tap to change</span>)</label>
+                <label class="active-item item-payment" id="pay-with-amex">
+                    <figure class="card-logo">
+                        <img src="/assets/{{renderData.creditCardType}}.png" alt="">
+                    </figure>
+                    <span class="number">Ending with 
+                        <span class="value number">{{renderData.endingWith}}</span>
+                    </span>
+                    <span class="date">Date 
+                        <span class="value date">{{renderData.cardExpiry}}</span>
+                    </span>
+                </label>
+                 </div>
 
                     <!-- Credit card options - hidden until CC set as payment type -->
-                    <div ng-include="'/assets/partials/reservation/rvCreditCard.html'"></div>
+                      <!-- Credit card options - hidden until CC set as payment type -->
+                    <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="reservationData.paymentType.type.value=== 'CC' && showCC"></div>
 
-                    <!-- Checkboxes -->
-                    <div class="entry margin">
-                        <label class="checkbox inline" for="add-in-guest-card">
-                            <span class="icon-form icon-checkbox"></span>
-                            <input name="checkin" id="add-in-guest-card" value="1" type="checkbox" />
-                            Add to Guest Card
-                        </label>
-                    </div>
-                    <div class="entry" ng-show="reservationData.paymentType.type.value=='CC'"> <!-- Show only when payment type is defined as CC -->
-                        <label class="checkbox inline" for="authorize-card">
-                            <span class="icon-form icon-checkbox"></span>
-                            <input name="authorize-card" id="authorize-card" value="1" type="checkbox" />
-                            Do Not Authorize Card
-                        </label>
-                    </div>
 
                     <!-- Use only if deposit is required -->
                     <div class="notice deposit" ng-if="depositData.isDepositRequired">                        
