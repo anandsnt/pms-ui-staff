@@ -10,6 +10,8 @@ var SwipeOperation = function(){
 			"cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4),
 			"nameOnCard": swipedCardData.RVCardReadCardName,
 			"cardExpiry": swipedCardData.RVCardReadExpDate,
+			"cardExpiryMonth": swipedCardData.RVCardReadExpDate.slice(-2),
+			"cardExpiryYear": swipedCardData.RVCardReadExpDate.substring(0, 2),
 			"et2": swipedCardData.RVCardReadTrack2,
 			'ksn': swipedCardData.RVCardReadTrack2KSN,
 			'pan': swipedCardData.RVCardReadMaskedPAN,

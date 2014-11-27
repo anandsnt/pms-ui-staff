@@ -11,9 +11,8 @@ sntRover.controller('RVCardOptionsCtrl',
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
 	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
-			console.log("eeeeeeee===="+swipedDataToRenderInScreen.cardExpiry);
-			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiry;
-			$scope.cardData.expiryYear = swipedDataToRenderInScreen.nameOnCard;
+			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
+			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
 	    };
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
