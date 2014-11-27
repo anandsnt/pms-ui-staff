@@ -25,6 +25,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.savePayment = {};
 	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
 	var isNewCardAdded = false;
+	$scope.dataToSave = {};
+	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+		$scope.dataToSave.paymentType = "CC";
+		$scope.showCCPage 			  = true;
+		$scope.addmode                = true;	
+	}
 
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
@@ -236,7 +242,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	var nonCCStayCardSuccess = function(data){
 		$scope.$emit("hideLoader");
 		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
-		alert($scope.paymentData.reservation_card.payment_method_used)
+		
 		$scope.closeDialog();
 	};
 	/*

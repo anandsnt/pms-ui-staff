@@ -265,6 +265,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		var promptCancel = function(penalty, nights,isDisplayReference) {
+			
 			var passData = {
 			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 			 		"details":{
@@ -452,6 +453,7 @@ sntRover.controller('reservationActionsController', [
 		 * Show Deposit/Balance Modal
 		 */
 		$scope.showDepositBalanceModal = function(){
+			
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 			var dataToSrv = {
 				"reservationId": reservationId

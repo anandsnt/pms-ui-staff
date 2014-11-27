@@ -8,9 +8,13 @@ sntRover.controller('RVCardOptionsCtrl',
 	 'RVPaymentSrv', 
 	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
 		BaseCtrl.call(this, $scope);
+		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
+	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
+			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
+			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
+			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
+	    };
 
-		console.log("innnnnnnnnnnnnnnnnnnnn")
-		
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
 		$scope.cardData = {};
@@ -19,6 +23,10 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.cardData.CCV = "";
 		$scope.cardData.expiryMonth ="";
 		$scope.cardData.expiryYear = "";
+		$scope.cardData.userName   = "";
+		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+			$scope.renderDataFromSwipe($scope.passData.details.swipedDataToRenderInScreen);
+		}
 		var time = new Date().getTime();
 		$scope.shouldShowAddNewCard = true;
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.passData.details.firstName + "&card_holder_last_name=" + $scope.passData.details.lastName + "&service_action=createtoken&time="+time;
@@ -29,7 +37,6 @@ sntRover.controller('RVCardOptionsCtrl',
 		}
 		$scope.shouldShowIframe = false;	
 
-		console.log("outytttttttttttttttttttt")
 
 
 		var emptySessionDetails = function(){
@@ -74,16 +81,21 @@ sntRover.controller('RVCardOptionsCtrl',
 		 * Function to get MLI token on click 'Add' button in form
 		 */
 		$scope.getToken = function(){
-			
-			var sessionDetails = setUpSessionDetails();
-			var successCallBack = function(response){		
-				response.isSixPayment = false;
-				notifyParent(response);
-			};
-			var failureCallback = function(errorMessage){
-				notifyParentError(errorMessage);
-			};
-			$scope.fetchMLI (sessionDetails,successCallBack,failureCallback);	//Base Ctrl function		
+			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+				var swipeOperationObj = new SwipeOperation();
+				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToSave(swipedCardData);
+			} else {
+				var sessionDetails = setUpSessionDetails();
+				var successCallBack = function(response){		
+					response.isSixPayment = false;
+					notifyParent(response);
+				};
+				var failureCallback = function(errorMessage){
+					notifyParentError(errorMessage);
+				};
+				$scope.fetchMLI (sessionDetails,successCallBack,failureCallback);
+			}
+			//Base Ctrl function		
 		};
 
 		/*
@@ -102,8 +114,12 @@ sntRover.controller('RVCardOptionsCtrl',
 		};
 
 	    $scope.cancelCardSelection = function(){
-	    	console.log("cancel");
 	    	$scope.$emit('cancelCardSelection');
 	    };
+	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
+			$scope.renderDataFromSwipe(swipedCardDataToRender);
+		});
+
+	   
 		
 }]);

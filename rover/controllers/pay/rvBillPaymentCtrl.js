@@ -129,12 +129,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	// CICO-9457 : To calculate fee - for standalone only
 	$scope.calculateFee = function(){
-		
+
 		if($scope.isStandAlone){
 			var feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
 			var amountSymbol = "";
 			var zeroAmount = parseFloat("0.00").toFixed(2);
-			if(typeof feesInfo != 'undefined') amountSymbol = feesInfo.amount_symbol;
+			if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
 
 			var totalAmount = ($scope.renderData.defaultPaymentAmount == "") ? zeroAmount :
 							parseFloat($scope.renderData.defaultPaymentAmount);

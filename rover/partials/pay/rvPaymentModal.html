@@ -43,10 +43,20 @@
         </div>
 
         <!-- Buttons -->
-        <div class="entry full-width" ng-hide="showCCPage">
+        <div class="entry full-width" ng-hide="showCCPage" ng-class="{'amount':isStandAlone}">
             <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
-            <input value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
+            <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
+            <span ng-if="isStandAlone" class="fee">
+                + {{currencySymbol}}{{renderData.calculatedFee}} fee
+            </span>
+            <span ng-if="isStandAlone" class="total">
+                Total:
+                <strong id="total-deposit-amount">
+                    {{currencySymbol}}{{renderData.totalOfValueAndFee}}
+                </strong>
+            </span>
         </div> 
+        
         <div class="entry full-width reference" ng-hide="showCC || !referenceTextAvailable">
                 <label for="reference">Reference</label>
                 <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
