@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1143,7 +1143,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     //console.log("===================="+$scope.reservationData.paymentType.type.value);
                     angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
                         if ($scope.reservationData.paymentType.type.value == item.value) {
-                            data.payment_type.type_id = item.id;
+                            data.payment_type.type_id = ($scope.reservationData.paymentType.type.value === "CC") ? $scope.reservationData.selectedPaymentId : item.id;
                         }
                     });
                     data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
@@ -1324,7 +1324,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
 
                 var params = {
-                     id: $scope.reservationData.reservationId
+                    id: $scope.reservationData.reservationId
                 };
 
                 $scope.invokeApi(RVReservationCardSrv.fetchCancellationPolicies, params, onCancellationDetailsFetchSuccess, onCancellationDetailsFetchFailure);
@@ -1389,6 +1389,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     /*
                      * TO DO:ends here
                      */
+
+                    $scope.successPaymentList = function(data) {
+                        $scope.$emit("hideLoader");
+                        $scope.cardsList = data.existing_payments;
+                        angular.forEach($scope.cardsList, function(value, key) {
+                            value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
+                            value.card_expiry = value.expiry_date; //Same comment above
+                        });
+                    };
+
+                    $scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.successPaymentList);
 
                     $scope.viewState.reservationStatus.confirm = true;
                     $scope.reservationData.is_routing_available = false;

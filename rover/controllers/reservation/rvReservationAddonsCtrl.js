@@ -49,7 +49,12 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
 
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
-            $scope.saveReservation('rover.reservation.staycard.mainCard.summaryAndConfirm');
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+                $scope.$emit('PROMPTCARD');
+            } else {
+                $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+            }
+            
         }
 
         $scope.selectAddonCategory = function(category, event) {
