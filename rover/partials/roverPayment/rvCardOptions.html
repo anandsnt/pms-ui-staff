@@ -16,7 +16,7 @@
 					<!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
 					<label for="booking-source">Guest Location</label>
 					<div class="switch-button" ng-class="{'on': !shouldShowIframe}">
-						<input name="booking-source" value="booking-source" type="checkbox" ng-model="isCallIn" ng-change="clickedOnSiteCallIn()" />
+						<input name="booking-source" value="booking-source" type="checkbox" ng-model="isCallIn" ng-change="shouldShowIframe = !shouldShowIframe" />
 						<label class="data-off" > 
 							<span class="value" >On-Site</span> 
 							<span class="switch-icon" >Call-In</span>

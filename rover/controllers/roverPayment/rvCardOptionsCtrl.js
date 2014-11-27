@@ -14,6 +14,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
 			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
 	    };
+
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
 		$scope.cardData = {};
@@ -31,24 +32,12 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.passData.details.firstName + "&card_holder_last_name=" + $scope.passData.details.lastName + "&service_action=createtoken&time="+time;
 		if($rootScope.paymentGateway == "sixpayments"){
 			$scope.shouldShowAddNewCard = false;
+			var iFrame = $document.find("sixIframe");
+			iFrame.attr("src", $scope.iFrameUrl);
 		}
 		$scope.shouldShowIframe = false;	
-		
-		/*
-		 * Handle toggle action onsite/callin
-		 */
-		$scope.clickedOnSiteCallIn = function(){
-			
-			$scope.shouldShowIframe = !$scope.shouldShowIframe;
-			if($scope.shouldShowIframe) { 
-            	var iFrame = $document.find("sixIframe");
-			    iFrame.attr("src", $scope.iFrameUrl);
-			    $scope.shouldShowAddNewCard = true;
-			} else {
-				$scope.shouldShowAddNewCard = false;
-			};
-		
-		};
+
+
 
 		var emptySessionDetails = function(){
 				$scope.cardData.cardNumber = "";
@@ -92,16 +81,20 @@ sntRover.controller('RVCardOptionsCtrl',
 		 * Function to get MLI token on click 'Add' button in form
 		 */
 		$scope.getToken = function(){
-			
-			var sessionDetails = setUpSessionDetails();
-			var successCallBack = function(response){		
-				response.isSixPayment = false;
-				notifyParent(response);
-			};
-			var failureCallback = function(errorMessage){
-				notifyParentError(errorMessage);
-			};
-			$scope.fetchMLI (sessionDetails,successCallBack,failureCallback);	//Base Ctrl function		
+			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+				$scope.renderDataFromSwipe($scope.passData.details.swipedDataToRenderInScreen);
+			} else {
+				var sessionDetails = setUpSessionDetails();
+				var successCallBack = function(response){		
+					response.isSixPayment = false;
+					notifyParent(response);
+				};
+				var failureCallback = function(errorMessage){
+					notifyParentError(errorMessage);
+				};
+				$scope.fetchMLI (sessionDetails,successCallBack,failureCallback);
+			}
+			//Base Ctrl function		
 		};
 
 		/*
