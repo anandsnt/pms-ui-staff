@@ -282,19 +282,25 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		return cardNumber;
 	};
 
+	var retrieveExpiryDate = function(){
+		var expiryMonth =  $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
+		var expiryYear  =  $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
+		var expiryDate = expiryMonth+" / "+expiryYear;
+		return expiryDate;
+	};
+
 	/*
 	* Success call back of save new card
 	*/
 	var successNewPayment = function(data){
 		$scope.$emit("hideLoader");
-		$scope.defaultPaymentTypeCard = retrieveCardtype();
-		
+		$scope.defaultPaymentTypeCard = retrieveCardtype();		
 		$scope.defaultPaymentTypeCardNumberEndingWith = retrieveCardNumber();
-		$scope.defaultPaymentTypeCardExpiry = $scope.newPaymentInfo.cardDetails.expiryMonth+"/"+$scope.newPaymentInfo.cardDetails.expiryYear;
+		$scope.defaultPaymentTypeCardExpiry =retrieveExpiryDate();
 		var selectedBillIndex = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
 		
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = retrieveCardtype();
-		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = $scope.newPaymentInfo.cardDetails.expiryMonth+"/"+$scope.newPaymentInfo.cardDetails.expiryYear;
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = retrieveExpiryDate();
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_number = retrieveCardNumber();
 		
 		$scope.saveData.payment_type_id = data.id;
@@ -308,7 +314,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			var dataToGuestList = {
 				"card_code": cardCode,
 				"mli_token": cardNumber,
-				"card_expiry": $scope.newPaymentInfo.cardDetails.expiryMonth+"/"+$scope.newPaymentInfo.cardDetails.expiryYear,
+				"card_expiry": retrieveExpiryDate(),
 				"card_name": $scope.newPaymentInfo.cardDetails.userName,
 				"id": data.id,
 				"isSelected": true,
@@ -320,14 +326,17 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
 		$scope.showCCPage = false;
+		$scope.showCreditCardInfo = true;
 		$scope.$broadcast("clearCardDetails");
 	};
 	/*
 	* To save new card
 	*/
 	var savePayment = function(data){
-		var cardToken = !data.tokenDetails.isSixPayment ? data.tokenDetails.session:data.tokenDetails.token_no;	
-		var expiryDate = $scope.newPaymentInfo.cardDetails.expiryMonth && $scope.newPaymentInfo.cardDetails.expiryYear ? "20"+$scope.newPaymentInfo.cardDetails.expiryYear+"-"+$scope.newPaymentInfo.cardDetails.expiryMonth+"-01" : "";
+		var cardToken   = !data.tokenDetails.isSixPayment ? data.tokenDetails.session:data.tokenDetails.token_no;	
+		var expiryMonth = data.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
+		var expiryYear  = data.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
+		var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
 
 		var dataToSave = {
 				"add_to_guest_card": $scope.newPaymentInfo.cardDetails.addToGuestCard,

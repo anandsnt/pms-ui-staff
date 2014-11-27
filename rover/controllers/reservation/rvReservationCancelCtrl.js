@@ -7,6 +7,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.showAddtoGuestCard = true;
 		$scope.addmode = false;
 		$scope.showCC = false;
+		$scope.referanceText = "";
 
 		$scope.cancellationData = {
 			selectedCard: -1,
@@ -43,10 +44,9 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		};
 
 		var retrieveExpiryDate = function(){
-			var expiryDate = $scope.newPaymentInfo.tokenDetails.isSixPayment?
-						$scope.newPaymentInfo.tokenDetails.expiry_month+"/"+$scope.newPaymentInfo.tokenDetails.expiry_year:
-						$scope.newPaymentInfo.cardDetails.expiryMonth+"/"+$scope.newPaymentInfo.cardDetails.expiryYear
-						;
+			var expiryMonth =  $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
+			var expiryYear  =  $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
+			var expiryDate = expiryMonth+" / "+expiryYear;
 			return expiryDate;
 		};
 
@@ -59,9 +59,10 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 
 		var savePayment = function() {
 
-			var cardExpiry  = 
-				$scope.newPaymentInfo.tokenDetails.isSixPayment ?'' :
-				($scope.newPaymentInfo.cardDetails.expiryMonth && $scope.newPaymentInfo.cardDetails.expiryYear ? "20" + $scope.newPaymentInfo.cardDetails.expiryYear + "-" + $scope.newPaymentInfo.cardDetails.expiryMonth + "-01" : "");
+			var expiryMonth = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
+			var expiryYear  = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
+			var cardExpiry  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
+
 			var cardToken = !$scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.session:$scope.newPaymentInfo.tokenDetails.token_no;	
 			var onSaveSuccess = function(data) {
 				$scope.$emit('hideLoader');
@@ -128,6 +129,9 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
 				id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId
 			}
+			if($scope.ngDialogData.isDisplayReference){
+				cancellationParameters.reference_text = $scope.referanceText;
+			};
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
 		};
 
