@@ -265,6 +265,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		var promptCancel = function(penalty, nights,isDisplayReference) {
+			
 			var passData = {
 			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 			 		"details":{
