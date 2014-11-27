@@ -95,27 +95,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 							}
 						});
 
-						_.each($scope.multiSheetState.selectedEmployees, function(employee) {
-							var employee = employee.id;
-							if (!$scope.multiSheetState.assignments[employee] || reset) {
-								$scope.multiSheetState.assignments[employee] = {};
-								$scope.multiSheetState.assignments[employee].rooms = [];
-								$scope.multiSheetState.assignments[employee].summary = {
-									shift: {
-										completed: "00:00",
-										total: "00:00"
-									},
-									stayovers: {
-										total: 0,
-										completed: 0
-									},
-									departures: {
-										total: 0,
-										completed: 0
-									}
-								}
-							}
-						});
 						refreshView();
 						$scope.$emit('hideLoader');
 					},
@@ -379,7 +358,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			selectionHistory = [];
 			_.each($scope.employeeList, function(employee) {
 				if (employee.ticked) selectionHistory.push(employee.id);
-			})
+			});
 		}
 
 		/**
@@ -400,9 +379,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					//Update worksheet Ids
 					if (data.touched_work_sheets && data.touched_work_sheets.length) {
 						_.each(data.touched_work_sheets, function(wS) {
-							$scope.multiSheetState.assignments[wS.assignee_id].worksheetId = wS.work_sheet_id;
-						})
-					}
+							if ( !!$scope.multiSheetState.assignments[wS.assignee_id] ) {
+								$scope.multiSheetState.assignments[wS.assignee_id].worksheetId = wS.work_sheet_id;
+							};
+						});
+					};
 					$scope.clearErrorMessage();
 
 					afterAPIcall();
@@ -414,18 +395,23 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					afterAPIcall();
 				};
 
-
 			// only post data if we have selected employes
-			console.log($scope.multiSheetState.selectedEmployees);
+			console.log($scope.multiSheetState);
 			if ( $scope.multiSheetState.selectedEmployees.length ) {
 				_.each($scope.multiSheetState.selectedEmployees, function(employee) {
 					var assignment = {};
 					assignment.assignee_id = employee.id;
-					assignment.work_sheet_id = $scope.multiSheetState.assignments[employee.id].worksheetId;
 					assignment.room_ids = [];
-					_.each($scope.multiSheetState.assignments[employee.id].rooms, function(room) {
-						assignment.room_ids.push(room.id);
-					})
+
+					if ( !!$scope.multiSheetState.assignments[employee.id] ) {
+						assignment.work_sheet_id = $scope.multiSheetState.assignments[employee.id].worksheetId;
+						_.each($scope.multiSheetState.assignments[employee.id].rooms, function(room) {
+							assignment.room_ids.push(room.id);
+						})
+					} else {
+						assignment.work_sheet_id = '';
+					};
+
 					assignments.push(assignment);
 				});
 
