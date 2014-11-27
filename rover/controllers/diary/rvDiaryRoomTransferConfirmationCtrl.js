@@ -35,6 +35,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		$scope.price = roomXfer.next.room.new_price - roomXfer.current.room.old_price;
 
+
 		$scope.selectAdditional = function() {
 			ngDialog.close();
 		};
@@ -51,7 +52,8 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 			var rooms = {
 				room_id: next.room.id,
 				rateId:  next.room.room_type.id,
-				amount: $scope.price
+				amount: $scope.price,
+				reservation_id: next.occupancy.reservation_id
 			}
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
@@ -61,7 +63,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		};
 
 		$scope.confirm = function() {
-			$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.reservation);
+			$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);
 		};
 
 		$scope.closeDialog = function() {
