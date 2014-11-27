@@ -83,7 +83,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.renderData.cardExpiry =retrieveExpiryDate();
 			};
 
-			var data = {}
+			var data = {};
 			data.reservation_id= $scope.reservationData.reservationId;	
 			data.token = (!$scope.newPaymentInfo.tokenDetails.isSixPayment)?
 								$scope.newPaymentInfo.tokenDetails.session :
@@ -250,9 +250,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.setScroller('reservationSummary', {
 				'click': true
 			});
-			$scope.setScroller('paymentInfo', {
-				'click': true
-			});
+			$scope.setScroller('paymentInfo');
 			fetchPaymentMethods();
 			refreshScrolls();
 		};
