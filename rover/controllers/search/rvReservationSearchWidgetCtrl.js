@@ -661,7 +661,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				isDisabled = true;
 			}
 			return isDisabled;
-		}
+		};
 
 		$scope.showCalendar = function(controller) {
 		    ngDialog.open({
@@ -671,7 +671,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		        closeByDocument: true,	        
 		        scope: $scope
 		    });
-		}
+		};
 		// For dashboard button search(DUEIN, STAYOVER, DUEOUT etc)
 		// the search API is called in router via resolve method.
 		// The scope mismatch for date params would occur.
@@ -680,13 +680,21 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.fromDate = date;
 			fetchSearchResults();
 			RVSearchSrv.fromDate = date;		
-		}
+		};
 		$scope.onToDateChanged = function(date){
 			$scope.toDate = date;
 			fetchSearchResults();
 			RVSearchSrv.toDate = date;
 
-		}
+		};
+
+		$scope.getTimeConverted = function(time){
+			if(time == null || time == undefined){
+				return "";
+			}
+			var timeDict = tConvert(time);
+			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
+p		};
 
 	}
 ]);
