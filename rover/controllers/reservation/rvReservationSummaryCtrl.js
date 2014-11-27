@@ -64,21 +64,27 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
 		});
 
-		$scope.payDeposit = function(){
-			var onPaymentSuccess = function(data){
-				console.log(data);
-				$scope.$emit('hideLoader');
-			},onPaymentFailure = function(errorMessage){
-				$scope.errorMessage = errorMessage;
-				$scope.$emit('hideLoader');
-			}
+		$scope.payDeposit = function() {
+			var onPaymentSuccess = function(data) {
+					console.log(data);
+					$scope.$emit('hideLoader');
+				},
+				onPaymentFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+					$scope.$emit('hideLoader');
+				}
 
 			var dataToMakePaymentApi = {
-				// "guest_payment_id": '',
-				"reservation_id": $scope.reservationData.reservationId,
-				"amount": 1
+				"postData": {
+					"bill_number": 1,
+					"payment_type": reservationData.paymentType.type.value,
+					"amount": $scope.depositData.depositValue,
+					"payment_type_id": reservationData.paymentType.type.id
+				},
+				"reservation_id": $scope.reservationData.reservationId
 			};
-			$scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, onPaymentSuccess, onPaymentFailure);
+
+			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToMakePaymentApi, onPaymentSuccess, onPaymentFailure);
 
 		}
 
@@ -217,36 +223,36 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			});
 
 			$scope.saveReservation();
-			
+
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 500);
 		};
 
-		$scope.$watch("reservationData.guest.id",function(){
+		$scope.$watch("reservationData.guest.id", function() {
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.errorMessage = ['Need to attach a card to proceed'];
-			}else{
+			} else {
 				$scope.errorMessage = [];
 				$scope.saveReservation();
 			}
 		});
-		$scope.$watch("reservationData.company.id",function(){
+		$scope.$watch("reservationData.company.id", function() {
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.errorMessage = ['Need to attach a card to proceed'];
-			}else{
+			} else {
 				$scope.errorMessage = [];
 				$scope.saveReservation();
 			}
 		});
-		$scope.$watch("reservationData.travelAgent.id",function(){
+		$scope.$watch("reservationData.travelAgent.id", function() {
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.errorMessage = ['Need to attach a card to proceed'];
-			}else{
+			} else {
 				$scope.errorMessage = [];
 				$scope.saveReservation();
 			}
-		});	
+		});
 
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
 
