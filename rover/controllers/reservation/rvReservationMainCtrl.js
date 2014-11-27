@@ -137,7 +137,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 isSameCard: false, // Set flag to retain the card details,
                 rateDetails: [], // This array would hold the configuration information of rates selected for each room
                 isRoomRateSuppressed: false, // This variable will hold flag to check whether any of the room rates is suppressed?
-                reservation_card : {}
+                reservation_card: {}
             };
 
             $scope.searchData = {
@@ -160,8 +160,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
             // default max value if max_adults, max_children, max_infants is not configured
             var defaultMaxvalue = 5;
-            var guestMaxSettings = baseSearchData.settings.max_guests;            
-            
+            var guestMaxSettings = baseSearchData.settings.max_guests;
+
             /**
              *   We have moved the fetching of 'baseData' form 'rover.reservation' state
              *   to the states where it actually requires it.
@@ -191,7 +191,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.additionalEmail = "";
             $scope.otherData.isGuestPrimaryEmailChecked = false;
             $scope.otherData.isGuestAdditionalEmailChecked = false;
-            $scope.otherData.reservationCreated = false;    
+            $scope.otherData.reservationCreated = false;
 
             $scope.guestCardData = {};
             $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
@@ -1084,7 +1084,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
          *   by climbing the $socpe.$parent ladder and will call this method.
          */
         $scope.callFromChildCtrl = function(baseData) {
-
             // update these datas.
             $scope.otherData.marketsEnabled = baseData.demographics.is_use_markets;
             $scope.otherData.markets = baseData.demographics.markets;
@@ -1097,5 +1096,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             // call this. no sure how we can pass date from here
             $scope.checkOccupancyLimit();
         };
+
+        $scope.editReservationRates = function(room) {
+            ngDialog.open({
+                template: '/assets/partials/reservation/rvEditRates.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(room)               
+            });
+        }
     }
 ]);
