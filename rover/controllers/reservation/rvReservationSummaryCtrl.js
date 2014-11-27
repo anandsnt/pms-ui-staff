@@ -41,8 +41,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var retrieveCardtype = function(){
 			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 				getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
-				getCreditCardType($scope.newPaymentInfo.tokenDetails.cardBrand).toLowerCase()
-				;
+				getCreditCardType($scope.newPaymentInfo.tokenDetails.cardBrand).toLowerCase();
 			return cardType;
 		};
 
@@ -77,7 +76,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit('hideLoader');
 				$scope.showCC = false;
 				$scope.showSelectedCreditCard = true;
-				$scope.paymentId = data.id;
+				$scope.reservationData.selectedPaymentId = data.id;				
 				$scope.renderData.creditCardType = retrieveCardtype();
 				$scope.renderData.endingWith  =retrieveCardNumber();
 				$scope.renderData.cardExpiry =retrieveExpiryDate();
@@ -100,7 +99,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		});
 
 		var setCreditCardFromList = function(index){	
-			$scope.paymentId =  $scope.cardsList[index].value;
+			$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value;
 			$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
 			$scope.renderData.endingWith  =$scope.cardsList[index].mli_token;
 			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
@@ -132,7 +131,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"bill_number": 1,
 					"payment_type": $scope.reservationData.paymentType.type.value,
 					"amount": $scope.depositData.depositValue,
-					"payment_type_id": $scope.reservationData.paymentType.type.id
+					"payment_type_id": $scope.reservationData.selectedPaymentId
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
@@ -169,9 +168,36 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		}
 
 		$scope.init = function() {
+			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+				$scope.$emit('PROMPTCARD');
+				$scope.$watch("reservationData.guest.id", function() {
+					if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+						$scope.errorMessage = ['Need to attach a card to proceed'];
+					} else {
+						$scope.errorMessage = [];
+						$scope.saveReservation();
+					}
+				});
+				$scope.$watch("reservationData.company.id", function() {
+					if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+						$scope.errorMessage = ['Need to attach a card to proceed'];
+					} else {
+						$scope.errorMessage = [];
+						$scope.saveReservation();
+					}
+				});
+				$scope.$watch("reservationData.travelAgent.id", function() {
+					if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+						$scope.errorMessage = ['Need to attach a card to proceed'];
+					} else {
+						$scope.errorMessage = [];
+						$scope.saveReservation();
+					}
+				});
+			} else {
+				$scope.saveReservation();
+			}
 			$scope.data = {};
-
-
 
 			$scope.cards = {
 				available: false,
@@ -179,7 +205,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			if ($stateParams.reservation == "HOURLY") {
-				$scope.errorMessage = ['Need to attach a card to proceed'];
 				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
@@ -273,31 +298,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit('hideLoader');
 			}, 500);
 		};
-
-		$scope.$watch("reservationData.guest.id", function() {
-			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-				$scope.errorMessage = ['Need to attach a card to proceed'];
-			} else {
-				$scope.errorMessage = [];
-				$scope.saveReservation();
-			}
-		});
-		$scope.$watch("reservationData.company.id", function() {
-			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-				$scope.errorMessage = ['Need to attach a card to proceed'];
-			} else {
-				$scope.errorMessage = [];
-				$scope.saveReservation();
-			}
-		});
-		$scope.$watch("reservationData.travelAgent.id", function() {
-			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-				$scope.errorMessage = ['Need to attach a card to proceed'];
-			} else {
-				$scope.errorMessage = [];
-				$scope.saveReservation();
-			}
-		});
 
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
 

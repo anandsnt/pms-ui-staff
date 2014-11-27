@@ -12,6 +12,34 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			cardId: ""
 		}
 
+		// CICO-9457 : Data for fees details.
+		$scope.setupFeeData = function(){
+			$scope.feeData = {};
+			var feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
+			var zeroAmount = parseFloat("0.00").toFixed(2);
+			var defaultAmount = $scope.ngDialogData.penalty ?
+			 	$scope.ngDialogData.penalty : zeroAmount;
+			console.log("feesInfo :");console.log(feesInfo);
+			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+				
+				var amountSymbol = feesInfo.amount_symbol;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				$scope.feeData.actualFees = feesAmount;
+				
+				if(amountSymbol == "%") $scope.calculateFee();
+				else{
+					$scope.feeData.calculatedFee = feesAmount;
+					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+				}
+			}
+			else{
+				$scope.feeData.actualFees = zeroAmount;
+				$scope.feeData.calculatedFee = zeroAmount;
+				$scope.feeData.totalOfValueAndFee = zeroAmount;
+			}
+		}
+		// CICO-9457 : Data for fees details - standalone only.	
+		if($scope.isStandAlone)	$scope.setupFeeData();
 
 		var cancelReservation = function(cancellationParameters) {
 			var onCancelSuccess = function(data) {
