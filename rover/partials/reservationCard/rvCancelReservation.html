@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog">
+<div id="modal" class="modal-show" role="dialog" ng-cloak>
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 <form method="post" action="cancel-reservation" id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-class="{'select-card':ngDialogData.state == 'PENALTY'}"><!-- Add class "select-card" when applying penalty charge -->
     <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
@@ -50,9 +50,9 @@
             <span class="total">Total: <strong id="total-deposit-amount" >${value+fee} </strong></span>-->
             </div>
             <!-- Reference field - use only when it exsits -->
-            <div class="entry full-width reference" ng-hide="showCC">
+            <div class="entry full-width reference" ng-hide="showCC || !ngDialogData.isDisplayReference">
                 <label for="reference">Reference</label>
-                <input name="reference" id="reference" value="" type="text" />
+                <input name="reference" id="reference" ng-model="referanceText" type="text" />
             </div>
 
 
