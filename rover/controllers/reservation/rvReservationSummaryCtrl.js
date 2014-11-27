@@ -178,6 +178,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
 				value['roomNumber'] = roomsArray[value.room_id].room_no;
 			});
+			
 			$scope.reservationData.rooms = [];
 			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
 			$scope.reservationData.arrivalDate = temporaryReservationDataFromDiaryScreen.arrival_date;
@@ -243,7 +244,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.invokeApi(RVReservationSummarySrv.getTaxDetails, {
 				rate_ids: rateIdSet
 			}, ratesFetched);
-		};
+		}.bind($scope.reservationData);
 
 		/**
 		 * Fetches all the payment methods

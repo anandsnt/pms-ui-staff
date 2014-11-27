@@ -407,7 +407,7 @@ sntRover
 		    	},
 		    	next: {
 		    		room:  row_data,
-		    		occupancy: row_item_data
+		    		occupancy: row_item_data,
 	    		}
 	    	};
 	    	
@@ -798,14 +798,14 @@ sntRover
 			rate_type = $scope.gridProps.filter.rate_type,
 			accound_id = $scope.gridProps.filter.account_id;
 		
-	
-		return {
+		var paramsToReturn = {
 			start_date: start,
 			end_date: end,
 			room_type_id: rt_filter,
 			rate_type: rate_type,
 			account_id: accound_id
 		};
+		return paramsToReturn
 	};
 
 	/*

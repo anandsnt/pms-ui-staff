@@ -184,7 +184,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             standAlone: true,
             menuIndex: "createReservation"
           }, {
-            title: "MENU_ROOM_ASSIGNMENT",
+            title: "MENU_ROOM_DIARY",
             action: 'rover.reservation.diary',
             standAlone: true,
             hidden: !$rootScope.isHourlyRateOn,
