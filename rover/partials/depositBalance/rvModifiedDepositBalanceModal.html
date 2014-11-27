@@ -72,7 +72,7 @@
 	                </label>
 	            </div>
 				<div class="entry full-width" ng-show="shouldShowMakePaymentScreen" ng-class="{'amount':depositBalanceMakePaymentData.fees!='' && isStandAlone}"><!-- Add class "amount" when fee exsists -->
-				    <label for="amount">Amount to pay (<span>$</span>)</label>
+				    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
 				    <input name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" value="{{depositBalanceMakePaymentData.amount}}" type="text" />
 				    <!-- CICO-9457 : Use only when fee exsists in standalone -->
 				    <span ng-if="isStandAlone" class="fee">
