@@ -452,6 +452,7 @@ sntRover.controller('reservationActionsController', [
 		 * Show Deposit/Balance Modal
 		 */
 		$scope.showDepositBalanceModal = function(){
+			
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 			var dataToSrv = {
 				"reservationId": reservationId

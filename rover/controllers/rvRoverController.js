@@ -68,7 +68,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
   	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
   	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
-  	// $rootScope.paymentGateway = "sixpaymentsgh";
+  	// $rootScope.paymentGateway = "sixpayments";
   	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
     //set MLI Merchant Id
@@ -135,8 +135,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.userId = hotelDetails.current_user.id;
 
     $scope.isDepositBalanceScreenOpened = false;
-    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function() {
-      $scope.isDepositBalanceScreenOpened = true;
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(value) {
+      $scope.isDepositBalanceScreenOpened = value;
     });
     $scope.searchBackButtonCaption = '';
 
@@ -527,8 +527,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     });
     
     $scope.successCallBackSwipe = function(data) {
-    	
-      $scope.$broadcast('SWIPEHAPPENED', data);
+      // $scope.$broadcast('SWIPEHAPPENED', data);
+      
+      $scope.$broadcast('SWIPE_ACTION', data);
     };
 
     $scope.failureCallBackSwipe = function() {};
@@ -565,10 +566,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Start Card reader now!.
      * Time out is to call set Browser
      */
-
-    setTimeout(function() {
-      $scope.initiateCardReader();
-    }, 2000);
+	if($rootScope.paymentGateway != "sixpayments"){
+		setTimeout(function() {
+	      $scope.initiateCardReader();
+	    }, 2000);
+	}
+    
 
     /*
      * To show add new payment modal

@@ -14,13 +14,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					
 	BaseCtrl.call(this, $scope);
 
-	// $scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
+	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
 	//console.log($scope.depositBalanceData.data.existing_payments)
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
 		value.isSelected = false;
 		value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
 		value.card_expiry = value.expiry_date;//Same comment above
 	});
+	
 	$scope.addmode = true;
 	$scope.shouldShowExistingCards = true;
 	$scope.shouldShowAddNewCard   = true;
@@ -123,7 +124,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 
 	$scope.closeDepositModal = function(){
-		$scope.isDepositBalanceScreenOpened = false;
+		$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", false);
 		$scope.closeDialog();
 	};
 	/*
@@ -177,6 +178,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.shouldShowMakePaymentScreen       = true; 
 		//$scope.shouldShowExistingCards  		 = false;
 		$scope.addmode                 			 = false;
+	});
+	
+	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender){
+		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 
 }]);
