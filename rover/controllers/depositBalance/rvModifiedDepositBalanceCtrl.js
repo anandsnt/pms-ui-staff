@@ -124,7 +124,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.feeData.calculatedFee = zeroAmount;
 			$scope.feeData.totalOfValueAndFee = zeroAmount;
 		}
-	}
+	};
 	// CICO-9457 : Data for fees details - standalone only.	
 	if($scope.isStandAlone)	$scope.setupFeeData();
 
@@ -143,7 +143,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			"postData": {
 				"payment_type": "CC",//FOR NOW - Since there is no drop down to select another payment type
 				"amount": $scope.depositBalanceMakePaymentData.amount,
-				"payment_type_id": $scope.paymentId
+				"payment_type_id": $scope.paymentId,
+				"credit_card_type" : $scope.depositBalanceMakePaymentData.card_code.toUpperCase()
 			},
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id
 		};
