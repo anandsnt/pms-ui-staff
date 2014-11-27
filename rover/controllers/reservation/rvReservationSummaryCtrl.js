@@ -67,9 +67,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.payDeposit = function() {
 			var onPaymentSuccess = function(data) {
 					console.log(data);
+					$scope.depositData.attempted = true;
+					$scope.depositData.depositSuccess = true;
+					$scope.depositData.authorizationCode = data.authorization_code;
 					$scope.$emit('hideLoader');
 				},
 				onPaymentFailure = function(errorMessage) {
+					$scope.depositData.attempted = true;
+					$scope.depositData.depositAttemptFailure = true;
 					$scope.errorMessage = errorMessage;
 					$scope.$emit('hideLoader');
 				}
@@ -77,9 +82,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var dataToMakePaymentApi = {
 				"postData": {
 					"bill_number": 1,
-					"payment_type": reservationData.paymentType.type.value,
+					"payment_type": $scope.reservationData.paymentType.type.value,
 					"amount": $scope.depositData.depositValue,
-					"payment_type_id": reservationData.paymentType.type.id
+					"payment_type_id": $scope.reservationData.paymentType.type.id
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
@@ -158,6 +163,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.depositData.description = "";
 				$scope.depositData.depositValue = 0.00;
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
+				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
 			} else {
 				$scope.depositData = {};
@@ -165,6 +171,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;
 				$scope.depositData.depositValue = $scope.reservationData.depositAmount;
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
+				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
 			}
 
