@@ -1,3 +1,4 @@
+
 sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv',
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv) {
 
@@ -23,45 +24,92 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.isIframeVisible = false;
 		}
 
-		var absoluteUrl = $location.$$absUrl;
-		domainUrl = absoluteUrl.split("/staff#/")[0];
-		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?amount=" + $filter('number')($scope.reservationData.totalStayCost, 2) + '&card_holder_first_name=' + $scope.guestCardData.contactInfo.first_name + '&card_holder_last_name=' + $scope.guestCardData.contactInfo.last_name + '&service_action=createtoken';
-		// var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-		// var eventer = window[eventMethod];
-		// // Now...
-		// // if 
-		// //    "attachEvent", then we need to select "onmessage" as the event. 
-		// // if 
-		// //    "addEventListener", then we need to select "message" as the event
+		// var absoluteUrl = $location.$$absUrl;
+		// domainUrl = absoluteUrl.split("/staff#/")[0];
+		// $scope.iFrameUrl = domainUrl + "/api/ipage/index.html?amount=" + $filter('number')($scope.reservationData.totalStayCost, 2) + '&card_holder_first_name=' + $scope.guestCardData.contactInfo.first_name + '&card_holder_last_name=' + $scope.guestCardData.contactInfo.last_name + '&service_action=createtoken';
+		
+		$scope.passData = { "details":{}};
 
-		// var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
+		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+		$scope.addmode = true;
+		$scope.showCC = false;
+		$scope.showAddtoGuestCard = true;
+		$scope.shouldShowAddNewCard = true;
+		$scope.renderData = {};
 
-		// // Listen to message from child IFrame window
+		var retrieveCardtype = function(){
+			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+				getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
+				getCreditCardType($scope.newPaymentInfo.tokenDetails.cardBrand).toLowerCase()
+				;
+			return cardType;
+		};
 
-		// eventer(messageEvent, function (e) {
+		var retrieveCardNumber = function(){
+			var cardNumber = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+				$scope.newPaymentInfo.tokenDetails.token_no.substr($scope.newPaymentInfo.tokenDetails.token_no.length - 4):
+				$scope.newPaymentInfo.cardDetails.cardNumber.slice(-4);
+			return cardNumber;
+		};
 
-		// 	   var responseData = e.data;
-		//        if(responseData.response_message == "token_created"){
-		//        		$scope.isSubmitButtonEnabled = true;
-		//        		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
-		//      				//responseData = dclone(responseData, unwantedKeys);
-		//        		//console.log(JSON.stringify(responseData));
-		//        		$scope.six_token = responseData.token_no;
+		var retrieveExpiryDate = function(){
+			var expiryMonth =  $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
+				var expiryYear  =  $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
+				var expiryDate = expiryMonth+" / "+expiryYear;
+			return expiryDate;
+		};
 
-		//        		//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
-		//        }
+		var retrieveExpiryDateForSave = function(){
+			var expiryMonth =  $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
+				var expiryYear  =  $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
+				var expiryDate = "20"+expiryYear+"-"+expiryMonth+"-"+"01";
+			return expiryDate;
+		};
 
-		// }, false);   
+		$scope.$on('cancelCardSelection',function(){
+			$scope.showCC = false;
+			$scope.reservationData.paymentType.type.value = ""; 
+		}); 
 
-		$rootScope.$on('six_token_recived', function(e, data) {
-			console.log(data);
-			$scope.isSubmitButtonEnabled = true;
-			// var unwantedKeys = ["response_message"]; // remove unwanted keys for API
-			// responseData = dclone(responseData, unwantedKeys);
-			// console.log(JSON.stringify(responseData));
-			$scope.six_token = data.six_token;
-			console.log($scope.six_token)
-				//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
+		var savenewCc = function(){
+			var ccSaveSuccess = function(data){
+				$scope.$emit('hideLoader');
+				$scope.showCC = false;
+				$scope.showSelectedCreditCard = true;
+				$scope.paymentId = data.id;
+				$scope.renderData.creditCardType = retrieveCardtype();
+				$scope.renderData.endingWith  =retrieveCardNumber();
+				$scope.renderData.cardExpiry =retrieveExpiryDate();
+			};
+
+			var data = {}
+			data.reservation_id= $scope.reservationData.reservationId;	
+			data.token = (!$scope.newPaymentInfo.tokenDetails.isSixPayment)?
+								$scope.newPaymentInfo.tokenDetails.session :
+								$scope.newPaymentInfo.tokenDetails.token_no;
+			data.add_to_guest_card = $scope.newPaymentInfo.cardDetails.addToGuestCard;
+			data.card_code =  retrieveCardtype();
+			data.card_expiry = retrieveExpiryDateForSave();
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
+		};
+
+		$scope.$on("TOKEN_CREATED", function(e,data){
+			$scope.newPaymentInfo = data;
+			savenewCc();
+		});
+
+		var setCreditCardFromList = function(index){	
+			$scope.paymentId =  $scope.cardsList[index].value;
+			$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
+			$scope.renderData.endingWith  =$scope.cardsList[index].mli_token;
+			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
+			$scope.showCC = false;
+			$scope.showSelectedCreditCard = true;
+		};
+
+		$scope.$on('cardSelected',function(e,data){
+			setCreditCardFromList(data.index);
 		});
 
 		$scope.payDeposit = function() {
@@ -106,16 +154,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		// $scope.isSubmitButtonEnabled = true;
 		// $scope.creditCardTransactionId = data.credit_card_transaction_id;
 		// };
-
-
-
-		setTimeout(function() {
-			// var MyIFrame = document.getElementById("sixpaymentform");
-			// var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
-			// if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
-			// MyIFrameDoc.getElementById("six_form").submit();
-
-		}, 1000);
 
 		// set the previous state -- 
 
@@ -464,55 +502,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		};
 
-		/**
-		 * MLI integration
-		 *
-		 */
-		var fetchMLISession = function() {
-			var sessionDetails = {};
-			sessionDetails.cardNumber = $scope.reservationData.paymentType.ccDetails.number;
-			sessionDetails.cardSecurityCode = $scope.reservationData.paymentType.ccDetails.cvv;
-			sessionDetails.cardExpiryMonth = $scope.reservationData.paymentType.ccDetails.expMonth;
-			sessionDetails.cardExpiryYear = $scope.reservationData.paymentType.ccDetails.expYear;
 
-			var callback = function(response) {
-				$scope.$emit("hideLoader");
-				$scope.$apply();
-				if (response.status === "ok") {
-					$scope.data.MLIData = response;
-					$scope.isSubmitButtonEnabled = true;
-				} else {
-					$scope.errorMessage = ["There is a problem with your credit card"];
-					$scope.data.MLIData = {};
-				}
-				$scope.$apply();
-			};
-
-			try {
-				HostedForm.updateSession(sessionDetails, callback);
-				$scope.$emit("showLoader");
-			} catch (err) {
-				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
-			};
-		};
-
-		$scope.initFetchMLI = function() {
-			if ($scope.reservationData.paymentType.ccDetails.number == "" ||
-				$scope.reservationData.paymentType.ccDetails.cvv == "" ||
-				$scope.reservationData.paymentType.ccDetails.expMonth == "" ||
-				$scope.reservationData.paymentType.ccDetails.expYear == "") {
-				return false;
-			}
-			fetchMLISession();
-		};
-
-		$scope.setUpMLIConnection = function() {
-			try {
-				HostedForm.setMerchant($rootScope.MLImerchantId);
-			} catch (err) {};
-
-		}();
-
+	
 		/**
 		 * Click handler for confirm button -
 		 * Creates the reservation and on success, goes to the confirmation screen
@@ -558,18 +549,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
-				if ($rootScope.paymentGateway === "sixpayments") {
-					$scope.isSixPaymentGatewayVisible = true;
-					if ($scope.isOnsiteActive) {
-						$scope.isMLICreditCardVisible = false;
-					} else {
-						$scope.isMLICreditCardVisible = false;
-					}
-
-				} else {
-					$scope.isSixPaymentGatewayVisible = false;
-					$scope.isMLICreditCardVisible = true;
-				}
+				$scope.showCC = true;
+				$scope.addmode = $scope.cardsList.length > 0 ? false:true;
 			} else {
 				$scope.isSixPaymentGatewayVisible = false;
 				$scope.isMLICreditCardVisible = false;
