@@ -268,7 +268,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && reservationData.paymentType.type.value === 'CC'" ng-click="changePaymentType()">
+                <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && reservationData.paymentType.type.value === 'CC' && !showCC" ng-click="changePaymentType()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label class="active-item item-payment" id="pay-with-amex">
                     <figure class="card-logo">

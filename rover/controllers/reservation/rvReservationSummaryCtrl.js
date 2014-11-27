@@ -35,6 +35,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.showCC = false;
 		$scope.showAddtoGuestCard = true;
 		$scope.shouldShowAddNewCard = true;
+		$scope.renderData = {};
 
 		var retrieveCardtype = function(){
 			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
@@ -76,7 +77,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.showCC = false;
 				$scope.showSelectedCreditCard = true;
 				$scope.paymentId = data.id;
-				$scope.renderData = {};
 				$scope.renderData.creditCardType = retrieveCardtype();
 				$scope.renderData.endingWith  =retrieveCardNumber();
 				$scope.renderData.cardExpiry =retrieveExpiryDate();
@@ -96,6 +96,19 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.$on("TOKEN_CREATED", function(e,data){
 			$scope.newPaymentInfo = data;
 			savenewCc();
+		});
+
+		var setCreditCardFromList = function(index){	
+			$scope.paymentId =  $scope.cardsList[index].value;
+			$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
+			$scope.renderData.endingWith  =$scope.cardsList[index].mli_token;
+			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
+			$scope.showCC = false;
+			$scope.showSelectedCreditCard = true;
+		};
+
+		$scope.$on('cardSelected',function(e,data){
+			setCreditCardFromList(data.index);
 		});
 
 		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
@@ -504,6 +517,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				$scope.showCC = true;
+				$scope.addmode = $scope.cardsList.length > 0 ? false:true;
 			} else {
 				$scope.isSixPaymentGatewayVisible = false;
 				$scope.isMLICreditCardVisible = false;
