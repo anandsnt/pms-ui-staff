@@ -85,7 +85,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 			var totalAmount = ($scope.depositBalanceMakePaymentData.amount == "") ? zeroAmount :
 							parseFloat($scope.depositBalanceMakePaymentData.amount);
-			var feePercent  = parseFloat($scope.depositBalanceMakePaymentData.actualFees);
+			var feePercent  = parseFloat($scope.feeData.actualFees);
 
 			if($scope.isStandAlone && amountSymbol == "%"){
 				var calculatedFee = parseFloat(totalAmount * (feePercent/100));
