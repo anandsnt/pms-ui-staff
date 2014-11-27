@@ -75,7 +75,6 @@
 	                            <time datetime="{arrival or departure timestamp}">
 	                            	<span ng-if ="(row.reservation_status == 'RESERVED'||row.reservation_status == 'CHECKING_IN')">
 		                                <span>{{row.arrival_date| date : dateFormat}}</span>
-		                                akhila
 		                                <!-- TODO: Date formating for arrival/departure time -->
 		                                <span>{{getTimeConverted(row.arrival_time)}}</span>
 		                            </span>
