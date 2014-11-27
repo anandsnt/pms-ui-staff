@@ -8,6 +8,8 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 			refreshScroller();
 		});
 
+		$scope.routesCount = 5;
+
 		$scope.$on("setCardContactErrorMessage", function($event, errorMessage) {
 			$scope.errorMessage = errorMessage;
 		});
