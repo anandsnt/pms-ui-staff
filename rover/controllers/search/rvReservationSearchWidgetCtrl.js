@@ -52,7 +52,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * 	and also also we can handle it inside
 		 */
 		$scope.$on("showAddNewGuestButton", function(event, showAddNewGuestButton) {
-			console.log('showAddNewGuestButton');
 			$scope.showAddNewGuestButton = showAddNewGuestButton;
 		});
 
@@ -331,14 +330,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					$scope.end = $scope.start + $scope.results.length - 1;
 					$scope.nextAction = false;
 					$scope.prevAction = false;
-					fetchSearchResults();		
+					$scope.fetchSearchResults();		
 				}
 				// we have changed data, so we are refreshing the scrollerbar
 				refreshScroller();
 			}
 		}; //end of displayFilteredResults
 
-		var fetchSearchResults = function(){
+		$scope.fetchSearchResults = function(){
 
 			var query = $scope.textInQueryBox.trim();
 			if($scope.escapeNull(query) == "" && $scope.escapeNull($stateParams.type) == ""){
@@ -621,12 +620,19 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			return mappedStatus;
 		};
 
+		$scope.$on("OUTSIDECLICKED", function(event){
+			$scope.focusOutOnSearchText();
+		});
 
 		//please don't remove this code.... CICO-10091
 		//blur action to navigate to dashboard if no query
 		$scope.focusOutOnSearchText = function(){
-			if($scope.textInQueryBox.length ===0){
-				$scope.$emit("HeaderBackButtonClicked")
+			
+			if($scope.textInQueryBox.length ===0 ){
+				$scope.$apply(function(){
+					$scope.$emit("HeaderBackButtonClicked")
+				});
+				
 			}
 		};
 
@@ -635,14 +641,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.page++;
 			$scope.nextAction = true;
 			$scope.prevAction = false;
-			fetchSearchResults();
+			$scope.fetchSearchResults();
 		};
 
 		$scope.loadPrevSet = function(){
 			RVSearchSrv.page--;
 			$scope.nextAction = false;
 			$scope.prevAction = true;
-			fetchSearchResults();
+			$scope.fetchSearchResults();
 		};
 
 		$scope.isNextButtonDisabled = function(){
@@ -678,12 +684,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// so the FROM DATE and TO DATE are kept in service. 
 		$scope.onFromDateChanged = function(date){
 			$scope.fromDate = date;
-			fetchSearchResults();
+			$scope.fetchSearchResults();
 			RVSearchSrv.fromDate = date;		
 		};
 		$scope.onToDateChanged = function(date){
 			$scope.toDate = date;
-			fetchSearchResults();
+			$scope.fetchSearchResults();
 			RVSearchSrv.toDate = date;
 
 		};
@@ -694,7 +700,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			var timeDict = tConvert(time);
 			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
-p		};
+		};
+
+		$scope.clearQueryFromDate = function(){
+			$scope.fromDate = $rootScope.businessDate; 
+			$scope.fetchSearchResults();
+
+		};
 
 	}
 ]);
