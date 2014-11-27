@@ -71,12 +71,19 @@
 	                    <span class="date">Date <span class="value date">{{depositBalanceMakePaymentData.card_expiry}}</span></span>
 	                </label>
 	            </div>
-				<div class="entry full-width" ng-show="shouldShowMakePaymentScreen"><!-- Add class "amount" when fee exsists -->
-				    <label for="amount">Amount to pay (<span>$</span>)</label>
+				<div class="entry full-width" ng-show="shouldShowMakePaymentScreen" ng-class="{'amount':depositBalanceMakePaymentData.fees!='' && isStandAlone}"><!-- Add class "amount" when fee exsists -->
+				    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
 				    <input name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" value="{{depositBalanceMakePaymentData.amount}}" type="text" />
-				    <!-- Use only when fee exsists 
-				    <span class="fee">+ ${fee} fee</span> 
-				    <span class="total">Total: <strong id="total-deposit-amount" >${value+fee} </strong></span>-->
+				    <!-- CICO-9457 : Use only when fee exsists in standalone -->
+				    <span ng-if="isStandAlone" class="fee">
+				    	+ {{currencySymbol}}{{depositBalanceData.data.fees}} fee
+				    </span> 
+				    <span ng-if="isStandAlone" class="total">
+				    	Total:
+				    	<strong id="total-deposit-amount">
+				    		{{currencySymbol}}{{depositBalanceData.data.totalOfValueAndFee}}
+				    	</strong>
+				    </span>
 				</div>
 		   
 				<!-- Reference field - use only when it exsits -->
