@@ -363,6 +363,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		
 		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
+		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
 		//alert(JSON.stringify(data));
 		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
 		{
