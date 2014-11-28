@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout) {
 
 		// pre setups for back button
 		var backTitle,
@@ -398,7 +398,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
+		var editPromptDialogId;
+
+		$scope.showEditReservationPrompt = function(){
+			editPromptDialogId = ngDialog.open({
+                template: '/assets/partials/reservation/rvStayCardEditRate.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false                               
+            });
+		}
+
+		$scope.applyCustomRate = function(){
+			$scope.closeDialog(editPromptDialogId);
+			$timeout(function(){
+				$scope.editReservationRates($scope.reservationParentData.rooms[0]);
+			},1000);			
+		} 
+
+
 		$scope.goToRoomAndRates = function(state) {
+			$scope.closeDialog(editPromptDialogId);
 			if($scope.reservationData.reservation_card.is_hourly_reservation){
 				return false;
 			} else if($rootScope.isStandAlone){

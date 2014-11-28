@@ -859,7 +859,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //cost
             $scope.reservationData.rooms[0].rateAvg = reservationDetails.reservation_card.avg_daily_rate;
             $scope.reservationData.rooms[0].rateTotal = reservationDetails.reservation_card.total_rate;
-
+            $scope.reservationData.rooms[0].rateName = reservationDetails.reservation_card.is_multiple_rates? "Multiple Rates" : reservationDetails.reservation_card.rate_name;
 
             $scope.reservationData.totalStayCost = reservationDetails.reservation_card.total_rate;
 
@@ -870,6 +870,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             */
             $scope.reservationData.stayDays = [];
             $scope.reservationData.rooms[0].rateId = [];
+
 
             angular.forEach(reservationDetails.reservation_card.stay_dates, function(item, index) {
                 $scope.reservationData.stayDays.push({
@@ -885,7 +886,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         },
                         rate: {
                             id: item.rate_id
-                        }
+                        },
+                        rateDetails: item.rate
                     }
                     // TODO : Extend for each stay dates
                 $scope.reservationData.rooms[0].rateId.push(item.rate_id);
@@ -1097,7 +1099,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.checkOccupancyLimit();
         };
 
-        $scope.editReservationRates = function(room) {
+        $scope.editReservationRates = function(room) {            
             ngDialog.open({
                 template: '/assets/partials/reservation/rvEditRates.html',
                 className: 'ngdialog-theme-default',

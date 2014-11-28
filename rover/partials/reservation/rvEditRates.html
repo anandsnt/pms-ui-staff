@@ -5,7 +5,7 @@
 
 		    <div class="modal-header">
 		        <h1>Rate Details</h1>
-		        <em>{Room Type}<br />{Rate Name}</em>
+		        <em>{{ngDialogData.roomTypeName}}<br/>{{ngDialogData.rateName}}</em>
 		    </div>
 
 		    <div id="rate-grid" class="scrollable">
@@ -14,15 +14,15 @@
 		                <thead>
 		                    <tr>
 		                        <th class="date">Date</th>
-		                        <th class="rate">By Code</th>
+		                        <th class="rate">Rate</th>
 		                        <th class="edit">Quoted</th>
 		                    </tr>
 		                </thead>
 		                <tbody>
-		                    <tr ng-repeat="(date,stayDay) in ngDialogData.stayDates">
+		                    <tr ng-repeat="(date,stayDay) in ngDialogData.stayDates" ng-hide="$last && $index > 0">
 		                        <td class="date">{{date}}</td>
-		                        <td class="rate">{{currencySymbol}}</td>
-		                        <td class="edit">{{currencySymbol}}<input type="text" value="" type="text" /></td>
+		                        <td class="rate">{{currencySymbol}}{{stayDay.rateDetails.actual_amount}}</td>
+		                        <td class="edit">{{currencySymbol}}<input ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false'" type="text" value="" type="text" ng-model="stayDay.rateDetails.modified_amount" /></td>
 		                    </tr>		                    
 		                </tbody>
 		            </table>
