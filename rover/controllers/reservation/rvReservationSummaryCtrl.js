@@ -93,8 +93,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.init = function() {
 			$scope.data = {};
 			if ($stateParams.reservation == "HOURLY") {
-				console.log("hhhhhhhhhhhhhhhhhh")
-;;				$scope.$emit('showLoader');
+
+				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
@@ -171,33 +171,86 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}, 500);
 		};
 
-		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
+		$scope.createReservationDataFromDiary = function(roomsArray, tData) {
 
-			angular.forEach(temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
+			angular.forEach(tData.rooms, function(value, key) {
 				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
 				value['roomNumber'] = roomsArray[value.room_id].room_no;
 			});
-			$scope.reservationData.rooms = [];
-			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
-			$scope.reservationData.arrivalDate = temporaryReservationDataFromDiaryScreen.arrival_date;
-			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;
-			var arrivalTimeSplit = temporaryReservationDataFromDiaryScreen.arrival_time.split(":");
-			$scope.reservationData.checkinTime.hh = arrivalTimeSplit[0];
-			$scope.reservationData.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
-			$scope.reservationData.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
-			var departureTimeSplit = temporaryReservationDataFromDiaryScreen.departure_time.split(":");
-			$scope.reservationData.checkoutTime.hh = departureTimeSplit[0];
-			$scope.reservationData.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
-			$scope.reservationData.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
+			
+			this.rooms 	= [];
+			this.rooms 	= tData.rooms;
+			this.arrivalDate = tData.arrival_date;
+			this.departureDate = tData.departure_date;
+			var arrivalTimeSplit = tData.arrival_time.split(":");
+		
+			this.checkinTime.hh = arrivalTimeSplit[0];
+			this.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
+			if(this.checkinTime.mm.length == 1) {
+				this.checkinTime.mm = "0" + this.checkinTime.mm;
+			}
+			this.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
+			if(parseInt(this.checkinTime.hh) > 12) {
+				this.checkinTime.hh = Math.abs(parseInt(this.checkinTime.hh) - 12) + "";
+				this.checkinTime.ampm = "PM";
+			}
+			else {
+				this.checkinTime.ampm = "AM";
+			}
+			if(this.checkinTime.hh.length == 1){
+				this.checkinTime.hh = "0" + this.checkinTime.hh;
+			}			
 
-			$scope.reservationData.totalStayCost = 0;
+			var departureTimeSplit = tData.departure_time.split(":");
+			this.checkoutTime.hh = departureTimeSplit[0];
+			this.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
+			if(this.checkoutTime.mm.length == 1) {
+				this.checkoutTime.mm = "0" + this.checkoutTime.mm;
+			}
+			this.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
+			if(parseInt(this.checkoutTime.hh) > 12) {
+				this.checkoutTime.hh = Math.abs(parseInt(this.checkoutTime.hh) - 12) + "";				
+				this.checkoutTime.ampm = "PM";
+			}
+			else {
+				this.checkoutTime.ampm = "AM";
+			}
+			if(this.checkoutTime.hh.length == 1){
+				this.checkoutTime.hh = "0" + this.checkoutTime.hh;
+			}
+			var hResData = tData.rooms[0];
+			this.reservationId 	= hResData.reservation_id;
+			this.confirmNum 	= hResData.confirmation_id;
+
+			$scope.reservationDetails.guestCard 			= {};
+			$scope.reservationDetails.guestCard.id 			= hResData.guest_card_id;
+			$scope.reservationDetails.travelAgent 			= {};
+			$scope.reservationDetails.travelAgent.id 		= hResData.travel_agent_id;
+			$scope.reservationDetails.companyCard			= {};
+			$scope.reservationDetails.companyCard.id 		= hResData.company_card_id;
+
+			 
+			$scope.reservationData.guest 			= {};
+			$scope.reservationData.guest.id 		= hResData.guest_card_id;
+			$scope.reservationData.travelAgent 		= {};
+			$scope.reservationData.travelAgent.id 	= hResData.travel_agent_id;
+			$scope.reservationData.company			= {};
+			$scope.reservationData.company.id 		= hResData.company_card_id;			
+
+			$scope.initGuestCard();
+			$scope.initCompanyCard();
+			$scope.initTravelAgentCard();
+
+
+			this.totalStayCost = 0;
 			var rateIdSet = [];
-			_.each($scope.reservationData.rooms, function(room) {
+			var self = this;
+			_.each(this.rooms, function(room) {
 				room.stayDates = {};
 				rateIdSet.push(room.rateId);
 				room.rateTotal = room.amount;
-				$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.amount);
+				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(room.amount);
 				var success = function(data) {
 					room.rateName = data;
 					refreshScrolls();
@@ -205,7 +258,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.invokeApi(RVReservationSummarySrv.getRateName, {
 					id: room.rateId
 				}, success);
-				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+				for (var ms = new tzIndependentDate(self.arrivalDate) * 1, last = new tzIndependentDate(self.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+
 					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
 						guests: {
 							adults: room.numAdults,
@@ -215,14 +269,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 						rate: {
 							id: room.rateId
 						}
-					};
+					};					
 				}
 			});
 
 			$scope.invokeApi(RVReservationSummarySrv.getTaxDetails, {
 				rate_ids: rateIdSet
 			}, ratesFetched);
-		};
+		}.bind($scope.reservationData);
 
 		/**
 		 * Fetches all the payment methods

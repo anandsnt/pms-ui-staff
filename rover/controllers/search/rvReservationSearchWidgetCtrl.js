@@ -39,8 +39,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isTyping = false;
 		$scope.isSwiped = false;
 		$scope.firstSearch = true;
-		
-
 
 		$scope.showAddNewGuestButton = false; //read cooment below :(
 		/**
@@ -291,15 +289,27 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			
 			$scope.isTyping = false;
 		};
+		/**
+		* Single digit search done based on the settings in admin
+		* The single digit search is done only for numeric characters.
+		* CICO-10323 
+		*/
+		function isSearchOnSingleDigit(searchTerm){
+			if($rootScope.isSingleDigitSearch){
+				return isNaN(searchTerm);
+			} else {
+				return true;
+			}
+		};
 
 		/**
 		 * function to perform filering on results.
 		 * if not fouund in the data, it will request for webservice
 		 */
 		var displayFilteredResults = function() {
-			//$scope.disableNextButton = false;
-			//if the entered text's length < 3, we will show everything, means no filtering    
-			if ($scope.textInQueryBox.length < 3) {
+
+			//show everything, means no filtering    
+			if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 				//based on 'is_row_visible' parameter we are showing the data in the template      
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;
@@ -309,14 +319,16 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}, 500);
 				refreshScroller();
 			} else {
+
 				//see if the new query is the substring of fetch term & the fetched results count < per_page param(which is set to be 100 now)
 				//If so we will do local filtering
 				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 
 					&& !$scope.firstSearch && $scope.results.length > 0 
 					&& RVSearchSrv.totalSearchResults <= $scope.searchPerPage) {
+
 					//RVSearchSrv.page = 1;
 					//var isLocalFiltering = true;
-					//applyFilters(isLocalFiltering);
+					//applyFilters(isLocalFilte	`ring);
 					applyFilters();
 
 				} else {
@@ -453,6 +465,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.textInQueryBox = "";
 			$scope.fetchTerm = "";
 			$scope.firstSearch = true;
+			RVSearchSrv.totalSearchResults = 0;
 			//$scope.start = 1;
 			//$scope.end = 100;
 
