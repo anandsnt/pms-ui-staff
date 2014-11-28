@@ -191,34 +191,47 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				this.checkinTime.mm = "0" + this.checkinTime.mm;
 			}
 			this.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
-			if(parseInt(this.checkinTime.hh) > 12) {
-				this.checkinTime.hh = Math.abs(parseInt(this.checkinTime.hh) - 12) + "";
-				this.checkinTime.ampm = "PM";
+			if(!(this.checkinTime.ampm === "AM" || this.checkinTime.ampm === "PM")){
+				if(parseInt(this.checkinTime.hh) >= 12) {
+					this.checkinTime.hh = Math.abs(parseInt(this.checkinTime.hh) - 12) + "";
+
+					this.checkinTime.ampm = "PM";
+				}
+				else {
+					this.checkinTime.ampm = "AM";
+				}
 			}
-			else {
-				this.checkinTime.ampm = "AM";
-			}
+			if(Math.abs(parseInt(this.checkinTime.hh) - 12) == 0 || this.checkinTime.hh === "00"  || this.checkinTime.hh === "0") {				
+				this.checkinTime.hh = "12";
+			}			
 			if(this.checkinTime.hh.length == 1){
 				this.checkinTime.hh = "0" + this.checkinTime.hh;
 			}			
-
+			
 			var departureTimeSplit = tData.departure_time.split(":");
 			this.checkoutTime.hh = departureTimeSplit[0];
 			this.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
+		
 			if(this.checkoutTime.mm.length == 1) {
 				this.checkoutTime.mm = "0" + this.checkoutTime.mm;
 			}
 			this.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
-			if(parseInt(this.checkoutTime.hh) > 12) {
-				this.checkoutTime.hh = Math.abs(parseInt(this.checkoutTime.hh) - 12) + "";				
-				this.checkoutTime.ampm = "PM";
+
+			if(!(this.checkoutTime.ampm === "AM" || this.checkoutTime.ampm === "PM")){
+				if(parseInt(this.checkoutTime.hh) >= 12) {
+					this.checkoutTime.hh = Math.abs(parseInt(this.checkoutTime.hh) - 12) + "";				
+					this.checkoutTime.ampm = "PM";
+				}
+				else {
+					this.checkoutTime.ampm = "AM";
+				}
 			}
-			else {
-				this.checkoutTime.ampm = "AM";
+			if(Math.abs(parseInt(this.checkoutTime.hh) - 12) == "0" || this.checkoutTime.hh === "00" || this.checkoutTime.hh === "0") {
+				this.checkoutTime.hh = "12";
 			}
 			if(this.checkoutTime.hh.length == 1){
 				this.checkoutTime.hh = "0" + this.checkoutTime.hh;
-			}
+			}				
 			var hResData = tData.rooms[0];
 			this.reservationId 	= hResData.reservation_id;
 			this.confirmNum 	= hResData.confirmation_id;
