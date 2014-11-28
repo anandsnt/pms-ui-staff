@@ -287,9 +287,7 @@ sntRover
 	    	var copy,
 	    		selection,
 	    		props = $scope.gridProps,
-	    		edit  = props.edit;   
-	    	
-	    	
+	    		edit  = props.edit;   	    	
 	    	if(!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch(command_message) {
 
@@ -310,7 +308,6 @@ sntRover
 	    		copy.selected = selected;
 
 	    		util.updateReservation(row_data, copy);
-		    	
 		    	$scope.renderGrid();
 
 		    	if($scope.isSelected(row_data, copy)) {
@@ -410,7 +407,6 @@ sntRover
 		    		occupancy: row_item_data,
 	    		}
 	    	};
-	    	
 			ngDialog.open({
 				template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
 				controller: 'RVDiaryRoomTransferConfirmationCtrl',
@@ -425,11 +421,14 @@ sntRover
 	    	}
 	    	this.edit.originalRowItem.old_price = avData.old_rate_amount;
 	    	this.currentResizeItemRow.new_price = avData.new_rate_amount;
+	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
 	    	this.currentResizeItemRow.departureTime = successParams.end_time;
-	    	this.currentResizeItemRow.departureDate = successParams.end_date;
+	    	this.currentResizeItemRow.departureDate = successParams.end_date.toComponents().date.toDateString();
     		this.currentResizeItemRow.arrivalTime = successParams.begin_time;
-	    	this.currentResizeItemRow.arrivalDate = successParams.begin_date;  	
-
+	    	this.currentResizeItemRow.arrivalDate = successParams.begin_date.toComponents().date.toDateString(); 
+	    	this.currentResizeItem.numAdults 	= 1; 	
+	    	this.currentResizeItem.numChildren 	= 0;
+	    	this.currentResizeItem.numInfants 	= 0;
 	    }.bind($scope.gridProps);
 	    
 	    var failureCallBackOfResizeExistingReservation = function(errorMessage){
