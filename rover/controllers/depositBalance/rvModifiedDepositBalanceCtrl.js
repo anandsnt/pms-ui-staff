@@ -258,5 +258,33 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender){
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		// console.log(swipedCardDataToSave);
+		// $scope.shouldShowIframe 	   			 = false;	
+		// $scope.shouldShowMakePaymentScreen       = true; 
+		// $scope.showAddtoGuestCard    			 = false;
+		// $scope.shouldShowExistingCards  		 = false;
+		// $scope.addmode                 			 = false;
+		// $scope.makePaymentButtonDisabled         = false;
+		// $scope.renderData.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
+		// $scope.renderData.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
+		// $scope.renderData.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
+// 		
+		// console.log(">>>>>>>>>>"+JSON.stringify($scope.swipedCardDataToSave));
+		
+		var data 			= swipedCardDataToSave;
+		data.reservation_id =	$scope.reservationData.reservation_card.reservation_id;
+		
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card = swipedCardDataToSave.cardType;
+		alert(JSON.stringify(data));
+		
+			data.user_id = $scope.guestCardData.userId;
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveToGuestCardSuccess);
+		
+		//$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
+		
+		
+	});
 
 }]);
