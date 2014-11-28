@@ -8,7 +8,7 @@ var Grid = React.createClass({
 			interactiveScrollbars: true,
 			scrollX: true, 
 			scrollY: true, 
-			bounce: true,
+			bounce: false,
 			momentum: false,
 			preventDefaultException: { className: /(^|\s)(occupied|available|reserved)(\s|$)/ },
 			mouseWheel: true,
