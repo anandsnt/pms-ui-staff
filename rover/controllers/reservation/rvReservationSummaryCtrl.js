@@ -38,6 +38,31 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.shouldShowAddNewCard = true;
 		$scope.isFromCreateReservation = true;
 		$scope.renderData = {};
+		$scope.feeData = {};
+
+		// CICO-9457 : To calculate fee - for standalone only
+		$scope.calculateFee = function(){
+
+			if($scope.isStandAlone){
+				var feesInfo = $scope.feeData.feesInfo;
+				var amountSymbol = "";
+				var zeroAmount = parseFloat("0.00").toFixed(2);
+				if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
+
+				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
+								parseFloat($scope.reservationData.depositAmount);
+				var feePercent  = parseFloat($scope.feeData.actualFees);
+
+				if(amountSymbol == "percent"){
+					var calculatedFee = parseFloat(totalAmount * (feePercent/100));
+					$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+				}
+				else{
+					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+				}
+			}
+		};
 
 		var retrieveCardtype = function(){
 			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
@@ -76,6 +101,33 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.errorMessage = data;
 		});
 
+		// CICO-9457 : Data for fees details.
+		$scope.setupFeeData = function(){
+			
+			var feesInfo = $scope.feeData.feesInfo;
+			var zeroAmount = parseFloat("0.00").toFixed(2);
+			var defaultAmount = $scope.reservationData ?
+			 	$scope.reservationData.depositAmount : zeroAmount;
+			console.log("feesInfo :");console.log(feesInfo);
+			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+				
+				var amountSymbol = feesInfo.amount_symbol;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				$scope.feeData.actualFees = feesAmount;
+				
+				if(amountSymbol == "percent") $scope.calculateFee();
+				else{
+					$scope.feeData.calculatedFee = feesAmount;
+					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+				}
+			}
+			else{
+				$scope.feeData.actualFees = zeroAmount;
+				$scope.feeData.calculatedFee = zeroAmount;
+				$scope.feeData.totalOfValueAndFee = zeroAmount;
+			}
+		};
+
 		var savenewCc = function(){
 			var ccSaveSuccess = function(data){
 				console.log("hiree")
@@ -86,6 +138,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.renderData.creditCardType = retrieveCardtype();
 				$scope.renderData.endingWith  =retrieveCardNumber();
 				$scope.renderData.cardExpiry =retrieveExpiryDate();
+				
+				if($scope.isStandAlone)	{
+					$scope.feeData.feesInfo = data.fees_information;
+					$scope.setupFeeData();
+				}
 			};
 
 			var data = {};
@@ -155,6 +212,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"reservation_id": $scope.reservationData.reservationId
 			};
 
+			if($scope.isStandAlone){
+				if($scope.feeData.calculatedFee)
+					dataToMakePaymentApi.postData.fees_amount = $scope.feeData.calculatedFee;
+				if($scope.feeData.feesInfo)
+					dataToMakePaymentApi.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+			}
+			console.log(dataToMakePaymentApi);
+
 			if($scope.checkReferencetextAvailable()){
 				dataToMakePaymentApi.postData.reference_text = $scope.reservationData.referanceText;
 			};
@@ -190,7 +255,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 		}
 
+		
+
 		$scope.init = function() {
+			
+			if($scope.isStandAlone){
+				// Setup fees info
+				$scope.feeData.feesInfo = $scope.reservationData.selected_payment_fees_details;
+				$scope.setupFeeData();
+			}
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.$emit('PROMPTCARD');
 				$scope.$watch("reservationData.guest.id", function() {

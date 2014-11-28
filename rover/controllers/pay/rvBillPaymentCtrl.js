@@ -25,7 +25,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showCancelCardSelection = true;
 		$scope.renderData.referanceText = "";
 		$scope.feeData = {};
-		$scope.feeData.feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
+		
 	};
 
 	$scope.handleCloseDialog = function(){
@@ -153,6 +153,31 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		}
 	};
 
+	$scope.setupFeeData = function(){
+		// CICO-9457 : Setup fees details initilaly - for standalone only
+		if($scope.isStandAlone){
+			var feesInfo = $scope.feeData.feesInfo;
+			console.log("feesInfo :");console.log(feesInfo);
+			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+				
+				var amountSymbol = feesInfo.amount_symbol;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				$scope.renderData.actualFees = feesAmount;
+				
+				if(amountSymbol == "percent") $scope.calculateFee();
+				else{
+					$scope.renderData.calculatedFee = feesAmount;
+					$scope.renderData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+				}
+			}
+			else{
+				$scope.renderData.actualFees = zeroAmount;
+				$scope.renderData.calculatedFee = zeroAmount;
+				$scope.renderData.totalOfValueAndFee = zeroAmount;
+			}
+		}
+	};
+
 	/*
 	* Initial screen - filled with deafult amount on bill
 	* If any payment type attached to that bill then that credit card can be viewed in initial screen
@@ -186,32 +211,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			}
 		}
 
-		var zeroAmount = parseFloat("0.00").toFixed(2);
 		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.length >0 ?
 			$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : zeroAmount;
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
-
-		// CICO-9457 : Setup fees details initilaly - for standalone only
+		
 		if($scope.isStandAlone){
-			var feesInfo = $scope.feeData.feesInfo;
-			console.log("feesInfo :");console.log(feesInfo);
-			if(typeof feesInfo != 'undefined' && feesInfo!= null){
-				
-				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
-				$scope.renderData.actualFees = feesAmount;
-				
-				if(amountSymbol == "percent") $scope.calculateFee();
-				else{
-					$scope.renderData.calculatedFee = feesAmount;
-					$scope.renderData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
-				}
-			}
-			else{
-				$scope.renderData.actualFees = zeroAmount;
-				$scope.renderData.calculatedFee = zeroAmount;
-				$scope.renderData.totalOfValueAndFee = zeroAmount;
-			}
+			$scope.feeData.feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
+			$scope.setupFeeData();
 		}
 	};
 	$scope.init();
@@ -342,6 +348,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showCCPage = false;
 		$scope.showCreditCardInfo = true;
 		$scope.$broadcast("clearCardDetails");
+
+		if($scope.isStandAlone)	{
+			$scope.feeData.feesInfo = data.fees_information;
+			$scope.setupFeeData();
+		}
 	};
 	/*
 	* To save new card
@@ -382,7 +393,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.saveData.payment_type_id =  $scope.guestPaymentList[index].id;
 		$scope.showCCPage = false;
 		console.log("card clicked from bill pay");
-		$scope.feeData.feesInfo = $scope.guestPaymentList[index].fees_information;
+		if($scope.isStandAlone)	{
+			$scope.feeData.feesInfo = $scope.guestPaymentList[index].fees_information;
+			$scope.setupFeeData();
+		}
 	};
 
 	$scope.$on('cardSelected',function(e,data){
