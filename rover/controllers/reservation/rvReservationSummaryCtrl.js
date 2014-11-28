@@ -73,6 +73,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		var savenewCc = function(){
 			var ccSaveSuccess = function(data){
+				console.log("hiree")
 				$scope.$emit('hideLoader');
 				$scope.showCC = false;
 				$scope.showSelectedCreditCard = true;
