@@ -11,15 +11,25 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 		$scope.routesCount = 5;
 
 		//trigger the billing information popup
-	    $scope.openBillingInformation = function(){
-	    	//TODO: Add company TA check
-	    	$scope.attachedEntities = {};
-	    	$scope.attachedEntities.travel_agent = {};
-	    	$scope.attachedEntities.travel_agent.id = $scope.contactInformation.id;
-	    	$scope.attachedEntities.travel_agent.name = $scope.contactInformation.account_details.account_name;
-	    	$scope.attachedEntities.travel_agent.logo = $scope.contactInformation.account_details.company_logo;
-	    	$scope.attachedEntities.type = "TRAVEL_AGENT_DEFAULT_BILLING";
-
+	    $scope.openBillingInformation = function(accountType){
+	    	if(accountType == 'TRAVELAGENT'){
+	    		$scope.attachedEntities = {};
+	    		$scope.attachedEntities.travel_agent = {};
+	    		$scope.attachedEntities.travel_agent.id = $scope.contactInformation.id;
+	    		$scope.attachedEntities.travel_agent.name = $scope.contactInformation.account_details.account_name;
+	    		$scope.attachedEntities.travel_agent.logo = $scope.contactInformation.account_details.company_logo;
+	    		$scope.attachedEntities.type = "TRAVEL_AGENT_DEFAULT_BILLING";
+	    	} else if (accountType == 'COMPANY'){
+	    		$scope.attachedEntities = {};
+	    		$scope.attachedEntities.company_card = {};
+	    		$scope.attachedEntities.company_card.id = $scope.contactInformation.id;
+	    		$scope.attachedEntities.company_card.name = $scope.contactInformation.account_details.account_name;
+	    		$scope.attachedEntities.company_card.logo = $scope.contactInformation.account_details.company_logo;
+	    		$scope.attachedEntities.type = "COMPANY_CARD_DEFAULT_BILLING";
+	    	} else {
+	    		return false;
+	    	}
+	    	
 		    ngDialog.open({
 		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
 		        controller: 'rvBillingInformationPopupCtrl',

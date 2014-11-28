@@ -66,7 +66,7 @@
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
             <div class= "entry full-width">
                 <label>Billing information ({{routesCount}} routes defined) </label>
-                <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation()" ng-show="isStandAlone" translate="">Add Billing Information</a>
+                <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation(account_type)" ng-show="isStandAlone" translate="">Add Billing Information</a>
             </div>
 
             <!-- <rv-textbox value="contactInformation.account_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox> -->

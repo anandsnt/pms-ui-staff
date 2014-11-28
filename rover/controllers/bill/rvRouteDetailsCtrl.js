@@ -327,7 +327,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, '', successCallback, errorCallback);
     };
 
-    if($scope.attachedEntities.type !== "TRAVEL_AGENT_DEFAULT_BILLING"){
+    if($scope.attachedEntities.type !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
+        $scope.attachedEntities.type !== "COMPANY_CARD_DEFAULT_BILLING"){
         $scope.fetchBillsForReservation();
     }else {
         $scope.fetchAllChargeCodes();
@@ -434,7 +435,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
                 return;
             }
-            if($scope.attachedEntities.type !== "TRAVEL_AGENT_DEFAULT_BILLING"){
+            if($scope.attachedEntities.type !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
+                $scope.attachedEntities.type !== "COMPANY_CARD_DEFAULT_BILLING"){
                 $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
             }
            
