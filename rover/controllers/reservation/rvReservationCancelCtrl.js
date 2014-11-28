@@ -113,7 +113,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			if($scope.isStandAlone){
 				if($scope.feeData.calculatedFee)
 					paymentData.fees_amount = $scope.feeData.calculatedFee;
-				if($scope.feeData.feesInfo.charge_code_id)
+				if($scope.feeData.feesInfo)
 					paymentData.fees_charge_code_id = $scope.feeData.feeInfo.charge_code_id;
 			}
 			console.log(paymentData);

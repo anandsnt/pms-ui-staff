@@ -157,7 +157,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		if($scope.isStandAlone){
 			if($scope.feeData.calculatedFee)
 				dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
-			if($scope.feeData.feesInfo.charge_code_id)
+			if($scope.feeData.feesInfo)
 				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 		}
 		console.log(dataToSrv);

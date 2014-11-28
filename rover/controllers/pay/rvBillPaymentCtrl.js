@@ -258,7 +258,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if($scope.isStandAlone){
 				if($scope.feeData.calculatedFee)
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
-				if($scope.feeData.feesInfo.charge_code_id)
+				if($scope.feeData.feesInfo)
 					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
 			console.log(dataToSrv);
@@ -362,11 +362,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"reservation_id": $scope.reservationData.reservationId,
 				"token": cardToken
 		};
-		if($scope.isStandAlone){
-			dataToSave.fees_amount = $scope.feeData.calculatedFee;
-			dataToSave.fees_charge_code_id = $scope.feeData.feesDetails.charge_code_id;
-		}
-		console.log(dataToSave);
+		
 	    $scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToSave,successNewPayment);
 	};
 
