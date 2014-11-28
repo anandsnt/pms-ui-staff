@@ -38,7 +38,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
 				$scope.feeData.actualFees = feesAmount;
 				
-				if(amountSymbol == "%") $scope.calculateFee();
+				if(amountSymbol == "percent") $scope.calculateFee();
 				else{
 					$scope.feeData.calculatedFee = feesAmount;
 					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
