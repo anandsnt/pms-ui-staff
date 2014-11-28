@@ -34,6 +34,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.depositBalanceMakePaymentData = {};
 	$scope.depositBalanceMakePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonDisabled = true;
+
 	/*
 	 * on succesfully created the token
 	 */
@@ -79,7 +80,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.calculateFee = function(){
 		if($scope.isStandAlone){
 			
-			var feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
+			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
 			var zeroAmount = parseFloat("0.00").toFixed(2);
 			if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
@@ -102,7 +103,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	// CICO-9457 : Data for fees details.
 	$scope.setupFeeData = function(){
 		$scope.feeData = {};
-		var feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
+		$scope.feeData.feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
+		var feesInfo = $scope.feeData.feesInfo;
 		var zeroAmount = parseFloat("0.00").toFixed(2);
 		var defaultAmount = $scope.depositBalanceMakePaymentData ?
 		 	$scope.depositBalanceMakePaymentData.amount : zeroAmount;
@@ -148,6 +150,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			},
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id
 		};
+		if($scope.isStandAlone){
+			if($scope.feeData.calculatedFee)
+				dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
+			if($scope.feeData.feesInfo.charge_code_id)
+				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+		}
+		console.log(dataToSrv);
 		//alert(JSON.stringify(dataToMakePaymentApi));
 		$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 
@@ -221,7 +230,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.ending_with  = $scope.depositBalanceData.data.existing_payments[index].ending_with;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
 		console.log("card clicked from deposit");
-		$scope.depositBalanceData.data.selected_payment_fees_details = dclone($scope.depositBalanceData.data.existing_payments[index].fees_information,[]);
+		$scope.feeData.feesInfo = dclone($scope.depositBalanceData.data.existing_payments[index].fees_information,[]);
 	};
 
 	/*

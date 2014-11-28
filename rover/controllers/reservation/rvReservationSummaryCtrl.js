@@ -36,6 +36,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.showCC = false;
 		$scope.showAddtoGuestCard = true;
 		$scope.shouldShowAddNewCard = true;
+		$scope.isFromCreateReservation = true;
 		$scope.renderData = {};
 
 		var retrieveCardtype = function(){
@@ -99,18 +100,22 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			savenewCc();
 		});
 
-		var setCreditCardFromList = function(index){	
-			$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value;
-			$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
-			$scope.renderData.endingWith  =$scope.cardsList[index].mli_token;
-			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
-			$scope.showCC = false;
-			$scope.showSelectedCreditCard = true;
-		};
+		 /*
+	        * Commented out .if existing cards needed remove comments
+	        */
 
-		$scope.$on('cardSelected',function(e,data){
-			setCreditCardFromList(data.index);
-		});
+		// var setCreditCardFromList = function(index){	
+		// 	$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value;
+		// 	$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
+		// 	$scope.renderData.endingWith  =$scope.cardsList[index].mli_token;
+		// 	$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
+		// 	$scope.showCC = false;
+		// 	$scope.showSelectedCreditCard = true;
+		// };
+
+		// $scope.$on('cardSelected',function(e,data){
+		// 	setCreditCardFromList(data.index);
+		// });
 
 		$scope.payDeposit = function() {
 			var onPaymentSuccess = function(data) {
@@ -602,8 +607,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				$scope.showCC = true;
-				$scope.cardsList = (typeof $scope.cardsList !== 'undefined') ? $scope.cardsList : [];
-				$scope.addmode = $scope.cardsList.length > 0 ? false:true;
+		  /*
+	        * Commented out .if existing cards needed remove comments
+	        */
+				//$scope.cardsList = (typeof $scope.cardsList !== 'undefined') ? $scope.cardsList : [];
+				//$scope.addmode = $scope.cardsList.length > 0 ? false:true;
+				$scope.addmode = true;
 			} else {
 				$scope.isSubmitButtonEnabled = true;
 			};

@@ -2,7 +2,7 @@
 			<div id="credit-card-options" ng-controller="RVCardOptionsCtrl">
 				<!-- If hidden by default, add class="hidden" -->
 				<!-- Card toggle - Use only if there are exsiting cards on file -->
-				<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest">
+				<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || isFromCreateReservation">
 					<li ng-class="{'active':!addmode}" ng-click="addmode = false">
 						Existing Cards
 					</li>
