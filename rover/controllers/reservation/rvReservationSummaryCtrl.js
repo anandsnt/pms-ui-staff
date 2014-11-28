@@ -131,7 +131,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"postData": {
 					"bill_number": 1,
 					"payment_type": $scope.reservationData.paymentType.type.value,
-					"amount": $scope.depositData.depositValue,
+					"amount": $scope.reservationData.depositAmount,
 					"payment_type_id": $scope.reservationData.selectedPaymentId
 				},
 				"reservation_id": $scope.reservationData.reservationId
@@ -225,15 +225,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.depositData = {};
 				$scope.depositData.isDepositRequired = false;
 				$scope.depositData.description = "";
-				$scope.depositData.depositValue = 0.00;
+				$scope.reservationData.depositAmount = 0.00;
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
 				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
 			} else {
 				$scope.depositData = {};
 				$scope.depositData.isDepositRequired = !!$scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.id;
-				$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;
-				$scope.depositData.depositValue = $scope.reservationData.depositAmount;
+				$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;				
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
 				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
