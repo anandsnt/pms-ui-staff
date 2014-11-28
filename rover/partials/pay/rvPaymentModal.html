@@ -56,8 +56,7 @@
                 </strong>
             </span>
         </div> 
-        
-        <div class="entry full-width reference" ng-hide="showCC || !referenceTextAvailable">
+        <div class="entry full-width reference" ng-show="!showCCPage && referenceTextAvailable">
                 <label for="reference">Reference</label>
                 <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
         </div> 

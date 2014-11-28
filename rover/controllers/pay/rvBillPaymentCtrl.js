@@ -67,8 +67,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
 		} else {
 			$scope.showCreditCardInfo = false;
-			checkReferencetextAvailable();
 		};
+		checkReferencetextAvailable();
 
 		//$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
 	};
