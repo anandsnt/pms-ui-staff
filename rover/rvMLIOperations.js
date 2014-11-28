@@ -16,4 +16,4 @@ var MLIOperation = function(){
 		HostedForm.updateSession(sessionDetails, callback);
 	};
 
-}
+};
