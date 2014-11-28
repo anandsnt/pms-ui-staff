@@ -72,6 +72,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.paymentType.type.value = ""; 
 		}); 
 
+		$scope.$on("MLI_ERROR", function(e,data){
+			$scope.errorMessage = data;
+		});
+
 		var savenewCc = function(){
 			var ccSaveSuccess = function(data){
 				console.log("hiree")
