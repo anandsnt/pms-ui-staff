@@ -216,15 +216,28 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
 	var saveToGuestCardSuccess = function(data){
+		console.log(data);
 		$scope.$emit("hideLoader");
 		$scope.closeDialog();
-		var dataToGuestList = {
-			"id": data.id,
-			"isSelected": true,
-			"is_primary":false,
-			"payment_type":data.payment_name,
-			"card_code": $scope.renderData.creditCardType.toLowerCase()
+		var dataToGuestList = {};
+		if(isNewCardAdded){
+			dataToGuestList = {
+				"id": data.id,
+				"isSelected": true,
+				"is_primary":false,
+				"payment_type":data.payment_name,
+				"card_code": $scope.renderData.creditCardType.toLowerCase()
+			};
+		}
+		else{
+			dataToGuestList = {
+				"id": data.id,
+				"isSelected": true,
+				"is_primary":false,
+				"payment_type":data.payment_name
+			};
 		};
+		
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 	};
 
