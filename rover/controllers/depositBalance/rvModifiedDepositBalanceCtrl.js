@@ -284,7 +284,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		alert(JSON.stringify(data));
 		
 			data.user_id = $scope.guestCardData.userId;
-			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveToGuestCardSuccess);
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.successSavePayment);
 		
 		//$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		
