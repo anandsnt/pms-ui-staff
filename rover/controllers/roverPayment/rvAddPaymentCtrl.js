@@ -121,6 +121,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.$digest();
 	});
 
+	$scope.$on("MLI_ERROR", function(e,data){
+		$scope.errorMessage = data;
+	});
+
 
 	var creditCardType = '';
 	var billIndex = parseInt($scope.passData.fromBill);

@@ -76,6 +76,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		
 	});
 	
+	$scope.$on("MLI_ERROR", function(e,data){
+		$scope.errorMessage = data;
+	});
+	
 	// CICO-9457 : To calculate fee
 	$scope.calculateFee = function(){
 		if($scope.isStandAlone){
