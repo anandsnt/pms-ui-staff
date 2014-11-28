@@ -36,9 +36,17 @@ var SwipeOperation = function(){
 	this.createSWipedDataToSave = function(swipedCardData){
 		console.log("================TO SAVE===============");
 		console.log(JSON.stringify(swipedCardData));
-		// var swipedCardDataToSave = {
-			// "et2": swipedCardData
-		// };
+		
+		
+		var swipedCardDataToSave = {
+			"cardType": swipedCardData.cardType,
+			"et2": swipedCardData.et2,
+			"ksn": swipedCardData.ksn,
+			"pan": swipedCardData.pan,
+			"mli_token": swipedCardData.token,
+			"payment_type": "CC"
+		};
+		return swipedCardDataToSave;
 // 		
 		// $scope.saveData.et2 = $scope.passData.et2;
 			// $scope.saveData.ksn = $scope.passData.ksn;

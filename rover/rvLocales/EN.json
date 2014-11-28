@@ -128,6 +128,7 @@
     "SEARCH_TITLE" : "Search",
     "STAYCARD_TITLE": "Staycard",
     "ROOM_ASSIGNMENT_TITLE" : "Room Assignment",
+    "MENU_ROOM_DIARY": "Room Diary",
     "ROOM_UPGRADES_TITLE": "Room Upgrades",
     "RESERVATION_TITLE": "Reservation",
     "RATE_MANAGER_TITLE": "Rate Manager",
@@ -506,7 +507,7 @@
 
     "BEST_SELLER": "BESTSELLER",
     "ENHANCEMENTS": "Enhancements",
-    "GO_TO_PAYMENT": "Go to Payment",
+    "GO_TO_PAYMENT": "Book",
     "QUANTITY": "Quantity",
     "REMOVE": "Remove",
     "ADD_MORE_TO_THIS_ROOM": "Add More to This Room",

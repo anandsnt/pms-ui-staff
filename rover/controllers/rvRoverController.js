@@ -24,7 +24,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
 
-
+    $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
 
     //Used to add precison in amounts
@@ -66,6 +66,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
+
   	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
   	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
   	//$rootScope.paymentGateway = "sixpayments";
@@ -76,6 +77,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
         }
     catch(err) {};
+
+	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+    $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
+
 
     //handle six payment iFrame communication
     var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
@@ -133,6 +140,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
+
 
     $scope.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(value) {
@@ -200,7 +208,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             standAlone: true,
             menuIndex: "createReservation"
           }, {
-            title: "MENU_ROOM_ASSIGNMENT",
+            title: "MENU_ROOM_DIARY",
             action: 'rover.reservation.diary',
             standAlone: true,
             hidden: !$rootScope.isHourlyRateOn,
@@ -655,7 +663,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     
     $scope.closeBussinnesDatePopup = function(){
       ngDialog.close(LastngDialogId,"");
-    }
+    };
 
     $rootScope.$on('ngDialog.opened', function (e, $dialog) {
       LastngDialogId = $dialog.attr('id');
