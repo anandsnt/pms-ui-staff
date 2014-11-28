@@ -142,7 +142,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 							parseFloat($scope.renderData.defaultPaymentAmount);
 			var feePercent  = parseFloat($scope.renderData.actualFees);
 
-			if($scope.isStandAlone && amountSymbol == "%"){
+			if(amountSymbol == "percent"){
 				var calculatedFee = parseFloat(totalAmount * (feePercent/100));
 				$scope.renderData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
 				$scope.renderData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
@@ -201,7 +201,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
 				$scope.renderData.actualFees = feesAmount;
 				
-				if(amountSymbol == "%") $scope.calculateFee();
+				if(amountSymbol == "percent") $scope.calculateFee();
 				else{
 					$scope.renderData.calculatedFee = feesAmount;
 					$scope.renderData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);

@@ -93,7 +93,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 							parseFloat($scope.depositBalanceMakePaymentData.amount);
 			var feePercent  = parseFloat($scope.feeData.actualFees);
 
-			if($scope.isStandAlone && amountSymbol == "%"){
+			if(amountSymbol == "percent"){
 				var calculatedFee = parseFloat(totalAmount * (feePercent/100));
 				$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
 				$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
@@ -119,7 +119,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
 			$scope.feeData.actualFees = feesAmount;
 			
-			if(amountSymbol == "%") $scope.calculateFee();
+			if(amountSymbol == "percent") $scope.calculateFee();
 			else{
 				$scope.feeData.calculatedFee = feesAmount;
 				$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
