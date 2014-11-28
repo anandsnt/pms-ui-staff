@@ -149,7 +149,23 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             }, onAssignSuccess, onAssignFailure);
         }
 
+        function isSearchOnSingleDigit(searchTerm){
+            if($rootScope.isSingleDigitSearch){
+                return isNaN(searchTerm);
+            } else {
+                return true;
+            }
+        };
+
         $scope.workManagementSearch = function(refresh) {
+            /**
+            * Single digit search for room number will be initiated based on the settings in admin
+            * Ref Story: CICO-10323 
+            */
+            if(isSearchOnSingleDigit($scope.stateVariables.searchQuery) && $scope.stateVariables.searchQuery.length < 3){
+                return false;
+            }
+
             if (refresh || ($scope.stateVariables.searchQuery.length > 0 && $scope.stateVariables.lastSearchQuery !== $scope.stateVariables.searchQuery)) {
                 var searchKey = $scope.stateVariables.searchQuery;
                 $scope.stateVariables.lastSearchQuery = $scope.stateVariables.searchQuery;
