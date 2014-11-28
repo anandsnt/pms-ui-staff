@@ -143,7 +143,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
 
     $scope.isDepositBalanceScreenOpened = false;
-    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(value) {
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {
       $scope.isDepositBalanceScreenOpened = value;
     });
     $scope.searchBackButtonCaption = '';

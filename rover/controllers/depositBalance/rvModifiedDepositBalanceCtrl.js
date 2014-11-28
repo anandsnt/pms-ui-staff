@@ -263,28 +263,17 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
-		// console.log(swipedCardDataToSave);
-		// $scope.shouldShowIframe 	   			 = false;	
-		// $scope.shouldShowMakePaymentScreen       = true; 
-		// $scope.showAddtoGuestCard    			 = false;
-		// $scope.shouldShowExistingCards  		 = false;
-		// $scope.addmode                 			 = false;
-		// $scope.makePaymentButtonDisabled         = false;
-		// $scope.renderData.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
-		// $scope.renderData.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
-		// $scope.renderData.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
-// 		
-		// console.log(">>>>>>>>>>"+JSON.stringify($scope.swipedCardDataToSave));
-		
+		$scope.depositBalanceMakePaymentData.card_code   = swipedCardDataToSave.cardType.toLowerCase();
+		$scope.depositBalanceMakePaymentData.ending_with = swipedCardDataToSave.cardNumber.slice(-4);
+		$scope.depositBalanceMakePaymentData.card_expiry  = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
 		var data 			= swipedCardDataToSave;
 		data.reservation_id =	$scope.reservationData.reservation_card.reservation_id;
 		
 		data.payment_credit_type = swipedCardDataToSave.cardType;
 		data.credit_card = swipedCardDataToSave.cardType;
-		alert(JSON.stringify(data));
 		
-			data.user_id = $scope.guestCardData.userId;
-			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.successSavePayment);
+		data.user_id = $scope.guestCardData.userId;
+		$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.successSavePayment);
 		
 		//$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		
