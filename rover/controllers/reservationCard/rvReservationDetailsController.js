@@ -488,7 +488,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 					
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				alert("==++++++++++====="+JSON.stringify(passData));
 				if(swipedCardDataToRender.swipeFrom !== "depositBalance"){
 					$scope.openPaymentDialogModal(passData, paymentData);
 				} else {
