@@ -293,8 +293,46 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
            
             $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, id, successCallback, errorCallback);
     };
+    /**
+    * function to fetch available billing groups from the server
+    */
+    $scope.fetchAllBillingGroups = function(){
+        
+            var successCallback = function(data) {
+                $scope.availableBillingGroups = data;
+                if(data.length == 0)
+                    $scope.isBillingGroup = false;
+                $scope.$parent.$emit('hideLoader');
 
-    $scope.fetchBillsForReservation();
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.$emit('displayErrorMessage',errorMessage);
+            };
+            
+           
+            $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, '', successCallback, errorCallback);
+    };  
+
+    $scope.fetchAllChargeCodes = function(){
+        var successCallback = function(data) {
+            $scope.availableChargeCodes = data;
+            $scope.fetchAllBillingGroups();
+        };
+        var errorCallback = function(errorMessage) {
+            $scope.$parent.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage',errorMessage);
+        };
+        
+        $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, '', successCallback, errorCallback);
+    };
+
+    if($scope.attachedEntities.type !== "TRAVEL_AGENT_DEFAULT_BILLING"){
+        $scope.fetchBillsForReservation();
+    }else {
+        $scope.fetchAllChargeCodes();
+
+    }
     /**
     * function to trigger the filtering when the search text is entered
     */
@@ -396,12 +434,14 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
                 return;
             }
-           $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
+            if($scope.attachedEntities.type !== "TRAVEL_AGENT_DEFAULT_BILLING"){
+                $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
+            }
            
            /*
-                     * If user selects the new bill option,
-                     * we'll first create the bill and then save the route for that bill
-                     */
+             * If user selects the new bill option,
+             * we'll first create the bill and then save the route for that bill
+             */
            if($scope.selectedEntity.to_bill == 'new'){
                 $scope.createNewBill();
             }else if($scope.paymentDetails != null){

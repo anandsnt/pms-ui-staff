@@ -9,9 +9,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.bills = [];
     $scope.isReloadNeeded = false;
     $scope.routes = [];
-    $scope.attachedEntities = [];
     $scope.errorMessage = '';
-	
+    $scope.isInitialPage = true;
+
+    if($scope.attachedEntities.type == "TRAVEL_AGENT_DEFAULT_BILLING"){
+        $scope.isInitialPage = true;
+    }
+
 	$scope.closeDialog = function(){
 		ngDialog.close();
         $scope.$emit('routingPopupDismissed');
@@ -122,9 +126,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 
             $scope.isEntitySelected = true;
             $scope.isInitialPage = false;
+            //TODO: Remove commented out code
             $scope.selectedEntity = {
-                "reservation_status" : $scope.reservationData.reservation_status,
-                "is_opted_late_checkout" : $scope.reservationData.is_opted_late_checkout,               
+               // "reservation_status" : $scope.reservationData.reservation_status,
+                //"is_opted_late_checkout" : $scope.reservationData.is_opted_late_checkout,               
                 "bill_no": "",              
                 "has_accompanying_guests" : false,
                 "attached_charge_codes": [],
@@ -132,6 +137,12 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 "is_new" : true,
                 "credit_card_details": {}
             };
+
+            if($scope.attachedEntities.type !== "TRAVEL_AGENT_DEFAULT_BILLING"){
+                $scope.selectedEntity.reservation_status = $scope.reservationData.reservation_status;
+                $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
+            }
+
             if(type == 'GUEST'){
                 $scope.selectedEntity.id = $scope.reservationData.reservation_id;
                 $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
@@ -258,7 +269,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.invokeApi(RVBillinginfoSrv.fetchAttachedCards, $scope.reservationData.reservation_id, successCallback, errorCallback);
     };  
 
-    $scope.fetchRoutes();
+    if($scope.attachedEntities.type == "TRAVEL_AGENT_DEFAULT_BILLING"){
+        $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
+    } else {
+        $scope.fetchRoutes();
+        $scope.attachedEntities = [];
+    }
+
     /**
     * function to save the new route
     */

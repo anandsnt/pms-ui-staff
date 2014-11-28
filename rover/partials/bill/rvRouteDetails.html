@@ -67,7 +67,7 @@
 			</div>
 		</div>
 	</fieldset>
-	<fieldset class="content-right" ng-show = "bills.length != 0">
+	<fieldset class="content-right">
 		<span class="h2 message" ng-hide = "(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION')">
 		  {{'ROUTE_TO_BILL' | translate}}
 			<div class="select select-stand-alone">
@@ -149,5 +149,5 @@
 </div>
 <div class="actions">
 	<button type="button" id="close-information" class="button blank modal-close" ng-click = "headerButtonClicked()">Cancel</button>
-	<button type="button" id="save-route" class="button green modal-close" ng-disabled="bills.length == 0" ng-class="{'grey': bills.length == 0}" ng-click = "saveRoute()">Save Route</button>
+	<button type="button" id="save-route" class="button green modal-close" ng-click = "saveRoute()">Save Route</button>
 </div>
