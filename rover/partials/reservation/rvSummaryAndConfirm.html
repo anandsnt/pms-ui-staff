@@ -305,7 +305,7 @@
                         <div class="notice success">Deposit payed successfully!</div>
                         <ul class="transaction">
                             <li ng-show="depositData.authorizationCode!=''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>
-                            <li>Amount paid: <span class="value">{{currencySymbol}}{{depositData.depositValue}}</span>
+                            <li>Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}}</span>
                             </li>
                         </ul>
                     </div>
@@ -318,7 +318,7 @@
                     <div class="actions">
                         <button type="button" ng-disabled="!reservationData.guest.id && !reservationData.company.id && !reservationData.travelAgent.id" class="button blank" ng-click="cancelReservation()">Cancel Reservation</button>
                         <!-- Show when deposit paid succesfully. If deposit not required, then show when payment method added  -->
-                        <button type="button" class="button green" ng-disabled="!reservationData.guest.id && !reservationData.company.id && !reservationData.travelAgent.id" ng-show="depositData.depositSuccess" ng-click="proceedCreatingReservation()">Continue</button>
+                        <button type="button" class="button green" ng-disabled="!reservationData.guest.id && !reservationData.company.id && !reservationData.travelAgent.id" ng-click="proceedCreatingReservation()">Continue</button>
                         <!-- Show when deposit payment fails  -->
                         <button type="button" class="button blue" ng-show="depositData.depositAttemptFailure" ng-click="payDeposit()">Try Again</button>
                     </div>
