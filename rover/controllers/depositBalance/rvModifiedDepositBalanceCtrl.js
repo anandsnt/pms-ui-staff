@@ -35,6 +35,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.depositBalanceMakePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonDisabled = true;
 	$scope.feeData = {};
+	$scope.hideCancelCard = true;
+
 	/*
 	 * on succesfully created the token
 	 */
@@ -268,6 +270,23 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender){
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+	});
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		$scope.depositBalanceMakePaymentData.card_code   = swipedCardDataToSave.cardType.toLowerCase();
+		$scope.depositBalanceMakePaymentData.ending_with = swipedCardDataToSave.cardNumber.slice(-4);
+		$scope.depositBalanceMakePaymentData.card_expiry  = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
+		var data 			= swipedCardDataToSave;
+		data.reservation_id =	$scope.reservationData.reservation_card.reservation_id;
+		
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card = swipedCardDataToSave.cardType;
+		
+		data.user_id = $scope.guestCardData.userId;
+		$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.successSavePayment);
+		
+		//$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
+		
+		
 	});
 
 }]);

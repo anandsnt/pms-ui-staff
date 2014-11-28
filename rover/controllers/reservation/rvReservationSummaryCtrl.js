@@ -38,6 +38,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.shouldShowAddNewCard = true;
 		$scope.isFromCreateReservation = true;
 		$scope.renderData = {};
+
 		$scope.feeData = {};
 
 		// CICO-9457 : To calculate fee - for standalone only
@@ -63,6 +64,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				}
 			}
 		};
+
+		$scope.reservationData.referanceText = "";
 
 		var retrieveCardtype = function(){
 			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
