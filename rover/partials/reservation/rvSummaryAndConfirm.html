@@ -289,7 +289,7 @@
 
 
                     <!-- Use only if deposit is required -->
-                    <div class="notice deposit" ng-if="depositData.isDepositRequired" ng-hide="depositData.attempted">                        
+                    <div class="notice deposit" ng-if="depositData.isDepositRequired" ng-hide="depositData.attempted || reservationData.depositAmount == '' || reservationData.depositAmount <= 0">                        
                         <p>Deposit required: <strong>{{depositData.description}}</strong>.</p>
                         <!-- Payment fields -->
                         <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        
