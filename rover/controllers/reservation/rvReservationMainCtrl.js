@@ -378,9 +378,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
              */
             var taxInclusiveStayTotal = 0.0; //Per Stay Inclusive Charges
             var taxExclusiveStayTotal = 0.0; //Per Stay Exlusive Charges
-
+            
+            if(date instanceof Date){
+                date = new tzIndependentDate(date).toComponents().date.toDateString();
+            }
             var taxDescription = [];
-
             var adults = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.adults;
             var children = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.children;
             var nights = $scope.reservationData.numNights;
@@ -506,7 +508,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if ((date != $scope.reservationData.departureDate || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                if ((date != $scope.reservationData.departure_date || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                    
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
 

@@ -274,7 +274,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					};
 					var paymentData = $scope.reservationData;
 					
-					if($scope.isDepositBalanceScreenOpened){
+					if($scope.roverFlags.isDepositBalanceScreenOpened){
 						
 						$scope.$broadcast("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", passData);
 					} else{

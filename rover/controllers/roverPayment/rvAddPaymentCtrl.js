@@ -334,8 +334,20 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 	
 	$scope.addNewPayment = function(){
-		if(typeof $scope.dataToSave !== "undefined")
+		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+			alert("raeche")
+			saveDataFromSwipe();
+		} else if(typeof $scope.dataToSave !== "undefined")
 		   ($scope.dataToSave.paymentType ==='CC') ? saveNewCard():saveNewPayment();
+	};
+	var saveDataFromSwipe = function(){
+		var data 			= $scope.swipedCardDataToSave;
+		data.reservation_id =	$scope.passData.reservationId;
+		
+		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
+		data.credit_card = $scope.swipedCardDataToSave.cardType;
+		alert(JSON.stringify(data));
+		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data,savePaymentSuccess);
 	};
 
 		/*
@@ -356,6 +368,19 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.$on('cardSelected',function(e,data){
 		$scope.showInitialScreen       = true;
 		setCreditCardFromList(data.index);
+	});
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		
+		$scope.swipedCardDataToSave = swipedCardDataToSave;
+		$scope.dataToSave.paymentType = "CC";
+		$scope.showCCPage = false;
+		$scope.showSelectedCreditCard  = true;
+		$scope.addmode                 = false;	
+		$scope.renderData.creditCardType = getCreditCardType(swipedCardDataToSave.cardType).toLowerCase();
+		$scope.renderData.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
+		$scope.renderData.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
+		
+		console.log(">>>>>>>>>>"+JSON.stringify($scope.swipedCardDataToSave));
 	});
 
 	$scope.$on('cancelCardSelection',function(e,data){
