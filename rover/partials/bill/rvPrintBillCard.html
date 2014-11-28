@@ -14,8 +14,8 @@
         </tr>
         <tr>
             <td>{{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</td>
-            <td>{{printData.arrival_date}}</td>
-            <td>{{printData.departure_date}}</td>
+            <td>{{printData.arrival_date | date:dateFormat}}</td>
+            <td>{{printData.departure_date | date:dateFormat}}</td>
         </tr>
         <tr>
             <th>City</th>
@@ -61,28 +61,17 @@
         </thead>
         <tfoot>
             <tr>
-                <td colspan="3">Total Charge</td>
-                <td>{{printData.currency}}{{printData.total_fees}}</td>
+                <td colspan="3"><strong>Total Charge</strong></td>
+                <td><strong>{{printData.currency}}{{printData.total_fees}}<strong></td>
             </tr>
             <tr>
-                <td colspan="3">Total Credits</td>
-                <td>{{printData.currency}}{{printData.credits | number: precisonTwo}} </td>
-            </tr>
-
-            <tr ng-repeat="payment_details in printData.payment_details">
-                <td colspan="3" ng-if="$index==0">Method of Payment</td>
-                <td colspan="3" ng-if="$index !=0"></td>
-                <td ng-if="payment_details.description == 'Credit Card'">
-                    <span>{{payment_details.description}}({{payment_details.card_number}})</span>
-                </td>
-                <td ng-if="payment_details.description != 'Credit Card'">
-                    <span>{{payment_details.description}}</span>
-                </td>
+                <td colspan="3"><strong>Total Credits<strong></td>
+                <td><strong>{{printData.currency}}{{printData.credits | number: precisonTwo}} <strong></td>
             </tr>
 
             <tr>
-                <td colspan="3">Balance</td>
-                <td>{{printData.currency}}{{printData.balance}}</td>
+                <td colspan="3"><strong>Balance</strong></td>
+                <td><strong>{{printData.currency}}{{printData.balance}} </strong></td>
             </tr>
             <tr>
                 <td colspan="3">Net Amount</td>
@@ -106,14 +95,14 @@
 
         <tbody>
             <tr ng-repeat="item in printData.charge_details_list" ng-if="!item.is_tax">
-                <td>{{feesData.date | date:'MM-dd-yyyy'}}</td>
+                <td>{{item.date | date:dateFormat}}</td>
                 <td>{{item.description}}</td>
                 <td class="align-right">{{printData.currency}}{{item.amount | number: precisonTwo}}</td>
                 <td class="align-right"></td>
             </tr>
 
             <tr ng-repeat="item in printData.credit_details_list">
-                <td>{{feesData.date | date:'MM-dd-yyyy'}}</td>
+                <td>{{item.date | date:dateFormat}}</td>
                 <td>{{item.description}}</td>
                 <td class="align-right"></td>
                 <td class="align-right">{{printData.currency}}{{item.amount | number: precisonTwo}}</td>

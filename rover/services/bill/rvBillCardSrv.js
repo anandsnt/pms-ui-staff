@@ -23,9 +23,11 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 				data.credit_details_list = [];
 				angular.forEach(data.fee_details,function(fees, index1){
 					angular.forEach(fees.charge_details,function(charge, index2){
+						charge.date=fees.date;
 						data.charge_details_list.push(charge);
 					});
 					angular.forEach(fees.credit_details,function(credit, index3){
+						credit.date=fees.date;
 						data.credit_details_list.push(credit);
 					});
 				});
