@@ -6,7 +6,7 @@
     <span class="total">Total: <strong id="total-deposit-amount" >${value+fee} </strong></span>-->
 </div>
 <!-- Reference field - use only when it exsits -->
-<div class="entry full-width reference">
+<div class="entry full-width reference" ng-show="checkReferencetextAvailable()">
     <label for="reference">Reference</label>
-    <input name="reference" id="reference" value="" type="text" />
+    <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
 </div>
