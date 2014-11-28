@@ -103,7 +103,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		 * Function to recieve six payment token on click 'Add' button in form
 		 */
 
-		$rootScope.$on('six_token_recived',function(e,data){
+		$scope.$on('six_token_recived',function(e,data){
 			data.six_payment_data.isSixPayment = true;
 			$scope.shouldShowAddNewCard = false;
 			notifyParent(data.six_payment_data);

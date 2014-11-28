@@ -73,6 +73,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		var savenewCc = function(){
 			var ccSaveSuccess = function(data){
+				console.log("hiree")
 				$scope.$emit('hideLoader');
 				$scope.showCC = false;
 				$scope.showSelectedCreditCard = true;
@@ -82,7 +83,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.renderData.cardExpiry =retrieveExpiryDate();
 			};
 
-			var data = {}
+			var data = {};
 			data.reservation_id= $scope.reservationData.reservationId;	
 			data.token = (!$scope.newPaymentInfo.tokenDetails.isSixPayment)?
 								$scope.newPaymentInfo.tokenDetails.session :
@@ -130,7 +131,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"postData": {
 					"bill_number": 1,
 					"payment_type": $scope.reservationData.paymentType.type.value,
-					"amount": $scope.depositData.depositValue,
+					"amount": $scope.reservationData.depositAmount,
 					"payment_type_id": $scope.reservationData.selectedPaymentId
 				},
 				"reservation_id": $scope.reservationData.reservationId
@@ -224,15 +225,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.depositData = {};
 				$scope.depositData.isDepositRequired = false;
 				$scope.depositData.description = "";
-				$scope.depositData.depositValue = 0.00;
+				$scope.reservationData.depositAmount = 0.00;
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
 				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
 			} else {
 				$scope.depositData = {};
 				$scope.depositData.isDepositRequired = !!$scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.id;
-				$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;
-				$scope.depositData.depositValue = $scope.reservationData.depositAmount;
+				$scope.depositData.description = $scope.reservationData.ratesMeta[$scope.reservationData.rooms[0].rateId].deposit_policy.description;				
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
 				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
@@ -249,9 +249,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.setScroller('reservationSummary', {
 				'click': true
 			});
-			$scope.setScroller('paymentInfo', {
-				'click': true
-			});
+			$scope.setScroller('paymentInfo');
 			fetchPaymentMethods();
 			refreshScrolls();
 		};
@@ -549,12 +547,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				$scope.showCC = true;
+				$scope.cardsList = (typeof $scope.cardsList !== 'undefined') ? $scope.cardsList : [];
 				$scope.addmode = $scope.cardsList.length > 0 ? false:true;
 			} else {
-				$scope.isSixPaymentGatewayVisible = false;
-				$scope.isMLICreditCardVisible = false;
 				$scope.isSubmitButtonEnabled = true;
-			}
+			};
 
 			$scope.refreshPaymentScroller();
 		};

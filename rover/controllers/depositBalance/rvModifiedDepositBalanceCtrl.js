@@ -78,7 +78,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	// CICO-9457 : To calculate fee
 	$scope.calculateFee = function(){
 		if($scope.isStandAlone){
-			//var feesInfo = $scope.depositBalanceData.data.existing_payments[0].fees_information;
+			
 			var feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
 			var amountSymbol = "";
 			var zeroAmount = parseFloat("0.00").toFixed(2);
@@ -203,13 +203,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		
 		$scope.closeDepositModal();
 	};
-	/*
-	 * Card selected from centralized controler 
-	 */
-	$scope.$on('cardSelected',function(e,data){
-		$scope.shouldCardAvailable 				 = true;
-		$scope.setCreditCardFromList(data.index);
-	});
+	
 	/*
 	 * Show the selected cards list in make payment screen
 	 */
@@ -226,7 +220,18 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.card_code = $scope.depositBalanceData.data.existing_payments[index].card_code;
 		$scope.depositBalanceMakePaymentData.ending_with  = $scope.depositBalanceData.data.existing_payments[index].ending_with;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
+		console.log("card clicked from deposit");
+		$scope.depositBalanceData.data.selected_payment_fees_details = dclone($scope.depositBalanceData.data.existing_payments[index].fees_information,[]);
 	};
+
+	/*
+	 * Card selected from centralized controler 
+	 */
+	$scope.$on('cardSelected',function(e,data){
+		$scope.shouldCardAvailable 				 = true;
+		$scope.setCreditCardFromList(data.index);
+	});
+	
 	$scope.showAddCardSection = function(){
 		$scope.shouldShowIframe 	   			 = false;	
 		$scope.shouldShowMakePaymentScreen       = false; 
