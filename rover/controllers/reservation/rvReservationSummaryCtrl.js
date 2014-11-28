@@ -116,6 +116,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		// $scope.$on('cardSelected',function(e,data){
 		// 	setCreditCardFromList(data.index);
 		// });
+		$scope.checkReferencetextAvailable = function(){
+			var referenceTextAvailable = false;
+			angular.forEach($scope.reservationData.paymentMethods, function(paymentMethod, key) {
+				if(paymentMethod.value == $scope.reservationData.paymentType.type.value){
+					referenceTextAvailable = (paymentMethod.is_display_reference)? true:false;
+				};
+			});
+			return referenceTextAvailable;
+		};
 
 		$scope.payDeposit = function() {
 			var onPaymentSuccess = function(data) {
@@ -140,6 +149,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"payment_type_id": $scope.reservationData.selectedPaymentId
 				},
 				"reservation_id": $scope.reservationData.reservationId
+			};
+
+			if($scope.checkReferencetextAvailable()){
+				dataToMakePaymentApi.postData.reference_text = $scope.reservationData.referanceText;
 			};
 
 			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToMakePaymentApi, onPaymentSuccess, onPaymentFailure);
