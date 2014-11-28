@@ -171,9 +171,12 @@ var TimelineResizeGrip = React.createClass({
 		if(currentResizeItem) {
 		 	grip_text = label + ' ' + (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
 		}
-
+		var classes = "set-times";
+		if(this.props.edit.active) {
+			classes += " editing";
+		}
 		return this.transferPropsTo(React.DOM.a({
-			className: 'set-times',
+			className: classes,
 			style: {
 				left: left + 'px'		
 			},
