@@ -547,12 +547,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				$scope.showCC = true;
+				$scope.cardsList = (typeof $scope.cardsList !== 'undefined') ? $scope.cardsList : [];
 				$scope.addmode = $scope.cardsList.length > 0 ? false:true;
 			} else {
-				$scope.isSixPaymentGatewayVisible = false;
-				$scope.isMLICreditCardVisible = false;
 				$scope.isSubmitButtonEnabled = true;
-			}
+			};
 
 			$scope.refreshPaymentScroller();
 		};
