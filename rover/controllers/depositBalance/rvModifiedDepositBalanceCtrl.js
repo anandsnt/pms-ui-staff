@@ -34,6 +34,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.depositBalanceMakePaymentData = {};
 	$scope.depositBalanceMakePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonDisabled = true;
+	$scope.hideCancelCard = true;
 
 	/*
 	 * on succesfully created the token

@@ -38,6 +38,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.shouldShowAddNewCard = true;
 		$scope.isFromCreateReservation = true;
 		$scope.renderData = {};
+		$scope.reservationData.referanceText = "";
 
 		var retrieveCardtype = function(){
 			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?

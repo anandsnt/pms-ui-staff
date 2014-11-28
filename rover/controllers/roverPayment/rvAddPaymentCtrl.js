@@ -397,6 +397,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCCPage = false;
+		$scope.dataToSave.paymentType = "";
 	});
 
 	
