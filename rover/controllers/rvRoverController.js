@@ -66,12 +66,35 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
+
+  	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+  	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+  	//$rootScope.paymentGateway = "sixpayments";
+  	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+
+    //set MLI Merchant Id
+    try {
+          sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
+        }
+    catch(err) {};
+
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
 	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
-  $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
+    $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
 
-	
+
+    //handle six payment iFrame communication
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var eventer = window[eventMethod];
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    
+    eventer(messageEvent, function(e) {
+      var responseData = e.data;
+      if (responseData.response_message == "token_created") {
+        $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
+      }
+    }, false);
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
@@ -118,9 +141,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
 
-    $scope.roverFlags.isDepositBalanceScreenOpened = false;
-    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function() {
-      $scope.roverFlags.isDepositBalanceScreenOpened = true;
+
+    $scope.isDepositBalanceScreenOpened = false;
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {
+      $scope.isDepositBalanceScreenOpened = value;
     });
     $scope.searchBackButtonCaption = '';
 
@@ -436,13 +460,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-     var routeChange = function(event, newURL) {
-       event.preventDefault();
-       return;
-     };
+    //  var routeChange = function(event, newURL) {
+    //    event.preventDefault();
+    //    return;
+    //  };
 
-    $rootScope.$on('$locationChangeStart', routeChange);
-    window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+    // $rootScope.$on('$locationChangeStart', routeChange);
+    // window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
     //
     // DEPRICATED!
@@ -511,8 +535,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     });
     
     $scope.successCallBackSwipe = function(data) {
-    	
-      $scope.$broadcast('SWIPEHAPPENED', data);
+      // $scope.$broadcast('SWIPEHAPPENED', data);
+      
+      $scope.$broadcast('SWIPE_ACTION', data);
     };
 
     $scope.failureCallBackSwipe = function() {};
@@ -549,17 +574,19 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Start Card reader now!.
      * Time out is to call set Browser
      */
-
-    setTimeout(function() {
-      $scope.initiateCardReader();
-    }, 2000);
+	if($rootScope.paymentGateway != "sixpayments"){
+		setTimeout(function() {
+	      $scope.initiateCardReader();
+	    }, 2000);
+	}
+    
 
     /*
      * To show add new payment modal
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
      * @param {{object}} - payment data - used for swipe
      */
-    $scope.showAddNewPaymentModal = function(passData, paymentData) {
+   /* $scope.showAddNewPaymentModal = function(passData, paymentData) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
       $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
@@ -568,7 +595,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         controller: 'RVPaymentMethodCtrl',
         scope: $scope
       });
-    };
+    };*/
     /*
      * Call payment after CONTACT INFO
      */
@@ -636,7 +663,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     
     $scope.closeBussinnesDatePopup = function(){
       ngDialog.close(LastngDialogId,"");
-    }
+    };
 
     $rootScope.$on('ngDialog.opened', function (e, $dialog) {
       LastngDialogId = $dialog.attr('id');
@@ -724,5 +751,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
 
     });
+    
+    $scope.openPaymentDialogModal = function(passData, paymentData) {
+      $scope.passData = passData;
+      $scope.paymentData = paymentData;
+     // $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
+      ngDialog.open({
+        template: '/assets/partials/roverPayment/rvAddPayment.html',
+        controller: 'RVPaymentAddPaymentCtrl',
+        scope: $scope
+      });
+    };
   }
 ]);
