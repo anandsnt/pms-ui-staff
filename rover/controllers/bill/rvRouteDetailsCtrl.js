@@ -311,7 +311,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             
            
-            $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, '', successCallback, errorCallback);
+            $scope.invokeApi(RVBillinginfoSrv.fetchAllBillingGroups, '', successCallback, errorCallback);
     };  
 
     $scope.fetchAllChargeCodes = function(){
@@ -324,7 +324,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             $scope.$emit('displayErrorMessage',errorMessage);
         };
         
-        $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, '', successCallback, errorCallback);
+        $scope.invokeApi(RVBillinginfoSrv.fetchAllChargeCodes, '', successCallback, errorCallback);
     };
 
     if($scope.attachedEntities.type !== "TRAVEL_AGENT_DEFAULT_BILLING" &&

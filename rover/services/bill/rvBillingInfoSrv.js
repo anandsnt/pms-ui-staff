@@ -54,6 +54,34 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		return deferred.promise;
 	};
 
+	this.fetchAllBillingGroups = function(){
+		var deferred = $q.defer();
+		var url = '/api/bill_routings/billing_groups?is_default_routing=true'
+			BaseWebSrvV2.getJSON(url).then(function(data) {
+				
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+
+	};  
+
+	this.fetchAllChargeCodes = function(){
+		var deferred = $q.defer();
+		var url = '/api/bill_routings/charge_codes?is_default_routing=true'
+			BaseWebSrvV2.getJSON(url).then(function(data) {
+				
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+
+	};
+
 	this.fetchBillsForReservation = function(reservationId){
 		var deferred = $q.defer();
 		var url = 'api/bill_routings/' + reservationId + '/bills.json';
