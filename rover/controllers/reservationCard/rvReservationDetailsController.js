@@ -327,9 +327,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.showAddNewPaymentModel(swipedCardData);
 			};
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-			
-			
-
 		});
 
 		$scope.failureNewspaperSave = function(errorMessage) {

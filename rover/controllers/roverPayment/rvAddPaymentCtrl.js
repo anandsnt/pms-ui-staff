@@ -303,7 +303,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
     var savePaymentSuccess = function(data){
-    	alert("success");
     	$scope.$emit("hideLoader");
     	(typeof $scope.passData.fromBill == "undefined")?
     		$scope.paymentData.reservation_card.payment_method_description = data.payment_type:
@@ -351,7 +350,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		
 		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
-		alert(JSON.stringify(data));
+		//alert(JSON.stringify(data));
 		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
 		{
 			data.user_id = $scope.passData.userId;
