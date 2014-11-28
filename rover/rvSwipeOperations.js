@@ -2,9 +2,25 @@ var SwipeOperation = function(){
 
 	var that = this;
 
-	
+	this.createDataToTokenize = function(swipedCardData){
+			var ksn = swipedCardData.RVCardReadTrack2KSN;
+      		if(swipedCardData.RVCardReadETBKSN != "" && typeof swipedCardData.RVCardReadETBKSN != "undefined"){
+				swipedCardData = data.RVCardReadETBKSN;
+			}
+			var getTokenFrom = {
+				'ksn': ksn,
+				'pan': swipedCardData.RVCardReadMaskedPAN
+			};
+
+			if(swipedCardData.RVCardReadTrack2!=''){
+				getTokenFrom.et2 = swipedCardData.RVCardReadTrack2;
+			} else if(swipedCardData.RVCardReadETB !=""){
+				getTokenFrom.etb = swipedCardData.RVCardReadETB;
+			}
+			return getTokenFrom;
+	};
 	this.createSWipedDataToRender = function(swipedCardData){
-		console.log(JSON.stringify(swipedCardData));
+	//	console.log(JSON.stringify(swipedCardData));
 		var swipedCardDataToRender = {
 			"cardType": swipedCardData.RVCardReadCardType,
 			"cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4),
@@ -16,11 +32,11 @@ var SwipeOperation = function(){
 			'ksn': swipedCardData.RVCardReadTrack2KSN,
 			'pan': swipedCardData.RVCardReadMaskedPAN,
 			'etb': swipedCardData.RVCardReadETB,
-			'swipeFrom': swipedCardData.swipeFromm,
+			'swipeFrom': swipedCardData.swipeFrom,
 			'token': swipedCardData.token
 		};
 		
-		console.log(swipedCardDataToRender);
+		//alert("..CLASS"+JSON.stringify(swipedCardDataToRender));
 		return swipedCardDataToRender;
 		// "credit_card": data.RVCardReadCardType,
 						// "card_number": "xxxx-xxxx-xxxx-" + tokenData.slice(-4),
@@ -44,7 +60,10 @@ var SwipeOperation = function(){
 			"ksn": swipedCardData.ksn,
 			"pan": swipedCardData.pan,
 			"mli_token": swipedCardData.token,
-			"payment_type": "CC"
+			"payment_type": "CC",
+			"cardExpiryMonth": swipedCardData.cardExpiryMonth,
+			"cardExpiryYear": swipedCardData.cardExpiryYear,
+			"cardNumber": swipedCardData.cardNumber
 		};
 		return swipedCardDataToSave;
 // 		

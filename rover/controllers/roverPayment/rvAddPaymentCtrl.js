@@ -30,6 +30,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.dataToSave.paymentType = "CC";
 		$scope.showCCPage 			  = true;
 		$scope.addmode                = true;	
+		$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
 	}
 
 	$scope.successRender = function(data){
@@ -114,7 +115,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	//retrieve token from paymnet gateway
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
 		$scope.cardData = tokenDetails;
-		console.log($scope.cardData)
 		renderScreen();
 		isNewCardAdded = true;
 		$scope.showInitialScreen       = true; 
@@ -219,7 +219,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"isSelected": true,
 			"is_primary":false,
 			"payment_type":data.payment_name,
-			"card_code": retrieveCardtype()
+			"card_code": $scope.renderData.creditCardType.toLowerCase()
 		};
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 	};
@@ -299,6 +299,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
     var savePaymentSuccess = function(data){
+    	alert("success");
     	$scope.$emit("hideLoader");
     	(typeof $scope.passData.fromBill == "undefined")?
     		$scope.paymentData.reservation_card.payment_method_description = data.payment_type:
@@ -335,7 +336,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	
 	$scope.addNewPayment = function(){
 		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
-			alert("raeche")
+			
 			saveDataFromSwipe();
 		} else if(typeof $scope.dataToSave !== "undefined")
 		   ($scope.dataToSave.paymentType ==='CC') ? saveNewCard():saveNewPayment();
@@ -347,7 +348,14 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		alert(JSON.stringify(data));
-		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data,savePaymentSuccess);
+		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
+		{
+			data.user_id = $scope.passData.userId;
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveToGuestCardSuccess);
+		} else {
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, savePaymentSuccess);
+		}
+		
 	};
 
 		/*
@@ -370,13 +378,13 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		setCreditCardFromList(data.index);
 	});
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
-		
+		console.log(swipedCardDataToSave);
 		$scope.swipedCardDataToSave = swipedCardDataToSave;
 		$scope.dataToSave.paymentType = "CC";
 		$scope.showCCPage = false;
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;	
-		$scope.renderData.creditCardType = getCreditCardType(swipedCardDataToSave.cardType).toLowerCase();
+		$scope.renderData.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
 		$scope.renderData.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
 		$scope.renderData.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
 		
