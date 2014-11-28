@@ -111,8 +111,10 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				card_expiry: cardExpiry
 			}
 			if($scope.isStandAlone){
-				paymentData.fees_amount = $scope.feeData.calculatedFee;
-				paymentData.fees_charge_code_id = $scope.feeData.feeInfo.charge_code_id;
+				if($scope.feeData.calculatedFee)
+					paymentData.fees_amount = $scope.feeData.calculatedFee;
+				if($scope.feeData.feesInfo.charge_code_id)
+					paymentData.fees_charge_code_id = $scope.feeData.feeInfo.charge_code_id;
 			}
 			console.log(paymentData);
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);

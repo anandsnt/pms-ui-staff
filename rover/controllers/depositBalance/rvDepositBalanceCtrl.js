@@ -53,7 +53,7 @@
 // 
 			// $scope.handleMLISessionId();
 		// } else {
-<<<<<<< HEAD
+//<<<<<<< HEAD
 // 
 			// $scope.savePayment("selectedCard");
 		// }
