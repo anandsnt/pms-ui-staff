@@ -287,9 +287,7 @@ sntRover
 	    	var copy,
 	    		selection,
 	    		props = $scope.gridProps,
-	    		edit  = props.edit;   
-	    	
-	    	
+	    		edit  = props.edit;   	    	
 	    	if(!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch(command_message) {
 
@@ -310,7 +308,6 @@ sntRover
 	    		copy.selected = selected;
 
 	    		util.updateReservation(row_data, copy);
-		    	
 		    	$scope.renderGrid();
 
 		    	if($scope.isSelected(row_data, copy)) {
@@ -378,6 +375,18 @@ sntRover
 	    	callAvailabilityAPI();
 	    }; 
 
+	    $scope.openStayCard = function() {
+	    	var reservation 	= this.currentResizeItem,
+	    		reservationID  	= reservation.reservation_id,
+	    		confirmationID 	= reservation.confirmation_number;
+	    		
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+				id: reservationID,
+				confirmationId: confirmationID,
+				isrefresh: true
+			});
+	    }.bind($scope.gridProps);
+
 	    $scope.editSave = function() {
 	    	var props 			= $scope.gridProps,
 	    		row_data 		= props.currentResizeItemRow, //util.copyRoom(props.currentResizeItemRow),
@@ -395,10 +404,9 @@ sntRover
 		    	},
 		    	next: {
 		    		room:  row_data,
-		    		occupancy: row_item_data
+		    		occupancy: row_item_data,
 	    		}
 	    	};
-	    	
 			ngDialog.open({
 				template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
 				controller: 'RVDiaryRoomTransferConfirmationCtrl',
@@ -413,11 +421,14 @@ sntRover
 	    	}
 	    	this.edit.originalRowItem.old_price = avData.old_rate_amount;
 	    	this.currentResizeItemRow.new_price = avData.new_rate_amount;
+	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
 	    	this.currentResizeItemRow.departureTime = successParams.end_time;
-	    	this.currentResizeItemRow.departureDate = successParams.end_date;
+	    	this.currentResizeItemRow.departureDate = successParams.end_date.toComponents().date.toDateString();
     		this.currentResizeItemRow.arrivalTime = successParams.begin_time;
-	    	this.currentResizeItemRow.arrivalDate = successParams.begin_date;  	
-
+	    	this.currentResizeItemRow.arrivalDate = successParams.begin_date.toComponents().date.toDateString(); 
+	    	this.currentResizeItem.numAdults 	= 1; 	
+	    	this.currentResizeItem.numChildren 	= 0;
+	    	this.currentResizeItem.numInfants 	= 0;
 	    }.bind($scope.gridProps);
 	    
 	    var failureCallBackOfResizeExistingReservation = function(errorMessage){
@@ -786,14 +797,14 @@ sntRover
 			rate_type = $scope.gridProps.filter.rate_type,
 			accound_id = $scope.gridProps.filter.account_id;
 		
-	
-		return {
+		var paramsToReturn = {
 			start_date: start,
 			end_date: end,
 			room_type_id: rt_filter,
 			rate_type: rate_type,
 			account_id: accound_id
 		};
+		return paramsToReturn
 	};
 
 	/*

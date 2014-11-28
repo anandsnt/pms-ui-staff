@@ -6,7 +6,8 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 												'ngDialog', 
 												'rvDiaryMetadata',
 												'$vault',
-	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta, $vault) {
+												'rvDiaryUtil',
+	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta, $vault, util) {
 
 		var roomXfer = $scope.roomXfer,
 			current = (roomXfer.current),
@@ -35,11 +36,12 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		$scope.price = roomXfer.next.room.new_price - roomXfer.current.room.old_price;
 
+
 		$scope.selectAdditional = function() {
 			ngDialog.close();
 		};
 
-		$scope.reserveRoom = function(nextRoom, reservation){
+		$scope.reserveRoom = function(nextRoom, occupancy){
 
 			var dataToPassConfirmScreen = {};
 			dataToPassConfirmScreen.arrival_date = nextRoom.arrivalDate;
@@ -47,11 +49,18 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 			
 			dataToPassConfirmScreen.departure_date = nextRoom.departureDate;
 			dataToPassConfirmScreen.departure_time = nextRoom.departureTime;			
-			
 			var rooms = {
 				room_id: next.room.id,
-				rateId:  next.room.room_type.id,
-				amount: $scope.price
+				rateId:  next.room.rate_id,
+				amount: roomXfer.next.room.new_price,
+				reservation_id: next.occupancy.reservation_id,
+				confirmation_id: next.occupancy.confirmation_number,
+				numAdults: next.occupancy.numAdults, 	
+	    		numChildren : next.occupancy.numChildren,
+	    		numInfants 	: next.occupancy.numChildren,
+	    		guest_card_id: next.occupancy.guest_card_id,
+	    		company_card_id: next.occupancy.company_card_id,
+	    		travel_agent_id: next.occupancy.travel_agent_id,
 			}
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
@@ -61,7 +70,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		};
 
 		$scope.confirm = function() {
-			$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.reservation);
+			$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);
 		};
 
 		$scope.closeDialog = function() {

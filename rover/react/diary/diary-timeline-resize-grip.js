@@ -22,20 +22,28 @@ var TimelineResizeGrip = React.createClass({
 		}
 	},
 	__onMouseMove: function(e) {
-		var props = 		this.props,
-			state = 		this.state,
-			display = 		props.display,
-			delta_x = 		e.pageX - state.origin_x, 
-			x_origin = 		(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
-			px_per_int = 	display.px_per_int,
-			px_per_ms = 	display.px_per_ms,
-			model = 		state.currentResizeItem, 
-			direction = 	props.itemProp,
-			opposite =      ((direction === 'departure') ? 'arrival' : 'departure'),
+		var props = 				this.props,
+			state = 				this.state,
+			display = 				props.display,
+			delta_x = 				e.pageX - state.origin_x, 
+			x_origin = 				(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			px_per_int = 			display.px_per_int,
+			px_per_ms = 			display.px_per_ms,
+			model = 				state.currentResizeItem, 
+			direction = 			props.itemProp,
+			opposite =      		((direction === 'departure') ? 'arrival' : 'departure'),
+			isResizable=			this.__whetherResizable(),
 			last_left;
 
 		e.stopPropagation();
 		e.preventDefault();
+		
+		if(!isResizable){
+			props.iscroll.timeline.enable();
+			document.removeEventListener('mouseup', this.__onMouseUp);
+			document.removeEventListener('mousemove', this.__onMouseMove);			
+			return false;
+		}
 
 		if(!state.resizing &&
 		   state.mouse_down && 
@@ -104,6 +112,21 @@ var TimelineResizeGrip = React.createClass({
 		e.stopPropagation();
 		e.preventDefault();
 	},
+	__whetherResizable: function(){
+		var props = 				this.props,
+			state =					this.state,
+			original_item = 		state.currentResizeItem,
+			direction = 			props.itemProp.toUpperCase(),
+			reservation_status = 	original_item.reservation_status.toUpperCase();
+		if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
+			reservation_status === "AVAILABLE" )) {
+			return true;
+		}
+		else if(direction == "ARRIVAL"){
+			return false;
+		}
+		return true;
+	},	
 	getDefaultProps: function() {
 		return {
 			handle_width: 50

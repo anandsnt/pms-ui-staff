@@ -365,8 +365,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To set the selected payment type based on the id and cc_type from the dropdown.
 		 */
 		$scope.changeSelectedPaymentType = function() {
-			$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
-			$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
+			if($scope.selected_payment_type.id != ""){
+				$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
+				$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
+			}
 		};
 
 		$scope.deleteTaxFromCaluculationPolicy = function(index) {

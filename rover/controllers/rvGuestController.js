@@ -921,6 +921,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 			
 		});
+
+		$scope.$on('PROMPTCARDENTRY', function() {
+            $scope.openGuestCard();
+        });
 		
 
 		$scope.init();

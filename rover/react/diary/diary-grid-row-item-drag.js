@@ -24,7 +24,7 @@ var GridRowItemDrag = React.createClass({
 		e.preventDefault();
 
 		if(e.button === 0 || e.button === 2) {
-			document.addEventListener('mouseup', this.__onMouseUp);
+			//document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
 
 			page_offset = this.getDOMNode().getBoundingClientRect();
@@ -47,10 +47,13 @@ var GridRowItemDrag = React.createClass({
 			function() {
 				props.iscroll.grid.disable();
 				props.iscroll.timeline.disable();
+				this.__onMouseUp();
 			});
 		}
 	},
 	__onMouseMove: function(e) {
+		e.stopPropagation();
+		e.preventDefault();
 		var state 		= this.state,
 			props 		= this.props,
 			display 	= props.display,
@@ -80,12 +83,12 @@ var GridRowItemDrag = React.createClass({
 			props = this.props,
 			item = this.state.currentDragItem;
 
-		document.removeEventListener('mouseup', this.__onMouseUp);
+		//document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__dbMouseMove);
 
 		
-		e.stopPropagation();
-		e.preventDefault();
+		/*e.stopPropagation();
+		e.preventDefault();*/
 
 		if(state.dragging) {
 			this.setState({
@@ -98,6 +101,7 @@ var GridRowItemDrag = React.createClass({
 				props.__onDragStop(e, state.left, item);
 			});
 		} else if(this.state.mouse_down) {
+
 			this.setState({
 				mouse_down: false,
 				selected: !state.selected
@@ -107,7 +111,6 @@ var GridRowItemDrag = React.createClass({
 
 				props.iscroll.grid.enable();			
 				props.iscroll.timeline.enable();
-				
 				props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}

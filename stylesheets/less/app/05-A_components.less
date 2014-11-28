@@ -6602,7 +6602,7 @@
 
                             .day,
                             .month,
-                            .year { position: absolute; }
+                            .year {  position: absolute; }
 
                             .month,
                             .year {
@@ -7205,6 +7205,7 @@
                     min-width: 60px;
                     max-width: 120px;
                     padding: 0 5px;
+                    cursor: pointer;
                     .faux-clickable;
                     .pull-left;
 
@@ -7241,7 +7242,10 @@
                         }
                     }
 
-                    &.locked { .opacity(30); }
+                    &.locked { 
+                        cursor: default;
+                        .opacity(30); 
+                    }
 
                     &.booked {
                         color: @textColor;
@@ -7253,6 +7257,8 @@
                         color: @white;
                         text-shadow: 1px 1px 0 rgba(0,0,0,.15);
                         .gradient(@logoGradientStart, @logoGradientEnd);
+
+                        &.locked { .opacity(100); }
                     }
 
                     &.check-in,
@@ -7280,7 +7286,6 @@
             
             .select {
                 height: 40px;
-                margin-right: 20px;
                 .size(40px, 180px);
                 .pull-left;
 
@@ -7764,21 +7769,12 @@
                             .options {
                                 text-align: right;
                                 margin-bottom: 10px;
-
                                 .float;
 
                                 .button {
                                     display: inline-block;
 
-                                    &.white {
-                                        margin-right: 10px;
-                                    }
-
-                                    &.green {
-                                        text-align: left;
-                                        padding-right: 40px;
-                                        line-height: 42px;
-                                    }
+                                    &.white { margin-right: 10px; }
                                 }
                             }
 
@@ -8015,7 +8011,11 @@
                 #pixel-to-percent > .width(980, 2038);
 
                 > .wrapper { padding: 40px; }
-                > .iScrollVerticalScrollbar { right: 10px; }
+                > .iScrollVerticalScrollbar { 
+                    right: 10px;
+
+                    .iScrollIndicator { background: rgba(0,0,0,.1); }
+                }
 
                 h2 {
                     text-align: center;
@@ -8102,6 +8102,7 @@
                 }
 
                 .rooms {
+                    text-align: center;
                     margin-bottom: 20px;
                     .faux-clickable;
 
@@ -8109,6 +8110,7 @@
                         font-size: 14px;
                         line-height: 18px;
                         text-transform: uppercase;
+                        text-align: left;
                         padding: 10px;
                         background-color: @grey1;
                         position: relative;
@@ -8131,6 +8133,7 @@
                     }
 
                     .room-type {
+                        text-align: left;
                         margin: 10px 10px 20px 10px;
                         .float;
 
@@ -8151,6 +8154,7 @@
                     }
 
                     .rate-and-enhancements {
+                        text-align: left;
                         margin: 0 10px 10px 10px;
 
                         li {
@@ -8201,6 +8205,20 @@
                         }
                     }
 
+                    .actions {
+                        margin: 0 10px;
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+
+                        .button { 
+                            margin-bottom: 0;
+
+                            &.white { background-color: @grey1; } 
+
+                            &:first-child { margin-right: 10px; }
+                        }
+                    }
+
                     .add-new-button {
                         cursor: pointer;
                         line-height: 40px;
@@ -8211,6 +8229,7 @@
                     }
 
                     .form {
+                        text-align: left;
                         margin: 10px;
                         padding: 10px;
                         .faux-clickable;
@@ -8237,14 +8256,16 @@
                     }
 
                     .guests {
+                        text-align: left;
                         margin: 0 10px;
 
                         h5 {
                             font-size: 18px;
+                            margin-bottom: 10px;
                         }
 
                         .accompanying-guests {
-                            margin: 10px 0;
+                            margin-bottom: 10px;
                             padding: 10px;
                             .faux-clickable;
                             background-color: @grey1;
@@ -8271,10 +8292,8 @@
                             }
                         }
                     }
-                     .button{
-                        margin-bottom: 10px;
-                        margin-left:170px;
-                    }
+                    
+                    .button { margin-bottom: 10px; }
                 }
 
                 .total-stay-cost {
@@ -8312,73 +8331,34 @@
                 > .wrapper { padding: 20px; }
                 > .iScrollVerticalScrollbar { right: 5px; }
 
-                .entry {
-                    #pixel-to-percent > .width(509, 1058);
-
-                    label { 
-                        margin-bottom: 0; 
-                    }
-                    
-                    input[size] {
-                        text-align: center;
-                        margin-right: 5px;
-
-                        &:last-child { margin-right: 0; }
-                    }
-
-                    &.margin { #pixel-to-percent > .right-margin(40, 1058); }
-
-                    &.card-number-large { #pixel-to-percent > .width(649, 1058); }
-                    &.card-number-small { #pixel-to-percent > .width(369, 1058); }
-
-                    &.full-width {
-                        float: none;
-                        clear: both;
-                        width: 100%;
-                    }
-                }
-
-                .actions {
-                    margin-top: 20px;
-                    padding-top: 20px;
-                    border-top: 1px solid rgba(0,0,0,.1);
-
-                    .button { 
-                        font-size: 18px;
-                        line-height: 24px;
-                        padding: 15px 40px;
-                        margin: 0 auto;
-                        .show;
-                    }
-                }
-
                 .reservation-completed {
-                    #pixel-to-percent > .side-padding(150, 1058);
-                    
+                    #pixel-to-percent > .side-padding(100, 1058);
+
                     h2 {
                         font-size: 28px;
                         font-weight: 600;
                         text-transform: uppercase;
                         text-align: center;
-                        margin: 60px 0 30px 0;
+                        margin: 40px 0 20px;
                     }
 
-                    .button { 
-                        font-size: 18px;
-                        line-height: 24px;
-                        padding: 15px 40px;
-                        width: 100%;
-                        .show;
+                    p { 
+                        text-transform: uppercase;
+                        text-align: center;
+                        color: @grey3;
                     }
 
-                    .entry {
-                        .button { margin-top: 10px; }
-                    }
+                    label { margin-bottom: 0; }
 
                     .actions {
                         .button {
-                            margin-bottom: 10px;
-
+                            font-size: 18px;
+                            line-height: 24px;
+                            padding: 15px 40px;
+                            margin: 0 auto 10px;
+                            width: 100%;
+                            .show;
+                           
                             &:last-child { margin-bottom: 0; }
                         }
                     }
@@ -10549,7 +10529,7 @@
     }
     
 /* Room Diary                ==============================*/
-.diary-content {
+  .diary-content {
     
     .diary-header {
         position: relative;
