@@ -9,7 +9,7 @@ var TimelinePanel = React.createClass({
 			scrollX: true, 
 			scrollY: false, 
 			momentum: false,
-			bounce: true,
+			bounce: false,
 			mouseWheel: false,
 			useTransition: true,
 			preventDefaultException:{ className: /(^|\s)set-times(\s|$)/ }
@@ -21,7 +21,11 @@ var TimelinePanel = React.createClass({
 
 		setTimeout(function () {
 	        iscroll.timeline.refresh();
-	    }.bind(this), 0);
+	        
+	        if(_.isNumber(this.props.display.scrollTo)) {
+	        	//scroll.timeline.scrollTo(this.props.display.scrollTo, 0);
+	        }
+	    }.bind(this), 1000);
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.timeline.destroy();
@@ -49,12 +53,14 @@ var TimelinePanel = React.createClass({
 			id: 'timeline-outer-wrapper',
 			className: 'outer-wrapper',
 			style: {
+				position: 'relative',
 				width: props.display.width + 'px'
 			}
 		},
 		Timeline({
 			display:                props.display,
 			iscroll:                props.iscroll,
+			filter:                 props.filter,
 			edit:    			    props.edit,
 			meta:                   props.meta,
 			__onResizeCommand:      props.__onResizeCommand,

@@ -1,11 +1,10 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse) {
+sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout) {
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
-    
-    
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
+
 	$scope.data = {};
 	$scope.data.activeTab = $stateParams.id=='' ? 0 : $stateParams.id;
 	$scope.data.filterData = {};
@@ -19,30 +18,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedPaymentType = 'ALL';
     $scope.data.reportType = "";
     $scope.data.filterTitle = "All Departments";
-	/*
-	 *	Setting Revenue & Payment date pickers.
-	 *	All date fields should default to yesterday's date.
-	 */
-    var yesterday = tzIndependentDate($rootScope.businessDate);
-    yesterday.setDate(yesterday.getDate()-1);
-
-    if($stateParams.id == 0){
-        $scope.$emit("updateRoverLeftMenu", "journals");
-        // Setting up the default Date as yesterday's business date.
-        $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
-        $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
-        $scope.data.paymentDate = $filter('date')(yesterday, 'yyyy-MM-dd');;
-        $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');;
-    }
-    else{
-        $scope.$emit("updateRoverLeftMenu", "cashier"); 
-        // Setting up the default Date as business date.
-        $scope.data.fromDate = $rootScope.businessDate;
-        $scope.data.toDate   = $rootScope.businessDate;
-        $scope.data.paymentDate = $rootScope.businessDate;
-        $scope.data.cashierDate = $rootScope.businessDate;
-    }
-	
+    
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeCodes = [];
     $scope.data.selectedDepartmentList = [];
@@ -63,9 +39,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.clickedToDate = function(){
 		$scope.popupCalendar('TO');
 	};
-	$scope.clickedPaymentDate = function(){
-		$scope.popupCalendar('PAYMENT');
-	};
 	$scope.clickedCashierDate = function(){
 		$scope.popupCalendar('CASHIER');
 	};
@@ -81,6 +54,17 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     };
 
     /** Employee/Departments Filter starts here ..**/
+
+    // Filter by Logged in user id.
+    $scope.filterByLoggedInUser = function(){
+        angular.forEach($scope.data.filterData.employees,function(item, index) {
+            if(item.id == $scope.data.filterData.loggedInUserId ){
+                item.checked = true;
+                $scope.data.filterData.isSelectButtonActive = true;
+                $scope.clickedSelectButton();
+            }
+        });
+    };
 
     // To toggle revenue filter box.
 	$scope.clickedRevenueFilter = function(){
@@ -108,16 +92,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.selectAllDepartment = function(){
     	$scope.data.filterData.checkedAllDepartments = true;
     	$scope.clearAllDeptSelection();
+        $scope.clearAllEmployeeSelection();
         $scope.getSelectButtonStatus();
 
-        if($scope.data.activeTab == '0' ){
-            $scope.resetRevenueFilters();
-            $scope.refreshRevenueTab();
-        }
-        else if ($scope.data.activeTab == '1' ){
-           $scope.resetPaymentFilters();
-           $scope.refreshPaymentTab();
-        }
+        $scope.resetRevenueFilters();
+        $scope.refreshRevenueTab();
+        $scope.resetPaymentFilters();
+        $scope.refreshPaymentTab();
+
         $scope.data.filterTitle = "All Departments";
     };
 
@@ -136,6 +118,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	angular.forEach($scope.data.filterData.departments,function(item, index) {
        		item.checked = false;
        	});
+    };
+
+    // Unchecking all checkboxes on Employees.
+    $scope.clearAllEmployeeSelection = function(index){
+        angular.forEach($scope.data.filterData.employees,function(item, index) {
+            item.checked = false;
+        });
     };
 
     // Checking whether all department checkboxes are unchecked or not
@@ -179,15 +168,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             $scope.setupDeptAndEmpList();
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
 
-            if($scope.data.activeTab == '0' ){
-                $scope.filterRevenueByDepartmentsOrEmployees();
-                $scope.refreshRevenueTab();
-                
-            }
-            else if ($scope.data.activeTab == '1' ){
-                $scope.filterPaymentByDepartmentsOrEmployees();
-                $scope.refreshPaymentTab();
-            }
+            $scope.filterRevenueByDepartmentsOrEmployees();
+            $scope.refreshRevenueTab();
+            $scope.filterPaymentByDepartmentsOrEmployees();
+            $scope.refreshPaymentTab();
         } 
     };
 
@@ -203,21 +187,24 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             }
         });
 
-        if($scope.data.selectedDepartmentList.length>1){
+        // To get the list of employee id selected.
+        $scope.data.selectedEmployeeList = [];
+        angular.forEach($scope.data.filterData.employees,function(item, index) {
+            if(item.checked){
+                $scope.data.selectedEmployeeList.push(item.id);
+                filterTitle = item.name;
+            }
+        });
+
+        if(($scope.data.selectedDepartmentList.length + $scope.data.selectedEmployeeList.length) > 1 ){
             $scope.data.filterTitle = "Multiple";
         }
-        else if($scope.data.selectedDepartmentList.length == 0){
+        else if( ($scope.data.selectedDepartmentList.length == 0) && ($scope.data.selectedEmployeeList.length == 0) ){
             $scope.data.filterTitle = "All Departments";
         }
         else{
             $scope.data.filterTitle = filterTitle;
         }
-
-        // To get the list of employee id selected.
-        $scope.data.selectedEmployeeList = [];
-        angular.forEach($scope.data.filterData.employees,function(item, index) {
-            if(item.checked) $scope.data.selectedEmployeeList.push(item.id);
-        });
     };
 
     // Searching for employee/dept id in their respective selected lists.
@@ -234,8 +221,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }
         return itemFoundInDeptOrEmpLists;
     };
-
-
 
     /*********************************************************************************************
 
@@ -260,16 +245,16 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.filterRevenueByDepartmentsOrEmployees = function(){
 
         $scope.resetRevenueFilters();
-
+        
         // Searching for transactions having department_id/employee_id from above lists.
         angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
             
             var isResultsFoundInCodes = false;
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-                
+
                 var isResultsFoundInTransactions = false;
                 angular.forEach(charge_codes.transactions,function(transactions, index3) {
-
+                    
                     if( $scope.searchDeptOrEmpId(transactions) ){
                         isResultsFoundInTransactions = true;
                     }
@@ -282,7 +267,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
                  *  So we have to hide its parent tabs - charge_groups & charge_codes
                  */
                 if(isResultsFoundInTransactions) {
-                    //charge_codes.active = true; // uncomment if dept filter needs details view.
                     isResultsFoundInCodes = true;
                 }
                 else{
@@ -384,6 +368,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             });
         });
     };
+
     // Reset the filters in payment tab as in the initial case.
     // Showing only payment types.
     $scope.resetPaymentFilters = function(){
@@ -413,6 +398,35 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             }
         });
     };
+
+    if($stateParams.id == 0){
+        // 2. Go to Financials -> Journal.
+        // a) Upon logging in, default Tab should be Revenue
+        $scope.data.activeTab = 0;
+        $scope.$emit("updateRoverLeftMenu", "journals");
+        // b) All employee fields should default to ALL users
+        // c) All date fields should default to yesterday's date
+        var yesterday = tzIndependentDate($rootScope.businessDate);
+        yesterday.setDate(yesterday.getDate()-1);
+        $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+    }
+    else if($stateParams.id == 2){
+        // 1. Go to Front Office -> Cashier
+        // a) Upon logging in, default Tab should be Cashier
+        $scope.data.activeTab = 2;
+        $scope.$emit("updateRoverLeftMenu", "cashier");
+        // c) All date fields should default to Business Date
+        $scope.data.fromDate = $rootScope.businessDate;
+        $scope.data.toDate   = $rootScope.businessDate;
+        $scope.data.cashierDate = $rootScope.businessDate;
+        // b) All employee fields should default to logged in user
+        $timeout(function(){
+            $scope.filterByLoggedInUser();
+        },2000);
+    }
+
     /** Employee/Departments Filter ends here .. **/
 
     /* Cashier filter starts here */
@@ -458,6 +472,5 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         var date = $filter('date')(date, $rootScope.dateFormat);
         return date + ', ' + time;
     };
-
     
 }]);

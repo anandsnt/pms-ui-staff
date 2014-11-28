@@ -24,7 +24,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
 
-
+    $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
 
     //Used to add precison in amounts
@@ -68,6 +68,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+  $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
 
 	
 
@@ -116,9 +118,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
 
-    $scope.isDepositBalanceScreenOpened = false;
+    $scope.roverFlags.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function() {
-      $scope.isDepositBalanceScreenOpened = true;
+      $scope.roverFlags.isDepositBalanceScreenOpened = true;
     });
     $scope.searchBackButtonCaption = '';
 
@@ -182,10 +184,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             standAlone: true,
             menuIndex: "createReservation"
           }, {
-            title: "MENU_ROOM_ASSIGNMENT",
-            action: "rover.diary.reservations",
+            title: "MENU_ROOM_DIARY",
+            action: 'rover.reservation.diary',
             standAlone: true,
-            menuIndex: 'diary'
+            hidden: !$rootScope.isHourlyRateOn,
+            menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
             action: "",
@@ -366,7 +369,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.hasLoader = false;
     });
 
-
+    /**
+    * in case of we want to reinitialize left menu based on new $rootScope values or something
+    * which set during it's creation, we can use
+    */    
+    $scope.$on('refreshLeftMenu', function(event){
+      setupLeftMenu();
+    }); 
+    
     $scope.init = function() {
       BaseCtrl.call(this, $scope);
       $rootScope.adminRole = '';
@@ -426,10 +436,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
+     var routeChange = function(event, newURL) {
+       event.preventDefault();
+       return;
+     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile

@@ -1,0 +1,70 @@
+<div id="wrapper" class="content current" ng-click="clearErrorMessage()" >
+	<header class="content-title float">
+		<h2 translate>STATIONARY</h2>
+		<a ng-click ="goBackToPreviousState()" class="action back" translate> BACK</a>
+	</header>
+	<section class="content-scroll">
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+	<form class="form float" >		
+		<fieldset class="holder left">
+			<div class="form-title">
+				<h3>
+					<span>{{'CUSTOMIZE' | translate}}</span>
+					{{'GUEST_BILL_TITLE' | translate}}
+				</h3>
+			</div>
+			<div class="entry full-width">
+				<label for="guest-bill-template" translate>GUEST_BILL_TEMPLATE </label>
+				<div class="select" >
+					<select ng-model="data.selected_guest_bill_template" name="guest-bill-template" class="placeholder">
+						<option value="" translate> SELECT_GUEST_BILL </option>
+						<option ng-repeat="item in data.guest_bill_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill_template">{{item.name}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="entry full-width">
+				<label for="hotel-logo" translate> HOTEL_LOGO </label>
+				<div class="select" >
+					<select ng-model="data.logo_type" name="hotel-logo" class="placeholder">
+						<option value="" translate> SELECT_LOGO_TYPE </option>
+						<option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type">{{item.name}}</option>
+					</select>
+				</div>
+			</div>
+			
+			<ad-toggle-button label="{{'SHOW_HOTEL_ADDRESS' | translate}}" is-checked="data.show_hotel_address"></ad-toggle-button>
+			
+			<div class="entry"></div>
+			<div class="entry full-width">
+				<label translate>CUSTOM_TEXT</label>
+
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_header" label = "{{'HEADER'| translate}} " placeholder = "{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}" ></ad-textarea>
+
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_footer" label = "{{'FOOTER'| translate}} " placeholder = "{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}" ></ad-textarea>
+				
+			</div>
+		</fieldset>
+		<fieldset class="holder right">
+			<div class="form-title">
+				<h3>
+					<span>{{'CUSTOMIZE' | translate}}</span>
+					{{'CONFIRMATION_COMMUNICATION' | translate}}
+				</h3>
+			</div>
+			<div class="entry full-width">
+				<label translate>GETTING_TO_THE_HOTEL</label>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.confirmation_template_text"></ad-textarea>
+			</div>
+		</fieldset>
+
+		<div class="actions float">
+			<button type="button" ng-click ="goBackToPreviousState()" class="button blank" translate>CANCEL
+			</button>
+			<button type="button" ng-click="clickedSave()" class="button green" translate>SAVE_CHANGES
+			</button>
+			
+		</div>
+	</form>
+	</section>
+</div>
