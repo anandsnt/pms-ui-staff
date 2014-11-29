@@ -21,9 +21,8 @@ var GridRowItemDrag = React.createClass({
 		var page_offset, el, props = this.props;
 
 		e.stopPropagation();
-		e.preventDefault();
-
-		if(e.button === 0 || e.button === 2) {
+		e.preventDefault();	
+		if(e.button === 0) {
 			//document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
 
