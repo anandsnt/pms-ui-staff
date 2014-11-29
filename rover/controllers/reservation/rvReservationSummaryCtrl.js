@@ -40,6 +40,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.renderData = {};
 
 		$scope.feeData = {};
+		var zeroAmount = parseFloat("0.00").toFixed(2);
 
 		// CICO-9457 : To calculate fee - for standalone only
 		$scope.calculateFee = function(){
@@ -47,7 +48,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if($scope.isStandAlone){
 				var feesInfo = $scope.feeData.feesInfo;
 				var amountSymbol = "";
-				var zeroAmount = parseFloat("0.00").toFixed(2);
 				if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
 
 				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
@@ -108,7 +108,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.setupFeeData = function(){
 			
 			var feesInfo = $scope.feeData.feesInfo;
-			var zeroAmount = parseFloat("0.00").toFixed(2);
 			var defaultAmount = $scope.reservationData ?
 			 	$scope.reservationData.depositAmount : zeroAmount;
 			console.log("feesInfo :");console.log(feesInfo);

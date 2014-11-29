@@ -218,12 +218,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.$emit("hideLoader");
 		}
 		var successOfRoomDetailsFetch = function(data) {
-			if (data.room_details.current_hk_status == 'READY') {
+			if (data.current_hk_status == 'READY') {
 				totalRoomsAvailable++;
 			}
 		};
 
-		$scope.enableCheckInButton = function() {
+		$scope.enableCheckInButton = function() {			
 			return $scope.reservationData.rooms.length == totalRoomsAvailable;
 		};
 
