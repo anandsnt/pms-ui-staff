@@ -23,7 +23,13 @@
 								<span class="value primary">Primary</span>
 							</span> 
 						</span>
-						<span class="value code" ng-show = "payment.payment_type_id != 1">{{ payment.payment_type }}</span>
+						<span class="value code" ng-show = "payment.payment_type_id != 1">
+							<span class="name">{{ payment.payment_type }}
+							</span> 
+							<span class="primary" ng-show="payment.is_primary">
+									<span class="value primary">Primary</span>
+							</span> 
+						</span>
 	  			
 					</a>
 					<a class="open-modal add-new-button" ng-click="openAddNewPaymentModel()">+ New Payment Method</a>

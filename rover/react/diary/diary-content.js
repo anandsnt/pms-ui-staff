@@ -116,9 +116,10 @@ var DiaryContent = React.createClass({
     	}.bind(this), 10, { leading: false, trailing: true }));
 
         setTimeout(function() {
-            self.state.iscroll.grid.scrollTo(-(self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms, 0, 0, 1000);
-            self.state.iscroll.timeline.scrollTo(-(self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms, 0, 0, 1000);
-            self.state.angular_evt.completedRendering.apply(this, Array.prototype.slice.call(arguments));
+            self.state.iscroll.grid.scrollTo(-(self.state.display.x_origin - self.state.display.x_n - 25200000) * self.state.display.px_per_ms, 0, 0, 1000);
+            self.state.iscroll.timeline.scrollTo(-(self.state.display.x_origin - self.state.display.x_n - 25200000) * self.state.display.px_per_ms, 0, 0, 1000);
+            self.state.angular_evt.onScrollEnd(Math.abs(self.state.iscroll.grid.x) / self.state.display.px_per_ms + self.state.display.x_n);
+            self.state.angular_evt.completedRendering.apply(self, Array.prototype.slice.call(arguments));
         }, 1000);
        
   	},

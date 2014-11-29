@@ -45,13 +45,26 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.$emit("hideLoader");
 		//for accompany guest dont show existing cards for add payment type in bill screen CICO-9719
 		$scope.hasAccompanyguest = data.has_accompanying_guests && (typeof $scope.passData.fromBill !== "undefined");
-		$scope.cardsList = $scope.hasAccompanyguest ? []:data.existing_payments;
-		console.log($scope.cardsList);
+		
+		if($scope.hasAccompanyguest){
+			$scope.cardsList = [];
+		}
+		else{
+			//To remove non cc payments
+			angular.forEach(data.existing_payments, function(obj, index){
+				if (obj.is_credit_card) {
+		 		 	$scope.cardsList.push(obj);
+				};
+			});
+		};
+		
 		angular.forEach($scope.cardsList, function(value, key) {
 			
 			value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
 			value.card_expiry = value.expiry_date;//Same comment above
 		});
+
+		$scope.addmode = $scope.cardsList.length > 0 ? false:true;
 	};
 	//NO need to show existing cards in guest card model
 	if(!$scope.isFromGuestCard){
@@ -67,7 +80,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.changePaymentType = function(){
 		$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
 		$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
-		$scope.showInitialScreen       =  ($scope.dataToSave.paymentType == "CC") ? false: true;
+		$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC") ? false: true;
 	};
 
 
@@ -216,7 +229,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
 	var saveToGuestCardSuccess = function(data){
-		console.log(data);
 		$scope.$emit("hideLoader");
 		$scope.closeDialog();
 		var dataToGuestList = {};
@@ -409,7 +421,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		setCreditCardFromList(data.index);
 	});
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
-		console.log(swipedCardDataToSave);
 		$scope.swipedCardDataToSave = swipedCardDataToSave;
 		$scope.dataToSave.paymentType = "CC";
 		$scope.showCCPage = false;
@@ -418,8 +429,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.renderData.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
 		$scope.renderData.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
 		$scope.renderData.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
-		
-		console.log(">>>>>>>>>>"+JSON.stringify($scope.swipedCardDataToSave));
 	});
 
 	$scope.$on('cancelCardSelection',function(e,data){

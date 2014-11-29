@@ -36,6 +36,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.makePaymentButtonDisabled = true;
 	$scope.feeData = {};
 	$scope.hideCancelCard = true;
+	var zeroAmount = parseFloat("0.00").toFixed(2);
 
 	/*
 	 * on succesfully created the token
@@ -88,7 +89,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
-			var zeroAmount = parseFloat("0.00").toFixed(2);
 			if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
 
 			var totalAmount = ($scope.depositBalanceMakePaymentData.amount == "") ? zeroAmount :
@@ -110,7 +110,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.setupFeeData = function(){
 		
 		var feesInfo = $scope.feeData.feesInfo;
-		var zeroAmount = parseFloat("0.00").toFixed(2);
 		var defaultAmount = $scope.depositBalanceMakePaymentData ?
 		 	$scope.depositBalanceMakePaymentData.amount : zeroAmount;
 		console.log("feesInfo :");console.log(feesInfo);
