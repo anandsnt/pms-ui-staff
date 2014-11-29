@@ -466,7 +466,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				if(swipedCardDataToRender.swipeFrom !== "payButton"){
 					$scope.openPaymentDialogModal(passData, paymentData);
 				} else {
-					//$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+					alert("kkkkkkk");
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
 				}
   	 		
   	 		
