@@ -519,6 +519,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
                     var extraAdults = adults >= 2 ? adults - 2 : 0;
                     var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+                    //CICO-6079
+                    if ($scope.reservationData.rooms[roomIndex].stayDates[date] && $scope.reservationData.rooms[roomIndex].stayDates[date].rateDetails) {
+                        if ($scope.reservationData.rooms[roomIndex].stayDates[date].rateDetails.actual_amount !=
+                            $scope.reservationData.rooms[roomIndex].stayDates[date].rateDetails.modified_amount)
+                            roomAmount = parseFloat($scope.reservationData.rooms[roomIndex].stayDates[date].rateDetails.modified_amount);
+                    }
 
                     roomTotal = roomTotal + roomAmount;
 
