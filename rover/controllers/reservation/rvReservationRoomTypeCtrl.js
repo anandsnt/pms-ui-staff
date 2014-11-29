@@ -419,7 +419,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				details.rateDetails = {
 					actual_amount: calculatedAmount,
 					modified_amount: calculatedAmount,
-					is_discount_allowed: 'true' // API returns true / false as a string ... Hence true in a string to maintain consistency
+					is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
+					is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on.toString()
 				}
 			});
 		}
@@ -520,14 +521,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
 				currentRoom.stayDates[activeDate].rate.id = rateId;
 				// CICO-6079
-				
+
 				var calculatedAmount = $scope.roomAvailability[roomId].ratedetails[activeDate] && $scope.roomAvailability[roomId].ratedetails[activeDate][rateId].rate ||
 					$scope.roomAvailability[roomId].ratedetails[activeDate][rateId].rate;
 				calculatedAmount = parseFloat(calculatedAmount).toFixed(2);
 				currentRoom.stayDates[activeDate].rateDetails = {
 					actual_amount: calculatedAmount,
 					modified_amount: calculatedAmount,
-					is_discount_allowed: 'true' // API returns true / false as a string ... Hence true in a string to maintain consistency
+					is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
+					is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on.toString()
 				}
 				currentRoom.stayDates[activeDate].rate.id = rateId;
 

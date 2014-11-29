@@ -21,8 +21,19 @@
 		                <tbody>
 		                    <tr ng-repeat="(date,stayDay) in ngDialogData.room.stayDates" ng-hide="$last && $index > 0">
 		                        <td class="date">{{date  | date : dateFormat}}</td>
-		                        <td class="rate">{{currencySymbol}}{{stayDay.rateDetails.actual_amount | number : 2}}</td>
-		                        <td class="edit">{{currencySymbol}}<input ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false'" type="text" value="" type="text" ng-model="stayDay.rateDetails.modified_amount" /></td>
+		                        <td class="rate" ng-if="!stayDay.rateDetails.is_suppressed">
+		                        	{{currencySymbol}}{{stayDay.rateDetails.actual_amount | number : 2}}
+		                        </td>
+		                        <td class="rate" ng-if="!!stayDay.rateDetails.is_suppressed">
+		                        	SR
+		                        </td>
+		                        <td class="edit" ng-if="!stayDay.rateDetails.is_suppressed">
+		                        	{{currencySymbol}}
+		                        	<input ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false' || !!stayDay.rateDetails.is_suppressed" type="text" value="" type="text" ng-model="stayDay.rateDetails.modified_amount" />
+		                        </td>
+		                        <td class="edit" ng-if="!!stayDay.rateDetails.is_suppressed">
+		                        	SR
+		                        </td>
 		                    </tr>		                    
 		                </tbody>
 		            </table>

@@ -1367,9 +1367,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         }
 
         var nextState = '';
+        var nextStateParameters = '';
 
         $scope.saveReservation = function(navigateTo, stateParameters) {
             nextState = navigateTo;
+            nextStateParameters = stateParameters;
             /**
              * CICO-10321
              * Move check for guest / company / ta card attached to the screen before the reservation summary screen.
@@ -1446,10 +1448,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.$emit('hideLoader');
                     console.log("*************************", $scope.reservationData.reservationId);
                     if (nextState) {
-                        if (!stateParameters) {
-                            stateParameters = {};
+                        if (!nextStateParameters) {
+                            nextStateParameters = {};
                         }
-                        $state.go(nextState, stateParameters);
+                        $state.go(nextState, nextStateParameters);
                     }
                 }
                 var saveFailure = function(data) {
@@ -1461,15 +1463,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     console.log("*************************", $scope.reservationData.reservationId);
                     $scope.reservationData.depositAmount = data.deposit_amount;
                     $scope.viewState.identifier = "UPDATED";
-                    $scope.reservationData.is_routing_available = data.is_routing_available;
-                    $scope.$emit('hideLoader');
+                    $scope.reservationData.is_routing_available = data.is_routing_available;                    
                     if (nextState) {
-                        if (!stateParameters) {
-                            stateParameters = {};
+                        if (!nextStateParameters) {
+                            nextStateParameters = {};
                         }
-                        $state.go(nextState, stateParameters);
+                        $state.go(nextState, nextStateParameters);
                     }
-
+                    $scope.$emit('hideLoader');
                 };
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {

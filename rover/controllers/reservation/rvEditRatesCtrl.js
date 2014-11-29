@@ -3,7 +3,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', '$stateParams',
 		$scope.save = function(room, index) {
 			$scope.reservationData.rooms[index] = room;
 			$scope.computeTotalStayCost();
-			if ($stateParams.reservationId) { // IN STAY CARD .. Reload staycard
+			if ($stateParams.id) { // IN STAY CARD .. Reload staycard
 				$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
