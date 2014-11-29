@@ -104,6 +104,9 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			if (filter.vipsOnly) {
 				filterObject.is_vip = true;
 			}
+			if (filter.showAllRooms) {
+				filterObject.show_all_rooms = true;
+			}
 			if (filter.selectedFOStatus) {
 				filterObject.fo_status = filter.selectedFOStatus;
 			}

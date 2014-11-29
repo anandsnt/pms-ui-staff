@@ -164,6 +164,21 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
+		// fetch list of all employees with a worksheet for each work type
+		this.fetchActiveWorksheetEmp = function() {
+			var url = "/api/work_sheets/active";
+			var deferred = $q.defer();
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
 		// get all all WorkTypes
 		var workTypesList = [];
 		this.fetchWorkTypes = function() {
@@ -426,16 +441,17 @@ sntRover.service('RVHkRoomStatusSrv', [
 			};
 
 			if ( !!room.assignee_maid.name ) {
+				room.canAssign = false;
 				return {
 					'name': angular.copy(room.assignee_maid.name),
 					'class': 'assigned'
 				}
 			} else {
+				room.canAssign = true;
 				return {
 					'name': 'Unassigned',
 					'class': 'unassigned'
 				}
-				room.canAssign = true;
 			}
 		};
 
