@@ -320,7 +320,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 						($scope.cardData.cardDetails.expiryMonth && $scope.cardData.cardDetails.expiryYear ? "20" + $scope.cardData.cardDetails.expiryYear + "-" + $scope.cardData.cardDetails.expiryMonth + "-01" : "");	
 					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
 				} else {
-					$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, nonCCStayCardSuccess);  
+					$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, ccSaveSuccess);  
 					
 				};
 			};
@@ -329,11 +329,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
     var savePaymentSuccess = function(data){
     	$scope.$emit("hideLoader");
-    	(typeof $scope.passData.fromBill == "undefined")?
-    		$scope.paymentData.reservation_card.payment_method_description = data.payment_type:
-    		$scope.paymentData.bills[billNumber].credit_card_details.payment_type_description = data.payment_type;
     	if(typeof $scope.passData.fromBill !== "undefined"){
      		$scope.paymentData.bills[billNumber].credit_card_details.payment_type = $scope.dataToSave.paymentType;
+			$scope.paymentData.bills[billNumber].credit_card_details.payment_type_description = data.payment_type;
+		}else{
+			$scope.paymentData.reservation_card.payment_method_description = data.payment_type;
+			$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		};
     	$scope.closeDialog();
     };
