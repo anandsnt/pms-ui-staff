@@ -437,11 +437,28 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		}();
 
+		var showConfirmRoutingPopup = function(){
+			ngDialog.open({
+				template: '/assets/partials/reservation/alert/rvBillingInfoConfirmPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+
+		};
+
 		/**
 		 * Click handler for confirm button -
 		 * Creates the reservation and on success, goes to the confirmation screen
 		 */
 		$scope.submitReservation = function() {
+
+			if($scope.reservationData.travelAgent.id !== null 
+				&& $scope.reservationData.travelAgent.id !== undefined){
+				console.log("API call to check if routing exists");
+			showConfirmRoutingPopup();
+			return false;
+
+			}
 			
 			$scope.errorMessage = [];
 			// CICO-9794
