@@ -127,6 +127,7 @@
     "AGREE_BUTTON_LABEL":"Agree",
     "NO_POST_ENABLED":"ROOM CHARGE ENABLED",
     "NO_POST_DISABLED":"ROOM CHARGE DISABLED",
+
     "INVOICE":"Invoice",
     "GUEST_FULL_NAME":"Guest Full Name",
     "ARRIVAL_DATE":"Arrival Date",
@@ -147,4 +148,6 @@
     "TOTAL_CREDITS":"Total Credits",
     "BALANCE":"Balance",
     "NET_AMOUNT":"Net Amount",
-    "TOTAL_INCL_TAX":"Total Incl Tax"
+    "TOTAL_INCL_TAX":"Total Incl Tax",
+    "UPDATE":"Update"
+

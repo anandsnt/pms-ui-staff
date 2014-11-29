@@ -220,6 +220,8 @@
 					font-weight: 600;
 				}
 
+				.switch-button.full-width { height: 41px; }
+
 				.button { 
 					margin-bottom: 10px;
 
@@ -229,34 +231,30 @@
 				.actions { margin-top: 20px; }
 
 				&#print-key { width: 400px; }
+
+				&#end-of-day {
+					.notice {
+						height: 90px;
+
+						.closing { color: @red; }
+						.opening { color: @green; }
+					}
+				}
 			}
 
 			/* New content modal window ***/
 			&.new-content {
-				padding: 0 0 20px 0;
-				width: 480px;
-
-				.new-form-title {
-					color: @white;
-					text-transform: uppercase;
-					line-height: 50px;
-					vertical-align: middle;
-					padding: 0 20px;
-					margin-bottom: 20px;
-					background: @gcard;
-					#border-radius > .top();
-					.show;
-				}
+				width: 320px;
 
 				.entry { 
-					padding: 0 20px; 
-					margin-bottom: 20px;
+					&.margin { width: 100%; }
 				}
 
 				.actions {
 					text-align: center;
-					padding: 10px 0;
-					.float;
+					margin-top: 20px;
+					padding-top: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
 
 					.button {
 						display: inline-block;
@@ -268,19 +266,13 @@
 							text-align: right; 
 						}
 					}
+				}
 
-					&.break-buttons {
-						padding: 0 20px;
+				&.select-card { 
+					width: 520px; 
 
-						.button {
-							&:first-child { margin-right: 10px;}
-							&.blank { 
-								margin: 10px auto 0 auto;
-								text-align: center;
-								padding: 0 40px;
-								.show; 
-							}
-						}
+					.entry { 
+						&.margin { .calc-width(50, 20); }
 					}
 				}
 			}
@@ -319,199 +311,6 @@
 						line-height: 50px;
 						.size(50px,200px);
 					}
-				}
-			}
-
-			/* Social lobby reply form ***/
-			&.lobby-form,
-			&.change-rate-form {
-				padding: 0;
-				width: 740px;
-				.float;
-
-				.post-details {
-					color: @white;
-					padding: 20px;
-					background: @gcard;
-					position: relative;
-					#border-radius > .top();
-					.show;
-					.float;
-
-					.data {
-						margin-left: 10px;
-						.pull-left;
-						.calc-width(100, 240); /* %, px */
-
-						.room {
-							font-size: 16px;
-							font-weight: 600;
-							margin-right: 10px; 
-							.pull-left;
-						}
-					
-						h1 {
-							.h2;
-							line-height: 24px;
-							font-weight: 600;
-							clear: none;
-							.pull-left;
-						}
-
-						h2 {
-							.h4;
-							line-height: 26px;
-							font-style: italic;
-						}
-
-						.job-title {
-							font-size: 12px;
-							line-height: 26px;
-							vertical-align: middle;
-							text-transform: uppercase;
-							margin-left: 10px; 
-							.pull-left;
-						}
-					}
-
-					.button {
-						position: absolute;
-						top: 20px;
-						right: 20px;
-						width: 160px;
-					}
-				}
-
-				.message { margin-bottom: 20px; }
-
-				.holder {
-					padding: 20px 20px 0 20px;
-					width: 50%;
-					.pull-left;
-
-					.entry { 
-						margin-bottom: 20px; 
-
-						&.only-switch { height: 40px; }
-					}
-
-					.actions { padding: 0; } 
-
-					&.left {
-						position: relative;
-						border-right: 1px solid rgba(0,0,0,.1);
-
-						&:after {
-							content: "Or";
-							position: absolute;
-							top: 50%;
-							right: -13px;
-							font-size: 18px;
-							font-weight: 600;
-							text-transform: uppercase;
-							padding: 10px 0;
-							background: @background;
-						}
-					}
-
-					&.right { clear: right; }
-				}
-
-				.actions {
-					clear: both;
-					padding: 20px 0;
-
-					.button.blank { 
-						width: 140px;
-						margin: 0 auto;
-					}
-				}				
-			}
-
-			/* Messages & review form ***/
-			&.messages-form,
-			&.review-form {
-				padding: 0;
-				width: 480px;
-				.float;
-
-				.sender-details {
-					color: @white;
-					padding: 20px;
-					background: @gcard;
-					position: relative;
-					#border-radius > .top();
-					.show;
-					.float;
-
-					.data {
-						margin-left: 20px;
-						overflow: hidden;
-						.pull-left;
-						.calc-width(100, 70); /* %, px */
-
-						.room {
-							font-size: 16px;
-							font-weight: 600;
-							margin-right: 10px; 
-							.pull-left;
-						}
-					
-						h1 {
-							.h2;
-							line-height: 24px;
-							font-weight: 600;
-							clear: none;
-							.pull-left;
-						}
-
-						h2,
-						h3 {
-							font-size: 14px;
-							line-height: 16px;
-							font-style: italic;
-							max-height: 32px;
-						}
-
-						time {
-							font-size: 12px;
-							line-height: 26px;
-							vertical-align: middle;
-							text-transform: uppercase;
-							margin-left: 10px; 
-							.pull-right;
-						}
-
-						.review-title {
-							.float;
-
-							h2 {
-								font-size: 16px;
-								font-weight: 600;
-								font-style: normal;
-								white-space: nowrap;
-						  		overflow: hidden;
-						  		text-overflow: ellipsis;
-								.calc-width(100, 80); /* %, px */
-								.pull-left;
-							}
-
-							.stars {
-								.stars-inverted;
-								.pull-right;
-							}
-						}
-					}
-				}
-
-				.message { margin-top: 40px; }
-
-				.entry {
-					padding: 0 20px;
-				}
-
-				.actions {
-					padding: 0 20px 20px 20px;
 				}
 			}
 
@@ -1241,34 +1040,18 @@
 
 				.active-item {
 					position: relative;
+					line-height: 50px;
 					padding: 0 20px;
 					margin-bottom: 10px;
-					line-height: 50px;
-					vertical-align: middle;
 					.clickable;
-					.float;
-
-					.card-logo { 
-						margin: 10px 10px 0 0; 
-						.pull-left;
-					}
 
 					> span {
-						
-						&.number,
-						&.date,
-						&.name { 
-							margin-right: 20px; 
-							.pull-left;
-						}
-
 						&.number { width: 150px; }
 						&.date { width: 100px; }
 						&.name {
-							width: 220px;
+							width: 240px;
 
 							.value {
-								width: 170px;
 								white-space: nowrap;
 								text-overflow: ellipsis;
 								overflow: hidden;
@@ -1284,13 +1067,9 @@
 						&.primary {
 							position: absolute;
 							top: 0;
-							right: 105px;
+							right: 125px;
 							margin-right: 0;
 						}
-					}
-
-					&.primary {
-						.value { font-weight: 600; }
 					}
 				}
 			}
@@ -1308,136 +1087,22 @@
 
 			/* Pay bill ***/
 			&.pay-bill {
-				.size(390px, 320px);
+				width: 420px;
 
-				.payment-info { .show; }
+				.actions {
+					.button {
+						display: inline-block;
+						width: auto;
+						padding: 0 40px;
 
-				.credit-card {
-					.hide; 
-		            .select-card,
-		            .new-card {
-		            	#fade > .in;
-		            	.transition;
-
-		            	&.hidden { #fade > .out; }
-		            }
-
-		            .select-card {
-		            	.cards-list {
-							position: relative;
-							height: 320px;
-
-							.wrapper { padding: 0 10px 0 0; }
-							.iScrollVerticalScrollbar { 
-								top: 0;
-								bottom: 0;
-								right: 0;
-							}
-
-							.active-item {
-								position: relative;
-								line-height: 50px;
-								padding: 0 10px;
-								.clickable;
-
-								> span {
-									margin-right: 10px;
-
-									&.number { width: 150px; }
-									&.date { width: 100px; }
-									&.name { width: 220px; margin-right: 0; }
-
-									&.primary {
-										position: absolute;
-										top: 0;
-										right: 10px;
-										margin-right: 0;
-									}
-								}
-
-								.card-logo { margin-right: 10px; }
-							}
+						&.blank { 
+							padding: 0 20px 0 0; 
+							text-align: right; 
 						}
-		            }
-
-		            .new-card {
-		            	.holder {
-							.entry {
-								width: 40%;
-
-								input {
-									&:nth-of-type(2) { margin-left: 10px; }
-								}
-
-								&.margin {
-									margin-right: 40px;
-									.calc-width(60, 40);
-								}
-
-								&.full-width { 
-									margin: 0; 
-
-									.checkbox { margin-bottom: 0; }
-								}
-							}
-						}
-
-						.actions {
-							margin-top: 20px;
-							text-align: center;
-							.float;
-
-							.button {
-								display: inline-block;
-								width: auto;
-								padding: 0 40px;
-
-								&.blank { 
-									padding: 0 20px 0 0; 
-									text-align: right; 
-								}
-							}
-						}	
-		            }	
-				}
-
-				.actions { 
-					margin-top: 20px; 
-					padding-top: 20px;
-					border-top: 1px solid rgba(0,0,0,.1);
-					.button { margin-bottom: 0; }
-				}
-
-				&.card-attached {	
-					.size(auto, 420px);
-					.active-item {
-						line-height: 50px;
-						padding: 0 10px;
-						margin: 0;
-						.clickable;
-
-						> span {
-							&.number { width: 150px; }
-							&.date { width: 100px; margin-right: 0; }
-						}
-
-						.card-logo { margin-right: 20px; }
 					}
 				}
 
-				&.select-card {
-					.size(560px, 720px);
-
-					.payment-info { .hide; }
-					.credit-card { .show; }				
-				}
-
-				&.new-card {
-					.size(440px, 480px);
-
-					.payment-info { .hide; }
-					.credit-card { .show; }
-				}
+				&.select-card { width: 520px; }
 			}
 
 			/* Deposits / Balance ***/
@@ -1455,7 +1120,7 @@
                 }
 
                 .content-left { 
-                    width: 50%;
+                    width: 40%;
                     padding: 20px;
                     background: rgba(0,0,0,.05);
 
@@ -1521,116 +1186,25 @@
                 }
 
                 .content-right {
-                    position: relative;
-                    width: 50%; 
-                    padding: 20px;
-                    .box-shadow(0 -2px 2px rgba(0,0,0,.3));
+					width: 60%;
+					position: relative;
+					padding: 20px;
+					.box-shadow(0 -2px 2px rgba(0,0,0,.3));
 
-                    .amount {
-                        float: none;
-                        clear: both;
-                        margin: 40px auto 0;
-                        width: 200px;
+					.actions {
+						.button {
+							display: inline-block;
+							width: auto;
+							padding: 0 40px;
+							margin: 0;
 
-                        &.full-width {
-                            width: 100%;
-                            text-align: center;
-                            margin: 0 0 20px 0;
-                            padding-bottom: 20px;
-                            border-bottom: 1px solid rgba(0,0,0,.1);
-
-                            input { width: 200px; }
-                        }
-                    }
-
-                    .select-card,
-                    .new-card {
-                        height: 280px;
-                        #fade > .in;
-                        .transition;
-
-                        &.hidden { #fade > .out; }
-                    }
-
-                    .select-card {
-                        .cards-list {
-                            position: relative;
-                            
-                            .wrapper { padding: 0 10px 0 0; }
-                            .iScrollVerticalScrollbar { 
-                                top: 0;
-                                bottom: 0;
-                                right: 0;
-                            }
-
-                            .active-item {
-                                position: relative;
-                                line-height: 50px;
-                                padding: 0 10px;
-                                .clickable;
-
-                                > span {
-                                    margin-right: 10px;
-
-                                    &.number { width: 150px; }
-                                    &.date { width: 100px; }
-                                    &.name { width: 220px; margin-right: 0; }
-
-                                    &.primary {
-                                        position: absolute;
-                                        top: 0;
-                                        right: 10px;
-                                        margin-right: 0;
-                                    }
-                                }
-
-                                .card-logo { margin-right: 10px; }
-                            }
-                        }
-                    }
-
-                    .new-card {
-                        .holder {
-                            .entry {
-                                width: 40%;
-
-                                input {
-                                    &:nth-of-type(2) { margin-left: 10px; }
-                                }
-
-                                &.margin {
-                                    margin-right: 40px;
-                                    .calc-width(60, 40);
-                                }
-
-                                &.full-width { 
-                                    margin: 0; 
-
-                                    .checkbox { margin-bottom: 0; }
-                                }
-                            }
-                        }   
-
-                        &.only-new { height: 335px; }
-                    }
-
-                    .actions {
-                        margin-top: 20px;
-                        text-align: center;
-                        .float;
-
-                        .button {
-                            display: inline-block;
-                            width: auto;
-                            padding: 0 40px;
-
-                            &.blank { 
-                                padding: 0 20px 0 0; 
-                                text-align: right; 
-                            }
-                        }
-                    }
-                }
+							&.blank { 
+								padding: 0 20px 0 0; 
+								text-align: right; 
+							}
+						}
+					}
+				}
             }
 
 			/* Cancel reservation ***/
@@ -1647,16 +1221,13 @@
 					}
 				}
 
-				&.pay-bill {
-
+				.payment-form {
 					.actions {
-						text-align: center;
-
-						.button {
+						.button { 
 							display: inline-block;
 							width: auto;
 							padding: 0 40px;
-							margin-bottom: 0;
+							margin: 0;
 
 							&.blank { 
 								padding: 0 20px 0 0; 
@@ -1664,11 +1235,9 @@
 							}
 						}
 					}
-
-					&.select-card { .size(620px, 720px); }
-					&.new-card { .size(500px, 480px); }
-					&.only-new-card { .size(420px, 480px); }
 				}
+
+				&.select-card { width: 520px; }
 			}
 
 			/* Grid modal ***/

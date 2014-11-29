@@ -111,14 +111,6 @@ var GridRowItemDrag = React.createClass({
 
 				props.iscroll.grid.enable();			
 				props.iscroll.timeline.enable();
-				/*if(props.data.reservation_status == "available") {
-					props.edit.passive 	= false;
-					props.edit.active 	= true;
-				}
-				else {
-					props.edit.passive 	= true;
-					props.edit.active 	= false;
-				}*/
 				props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}

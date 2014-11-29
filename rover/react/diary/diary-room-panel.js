@@ -9,7 +9,7 @@ var RoomPanel = React.createClass({
 			scrollX: false, 
 			scrollY: true,
 			momentum: false,
-			bounce: true, 
+			bounce: false, 
 			mouseWheel: false,
 			useTransition: true
 		});
