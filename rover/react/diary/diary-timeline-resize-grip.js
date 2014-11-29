@@ -22,20 +22,28 @@ var TimelineResizeGrip = React.createClass({
 		}
 	},
 	__onMouseMove: function(e) {
-		var props = 		this.props,
-			state = 		this.state,
-			display = 		props.display,
-			delta_x = 		e.pageX - state.origin_x, 
-			x_origin = 		(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
-			px_per_int = 	display.px_per_int,
-			px_per_ms = 	display.px_per_ms,
-			model = 		state.currentResizeItem, 
-			direction = 	props.itemProp,
-			opposite =      ((direction === 'departure') ? 'arrival' : 'departure'),
+		var props = 				this.props,
+			state = 				this.state,
+			display = 				props.display,
+			delta_x = 				e.pageX - state.origin_x, 
+			x_origin = 				(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			px_per_int = 			display.px_per_int,
+			px_per_ms = 			display.px_per_ms,
+			model = 				state.currentResizeItem, 
+			direction = 			props.itemProp,
+			opposite =      		((direction === 'departure') ? 'arrival' : 'departure'),
+			isResizable=			this.__whetherResizable(),
 			last_left;
 
 		e.stopPropagation();
 		e.preventDefault();
+		
+		if(!isResizable){
+			props.iscroll.timeline.enable();
+			document.removeEventListener('mouseup', this.__onMouseUp);
+			document.removeEventListener('mousemove', this.__onMouseMove);			
+			return false;
+		}
 
 		if(!state.resizing &&
 		   state.mouse_down && 
@@ -104,6 +112,21 @@ var TimelineResizeGrip = React.createClass({
 		e.stopPropagation();
 		e.preventDefault();
 	},
+	__whetherResizable: function(){
+		var props = 				this.props,
+			state =					this.state,
+			original_item = 		state.currentResizeItem,
+			direction = 			props.itemProp.toUpperCase(),
+			reservation_status = 	original_item.reservation_status.toUpperCase();
+		if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
+			reservation_status === "AVAILABLE" )) {
+			return true;
+		}
+		else if(direction == "ARRIVAL"){
+			return false;
+		}
+		return true;
+	},	
 	getDefaultProps: function() {
 		return {
 			handle_width: 50
@@ -128,7 +151,7 @@ var TimelineResizeGrip = React.createClass({
 			display 	= props.display, 
 			direction 	= this.props.itemProp,
 			px_per_ms 	= display.px_per_ms,
-			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			x_origin 	= display.x_n, // instanceof Date ? display.x_n.getTime() : display.x_n), 
 			m 			= props.meta.occupancy;
 
 		if(!this.state.resizing) {
@@ -162,7 +185,7 @@ var TimelineResizeGrip = React.createClass({
 			props 				= this.props,
 			direction 			= props.itemProp,
 			currentResizeItem 	= this.state.currentResizeItem,
-			x_origin 			= props.display.x_n,
+			x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
 			px_per_ms 			= props.display.px_per_ms,
 			label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
 			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
@@ -171,9 +194,12 @@ var TimelineResizeGrip = React.createClass({
 		if(currentResizeItem) {
 		 	grip_text = label + ' ' + (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
 		}
-
+		var classes = "set-times";
+		if(this.props.edit.active) {
+			classes += " editing";
+		}
 		return this.transferPropsTo(React.DOM.a({
-			className: 'set-times',
+			className: classes,
 			style: {
 				left: left + 'px'		
 			},

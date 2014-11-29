@@ -76,6 +76,9 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 
         $scope.initSelections();
 
+        
+
+
         $scope.selectAdditional = function() {
             ngDialog.close();
         };
@@ -142,6 +145,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
         };
 
         $scope.closeDialog = function() {
+            $scope.cancelSelection();
             ngDialog.close();
             $scope.renderGrid();
         };

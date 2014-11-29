@@ -105,7 +105,8 @@ var DiaryContent = React.createClass({
 			currentResizeItemRow: row_data
 		});
 	},
-	componentDidMount: function() {
+
+	componentDidMount: function() {		
 		var self = this,
             state = this.state;
 
@@ -117,12 +118,14 @@ var DiaryContent = React.createClass({
         setTimeout(function() {
             self.state.iscroll.grid.scrollTo(-(self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms, 0, 0, 1000);
             self.state.iscroll.timeline.scrollTo(-(self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms, 0, 0, 1000);
+            self.state.angular_evt.completedRendering.apply(this, Array.prototype.slice.call(arguments));
         }, 1000);
+       
   	},
-  	componentWillUnmount: function() {
+  	componentWillUnmount: function() {  		
   		$(window).off('resize');
   	},
-  	componentWillMount: function() {
+  	componentWillMount: function() {  		
   		var self = this;
 
     	for(var k in this.state.iscroll) {
@@ -136,6 +139,7 @@ var DiaryContent = React.createClass({
     	}
   	},
   	componentWillReceiveProps: function(nextProps) {
+  		
   		var hops = Object.prototype.hasOwnProperty;
   		/*if(this.props.viewport !== nextProps.viewport ||
   		   this.props.display !== nextProps.display ||
@@ -175,6 +179,7 @@ var DiaryContent = React.createClass({
   		}
   	},
 	getInitialState: function() {
+		
 		var props 		= this.props,
 			scope 		= props.scope,
 			viewport 	= scope.gridProps.viewport,
@@ -195,7 +200,8 @@ var DiaryContent = React.createClass({
 								onResizeEnd: 				scope.onResizeEnd,
 								onScrollEnd:                scope.onScrollEnd, 
 								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
-								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft
+								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft,
+								completedRendering:         scope.eventAfterRendering
 							},
 							currentDragItem: props.currentDragItem,
 							currentResizeItem: props.currentResizeItem,
@@ -225,6 +231,7 @@ var DiaryContent = React.createClass({
 		return _.extend(s_0, scope.gridProps);
 	},
 	render: function() {
+		
 		var self = this,
 			props = this.props,
 			state = this.state;

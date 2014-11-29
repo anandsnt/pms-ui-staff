@@ -3,6 +3,8 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	
 	$scope.textInQueryBox = "";
   	$scope.isReservationActive = true;
+  	$scope.results.cards = [];
+	$scope.results.reservations = [];
   	
   	var scrollerOptions = {click: true, preventDefault: false};
     $scope.setScroller('cards_search_scroller', scrollerOptions);
@@ -18,12 +20,25 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
                 }, 
             500);
 
+
+    /**
+    * Single digit search done based on the settings in admin
+    * The single digit search is done only for numeric characters.
+    * CICO-10323 
+    */
+    var isSearchOnSingleDigit = function(searchTerm) {
+    	if($rootScope.isSingleDigitSearch){
+    		return isNaN(searchTerm);
+    	} else {
+    		return true;
+    	}
+    };
+
     /**
   	* function to perform filtering/request data from service in change event of query box
   	*/
 	$scope.queryEntered = function(){
-		console.log("queryEntered");
-		if($scope.textInQueryBox === "" || $scope.textInQueryBox.length < 3){
+		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 			$scope.results.cards = [];
 			$scope.results.reservations = [];
 		}
@@ -53,8 +68,8 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   	* if not fouund in the data, it will request for webservice
   	*/
   	var displayFilteredResultsCards = function(){ 
-	    //if the entered text's length < 3, we will show everything, means no filtering    
-	    if($scope.textInQueryBox.length < 3){
+	    //show everything, means no filtering    
+	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 	      //based on 'is_row_visible' parameter we are showing the data in the template      
 	      for(var i = 0; i < $scope.results.cards.length; i++){
 	          $scope.results.cards[i].is_row_visible = true;
@@ -130,8 +145,8 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   	* if not fouund in the data, it will request for webservice
   	*/
 	var displayFilteredResultsReservations = function(){ 
-	    //if the entered text's length < 3, we will show everything, means no filtering    
-	    if($scope.textInQueryBox.length < 3){
+	    //show everything, means no filtering    
+	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 	      	//based on 'is_row_visible' parameter we are showing the data in the template      
 	      	for(var i = 0; i < $scope.results.length; i++){
 	          $scope.results.reservations[i].is_row_visible = true;

@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
-    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -27,13 +27,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         };
 
-        var successCallbackOfCountryListFetch = function(data) {
-            $scope.countries = data;
-        };
+        // var successCallbackOfCountryListFetch = function(data) {
+        //     $scope.countries = data;
+        // };
 
         //fetching country list
         //Commenting - Another call is happening to fetch countries
-        $scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
+        //$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
 
         // adding extra function to reset time
         $scope.clearArrivalAndDepartureTime = function() {
@@ -49,6 +49,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             };
 
         };
+
+        $scope.otherData = {};
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
@@ -135,7 +137,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 isSameCard: false, // Set flag to retain the card details,
                 rateDetails: [], // This array would hold the configuration information of rates selected for each room
                 isRoomRateSuppressed: false, // This variable will hold flag to check whether any of the room rates is suppressed?
-                reservation_card : {}
+                reservation_card: {}
             };
 
             $scope.searchData = {
@@ -159,35 +161,37 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             // default max value if max_adults, max_children, max_infants is not configured
             var defaultMaxvalue = 5;
             var guestMaxSettings = baseSearchData.settings.max_guests;
-            $scope.otherData = {
-                taxesMeta: [],
-                marketsEnabled: baseData.demographics.is_use_markets,
-                markets: baseData.demographics.markets,
-                sourcesEnabled: baseData.demographics.is_use_sources,
-                sources: baseData.demographics.sources,
-                originsEnabled: baseData.demographics.is_use_origins,
-                origins: baseData.demographics.origins,
-                reservationTypes: baseData.demographics.reservationTypes,
-                promotionTypes: [{
-                    value: "v1",
-                    description: "The first"
-                }, {
-                    value: "v2",
-                    description: "The Second"
-                }],
-                maxAdults: (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults,
-                maxChildren: (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children,
-                maxInfants: (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants,
-                roomTypes: baseSearchData.roomTypes,
-                fromSearch: false,
-                recommendedRateDisplay: baseSearchData.settings.recommended_rate_display,
-                defaultRateDisplayName: baseSearchData.settings.default_rate_display_name,
-                businessDate: baseSearchData.businessDate,
-                additionalEmail: "",
-                isGuestPrimaryEmailChecked: false,
-                isGuestAdditionalEmailChecked: false,
-                reservationCreated: false
-            };
+
+            /**
+             *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+             *   to the states where it actually requires it.
+             *
+             *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' (last method).
+             *
+             *   Once that state controller fetch 'baseData', it will find this controller
+             *   by climbing the $socpe.$parent ladder and will call 'callFromChildCtrl' method.
+             */
+
+            $scope.otherData.taxesMeta = [];
+            $scope.otherData.promotionTypes = [{
+                value: "v1",
+                description: "The first"
+            }, {
+                value: "v2",
+                description: "The Second"
+            }];
+            $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
+            $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
+            $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
+            $scope.otherData.roomTypes = baseSearchData.roomTypes;
+            $scope.otherData.fromSearch = false;
+            $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
+            $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;
+            $scope.otherData.businessDate = baseSearchData.businessDate;
+            $scope.otherData.additionalEmail = "";
+            $scope.otherData.isGuestPrimaryEmailChecked = false;
+            $scope.otherData.isGuestAdditionalEmailChecked = false;
+            $scope.otherData.reservationCreated = false;
 
             $scope.guestCardData = {};
             $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
@@ -374,9 +378,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
              */
             var taxInclusiveStayTotal = 0.0; //Per Stay Inclusive Charges
             var taxExclusiveStayTotal = 0.0; //Per Stay Exlusive Charges
-
+            
+            if(date instanceof Date){
+                date = new tzIndependentDate(date).toComponents().date.toDateString();
+            }
             var taxDescription = [];
-
             var adults = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.adults;
             var children = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.children;
             var nights = $scope.reservationData.numNights;
@@ -502,7 +508,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if ((date != $scope.reservationData.departureDate || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                if ((date != $scope.reservationData.departure_date || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                    
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
 
@@ -1068,5 +1075,379 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.$on('REFRESHACCORDIAN', function() {
             $scope.$broadcast('GETREFRESHACCORDIAN');
         });
+
+        $scope.$on('PROMPTCARD', function() {
+            $scope.$broadcast('PROMPTCARDENTRY');
+        });
+
+        /**
+         *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+         *   to the states where it actually requires it.
+         *
+         *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' method here.
+         *
+         *   Once that state controller fetch 'baseData', it will find this controller
+         *   by climbing the $socpe.$parent ladder and will call this method.
+         */
+        $scope.callFromChildCtrl = function(baseData) {
+
+            // update these datas.
+            $scope.otherData.marketsEnabled = baseData.demographics.is_use_markets;
+            $scope.otherData.markets = baseData.demographics.markets;
+            $scope.otherData.sourcesEnabled = baseData.demographics.is_use_sources;
+            $scope.otherData.sources = baseData.demographics.sources;
+            $scope.otherData.originsEnabled = baseData.demographics.is_use_origins;
+            $scope.otherData.origins = baseData.demographics.origins;
+            $scope.otherData.reservationTypes = baseData.demographics.reservationTypes;
+
+            // call this. no sure how we can pass date from here
+            $scope.checkOccupancyLimit();
+        };
+
+        $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails) {
+            var data = {};
+            data.is_hourly = $scope.reservationData.isHourly;
+            data.arrival_date = $scope.reservationData.arrivalDate;
+            data.arrival_time = '';
+            //Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
+            if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' && $scope.reservationData.checkinTime.ampm != '') {
+                data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh,
+                    $scope.reservationData.checkinTime.mm,
+                    $scope.reservationData.checkinTime.ampm);
+            }
+            data.departure_date = $scope.reservationData.departureDate;
+            data.departure_time = '';
+            //Check if the checkout time is set by the user. If yes, format it to the 24hr format and build the API data.
+            if ($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkoutTime.ampm != '') {
+                data.departure_time = getTimeFormated($scope.reservationData.checkoutTime.hh,
+                    $scope.reservationData.checkoutTime.mm,
+                    $scope.reservationData.checkoutTime.ampm);
+            }
+
+            data.adults_count = parseInt($scope.reservationData.rooms[0].numAdults);
+            data.children_count = parseInt($scope.reservationData.rooms[0].numChildren);
+            data.infants_count = parseInt($scope.reservationData.rooms[0].numInfants);
+            // CICO - 8320 Rate to be handled in room level
+            // data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
+            data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
+            //Guest details
+            data.guest_detail = {};
+            // Send null if no guest card is attached, empty string causes server internal error
+            data.guest_detail.id = $scope.reservationData.guest.id == "" ? null : $scope.reservationData.guest.id;
+            // New API changes
+            data.guest_detail_id = data.guest_detail.id;
+            data.guest_detail.first_name = $scope.reservationData.guest.firstName;
+            data.guest_detail.last_name = $scope.reservationData.guest.lastName;
+            data.guest_detail.email = $scope.reservationData.guest.email;
+
+            if (!skipPaymentData) {
+                data.payment_type = {};
+                if ($scope.reservationData.paymentType.type.value !== null) {
+                    //console.log("===================="+$scope.reservationData.paymentType.type.value);
+                    angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
+                        if ($scope.reservationData.paymentType.type.value == item.value) {
+                            data.payment_type.type_id = ($scope.reservationData.paymentType.type.value === "CC") ? $scope.reservationData.selectedPaymentId : item.id;
+                        }
+                    });
+                    data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
+                        $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
+                    data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+                }
+            }
+
+
+            // CICO-7077 Confirmation Mail to have tax details
+
+
+            data.tax_details = [];
+            _.each($scope.reservationData.taxDetails, function(taxDetail) {
+                data.tax_details.push(taxDetail);
+            });
+
+            data.tax_total = $scope.reservationData.totalTaxAmount;
+
+            // guest emails to which confirmation emails should send
+
+            if (!skipConfirmationEmails) {
+                data.confirmation_emails = [];
+                if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email != "") {
+                    data.confirmation_emails.push($scope.reservationData.guest.email);
+                }
+                if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
+                    data.confirmation_emails.push($scope.otherData.additionalEmail);
+                }
+            }
+
+            if (!skipPaymentData) {
+                // MLI Integration.
+                if ($rootScope.paymentGateway === "sixpayments") {
+                    data.payment_type.token = $scope.six_token;
+                    data.payment_type.isSixPayment = true;
+                } else {
+                    data.payment_type.isSixPayment = false;
+                    if ($scope.reservationData.paymentType.type !== null) {
+                        if ($scope.reservationData.paymentType.type.value === "CC") {
+                            data.payment_type.session_id = $scope.data.MLIData.session;
+                        }
+                    }
+                }
+            }
+
+            //  CICO-8320
+            //  The API request payload changes
+            var stay = [];
+            data.room_id = [];
+            _.each($scope.reservationData.rooms, function(room) {
+                var reservationStayDetails = [];
+                _.each(room.stayDates, function(staydata, date) {
+                    reservationStayDetails.push({
+                        date: date,
+                        rate_id: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
+                        room_type_id: room.roomTypeId,
+                        room_id: room.room_id,
+                        adults_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
+                        children_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
+                        infants_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants)
+                    });
+                });
+                stay.push(reservationStayDetails);
+            });
+
+            //  end of payload changes
+            data.stay_dates = stay;
+
+            //addons
+            data.addons = [];
+            _.each($scope.reservationData.rooms[0].addons, function(addon) {
+                data.addons.push({
+                    id: addon.id,
+                    quantity: addon.quantity
+                });
+            });
+
+            data.company_id = $scope.reservationData.company.id;
+            data.travel_agent_id = $scope.reservationData.travelAgent.id;
+            data.reservation_type_id = parseInt($scope.reservationData.demographics.reservationType);
+            data.source_id = parseInt($scope.reservationData.demographics.source);
+            data.market_segment_id = parseInt($scope.reservationData.demographics.market);
+            data.booking_origin_id = parseInt($scope.reservationData.demographics.origin);
+            data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
+
+            //to delete starts here
+            // var room = {
+            //                  numAdults: 1,
+            //                  numChildren: 0,
+            //                  numInfants: 0,
+            //                  roomTypeId: '',
+            //                  roomTypeName: 'Deluxe',
+            //                  rateId: '',
+            //                  rateName: 'Special',
+            //                  rateAvg: 0,
+            //                  rateTotal: 0,
+            //                  addons: [],
+            //                  varyingOccupancy: false,
+            //                  stayDates: {},
+            //                  room_id:320,
+            //                  isOccupancyCheckAlerted: false
+            //              }
+            //          $scope.reservationData.rooms[0].room_id = 324;
+            // $scope.reservationData.rooms.push(room);
+            data.room_id = [];
+            angular.forEach($scope.reservationData.rooms, function(room, key) {
+                data.room_id.push(room.room_id);
+            });
+            //to delete ends here
+            return data;
+        };
+
+        var cancellationCharge = 0;
+        var nights = false;
+        var depositAmount = 0;
+        var promptCancel = function(penalty, nights) {
+            ngDialog.open({
+                template: '/assets/partials/reservationCard/rvCancelReservation.html',
+                controller: 'RVCancelReservation',
+                scope: $scope,
+                data: JSON.stringify({
+                    state: 'CONFIRM',
+                    cards: false,
+                    penalty: penalty,
+                    penaltyText: (function() {
+                        if (nights) {
+                            return penalty + (penalty > 1 ? " nights" : " night");
+                        } else {
+                            return $rootScope.currencySymbol + $filter('number')(penalty, 2);
+                        }
+                    })()
+                })
+            });
+        };
+
+        $scope.cancelReservation = function() {
+            var checkCancellationPolicy = function() {
+                var onCancellationDetailsFetchSuccess = function(data) {
+                    $scope.$emit('hideLoader');
+
+                    // Sample Response from api/reservations/:id/policies inside the results hash
+                    // calculated_penalty_amount: 40
+                    // cancellation_policy_id: 36
+                    // penalty_type: "percent"
+                    // penalty_value: 20
+
+                    depositAmount = data.results.deposit_amount;
+                    var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id != 'undefined');
+                    if (isOutOfCancellationPeriod) {
+                        if (data.results.penalty_type == 'day') {
+                            // To get the duration of stay
+                            var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
+                            // Make sure that the cancellation value is -lte thatn the total duration
+                            cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
+                            nights = true;
+                        } else {
+                            cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
+                        }
+                        if (parseInt(depositAmount) > 0) {
+                            showDepositPopup(depositAmount, isOutOfCancellationPeriod, cancellationCharge);
+                        } else {
+                            promptCancel(cancellationCharge, nights);
+                        };
+                    } else {
+                        if (parseInt(depositAmount) > 0) {
+                            showDepositPopup(depositAmount, isOutOfCancellationPeriod, '');
+                        } else {
+                            promptCancel('', nights);
+                        };
+                    }
+                    //promptCancel(cancellationCharge, nights);
+
+                };
+                var onCancellationDetailsFetchFailure = function(error) {
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = error;
+                };
+
+                var params = {
+                    id: $scope.reservationData.reservationId
+                };
+
+                $scope.invokeApi(RVReservationCardSrv.fetchCancellationPolicies, params, onCancellationDetailsFetchSuccess, onCancellationDetailsFetchFailure);
+            };
+
+            /**
+             * If the reservation is within cancellation period, no action will take place.
+             * If the reservation is outside of the cancellation period, a screen will display to show the cancellation rule.
+             * [Cancellation period is the date and time set up in the cancellation rule]
+             */
+
+            checkCancellationPolicy();
+        }
+
+        var nextState = '';
+
+        $scope.saveReservation = function(navigateTo) {
+            nextState = navigateTo;
+            /**
+             * CICO-10321
+             * Move check for guest / company / ta card attached to the screen before the reservation summary screen.
+             * This may either be the rooms and rates screen or the Add on screen when turned on.
+             */
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+                console.log({
+                    guest: $scope.reservationData.guest.id,
+                    company: $scope.reservationData.company.id,
+                    agent: $scope.reservationData.travelAgent.id
+                });
+                $scope.$emit('PROMPTCARD');
+            } else {
+                /**
+                 * CICO-10321
+                 * 3. Once hitting the BOOK button and cards have been attached, issue the confirmation number and move to reservation summary screen
+                 * NOTE :
+                 *     Exisiting implementation : Confirmation number gets generated when the submit reservation button in the summary screen is clicked
+                 */
+
+                var postData = $scope.computeReservationDataforUpdate(true, true);
+                var saveSuccess = function(data) {
+                    $scope.reservationData.depositAmount = data.reservations[0].deposit_amount;
+                    if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
+                        angular.forEach(data.reservations, function(reservation, key) {
+                            angular.forEach($scope.reservationData.rooms, function(room, key) {
+                                if (parseInt(reservation.room_id) === parseInt(room.room_id)) {
+                                    room.confirm_no = reservation.confirm_no;
+                                }
+                            });
+                        });
+                        $scope.reservationData.reservations = data.reservations;
+                        $scope.reservationData.reservationId = $scope.reservationData.reservations[0].id;
+                        $scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
+                        $scope.reservationData.status = $scope.reservationData.reservations[0].status;
+                        $scope.viewState.reservationStatus.number = $scope.reservationData.reservations[0].id;
+                    } else {
+                        $scope.reservationData.reservationId = data.id;
+                        $scope.reservationData.confirmNum = data.confirm_no;
+                        $scope.reservationData.rooms[0].confirm_no = data.confirm_no;
+                        $scope.reservationData.status = data.status;
+                        $scope.viewState.reservationStatus.number = data.id;
+                    }
+                    /*
+                     * TO DO:ends here
+                     */
+
+                  /*
+                    * Commented out .if existing cards needed remove comments
+                    */
+
+                    // $scope.successPaymentList = function(data) {
+                    //     $scope.$emit("hideLoader");
+                    //     $scope.cardsList = data.existing_payments;
+                    //     angular.forEach($scope.cardsList, function(value, key) {
+                    //         value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
+                    //         value.card_expiry = value.expiry_date; //Same comment above
+                    //     });
+                    // };
+
+                    //$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.successPaymentList);
+
+                    $scope.viewState.reservationStatus.confirm = true;
+                    $scope.reservationData.is_routing_available = false;
+                    // Change mode to stay card as the reservation has been made!
+                    $scope.viewState.identifier = "CONFIRM";
+
+                    $scope.reservation = {
+                        reservation_card: {}
+                    };
+
+                    $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
+                    $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
+                    $scope.$emit('hideLoader');
+                    console.log("*************************", $scope.reservationData.reservationId);
+                    if (nextState) {
+                        $state.go(nextState);
+                    }
+
+                }
+                var saveFailure = function(data) {
+                    $scope.errorMessage = data;
+                    $scope.$emit('hideLoader');
+                }
+
+                var updateSuccess = function(data) {
+                    console.log("*************************", $scope.reservationData.reservationId);
+                    $scope.reservationData.depositAmount = data.deposit_amount;
+                    $scope.viewState.identifier = "UPDATED";
+                    $scope.reservationData.is_routing_available = data.is_routing_available;
+                    if (nextState) {
+                        $state.go(nextState);
+                    }
+                };
+
+                if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
+                    postData.reservationId = $scope.reservationData.reservationId;
+                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
+                } else {
+                    $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
+                }
+            }
+        }
     }
 ]);
