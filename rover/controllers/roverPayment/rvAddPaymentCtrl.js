@@ -365,7 +365,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	
 	$scope.addNewPayment = function(){
 		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
-			
 			saveDataFromSwipe();
 		} else if(typeof $scope.dataToSave !== "undefined")
 		   ($scope.dataToSave.paymentType ==='CC') ? saveNewCard():saveNewPayment();
@@ -378,14 +377,29 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
 		//alert(JSON.stringify(data));
-		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
+		if($scope.passData.details.isClickedCheckin != undefined && $scope.passData.details.isClickedCheckin){
+			//savePaymentSuccess();
+		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
 		{
 			data.user_id = $scope.passData.userId;
-			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveToGuestCardSuccess);
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, saveToGuestCardSuccess);
 		} else {
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, savePaymentSuccess);
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successSwipePayment);
 		}
 		
+	};
+	var successSwipePayment = function(data){
+		$scope.$emit("hideLoader");
+		if($scope.passData.fromBill == undefined){
+			$scope.paymentData.reservation_card.payment_method_used = "CC";
+			$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.swipedCardDataToSave.cardType.toLowerCase()+".png";
+			$scope.paymentData.reservation_card.payment_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
+			$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;	
+		} else {
+			$scope.paymentData.bills[billNumber].credit_card_details.card_code = $scope.swipedCardDataToSave.cardType.toLowerCase();
+			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
+			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
+		}
 	};
 
 		/*

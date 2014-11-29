@@ -25,6 +25,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showCancelCardSelection = true;
 		$scope.renderData.referanceText = "";
 		$scope.feeData = {};
+		$scope.swipedCardDataToSave  = {};
+		$scope.cardData = {};
 		
 	};
 	var zeroAmount = parseFloat("0.00").toFixed(2);
@@ -316,27 +318,38 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	var successNewPayment = function(data){
 		$scope.$emit("hideLoader");
-		$scope.defaultPaymentTypeCard = retrieveCardtype();		
-		$scope.defaultPaymentTypeCardNumberEndingWith = retrieveCardNumber();
-		$scope.defaultPaymentTypeCardExpiry =retrieveExpiryDate();
 		var selectedBillIndex = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
-		
-		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = retrieveCardtype();
-		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = retrieveExpiryDate();
-		$scope.billsArray[selectedBillIndex].credit_card_details.card_number = retrieveCardNumber();
+		if(!isEmptyObject($scope.swipedCardDataToSave)){
+			var cardType =  $scope.swipedCardDataToSave.cardType.toLowerCase();		
+			var cardNumberEndingWith = $scope.swipedCardDataToSave.cardNumber.slice(-4);
+			var cardExpiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
+		} else {
+			var cardType = retrieveCardtype();		
+			var cardNumberEndingWith = retrieveCardNumber();
+			var cardExpiry = retrieveExpiryDate();
+		}
+		//To update popup
+		$scope.defaultPaymentTypeCard = cardType;
+		$scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
+		$scope.defaultPaymentTypeCardExpiry = cardExpiry;
+		//To update bill screen
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = cardExpiry;
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = cardType;
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_number = cardNumberEndingWith;
 		
 		$scope.saveData.payment_type_id = data.id;
+		
 		angular.forEach($scope.guestPaymentList, function(value, key) {
 			value.isSelected = false;
 		});
 
 		if($scope.newPaymentInfo.addToGuestCard){
-			var cardCode = retrieveCardtype();
-			var cardNumber = retrieveCardNumber();
+			var cardCode = $scope.defaultPaymentTypeCard;
+			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
 			var dataToGuestList = {
 				"card_code": cardCode,
 				"mli_token": cardNumber,
-				"card_expiry": retrieveExpiryDate(),
+				"card_expiry": $scope.defaultPaymentTypeCardExpiry,
 				"card_name": $scope.newPaymentInfo.cardDetails.userName,
 				"id": data.id,
 				"isSelected": true,
@@ -376,8 +389,24 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"token": cardToken
 		};
 		
-	    $scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToSave,successNewPayment);
+	    $scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToSave, successNewPayment);
 	};
+	
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		
+		$scope.swipedCardDataToSave = swipedCardDataToSave;
+		var data 			= swipedCardDataToSave;
+		data.reservation_id =	$scope.reservationData.reservationId;
+		
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card = swipedCardDataToSave.cardType;
+		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+		data.add_to_guest_card = $scope.cardData.addToGuestCard;
+		
+		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successNewPayment);
+	
+		
+	});
 
 	/*
 		*  card selection action
@@ -416,6 +445,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	});
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCCPage = false;
+	});
+	
+	$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
+		$scope.showCCPage 						 = true;
+		$scope.addmode                 			 = true;
+		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 
 }]);
