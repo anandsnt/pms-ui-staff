@@ -880,14 +880,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.stayDays = [];
             $scope.reservationData.rooms[0].rateId = [];
 
+            $scope.reservationData.is_modified = false;
 
             angular.forEach(reservationDetails.reservation_card.stay_dates, function(item, index) {
-
                 if (item.rate.actual_amount != item.rate.modified_amount) {
                     $scope.reservationData.is_modified = true;
-                } else {
-                    $scope.reservationData.is_modified = false;
-                }
+                } 
 
                 $scope.reservationData.stayDays.push({
                     date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
