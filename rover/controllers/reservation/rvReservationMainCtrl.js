@@ -882,6 +882,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
 
             angular.forEach(reservationDetails.reservation_card.stay_dates, function(item, index) {
+
+                if (item.rate.actual_amount != item.rate.modified_amount) {
+                    $scope.reservationData.is_modified = true;
+                } else {
+                    $scope.reservationData.is_modified = false;
+                }
+
                 $scope.reservationData.stayDays.push({
                     date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
                     dayOfWeek: dateFilter(new tzIndependentDate(item.date), 'EEE'),
@@ -1463,7 +1470,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     console.log("*************************", $scope.reservationData.reservationId);
                     $scope.reservationData.depositAmount = data.deposit_amount;
                     $scope.viewState.identifier = "UPDATED";
-                    $scope.reservationData.is_routing_available = data.is_routing_available;                    
+                    $scope.reservationData.is_routing_available = data.is_routing_available;
                     if (nextState) {
                         if (!nextStateParameters) {
                             nextStateParameters = {};

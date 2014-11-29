@@ -418,7 +418,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
-		var editPromptDialogId;
+		var editPromptDialogId;			
 
 		$scope.showEditReservationPrompt = function(){
 			editPromptDialogId = ngDialog.open({
