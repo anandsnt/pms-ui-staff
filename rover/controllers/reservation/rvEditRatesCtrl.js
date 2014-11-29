@@ -1,9 +1,18 @@
-sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
-	function($scope, $rootScope) {
-		$scope.save = function(room ,index){
+sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', '$stateParams',
+	function($scope, $rootScope, $stateParams) {
+		$scope.save = function(room, index) {
 			$scope.reservationData.rooms[index] = room;
 			$scope.computeTotalStayCost();
-			$scope.saveReservation();
+			if ($stateParams.reservationId) { // IN STAY CARD .. Reload staycard
+				$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
+					"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
+					"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
+					"isrefresh": false
+				});
+			} else {
+				$scope.saveReservation();
+			}
+			$scope.closeDialog();
 		}
 	}
 ]);

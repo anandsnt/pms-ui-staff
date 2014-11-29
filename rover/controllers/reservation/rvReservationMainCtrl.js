@@ -1368,7 +1368,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         var nextState = '';
 
-        $scope.saveReservation = function(navigateTo) {
+        $scope.saveReservation = function(navigateTo, stateParameters) {
             nextState = navigateTo;
             /**
              * CICO-10321
@@ -1446,9 +1446,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.$emit('hideLoader');
                     console.log("*************************", $scope.reservationData.reservationId);
                     if (nextState) {
-                        $state.go(nextState);
+                        if (!stateParameters) {
+                            stateParameters = {};
+                        }
+                        $state.go(nextState, stateParameters);
                     }
-
                 }
                 var saveFailure = function(data) {
                     $scope.errorMessage = data;
@@ -1462,7 +1464,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.is_routing_available = data.is_routing_available;
                     $scope.$emit('hideLoader');
                     if (nextState) {
-                        $state.go(nextState);
+                        if (!stateParameters) {
+                            stateParameters = {};
+                        }
+                        $state.go(nextState, stateParameters);
                     }
 
                 };
