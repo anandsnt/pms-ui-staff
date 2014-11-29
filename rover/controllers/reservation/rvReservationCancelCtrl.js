@@ -29,7 +29,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			
 			var feesInfo = $scope.feeData.feeInfo;
 			var zeroAmount = parseFloat("0.00").toFixed(2);
-			var defaultAmount = $scope.ngDialogData.penalty ?
+			var defaultAmount = $scope.ngDialogData ?
 			 	$scope.ngDialogData.penalty : zeroAmount;
 			console.log("feesInfo :");console.log(feesInfo);
 			if(typeof feesInfo != 'undefined' && feesInfo!= null){
