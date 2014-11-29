@@ -1,4 +1,12 @@
-<div role="dialog" id="modal" class="modal-show" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-show="!isManualCCEntryEnabled">
+	<div class="modal-content">
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<span class="h3 message solo">Manual Credit Card Updates are Disabled!</span>
+	</div>
+</div>
+<div role="dialog" id="modal" class="modal-show" ng-show="isManualCCEntryEnabled" ng-cloak>
 	<form method="post" action="{action}" id="new-payment" name="new-payment" class="modal-content form new-content select-card">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
