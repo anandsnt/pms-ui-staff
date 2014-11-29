@@ -8,7 +8,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'RVBillCardSrv',
 	'$q',
 	'RVHkRoomDetailsSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv) {
+	'$vault',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv, $vault) {
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 		var totalRoomsAvailable = 0;
@@ -207,6 +208,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		$scope.gotoDiaryScreen = function() {
+			$scope.reservationData = {};
+			$scope.initReservationDetails();
+			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify({}));
 			$state.go('rover.reservation.diary', {
 				isfromcreatereservation: false
 			});
