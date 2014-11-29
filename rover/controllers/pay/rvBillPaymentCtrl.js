@@ -157,6 +157,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		// CICO-9457 : Setup fees details initilaly - for standalone only
 		if($scope.isStandAlone){
 			var feesInfo = $scope.feeData.feesInfo;
+			var zeroAmount = parseFloat("0.00").toFixed(2);
 			console.log("feesInfo :");console.log(feesInfo);
 			if(typeof feesInfo != 'undefined' && feesInfo!= null){
 				
