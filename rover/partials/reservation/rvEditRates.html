@@ -5,7 +5,7 @@
 
 		    <div class="modal-header">
 		        <h1>Rate Details</h1>
-		        <em>{{ngDialogData.roomTypeName}}<br/>{{ngDialogData.rateName}}</em>
+		        <em>{{ngDialogData.room.roomTypeName}}<br/>{{ngDialogData.room.rateName}}</em>
 		    </div>
 
 		    <div id="rate-grid" class="scrollable">
@@ -19,9 +19,9 @@
 		                    </tr>
 		                </thead>
 		                <tbody>
-		                    <tr ng-repeat="(date,stayDay) in ngDialogData.stayDates" ng-hide="$last && $index > 0">
-		                        <td class="date">{{date}}</td>
-		                        <td class="rate">{{currencySymbol}}{{stayDay.rateDetails.actual_amount}}</td>
+		                    <tr ng-repeat="(date,stayDay) in ngDialogData.room.stayDates" ng-hide="$last && $index > 0">
+		                        <td class="date">{{date  | date : dateFormat}}</td>
+		                        <td class="rate">{{currencySymbol}}{{stayDay.rateDetails.actual_amount | number : 2}}</td>
 		                        <td class="edit">{{currencySymbol}}<input ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false'" type="text" value="" type="text" ng-model="stayDay.rateDetails.modified_amount" /></td>
 		                    </tr>		                    
 		                </tbody>
@@ -31,7 +31,7 @@
 
 		    <div class="actions">
 		        <button type="button" ng-click="closeDialog()" class="button blank modal-close">Close</button>
-		        <button type="button" class="button green modal-close">Update</button>
+		        <button type="button" ng-click="save(ngDialogData.room, ngDialogData.index)" class="button green modal-close">Update</button>
 		    </div>
 		</form>	
 	</div>

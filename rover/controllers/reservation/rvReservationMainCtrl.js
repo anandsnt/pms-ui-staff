@@ -1106,14 +1106,18 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
 
-        $scope.editReservationRates = function(room) {
+        $scope.editReservationRates = function(room, index) {
             ngDialog.open({
                 template: '/assets/partials/reservation/rvEditRates.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 closeByDocument: false,
+                controller: 'RVEditRatesCtrl',
                 closeByEscape: false,
-                data: JSON.stringify(room)
+                data: JSON.stringify({
+                    room: room,
+                    index: index
+                })
             });
         }
 
@@ -1220,7 +1224,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         room_id: room.room_id,
                         adults_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
                         children_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
-                        infants_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants)
+                        infants_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
+                        rate_amount: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount : staydata.rateDetails.modified_amount
                     });
                 });
                 stay.push(reservationStayDetails);
@@ -1312,7 +1317,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     if (isOutOfCancellationPeriod) {
                         if (data.results.penalty_type == 'day') {
                             // To get the duration of stay
-                            var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
+                            var stayDuration = $scope.reservationData.numNights > 0 ? $scope.reservationData.numNights : 1;
                             // Make sure that the cancellation value is -lte thatn the total duration
                             cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
                             nights = true;
@@ -1449,9 +1454,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.depositAmount = data.deposit_amount;
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
+                    $scope.$emit('hideLoader');
                     if (nextState) {
                         $state.go(nextState);
                     }
+
                 };
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {

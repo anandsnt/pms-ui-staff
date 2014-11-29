@@ -433,7 +433,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.applyCustomRate = function(){
 			$scope.closeDialog(editPromptDialogId);
 			$timeout(function(){
-				$scope.editReservationRates($scope.reservationParentData.rooms[0]);
+				$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
 			},1000);			
 		} 
 

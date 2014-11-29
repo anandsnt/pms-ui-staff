@@ -183,8 +183,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//Restructure rates for easy selection
 			var rates = [];
 
-			$scope.days = roomRates.results.length;			
-			
+			$scope.days = roomRates.results.length;
+
 
 			//Reset isSupressedField
 			$scope.stateCheck.suppressedRates = [];
@@ -408,10 +408,19 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 		}
 
-		var populateStayDates = function(rateId) {
+		var populateStayDates = function(rateId, roomId) {
 			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(details, date) {
-				details.rate.id = rateId,
-					details.rate.name = $scope.displayData.allRates[rateId].name;
+				details.rate.id = rateId;
+				details.rate.name = $scope.displayData.allRates[rateId].name;
+				// CICO-6079
+				var calculatedAmount = $scope.roomAvailability[roomId].ratedetails[date] && $scope.roomAvailability[roomId].ratedetails[date][rateId].rate ||
+					$scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].rate;
+				calculatedAmount = parseFloat(calculatedAmount).toFixed(2);
+				details.rateDetails = {
+					actual_amount: calculatedAmount,
+					modified_amount: calculatedAmount,
+					is_discount_allowed: 'true' // API returns true / false as a string ... Hence true in a string to maintain consistency
+				}
 			});
 		}
 
@@ -488,13 +497,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			 */
 			// CICO-9727: Reservations - Error thrown when user chooses SR rates for another room type
 			// bypass rate selection from room type other than $scope.stateCheck.preferredType
-			
+
 			var currentRoom = $scope.reservationData.rooms[$scope.activeRoom];
 
 			if ($scope.stateCheck.preferredType > 0 && roomId !== $scope.stateCheck.preferredType) {
 				return false;
 			}
 			if ($scope.stateCheck.stayDatesMode) {
+				var activeDate = $scope.stateCheck.dateModeActiveDate;
 				if (!$scope.stateCheck.rateSelected.oneDay) {
 					// The first selected day must be taken as the preferredType
 					// No more selection of rooms must be allowed here
@@ -508,7 +518,19 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$scope.filterRooms();
 				}
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
-				currentRoom.stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
+				currentRoom.stayDates[activeDate].rate.id = rateId;
+				// CICO-6079
+				
+				var calculatedAmount = $scope.roomAvailability[roomId].ratedetails[activeDate] && $scope.roomAvailability[roomId].ratedetails[activeDate][rateId].rate ||
+					$scope.roomAvailability[roomId].ratedetails[activeDate][rateId].rate;
+				calculatedAmount = parseFloat(calculatedAmount).toFixed(2);
+				currentRoom.stayDates[activeDate].rateDetails = {
+					actual_amount: calculatedAmount,
+					modified_amount: calculatedAmount,
+					is_discount_allowed: 'true' // API returns true / false as a string ... Hence true in a string to maintain consistency
+				}
+				currentRoom.stayDates[activeDate].rate.id = rateId;
+
 				if (!currentRoom.rateId) {
 					currentRoom.rateId = []
 				}
@@ -520,7 +542,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 			} else {
-				populateStayDates(rateId);
+				populateStayDates(rateId, roomId);
 				currentRoom.roomTypeId = roomId;
 				currentRoom.roomTypeName = $scope.roomAvailability[roomId].name;
 				currentRoom.rateId = rateId;
@@ -538,7 +560,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				//TODO : 7641 - Update the rateDetails array in the reservationData
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 				$scope.checkOccupancyLimit();
-
 				$scope.enhanceStay();
 			}
 

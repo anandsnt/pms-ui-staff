@@ -117,7 +117,7 @@
                     </div>
                     <ul class="rate-and-enhancements">                        
                         <li class="update-rate">
-                            <a ng-click="editReservationRates(room)">
+                            <a ng-click="editReservationRates(room, $index)">
                                 <em>{{room.rateName}}</em>
                                 <span class="price">
                                     <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
