@@ -2,9 +2,6 @@
     <h1 translate>INVOICE</h1>
     <img ng-if="printData.hotel_logo!=''" ng-src="{{printData.hotel_logo}}" alt="Logo of hotel" />
 </div>
-<div class="invoice-header">
-    {{printData.custom_text_header}}
-</div>
 <table class="guest-info">
     <tbody>
         <tr>
@@ -41,7 +38,9 @@
         </tr>
     </tbody>
 </table>
-
+<div class="invoice-header">
+    {{printData.custom_text_header}}
+</div>
 <div class="invoice-body">
     <p class="date"><strong translate>INVOICE_DATE</strong>{{printData.invoice_date}}</p>
     <table class="invoice-details">
