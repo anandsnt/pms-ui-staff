@@ -876,23 +876,9 @@ body { overflow: hidden; }
 
 			.entry {
 				.query { padding-left: 40px; }
-
-				/*&#lobby-search,
-				&#messages-search {
-					padding-left: 10px;
-					border-left: 1px solid rgba(0,0,0,.1);
-					
-					.icon-search { left: 20px }
-					#query { position: static; }
-				}
-
-				&#lobby-search { .calc-width(100, 60);  }
-				&#messages-search { .calc-width(100, 110);  }*/
 			}
 
 			.add-new-button { 
-				cursor: pointer;
-				background-color: transparent;
 				line-height: 40px;
 				.size(40px, 100px);
 				.pull-right;
@@ -933,6 +919,65 @@ body { overflow: hidden; }
 				}
 
 				.add-new-button { .show; }
+			}
+
+			&.has-dates {
+				.entry {
+					&.search { 
+						margin-right: 10px;
+						.calc-width(100, 410);
+					}
+
+					&.dates {
+						margin: 0;
+						padding: 0 0 0 10px;
+						border-top: 0;
+						border-left: 1px solid rgba(0,0,0,.1);
+						.size(40px, 400px);
+
+						.entry-data {
+							position: relative;
+							.faux-clickable;
+							.pull-left;
+							.calc-width(50, 5);
+
+							&:first-child { margin-right: 10px; }
+
+							label {
+								position: absolute;
+								top: 0;
+								left: 10px;
+								font-size: 12px;
+								text-transform: uppercase;
+								color: @grey3;
+							}
+
+							input {
+								font-size: 18px;
+								line-height: 25px;
+								font-weight: 600;
+								padding-top: 15px;
+								width: 100%;
+							}
+
+							.clear-query {
+								top: 2px;
+								background-color: @white;
+
+								.icons { top: 10.5px; }
+							}
+						}
+					}
+				}
+
+				&.enable-adding {
+					.entry {
+						&.search {
+							.calc-width(100, 530); 
+							.transition;
+						}
+					}
+				}
 			}
 		}
 	}
