@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state', 'ngDialog', '$filter',
-	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state, ngDialog, $filter) {
+sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state', 'ngDialog', '$filter', 'allUnassigned',
+	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state, ngDialog, $filter, allUnassigned) {
 		BaseCtrl.call(this, $scope);
 		$scope.singleState = {
 			workSheet: {
@@ -26,36 +26,6 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}
 		};
 
-		$scope.filters = {
-			selectedFloor: "",
-			selectedReservationStatus: "",
-			selectedFOStatus: "",
-			vipsOnly: false,
-			checkin: {
-				after: {
-					hh: "",
-					mm: "",
-					am: "AM"
-				},
-				before: {
-					hh: "",
-					mm: "",
-					am: "AM"
-				}
-			},
-			checkout: {
-				after: {
-					hh: "",
-					mm: "",
-					am: "AM"
-				},
-				before: {
-					hh: "",
-					mm: "",
-					am: "AM"
-				}
-			}
-		}
 
 		$scope.dropToUnassign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
@@ -185,6 +155,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			selectedReservationStatus: "",
 			selectedFOStatus: "",
 			vipsOnly: false,
+			showAllRooms: true,
 			checkin: {
 				after: {
 					hh: "",
@@ -232,7 +203,44 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}, onDeleteSuccess, onDeleteFailure);
 		}
 
+
+
+
+
+		// for all unassigned rooms
+		// we are gonna mark each rooms with
+		// its associated work_type_id
+		// this way while saving we can determine
+		// how many different work type has been touched
+		// and how many save request must be created
+		var wtid = '';
+		_.each(allUnassigned, function(item) {
+			wtid = item.id;
+			_.each(item.unassigned, function(room) {
+				room.work_type_id = wtid;
+			});
+		});
+
 		$scope.saveWorkSheet = function() {
+			var assignedRooms = [],
+				saveCount     = 0,
+				worktypesSet  = {};
+
+			var onSaveSuccess = function(data) {
+					saveCount--;
+					if ( saveCount == 0 ) {
+						$scope.$emit("hideLoader");
+						$scope.clearErrorMessage();
+					};
+				},
+				onSaveFailure = function(errorMessage) {
+					saveCount--;
+					if ( saveCount == 0 ) {
+						$scope.errorMessage = errorMessage;
+						$scope.$emit("hideLoader");
+					};
+				};
+
 			if (!$scope.singleState.workSheet.work_type_id) {
 				$scope.errorMessage = ['Please select a work type.'];
 				return false;
@@ -241,36 +249,68 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				$scope.errorMessage = ['Please select an employee.'];
 				return false;
 			}
-			var assignedRooms = [],
-				onSaveSuccess = function(data) {
-					$scope.$emit("hideLoader");
-					$scope.clearErrorMessage();
-				},
-				onSaveFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-					$scope.$emit("hideLoader");
-				};
 
-			_.each($scope.singleState.assigned, function(room) {
-				assignedRooms.push(room.room_id || room.id);
+			// lets create a set of worktypes that will hold 
+			// rooms under each worktype id name - e.g:
+			// {
+			//		'4'  : [ array of rooms ],
+			//		'20' : [ array of rooms ]
+			// }
+			worktypesSet = {};
+
+			// use the worktype list to initiate
+			// each worktype array that will hold
+			// corresponding rooms
+			_.each($scope.workTypes, function(type) {
+				worktypesSet[type.id.toString()] = [];
 			});
 
-			$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
-				"date": $stateParams.date,
-				"task_id": $scope.singleState.workSheet.work_type_id,
-				"order": "",
-				"assignments": [{
-					"shift_id": $scope.singleState.workSheet.shift_id,
-					"assignee_id": $scope.singleState.workSheet.user_id,
-					"room_ids": assignedRooms,
-					"work_sheet_id": $stateParams.id
-				}]
-			}, onSaveSuccess, onSaveFailure);
-		}
+			// if a room in assigned has prop 'work_type_id' (read line #217)
+			// assign it to the corresponding array
+			// else assign to the array corresponding the active work type
+			_.each($scope.singleState.assigned, function(room) {
+				if ( room.hasOwnProperty('work_type_id') ) {
+					worktypesSet[room.work_type_id.toString()].push(room);
+				} else {
+					worktypesSet[$scope.singleState.workSheet.work_type_id.toString()].push(room);
+				};
+			});
+
+			// loop each worktypeSet
+			// we only need to save it
+			// if it has any room in it
+			_.each(worktypesSet, function(set, key) {
+				if ( set.length ) {
+					_.each(set, function(room) {
+						assignedRooms.push(room.room_id || room.id);
+					});
+
+					$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
+						"date"        : $stateParams.date,
+						"task_id"     : parseInt(key),
+						"order"       : "",
+						"assignments" : [{
+							"shift_id"      : $scope.singleState.workSheet.shift_id,
+							"assignee_id"   : $scope.singleState.workSheet.user_id,
+							"room_ids"      : assignedRooms,
+							"work_sheet_id" : ""
+						}]
+					}, onSaveSuccess, onSaveFailure);
+
+					// must reset after API call
+					assignedRooms = [];
+
+					// increment API call count
+					saveCount++;
+				};
+			});
+		};
 
 		// throttle down the multiple calls. DO NOT BIND TO VIEW
 		$scope.throttleSaveWorkSheet = _.throttle($scope.saveWorkSheet, 300);
 			
+
+
 
 
 		$scope.startLoader = function() {
@@ -278,7 +318,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		}
 
 		$scope.filterUnassigned = function() {
-			$scope.singleState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.singleState.unassigned);
+			$scope.singleState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.singleState.unassigned, allUnassigned);
 			refreshView();
 			$scope.closeDialog();
 		}

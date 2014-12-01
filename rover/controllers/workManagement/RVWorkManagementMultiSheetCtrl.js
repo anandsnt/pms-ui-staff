@@ -247,7 +247,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.filterUnassigned = function() {
-			console.log($scope.multiSheetState);
 			$scope.multiSheetState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned);
 			refreshView();
 			$scope.closeDialog();
