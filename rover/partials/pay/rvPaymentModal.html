@@ -47,12 +47,12 @@
             <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
             <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
             <span ng-if="isStandAlone" class="fee">
-                + {{currencySymbol}}{{renderData.calculatedFee}} fee
+                + {{currencySymbol}}{{feeData.calculatedFee}} fee
             </span>
             <span ng-if="isStandAlone" class="total">
                 Total:
                 <strong id="total-deposit-amount">
-                    {{currencySymbol}}{{renderData.totalOfValueAndFee}}
+                    {{currencySymbol}}{{feeData.totalOfValueAndFee}}
                 </strong>
             </span>
         </div> 

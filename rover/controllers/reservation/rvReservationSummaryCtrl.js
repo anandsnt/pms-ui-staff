@@ -110,7 +110,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var feesInfo = $scope.feeData.feesInfo;
 			var defaultAmount = $scope.reservationData ?
 			 	$scope.reservationData.depositAmount : zeroAmount;
-			console.log("feesInfo :");console.log(feesInfo);
+			
 			if(typeof feesInfo != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
@@ -220,7 +220,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				if($scope.feeData.feesInfo)
 					dataToMakePaymentApi.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
-			console.log(dataToMakePaymentApi);
 
 			if($scope.checkReferencetextAvailable()){
 				dataToMakePaymentApi.postData.reference_text = $scope.reservationData.referanceText;
