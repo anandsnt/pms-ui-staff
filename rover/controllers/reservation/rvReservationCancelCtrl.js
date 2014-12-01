@@ -19,6 +19,10 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			expiry_date:"",
 			card_type:""
 		};
+		
+		if($scope.ngDialogData.penalty > 0){
+			$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
+		}
 
 		$scope.setScroller('cardsList');
 
@@ -49,13 +53,13 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				$scope.feeData.calculatedFee = zeroAmount;
 				$scope.feeData.totalOfValueAndFee = zeroAmount;
 			}
-		}
+		};
 		
 
 		var refreshCardsList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
-			}, 300)
+			}, 300);
 		};
 
 		var retrieveCardtype = function(){
@@ -109,7 +113,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
 				token: cardToken,
 				card_expiry: cardExpiry
-			}
+			};
 			if($scope.isStandAlone){
 				if($scope.feeData.calculatedFee)
 					paymentData.fees_amount = $scope.feeData.calculatedFee;
@@ -154,18 +158,18 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 					"confirmationId": $scope.reservationData.confirmNum ||  $scope.reservationParentData.confirmNum,
 					"isrefresh": false
 				});
-				$scope.closeDialog();
+				$scope.closeReservationCancelModal();
 				$scope.$emit('hideLoader');
-			}
+			};
 			var onCancelFailure = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data;
-			}
+			};
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
 				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
 				id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId
-			}
+			};
 			if($scope.ngDialogData.isDisplayReference){
 				cancellationParameters.reference_text = $scope.referanceText;
 			};
@@ -207,7 +211,47 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);
 	});
+	
+	$scope.$on("SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN", function(e, swipedCardDataToRender){
+
+		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+		$scope.ngDialogData.state = 'PENALTY';
+		$scope.showCC = true;
+		$scope.addmode = true;
+
+	});
+	
+	var successSwipePayment = function(data, successParams){
+				$scope.$emit('hideLoader');
+				$scope.cancellationData.selectedCard = data.id;
+				$scope.cancellationData.cardNumber = successParams.cardNumber.slice(-4);;
+				$scope.cancellationData.expiry_date = successParams.cardExpiryMonth+"/"+successParams.cardExpiryYear;
+				$scope.cancellationData.card_type = successParams.cardType.toLowerCase();
+				$scope.showCC = false;
+	};
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		var data 				 = swipedCardDataToSave;
+		data.reservation_id 	 = $scope.reservationData.reservation_card.reservation_id;
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card 		 = swipedCardDataToSave.cardType;
+		data.card_expiry 		 = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+		data.add_to_guest_card   = swipedCardDataToSave.addToGuestCard;
+		
+		
+		var options = {
+	    		params: 			data,
+	    		successCallBack: 	successSwipePayment,	 
+	    		successCallBackParameters:  swipedCardDataToSave 	
+	    };
+	    $scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
+	});
+	$scope.closeReservationCancelModal = function(){
+		$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", false);
+		$scope.closeDialog();
+	};
 
 	}
+	
+	
 
 ]);

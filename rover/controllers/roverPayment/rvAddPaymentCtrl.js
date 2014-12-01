@@ -377,7 +377,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
 		//alert(JSON.stringify(data));
 		if($scope.passData.details.isClickedCheckin != undefined && $scope.passData.details.isClickedCheckin){
-			//savePaymentSuccess();
+			successSwipePayment();
 		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
 		{
 			data.user_id = $scope.passData.userId;
@@ -399,6 +399,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
 		}
+		$scope.closeDialog();
 	};
 
 		/*

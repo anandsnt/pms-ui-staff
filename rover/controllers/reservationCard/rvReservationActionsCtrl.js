@@ -339,6 +339,8 @@ sntRover.controller('reservationActionsController', [
 					        	is_display_reference = true;
 					        };
 						});
+						cancellationCharge = 23;
+						
 						promptCancel(cancellationCharge, nights,is_display_reference);
 
 					};
@@ -371,6 +373,7 @@ sntRover.controller('reservationActionsController', [
 						}
 						else{
 							//promptCancel(cancellationCharge, nights);
+							
 							checkifReferenceIsPresent(cancellationCharge, nights);
 						};
 					}
