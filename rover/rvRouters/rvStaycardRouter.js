@@ -102,9 +102,14 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.addons', {
-            url: '/addons/:from_date/:to_date',
+            url: '/addons/:from_date/:to_date/:reservation',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
-            controller: 'RVReservationAddonsCtrl',
+            controller: 'RVReservationAddonsCtrl',            
+            onEnter: function($stateParams) {
+                if (typeof $stateParams.reservation == "undefined" || $stateParams.reservation == null) {
+                    $stateParams.reservation = "DAILY";
+                }
+            },
             resolve: {
                 addonData: function(RVReservationAddonsSrv, $stateParams) {
                     var params = {};
