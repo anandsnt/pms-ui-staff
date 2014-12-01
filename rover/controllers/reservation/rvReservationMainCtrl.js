@@ -1394,19 +1394,19 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                      */
 
                   /*
-                    * Commented out .if existing cards needed remove comments
+                    * Comment out .if existing cards needed remove comments
                     */
 
-                    // $scope.successPaymentList = function(data) {
-                    //     $scope.$emit("hideLoader");
-                    //     $scope.cardsList = data.existing_payments;
-                    //     angular.forEach($scope.cardsList, function(value, key) {
-                    //         value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
-                    //         value.card_expiry = value.expiry_date; //Same comment above
-                    //     });
-                    // };
+                    $scope.successPaymentList = function(data) {
+                        $scope.$emit("hideLoader");
+                        $scope.cardsList = data.existing_payments;
+                        angular.forEach($scope.cardsList, function(value, key) {
+                            value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
+                            value.card_expiry = value.expiry_date; //Same comment above
+                        });
+                    };
 
-                    //$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.successPaymentList);
+                    $scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.successPaymentList);
 
                     $scope.viewState.reservationStatus.confirm = true;
                     $scope.reservationData.is_routing_available = false;
