@@ -129,7 +129,32 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.feeData.totalOfValueAndFee = zeroAmount;
 			}
 		};
-
+		var addToGuestCard = function(data){
+			var dataToGuestList = {};
+			if(isNewCardAdded){
+				var cardName = (!$scope.newPaymentInfo.tokenDetails.isSixPayment)?
+							$scope.newPaymentInfo.cardDetails.userName:
+							($scope.passData.details.firstName+" "+$scope.passData.details.lastName);
+				dataToGuestList = {
+					"id": data.id,
+					"isSelected": true,
+					"is_primary":false,
+					"payment_type":data.payment_name,
+					"card_code":retrieveCardNumber(),
+					"card_name":cardName
+				};
+			}
+			else{
+				dataToGuestList = {
+					"id": data.id,
+					"isSelected": true,
+					"is_primary":false,
+					"payment_type":data.payment_name
+				};
+			};		
+			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		};
+		var isNewCardAdded = false;
 		var savenewCc = function(){
 			var ccSaveSuccess = function(data){
 				console.log("hiree")
@@ -145,6 +170,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.feeData.feesInfo = data.fees_information;
 					$scope.setupFeeData();
 				}
+				isNewCardAdded = true;
+				addToGuestCard(data);
 			};
 
 			var data = {};
