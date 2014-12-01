@@ -1,0 +1,19 @@
+<div class="entry full-width" ng-class="{'amount': isStandAlone}"><!-- Add class "amount" when fee exsists -->
+    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
+    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" />
+    <!-- CICO-9457 : Use only when fee exsists in standalone -->
+    <span ng-if="isStandAlone" class="fee">
+    	+ {{currencySymbol}}{{feeData.calculatedFee}} fee
+    </span> 
+    <span ng-if="isStandAlone" class="total">
+    	Total:
+    	<strong id="total-deposit-amount">
+    		{{currencySymbol}}{{feeData.totalOfValueAndFee}}
+    	</strong>
+    </span>
+</div>
+<!-- Reference field - use only when it exsits -->
+<div class="entry full-width reference" ng-show="checkReferencetextAvailable()">
+    <label for="reference">Reference</label>
+    <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
+</div>
