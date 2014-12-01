@@ -693,7 +693,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // add the amount here
                             // Note Got to multiply with the number of days as this is a per night tax                            
                             var nights = $scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights;
-                            if (addon.postType.value == "STAY") nights = 1; // Based on Nicole's comments the addons override their taxes in the post type dimension
+                            if (addon.postType.value == "NIGHT") nights = 1; // Based on Nicole's comments the addons override their taxes in the post type dimension
                             /**
                                  * CICO-9576
                                  * QA Comment

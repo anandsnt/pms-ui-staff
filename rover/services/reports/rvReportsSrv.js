@@ -23,17 +23,6 @@ sntRover.service('RVreportsSrv', [
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-
-						// mock data, remove before API integration, release merge
-						data.results.push({
-							description: "Conversion details for late check in and web check in",
-							id: 5,
-							sub_title: "By Month",
-							title: "Web Check In Conversion",
-							filters: [{ description: "Date Range", value: "DATE_RANGE" }],
-							sort_fields: [{ description: "Date", value: "DATE" }]
-						});
-
 						this.cacheReportList = data;
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data){

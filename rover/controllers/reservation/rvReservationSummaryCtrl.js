@@ -110,7 +110,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var feesInfo = $scope.feeData.feesInfo;
 			var defaultAmount = $scope.reservationData ?
 				$scope.reservationData.depositAmount : zeroAmount;
-
 			if (typeof feesInfo != 'undefined' && feesInfo != null) {
 
 				var amountSymbol = feesInfo.amount_symbol;
@@ -157,7 +156,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			console.log(dataToGuestList)
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
+
 		var isNewCardAdded = false;
+
 		var savenewCc = function() {
 			var ccSaveSuccess = function(data) {
 				console.log("hiree")
@@ -197,7 +198,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.newPaymentInfo = data;
 			savenewCc();
 		});
-
 
 		/*
 		 * Commented out .if existing cards needed remove comments
@@ -305,30 +305,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.$emit('PROMPTCARD');
-				$scope.$watch("reservationData.guest.id", function() {
-					if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-						$scope.errorMessage = ['Need to attach a card to proceed'];
-					} else {
-						$scope.errorMessage = [];
+				var save = function() {
+					if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
 						$scope.saveReservation();
 					}
-				});
-				$scope.$watch("reservationData.company.id", function() {
-					if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-						$scope.errorMessage = ['Need to attach a card to proceed'];
-					} else {
-						$scope.errorMessage = [];
-						$scope.saveReservation();
-					}
-				});
-				$scope.$watch("reservationData.travelAgent.id", function() {
-					if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-						$scope.errorMessage = ['Need to attach a card to proceed'];
-					} else {
-						$scope.errorMessage = [];
-						$scope.saveReservation();
-					}
-				});
+				};
+				$scope.$watch("reservationData.guest.id", save);
+				$scope.$watch("reservationData.company.id", save);
+				$scope.$watch("reservationData.travelAgent.id", save);
 			} else {
 				$scope.saveReservation();
 			}
@@ -340,7 +324,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 
 			if ($stateParams.reservation == "HOURLY") {
-				$scope.$emit('showLoader');
+				$scope.$emit('showLoader');				
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
@@ -753,13 +737,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				$scope.showCC = true;
-				/*
+								/*
+
 				 * Comment out .if existing cards needed remove comments
 				 */
 				$scope.cardsList = (typeof $scope.cardsList !== 'undefined') ? $scope.cardsList : [];
 				$scope.addmode = $scope.cardsList.length > 0 ? false : true;
 				//$scope.addmode = true;
-
 			} else {
 				$scope.isSubmitButtonEnabled = true;
 			};
