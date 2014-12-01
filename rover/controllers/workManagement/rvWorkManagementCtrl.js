@@ -166,9 +166,6 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 				$scope.$emit('hideLoader');
 			}, 800);
 			return filteredRooms;
-
-
-
 		}
 	}
 ]);

@@ -4,15 +4,15 @@ var Grid = React.createClass({
 
 		iscroll.grid = new IScroll($('.diary-grid .wrapper')[0], { 
 			probeType: 2, 
-			scrollbars: true,
+			scrollbars: 'custom',
 			interactiveScrollbars: true,
 			scrollX: true, 
 			scrollY: true, 
-			bounce: true,
+			bounce: false,
 			momentum: false,
 			preventDefaultException: { className: /(^|\s)(occupied|available|reserved)(\s|$)/ },
 			mouseWheel: true,
-			useTransition: true
+			useTransition: true,
 		});
 
 		iscroll.grid._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.grid), 10, { leading: false, trailing: true });
@@ -26,7 +26,7 @@ var Grid = React.createClass({
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.grid.destroy();
-		this.props.iscroll.grid = null;
+		this.props.iscroll.grid = null; 
 	},
 	render: function() {
 		var props 		= this.props,
@@ -42,8 +42,8 @@ var Grid = React.createClass({
 				React.DOM.ul({ 
 					className: 'grid',
 					style: {
-						width: grid_width 
-						//left: -1 * (display.x_origin - display.x_nL) * display.px_per_ms + 'px'
+						width: grid_width//, 
+						//left: -1 * (display.x_offset - display.x_n) * display.px_per_ms + 'px'
 					}
 				}, 
 				_.map(this.props.data, function(row, idx) {

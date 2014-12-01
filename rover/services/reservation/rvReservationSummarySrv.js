@@ -138,9 +138,10 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
-        this.startPayment = function(data) {
-            var deferred = $q.defer();
-            var url = '/api/cc/auth_settle?emv=true';
+
+        this.startPayment = function(data){
+        	var deferred = $q.defer();
+            var url = '/api/cc/get_token';
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

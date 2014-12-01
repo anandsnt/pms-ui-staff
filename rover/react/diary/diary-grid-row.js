@@ -25,6 +25,9 @@ var GridRow = React.createClass({
 
 		return render;
 	},
+	componentDidMount: function(){
+		$(this.getDOMNode()).droppable();
+	},
 	render: function() {
 		var props 				= this.props,
 			display 			= props.display,

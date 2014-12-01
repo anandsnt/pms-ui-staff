@@ -9,11 +9,11 @@ var Timeline = React.createClass({
 			interval_spans,
 			px_per_int 				= display.px_per_int + 'px',
 			px_per_hr 				= display.px_per_hr + 'px',
-			start_time 				= display.x_nL_time, 
+			start_time 				= display.x_n_time, 
 			self 					= this;
 
 		(function() {
-			var time = start_time.hours;
+			var time = 0; //start_time.hours;
 
 			for(var i = 0, len = display.hours; i < len; i++) {
 				segment_hour_display.push(time++ + ':00');
