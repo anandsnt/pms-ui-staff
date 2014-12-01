@@ -111,8 +111,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var zeroAmount = parseFloat("0.00").toFixed(2);
 			var defaultAmount = $scope.reservationData ?
 				$scope.reservationData.depositAmount : zeroAmount;
-			console.log("feesInfo :");
-			console.log(feesInfo);
+
 			if (typeof feesInfo != 'undefined' && feesInfo != null) {
 
 				var amountSymbol = feesInfo.amount_symbol;
@@ -132,8 +131,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		var savenewCc = function() {
-			var ccSaveSuccess = function(data) {
-				console.log("hiree")
+			var ccSaveSuccess = function(data) {				
 				$scope.$emit('hideLoader');
 				$scope.showCC = false;
 				$scope.showSelectedCreditCard = true;
@@ -191,8 +189,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.payDeposit = function() {
-			var onPaymentSuccess = function(data) {
-					console.log(data);
+			var onPaymentSuccess = function(data) {					
 					$scope.depositData.attempted = true;
 					$scope.depositData.depositSuccess = true;
 					$scope.depositData.authorizationCode = data.authorization_code;
@@ -220,8 +217,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					dataToMakePaymentApi.postData.fees_amount = $scope.feeData.calculatedFee;
 				if ($scope.feeData.feesInfo)
 					dataToMakePaymentApi.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
-			}
-			console.log(dataToMakePaymentApi);
+			}			
 
 			if ($scope.checkReferencetextAvailable()) {
 				dataToMakePaymentApi.postData.reference_text = $scope.reservationData.referanceText;
@@ -304,7 +300,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 
 			if ($stateParams.reservation == "HOURLY") {
-				$scope.$emit('showLoader');				
+				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
@@ -802,8 +798,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"amount": "10.00",
 				"currency_code": ""
 			};
-			RVReservationSummarySrv.startPayment(data).then(function(response) {
-				console.log(response);
+			RVReservationSummarySrv.startPayment(data).then(function(response) {				
 				$scope.shouldShowWaiting = false;
 			}, function() {
 				$rootScope.netWorkError = true;

@@ -1382,12 +1382,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
              * Move check for guest / company / ta card attached to the screen before the reservation summary screen.
              * This may either be the rooms and rates screen or the Add on screen when turned on.
              */
-            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-                console.log({
-                    guest: $scope.reservationData.guest.id,
-                    company: $scope.reservationData.company.id,
-                    agent: $scope.reservationData.travelAgent.id
-                });
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {                
                 $scope.$emit('PROMPTCARD');
             } else {
                 /**
@@ -1450,8 +1445,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
                     $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
-                    $scope.$emit('hideLoader');
-                    console.log("*************************", $scope.reservationData.reservationId);
+                    $scope.$emit('hideLoader');                    
                     if (nextState) {
                         if (!nextStateParameters) {
                             nextStateParameters = {};
@@ -1464,8 +1458,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.$emit('hideLoader');
                 }
 
-                var updateSuccess = function(data) {
-                    console.log("*************************", $scope.reservationData.reservationId);
+                var updateSuccess = function(data) {                    
                     $scope.reservationData.depositAmount = data.deposit_amount;
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
