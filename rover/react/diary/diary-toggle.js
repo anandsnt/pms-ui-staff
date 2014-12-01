@@ -18,7 +18,7 @@ var Toggle = React.createClass({
 			},
 				React.DOM.span({
 					className: 'value'
-				}, 'All'),
+				}, 'Open'),
 				React.DOM.span({
 					className: 'switch-icon'
 				}, 'All')),
@@ -27,7 +27,7 @@ var Toggle = React.createClass({
 			},
 				React.DOM.span({
 					className: 'switch-icon'
-				}, 'H'),
+				}, 'All'),
 				React.DOM.span({
 					className: 'value'
 				}, 'Open'))

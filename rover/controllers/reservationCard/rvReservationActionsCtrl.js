@@ -10,7 +10,7 @@ sntRover.controller('reservationActionsController', [
 	'RVSearchSrv',
 	'RVDepositBalanceSrv',
 	'$filter',
-	'RVChargeItems',
+	'RVChargeItems','RVPaymentSrv',
 	function($rootScope, 
 		$scope, 
 		ngDialog, 
@@ -22,7 +22,7 @@ sntRover.controller('reservationActionsController', [
 		RVSearchSrv,
 		RVDepositBalanceSrv, 
 		$filter,
-		RVChargeItems) {
+		RVChargeItems,RVPaymentSrv) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -264,7 +264,18 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
-		var promptCancel = function(penalty, nights) {
+		var promptCancel = function(penalty, nights,isDisplayReference) {
+			
+			var passData = {
+			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+			 		"details":{
+			 			"firstName":$scope.guestCardData.contactInfo.first_name,
+			 			"lastName":$scope.guestCardData.contactInfo.last_name
+			 		}
+			 };
+
+			$scope.passData = passData;
+
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
@@ -273,6 +284,7 @@ sntRover.controller('reservationActionsController', [
 					state: 'CONFIRM',
 					cards: false,
 					penalty: penalty,
+					isDisplayReference :isDisplayReference,
 					penaltyText: (function() {
 						if (nights) {
 							return penalty + (penalty > 1 ? " nights" : " night");
@@ -317,6 +329,22 @@ sntRover.controller('reservationActionsController', [
 		$scope.toggleCancellation = function() {
 
 			var checkCancellationPolicy = function() {
+
+				var checkifReferenceIsPresent = function(cancellationCharge, nights){
+					var successCallback = function(data){
+						$scope.$emit('hideLoader');
+						var is_display_reference = false;
+						data.forEach(function(item) {
+					        if(item.name === 'CC' && item.is_display_reference){
+					        	is_display_reference = true;
+					        };
+						});
+						promptCancel(cancellationCharge, nights,is_display_reference);
+
+					};
+					$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback)
+				};
+
 				var onCancellationDetailsFetchSuccess = function(data) {
 					$scope.$emit('hideLoader');			
 
@@ -342,7 +370,8 @@ sntRover.controller('reservationActionsController', [
 							showDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
 						}
 						else{
-							promptCancel(cancellationCharge, nights);
+							//promptCancel(cancellationCharge, nights);
+							checkifReferenceIsPresent(cancellationCharge, nights);
 						};
 					}
 					else{
@@ -350,7 +379,8 @@ sntRover.controller('reservationActionsController', [
 							showDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
 						}
 						else{
-							promptCancel('', nights);
+							//promptCancel('', nights);
+							checkifReferenceIsPresent('', nights);
 						};
 					}
 					//promptCancel(cancellationCharge, nights);
@@ -423,6 +453,7 @@ sntRover.controller('reservationActionsController', [
 		 * Show Deposit/Balance Modal
 		 */
 		$scope.showDepositBalanceModal = function(){
+			
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 			var dataToSrv = {
 				"reservationId": reservationId
@@ -437,8 +468,14 @@ sntRover.controller('reservationActionsController', [
 			// $scope.depositBalanceData = data;
 			$scope.depositBalanceData = data;
 			
+			$scope.passData = { 
+			    "details": {
+			    	"firstName": $scope.data.guest_details.first_name,
+			    	"lastName": $scope.data.guest_details.last_name,
+			    }
+			};
 			ngDialog.open({
-					template: '/assets/partials/depositBalance/rvDepositBalanceModal.html',
+					template: '/assets/partials/depositBalance/rvModifiedDepositBalanceModal.html',
 					controller: 'RVDepositBalanceCtrl',
 					className: 'ngdialog-theme-default1',
 					closeByDocument: false,

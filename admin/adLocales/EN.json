@@ -132,19 +132,21 @@
 "CATEGORY_ICON_LABEL": "Category icon",
 "ITEM_IMAGE_LABEL": "Image",
 "ICON_SPEC": "(Transparent PNG, 128x128px in size)",
-"IMAGE_SPEC": "(680x320px in size)",
+"IMAGE_SPEC": "(960x600px in size)",
 "DETAILS_LABEL": "details",
 
-"ASSIGN_LABEL": "Assign",
-"TO_SECTION_LABEL": "to section",
-"TO_CATEGORY_LABEL": "to category",
+"ASSIGN_LABEL": "Assign ",
+"TO_SECTION_LABEL": "Assign to section",
+"TO_CATEGORY_LABEL": "Assign to category",
 
 "CONFIRM_LABEL":"Confirm",
 "SELECT_SECTION_LABEL": "Select section",
 "SELECT_CATEGORY_LABEL": "Select category",
 
 "SURE_LABEL": "Are you sure?",
-"CONTENT_NOTIFICATION_LABEL": "The following content is assigned to this section and will be marked as unassigned:"
+"CONTENT_NOTIFICATION_LABEL": "The following content is assigned to this section and will be marked as unassigned:",
+"NO_SECTION_MESSAGE": "Sections are not available",
+"NO_CATEGORY_MESSAGE": "Categories are not available"
 
 ,
 
@@ -173,7 +175,8 @@
 "CALCULATION_RULE":"Calculation Rule",
 "ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
 "ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
-"SELECT_CALCULATION_RULE":"Select Calculation Rule"
+"SELECT_CALCULATION_RULE":"Select Calculation Rule",
+"FEES_CODE":"Fees code"
 ,
 
 
@@ -268,8 +271,12 @@
 	"WORKSTATIONS":"Work Stations"
 ,
 	"PAYMENT_METHODS": "Payment Methods",
-	"SYSTEM_DEFINED": "(System defined)"
-,
+	"SYSTEM_DEFINED": "(System defined)",
+	"CC":"Credit Card",
+	"OFFLINE":"Offline",
+	"ROVER_ONLY":"Rover Payments Only",
+	"WEB_ONLY":"Web Payments Only",
+	"DISPLAY_REFERENCE":"Display Reference",
 
 
 "DAILY_UPSELL_SETUP":"Daily Upsell Setup",
@@ -443,11 +450,30 @@
     "MAX_ADULTS":"Max Adults",
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
-    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display",
+    "CANCELLATION_CHARGE_CODE":"Cancellation Charge Code",
+    "SELECT_CHARGE_CODE":"Select Charge Code",
+    "NO_SHOW_CHARGE_CODE":"No show charge code"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
+
+	"STATIONARY":"Stationary",
+	"CUSTOMIZE":"Customize",
+	"GUEST_BILL_TITLE": "Guest Bill",
+	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
+	"HOTEL_LOGO":"Hotel Logo",
+	"SELECT_LOGO_TYPE": "Select Hotel Logo Type",
+	"SELECT_GUEST_BILL":"Select Guest Bill",
+	"SHOW_HOTEL_ADDRESS":"Show Hotel Address",
+	"CUSTOM_TEXT":"Custom Text",
+	"HEADER":"Header",
+	"FOOTER":"Footer",
+	"CUSTOM_TEXT_PLACEHOLDER":"Add custom text, hotel name / address etc",
+	"CONFIRMATION_COMMUNICATION":"Confirmation Communications",
+	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL"
+,
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",

@@ -1,0 +1,111 @@
+<div role="dialog" id="modal" class="modal-show" ng-cloak>
+	
+	<form name="deposit-balance" method="post" id="deposit-balance" class="modal-content form deposit-balance" action="{action}">
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDepositModal()">
+			<span class="icons icon-close invert"> </span>
+		</button>
+		<!-- Left side -->
+		
+		<fieldset class="content-left">
+			<strong class="h2 message">Balance</strong>
+			<ul id="expenses" class="expenses">
+				<li>
+					Room Cost
+					<span> {{currencySymbol}}{{depositBalanceData.data.room_cost}} </span>
+				</li>
+				<li>
+					Packages
+					<span> {{currencySymbol}}{{depositBalanceData.data.packages}} </span>
+				</li>
+				<li class="total">
+					Sub Total
+					<span> {{currencySymbol}}{{depositBalanceData.data.sub_total}} </span>
+				</li>
+				<li>
+					Fees
+					<span> {{currencySymbol}}{{depositBalanceData.data.fees}} </span>
+				</li>
+				<li class="total">
+					Stay Total
+					<span> {{currencySymbol}}{{depositBalanceData.data.stay_total}} </span>
+				</li>
+				<li>
+					Nightly Charge
+					<span> {{currencySymbol}}{{depositBalanceData.data.nightly_charges}} </span>
+				</li>
+				<li class="total final">
+					Total Cost of Stay
+					<span> {{currencySymbol}}{{depositBalanceData.data.total_cost_of_stay}} </span>
+				</li>
+				<li class="deposit">
+					Deposit Paid
+					<span class="green"> {{currencySymbol}}{{depositBalanceData.data.deposit_paid}} </span>
+				</li>
+				<li class="balance">
+					Outstanding Stay Total
+					<span class="red"> {{currencySymbol}}{{depositBalanceData.data.outstanding_stay_total}} </span>
+			
+				</li>
+			</ul>
+		</fieldset>
+		<!-- Right side -->
+		<fieldset class="content-right">
+			<strong class="h2 message">Deposit</strong>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<!-- <div class="entry amount">
+				<label for="amount"> Amount to pay (<span></span>{{currencySymbol}}
+					) </label>
+				<input type="text" ng-model="makePaymentData.amount" value="{{makePaymentData.amount}}" name="amount" id="amount">
+			</div> -->
+			<!-- Show these options only if there are existing cards -->
+			
+			<!-- New Card form - this is same as in {modals/pay-bill/card-attached.html}, lines 98-129 -->
+			<div class="payment-form for-deposit" id="set-payment" >
+				<div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-hide="shouldShowMakePaymentScreen"></div>
+			
+				<div class="entry full-width" ng-click="showAddCardSection()" ng-show="shouldShowMakePaymentScreen && shouldCardAvailable" id="selected-card"><label>Credit Card (<span>Tap to change</span>)</label><label class="active-item item-payment" id="pay-with-discover">
+	                    <figure class="card-logo">
+	                        <img alt="" src="/assets/{{depositBalanceMakePaymentData.card_code}}.png">
+	                    </figure>
+	                    <span class="number">Ending with <span class="value number">{{depositBalanceMakePaymentData.ending_with}}</span></span>
+	                    <span class="date">Date <span class="value date">{{depositBalanceMakePaymentData.card_expiry}}</span></span>
+	                </label>
+	            </div>
+				<div class="entry full-width" ng-show="shouldShowMakePaymentScreen" ng-class="{'amount': isStandAlone}"><!-- Add class "amount" when fee exsists -->
+				    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
+				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" value="{{depositBalanceMakePaymentData.amount}}" type="text" />
+				    <!-- CICO-9457 : Use only when fee exsists in standalone -->
+				    <span ng-if="isStandAlone" class="fee">
+				    	+ {{currencySymbol}}{{feeData.calculatedFee}} fee
+				    </span> 
+				    <span ng-if="isStandAlone" class="total">
+				    	Total:
+				    	<strong id="total-deposit-amount">
+				    		{{currencySymbol}}{{feeData.totalOfValueAndFee}}
+				    	</strong>
+				    </span>
+				</div>
+		   
+				<!-- Reference field - use only when it exsits -->
+				<!-- <div class="entry full-width reference">
+				    <label for="reference">Reference</label>
+				    <input name="reference" id="reference" value="" type="text" />
+				</div> -->
+				<div class="actions" ng-show="shouldShowMakePaymentScreen">
+					<button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
+						Close
+					</button>
+	
+					<button type="button" ng-disabled="makePaymentButtonActive" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()" id="make-payment" class="button modal-close" >
+						Make Payment
+					</button>
+				</div>
+				<div class="actions" ng-show="!shouldShowMakePaymentScreen">
+					<button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
+						Close
+					</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>

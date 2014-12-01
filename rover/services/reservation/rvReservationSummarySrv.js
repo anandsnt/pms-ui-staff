@@ -124,7 +124,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
-        
+
         /**
          * Call API to do the payment - SIX payment
          */
@@ -138,9 +138,10 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+
         this.startPayment = function(data){
         	var deferred = $q.defer();
-            var url = '/api/cc/auth_settle?emv=true';
+            var url = '/api/cc/get_token';
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -148,8 +149,37 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+        this.fetchRooms = function() {
+            var deferred = $q.defer();
+            var url = '/api/rooms';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
+        this.getRateName = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/rates/' + params.id;
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data.name);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
-
+        this.getTaxDetails = function(rates) {
+            var deferred = $q.defer();            
+            var url = '/api/rates/tax_information/';
+            rvBaseWebSrvV2.getJSON(url, rates).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        }
     }
 ]);

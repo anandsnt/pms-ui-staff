@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout',
-    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout) {
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout', 'RVReservationSummarySrv',
+    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv) {
 
         // set the previous state
         $rootScope.setPrevState = {
@@ -49,7 +49,12 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
 
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
-            $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+                $scope.$emit('PROMPTCARD');
+            } else {
+                $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+            }
+            
         }
 
         $scope.selectAddonCategory = function(category, event) {

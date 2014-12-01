@@ -39,7 +39,6 @@
 //=require_tree ../rover/directives/ngReact
 
 //=require ../rover/react/diary/util.js
-//=require ../rover/react/diary/resize_mixin.js
 //=require ../rover/react/diary/diary-toggle.js
 //=require ../rover/react/diary/diary-toggle-panel.js
 //=require ../rover/react/diary/diary-grid-row-item-drag.js
@@ -59,6 +58,8 @@
 
 //=require ../rover/rvRouter.js
 //=require ../rover/rvCardOperations.js
+//=require ../rover/rvMLIOperations.js
+//=require ../rover/rvSwipeOperations.js
 //=require ../rover/rvCacheVaultModule.js
 //=require ../rover/rvSntApp.js
 

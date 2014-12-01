@@ -128,6 +128,7 @@
     "SEARCH_TITLE" : "Search",
     "STAYCARD_TITLE": "Staycard",
     "ROOM_ASSIGNMENT_TITLE" : "Room Assignment",
+    "MENU_ROOM_DIARY": "Room Diary",
     "ROOM_UPGRADES_TITLE": "Room Upgrades",
     "RESERVATION_TITLE": "Reservation",
     "RATE_MANAGER_TITLE": "Rate Manager",
@@ -506,7 +507,7 @@
 
     "BEST_SELLER": "BESTSELLER",
     "ENHANCEMENTS": "Enhancements",
-    "GO_TO_PAYMENT": "Go to Payment",
+    "GO_TO_PAYMENT": "Book",
     "QUANTITY": "Quantity",
     "REMOVE": "Remove",
     "ADD_MORE_TO_THIS_ROOM": "Add More to This Room",
@@ -781,5 +782,29 @@
     "DISAGREE_BUTTON_LABEL":"Disagree",
     "AGREE_BUTTON_LABEL":"Agree",
     "NO_POST_ENABLED":"ROOM CHARGE ENABLED",
-    "NO_POST_DISABLED":"ROOM CHARGE DISABLED"
+    "NO_POST_DISABLED":"ROOM CHARGE DISABLED",
+
+    "INVOICE":"Invoice",
+    "GUEST_FULL_NAME":"Guest Full Name",
+    "ARRIVAL_DATE":"Arrival Date",
+    "DEPARTURE_DATE":"Departure Date",
+    "CITY":"City",
+    "STATE":"State",
+    "POSTAL_CODE":"Postal Code",
+    "COUNTRY":"Country",
+    "CONFIRMATION_NO":"Confirmation No.",
+    "ROOM_NO":"Room No.",
+    "INVOICE_NO":"Invoice No.",
+    "INVOICE_DATE":"Invoice date",
+    "DATE_OF_CHARGE":"Date of Charge",
+    "CHARGE_DESC":"Charge description",
+    "CHARGE_AMOUNT":"Charge amount",
+    "CREDIT_AMOUNT":"Credit amount",
+    "TOTAL_CHARGE":"Total Charge",
+    "TOTAL_CREDITS":"Total Credits",
+    "BALANCE":"Balance",
+    "NET_AMOUNT":"Net Amount",
+    "TOTAL_INCL_TAX":"Total Incl Tax",
+    "UPDATE":"Update"
+
 }

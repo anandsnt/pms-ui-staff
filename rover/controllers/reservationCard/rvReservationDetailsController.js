@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData) {
 
 		// pre setups for back button
 		var backTitle,
@@ -47,6 +47,24 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$state.go('rover.search', backParam);
 		};
 
+		//CICO-10568
+		$scope.reservationData.isSameCard = false;
+
+		/**
+		*	We have moved the fetching of 'baseData' form 'rover.reservation' state
+		*	to the state where this controller is set as the state controller
+		*
+		*	Now we do want the original parent controller 'RVReservationMainCtrl' to bind that data
+		*	so we have created a 'callFromChildCtrl' method on the 'RVReservationMainCtrl' $scope.
+		*
+		*	Once we fetch the baseData here we are going call 'callFromChildCtrl' method
+		*	while passing the data, this way all the things 'RVReservationMainCtrl' was doing with
+		*	'baseData' will be processed again
+		*
+		*	The number of '$parent' used is based on how deep this state is wrt 'rover.reservation' state
+		*/
+		var rvReservationMainCtrl = $scope.$parent.$parent.$parent.$parent;
+		rvReservationMainCtrl.callFromChildCtrl(baseData);
 
 
 		BaseCtrl.call(this, $scope);
@@ -59,6 +77,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		var reservationMainData = $scope.$parent.reservationData;
 		$scope.reservationParentData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
+		
+
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 		$scope.updateSearchCache = function() {
@@ -194,6 +214,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, data, $scope.reservationDetailsFetchSuccessCallback);
 			} else {
 				$scope.reservationData = {};
+				$scope.reservationData.reservation_card = {};
 			}
 
 		});
@@ -207,7 +228,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.$emit('passReservationParams', passData);
 
 
-		$scope.openAddNewPaymentModel = function(data) {
+		/*$scope.openAddNewPaymentModel = function(data) {
 			if (data === undefined) {
 				var passData = {
 					"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -253,7 +274,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					};
 					var paymentData = $scope.reservationData;
 					
-					if($scope.isDepositBalanceScreenOpened){
+					if($scope.roverFlags.isDepositBalanceScreenOpened){
 						
 						$scope.$broadcast("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", passData);
 					} else{
@@ -264,7 +285,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			}
 
-		};
+		};*/
 
 		$rootScope.$on('clearErroMessages', function() {
 			$scope.errorMessage = "";
@@ -280,12 +301,32 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		/*
 		 * Handle swipe action in reservationdetails card
 		 */
-		$scope.$on('SWIPEHAPPENED', function(event, data) {
-			
-			if (!$scope.isGuestCardVisible) {
-				$scope.openAddNewPaymentModel(data);
+		// $scope.$on('SWIPEHAPPENED', function(event, data) {
+// 			
+			// if (!$scope.isGuestCardVisible) {
+				// $scope.openAddNewPaymentModel(data);
+			// }
+// 
+		// });
+		
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+			console.log(swipedCardData);
+			if($scope.isDepositBalanceScreenOpened){
+				swipedCardData.swipeFrom = "depositBalance";
+			} else if ($scope.isGuestCardVisible) {
+				swipedCardData.swipeFrom = "guestCard";
+			} else {
+				swipedCardData.swipeFrom = "stayCard";
 			}
-
+			
+			var swipeOperationObj = new SwipeOperation();
+			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+			var tokenizeSuccessCallback = function(tokenValue){
+				$scope.$emit('hideLoader');
+				swipedCardData.token = tokenValue;
+				$scope.showAddNewPaymentModel(swipedCardData);
+			};
+			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 		});
 
 		$scope.failureNewspaperSave = function(errorMessage) {
@@ -378,7 +419,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		$scope.goToRoomAndRates = function(state) {
-			if($rootScope.isStandAlone){
+			if($scope.reservationData.reservation_card.is_hourly_reservation){
+				return false;
+			} else if($rootScope.isStandAlone){
 				$state.go('rover.reservation.staycard.mainCard.roomType', {
 					from_date: reservationMainData.arrivalDate,
 					to_date: reservationMainData.departureDate,
@@ -422,6 +465,46 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		};
+		
+		
+
+		
+		
+		$scope.showAddNewPaymentModel = function(swipedCardData){
+		    
+			var passData = {
+				"reservationId": $scope.reservationData.reservation_card.reservation_id,
+			    "userId" : $scope.data.guest_details.user_id,
+			    "details": {
+			    	"firstName": $scope.data.guest_details.first_name,
+			    	"lastName": $scope.data.guest_details.last_name,
+			    }
+			};
+			var paymentData = $scope.reservationData;
+			if (swipedCardData !== undefined) {
+				// alert("============SWIPED DATA==============");
+				//alert(JSON.stringify(swipedCardData));
+				var swipeOperationObj = new SwipeOperation();
+				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+					
+				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+				if(swipedCardDataToRender.swipeFrom !== "depositBalance"){
+					$scope.openPaymentDialogModal(passData, paymentData);
+				} else {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+				}
+			} else {
+				passData.details.swipedDataToRenderInScreen = {};
+				$scope.openPaymentDialogModal(passData, paymentData);
+			}
+			
+			
+		};
+
+		$scope.showDiaryScreen = function(){
+			$state.go('rover.reservation.diary', {reservation_id: $scope.reservationData.reservation_card.reservation_id});
+		};
+
 	}
 
 ]);
