@@ -36,7 +36,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.showCC = false;
 		$scope.showAddtoGuestCard = true;
 		$scope.shouldShowAddNewCard = true;
-		$scope.isFromCreateReservation = true;
+		//$scope.isFromCreateReservation = true;
 		$scope.renderData = {};
 
 		$scope.feeData = {};
@@ -129,7 +129,36 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.feeData.totalOfValueAndFee = zeroAmount;
 			}
 		};
-
+		var addToGuestCard = function(data){
+			var dataToGuestList = {};
+			if(isNewCardAdded){
+				var cardName = (!$scope.newPaymentInfo.tokenDetails.isSixPayment)?
+							$scope.newPaymentInfo.cardDetails.userName:
+							($scope.passData.details.firstName+" "+$scope.passData.details.lastName);
+				dataToGuestList = {
+					"id": data.id,
+					"isSelected": true,
+					"card_code": retrieveCardtype(),
+					"is_primary":false,
+					"payment_type":data.payment_name,
+					"card_expiry":retrieveExpiryDate(),
+					"mli_token":retrieveCardNumber(),
+					"card_name":cardName,
+					"payment_type_id":1
+				};
+			}
+			else{
+				dataToGuestList = {
+					"id": data.id,
+					"isSelected": true,
+					"is_primary":false,
+					"payment_type":data.payment_name
+				};
+			};	
+			console.log(dataToGuestList)	
+			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		};
+		var isNewCardAdded = false;
 		var savenewCc = function(){
 			var ccSaveSuccess = function(data){
 				console.log("hiree")
@@ -145,6 +174,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.feeData.feesInfo = data.fees_information;
 					$scope.setupFeeData();
 				}
+				isNewCardAdded = true;
+				addToGuestCard(data);
 			};
 
 			var data = {};
@@ -155,6 +186,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.add_to_guest_card = $scope.newPaymentInfo.cardDetails.addToGuestCard;
 			data.card_code =  retrieveCardtype();
 			data.card_expiry = retrieveExpiryDateForSave();
+			data.card_name = (!$scope.newPaymentInfo.tokenDetails.isSixPayment)?
+							$scope.newPaymentInfo.cardDetails.userName:
+							($scope.passData.details.firstName+" "+$scope.passData.details.lastName);
+
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
 		};
 
@@ -164,21 +199,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		});
 
 		 /*
-	        * Commented out .if existing cards needed remove comments
+	        * Comment out .if existing cards needed remove comments
 	        */
 
-		// var setCreditCardFromList = function(index){	
-		// 	$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value;
-		// 	$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
-		// 	$scope.renderData.endingWith  =$scope.cardsList[index].mli_token;
-		// 	$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
-		// 	$scope.showCC = false;
-		// 	$scope.showSelectedCreditCard = true;
-		// };
+		var setCreditCardFromList = function(index){	
+			$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value;
+			$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
+			$scope.renderData.endingWith  =$scope.cardsList[index].mli_token;
+			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
+			$scope.showCC = false;
+			$scope.showSelectedCreditCard = true;
+		};
 
-		// $scope.$on('cardSelected',function(e,data){
-		// 	setCreditCardFromList(data.index);
-		// });
+		$scope.$on('cardSelected',function(e,data){
+			setCreditCardFromList(data.index);
+		});
 		$scope.checkReferencetextAvailable = function(){
 			var referenceTextAvailable = false;
 			angular.forEach($scope.reservationData.paymentMethods, function(paymentMethod, key) {
@@ -713,11 +748,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				$scope.showCC = true;
 		  /*
-	        * Commented out .if existing cards needed remove comments
+	        * Comment out .if existing cards needed remove comments
 	        */
-				//$scope.cardsList = (typeof $scope.cardsList !== 'undefined') ? $scope.cardsList : [];
-				//$scope.addmode = $scope.cardsList.length > 0 ? false:true;
-				$scope.addmode = true;
+				$scope.cardsList = (typeof $scope.cardsList !== 'undefined') ? $scope.cardsList : [];
+				$scope.addmode = $scope.cardsList.length > 0 ? false:true;
+				//$scope.addmode = true;
 			} else {
 				$scope.isSubmitButtonEnabled = true;
 			};
