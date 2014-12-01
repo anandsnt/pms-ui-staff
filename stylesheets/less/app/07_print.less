@@ -15,6 +15,12 @@ html {
     background: transparent;
 }
 
+#main-menu,
+#availability,
+.cards,
+.logo-hide, 
+.text-hide { display: none !important; }
+
 /* 2. TYPOGRAPHY
 ==========================================================*/
 p, 
@@ -105,10 +111,6 @@ q:before, q:after {content: ""}
     .iScrollVerticalScrollbar,
     .iScrollHorizontalScrollbar { .hide; }
 
-/* Navigation sidebar		==============================*/
-	#main-menu,
-    #availability { display: none !important; }
-
 /* Nav Bar 					==============================*/
 	.nav-bar {
         position: relative;
@@ -144,7 +146,9 @@ q:before, q:after {content: ""}
             .show;
 
             img { .size(100%, auto); }
-        }     
+        }
+
+        &.no-print { .hide; }  
     }
 
 /* 5. COMPONENTS
@@ -229,216 +233,6 @@ q:before, q:after {content: ""}
 			}
 		}
 	}
-
-/* Guest Bill*/	
-	.overview, .block-item,.action-select { .hide; }
-    .logo-hide, .text-hide{.hide;}
-	#guest-card, #bills-tabs-nav, #signature-pad{ .hide; }
-
-	.reservation-header,.billing-information, .bill-summary-wrapper,.selectBill { .hide; }
-
-	.button, .total-stay-fees,.notice,.error error_message, button { .hide; }
-
-	.hotel_logo {
-		position: static;
-		top: auto;
-		right: auto;
-		text-align: center;
-		margin: 1cm auto .25cm auto;
-		.size(70px,316px);
-
-		img { 
-			max-height: 70px;
-			max-width: 316px;
-		}
-	}
-
-	
-    .print-billcard{
-    	display:block !important;
-
-    	.guest-info{
-
-    		table{
-    			width:100%;
-    			font-size:20px;
-    			tr:first-child{
-    				border-bottom: 1px solid black;
-    				padding-bottom:.25cm;
-    			}
-    			tr {
-    				page-break-after: always !important;
-    				page-break-inside: avoid !important;
-
-    				td:first-child, td:last-child{
-    					width:40%;
-    				}
-    				td:nth-child(2){
-    					width:20%;
-    				}
-    				td:first-child{
-    					text-align:left;
-    				}
-    				td:last-child{
-    					text-align:right;
-    				}
-
-
-    				td {							
-    					page-break-inside: avoid !important;
-    				}
-    			}
-            }
-        }
-
-    	.details {
-    		height: auto !important;
-    		overflow: auto !important;
-    		border-top: 2px solid rgba(0,0,0,.1);
-
-    		table{
-    			table-layout: fixed;
-    			border-collapse: collapse; 
-    			margin-bottom: 0;
-
-    			tr {	
-    				page-break-after: always;
-    				page-break-inside: avoid;
-    				
-    				th{
-    					padding-bottom:0.5cm !important;
-    				}
-
-    				th,
-    				td {
-    					page-break-after:always !important;
-    					page-break-inside: avoid !important;
-    					white-space: normal !important;
-    					overflow: visible !important;
-    					vertical-align: top !important;
-    					line-height: 1.1;
-    					padding: .2cm 1cm .2cm 0;
-    					border-bottom: 1px solid rgba(0,0,0,.1);
-    					min-width:14%;
-    					max-width:29%;
-    					width:29%;
-    					font-size:15px
-    				}
-    			}
-
-    			tfoot {
-    				tr {
-    					page-break-after: always !important;
-    					page-break-inside: avoid !important;
-    					td {
-    						page-break-after:always !important;
-    						page-break-inside: avoid !important;
-    						border-bottom: 0;
-    						padding-top: 1cm !important;
-    						font-size:15px;
-    					}
-    				}
-    			}
-    		}
-    	}
-
-    	.print-billcard {
-    		display:block !important;
-    		margin-top:-2cm;
-    		padding-top:5px;
-
-    		.guest-info{
-    			table{
-    					width:100%;
-    					font-size:20px;
-    					tr:first-child{
-    						border-bottom: 1px solid black;
-    						padding-bottom:.25cm;
-    					}
-    					tr {
-    							page-break-after: always !important;
-    							page-break-inside: avoid !important;
-
-    							td:first-child, td:last-child{
-    								width:40%;
-    							}
-    							td:nth-child(2){
-    								width:20%;
-    							}
-    							td:first-child{
-    								text-align:left;
-    							}
-    							td:last-child{
-    								text-align:right;
-    							}
-
-
-    							td {
-    								page-break-after:always !important;
-    								page-break-inside: avoid !important;
-    								padding:0;
-    							}
-    						}
-    			}
-    		}
-
-    		.bill-details{
-    			table {
-    			    border-collapse: collapse;
-    				width:100%;
-    				font-size:20px;
-    					
-    				tr {
-    					page-break-after: always !important;
-    					page-break-inside: avoid !important;
-    					th{
-    						text-align:center;
-    						font-weight:bold !important;
-    						border:1px solid #C0C0C0;
-    						padding:0.25cm 0;
-    					}
-    					td:first-child{
-    						text-align:center;
-    					}
-    					td:nth-child(2), td:nth-child(3), td:nth-child(4){
-    						text-align:right;
-    					}
-    					td {
-
-    						border:1px solid #C0C0C0;
-    						width:30%;
-    						page-break-after:always !important;
-    						page-break-inside: avoid !important;
-    						padding:.25cm .25cm 0;
-    					}
-    				
-    				}
-    			}
-    		}
-
-    		.amount-details{
-    			table {
-    			    border-collapse: collapse;
-    				width:100%;
-    				font-size:20px;
-    					
-    				tr {
-    					page-break-after: always !important;
-    					page-break-inside: avoid !important;
-    				
-    					td {
-    						text-align:right;
-    						border:1px solid #C0C0C0;
-    						width:30%;
-    						page-break-after:always !important;
-    						page-break-inside: avoid !important;
-    						padding:.25cm .25cm 0;
-    					}
-    				}
-    			}
-    		}
-    	}
-    }
 
 /* Work Management          ==============================*/
     #worksheet-content {
@@ -1103,6 +897,173 @@ q:before, q:after {content: ""}
                         }
 
                         &:last-child { border-bottom: 0; }
+                    }
+                }
+            }
+        }
+    }
+
+/* Registration             ==============================*/
+    #registration-details {
+
+        .reservation-header,
+        .complete-registration { .hide; }
+
+        .registration-content {
+
+            .registration-summary {
+
+                #bills-tabs-nav,
+                .bill-summary-wrapper,
+                .total-stay-fees { .hide; }
+
+                .invoice {
+                    margin: 1cm 2cm 0;
+                    .show;
+
+                    table {
+                        margin: 0;
+                        width: 100%;
+                        text-transform: uppercase;
+                        table-layout: auto;
+                        border-collapse: collapse; 
+                        border-spacing: 0;
+
+                        tr {
+                            page-break-after: auto;
+                            page-break-inside: avoid;
+
+                            th { 
+                                white-space: normal; 
+                                font-weight: 600;
+                            }
+
+                            th,
+                            td {
+                                font-size: 9pt;
+                                line-height: 1em;
+                                vertical-align: top;
+                                text-align: left;
+                                page-break-after: auto;
+                                page-break-inside: avoid;
+                                white-space: normal;
+                            }
+                        }
+                    }
+
+                    .invoice-logo {
+                        height: 3cm;
+                        position: relative;
+
+                        h1 {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            font-weight: 600;
+                            line-height: 40px;
+                        }
+
+                        img {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            .size(40px, auto);
+                        }
+                    }
+
+                    .guest-info {
+                        text-transform: none;
+
+                        tr {
+                            page-break-after: avoid;
+
+                            th,
+                            td { 
+                                padding: 0 4pt 0 0;
+                                page-break-after: avoid; 
+                            }
+                            
+                            td { padding-bottom: 8pt; }
+                        }
+                    }
+
+                    .invoice-header {
+                        font-size: 9pt;
+                        line-height: 11pt;
+                        text-align: center;
+                        margin: 1cm 0 -1cm 0;
+                    }
+
+                    .invoice-body {
+                        margin-top: 2cm;
+
+                        .date {
+                            font-size: 9pt;
+                            line-height: 11pt;
+                            margin: 0;
+
+                            strong { 
+                                font-weight: 600;
+                                .show; 
+                            }
+                        }
+
+                        .invoice-details {
+                            text-transform: none;
+                            margin: 4pt 0;
+                            page-break-after:auto;
+                            
+                            caption {
+                                font-size: 14pt;
+                                line-height: 12pt;
+                                padding: 12pt 0 8pt;
+                                border-top: 2px solid @grey2;
+
+                                span { 
+                                    font-size: 9pt;
+                                    .show;
+                                }
+                            }
+
+                            tr {
+                                th,
+                                td {
+                                    padding: 2pt 2pt 2pt 0;
+
+                                    &.align-right { text-align: right; }
+                                }
+
+                                &:last-child {
+                                    td {
+                                        padding-bottom: 12pt;
+                                    }
+                                }
+                            }
+
+                            thead {
+                                tr {
+                                   th { background-color: transparent; } 
+                                }
+                            }
+
+                            tfoot {
+                                padding: 12pt 0 4pt;
+                                border-top: 2px solid @grey2;
+
+                                td { text-align: right; }
+
+                                tr {
+                                    &:first-child {
+                                        td { padding-top: 12pt; }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .invoice-footer {
+                        font-size: 8pt;
+                        padding-top: 16pt;
                     }
                 }
             }

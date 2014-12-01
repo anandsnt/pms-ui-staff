@@ -656,8 +656,14 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                 /*Primary Method to obtian Available Slots for a given range, room type, and optional 
                   GUID*/
-                this.Availability = function(start_date, end_date, room_type_id, rate_type, account_id, GUID) { 
-                    var _data_Store = this.data_Store,
+                this.Availability = function(params) {
+                    var start_date = params.start_date,
+                        end_date = params.end_date,
+                        room_type_id = params.room_type_id,
+                        rate_type = params.rate_type,
+                        account_id = params.account_id,
+                        GUID = params.GUID,
+                        _data_Store = this.data_Store,
                         q = $q.defer(),
                         guid = GUID || _.uniqueId('avl-'),
                         params = dateRange(start_date, end_date, room_type_id, rate_type);
@@ -684,6 +690,32 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     });
 
                     return q.promise;
+                };
+
+                /**
+                * primary method to get availability against a room
+                * usually used when reservation editing with time slot changing or room changing
+                */
+                this.roomAvailabilityCheckAgainstReservation = function(data){
+                    var params = {
+                        room_id:            data.room_id,
+                        reservation_id:     data.reservation_id,
+                        begin_date:         data.begin_date,
+                        begin_time:         data.begin_time,
+                        end_date:           data.end_date,
+                        end_time:           data.end_time,
+                        rate_type:          data.rate_type,
+                    }
+
+                    //Webservice calling section
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_availability/room';
+                    rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
+                        deferred.resolve(resultFromAPI);                       
+                    },function(error){
+                        deferred.reject(error);
+                    }); 
+                    return deferred.promise;                    
                 };
 
                 /*Process data points set during create reservation that redirects here*/

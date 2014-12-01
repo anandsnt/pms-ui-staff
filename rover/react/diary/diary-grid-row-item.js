@@ -7,7 +7,9 @@ var GridRowItem = React.createClass({
 			currentResizeItemRow: this.props.currentResizeItemRow
 		};
 	},
+	
 	componentWillReceiveProps: function(nextProps) {
+
 		var meta_id = this.props.meta.occupancy.id,
 			edit = nextProps.edit,
 			editing = edit.active,
@@ -35,8 +37,9 @@ var GridRowItem = React.createClass({
 				currentResizeItemRow: undefined
 			});
 		}
-	},
+	},	
 	render: function() {
+
 		var props 					= this.props,
 			state 					= this.state,
 			display 				= props.display,
