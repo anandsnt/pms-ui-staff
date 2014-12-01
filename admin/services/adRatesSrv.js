@@ -52,7 +52,13 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             //var url = " /sample_json/ng_admin/rate_types.json";
             var url = "/api/rate_types.json";
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
-                deferred.resolve(data.results);
+                var results = [];
+                for(var i = 0; i < data.results.length; i++){
+                    if(data.results[i].activated){
+                        results.push(data.results[i]);
+                    }
+                }
+                deferred.resolve(results);
             }, function (data) {
                 deferred.reject(data);
             });

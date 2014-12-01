@@ -6,7 +6,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 	this.fetch = function(){
 		
 		var deferred = $q.defer();
-		var url = '/api/work_stations.json';
+		var url = '/api/workstations.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -22,7 +22,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
     */
 	this.createMapping = function(data){
 		var deferred = $q.defer();
-		var url = '/api/work_stations';	
+		var url = '/api/workstations';	
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -39,7 +39,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 	this.getDeviceMappingDetails = function(data){
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = '/api/work_stations/'+id;	
+		var url = '/api/workstations/'+id;	
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -56,7 +56,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 	this.updateMapping = function(data){
 
 		var deferred = $q.defer();
-		var url = '/api/work_stations/'+data.id;
+		var url = '/api/workstations/'+data.id;
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -72,7 +72,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
     */
 	this.deleteDeviceMapping = function(id){
 		var deferred = $q.defer();
-		var url = '/api/work_stations/'+id;
+		var url = '/api/workstations/'+id;
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);

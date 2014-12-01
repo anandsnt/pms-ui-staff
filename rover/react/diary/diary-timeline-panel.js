@@ -9,7 +9,7 @@ var TimelinePanel = React.createClass({
 			scrollX: true, 
 			scrollY: false, 
 			momentum: false,
-			bounce: true,
+			bounce: false,
 			mouseWheel: false,
 			useTransition: true,
 			preventDefaultException:{ className: /(^|\s)set-times(\s|$)/ }

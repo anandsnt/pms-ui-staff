@@ -4,12 +4,12 @@ var RoomPanel = React.createClass({
 
 		iscroll.rooms = new IScroll('#diary-rooms', { 
 			probeType: 2, 
-			scrollbars: true,
+			scrollbars: 'custom',
 			interactiveScrollbars: true,
 			scrollX: false, 
 			scrollY: true,
 			momentum: false,
-			bounce: true, 
+			bounce: false, 
 			mouseWheel: false,
 			useTransition: true
 		});

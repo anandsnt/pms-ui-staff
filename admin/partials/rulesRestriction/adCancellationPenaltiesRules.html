@@ -126,7 +126,7 @@
 								<div class="select">
 									<select class="placeholder" ng-model="singleRule.charge_code_id">
 										<option value="" ng-selected="singleRule.charge_code_id == ''" translate>SELECT_CHARGE_CODE</option>
-										<option ng-selected="singleRule.charge_code_id == charge_code.value" value="{{charge_code.value}}" ng-repeat="charge_code in chargeCodes" >{{charge_code.value+' '+charge_code.description}}</option>
+										<option ng-selected="singleRule.charge_code_id == charge_code.charge_code" value="{{charge_code.value}}" ng-repeat="charge_code in chargeCodes" >{{charge_code.charge_code+' '+charge_code.description}}</option>
 									</select>
 								</div>
 							</div>
