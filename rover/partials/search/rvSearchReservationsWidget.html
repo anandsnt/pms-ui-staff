@@ -20,7 +20,7 @@
                 <button id="dashboard-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(toDate) !=''}">
                     <span class="icons icon-clear-search" ng-click="toDate = ''; fetchSearchResults();">Clear query</span>
                 </button>
-                <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : 'dd MMMM yyyy'}}" value="{{toDate}}" readonly="" type="text" />
+                <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : 'dd MMMM yyyy'}}" value="{{toDate}}" readonly="" type="text"/>
                 <button ng-click="showCalendar('RVReservationSearchToDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
             </div>
         </div>
