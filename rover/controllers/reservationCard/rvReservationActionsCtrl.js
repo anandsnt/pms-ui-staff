@@ -136,7 +136,7 @@ sntRover.controller('reservationActionsController', [
 
 		// the listner must be destroyed when no needed anymore
 		$scope.$on('$destroy', postchargeAdded);
-
+		$scope.creditCardTypes = [];
 		var openDepositPopup = function(){
 			var passData = {
 						 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -315,7 +315,8 @@ sntRover.controller('reservationActionsController', [
 			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 			 		"details":{
 			 			"firstName":$scope.guestCardData.contactInfo.first_name,
-			 			"lastName":$scope.guestCardData.contactInfo.last_name
+			 			"lastName":$scope.guestCardData.contactInfo.last_name,
+			 			"creditCardTypes":$scope.creditCardTypes
 			 		}
 			 };
 
@@ -381,14 +382,11 @@ sntRover.controller('reservationActionsController', [
 						$scope.$emit('hideLoader');
 						var is_display_reference = false;
 						data.forEach(function(item) {
-					        if(item.name === 'CC' && item.is_display_reference){
-					        	is_display_reference = true;
+					        if(item.name === 'CC'){
+					        	$scope.creditCardTypes = item.values;
 					        };
-						});
-						cancellationCharge = 23;
-						
+						});						
 						promptCancel(cancellationCharge, nights,is_display_reference);
-
 					};
 					$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback)
 				};
