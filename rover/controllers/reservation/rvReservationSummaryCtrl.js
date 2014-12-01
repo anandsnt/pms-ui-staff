@@ -138,10 +138,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				dataToGuestList = {
 					"id": data.id,
 					"isSelected": true,
+					"card_code": retrieveCardtype(),
 					"is_primary":false,
 					"payment_type":data.payment_name,
-					"card_code":retrieveCardNumber(),
-					"card_name":cardName
+					"card_expiry":retrieveExpiryDate(),
+					"mli_token":retrieveCardNumber(),
+					"card_name":cardName,
+					"payment_type_id":1
 				};
 			}
 			else{
@@ -151,7 +154,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"is_primary":false,
 					"payment_type":data.payment_name
 				};
-			};		
+			};	
+			console.log(dataToGuestList)	
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
 		var isNewCardAdded = false;
