@@ -145,6 +145,9 @@ var TimelineResizeGrip = React.createClass({
 	componentWillMount: function() {
 		this.__dbMouseMove = _.throttle(this.__onMouseMove, 10);
 	},
+	componentDidMount: function(){
+		this.getDOMNode().addEventListener('mousedown', this.__onMouseDown);
+	},
 	componentWillReceiveProps: function(nextProps) {
 		var model, 
 			props 		= this.props, 
@@ -202,8 +205,7 @@ var TimelineResizeGrip = React.createClass({
 			className: classes,
 			style: {
 				left: left + 'px'		
-			},
-			onMouseDown: self.__onMouseDown
+			},			
 		}, grip_text));
 	}
 });

@@ -709,6 +709,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 		$scope.showCalendar = function(controller) {
+			$scope.focusOnSearchText();
 		    ngDialog.open({
 		        template: '/assets/partials/search/rvDatePickerPopup.html',
 		        controller: controller,
@@ -740,12 +741,5 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			var timeDict = tConvert(time);
 			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 		};
-
-		$scope.clearQueryFromDate = function(){
-			$scope.fromDate = $rootScope.businessDate; 
-			$scope.fetchSearchResults();
-
-		};
-
 	}
 ]);
