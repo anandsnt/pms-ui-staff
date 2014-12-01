@@ -740,12 +740,5 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			var timeDict = tConvert(time);
 			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 		};
-
-		$scope.clearQueryFromDate = function(){
-			$scope.fromDate = $rootScope.businessDate; 
-			$scope.fetchSearchResults();
-
-		};
-
 	}
 ]);
