@@ -1299,7 +1299,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     if (isOutOfCancellationPeriod) {
                         if (data.results.penalty_type == 'day') {
                             // To get the duration of stay
-                            var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
+                            var stayDuration = $scope.reservationData.numNights > 0 ? $scope.reservationData.numNights : 1;
                             // Make sure that the cancellation value is -lte thatn the total duration
                             cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
                             nights = true;
