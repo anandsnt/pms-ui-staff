@@ -17,7 +17,7 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				});
 				$scope.closeDialog();
 				$scope.$emit('hideLoader');
-			}
+			};
 
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,

@@ -141,6 +141,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {
       $scope.isDepositBalanceScreenOpened = value;
     });
+    $scope.isCancelReservationPenaltyOpened = false;
+    $scope.$on("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", function(e, value) {
+      $scope.isCancelReservationPenaltyOpened = value;
+    });
     $scope.searchBackButtonCaption = '';
 
     /**

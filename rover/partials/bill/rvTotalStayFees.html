@@ -64,9 +64,11 @@
 			</span> 
 		    <span ng-show="billData.credit_card_details.is_swiped" class="icons icon-swiped">Credit card swiped</span>
 		</a>
-		<a class="button with-icon green" ng-click='clickedAddUpdateCCButton()' ng-show="billData.credit_card_details.payment_type == 'CC'"> 
+		<!-- CICO-9719 -->
+		<!-- <a class="button with-icon green" ng-click='clickedAddUpdateCCButton()' ng-show="billData.credit_card_details.payment_type == 'CC'"> 
 			<span class="icons icon-wallet"></span>{{ 'UPDATE_CC' | translate }}</span>  
-		</a>
+		</a> -->
+		<a ng-if="isStandAlone && billData.credit_card_details.payment_type" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>{{'UPDATE' | translate}}</a>
 
 		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type !=''">	
 			<span>{{billData.guest_or_company_name}}</span>   

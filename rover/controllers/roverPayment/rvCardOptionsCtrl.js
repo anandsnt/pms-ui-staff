@@ -9,6 +9,7 @@ sntRover.controller('RVCardOptionsCtrl',
 	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
 		BaseCtrl.call(this, $scope);
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
+		 
 	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
@@ -84,6 +85,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 				var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToSave = swipeOperationObj.createSWipedDataToSave($scope.passData.details.swipedDataToRenderInScreen);
+				swipedCardDataToSave.addToGuestCard = $scope.cardData.addToGuestCard;
 				$scope.$emit('SWIPED_DATA_TO_SAVE', swipedCardDataToSave);
 			} else {
 				var sessionDetails = setUpSessionDetails();
@@ -120,6 +122,7 @@ sntRover.controller('RVCardOptionsCtrl',
 	    	$scope.cardselectedIndex = -1;
 	    };
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
+	    	
 			$scope.renderDataFromSwipe(swipedCardDataToRender);
 			$scope.passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 		});

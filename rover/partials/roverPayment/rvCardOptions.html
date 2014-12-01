@@ -72,7 +72,7 @@
 
 				<!-- New card: Call-In -->
 					<iframe ng-show="shouldShowIframe && addmode" class="payment-iframe" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
-					<div class="entry full-width" ng-show="showAddtoGuestCard && addmode && shouldShowAddNewCard">
+					<div class="entry full-width" ng-show="showAddtoGuestCard && addmode">
 						<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.addToGuestCard}">
 							<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.addToGuestCard}"></span>
 							<input ng-model="cardData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />

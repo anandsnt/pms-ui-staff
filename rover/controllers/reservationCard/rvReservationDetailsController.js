@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout) {
 
 		// pre setups for back button
 		var backTitle,
@@ -313,6 +313,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			console.log(swipedCardData);
 			if($scope.isDepositBalanceScreenOpened){
 				swipedCardData.swipeFrom = "depositBalance";
+			} else if($scope.isCancelReservationPenaltyOpened){
+				swipedCardData.swipeFrom = "cancelReservationPenalty";
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
 			} else {
@@ -418,7 +420,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
+		var editPromptDialogId;			
+
+		$scope.showEditReservationPrompt = function(){
+			editPromptDialogId = ngDialog.open({
+                template: '/assets/partials/reservation/rvStayCardEditRate.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false                               
+            });
+		}
+
+		$scope.applyCustomRate = function(){
+			$scope.closeDialog(editPromptDialogId);
+			$timeout(function(){
+				$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
+			},1000);			
+		} 
+
+
 		$scope.goToRoomAndRates = function(state) {
+			$scope.closeDialog(editPromptDialogId);
 			if($scope.reservationData.reservation_card.is_hourly_reservation){
 				return false;
 			} else if($rootScope.isStandAlone){
@@ -488,10 +511,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 					
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if(swipedCardDataToRender.swipeFrom !== "depositBalance"){
+				if(swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty"){
 					$scope.openPaymentDialogModal(passData, paymentData);
-				} else {
+				} else if(swipedCardDataToRender.swipeFrom == "depositBalance"){
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+				} else {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN', swipedCardDataToRender);
 				}
 			} else {
 				passData.details.swipedDataToRenderInScreen = {};
