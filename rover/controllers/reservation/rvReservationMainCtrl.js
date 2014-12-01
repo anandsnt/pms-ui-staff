@@ -1449,5 +1449,25 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 }
             }
         }
+
+        $scope.fetchDemoGraphics = function(){
+
+            var fetchSuccess = function(data) {
+                $scope.otherData.marketsEnabled = data.demographics.is_use_markets;
+                $scope.otherData.markets = data.demographics.markets;
+                $scope.otherData.sourcesEnabled = data.demographics.is_use_sources;
+                $scope.otherData.sources = data.demographics.sources;
+                $scope.otherData.originsEnabled = data.demographics.is_use_origins;
+                $scope.otherData.origins = data.demographics.origins;
+                $scope.otherData.reservationTypes = data.demographics.reservationTypes;
+                $scope.$emit('hideLoader');
+            };
+            var fetchFailure = function(data) {
+                $scope.errorMessage = data;
+                $scope.$emit('hideLoader');
+            };
+
+            $scope.invokeApi(RVReservationSummarySrv.fetchInitialData, {}, fetchSuccess, fetchFailure);
+        }
     }
 ]);
