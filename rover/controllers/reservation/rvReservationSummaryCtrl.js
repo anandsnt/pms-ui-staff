@@ -105,13 +105,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		});
 
 		// CICO-9457 : Data for fees details.
-		$scope.setupFeeData = function() {
 
-			var feesInfo = $scope.feeData.feesInfo;
+		$scope.setupFeeData = function(){
+			
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.reservationData ?
-				$scope.reservationData.depositAmount : zeroAmount;
-			if (typeof feesInfo != 'undefined' && feesInfo != null) {
-
+			 	$scope.reservationData.depositAmount : zeroAmount;
+			
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+				
 				var amountSymbol = feesInfo.amount_symbol;
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
 				$scope.feeData.actualFees = feesAmount;
@@ -121,10 +123,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.feeData.calculatedFee = feesAmount;
 					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 				}
-			} else {
-				$scope.feeData.actualFees = zeroAmount;
-				$scope.feeData.calculatedFee = zeroAmount;
-				$scope.feeData.totalOfValueAndFee = zeroAmount;
 			}
 		};
 

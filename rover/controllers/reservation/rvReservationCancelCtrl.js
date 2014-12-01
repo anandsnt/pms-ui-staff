@@ -32,11 +32,11 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		// CICO-9457 : Data for fees details.
 		$scope.setupFeeData = function(){
 			
-			var feesInfo = $scope.feeData.feeInfo;
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.ngDialogData ?
 			 	$scope.ngDialogData.penalty : zeroAmount;
-			console.log("feesInfo :");console.log(feesInfo);
-			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+			
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
@@ -48,13 +48,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 				}
 			}
-			else{
-				$scope.feeData.actualFees = zeroAmount;
-				$scope.feeData.calculatedFee = zeroAmount;
-				$scope.feeData.totalOfValueAndFee = zeroAmount;
-			}
 		};
-		
 
 		var refreshCardsList = function() {
 			$timeout(function() {
@@ -120,7 +114,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				if($scope.feeData.feesInfo)
 					paymentData.fees_charge_code_id = $scope.feeData.feeInfo.charge_code_id;
 			}
-			console.log(paymentData);
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 		};
 
@@ -186,8 +179,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.cancellationData.expiry_date = $scope.cardsList[index].card_expiry;
 		$scope.cancellationData.card_type = $scope.cardsList[index].card_code;
 		$scope.showCC = false;
-		console.log("card clicked from cancel reservation");
-		
 		// CICO-9457 : Data for fees details - standalone only.	
 		if($scope.isStandAlone)	{
 			$scope.feeData.feeInfo = $scope.cardsList[index].fees_information;

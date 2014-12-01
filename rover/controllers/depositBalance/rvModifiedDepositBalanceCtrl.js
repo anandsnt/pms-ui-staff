@@ -109,11 +109,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	// CICO-9457 : Data for fees details.
 	$scope.setupFeeData = function(){
 		
-		var feesInfo = $scope.feeData.feesInfo;
+		var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 		var defaultAmount = $scope.depositBalanceMakePaymentData ?
 		 	$scope.depositBalanceMakePaymentData.amount : zeroAmount;
-		console.log("feesInfo :");console.log(feesInfo);
-		if(typeof feesInfo != 'undefined' && feesInfo!= null){
+		
+		if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 			
 			var amountSymbol = feesInfo.amount_symbol;
 			var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
@@ -125,12 +125,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 			}
 		}
-		else{
-			$scope.feeData.actualFees = zeroAmount;
-			$scope.feeData.calculatedFee = zeroAmount;
-			$scope.feeData.totalOfValueAndFee = zeroAmount;
-		}
 	};
+	
 	// CICO-9457 : Data for fees details - standalone only.	
 	if($scope.isStandAlone)	{
 		$scope.feeData.feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
@@ -163,7 +159,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			if($scope.feeData.feesInfo)
 				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 		}
-		console.log(dataToSrv);
 		//alert(JSON.stringify(dataToMakePaymentApi));
 		$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 
@@ -236,7 +231,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.card_code = $scope.depositBalanceData.data.existing_payments[index].card_code;
 		$scope.depositBalanceMakePaymentData.ending_with  = $scope.depositBalanceData.data.existing_payments[index].ending_with;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
-		console.log("card clicked from deposit");
 		
 		if($scope.isStandAlone){
 			// Setup fees info
