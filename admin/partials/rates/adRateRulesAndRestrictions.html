@@ -33,7 +33,7 @@
 	</fieldset>
 </div>
 <!-- Expanded View for non hourly -->
-<div ng-if="detailsMenu ==='rulesAndRestrictions' && !isHourlyRatesEnabled && !rateData.is_hourly_rate" class="form_add_new_rate" >
+<div ng-if="detailsMenu ==='rulesAndRestrictions' || !isHourlyRatesEnabled || !rateData.is_hourly_rate" class="form_add_new_rate" >
 	<div class="form-title cursor_pointer" ng-click="changeDetailsMenu('')">
 		<div class="rate_additional_details_heading">
 			RULES & RESTRICTIONS

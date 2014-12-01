@@ -21,9 +21,8 @@ var GridRowItemDrag = React.createClass({
 		var page_offset, el, props = this.props;
 
 		e.stopPropagation();
-		e.preventDefault();
-
-		if(e.button === 0 || e.button === 2) {
+		e.preventDefault();	
+		if(e.button === 0) {
 			//document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
 
@@ -111,14 +110,6 @@ var GridRowItemDrag = React.createClass({
 
 				props.iscroll.grid.enable();			
 				props.iscroll.timeline.enable();
-				/*if(props.data.reservation_status == "available") {
-					props.edit.passive 	= false;
-					props.edit.active 	= true;
-				}
-				else {
-					props.edit.passive 	= true;
-					props.edit.active 	= false;
-				}*/
 				props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}
