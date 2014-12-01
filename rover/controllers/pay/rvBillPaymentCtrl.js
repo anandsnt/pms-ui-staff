@@ -24,11 +24,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showAddtoGuestCard = true;
 		$scope.showCancelCardSelection = true;
 		$scope.renderData.referanceText = "";
-		$scope.feeData = {};
 		$scope.swipedCardDataToSave  = {};
 		$scope.cardData = {};
 		
 	};
+
+	$scope.feeData = {};
+	//$scope.feeData.feesInfo = {};
 	var zeroAmount = parseFloat("0.00").toFixed(2);
 
 	$scope.handleCloseDialog = function(){
@@ -158,11 +160,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.setupFeeData = function(){
 		// CICO-9457 : Setup fees details initilaly - for standalone only
 		if($scope.isStandAlone){
-			var feesInfo = $scope.feeData.feesInfo;
+			
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.renderData ?
 			 	$scope.renderData.defaultPaymentAmount : zeroAmount;
 			
-			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
@@ -173,11 +176,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					$scope.feeData.calculatedFee = feesAmount;
 					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 				}
-			}
-			else{
-				$scope.feeData.actualFees = zeroAmount;
-				$scope.feeData.calculatedFee = zeroAmount;
-				$scope.feeData.totalOfValueAndFee = zeroAmount;
 			}
 		}
 	};
@@ -221,6 +219,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		
 		if($scope.isStandAlone){
 			$scope.feeData.feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
+			console.log($scope.feeData);
 			$scope.setupFeeData();
 		}
 	};

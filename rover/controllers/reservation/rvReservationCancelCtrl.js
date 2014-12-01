@@ -28,11 +28,11 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		// CICO-9457 : Data for fees details.
 		$scope.setupFeeData = function(){
 			
-			var feesInfo = $scope.feeData.feeInfo;
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.ngDialogData ?
 			 	$scope.ngDialogData.penalty : zeroAmount;
 			
-			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
@@ -44,13 +44,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 				}
 			}
-			else{
-				$scope.feeData.actualFees = zeroAmount;
-				$scope.feeData.calculatedFee = zeroAmount;
-				$scope.feeData.totalOfValueAndFee = zeroAmount;
-			}
-		}
-		
+		};
 
 		var refreshCardsList = function() {
 			$timeout(function() {
