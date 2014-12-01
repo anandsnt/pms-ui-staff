@@ -8,6 +8,9 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.addmode = false;
 		$scope.showCC = false;
 		$scope.referanceText = "";
+		$scope.isDisplayReference = false;
+
+		console.log($scope.passData.details.creditCardTypes);
 
 		$scope.cancellationData = {
 			selectedCard: -1,
@@ -25,6 +28,14 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		}
 
 		$scope.setScroller('cardsList');
+
+		var checkReferencetextAvailableForCC = function(){
+			angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
+				if($scope.cancellationData.card_type.toUpperCase() === value.cardcode){
+					$scope.isDisplayReference = (value.is_display_reference)? true:false;
+				};					
+			});				
+		};
 
 		$scope.feeData = {};
 		var zeroAmount = parseFloat("0.00").toFixed(2);
@@ -98,6 +109,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				$scope.cancellationData.cardNumber = retrieveCardNumber();
 				$scope.cancellationData.expiry_date = retrieveExpiryDate();
 				$scope.cancellationData.card_type = retrieveCardtype();
+				checkReferencetextAvailableForCC();
 				$scope.showCC = false;
 			};
 			var paymentData = {
@@ -178,6 +190,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.cancellationData.cardNumber = $scope.cardsList[index].mli_token;
 		$scope.cancellationData.expiry_date = $scope.cardsList[index].card_expiry;
 		$scope.cancellationData.card_type = $scope.cardsList[index].card_code;
+		checkReferencetextAvailableForCC();
 		$scope.showCC = false;
 		// CICO-9457 : Data for fees details - standalone only.	
 		if($scope.isStandAlone)	{

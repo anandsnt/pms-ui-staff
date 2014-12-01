@@ -75,6 +75,19 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 		$scope.renderDefaultValues();
 	};
+
+	
+	var checkReferencetextAvailableForCC = function(){
+		angular.forEach($scope.renderData, function(paymentType, key) {
+			if(paymentType.name == 'CC'){
+				angular.forEach(paymentType.values, function(value, key) {
+					if($scope.defaultPaymentTypeCard.toUpperCase() === value.cardcode){
+						$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
+					};					
+				});				
+			}
+		});
+	};
 	/*
 	* Success call back for guest payment list screen
 	*/
@@ -105,6 +118,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() == "CC"){
 						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number == value.mli_token) && ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() == value.card_code.toLowerCase() )) {
 							value.isSelected = true;
+							checkReferencetextAvailableForCC();
 						} 
 					}
 				}
@@ -325,6 +339,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.defaultPaymentTypeCard = cardType;
 		$scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
 		$scope.defaultPaymentTypeCardExpiry = cardExpiry;
+
+		checkReferencetextAvailableForCC();
 		//To update bill screen
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = cardExpiry;
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = cardType;
@@ -401,6 +417,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		
 	});
 
+
 	/*
 		*  card selection action
 		*/
@@ -420,6 +437,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}
+		checkReferencetextAvailableForCC();
 	};
 
 	$scope.$on('cardSelected',function(e,data){

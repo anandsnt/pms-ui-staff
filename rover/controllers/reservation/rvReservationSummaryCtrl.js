@@ -216,11 +216,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			setCreditCardFromList(data.index);
 		});
 
-		$scope.checkReferencetextAvailable = function() {
+
+
+		$scope.checkReferencetextAvailable = function(){
 			var referenceTextAvailable = false;
 			angular.forEach($scope.reservationData.paymentMethods, function(paymentMethod, key) {
-				if (paymentMethod.value == $scope.reservationData.paymentType.type.value) {
-					referenceTextAvailable = (paymentMethod.is_display_reference) ? true : false;
+				if($scope.reservationData.paymentType.type.value === "CC" && paymentMethod.value === "CC"){
+					angular.forEach(paymentMethod.credit_card_list, function(value, key) {
+						if($scope.renderData.creditCardType.toUpperCase() === value.cardcode){
+							referenceTextAvailable = (value.is_display_reference)? true:false;
+						};					
+					});					
+				}
+				else if(paymentMethod.value == $scope.reservationData.paymentType.type.value){
+					referenceTextAvailable = (paymentMethod.is_display_reference)? true:false;
 				};
 			});
 			return referenceTextAvailable;
