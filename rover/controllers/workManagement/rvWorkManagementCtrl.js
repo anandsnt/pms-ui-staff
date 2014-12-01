@@ -1,6 +1,8 @@
 sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees', 'workTypes', 'shifts', 'floors', '$timeout',
 	function($rootScope, $scope, employees, workTypes, shifts, floors, $timeout) {
 
+		BaseCtrl.call(this, $scope);
+
 		$scope.setHeading = function(headingText) {
 			$scope.heading = headingText;
 			$scope.setTitle(headingText);
@@ -95,8 +97,6 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 		// we will be using this new argument to create the filterRooms
 		// the else case is just as before, no change
 		$scope.filterUnassignedRooms = function(filter, rooms, allUnassigned) {
-			$scope.$emit('showLoader');
-
 			var filteredRooms = [];
 			var filterObject = {};
 
@@ -174,11 +174,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 					});
 				}
 			};
-
-
-			$timeout(function() {
-				$scope.$emit('hideLoader');
-			}, 800);
+			
 			return filteredRooms;
 		};
 	}

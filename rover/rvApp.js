@@ -78,6 +78,12 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	}, {
 		fromState: 'rover.workManagement.multiSheet',
 		toState  : 'rover.workManagement.start'
+	}, {
+		fromState: 'rover.workManagement.singleSheet',
+		toState  : 'rover.workManagement.start'
+	}, {
+		fromState: 'rover.workManagement.singleSheet',
+		toState  : 'rover.workManagement.multiSheet'
 	}];
 
 
