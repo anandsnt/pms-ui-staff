@@ -710,6 +710,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.showCalendar = function(controller) {
 			$scope.focusOnSearchText();
+			$scope.focusSearchField = true;
 		    ngDialog.open({
 		        template: '/assets/partials/search/rvDatePickerPopup.html',
 		        controller: controller,
@@ -724,11 +725,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// so the FROM DATE and TO DATE are kept in service. 
 		$scope.onFromDateChanged = function(date){
 			$scope.fromDate = date;
+			$scope.focusSearchField = true;
 			$scope.fetchSearchResults();
 			RVSearchSrv.fromDate = date;		
 		};
 		$scope.onToDateChanged = function(date){
 			$scope.toDate = date;
+			$scope.focusSearchField = true;
 			$scope.fetchSearchResults();
 			RVSearchSrv.toDate = date;
 
