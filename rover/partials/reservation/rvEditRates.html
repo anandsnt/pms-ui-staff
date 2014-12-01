@@ -1,6 +1,6 @@
 <div id="modal" class="modal-show" role="dialog">
-   <div class="modal-content">
-		<form method="post" action="{action}" id="edit-rate" name="edit-rate" class="modal-content form modify-rate">
+   <div>
+		<form ng-cloak method="post" id="edit-rate" name="edit-rate" class="modal-content form modify-rate">
 		    <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
 
 		    <div class="modal-header">
@@ -20,7 +20,7 @@
 		                </thead>
 		                <tbody>		                	
 		                    <tr ng-repeat="(date,stayDay) in ngDialogData.room.stayDates" ng-hide="$last && $index > 0">		                    	
-		                        <td class="date">{{date  | date : dateFormat}}</td>
+		                        <td class="date">{{date  | date : 'EEEE, d MMMM'}}</td>
 		                        <td class="rate" ng-if="stayDay.rateDetails.is_suppressed != 'true'">
 		                        	{{currencySymbol}}{{stayDay.rateDetails.actual_amount | number : 2}}
 		                        </td>

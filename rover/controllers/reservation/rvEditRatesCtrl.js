@@ -1,5 +1,5 @@
-sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', '$stateParams',
-	function($scope, $rootScope, $stateParams) {
+sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', '$stateParams', 'ngDialog',
+	function($scope, $rootScope, $stateParams, ngDialog) {
 		$scope.save = function(room, index) {
 			$scope.reservationData.rooms[index] = room;
 			$scope.computeTotalStayCost();
