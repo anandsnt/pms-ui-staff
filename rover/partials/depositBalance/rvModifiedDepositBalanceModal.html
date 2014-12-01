@@ -85,6 +85,11 @@
 				    	</strong>
 				    </span>
 				</div>
+				 <!-- Reference field - use only when it exsits -->
+			    <div class="entry full-width reference" ng-show="shouldShowMakePaymentScreen && shouldCardAvailable && isDisplayReference">
+			        <label for="reference">Reference</label>
+			        <input name="reference" id="reference" ng-model="referanceText" type="text" />
+			    </div>
 		   
 				<!-- Reference field - use only when it exsits -->
 				<!-- <div class="entry full-width reference">
