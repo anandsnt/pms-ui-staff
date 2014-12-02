@@ -810,6 +810,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.departureDate = reservationDetails.reservation_card.departure_date;
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
+            $scope.reservationData.isHourly = reservationDetails.reservation_card.is_hourly_reservation;
+
             /** CICO-6135
              *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
              */
