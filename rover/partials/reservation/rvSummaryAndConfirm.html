@@ -115,16 +115,18 @@
                             <span class="label">Confirmation #</span>{{room.confirm_no}}
                         </div>
                     </div>
-                    <ul class="rate-and-enhancements">
-                        <li>
-                            <em>{{room.rateName}}</em>
-                            <span class="price">
-                                <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
-                                <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
-                                <span ng-if="!reservationData.isHourly" translate>AVG_NIGHT</span>
-                                <span class="total" ng-if="room.isSuppressed">SR</span>
-                                <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
-                            </span>
+                    <ul class="rate-and-enhancements">                        
+                        <li class="update-rate">
+                            <a ng-click="editReservationRates(room, $index)">
+                                <em>{{room.rateName}}</em>
+                                <span class="price">
+                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
+                                    <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
+                                    <span ng-if="!reservationData.isHourly" translate>AVG_NIGHT</span>
+                                    <span class="total" ng-if="room.isSuppressed">SR</span>
+                                    <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
+                                </span>
+                            <a>
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>

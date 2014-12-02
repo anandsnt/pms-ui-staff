@@ -110,7 +110,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       var FLO_MGR = 'floor_&_maintenance_manager',
           FLO_STF = 'floor_&_maintenance_staff',
           FLO_MGR_ID = 10,
-          FLO_STF_ID = 11
+          FLO_STF_ID = 11,
           isFloMgr = false,
           isFloStf = false;
 
@@ -140,6 +140,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {
       $scope.isDepositBalanceScreenOpened = value;
+    });
+    $scope.isCancelReservationPenaltyOpened = false;
+    $scope.$on("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", function(e, value) {
+      $scope.isCancelReservationPenaltyOpened = value;
     });
     $scope.searchBackButtonCaption = '';
 
@@ -531,7 +535,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     
     $scope.successCallBackSwipe = function(data) {
       // $scope.$broadcast('SWIPEHAPPENED', data);
-      
       $scope.$broadcast('SWIPE_ACTION', data);
     };
 

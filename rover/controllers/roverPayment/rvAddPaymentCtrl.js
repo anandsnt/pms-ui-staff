@@ -26,12 +26,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
 	var isNewCardAdded = false;
 	$scope.dataToSave = {};
-	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
-		$scope.dataToSave.paymentType = "CC";
-		$scope.showCCPage 			  = true;
-		$scope.addmode                = true;	
-		$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
-	}
 
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
@@ -65,6 +59,13 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		});
 
 		$scope.addmode = $scope.cardsList.length > 0 ? false:true;
+		//To render swiped data in the add screen
+		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+			$scope.dataToSave.paymentType = "CC";
+			$scope.showCCPage 			  = true;
+			$scope.addmode                = true;	
+			$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
+		}
 	};
 	//NO need to show existing cards in guest card model
 	if(!$scope.isFromGuestCard){
@@ -114,6 +115,13 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 				$scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4):
 				$scope.cardData.cardDetails.cardNumber.slice(-4);
 		return cardNumber;
+	};
+
+	var retrieveCardName = function(){
+		var cardName = (!$scope.cardData.tokenDetails.isSixPayment)?
+							$scope.cardData.cardDetails.userName:
+							($scope.passData.details.firstName+" "+$scope.passData.details.lastName);
+		return cardName;
 	};
 
 	var renderScreen = function(){
@@ -238,7 +246,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 				"isSelected": true,
 				"is_primary":false,
 				"payment_type":data.payment_name,
-				"card_code": $scope.renderData.creditCardType.toLowerCase()
+				"card_code": $scope.renderData.creditCardType.toLowerCase(),
+				"card_name":retrieveCardName()
 			};
 		}
 		else{
@@ -296,6 +305,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 								$scope.cardData.tokenDetails.session :
 								$scope.cardData.tokenDetails.token_no;
 				data.add_to_guest_card = $scope.cardData.cardDetails.addToGuestCard;
+				data.card_name = retrieveCardName()
 
 			}
 			else{
@@ -378,7 +388,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
 		//alert(JSON.stringify(data));
 		if($scope.passData.details.isClickedCheckin != undefined && $scope.passData.details.isClickedCheckin){
-			//savePaymentSuccess();
+			successSwipePayment();
 		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
 		{
 			data.user_id = $scope.passData.userId;
@@ -400,6 +410,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
 		}
+		$scope.closeDialog();
 	};
 
 		/*
