@@ -119,6 +119,17 @@ sntRover
 				currency_symbol:            $rootScope.currencySymbol,
 				min_hours: 					payload.display.min_hours
 			},
+
+			availability: {
+				resize: {
+					current_arrival_time : null,
+					current_departure_time: null,
+					last_arrival_time : null,
+					last_departure_time: null,
+				}
+			},
+
+
 		/* 
 		   Edit command object.  When we need to edit an existing reservation, this is how we setup the
 		   edit command object:
@@ -228,6 +239,7 @@ sntRover
 		}
 	};
 
+
 	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
 			  	
 		/*--------------------------------------------------*/
@@ -287,9 +299,7 @@ sntRover
 	    	var copy,
 	    		selection,
 	    		props = $scope.gridProps,
-	    		edit  = props.edit;   
-	    	
-	    	
+	    		edit  = props.edit;   	    	
 	    	if(!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch(command_message) {
 
@@ -305,12 +315,18 @@ sntRover
 
 		    		break;	 
 		    	} 
-		    } else {		    	
+		    } else {	
+			
 		    	copy = util.shallowCopy({}, row_item_data);
 	    		copy.selected = selected;
 
+		    	if(props.availability.resize.current_arrival_time !== null && 
+				props.availability.resize.current_departure_time !== null){
+					copy[meta.occupancy.start_date] = new Date(props.availability.resize.current_arrival_time);
+					copy[meta.occupancy.end_date] = new Date(props.availability.resize.current_departure_time);
+				}
+
 	    		util.updateReservation(row_data, copy);
-		    	
 		    	$scope.renderGrid();
 
 		    	if($scope.isSelected(row_data, copy)) {
@@ -370,13 +386,14 @@ sntRover
 	    }
 
 	    var resizeEndForNewReservation = function (row_data, row_item_data) {
-	    	$scope.gridProps.filter = util.deepCopy($scope.gridProps.filter);
-	    	$scope.gridProps.display = util.deepCopy($scope.gridProps.display);
+	    	/*$scope.gridProps.filter = util.deepCopy($scope.gridProps.filter);
+	    	$scope.gridProps.display = util.deepCopy($scope.gridProps.display);*/
+	    	this.availability.resize.current_arrival_time = row_item_data[meta.occupancy.start_date];
+	    	this.availability.resize.current_departure_time = row_item_data[meta.occupancy.end_date];
+	    	this.display.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;			
+	    	$scope.Availability();
 
-	    	$scope.gridProps.display.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
-
-	    	callAvailabilityAPI();
-	    }; 
+	    }.bind($scope.gridProps); 
 
 	    $scope.openStayCard = function() {
 	    	var reservation 	= this.currentResizeItem,
@@ -410,7 +427,6 @@ sntRover
 		    		occupancy: row_item_data,
 	    		}
 	    	};
-	    	
 			ngDialog.open({
 				template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
 				controller: 'RVDiaryRoomTransferConfirmationCtrl',
@@ -425,11 +441,14 @@ sntRover
 	    	}
 	    	this.edit.originalRowItem.old_price = avData.old_rate_amount;
 	    	this.currentResizeItemRow.new_price = avData.new_rate_amount;
+	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
 	    	this.currentResizeItemRow.departureTime = successParams.end_time;
-	    	this.currentResizeItemRow.departureDate = successParams.end_date;
+	    	this.currentResizeItemRow.departureDate = successParams.end_date.toComponents().date.toDateString();
     		this.currentResizeItemRow.arrivalTime = successParams.begin_time;
-	    	this.currentResizeItemRow.arrivalDate = successParams.begin_date;  	
-
+	    	this.currentResizeItemRow.arrivalDate = successParams.begin_date.toComponents().date.toDateString(); 
+	    	this.currentResizeItem.numAdults 	= 1; 	
+	    	this.currentResizeItem.numChildren 	= 0;
+	    	this.currentResizeItem.numInfants 	= 0;
 	    }.bind($scope.gridProps);
 	    
 	    var failureCallBackOfResizeExistingReservation = function(errorMessage){
@@ -692,12 +711,16 @@ sntRover
 			}
 		};
 
-	var successCallBackOfAvailabilityFetching = function(data){
-		var row_item_data;
-
+	var successCallBackOfAvailabilityFetching = function(data, successParams){
+		var row_item_data;		
 		if(data.length) {
-			row_item_data 	= data[0];
-		
+			row_item_data 	= data[0];					
+			if(this.availability.resize.current_arrival_time !== null && 
+				this.availability.resize.current_departure_time !== null){
+				this.availability.resize.last_arrival_time =  this.availability.resize.current_arrival_time;
+				this.availability.resize.last_departure_time = this.availability.resize.current_departure_time;
+			}						
+
 			$scope.initPassiveEditMode({
                 start_date:     new Date(row_item_data[meta.occupancy.start_date]),
                 end_date:       new Date(row_item_data[meta.occupancy.end_date]),
@@ -706,19 +729,22 @@ sntRover
                 row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id }) //rvDiarySrv.data_Store.get('/room.values.id')[row_item_data.room_id],   
             });
 		}
-
 		$scope.renderGrid();
-	}
+				
+	}.bind($scope.gridProps);
+
 	var failureCallBackOfAvailabilityFetching = function(errorMessage){
 		$scope.errorMessage = errorMessage;
 		alert('failure in fetching the availability') //TODO: Discss with Stj & change
 	}
 
 	var callAvailabilityAPI = function(){
+		var params = getAvailabilityCallingParams();
 		var options = {
-    		params: 			getAvailabilityCallingParams(),
+    		params: 			params,
     		successCallBack: 	successCallBackOfAvailabilityFetching,	 
     		failureCallBack: 	failureCallBackOfAvailabilityFetching,    	
+    		successCallBackParameters:  params 	
     	}
     	$scope.callAPI(rvDiarySrv.Availability, options);
 	}
@@ -778,9 +804,9 @@ sntRover
 	}.bind($scope.gridProps);
 
 	var getAvailabilityCallingParams = function() {
-		var filter 		= _.extend({}, $scope.gridProps.filter),
-			time_span 	= Time({ hours: $scope.gridProps.display.min_hours }), 
-			start_date 	= new Date($scope.gridProps.display.x_n), 
+		var filter 		= _.extend({}, this.filter),
+			time_span 	= Time({ hours: this.display.min_hours }), 
+			start_date 	= new Date(this.display.x_n), 
 			start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
@@ -795,18 +821,25 @@ sntRover
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
-			rate_type = $scope.gridProps.filter.rate_type,
-			accound_id = $scope.gridProps.filter.account_id;
+			rate_type = filter.rate_type,
+			accound_id = filter.account_id,
+			GUID = "avl-101"; //No need to manipulate this thing from service part, we are deciding
+			if(this.availability.resize.current_arrival_time !== null && 
+				this.availability.resize.current_departure_time !== null){
+				start = new Date(this.availability.resize.current_arrival_time);
+				end = new Date(this.availability.resize.current_departure_time);
+			}			
 		
 		var paramsToReturn = {
 			start_date: start,
 			end_date: end,
 			room_type_id: rt_filter,
 			rate_type: rate_type,
-			account_id: accound_id
+			account_id: accound_id,
+			GUID: GUID
 		};
 		return paramsToReturn
-	};
+	}.bind($scope.gridProps);
 
 	/*
 		----------------------------------------------------------------
@@ -842,7 +875,7 @@ sntRover
 			filter 	= props.filter,
 			arrival_ms = filter.arrival_date.getTime(),
 			time_set; 
-
+	
 		if(newValue !== oldValue) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
 
@@ -890,8 +923,12 @@ sntRover
 	};
 	
 
-	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {
+	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {		
 		if(newValue !== oldValue) {
+			$scope.gridProps.availability.resize.current_arrival_time = null;
+			$scope.gridProps.availability.resize.current_departure_time = null;
+			$scope.gridProps.availability.resize.last_arrival_time = null;
+			$scope.gridProps.availability.resize.last_departure_time = null;
 			if(!$scope.gridProps.edit.active) {
 				$scope.Availability();
 			}

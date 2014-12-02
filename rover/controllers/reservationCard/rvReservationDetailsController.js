@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout) {
 
 		// pre setups for back button
 		var backTitle,
@@ -228,64 +228,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.$emit('passReservationParams', passData);
 
 
-		$scope.openAddNewPaymentModel = function(data) {
-			if (data === undefined) {
-				var passData = {
-					"reservationId": $scope.reservationData.reservation_card.reservation_id,
-					"fromView": "staycard",
-					"is_swiped": false
-				};
-				var paymentData = $scope.reservationData;
-				$scope.showAddNewPaymentModal(passData, paymentData);
-			} else {
-				var ksn = data.RVCardReadTrack2KSN;
-          		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
-					ksn = data.RVCardReadETBKSN;
-				}
-
-				var getTokenFrom = {
-					'ksn': ksn,
-					'pan': data.RVCardReadMaskedPAN
-				};
-				
-				if(data.RVCardReadTrack2!=''){
-					getTokenFrom.et2 = data.RVCardReadTrack2;
-				} else if(data.RVCardReadETB !=""){
-					getTokenFrom.etb = data.RVCardReadETB;
-				}
-				
-				
-				var tokenizeSuccessCallback = function(tokenData) {
-					
-					data.token = tokenData;
-					var passData = {
-						"reservationId": $scope.reservationData.reservation_card.reservation_id,
-						"fromView": "staycard",
-						"credit_card": data.RVCardReadCardType,
-						"card_number": "xxxx-xxxx-xxxx-" + tokenData.slice(-4),
-						"name_on_card": data.RVCardReadCardName,
-						"card_expiry": data.RVCardReadExpDate,
-						"et2": data.RVCardReadTrack2,
-						'ksn': data.RVCardReadTrack2KSN,
-						'pan': data.RVCardReadMaskedPAN,
-						'etb': data.RVCardReadETB,
-						'token': tokenData,
-						"is_swiped": true // Commenting for now
-					};
-					var paymentData = $scope.reservationData;
-					
-					if($scope.roverFlags.isDepositBalanceScreenOpened){
-						
-						$scope.$broadcast("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", passData);
-					} else{
-						$scope.showAddNewPaymentModal(passData, paymentData);
-					}
-					
-				};
-				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-			}
-
-		};
+		
 
 		$rootScope.$on('clearErroMessages', function() {
 			$scope.errorMessage = "";
@@ -301,12 +244,25 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		/*
 		 * Handle swipe action in reservationdetails card
 		 */
-		$scope.$on('SWIPEHAPPENED', function(event, data) {
-			
-			if (!$scope.isGuestCardVisible) {
-				$scope.openAddNewPaymentModel(data);
+		
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+			if($scope.isDepositBalanceScreenOpened){
+				swipedCardData.swipeFrom = "depositBalance";
+			} else if($scope.isCancelReservationPenaltyOpened){
+				swipedCardData.swipeFrom = "cancelReservationPenalty";
+			} else if ($scope.isGuestCardVisible) {
+				swipedCardData.swipeFrom = "guestCard";
+			} else {
+				swipedCardData.swipeFrom = "stayCard";
 			}
-
+			var swipeOperationObj = new SwipeOperation();
+			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+			var tokenizeSuccessCallback = function(tokenValue){
+				$scope.$emit('hideLoader');
+				swipedCardData.token = tokenValue;
+				$scope.showAddNewPaymentModel(swipedCardData);
+			};
+			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 		});
 
 		$scope.failureNewspaperSave = function(errorMessage) {
@@ -398,7 +354,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
+		var editPromptDialogId;			
+
+		$scope.showEditReservationPrompt = function(){
+			editPromptDialogId = ngDialog.open({
+                template: '/assets/partials/reservation/rvStayCardEditRate.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false                               
+            });
+		}
+
+		$scope.applyCustomRate = function(){
+			$scope.closeDialog(editPromptDialogId);
+			$timeout(function(){
+				$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
+			},1000);			
+		} 
+
+
 		$scope.goToRoomAndRates = function(state) {
+			$scope.closeDialog(editPromptDialogId);
 			if($scope.reservationData.reservation_card.is_hourly_reservation){
 				return false;
 			} else if($rootScope.isStandAlone){
@@ -447,9 +424,44 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 		
 		
+
+		
+		
+		$scope.showAddNewPaymentModel = function(swipedCardData){
+		    
+			var passData = {
+				"reservationId": $scope.reservationData.reservation_card.reservation_id,
+			    "userId" : $scope.data.guest_details.user_id,
+			    "details": {
+			    	"firstName": $scope.data.guest_details.first_name,
+			    	"lastName": $scope.data.guest_details.last_name,
+			    }
+			};
+			var paymentData = $scope.reservationData;
+			if (swipedCardData !== undefined) {
+				var swipeOperationObj = new SwipeOperation();
+				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+					
+				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+				if(swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty"){
+					$scope.openPaymentDialogModal(passData, paymentData);
+				} else if(swipedCardDataToRender.swipeFrom == "depositBalance"){
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+				} else {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN', swipedCardDataToRender);
+				}
+			} else {
+				passData.details.swipedDataToRenderInScreen = {};
+				$scope.openPaymentDialogModal(passData, paymentData);
+			}
+			
+			
+		};
+
 		$scope.showDiaryScreen = function(){
 			$state.go('rover.reservation.diary', {reservation_id: $scope.reservationData.reservation_card.reservation_id});
 		};
+
 	}
 
 ]);
