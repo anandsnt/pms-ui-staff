@@ -3,29 +3,11 @@
     <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
     <fieldset id="cancel-options">
         <span class="h2 message"> DEPOSIT REQUIRED</span>
-        <div id="set-payment" class="payment-form" ng-hide="successOccured">
-            <div id="credit-card-options">
-                <div class="entry">
-                    <label for="booking-source">CARD INPUT</label>
-                    <div class="switch-button" ng-class="{'on': !isManual}">
-                        <input name="booking-source" value="booking-source" type="checkbox" ng-model="isManual" ng-change="cardInputChange()" />
-                        <label class="data-off" > 
-                            <span class="value" >C&P</span> 
-                            <span class="switch-icon" >MANUAL</span>
-                        </label>
-                        <label class="data-on" > 
-                            <span class="switch-icon" >C&P</span> 
-                            <span class="value" >MANUAL</span> 
-                        </label> 
-                    </div>
-                </div>
-            </div>
-        </div>
     </fieldset>    
     <!-- 1. deposit Options screen -->
     <fieldset id="cancel-options" ng-show="!paymentMode">
         <div id="set-payment" class="payment-form">
-        <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected && isManual && !successOccured">
+        <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected && !successOccured">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
@@ -36,7 +18,7 @@
                 </label>
         </div>
         </div>
-        <div class="notice deposit" ng-hide="depositInProcess">                        
+        <div class="notice deposit" ng-hide="depositInProcess && paymentMode">                        
             <p>Deposit required: <strong>9% of the stay / first night /(flat amount)</strong>.</p>
             <!-- Payment fields -->
             <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        
@@ -63,6 +45,7 @@
 
     <!-- 2. Apply deposit screen-->
     <fieldset id="apply-penalty" class="credit-card" ng-show="paymentMode">
+         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div id="set-payment" class="payment-form">
             <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"></div>
             </div>
