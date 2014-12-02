@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -419,5 +419,162 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// 	CICO-7792 END
 		}
 
+		$scope.populateDatafromDiary = function(roomsArray, tData) {
+
+			var ratesFetched = function(data) {
+				$scope.otherData.taxesMeta = data.tax_codes;
+				$scope.reservationData.totalTax = 0;
+				_.each($scope.reservationData.rooms, function(room, roomNumber) {
+					var taxes = _.where(data.tax_information, {
+						rate_id: parseInt(room.rateId)
+					});
+
+					/**
+					 * Need to calculate taxes IIF the taxes are configured for the rate selected for the room (as there could be more than one room for multiple reservations)
+					 */
+
+					if (taxes.length > 0) {
+						/**
+						 * Calculating taxApplied just for the arrival date, as this being the case for hourly reservations.
+						 */
+						var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes[0].tax, roomNumber);
+						_.each(taxApplied.taxDescription, function(description, index) {
+							if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+								$scope.reservationData.taxDetails[description.id] = description;
+							} else {
+								$scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
+							}
+						});
+						$scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+						$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
+					}
+				});
+
+				$scope.saveReservation();
+
+				$timeout(function() {
+					$scope.$emit('hideLoader');
+				}, 500);
+			};
+
+			angular.forEach(tData.rooms, function(value, key) {
+				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
+				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
+				value['roomNumber'] = roomsArray[value.room_id].room_no;
+			});
+
+			this.rooms = [];
+			this.rooms = tData.rooms;
+			this.arrivalDate = tData.arrival_date;
+			this.departureDate = tData.departure_date;
+			var arrivalTimeSplit = tData.arrival_time.split(":");
+
+			this.checkinTime.hh = arrivalTimeSplit[0];
+			this.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
+			if (this.checkinTime.mm.length == 1) {
+				this.checkinTime.mm = "0" + this.checkinTime.mm;
+			}
+			this.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
+			if (!(this.checkinTime.ampm === "AM" || this.checkinTime.ampm === "PM")) {
+				if (parseInt(this.checkinTime.hh) >= 12) {
+					this.checkinTime.hh = Math.abs(parseInt(this.checkinTime.hh) - 12) + "";
+
+					this.checkinTime.ampm = "PM";
+				} else {
+					this.checkinTime.ampm = "AM";
+				}
+			}
+			if (Math.abs(parseInt(this.checkinTime.hh) - 12) == 0 || this.checkinTime.hh === "00" || this.checkinTime.hh === "0") {
+				this.checkinTime.hh = "12";
+			}
+			if (this.checkinTime.hh.length == 1) {
+				this.checkinTime.hh = "0" + this.checkinTime.hh;
+			}
+
+			var departureTimeSplit = tData.departure_time.split(":");
+			this.checkoutTime.hh = departureTimeSplit[0];
+			this.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
+
+			if (this.checkoutTime.mm.length == 1) {
+				this.checkoutTime.mm = "0" + this.checkoutTime.mm;
+			}
+			this.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
+
+			if (!(this.checkoutTime.ampm === "AM" || this.checkoutTime.ampm === "PM")) {
+				if (parseInt(this.checkoutTime.hh) >= 12) {
+					this.checkoutTime.hh = Math.abs(parseInt(this.checkoutTime.hh) - 12) + "";
+					this.checkoutTime.ampm = "PM";
+				} else {
+					this.checkoutTime.ampm = "AM";
+				}
+			}
+			if (Math.abs(parseInt(this.checkoutTime.hh) - 12) == "0" || this.checkoutTime.hh === "00" || this.checkoutTime.hh === "0") {
+				this.checkoutTime.hh = "12";
+			}
+			if (this.checkoutTime.hh.length == 1) {
+				this.checkoutTime.hh = "0" + this.checkoutTime.hh;
+			}
+			var hResData = tData.rooms[0];
+			this.reservationId = hResData.reservation_id;
+			this.confirmNum = hResData.confirmation_id;
+
+			if (this.reservationId) { //Need this in case of edit reservations alone
+				$scope.reservationDetails.guestCard = {};
+				$scope.reservationDetails.guestCard.id = hResData.guest_card_id;
+				$scope.reservationDetails.travelAgent = {};
+				$scope.reservationDetails.travelAgent.id = hResData.travel_agent_id;
+				$scope.reservationDetails.companyCard = {};
+				$scope.reservationDetails.companyCard.id = hResData.company_card_id;
+
+				$scope.reservationData.guest = {};
+				$scope.reservationData.guest.id = hResData.guest_card_id;
+				$scope.reservationData.travelAgent = {};
+				$scope.reservationData.travelAgent.id = hResData.travel_agent_id;
+				$scope.reservationData.company = {};
+				$scope.reservationData.company.id = hResData.company_card_id;
+
+				$scope.initGuestCard();
+				$scope.initCompanyCard();
+				$scope.initTravelAgentCard();
+			}
+
+			this.totalStayCost = 0;
+			var rateIdSet = [];
+			var self = this;
+			_.each(this.rooms, function(room) {
+				room.stayDates = {};
+				rateIdSet.push(room.rateId);
+				room.rateTotal = room.amount;
+				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(room.amount);
+				var success = function(data) {
+					room.rateName = data;
+				};
+				$scope.invokeApi(RVReservationSummarySrv.getRateName, {
+					id: room.rateId
+				}, success);
+				for (var ms = new tzIndependentDate(self.arrivalDate) * 1, last = new tzIndependentDate(self.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+
+					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+						guests: {
+							adults: room.numAdults,
+							children: room.numChildren,
+							infants: room.numInfants
+						},
+						rate: {
+							id: room.rateId
+						},
+						rateDetails: {
+							actual_amount: room.amount,
+							modified_amount: room.amount,
+							is_discount_allowed: 'true'
+						}
+					};
+				}
+			});
+
+			$scope.invokeApi(RVReservationSummarySrv.getTaxDetails, {
+				rate_ids: rateIdSet
+			}, ratesFetched);
+		}.bind($scope.reservationData);
 	}
 ]);

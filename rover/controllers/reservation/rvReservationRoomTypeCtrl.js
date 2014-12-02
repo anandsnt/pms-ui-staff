@@ -473,15 +473,34 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.enhanceStay = function() {
 			// CICO-9429: Show Addon step only if its been set ON in admin
-			if($rootScope.isAddonOn){
+			var navigate = function() {
+				if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
+					if ($rootScope.isAddonOn) {
+						$state.go('rover.reservation.staycard.mainCard.addons', {
+							"from_date": $scope.reservationData.arrivalDate,
+							"to_date": $scope.reservationData.departureDate
+						});
+					} else {
+						$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+					}
+				}
+			}
+			if ($rootScope.isAddonOn) {
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					"from_date": $scope.reservationData.arrivalDate,
 					"to_date": $scope.reservationData.departureDate
 				});
+			} else {
+				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+					$scope.$emit('PROMPTCARD');
+					$scope.$watch("reservationData.guest.id", navigate);
+					$scope.$watch("reservationData.company.id", navigate);
+					$scope.$watch("reservationData.travelAgent.id", navigate);
+				} else {
+					navigate();
+				}
 			}
-			else{
-				$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
-			}	
+
 		}
 
 		var updateSupressedRatesFlag = function() {

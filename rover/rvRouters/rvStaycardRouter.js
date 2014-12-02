@@ -21,14 +21,14 @@ angular.module('stayCardModule', [])
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
                 /**
-                *   We have moved the fetching of 'baseData' form 'rover.reservation' state
-                *   to the states where it actually requires it.
-                *
-                *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' method on 'RVReservationMainCtrl'.
-                *
-                *   Once that state controller fetch 'baseData', it will find 'RVReservationMainCtrl' controller
-                *   by climbing the $socpe.$parent ladder and will call 'callFromChildCtrl' method.
-                */
+                 *   We have moved the fetching of 'baseData' form 'rover.reservation' state
+                 *   to the states where it actually requires it.
+                 *
+                 *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' method on 'RVReservationMainCtrl'.
+                 *
+                 *   Once that state controller fetch 'baseData', it will find 'RVReservationMainCtrl' controller
+                 *   by climbing the $socpe.$parent ladder and will call 'callFromChildCtrl' method.
+                 */
                 baseSearchData: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchBaseSearchData();
                 }
@@ -42,7 +42,7 @@ angular.module('stayCardModule', [])
             resolve: {
                 payload: function($rootScope, rvDiarySrv, $stateParams) {
                     var start_date = new tzIndependentDate($rootScope.businessDate); //Date.now();
-                           
+
                     return rvDiarySrv.load(start_date, rvDiarySrv.ArrivalFromCreateReservation());
                 }
             }
@@ -104,7 +104,7 @@ angular.module('stayCardModule', [])
         $stateProvider.state('rover.reservation.staycard.mainCard.addons', {
             url: '/addons/:from_date/:to_date/:reservation',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
-            controller: 'RVReservationAddonsCtrl',            
+            controller: 'RVReservationAddonsCtrl',
             onEnter: function($stateParams) {
                 if (typeof $stateParams.reservation == "undefined" || $stateParams.reservation == null) {
                     $stateParams.reservation = "DAILY";
@@ -123,12 +123,15 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.summaryAndConfirm', {
-            url: '/summaryAndConfirm/:reservation',
+            url: '/summaryAndConfirm/:reservation/:mode',
             templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
             controller: 'RVReservationSummaryCtrl',
             onEnter: function($stateParams) {
                 if (typeof $stateParams.reservation == "undefined" || $stateParams.reservation == null) {
                     $stateParams.reservation = "DAILY";
+                }
+                if (typeof $stateParams.mode == "undefined" || $stateParams.mode == null) {
+                    $stateParams.mode = "OTHER";
                 }
             }
         });
