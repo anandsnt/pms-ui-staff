@@ -228,7 +228,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		$scope.enableCheckInButton = function() {			
-			return $scope.reservationData.rooms.length == totalRoomsAvailable;
+			return _.has($scope.reservationData, "rooms" ) && 
+				($scope.reservationData.rooms.length == totalRoomsAvailable);
 		};
 
 		var checkAllRoomsAreReady = function() {
