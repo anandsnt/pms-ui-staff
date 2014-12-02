@@ -2308,6 +2308,85 @@
                     border-top: 1px solid rgba(0,0,0,.1);
                 }
             }
+
+            /* Modify rate ***/
+			&.modify-rate {
+				padding: 0;
+				width: 540px;
+				max-height: 620px;
+
+				.modal-header {
+					padding: 20px;
+					color: @white;
+					background: @gcard;
+					#border-radius > .top();
+					.size(110px, 100%);
+					.show;
+
+					h1 {
+						font-weight: 700;
+						clear: none;
+					}
+
+					em { .h4; }
+				}
+
+				.scrollable {
+					position: relative;
+					max-height: 420px;
+				}
+
+				.rate-grid {
+					margin: 0;
+					width: 100%;
+                	border-collapse: separate;
+                	border-spacing: 0 10px;
+                	text-transform: uppercase;
+
+                	th,
+                	td { 
+                		padding: 5px 20px; 
+
+                		&.date { .calc-width(100, 300); }
+	                    &.rate { width: 120px; }
+	                    &.edit { width: 160px; }
+                	}
+
+                	thead {
+	                    th { font-size: 14px; }
+	                }
+
+	                tbody {
+	                	tr {
+	                		td {
+	                			&.date { font-weight: 600; }
+	                			&.edit {
+	                				input { 
+	                					width: 80px;
+	                					margin-left: 10px;
+	                				}
+	                			}
+	                		}
+
+	                		&:nth-child(odd) { 
+	                			background-color: rgba(255,255,255,.4);
+	                		}
+	                	}
+	                }
+				}
+
+				.actions {
+					text-align: center;
+					padding: 20px;
+					.box-shadow(-2px 0 2px rgba(0,0,0,.3));
+					.size(90px, 100%);
+
+					.button {
+						display: inline-block;
+						width: auto;
+					}
+				} 
+			}
 		}
 	}
 

@@ -5,10 +5,18 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.errorMessage = '';
 		$scope.showCancelCardSelection =true;
 		$scope.addmode = false;
-		$scope.showCC = false;
 		$scope.referanceText = "";
-		$scope.depositMode = false;
+		$scope.paymentMode = false;
 		$scope.showAddtoGuestCard = true;
+		$scope.cardSelected = false;
+		$scope.isManual = false;
+		$scope.isDisplayReference = false;
+		$scope.depositInProcess = false;
+		$scope.errorOccured = false;
+		$scope.errorMessage = "";
+		$scope.successOccured = false;
+		$scope.successMessage = "";
+		$scope.authorizedCode = "54275754";
 
 		$scope.depositData = {
 			selectedCard: -1,
@@ -22,6 +30,9 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			isDisplayReference:false,
 			referanceText:""
 		};
+		$scope.reservationData = {};
+		$scope.reservationData.depositAmount = 4353;
+		$scope.reservationData.referanceText = "";
 
 		$scope.depositData.isDisplayReference = $scope.passData.details.isDisplayReference;
 
@@ -61,6 +72,19 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			return cardName;
 		};
 
+		// var checkReferencetextAvailableForCC = function(){
+						
+		// };
+
+		$scope.checkReferencetextAvailable = function(){
+			angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
+				if($scope.depositData.card_type.toUpperCase() === value.cardcode){
+					$scope.isDisplayReference = (value.is_display_reference)? true:false;
+				};					
+			});	
+			return $scope.isDisplayReference;
+		};
+
 
 		var savePayment = function() {
 
@@ -75,7 +99,9 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.depositData.cardNumber = retrieveCardNumber();
 				$scope.depositData.expiry_date = retrieveExpiryDate();
 				$scope.depositData.card_type = retrieveCardtype();
-				$scope.showCC = false;
+				//checkReferencetextAvailableForCC();
+				$scope.paymentMode = false;
+				$scope.cardSelected = true;
 			};
 			
 			var paymentData = {
@@ -105,28 +131,44 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 					   delete card.expiry_date; 
 			});
 			if ($scope.cardsList.length > 0) {
-				$scope.depositData.viewCardsList = true;
+				$scope.addmode = false;
 				refreshCardsList();
 			};
-			$scope.depositMode = true;
 		};
 
+	var reservationId = $stateParams.id;
+	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
+	
 	$scope.payDeposit = function() {
-		var reservationId = $stateParams.id;
-		$scope.showCC = true;
-		$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
+		
+		$scope.depositInProcess = true;	
+		$scope.errorMessage = ['failed'];	
+		$scope.errorOccured = true;
+	};
+	//to delte
+	$scope.showSuccess = function(){
+		$scope.successMessage = "succesMessage";	
+		$scope.errorOccured = false;
+		$scope.successOccured = true;
 	};
 
 	$scope.onCardClick = function(){
-		$scope.showCC = true;
+		$scope.paymentMode = true;
 		$scope.addmode = false;
 	};
+
+	$scope.cardInputChange = function(){
+		$scope.paymentMode = ($scope.isManual)?true:false;
+	};
+
 	var setCreditCardFromList = function(index){
 		$scope.depositData.selectedCard = $scope.cardsList[index].value;
 		$scope.depositData.cardNumber = $scope.cardsList[index].mli_token;
 		$scope.depositData.expiry_date = $scope.cardsList[index].card_expiry;
 		$scope.depositData.card_type = $scope.cardsList[index].card_code;
-		$scope.showCC = false;
+		$scope.paymentMode = false;
+		$scope.cardSelected = true;
+		//checkReferencetextAvailableForCC();
 	};
 
 	$scope.$on("TOKEN_CREATED", function(e,data){
@@ -139,7 +181,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 	});
 
 	$scope.$on('cancelCardSelection',function(e,data){
-		$scope.depositMode = false;
+		$scope.paymentMode = false;
 	});
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);

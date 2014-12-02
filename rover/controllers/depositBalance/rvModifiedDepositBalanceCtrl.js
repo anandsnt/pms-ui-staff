@@ -22,12 +22,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		value.card_expiry = value.expiry_date;//Same comment above
 	});
 	
-	$scope.addmode = true;
+	
 	$scope.shouldShowExistingCards = true;
 	$scope.shouldShowAddNewCard   = true;
 	$scope.showExistingAndAddNewPayments = true;
 	$scope.showOnlyAddCard = false;
 	$scope.cardsList = $scope.depositBalanceData.data.existing_payments;
+	$scope.addmode = ($scope.cardsList.length>0) ? false :true;
 	$scope.shouldShowMakePaymentScreen = false;
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;
@@ -37,6 +38,17 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.feeData = {};
 	$scope.hideCancelCard = true;
 	var zeroAmount = parseFloat("0.00").toFixed(2);
+	$scope.isDisplayReference = false;
+	$scope.referanceText = "";
+
+
+	var checkReferencetextAvailableForCC = function(){
+		angular.forEach($scope.depositBalanceData.data.credit_card_types, function(value, key) {
+			if($scope.depositBalanceMakePaymentData.card_code.toUpperCase() === value.cardcode){
+				$scope.isDisplayReference = (value.is_display_reference)? true:false;
+			};					
+		});				
+	};
 
 	/*
 	 * on succesfully created the token
@@ -49,6 +61,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
 	    	//To render the selected card data 
 	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.tokenDetails.cardBrand).toLowerCase();
+	    	checkReferencetextAvailableForCC();
 	    	$scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.cardDetails.cardNumber.substr($scope.cardValues.cardDetails.cardNumber.length - 4);;
 		    var dataToApiToAddNewCard = {
 		          	"token" : $scope.cardValues.tokenDetails.session,
@@ -109,11 +122,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	// CICO-9457 : Data for fees details.
 	$scope.setupFeeData = function(){
 		
-		var feesInfo = $scope.feeData.feesInfo;
+		var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 		var defaultAmount = $scope.depositBalanceMakePaymentData ?
 		 	$scope.depositBalanceMakePaymentData.amount : zeroAmount;
-		console.log("feesInfo :");console.log(feesInfo);
-		if(typeof feesInfo != 'undefined' && feesInfo!= null){
+		
+		if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 			
 			var amountSymbol = feesInfo.amount_symbol;
 			var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
@@ -125,12 +138,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 			}
 		}
-		else{
-			$scope.feeData.actualFees = zeroAmount;
-			$scope.feeData.calculatedFee = zeroAmount;
-			$scope.feeData.totalOfValueAndFee = zeroAmount;
-		}
 	};
+	
 	// CICO-9457 : Data for fees details - standalone only.	
 	if($scope.isStandAlone)	{
 		$scope.feeData.feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
@@ -157,13 +166,15 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			},
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id
 		};
+		if($scope.isDisplayReference){
+			dataToSrv.postData.reference_text = $scope.referanceText;
+		};
 		if($scope.isStandAlone){
 			if($scope.feeData.calculatedFee)
 				dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
 			if($scope.feeData.feesInfo)
 				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 		}
-		console.log(dataToSrv);
 		//alert(JSON.stringify(dataToMakePaymentApi));
 		$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 
@@ -236,6 +247,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.card_code = $scope.depositBalanceData.data.existing_payments[index].card_code;
 		$scope.depositBalanceMakePaymentData.ending_with  = $scope.depositBalanceData.data.existing_payments[index].ending_with;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
+		checkReferencetextAvailableForCC();
 		console.log("card clicked from deposit");
 		
 		if($scope.isStandAlone){
