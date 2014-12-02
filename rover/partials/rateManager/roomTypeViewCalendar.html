@@ -51,7 +51,7 @@
 		<tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}"> 
 			<td class="first-row">    
 				<span ng-class="{'expanded': currentExpandedRow===$index}">{{rate.name}}</span>
-				<span style="float:right" ng-hide="currentExpandedRow===$index">
+				<span style="float:right" ng-hide="currentExpandedRow===$index || !!rate.is_hourly">
 					<img class="down" src="/assets/arrow-down.png" ng-click="expandRow($index)">
 				</span>
 				<span style="float:right" ng-show="currentExpandedRow===$index">
