@@ -80,20 +80,26 @@ q:before, q:after {content: ""}
 
         /* Page inner container ***/
         .content,
-        .main-view {
+        .main-view,
+        .nested-view {
             position: static;
             top: 0 !important; 
             left: 0 !important;
+            bottom: auto !important;
+            right: auto !important;
             height: auto !important;
             background: transparent !important;
             overflow: visible;
         }
     }
 
-    .root-view {
+    .root-view,
+    .ui-router-wrapper {
         position: static !important;
         top: 0 !important; 
         left: 0 !important;
+        bottom: auto !important;
+        right: auto !important;
         height: auto !important;
         background: transparent !important;
         overflow: visible;
@@ -910,8 +916,15 @@ q:before, q:after {content: ""}
         .complete-registration { .hide; }
 
         .registration-content {
+            position: static;
+            height: 100%;
+            overflow: visible;
 
             .registration-summary {
+
+                .bill-summary {
+                    top: 0 !important;
+                }
 
                 #bills-tabs-nav,
                 .bill-summary-wrapper,

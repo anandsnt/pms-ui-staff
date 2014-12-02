@@ -19,13 +19,13 @@
         	</span>       	
         </li>
 
-        <li ng-show="statisticsData.occupancy.fullMonth!=''">{{userInfo.business_date|date:fullMonth}}
+        <li>{{userInfo.business_date|date:fullMonth}}
         	<span bo-text="'{{statisticsData.occupancy.current_month | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.current_month)!==''">
         		
         	</span>
         </li>
 
-        <li ng-show="statisticsData.occupancy.current_year!=''">{{userInfo.business_date|date:fullYear}}
+        <li>{{userInfo.business_date|date:fullYear}}
         	<span bo-text="'{{statisticsData.occupancy.current_year | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.current_year)!==''">
         	
         	</span>

@@ -228,64 +228,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.$emit('passReservationParams', passData);
 
 
-		/*$scope.openAddNewPaymentModel = function(data) {
-			if (data === undefined) {
-				var passData = {
-					"reservationId": $scope.reservationData.reservation_card.reservation_id,
-					"fromView": "staycard",
-					"is_swiped": false
-				};
-				var paymentData = $scope.reservationData;
-				$scope.showAddNewPaymentModal(passData, paymentData);
-			} else {
-				var ksn = data.RVCardReadTrack2KSN;
-          		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
-					ksn = data.RVCardReadETBKSN;
-				}
-
-				var getTokenFrom = {
-					'ksn': ksn,
-					'pan': data.RVCardReadMaskedPAN
-				};
-				
-				if(data.RVCardReadTrack2!=''){
-					getTokenFrom.et2 = data.RVCardReadTrack2;
-				} else if(data.RVCardReadETB !=""){
-					getTokenFrom.etb = data.RVCardReadETB;
-				}
-				
-				
-				var tokenizeSuccessCallback = function(tokenData) {
-					
-					data.token = tokenData;
-					var passData = {
-						"reservationId": $scope.reservationData.reservation_card.reservation_id,
-						"fromView": "staycard",
-						"credit_card": data.RVCardReadCardType,
-						"card_number": "xxxx-xxxx-xxxx-" + tokenData.slice(-4),
-						"name_on_card": data.RVCardReadCardName,
-						"card_expiry": data.RVCardReadExpDate,
-						"et2": data.RVCardReadTrack2,
-						'ksn': data.RVCardReadTrack2KSN,
-						'pan': data.RVCardReadMaskedPAN,
-						'etb': data.RVCardReadETB,
-						'token': tokenData,
-						"is_swiped": true // Commenting for now
-					};
-					var paymentData = $scope.reservationData;
-					
-					if($scope.roverFlags.isDepositBalanceScreenOpened){
-						
-						$scope.$broadcast("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", passData);
-					} else{
-						$scope.showAddNewPaymentModal(passData, paymentData);
-					}
-					
-				};
-				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-			}
-
-		};*/
+		
 
 		$rootScope.$on('clearErroMessages', function() {
 			$scope.errorMessage = "";
@@ -301,16 +244,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		/*
 		 * Handle swipe action in reservationdetails card
 		 */
-		// $scope.$on('SWIPEHAPPENED', function(event, data) {
-// 			
-			// if (!$scope.isGuestCardVisible) {
-				// $scope.openAddNewPaymentModel(data);
-			// }
-// 
-		// });
 		
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
-			console.log(swipedCardData);
 			if($scope.isDepositBalanceScreenOpened){
 				swipedCardData.swipeFrom = "depositBalance";
 			} else if($scope.isCancelReservationPenaltyOpened){
@@ -320,7 +255,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			} else {
 				swipedCardData.swipeFrom = "stayCard";
 			}
-			
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue){
@@ -505,8 +439,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			};
 			var paymentData = $scope.reservationData;
 			if (swipedCardData !== undefined) {
-				// alert("============SWIPED DATA==============");
-				//alert(JSON.stringify(swipedCardData));
 				var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 					
