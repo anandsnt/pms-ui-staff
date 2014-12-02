@@ -94,21 +94,17 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		 *													
 		 */
 	    var setSelectedCreditCard = function(cardValue){
-			var selectedCard = {};
-			$scope.cardsList.forEach(function(card) {
-				if(card.value == cardValue){
-					selectedCard =angular.copy(card);
-					$scope.depositData.selectedCard = selectedCard.value;
-					$scope.depositData.cardNumber = selectedCard.mli_token;
-					$scope.depositData.expiry_date = selectedCard.card_expiry;
-					$scope.depositData.card_type = selectedCard.card_code;
-					$scope.cardSelected = true;
-				};
-			});			
+
+			var attached_card = $scope.depositDetails.attached_card;
+			$scope.depositData.selectedCard = attached_card.value;
+			$scope.depositData.cardNumber = attached_card.ending_with;
+			$scope.depositData.expiry_date = attached_card.expiry_date;
+			$scope.depositData.card_type = attached_card.card_code;
+			$scope.cardSelected = true;	
 		};
 
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
-		$scope.reservationData.depositAmount = $scope.depositDetails.deposit_policy.amount;
+		$scope.reservationData.depositAmount =  parseInt($scope.depositDetails.deposit_amount);
 		
 	
 		var savePayment = function() {
@@ -163,9 +159,10 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.addmode = false;
 				refreshCardsList();
 			};
-			if((typeof $scope.depositDetails.attached_card.value !== "undefined") && $scope.depositDetails.attached_card.value !==""){
+			if((typeof $scope.depositDetails.attached_card !== "undefined") && $scope.depositDetails.attached_card.value !==""){
 				setSelectedCreditCard($scope.depositDetails.attached_card.value);
 			};
+			
 		};
 
 	var reservationId = $stateParams.id;
@@ -226,12 +223,14 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		}
 		else{
 			$scope.paymentMode = true;
+			refreshCardsList();
 		};
 	};	
 
 	$scope.onCardClick = function(){
 		$scope.paymentMode = true;
 		$scope.addmode = false;
+		refreshCardsList();
 	};
 
 	var setCreditCardFromList = function(index){

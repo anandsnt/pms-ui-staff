@@ -6,7 +6,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.saveData = {};
 		$scope.errorMessage = '';
 		$scope.saveData.payment_type_id = '';
-		$scope.cardsList = {};
+		$scope.cardsList = [];
 		$scope.newPaymentInfo = {};
 		$scope.newPaymentInfo.addToGuestCard = false;
 		$scope.renderData.billNumberSelected = '';

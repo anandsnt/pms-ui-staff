@@ -171,13 +171,13 @@ sntRover.controller('reservationActionsController', [
 		var fetchDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
-			if($scope.depositDetails.deposit_policy.amount >0){
+			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0){
 				openDepositPopup();
 			};
 		};
 
 		$scope.fetchDepositDetails = function(){
-			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, {},fetchDepositDetailsSuccess);
+			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,fetchDepositDetailsSuccess);
 		};
 
 		var fetcCreditCardTypes = function(cancellationCharge, nights){
@@ -274,11 +274,11 @@ sntRover.controller('reservationActionsController', [
 		var checkinDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
-			($scope.depositDetails.deposit_policy.amount >0)? openDepositPopup() : startCheckin();
+			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0)? openDepositPopup() : startCheckin();
 		};
 
 		var checkforDeposit = function(){
-			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, {},checkinDepositDetailsSuccess);
+			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,checkinDepositDetailsSuccess);
 		};
 		$scope.goToCheckin = function(){
 			checkforDeposit();
