@@ -419,8 +419,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				details.rateDetails = {
 					actual_amount: calculatedAmount,
 					modified_amount: calculatedAmount,
-					is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
-					is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on.toString()
+					is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed == null ? "false" : $scope.reservationData.ratesMeta[rateId].is_discount_allowed.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
+					is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on == null ? "false" : $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on.toString()
 				}
 			});
 		}
@@ -553,8 +553,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				currentRoom.stayDates[activeDate].rateDetails = {
 					actual_amount: calculatedAmount,
 					modified_amount: calculatedAmount,
-					is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
-					is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on.toString()
+					is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed == null ? "false" : $scope.reservationData.ratesMeta[rateId].is_discount_allowed.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
+					is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on == null ? "false" : $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on.toString()
 				}
 				currentRoom.stayDates[activeDate].rate.id = rateId;
 

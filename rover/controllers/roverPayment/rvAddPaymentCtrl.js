@@ -26,12 +26,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
 	var isNewCardAdded = false;
 	$scope.dataToSave = {};
-	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
-		$scope.dataToSave.paymentType = "CC";
-		$scope.showCCPage 			  = true;
-		$scope.addmode                = true;	
-		$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
-	}
 
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
@@ -65,6 +59,13 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		});
 
 		$scope.addmode = $scope.cardsList.length > 0 ? false:true;
+		//To render swiped data in the add screen
+		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+			$scope.dataToSave.paymentType = "CC";
+			$scope.showCCPage 			  = true;
+			$scope.addmode                = true;	
+			$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
+		}
 	};
 	//NO need to show existing cards in guest card model
 	if(!$scope.isFromGuestCard){
