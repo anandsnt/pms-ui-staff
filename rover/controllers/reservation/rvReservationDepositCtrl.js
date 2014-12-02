@@ -42,6 +42,11 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			}, 300)
 		};
 
+		/*
+		 * card details based on six payment/MLI           
+		 *													
+		 */
+
 		var retrieveCardtype = function(){
 			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 			getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
@@ -71,6 +76,10 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			return cardName;
 		};
 
+		/*
+		 * check if reference text is available for the selected card type           
+		 *													
+		 */
 		$scope.checkReferencetextAvailable = function(){
 			angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
 				if($scope.depositData.card_type.toUpperCase() === value.cardcode){
@@ -80,7 +89,10 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			return $scope.isDisplayReference;
 		};
 
-
+		/*
+		 * set selected card if any card is selected          
+		 *													
+		 */
 	    var setSelectedCreditCard = function(cardValue){
 			var selectedCard = {};
 			$scope.cardsList.forEach(function(card) {
@@ -131,6 +143,10 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 		};
+		/*
+		 * fetch reservation's cards list          
+		 *													
+		 */
 
 		var onFetchPaymentsSuccess = function(data) {
 			$scope.$emit('hideLoader');
