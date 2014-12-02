@@ -95,17 +95,10 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			});			
 		};
 
-		var fetchDepositDetailsSuccess = function(data){
-			$scope.$emit('hideLoader');
-			var depositDetails = data;
-			$scope.depositPolicyName = depositDetails.deposit_policy.description;
-			$scope.reservationData.depositAmount = depositDetails.deposit_policy.amount;
-			if((typeof depositDetails.attached_card.value !== "undefined") && depositDetails.attached_card.value !==""){
-				setSelectedCreditCard(depositDetails.attached_card.value);
-			};
-		};
-
-
+		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
+		$scope.reservationData.depositAmount = $scope.depositDetails.deposit_policy.amount;
+		
+	
 		var savePayment = function() {
 
 			var expiryMonth = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
@@ -154,7 +147,9 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.addmode = false;
 				refreshCardsList();
 			};
-			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, {},fetchDepositDetailsSuccess);
+			if((typeof $scope.depositDetails.attached_card.value !== "undefined") && $scope.depositDetails.attached_card.value !==""){
+				setSelectedCreditCard($scope.depositDetails.attached_card.value);
+			};
 		};
 
 	var reservationId = $stateParams.id;
