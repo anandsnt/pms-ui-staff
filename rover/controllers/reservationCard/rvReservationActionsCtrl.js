@@ -137,6 +137,7 @@ sntRover.controller('reservationActionsController', [
 		// the listner must be destroyed when no needed anymore
 		$scope.$on('$destroy', postchargeAdded);
 		$scope.creditCardTypes = [];
+	
 		var openDepositPopup = function(){
 			var passData = {
 						 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -148,6 +149,7 @@ sntRover.controller('reservationActionsController', [
 						 		}
 						};
 			$scope.passData = passData;
+			ngDialog.close(); //close any existing popups
 			ngDialog.open({
 						template: '/assets/partials/reservationCard/rvReservationDepositPopup.html',
 						className: '',
@@ -172,7 +174,10 @@ sntRover.controller('reservationActionsController', [
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
 			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0){
-				openDepositPopup();
+				if(!$scope.depositPopupData.isShown){
+					openDepositPopup();
+					$scope.depositPopupData.isShown = true;
+				};				
 			};
 		};
 
