@@ -7,7 +7,7 @@
     <!-- 1. deposit Options screen -->
     <fieldset id="cancel-options" ng-show="!paymentMode">
         <div id="set-payment" class="payment-form">
-        <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected && !successOccured">
+        <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
@@ -18,7 +18,7 @@
                 </label>
         </div>
         </div>
-        <div class="notice deposit" ng-hide="depositInProcess && paymentMode">                        
+        <div class="notice deposit" ng-hide="depositInProcess || paymentMode">                        
             <p>Deposit required: <strong>9% of the stay / first night /(flat amount)</strong>.</p>
             <!-- Payment fields -->
             <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        

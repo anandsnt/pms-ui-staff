@@ -132,26 +132,60 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 	var reservationId = $stateParams.id;
 	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
+
+	var successPayment = function(data){
+		$scope.$emit('hideLoader');
+		$scope.successMessage = "Deposit payed successfully!";	
+		$scope.errorOccured = false;
+		$scope.successOccured = true;
+	};
+
+	var paymentFailed = function(data){
+		$scope.$emit('hideLoader');
+		$scope.errorMessage = data;
+		$scope.errorOccured = true;
+		$scope.successOccured = false;
+
+	};
+
+
+	  /*
+	* Action - On click submit payment button
+	*/
+	$scope.submitPayment = function(){
+
+		if($scope.reservationData.depositAmount == '' || $scope.reservationData.depositAmount == null){
+			$scope.errorMessage = ["Please enter amount"];
+		} else {
+			$scope.errorMessage = "";
+			$scope.depositInProcess = true;	
+			var dataToSrv = {
+				"postData": {
+					"bill_number": 1,
+					"payment_type": "CC",
+					"amount": $scope.reservationData.depositAmount,
+					"payment_type_id":$scope.depositData.selectedCard
+				},
+				"reservation_id": $stateParams.id
+			};
+
+			if($scope.isDisplayReference){
+				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;
+			};
+			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment,paymentFailed);
+		};
+	};
+
 	
 	$scope.payDeposit = function() {
 
 		if($scope.depositData.selectedCard !== -1){
-			alert("save")
+			$scope.submitPayment();
 		}
 		else{
 			$scope.paymentMode = true;
 		};
-	};		
-	// 	$scope.depositInProcess = true;	
-	// 	$scope.errorMessage = ['failed'];	
-	// 	$scope.errorOccured = true;
-	// };
-	//to delte
-	$scope.showSuccess = function(){
-		$scope.successMessage = "succesMessage";	
-		$scope.errorOccured = false;
-		$scope.successOccured = true;
-	};
+	};	
 
 	$scope.onCardClick = function(){
 		$scope.paymentMode = true;
