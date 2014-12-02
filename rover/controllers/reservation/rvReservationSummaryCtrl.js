@@ -782,10 +782,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//Proceed with reservation creation flow
 				$scope.goToConfirmationScreen();
 			}
-			ngDialog.close();
 			$scope.goToConfirmationScreen();
+		};
 
-
+		$scope.okClickedForConflictingRoutes = function(){
+			$scope.goToConfirmationScreen();
+			ngDialog.close();
 		};
 
 		this.attachCompanyTACardRoutings = function(){
@@ -817,7 +819,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			};
 			
-			console.log("attachCompanyTACardRoutings");
 			if(that.hasTravelAgent() || that.hasCompanyCard()) {
 				var params = {};
 				params.reservation_id = $scope.reservationData.reservationId;

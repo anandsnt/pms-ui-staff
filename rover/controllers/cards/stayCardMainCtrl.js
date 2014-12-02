@@ -1,8 +1,9 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
+		var that = this;
 		if ($scope.guestCardData.cardHeaderImage == undefined || $scope.guestCardData.cardHeaderImage == "") {
 			$scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
 		}
@@ -249,7 +250,83 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
+		$scope.noRoutingToReservation = function(){
+			ngDialog.close();
+		};
+
+		$scope.applyRoutingToReservation = function(){
+			var routingApplySuccess = function(data){
+				$scope.$emit("hideLoader");
+				ngDialog.close();
+			};
+
+			var params = {};
+			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
+			params.reservation_id = $scope.reservationData.reservationId;
+			
+			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
+		};
+
+		$scope.okClickedForConflictingRoutes = function(){
+			ngDialog.close();
+		};
+
+		this.showConfirmRoutingPopup = function(type, id){
+			ngDialog.open({
+				template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		};
+
+		this.showConflictingRoutingPopup = function(type, id){
+
+			ngDialog.open({
+				template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+
+		};
+
+		this.attachCompanyTACardRoutings = function(card){
+
+			var fetchSuccessofDefaultRouting = function(data){
+				$scope.$emit("hideLoader");
+				$scope.routingInfo = data;
+
+				if(data.has_conflicting_routes){
+					that.showConflictingRoutingPopup();
+					return false;
+				}
+
+				if(card == 'travel_agent' && data.travel_agent.routings_count > 0){
+					$scope.contractRoutingType = "TRAVEL_AGENT";
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
+					return false;
+
+				}
+				if(card == 'company' && data.company.routings_count > 0){
+					$scope.contractRoutingType = "COMPANY";
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+					return false;
+				}
+
+			};
+			
+			var params = {};
+			params.reservation_id = $scope.reservationData.reservationId;
+			if(card == 'travel_agent'){
+				params.travel_agent_id = $scope.reservationData.travelAgent.id;
+			} else if (card == 'company'){
+				params.company_id = $scope.reservationData.company.id;
+			}
+			
+			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
+		};
+
 		$scope.replaceCard = function(card, cardData, future) {
+			
 			//Replace card with the selected one
 			$scope.invokeApi(RVCompanyCardSrv.replaceCard, {
 				'reservation': typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
@@ -277,6 +354,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					});
 				}
 				$scope.$emit('hideLoader');
+				that.attachCompanyTACardRoutings(card);
 			}, function() {
 				$scope.cardRemoved();
 				$scope.$emit('hideLoader');
