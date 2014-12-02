@@ -143,7 +143,8 @@ sntRover.controller('reservationActionsController', [
 						 		"details":{
 						 			"firstName":$scope.guestCardData.contactInfo.first_name,
 						 			"lastName":$scope.guestCardData.contactInfo.last_name,
-						 			"isDisplayReference":$scope.ifReferanceForCC
+						 			"isDisplayReference":$scope.ifReferanceForCC,
+						 			"creditCardTypes":$scope.creditCardTypes
 						 		}
 						};
 			$scope.passData = passData;
@@ -165,16 +166,16 @@ sntRover.controller('reservationActionsController', [
 			var successCallback = function(data){
 				$scope.$emit('hideLoader');
 				data.forEach(function(item) {
-			        if(item.name === 'CC' && item.is_display_reference){
-			        	$scope.ifReferanceForCC = true;
-			        };
+		          if(item.name === 'CC'){
+				     $scope.creditCardTypes = item.values;
+				  };
 				});
 				openDepositPopup();
 			};
 			$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback)
 		};
 
-		//checkifReferenceIsPresentForCc();
+		checkifReferenceIsPresentForCc();
 
 
 		$scope.goToCheckin = function() {
