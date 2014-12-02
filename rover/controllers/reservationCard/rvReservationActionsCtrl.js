@@ -179,7 +179,7 @@ sntRover.controller('reservationActionsController', [
 
 
 		$scope.goToCheckin = function() {
-				var deposit= false;
+				var deposit= true;
 				if(deposit){
 					openDepositPopup();
 				}
