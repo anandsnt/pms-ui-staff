@@ -180,6 +180,32 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
+
+        this.fetchDefaultRoutingInfo = function(params){
+            var deferred = $q.defer();            
+            var url = '/api/default_account_routings/'+ params.id+'/routings_count/';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                console.log("fetch success");
+                console.log(data);
+                deferred.resolve(data);
+            }, function(data) {
+                console.log("failed");
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.applyDefaultRoutingToReservation = function(params){
+            var deferred = $q.defer();
+            var url = '/api/default_account_routings/attach_reservation';
+            rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            },function(data){
+                deferred.reject(data);
+            }); 
+
+            return deferred.promise;
+        };
     }
 ]);

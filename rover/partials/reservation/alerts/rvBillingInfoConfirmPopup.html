@@ -1,17 +1,16 @@
-<div role="dialog" id="modal" class="modal-show">
-	<div class="modal-content new-content form warning">
-		<div>
-			<span translate> {{'NO' | translate}} <span ng-if="houseNotAvailableForBooking" translate>HOUSE</span><span ng-if="roomTypeNotAvailableForBooking" translate>RESV_ROOM</span> {{'OVERBOOK_TEXT' | translate}}</span>
+<div id ="modal" class="modal-show">
+	<div class="modal-content confirmation">
+	    <button type="button" id="modal-close" class="modal-close"><span class="icons icon-close invert"></span></button>
+	    <span class="h2 message">Billing information found</span>
+	    <span class="text" ng-if="contractRoutingType == 'TRAVEL_AGENT'">On selected card<strong> {{reservationData.travelAgent.name}}</strong></span>
+	    <span class="text" ng-if="contractRoutingType == 'COMPANY'">On selected card<strong> {{reservationData.company.name}}</strong></span>
 
-		</div>
-		<div class="actions float small-button">
-			<button class="button green" ng-click="updateDataModel(); closeThisDialog();" translate>
-				YES
-			</button>
-			<button  class="button white" ng-click="closeThisDialog()" translate>
-				NO
-			</button>
-		</div>
+	    <div class="actions">
+	        <button type="button" class="button green" ng-click="applyRoutingToReservation()">Apply to reservation</button>
+	        <button type="button" class="button red" ng-click="noRoutingToReservation()">Don't apply</button> 
+	        <button type="button" class="button blank" ng-click="noRoutingToReservation()">Close</button>
+	    </div>
 	</div>
 </div>
+
 
