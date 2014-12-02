@@ -1177,21 +1177,21 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     data.confirmation_emails.push($scope.otherData.additionalEmail);
                 }
             }
-
-            if (!skipPaymentData) {
-                // MLI Integration.
-                if ($rootScope.paymentGateway === "sixpayments") {
-                    data.payment_type.token = $scope.six_token;
-                    data.payment_type.isSixPayment = true;
-                } else {
-                    data.payment_type.isSixPayment = false;
-                    if ($scope.reservationData.paymentType.type !== null) {
-                        if ($scope.reservationData.paymentType.type.value === "CC") {
-                            data.payment_type.session_id = $scope.data.MLIData.session;
-                        }
-                    }
-                }
-            }
+//according to  new flow
+            // if (!skipPaymentData) {
+            //     // MLI Integration.
+            //     if ($rootScope.paymentGateway === "sixpayments") {
+            //         data.payment_type.token = $scope.six_token;
+            //         data.payment_type.isSixPayment = true;
+            //     } else {
+            //         data.payment_type.isSixPayment = false;
+            //         if ($scope.reservationData.paymentType.type !== null) {
+            //             if ($scope.reservationData.paymentType.type.value === "CC") {
+            //                 data.payment_type.session_id = $scope.data.MLIData.session;
+            //             }
+            //         }
+            //     }
+            // }
 
             //  CICO-8320
             //  The API request payload changes

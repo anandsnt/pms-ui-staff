@@ -40,6 +40,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.renderData = {};
 
 		$scope.feeData = {};
+		var zeroAmount = parseFloat("0.00").toFixed(2);
 
 		// CICO-9457 : To calculate fee - for standalone only
 		$scope.calculateFee = function(){
@@ -47,7 +48,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if($scope.isStandAlone){
 				var feesInfo = $scope.feeData.feesInfo;
 				var amountSymbol = "";
-				var zeroAmount = parseFloat("0.00").toFixed(2);
 				if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
 
 				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
@@ -107,12 +107,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		// CICO-9457 : Data for fees details.
 		$scope.setupFeeData = function(){
 			
-			var feesInfo = $scope.feeData.feesInfo;
-			var zeroAmount = parseFloat("0.00").toFixed(2);
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.reservationData ?
 			 	$scope.reservationData.depositAmount : zeroAmount;
-			console.log("feesInfo :");console.log(feesInfo);
-			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+			
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
@@ -123,11 +122,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.feeData.calculatedFee = feesAmount;
 					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 				}
-			}
-			else{
-				$scope.feeData.actualFees = zeroAmount;
-				$scope.feeData.calculatedFee = zeroAmount;
-				$scope.feeData.totalOfValueAndFee = zeroAmount;
 			}
 		};
 
@@ -221,7 +215,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				if($scope.feeData.feesInfo)
 					dataToMakePaymentApi.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
-			console.log(dataToMakePaymentApi);
 
 			if($scope.checkReferencetextAvailable()){
 				dataToMakePaymentApi.postData.reference_text = $scope.reservationData.referanceText;

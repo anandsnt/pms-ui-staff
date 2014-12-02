@@ -76,7 +76,7 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	          });
   	 };
   	 var scrollerOptions = {preventDefault: false};
-  	 $scope.setScroller('paymentList', scrollerOptions);
+  	$scope.setScroller('paymentList', scrollerOptions);
   	$scope.$on("$viewContentLoaded", function(){
 		$scope.refreshScroller('paymentList');
 	});
@@ -92,6 +92,7 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	 
 	 $scope.$on('ADDEDNEWPAYMENTTOGUEST', function(event, data){
 	 	$scope.paymentData.data.push(data);
+	 	$scope.refreshScroller('paymentList');
 	 });
 	 
 	 

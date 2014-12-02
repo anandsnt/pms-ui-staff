@@ -8,7 +8,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'RVBillCardSrv',
 	'$q',
 	'RVHkRoomDetailsSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv) {
+	'$vault',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv, $vault) {
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 		var totalRoomsAvailable = 0;
@@ -207,6 +208,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		$scope.gotoDiaryScreen = function() {
+			$scope.reservationData = {};
+			$scope.initReservationDetails();
+			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify({}));
 			$state.go('rover.reservation.diary', {
 				isfromcreatereservation: false
 			});
@@ -218,12 +222,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.$emit("hideLoader");
 		}
 		var successOfRoomDetailsFetch = function(data) {
-			if (data.room_details.current_hk_status == 'READY') {
+			if (data.current_hk_status == 'READY') {
 				totalRoomsAvailable++;
 			}
 		};
 
-		$scope.enableCheckInButton = function() {
+		$scope.enableCheckInButton = function() {			
 			return $scope.reservationData.rooms.length == totalRoomsAvailable;
 		};
 
