@@ -175,11 +175,11 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback)
 		};
 
-		checkifReferenceIsPresentForCc();
+		//checkifReferenceIsPresentForCc();
 
 
 		$scope.goToCheckin = function() {
-				var deposit= true;
+				var deposit= false;
 				if(deposit){
 					openDepositPopup();
 				}
