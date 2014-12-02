@@ -219,8 +219,11 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 		$scope.deletWorkSheet = function() {
 			var onDeleteSuccess = function(data) {
-					$state.go('rover.workManagement.start');
+					//$state.go('rover.workManagement.start');
 					$scope.$emit("hideLoader");
+					$timeout( function() {
+						$state.go('rover.workManagement.start');
+					}, 20 );
 				},
 				onDeleteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -255,8 +258,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				worktypesSet  = {};
 
 			var afterAPIcall  = function() {
-
-					// delay are for avoiding collitions
+					// delay are for avoiding collisions
 					if ( options && $scope[options.callNextMethod] ) {
 						$timeout($scope[options.callNextMethod], 50);
 					};
@@ -274,11 +276,11 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					};
 				},
 				onSaveFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+
 					saveCount--;
 					if ( saveCount == 0 ) {
-						$scope.errorMessage = errorMessage;
 						$scope.$emit("hideLoader");
-
 						afterAPIcall();
 					};
 				};
@@ -310,46 +312,47 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			// if a room in assigned has prop 'work_type_id' (read line #217)
 			// assign it to the corresponding array
 			// else assign to the array corresponding the active work type
-			_.each($scope.singleState.assigned, function(room) {
-				if ( room.hasOwnProperty('work_type_id') ) {
-					worktypesSet[room.work_type_id.toString()].push(room);
-				} else {
-					worktypesSet[$scope.singleState.workSheet.work_type_id.toString()].push(room);
-				};
-			});
+			if ( $scope.singleState.assigned.length ) {
+				_.each($scope.singleState.assigned, function(room) {
+					if ( room.hasOwnProperty('work_type_id') ) {
+						worktypesSet[room.work_type_id.toString()].push(room);
+					} else {
+						worktypesSet[$scope.singleState.workSheet.work_type_id.toString()].push(room);
+					};
+				});
 
-			// loop each worktypeSet
-			// we only need to save it
-			// if it has any room in it
-			_.each(worktypesSet, function(set, key) {
-				if ( set.length ) {
-					_.each(set, function(room) {
-						assignedRooms.push(room.room_id || room.id);
-					});
+				// loop each worktypeSet
+				// we only need to save it
+				// if it has any room in it
+				_.each(worktypesSet, function(set, key) {
+					if ( set.length ) {
+						_.each(set, function(room) {
+							assignedRooms.push(room.room_id || room.id);
+						});
 
-					$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
-						"date"        : $stateParams.date,
-						"task_id"     : parseInt(key),
-						"order"       : "",
-						"assignments" : [{
-							"shift_id"      : $scope.singleState.workSheet.shift_id,
-							"assignee_id"   : $scope.singleState.workSheet.user_id,
-							"room_ids"      : assignedRooms,
-							"work_sheet_id" : ""
-						}]
-					}, onSaveSuccess, onSaveFailure);
+						$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
+							"date"        : $stateParams.date,
+							"task_id"     : parseInt(key),
+							"order"       : "",
+							"assignments" : [{
+								"shift_id"      : $scope.singleState.workSheet.shift_id,
+								"assignee_id"   : $scope.singleState.workSheet.user_id,
+								"room_ids"      : assignedRooms,
+								"work_sheet_id" : ""
+							}]
+						}, onSaveSuccess, onSaveFailure);
 
-					// must reset after API call
-					assignedRooms = [];
+						// must reset after API call
+						assignedRooms = [];
 
-					// increment API call count
-					saveCount++;
-				};
-			});
+						// increment API call count
+						saveCount++;
+					};
+				});
+			} else {
+				afterAPIcall();
+			};
 		};
-
-		// throttle down the multiple calls. DO NOT BIND TO VIEW
-		$scope.throttleSaveWorkSheet = _.throttle($scope.saveWorkSheet, 300);
 			
 
 

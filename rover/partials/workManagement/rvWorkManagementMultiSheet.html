@@ -50,7 +50,8 @@
                 <li iscroll-stop-propagation id="unassigned-UA-{{$index}}" class="worksheet-room multi-sheet unassigned" ng-repeat="room in multiSheetState.unassignedFiltered"
                         data-drag = "true"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}"
+                        ng-hide="room.isAssigned">
                     <h3>{{room.room_no}}</h3> 
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !room.checkout_time">DUE OUT</span>
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>

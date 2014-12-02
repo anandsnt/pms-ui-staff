@@ -96,7 +96,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 		// if the user choose the option to view all rooms - showAllRooms
 		// we will be using this new argument to create the filterRooms
 		// the else case is just as before, no change
-		$scope.filterUnassignedRooms = function(filter, rooms, allUnassigned) {
+		$scope.filterUnassignedRooms = function(filter, rooms, allUnassigned, alreadyAssigned) {
 			var filteredRooms = [];
 			var filterObject = {};
 
