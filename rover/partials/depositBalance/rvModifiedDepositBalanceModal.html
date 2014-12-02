@@ -76,7 +76,7 @@
 				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" value="{{depositBalanceMakePaymentData.amount}}" type="text" />
 				    <!-- CICO-9457 : Use only when fee exsists in standalone -->
 				    <span ng-show="isStandAlone && feeData.feesInfo.amount" class="fee">
-				    	+ {{currencySymbol}}{{feeData.calculatedFee}} {{feeData.feesInfo.description}}
+				    	+ {{currencySymbol}}{{feeData.calculatedFee}} fee
 				    </span> 
 				    <span ng-show="isStandAlone && feeData.feesInfo.amount" class="total">
 				    	Total:
