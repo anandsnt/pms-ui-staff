@@ -1,161 +1,115 @@
-
-<header role="banner">
-	
-	<div class="hotel_logo">
-		<img alt="Logo of hotel" ng-src="{{printData.hotel_logo}}">
-	</div>
-</header>
-	
-<div class="guest-info">
-
-	<table>
-		<tr>
-			<td>Date:{{printData.invoice_date}}</td>
-			<td ></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Hotel Name: {{printData.hotel_name}}</td>
-			<td></td>
-			<td >Guest Name: {{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td >Address: {{printData.guest_details.street}}</td>
-		</tr>
-		<tr>
-			<td >Confirmation No:{{printData.confirmation_number}}</td>
-			<td></td>
-			<td >City :{{printData.guest_details.city}}</td>
-		</tr>
-		<tr>
-			<td>Room Number: {{printData.room_number}}</td>
-			<td></td>
-			<td >State:{{printData.guest_details.state}}</td>
-		</tr>
-		<tr>
-			<td>Invoice Number:{{printData.invoice_number}}</td>
-			<td></td>
-			<td >Postal Code :{{printData.guest_details.postal_code}}</td>
-		</tr>
-		<tr>
-			<td ></td>
-			<td></td>
-			<td >Country :{{printData.guest_details.country}}</td>
-		</tr>
-		<tr>
-			<td ></td>
-			<td></td>
-			<td >Arrival Date : {{printData.arrival_date}}</td>
-		</tr>
-		<tr>
-			<td ></td>
-			<td></td>
-			<td >Departure Date:{{printData.departure_date}}</td>
-		</tr>
-	</table>
+<div class="invoice-logo">
+    <h1 translate>INVOICE</h1>
+    <img ng-if="printData.hotel_logo!=''" ng-src="{{printData.hotel_logo}}" alt="Logo of hotel" />
 </div>
-<div class="bill-details" >
-	<table>
-			<tr>
-				<th>Date of charge</th>
-				<th>Charge description</th>
-				<th>Charge amount</th>
-				<th>Credit amount </th>
-			</tr>
-		<tbody ng-repeat="feesData in printData.fee_details">
-			<tr ng-repeat="item in feesData.charge_details" ng-if="!item.is_tax">
-					<td> {{feesData.date | date:'MM-dd-yyyy'}}</td>
-					<td> 
-						<span>
-							{{item.description}}
-						</span>
-					</td>
-					<td><strong> 
-							<span>
-								{{printData.currency}}{{item.amount | number: precisonTwo}}
-							</span>
-					</strong></td>
-					<td></td>
-			</tr>
-			<tr ng-repeat="item in feesData.credit_details">
-			
-					<td> {{feesData.date | date:'MM-dd-yyyy'}}</td>
-					<td> 
-						<span>
-							{{item.description}}
-						</span>
-					</td>
-					<td></td>
-					<td>
-						<strong>
-						 	<span>
-								{{printData.currency}}{{item.amount | number: precisonTwo}}
-							</span>
-						</strong>
-					</td>
-			</tr>
-		</tbody>
-	</table>
+<table class="guest-info">
+    <tbody>
+        <tr>
+            <th translate>GUEST_FULL_NAME</th>
+            <th translate>ARRIVAL_DATE</th>
+            <th translate>DEPARTURE_DATE</th>
+        </tr>
+        <tr>
+            <td>{{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</td>
+            <td>{{printData.arrival_date | date:dateFormat}}</td>
+            <td>{{printData.departure_date | date:dateFormat}}</td>
+        </tr>
+        <tr>
+            <th translate>CITY</th>
+            <th translate>STATE</th>
+            <th translate>POSTAL_CODE</th>
+            <th translate>COUNTRY</th>
+        </tr>
+        <tr>
+            <td>{{printData.guest_details.city}}</td>
+            <td>{{printData.guest_details.state}}</td>
+            <td>{{printData.guest_details.postal_code}}</td>
+            <td>{{printData.guest_details.country}}</td>
+        </tr>
+        <tr>
+            <th translate>CONFIRMATION_NO</th>
+            <th translate>ROOM_NO</th>
+            <th translate>INVOICE_NO</th>
+        </tr>
+        <tr>
+            <td>{{printData.confirmation_number}}</td>
+            <td>{{printData.room_number}}</td>
+            <td>{{printData.invoice_number}}</td>
+        </tr>
+    </tbody>
+</table>
+<div class="invoice-header">
+    {{printData.custom_text_header}}
 </div>
-<div class="amount-details">
-	<table>
-		<tr>	
-			<td colspan="2" align="right"><span translate>Total charge</span></td>
-			<td colspan="3" align="right">
-				<strong> 
-					{{printData.currency}}{{printData.total_fees}}
-				</strong>
-			</td>
-		</tr>
+<div class="invoice-body">
+    <p class="date"><strong translate>INVOICE_DATE</strong>{{printData.invoice_date}}</p>
+    <table class="invoice-details">
+        <caption>
+            {{printData.hotel_name}}
+            <span ng-if="printData.show_hotel_address">
+                {{printData.hotel_address}}
+            </span>
+        </caption>
+        <thead>
+            <tr>
+                <th translate>DATE_OF_CHARGE</th>
+                <th translate>CHARGE_DESC</th>
+                <th class="align-right" translate>CHARGE_AMOUNT</th>
+                <th class="align-right" translate>CREDIT_AMOUNT</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="3"><strong translate>TOTAL_CHARGE</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.total_fees}}<strong></td>
+            </tr>
+            <tr>
+                <td colspan="3"><strong translate>TOTAL_CREDITS<strong></td>
+                <td><strong>{{currencySymbol}}{{printData.credits | number: precisonTwo}} <strong></td>
+            </tr>
 
-		<tr>
-			<td colspan="2"> <span translate>Total Credits</span></td>
-			<td colspan="3">
-				<strong> 
-					{{printData.currency}} {{printData.credits | number: precisonTwo}} 
-				</strong>
-			</td>
-		</tr>
+            <tr>
+                <td colspan="3"><strong translate>BALANCE</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.balance}} </strong></td>
+            </tr>
+            <tr>
+                <td colspan="3" translate>NET_AMOUNT</td>
+                <td>{{currencySymbol}}{{printData.net_amount}}</td>
+            </tr>
+           
+            <tr ng-repeat="item in printData.charge_details_list" ng-if="item.is_tax">
+                <td colspan="3"> 
+                    {{item.description}}
+                </td>
+                <td>           
+                    {{currencySymbol}}{{item.amount | number: precisonTwo}}
+                </td>
+            </tr>
 
-		<tr ng-repeat="payment_details in printData.payment_details">
-			<td colspan="2" ng-if="payment_details.description == 'Credit Card'">
-				<span>{{payment_details.description}}({{payment_details.card_number}})</span>
-	 		</td>
-	 		<td colspan="2"  ng-if="payment_details.description != 'Credit Card'">
-				<span>{{payment_details.description}}</span>
-	 		</td>
- 			<td colspan="3" ></td>
-		</tr>
+            <tr>
+                <td colspan="3" translate>TOTAL_INCL_TAX</td>
+                <td>{{currencySymbol}}{{printData.total_incl_tax}}</td>
+            </tr>            
+        </tfoot>
 
-		<tr >
-			<td colspan="2"><span>Balance</span></td>
-			<td colspan="3"><span><strong>{{printData.currency}}{{printData.balance}}</strong></span></td>
-		</tr>
-		<tr >
-			<td colspan="2"><span>Net Amount</span></td>
-			<td colspan="3"><span><strong>{{printData.currency}}{{printData.net_amount}}</strong></span></td>
-		</tr>
-		<tbody ng-repeat="feesData in printData.fee_details">
-			<tr ng-repeat="item in feesData.charge_details" ng-if="item.is_tax">
-				<td colspan="2"> 
-					<span>
-						{{item.description}}
-					</span>
-				</td>
-				<td colspan="3">
-					<strong > 
-						<span>
-							{{printData.currency}}{{item.amount | number: precisonTwo}}
-						</span>
-					</strong>
-				</td>
-			</tr>
-		</tbody>
-		<tr >
-			<td colspan="2"><span>Total Incl Tax</span></td>
-			<td colspan="3"><span><strong>{{printData.currency}}{{printData.total_incl_tax}}</strong></span></td>
-		</tr>
-	</table>
+        <tbody>
+            <tr ng-repeat="item in printData.charge_details_list" ng-show="!item.is_tax">
+                <td>{{item.date | date:dateFormat}}</td>
+                <td>{{item.description}}</td>
+                <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
+                <td class="align-right"></td>
+            </tr>
+
+            <tr ng-repeat="item in printData.credit_details_list">
+                <td>{{item.date | date:dateFormat}}</td>
+                <td>{{item.description}}</td>
+                <td class="align-right"></td>
+                <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+<div class="invoice-footer">
+    {{printData.custom_text_footer}}
 </div>

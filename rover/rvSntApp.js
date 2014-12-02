@@ -5,6 +5,7 @@ var GlobalApp = function(){
     this.cardReader = null;
     this.iBeaconLinker = null;
     this.enableURLChange = true;
+    this.MLIOperator = new MLIOperation();
 
     this.DEBUG = true;
 
@@ -73,5 +74,5 @@ var GlobalApp = function(){
 };
 
 sntapp = new GlobalApp();
-// sntapp.enableCardSwipeDebug();
+//sntapp.enableCardSwipeDebug();
 

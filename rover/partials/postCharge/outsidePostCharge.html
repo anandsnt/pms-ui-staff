@@ -97,7 +97,17 @@
 		                    <strong class="h1" translate>SEARCH_NORMAL</strong>
 		                    <span class="h2">{{'SEARCH' | translate}} <em>{{'ROOM_LABEL' | translate}}</em> {{'BY'| translate}} <strong>{{'NUMBER' | translate}}</strong> {{'OR' | translate}} <em>Reservation</em> {{'BY'| translate}} <strong>{{'GUEST' | translate}}</strong>, <strong>{{'COMPANY' | translate}}</strong> {{'OR' | translate}} <strong>{{'TRAVELAGENT' | translate}}</strong> {{'NAME' | translate}}</span>
 		                </div>
-		            </div> 
+		            </div>
+
+            		<div id="search-guests-for-charge-no-matches" class="search-cards no-content show-initial-search" ng-show="showNoMatches" >
+                        <div class="info">
+    						<span class="icon-no-content icon-search"></span>
+    						<strong class="h1">No matches </strong>
+    						<span class="h2">Check that you didn't mispell the <strong>Name</strong> , or typed in the wrong <strong>Room </strong> number
+    						</span>
+    						<span ng-show="results.length==0 && showAddNewGuestButton"> or  <a>Add a New Guest <a/> </span>
+    					</div>
+                    </div>
 	
 		    		<!-- When you have results, use the same markup as on reservation search screen. -->
 		        	

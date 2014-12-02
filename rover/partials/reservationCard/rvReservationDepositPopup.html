@@ -1,0 +1,53 @@
+<div id="modal" class="modal-show" role="dialog" ng-cloak>
+<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+<form id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-class="{'select-card':depositMode}"><!-- Add class "select-card" when applying penalty charge -->
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+    
+    <!-- 1. deposit Options screen -->
+    <fieldset id="cancel-options" ng-show="!depositMode">
+        <span class="h2 message"> DEPOSIT </span>
+        <span class="text">This reservation is subject to a deposit of 9% / <currency> of the stay / first night /(flat amount)</span>
+        <div class="actions">
+            <button type="button" class="button green" ng-click="payDeposit()">Pay Deposit Now</a>
+            <button type="button" class="button blue" ng-click="closeDialog()">Pay Later</button> 
+        </div>
+    </fieldset>
+
+    <!-- 2. Apply deposit screen-->
+    <fieldset id="apply-penalty" class="credit-card" ng-show="depositMode">
+        <strong class="h2 message">Select or Add Credit Card</strong>
+         <span class="text">Card will be charged with a {{currencySymbol}}45 deposit.</span>
+        <div id="set-payment" class="payment-form">
+            <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="showCC"></div>
+             <!-- Selected/added credit card -->
+            <div id="selected-card" class="entry full-width" ng-hide="showCC" ng-click="onCardClick()">
+                <label>Credit Card (<span>Tap to change</span>)</label>
+                <label id="pay-with-jcb" class="active-item item-payment">
+                    <figure class="card-logo">
+                      <img src="/assets/{{depositData.card_type}}.png" alt="" />
+                    </figure>
+                    <span class="number">Ending with <span class="value number">{{depositData.cardNumber}}</span></span>
+                    <span class="date">Date <span class="value date">{{depositData.expiry_date}}</span></span>
+                </label>
+            </div>
+            <div class="entry full-width" ng-hide="showCC" ng-class="{'amount': isStandAlone}"><!-- Add class "amount" when fee exsists -->
+                <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
+                <input name="amount" id="amount" ng-model="depositData.amount" type="text" />
+            </div>
+            <!-- Reference field - use only when it exsits -->
+            <div class="entry full-width reference" ng-hide="showCC || !depositData.isDisplayReference">
+                <label for="reference">Reference</label>
+                <input name="reference" id="reference" ng-model="depositData.referanceText" type="text" />
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="actions" ng-hide="showCC">
+                <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
+                <button type="button" class="button green" ng-click="cancelReservation()">Make Payment</button> 
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+</div>

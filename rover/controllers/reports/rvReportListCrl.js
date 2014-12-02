@@ -31,14 +31,32 @@ sntRover.controller('RVReportListCrl', [
 
 			for (var i = 0, j = reportList.length; i < j; i++) {
 
-				// add report icon class
-                if ( reportList[i]['title'] == 'Upsell' ) {
-                    reportList[i]['reportIconCls'] = 'icon-upsell';
-                } else if ( reportList[i]['title'] == 'Late Check Out' ) {
-                    reportList[i]['reportIconCls'] = 'icon-late-check-out';
-                } else {
-                    reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
-                }
+                // add report icon class
+                switch (reportList[i]['title']) {
+                    case 'Check In / Check Out':
+                        reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
+                        break;
+
+                    case 'Upsell':
+                        reportList[i]['reportIconCls'] = 'icon-upsell';
+                        break;
+
+                    case 'Late Check Out':
+                        reportList[i]['reportIconCls'] = 'icon-late-check-out';
+                        break;
+
+                    case 'Web Check Out Conversion':
+                        reportList[i]['reportIconCls'] = 'icon-check-out';
+                        break;
+
+                    case 'Web Check In Conversion':
+                        reportList[i]['reportIconCls'] = 'icon-check-in';
+                        break;
+
+                    default:
+                        reportList[i]['reportIconCls'] = '';
+                        break;
+                };
 
                 reportList[i]['show_filter'] = false;
 

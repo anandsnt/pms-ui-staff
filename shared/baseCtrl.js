@@ -59,6 +59,47 @@ function BaseCtrl($scope) {
 		
 	};
 
+	$scope.callAPI = function(serviceApi, options){		
+		var options = options ? options : {},
+			params = options["params"] ? options["params"] : null,
+			loader = options["loader"] ? options["loader"] : 'BLOCKER',
+			successCallBack = options["successCallBack"] ? options["successCallBack"] : $scope.fetchedCompleted,
+			failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : $scope.fetchedFailed,
+			successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null,
+			failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;		
+
+		if(loader.toUpperCase() == 'BLOCKER')
+			$scope.$emit('showLoader')		
+
+
+		return serviceApi(params).then(
+			//success call back
+			function(data){
+				$scope.$emit('hideLoader');
+				if(successCallBack) {
+					if(successCallBackParameters){
+						successCallBack(data, successCallBackParameters);
+					}
+					else{
+						successCallBack(data);
+					}						
+				}				
+			},
+			//failure callback
+			function(error){
+				$scope.$emit('hideLoader');
+				if(failureCallBack) {	
+					if(failureCallBackParameters){
+						failureCallBack(error, failureCallBackParameters);
+					}
+					else{
+						failureCallBack(data.errors);
+					}
+				}
+			}
+		);
+	}
+
 	//handle drag and drop events
 	$scope.hideCurrentDragItem = function(ev, ui){ 
 		$(ev.target).hide();
@@ -182,5 +223,41 @@ function BaseCtrl($scope) {
     		};
     	}, $scope.timeOutForScrollerRefresh);   	
     };
+
+    /*
+    * MLI integration
+    */
+
+    $scope.fetchMLI = function(sessionDetails,successCallback,failureCallback){
+
+		var success = function(response){
+			$scope.$emit("hideLoader");
+			successCallback(response);
+			$scope.$apply(); 
+		};
+		var failure = function(data){
+			$scope.$emit("hideLoader");
+			var errorMessage = ["There is a problem with your credit card"];
+			failureCallback(errorMessage); 
+			$scope.$apply();
+		};
+
+		if(sessionDetails.cardNumber.length > 0 ){
+				try {
+					$scope.$emit('showLoader');
+					sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,success,failure);
+				}
+				catch(err) {
+					$scope.$emit("hideLoader");
+					var errorMessage = ["There was a problem connecting to the payment gateway."];
+					failureCallback(errorMessage);
+				};
+			}
+		else{
+				var errorMessage = ["There is a problem with your credit card"];
+				failureCallback(errorMessage);
+		};
+		
+	};
 
 }

@@ -23,6 +23,7 @@ admin.controller('ADStationaryCtrl',['$scope','ADStationarySrv',function($scope,
 	var successCallbackOfSaveDetails = function(data){
 		$scope.$emit('hideLoader');	
 		$scope.errorMessage = '';
+		$scope.goBackToPreviousState();
 	};
 	// Save changes button actions.
 	$scope.clickedSave = function(){
