@@ -114,6 +114,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 //They are added to the reservation by default later on, 
                 //but should be copied to the Search screen as well
                 $scope.viewState.reservationStatus.confirm = false;
+                // Reset addons as part CICO-10657
+                $scope.resetAddons();
                 if ($scope.reservationDetails.guestCard.id != '') {
                     $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
                     $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
