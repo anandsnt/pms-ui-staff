@@ -390,9 +390,8 @@ sntRover
 	    	$scope.gridProps.display = util.deepCopy($scope.gridProps.display);*/
 	    	this.availability.resize.current_arrival_time = row_item_data[meta.occupancy.start_date];
 	    	this.availability.resize.current_departure_time = row_item_data[meta.occupancy.end_date];
-	    	this.display.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;
-
-	    	callAvailabilityAPI();
+	    	this.display.min_hours = (row_item_data[meta.occupancy.end_date] - row_item_data[meta.occupancy.start_date]) / 3600000;			
+	    	$scope.Availability();
 
 	    }.bind($scope.gridProps); 
 
@@ -713,17 +712,15 @@ sntRover
 		};
 
 	var successCallBackOfAvailabilityFetching = function(data, successParams){
-		var row_item_data;
-
+		var row_item_data;		
 		if(data.length) {
-			row_item_data 	= data[0];
-			
+			row_item_data 	= data[0];					
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
 				this.availability.resize.last_arrival_time =  this.availability.resize.current_arrival_time;
 				this.availability.resize.last_departure_time = this.availability.resize.current_departure_time;
 			}						
-			
+
 			$scope.initPassiveEditMode({
                 start_date:     new Date(row_item_data[meta.occupancy.start_date]),
                 end_date:       new Date(row_item_data[meta.occupancy.end_date]),
