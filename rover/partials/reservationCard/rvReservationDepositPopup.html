@@ -41,7 +41,7 @@
             <!-- Payment fields -->
             <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        
             <!-- Buttons - remove class "hidden" when payment type is defined-->
-            <div class="actions">
+            <div class="actions deposit-actions">
                 <button type="button" class="button blue" ng-click="closeDialog()">Pay deposit later</button>
                 <button type="button" class="button green" ng-click="payDeposit()">Pay deposit now</button>
             </div>
@@ -50,11 +50,17 @@
             <div ng-include="'/assets/partials/common/notification_message.html'" ng-hide="successOccured"></div>
             <div ng-hide="errorOccured">
                 <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-                Your authorized code is :{{authorizedCode}}
-                Amount Paid: {{currencySymbol}}{{reservationData.depositAmount}}
+                <div class="authorised-code-text">
+                    <span>Your authorized code is :</span>
+                    <span>{{authorizedCode}}</span>
+                </div>
+                <div class="amount-paid">
+                    <span>Amount Paid:</span> 
+                    <span >{{currencySymbol}}{{reservationData.depositAmount}}</span>
+                </div>
             </div>
         </div>
-        <div class="actions">
+        <div class="actions float" ng-class="{'deposit-required-actions':depositInProcess && errorOccured && !successOccured}">
             <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
             <!-- to chnage ng-lcick -->
             <button type="button" class="button blue" ng-click="showSuccess()" ng-show="depositInProcess && errorOccured && !successOccured">Try again</button>
