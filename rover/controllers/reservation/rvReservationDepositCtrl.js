@@ -15,7 +15,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.errorMessage = "";
 		$scope.successOccured = false;
 		$scope.successMessage = "";
-		$scope.authorizedCode = "54275754";
+		$scope.authorizedCode = "";
 
 		$scope.depositData = {
 			selectedCard: -1,
@@ -30,10 +30,10 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			referanceText:""
 		};
 		$scope.reservationData = {};
-		$scope.reservationData.depositAmount = 4353;
+		$scope.reservationData.depositAmount = "";
+		$scope.depositPolicyName = "";
 		$scope.reservationData.referanceText = "";
-
-		$scope.depositData.isDisplayReference = $scope.passData.details.isDisplayReference;
+		
 
 		$scope.setScroller('cardsList');		
 		var refreshCardsList = function() {
@@ -81,6 +81,31 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 
+	    var setSelectedCreditCard = function(cardValue){
+			var selectedCard = {};
+			$scope.cardsList.forEach(function(card) {
+				if(card.value == cardValue){
+					selectedCard =angular.copy(card);
+					$scope.depositData.selectedCard = selectedCard.value;
+					$scope.depositData.cardNumber = selectedCard.mli_token;
+					$scope.depositData.expiry_date = selectedCard.card_expiry;
+					$scope.depositData.card_type = selectedCard.card_code;
+					$scope.cardSelected = true;
+				};
+			});			
+		};
+
+		var fetchDepositDetailsSuccess = function(data){
+			$scope.$emit('hideLoader');
+			var depositDetails = data;
+			$scope.depositPolicyName = depositDetails.deposit_policy.description;
+			$scope.reservationData.depositAmount = depositDetails.deposit_policy.amount;
+			if((typeof depositDetails.attached_card.value !== "undefined") && depositDetails.attached_card.value !==""){
+				setSelectedCreditCard(depositDetails.attached_card.value);
+			};
+		};
+
+
 		var savePayment = function() {
 
 			var expiryMonth = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
@@ -110,6 +135,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			if($scope.depositData.isDisplayReference){
 				paymentData.referance_text = $scope.depositData.referanceText;
 			};
+
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 		};
 
@@ -128,6 +154,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.addmode = false;
 				refreshCardsList();
 			};
+			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, {},fetchDepositDetailsSuccess);
 		};
 
 	var reservationId = $stateParams.id;
@@ -136,8 +163,10 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 	var successPayment = function(data){
 		$scope.$emit('hideLoader');
 		$scope.successMessage = "Deposit payed successfully!";	
+		$scope.authorizedCode = data.authorization_code;
 		$scope.errorOccured = false;
 		$scope.successOccured = true;
+		$scope.isLoading =  false;
 	};
 
 	var paymentFailed = function(data){
@@ -145,6 +174,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.errorMessage = data;
 		$scope.errorOccured = true;
 		$scope.successOccured = false;
+		$scope.isLoading =  false; 
 
 	};
 
@@ -172,6 +202,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			if($scope.isDisplayReference){
 				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;
 			};
+			$scope.isLoading =  true;
 			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment,paymentFailed);
 		};
 	};
@@ -221,6 +252,4 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		setCreditCardFromList(data.index);
 	});
 
-	}
-
-]);
+}]);

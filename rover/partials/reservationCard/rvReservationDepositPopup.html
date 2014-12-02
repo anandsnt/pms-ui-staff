@@ -19,7 +19,7 @@
         </div>
         </div>
         <div class="notice deposit" ng-hide="depositInProcess || paymentMode">                        
-            <p>Deposit required: <strong>9% of the stay / first night /(flat amount)</strong>.</p>
+            <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
             <!-- Payment fields -->
             <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        
             <!-- Buttons - remove class "hidden" when payment type is defined-->
@@ -30,7 +30,7 @@
         </div>
         <div ng-hide="!depositInProcess">                        
             <div ng-include="'/assets/partials/common/notification_message.html'" ng-hide="successOccured"></div>
-            <div ng-hide="errorOccured">
+            <div ng-hide="errorOccured || isLoading">
                 <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
                 <div class="authorised-code-text">
                     <span>Your authorized code is :</span>
