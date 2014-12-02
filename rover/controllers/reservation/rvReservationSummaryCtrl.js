@@ -94,8 +94,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.init = function() {
 			$scope.data = {};
 			if ($stateParams.reservation == "HOURLY") {
-				console.log("hhhhhhhhhhhhhhhhhh")
-;;				$scope.$emit('showLoader');
+				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
@@ -537,14 +536,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		this.attachCompanyTACardRoutings = function(){
 
 			var fetchSuccessofDefaultRouting = function(data){
-				//TODO: Remove this
-				data = {};
-				data.has_conflicting_routes = false;
-				data.travel_agent = {};
-				data.travel_agent.routings_count = 2;
-				data.company = {};
-				data.company.routings_count = 2;
-
+				$scope.$emit("hideLoader");
 				$scope.routingInfo = data;
 
 				if(data.has_conflicting_routes){
@@ -577,9 +569,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 				params.company_id = $scope.reservationData.company.id;
 				//TODO: Actual API call
-				fetchSuccessofDefaultRouting();
+				//fetchSuccessofDefaultRouting();
 
-				//$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
+				$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
 			}
 		};
 

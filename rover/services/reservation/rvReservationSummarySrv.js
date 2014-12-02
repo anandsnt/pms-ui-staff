@@ -184,13 +184,10 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
 
         this.fetchDefaultRoutingInfo = function(params){
             var deferred = $q.defer();            
-            var url = '/api/default_account_routings/'+ params.id+'/routings_count/';
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                console.log("fetch success");
-                console.log(data);
+            var url = '/api/default_account_routings/routings_count/';
+            rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
-                console.log("failed");
                 deferred.reject(data);
             });
             return deferred.promise;
