@@ -1,3 +1,4 @@
+R = []
 sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault',
         function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault) {
                 /* DATA STORE w/ set functions */
@@ -83,7 +84,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             incoming,
                             set_difference,
                             room_ids    = _.keys(room_oc_groups);
-
                         for(var i = 0, len = room_ids.length; i < len; i++) {
                             idx = +room_ids[i];
 
@@ -246,7 +246,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     normalization: function(normalizeParams) {
                         var local_store = this.store,
                             self = this;
-
                         if(this.normalize) {
                             _.each(local_store.data, function(obj) {
                                 if(!normalizeParams) {
@@ -452,7 +451,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         m           = meta.occupancy,
                         room        = this.dataStore.get('_room.values.id')[slot.id],
                         room_type   = room.room_type;
-
+                        R.push(slot.id);
                     /*
                         Configrue Available slot to mirror occupancy, execpt
                         set revervation_id for the collection so the resize
@@ -667,24 +666,54 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         q = $q.defer(),
                         guid = GUID || _.uniqueId('avl-'),
                         params = dateRange(start_date, end_date, room_type_id, rate_type);
-                    
+                    var self = this;
                     //If rate_type is available
                     if(rate_type) {
                         if(account_id){
                             _.extend(params, { account_id: account_id });
                         }
                     }
-
+                    R = [];
                     Availability.read(params)
-                    .then(function(data) {
-                        if(data && data.results) {
+                    .then(function(data) {                        
+                        if(data && data.results) {                      
+                             /*var keys = [];
+                             if(Availability.store.group.values.id){
+                                for (key in Availability.store.group.values.id){
+                                    keys.push(key);
+                                }                                
+                            }*/
+
+                            var existing_data   = JSON.parse(JSON.stringify(Availability.store.data)),
+                                existing_ids    = _.pluck(existing_data, "id"),
+                                new_coming_data = JSON.parse(JSON.stringify(data.results[0].availability)),
+                                new_coming_ids  = _.pluck(new_coming_data, "id"),
+                                id_difference   = undefined; 
+                                if(existing_ids.length > 0){
+                                    id_difference = _.difference(existing_ids, new_coming_ids);
+
+                                    var len = Availability.store.data.length;
+                                   
+
+                                    for(var i = 0; i < len; i++) {
+                                       for(var k = 0; k < id_difference.length; k++) {                                       
+                                            if(Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id == id_difference [k]){
+                                                Availability.store.data.splice(i);
+                                                delete Availability.store.group.values.id[id_difference[k]];
+                                                len--;
+                                            }
+                                        } 
+                                    }                              
+                                }             
+                            
+
                             Availability.resolve(data.results.shift(), [
                                 start_date,
                                 end_date,       
                                 guid,
                                 false
-                            ]);
-
+                            ]);                           
+                            
                             q.resolve(Availability.store.data);
                        }
                     });
