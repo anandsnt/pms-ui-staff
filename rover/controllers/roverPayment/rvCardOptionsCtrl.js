@@ -9,7 +9,8 @@ sntRover.controller('RVCardOptionsCtrl',
 	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
 		BaseCtrl.call(this, $scope);
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
-		 
+		 	console.log("=======RENDER============");
+		 console.log(swipedDataToRenderInScreen);
 	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
