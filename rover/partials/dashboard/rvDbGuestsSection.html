@@ -1,31 +1,34 @@
 <div bindonce="statisticsData" id="dashboard-guests" class="dashboard-block buttons" ng-controller="rvDashboardGuestWidgetController">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <h3>Guests</h3>    
+    <h3>Guests</h3> 
+    <!-- <button ui-sref="rover.reservation.staycard.mainCard.summaryAndConfirmFromOutide({'room_id':['180','181'],'arrival_date':'2014-07-15','departure_date':'2014-07-16', 'arrival_time': '04:30', 'departure_time': '09:15'})">GO TO CONFIRMATION RESERVATION SCREEN</button>    -->
+     <!-- <button ng-click="setReservationDataFromDiaryScreen()">GO TO CONFIRMATION RESERVATION SCREEN</button> -->
     <ul class="actions" ng-class="{'col5': statisticsData.guests.is_pre_checkin_only ==='true'}">
+        
         <li>
-            <a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN')" >
+            <a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN', statisticsData.guests.checking_in)" >
                 <strong bo-text="statisticsData.guests.checking_in"></strong> 
                 Arrivals
             </a>
         </li>
         <li ng-show="statisticsData.guests.is_pre_checkin_only =='true'">
-            <a ng-click="clickedOnGuestsToday($event, 'PRE_CHECKIN')" class="button orange">
+            <a ng-click="clickedOnGuestsToday($event, 'PRE_CHECKIN', statisticsData.guests.pre_check_in)" class="button orange">
             <strong bo-text="statisticsData.guests.pre_check_in"></strong>Pre Check In</a>
         </li>
         <li>
-            <a class="button blue" ng-click="clickedOnGuestsToday($event, 'INHOUSE')">
+            <a class="button blue" ng-click="clickedOnGuestsToday($event, 'INHOUSE', statisticsData.guests.in_house)">
                 <strong bo-text="statisticsData.guests.in_house"></strong> 
                 In-house
             </a>
         </li>
         <li>
-            <a class="button red" ng-click="clickedOnGuestsToday($event, 'DUEOUT')">
+            <a class="button red" ng-click="clickedOnGuestsToday($event, 'DUEOUT', statisticsData.guests.checking_out)">
                 <strong bo-text="statisticsData.guests.checking_out"></strong>
                 Departures
             </a>
         </li>        
         <li>
-            <a class="button yellow" ng-click="clickedOnGuestsToday($event, 'VIP')">
+            <a class="button yellow" ng-click="clickedOnGuestsToday($event, 'VIP', statisticsData.guests.vip)">
                 <strong bo-text="statisticsData.guests.vip"></strong> 
                 VIPs
             </a>
@@ -33,7 +36,7 @@
     </ul>
     <ul class="data">
         <li>Arrivals <strong class="green" bo-text="statisticsData.guests.checking_in"></strong></li>
-        <li ng-show="statisticsData.guests.is_pre_checkin_only =='true'">Pre Check In <strong class="orange" bo-text="statisticsData.guests.checking_in"></strong></li>
+        <li ng-show="statisticsData.guests.is_pre_checkin_only =='true'">Pre Check In <strong class="orange" bo-text="statisticsData.guests.pre_check_in"></strong></li>
         <li>Departures <strong class="red" bo-text="statisticsData.guests.checking_out"></strong></li>
         <li>In-house <strong class="blue" bo-text="statisticsData.guests.in_house"></strong></li>
         <li>VIPs <strong class="yellow" bo-text="statisticsData.guests.vip"></strong></li>

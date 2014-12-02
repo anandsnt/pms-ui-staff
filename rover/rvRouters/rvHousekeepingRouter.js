@@ -9,16 +9,12 @@ angular.module('housekeepingModule', [])
         });
 
         $stateProvider.state('rover.housekeeping.roomStatus', {
-            url: '/roomStatus/:roomStatus',
+            url: '/roomStatus?roomStatus&businessDate',
             templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
             controller: 'RVHkRoomStatusCtrl',
             resolve: {
-                fetchedRoomList: function(RVHkRoomStatusSrv, $stateParams) {
-                    if (!$stateParams) {
-                        return false;
-                    };
-
-                    if (!!$stateParams.roomStatus) {
+                roomList: function(RVHkRoomStatusSrv, $stateParams, $rootScope) {
+                    if (!!$stateParams && !!$stateParams.roomStatus) {
                         var filterStatus = {
                             'INHOUSE_DIRTY': ['dirty', 'stayover'],
                             'INHOUSE_CLEAN': ['clean', 'stayover'],
@@ -26,17 +22,31 @@ angular.module('housekeepingModule', [])
                             'DEPARTURES_CLEAN': ['dueout', 'departed', 'clean'],
                             'OCCUPIED': ['occupied'],
                             'VACANT_READY': ['vacant', 'clean', 'inspected'],
-                            'VACANT_NOT_READY': ['vacant', 'dirty', 'out_of_order'],
+                            'VACANT_NOT_READY': ['vacant', 'dirty'],
                             'OUTOFORDER_OR_SERVICE': ['out_of_order', 'out_of_service'],
-                            'QUEUED_ROOMS': ['dayuse']
+                            'QUEUED_ROOMS': ['queued']
                         }
                         var filtersToApply = filterStatus[$stateParams.roomStatus];
                         for (var i = 0; i < filtersToApply.length; i++) {
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
                     }
-
-                    return RVHkRoomStatusSrv.roomList;
+                    var businessDate = $stateParams.businessDate || $rootScope.businessDate;
+                    return RVHkRoomStatusSrv.fetchRoomList({
+                        businessDate: businessDate
+                    });
+                },
+                employees: function(RVHkRoomStatusSrv, $rootScope) {
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];
+                },
+                workTypes: function(RVHkRoomStatusSrv, $rootScope) {
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchWorkTypes() : [];
+                },
+                roomTypes: function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchRoomTypes();
+                },
+                floors: function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchFloors();
                 }
             }
         });
@@ -73,7 +83,7 @@ angular.module('housekeepingModule', [])
                     return RVWorkManagementSrv.fetchShifts();
                 },
                 floors: function(RVHkRoomStatusSrv) {
-                    return RVHkRoomStatusSrv.fetch_floors();
+                    return RVHkRoomStatusSrv.fetchFloors();
                 }
             }
         });
@@ -81,7 +91,7 @@ angular.module('housekeepingModule', [])
         $stateProvider.state('rover.workManagement.start', {
             url: '/start',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementLanding.html',
-            controller: 'RVWorkManagementStartCtrl'            
+            controller: 'RVWorkManagementStartCtrl'
         });
 
         $stateProvider.state('rover.workManagement.multiSheet', {

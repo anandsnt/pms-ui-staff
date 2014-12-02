@@ -4,8 +4,8 @@ var sntRover = angular.module('sntRover',[
 		'ui.utils', 
 		'ng-iscroll', 
 		'highcharts-ng', 
-		'ngAnimate',
-		'ngDialog', 
+		'ngDialog',
+		'ngAnimate', 
 		'ngSanitize', 
 		'pascalprecht.translate',
 		'ui.date',
@@ -15,6 +15,8 @@ var sntRover = angular.module('sntRover',[
 		'stayCardModule', 
 		'housekeepingModule', 
 		'reportsModule', 
+		'diaryModule',
+		'FinancialsModule',
 		'cacheVaultModule', 
 		'twoMonthscalendar',
 		'acute.select', 
@@ -25,7 +27,8 @@ var sntRover = angular.module('sntRover',[
 		'orientationInputBlurModule',  
 		'multi-select', 		
 		'ngDragDrop',
-		'iscrollStopPropagation']);
+		'iscrollStopPropagation',
+		'ngReact']);
 
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
@@ -165,7 +168,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
-		//console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
+		console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  

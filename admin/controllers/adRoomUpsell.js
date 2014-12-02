@@ -83,10 +83,10 @@ $scope.saveClick = function() {
 	data.charge_code = $scope.upsellData.selected_charge_code
 	data.upsell_room_levels = $scope.upsellData.upsell_room_levels;
 
-	var updateChainSuccessCallback = function(data) {
+	var updateRoomUpsellSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
 	};
-	$scope.invokeApi(adRoomUpsellService.update, data, updateChainSuccessCallback);
+	$scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback);
 
 };
 

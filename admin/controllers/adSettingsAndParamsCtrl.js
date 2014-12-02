@@ -1,4 +1,4 @@
-admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','settingsAndParamsData', function($scope,settingsAndParamsSrv,settingsAndParamsData){
+admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','settingsAndParamsData','chargeCodes', function($scope,settingsAndParamsSrv,settingsAndParamsData,chargeCodes){
 
 	BaseCtrl.call(this, $scope);
 	$scope.hours = ["HH","01","02","03","04","05","06","07","08","09","10","11","12"];
@@ -6,8 +6,10 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
 
 
     $scope.data = settingsAndParamsData.business_date;
-
- /**
+    $scope.chargeCodes = chargeCodes;
+    $scope.selected_charge_code = settingsAndParamsData.no_show_charge_code_id;
+  
+    /**
     * To handle save button action
     *
     */ 
@@ -17,8 +19,10 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
              $scope.$emit('hideLoader');
              $scope.goBackToPreviousState();
         }
-    
-        $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, $scope.data,saveDetailsSuccessCallback);
+        var selectedChargeCode = ( typeof $scope.selected_charge_code == 'undefined' ) ? "" : $scope.selected_charge_code;
+        var dataToSend = { "no_show_charge_code_id" : selectedChargeCode , "business_date" : $scope.data };
+        
+        $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend ,saveDetailsSuccessCallback);
     };
 
 

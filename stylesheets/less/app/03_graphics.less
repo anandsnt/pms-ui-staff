@@ -162,8 +162,11 @@
 		}
 
 		/* Guest icons ***/
-		&.icon-location {  background-position: 0 -23px; background-size: 80px; }
-		&.icon-group { background-position: 0 -50px; background-size: 80px; }
+		&.icon-location {  background-position: 0px -36px; }
+		&.icon-group { background-position: 0 -78px; }
+		&.icon-guest-company { background-position: 0 -760px; }
+		&.icon-guest-travelagent { background-position: 0 -820px; }
+		
 		&.icon-phone { background-position: 3px -4234px; }
 		&.icon-email-grey { background-position: 2px -4293px; }
 		&.pre-check-in,
@@ -249,6 +252,11 @@
 			&.late-check-out { background-position: 10px -2903px; }
 		}
 
+		&.icon-time {
+			&.time-in { background-position: 10px -4050px; }
+			&.time-out { background-position: 10px -4110px; }
+		}
+
 		/* Housekeeping icons ***/
 		&.icon-room {
 			background-position: 0 -4350px;
@@ -263,6 +271,11 @@
 		&.icon-location-floor { background-position: 0 -5680px; }
 		&.icon-unassign-room { background-position: 25px -5720px; }
 		&.icon-assign-room { background-position: 25px -5780px; }
+
+		/* Diary icons ***/
+		&.icon-diary-maintenance { background-position: 0 -5920px; }
+		&.icon-diary-move-reservation { background-position: 0 -5980px; }
+		&.icon-diary-edit-reservation { background-position: 0 -6040px; }
 
 		/* Social Lobby Icons ***/
 		&.icon-show-conversations {
@@ -314,7 +327,7 @@
 
 		&.icon-pencil-blue { background-position: 3px -2137px; }
 
-		/* Reservation Icons ***/
+		/* Add / Remove Icons ***/
 		&.icon-add-60 {
 			background-position: 20px -3680px;
 			.hide-text;
@@ -352,11 +365,6 @@
 			background-position: 0 -5860px;
 			.hide-text;
 			.square(14px);
-		}
-
-		&.icon-time {
-			&.time-in { background-position: 10px -4050px; }
-			&.time-out { background-position: 10px -4110px; }
 		}
 
 		/* @2x Icons ***/
@@ -427,6 +435,7 @@
 		&.icon-upsell { background-position: 0 -25px;}
 		&.icon-late-check-out { background-position: 0 -55px;}
 		&.icon-check-out { background-position: 0 -85px;}
+		&.icon-check-in { background-position: 0 -115px;}
 
 		@media @highdpi {
 			background-image: @iconReports2x;

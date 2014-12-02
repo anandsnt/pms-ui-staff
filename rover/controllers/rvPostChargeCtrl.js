@@ -24,7 +24,6 @@ sntRover.controller('RVPostChargeController',
 
   			$scope.closeDialog = function(){
   				ngDialog.close();
-  				$rootScope.multiplePostingNumber = "";
   			};
 
 			// // set the default bill number
@@ -208,10 +207,6 @@ sntRover.controller('RVPostChargeController',
 					item.count = 1;
 					newCount++;
 				}
-			
-				if(newCount > 1 && $rootScope.multiplePostingNumber){
-					$scope.billNumber = $rootScope.multiplePostingNumber;
-				}
 
 				item.total_price = item.modifiedPrice * item.count;
 
@@ -219,6 +214,16 @@ sntRover.controller('RVPostChargeController',
 
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
+				/*
+				 * TO solve CICO-10251
+				 */
+				angular.forEach(angular.element("#numpad-numbers button"), function(value, key){
+				      new FastClick(value);
+				});
+				angular.forEach(angular.element("#numpad-options button"), function(value, key){
+				      new FastClick(value);
+				});
+				
 			};
 
 			/**
@@ -504,7 +509,6 @@ sntRover.controller('RVPostChargeController',
 				}
 				/****    CICO-6094    **/
 				var callback = function(data) {
-					$rootScope.multiplePostingNumber = dclone($scope.billNumber,[]);
 					$scope.$emit( 'hideLoader' );
 					// update the price in staycard
 					if(!$scope.isOutsidePostCharge){

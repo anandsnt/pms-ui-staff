@@ -23,40 +23,61 @@
 					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
                   <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
 				</div>
-				<div class="title" ng-show= "showPayment">Payment</div>
+				<div class="title" ng-show= "showPayment">Payment
+					<button type="button" id="edit-entity" ng-click="paymentDetails = null; isAddPayment = false" class="button with-icon only-icon purple edit" ng-show= "paymentDetails != null">
+						<span class="icons icon-pencil" ></span>
+					</button>
+				</div>
 				<!-- Available credit card -->
-				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && attachedPaymentTypes.existing_payments.length > 0">
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && paymentDetails == null">
 					<div class="wrapper">
-						<div class="payment" ng-show = "!isAddPayment && showPayment && paymentType.is_credit_card" ng-repeat="paymentType in attachedPaymentTypes.existing_payments" ng-click = "selectedEntity.selected_payment = paymentType.value">
+						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
 							<!-- add class active when selected -->
-							<figure class="card-logo">
-								<img src="/assets/{{paymentType.card_code}}.png" alt="" />
-							</figure>
-							<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.ending_with}}</span></span>
-							<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
+							<span ng-show = "paymentType.payment_type_id == 1">
+								<figure class="card-logo">
+									<img src="/assets/{{paymentType.card_code}}.png" alt="" />
+								</figure>
+								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
+								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>							
+							</span>
+							<span class="value code" ng-show = "paymentType.payment_type_id != 1">{{ paymentType.payment_type }}</span>
+							<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.id"></span>
 						</div>
 					</div>
 				</div>
+
+				<div class="payment active"  ng-show = "isAddPayment && showPayment && paymentDetails != null">
+							<!-- add class active when selected -->
+							<span ng-show = "paymentDetails.payment_type == 'CC'">
+								<figure class="card-logo">
+									<img src="/assets/{{paymentDetails.credit_card.toLowerCase()}}.png" alt="" />
+								</figure>
+								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentDetails.mli_token}}</span></span>
+								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentDetails.card_expiry}}</span></span>							
+							</span>
+							<span class="value code" ng-show = "paymentDetails.payment_type != 'CC'">{{ paymentDetails.payment_type_description }}</span>
+							<span class="icons icon-ok-10" ></span>
+				</div>
 				
 				<!-- Add new credit card button - remove it when new card is added -->
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment">+ New Payment Method</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && paymentDetails == null">+ New Payment Method</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
-				<div id = "newpaymentview"  ng-show = "isAddPayment && showPayment"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
+				<div id = "newpaymentview"  ng-if = "isAddPayment && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
 			</div>
 		</div>
 	</fieldset>
 	<fieldset class="content-right" ng-show = "bills.length != 0">
-		<span class="h2 message">
+		<span class="h2 message" ng-hide = "(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION')">
 		  {{'ROUTE_TO_BILL' | translate}}
-			<div class="select">
-				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill">
-					<option value="{{bill.id}}" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
+			<div class="select select-stand-alone">
+				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill" >
+					<option value="{{bill.id}}" ng-selected = "bill.id == selectedEntity.to_bill" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
 					<!-- .. add options as needed -->
 				</select>
 			</div>
 		</span>
-		<ul id="transaction-type" class="modal-options">
+		<ul id="transaction-type" class="modal-options" >
 			<li ng-class="{'active' : isBillingGroup}" ng-click = "toggleChargeType()" translate>BILLING_GROUP</li>
 			<li ng-class="{'active' : !isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
 		</ul>
@@ -75,7 +96,7 @@
 
 
 		<!-- Search available charge codes -->
-		<div id="autocomplete-charge-codes" class="search-codes" ng-show = "!isBillingGroup">
+		<div id="autocomplete-charge-codes" class="search-codes charge-code-select" ng-show = "!isBillingGroup">
 			<input ng-model="chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
 			<div class="mini-select" ng-click = "showAvailableChargeCodes()">
 				
@@ -96,7 +117,7 @@
 	         	</div>
 			</div>
 		<!-- Added from search -->
-		<div id="transactions" ng-iscroll='chargeCodes' ng-iscroll-delay='100' class="transactions codes scrollable" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length > 0)">
+		<div id="transactions" ng-iscroll='chargeCodes' ng-iscroll-delay='100' class="transactions codes scrollable billing-info-charge-codes" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length > 0)">
 			
 				<div class="entry radio-check wrapper" >
 					<label class="checkbox" ng-click="removeChargeCode(selectedChargeCode)" ng-repeat = "selectedChargeCode in selectedEntity.attached_charge_codes">
@@ -115,13 +136,13 @@
 			</div>
 	</fieldset>
 
-	<fieldset class="content-right" ng-show = "bills.length == 0">
+	<!-- <fieldset class="content-right" ng-show = "bills.length == 0">
       <div class="no-content" >
          <div class="info">
             <strong class="h1" translate>NO_BILLS_TO_ROUTE</strong>  
             
          </div>
-      </div>
+      </div> -->
         
    </fieldset>
 

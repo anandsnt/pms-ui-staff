@@ -6,11 +6,11 @@
         <div class="reservation-summary scrollable" id="reservation-summary" ng-iscroll='reservationSummary'>
             <div class="wrapper">
                 <h2>Reservation Confirmation</h2>
-                <ul class="data">
+                <ul class="data" ng-if="!reservationData.isHourly">
                     <li><span class="guest-status room" translate>ROOMS</span>
-                        <span>{{reservationData.roomCount}}</span>
-                        <span ng-if="reservationData.roomCount === 1" translate>ROOM</span>
-                        <span ng-if="reservationData.roomCount !== 1" translate>ROOMS</span>
+                        <span>{{reservationData.rooms.length}}</span>
+                        <span ng-if="reservationData.rooms.length === 1" translate>ROOM</span>
+                        <span ng-if="reservationData.rooms.length !== 1" translate>ROOMS</span>
                     </li>
                     <li>
                         <span class="guest-status nights" translate>NIGHTS</span>
@@ -42,7 +42,7 @@
                                 </select>
                             </div>
                             <div class="select minutes">
-                                <select iscroll-stop-propagation name="check-in" class="placeholder"ng-model="reservationData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()">
+                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -109,17 +109,20 @@
                     </div>
                     <div class="room-type">
                         <h4>{{room.roomTypeName}}<span></span></h4>
-                        <div class="confirmation"> <!-- Show confirmation number -->
+                        <div class="confirmation" ng-hide="room.confirm_no"> <!-- Show confirmation number -->
                             <span class="label">Confirmation #</span>{{reservationData.confirmNum}}
+                        </div>
+                        <div class="confirmation" ng-show="room.confirm_no"> <!-- Show confirmation number -->
+                            <span class="label">Confirmation #</span>{{room.confirm_no}}
                         </div>
                     </div>
                     <ul class="rate-and-enhancements">
                         <li>
                             <em>{{room.rateName}}</em>
                             <span class="price">
-                                <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
-                                <label ng-if="room.isSuppressed">SR</label>
-                                <span translate>AVG_NIGHT</span>
+                                <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
+                                <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
+                                <span translate ng-if="!reservationData.isHourly">AVG_NIGHT</span>
                                 <span class="total" ng-if="room.isSuppressed">SR</span>
                                 <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
                             </span>
@@ -141,7 +144,9 @@
                         </ul> -->
                     </div>
                     
-                    <a href="" class="button blue" ng-click = "openBillingInformation()" >{{getBillingInfoTitle()}}</a>
+                    <!-- <a href="" class="button blue" ng-click = "openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</a>
+                    <a href="" class="button brand-colors" ng-click="setDemographics()">Demographics</a>
+ -->
                 </div>
                 <ul class="total-stay-cost">
                 	<li ng-repeat="row in reservationData.taxDetails">
@@ -151,7 +156,7 @@
                 	</li>
                     <li>
                         <span class="label" translate>TOTAL_TAX</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTaxAmount | number : 2}}</label>
+                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTax | number : 2}}</label>
                         <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
                     </li>
                     <li>
@@ -165,25 +170,64 @@
         <form class="form payment-info scrollable" id="payment-info" name="payment_info" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
                 <div class="reservation-completed">
                     <h2 ng-hide="viewState.identifier == 'UPDATED'" translate>RESERVATION_CREATED</h2>
                     <h2 ng-show="viewState.identifier == 'UPDATED'" translate>RESERVATION_CHANGED</h2>
-                    <div class="entry full-width" ng-show="isConfirmationEmailSent">
-                        <label>Email confirmation has been sent to {{reservationData.guest.email}}</label>
-                        <label ng-if="reservationData.guest.email != '' && otherData.additionalEmail !=''">(and {{otherData.additionalEmail}}).</label>
-                        <label ng-if="reservationData.guest.email == '' && otherData.additionalEmail != ''">{{otherData.additionalEmail}}.</label>
-                    </div>
-                    <div class="entry full-width" ng-hide="isConfirmationEmailSent">
-                        <label for="email" translate>CONFIRM_EMAIL_LABEL</label>
-                        <input name="email" id="email" type="email" ng-model="reservationData.guest.sendConfirmMailTo" ng-blur="primaryEmailEntered()">
-                        <button type="button" id="send-confirmation" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)" translate>SEND_CONFIRMATION_EMAIL</button>
-                    </div>
+                    <section ng-show="!reservationStatus.confirmed">
+                    <p>Send confirmation to the following email address(es)</p>
+                        <div class="entry full-width">
+                            <label for="email">Guest e-mail address</label>
+                            <input name="email" id="email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()" type="email">
+                        </div>
+                        <div class="entry full-width">
+                            <label for="email">Additional e-mail address</label>
+                            <input name="email" id="email" ng-model="otherData.additionalEmail" type="email">
+                        </div>
+                        <div class="actions">
+                            <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)">Confirm Reservation</button>
+                        </div>
+                    </section>    
+                    <section ng-show="reservationStatus.confirmed">
+                    <!-- 2. After confirmation -->
                     <div class="actions">
-                        <!-- You can use regular <a href="..."> here as well -->
-                        <button type="button" id="go-to-staycard" class="button brand-colors" ng-click="goToStaycardClicked()" translate>GO_TO_STAYCARD</button>
-                        <button type="button" id="new-reservation-for-guest" class="button green" ng-click="clickedNewReservation()" translate>NEW_RESERVATION_FOR_GUEST</button>
-                        <button type="button" id="go-to-search" class="button white blue-text" ng-click="goToSearchClicked()" translate>SEARCH_RESERVATIONS</button>
+                        <button type="button" id="go-to-staycard" class="button brand-colors" ng-click="goToStaycardClicked()" translate>
+                            GO_TO_STAYCARD
+                        </button>
+                        <button type="button" id="new-reservation-for-guest" class="button green" ng-click="clickedNewReservation()" translate>
+                            NEW_RESERVATION_FOR_GUEST
+                        </button>
+                        <button type="button" id="go-to-search" ng-hide="reservationData.isHourly" class="button white blue-text" ng-click="goToSearchClicked()" translate>
+                            SEARCH_RESERVATIONS
+                        </button>
+                        <button type="button" id="" class="button blue-text"  translate ng-click="checkin()" ng-disabled="!enableCheckInButton()" ng-class="{'white': enableCheckInButton(), 'grey': !enableCheckInButton()}" >
+                            CHECKIN
+                        </button>
+                        <button type="button" id="" class="button white blue-text"  translate ng-click="gotoDiaryScreen()" ng-show="reservationData.isHourly">
+                            Diary
+                        </button>
                     </div>
+                    </section>
+                    <section ng-hide="true">
+                        <div class="entry full-width" ng-show="isConfirmationEmailSent">
+                            <label>Email confirmation has been sent to {{reservationData.guest.email}}</label>
+                            <label ng-if="reservationData.guest.email != '' && otherData.additionalEmail !=''">(and {{otherData.additionalEmail}}).</label>
+                            <label ng-if="reservationData.guest.email == '' && otherData.additionalEmail != ''">{{otherData.additionalEmail}}.</label>
+                        </div>
+                        <div class="entry full-width" ng-hide="isConfirmationEmailSent">
+                            <label for="email" translate>CONFIRM_EMAIL_LABEL</label>
+                            <input name="email" id="email" type="email" ng-model="reservationData.guest.sendConfirmMailTo" ng-blur="primaryEmailEntered()">
+                            <button type="button" id="send-confirmation" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)" translate>SEND_CONFIRMATION_EMAIL</button>
+                        </div>
+                        <div class="actions">
+                            <!-- You can use regular <a href="..."> here as well -->
+                            <button type="button" id="go-to-staycard" class="button brand-colors" ng-click="goToStaycardClicked()" translate>GO_TO_STAYCARD</button>
+                            <button type="button" id="new-reservation-for-guest" class="button green" ng-click="clickedNewReservation()" translate>NEW_RESERVATION_FOR_GUEST</button>
+                            <button type="button" id="go-to-search" ng-hide="reservationData.isHourly" class="button white blue-text" ng-click="goToSearchClicked()" translate>SEARCH_RESERVATIONS</button> 
+                            <button type="button" id="" class="button blue-text"  translate ng-click="checkin()" ng-disabled="!enableCheckInButton()" ng-class="{'white': enableCheckInButton(), 'grey': !enableCheckInButton()}" >CHECKIN</button>
+                            <button type="button" id="" class="button white blue-text"  translate ng-click="gotoDiaryScreen()" ng-show="reservationData.isHourly">Diary</button>
+                        </div>
+                    </section>
                 </div>
             </div>
         </form>

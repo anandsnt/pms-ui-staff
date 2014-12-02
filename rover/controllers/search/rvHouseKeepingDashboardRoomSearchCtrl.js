@@ -43,8 +43,8 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 			// smaller part consisit of enogh rooms
 			// that will fill in the screen
-			smallPart = smallPart.slice( 0, 13 );
-			restPart  = restPart.slice( 13 );
+			smallPart = smallPart.slice( 0, 20 );
+			restPart  = restPart.slice( 20 );
 
 			// first load the small part
 			$scope.rooms = smallPart;
@@ -79,8 +79,9 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			if ( $scope.rooms.length == 0) {
 				$scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
-					.then(function(data) {
+				RVHkRoomStatusSrv.fetchRoomList({
+					businessDate: $rootScope.businessDate
+				}).then(function(data) {
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
 						$scope.showQueued = data.is_queue_rooms_on;

@@ -1,0 +1,51 @@
+<div role="dialog" id="modal" class="modal-show"> <!--modal-content diary-move -->
+    <div ng-cloak class="modal-content diary-move">
+    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+    <span class="h2 message">
+    	Move results in a price change of:
+    	<!-- if price increase: -->
+    	<span class="red" >{{currencySymbol}} {{price}}</span>
+    	<!-- if price decrease:
+    	<span class="green">- ${price}</span> -->
+    </span>
+
+	<div class="diary-moved">
+		<span class="label">From</span>
+		<ul class="details">
+			<li class="arrival">
+                <span>{{roomXfer.current.arrivalTime}}</span>
+                {{roomXfer.current.arrivalDate}}
+            </li>
+            <li class="departure">
+                <span>{{roomXfer.current.departureTime}}</span>
+                {{roomXfer.current.departureDate}}
+            </li>
+            <li class="type">{{roomXfer.current.room.room_type_name}}</li>
+            <li class="room">{{roomXfer.current.room.number}}</li>
+            <li class="price">{{currencySymbol}} {{roomXfer.current.room.old_price}}</li>
+		</ul>
+	</div>
+	<div class="diary-moved">
+		<span class="label">To</span>
+		<ul class="details">
+			<li class="arrival">
+                <span>{{roomXfer.next.arrivalTime}}</span>
+                {{roomXfer.next.arrivalDate}}
+            </li>
+            <li class="departure">
+                <span>{{roomXfer.next.departureTime}}</span>
+                {{roomXfer.next.departureDate}}
+            </li>
+            <li class="type">{{roomXfer.next.room.room_type_name}}</li>
+            <li class="room">{{roomXfer.next.room.number}}</li>
+            <li class="price">{{currencySymbol}} {{roomXfer.next.room.new_price}}</li>
+		</ul>
+	</div>
+
+    <div class="actions">
+        <button type="button" class="button brand-colors">Move without Rate Change</button>
+        <button type="button" class="button green" ng-click="confirm()">Apply Payment</button>
+        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button> 
+    </div>
+</div>
+</div>

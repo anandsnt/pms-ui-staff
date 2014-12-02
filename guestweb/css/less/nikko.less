@@ -51,7 +51,7 @@ body{
 		}
 	}
 	.checkin-button{
-		background-color: @blue;
+		background-color: @blue !important;
 		color: @white;
 		border:1px solid #144e73;
 		border-color: #357195 #92afc1 #144e73;
@@ -140,6 +140,32 @@ body{
 		color: @white;
 	}
 }
+
+.proceed-to-checkin{
+   background: none repeat scroll 0 0 @blue;
+    color: @white;
+}
+
+#get-key-wrapper{
+	
+	.reservation-id {
+		margin-top: 0px;
+	}
+
+	.get-key{
+		border-top: 1px solid #c9c9c9;
+		font-family: 'Source Sans Pro';
+	    	font-weight: 200;
+	    	padding-top: 30px;
+	    	text-align:center;
+	    p{
+	    	color: @lightBlue !important;
+	    	margin-bottom: 0px;
+	    }
+	}
+}
+
+
 @media all and (max-width: 767px){
 	.jumbotron .container.backgroundbg,.jumbotron#check-in-out{
 		.container{
@@ -151,9 +177,7 @@ body{
 				font-size: 21px ;
 				color: @grey;
 			}
-			input{
-				min-height: 50px;
-			}
+			
 			.continue-button{
 				padding: 3%;
 			}
@@ -173,18 +197,31 @@ body{
 			}
 		}
 	}
+     .row .applycharge input{
+        min-height: 0px !important;
+    }
+    #get-key-wrapper{
+		padding-left: 20px;
+		padding-right: 20px;
+
+		.get-key{
+			margin:30px 0 0;
+			
+		    p:first-child, p:last-child{
+		    	font-size: 23px !important;
+		    }
+		    p:nth-child(2){
+		    	font-size: 30px !important;
+		    }
+		}
+	}
 }
-
-
-
-/* Styles copied from Galleria */
-
 
 .row .date-container{
 	  border-bottom:1px solid #134b52;
 }
 .checkoutlater, .checkin {
-    color: #fff;
+    color: @white;
 }
 
 .checkoutnow-icon,.checkoutlater-icon,.accept-charges-icon,.checkout-now-white-icon{
@@ -197,44 +234,70 @@ body{
   	background: url(/assets/img/Nikko/checkout-now_icon-white.png) top center no-repeat !important;
 }
 
-
-.pickadate-cell .pickadate-disabled,.pickadate-cell .pickadate-enabled {
-	  background-color: #9b9b9b;
-	  background:rgba(0, 0, 0, 24%);
-}
-
 .date-picker-header{
-  background-color: #134b52;
+  background-color: #18171c;
 }
 
 .date-picker-ok{
   padding-top: 18px;
   background: url(/assets/img/Nikko/tick-white-small.png) 25px 0px no-repeat !important;
-  color:#fff;
+  
+}
+.date-picker-ok, .date-picker-back{
+	color:#699ac5 !important;
 }
 .date-picker-wrap{
-  background: url(/assets/img/Nikko/bg.png) repeat top left !important;
+  background-color: @white !important;
+  background-image: linear-gradient(to bottom, @white, @white);
 }
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-disabled a {
-  color: #134b52;
+  color: #959595 !important;
 }
 .link-btn.with-bg.nextbtn{
-  background: #513d4f;
-  color:#fff;
+	background: #513d4f;
+	color:@white;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
 }
 .departure-date{
    p:first-child{
-       color:#78b3ba;
+       color:#699ac5;
    }
   
 }
-
-.row .reservation-dates .lightcontent, .res-conf-no , .row .applycharge, .error-callus div{
-  color:#134b52 !important;
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
 }
 
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#e5e5e5 !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:#689bc8 !important;
+    color:@white !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#18171c !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
 
+.row .reservation-dates .lightcontent, .res-conf-no , .row .applycharge{
+  color:#18171c !important;
+}
+.room_details,.dateContent,.chekin-heading{
+     color:@lightBlue !important;
+}
+.error-callus{
+    div, a, a:hover{
+    color:@lightBlue !important;
+    }
+}
 
 .checkoutlater-icon{
 	background: url(/assets/img/Nikko/checkoutlater_smalll.png) top center no-repeat !important;
@@ -258,7 +321,7 @@ body{
     background: none repeat scroll 0 0 #689bc8;
 }
 .checkouttime3 {
-    background: none repeat scroll 0 0 #195c87;
+    background: none repeat scroll 0 0 @blue;
 }
 
 .no-thanks {
@@ -276,15 +339,18 @@ body{
 
 .upgrade-details .upgrades-btn{
     background-color:#fba000;
+    p{
+        color:@white !important;
+    }
 }
 
 .upgrades-label{
-  color:#513d4f;
+  color:#fba000 !important;
 }
 
 .col-xs-12.checkoutnow.single, .col-xs-12.accept-charges-button.single  {
-    background: none repeat scroll 0 0 #195c87;
-    color: #fff;
+    background: none repeat scroll 0 0 @blue;
+    color: @white;
 }
 
 .guest-room-description {
@@ -296,7 +362,7 @@ body{
  }
 
 .link-btn.with-bg {
-	background: #195c87 !important;
+	background: @blue !important;
 }
 .jumbotron .check-inout-wrapper{
 	padding-top: 40px !important;
@@ -342,22 +408,16 @@ body{
 }
 
 .viewbill-toggle a, .viewbill-toggle a:hover,.white-alert-link-tag, .alert-link-tag:hover {
-	color: #195c87 !important;
+	color: @blue !important;
 }
 .with-back-btn span{
 	color:#7a787d !important;
 }
 
 
-
 /* Desktop only */
 
 @media (min-width: 990px) {
-
-	.proceed-to-checkin{
-	   background: none repeat scroll 0 0 #513d4f;
-	    color: #fff;
-	}
 
    .checkin-width {
 	      margin-top:20%;
@@ -371,7 +431,6 @@ body{
 	         margin-left: -84px;
 	      }
 	  }
-
 	  
    .line-top{
 	   border-top:1px solid white;
@@ -441,9 +500,6 @@ body{
 	    margin-top: 0 !important;
 	}
 	
-
-	//------------------------------------
-
 	.row.checkout-later-text.accept-charges-text{
 		padding-left:30px;
 		padding-right:30px;
@@ -470,6 +526,37 @@ body{
 	
 	.link-btn.with-bg{
 		margin-top: 125px !important; 
+	}
+	.jumbotron .checkin-wrapper .headtext {
+    	width: 50% !important;
+ 	}
+ 	.verti-ruler{
+		background: none repeat scroll 0 0 #c9c9c9;
+ 	}
+    .reservation-id{
+        margin-bottom: 0px; 
+        margin-top: 20px;
+    }
+    .row .applycharge input{
+        min-height: 0px !important;
+    }
+    #get-key-wrapper{
+		padding-left: 50px;
+		padding-right: 50px;
+		
+		.get-key{
+			margin:30px 50px 0;
+			
+		    p:first-child, p:last-child{
+		    	font-size: 34px !important;
+		    }
+		    p:nth-child(2){
+		    	font-size: 44px !important;
+		    }
+		}
+	}
+	.upgrades-label{
+		font-size: 17px !important;
 	}
 }
 
@@ -512,6 +599,8 @@ body{
 		}
 	}
 }
+
+
 @media (max-width: 480px) {
   .checkin{
     background: url(/assets/img/Nikko/checkin-white-icon-small.png)   80% 30%  no-repeat  #513d4f !important;
@@ -523,7 +612,6 @@ body{
   display:none;
   }
 }
-
 
 .margin-top-20{
 	margin-top:20px !important;
@@ -537,5 +625,31 @@ body{
 }
    
 .red-border{
-	 border: 3px solid red !important;
+	border: 3px solid red !important;
 }
+.labelText, .subTitletext{
+  color:#333333 !important;
+}
+.reservation-details{
+	color:#000;
+}
+
+#checkin.jumbotron .container.backgroundbg .container{
+    border-bottom: 0;
+}
+
+.preckin-status-header,.msg-body,.msg-head{
+	color: grey !important;
+}
+red-border{
+	border: 3px solid red !important;
+}
+.nikko-logo{
+	background-color: #000;
+}
+
+.margin-zero{
+	margin: 0 auto !important;
+}
+
+

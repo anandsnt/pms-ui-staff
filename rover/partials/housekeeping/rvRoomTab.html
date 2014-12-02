@@ -1,70 +1,109 @@
-<div ng-controller="RVHKRoomTabCtrl" ng-iscroll="room-tab-scroll">
+<div ng-controller="RVHKRoomTabCtrl">
 
   <div class="room-actions">
     <div class="select">
-      <select name="room-service-status" id="room-service-status" ng-model="roomServices.room_service_status_id" ng-options="item.id as item.description for item in roomServiceStatusList" ng-change="statusChange()">
+      <select name="room-service-status" id="room-service-status" ng-model="updateService.room_service_status_id" ng-options="item.id as item.description for item in allServiceStatus" ng-change="statusChange()">
       </select>
     </div>
   </div>
-
-  <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
-  <!-- 3.A  Room Tab - Room in service -->
-  <div id="room-content" class="room-content" ng-if="inService && !showForm">
-    <strong class="h2">In Service</strong>
-    <span class="icon-no-content icon-ok"></span>
-  </div>
-
-  <div id="room-content" class="room-content" ng-if="!inService && !showForm">
-    <strong class="h2">{{ ooOsTitle }}</strong>
-    <span class="icon-no-content icon-out"></span>
-  </div>
-
+    
   <!-- 3.B Room Tab - Room is OOO or OOS -->
-  <div id="room-content" class="room-content" ng-if="showForm">
-    <form method="post" action="" name="room-content">
-      <strong class="h2">{{ ooOsTitle }}</strong>
-      <div id="dates" class="row">
-        <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
-        <div id="out-from" class="entry">
-          <label id="room-out-from-label" for="room-out-from">From <span>{{ getSimplifiedDayName(roomServices.from_date) }}</span></label>
-          <div class="entry-data" ng-click="">
-            <input name="room-out-from" id="room-out-from" type="text" class="datepicker" ui-date="fromDateOptions" ng-model="roomServices.from_date" ng-change="fromDateChanged()" ui-date-format readonly style="display:block!important;position:static!important;margin:0!important;opacity:0">
+  <div id="room-content" class="room-content row scrollable" ng-iscroll="room-tab-scroll">
+    <div class="wrapper">
+      <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+          <!-- 3.A  Room Tab - Room in service -->
+          <div ng-if="inService && !showForm">
+            <strong class="h2">In Service</strong>
+            <span class="icon-no-content icon-ok"></span>
+          </div>
+          
+          <!-- 3.A  Room Tab - Room not in service -->
+          <div ng-if="!inService && !showForm">
+            <strong class="h2">{{ ooOsTitle }}</strong>
+          </div>
 
-            <strong id="room-out-from-day" class="day">{{ roomServices.from_date | date:'dd' }}</strong>
-            <span id="room-out-from-month" class="month">{{ roomServices.from_date | date:'MMMM' }}</span>
-            <span id="room-out-from-year" class="year">{{ roomServices.from_date | date:'yyyy' }}</span>
-          </div>
-        </div>
-        <div id="out-to" class="entry">
-          <label id="room-out-to-label" for="room-out-to">To <span>{{ getSimplifiedDayName(roomServices.to_date) }}</span></label>
-          <div class="entry-data" class="ui-datepicker-trigger">
-            <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="getToDateOptions()" ng-model="roomServices.to_date" ui-date-format readonly style="display:block!important;position:static!important;margin:0!important;opacity:0">
+          <form method="post" action="" name="room-content" ng-if="showForm">
+            <strong class="h2">{{ ooOsTitle }}</strong>
+            <div id="dates" class="row">
+              <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
+              <div id="out-from" class="entry">
+                <label id="room-out-from-label" for="room-out-from">From <span>{{ getSimplifiedDayName(updateService.from_date) }}</span></label>
+                <div class="entry-data" ng-click="">
+                  <input name="room-out-from" id="room-out-from" type="text" class="datepicker" ui-date="fromDateOptions" ng-model="updateService.from_date" ng-change="fromDateChanged()" ui-date-format readonly style="display:block!important;position:static!important;margin:0!important;opacity:0">
 
-            <strong id="room-out-to-day" class="day">{{ roomServices.to_date | date:'dd' }}</strong>
-            <span id="room-out-to-month" class="month">{{ roomServices.to_date | date:'MMMM' }}</span>
-            <span id="room-out-to-year" class="year">{{ roomServices.to_date | date:'yyyy' }}</span>
-          </div>
-        </div>
-      </div>
-      <div id="reason" class="row">
-        <div class="entry">
-          <label for="reason">Reason</label>
-          <div class="select">
-            <select name="reason" id="reason" ng-model="roomServices.reason_id" ng-options="item.value as item.name for item in maintenanceReasonsList">
-              <option value="">Choose reason</option>
-            </select>
-          </div>
-        </div>
-        <div class="entry">
-          <label for="reason-comments">Comments <span>(optional)</span></label>
-          <textarea name="reason-comments" id="reason-comments" rows="4" ng-model="roomServices.comment"></textarea>
-        </div>
-      </div>
-      <div id="actions" class="row">
-        <button type="button" class="button green" ng-click="submit()">Update</button>
-      </div>
-    </form>
+                  <strong id="room-out-from-day" class="day">{{ updateService.from_date | date:'dd' }}</strong>
+                  <span id="room-out-from-month" class="month">{{ updateService.from_date | date:'MMMM' }}</span>
+                  <span id="room-out-from-year" class="year">{{ updateService.from_date | date:'yyyy' }}</span>
+                </div>
+              </div>
+              <div id="out-to" class="entry">
+                <label id="room-out-to-label" for="room-out-to">To <span>{{ getSimplifiedDayName(updateService.to_date) }}</span></label>
+                <div class="entry-data" class="ui-datepicker-trigger">
+                  <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="getToDateOptions()" ng-model="updateService.to_date" ui-date-format readonly style="display:block!important;position:static!important;margin:0!important;opacity:0">
+
+                  <strong id="room-out-to-day" class="day">{{ updateService.to_date | date:'dd' }}</strong>
+                  <span id="room-out-to-month" class="month">{{ updateService.to_date | date:'MMMM' }}</span>
+                  <span id="room-out-to-year" class="year">{{ updateService.to_date | date:'yyyy' }}</span>
+                </div>
+              </div>
+            </div>
+            <div id="reason" class="row">
+              <div class="entry">
+                <label for="reason">Reason</label>
+                <div class="select">
+                  <select name="reason" id="reason" ng-model="updateService.reason_id" ng-options="item.value as item.name for item in maintenanceReasonsList">
+                    <option value="">Choose reason</option>
+                  </select>
+                </div>
+              </div>
+              <div class="entry">
+                <label for="reason-comments">Comments <span>(optional)</span></label>
+                <textarea name="reason-comments" id="reason-comments" rows="4" ng-model="updateService.comment"></textarea>
+              </div>
+            </div>
+            <div id="actions" class="row">
+              <button type="button" class="button green" ng-click="update()">Update</button>
+            </div>
+          </form>
+
+          <form method="post" action="" name="room-content" ng-if="showSaved">
+            <div id="dates" class="row">
+              <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
+              <div id="out-from" class="entry disabled">
+                <label id="room-out-from-label" for="room-out-from">From <span>{{ getSimplifiedDayName(editService.from_date) }}</span></label>
+                <div class="entry-data" ng-click="">
+                  <strong id="room-out-from-day" class="day">{{ editService.from_date | date:'dd' }}</strong>
+                  <span id="room-out-from-month" class="month">{{ editService.from_date | date:'MMMM' }}</span>
+                  <span id="room-out-from-year" class="year">{{ editService.from_date | date:'yyyy' }}</span>
+                </div>
+              </div>
+              <div id="out-to" class="entry disabled">
+                <label id="room-out-to-label" for="room-out-to">To <span>{{ getSimplifiedDayName(editService.to_date) }}</span></label>
+                <div class="entry-data" class="ui-datepicker-trigger">
+                  <strong id="room-out-to-day" class="day">{{ editService.to_date | date:'dd' }}</strong>
+                  <span id="room-out-to-month" class="month">{{ editService.to_date | date:'MMMM' }}</span>
+                  <span id="room-out-to-year" class="year">{{ editService.to_date | date:'yyyy' }}</span>
+                </div>
+              </div>
+            </div>
+            <div id="reason" class="row">
+              <div class="entry">
+                <label for="reason">Reason</label>
+                <div class="select">
+                  <select name="reason" id="reason" ng-model="editService.reason_id" ng-options="item.value as item.name for item in maintenanceReasonsList" disabled></select>
+                </div>
+              </div>
+              <div class="entry">
+                <label for="reason-comments">Comments <span>(optional)</span></label>
+                <textarea name="reason-comments" id="reason-comments" rows="4" ng-model="editService.comment" disabled></textarea>
+              </div>
+            </div>
+            <div id="actions" class="row">
+              <button type="button" class="button green" ng-click="edit()">Edit</button>
+            </div>
+          </form>
+    </div>
+    
   </div>
 
 </div>

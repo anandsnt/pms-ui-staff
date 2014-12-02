@@ -8,15 +8,27 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	$scope.results = {};
     $scope.bills = [];
     $scope.isReloadNeeded = false;
+    $scope.routes = [];
+    $scope.attachedEntities = [];
+    $scope.errorMessage = '';
 	
 	$scope.closeDialog = function(){
 		ngDialog.close();
+        $scope.$emit('routingPopupDismissed');
 	};
 
 	$scope.dimissLoaderAndDialog = function(){
 			$scope.$emit('hideLoader');
 			$scope.closeDialog();
 		};
+
+     
+    $scope.$watch(
+            function() { return $scope.errorMessage; },
+            function(error) {
+                $scope.refreshScroller('homeScroll');
+            }
+        );
     /**
     * function to get label for all routes and add routes button
     */
@@ -55,9 +67,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
-        	$scope.selectedEntity = $scope.attachedEntities[index];
+        	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type == 'ATTACHED_ENTITY')? true: false; 
-            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
+            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;            
         }
         else if(type === 'RESERVATIONS'){
         	var data = $scope.results.reservations[index];
@@ -72,7 +84,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
-                "is_new" : true
+                "is_new" : true,
+                "credit_card_details": {}
 			};
 			
         	console.log($scope.selectedEntity);
@@ -90,7 +103,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
                 "is_new" : true,
-                "selected_payment" : ""
+                "selected_payment" : "",
+                "credit_card_details": {}
 			};
 			if(data.account_type === 'COMPANY'){
 				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
@@ -101,6 +115,61 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			console.log($scope.selectedEntity);
         }
 	}
+
+    /*function to select the attached entity
+    */
+    $scope.selectAttachedEntity = function(index,type){
+
+            $scope.isEntitySelected = true;
+            $scope.isInitialPage = false;
+            $scope.selectedEntity = {
+                "reservation_status" : $scope.reservationData.reservation_status,
+                "is_opted_late_checkout" : $scope.reservationData.is_opted_late_checkout,               
+                "bill_no": "",              
+                "has_accompanying_guests" : false,
+                "attached_charge_codes": [],
+                "attached_billing_groups": [],
+                "is_new" : true,
+                "credit_card_details": {}
+            };
+            if(type == 'GUEST'){
+                $scope.selectedEntity.id = $scope.reservationData.reservation_id;
+                $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
+                $scope.selectedEntity.name = $scope.attachedEntities.primary_guest_details.name;
+                $scope.selectedEntity.images = [{
+                    "is_primary":true, 
+                    "guest_image": $scope.attachedEntities.primary_guest_details.avatar
+                }];
+                $scope.selectedEntity.entity_type = "RESERVATION";
+            }else if(type == 'ACCOMPANY_GUEST'){
+                $scope.selectedEntity.id = $scope.reservationData.reservation_id;
+                $scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
+                $scope.selectedEntity.name = $scope.attachedEntities.accompanying_guest_details[index].name;
+                $scope.selectedEntity.images = [{
+                    "is_primary":false, 
+                    "guest_image": $scope.attachedEntities.accompanying_guest_details[index].avatar
+                }];     
+                $scope.selectedEntity.has_accompanying_guests = true;        
+                $scope.selectedEntity.entity_type = "RESERVATION";
+            }else if(type == 'COMPANY_CARD'){
+                $scope.selectedEntity.id = $scope.attachedEntities.company_card.id;
+                $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
+                $scope.selectedEntity.images = [{
+                    "is_primary":true, 
+                    "guest_image": $scope.attachedEntities.company_card.logo
+                }];             
+                $scope.selectedEntity.entity_type = "COMPANY_CARD";
+            }else if(type == 'TRAVEL_AGENT'){
+                $scope.selectedEntity.id = $scope.attachedEntities.travel_agent.id;
+                $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
+                $scope.selectedEntity.images = [{
+                    "is_primary":true, 
+                    "guest_image": $scope.attachedEntities.travel_agent.logo
+                }];             
+                $scope.selectedEntity.entity_type = "TRAVEL_AGENT";                
+            }
+    }
+
     /*
     * function used in template to map the reservation status to the view expected format
     */
@@ -159,17 +228,35 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.fetchRoutes = function(){
         
             var successCallback = function(data) {
+                 $scope.routes = data;
+                 $scope.fetchEntities();
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.fetchEntities();
+                $scope.errorMessage = errorMessage;
+
+            };
+           
+            $scope.invokeApi(RVBillinginfoSrv.fetchRoutes, $scope.reservationData.reservation_id, successCallback, errorCallback);
+    };	
+
+    /**
+    * function to fetch the attached entity list
+    */
+    $scope.fetchEntities = function(){
+        
+            var successCallback = function(data) {
                 $scope.attachedEntities = data;
-                $scope.routes = data;
                  $scope.$parent.$emit('hideLoader');
             };
             var errorCallback = function(errorMessage) {
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
+                
             };
            
-            $scope.invokeApi(RVBillinginfoSrv.fetchRoutes, $scope.reservationData.reservation_id, successCallback, errorCallback);
-    };	
+            $scope.invokeApi(RVBillinginfoSrv.fetchAttachedCards, $scope.reservationData.reservation_id, successCallback, errorCallback);
+    };  
 
     $scope.fetchRoutes();
     /**
@@ -178,5 +265,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.saveRoute = function(){
             $rootScope.$broadcast('routeSaveClicked');
     };
+    /**
+    * Listener to show error messages for child views
+    */
+    $scope.$on("displayErrorMessage", function(event, error){
+        $scope.errorMessage = error;
+        
+    });
+
 	
 }]);

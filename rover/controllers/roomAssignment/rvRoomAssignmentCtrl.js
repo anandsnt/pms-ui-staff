@@ -250,7 +250,7 @@ sntRover.controller('RVroomAssignmentController',[
 		};
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
-		params.room_number = parseInt($scope.assignedRoom.room_number, 10);
+		params.room_number = $scope.assignedRoom.room_number;
 		$scope.roomAssgnment.inProgress = true;
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
@@ -327,48 +327,11 @@ sntRover.controller('RVroomAssignmentController',[
 	* function to set the color coding for the room number based on the room status
 	*/
 	$scope.getRoomStatusClass = function(){
-		
-		var reservationRoomStatusClass = "";
-		
-		var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status;
+		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+		var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status; 
 		var foStatus = $scope.reservationData.reservation_card.fo_status;
 		var checkinInspectedOnly = $scope.reservationData.reservation_card.checkin_inspected_only;
-		if($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN'){
-		    if(roomReadyStatus!=''){
-					if(foStatus == 'VACANT'){
-						switch(roomReadyStatus) {
-	
-							case "INSPECTED":
-								reservationRoomStatusClass = ' room-green';
-								break;
-							case "CLEAN":
-								if (checkinInspectedOnly == "true") {
-									reservationRoomStatusClass = ' room-orange';
-									break;
-								} else {
-									reservationRoomStatusClass = ' room-green';
-									break;
-								}
-								break;
-							case "PICKUP":
-								reservationRoomStatusClass = " room-orange";
-								break;
-				
-							case "DIRTY":
-								reservationRoomStatusClass = " room-red";
-								break;
-	
-			        }
-					
-					} else {
-						reservationRoomStatusClass = "room-red";
-					}
-					
-				}
-			}
-		
-		
-		return reservationRoomStatusClass;
+		return getMappedRoomStatusColor(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly);
 	};
 
 	$scope.getNotReadyRoomTag = function(room){

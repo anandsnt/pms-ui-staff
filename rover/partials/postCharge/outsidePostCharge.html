@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-cloak>
 	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended extended-post-charge">
 	    <button class="modal-close dark-title" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close"></span></button>
 	
@@ -97,7 +97,17 @@
 		                    <strong class="h1" translate>SEARCH_NORMAL</strong>
 		                    <span class="h2">{{'SEARCH' | translate}} <em>{{'ROOM_LABEL' | translate}}</em> {{'BY'| translate}} <strong>{{'NUMBER' | translate}}</strong> {{'OR' | translate}} <em>Reservation</em> {{'BY'| translate}} <strong>{{'GUEST' | translate}}</strong>, <strong>{{'COMPANY' | translate}}</strong> {{'OR' | translate}} <strong>{{'TRAVELAGENT' | translate}}</strong> {{'NAME' | translate}}</span>
 		                </div>
-		            </div> 
+		            </div>
+
+            		<div id="search-guests-for-charge-no-matches" class="search-cards no-content show-initial-search" ng-show="showNoMatches" >
+                        <div class="info">
+    						<span class="icon-no-content icon-search"></span>
+    						<strong class="h1">No matches </strong>
+    						<span class="h2">Check that you didn't mispell the <strong>Name</strong> , or typed in the wrong <strong>Room </strong> number
+    						</span>
+    						<span ng-show="results.length==0 && showAddNewGuestButton"> or  <a>Add a New Guest <a/> </span>
+    					</div>
+                    </div>
 	
 		    		<!-- When you have results, use the same markup as on reservation search screen. -->
 		        	
@@ -155,7 +165,7 @@
 		</div>
 	</div>
 	    
-	    <span ng-controller="RVPostChargeController">
+	    <span ng-controller="RVPostChargeController" ng-if="fetchedItems">
 	    <fieldset class="content-left">
 			<div role="search" class="search-form">
 				<div class="select">
@@ -248,7 +258,7 @@
 				<p id="total-charge" class="offset-2">
 					{{'RESV_TOTAL' | translate}} <span class="price">{{ currencySymbol }} <span class="value">{{ net_total_price | number : 2 }}</span></span>
 				</p>
-				<div id="numpad" ng-show="selectedChargeItem.item_name || selectedChargeItem.charge_code">
+				<div id="numpad" class = "numpad-with-bottom-space" ng-show="selectedChargeItem.item_name || selectedChargeItem.charge_code">
 					<div id="numpad-numbers">
 						<button value="1" type="button" class="button white" ng-click="calNumAction(1)">
 							1

@@ -19,6 +19,9 @@ admin.config([
 			resolve: {
                 adminMenuData: function(ADAppSrv) {
                     return ADAppSrv.fetch();
+                },
+                businessDate: function(ADAppSrv) {
+                	return ADAppSrv.fetchHotelBusinessDate();
                 }
             }
 		});

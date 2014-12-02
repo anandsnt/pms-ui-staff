@@ -1,0 +1,20 @@
+<div id="modal" class="modal-show" role="dialog">
+<form  id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-click="clearErrorMessage()"ng-class="{'pay-bill':ngDialogData.state == 'REFUND', 'select-card': (ngDialogData.state == 'REFUND' && cancellationData.viewCardsList), 'new-card' :  (ngDialogData.state == 'REFUND' && !cancellationData.viewCardsList)}" class="modal-content form cancel-reservation" ng-cloak>
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    
+      <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">
+       <div class="entry full-width">
+            <label for="cancel-reason">{{'CANCELLATION_REASON'| translate}}&nbsp;(<span translate>OPTIONAL</span>)</label>
+            <textarea id="cancel-reason" name="cancel-reason" placeholder="{{'CANCELLATION_REASON_PLACEHOLDER' | translate}}" rows="2" ng-model="cancellationData.reason"/>
+        </div> 
+        {{ ngDialogData.depositText }}
+        <div class="actions" ng-show="ngDialogData.deposit > 0">
+            <button type="button" class="button blue" ng-click="proceedWithOutDepositRefund()" translate>PROCEED_WITHOUT_DEPOSIT_REFUND</button>
+            <button type="button" class="button green" ng-click="proceedWithDepositRefund()" >
+            {{'PROCEED_WITH_DEPOSIT_REFUND' | translate}} ({{currencySymbol}}{{ngDialogData.deposit | number:2}})</button>
+            <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button> 
+        </div>
+    </fieldset>
+</form>
+</div>

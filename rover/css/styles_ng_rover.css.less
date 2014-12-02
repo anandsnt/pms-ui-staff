@@ -384,11 +384,6 @@ height: 410px;
 }
 
 
-
-.grey{
-  color:grey;
-}
-
 // CICO-609 'Accompany' in Search- Multiple images
 .guest-image img{
     &.first-image {
@@ -641,7 +636,8 @@ Padding for the ows error popup
 }
 
 /* Rooms page               ==============================*/
-.content#rooms {
+.content#rooms,
+.content#filter-options {
   overflow: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling:touch;
@@ -670,29 +666,10 @@ Padding for the ows error popup
 }
 
 .content#filter-options {
-  overflow: hidden;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling:touch;
-
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-   
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-   
-  &::-webkit-scrollbar-thumb {
-    width: 4px;
-    border-radius: 3px;
-    background-color: #FFB319;
-  }
 }
-
 
 #pull-refresh-notify {
   padding: 10px;
@@ -883,6 +860,9 @@ Padding for the ows error popup
   padding:0 !important;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 .guest-bill-edit-buttons{
   width:100% !important;
 }
@@ -1043,11 +1023,21 @@ Padding for the ows error popup
     z-index: 10;
   }
  }
+
+// For CICO-6080 Charge code select box.
+
+.charge-code-select{
+  margin: 0 auto 0 auto !important;
+}
+
+.billing-info-charge-codes{
+  margin: 20 0 0 0 !important;
+}
+ 
  // For CICO-6080 Charge code search results.
  
  .charge-code-list{
     height: 200px;
-    top: 290px;
     z-index: 999;
     left: 390px;
     width: 330px;
@@ -1080,7 +1070,8 @@ Padding for the ows error popup
 }
 
 .bill-routing-list {
-  padding-top : 60px;
+  margin-top : 60px;
+  height: 360px !important;
 }
 
 /*-----CICO-6080 Adding cursor pointer to the entity div-------*/
@@ -1187,7 +1178,6 @@ Padding for the ows error popup
   height:220px;
 }
 
-
 /*  
     CICO-7619  - Deleted payment and loyalty do not disappear from Guest card.
     Adding correction class 'active-item-no-transition' here.
@@ -1196,9 +1186,42 @@ Padding for the ows error popup
 */
 .active-item-no-transition{
   .transition (all, 0s, @easing: cubic-bezier(.10, .10, .25, .90)) !important;
+
 }
 
+/* CICO-10105 */
 #availability {
-  z-index: 10000
+  z-index: 10000;
+}
 
+#modal .key-delivery #key-status .info.print-status-msg {
+    height: 150px;
+}
+
+/* CICO-10309 */
+.no-margin-right {
+  margin-right:0px !important;
+}
+
+/* CICO-6105 */
+.short-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* CICO-10508 */
+#modal .modal-content .message .select-stand-alone{
+  width:auto !important;
+}
+
+#modal .modal-content .message .select-stand-alone:after{
+  width: 14px !important;
+}
+
+/* CICO-10647 */
+.numpad-with-bottom-space {
+  top: 294px !important;
+}
+
+.bill-position {
+  position: static !important;
 }

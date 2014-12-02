@@ -1,5 +1,5 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate) {
 
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
@@ -39,8 +39,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
 		$rootScope.currencySymbol = "";
+		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
+		$rootScope.isHourlyRatesEnabled = false;
 		//in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
 	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+
+	    $rootScope.businessDate = businessDate;
 	
 	    var routeChange = function(event, newURL) {
 	      event.preventDefault();
@@ -88,16 +92,18 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						standAlone : true
 					}, {
 						title: "MENU_ROOM_ASSIGNMENT",
-						action: ""
+						action: "staff#/staff/diary/reservations",
+						standAlone: true,
+						hidden: !$rootScope.isHourlyRatesEnabled
 					}, {
 						title: "MENU_POST_CHARGES",
-						action: ""
+						action: "staff#/staff/dashboard/postCharge"
 					}, {
 						title: "MENU_CASHIER",
-						action: ""
+						action: "staff#/staff/financials/journal/2"
 					}, {
 						title: "MENU_END_OF_DAY",
-						action: ""
+						action: "staff#/staff/dashboard/changeBussinessDate"
 					}]
 				}, {
 					title: "MENU_CONVERSATIONS",
@@ -137,7 +143,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus/",
+						action: "staff#/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
@@ -149,10 +155,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				}, {
 					title: "MENU_FINANCIALS",
 					action: "#",
-					iconClass: "icon-finance",
+					iconClass: "icon-financials",
 					submenu: [{
-						title: "MENU_REVENUE",
-						action: ""
+						title: "MENU_JOURNAL",
+						action: "staff#/staff/financials/journal/0"
 					}, {
 						title: "MENU_ACCOUNTING",
 						action: ""
@@ -163,10 +169,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				}, {
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
+					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
-
 				// menu for mobile views
 				$scope.mobileMenu = [{
 				  title: "MENU_DASHBOARD",
@@ -196,12 +202,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus/",
+						action: "staff#/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}]
 				},{
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
+					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
@@ -222,7 +229,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}
 		};
 		
-		
+		/**
+		* in case of we want to reinitialize left menu based on new $rootScope values or something
+		* which set during it's creation, we can use
+		*/		
+		$scope.$on('refreshLeftMenu', function(event){
+			setupLeftMenu();
+		});	
 
 		$scope.$on("updateSubMenu", function(idx, item) {
 			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
@@ -359,7 +372,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			setTimeout(function() {
 				$scope.clearErrorMessage();
 				$scope.$apply();
-			}, 2000);
+			}, 10000);
 		});
 
 		/*
@@ -421,12 +434,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				
 			//set flag if standalone PMS
 			if (data.pms_type === null)
-				$scope.isStandAlone = true;
-			setupLeftMenu();
-			$rootScope.businessDate = data.business_date;
+				$scope.isStandAlone = true;			
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
+			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
+			setupLeftMenu();
 
 		};
 		/*

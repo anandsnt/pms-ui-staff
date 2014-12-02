@@ -1,0 +1,34 @@
+<div id="modal" class="modal-show" role="dialog">
+    <form method="post" action="" id="component-tree" name="component-tree" class="modal-content cms-content">
+        <span class="message h3" ng-show="isSection && sections.length > 0" translate>SELECT_SECTION_LABEL</span>
+        <span class="message h3" ng-show="!isSection && categories.length > 0" translate>SELECT_CATEGORY_LABEL</span>
+        <ul class="cms-tree" ng-show="isSection">
+            <li class="section" ng-class="{'selected': isSectionSelected($index)}" ng-click = "sectionAdded($index)" ng-show="isComponentAvailable(section)" ng-repeat="section in sections"> <!-- Add class 'selected' if selected -->
+    			<div class="sort">
+    				<strong class="cms-name">{{section.name}}</strong>
+    				<span class="icons icon-added" ng-show="isSectionSelected($index)">Selected</span>
+    			</div>
+    		</li>
+    		
+        </ul>
+
+        <ul class="cms-tree" ng-show="!isSection">
+            <li class="categories" ng-class="{'selected': isCategorySelected($index)}" ng-click = "categoryAdded($index)" ng-show="isComponentAvailable(category)" ng-repeat="category in categories"> <!-- Add class 'selected' if selected -->
+                <div class="sort">
+                    <strong class="cms-name">{{category.name}}</strong>
+                    <span class="icons icon-added" ng-show = "isCategorySelected($index)" >Selected</span>
+                </div>
+            </li>
+            
+        </ul>
+
+        <span class="message h3" ng-show="isSection && sections.length == 0 && isDataFetched" translate>NO_SECTION_MESSAGE</span>
+        <span class="message h3" ng-show="!isSection && categories.length == 0 && isDataFetched" translate>NO_CATEGORY_MESSAGE</span>
+
+        <div class="actions">
+            <button type="button" ng-click="confirmClicked()" ng-show = "((isSection && sections.length > 0) || (!isSection && categories.length > 0))" class="button green" translate>CONFIRM_LABEL</button>
+            <button type="button" ng-click="cancelClicked()" ng-show = "((isSection && sections.length > 0) || (!isSection && categories.length > 0))" class="button blank" translate>CANCEL</button>
+            <button type="button" ng-click="cancelClicked()" ng-show = "!((isSection && sections.length > 0) || (!isSection && categories.length > 0)) && isDataFetched" class="button green" translate>OK</button>
+        </div>
+    </form>
+</div>

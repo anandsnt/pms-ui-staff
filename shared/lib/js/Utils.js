@@ -190,33 +190,43 @@ function getCurrencySymbol(currenyCode){
       return symbol;
 };
 
-var getMappedRoomReadyStatusColor = function(roomReadyStatus, checkinIsInspectedOnly) {
+var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly) {
+
+    var reservationRoomStatusClass = "";
+    if(reservationStatus == 'CHECKING_IN' && roomReadyStatus!=''){
+        
+        if(foStatus == 'VACANT'){
+            switch(roomReadyStatus) {
+                case "INSPECTED":
+                    reservationRoomStatusClass = ' room-green';
+                    break;
+                case "CLEAN":
+                    if (checkinInspectedOnly == "true") {
+                        reservationRoomStatusClass = ' room-orange';
+                        break;
+                    } else {
+                        reservationRoomStatusClass = ' room-green';
+                        break;
+                    }
+                    break;
+                case "PICKUP":
+                    reservationRoomStatusClass = " room-orange";
+                    break;
     
-        mappedColor = "";
-        switch(roomReadyStatus) {
-
-            case "INSPECTED":
-                mappedColor = 'room-green';
-                break;
-            case "CLEAN":
-                if (checkinIsInspectedOnly == "true") {
-                    mappedColor = 'room-orange';
+                case "DIRTY":
+                    reservationRoomStatusClass = " room-red";
                     break;
-                } else {
-                    mappedColor = 'room-green';
+                default:
+                    reservationRoomStatusClass = " ";
                     break;
-                }
-                break;
-            case "PICKUP":
-                mappedColor = "room-orange";
-                break;
-
-            case "DIRTY":
-                mappedColor = "room-red";
-                break;
-
+            }
+        
+        } else {
+            reservationRoomStatusClass = "room-red";
         }
-        return mappedColor;
+            
+    } 
+    return reservationRoomStatusClass;
 };
 
 
@@ -242,6 +252,38 @@ function getAvatharUrl(title){
         // TODO: handle exception
     }
 }
+
+var creditCardTypes = {
+      "AMEX": 'AX',
+      "DINERS_CLUB": 'DC',
+      "DISCOVER": 'DS',
+      "JCB": 'JCB',
+      "MASTERCARD": 'MC',
+      "VISA": 'VA'
+};
+
+function getCreditCardType(cardBrand){
+    var card = cardBrand.toUpperCase();
+    return creditCardTypes[card];
+}
+
+
+var sixCreditCardTypes = {
+      "AX": 'AX',
+      "DI": 'DS',
+      "DN": 'DC',
+      "JC": 'JCB',
+      "MC": 'MC',
+      "VS": 'VA',
+      "MX": 'DS'//Six iframe reurns MX for discover. not good
+};
+
+function getSixCreditCardType(cardCode){
+    var card = cardCode.toUpperCase();
+    return sixCreditCardTypes[card];
+}
+
+
 
 /**
 * utils function convert any number to number with two decimal points.
@@ -405,3 +447,13 @@ var getJqDateFormat = function(dateFormat) {
         return DateFormatInfoMappings[dateFormat][1];
     }
 };
+
+var tConvert = function(time){
+    tDict = {};
+    var t = time.split(':');
+    tDict.hh = (t[0] >= 12) ? (t[0] - 12) : t[0];
+    tDict.mm = t[1];
+    tDict.ampm = (t[0] >= 12) ? 'PM' : 'AM';
+
+    return tDict;
+}

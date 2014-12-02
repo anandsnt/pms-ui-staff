@@ -83,7 +83,7 @@
 			<div id="bills-tabs-nav" class="float bill-tabs" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
 						<div class="bill-tab-container"  style="width:{{getWidthForBillTabsScroll()}}px">
 						<!-- Billing instructions -->
-						<a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a>
+						<!-- <a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a> -->
 						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
 						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton'" ng-click="noPostButtonClicked()" ng-class = "{'green':roomChargeEnabled, 'red': !roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
 						
@@ -108,7 +108,7 @@
 									{{billTab.credit_card_details.payment_type_description}}
 								</div>
 								<figure id="payment-info-1" class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC'">
-									<img src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
+									<img ng-src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
 									<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 								</figure></a>
 							</li>
@@ -122,7 +122,7 @@
 						</div>
 					</div>
 					<!-- Bill Tabs for Day items and Group items -->
-					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills" style="position: static">
+					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-position bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills">
 						<div class="bill-summary-wrapper">
 							<!-- TODO: IMPLEMENT HORIZONTAL SCROLL -->
 							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50'>

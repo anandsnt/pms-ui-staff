@@ -1,5 +1,71 @@
-<div id="modal" class="modal-show" style="width:100%">
-    <table border="1" class="set-target-table">
+<div id="modal" class="modal-show" ng-cloak>
+    <div class="modal-content grid set-targets">
+        <button class="modal-close" id="modal-close" type="button" ng-click="cancelClicked()"><span class="icons icon-close invert"></span></button>
+        <span class="h2 message"><h1>SET TARGETS</h1><em>Values will be set as percentage</em></span>
+        <div class="grid-wrapper">
+            <div class="holder left">
+                <ul>
+                    <li>&nbsp;</li>
+                    <li ng-repeat="week in targetData track by $index">
+                        <div class="entry">
+                            <label for="target-all"><strong>{{ week[0].date | date:'dd' }} . - {{ week[6].date | date:'dd.MMM' }}</strong></label>
+                        </div>
+                        <div class="entry">
+                            <input name="target-all" id="target-all" type="text" ng-model=weekCommonTargets[$index] />
+                            <!--<input name="target-all" id="target-all" value="" type="text">-->
+                        </div>
+                        <div class="entry move">
+                            <span class="admin-icons icon-mover-right" ng-click="copyTargetToAllWeekDays($index)">&nbsp;</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>      
+            <div class="holder right">
+                <uL>
+                    <li>
+                        <div class="entry">
+                            SUN
+                        </div>
+                        <div class="entry">
+                            MON
+                        </div>
+                        <div class="entry">
+                            TUE
+                        </div>
+                        <div class="entry">
+                            WED
+                        </div>
+                        <div class="entry">
+                            THU
+                        </div>
+                        <div class="entry">
+                            FRI
+                        </div>
+                        <div class="entry">
+                            SAT
+                        </div>
+                    </li>
+                    <li ng-repeat="week in targetData track by $id(week)">
+                        <div class="entry" ng-repeat="weekDay in week">
+                            <div class="target" ng-class="{'disabled-bg': !weekDay.is_editable}">
+                                <span ng-show="!weekDay.is_editable" >&nbsp;</span>
+                                <span ng-show="weekDay.is_editable" >{{ weekDay.date | date:'dd' }}</span>
+                                <input ng-model="weekDay.value" ng-show="weekDay.value > 0 || weekDay.is_editable" ng-disabled="!weekDay.is_editable" ng-class="{'disabled-bg': !weekDay.is_editable}"/>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="actions float">
+            <button type="button" class="button blank modal-close" ng-click="cancelClicked()">CANCEL</button>
+            <button type="button" class="button green modal-close" ng-click="setTargets()">SET</button>
+        </div>
+    </div>
+</div>
+        <!--CRLF-->
+
+    <!--<table border="1" class="set-target-table">
         <tr class="noline">
             <td colspan="10" align="center"><h1>SET TARGETS</h1><em>Values will be set as percentage</em></td>
         </tr>
@@ -27,7 +93,7 @@
             	 <img src="/assets/rate-manager/rightarrownew.png" ng-click="copyTargetToAllWeekDays($index)">
                <!--<span class="icons right-arrow-copy" ng-click="copyTargetToAllWeekDays($index)">&nbsp;</span>-->
                 
-            </td>
+            <!--</td>
             <td ng-repeat="weekDay in week">
                 <div class="cellbg" ng-class="{'disabled-bg': !weekDay.is_editable}">
                     <span ng-show="!weekDay.is_editable" >&nbsp;</span>
@@ -41,11 +107,11 @@
             <td colspan="10">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr class="noline">
-                        <td align="right" width="50%"> <button ng-click="cancelClicked()" class="button nogreen edit-data-inline">Cancel</button></td>
-                        <td align="left" width="50%"> <button ng-click="setTargets()" class="button green edit-data-inline">Set</button></td>
+                        <td align="right" width="50%"> <button ng-click="cancelClicked()" class="button nogreen edit-data-inline" style="width: 30%;">Cancel</button></td>
+                        <td align="left" width="50%"> <button ng-click="setTargets()" class="button green edit-data-inline" style="width: 30%;">Set</button></td>
                     </tr>
                 </table>   
             </td>
         </tr>
-    </table>
-</div>
+    </table>-->
+<!--</div>-->

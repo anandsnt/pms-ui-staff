@@ -1,4 +1,11 @@
-admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams','$state', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state){
+admin.controller('ADHotelDetailsCtrl', [
+							'$rootScope', 
+							'$scope', 
+							'ADHotelDetailsSrv',
+							'$stateParams',
+							'$state', 
+							'ngDialog',
+							function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state, ngDialog){
 
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
@@ -11,6 +18,15 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.hotel_template_logo_file = $scope.fileName;
 	$scope.certificate = "";
 	$scope.isHotelChainEditable =  true;
+	//pms start date setting calendar options
+	$scope.pmsStartDateOptions = {
+	    changeYear: true,
+	    changeMonth: true,	   
+	    yearRange: "0:+10",
+	    onSelect: function()	 {
+	    	ngDialog.close();
+	    }
+  	};	
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
@@ -97,6 +113,18 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		);
 
 	/**
+	* function to open calndar popup for choosing pms start date
+	*/
+	$scope.setPmsStartDate = function(){
+		ngDialog.open({
+            template: '/assets/partials/hotel/adPmsStartDateCalendarPopup.html',
+            className: 'ngdialog ngdialog-theme-default calendar-single1',
+            closeByDocument: true,
+            scope: $scope
+        });
+	};
+
+	/**
     *   A post method for Test MliConnectivity for a hotel
     */
 	$scope.clickedTestMliConnectivity = function(){
@@ -139,11 +167,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		/*********** Commented out to fix CICO-8508 ****************************/	
 		//template logo was not updating when existing image was removed
 		/********************************************************************/		
-			// if($scope.data.hotel_template_logo.indexOf("data:")!= -1){
-				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats"];
-			// } else {
-			// 	var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages", "hotel_template_logo"];
-			// }
+			if($scope.data.payment_gateway === "MLI"){
+				
+				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "six_merchant_id", "six_validation_code"];
+			 } else {
+			 	var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code"];
+			 }
 			
 			
 			var data = dclone($scope.data, unwantedKeys);
@@ -212,7 +241,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 
 		$scope.invokeApi(ADHotelDetailsSrv.testMLIPaymentGateway,{}, testMLIPaymentGatewaySuccess, testMLIPaymentGatewayError);
 		
-	}
+	};
 
 
 	/**
