@@ -574,7 +574,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     rate_id:            undefined,
                                     rate_type:          'Standard',
                                     room_type:          _data_Store.get('room_type'),
-                                    room_type_id:       create_reservation_data.room_type_id
+                                    room_type_id:       create_reservation_data ? create_reservation_data.room_type_id : ''
                                 },
                                 display: {
                                     x_n:                    time.x_n,
@@ -753,8 +753,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     }
 
                     if(data) {
-                        //if(data.fromDate === data.toDate) {
-                        if(true) {
+                        if(data.fromDate === data.toDate) {
                             var start_date  = parseDate(data.fromDate, data.arrivalTime),
                                 end_date    = parseDate(data.toDate, data.departureTime);
 
