@@ -426,6 +426,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.createReservationDataFromDiary = function(roomsArray, tData) {
 
+			$scope.viewState.identifier = "CREATION";
+			
 			angular.forEach(tData.rooms, function(value, key) {
 				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
