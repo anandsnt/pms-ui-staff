@@ -186,7 +186,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   	   	if (rateData === null){
 		   	   		rateData ={
    				   				id : rate.room_type.id,
-   				   				name : rate.room_type.name
+   				   				name : rate.room_type.name,
+   				   				is_hourly : rate.is_hourly
    				   			};
 		   			roomRateData.push(rateData);
 		   		}
