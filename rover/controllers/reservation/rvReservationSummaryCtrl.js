@@ -683,8 +683,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if($scope.reservationData.paymentType.type.value == 'CC'){
 				postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
 			}
-			console.log("===================POSTDATA=====================");
-			console.log(JSON.stringify(postData));
+		
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
