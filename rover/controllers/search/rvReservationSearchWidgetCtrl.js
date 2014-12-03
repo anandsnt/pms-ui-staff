@@ -661,7 +661,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.$on("OUTSIDECLICKED", function(event){
 			$scope.focusOutOnSearchText();
-			ngDialog.close();
+			//ngDialog.close();
 		});
 
 		//please don't remove this code.... CICO-10091
