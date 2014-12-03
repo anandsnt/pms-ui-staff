@@ -162,7 +162,7 @@ sntRover.controller('reservationActionsController', [
 			console.log(passData);
 		};
 
-		openDepositPopup();
+		//openDepositPopup();
 		$scope.ifReferanceForCC = false;
 		$scope.depositDetails ={};
 
