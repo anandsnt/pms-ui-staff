@@ -32,6 +32,8 @@ sntRover
 
 	$scope.$emit('showLoader');
 
+	$scope.reservationData = {};
+	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
 	/*--------------------------------------------------*/
 	/*BEGIN CONFIGURATION 

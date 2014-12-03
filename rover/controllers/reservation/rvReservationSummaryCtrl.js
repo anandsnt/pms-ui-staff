@@ -434,8 +434,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			this.rooms = [];
 			this.rooms = tData.rooms;
-			this.arrivalDate = tData.arrival_date;
-			this.departureDate = tData.departure_date;
+			this.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
+			this.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
 			var arrivalTimeSplit = tData.arrival_time.split(":");
 
 			this.checkinTime.hh = arrivalTimeSplit[0];
