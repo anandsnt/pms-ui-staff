@@ -174,7 +174,7 @@ sntRover.controller('reservationActionsController', [
 		var fetchDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
-			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0){
+			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone){
 				if(!$scope.depositPopupData.isShown){
 					openDepositPopup();
 					$scope.depositPopupData.isShown = true;
@@ -280,7 +280,7 @@ sntRover.controller('reservationActionsController', [
 		var checkinDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
-			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0)? openDepositPopup() : startCheckin();
+			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
 		};
 
 		var checkforDeposit = function(){
