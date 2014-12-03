@@ -269,5 +269,30 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.addmode = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		var data 				 = swipedCardDataToSave;
+		data.reservation_id 	 = $scope.passData.reservationId;
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card 		 = swipedCardDataToSave.cardType;
+		data.card_expiry 		 = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+		data.add_to_guest_card   = swipedCardDataToSave.addToGuestCard;
+		
+		
+		var options = {
+	    		params: 			data,
+	    		successCallBack: 	successSwipePayment,	 
+	    		successCallBackParameters:  swipedCardDataToSave 	
+	    };
+	    $scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
+	 });
+	 var successSwipePayment = function(data, successParams){
+				$scope.$emit('hideLoader');
+				$scope.depositData.selectedCard = data.id;
+				$scope.depositData.cardNumber = successParams.cardNumber.slice(-4);;
+				$scope.depositData.expiry_date = successParams.cardExpiryMonth+"/"+successParams.cardExpiryYear;
+				$scope.depositData.card_type = successParams.cardType.toLowerCase();
+				$scope.paymentMode = false;
+				$scope.cardSelected = true;
+	};
 
 }]);
