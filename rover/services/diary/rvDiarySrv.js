@@ -543,10 +543,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                              });
                         } 
 
-                        _data_Store.set({
-
-                        });
-
                         $q.all([Maintenance.read(), 
                                 RoomType.read(), 
                                 Room.read(), 
@@ -575,7 +571,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     rate:               undefined,
                                     rate_id:            undefined,
                                     rate_type:          'Standard',
-                                    room_type: _data_Store.get('room_type')
+                                    room_type:          _data_Store.get('room_type'),
+                                    room_type_id:       create_reservation_data ? create_reservation_data.room_type_id : ''
                                 },
                                 display: {
                                     x_n:                    time.x_n,
@@ -809,9 +806,9 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         var t_a, t_b;
 
                         if(timeObj.ampm === 'AM') {
-                            t_a = (12 + parseInt(timeObj.hh, 10)) * 3600000;
-                        } else {
                             t_a = (parseInt(timeObj.hh, 10)) * 3600000;
+                        } else {
+                            t_a = (12 + parseInt(timeObj.hh, 10)) * 3600000;
                         }
 
                         t_b = parseInt(timeObj.mm, 10) * 60000;
