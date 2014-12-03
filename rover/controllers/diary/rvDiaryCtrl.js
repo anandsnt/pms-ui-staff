@@ -195,7 +195,7 @@ sntRover
 	    	rate_type: 					payload.filter.rate_type,
 		    rate_type_details: 			[],
 		    rate:                        undefined,
-	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.room_type_id] : undefined,
+	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
 		    show_all_rooms: 			'on',
 		    toggleHoursDays: function() {

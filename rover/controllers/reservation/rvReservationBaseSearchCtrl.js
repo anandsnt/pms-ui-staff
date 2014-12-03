@@ -104,15 +104,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // if the guest came in at 3:10AM it should be rounded to 3:15AM
             if ( intMins > 45 && intHrs + 1 < 12 ) {
                 intHrs += 1;
-                intMins = 00;
+                intMins = '00';
             } else if ( intMins > 45 && intHrs + 1 == 12 ) {
                 if ( ampm == 'AM' ) {
                     intHrs  = 12;
-                    intMins = 00;
+                    intMins = '00';
                     ampm    = 'PM';
                 } else {
                     intHrs  = 12;
-                    intMins = 00;
+                    intMins = '00';
                     ampm    = 'AM';
                 }
             } else if ( intMins == 15 || intMins == 30 || intMins == 45 ) {
@@ -305,21 +305,24 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.navigate = function() {
             //if selected thing is 'hours'
             if (!$scope.isNightsActive) {
-                var reservationDataToKeepinVault = {};
-                var roomData = $scope.reservationData.rooms[0];
-                reservationDataToKeepinVault.fromDate = new tzIndependentDate($scope.reservationData.arrivalDate).getTime();
-                reservationDataToKeepinVault.toDate = new tzIndependentDate($scope.reservationData.departureDate).getTime();
-                reservationDataToKeepinVault.arrivalTime = $scope.reservationData.checkinTime;
-                reservationDataToKeepinVault.departureTime = $scope.reservationData.checkoutTime;
-                reservationDataToKeepinVault.adults = roomData.numAdults;
-                reservationDataToKeepinVault.children = roomData.numChildren;
-                reservationDataToKeepinVault.infants = roomData.numInfants;
-                reservationDataToKeepinVault.roomTypeID = roomData.roomTypeId;
+                var reservationDataToKeepinVault = {},
+                    roomData                     = $scope.reservationData.rooms[0];
+
+                reservationDataToKeepinVault.fromDate       = new tzIndependentDate($scope.reservationData.arrivalDate).getTime();
+                reservationDataToKeepinVault.toDate         = new tzIndependentDate($scope.reservationData.departureDate).getTime();
+                reservationDataToKeepinVault.arrivalTime    = $scope.reservationData.checkinTime;
+                reservationDataToKeepinVault.departureTime  = $scope.reservationData.checkoutTime;
+                reservationDataToKeepinVault.adults         = roomData.numAdults;
+                reservationDataToKeepinVault.children       = roomData.numChildren;
+                reservationDataToKeepinVault.infants        = roomData.numInfants;
+                reservationDataToKeepinVault.roomTypeID     = roomData.roomTypeId;
                 reservationDataToKeepinVault.guestFirstName = $scope.searchData.guestCard.guestFirstName;
-                reservationDataToKeepinVault.guestLastName = $scope.searchData.guestCard.guestLastName;
-                reservationDataToKeepinVault.companyID = $scope.reservationData.company.id;
-                reservationDataToKeepinVault.travelAgentID = $scope.reservationData.travelAgent.id;
+                reservationDataToKeepinVault.guestLastName  = $scope.searchData.guestCard.guestLastName;
+                reservationDataToKeepinVault.companyID      = $scope.reservationData.company.id;
+                reservationDataToKeepinVault.travelAgentID  = $scope.reservationData.travelAgent.id;
+
                 $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
+
                 $state.go('rover.reservation.diary', {
                     isfromcreatereservation: true
                 });
