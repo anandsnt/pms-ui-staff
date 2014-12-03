@@ -30,8 +30,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	$scope.feeData = {};
-	//$scope.feeData.feesInfo = {};
 	var zeroAmount = parseFloat("0.00").toFixed(2);
+
 	// CICO-9457 : To calculate fee - for standalone only
 	$scope.calculateFee = function(){
 
@@ -96,6 +96,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if(value.name == $scope.saveData.paymentType){
 				$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
 
+				// To handle fees details on reservation summary,
+				// While we change payment methods
+				// Handling Credit Cards seperately.
 				if(value.name != "CC"){
 					$scope.feeData.feesInfo = value.charge_code.fees_information;
 				}

@@ -50,7 +50,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.isStandAlone) {
 				var feesInfo = $scope.feeData.feesInfo;
 				var amountSymbol = "";
-				var zeroAmount = parseFloat("0.00").toFixed(2);
+				
 				if (typeof feesInfo != 'undefined' && feesInfo != null) amountSymbol = feesInfo.amount_symbol;
 				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
 					parseFloat($scope.reservationData.depositAmount);
@@ -62,6 +62,28 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
 				} else {
 					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+				}
+			}
+		};
+
+		// CICO-9457 : Data for fees details.
+
+		$scope.setupFeeData = function(){
+			
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
+			var defaultAmount = $scope.reservationData ?
+			 	$scope.reservationData.depositAmount : zeroAmount;
+			
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+				
+				var amountSymbol = feesInfo.amount_symbol;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				$scope.feeData.actualFees = feesAmount;
+
+				if (amountSymbol == "percent") $scope.calculateFee();
+				else {
+					$scope.feeData.calculatedFee = feesAmount;
+					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 				}
 			}
 		};
@@ -105,27 +127,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.errorMessage = data;
 		});
 
-		// CICO-9457 : Data for fees details.
-
-		$scope.setupFeeData = function(){
-			
-			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
-			var defaultAmount = $scope.reservationData ?
-			 	$scope.reservationData.depositAmount : zeroAmount;
-			
-			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
-				
-				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
-				$scope.feeData.actualFees = feesAmount;
-
-				if (amountSymbol == "percent") $scope.calculateFee();
-				else {
-					$scope.feeData.calculatedFee = feesAmount;
-					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
-				}
-			}
-		};
+		
 
 		var addToGuestCard = function(data) {
 			var dataToGuestList = {};
@@ -753,6 +755,19 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//$scope.addmode = true;
 			} else {
 				$scope.isSubmitButtonEnabled = true;
+				console.log($scope.reservationData.paymentMethods);
+
+				// To handle fees details on reservation summary,
+				// While we change payment methods.
+				// Handling Credit Cards seperately.
+				angular.forEach($scope.reservationData.paymentMethods, function(item, key) {
+					if((item.value == $scope.reservationData.paymentType.type.value) && (item.value != "CC")){
+						$scope.feeData.feesInfo = item.charge_code.fees_information;
+						$scope.setupFeeData();
+						console.log(item);
+					}
+				});
+
 			};
 
 			$scope.refreshPaymentScroller();
