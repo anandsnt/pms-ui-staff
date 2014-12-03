@@ -6,7 +6,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.saveData = {};
 		$scope.errorMessage = '';
 		$scope.saveData.payment_type_id = '';
-		$scope.guestPaymentList = {};
+		$scope.cardsList = {};
 		$scope.newPaymentInfo = {};
 		$scope.newPaymentInfo.addToGuestCard = false;
 		$scope.renderData.billNumberSelected = '';
@@ -88,19 +88,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Show guest credit card list
 	*/
 	$scope.showGuestCreditCardList = function(){
-		$scope.showCCPage = true;
-		if($scope.guestPaymentList.length >0){
-		// $scope.showInitalPaymentScreen = false;
-			$scope.showExistingAndAddNewPayments = true;
-			$scope.showExistingGuestPayments = true;
-			$scope.showOnlyAddCard = false;
-			$scope.cardsList = $scope.guestPaymentList;
-			$scope.refreshScroller('cardsList');
-			$scope.addmode = false;
-		} else {
-			$scope.showOnlyAddCard = true;
-			$scope.addmode = true;
-		};		
+		$scope.showCCPage = true;	
 	};
 
 	var checkReferencetextAvailable = function(){
@@ -138,31 +126,50 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 		$scope.renderDefaultValues();
 	};
+
+	
+	var checkReferencetextAvailableForCC = function(){
+		angular.forEach($scope.renderData, function(paymentType, key) {
+			if(paymentType.name == 'CC'){
+				angular.forEach(paymentType.values, function(value, key) {
+					if($scope.defaultPaymentTypeCard.toUpperCase() === value.cardcode){
+						$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
+					};					
+				});				
+			}
+		});
+	};
 	/*
 	* Success call back for guest payment list screen
 	*/
-	$scope.guestPaymentListSuccess = function(data){
+	$scope.cardsListSuccess = function(data){
 		$scope.$emit('hideLoader');
 		if(data.length == 0){
-			$scope.guestPaymentList = [];
+			$scope.cardsList = [];
 		} else {
-			var cardsList = [];
-			angular.forEach(data, function(value, key) {
-				if(value.credit_card_type_id !== null){
-					cardsList.push(value);
+			$scope.cardsList = [];
+			angular.forEach(data.existing_payments, function(obj, index){
+				if (obj.is_credit_card) {
+		 		 	$scope.cardsList.push(obj);
 				};
 			});
-			cardsList.forEach(function(card) {
-					   card.is_credit_card = true;
-					   delete card.credit_card_type_id;
-			});
-			$scope.guestPaymentList = cardsList;
-			angular.forEach($scope.guestPaymentList, function(value, key) {
+			angular.forEach($scope.cardsList, function(value, key) {
+			
+				value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
+				value.card_expiry = value.expiry_date;//Same comment above
+
+				delete value.ending_with;
+				delete value.expiry_date;
+		    });
+
+		    $scope.addmode = $scope.cardsList.length > 0 ? false:true;
+			angular.forEach($scope.cardsList, function(value, key) {
 				value.isSelected = false;
 				if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
 					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() == "CC"){
 						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number == value.mli_token) && ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() == value.card_code.toLowerCase() )) {
 							value.isSelected = true;
+							checkReferencetextAvailableForCC();
 						} 
 					}
 				}
@@ -182,7 +189,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
-		$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.guestPaymentListSuccess, '', 'NONE');
+		//$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.cardsListSuccess, '', 'NONE');
+		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.cardsListSuccess);
 	};
 
 	
@@ -338,6 +346,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.defaultPaymentTypeCard = cardType;
 		$scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
 		$scope.defaultPaymentTypeCardExpiry = cardExpiry;
+
+		checkReferencetextAvailableForCC();
 		//To update bill screen
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = cardExpiry;
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = cardType;
@@ -345,7 +355,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		
 		$scope.saveData.payment_type_id = data.id;
 		
-		angular.forEach($scope.guestPaymentList, function(value, key) {
+		angular.forEach($scope.cardsList, function(value, key) {
 			value.isSelected = false;
 		});
 
@@ -363,7 +373,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"payment_type":data.payment_name,
 				"payment_type_id": 1
 			};
-			$scope.guestPaymentList.push(dataToGuestList);
+			$scope.cardsList.push(dataToGuestList);
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
 		$scope.showCCPage = false;
@@ -414,25 +424,27 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		
 	});
 
+
 	/*
 		*  card selection action
 		*/
 	$scope.setCreditCardFromList = function(index){
 		$scope.isExistPaymentType = true;
 		$scope.showCreditCardInfo = true;
-		$scope.defaultPaymentTypeCard = $scope.guestPaymentList[index].card_code.toLowerCase();
-		$scope.defaultPaymentTypeCardNumberEndingWith = $scope.guestPaymentList[index].mli_token;
-		$scope.defaultPaymentTypeCardExpiry = $scope.guestPaymentList[index].card_expiry;
-		angular.forEach($scope.guestPaymentList, function(value, key) {
+		$scope.defaultPaymentTypeCard = $scope.cardsList[index].card_code.toLowerCase();
+		$scope.defaultPaymentTypeCardNumberEndingWith = $scope.cardsList[index].mli_token;
+		$scope.defaultPaymentTypeCardExpiry = $scope.cardsList[index].card_expiry;
+		angular.forEach($scope.cardsList, function(value, key) {
 			value.isSelected = false;
 		});
-		$scope.guestPaymentList[index].isSelected = true;
-		$scope.saveData.payment_type_id =  $scope.guestPaymentList[index].id;
+		$scope.cardsList[index].isSelected = true;
+		$scope.saveData.payment_type_id =  $scope.cardsList[index].id;
 		$scope.showCCPage = false;
 		if($scope.isStandAlone)	{
-			$scope.feeData.feesInfo = $scope.guestPaymentList[index].fees_information;
+			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}
+		checkReferencetextAvailableForCC();
 	};
 
 	$scope.$on('cardSelected',function(e,data){

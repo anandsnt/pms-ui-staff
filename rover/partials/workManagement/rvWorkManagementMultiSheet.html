@@ -20,12 +20,13 @@
         <div class="entry task">
             <label for="worksheet-work-type" translate>WORK TYPE</label>
             <div class="select">
-                <select ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChanged()">
+                <select ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type">
+                    <!-- removed ng-change since we are $watch.ing it in ctrl
+                    if the value chanages save the multisheet then change view -->
                 </select>
             </div>
         </div>
         <div class="actions">
-            <button type="button" ng-click="saveMultiSheet()" class="button green" translate>SAVE</button>
             <button type="button" ng-click="printWorkSheet()" class="button grey" translate>PRINT</button>
             <button type="button" ng-click="onCancel()" class="button blank" translate>CANCEL</button>
         </div>
@@ -49,7 +50,8 @@
                 <li iscroll-stop-propagation id="unassigned-UA-{{$index}}" class="worksheet-room multi-sheet unassigned" ng-repeat="room in multiSheetState.unassignedFiltered"
                         data-drag = "true"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}"
+                        ng-hide="room.isAssigned">
                     <h3>{{room.room_no}}</h3> 
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !room.checkout_time">DUE OUT</span>
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>

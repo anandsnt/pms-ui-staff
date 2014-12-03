@@ -23,12 +23,24 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			open: 'OPEN',
 			inProgress: 'IN_PROGRESS',
 			completed: 'COMPLETED'
-		}
-		$scope.isCleaning = $scope.roomDetails.work_status == $_workStatusList['inProgress'] ? true : false;
+		};
 
-		// the task completion status
-		// when the user click start button and done button the status here must be used as the done status
-		$scope.task_completion_status = $scope.roomDetails.task_completion_status;
+		// by default they are null
+		// with the type object (typeof null === 'object')
+		$scope.isStarted   = null;
+		$scope.isCompleted = null;
+		$scope.isOpen      = null;
+
+		var $_updateWorkStatusFlags = function() {
+			$scope.isStarted   = $scope.roomDetails.work_status == $_workStatusList['inProgress'] ? true : false;
+			$scope.isCompleted = $scope.roomDetails.work_status == $_workStatusList['completed']  ? true : false;
+			$scope.isOpen      = $scope.roomDetails.work_status == $_workStatusList['open']       ? true : false;
+		};
+
+		// only for standalone will these get typecasted to booleans
+		$scope.isStandAlone && $_updateWorkStatusFlags();
+
+
 
 		// default room HK status
 		// will be changed only for connected
@@ -74,10 +86,6 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			var callback = function(data){
 				$scope.$emit('hideLoader');
 				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
-				RVHkRoomStatusSrv.updateHKStatus({
-					id: $scope.roomDetails.id,
-					current_hk_status: $scope.roomDetails.current_hk_status
-				});
 			}
 
 			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
@@ -93,14 +101,14 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		};
 
 
-		// start cleaning 
-		$scope.startCleaning = function() {
+		// start working 
+		$scope.startWorking = function() {
 			var callback = function() {
 				$scope.$emit('hideLoader');
 
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['inProgress'];
-				$scope.isCleaning = true;
+				$_updateWorkStatusFlags();
 			};
 
 			var params = {
@@ -111,17 +119,17 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
 		};
 
-		// done cleaning
-		$scope.doneCleaning = function() {
+		// done working
+		$scope.doneWorking = function() {
 			var callback = function() {
 				$scope.$emit('hideLoader');
 
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['completed'];
-				$scope.isCleaning = false;
+				$_updateWorkStatusFlags();
 			
-				// update 'current_hk_status' to 'task_completion_status'
-				$_updateRoomDetails( 'current_hk_status', $scope.task_completion_status || "CLEAN" );
+				// update 'current_hk_status' to 'task_completion_status', this should call '$scope.manualRoomStatusChanged'
+				$scope.roomDetails.current_hk_status = $scope.roomDetails.task_completion_status;
 			};
 
 			var params = {
