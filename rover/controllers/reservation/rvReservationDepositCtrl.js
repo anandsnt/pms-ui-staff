@@ -122,7 +122,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				}
 			}
 		};
-		
+
 		if($scope.isStandAlone) {
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
@@ -194,12 +194,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				token: cardToken,
 				card_expiry: cardExpiry
 			};
-			if($scope.isStandAlone){
-				if($scope.feeData.calculatedFee)
-					paymentData.fees_amount = $scope.feeData.calculatedFee;
-				if($scope.feeData.feesInfo)
-					paymentData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
-			}
+
 			if($scope.depositData.isDisplayReference){
 				paymentData.referance_text = $scope.depositData.referanceText;
 			};
@@ -273,7 +268,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				},
 				"reservation_id": $stateParams.id
 			};
-
+			if($scope.isStandAlone){
+				if($scope.feeData.calculatedFee)
+					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
+				if($scope.feeData.feesInfo)
+					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+			}
 			if($scope.isDisplayReference){
 				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;
 			};
