@@ -675,6 +675,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 
 			var updateSuccess = function(data) {
+				$scope.$emit('hideLoader');
+
 				$scope.viewState.identifier = "UPDATED";
 				//TODO: what is this?
 				$scope.reservationData.is_routing_available = data.is_routing_available;
@@ -805,7 +807,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		this.attachCompanyTACardRoutings = function(){
-
+console.log("attachCompanyTACardRoutings");
 			var fetchSuccessofDefaultRouting = function(data){
 				$scope.$emit("hideLoader");
 				$scope.routingInfo = data;
@@ -839,7 +841,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					return false;
 
 				} else {
-					ngDialog.close();
+					//ngDialog.close();
 					$scope.goToConfirmationScreen();
 				}
 
@@ -858,6 +860,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				}*/
 
 				$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
+			}else {
+				$scope.goToConfirmationScreen();
+
 			}
 		};
 
