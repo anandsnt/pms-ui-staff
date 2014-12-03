@@ -76,6 +76,58 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			return cardName;
 		};
 
+		$scope.feeData = {};
+		var zeroAmount = parseFloat("0.00").toFixed(2);
+
+		// CICO-6068 : To calculate fee
+		$scope.calculateFee = function(){
+			if($scope.isStandAlone){
+				
+				var feesInfo = $scope.feeData.feesInfo;
+				var amountSymbol = "";
+				if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
+
+				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
+								parseFloat($scope.reservationData.depositAmount);
+				var feePercent  = parseFloat($scope.feeData.actualFees);
+
+				if(amountSymbol == "percent"){
+					var calculatedFee = parseFloat(totalAmount * (feePercent/100));
+					$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+				}
+				else{
+					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+				}
+			}
+		};
+
+		// CICO-6068 : Data for fees details.
+		$scope.setupFeeData = function(){
+			
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
+			var defaultAmount = $scope.reservationData ?
+			 	$scope.reservationData.depositAmount : zeroAmount;
+			
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+				
+				var amountSymbol = feesInfo.amount_symbol;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				$scope.feeData.actualFees = feesAmount;
+				
+				if(amountSymbol == "percent") $scope.calculateFee();
+				else{
+					$scope.feeData.calculatedFee = feesAmount;
+					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+				}
+			}
+		};
+		
+		if($scope.isStandAlone) {
+			$scope.feeData.feesInfo = $scope.passData.fees_information;
+			$scope.setupFeeData();
+		}
+
 		/*
 		 * check if reference text is available for the selected card type           
 		 *													
@@ -100,7 +152,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			$scope.depositData.cardNumber = attached_card.ending_with;
 			$scope.depositData.expiry_date = attached_card.expiry_date;
 			$scope.depositData.card_type = attached_card.card_code;
-			$scope.cardSelected = true;	
+			$scope.cardSelected = true;
+
+			if($scope.isStandAlone) {
+				$scope.feeData.feesInfo = attached_card.fees_information;
+				$scope.setupFeeData();
+			}
 		};
 
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
@@ -122,6 +179,11 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.depositData.card_type = retrieveCardtype();
 				$scope.paymentMode = false;
 				$scope.cardSelected = true;
+
+				if($scope.isStandAlone) {
+					$scope.feeData.feesInfo = data.fees_information;
+					$scope.setupFeeData();
+				}
 			};
 			
 			var paymentData = {
@@ -132,7 +194,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				token: cardToken,
 				card_expiry: cardExpiry
 			};
-
+			if($scope.isStandAlone){
+				if($scope.feeData.calculatedFee)
+					paymentData.fees_amount = $scope.feeData.calculatedFee;
+				if($scope.feeData.feesInfo)
+					paymentData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+			}
 			if($scope.depositData.isDisplayReference){
 				paymentData.referance_text = $scope.depositData.referanceText;
 			};
