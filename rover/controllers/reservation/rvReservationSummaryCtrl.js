@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv','RVReservationCardSrv',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv) {
+
 
 		BaseCtrl.call(this, $scope);
 		$scope.isSubmitButtonEnabled = false;
@@ -159,7 +160,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		var savenewCc = function() {
 			var ccSaveSuccess = function(data) {
-				console.log("hiree")
 
 				$scope.$emit('hideLoader');
 				$scope.showCC = false;
@@ -434,8 +434,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			this.rooms = [];
 			this.rooms = tData.rooms;
-			this.arrivalDate = tData.arrival_date;
-			this.departureDate = tData.departure_date;
+			this.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
+			this.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
 			var arrivalTimeSplit = tData.arrival_time.split(":");
 
 			this.checkinTime.hh = arrivalTimeSplit[0];
@@ -912,6 +912,49 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				scope: $scope
 			});
 		};
+		$scope.$on("SWIPE_ACTION", function(e, swipedCardData){
+			// console.log("renderrrrrrrrrrrrrrrrrrrr");
+			// $scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+			var swipeOperationObj = new SwipeOperation();
+			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+			var tokenizeSuccessCallback = function(tokenValue){
+				$scope.$emit('hideLoader');
+				swipedCardData.token = tokenValue;
+				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+				$scope.reservationData.paymentType.type.value = "CC";
+				$scope.showCC = true;
+				$scope.addmode = true;
+				$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+			
+			};
+			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+		});
+		var successSwipePayment = function(data, successParams){
+				
+				$scope.showCC = false;
+				$scope.showSelectedCreditCard = true;
+				$scope.reservationData.selectedPaymentId = data.id;				
+				$scope.renderData.creditCardType =  successParams.cardType.toLowerCase();
+				$scope.renderData.endingWith  = successParams.cardNumber.slice(-4);;
+				$scope.renderData.cardExpiry = successParams.cardExpiryMonth+"/"+successParams.cardExpiryYear;
+
+		};
+		$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+			var data 				 = swipedCardDataToSave;
+			data.reservation_id 	 = $scope.reservationData.reservationId;	
+			data.payment_credit_type = swipedCardDataToSave.cardType;
+			data.credit_card 		 = swipedCardDataToSave.cardType;
+			data.card_expiry 		 = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+			data.add_to_guest_card   = swipedCardDataToSave.addToGuestCard;
+			
+			
+			var options = {
+		    		params: 			data,
+		    		successCallBack: 	successSwipePayment,	 
+		    		successCallBackParameters:  swipedCardDataToSave 	
+		    };
+		    $scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
+		});
 
 		$scope.init();
 	}

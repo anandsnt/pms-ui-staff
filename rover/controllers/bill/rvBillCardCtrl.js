@@ -486,18 +486,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
      /*
 	  * Handle swipe action in bill card
 	  */
-	 // $scope.$on('SWIPEHAPPENED', function(event, data){
-	 	// if(!$scope.isGuestCardVisible){
-	 		// if($scope.paymentModalOpened){
-	 			// $scope.paymentModalSwipeHappened = true;
-	 			// $scope.$broadcast('PAYMENTSWIPEHAPPENED', data);
-	 		// } else {
-	 			// $scope.fromViewToPaymentPopup = "billcard";
-	 			// $scope.addNewPaymentModal(data);
-	 		// }
-// 	 		
-	 	// }
-	 // });
+
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 	 	  if($scope.paymentModalOpened){
@@ -505,7 +494,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			} else {
 				swipedCardData.swipeFrom = "viewBill";
 			}
-			
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue){
