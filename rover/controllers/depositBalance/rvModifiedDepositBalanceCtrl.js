@@ -35,9 +35,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.depositBalanceMakePaymentData = {};
 	$scope.depositBalanceMakePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonDisabled = true;
-	$scope.feeData = {};
 	$scope.hideCancelCard = true;
-	var zeroAmount = parseFloat("0.00").toFixed(2);
 	$scope.isDisplayReference = false;
 	$scope.referanceText = "";
 
@@ -95,6 +93,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.$on("MLI_ERROR", function(e,data){
 		$scope.errorMessage = data;
 	});
+
+	$scope.feeData = {};
+	var zeroAmount = parseFloat("0.00").toFixed(2);
 	
 	// CICO-9457 : To calculate fee
 	$scope.calculateFee = function(){

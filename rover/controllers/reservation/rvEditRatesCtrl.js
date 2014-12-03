@@ -14,5 +14,10 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', '$stateParams', 
 			}
 			$scope.closeDialog();
 		}
+		
+		$scope.pastDay = function(date) {
+			return tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date);
+		}
+
 	}
 ]);
