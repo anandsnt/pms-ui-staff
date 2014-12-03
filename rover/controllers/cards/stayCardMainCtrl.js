@@ -291,6 +291,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		this.attachCompanyTACardRoutings = function(card){
+			$s = $scope;
+			console.log($scope.reservationData.travelAgent);
+			console.log($scope.reservationData.company);
+
 
 			var fetchSuccessofDefaultRouting = function(data){
 				$scope.$emit("hideLoader");
