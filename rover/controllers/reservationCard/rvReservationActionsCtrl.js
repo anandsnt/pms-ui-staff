@@ -141,6 +141,7 @@ sntRover.controller('reservationActionsController', [
 		var openDepositPopup = function(){
 			var passData = {
 						 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+						 		"fees_information" : $scope.depositDetails.attached_card.fees_information,
 						 		"details":{
 						 			"firstName":$scope.guestCardData.contactInfo.first_name,
 						 			"lastName":$scope.guestCardData.contactInfo.last_name,
@@ -158,10 +159,10 @@ sntRover.controller('reservationActionsController', [
 						closeByDocument: false,
 						closeByEscape: false
 			    });
-		
+			console.log(passData);
 		};
 
-		//openDepositPopup();
+		openDepositPopup();
 		$scope.ifReferanceForCC = false;
 		$scope.depositDetails ={};
 
