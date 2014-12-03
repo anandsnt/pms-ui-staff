@@ -29,7 +29,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			if($vault.get('searchType') == "BY_SWIPE"){
 				backParam = { type: "BY_SWIPE"};
 			}
-
 		}
 
 		// setup a back button
@@ -43,7 +42,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		// before going back to search results
 		$scope.goBackSearch = function() {
 			$scope.updateSearchCache();
-			console.log(backParam);
 			$state.go('rover.search', backParam);
 		};
 
