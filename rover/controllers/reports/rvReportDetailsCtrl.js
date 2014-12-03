@@ -48,7 +48,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// now lets slice it half and half in order that each have atmost 4
 			// since "Web Check Out Conversion" this check is required
-			if ( $scope.chosenReport.title === 'Web Check Out Conversion' ) {
+			if ( $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ) {
 				$scope.firstHalf = $scope.firstHalf.slice( 0, 3 );
 				$scope.restHalf  = $scope.restHalf.slice( 3 );
 			} else {
@@ -88,7 +88,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			    };
 
 			    // additional condition for "Web Check Out Conversion"
-			    if ( $scope.chosenReport.title === 'Web Check Out Conversion' ) {
+			    if ( $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ) {
 			    	$scope.restHalf[$scope.restHalf.length - 1]['class'] = 'orange';
 			    };
 			};
@@ -134,8 +134,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
 
 			// hack to set the colspan for reports details tfoot - 'Web Check Out Conversion''
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.leftColSpan;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.rightColSpan;
+			$scope.leftColSpan  = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.leftColSpan;
+			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.rightColSpan;
 
 			// scroller refresh and reset position
 			refreshScroll();

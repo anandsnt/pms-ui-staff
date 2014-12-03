@@ -443,6 +443,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	var paymentData = $scope.reservationBillData;	
 	 	if($scope.clickedButton == "checkinButton"){
 	 		if(!$scope.paymentModalSwipeHappened){
+	 			$scope.isSwipeHappenedDuringCheckin = true;
 	 			swipedTrackDataForCheckin = swipedCardData;
 	 			passData.details.isClickedCheckin = true;
 	 		}
@@ -485,18 +486,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
      /*
 	  * Handle swipe action in bill card
 	  */
-	 // $scope.$on('SWIPEHAPPENED', function(event, data){
-	 	// if(!$scope.isGuestCardVisible){
-	 		// if($scope.paymentModalOpened){
-	 			// $scope.paymentModalSwipeHappened = true;
-	 			// $scope.$broadcast('PAYMENTSWIPEHAPPENED', data);
-	 		// } else {
-	 			// $scope.fromViewToPaymentPopup = "billcard";
-	 			// $scope.addNewPaymentModal(data);
-	 		// }
-// 	 		
-	 	// }
-	 // });
+
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 	 	  if($scope.paymentModalOpened){
@@ -504,7 +494,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			} else {
 				swipedCardData.swipeFrom = "viewBill";
 			}
-			
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue){
@@ -840,7 +829,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"signature" : signatureData,
 						"reservation_id" : $scope.reservationBillData.reservation_id,
 					    "payment_type": "CC",	
- 						"mli_token": swipedTrackDataForCheckin.tokenDataValue,
+ 						"mli_token": swipedTrackDataForCheckin.token,
 						"et2": swipedTrackDataForCheckin.RVCardReadTrack2,
 						"ksn": swipedTrackDataForCheckin.RVCardReadTrack2KSN,
 						"pan": swipedTrackDataForCheckin.RVCardReadMaskedPAN,
@@ -859,7 +848,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					    "no_post" : !$scope.roomChargeEnabled	
 					};
 	 		    }
-
 				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
 			
 			}

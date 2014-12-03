@@ -9,13 +9,22 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'$q',
 	'RVHkRoomDetailsSrv',
 	'$vault',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv, $vault) {
+	'$rootScope',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv, $vault, $rootScope) {
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 		var totalRoomsAvailable = 0;
 
 		$scope.reservationStatus = {
 			confirmed: false // flag to show the action button (Go to staycard etc.) after confirming reservation
+		};
+
+		$rootScope.setPrevState = {
+			title: $filter('translate')('RESERVATION_SUMMARY'),
+			name: 'rover.reservation.staycard.mainCard.summaryAndConfirm',
+			param: {
+				reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
+			}
 		};
 
 		$scope.init = function() {
@@ -73,13 +82,37 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 		};
 
+		$scope.unflagConfirmation = function() {
+			$scope.reservationStatus.confirmed = false;
+			$rootScope.setPrevState = {
+				title: $filter('translate')('RESERVATION_SUMMARY'),
+				name: 'rover.reservation.staycard.mainCard.summaryAndConfirm',
+				param: {
+					reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
+				}
+			};
+		}
+
 		/**
 		 * Call API to send the confirmation email
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
-			//TODO: for now skip sending messages and go to the next screen
+			var updateBackButton = function() {
+				$rootScope.setPrevState = {
+					title: $filter('translate')('CONFIRM_RESERVATION'),
+					name: 'rover.reservation.staycard.mainCard.reservationConfirm',
+					param: {
+						confirmationId: $scope.reservationData.confirmNum,
+					},
+					callback: 'unflagConfirmation',
+					scope: $scope
+				};
+			}
+
+			//skip sending messages if no mail id is provided and go to the next screen
 			if (!$scope.otherData.additionalEmail && !$scope.reservationData.guest.email) {
 				$scope.reservationStatus.confirmed = true;
+				updateBackButton();
 				return false;
 			}
 
@@ -105,6 +138,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var emailSentSuccess = function(data) {
 				$scope.reservationStatus.confirmed = true;
+				updateBackButton();
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
@@ -226,9 +260,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				totalRoomsAvailable++;
 			}
 		};
-
 		$scope.enableCheckInButton = function() {			
-			return $scope.reservationData.rooms.length == totalRoomsAvailable;
+			return _.has($scope.reservationData, "rooms" ) && 
+				($scope.reservationData.rooms.length == totalRoomsAvailable);
 		};
 
 		var checkAllRoomsAreReady = function() {

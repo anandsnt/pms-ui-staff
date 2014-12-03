@@ -10,7 +10,23 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'workTypes',
 	'roomTypes',
 	'floors',
-	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, roomList, employees, workTypes, roomTypes, floors) {
+	'ngDialog',
+	'RVWorkManagementSrv',
+	function(
+		$scope,
+		$rootScope,
+		$timeout,
+		$state,
+		$filter,
+		RVHkRoomStatusSrv,
+		roomList,
+		employees,
+		workTypes,
+		roomTypes,
+		floors,
+		ngDialog,
+		RVWorkManagementSrv
+	) {
 
 		// hook it up with base ctrl
 		BaseCtrl.call(this, $scope);
@@ -883,6 +899,106 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			angular.element(roomsEl).off('ontouchmove');
 			angular.element(filterRoomsEl).off('ontouchmove');
 		});
+
+
+
+
+
+		// NEW FEATURES, will be moved to a proper place when working on 10222
+		$scope.assignRoom = {};
+
+		$scope.closeDialog = function() {
+		    $scope.errorMessage = "";
+		    ngDialog.close();
+		}
+
+		var activeWorksheetData = [];
+		var tobeAssignedRoom = {};
+		var findEmpAry = function() {
+			var workid = $scope.assignRoom.work_type_id || $scope.topFilter.byWorkType,
+				ret    =  _.find(activeWorksheetData, function(item) {
+					return item.id === workid;
+				});
+
+			return !!ret ? ret.employees : [];
+		};
+
+		$scope.openAssignRoomModal = function(room) {
+			tobeAssignedRoom = room;
+
+			$scope.assignRoom.rooms = [tobeAssignedRoom.id];
+			$scope.assignRoom.work_type_id = $scope.topFilter.byWorkType;
+			$scope.activeWorksheetEmp = [];
+
+			var onSuccess = function(response) {
+					$scope.$emit('hideLoader');
+
+					activeWorksheetData = response.data;
+					$scope.activeWorksheetEmp = findEmpAry();
+					ngDialog.open({
+					    template: '/assets/partials/housekeeping/rvAssignRoomPopup.html',
+					    className: 'ngdialog-theme-default',
+					    closeByDocument: true,
+					    scope: $scope,
+					    data: []
+					});
+					
+				},
+				onError = function() {
+					$scope.$emit('hideLoader');
+				};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchActiveWorksheetEmp, {}, onSuccess, onError);
+		};
+
+		$scope.assignRoomWorkTypeChanged = function() {
+			$scope.activeWorksheetEmp = findEmpAry();
+		};
+
+		$scope.submitAssignRoom = function() {
+		    $scope.errorMessage = "";
+		    if (!$scope.assignRoom.work_type_id) {
+		        $scope.errorMessage = ['Please select a work type.'];
+		        return false;
+		    }
+		    if (!$scope.assignRoom.user_id) {
+		        $scope.errorMessage = ['Please select an employele.'];
+		        return false;
+		    }
+		    var onAssignSuccess = function(data) {
+		            $scope.$emit('hideLoader');
+		            
+		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
+		            	return emp.id === $scope.assignRoom.user_id
+		            });
+		            tobeAssignedRoom.canAssign = false;
+		            tobeAssignedRoom.assigned_staff = {
+		            	'name': angular.copy(assignee.name),
+		            	'class': 'assigned'
+		            };
+
+		            $scope.assignRoom = {};
+
+		            $scope.closeDialog();
+		        },
+		        onAssignFailure = function(errorMessage) {
+		            $scope.$emit('hideLoader');
+		            $scope.errorMessage = errorMessage;
+		        },
+		        data = {
+			        "date": $rootScope.businessDate,
+			        "task_id": $scope.assignRoom.work_type_id,
+			        "order": "",
+			        "assignments": [{
+			            "assignee_id": $scope.assignRoom.user_id,
+			            "room_ids": $scope.assignRoom.rooms,
+			            "work_sheet_id": "",
+			            "from_search": true
+			        }]
+			    };
+
+		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, data, onAssignSuccess, onAssignFailure);
+		};
 
 	}
 ]);

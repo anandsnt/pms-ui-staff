@@ -11,6 +11,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			BaseCtrl.call( this, $scope );
 			$scope.reservationsArray = [];
 			$scope.init = function(){
+				$s = $scope;
 				// quick ref to fetched items
 				// and chosen one from the list
 				$scope.fetchedItems = $scope.fetchedData.items;
@@ -67,8 +68,6 @@ sntRover.controller('RVOutsidePostChargeController',
 			};
 	
 			$scope.searchForResultsSuccess = function(data){
-	
-				$scope.showInitialSearchScreen = false;
 				$scope.$emit( 'hideLoader' );
 				$scope.reservationsArray = data;
 				
@@ -77,6 +76,12 @@ sntRover.controller('RVOutsidePostChargeController',
 				angular.forEach($scope.reservationsArray, function(value, key) {
 					value.shouldShowReservation = true;
 				});
+
+				if($scope.reservationsArray.length == 0){
+					$scope.showNoMatches = true;
+				}
+				$scope.showInitialSearchScreen = false;
+
 				refreshScroller();
 			};
 
@@ -89,8 +94,13 @@ sntRover.controller('RVOutsidePostChargeController',
 			};
 			
 			$scope.searchForResults = function(){
-				$scope.showInitialSearchScreen = false;
+				$scope.showNoMatches = false;
 				$scope.refreshApi = true;
+				
+				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0 
+																&& $scope.reservationsArray.length == 0){
+					$scope.showInitialSearchScreen = true;
+				}
 
 				//single difit search parameter is turned on in admin, room number search is made for single digit
 				//company/TA/guest search will be done for 3 characters.
@@ -138,15 +148,27 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.search.guest_company_agent = '';
 				$scope.search.room = '';
 				$scope.showInitialSearchScreen = true;
+				$scope.reservationsArray.length = 0;
+				$scope.showNoMatches = false;
 				$scope.itemsVisible = false;
 				$scope.showSearchScreen = false;
 			};
 			$scope.showHideInitialSearchScreen = function(){
-				// if($scope.reservationsArray.length == 0){
+				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0 
+																&& $scope.reservationsArray.length == 0){
 					$scope.showInitialSearchScreen = true;
-					$scope.showSearchScreen = true;
-					$scope.itemsVisible = false;
-				// }
+				}
+				/*angular.forEach($scope.reservationsArray, function(value, key) {
+					value.shouldShowReservation = false;
+					//TODO: travel agent based search not hapening
+					if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.search.guest_company_agent.toUpperCase()) >= 0 ||
+						($scope.search.guest_company_agent.length > 0 && ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.search.guest_company_agent.toUpperCase()) >= 0) ||
+						($scope.search.room.length > 0 && ($scope.escapeNull(value.room).toString()).indexOf($scope.search.room) >= 0)){
+						value.shouldShowReservation = true;
+					}
+				});*/
+				$scope.showSearchScreen = true;
+				$scope.itemsVisible = false;
 				
 			};
 			$scope.successGetBillDetails = function(data){
@@ -303,6 +325,8 @@ sntRover.controller('RVOutsidePostChargeController',
 					$scope.reservation_id = $scope.cardAttached.id;
 					$scope.$broadcast('POSTCHARGE');
 				}
+
+
 			};
 			/*
 			 * Method to handle ADD GUEST OR ROOM button click
