@@ -10,7 +10,8 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 		$scope.staycardReady = false;
 		$timeout(function() { $scope.staycardReady = true; }, delay);
 
-
+		$scope.depositPopupData = {};
+		$scope.depositPopupData.hasShown = false;
 
 
 		// $scope.guestCardData = {};
