@@ -16,7 +16,9 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.successOccured = false;
 		$scope.successMessage = "";
 		$scope.authorizedCode = "";
-
+		
+		$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
+		
 		$scope.depositData = {
 			selectedCard: -1,
 			amount: "",
@@ -39,7 +41,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		var refreshCardsList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
-			}, 300)
+			}, 300);
 		};
 
 		/*
@@ -260,6 +262,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 	});
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);
+	});
+	
+	$scope.$on("SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN", function(e, swipedCardDataToRender){
+		$scope.paymentMode = true;
+		$scope.addmode = true;
+		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 
 }]);

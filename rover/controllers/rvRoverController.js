@@ -145,6 +145,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.$on("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", function(e, value) {
       $scope.isCancelReservationPenaltyOpened = value;
     });
+    $scope.isStayCardDepositScreenOpened = false;
+    $scope.$on("UPDATE_STAY_CARD_DEPOSIT_FLAG", function(e, value) {
+      $scope.isStayCardDepositScreenOpened = value;
+    });
     $scope.searchBackButtonCaption = '';
 
     /**
