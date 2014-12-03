@@ -265,11 +265,13 @@
                     <div class="select">
 
                         <select class="placeholder" ng-model="reservationData.paymentType.type.value"
-                            ng-options="paymentMethod.value as paymentMethod.description for paymentMethod in reservationData.paymentMethods" ng-change="changePaymentType()">
+                            ng-change="changePaymentType()">
                             <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
+                            <option value="paymentTypes.value" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
                         </select>
                     </div>
                 </div>
+                {{renderData}}
                 <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && reservationData.paymentType.type.value === 'CC' && !showCC" ng-click="changePaymentType()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label class="active-item item-payment" id="pay-with-amex">
