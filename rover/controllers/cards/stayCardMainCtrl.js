@@ -12,6 +12,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			cardType: ""
 		};
 
+		$s = $scope;
+
 		$scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;
 			$scope.setTitle(heading);
@@ -296,7 +298,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var fetchSuccessofDefaultRouting = function(data){
 				$scope.$emit("hideLoader");
 				$scope.routingInfo = data;
-
 				if(data.has_conflicting_routes){
 					$scope.conflict_cards = [];
 					if(card == 'travel_agent' && data.travel_agent.routings_count > 0){

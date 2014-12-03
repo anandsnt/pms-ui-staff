@@ -10,8 +10,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			cardTabContentOffset: 170, // Height of the tab menu and the header above.			
 		};
 
-		$s = $scope;
-
 		$scope.cardVisible = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
