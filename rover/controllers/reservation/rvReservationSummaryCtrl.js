@@ -603,7 +603,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var postData = $scope.computeReservationDataforUpdate(false, true);
 			// return false;
 			var saveSuccess = function(data) {
-				console.log("saveSuccess");
 				$scope.$emit('hideLoader');
 				/*
 				 * TO DO: to handle in future when more than one confirmations are returned.
@@ -679,10 +678,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.viewState.identifier = "UPDATED";
 				//TODO: what is this?
 				$scope.reservationData.is_routing_available = data.is_routing_available;
-				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+				/*$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum
-				});
+				});*/
 				that.attachCompanyTACardRoutings();
 
 			};
@@ -764,10 +763,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.contractRoutingType = "COMPANY";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
 					return false;
-				} /*else {
+				} else {
 					//Proceed with reservation creation flow
 					$scope.goToConfirmationScreen();
-				}*/
+				}
 			};
 
 			var params = {};
@@ -793,11 +792,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				return false;
 
 				
-			} /*else {
+			} else {
 				//Proceed with reservation creation flow
 				$scope.goToConfirmationScreen();
 			}
-			$scope.goToConfirmationScreen();*/
+			//$scope.goToConfirmationScreen();
 		};
 
 		$scope.okClickedForConflictingRoutes = function(){
@@ -839,10 +838,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
 					return false;
 
-				} /*else {
+				} else {
 					ngDialog.close();
 					$scope.goToConfirmationScreen();
-				}*/
+				}
 
 			};
 			
