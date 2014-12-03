@@ -170,7 +170,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 	var successPayment = function(data){
 		$scope.$emit('hideLoader');
-		$scope.successMessage = "Deposit payed successfully!";	
+		$scope.successMessage = "Deposit paid";	
 		$scope.authorizedCode = data.authorization_code;
 		$scope.errorOccured = false;
 		$scope.successOccured = true;
