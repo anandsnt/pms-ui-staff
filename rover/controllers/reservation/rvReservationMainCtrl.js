@@ -810,6 +810,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.departureDate = reservationDetails.reservation_card.departure_date;
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
+            $scope.reservationData.isHourly = reservationDetails.reservation_card.is_hourly_reservation;
+
             /** CICO-6135
              *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
              */
@@ -879,6 +881,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             */
             $scope.reservationData.stayDays = [];
             $scope.reservationData.rooms[0].rateId = [];
+            $scope.reservationData.rooms[0].stayDates = {};
 
             $scope.reservationData.is_modified = false;
 
@@ -891,7 +894,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
                     dayOfWeek: dateFilter(new tzIndependentDate(item.date), 'EEE'),
                     day: dateFilter(new tzIndependentDate(item.date), 'dd')
-                });
+                });                
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
                         guests: {
                             adults: item.adults,
@@ -1117,7 +1120,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
 
-        $scope.editReservationRates = function(room, index) {
+        $scope.editReservationRates = function(room, index) {            
             ngDialog.open({
                 template: '/assets/partials/reservation/rvEditRates.html',
                 className: 'ngdialog-theme-default',

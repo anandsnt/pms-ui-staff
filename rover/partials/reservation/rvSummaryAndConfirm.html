@@ -126,7 +126,7 @@
                                     <span class="total" ng-if="room.isSuppressed">SR</span>
                                     <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
                                 </span>
-                            <a>
+                            </a>
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>
@@ -142,7 +142,7 @@
                         <button type="button" class="button white brand-text" ng-click="setDemographics()">Demographics</a>
                     </div>
                     <button class="add-new-button" ng-hide="true">+ Accompanying Guest</button>
-                    <form action="{action}" id="room-1-accompany" class="form hidden"> <!-- Remove class hidden when button above clicked -->
+                    <form id="room-1-accompany" class="form hidden"> <!-- Remove class hidden when button above clicked -->
                         <div class="entry">
                             <label for="room-1-acc-1-firstname">Accompanying guest</label>
                             <input name="room-1-acc-1-firstname" id="room-1-acc-1-firstname" placeholder="First Name" value="" type="text" />
@@ -154,8 +154,7 @@
                     </form>
                 </div>
                 <ul class="total-stay-cost">                	
-                	<li ng-repeat="row in reservationData.taxDetails">
-                        <!-- TODO : REMOVE THE ADDITIONAL INFO FROM THE BELOW LINE AFTER FUNCTIONAL TESTING-->
+                	<li ng-repeat="row in reservationData.taxDetails">                        
                 		<span class="label" translate> {{row.description}} </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                         <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{ row.amount | number : 2}}</span>               		
@@ -265,8 +264,9 @@
                     <div class="select">
 
                         <select class="placeholder" ng-model="reservationData.paymentType.type.value"
-                            ng-options="paymentMethod.value as paymentMethod.description for paymentMethod in reservationData.paymentMethods" ng-change="changePaymentType()">
+                            ng-change="changePaymentType()">
                             <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
+                            <option value="{{paymentTypes.value}}" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
                         </select>
                     </div>
                 </div>

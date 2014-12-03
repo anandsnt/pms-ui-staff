@@ -31,7 +31,10 @@ sntRover.controller('RVCardOptionsCtrl',
 		}
 		var time = new Date().getTime();
 		$scope.shouldShowAddNewCard = true;
-		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.passData.details.firstName + "&card_holder_last_name=" + $scope.passData.details.lastName + "&service_action=createtoken&time="+time;
+		var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
+		var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
+		console.log(firstName + lastName)
+		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
 		if($rootScope.paymentGateway == "sixpayments"){
 			$scope.shouldShowAddNewCard = false;
 			var iFrame = $document.find("sixIframe");

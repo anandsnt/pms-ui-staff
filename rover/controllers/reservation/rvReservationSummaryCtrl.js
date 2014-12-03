@@ -692,7 +692,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"confirmationId": $scope.reservationData.confirmNum
 				});
 			};
+			postData.payment_type = {};
+			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
+				if(value.value == $scope.reservationData.paymentType.type.value){
+					postData.payment_type.type_id = value.id;
+				}
 
+			});
+			if($scope.reservationData.paymentType.type.value == 'CC'){
+				postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
+			}
+		
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
