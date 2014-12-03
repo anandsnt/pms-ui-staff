@@ -421,9 +421,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		$scope.populateDatafromDiary = function(roomsArray, tData) {
 
-			//CICO-11443
-			$scope.viewState.identifier = "CREATION";
-
 			var ratesFetched = function(data) {
 				$scope.otherData.taxesMeta = data.tax_codes;
 				$scope.reservationData.totalTax = 0;
@@ -520,6 +517,12 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var hResData = tData.rooms[0];
 			this.reservationId = hResData.reservation_id;
 			this.confirmNum = hResData.confirmation_id;
+
+			if(this.reservationId){
+				$scope.viewState.identifier == "CONFIRM";
+			}else{
+				$scope.viewState.identifier == "CREATION";
+			}
 
 			if (this.reservationId) { //Need this in case of edit reservations alone
 				$scope.reservationDetails.guestCard = {};
