@@ -10,8 +10,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.referanceText = "";
 		$scope.isDisplayReference = false;
 
-		console.log($scope.passData.details.creditCardTypes);
-
 		$scope.cancellationData = {
 			selectedCard: -1,
 			reason: "",
