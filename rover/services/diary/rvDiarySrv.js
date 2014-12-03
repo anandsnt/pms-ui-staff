@@ -604,6 +604,32 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return q.promise;
                 };
 
+                this.callOccupancyAndAvailabilityCount = function(start_date, end_date) {
+                    var _data_Store     = this.data_Store,
+                    time            = util.gridTimeComponents(start_date, 48);
+                    q = $q.defer();
+                    $q.all([ 
+                            Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
+                            AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
+                            .then(function(data_array) {
+                                _.reduce([
+                                       
+                                      Occupancy, 
+                                      AvailabilityCount], 
+                            function(memo, obj, idx) {  
+                                obj.resolve(data_array[idx]);
+                        }, data_array);
+
+                        q.resolve(_data_Store.get(                                
+                                'room',
+                                'availability_count'
+                            ));
+                    })
+                    
+                    
+                    return q.promise;
+                };
+
                 /*Process list of arrival times that increment by "base_interval"*/
                 this.fetchArrivalTimes = function(base_interval, results) { //, offset) {
                     var day_min = 24 * 60,
@@ -618,6 +644,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     return results;
                 };
+
+
 
                 /*Primary Method to obtain Occupancy Slots for a given date range*/
                 this.Occupancy = function(start_date, end_date) {
