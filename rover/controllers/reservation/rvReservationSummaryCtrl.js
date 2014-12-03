@@ -755,7 +755,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//$scope.addmode = true;
 			} else {
 				$scope.isSubmitButtonEnabled = true;
-				console.log($scope.reservationData.paymentMethods);
 
 				// To handle fees details on reservation summary,
 				// While we change payment methods.
@@ -764,10 +763,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					if((item.value == $scope.reservationData.paymentType.type.value) && (item.value != "CC")){
 						$scope.feeData.feesInfo = item.charge_code.fees_information;
 						$scope.setupFeeData();
-						console.log(item);
 					}
 				});
-
 			};
 
 			$scope.refreshPaymentScroller();
