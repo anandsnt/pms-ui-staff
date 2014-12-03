@@ -1305,6 +1305,14 @@ body { overflow: hidden; }
         }
 
 		/* Data ***/
+		.holder {
+			width: 100%;
+			clear: both;
+			.float;
+
+			.entry { margin-bottom: 0; }
+		}
+
 		.entry {
 			width: 50%;
 
@@ -1370,39 +1378,41 @@ body { overflow: hidden; }
             }
 
             /* New card ***/
-            &.card-number,
-            &.card-name {
-                margin-right: 20px;
-                .calc-width(70, 20); 
-            }
+            &.card-type,
+            &.card-name,
+            &.card-expiry,
+            &.card-ccv { margin-right: 20px; }
 
-            &.card-expiry {
-            	width: 30%;
+            &.card-type { .calc-width(37, 20); }
 
-                input {
-                    float: left;
-                    .calc-width(50, 5);
+           	&.card-number { width: 63%; }
 
-                    &:first-of-type { margin-right: 10px; }
-                }
-            }
+	        &.card-expiry {
+	            .calc-width(37, 20);
 
-            &.card-ccv {
-            	margin-right: 10px;
-                .calc-width(15, 10);
-            }
+	            input {
+	                float: left;
+	                .calc-width(50, 5);
 
-            &.card-action {
-            	width: 15%;
+	                &:first-of-type { margin-right: 10px; }
+	            }
+	        }
 
-            	.button { 
-            		font-size: 14px !important; 
+	        &.card-name { .calc-width(38, 20);}
+
+	        &.card-ccv { .calc-width(15, 20); }
+
+	        &.card-action {
+	            width: 10%;
+
+	            .button { 
+	            	font-size: 14px !important; 
             		line-height: 38px !important;
             		padding: 0 !important;
             		margin-top: 24px;
             		width: 100%;
-            	}
-            }
+	            }
+	        }
 
             /* Amount + reference ***/
             &.amount {
@@ -1415,17 +1425,20 @@ body { overflow: hidden; }
 
                 .fee,
                 .total {
-                	line-height: 40px;
+                	line-height: 39px;
                 	text-transform: uppercase;
                 	margin-left: 10px;
-                	.calc-width(30, 10);
                     .pull-left;
                 }
 
-                .fee { font-size: 14px; }
+                .fee { 
+                	font-size: 14px; 
+                	.calc-width(25, 10);
+                }
 
                 .total {
                 	text-align: right;
+                	.calc-width(35, 10);
 
                 	strong {
 	                    font-size: 18px;

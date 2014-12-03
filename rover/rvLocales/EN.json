@@ -806,6 +806,7 @@
     "BALANCE":"Balance",
     "NET_AMOUNT":"Net Amount",
     "TOTAL_INCL_TAX":"Total Incl Tax",
-    "UPDATE":"Update"
+    "UPDATE":"Update",
+    "NOT_DEFINED": "Not Defined"
 
 }
