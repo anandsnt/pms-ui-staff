@@ -262,7 +262,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			var params = {};
 			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
-			params.reservation_id = $scope.reservationData.reservationId;
+			params.reservation_id = [];
+			params.reservation_id.push($scope.reservationData.reservationId)
 			
 			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
 		};
@@ -316,6 +317,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			
 			var params = {};
 			params.reservation_id = $scope.reservationData.reservationId;
+
 			if(card == 'travel_agent'){
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 			} else if (card == 'company'){

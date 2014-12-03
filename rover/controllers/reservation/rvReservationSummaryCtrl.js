@@ -592,9 +592,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.proceedCreatingReservation = function() {
+			console.log("proceedCreatingReservation");
 			var postData = $scope.computeReservationDataforUpdate(false, true);
 			// return false;
 			var saveSuccess = function(data) {
+				console.log("saveSuccess");
 				$scope.$emit('hideLoader');
 				/*
 				 * TO DO: to handle in future when more than one confirmations are returned.
@@ -674,6 +676,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum
 				});
+				that.attachCompanyTACardRoutings();
+
 			};
 
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
@@ -681,6 +685,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				postData.reservationId = $scope.reservationData.reservationId;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
 			} else {
+
 				//updating reservation
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
 			}
@@ -752,16 +757,19 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.contractRoutingType = "COMPANY";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
 					return false;
-				} else {
+				} /*else {
 					//Proceed with reservation creation flow
 					$scope.goToConfirmationScreen();
-				}
+				}*/
 			};
 
 			var params = {};
 			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
-			params.reservation_id = $scope.reservationData.reservationId;
-			
+			//params.reservation_id = $scope.reservationData.reservationId;
+			params.reservation_id = [];
+			for(var i in $scope.reservationData.reservations){
+				params.reservation_id.push($scope.reservationData.reservations[i].id)
+			}
 			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
 
 		};
@@ -778,19 +786,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				return false;
 
 				
-			} else {
+			} /*else {
 				//Proceed with reservation creation flow
 				$scope.goToConfirmationScreen();
 			}
-			$scope.goToConfirmationScreen();
+			$scope.goToConfirmationScreen();*/
 		};
 
 		$scope.okClickedForConflictingRoutes = function(){
-			$scope.goToConfirmationScreen();
+			//$scope.goToConfirmationScreen();
 			ngDialog.close();
 		};
 
 		this.attachCompanyTACardRoutings = function(){
+			console.log("attachCompanyTACardRoutings");
+			console.log($scope.reservationData.reservations);
 
 			var fetchSuccessofDefaultRouting = function(data){
 				$scope.$emit("hideLoader");
@@ -801,21 +811,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					return false;
 				}
 
-				if(data.travel_agent.routings_count > 0){
+				if(that.hasTravelAgent() &&data.travel_agent.routings_count > 0){
 					$scope.contractRoutingType = "TRAVEL_AGENT";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
 					return false;
 
 				}
-				if(data.company.routings_count > 0){
+				if(that.hasCompanyCard() && data.company.routings_count > 0){
 					$scope.contractRoutingType = "COMPANY";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
 					return false;
 
-				} else {
+				} /*else {
 					ngDialog.close();
 					$scope.goToConfirmationScreen();
-				}
+				}*/
 
 			};
 			
@@ -824,8 +834,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				params.reservation_id = $scope.reservationData.reservationId;
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 				params.company_id = $scope.reservationData.company.id;
-				//TODO: Actual API call
+				/*//TODO: Actual API call
 				//fetchSuccessofDefaultRouting();
+				params.reservation_id = [];
+				for(var i in $scope.reservationData.reservations){
+					params.reservation_id.push($scope.reservationData.reservations[i].id)
+				}*/
 
 				$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
 			}
