@@ -140,7 +140,6 @@ var DiaryContent = React.createClass({
     	}
   	},
   	componentWillReceiveProps: function(nextProps) {
-  		
   		var hops = Object.prototype.hasOwnProperty;
   		/*if(this.props.viewport !== nextProps.viewport ||
   		   this.props.display !== nextProps.display ||
@@ -154,6 +153,11 @@ var DiaryContent = React.createClass({
   				edit: nextProps.edit
   			});
   		}*/
+		if(hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
+  			this.setState({
+  				stats: nextProps.stats
+  			});
+  		}
 
   		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
@@ -173,7 +177,7 @@ var DiaryContent = React.createClass({
   			});
   		}
 
-  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {
+  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {  			
   			this.setState({
   				edit: nextProps.edit
   			});
@@ -216,7 +220,8 @@ var DiaryContent = React.createClass({
 				  				timeline: undefined,
 				  				rooms: undefined,
 				  				grid: undefined
-				  			}
+				  			},
+				  			stats: props.stats
 						};
 		
 		display.width 				= display.hours / viewport.hours * viewport.width;
