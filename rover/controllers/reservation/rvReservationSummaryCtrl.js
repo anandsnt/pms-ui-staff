@@ -674,9 +674,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				});
 			};
 			postData.payment_type = {};
-			angular.foreach($scope.reservationData.paymentMethods, function(value, key) {
+			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
 				if(value.value == $scope.reservationData.paymentType.type.value){
-					postData.payment_type.type_id == value.id;
+					postData.payment_type.type_id = value.id;
 				}
 
 			});
@@ -685,14 +685,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 			console.log("===================POSTDATA=====================");
 			console.log(JSON.stringify(postData));
-			// if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
-				// //creating reservation
-				// postData.reservationId = $scope.reservationData.reservationId;
-				// $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
-			// } else {
-				// //updating reservation
-				// $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
-			// }
+			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
+				//creating reservation
+				postData.reservationId = $scope.reservationData.reservationId;
+				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
+			} else {
+				//updating reservation
+				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
+			}
 		};
 		$scope.showRoomNotAvailableDialog = function(errorMessage) {
 
