@@ -1,7 +1,9 @@
 <div id ="modal" class="modal-show">
 	<div class="modal-content new-content form warning">
 	    <div>
-			conflicting billing info exists. Please update manually
+			conflicting billing info exists on 
+			<span ng-repeat="card in conflict_cards">{{card}} card{{$last ? '. ' : ', '}}</span>
+			Please update manually
 		</div>
 
 	    <div class="actions">

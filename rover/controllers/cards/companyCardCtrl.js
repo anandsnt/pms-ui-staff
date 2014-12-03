@@ -142,6 +142,8 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 		$scope.$on("companySearchInitiated", function() {
 			$scope.companySearchIntiated = true;
 			$scope.companies = $scope.searchedCompanies;
+			console.log("company search inititaled");
+			console.log($scope.companies);
 			$scope.$broadcast("refreshCompaniesScroll");
 		})
 

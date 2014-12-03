@@ -773,9 +773,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var params = {};
 			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
 			//params.reservation_id = $scope.reservationData.reservationId;
-			params.reservation_id = [];
+			params.reservation_ids = [];
 			for(var i in $scope.reservationData.reservations){
-				params.reservation_id.push($scope.reservationData.reservations[i].id)
+				params.reservation_ids.push($scope.reservationData.reservations[i].id)
 			}
 			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
 
@@ -806,15 +806,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		this.attachCompanyTACardRoutings = function(){
-			console.log("attachCompanyTACardRoutings");
-			console.log($scope.reservationData.reservations);
 
 			var fetchSuccessofDefaultRouting = function(data){
 				$scope.$emit("hideLoader");
 				$scope.routingInfo = data;
 
 				if(data.has_conflicting_routes){
+					$scope.conflict_cards = [];
+					if(that.hasTravelAgent() && data.travel_agent.routings_count > 0){
+						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
+					}
+					if(that.hasCompanyCard() && data.company.routings_count > 0){
+						$scope.conflict_cards.push($scope.reservationData.company.name)
+					}
 					that.showConflictingRoutingPopup();
+					
 					return false;
 				}
 

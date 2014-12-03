@@ -752,6 +752,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$event.stopPropagation();
 			//CICO-7792
 			if ($scope.viewState.identifier == "CREATION") {
+				console.log("view state identified is creation");
 				$scope.reservationData.company.id = company.id;
 				$scope.showContractedRates({
 					companyCard: company.id,
@@ -768,6 +769,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
 			} else {
+				console.log("else case");
+
 				if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('company', company, false);
 				} else {

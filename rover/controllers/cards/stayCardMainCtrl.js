@@ -142,6 +142,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.travelAgent.id;
 				$scope.travelAgentInformation = data;
+
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('travelAgentFetchComplete');
@@ -262,8 +263,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			var params = {};
 			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
-			params.reservation_id = [];
-			params.reservation_id.push($scope.reservationData.reservationId)
+			params.reservation_ids = [];
+			params.reservation_ids.push($scope.reservationData.reservationId)
 			
 			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
 		};
@@ -291,16 +292,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		this.attachCompanyTACardRoutings = function(card){
-			$s = $scope;
-			console.log($scope.reservationData.travelAgent);
-			console.log($scope.reservationData.company);
-
 
 			var fetchSuccessofDefaultRouting = function(data){
 				$scope.$emit("hideLoader");
 				$scope.routingInfo = data;
 
 				if(data.has_conflicting_routes){
+					$scope.conflict_cards = [];
+					if(card == 'travel_agent' && data.travel_agent.routings_count > 0){
+						console.log("is travel agent");
+						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
+					}
+					if(card == 'company' && data.company.routings_count > 0){
+						console.log("is company");
+						$scope.conflict_cards.push($scope.reservationData.company.name)
+					}
 					that.showConflictingRoutingPopup();
 					return false;
 				}
@@ -332,7 +338,14 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		$scope.replaceCard = function(card, cardData, future) {
-			
+			if(card == 'company'){ 
+				$scope.reservationData.company.id = cardData.id;
+				$scope.reservationData.company.name = cardData.account_name;
+			} else if (card == 'travel_agent'){
+				$scope.reservationData.travelAgent.id = cardData.id;
+				$scope.reservationData.travelAgent.name = cardData.account_name;
+			}
+
 			//Replace card with the selected one
 			$scope.invokeApi(RVCompanyCardSrv.replaceCard, {
 				'reservation': typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
