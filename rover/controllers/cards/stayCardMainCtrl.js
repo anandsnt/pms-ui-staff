@@ -421,6 +421,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		$scope.populateDatafromDiary = function(roomsArray, tData) {
 
+			//CICO-11443
+			$scope.viewState.identifier = "CREATION";
+
 			var ratesFetched = function(data) {
 				$scope.otherData.taxesMeta = data.tax_codes;
 				$scope.reservationData.totalTax = 0;
@@ -465,8 +468,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			this.rooms = [];
 			this.rooms = tData.rooms;
-			this.arrivalDate = tData.arrival_date;
-			this.departureDate = tData.departure_date;
+			this.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
+			this.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
 			var arrivalTimeSplit = tData.arrival_time.split(":");
 
 			this.checkinTime.hh = arrivalTimeSplit[0];
