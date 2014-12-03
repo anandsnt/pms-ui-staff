@@ -8,6 +8,9 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.addmode = false;
 		$scope.showCC = false;
 		$scope.referanceText = "";
+		$scope.isDisplayReference = false;
+
+		console.log($scope.passData.details.creditCardTypes);
 
 		$scope.cancellationData = {
 			selectedCard: -1,
@@ -19,20 +22,32 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			expiry_date:"",
 			card_type:""
 		};
+		
+		if($scope.ngDialogData.penalty > 0){
+			$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
+		}
 
 		$scope.setScroller('cardsList');
 
+		var checkReferencetextAvailableForCC = function(){
+			angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
+				if($scope.cancellationData.card_type.toUpperCase() === value.cardcode){
+					$scope.isDisplayReference = (value.is_display_reference)? true:false;
+				};					
+			});				
+		};
+
 		$scope.feeData = {};
-		
+		var zeroAmount = parseFloat("0.00").toFixed(2);
+
 		// CICO-9457 : Data for fees details.
 		$scope.setupFeeData = function(){
 			
-			var feesInfo = $scope.feeData.feeInfo;
-			var zeroAmount = parseFloat("0.00").toFixed(2);
-			var defaultAmount = $scope.ngDialogData.penalty ?
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
+			var defaultAmount = $scope.ngDialogData ?
 			 	$scope.ngDialogData.penalty : zeroAmount;
-			console.log("feesInfo :");console.log(feesInfo);
-			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+			
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
@@ -44,18 +59,12 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 				}
 			}
-			else{
-				$scope.feeData.actualFees = zeroAmount;
-				$scope.feeData.calculatedFee = zeroAmount;
-				$scope.feeData.totalOfValueAndFee = zeroAmount;
-			}
-		}
-		
+		};
 
 		var refreshCardsList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
-			}, 300)
+			}, 300);
 		};
 
 		var retrieveCardtype = function(){
@@ -100,6 +109,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				$scope.cancellationData.cardNumber = retrieveCardNumber();
 				$scope.cancellationData.expiry_date = retrieveExpiryDate();
 				$scope.cancellationData.card_type = retrieveCardtype();
+				checkReferencetextAvailableForCC();
 				$scope.showCC = false;
 			};
 			var paymentData = {
@@ -109,14 +119,13 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
 				token: cardToken,
 				card_expiry: cardExpiry
-			}
+			};
 			if($scope.isStandAlone){
 				if($scope.feeData.calculatedFee)
 					paymentData.fees_amount = $scope.feeData.calculatedFee;
 				if($scope.feeData.feesInfo)
 					paymentData.fees_charge_code_id = $scope.feeData.feeInfo.charge_code_id;
 			}
-			console.log(paymentData);
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 		};
 
@@ -154,18 +163,18 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 					"confirmationId": $scope.reservationData.confirmNum ||  $scope.reservationParentData.confirmNum,
 					"isrefresh": false
 				});
-				$scope.closeDialog();
+				$scope.closeReservationCancelModal();
 				$scope.$emit('hideLoader');
-			}
+			};
 			var onCancelFailure = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data;
-			}
+			};
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
 				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
 				id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId
-			}
+			};
 			if($scope.ngDialogData.isDisplayReference){
 				cancellationParameters.reference_text = $scope.referanceText;
 			};
@@ -181,9 +190,8 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.cancellationData.cardNumber = $scope.cardsList[index].mli_token;
 		$scope.cancellationData.expiry_date = $scope.cardsList[index].card_expiry;
 		$scope.cancellationData.card_type = $scope.cardsList[index].card_code;
+		checkReferencetextAvailableForCC();
 		$scope.showCC = false;
-		console.log("card clicked from cancel reservation");
-		
 		// CICO-9457 : Data for fees details - standalone only.	
 		if($scope.isStandAlone)	{
 			$scope.feeData.feeInfo = $scope.cardsList[index].fees_information;
@@ -207,7 +215,47 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);
 	});
+	
+	$scope.$on("SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN", function(e, swipedCardDataToRender){
+
+		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+		$scope.ngDialogData.state = 'PENALTY';
+		$scope.showCC = true;
+		$scope.addmode = true;
+
+	});
+	
+	var successSwipePayment = function(data, successParams){
+				$scope.$emit('hideLoader');
+				$scope.cancellationData.selectedCard = data.id;
+				$scope.cancellationData.cardNumber = successParams.cardNumber.slice(-4);;
+				$scope.cancellationData.expiry_date = successParams.cardExpiryMonth+"/"+successParams.cardExpiryYear;
+				$scope.cancellationData.card_type = successParams.cardType.toLowerCase();
+				$scope.showCC = false;
+	};
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		var data 				 = swipedCardDataToSave;
+		data.reservation_id 	 = $scope.reservationData.reservation_card.reservation_id;
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card 		 = swipedCardDataToSave.cardType;
+		data.card_expiry 		 = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+		data.add_to_guest_card   = swipedCardDataToSave.addToGuestCard;
+		
+		
+		var options = {
+	    		params: 			data,
+	    		successCallBack: 	successSwipePayment,	 
+	    		successCallBackParameters:  swipedCardDataToSave 	
+	    };
+	    $scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
+	});
+	$scope.closeReservationCancelModal = function(){
+		$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", false);
+		$scope.closeDialog();
+	};
 
 	}
+	
+	
 
 ]);

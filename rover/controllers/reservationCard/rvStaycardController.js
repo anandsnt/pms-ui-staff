@@ -72,6 +72,9 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			 * Changing code to refer the parent's heading variable to override this behaviour.
 			 */			
 			$scope.$parent.heading = data;
+			
+			if(data == "Guest Bill") $scope.$parent.addNoPrintClass = true;
+			else $scope.$parent.addNoPrintClass = false;
 		});
 
 		$scope.$on('SHOWPAYMENTLIST', function(event, data) {

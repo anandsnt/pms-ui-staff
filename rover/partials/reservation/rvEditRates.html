@@ -1,0 +1,49 @@
+<div id="modal" class="modal-show" role="dialog">
+   <div>
+		<form ng-cloak method="post" id="edit-rate" name="edit-rate" class="modal-content form modify-rate">
+		    <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
+
+		    <div class="modal-header">
+		        <h1>Rate Details</h1>
+		        <em>{{ngDialogData.room.roomTypeName}}<br/>{{ngDialogData.room.rateName}}</em>
+		    </div>
+
+		    <div id="rate-grid" class="scrollable">
+		        <div class="wrapper">
+		            <table class="rate-grid">
+		                <thead>
+		                    <tr>
+		                        <th class="date">Date</th>
+		                        <th class="rate">Rate</th>
+		                        <th class="edit">Quoted</th>
+		                    </tr>
+		                </thead>
+		                <tbody>		                	
+		                    <tr ng-repeat="(date,stayDay) in ngDialogData.room.stayDates" ng-hide="$last && $index > 0">		                    	
+		                        <td class="date">{{date  | date : 'EEEE, d MMMM'}}</td>
+		                        <td class="rate" ng-if="stayDay.rateDetails.is_suppressed != 'true'">
+		                        	{{currencySymbol}}{{stayDay.rateDetails.actual_amount | number : 2}}
+		                        </td>
+		                        <td class="rate" ng-if="stayDay.rateDetails.is_suppressed == 'true'">
+		                        	SR
+		                        </td>
+		                        <td class="edit" ng-if="stayDay.rateDetails.is_suppressed != 'true'">
+		                        	{{currencySymbol}}
+		                        	<input ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false'" type="text" value="" type="text" ng-model="stayDay.rateDetails.modified_amount" />
+		                        </td>
+		                        <td class="edit" ng-if="stayDay.rateDetails.is_suppressed == 'true'">
+		                        	SR
+		                        </td>
+		                    </tr>		                    
+		                </tbody>
+		            </table>
+		        </div>
+		    </div>   
+
+		    <div class="actions">
+		        <button type="button" ng-click="closeDialog()" class="button blank modal-close">Close</button>
+		        <button type="button" ng-click="save(ngDialogData.room, ngDialogData.index)" class="button green modal-close">Update</button>
+		    </div>
+		</form>	
+	</div>
+</div>

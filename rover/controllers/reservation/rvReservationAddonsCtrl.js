@@ -49,12 +49,27 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
 
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
+            var save = function() {
+                if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
+                    // $scope.saveReservation('rover.reservation.staycard.mainCard.summaryAndConfirm');
+                    /**
+                     * 1. Move check for guest / company / ta card attached to the screen before the reservation summary screen. 
+                     * This may either be the rooms and rates screen or the Add on screen when turned on. 
+                     * -- QA Comments : done, but returns to enhance stay screen. 
+                     *    Upon closing, user should be on summary screen
+                     */
+                    $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
+                }
+            }
             if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
                 $scope.$emit('PROMPTCARD');
+                $scope.$watch("reservationData.guest.id", save);
+                $scope.$watch("reservationData.company.id", save);
+                $scope.$watch("reservationData.travelAgent.id", save);
             } else {
                 $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
             }
-            
+
         }
 
         $scope.selectAddonCategory = function(category, event) {

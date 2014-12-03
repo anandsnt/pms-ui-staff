@@ -429,11 +429,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 };
 	 $scope.addNewPaymentModal = function(swipedCardData){
 	 	//Current active bill is index - adding 1 to get billnumber
-	 	if($scope.clickedButton == "checkinButton"){
-	 		if(!$scope.paymentModalSwipeHappened){
-	 			swipedTrackDataForCheckin = swipedCardData;
-	 		}
-	 	}
 	 	var billNumber = parseInt($scope.currentActiveBill)+parseInt(1);
 	 	var passData = {
 	 		"reservationId": $scope.reservationBillData.reservation_id,
@@ -445,19 +440,22 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 			"lastName":$scope.guestCardData.contactInfo.last_name
 	 		}
 	 	};
-	 	var paymentData = $scope.reservationBillData;	 	
+	 	var paymentData = $scope.reservationBillData;	
+	 	if($scope.clickedButton == "checkinButton"){
+	 		if(!$scope.paymentModalSwipeHappened){
+	 			$scope.isSwipeHappenedDuringCheckin = true;
+	 			swipedTrackDataForCheckin = swipedCardData;
+	 			passData.details.isClickedCheckin = true;
+	 		}
+	 	}
+	 	 	
 	 	if(swipedCardData === undefined){
-	 		   
-  	 			
 			 	passData.showDoNotAuthorize = ($scope.clickedButton == "checkinButton" && $rootScope.isStandAlone);
-				
 				$scope.setScroller('cardsList');
 				$scope.addmode = false;
 		 		$scope.openPaymentDialogModal(passData, paymentData);
 			 	
   	 	} else {
-  	 		
-  	 		
   	 		
   	 			var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
@@ -466,64 +464,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				if(swipedCardDataToRender.swipeFrom !== "payButton"){
 					$scope.openPaymentDialogModal(passData, paymentData);
 				} else {
-					//$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
 				}
   	 		
-  	 		
-  	 		
-  	 		
-  	 		
-  	 		
-  	 		
-  	 		
-  	 		
-  	 		
-  	 		// var ksn = data.RVCardReadTrack2KSN;
-      		// if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
-				// ksn = data.RVCardReadETBKSN;
-			// }
-// 
-			// var getTokenFrom = {
-				// 'ksn': ksn,
-				// 'pan': data.RVCardReadMaskedPAN
-			// };
-// 			
-			// if(data.RVCardReadTrack2!=''){
-				// getTokenFrom.et2 = data.RVCardReadTrack2;
-			// } else if(data.RVCardReadETB !=""){
-				// getTokenFrom.etb = data.RVCardReadETB;
-			// }
-//   	 		
-//           
-         	// var tokenizeSuccessCallback = function(tokenData){
-         		//Below code used for closing please swipe modal popup
-         		// $scope.closeDialog();
-         		// data.token = tokenData;
-         		// swipedTrackDataForCheckin.tokenDataValue = tokenData;
-         		// var passData = {
-		  	 		// "reservationId": $scope.reservationBillData.reservation_id,
-		  	 		// "fromView": $scope.fromViewToPaymentPopup,
-		  	 		// "credit_card": data.RVCardReadCardType,
-		  	 		// "card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
-		  	 		// "name_on_card": data.RVCardReadCardName,
-		  	 		// "card_expiry":data.RVCardReadExpDate,
-		  	 		// "et2": data.RVCardReadTrack2,
-	             	// 'ksn': data.RVCardReadTrack2KSN,
-	              	// 'pan': data.RVCardReadMaskedPAN,
-	              	// 'etb': data.RVCardReadETB,
-	              	// 'token': tokenData,
-	              	// "fromBill" : billNumber,
-		  	 		// "is_swiped": true   // Commenting for now
-		  	 	// };
-		  	 	// passData.showDoNotAuthorize = ($scope.clickedButton == "checkinButton" && $rootScope.isStandAlone);
-	         	// var paymentData = $scope.reservationBillData;
-	         	// if($scope.clickedButton == "checkinButton"){
-	         		// $scope.isSwipeHappenedDuringCheckin = true;
-	         	// }
-	         	// passData.isSwipeHappenedDuringCheckin = $scope.isSwipeHappenedDuringCheckin;
-	  	 		// $scope.showAddNewPaymentModal(passData, paymentData);
-         	// };
-         	// $scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
   	 	}
 	 };
 	 
@@ -543,18 +486,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
      /*
 	  * Handle swipe action in bill card
 	  */
-	 // $scope.$on('SWIPEHAPPENED', function(event, data){
-	 	// if(!$scope.isGuestCardVisible){
-	 		// if($scope.paymentModalOpened){
-	 			// $scope.paymentModalSwipeHappened = true;
-	 			// $scope.$broadcast('PAYMENTSWIPEHAPPENED', data);
-	 		// } else {
-	 			// $scope.fromViewToPaymentPopup = "billcard";
-	 			// $scope.addNewPaymentModal(data);
-	 		// }
-// 	 		
-	 	// }
-	 // });
+
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 	 	  if($scope.paymentModalOpened){
@@ -562,7 +494,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			} else {
 				swipedCardData.swipeFrom = "viewBill";
 			}
-			
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue){
@@ -574,40 +505,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	
 	 	
 	 	 }
-			
-	 	
-	 	
-	 	
-	 	
-	 	
-	 	
-	 	
-	 	
-// 	 	
-		// console.log(swipedCardData);
-		// if(!$scope.isGuestCardVisible){
-			// if($scope.paymentModalOpened){
-				// swipedCardData.swipeFrom = "payButton";
-			// } else {
-				// swipedCardData.swipeFrom = "viewBill";
-			// }
-			// var swipeOperationObj = new SwipeOperation();
-			// var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
-			// var tokenizeSuccessCallback = function(tokenValue){
-				// $scope.$emit('hideLoader');
-				// swipedCardData.token = tokenValue;
-				// $scope.addNewPaymentModal(swipedCardData);
-				// //$scope.showAddNewPaymentModel(swipedCardData);
-			// };
-			// $scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-		// }
-		// if($scope.isDepositBalanceScreenOpened){
-			// swipedCardData.swipeFrom = "depositBalance";
-		// } else if ($scope.isGuestCardVisible) {
-			// swipedCardData.swipeFrom = "guestCard";
-		// } else {
-			// swipedCardData.swipeFrom = "stayCard";
-		// }
+	
 		
 		
 	});
@@ -931,7 +829,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"signature" : signatureData,
 						"reservation_id" : $scope.reservationBillData.reservation_id,
 					    "payment_type": "CC",	
- 						"mli_token": swipedTrackDataForCheckin.tokenDataValue,
+ 						"mli_token": swipedTrackDataForCheckin.token,
 						"et2": swipedTrackDataForCheckin.RVCardReadTrack2,
 						"ksn": swipedTrackDataForCheckin.RVCardReadTrack2KSN,
 						"pan": swipedTrackDataForCheckin.RVCardReadMaskedPAN,
@@ -950,7 +848,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					    "no_post" : !$scope.roomChargeEnabled	
 					};
 	 		    }
-
 				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
 			
 			}

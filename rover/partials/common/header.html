@@ -1,6 +1,6 @@
 <!-- Navbar --> 
-<header class="nav-bar rover-header" role = "banner">
-
+<header ng-class="{'no-print':addNoPrintClass}" class="nav-bar rover-header" role = "banner">
+	
 	<!--search Backbutton> -->
 	<a class="back-button" ng-if="searchBackButtonCaption!=''" ng-click="headerBackButtonClicked()">{{searchBackButtonCaption}}</a>	
 	<!-- end of search backbutton -->

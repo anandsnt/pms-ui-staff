@@ -6,7 +6,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.saveData = {};
 		$scope.errorMessage = '';
 		$scope.saveData.payment_type_id = '';
-		$scope.guestPaymentList = {};
+		$scope.cardsList = {};
 		$scope.newPaymentInfo = {};
 		$scope.newPaymentInfo.addToGuestCard = false;
 		$scope.renderData.billNumberSelected = '';
@@ -24,9 +24,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showAddtoGuestCard = true;
 		$scope.showCancelCardSelection = true;
 		$scope.renderData.referanceText = "";
-		$scope.feeData = {};
+		$scope.swipedCardDataToSave  = {};
+		$scope.cardData = {};
 		
 	};
+
+	$scope.feeData = {};
+	//$scope.feeData.feesInfo = {};
+	var zeroAmount = parseFloat("0.00").toFixed(2);
 
 	$scope.handleCloseDialog = function(){
 		$scope.paymentModalOpened = false;
@@ -38,19 +43,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Show guest credit card list
 	*/
 	$scope.showGuestCreditCardList = function(){
-		$scope.showCCPage = true;
-		if($scope.guestPaymentList.length >0){
-		// $scope.showInitalPaymentScreen = false;
-			$scope.showExistingAndAddNewPayments = true;
-			$scope.showExistingGuestPayments = true;
-			$scope.showOnlyAddCard = false;
-			$scope.cardsList = $scope.guestPaymentList;
-			$scope.refreshScroller('cardsList');
-			$scope.addmode = false;
-		} else {
-			$scope.showOnlyAddCard = true;
-			$scope.addmode = true;
-		};		
+		$scope.showCCPage = true;	
 	};
 
 	var checkReferencetextAvailable = function(){
@@ -82,31 +75,50 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 		$scope.renderDefaultValues();
 	};
+
+	
+	var checkReferencetextAvailableForCC = function(){
+		angular.forEach($scope.renderData, function(paymentType, key) {
+			if(paymentType.name == 'CC'){
+				angular.forEach(paymentType.values, function(value, key) {
+					if($scope.defaultPaymentTypeCard.toUpperCase() === value.cardcode){
+						$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
+					};					
+				});				
+			}
+		});
+	};
 	/*
 	* Success call back for guest payment list screen
 	*/
-	$scope.guestPaymentListSuccess = function(data){
+	$scope.cardsListSuccess = function(data){
 		$scope.$emit('hideLoader');
 		if(data.length == 0){
-			$scope.guestPaymentList = [];
+			$scope.cardsList = [];
 		} else {
-			var cardsList = [];
-			angular.forEach(data, function(value, key) {
-				if(value.credit_card_type_id !== null){
-					cardsList.push(value);
+			$scope.cardsList = [];
+			angular.forEach(data.existing_payments, function(obj, index){
+				if (obj.is_credit_card) {
+		 		 	$scope.cardsList.push(obj);
 				};
 			});
-			cardsList.forEach(function(card) {
-					   card.is_credit_card = true;
-					   delete card.credit_card_type_id;
-			});
-			$scope.guestPaymentList = cardsList;
-			angular.forEach($scope.guestPaymentList, function(value, key) {
+			angular.forEach($scope.cardsList, function(value, key) {
+			
+				value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
+				value.card_expiry = value.expiry_date;//Same comment above
+
+				delete value.ending_with;
+				delete value.expiry_date;
+		    });
+
+		    $scope.addmode = $scope.cardsList.length > 0 ? false:true;
+			angular.forEach($scope.cardsList, function(value, key) {
 				value.isSelected = false;
 				if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
 					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() == "CC"){
 						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number == value.mli_token) && ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() == value.card_code.toLowerCase() )) {
 							value.isSelected = true;
+							checkReferencetextAvailableForCC();
 						} 
 					}
 				}
@@ -126,7 +138,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
-		$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.guestPaymentListSuccess, '', 'NONE');
+		//$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.cardsListSuccess, '', 'NONE');
+		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.cardsListSuccess);
 	};
 
 	// CICO-9457 : To calculate fee - for standalone only
@@ -135,20 +148,19 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		if($scope.isStandAlone){
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
-			var zeroAmount = parseFloat("0.00").toFixed(2);
 			if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
 
 			var totalAmount = ($scope.renderData.defaultPaymentAmount == "") ? zeroAmount :
 							parseFloat($scope.renderData.defaultPaymentAmount);
-			var feePercent  = parseFloat($scope.renderData.actualFees);
+			var feePercent  = parseFloat($scope.feeData.actualFees);
 
 			if(amountSymbol == "percent"){
 				var calculatedFee = parseFloat(totalAmount * (feePercent/100));
-				$scope.renderData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
-				$scope.renderData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+				$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+				$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
 			}
 			else{
-				$scope.renderData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+				$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
 			}
 		}
 	};
@@ -156,25 +168,22 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.setupFeeData = function(){
 		// CICO-9457 : Setup fees details initilaly - for standalone only
 		if($scope.isStandAlone){
-			var feesInfo = $scope.feeData.feesInfo;
-			var zeroAmount = parseFloat("0.00").toFixed(2);
-			console.log("feesInfo :");console.log(feesInfo);
-			if(typeof feesInfo != 'undefined' && feesInfo!= null){
+			
+			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
+			var defaultAmount = $scope.renderData ?
+			 	$scope.renderData.defaultPaymentAmount : zeroAmount;
+			
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
 				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
-				$scope.renderData.actualFees = feesAmount;
+				$scope.feeData.actualFees = feesAmount;
 				
 				if(amountSymbol == "percent") $scope.calculateFee();
 				else{
-					$scope.renderData.calculatedFee = feesAmount;
-					$scope.renderData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+					$scope.feeData.calculatedFee = feesAmount;
+					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
 				}
-			}
-			else{
-				$scope.renderData.actualFees = zeroAmount;
-				$scope.renderData.calculatedFee = zeroAmount;
-				$scope.renderData.totalOfValueAndFee = zeroAmount;
 			}
 		}
 	};
@@ -211,13 +220,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				}
 			}
 		}
-
+		
 		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.length >0 ?
 			$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : zeroAmount;
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 		
 		if($scope.isStandAlone){
 			$scope.feeData.feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
+			console.log($scope.feeData);
 			$scope.setupFeeData();
 		}
 	};
@@ -262,13 +272,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
+			
 			if($scope.isStandAlone){
 				if($scope.feeData.calculatedFee)
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
 				if($scope.feeData.feesInfo)
 					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
-			console.log(dataToSrv);
 
 			if($scope.referenceTextAvailable){
 				dataToSrv.postData.reference_text = $scope.renderData.referanceText;
@@ -315,27 +325,40 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	var successNewPayment = function(data){
 		$scope.$emit("hideLoader");
-		$scope.defaultPaymentTypeCard = retrieveCardtype();		
-		$scope.defaultPaymentTypeCardNumberEndingWith = retrieveCardNumber();
-		$scope.defaultPaymentTypeCardExpiry =retrieveExpiryDate();
 		var selectedBillIndex = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
-		
-		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = retrieveCardtype();
-		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = retrieveExpiryDate();
-		$scope.billsArray[selectedBillIndex].credit_card_details.card_number = retrieveCardNumber();
+		if(!isEmptyObject($scope.swipedCardDataToSave)){
+			var cardType =  $scope.swipedCardDataToSave.cardType.toLowerCase();		
+			var cardNumberEndingWith = $scope.swipedCardDataToSave.cardNumber.slice(-4);
+			var cardExpiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
+		} else {
+			var cardType = retrieveCardtype();		
+			var cardNumberEndingWith = retrieveCardNumber();
+			var cardExpiry = retrieveExpiryDate();
+		}
+		//To update popup
+		$scope.defaultPaymentTypeCard = cardType;
+		$scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
+		$scope.defaultPaymentTypeCardExpiry = cardExpiry;
+
+		checkReferencetextAvailableForCC();
+		//To update bill screen
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = cardExpiry;
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = cardType;
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_number = cardNumberEndingWith;
 		
 		$scope.saveData.payment_type_id = data.id;
-		angular.forEach($scope.guestPaymentList, function(value, key) {
+		
+		angular.forEach($scope.cardsList, function(value, key) {
 			value.isSelected = false;
 		});
 
 		if($scope.newPaymentInfo.addToGuestCard){
-			var cardCode = retrieveCardtype();
-			var cardNumber = retrieveCardNumber();
+			var cardCode = $scope.defaultPaymentTypeCard;
+			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
 			var dataToGuestList = {
 				"card_code": cardCode,
 				"mli_token": cardNumber,
-				"card_expiry": retrieveExpiryDate(),
+				"card_expiry": $scope.defaultPaymentTypeCardExpiry,
 				"card_name": $scope.newPaymentInfo.cardDetails.userName,
 				"id": data.id,
 				"isSelected": true,
@@ -343,7 +366,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"payment_type":data.payment_name,
 				"payment_type_id": 1
 			};
-			$scope.guestPaymentList.push(dataToGuestList);
+			$scope.cardsList.push(dataToGuestList);
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
 		$scope.showCCPage = false;
@@ -375,8 +398,25 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"token": cardToken
 		};
 		
-	    $scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToSave,successNewPayment);
+	    $scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToSave, successNewPayment);
 	};
+	
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		
+		$scope.swipedCardDataToSave = swipedCardDataToSave;
+		var data 			= swipedCardDataToSave;
+		data.reservation_id =	$scope.reservationData.reservationId;
+		
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card = swipedCardDataToSave.cardType;
+		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+		data.add_to_guest_card = $scope.cardData.addToGuestCard;
+		
+		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successNewPayment);
+	
+		
+	});
+
 
 	/*
 		*  card selection action
@@ -384,20 +424,20 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.setCreditCardFromList = function(index){
 		$scope.isExistPaymentType = true;
 		$scope.showCreditCardInfo = true;
-		$scope.defaultPaymentTypeCard = $scope.guestPaymentList[index].card_code.toLowerCase();
-		$scope.defaultPaymentTypeCardNumberEndingWith = $scope.guestPaymentList[index].mli_token;
-		$scope.defaultPaymentTypeCardExpiry = $scope.guestPaymentList[index].card_expiry;
-		angular.forEach($scope.guestPaymentList, function(value, key) {
+		$scope.defaultPaymentTypeCard = $scope.cardsList[index].card_code.toLowerCase();
+		$scope.defaultPaymentTypeCardNumberEndingWith = $scope.cardsList[index].mli_token;
+		$scope.defaultPaymentTypeCardExpiry = $scope.cardsList[index].card_expiry;
+		angular.forEach($scope.cardsList, function(value, key) {
 			value.isSelected = false;
 		});
-		$scope.guestPaymentList[index].isSelected = true;
-		$scope.saveData.payment_type_id =  $scope.guestPaymentList[index].id;
+		$scope.cardsList[index].isSelected = true;
+		$scope.saveData.payment_type_id =  $scope.cardsList[index].id;
 		$scope.showCCPage = false;
-		console.log("card clicked from bill pay");
 		if($scope.isStandAlone)	{
-			$scope.feeData.feesInfo = $scope.guestPaymentList[index].fees_information;
+			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}
+		checkReferencetextAvailableForCC();
 	};
 
 	$scope.$on('cardSelected',function(e,data){
@@ -415,6 +455,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	});
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCCPage = false;
+	});
+	
+	$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
+		$scope.showCCPage 						 = true;
+		$scope.addmode                 			 = true;
+		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 
 }]);
