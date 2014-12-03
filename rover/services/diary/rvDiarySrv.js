@@ -1,4 +1,3 @@
-R = []
 sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault',
         function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault) {
                 /* DATA STORE w/ set functions */
@@ -450,8 +449,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         selected    = args.shift(),
                         m           = meta.occupancy,
                         room        = this.dataStore.get('_room.values.id')[slot.id],
-                        room_type   = room.room_type;
-                        R.push(slot.id);
+                        room_type   = room.room_type;                        
                     /*
                         Configrue Available slot to mirror occupancy, execpt
                         set revervation_id for the collection so the resize
@@ -673,7 +671,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             _.extend(params, { account_id: account_id });
                         }
                     }
-                    R = [];
+                                        
                     Availability.read(params)
                     .then(function(data) {                        
                         if(data && data.results) {                      
