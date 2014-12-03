@@ -159,5 +159,20 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			});
 			return deferred.promise;
 		};
+
+		// method to fetch all unassigned rooms for a given date
+		this.fetchAllUnassigned = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/work_assignments/unassigned_rooms?date=' + params.date;
+
+			RVBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);
