@@ -50,7 +50,8 @@
                     <div class="file-upload with-preview large-preview">
                         <span class="input">{{fileName}}</span>
                         <input type="file" name="item-image" ng-model="data.image" app-filereader id="item-image" />
-                        <button type="button" class="button brand-colors">Replace image</button>
+                        <button type="button" ng-if="data.image != null && data.image != ''" class="button brand-colors" translate>REPLACE_IMAGE_LABEL</button>
+                        <button type="button" ng-if="data.image == null || data.image == ''" class="button brand-colors" translate>ADD_IMAGE_LABEL</button>
                     </div>
                     <span class="file-preview large-preview">
                         <img src="{{data.image}}" alt="" />
