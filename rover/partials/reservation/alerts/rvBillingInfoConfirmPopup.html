@@ -6,7 +6,7 @@
 	    <span class="text" ng-if="contractRoutingType == 'COMPANY'">On selected card<strong> {{reservationData.company.name}}</strong></span>
 
 	    <div class="actions">
-	        <button type="button" class="button green" ng-click="applyRoutingToReservation()">Apply to reservation</button>
+	        <button type="button" class="button green" ng-click="applyRoutingToReservation()">Apply to reservation<span ng-if="reservationData.isHourly && reservationData.reservations.length > 1">s</span></button>
 	        <button type="button" class="button red" ng-click="noRoutingToReservation()">Don't apply</button> 
 	    </div>
 	</div>
