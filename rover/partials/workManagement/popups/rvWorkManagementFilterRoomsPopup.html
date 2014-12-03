@@ -1,7 +1,23 @@
 <div id="modal" class="modal-show" ng-cloak>
-	<div class="modal-content new-content">
+	<div class="modal-content new-content" id="filter-room-wrap">
 		<form method="post" action="" id="fitler-rooms" name="fitler-rooms" class="modal-content form fitler-rooms">
+			<style type="text/css">
+				#modal #filter-room-wrap {
+					width: 450px;
+				}
 
+				#fitler-rooms {
+					min-width: 410px;
+				}
+
+				#fitler-rooms .full-width .half-width {
+					width: 49%;
+				}
+
+				#fitler-rooms .full-width .half-width:last-child {
+					float: right;
+				}
+			</style>
 			<span class="h2 message">Filter Rooms</span>
 			<div class="full-width">     
 	        	<div class="entry half-width">
