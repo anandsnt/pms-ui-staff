@@ -141,6 +141,7 @@ sntRover.controller('reservationActionsController', [
 		var openDepositPopup = function(){
 			var passData = {
 						 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+						 		"fees_information" : $scope.depositDetails.attached_card.fees_information,
 						 		"details":{
 						 			"firstName":$scope.guestCardData.contactInfo.first_name,
 						 			"lastName":$scope.guestCardData.contactInfo.last_name,
@@ -158,7 +159,7 @@ sntRover.controller('reservationActionsController', [
 						closeByDocument: false,
 						closeByEscape: false
 			    });
-		
+			console.log(passData);
 		};
 
 		//openDepositPopup();
@@ -173,8 +174,8 @@ sntRover.controller('reservationActionsController', [
 		var fetchDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
-			$scope.depositDetails= {"deposit_amount":78,"deposit_policy":{}};
-			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0){
+
+			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone){
 				if(!$scope.depositPopupData.isShown){
 					openDepositPopup();
 					$scope.depositPopupData.isShown = true;
@@ -280,7 +281,7 @@ sntRover.controller('reservationActionsController', [
 		var checkinDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
-			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0)? openDepositPopup() : startCheckin();
+			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
 		};
 
 		var checkforDeposit = function(){
