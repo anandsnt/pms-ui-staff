@@ -126,6 +126,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 		if($scope.isStandAlone) {
+			console.log($scope.passData);
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
 		};
@@ -157,6 +158,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			$scope.cardSelected = true;
 
 			if($scope.isStandAlone) {
+				console.log("clicked cc");
+				console.log(attached_card);
 				$scope.feeData.feesInfo = attached_card.fees_information;
 				$scope.setupFeeData();
 			}
