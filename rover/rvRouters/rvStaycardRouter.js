@@ -41,18 +41,16 @@ angular.module('stayCardModule', [])
             controller: 'rvDiaryCtrl',
             resolve: {
                 payload: function($rootScope, rvDiarySrv, $stateParams, $vault) {
-                    var data = $vault.get('searchReservationData');
+                    var data = $vault.get('searchReservationData'),
+                        start_date = new tzIndependentDate($rootScope.businessDate);
                     
+                    // move the hour and minutes to the value set from search screen
                     if(data) {
                         data = JSON.parse(data);
+                        start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
                     }
-
-                    var start_date = new tzIndependentDate($rootScope.businessDate);
-
-                    // move the hour and minutes to the value set from search screen
-                    start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
                            
-                    return rvDiarySrv.load(start_date, rvDiarySrv.ArrivalFromCreateReservation());
+                    return rvDiarySrv.load(start_date, rvDiarySrv.ArrivalFromCreateReservation(), !!data);
                 }
             }
         });

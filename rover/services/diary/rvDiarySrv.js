@@ -498,10 +498,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.data_Store);
 
                 /*ROUTER RESOLVE - LOADING POINT FOR DIARY*/
-                this.load = function(arrival_ms, create_reservation_data) {     
+                this.load = function(arrival_ms, create_reservation_data, isVaultTime) {     
                     var _data_Store     = this.data_Store,
                         arrival_times   = this.fetchArrivalTimes(15, []),
-                        time            = util.gridTimeComponents(arrival_ms, 48),      
+                        time            = util.gridTimeComponents(arrival_ms, 48, null, isVaultTime),      
 /*                        arrival_time    = { 
                             hours: time.x_origin_start_time.hours, 
                             min:   (time.x_origin_start_time.minutes / 15).toFixed() * 15 
@@ -806,7 +806,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                         if(timeObj.ampm === 'AM') {
                             t_a = (12 + parseInt(timeObj.hh, 10)) * 3600000;
-                            
                         } else {
                             t_a = (parseInt(timeObj.hh, 10)) * 3600000;
                         }
