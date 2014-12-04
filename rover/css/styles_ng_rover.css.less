@@ -1225,3 +1225,47 @@ Padding for the ows error popup
 .bill-position {
   position: static !important;
 }
+
+/* PAYMENTS */
+
+.deposit-actions, .deposit-required-actions{
+	padding-left: 10px;
+	padding-right: 10px;
+	.button{
+	    width: 210px !important;
+	}
+	.button.blue{
+	    float:left !important;
+	}
+	.button.green{
+	    float: right !important;
+	}
+}
+.deposit-required-actions{
+	.button.blue{
+	    float:right !important;
+	}
+	.button.blank{
+	    float: left !important;
+	}
+}
+.authorised-code-text, .amount-paid{
+	text-align: center;
+	margin-right: 70px; 
+	margin-left: 70px;
+	span:first-child{
+		float:left !important;
+	}
+	span:last-child{
+		color:#ff9812 !important;
+		float:right !important;
+	}
+}
+.authorised-code-text{
+	padding-top: 15px;
+}
+.amount-paid{
+	padding-top: 10px; 
+	border-top: 1px solid grey; 
+	margin-top: 35px; 
+}
