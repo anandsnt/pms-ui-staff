@@ -890,8 +890,8 @@ sntRover
 			$scope.gridProps.filter.arrival_time = "00:00";
 			$scope.gridProps.filter.room_type = "";
 			number_of_items_resetted = 0;
-			
-			//$scope.clearAvailability();
+			$scope.clearAvailability();
+			$scope.resetEdit();
 			$scope.renderGrid();	
 			$scope.$emit('hideLoader');						
 					
