@@ -223,7 +223,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			angular.forEach($scope.reservationData.paymentMethods, function(paymentMethod, key) {
 				if ($scope.reservationData.paymentType.type.value === "CC" && paymentMethod.value === "CC") {
 					angular.forEach(paymentMethod.credit_card_list, function(value, key) {
-						if ($scope.renderData.creditCardType.toUpperCase() === value.cardcode) {
+						if ((typeof $scope.renderData.creditCardType != 'undefined') && $scope.renderData.creditCardType.toUpperCase() === value.cardcode) {
 							referenceTextAvailable = (value.is_display_reference) ? true : false;
 						};
 					});

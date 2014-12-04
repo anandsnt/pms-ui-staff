@@ -34,10 +34,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	// CICO-9457 : To calculate fee - for standalone only
 	$scope.calculateFee = function(){
-		console.log($scope.renderData.defaultPaymentAmount);
-		console.log(typeof $scope.renderData.defaultPaymentAmount);
-		if($scope.renderData.defaultPaymentAmount=="") console.log("blank");
-		else console.log("not blank");
+		
 		if($scope.isStandAlone){
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
