@@ -171,6 +171,17 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        this.getRateDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/rates/' + params.id;
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.getTaxDetails = function(rates) {
             var deferred = $q.defer();            
             var url = '/api/rates/tax_information/';

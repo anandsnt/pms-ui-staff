@@ -255,6 +255,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				swipedCardData.swipeFrom = "depositBalance";
 			} else if ($scope.isCancelReservationPenaltyOpened) {
 				swipedCardData.swipeFrom = "cancelReservationPenalty";
+			} else if($scope.isStayCardDepositScreenOpened) {
+				swipedCardData.swipeFrom = "stayCardDeposit";
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
 			} else {
@@ -448,12 +450,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			if (swipedCardData !== undefined) {
 				var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
-
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty") {
+				if(swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && swipedCardDataToRender.swipeFrom !== "stayCardDeposit"){
 					$scope.openPaymentDialogModal(passData, paymentData);
 				} else if (swipedCardDataToRender.swipeFrom == "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+				} else if(swipedCardDataToRender.swipeFrom == "stayCardDeposit") {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
 				} else {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN', swipedCardDataToRender);
 				}
