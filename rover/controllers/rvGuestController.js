@@ -727,8 +727,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
 			console.log($scope.reservationData);
 			console.log($scope.viewState);
-			
-			if (!$scope.isHourly) {
+
+			if (!$scope.isHourly && $stateParams.reservation!="HOURLY") {
 
 				var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
 				if (cardType == 'guest') {
@@ -812,6 +812,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.selectGuest = function(guest, $event) {
+			console.log($stateParams.reservation);
 			$event.stopPropagation();
 			if ($scope.viewState.identifier == "CREATION") {
 				$scope.reservationData.guest.id = guest.id;
