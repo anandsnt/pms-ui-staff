@@ -10,8 +10,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.referanceText = "";
 		$scope.isDisplayReference = false;
 
-		console.log($scope.passData.details.creditCardTypes);
-
 		$scope.cancellationData = {
 			selectedCard: -1,
 			reason: "",
@@ -39,6 +37,27 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 
 		$scope.feeData = {};
 		var zeroAmount = parseFloat("0.00").toFixed(2);
+
+		// CICO-9457 : To calculate fee - for standalone only
+		$scope.calculateFee = function() {
+
+			if ($scope.isStandAlone) {
+				var feesInfo = $scope.feeData.feesInfo;
+				var amountSymbol = "";
+				if (typeof feesInfo != 'undefined' && feesInfo != null) amountSymbol = feesInfo.amount_symbol;
+				var totalAmount = ($scope.ngDialogData.penalty == "") ? zeroAmount :
+					parseFloat($scope.ngDialogData.penalty);
+				var feePercent = parseFloat($scope.feeData.actualFees);
+
+				if (amountSymbol == "percent") {
+					var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
+					$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+				} else {
+					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+				}
+			}
+		};
 
 		// CICO-9457 : Data for fees details.
 		$scope.setupFeeData = function(){
@@ -200,7 +219,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	};
 
 	$scope.$on("TOKEN_CREATED", function(e,data){
-		console.log(data);
 		$scope.newPaymentInfo = data;
 		savePayment();
 	});
@@ -254,8 +272,4 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.closeDialog();
 	};
 
-	}
-	
-	
-
-]);
+}]);
