@@ -498,10 +498,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.data_Store);
 
                 /*ROUTER RESOLVE - LOADING POINT FOR DIARY*/
-                this.load = function(arrival_ms, create_reservation_data, isVaultTime) {     
+                this.load = function(arrival_ms, create_reservation_data) {     
                     var _data_Store     = this.data_Store,
                         arrival_times   = this.fetchArrivalTimes(15, []),
-                        time            = util.gridTimeComponents(arrival_ms, 48, null, isVaultTime),      
+                        time            = util.gridTimeComponents(arrival_ms, 48),      
 /*                        arrival_time    = { 
                             hours: time.x_origin_start_time.hours, 
                             min:   (time.x_origin_start_time.minutes / 15).toFixed() * 15 
@@ -526,7 +526,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             time = util.gridTimeComponents(create_reservation_data.start_date, 48);
 
                             _data_Store.set({ 
-                                filter: {   
+                                filter: {
                                     arrival_time:     (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
                                     min_hours:        (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
                                     room_type_id:     create_reservation_data.room_type_id, 

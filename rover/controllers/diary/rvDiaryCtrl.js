@@ -1088,6 +1088,10 @@ sntRover
 			// trigger call
 			$scope.clickedOnRoomType();
 		};
+
+		setTimeout(function() {
+			$vault.remove('searchReservationData');
+		}, 10);
 	};
 
 	$scope.eventAfterRendering = function() {
