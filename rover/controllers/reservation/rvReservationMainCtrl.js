@@ -216,6 +216,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     futureReservations: 0
                 }
             };
+
+            $scope.viewState = {
+                isAddNewCard: false,
+                pendingRemoval: {
+                    status: false,
+                    cardType: ""
+                },
+                identifier: "CREATION",
+                lastCardSlot: {
+                    cardType: ""
+                },
+                reservationStatus: {
+                    confirm: false,
+                    number: null
+                }
+            };
         };
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
@@ -894,7 +910,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
                     dayOfWeek: dateFilter(new tzIndependentDate(item.date), 'EEE'),
                     day: dateFilter(new tzIndependentDate(item.date), 'dd')
-                });                
+                });
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
                         guests: {
                             adults: item.adults,
@@ -1120,7 +1136,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
 
-        $scope.editReservationRates = function(room, index) {            
+        $scope.editReservationRates = function(room, index) {
             ngDialog.open({
                 template: '/assets/partials/reservation/rvEditRates.html',
                 className: 'ngdialog-theme-default',
@@ -1503,8 +1519,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.invokeApi(RVReservationSummarySrv.fetchInitialData, {}, fetchSuccess, fetchFailure);
         }
 
-        $scope.resetAddons = function(){
-            angular.forEach($scope.reservationData.rooms, function(room){
+        $scope.resetAddons = function() {
+            angular.forEach($scope.reservationData.rooms, function(room) {
                 room.addons = []
             });
         }
