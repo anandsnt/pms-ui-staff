@@ -9,8 +9,6 @@ sntRover.controller('RVCardOptionsCtrl',
 	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
 		BaseCtrl.call(this, $scope);
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
-		 	console.log("=======RENDER============");
-		 console.log(swipedDataToRenderInScreen);
 	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
@@ -33,7 +31,6 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.shouldShowAddNewCard = true;
 		var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
 		var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
-		console.log(firstName + lastName)
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
 		if($rootScope.paymentGateway == "sixpayments"){
 			$scope.shouldShowAddNewCard = false;
@@ -60,14 +57,11 @@ sntRover.controller('RVCardOptionsCtrl',
 			var payementData = {};
 			payementData.cardDetails = angular.copy($scope.cardData);
 			payementData.tokenDetails = tokenDetails;
-			console.log(payementData);
 			$scope.$emit("TOKEN_CREATED", payementData);
 			$scope.$digest();
 			
 		};
-		// $scope.$watch('shouldShowIframe', function(o,n){
-			// console.log(o+"========*********======="+n);
-		// });
+	
 
 		var notifyParentError = function(errorMessage){
 			$scope.$emit("MLI_ERROR", errorMessage);

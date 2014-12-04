@@ -53,6 +53,7 @@ sntRover
 	    $scope.stats 	= $scope.availability_count;
 	    $scope.selectedReservations = [];
 
+	    var number_of_items_resetted = 0;
 		$scope.gridProps = {
 			/* Meta data object - allows us to use a single point of reference for various object properties.
 		       If a property name expected changes, update it here so it will propagate throughout the application.
@@ -197,7 +198,7 @@ sntRover
 	    	rate_type: 					payload.filter.rate_type,
 		    rate_type_details: 			[],
 		    rate:                        undefined,
-	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.room_type_id] : undefined,
+	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
 		    show_all_rooms: 			'on',
 		    toggleHoursDays: function() {
@@ -722,7 +723,7 @@ sntRover
 				this.availability.resize.last_arrival_time =  this.availability.resize.current_arrival_time;
 				this.availability.resize.last_departure_time = this.availability.resize.current_departure_time;
 			}						
-
+			
 			$scope.initPassiveEditMode({
                 start_date:     new Date(row_item_data[meta.occupancy.start_date]),
                 end_date:       new Date(row_item_data[meta.occupancy.end_date]),
@@ -731,7 +732,7 @@ sntRover
                 row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id }) //rvDiarySrv.data_Store.get('/room.values.id')[row_item_data.room_id],   
             });
 		}
-		$scope.renderGrid();
+		$scope.renderGrid();				
 				
 	}.bind($scope.gridProps);
 
@@ -824,8 +825,8 @@ sntRover
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
 			rate_type = filter.rate_type,
-			accound_id = filter.account_id,
-			GUID = "avl-101"; //No need to manipulate this thing from service part, we are deciding
+			accound_id = filter.account_id; 
+			//GUID = "avl-101"//No need to manipulate this thing from service part, we are deciding
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
 				start = new Date(this.availability.resize.current_arrival_time);
@@ -838,7 +839,7 @@ sntRover
 			room_type_id: rt_filter,
 			rate_type: rate_type,
 			account_id: accound_id,
-			GUID: GUID
+			//GUID: GUID
 		};
 		return paramsToReturn
 	}.bind($scope.gridProps);
@@ -871,7 +872,32 @@ sntRover
 			}
 		}
 	});
+	var callDiaryAPIsAgainstNewDate = function(start_date, end_date){
+		$scope.$emit('showLoader');
+		
+		rvDiarySrv.callOccupancyAndAvailabilityCount(start_date, end_date)
+		.then(function(data){
 
+			$scope.gridProps.data 	= data.room;
+    		
+
+    		$scope.gridProps.stats = data.availability_count;
+
+			$scope.gridProps.display.x_0 = $scope.gridProps.viewport.row_header_right;					
+			
+			//Resetting as per CICO-11314
+			$scope.gridProps.filter.rate_type = "Standard";
+			$scope.gridProps.filter.arrival_time = "00:00";
+			$scope.gridProps.filter.room_type = "";
+			number_of_items_resetted = 0;
+			$scope.clearAvailability();
+			$scope.resetEdit();
+			$scope.renderGrid();	
+			$scope.$emit('hideLoader');						
+					
+		
+		});		
+	};
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
 			filter 	= props.filter,
@@ -883,16 +909,14 @@ sntRover
 
             $scope.gridProps.display = util.deepCopy(time_set.display);
 
-			$scope.renderGrid();
-
 			if($scope.gridProps.edit.active || $scope.gridProps.edit.passive) {
 				//$scope.Availability();
 			}
-
-			rvDiarySrv.Occupancy(time_set.toStartDate(), time_set.toEndDate())					
-			.then(function(data) {
-				$scope.renderGrid();
-			}, responseError);	
+			
+					
+	    	
+			callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
+			
 		}
 	});
 
@@ -924,34 +948,49 @@ sntRover
 		}
 	};
 	
-
-	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {		
-		if(newValue !== oldValue) {
-			$scope.gridProps.availability.resize.current_arrival_time = null;
-			$scope.gridProps.availability.resize.current_departure_time = null;
-			$scope.gridProps.availability.resize.last_arrival_time = null;
-			$scope.gridProps.availability.resize.last_departure_time = null;
-			if(!$scope.gridProps.edit.active) {
-				$scope.Availability();
-			}
+	$scope.clickedOnArrivalTime = function(){
+		$scope.gridProps.availability.resize.current_arrival_time = null;
+		$scope.gridProps.availability.resize.current_departure_time = null;
+		$scope.gridProps.availability.resize.last_arrival_time = null;
+		$scope.gridProps.availability.resize.last_departure_time = null;
+		if(!$scope.gridProps.edit.active) {
+			$scope.Availability();
 		}
-	});
+	};
 
-	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
-		if(newValue !== oldValue) {
-			if (!$scope.gridProps.edit.active) {
-				$scope.Availability();
-			}
+	$scope.clickedOnRoomType = function(){
+		if (!$scope.gridProps.edit.active) {
+			$scope.Availability();
 		}
-	});
+	};
+
+	$scope.clickedOnRateType = function(){
+		if (!$scope.gridProps.edit.active) {
+			$scope.Availability();
+		}
+	};	
+	/*$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {		
+		
+		if(newValue !== oldValue) {
+
+		}
+	});*/
+
+/*	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
+
+		if(newValue !== oldValue) {
+
+		}
+	});*/
 	/*TODO - PASS COMPANY ID HERE*/
-	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
+	/*$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
+
 		if(newValue !== oldValue) {
 			if (!$scope.gridProps.edit.active) {
 				$scope.Availability();
 			}		
 		}	
-	});
+	});*/
 	/*
 		----------------------------------------------------------------
 		END WATCHERS

@@ -16,7 +16,9 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.successOccured = false;
 		$scope.successMessage = "";
 		$scope.authorizedCode = "";
-
+		
+		$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
+		
 		$scope.depositData = {
 			selectedCard: -1,
 			amount: "",
@@ -39,7 +41,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		var refreshCardsList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
-			}, 300)
+			}, 300);
 		};
 
 		/*
@@ -122,11 +124,11 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				}
 			}
 		};
-		
+
 		if($scope.isStandAlone) {
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
-		}
+		};
 
 		/*
 		 * check if reference text is available for the selected card type           
@@ -161,7 +163,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
-		$scope.reservationData.depositAmount =  parseInt($scope.depositDetails.deposit_amount);
+		$scope.reservationData.depositAmount = $filter('number')(parseInt($scope.depositDetails.deposit_amount), 2);
+
 		
 	
 		var savePayment = function() {
@@ -194,12 +197,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				token: cardToken,
 				card_expiry: cardExpiry
 			};
-			if($scope.isStandAlone){
-				if($scope.feeData.calculatedFee)
-					paymentData.fees_amount = $scope.feeData.calculatedFee;
-				if($scope.feeData.feesInfo)
-					paymentData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
-			}
+
 			if($scope.depositData.isDisplayReference){
 				paymentData.referance_text = $scope.depositData.referanceText;
 			};
@@ -273,7 +271,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				},
 				"reservation_id": $stateParams.id
 			};
-
+			if($scope.isStandAlone){
+				if($scope.feeData.calculatedFee)
+					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
+				if($scope.feeData.feesInfo)
+					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+			}
 			if($scope.isDisplayReference){
 				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;
 			};
@@ -328,5 +331,36 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);
 	});
+	
+	$scope.$on("SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN", function(e, swipedCardDataToRender){
+		$scope.paymentMode = true;
+		$scope.addmode = true;
+		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+	});
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		var data 				 = swipedCardDataToSave;
+		data.reservation_id 	 = $scope.passData.reservationId;
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card 		 = swipedCardDataToSave.cardType;
+		data.card_expiry 		 = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+		data.add_to_guest_card   = swipedCardDataToSave.addToGuestCard;
+		
+		
+		var options = {
+	    		params: 			data,
+	    		successCallBack: 	successSwipePayment,	 
+	    		successCallBackParameters:  swipedCardDataToSave 	
+	    };
+	    $scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
+	 });
+	 var successSwipePayment = function(data, successParams){
+				$scope.$emit('hideLoader');
+				$scope.depositData.selectedCard = data.id;
+				$scope.depositData.cardNumber = successParams.cardNumber.slice(-4);;
+				$scope.depositData.expiry_date = successParams.cardExpiryMonth+"/"+successParams.cardExpiryYear;
+				$scope.depositData.card_type = successParams.cardType.toLowerCase();
+				$scope.paymentMode = false;
+				$scope.cardSelected = true;
+	};
 
 }]);

@@ -1502,5 +1502,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             $scope.invokeApi(RVReservationSummarySrv.fetchInitialData, {}, fetchSuccess, fetchFailure);
         }
+
+        $scope.resetAddons = function(){
+            angular.forEach($scope.reservationData.rooms, function(room){
+                room.addons = []
+            });
+        }
     }
 ]);
