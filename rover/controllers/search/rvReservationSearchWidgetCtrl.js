@@ -661,6 +661,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.$on("OUTSIDECLICKED", function(event){
 			$scope.focusOutOnSearchText();
+			//ngDialog.close();
 		});
 
 		//please don't remove this code.... CICO-10091
@@ -714,8 +715,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		    ngDialog.open({
 		        template: '/assets/partials/search/rvDatePickerPopup.html',
 		        controller: controller,
-		        className: 'ngdialog-theme-default single-date-picker',
-		        closeByDocument: true,	        
+		        className: '',
 		        scope: $scope
 		    });
 		};
