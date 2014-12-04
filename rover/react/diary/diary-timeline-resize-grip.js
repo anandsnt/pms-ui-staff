@@ -146,11 +146,12 @@ var TimelineResizeGrip = React.createClass({
 		this.__dbMouseMove = _.throttle(this.__onMouseMove, 10);
 	},
 	componentDidMount: function(){
-		this.getDOMNode().addEventListener('mousedown', this.__onMouseDown);
+		this.getDOMNode().addEventListener('mousedown', this.__onMouseDown);	
 	},
 	componentWillReceiveProps: function(nextProps) {
 		var model, 
 			props 		= this.props, 
+			state  		= this.state,
 			display 	= props.display, 
 			direction 	= this.props.itemProp,
 			px_per_ms 	= display.px_per_ms,
@@ -167,6 +168,14 @@ var TimelineResizeGrip = React.createClass({
 						currentResizeItem: model,
 						currentResizeItemRow: model[props.meta.occupancy.id]
 					});
+					var scrollToPos = (model[m.start_date] - x_origin - 7200000) * px_per_ms;
+					if(scrollToPos < 0){
+						scrollToPos = 0;
+					}					
+					props.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
+            		props.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
+            		//state.onScrollEnd(Math.abs(props.iscroll.grid.x) / px_per_ms + x_origin);
+
 				} else {
 					this.setState({
 						mode: 					undefined,
@@ -180,7 +189,7 @@ var TimelineResizeGrip = React.createClass({
 					currentResizeItem: 		undefined,
 					currentResizeItemRow: 	undefined
 				});
-			}
+			}						
 		} 
 	},
 	render: function() {
