@@ -72,12 +72,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			
 			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.reservationData ?
-			 	$scope.reservationData.depositAmount : zeroAmount;
+			 	parseFloat($scope.reservationData.depositAmount) : zeroAmount;
 			
 			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 				$scope.feeData.actualFees = feesAmount;
 
 				if (amountSymbol == "percent") $scope.calculateFee();
@@ -253,9 +253,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"bill_number": 1,
 					"payment_type": $scope.reservationData.paymentType.type.value,
 					"amount": $scope.reservationData.depositAmount,
-					"payment_type_id": $scope.reservationData.selectedPaymentId
+					"payment_type_id":null
 				},
 				"reservation_id": $scope.reservationData.reservationId
+			};
+
+			if(dataToMakePaymentApi.postData.payment_type === "CC"){
+				dataToMakePaymentApi.postData.payment_type_id =  $scope.reservationData.selectedPaymentId;
 			};
 
 			if ($scope.isStandAlone) {
@@ -298,7 +302,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					to_date: $scope.reservationData.departureDate
 				}
 			};
-		}
+		};
+
+
+		$scope.isContinueDisabled =  function(){
+			var depositPaid = false;
+			if($scope.depositData.isDepositRequired){
+				depositPaid = $scope.depositData.attempted ? true:false;
+			}else{
+				depositPaid = true;
+			};
+			var idPresent = (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id);
+			var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value ==="undefined") ||$scope.reservationData.paymentType.type.value.length ===0 );
+			return (idPresent || isPaymentTypeNotSelected || !depositPaid);
+		};
 
 
 
@@ -501,6 +518,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.viewState.identifier = "CONFIRM";
 			}else{
 				$scope.viewState.identifier = "CREATION";
+				$scope.viewState.reservationStatus.confirm = false;
 			}
 
 			$scope.reservationDetails.guestCard = {};
@@ -602,10 +620,41 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.confirmReservation = function() {
-			$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
-				"id": $scope.reservationData.reservationId,
-				"confirmationId": $scope.reservationData.confirmNum
+			console.log("confirm reservation");
+			var postData = $scope.computeReservationDataforUpdate(false, true);
+			postData.payment_type = {};
+			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
+				if(value.value == $scope.reservationData.paymentType.type.value){
+					postData.payment_type.type_id = value.id;
+				}
+
 			});
+			console.log(JSON.stringify(postData));
+			if($scope.reservationData.paymentType.type.value == 'CC'){
+				postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
+			}
+			
+			var saveSuccess = function(){
+				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+					"id": $scope.reservationData.reservationId,
+					"confirmationId": $scope.reservationData.confirmNum
+				});
+			};
+			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
+				//creating reservation
+				console.log("update")
+				postData.reservationId = $scope.reservationData.reservationId;
+				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
+			} else {
+				console.log("create")
+				//updating reservation
+				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
+			}
+			
+			
+			
+			
+			
 		};
 
 		$scope.proceedCreatingReservation = function() {
