@@ -806,9 +806,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         var t_a, t_b;
 
                         if(timeObj.ampm === 'AM') {
-                            t_a = (parseInt(timeObj.hh, 10)) * 3600000;
-                        } else {
                             t_a = (12 + parseInt(timeObj.hh, 10)) * 3600000;
+                            
+                        } else {
+                            t_a = (parseInt(timeObj.hh, 10)) * 3600000;
                         }
 
                         t_b = parseInt(timeObj.mm, 10) * 60000;
