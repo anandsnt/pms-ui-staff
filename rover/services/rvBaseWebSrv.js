@@ -52,6 +52,7 @@ sntRover.service('RVBaseWebSrv',['$http', '$q', '$window', function($http, $q, $
 			if(status == 406){ // 406- Network error
 				deferred.reject(response.errors);
 			} else if(status == 422){ // 406- Network error
+				console.log("base 1");
 				deferred.reject(response.errors);
 			}
  			else if(status == 501 || status == 502 || status == 503){ // 500- Internal Server Error
