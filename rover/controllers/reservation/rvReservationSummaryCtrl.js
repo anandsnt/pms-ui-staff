@@ -252,10 +252,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"postData": {
 					"bill_number": 1,
 					"payment_type": $scope.reservationData.paymentType.type.value,
-					"amount": $scope.reservationData.depositAmount,
-					"payment_type_id": $scope.reservationData.selectedPaymentId
+					"amount": $scope.reservationData.depositAmount
 				},
 				"reservation_id": $scope.reservationData.reservationId
+			};
+
+			if(dataToMakePaymentApi.postData.payment_type === "CC"){
+				dataToMakePaymentApi.postData.payment_type_id =  $scope.reservationData.selectedPaymentId;
 			};
 
 			if ($scope.isStandAlone) {
