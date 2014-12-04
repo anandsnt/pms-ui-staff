@@ -725,11 +725,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
 			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
-			console.log("******CICO-11443 Debugging ************");
 			console.log($scope.reservationData);
 			console.log($scope.viewState);
-			console.log("******CICO-11443 Debugging ************");
-
+			
 			if (!$scope.isHourly) {
 
 				var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';

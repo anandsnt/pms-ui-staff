@@ -216,6 +216,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     futureReservations: 0
                 }
             };
+        };
+
+        $scope.initReservationDetails = function() {
+            // Initiate All Cards 
+            $scope.reservationDetails.guestCard.id = "";
+            $scope.reservationDetails.guestCard.futureReservations = 0;
+            $scope.reservationDetails.companyCard.id = "";
+            $scope.reservationDetails.companyCard.futureReservations = 0;
+            $scope.reservationDetails.travelAgent.id = "";
+            $scope.reservationDetails.travelAgent.futureReservations = 0;
 
             $scope.viewState = {
                 isAddNewCard: false,
@@ -232,15 +242,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     number: null
                 }
             };
-        };
-        $scope.initReservationDetails = function() {
-            // Initiate All Cards 
-            $scope.reservationDetails.guestCard.id = "";
-            $scope.reservationDetails.guestCard.futureReservations = 0;
-            $scope.reservationDetails.companyCard.id = "";
-            $scope.reservationDetails.companyCard.futureReservations = 0;
-            $scope.reservationDetails.travelAgent.id = "";
-            $scope.reservationDetails.travelAgent.futureReservations = 0;
         };
 
 
