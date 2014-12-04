@@ -32,8 +32,6 @@ sntRover
 
 	$scope.$emit('showLoader');
 
-	console.log(payload);
-
 	$scope.reservationData = {};
 	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
@@ -1074,7 +1072,7 @@ sntRover
 		}						
 	}
 
-	$scope.eventAfterRendering = function(){
+	$scope.eventAfterRendering = function() {
 		$scope.$apply(function(){
 			$scope.$emit('hideLoader');
 			$scope.resetEdit();
@@ -1082,7 +1080,31 @@ sntRover
 		setTimeout(function(){
 			switchToEditModeIfPassed();
 		}, 1000);
-				
+		
+		// if ( !$scope.gridProps.filter.room_type ) {
+		// 	var data,
+		// 		room_type_id,
+		// 		matched;
+
+		// 	data = $vault.get('searchReservationData');
+			
+		// 	if(data) {
+		// 	    data = JSON.parse(data);
+		// 	} else {
+		// 		return;
+		// 	}
+
+		// 	room_type_id = isNaN(parseInt(data.roomTypeID)) ? 'All' : data.roomTypeID;
+
+		// 	match = _.find($scope.gridProps.filter.room_types, function(item) {
+		// 		return room_type_id == item.id;
+		// 	});
+
+		// 	$scope.gridProps.filter.room_type = match;
+
+		// 	// trigger call
+		// 	$scope.clickedOnRoomType();
+		// };			
 	}
 
 	
