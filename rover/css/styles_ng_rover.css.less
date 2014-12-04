@@ -358,8 +358,9 @@ height: 410px;
 }
 
 /*------------------date -picker ends here-------------------------- */
-
-.ui-match { color: #F6991B; margin-right: 0px !important;}
+.ui-match { 
+  color: #F6991B !important; margin-right: 0px !important;
+}
 .post-button {
   line-height: 50px !important;
   width: 100% !important;
@@ -1226,6 +1227,7 @@ Padding for the ows error popup
   position: static !important;
 }
 
+
 /* PAYMENTS */
 
 .deposit-actions, .deposit-required-actions{
@@ -1268,4 +1270,13 @@ Padding for the ows error popup
 	padding-top: 10px; 
 	border-top: 1px solid grey; 
 	margin-top: 35px; 
+
+}
+
+
+.search-results li:not(.no-content).reservation a .room-number .ui-match {
+  display: inline-block;
+  margin-left: -10px;
+  padding-left: 10px;
+  border-left: 4px solid #f6991b;
 }
