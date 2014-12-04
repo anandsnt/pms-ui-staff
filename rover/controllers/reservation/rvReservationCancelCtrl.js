@@ -10,8 +10,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.referanceText = "";
 		$scope.isDisplayReference = false;
 
-		console.log($scope.passData.details.creditCardTypes);
-
 		$scope.cancellationData = {
 			selectedCard: -1,
 			reason: "",
@@ -221,7 +219,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	};
 
 	$scope.$on("TOKEN_CREATED", function(e,data){
-		console.log(data);
 		$scope.newPaymentInfo = data;
 		savePayment();
 	});
@@ -275,8 +272,4 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.closeDialog();
 	};
 
-	}
-	
-	
-
-]);
+}]);
