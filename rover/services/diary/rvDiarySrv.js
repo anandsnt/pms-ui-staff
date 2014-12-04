@@ -552,7 +552,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     _.reduce([
                                           Maintenance, 
                                           RoomType, 
-                                          Room, 
+                                          Room,
                                           Occupancy, 
                                           AvailabilityCount], 
                                 function(memo, obj, idx) {  
