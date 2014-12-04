@@ -26,7 +26,7 @@
                 <select id="arrival-time" 
                         name="arrival-time" 
                         ng-model="gridProps.filter.arrival_time" 
-                        ng-options="arrival_time as arrival_time for arrival_time in gridProps.filter.arrival_times">
+                        ng-options="arrival_time as arrival_time for arrival_time in gridProps.filter.arrival_times" ng-click="clickedOnArrivalTime()">
                     <option value="" disabled selected="selected">Select</option>
                     <!--<option value={{arrival_time}}>{{arrival_time}}</option> -->
                 </select>
@@ -38,7 +38,7 @@
                 <select id="room-type" 
                         name="room-type" 
                         ng-model="gridProps.filter.room_type" 
-                        ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types">
+                        ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types" ng-click="clickedOnRoomType()">
                     <option value="" disabled selected="selected">Select</option>
                 </select>
             </div>

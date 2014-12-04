@@ -948,37 +948,49 @@ sntRover
 		}
 	};
 	
+	$scope.clickedOnArrivalTime = function(){
+		$scope.gridProps.availability.resize.current_arrival_time = null;
+		$scope.gridProps.availability.resize.current_departure_time = null;
+		$scope.gridProps.availability.resize.last_arrival_time = null;
+		$scope.gridProps.availability.resize.last_departure_time = null;
+		if(!$scope.gridProps.edit.active) {
+			$scope.Availability();
+		}
+	};
 
-	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {		
+	$scope.clickedOnRoomType = function(){
+		if (!$scope.gridProps.edit.active) {
+			$scope.Availability();
+		}
+	};
+
+	$scope.clickedOnRateType = function(){
+		if (!$scope.gridProps.edit.active) {
+			$scope.Availability();
+		}
+	};	
+	/*$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {		
 		
 		if(newValue !== oldValue) {
-			$scope.gridProps.availability.resize.current_arrival_time = null;
-			$scope.gridProps.availability.resize.current_departure_time = null;
-			$scope.gridProps.availability.resize.last_arrival_time = null;
-			$scope.gridProps.availability.resize.last_departure_time = null;
-			if(!$scope.gridProps.edit.active) {
-				$scope.Availability();
-			}
-		}
-	});
 
-	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
+		}
+	});*/
+
+/*	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
 
 		if(newValue !== oldValue) {
-			if (!$scope.gridProps.edit.active) {
-				$scope.Availability();
-			}
+
 		}
-	});
+	});*/
 	/*TODO - PASS COMPANY ID HERE*/
-	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
+	/*$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
 
 		if(newValue !== oldValue) {
 			if (!$scope.gridProps.edit.active) {
 				$scope.Availability();
 			}		
 		}	
-	});
+	});*/
 	/*
 		----------------------------------------------------------------
 		END WATCHERS
