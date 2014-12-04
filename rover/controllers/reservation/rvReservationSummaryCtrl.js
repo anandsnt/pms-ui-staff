@@ -42,7 +42,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.renderData = {};
 
 		$scope.feeData = {};
-		var zeroAmount = parseFloat("0.00").toFixed(2);
+		var zeroAmount = parseFloat("0.00");
 
 		// CICO-9457 : To calculate fee - for standalone only
 		$scope.calculateFee = function() {
@@ -82,8 +82,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 				if (amountSymbol == "percent") $scope.calculateFee();
 				else {
-					$scope.feeData.calculatedFee = feesAmount;
-					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
 				}
 			}
 		};
@@ -223,7 +223,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			angular.forEach($scope.reservationData.paymentMethods, function(paymentMethod, key) {
 				if ($scope.reservationData.paymentType.type.value === "CC" && paymentMethod.value === "CC") {
 					angular.forEach(paymentMethod.credit_card_list, function(value, key) {
-						if ($scope.renderData.creditCardType.toUpperCase() === value.cardcode) {
+						if ((typeof $scope.renderData.creditCardType != 'undefined') && $scope.renderData.creditCardType.toUpperCase() === value.cardcode) {
 							referenceTextAvailable = (value.is_display_reference) ? true : false;
 						};
 					});

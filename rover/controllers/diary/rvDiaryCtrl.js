@@ -471,7 +471,7 @@ sntRover
 	    	$scope.callAPI(rvDiarySrv.roomAvailabilityCheckAgainstReservation, options);
 	    };  
 
-	    $scope.onResizeEnd = function(row_data, row_item_data){					
+	    $scope.onResizeEnd = function(row_data, row_item_data){	
 			if($scope.gridProps.edit.active) {
 				resizeEndForExistingReservation (row_data, row_item_data);
 			}
@@ -699,20 +699,20 @@ sntRover
 		----------------------------------------------------------------
 	*/
 
-	   	$scope.clearAvailability = function() {
-			var rooms = $scope.data,
-				room,
-                m_status = meta.occupancy.status,
-				reject = function(child) {
-					return angular.lowercase(child[m_status]) === 'available'; 
-				};
+   	$scope.clearAvailability = function() {
+		var rooms = $scope.data,
+			room,
+            m_status = meta.occupancy.status,
+			reject = function(child) {
+				return angular.lowercase(child[m_status]) === 'available'; 
+			};
 
-			for(var i = 0, len = rooms.length; i < len; i++) {
-				room 			= rooms[i];
-			room.occupancy 	= _.reject(room.occupancy, reject);	//util.copyArray(_.reject(room.occupancy, reject), room.occupancy);	
-				room 			= util.deepCopy(room);							 
-			}
-		};
+		for(var i = 0, len = rooms.length; i < len; i++) {
+			room 			= rooms[i];
+		room.occupancy 	= _.reject(room.occupancy, reject);	//util.copyArray(_.reject(room.occupancy, reject), room.occupancy);	
+			room 			= util.deepCopy(room);							 
+		}
+	};
 
 	var successCallBackOfAvailabilityFetching = function(data, successParams){
 		var row_item_data;		
@@ -738,7 +738,7 @@ sntRover
 
 	var failureCallBackOfAvailabilityFetching = function(errorMessage){
 		$scope.errorMessage = errorMessage;
-		alert('failure in fetching the availability') //TODO: Discss with Stj & change
+		alert('Error in Availability fetching: ' + $scope.errorMessage) //TODO: Discss with Stj & change
 	}
 
 	var callAvailabilityAPI = function(){
@@ -769,18 +769,8 @@ sntRover
 			start_date 	= new Date(this.display.x_n), 
 			start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
 			
-			start 		= new Date(start_date.getFullYear(),
-							 start_date.getMonth(),
-							 start_date.getDate(),
-							 start_time.hours,
-							 start_time.minutes, 
-							 0, 0),
-			end 		= new Date(start.getFullYear(),
-						   start.getMonth(),
-						   start.getDate(),
-						   start.getHours()  + time_span.hours,
-						   start.getMinutes() + time_span.minutes,
-						   0, 0),
+			start 		= new Date(this.currentResizeItem.arrival),
+			end 		= new Date(this.currentResizeItem.departure),
 			
 			rate_type 	= this.filter.rate_type,
 			
