@@ -252,7 +252,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"postData": {
 					"bill_number": 1,
 					"payment_type": $scope.reservationData.paymentType.type.value,
-					"amount": $scope.reservationData.depositAmount
+					"amount": $scope.reservationData.depositAmount,
+					"payment_type_id":null
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
