@@ -501,6 +501,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.viewState.identifier = "CONFIRM";
 			}else{
 				$scope.viewState.identifier = "CREATION";
+				$scope.viewState.reservationStatus.confirm = false;
 			}
 
 			$scope.reservationDetails.guestCard = {};
