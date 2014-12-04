@@ -14,7 +14,10 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
 			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
 	    };
-
+		$scope.refreshIframe = function(){
+			var iFrame = document.getElementById('sixIframe');
+			iFrame.src = iFrame.src;
+		};
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
 		$scope.cardData = {};
@@ -59,7 +62,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			payementData.tokenDetails = tokenDetails;
 			$scope.$emit("TOKEN_CREATED", payementData);
 			$scope.$digest();
-			
+			$scope.refreshIframe();
 		};
 	
 
@@ -108,6 +111,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.shouldShowAddNewCard = false;
 			notifyParent(data.six_payment_data);
 		});
+		
 
 
 		$scope.setCreditCardFromList = function(index){
@@ -118,7 +122,9 @@ sntRover.controller('RVCardOptionsCtrl',
 	    $scope.cancelCardSelection = function(){
 	    	$scope.$emit('cancelCardSelection');
 	    	$scope.cardselectedIndex = -1;
+	    	$scope.refreshIframe();
 	    };
+	    
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
 	    	
 			$scope.renderDataFromSwipe(swipedCardDataToRender);
