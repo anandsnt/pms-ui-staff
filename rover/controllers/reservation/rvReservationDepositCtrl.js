@@ -128,7 +128,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		if($scope.isStandAlone) {
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
-		}
+		};
 
 		/*
 		 * check if reference text is available for the selected card type           
@@ -163,7 +163,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
-		$scope.reservationData.depositAmount =  parseInt($scope.depositDetails.deposit_amount);
+		$scope.reservationData.depositAmount = $filter('number')(parseInt($scope.depositDetails.deposit_amount), 2);
+
 		
 	
 		var savePayment = function() {

@@ -139,30 +139,36 @@ sntRover.controller('reservationActionsController', [
 		$scope.creditCardTypes = [];
 	
 		var openDepositPopup = function(){
-			var passData = {
-						 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
-						 		"fees_information" : $scope.depositDetails.attached_card.fees_information,
-						 		"details":{
-						 			"firstName":$scope.guestCardData.contactInfo.first_name,
-						 			"lastName":$scope.guestCardData.contactInfo.last_name,
-						 			"isDisplayReference":$scope.ifReferanceForCC,
-						 			"creditCardTypes":$scope.creditCardTypes
-						 		}
-						};
-			$scope.passData = passData;
-			ngDialog.close(); //close any existing popups
-			ngDialog.open({
-						template: '/assets/partials/reservationCard/rvReservationDepositPopup.html',
-						className: '',
-						controller:'RVReservationDepositController',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-			    });
-			console.log(passData);
+
+			if($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN"){
+				var feeDetails = (typeof $scope.depositDetails.attached_card ==="undefined") ? {}: $scope.depositDetails.attached_card.fees_information;
+				var passData = {
+							 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+							 		"fees_information":feeDetails,
+							 		"details":{
+							 			"firstName":$scope.guestCardData.contactInfo.first_name,
+							 			"lastName":$scope.guestCardData.contactInfo.last_name,
+							 			"isDisplayReference":$scope.ifReferanceForCC,
+							 			"creditCardTypes":$scope.creditCardTypes
+							 		}
+							};
+				$scope.passData = passData;
+				ngDialog.close(); //close any existing popups
+				ngDialog.open({
+							template: '/assets/partials/reservationCard/rvReservationDepositPopup.html',
+							className: '',
+							controller:'RVReservationDepositController',
+							scope: $scope,
+							closeByDocument: false,
+							closeByEscape: false
+				    });
+			}
+			else{
+				return;
+			};
+			
 		};
 
-		//openDepositPopup();
 		$scope.ifReferanceForCC = false;
 		$scope.depositDetails ={};
 
