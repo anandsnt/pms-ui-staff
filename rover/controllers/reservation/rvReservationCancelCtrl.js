@@ -213,8 +213,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.showCC = false;
 		// CICO-9457 : Data for fees details - standalone only.	
 		if($scope.isStandAlone)	{
-			console.log("clicked cc");
-			console.log($scope.cardsList[index]);
 			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}
