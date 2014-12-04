@@ -34,7 +34,7 @@ sntRover
                 x_min               = (display_total_hours * ms_per_hr - x_max),
                 x_right             = x_origin + x_max, 
                 x_left              = x_origin - x_min,
-                x_offset            = x_origin - (ms_per_hr * 2); 
+                x_offset            = x_origin - (ms_per_hr * 2);
 
             ret = {
                 x_offset: new Date(x_offset),

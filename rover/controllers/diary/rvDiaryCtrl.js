@@ -32,6 +32,8 @@ sntRover
 
 	$scope.$emit('showLoader');
 
+	console.log(payload);
+
 	$scope.reservationData = {};
 	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
