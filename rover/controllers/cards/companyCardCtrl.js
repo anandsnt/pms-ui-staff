@@ -1,5 +1,5 @@
-sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter) {
+sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams) {
 		$scope.searchMode = true;
 		$scope.account_type = 'COMPANY';
 		$scope.currentSelectedTab = 'cc-contact-info';
@@ -212,14 +212,16 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 					$scope.viewState.pendingRemoval.status = false;
 					//if a new card has been added, reset the future count to zero
 					$scope.viewState.pendingRemoval.cardType = "";
-					if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
+					if ($scope.reservationDetails.companyCard.futureReservations <= 0 || $stateParams.reservation == "HOURLY") {
 						$scope.replaceCardCaller('company', {
 							id: data.id
 						}, false);
 					} else {
-						$scope.checkFuture('company', {
-							id: data.id
-						});
+						if ($stateParams.reservation != "HOURLY") {
+							$scope.checkFuture('company', {
+								id: data.id
+							});
+						}
 					}
 					$scope.reservationDetails.companyCard.futureReservations = 0;
 				}
@@ -292,12 +294,16 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 sntRover.controller('companyResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
 		BaseCtrl.call(this, $scope);
-		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
-  		$scope.setScroller ('companyResultScroll', scrollerOptionsForGraph);
+		var scrollerOptionsForGraph = {
+			scrollX: true,
+			click: true,
+			preventDefault: false
+		};
+		$scope.setScroller('companyResultScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshCompaniesScroll", function() {
 			$timeout(function() {
-				$scope.refreshScroller('companyResultScroll');	
+				$scope.refreshScroller('companyResultScroll');
 			}, 500);
 		})
 	}
