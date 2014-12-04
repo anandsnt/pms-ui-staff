@@ -195,6 +195,8 @@ sntRover.controller('reservationActionsController', [
 
 		var fetcCreditCardTypes = function(cancellationCharge, nights){
 			var successCallback = function(data){
+				console.log("fetcCreditCardTypes");
+				console.log(data);
 				$scope.$emit('hideLoader');
 				data.forEach(function(item) {
 		          if(item.name === 'CC'){
