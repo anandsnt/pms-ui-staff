@@ -30,11 +30,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	$scope.feeData = {};
-	var zeroAmount = parseFloat("0.00").toFixed(2);
+	var zeroAmount = parseFloat("0.00");
 
 	// CICO-9457 : To calculate fee - for standalone only
 	$scope.calculateFee = function(){
-
+		
 		if($scope.isStandAlone){
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
@@ -71,8 +71,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				
 				if(amountSymbol == "percent") $scope.calculateFee();
 				else{
-					$scope.feeData.calculatedFee = feesAmount;
-					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
 				}
 			}
 		}
@@ -272,13 +272,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		} else if($scope.renderData.defaultPaymentAmount == '' || $scope.renderData.defaultPaymentAmount == null){
 			$scope.errorMessage = ["Please enter amount"];
 		} else {
+			
 			$scope.errorMessage = "";
 			var dataToSrv = {
 				"postData": {
 					"bill_number": $scope.renderData.billNumberSelected,
 					"payment_type": $scope.saveData.paymentType,
 					"amount": $scope.renderData.defaultPaymentAmount,
-					"payment_type_id":$scope.saveData.payment_type_id
+					"payment_type_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
