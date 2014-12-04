@@ -302,7 +302,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					to_date: $scope.reservationData.departureDate
 				}
 			};
-		}
+		};
+
+
+		$scope.isContinueDisabled =  function(){
+			var depositPaid = false;
+			if($scope.depositData.isDepositRequired){
+				depositPaid = $scope.depositData.attempted ? true:false;
+			}else{
+				depositPaid = true;
+			};
+			var idPresent = (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id);
+			var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value ==="undefined") ||$scope.reservationData.paymentType.type.value.length ===0 );
+			return (idPresent || isPaymentTypeNotSelected || !depositPaid);
+		};
 
 
 
