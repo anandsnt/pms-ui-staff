@@ -1,5 +1,5 @@
-sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault',
-        function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault) {
+sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault', '$rootScope',
+        function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault, $rootScope) {
                 /* DATA STORE w/ set functions */
                 function STORE() {
                     if(!(this instanceof STORE)) {
@@ -770,6 +770,62 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         deferred.reject(error);
                     }); 
                     return deferred.promise;                    
+                };
+
+                this.properDateTimeCreation = function() {
+                    var data       = $vault.get('searchReservationData'),
+                        start_date = new tzIndependentDate($rootScope.businessDate);
+
+                    if(data) {
+                        data = JSON.parse(data);
+                        start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
+                    } else {
+                        correctTime();
+                    };
+
+                    return start_date;
+
+                    function correctTime() {
+                        var now = new Date(Date.now()),
+                            hh   = now.getHours(),
+                            mm   = now.getMinutes(),
+                            ampm = '';
+
+                        // first decide AMP PM
+                        if ( hh > 12 ) {
+                            ampm = 'PM';
+                        } else {
+                            ampm = 'AM';
+                        }
+
+                        // the time must be rounded to next 15min position
+                        // if the guest came in at 3:10AM it should be rounded to 3:15AM
+                        if ( mm > 45 && hh + 1 < 12 ) {
+                            hh += 1;
+                            mm = 0;
+                        } else if ( mm > 45 && hh + 1 == 12 ) {
+                            if ( ampm == 'AM' ) {
+                                hh  = 12;
+                                mm = 0;
+                                ampm    = 'PM';
+                            } else {
+                                hh  = 12;
+                                mm = 0;
+                                ampm    = 'AM';
+                            }
+                        } else if ( mm == 15 || mm == 30 || mm == 45 ) {
+                            mm += 15;
+                        } else {
+                            do {
+                                mm += 1;
+                                if ( mm == 15 || mm == 30 || mm == 45 ) {
+                                    break;
+                                }
+                            } while ( mm != 15 || mm != 30 || mm != 45 );
+                        };
+
+                        start_date.setHours(hh, mm);
+                    };
                 };
 
                 /*Process data points set during create reservation that redirects here*/

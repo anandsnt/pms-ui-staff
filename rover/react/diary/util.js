@@ -78,7 +78,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	}
 	Time.prototype.convertToReferenceInterval = function(interval) {
 		// no more need to push the time, so just return 'this'
-		return this;
+		// return this;
 
 		var time_shift;
 

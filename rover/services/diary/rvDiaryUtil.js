@@ -25,34 +25,16 @@ sntRover
             gridTimeComponents;
 
         gridTimeComponents = function(arrival_ms, display_total_hours, display, isVaultTime) {
-        	var perspective_offset, x_origin;
-
-        	if ( isVaultTime ) {
-            	perspective_offset  = (arrival_ms instanceof Date ? new Date(arrival_ms).toComponents().time.hours : 0);
-                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(arrival_ms).toComponents().time.hours, new Date(arrival_ms).toComponents().time.minutes, 0) : arrival_ms);
-            } else {
-            	perspective_offset  = (arrival_ms instanceof Date ? new Date(Date.now()).toComponents().time.hours : 0);
-                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(Date.now()).toComponents().time.hours,0,0) : arrival_ms);
-            };
-
             var ret,
                 ms_per_day          = 43200000,
                 ms_per_hr           = 3600000,
-                // perspective_offset  = (arrival_ms instanceof Date ? new Date(arrival_ms).toComponents().time.hours : 0),
-                // x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(arrival_ms).toComponents().time.hours, new Date(arrival_ms).toComponents().time.minutes, 0) : arrival_ms), 
+                perspective_offset  = (arrival_ms instanceof Date ? new Date(arrival_ms).toComponents().time.hours : 0),
+                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(arrival_ms).toComponents().time.hours, new Date(arrival_ms).toComponents().time.minutes, 0) : arrival_ms), 
                 x_max               = (display_total_hours - perspective_offset) * ms_per_hr, 
                 x_min               = (display_total_hours * ms_per_hr - x_max),
                 x_right             = x_origin + x_max, 
                 x_left              = x_origin - x_min,
                 x_offset            = x_origin - (ms_per_hr * 2);
-
-            if ( isVaultTime ) {
-            	perspective_offset  = (arrival_ms instanceof Date ? new Date(arrival_ms).toComponents().time.hours : 0);
-                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(arrival_ms).toComponents().time.hours, new Date(arrival_ms).toComponents().time.minutes, 0) : arrival_ms);
-            } else {
-            	perspective_offset  = (arrival_ms instanceof Date ? new Date(arrival_ms).toComponents().time.hours : 0);
-                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(arrival_ms).toComponents().time.hours, new Date(arrival_ms).toComponents().time.minutes, 0) : arrival_ms);
-            };
 
             ret = {
                 x_offset: new Date(x_offset),
