@@ -736,7 +736,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 guid,
                                 false
                             ]);                           
-                            console.log(JSON.stringify(Availability.store.data));
                             q.resolve(Availability.store.data);
                        }
                     },
