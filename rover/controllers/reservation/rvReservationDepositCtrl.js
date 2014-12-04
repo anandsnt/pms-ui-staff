@@ -79,7 +79,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 		$scope.feeData = {};
-		var zeroAmount = parseFloat("0.00").toFixed(2);
+		var zeroAmount = parseFloat("0.00");
 
 		// CICO-6068 : To calculate fee
 		$scope.calculateFee = function(){
@@ -109,23 +109,24 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			
 			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.reservationData ?
-			 	$scope.reservationData.depositAmount : zeroAmount;
+			 	parseFloat($scope.reservationData.depositAmount) : zeroAmount;
 			
 			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 				$scope.feeData.actualFees = feesAmount;
 				
 				if(amountSymbol == "percent") $scope.calculateFee();
 				else{
-					$scope.feeData.calculatedFee = feesAmount;
-					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
 				}
 			}
 		};
 
 		if($scope.isStandAlone) {
+			console.log($scope.passData);
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
 		};
@@ -155,11 +156,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			$scope.depositData.expiry_date = attached_card.expiry_date;
 			$scope.depositData.card_type = attached_card.card_code;
 			$scope.cardSelected = true;
-
-			if($scope.isStandAlone) {
-				$scope.feeData.feesInfo = attached_card.fees_information;
-				$scope.setupFeeData();
-			}
+			
 		};
 
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
@@ -310,6 +307,13 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.depositData.card_type = $scope.cardsList[index].card_code;
 		$scope.paymentMode = false;
 		$scope.cardSelected = true;
+
+		if($scope.isStandAlone) {
+			console.log("clicked cc");
+			console.log($scope.cardsList[index]);
+			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
+			$scope.setupFeeData();
+		}
 	};
 
 	$scope.$on("TOKEN_CREATED", function(e,data){

@@ -36,7 +36,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		};
 
 		$scope.feeData = {};
-		var zeroAmount = parseFloat("0.00").toFixed(2);
+		var zeroAmount = parseFloat("0.00");
 
 		// CICO-9457 : To calculate fee - for standalone only
 		$scope.calculateFee = function() {
@@ -64,18 +64,18 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			
 			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.ngDialogData ?
-			 	$scope.ngDialogData.penalty : zeroAmount;
+			 	parseFloat($scope.ngDialogData.penalty) : zeroAmount;
 			
 			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 				$scope.feeData.actualFees = feesAmount;
 				
 				if(amountSymbol == "percent") $scope.calculateFee();
 				else{
-					$scope.feeData.calculatedFee = feesAmount;
-					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
 				}
 			}
 		};
@@ -143,7 +143,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				if($scope.feeData.calculatedFee)
 					paymentData.fees_amount = $scope.feeData.calculatedFee;
 				if($scope.feeData.feesInfo)
-					paymentData.fees_charge_code_id = $scope.feeData.feeInfo.charge_code_id;
+					paymentData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 		};
@@ -213,7 +213,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.showCC = false;
 		// CICO-9457 : Data for fees details - standalone only.	
 		if($scope.isStandAlone)	{
-			$scope.feeData.feeInfo = $scope.cardsList[index].fees_information;
+			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}
 	};
