@@ -272,13 +272,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		} else if($scope.renderData.defaultPaymentAmount == '' || $scope.renderData.defaultPaymentAmount == null){
 			$scope.errorMessage = ["Please enter amount"];
 		} else {
+			
 			$scope.errorMessage = "";
 			var dataToSrv = {
 				"postData": {
 					"bill_number": $scope.renderData.billNumberSelected,
 					"payment_type": $scope.saveData.paymentType,
 					"amount": $scope.renderData.defaultPaymentAmount,
-					"payment_type_id":$scope.saveData.payment_type_id
+					"payment_type_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
