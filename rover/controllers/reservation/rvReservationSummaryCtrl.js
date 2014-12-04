@@ -253,9 +253,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"bill_number": 1,
 					"payment_type": $scope.reservationData.paymentType.type.value,
 					"amount": $scope.reservationData.depositAmount,
-					"payment_type_id": $scope.reservationData.selectedPaymentId
+					"payment_type_id":null
 				},
 				"reservation_id": $scope.reservationData.reservationId
+			};
+
+			if(dataToMakePaymentApi.postData.payment_type === "CC"){
+				dataToMakePaymentApi.postData.payment_type_id =  $scope.reservationData.selectedPaymentId;
 			};
 
 			if ($scope.isStandAlone) {
@@ -298,7 +302,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					to_date: $scope.reservationData.departureDate
 				}
 			};
-		}
+		};
+
+
+		$scope.isContinueDisabled =  function(){
+			var depositPaid = false;
+			if($scope.depositData.isDepositRequired){
+				depositPaid = $scope.depositData.attempted ? true:false;
+			}else{
+				depositPaid = true;
+			};
+			var idPresent = (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id);
+			var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value ==="undefined") ||$scope.reservationData.paymentType.type.value.length ===0 );
+			return (idPresent || isPaymentTypeNotSelected || !depositPaid);
+		};
 
 
 
