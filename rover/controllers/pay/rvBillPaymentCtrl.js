@@ -30,11 +30,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	$scope.feeData = {};
-	var zeroAmount = parseFloat("0.00").toFixed(2);
+	var zeroAmount = parseFloat("0.00");
 
 	// CICO-9457 : To calculate fee - for standalone only
 	$scope.calculateFee = function(){
-
+		console.log($scope.renderData.defaultPaymentAmount);
+		console.log(typeof $scope.renderData.defaultPaymentAmount);
+		if($scope.renderData.defaultPaymentAmount=="") console.log("blank");
+		else console.log("not blank");
 		if($scope.isStandAlone){
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
@@ -71,8 +74,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				
 				if(amountSymbol == "percent") $scope.calculateFee();
 				else{
-					$scope.feeData.calculatedFee = feesAmount;
-					$scope.feeData.totalOfValueAndFee = parseFloat(parseFloat(feesAmount) + parseFloat(defaultAmount)).toFixed(2);
+					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
 				}
 			}
 		}
