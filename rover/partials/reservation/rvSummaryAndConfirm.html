@@ -173,7 +173,7 @@
                 </ul>
             </div> 
         </div>
-        <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
+        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-click="clearErrorMessage()">
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
            <!--      <section ng-hide="true">
@@ -291,7 +291,7 @@
 
 
                     <!-- Use only if deposit is required -->
-                    <div class="notice deposit" ng-if="depositData.isDepositRequired" ng-hide="depositData.attempted || reservationData.depositAmount <=0">                        
+                    <div class="notice deposit" ng-if="depositData.isDepositRequired" ng-hide="depositData.attempted">                        
                         <p>Deposit required: <strong>{{depositData.description}}</strong>.</p>
                         <!-- Payment fields -->
                         <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        

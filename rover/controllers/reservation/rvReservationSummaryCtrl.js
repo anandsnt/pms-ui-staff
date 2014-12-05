@@ -32,8 +32,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			"details": {}
 		};
 
-		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
-		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+		$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
+		$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 		$scope.addmode = true;
 		$scope.showCC = false;
 		$scope.showAddtoGuestCard = true;
@@ -834,6 +834,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$state.go('rover.reservation.search');
 			}
 		};
+		
+		$scope.reservationData.paymentType.type.value = "";
 
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
@@ -1058,6 +1060,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				successCallBackParameters: swipedCardDataToSave
 			};
 			$scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
+		});
+		//To fix the issue CICO-11440
+		//From diary screen create reservation guest data is available only after reaching the summary ctrl
+		//At that time iframe fname and lname is set as null or undefined since data not available
+		//here refreshing the iframe with name of guest
+		$scope.$on("resetGuestTab", function(e, data){
+			var guestData = {
+				"fname": $scope.reservationData.guest.firstName,
+				"lname":  $scope.reservationData.guest.lastName
+			};
+			//CICO-11413 - Since card name is taken from pass data.
+			$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
+			$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
+			$scope.$broadcast("refreshIframe", guestData);
 		});
 
 		$scope.init();

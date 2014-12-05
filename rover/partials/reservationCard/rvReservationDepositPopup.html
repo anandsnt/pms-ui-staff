@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
     <form id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation select-card"><!-- Add class "select-card" when applying penalty charge -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         <fieldset id="cancel-options">
@@ -45,7 +45,7 @@
         <div class="actions float" ng-class="{'deposit-required-actions':depositInProcess && errorOccured && !successOccured}">
             <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
             <!-- to chnage ng-lcick -->
-            <button type="button" class="button blue" ng-click="submitPayment()" ng-show="depositInProcess && errorOccured && !successOccured">Try again</button>
+            <button type="button" class="button blue" ng-click="tryAgain()" ng-show="depositInProcess && errorOccured && !successOccured">Try again</button>
         </div>
     </fieldset>
 
