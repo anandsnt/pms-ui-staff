@@ -249,7 +249,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.ending_with  = $scope.depositBalanceData.data.existing_payments[index].ending_with;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
 		checkReferencetextAvailableForCC();
-		console.log("card clicked from deposit");
 		
 		if($scope.isStandAlone){
 			// Setup fees info
