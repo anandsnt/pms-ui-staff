@@ -31,8 +31,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.passData = {
 			"details": {}
 		};
-	console.log("---------------GUESTCARD DATA---------------------");	
-console.log($scope.reservationData);
+
 		$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
 		$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 		$scope.addmode = true;
@@ -1060,14 +1059,18 @@ console.log($scope.reservationData);
 			};
 			$scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
 		});
-		
+		//To fix the issue CICO-11440
+		//From diary screen create reservation guest data is available only after reaching the summary ctrl
+		//At that time iframe fname and lname is set as null or undefined since data not available
+		//here refreshing the iframe with name of guest
 		$scope.$on("resetGuestTab", function(e, data){
-			console.log("---------------resetGuestTab broad DATA---------------------");	
-			console.log($scope.reservationData);
 			var guestData = {
 				"fname": $scope.reservationData.guest.firstName,
 				"lname":  $scope.reservationData.guest.lastName
 			};
+			//CICO-11413 - Since card name is taken from pass data.
+			$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
+			$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 			$scope.$broadcast("refreshIframe", guestData);
 		});
 
