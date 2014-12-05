@@ -32,11 +32,11 @@
             <div ng-include="'/assets/partials/common/notification_message.html'" ng-hide="successOccured"></div>
             <div ng-hide="errorOccured || isLoading">
                 <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-                <div class="authorised-code-text">
+                <div class="authorised-code-text" ng-show="authorizedCode !==''">
                     <span>Your authorized code is :</span>
                     <span>{{authorizedCode}}</span>
                 </div>
-                <div class="amount-paid">
+                <div class="amount-paid" ng-class="{'margin-top-1':authorizedCode !==''}">
                     <span>Amount Paid:</span> 
                     <span >{{currencySymbol}}{{reservationData.depositAmount}}</span>
                 </div>
