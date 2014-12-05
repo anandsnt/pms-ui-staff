@@ -89,6 +89,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if (responseData.response_message == "token_created") {
         $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
       }
+      // if (responseData.response_message == "error_on_token_creation") {
+        // $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
+      // }
     }, false);
 
     //set flag if standalone PMS

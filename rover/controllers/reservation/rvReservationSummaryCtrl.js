@@ -31,9 +31,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.passData = {
 			"details": {}
 		};
-
-		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
-		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+	console.log("---------------GUESTCARD DATA---------------------");	
+console.log($scope.reservationData);
+		$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
+		$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 		$scope.addmode = true;
 		$scope.showCC = false;
 		$scope.showAddtoGuestCard = true;
@@ -641,7 +642,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.confirmReservation = function() {
-			console.log("confirm reservation");
 			var postData = $scope.computeReservationDataforUpdate(false, true);
 			postData.payment_type = {};
 			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
@@ -650,8 +650,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				}
 
 			});
-			console.log(JSON.stringify(postData));
-			if ($scope.reservationData.paymentType.type.value == 'CC') {
+			if($scope.reservationData.paymentType.type.value == 'CC'){
+
 				postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
 			}
 
@@ -663,12 +663,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
 				//creating reservation
-				console.log("update")
 				postData.reservationId = $scope.reservationData.reservationId;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
 			} else {
-				console.log("create")
-					//updating reservation
+				//updating reservation
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
 			}
 
@@ -1063,6 +1061,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				successCallBackParameters: swipedCardDataToSave
 			};
 			$scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
+		});
+		
+		$scope.$on("resetGuestTab", function(e, data){
+			console.log("---------------resetGuestTab broad DATA---------------------");	
+			console.log($scope.reservationData);
+			var guestData = {
+				"fname": $scope.reservationData.guest.firstName,
+				"lname":  $scope.reservationData.guest.lastName
+			};
+			$scope.$broadcast("refreshIframe", guestData);
 		});
 
 		$scope.init();
