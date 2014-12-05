@@ -305,8 +305,6 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.cardSelected = true;
 
 		if($scope.isStandAlone) {
-			console.log("clicked cc");
-			console.log($scope.cardsList[index]);
 			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}
