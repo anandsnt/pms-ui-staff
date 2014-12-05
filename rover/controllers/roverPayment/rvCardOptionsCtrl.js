@@ -13,8 +13,16 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
 			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
+			if(swipedDataToRenderInScreen.swipeFrom == "guestCard"){
+				$scope.showAddtoGuestCard = false;
+			} else {
+				$scope.showAddtoGuestCard = true;
+			}
 	    };
-
+		$scope.refreshIframe = function(){
+			var iFrame = document.getElementById('sixIframe');
+			iFrame.src = iFrame.src;
+		};
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
 		$scope.cardData = {};
@@ -24,9 +32,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.cardData.expiryMonth ="";
 		$scope.cardData.expiryYear = "";
 		$scope.cardData.userName   = "";
-		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
-			$scope.renderDataFromSwipe($scope.passData.details.swipedDataToRenderInScreen);
-		}
+		
 		var time = new Date().getTime();
 		$scope.shouldShowAddNewCard = true;
 		var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
@@ -36,11 +42,30 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.shouldShowAddNewCard = false;
 			var iFrame = $document.find("sixIframe");
 			iFrame.attr("src", $scope.iFrameUrl);
+			$scope.showAddtoGuestCard = false;
+		} else {
+			if(!$scope.isFromGuestCard){
+				$scope.showAddtoGuestCard = true;
+			}
+		}
+		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+			$scope.renderDataFromSwipe($scope.passData.details.swipedDataToRenderInScreen);
 		}
 		$scope.shouldShowIframe = false;	
 
 
-
+		$scope.changeOnsiteCallIn = function(){
+			$scope.shouldShowIframe = !$scope.shouldShowIframe;
+			if(!$scope.isFromGuestCard){
+				if($scope.shouldShowIframe){
+					$scope.showAddtoGuestCard = true;
+				} else {
+					
+					$scope.showAddtoGuestCard = false;
+				}
+			}
+			
+		};
 		var emptySessionDetails = function(){
 				$scope.cardData.cardNumber = "";
 				$scope.cardData.CCV = "";
@@ -59,7 +84,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			payementData.tokenDetails = tokenDetails;
 			$scope.$emit("TOKEN_CREATED", payementData);
 			$scope.$digest();
-			
+			$scope.refreshIframe();
 		};
 	
 
@@ -108,6 +133,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.shouldShowAddNewCard = false;
 			notifyParent(data.six_payment_data);
 		});
+		
 
 
 		$scope.setCreditCardFromList = function(index){
@@ -118,9 +144,11 @@ sntRover.controller('RVCardOptionsCtrl',
 	    $scope.cancelCardSelection = function(){
 	    	$scope.$emit('cancelCardSelection');
 	    	$scope.cardselectedIndex = -1;
+	    	$scope.refreshIframe();
 	    };
+	    
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
-	    	
+	
 			$scope.renderDataFromSwipe(swipedCardDataToRender);
 			$scope.passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 		});

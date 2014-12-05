@@ -61,12 +61,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			
 			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.renderData ?
-			 	$scope.renderData.defaultPaymentAmount : zeroAmount;
+			 	parseFloat($scope.renderData.defaultPaymentAmount) : zeroAmount;
 			
 			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 				
 				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 				$scope.feeData.actualFees = feesAmount;
 				
 				if(amountSymbol == "percent") $scope.calculateFee();
@@ -458,7 +458,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		console.log(data);
 		$scope.newPaymentInfo = data;
-		savePayment(data);
+		$scope.showCCPage = false;
+		setTimeout(function(){
+			savePayment(data);
+		}, 200);
+		
+		
 	});
 
 	$scope.$on("MLI_ERROR", function(e,data){

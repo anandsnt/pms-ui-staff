@@ -326,6 +326,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				refreshScroller();
 			} else {
 
+				if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length === 3){
+					$scope.fetchSearchResults();		
+					return false;
+				}
+
 				//see if the new query is the substring of fetch term & the fetched results count < per_page param(which is set to be 100 now)
 				//If so we will do local filtering
 				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 
@@ -371,6 +376,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			} else if($stateParams.type != undefined && query == ''){
 				dataDict.status = $stateParams.type;
 			}
+
+			if($rootScope.isSingleDigitSearch && !isNaN(query) && query.length < 3){
+				dataDict.room_search = true;
+			}
+
 			$scope.firstSearch = false;
 			$scope.fetchTerm = $scope.textInQueryBox;
 			$scope.searchResultsFetchDone = false;

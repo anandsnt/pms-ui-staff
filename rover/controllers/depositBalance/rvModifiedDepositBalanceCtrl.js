@@ -125,12 +125,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		
 		var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 		var defaultAmount = $scope.depositBalanceMakePaymentData ?
-		 	$scope.depositBalanceMakePaymentData.amount : zeroAmount;
+		 	parseFloat($scope.depositBalanceMakePaymentData.amount) : zeroAmount;
 		
 		if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
 			
 			var amountSymbol = feesInfo.amount_symbol;
-			var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount).toFixed(2) : zeroAmount;
+			var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 			$scope.feeData.actualFees = feesAmount;
 			
 			if(amountSymbol == "percent") $scope.calculateFee();
@@ -249,7 +249,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.ending_with  = $scope.depositBalanceData.data.existing_payments[index].ending_with;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
 		checkReferencetextAvailableForCC();
-		console.log("card clicked from deposit");
 		
 		if($scope.isStandAlone){
 			// Setup fees info
