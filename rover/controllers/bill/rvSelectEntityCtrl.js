@@ -156,6 +156,11 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	    }
 	    else{
 
+	    	if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length === 3){
+				fetchSearchResults();		
+				return false;
+			}
+
 		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.reservations.length > 0){
 		        var value = ""; 
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
@@ -168,27 +173,33 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		              ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 || 
 		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 )
-		              {
-		                 $scope.results.reservations[i].is_row_visible = true;
-		                 totalCountOfFound++;
-		              }
-		          else {
-		            $scope.results.reservations[i].is_row_visible = false;
-		          }  
+		              	{
+		                 	$scope.results.reservations[i].is_row_visible = true;
+		                 	totalCountOfFound++;
+		              	}
+		          	else {
+		            	$scope.results.reservations[i].is_row_visible = false;
+		          	}  
 		        }
 		        if(totalCountOfFound == 0){
-		        	 var dataDict = {'query': $scope.textInQueryBox.trim()};
-		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);
+		        	fetchSearchResults();
 		        }
-		      }
+		    }
 		    else{
-		        var dataDict = {'query': $scope.textInQueryBox.trim()};
-		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);         
+		    	fetchSearchResults();
 		    }
 	      	// we have changed data, so we are refreshing the scrollerbar
 	      	$scope.refreshScroller('res_search_scroller');                
 	    }
 	}; //end of displayFilteredResults
+
+	var fetchSearchResults = function() {
+		var dataDict = {'query': $scope.textInQueryBox.trim()};
+		if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length < 3){
+			dataDict.room_search = true;
+		}
+		$scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);         
+	};
 	
 	//Toggle between Reservations , Cards
 	$scope.toggleClicked = function(flag){

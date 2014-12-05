@@ -223,6 +223,7 @@
 					    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
 					        {{ no }}
 					    </opzion>
+					    <option value="{{fetchedData.bill_numbers.length+1}}" ng-show="fetchedData.bill_numbers.length<10 && isStandAlone">{{fetchedData.bill_numbers.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 					</select>
 				</div> </span>
 			<div id="no-items-added" class="no-content" ng-hide="isAnyChosen()">

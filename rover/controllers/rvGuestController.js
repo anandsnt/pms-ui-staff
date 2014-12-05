@@ -725,10 +725,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
 			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
-			console.log("******CICO-11443 Debugging ************");
 			console.log($scope.reservationData);
 			console.log($scope.viewState);
-			console.log("******CICO-11443 Debugging ************");
 
 			if (!$scope.isHourly) {
 
@@ -758,7 +756,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
 			//CICO-7792
-			if ($scope.viewState.identifier == "CREATION") {
+			if ($scope.viewState.identifier == "CREATION" || $stateParams.reservation == "HOURLY") {
 				$scope.reservationData.company.id = company.id;
 				$scope.showContractedRates({
 					companyCard: company.id,
@@ -778,7 +776,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('company', company, false);
 				} else {
-					$scope.checkFuture('company', company);
+					if ($stateParams.reservation != "HOURLY") {
+						$scope.checkFuture('company', company);
+					}
 				}
 			}
 
@@ -787,7 +787,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
 			//CICO-7792
-			if ($scope.viewState.identifier == "CREATION") {
+			if ($scope.viewState.identifier == "CREATION" || $stateParams.reservation == "HOURLY") {
 				// Update main reservation scope
 				$scope.reservationData.travelAgent.id = travelAgent.id;
 				$scope.showContractedRates({
@@ -808,14 +808,17 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
 					$scope.replaceCardCaller('travel_agent', travelAgent, false);
 				} else {
-					$scope.checkFuture('travel_agent', travelAgent);
+					if ($stateParams.reservation != "HOURLY") {
+						$scope.checkFuture('travel_agent', travelAgent);
+					}
 				}
 			}
 		};
 
 		$scope.selectGuest = function(guest, $event) {
+			console.log($stateParams.reservation);
 			$event.stopPropagation();
-			if ($scope.viewState.identifier == "CREATION") {
+			if ($scope.viewState.identifier == "CREATION" || $stateParams.reservation == "HOURLY") {
 				$scope.reservationData.guest.id = guest.id;
 				$scope.reservationData.guest.firstName = guest.firstName;
 				$scope.reservationData.guest.lastName = guest.lastName;
@@ -835,7 +838,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('guest', guest, false);
 				} else {
-					$scope.checkFuture('guest', guest);
+					if ($stateParams.reservation != "HOURLY") {
+						$scope.checkFuture('guest', guest);
+					}
 				}
 			}
 		};

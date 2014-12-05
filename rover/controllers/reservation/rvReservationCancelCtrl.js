@@ -143,7 +143,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				if($scope.feeData.calculatedFee)
 					paymentData.fees_amount = $scope.feeData.calculatedFee;
 				if($scope.feeData.feesInfo)
-					paymentData.fees_charge_code_id = $scope.feeData.feeInfo.charge_code_id;
+					paymentData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 		};
@@ -213,7 +213,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.showCC = false;
 		// CICO-9457 : Data for fees details - standalone only.	
 		if($scope.isStandAlone)	{
-			$scope.feeData.feeInfo = $scope.cardsList[index].fees_information;
+			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}
 	};

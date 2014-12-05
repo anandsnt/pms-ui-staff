@@ -458,7 +458,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		console.log(data);
 		$scope.newPaymentInfo = data;
-		savePayment(data);
+		$scope.showCCPage = false;
+		setTimeout(function(){
+			savePayment(data);
+		}, 200);
+		
+		
 	});
 
 	$scope.$on("MLI_ERROR", function(e,data){
