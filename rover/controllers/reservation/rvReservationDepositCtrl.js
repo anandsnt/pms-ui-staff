@@ -49,6 +49,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 		$scope.tryAgain = function(){
 			$scope.depositInProcess = false;
+			$scope.errorMessage = "";
 		};
 
 		/*
