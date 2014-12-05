@@ -209,6 +209,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
 			$scope.showCC = false;
 			$scope.showSelectedCreditCard = true;
+			// CICO-9457 : Data for fees details - standalone only.	
+			if($scope.isStandAlone)	{
+				$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
+				$scope.setupFeeData();
+			}
 		};
 
 
@@ -234,8 +239,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			return referenceTextAvailable;
 		};
 
+		$scope.tryAgain = function(){
+			$scope.errorMessage = "";
+			$scope.depositData.attempted = false;
+			$scope.depositData.depositSuccess = false;
+			$scope.depositData.depositAttemptFailure = false;
+		};
+
 		$scope.payDeposit = function() {
 			var onPaymentSuccess = function(data) {
+				console.log(data);
 					$scope.depositData.attempted = true;
 					$scope.depositData.depositSuccess = true;
 					$scope.depositData.authorizationCode = data.authorization_code;
@@ -605,7 +618,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.confirmReservation = function() {
-			console.log("confirm reservation");
 			var postData = $scope.computeReservationDataforUpdate(false, true);
 			postData.payment_type = {};
 			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
@@ -614,8 +626,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				}
 
 			});
-			console.log(JSON.stringify(postData));
-			if ($scope.reservationData.paymentType.type.value == 'CC') {
+			if($scope.reservationData.paymentType.type.value == 'CC'){
+
 				postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
 			}
 
@@ -627,12 +639,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
 				//creating reservation
-				console.log("update")
 				postData.reservationId = $scope.reservationData.reservationId;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
 			} else {
-				console.log("create")
-					//updating reservation
+				//updating reservation
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
 			}
 
