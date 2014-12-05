@@ -835,6 +835,8 @@ console.log($scope.reservationData);
 				$state.go('rover.reservation.search');
 			}
 		};
+		
+		$scope.reservationData.paymentType.type.value = "";
 
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
