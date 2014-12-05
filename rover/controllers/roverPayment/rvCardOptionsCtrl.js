@@ -79,7 +79,8 @@ sntRover.controller('RVCardOptionsCtrl',
 		/*
 		 * Function to get MLI token on click 'Add' button in form
 		 */
-		$scope.getToken = function(){
+		$scope.getToken = function($event){
+			$event.preventDefault();		
 			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 				var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToSave = swipeOperationObj.createSWipedDataToSave($scope.passData.details.swipedDataToRenderInScreen);
