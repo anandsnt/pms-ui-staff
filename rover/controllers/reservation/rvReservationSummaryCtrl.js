@@ -66,6 +66,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 		};
 
+		$scope.$on("UPDATEFEE",$scope.calculateFee);
+
 		// CICO-9457 : Data for fees details.
 
 		$scope.setupFeeData = function() {
