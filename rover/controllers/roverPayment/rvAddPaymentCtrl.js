@@ -270,8 +270,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
 	var ccSaveSuccess = function(data){
-		console.log("ccSave success");
-		console.log($scope.cardData)
+		
 		$scope.$emit("hideLoader");
 		if(isNewCardAdded){
 			console.log("ccSave success isNewCardAdded");
