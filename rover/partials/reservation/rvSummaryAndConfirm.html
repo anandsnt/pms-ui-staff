@@ -306,7 +306,7 @@
                     <div class="feedback" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && !depositData.depositAttemptFailure">
                         <div class="notice success">Deposit paid</div>
                         <ul class="transaction">
-                            <li ng-show="depositData.authorizationCode!=''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>
+                            <li ng-show="depositData.authorizationCode!==''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>
                             <li>Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}}</span>
                             </li>
                         </ul>

@@ -156,7 +156,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			$scope.depositData.selectedCard = attached_card.value;
 			$scope.depositData.cardNumber = attached_card.ending_with;
 			$scope.depositData.expiry_date = attached_card.expiry_date;
-			$scope.depositData.card_type = attached_card.card_code;
+			$scope.depositData.card_type = attached_card.card_code.toLowerCase();
 			$scope.cardSelected = true;
 			
 		};
@@ -305,8 +305,6 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.cardSelected = true;
 
 		if($scope.isStandAlone) {
-			console.log("clicked cc");
-			console.log($scope.cardsList[index]);
 			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 			$scope.setupFeeData();
 		}
