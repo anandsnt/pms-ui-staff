@@ -284,21 +284,22 @@ sntRover.controller('reservationActionsController', [
 
 		/**************************************************************************/
 		/* Before checking in we check if any deposit is left else noraml checkin 
-		/* commenting out for now
 		/*
 		/**************************************************************************/
-		// var checkinDepositDetailsSuccess = function(data){
-		// 	$scope.$emit('hideLoader');
-		// 	$scope.depositDetails = data;
-		// 	((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
-		// };
+		var checkinDepositDetailsSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.depositDetails = data;
+			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
+		};
 
-		// var checkforDeposit = function(){
-		// 	$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,checkinDepositDetailsSuccess);
-		// };
+		var checkforDeposit = function(){
+			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,checkinDepositDetailsSuccess);
+		};
+		//only show deposit popup once
+		var checkinAttemptCount = 0;
 		$scope.goToCheckin = function(){
-			//checkforDeposit();
-			startCheckin();
+			(checkinAttemptCount ===0) ?  checkforDeposit() :startCheckin();
+			checkinAttemptCount ++;
 		};
 
 		/******************************************/
