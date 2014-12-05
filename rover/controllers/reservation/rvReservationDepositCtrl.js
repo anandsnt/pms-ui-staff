@@ -145,10 +145,10 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 		/*
-		 * set selected card if any card is selected          
+		 * set selected card if any card is attached to the reservation          
 		 *													
 		 */
-	    var setSelectedCreditCard = function(cardValue){
+	    var setReservationCreditCard = function(cardValue){
 
 			var attached_card = $scope.depositDetails.attached_card;
 			$scope.depositData.selectedCard = attached_card.value;
@@ -222,7 +222,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				refreshCardsList();
 			};
 			if((typeof $scope.depositDetails.attached_card !== "undefined") && $scope.depositDetails.attached_card.value !=="" && $scope.depositDetails.attached_card.is_credit_card){
-				setSelectedCreditCard($scope.depositDetails.attached_card.value);
+				setReservationCreditCard($scope.depositDetails.attached_card.value);
 			};
 			
 		};
