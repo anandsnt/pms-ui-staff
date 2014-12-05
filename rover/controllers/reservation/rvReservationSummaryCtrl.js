@@ -209,6 +209,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
 			$scope.showCC = false;
 			$scope.showSelectedCreditCard = true;
+			// CICO-9457 : Data for fees details - standalone only.	
+			if($scope.isStandAlone)	{
+				$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
+				$scope.setupFeeData();
+			}
 		};
 
 
