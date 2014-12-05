@@ -234,6 +234,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			return referenceTextAvailable;
 		};
 
+		$scope.tryAgain = function(){
+			$scope.errorMessage = "";
+			$scope.depositData.attempted = false;
+			$scope.depositData.depositSuccess = false;
+			$scope.depositData.depositAttemptFailure = false;
+		};
+
 		$scope.payDeposit = function() {
 			var onPaymentSuccess = function(data) {
 				console.log(data);
