@@ -66,19 +66,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // strip $scope.fullCheckinTime to generate hh, mm, ampm
         // map $scope.fullCheckinTime to $scope.reservationData.checkinTime
         $scope.mapToCheckinTime = function() {
+            if ( !$scope.isNightsActive ) {
+                // strip 'fullCheckinTime' to generate hh, mm, ampm
+                var ampm = $scope.fullCheckinTime.split(' ')[1];
+                var time = $scope.fullCheckinTime.split(' ')[0];
+                var hh   = time.length ? time.split(':')[0] : '';
+                var mm   = time.length ? time.split(':')[1] : '';
 
-            // strip 'fullCheckinTime' to generate hh, mm, ampm
-            var ampm = $scope.fullCheckinTime.split(' ')[1];
-            var time = $scope.fullCheckinTime.split(' ')[0];
-            var hh   = time.length ? time.split(':')[0] : '';
-            var mm   = time.length ? time.split(':')[1] : '';
+                // map fullCheckinTime to $scope.reservationData.checkinTime
+                $scope.reservationData.checkinTime.hh = isNaN(parseInt(hh)) ? '' : parseInt(hh) < 10 ? '0'+hh : hh;
+                $scope.reservationData.checkinTime.mm = mm || '';
+                $scope.reservationData.checkinTime.ampm = ampm || '';
 
-            // map fullCheckinTime to $scope.reservationData.checkinTime
-            $scope.reservationData.checkinTime.hh = isNaN(parseInt(hh)) ? '' : parseInt(hh) < 10 ? '0'+hh : hh;
-            $scope.reservationData.checkinTime.mm = mm || '';
-            $scope.reservationData.checkinTime.ampm = ampm || '';
-
-            $scope.setDepartureHours();
+                $scope.setDepartureHours();
+            }
         };
 
 
@@ -499,6 +500,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else{
                 $scope.shouldShowNights = true;
                 $scope.shouldShowHours = false;
+                $scope.clearArrivalAndDepartureTime();
             };
         };
 
