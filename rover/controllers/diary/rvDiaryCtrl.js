@@ -35,6 +35,34 @@ sntRover
 	$scope.reservationData = {};
 	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
+
+
+	// data for next state
+	$rootScope.setNextState = {
+		data: {
+			'isFromDiary' : true,
+			'useCache'    : true
+		}
+	}
+
+	// set a back button
+	if ( $rootScope.diaryState.useOriginal($rootScope.getPrevStateTitle()) ) {
+		var goToThisPrev = $rootScope.diaryState.getOriginState();
+		$rootScope.setPrevState = {
+			title : goToThisPrev.title,
+			name  : goToThisPrev.name,
+			param : goToThisPrev.param
+		}
+	} else {
+		$rootScope.setPrevState = {
+			title: $rootScope.getPrevStateTitle()
+		}
+	};
+
+	// from Dashboard    rover.dashboard.manager
+	// from Reservation  rover.reservation.search
+
+
 	/*--------------------------------------------------*/
 	/*BEGIN CONFIGURATION 
 	/*--------------------------------------------------*/
@@ -880,8 +908,8 @@ sntRover
 			$scope.gridProps.filter.arrival_time = "00:00";
 			$scope.gridProps.filter.room_type = "";
 			number_of_items_resetted = 0;
-			$scope.clearAvailability();
-			$scope.resetEdit();
+			
+			//$scope.clearAvailability();
 			$scope.renderGrid();	
 			$scope.$emit('hideLoader');						
 					
