@@ -173,7 +173,7 @@
                 </ul>
             </div> 
         </div>
-        <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
+        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-click="clearErrorMessage()">
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
            <!--      <section ng-hide="true">
@@ -306,7 +306,7 @@
                     <div class="feedback" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && !depositData.depositAttemptFailure">
                         <div class="notice success">Deposit paid</div>
                         <ul class="transaction">
-                            <li ng-show="depositData.authorizationCode!=''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>
+                            <li ng-show="depositData.authorizationCode!==''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>
                             <li>Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}}</span>
                             </li>
                         </ul>
