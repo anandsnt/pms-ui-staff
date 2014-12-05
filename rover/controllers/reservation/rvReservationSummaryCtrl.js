@@ -641,7 +641,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.confirmReservation = function() {
-			console.log("confirm reservation");
 			var postData = $scope.computeReservationDataforUpdate(false, true);
 			postData.payment_type = {};
 			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
@@ -650,8 +649,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				}
 
 			});
-			console.log(JSON.stringify(postData));
-			if ($scope.reservationData.paymentType.type.value == 'CC') {
+			if($scope.reservationData.paymentType.type.value == 'CC'){
+
 				postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
 			}
 
@@ -663,12 +662,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
 				//creating reservation
-				console.log("update")
 				postData.reservationId = $scope.reservationData.reservationId;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
 			} else {
-				console.log("create")
-					//updating reservation
+				//updating reservation
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
 			}
 
