@@ -7,7 +7,11 @@ sntRover
 			type: 'room_type_name',
 			type_id: 'room_type_id',
 			row_children: 'occupancy',
-			status: 'room_status'
+			hk_status: 'room_status',
+			hk_status_map: {
+				'CLEAN': '',
+				'DIRTY': 'dirty',
+			}			
 		},
 		room_type: {
 			id: 'id'

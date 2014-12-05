@@ -49,7 +49,7 @@ var GridRow = React.createClass({
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: 		props.key,
-			className: 	'grid-row' + (_.isEmpty(props.data[room_meta.status]) ? '' : ' ' + props.data[room_meta.status])
+			className: 	'grid-row'
 		}, 
 		_.map(props.data[room_meta_children], function(occupancy) {
 			return GridRowItem({
