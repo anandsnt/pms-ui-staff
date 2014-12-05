@@ -35,6 +35,8 @@ var GridRow = React.createClass({
 			hourly_divs 		= [],
 			room_meta 			= props.meta.room,
 			room_meta_children 	= room_meta.row_children,
+			room_meta_inactive	= room_meta.inactive_slots,
+			room_inactives		= [],
 			self 				= this;
 
 		/*Create hourly spans across each grid row*/
@@ -46,6 +48,17 @@ var GridRow = React.createClass({
 				}
 			}));
 		}
+		
+		/** Creating in active slots */
+		_.each(props.data[room_meta_inactive], function(inactive_slot) {
+			room_inactives.push(GridRowInactive({
+				data: 			inactive_slot,
+				display: 		display,
+				viewport:    	props.viewport, 
+			}));
+		});
+
+
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: 		props.key,
@@ -60,7 +73,7 @@ var GridRow = React.createClass({
 				edit:           props.edit,
 				iscroll:        props.iscroll,
 				angular_evt: 	props.angular_evt,
-				meta:           props.meta,
+				meta:           props.meta,				
 				data: 			occupancy,
 				row_data:       props.data, 
 				row_offset: 	props.row_number * (display.row_height + display.row_height_margin),
@@ -69,6 +82,6 @@ var GridRow = React.createClass({
 				currentResizeItem: props.currentResizeItem,
 				currentResizeItemRow: props.currentResizeItemRow
 			});
-		}), hourly_divs); //GridRowBackground({ display: this.props.display })); //hourly_divs);
+		}), hourly_divs, room_inactives); //GridRowBackground({ display: this.props.display })); //hourly_divs);
 	}	
 });
