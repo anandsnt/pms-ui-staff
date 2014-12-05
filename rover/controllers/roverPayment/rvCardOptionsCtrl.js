@@ -23,6 +23,22 @@ sntRover.controller('RVCardOptionsCtrl',
 			var iFrame = document.getElementById('sixIframe');
 			iFrame.src = iFrame.src;
 		};
+		//Not a good method
+		//To fix the issue CICO-11440
+		//From diary screen create reservation guest data is available only after reaching the summary ctrl
+		//At that time iframe fname and lname is set as null or undefined since data not available
+		//here refreshing the iframe with name of guest
+		$scope.refreshIframeWithGuestData = function(guestData){
+			var time = new Date().getTime();
+			var firstName = guestData.fname;
+			var lastName = guestData.lname;
+			iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
+			var iFrame = document.getElementById('sixIframe');
+			iFrame.src = iFrameUrl;
+		};
+		$scope.$on("refreshIframe", function(e, guestData){
+			$scope.refreshIframeWithGuestData(guestData);
+		});
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
 		$scope.cardData = {};
@@ -59,8 +75,8 @@ sntRover.controller('RVCardOptionsCtrl',
 			if(!$scope.isFromGuestCard){
 				if($scope.shouldShowIframe){
 					$scope.showAddtoGuestCard = true;
+					$scope.refreshIframe();
 				} else {
-					
 					$scope.showAddtoGuestCard = false;
 				}
 			}

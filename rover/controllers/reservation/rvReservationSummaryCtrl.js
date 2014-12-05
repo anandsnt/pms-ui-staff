@@ -31,9 +31,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.passData = {
 			"details": {}
 		};
-
-		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
-		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+	console.log("---------------GUESTCARD DATA---------------------");	
+console.log($scope.reservationData);
+		$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
+		$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 		$scope.addmode = true;
 		$scope.showCC = false;
 		$scope.showAddtoGuestCard = true;
@@ -1058,6 +1059,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				successCallBackParameters: swipedCardDataToSave
 			};
 			$scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
+		});
+		
+		$scope.$on("resetGuestTab", function(e, data){
+			console.log("---------------resetGuestTab broad DATA---------------------");	
+			console.log($scope.reservationData);
+			var guestData = {
+				"fname": $scope.reservationData.guest.firstName,
+				"lname":  $scope.reservationData.guest.lastName
+			};
+			$scope.$broadcast("refreshIframe", guestData);
 		});
 
 		$scope.init();
