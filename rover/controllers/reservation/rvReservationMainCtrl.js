@@ -217,6 +217,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 }
             };
         };
+
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
             $scope.reservationDetails.guestCard.id = "";
@@ -225,6 +226,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationDetails.companyCard.futureReservations = 0;
             $scope.reservationDetails.travelAgent.id = "";
             $scope.reservationDetails.travelAgent.futureReservations = 0;
+
+            $scope.viewState = {
+                isAddNewCard: false,
+                pendingRemoval: {
+                    status: false,
+                    cardType: ""
+                },
+                identifier: "CREATION",
+                lastCardSlot: {
+                    cardType: ""
+                },
+                reservationStatus: {
+                    confirm: false,
+                    number: null
+                }
+            };
         };
 
 
@@ -810,6 +827,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.departureDate = reservationDetails.reservation_card.departure_date;
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
+            $scope.reservationData.isHourly = reservationDetails.reservation_card.is_hourly_reservation;
+
             /** CICO-6135
              *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
              */
@@ -879,6 +898,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             */
             $scope.reservationData.stayDays = [];
             $scope.reservationData.rooms[0].rateId = [];
+            $scope.reservationData.rooms[0].stayDates = {};
 
             $scope.reservationData.is_modified = false;
 
@@ -1498,6 +1518,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
 
             $scope.invokeApi(RVReservationSummarySrv.fetchInitialData, {}, fetchSuccess, fetchFailure);
+        }
+
+        $scope.resetAddons = function() {
+            angular.forEach($scope.reservationData.rooms, function(room) {
+                room.addons = []
+            });
         }
     }
 ]);

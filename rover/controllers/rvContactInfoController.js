@@ -1,5 +1,5 @@
-sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv',
-  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv) {
+sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams',
+  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams) {
 
     BaseCtrl.call(this, $scope);
 
@@ -8,7 +8,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
      * storing to check if data will be updated
      */
     var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-  //  presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+    //  presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
     $scope.errorMessage = "";
 
     $scope.$on('clearNotifications', function() {
@@ -16,12 +16,12 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
       $scope.$emit('contactInfoError', false);
     });
     //to reset current data in contcat info for determining any change
-     $scope.$on('RESETCONTACTINFO', function(event, data) {
+    $scope.$on('RESETCONTACTINFO', function(event, data) {
       presentContactInfo.address = data.address;
       presentContactInfo.phone = data.phone;
       presentContactInfo.email = data.email;
       presentContactInfo.first_name = data.first_name;
-      presentContactInfo.last_name =  data.last_name;
+      presentContactInfo.last_name = data.last_name;
     });
 
     $scope.saveContactInfo = function(newGuest) {
@@ -55,8 +55,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         var data = {
           'firstname': $scope.guestCardData.contactInfo.first_name,
           'lastname': $scope.guestCardData.contactInfo.last_name,
-          'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city 
-                    + ', '  + $scope.guestCardData.contactInfo.address.state: false,
+          'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city + ', ' + $scope.guestCardData.contactInfo.address.state : false,
           'vip': $scope.guestCardData.contactInfo.vip,
           'avatar': avatarImage
         };
@@ -76,14 +75,16 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
           if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
             $scope.viewState.pendingRemoval.status = false;
             $scope.viewState.pendingRemoval.cardType = "";
-            if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
+            if ($scope.reservationDetails.guestCard.futureReservations <= 0 || $stateParams.reservation == "HOURLY") {
               $scope.replaceCardCaller('guest', {
                 id: data.id
               }, false);
             } else {
-              $scope.checkFuture('guest', {
-                id: data.id
-              });
+              if ($stateParams.reservation != "HOURLY") {
+                $scope.checkFuture('guest', {
+                  id: data.id
+                });
+              }
             }
             // $scope.replaceCard('guest', {
             //   id: data.id

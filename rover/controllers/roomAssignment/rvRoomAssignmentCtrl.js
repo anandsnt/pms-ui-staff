@@ -343,6 +343,10 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.getRoomStatusClassForRoom = function(room){
+		console.log(room);
+		if(room.is_oos){
+			return "room-grey";
+		}
 
 		var reservationRoomStatusClass = "";
 		

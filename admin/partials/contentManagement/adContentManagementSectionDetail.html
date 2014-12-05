@@ -29,7 +29,8 @@
                     <div class="file-upload with-preview small-preview">
                         <span class="input">{{fileName}}</span>
                         <input type="file" ng-model="data.icon" accept="image/*" app-filereader name="section-image" id="section-image" />
-                        <button type="button" class="button brand-colors">Replace image</button>
+                        <button type="button" ng-if="data.icon != null && data.icon != ''" class="button brand-colors" translate>REPLACE_ICON_LABEL</button>
+                        <button type="button" ng-if="data.icon == null || data.icon == ''" class="button brand-colors" translate>ADD_ICON_LABEL</button>
                     </div>
                     <span class="file-preview small-preview">
                         <img src="{{data.icon}}" alt="" />
