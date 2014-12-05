@@ -24,7 +24,7 @@ sntRover
             inherit,
             gridTimeComponents;
 
-        gridTimeComponents = function(arrival_ms, display_total_hours, display, isVaultTime) {
+        gridTimeComponents = function(arrival_ms, display_total_hours, display) {
             var ret,
                 ms_per_day          = 43200000,
                 ms_per_hr           = 3600000,
