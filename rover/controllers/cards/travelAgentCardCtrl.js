@@ -1,5 +1,5 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter',
-	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter) {
+sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams',
+	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter, $stateParams) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
@@ -21,7 +21,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
 			}
-			
+
 			if (tabToSwitch == 'cc-ar-accounts') {
 				$scope.$broadcast("arAccountTabActive");
 			} else if (tabToSwitch == 'cc-contracts') {
@@ -202,14 +202,16 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 				if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
 					//if a new card has been added, reset the future count to zero
-					if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
+					if ($scope.reservationDetails.travelAgent.futureReservations <= 0 || $stateParams.reservation == "HOURLY") {
 						$scope.replaceCardCaller('travel_agent', {
 							id: data.id
 						}, false);
 					} else {
-						$scope.checkFuture('travel_agent', {
-							id: data.id
-						});
+						if ($stateParams.reservation != "HOURLY") {
+							$scope.checkFuture('travel_agent', {
+								id: data.id
+							});
+						}
 					}
 					$scope.reservationDetails.travelAgent.futureReservations = 0;
 					$scope.viewState.pendingRemoval.cardType = "";
@@ -283,12 +285,16 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 sntRover.controller('travelAgentResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
 		BaseCtrl.call(this, $scope);
-		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
-  		$scope.setScroller ('travelAgentResultScroll', scrollerOptionsForGraph);
+		var scrollerOptionsForGraph = {
+			scrollX: true,
+			click: true,
+			preventDefault: false
+		};
+		$scope.setScroller('travelAgentResultScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshTravelAgentScroll", function() {
 			$timeout(function() {
-				$scope.refreshScroller('travelAgentResultScroll');	
+				$scope.refreshScroller('travelAgentResultScroll');
 			}, 500);
 		});
 	}

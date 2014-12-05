@@ -12,7 +12,9 @@
 
             <div class="entry-data has-datepicker">
                 <label for="dashboard-date-from">From</label>
-                <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : 'dd MMMM yyyy'}}" value="{{fromDate}}"/>
+
+                
+                <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}"/>
                 <button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
             </div>
             <div class="entry-data has-datepicker">
@@ -20,7 +22,8 @@
                 <button id="dashboard-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(toDate) !=''}">
                     <span class="icons icon-clear-search" ng-click="toDate = ''; fetchSearchResults();">Clear query</span>
                 </button>
-                <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : 'dd MMMM yyyy'}}" value="{{toDate}}" readonly="" type="text"/>
+
+                <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : dateFormat}}" value="{{toDate| date : dateFormat}}" readonly="" type="text" />
                 <button ng-click="showCalendar('RVReservationSearchToDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
             </div>
         </div>
@@ -32,7 +35,7 @@
 	    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
 	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
 	</div>
-	<section id="dashboard-search" class="content scrollable" ng-class="{'no-pagination': !(totalSearchResults > searchPerPage && results.length > 0)}"role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
+	<section id="dashboard-search" class="content scrollable" ng-class="{'no-pagination': (totalSearchResults < searchPerPage && results.length > 0), 'no-results' : results.length == 0}" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
@@ -71,6 +74,7 @@
 	                            
 	                            <time datetime="{arrival or departure timestamp}">
 	                            	<span ng-if ="(row.reservation_status == 'RESERVED'||row.reservation_status == 'CHECKING_IN')">
+
 		                                <span>{{row.arrival_date| date : dateFormat}}</span>
 		                                <!-- TODO: Date formating for arrival/departure time -->
 		                                <span>{{getTimeConverted(row.arrival_time)}}</span>
@@ -79,8 +83,8 @@
 		                            <span ng-if ="(row.reservation_status == 'CHECKEDIN'||row.reservation_status == 'CHECKING_OUT')">
 		                            	
 		                                <span>{{row.departure_date| date : dateFormat}}</span>
-		                                <span ng-hide="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true">{{getTimeConverted(row.departure_time)}}</span>
-		                                <span ng-show="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true">{{getTimeConverted(row.late_checkout_time)}}</span>
+		                                <span ng-hide="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{getTimeConverted(row.departure_time)}}</span>
+		                                <span ng-show="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{getTimeConverted(row.late_checkout_time)}}</span>
 		                            </span>
 
 	                            </time> 
@@ -89,8 +93,7 @@
 	                        <div class="room-info">
 								<!-- Confirm the logic of READY and NOT-READY -->
 	                        	<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
-	                        		<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
-	                        			{{row.room}}
+	                        		<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" ng-bind-html="escapeNull(row.room)|highlight:textInQueryBox:false">
 	                        		</span>			
 	                        	</span>
 

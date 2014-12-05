@@ -204,6 +204,17 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			});
 			return deferred.promise;
 		};
+		 this.fetchDepositDetails = function(id) {
+            var deferred = $q.defer();
+            var url = 'api/reservations/'+id+'/deposit_policy';
+           //var url = '/sample_json/reservations/res_deposit.json';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
 	}
 ]);

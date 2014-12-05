@@ -116,8 +116,12 @@ var DiaryContent = React.createClass({
     	}.bind(this), 10, { leading: false, trailing: true }));
 
         setTimeout(function() {
-            self.state.iscroll.grid.scrollTo(-(self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms, 0, 0, 1000);
-            self.state.iscroll.timeline.scrollTo(-(self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms, 0, 0, 1000);
+        	var scrollToPos = (self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms;
+        	if(scrollToPos < 0) {
+        		scrollToPos = 0;
+        	}
+            self.state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
+            self.state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
             self.state.angular_evt.onScrollEnd(Math.abs(self.state.iscroll.grid.x) / self.state.display.px_per_ms + self.state.display.x_n);
             self.state.angular_evt.completedRendering.apply(self, Array.prototype.slice.call(arguments));
         }, 1000);
@@ -140,8 +144,8 @@ var DiaryContent = React.createClass({
     	}
   	},
   	componentWillReceiveProps: function(nextProps) {
-  		
-  		var hops = Object.prototype.hasOwnProperty;
+  		var hops = Object.prototype.hasOwnProperty,
+  			self = this;
   		/*if(this.props.viewport !== nextProps.viewport ||
   		   this.props.display !== nextProps.display ||
   		   this.props.filter !== nextProps.filter ||
@@ -154,6 +158,11 @@ var DiaryContent = React.createClass({
   				edit: nextProps.edit
   			});
   		}*/
+		if(hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
+  			this.setState({
+  				stats: nextProps.stats
+  			});
+  		}
 
   		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
@@ -164,19 +173,20 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
   			this.setState({
   				display: nextProps.display
-  			});
+  			});  			  			
   		}
 
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter
-  			});
+  			});			
   		}
 
-  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {
+  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {  
+  				
   			this.setState({
   				edit: nextProps.edit
-  			});
+  			});  			
   		}
   	},
 	getInitialState: function() {
@@ -215,8 +225,9 @@ var DiaryContent = React.createClass({
 							iscroll: {
 				  				timeline: undefined,
 				  				rooms: undefined,
-				  				grid: undefined
-				  			}
+				  				grid: undefined,				  				
+				  			},
+				  			stats: props.stats
 						};
 		
 		display.width 				= display.hours / viewport.hours * viewport.width;
