@@ -66,7 +66,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // strip $scope.fullCheckinTime to generate hh, mm, ampm
         // map $scope.fullCheckinTime to $scope.reservationData.checkinTime
         $scope.mapToCheckinTime = function() {
-            if ( !$scope.isNightsActive ) {
                 // strip 'fullCheckinTime' to generate hh, mm, ampm
                 var ampm = $scope.fullCheckinTime.split(' ')[1];
                 var time = $scope.fullCheckinTime.split(' ')[0];
@@ -79,7 +78,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.checkinTime.ampm = ampm || '';
 
                 $scope.setDepartureHours();
-            }
         };
 
 
