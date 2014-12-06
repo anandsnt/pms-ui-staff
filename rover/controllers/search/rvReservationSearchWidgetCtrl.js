@@ -720,7 +720,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 		$scope.showCalendar = function(controller) {
-			$scope.focusOnSearchText();
+			$scope.$emit("showSearchResultsArea", true);
 			$scope.focusSearchField = true;
 		    ngDialog.open({
 		        template: '/assets/partials/search/rvDatePickerPopup.html',
