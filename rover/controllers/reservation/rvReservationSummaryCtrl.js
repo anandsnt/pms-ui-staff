@@ -66,6 +66,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 		};
 
+		$scope.$on("UPDATEFEE",$scope.calculateFee);
+
 		// CICO-9457 : Data for fees details.
 
 		$scope.setupFeeData = function() {
@@ -345,7 +347,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			$scope.data = {};
-			
+
 			$scope.cards = {
 				available: false,
 				activeView: "NEW"
@@ -428,34 +430,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		var ratesFetched = function(data) {
 			$scope.otherData.taxesMeta = data.tax_codes;
+			$scope.otherData.hourlyTaxInfo = data.tax_information;
 			$scope.reservationData.totalTax = 0;
-			_.each($scope.reservationData.rooms, function(room, roomNumber) {
-				var taxes = _.where(data.tax_information, {
-					rate_id: parseInt(room.rateId)
-				});
-
-				/**
-				 * Need to calculate taxes IIF the taxes are configured for the rate selected for the room (as there could be more than one room for multiple reservations)
-				 */
-
-				if (taxes.length > 0) {
-					/**
-					 * Calculating taxApplied just for the arrival date, as this being the case for hourly reservations.
-					 */
-					var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes[0].tax, roomNumber);
-					_.each(taxApplied.taxDescription, function(description, index) {
-						if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
-							$scope.reservationData.taxDetails[description.id] = description;
-						} else {
-							$scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
-						}
-					});
-					$scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
-					$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
-
-				}
-			});
-
+			$scope.computeHourlyTotalandTaxes();
+			
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.$emit('PROMPTCARD');
 				$scope.$watch("reservationData.guest.id", save);
@@ -577,6 +555,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					}
 					refreshScrolls();
 				};
+				var roomAmount = parseFloat(room.amount).toFixed(2);
 				$scope.invokeApi(RVReservationSummarySrv.getRateDetails, {
 					id: room.rateId
 				}, success);
@@ -592,8 +571,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 							id: room.rateId
 						},
 						rateDetails: {
-							actual_amount: room.amount,
-							modified_amount: room.amount,
+							actual_amount: roomAmount,
+							modified_amount: roomAmount,
 							is_discount_allowed: 'true'
 						}
 					};
@@ -826,7 +805,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				var stateParams = {
 					id: $scope.reservationData.reservationId,
 					confirmationId: $scope.reservationData.confirmNum,
-					isrefresh: false
+					isrefresh: false,
+					justCreatedRes: true
 				};
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 			} else {

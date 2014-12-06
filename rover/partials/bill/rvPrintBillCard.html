@@ -77,7 +77,7 @@
                 <td>{{currencySymbol}}{{printData.net_amount}}</td>
             </tr>
            
-            <tr ng-repeat="item in printData.charge_details_list" ng-show="item.is_tax">
+            <tr ng-repeat="item in printData.tax_details">
                 <td colspan="3"> 
                     {{item.description}}
                 </td>

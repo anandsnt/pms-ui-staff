@@ -139,8 +139,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.creditCardTypes = [];
 	
 		var openDepositPopup = function(){
-
-			if($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN"){
+			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN") && !$scope.reservationData.justCreatedRes){
 				var feeDetails = (typeof $scope.depositDetails.attached_card ==="undefined") ? {}: $scope.depositDetails.attached_card.fees_information;
 				var passData = {
 							 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -358,7 +357,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
-		var promptCancel = function(penalty, nights) {
+		var promptCancel = function(penalty, nights , isPercent) {
 			
 			var passData = {
 			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -382,7 +381,11 @@ sntRover.controller('reservationActionsController', [
 					penaltyText: (function() {
 						if (nights) {
 							return penalty + (penalty > 1 ? " nights" : " night");
-						} else {
+						}
+						else if(isPercent){
+							return penalty + " %";
+						}
+						else {
 							return $rootScope.currencySymbol + $filter('number')(penalty, 2);
 						}
 					})()
@@ -443,14 +446,16 @@ sntRover.controller('reservationActionsController', [
 							// Make sure that the cancellation value is -lte thatn the total duration
 							cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
 							nights = true;
-						} else {
+						}
+						else {
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
+
 						if(parseInt(depositAmount) > 0){
 							showDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
 						}
 						else{
-							promptCancel(cancellationCharge, nights);
+							promptCancel(cancellationCharge, nights, (data.results.penalty_type == 'percent'));
 						};
 					}
 					else{
@@ -458,7 +463,7 @@ sntRover.controller('reservationActionsController', [
 							showDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
 						}
 						else{
-							promptCancel('', nights);
+							promptCancel('', nights, (data.results.penalty_type == 'percent'));
 						};
 					}
 					//promptCancel(cancellationCharge, nights);
