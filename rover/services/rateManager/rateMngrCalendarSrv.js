@@ -197,7 +197,10 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   		rr["double"] = rate["double"];
 		   		rr.extra_adult = rate.extra_adult;
 		   		rr.child = rate.child;
-
+		   		// ( CICO-9555 
+		   		rr.isHourly	= rate.is_hourly;
+		   		rr.nightly	= rate.nightly_rate;
+		   		// CICO-9555 )
 		   		rateData[item.date] = rr;
 		   	}
 
@@ -332,6 +335,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		var restriction_type_updated = {};
 		//TODO: Add UI condition checks using "restrVal"
 		restriction_type_updated.icon = "";
+		//(CICO-9555
+		restriction_type_updated.hideOnHourly = false;
+		//CICO-9555)		
 		if('CLOSED' == restriction_type.value) {
 			restriction_type_updated.icon = "icon-cross";
 		} 
@@ -344,12 +350,17 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		}
 		if('MIN_STAY_LENGTH' == restriction_type.value) {
 			restriction_type_updated.background_class = "bg-blue";
-		} 
+			restriction_type_updated.hideOnHourly = true; // CICO-9555
+		}
+		if('MAX_STAY_LENGTH' == restriction_type.value) {
+			restriction_type_updated.hideOnHourly = true; // CICO-9555
+		}
 		if('MIN_ADV_BOOKING' == restriction_type.value) {
 			restriction_type_updated.background_class = "bg-green";
 		}
 		if('MIN_STAY_THROUGH' == restriction_type.value) {
 			restriction_type_updated.background_class = "bg-violet";
+			restriction_type_updated.hideOnHourly = true; // CICO-9555
 		}
 		restriction_type_updated.id = restriction_type.id;
 		restriction_type_updated.description = restriction_type.description;

@@ -64,8 +64,10 @@
 					<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
 						<div>
 							<span class="left rate-single">
-								<span ng-if ="rate[date].single === null">{{rate[date].single}}</span>
-								<span ng-if ="rate[date].single !== null">{{rate[date].single | number : 2}}</span>
+								<span ng-if ="!rate[date].isHourly && rate[date].single === null">{{rate[date].single}}</span>
+								<span ng-if ="!rate[date].isHourly && rate[date].single !== null">{{rate[date].single | number : 2}}</span>
+								<span ng-if ="!rate[date].isHourly && rate[date].nightly === null">{{rate[date].nightly}}</span>
+								<span ng-if ="rate[date].isHourly && rate[date].nightly !== null">{{rate[date].nightly | number : 2}}</span>
 							</span>
 							<div class="limit-width">
 								<span ng-repeat="restriction in rate[date].restrictions track by $index" 								  
