@@ -223,7 +223,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		var cardNumber = retrieveCardNumber();
 		var cardExpiry = retrieveExpiryDate();
 		var dataToGuestList = {
-			"card_code": creditCardType,
+			"card_code": cardCode,
 			"mli_token": cardNumber,
 			"card_expiry":cardExpiry,
 			"card_name": retrieveCardName(),
@@ -270,9 +270,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
 	var ccSaveSuccess = function(data){
+		
 		$scope.$emit("hideLoader");
 		if(isNewCardAdded){
-			if($scope.savePayment.addToGuest){
+			console.log("ccSave success isNewCardAdded");
+			if($scope.cardData.addToGuestCard){
+					console.log("addToGuestCard isNewCardAdded");
 				addToGuestCard(data);
 			};
 			(typeof $scope.passData.fromBill == "undefined")?saveNewCardSuccess(data):billScreenCCSaveActions(data);

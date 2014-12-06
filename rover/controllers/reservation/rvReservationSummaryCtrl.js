@@ -31,8 +31,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.passData = {
 			"details": {}
 		};
-	console.log("---------------GUESTCARD DATA---------------------");	
-console.log($scope.reservationData);
+
 		$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
 		$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 		$scope.addmode = true;
@@ -66,6 +65,8 @@ console.log($scope.reservationData);
 				}
 			}
 		};
+
+		$scope.$on("UPDATEFEE",$scope.calculateFee);
 
 		// CICO-9457 : Data for fees details.
 
@@ -346,7 +347,7 @@ console.log($scope.reservationData);
 			}
 
 			$scope.data = {};
-			
+
 			$scope.cards = {
 				available: false,
 				activeView: "NEW"
@@ -429,34 +430,10 @@ console.log($scope.reservationData);
 
 		var ratesFetched = function(data) {
 			$scope.otherData.taxesMeta = data.tax_codes;
+			$scope.otherData.hourlyTaxInfo = data.tax_information;
 			$scope.reservationData.totalTax = 0;
-			_.each($scope.reservationData.rooms, function(room, roomNumber) {
-				var taxes = _.where(data.tax_information, {
-					rate_id: parseInt(room.rateId)
-				});
-
-				/**
-				 * Need to calculate taxes IIF the taxes are configured for the rate selected for the room (as there could be more than one room for multiple reservations)
-				 */
-
-				if (taxes.length > 0) {
-					/**
-					 * Calculating taxApplied just for the arrival date, as this being the case for hourly reservations.
-					 */
-					var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes[0].tax, roomNumber);
-					_.each(taxApplied.taxDescription, function(description, index) {
-						if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
-							$scope.reservationData.taxDetails[description.id] = description;
-						} else {
-							$scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
-						}
-					});
-					$scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
-					$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
-
-				}
-			});
-
+			$scope.computeHourlyTotalandTaxes();
+			
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
 				$scope.$emit('PROMPTCARD');
 				$scope.$watch("reservationData.guest.id", save);
@@ -578,6 +555,7 @@ console.log($scope.reservationData);
 					}
 					refreshScrolls();
 				};
+				var roomAmount = parseFloat(room.amount).toFixed(2);
 				$scope.invokeApi(RVReservationSummarySrv.getRateDetails, {
 					id: room.rateId
 				}, success);
@@ -593,8 +571,8 @@ console.log($scope.reservationData);
 							id: room.rateId
 						},
 						rateDetails: {
-							actual_amount: room.amount,
-							modified_amount: room.amount,
+							actual_amount: roomAmount,
+							modified_amount: roomAmount,
 							is_discount_allowed: 'true'
 						}
 					};
@@ -1062,14 +1040,18 @@ console.log($scope.reservationData);
 			};
 			$scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
 		});
-		
+		//To fix the issue CICO-11440
+		//From diary screen create reservation guest data is available only after reaching the summary ctrl
+		//At that time iframe fname and lname is set as null or undefined since data not available
+		//here refreshing the iframe with name of guest
 		$scope.$on("resetGuestTab", function(e, data){
-			console.log("---------------resetGuestTab broad DATA---------------------");	
-			console.log($scope.reservationData);
 			var guestData = {
 				"fname": $scope.reservationData.guest.firstName,
 				"lname":  $scope.reservationData.guest.lastName
 			};
+			//CICO-11413 - Since card name is taken from pass data.
+			$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
+			$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 			$scope.$broadcast("refreshIframe", guestData);
 		});
 

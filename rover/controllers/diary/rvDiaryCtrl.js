@@ -35,6 +35,34 @@ sntRover
 	$scope.reservationData = {};
 	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
+
+
+	// data for next state
+	$rootScope.setNextState = {
+		data: {
+			'isFromDiary' : true,
+			'useCache'    : true
+		}
+	}
+
+	// set a back button
+	if ( $rootScope.diaryState.useOriginal($rootScope.getPrevStateTitle()) ) {
+		var goToThisPrev = $rootScope.diaryState.getOriginState();
+		$rootScope.setPrevState = {
+			title : goToThisPrev.title,
+			name  : goToThisPrev.name,
+			param : goToThisPrev.param
+		}
+	} else {
+		$rootScope.setPrevState = {
+			title: $rootScope.getPrevStateTitle()
+		}
+	};
+
+	// from Dashboard    rover.dashboard.manager
+	// from Reservation  rover.reservation.search
+
+
 	/*--------------------------------------------------*/
 	/*BEGIN CONFIGURATION 
 	/*--------------------------------------------------*/
@@ -200,7 +228,7 @@ sntRover
 		    rate:                        undefined,
 	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
-		    show_all_rooms: 			'on',
+		    show_all_rooms: 			'off',
 		    toggleHoursDays: function() {
 	    		this.reservation_format = (this.reservation_format === 'h') ? 'd' : 'h';
 
@@ -237,7 +265,7 @@ sntRover
 				$scope.gridProps.display.px_per_int 	    = $scope.gridProps.display.px_per_hr / $scope.gridProps.display.intervals_per_hour;
 				$scope.gridProps.display.px_per_ms 			= $scope.gridProps.display.px_per_int / $scope.gridProps.display.ms_15;
 
-				 $scope.renderGrid();
+				$scope.renderGrid();
 			}
 		}
 	};
@@ -495,11 +523,11 @@ sntRover
 	    $scope.toggleRows = function(state, current_scroll_pos) {
 	    	$scope.gridProps.filter.show_all_rooms = state; //(state === 'on');
 
-	    	if($scope.gridProps.filter.show_all_rooms === 'on') {
+	    	/*if($scope.gridProps.filter.show_all_rooms === 'on') {
 	    		util.clearRowClasses($scope.gridProps.data);
 	    	} else {
 	    		updateRowClasses(current_scroll_pos);
-			}
+			}*/
 
 	    	$scope.renderGrid();
 	    };
@@ -1063,7 +1091,7 @@ sntRover
 	}
 
 	$scope.eventAfterRendering = function(){
-		$scope.$apply(function(){
+		$scope.$apply(function(){			
 			$scope.$emit('hideLoader');
 			$scope.resetEdit();
 		});
