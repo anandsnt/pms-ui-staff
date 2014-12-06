@@ -35,6 +35,34 @@ sntRover
 	$scope.reservationData = {};
 	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
+
+
+	// data for next state
+	$rootScope.setNextState = {
+		data: {
+			'isFromDiary' : true,
+			'useCache'    : true
+		}
+	}
+
+	// set a back button
+	if ( $rootScope.diaryState.useOriginal($rootScope.getPrevStateTitle()) ) {
+		var goToThisPrev = $rootScope.diaryState.getOriginState();
+		$rootScope.setPrevState = {
+			title : goToThisPrev.title,
+			name  : goToThisPrev.name,
+			param : goToThisPrev.param
+		}
+	} else {
+		$rootScope.setPrevState = {
+			title: $rootScope.getPrevStateTitle()
+		}
+	};
+
+	// from Dashboard    rover.dashboard.manager
+	// from Reservation  rover.reservation.search
+
+
 	/*--------------------------------------------------*/
 	/*BEGIN CONFIGURATION 
 	/*--------------------------------------------------*/
@@ -54,6 +82,10 @@ sntRover
 	    $scope.selectedReservations = [];
 
 	    var number_of_items_resetted = 0;
+
+	    console.log(payload.filter.arrival_time);
+	    // payload.filter.arrival_time = "6:45";
+
 		$scope.gridProps = {
 			/* Meta data object - allows us to use a single point of reference for various object properties.
 		       If a property name expected changes, update it here so it will propagate throughout the application.
@@ -200,7 +232,7 @@ sntRover
 		    rate:                        undefined,
 	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
-		    show_all_rooms: 			'on',
+		    show_all_rooms: 			'off',
 		    toggleHoursDays: function() {
 	    		this.reservation_format = (this.reservation_format === 'h') ? 'd' : 'h';
 
@@ -237,7 +269,7 @@ sntRover
 				$scope.gridProps.display.px_per_int 	    = $scope.gridProps.display.px_per_hr / $scope.gridProps.display.intervals_per_hour;
 				$scope.gridProps.display.px_per_ms 			= $scope.gridProps.display.px_per_int / $scope.gridProps.display.ms_15;
 
-				 $scope.renderGrid();
+				$scope.renderGrid();
 			}
 		}
 	};
@@ -495,11 +527,11 @@ sntRover
 	    $scope.toggleRows = function(state, current_scroll_pos) {
 	    	$scope.gridProps.filter.show_all_rooms = state; //(state === 'on');
 
-	    	if($scope.gridProps.filter.show_all_rooms === 'on') {
+	    	/*if($scope.gridProps.filter.show_all_rooms === 'on') {
 	    		util.clearRowClasses($scope.gridProps.data);
 	    	} else {
 	    		updateRowClasses(current_scroll_pos);
-			}
+			}*/
 
 	    	$scope.renderGrid();
 	    };
@@ -799,13 +831,16 @@ sntRover
 	var getAvailabilityCallingParams = function() {
 		var filter 		= _.extend({}, this.filter),
 			time_span 	= Time({ hours: this.display.min_hours }), 
-			start_date 	= new Date(this.display.x_n), 
-			start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
+			start_date 	= new Date(this.display.x_n),
+			getIndex    = filter.arrival_times.indexOf(filter.arrival_time),
+			// correction  = getIndex % 4 != 0 ? 900000 : 0,
+			correction  = 0,
+			start_time 	= new Date((getIndex * 900000) - correction + start_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
 							 start_time.hours,
-							 start_time.minutes, 
+							 start_time.minutes,
 							 0, 0),
 			end = new Date(start.getFullYear(),
 						   start.getMonth(),
@@ -880,8 +915,8 @@ sntRover
 			$scope.gridProps.filter.arrival_time = "00:00";
 			$scope.gridProps.filter.room_type = "";
 			number_of_items_resetted = 0;
-			
-			//$scope.clearAvailability();
+			$scope.clearAvailability();
+			$scope.resetEdit();
 			$scope.renderGrid();	
 			$scope.$emit('hideLoader');						
 					
@@ -1062,7 +1097,6 @@ sntRover
 		}						
 	}
 
-
 	var correctRoomType = function() {
 		if ( !$scope.gridProps.filter.room_type ) {
 			var data,
@@ -1105,7 +1139,5 @@ sntRover
 		setTimeout(function(){
 			switchToEditModeIfPassed();
 		}, 1000);
-	}
-
-	
+	};	
 }]);

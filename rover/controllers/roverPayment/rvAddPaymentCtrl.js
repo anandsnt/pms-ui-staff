@@ -124,6 +124,13 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		return cardName;
 	};
 
+	var retrieveCardExpiryForApi =  function(){
+		var expiryMonth = $scope.cardData.tokenDetails.isSixPayment ? $scope.cardData.tokenDetails.expiry.substring(2, 4) :$scope.cardData.cardDetails.expiryMonth;
+		var expiryYear  = $scope.cardData.tokenDetails.isSixPayment ? $scope.cardData.tokenDetails.expiry.substring(0, 2) :$scope.cardData.cardDetails.expiryYear;
+		var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
+		return expiryDate;
+	};
+
 	var renderScreen = function(){
 		$scope.showCCPage = false;
 		$scope.showSelectedCreditCard  = true;
@@ -216,10 +223,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		var cardNumber = retrieveCardNumber();
 		var cardExpiry = retrieveExpiryDate();
 		var dataToGuestList = {
-			"card_code": creditCardType,
+			"card_code": cardCode,
 			"mli_token": cardNumber,
 			"card_expiry":cardExpiry,
-			"card_name": '',
+			"card_name": retrieveCardName(),
 			"id": data.id,
 			"isSelected": true,
 			"is_primary":false,
@@ -263,9 +270,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
 	var ccSaveSuccess = function(data){
+		
 		$scope.$emit("hideLoader");
 		if(isNewCardAdded){
-			if($scope.savePayment.addToGuest){
+			console.log("ccSave success isNewCardAdded");
+			if($scope.cardData.addToGuestCard){
+					console.log("addToGuestCard isNewCardAdded");
 				addToGuestCard(data);
 			};
 			(typeof $scope.passData.fromBill == "undefined")?saveNewCardSuccess(data):billScreenCCSaveActions(data);
@@ -305,8 +315,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 								$scope.cardData.tokenDetails.session :
 								$scope.cardData.tokenDetails.token_no;
 				data.add_to_guest_card = $scope.cardData.cardDetails.addToGuestCard;
-				data.card_name = retrieveCardName()
-
+				data.card_name = retrieveCardName();
 			}
 			else{
 				creditCardType = $scope.renderData.creditCardType;
@@ -320,14 +329,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 				data.add_to_guest_card = true;
 				data.card_code =  retrieveCardtype();
 				data.user_id = $scope.passData.guest_id;
-				data.card_expiry = 	$scope.cardData.tokenDetails.isSixPayment ?'' :
-				($scope.cardData.cardDetails.expiryMonth && $scope.cardData.cardDetails.expiryYear ? "20" + $scope.cardData.cardDetails.expiryYear + "-" + $scope.cardData.cardDetails.expiryMonth + "-01" : "");
+				data.card_expiry = 	retrieveCardExpiryForApi();
 				$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveCCToGuestCardSuccess);
 			}
 			else{
 				if(isNewCardAdded){	
-					data.card_expiry = 	$scope.cardData.tokenDetails.isSixPayment ?'' :
-						($scope.cardData.cardDetails.expiryMonth && $scope.cardData.cardDetails.expiryYear ? "20" + $scope.cardData.cardDetails.expiryYear + "-" + $scope.cardData.cardDetails.expiryMonth + "-01" : "");	
+					data.card_expiry = 	retrieveCardExpiryForApi();
 					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
 				} else {
 					$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, ccSaveSuccess);  

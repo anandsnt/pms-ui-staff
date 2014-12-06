@@ -310,7 +310,9 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return params;
                 }
 
-                /* ROOM Configuration Adapter */
+                /* ROOM Configuration Adapter 
+                Config(config, param_cfg, index_cfg, group_cfg, dataStore, normalizationFn, mergeFn)
+                */
                 var Room = Config({
                     id:         meta.room.id,
                     name:       'room',                       
@@ -323,7 +325,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 ['id', 'room_no'],
                 ['room_type_id'],
                 this.data_Store,
-                function(room) {
+                function(room) {  
+                    
                     var room_type_id = room.room_type_id,
                         room_type = this.dataStore.get('_room_type.values.id')[room_type_id],
                         maintenance = this.dataStore.get('_maintenance.values.room_type_id')[room_type_id];
@@ -332,8 +335,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room_type[meta.maintenance.time_span] = maintenance[meta.maintenance.time_span];
                     }
                     room.room_type = room_type;
-                    room.occupancy = [];
-
+                    room.occupancy = [];                        
+                    room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
                     return room;
                 }),
 

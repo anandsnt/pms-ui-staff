@@ -42,12 +42,12 @@
     {{printData.custom_text_header}}
 </div>
 <div class="invoice-body">
-    <p class="date"><strong translate>INVOICE_DATE</strong>{{printData.invoice_date}}</p>
+    <p class="date"><strong translate>INVOICE_DATE</strong>{{printData.invoice_date | date:dateFormat}}</p>
     <table class="invoice-details">
         <caption>
             {{printData.hotel_name}}
             <span ng-if="printData.show_hotel_address">
-                {{printData.hotel_address}}
+               {{printData.street}}&nbsp;&#9830;&nbsp;{{printData.city}},&nbsp;{{printData.state}}&nbsp; {{printData.zipcode}}&nbsp;&#9830;&nbsp;{{printData.country}}
             </span>
         </caption>
         <thead>
@@ -77,7 +77,7 @@
                 <td>{{currencySymbol}}{{printData.net_amount}}</td>
             </tr>
            
-            <tr ng-repeat="item in printData.charge_details_list" ng-show="item.is_tax">
+            <tr ng-repeat="item in printData.tax_details">
                 <td colspan="3"> 
                     {{item.description}}
                 </td>

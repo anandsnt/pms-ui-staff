@@ -191,5 +191,16 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 			});
 		};
 
+		/**
+		* In upgrades we would display rooms Inspected & vacant(color - green) or outof service (grey). 
+		*/ 
+		$scope.getRoomStatusClass = function(room){
+			var statusClass = "ready";
+			if(room.is_oos == "true"){
+				return "room-grey";
+			}
+			return statusClass;
+		}
+
 	}
 ]);

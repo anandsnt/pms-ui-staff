@@ -305,7 +305,8 @@
 	"CREATE_WS" : "Create Work Sheet",
 	"EMPLOYEE_NAME": "Employee name",
 	"SELECT_EMPLOYEE" : "Select Employee",
-	"MAID" : "Maid",
+	"MAID" : "Employee",
+	"EMP"  : "Employee",
 	"UNASSIGNED" : "Unassigned",
 	"ALL_UNASSIGNED" : "All unassigned",
 	"ALL_FLOORS" : "All floors",
@@ -542,7 +543,9 @@
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
-    "START_PAYMENT_PROCESS": "Start Payment Process"
+    "START_PAYMENT_PROCESS": "Start Payment Process",
+    "APPLY_CUSTOMRATE" : "Apply Custom Rate",
+    "MODIFY_CUSTOMRATE" : "Modify Custom Rate"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
@@ -805,6 +808,7 @@
     "BALANCE":"Balance",
     "NET_AMOUNT":"Net Amount",
     "TOTAL_INCL_TAX":"Total Incl Tax",
-    "UPDATE":"Update"
+    "UPDATE":"Update",
+    "NOT_DEFINED": "Not Defined"
 
 }
