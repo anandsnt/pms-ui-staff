@@ -1487,6 +1487,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var updateSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.deposit_amount;
+                    $scope.$broadcast('UPDATEFEE');
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
                     if (nextState) {
@@ -1530,6 +1531,42 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.resetAddons = function() {
             angular.forEach($scope.reservationData.rooms, function(room) {
                 room.addons = []
+            });
+        }
+
+        $scope.computeHourlyTotalandTaxes = function() {            
+            $scope.reservationData.totalStayCost = 0.0;
+            $scope.reservationData.totalTax = 0.0;
+            $scope.reservationData.taxDetails = {};
+            _.each($scope.reservationData.rooms, function(room, roomNumber) {
+                var taxes = $scope.otherData.hourlyTaxInfo[0];
+                room.amount = 0.0;
+                _.each(room.stayDates, function(stayDate) {
+                    stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
+                    if (isNaN(stayDate.rateDetails.modified_amount)) {
+                        stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+                    }
+                    room.amount = parseFloat(room.amount) + parseFloat(stayDate.rateDetails.modified_amount);
+
+                });
+                room.rateTotal = room.amount;
+                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal);
+
+                if (taxes) {
+                    /**
+                     * Calculating taxApplied just for the arrival date, as this being the case for hourly reservations.
+                     */
+                    var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes.tax, roomNumber);
+                    _.each(taxApplied.taxDescription, function(description, index) {
+                        if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+                            $scope.reservationData.taxDetails[description.id] = description;
+                        } else {
+                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
+                        }
+                    });
+                    $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+                    $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
+                }
             });
         }
     }
