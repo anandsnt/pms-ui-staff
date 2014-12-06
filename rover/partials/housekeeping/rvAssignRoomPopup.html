@@ -7,7 +7,9 @@
 			<span class="h2 message">Assign Room</span>		
 			<div class="entry full-width">
 				<div class="select">
-            		<select id="work-type" name="work-type" ng-model="assignRoom.work_type_id" ng-options="work.id as work.name for work in workTypes" ng-change="assignRoomWorkTypeChanged()"></select>
+            		<select id="work-type" name="work-type" ng-model="assignRoom.work_type_id" ng-options="work.id as work.name for work in workTypes" ng-change="assignRoomWorkTypeChanged()">
+            			<option value="">Select Worktype</option>
+            		</select>
 				</div>
 			</div>
 			<div class="entry full-width">
