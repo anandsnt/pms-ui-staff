@@ -29,7 +29,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name == "rover.search");
 		//Date picker from date should default to current business date - CICO-8490
-		$scope.fromDate = $rootScope.businessDate;
+		$scope.fromDate = RVSearchSrv.fromDate == undefined? $rootScope.businessDate : RVSearchSrv.fromDate;
+		$scope.toDate = RVSearchSrv.toDate == undefined? "" : RVSearchSrv.toDate;
+		
 		RVSearchSrv.fromDate = $rootScope.businessDate;
 
 		$scope.start = 1;
