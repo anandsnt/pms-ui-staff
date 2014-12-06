@@ -11208,6 +11208,19 @@
                                         }
                                     }
 
+                                    &.oos {
+                                        .gradient(@greyStart, @greyEnd);
+
+                                        &:after,
+                                        &:before  {
+                                            background-image: asset-url("out_of_service_icon.svg");
+                                        }
+                                    }
+                                   
+
+                                    &.ooo {
+                                        .gradient(@greyStart, @greyStart);
+                                    }
                                     &.check-in {
                                         .gradient(@greenStart, @greenEnd);
                                         

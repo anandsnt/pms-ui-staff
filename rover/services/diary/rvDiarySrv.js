@@ -310,10 +310,26 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return params;
                 }
 
+                /**
+                *
+                */
+                var InActiveRoomSlots = Config({
+                    id:         meta.inactive_rooms.id,
+                    name:       'inactiveroom',                       
+                    url:        'api/room_services/inactive_rooms',
+                    key_prefix: 'iar-',
+                    namespace:  'inactive_rooms',
+                    cache:      true
+                }, 
+                ['from_date', 'to_date'], 
+                undefined,
+                ['inactive_room_id'],
+                this.data_Store),
+
                 /* ROOM Configuration Adapter 
                 Config(config, param_cfg, index_cfg, group_cfg, dataStore, normalizationFn, mergeFn)
                 */
-                var Room = Config({
+                Room = Config({
                     id:         meta.room.id,
                     name:       'room',                       
                     url:        'api/rooms',
@@ -335,7 +351,34 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room_type[meta.maintenance.time_span] = maintenance[meta.maintenance.time_span];
                     }
                     room.room_type = room_type;
-                    room.occupancy = [];                        
+                    room.occupancy = [];                      
+                    room.room_inactive_slots = [];  
+
+                    var inactiveRooms   = (this.dataStore.get('inactiveroom')),
+                        i               = 0,
+                        startTime       = null,
+                        endTime         = null,
+                        time            = null,
+                        matchedRooms    = [];
+
+
+                    _.each(inactiveRooms, function(value, key) {
+
+                        _.each(value, function(eachRoom){
+
+                            time = util.gridTimeComponents(new Date(key), 24);
+                            if(eachRoom.room_id == room.id) {
+                                startTime = time.toShijuBugStartDate(0);
+                                endTime   = time.toShijuBugEndDate(0);
+                                room.room_inactive_slots.push({
+                                    'startTime': startTime,
+                                    'endTime'  : endTime,
+                                    'status'   : eachRoom.service_status
+                                });
+                            }
+                        });
+                    });
+                    
                     room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
                     return room;
                 }),
@@ -427,6 +470,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return occupancy;
                 },
                 function(incoming) {
+
                     this.dataStore.mergeOccupancies(this.store.group.values.room_id); 
                 }),
                
@@ -548,17 +592,21 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                         $q.all([Maintenance.read(), 
                                 RoomType.read(), 
-                                Room.read(), 
+                                InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
+                                Room.read(),                                                                 
                                 Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
                                 AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                                 .then(function(data_array) {
                                     _.reduce([
                                           Maintenance, 
                                           RoomType, 
+                                          InActiveRoomSlots,
                                           Room, 
-                                          Occupancy, 
+                                          
+                                          Occupancy,
+                                                                                    
                                           AvailabilityCount], 
-                                function(memo, obj, idx) {  
+                                function(memo, obj, idx) {                                      
                                     obj.resolve(data_array[idx]);
                             }, data_array);
 
@@ -588,11 +636,11 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     min_hours:              _data_Store.get('min_hours')
                                 }
                             });
-
+                            
                             q.resolve(_data_Store.get(
                                 'display',
                                 'filter',
-                                'common_reservation_data',
+                                'common_reservation_data',                                
                                 'room',
                                 'availability_count'
                             ));
@@ -608,12 +656,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     var _data_Store     = this.data_Store,
                     time            = util.gridTimeComponents(start_date, 48);
                     q = $q.defer();
-                    $q.all([ 
+                    $q.all([
+                            InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
+                            Room.read(),                            
                             Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
                                 _.reduce([
-                                       
+                                      InActiveRoomSlots,
+                                      Room,
                                       Occupancy, 
                                       AvailabilityCount], 
                             function(memo, obj, idx) {  
