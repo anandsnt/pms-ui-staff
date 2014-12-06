@@ -46,6 +46,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			}, 300);
 		};
 
+
+		$scope.tryAgain = function(){
+			$scope.depositInProcess = false;
+			$scope.errorMessage = "";
+		};
+
 		/*
 		 * card details based on six payment/MLI           
 		 *													
