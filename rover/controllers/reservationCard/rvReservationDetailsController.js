@@ -5,50 +5,57 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		var backTitle,
 			backParam,
 			titleDict = {
-				'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
-				'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
-				'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
-				'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
-				'VIP': 'DASHBOARD_SEARCH_VIP',
-				'NORMAL_SEARCH': 'SEARCH_NORMAL'
+				'DUEIN'         : 'DASHBOARD_SEARCH_CHECKINGIN',
+				'DUEOUT'        : 'DASHBOARD_SEARCH_CHECKINGOUT',
+				'INHOUSE'       : 'DASHBOARD_SEARCH_INHOUSE',
+				'LATE_CHECKOUT' : 'DASHBOARD_SEARCH_LATECHECKOUT',
+				'VIP'           : 'DASHBOARD_SEARCH_VIP',
+				'NORMAL_SEARCH' : 'SEARCH_NORMAL'
 			};
-		
-		//CICO-10006 assign the avatar image
-		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 
-		// if we just created a reservation and came straight to staycard
-		// we should show the back button with the default text "Find Reservations"	
-		if ( $stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
-			backTitle = titleDict['NORMAL_SEARCH'];
-			backParam = { type: 'RESET'}; // CICO-9726 --- If a newly created reservation / go back to plain search page
+		if ( $stateParams.isFromDiary && !$rootScope.isReturning() ) {
+			$rootScope.setPrevState = {
+				title: 'Room Diary'
+			};
 		} else {
-			backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-			backParam = { type: $vault.get('searchType') };
-			//Special case - In case of search by CC, the title has to display the card number as well.
-			//The title is already stored in $vault
-			if($vault.get('searchType') == "BY_SWIPE"){
-				backParam = { type: "BY_SWIPE"};
-			}
+			// if we just created a reservation and came straight to staycard
+			// we should show the back button with the default text "Find Reservations"	
+			if ( $stateParams.justCreatedRes || $scope.otherData.reservationCreated ) {
+				backTitle = titleDict['NORMAL_SEARCH'];
+				backParam = { type: 'RESET' }; // CICO-9726 --- If a newly created reservation / go back to plain search page
+			} else {
+				backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
+				backParam = { type: $vault.get('searchType') };
+				//Special case - In case of search by CC, the title has to display the card number as well.
+				//The title is already stored in $vault
+				if($vault.get('searchType') == "BY_SWIPE"){
+					backParam = { type: "BY_SWIPE" };
+				}
+			};
 
+			// setup a back button
+			$rootScope.setPrevState = {
+				title: $filter('translate')(backTitle),
+				scope: $scope,
+				callback: 'goBackSearch'
+			};
+
+			// we need to update any changes to the room
+			// before going back to search results
+			$scope.goBackSearch = function() {
+				$scope.updateSearchCache();
+				$state.go('rover.search', backParam);
+			};
 		}
+		
 
-		// setup a back button
-		$rootScope.setPrevState = {
-			title: $filter('translate')(backTitle),
-			scope: $scope,
-			callback: 'goBackSearch'
-		};
-
-		// we need to update any changes to the room
-		// before going back to search results
-		$scope.goBackSearch = function() {
-			$scope.updateSearchCache();
-			console.log(backParam);
-			$state.go('rover.search', backParam);
-		};
+		
 
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
+
+		//CICO-10006 assign the avatar image
+		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 
 		/**
 		*	We have moved the fetching of 'baseData' form 'rover.reservation' state

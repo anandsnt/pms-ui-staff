@@ -4,7 +4,7 @@
     <!-- Worksheet header -->
     <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
         <div class="entry maid">
-            <label for="worksheet-employee" translate>MAID</label>
+            <label for="worksheet-employee" translate>EMP</label>
             <div class="select">
                 <select ng-model="singleState.workSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList" id="worksheet-employee" name="worksheet-employee" >
                         <option value="">{{'SELECT_EMPLOYEE'| translate}}</option>
@@ -26,7 +26,6 @@
             </div>
         </div>
         <div class="actions">
-            <button type="button" class="button green" ng-click="saveWorkSheet()">{{'SAVE' | translate}}</button>
             <button type="button" class="button grey" ng-click="printWorkSheet()">{{'PRINT' | translate}}</button>
             <button type="button" class="button red" ng-click="deletWorkSheet()">{{'DELETE' | translate}}</button>
         </div>

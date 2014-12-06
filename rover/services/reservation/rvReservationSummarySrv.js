@@ -112,6 +112,31 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
         };
 
         /**
+         * Sends the confirmation email
+         */
+        this.sendHourlyConfirmationEmail = function(data) {
+            var deferred = $q.defer();
+            // /api/reservations/hourly_confirmation_emails?reservation_ids[]=1311017&reservation_ids[]=1311016&reservation_ids[]=1311018]&emails[]=shiju@stayntouch.com
+            var url = '/api/reservations/hourly_confirmation_emails?';
+            _.each(data.reservation_ids, function(id) {
+                url += 'reservation_ids[]=' + id + '&';
+            })
+            _.each(data.emails, function(mail) {
+                url += 'emails[]=' + mail + '&';
+            })
+
+            delete data['reservation_ids'];
+            delete data['emails'];
+
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /**
          * Call API to Update the reservation
          */
         this.updateReservation = function(data) {
@@ -139,8 +164,8 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.startPayment = function(data){
-        	var deferred = $q.defer();
+        this.startPayment = function(data) {
+            var deferred = $q.defer();
             var url = '/api/cc/get_token';
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
@@ -171,8 +196,19 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        this.getRateDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/rates/' + params.id;
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.getTaxDetails = function(rates) {
-            var deferred = $q.defer();            
+            var deferred = $q.defer();
             var url = '/api/rates/tax_information/';
             rvBaseWebSrvV2.getJSON(url, rates).then(function(data) {
                 deferred.resolve(data);

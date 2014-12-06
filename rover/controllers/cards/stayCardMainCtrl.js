@@ -419,44 +419,37 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// 	CICO-7792 END
 		}
 
-		$scope.populateDatafromDiary = function(roomsArray, tData) {
 
-			var ratesFetched = function(data) {
-				$scope.otherData.taxesMeta = data.tax_codes;
-				$scope.reservationData.totalTax = 0;
-				_.each($scope.reservationData.rooms, function(room, roomNumber) {
-					var taxes = _.where(data.tax_information, {
-						rate_id: parseInt(room.rateId)
-					});
-
-					/**
-					 * Need to calculate taxes IIF the taxes are configured for the rate selected for the room (as there could be more than one room for multiple reservations)
-					 */
-
-					if (taxes.length > 0) {
-						/**
-						 * Calculating taxApplied just for the arrival date, as this being the case for hourly reservations.
-						 */
-						var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes[0].tax, roomNumber);
-						_.each(taxApplied.taxDescription, function(description, index) {
-							if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
-								$scope.reservationData.taxDetails[description.id] = description;
-							} else {
-								$scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
-							}
-						});
-						$scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
-						$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
-					}
-				});
-
-				$scope.saveReservation();
-
-				$timeout(function() {
-					$scope.$emit('hideLoader');
-				}, 500);
+		var ratesFetched = function(data, saveReservation) {
+			var save = function() {
+				if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
+					$scope.saveReservation();
+				} else {
+					$scope.$emit('PROMPTCARD');
+				}
 			};
 
+			$scope.otherData.taxesMeta = data.tax_codes;
+			$scope.otherData.hourlyTaxInfo = data.tax_information;
+			$scope.reservationData.totalTax = 0;
+			$scope.computeHourlyTotalandTaxes();
+			if (saveReservation) {
+				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+					$scope.$emit('PROMPTCARD');
+					$scope.$watch("reservationData.guest.id", save);
+					$scope.$watch("reservationData.company.id", save);
+					$scope.$watch("reservationData.travelAgent.id", save);
+				} else {
+					$scope.saveReservation();
+				}
+			}
+
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 500);
+		};
+
+		$scope.populateDatafromDiary = function(roomsArray, tData, saveReservation) {
 			angular.forEach(tData.rooms, function(value, key) {
 				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
@@ -515,34 +508,37 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				this.checkoutTime.hh = "0" + this.checkoutTime.hh;
 			}
 			var hResData = tData.rooms[0];
+
 			this.reservationId = hResData.reservation_id;
 			this.confirmNum = hResData.confirmation_id;
 
-			if(this.reservationId){
-				$scope.viewState.identifier == "CONFIRM";
-			}else{
-				$scope.viewState.identifier == "CREATION";
+
+			if (this.reservationId) {
+				$scope.viewState.identifier = "CONFIRM";
+			} else {
+				$scope.viewState.identifier = "CREATION";
+				$scope.viewState.reservationStatus.confirm = false;
 			}
 
-			if (this.reservationId) { //Need this in case of edit reservations alone
-				$scope.reservationDetails.guestCard = {};
-				$scope.reservationDetails.guestCard.id = hResData.guest_card_id;
-				$scope.reservationDetails.travelAgent = {};
-				$scope.reservationDetails.travelAgent.id = hResData.travel_agent_id;
-				$scope.reservationDetails.companyCard = {};
-				$scope.reservationDetails.companyCard.id = hResData.company_card_id;
+			$scope.reservationDetails.guestCard = {};
+			$scope.reservationDetails.guestCard.id = hResData.guest_card_id;
+			$scope.reservationDetails.travelAgent = {};
+			$scope.reservationDetails.travelAgent.id = hResData.travel_agent_id;
+			$scope.reservationDetails.companyCard = {};
+			$scope.reservationDetails.companyCard.id = hResData.company_card_id;
 
-				$scope.reservationData.guest = {};
-				$scope.reservationData.guest.id = hResData.guest_card_id;
-				$scope.reservationData.travelAgent = {};
-				$scope.reservationData.travelAgent.id = hResData.travel_agent_id;
-				$scope.reservationData.company = {};
-				$scope.reservationData.company.id = hResData.company_card_id;
 
-				$scope.initGuestCard();
-				$scope.initCompanyCard();
-				$scope.initTravelAgentCard();
-			}
+			$scope.reservationData.guest = {};
+			$scope.reservationData.guest.id = hResData.guest_card_id;
+			$scope.reservationData.travelAgent = {};
+			$scope.reservationData.travelAgent.id = hResData.travel_agent_id;
+			$scope.reservationData.company = {};
+			$scope.reservationData.company.id = hResData.company_card_id;
+
+			$scope.initGuestCard();
+			$scope.initCompanyCard();
+			$scope.initTravelAgentCard();
+
 
 			this.totalStayCost = 0;
 			var rateIdSet = [];
@@ -553,9 +549,18 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				room.rateTotal = room.amount;
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(room.amount);
 				var success = function(data) {
-					room.rateName = data;
+					room.rateName = data.name;
+					if (data.deposit_policy_id) {
+						$scope.reservationData.depositData = {};
+						$scope.reservationData.depositData.isDepositRequired = true;
+						$scope.reservationData.depositData.description = data.deposit_policy.description;
+						$scope.reservationData.depositData.depositSuccess = !$scope.reservationData.depositData.isDepositRequired;
+						$scope.reservationData.depositData.attempted = false;
+						$scope.reservationData.depositData.depositAttemptFailure = false;						
+					}
 				};
-				$scope.invokeApi(RVReservationSummarySrv.getRateName, {
+				var roomAmount = parseFloat(room.amount).toFixed(2);
+				$scope.invokeApi(RVReservationSummarySrv.getRateDetails, {
 					id: room.rateId
 				}, success);
 				for (var ms = new tzIndependentDate(self.arrivalDate) * 1, last = new tzIndependentDate(self.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
@@ -570,8 +575,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 							id: room.rateId
 						},
 						rateDetails: {
-							actual_amount: room.amount,
-							modified_amount: room.amount,
+							actual_amount: roomAmount,
+							modified_amount: roomAmount,
 							is_discount_allowed: 'true'
 						}
 					};

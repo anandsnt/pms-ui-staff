@@ -36,8 +36,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                         var roomKey = value.id;
                         roomsArray[roomKey] = value;
                     });
-                    $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
-                    createReservation();
+                    $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);                    
                 };
                 $scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
             }

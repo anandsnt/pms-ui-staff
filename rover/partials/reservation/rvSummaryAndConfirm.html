@@ -126,7 +126,7 @@
                                     <span class="total" ng-if="room.isSuppressed">SR</span>
                                     <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
                                 </span>
-                            <a>
+                            </a>
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>
@@ -142,7 +142,7 @@
                         <button type="button" class="button white brand-text" ng-click="setDemographics()">Demographics</a>
                     </div>
                     <button class="add-new-button" ng-hide="true">+ Accompanying Guest</button>
-                    <form action="{action}" id="room-1-accompany" class="form hidden"> <!-- Remove class hidden when button above clicked -->
+                    <form id="room-1-accompany" class="form hidden"> <!-- Remove class hidden when button above clicked -->
                         <div class="entry">
                             <label for="room-1-acc-1-firstname">Accompanying guest</label>
                             <input name="room-1-acc-1-firstname" id="room-1-acc-1-firstname" placeholder="First Name" value="" type="text" />
@@ -154,8 +154,7 @@
                     </form>
                 </div>
                 <ul class="total-stay-cost">                	
-                	<li ng-repeat="row in reservationData.taxDetails">
-                        <!-- TODO : REMOVE THE ADDITIONAL INFO FROM THE BELOW LINE AFTER FUNCTIONAL TESTING-->
+                	<li ng-repeat="row in reservationData.taxDetails">                        
                 		<span class="label" translate> {{row.description}} </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                         <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{ row.amount | number : 2}}</span>               		
@@ -174,7 +173,7 @@
                 </ul>
             </div> 
         </div>
-        <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
+        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-click="clearErrorMessage()">
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
            <!--      <section ng-hide="true">
@@ -265,8 +264,9 @@
                     <div class="select">
 
                         <select class="placeholder" ng-model="reservationData.paymentType.type.value"
-                            ng-options="paymentMethod.value as paymentMethod.description for paymentMethod in reservationData.paymentMethods" ng-change="changePaymentType()">
+                            ng-change="changePaymentType()">
                             <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
+                            <option value="{{paymentTypes.value}}" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
                         </select>
                     </div>
                 </div>
@@ -274,7 +274,7 @@
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label class="active-item item-payment" id="pay-with-amex">
                     <figure class="card-logo">
-                        <img src="/assets/{{renderData.creditCardType}}.png" alt="">
+                        <img ng-src="/assets/{{renderData.creditCardType}}.png" alt="">
                     </figure>
                     <span class="number">Ending with 
                         <span class="value number">{{renderData.endingWith}}</span>
@@ -291,7 +291,7 @@
 
 
                     <!-- Use only if deposit is required -->
-                    <div class="notice deposit" ng-if="depositData.isDepositRequired" ng-hide="depositData.attempted || reservationData.depositAmount == '' || reservationData.depositAmount <= 0">                        
+                    <div class="notice deposit" ng-if="depositData.isDepositRequired" ng-hide="depositData.attempted">                        
                         <p>Deposit required: <strong>{{depositData.description}}</strong>.</p>
                         <!-- Payment fields -->
                         <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        
@@ -304,9 +304,9 @@
                     
                     <!-- Deposit paid succesfully -->
                     <div class="feedback" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && !depositData.depositAttemptFailure">
-                        <div class="notice success">Deposit payed successfully!</div>
+                        <div class="notice success">Deposit paid</div>
                         <ul class="transaction">
-                            <li ng-show="depositData.authorizationCode!=''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>
+                            <li ng-show="depositData.authorizationCode!==''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>
                             <li>Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}}</span>
                             </li>
                         </ul>
@@ -320,9 +320,9 @@
                     <div class="actions">
                         <button type="button" ng-disabled="!reservationData.guest.id && !reservationData.company.id && !reservationData.travelAgent.id" class="button blank" ng-click="cancelReservation()">Cancel Reservation</button>
                         <!-- Show when deposit paid succesfully. If deposit not required, then show when payment method added  -->
-                        <button type="button" class="button green" ng-disabled="!reservationData.guest.id && !reservationData.company.id && !reservationData.travelAgent.id" ng-click="proceedCreatingReservation()">Continue</button>
+                        <button type="button" class="button" ng-class="{'grey':isContinueDisabled(),'green':!isContinueDisabled()}" ng-disabled="isContinueDisabled()" ng-click="proceedCreatingReservation()">Continue</button>
                         <!-- Show when deposit payment fails  -->
-                        <button type="button" class="button blue" ng-show="depositData.depositAttemptFailure" ng-click="payDeposit()">Try Again</button>
+                        <button type="button" class="button blue" ng-show="depositData.depositAttemptFailure" ng-click="tryAgain()">Try Again</button>
                     </div>
                 </div>
                 

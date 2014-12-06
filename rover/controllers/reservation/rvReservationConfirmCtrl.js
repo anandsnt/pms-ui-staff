@@ -118,6 +118,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var postData = {};
 			postData.reservationId = $scope.reservationData.reservationId;
+
 			/**
 			 * CICO-7077 Confirmation Mail to have tax details
 			 */
@@ -125,8 +126,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			_.each($scope.reservationData.taxDetails, function(taxDetail) {
 				postData.tax_details.push(taxDetail);
 			});
-
 			postData.tax_total = $scope.reservationData.totalTax;
+
 
 			postData.emails = [];
 			if (!!$scope.reservationData.guest.email)
@@ -135,13 +136,25 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			if (!!$scope.otherData.additionalEmail)
 				postData.emails.push($scope.otherData.additionalEmail);
 
-
+			if ($scope.reservationData.isHourly) {
+				postData.reservation_ids = [];
+				_.each($scope.reservationData.reservations, function(reservation) {
+					postData.reservation_ids.push(reservation.id);
+				});
+			}
+			
 			var emailSentSuccess = function(data) {
 				$scope.reservationStatus.confirmed = true;
 				updateBackButton();
 				$scope.$emit('hideLoader');
 			};
-			$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
+
+			if ($scope.reservationData.isHourly) {
+				$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
+			} else {
+				$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
+			}
+
 		};
 
 		/*
@@ -260,9 +273,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				totalRoomsAvailable++;
 			}
 		};
-
 		$scope.enableCheckInButton = function() {
-			return $scope.reservationData.rooms.length == totalRoomsAvailable;
+			return _.has($scope.reservationData, "rooms") &&
+				($scope.reservationData.rooms.length == totalRoomsAvailable);
 		};
 
 		var checkAllRoomsAreReady = function() {
