@@ -11243,7 +11243,10 @@
                                     }
 
                                     &.departed {
+                                        color: rgba(255,255,255,.6);
                                         cursor: default;
+
+                                        &:after { .opacity(60); }
 
                                         &:before {
                                             top: 0;
@@ -11252,7 +11255,7 @@
                                             bottom: 0;
                                             background-image: none;
                                             #fade > .in();
-                                            .opacity(50);
+                                            .opacity(60);
                                             .show;
                                             .candystripe(rgba(255,118,37,.5), -45deg);
                                         }
@@ -11278,7 +11281,7 @@
                                     }
 
                                     &.oos {
-                                        background: @grey3;
+                                        background: @greyStart;
 
                                         &:after {
                                             .icons > .icon-diary-oos;
