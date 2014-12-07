@@ -36,6 +36,8 @@ sntRover
 	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
 
+	//updating the left side menu
+    $scope.$emit("updateRoverLeftMenu", "diaryReservation");
 
 	// data for next state
 	$rootScope.setNextState = {
@@ -223,8 +225,7 @@ sntRover
 	    	arrival_time: 				payload.filter.arrival_time,
 	    	reservation_format: 		'h',
 		    range: 						12,
-	    	rate_type: 					payload.filter.rate_type,
-		    rate_type_details: 			[],
+	    	rate_type: 					payload.filter.rate_type,		    
 		    rate:                        undefined,
 	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
@@ -297,22 +298,12 @@ sntRover
 		    BEGIN CORPORATE RATE METHODS 
 		  ________________________________________________________
 		*/
-		$scope.confirmRateSelection = function(idx) {
-			var details = $scope.gridProps.filter.rate_type_details;
-
-			$scope.gridProps.filter.rate = $scope.gridProps.filter.rate_type_details[idx];
-	    };    
-
-		$scope.discardRateSelection = function(idx) {
-			//var details = $scope.gridProps.filter.rate_type_details;
-			$scope.gridProps.filter.rate_type_details = [];
-			$scope.gridProps.filter.rate = undefined;
-	    };
+		
 
         $scope.companySearchTextEntered = function() {
-            if($scope.companySearchText.length === 1) {
-                $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
-            } else if($scope.companySearchText.length > 2){
+            if($scope.corporateSearchText.length === 1) {
+                $scope.corporateSearchText = $scope.corporateSearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
+            } else if($scope.corporateSearchText.length > 2){
                 displayFilteredResults();
             }
 	    };
@@ -536,20 +527,10 @@ sntRover
 			var DS = rvDiarySrv.data_Store, hourly_rates = [];
 
         	RMFilterOptionsSrv.fetchCompanyCard({ 
-        		query: $scope.companySearchText.trim() 
+        		query: $scope.corporateSearchText.trim() 
         	})
             .then(function(data) {
-            	var applicable_accounts = _.filter(data.accounts, function(account) {
-            		var contract = account.current_contract;
 
-            		if(_.isObject(contract) && _.has(contract, 'id')) {
-            			hourly_rates.push(contract);
-
-            			return _.findWhere(hourly_rates, { id: contract.id });
-            		}
-            	});
-            	//$scope.gridProps.filter.rate_type_details = data.accounts;
-				$scope.gridProps.filter.rate_type_details = applicable_accounts;//companyCardResults = data.accounts;
             }, responseError);  
         }, 500);
 
@@ -568,12 +549,7 @@ sntRover
 			//$scope.debug();
 		};
 
-		$scope.setAccountID = function(index) {
-			if(index < $scope.gridProps.filter.rate_type_details.length)
-				$scope.gridProps.filter.account_id = $scope.gridProps.filter.rate_type_details[index].id;
-			else
-				console.warn('index passed to find is greater than array length of companyCardResults')
-		}
+		
 
 	    $scope.isSelected = function(room, reservation) {
 	    	return _.isBoolean(reservation.selected) && reservation.selected;
@@ -987,33 +963,8 @@ sntRover
 			$scope.Availability();
 		}
 	};	
-	/*$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {		
-		
-		if(newValue !== oldValue) {
 
-		}
-	});*/
 
-/*	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
-
-		if(newValue !== oldValue) {
-
-		}
-	});*/
-	/*TODO - PASS COMPANY ID HERE*/
-	/*$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
-
-		if(newValue !== oldValue) {
-			if (!$scope.gridProps.edit.active) {
-				$scope.Availability();
-			}		
-		}	
-	});*/
-	/*
-		----------------------------------------------------------------
-		END WATCHERS
-		----------------------------------------------------------------
-	*/
 
 
 	/*
@@ -1101,5 +1052,101 @@ sntRover
 				
 	}
 
+
+
+    // jquery autocomplete Souce handler
+    // get two arguments - request object and response callback function
+    var autoCompleteSourceHandler = function(request, response) {
+
+        var companyCardResults = [],
+            lastSearchText = '',
+            eachItem = {},
+            hasItem = false,
+            img_url = '';
+
+        // process the fetched data as per our liking
+        // add make sure to call response callback function
+        // so that jquery could show the suggestions on the UI
+        var processDisplay = function(data) {
+            $scope.$emit("hideLoader");
+
+            angular.forEach(data.accounts, function(item) {
+                eachItem = {};
+
+                eachItem = {
+                    label: item.account_name,
+                    value: item.account_name,
+                    image: item.company_logo,
+
+                    // only for our understanding
+                    // jq-ui autocomplete wont use it
+                    type: item.account_type,
+                    id: item.id,
+                    corporateid: '',
+                    iataNumber: ''
+                };
+
+                if(item.company_logo === '') {
+                	img_url = item.account_type === 'COMPANY' ? '/assets/avatar-company.png' : '/assets/avatar-travel-agent.png';
+                	eachItem.image = img_url;
+                }
+
+                // making sure that the newly created 'eachItem'
+                // doesnt exist in 'companyCardResults' array
+                // so as to avoid duplicate entry
+                hasItem = _.find($scope.companyCardResults, function(item) {
+                    return eachItem.id === item.id;
+                });
+
+                // yep we just witnessed an loop inside loop, its necessary
+                // worst case senario - too many results and 'eachItem' is-a-new-item
+                // will loop the entire 'companyCardResults'
+                if (!hasItem) {
+                    companyCardResults.push(eachItem);
+                };
+            });
+
+            // call response callback function
+            // with the processed results array
+            response(companyCardResults);
+        };
+
+        // fetch data from server
+        var fetchData = function() {
+            if (request.term != '' && lastSearchText != request.term) {
+                $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, {
+                    'query': request.term
+                }, processDisplay);
+                lastSearchText = request.term;
+            }
+        };
+
+        // quite simple to understand
+        if (request.term.length === 0) {
+            companyCardResults = [];
+            lastSearchText = "";
+        } else if (request.term.length > 2) {
+            fetchData();
+        }
+    };
+
+    var autoCompleteSelectHandler = function(event, ui) {
+    	console.log('hello');
+    	console.log(ui.item )
+    	$scope.gridProps.filter.rate = ui.item;
+        $scope.$apply();
+       
+    };
+
+    $scope.autocompleteOptions = {
+        delay: 0,
+        position: {
+             my : "right top", 
+             at: "right bottom",
+            collision: 'flip'
+        },
+        source: autoCompleteSourceHandler,
+        select: autoCompleteSelectHandler
+    };
 	
 }]);
