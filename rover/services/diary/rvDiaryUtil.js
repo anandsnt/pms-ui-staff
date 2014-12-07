@@ -236,7 +236,7 @@ sntRover
 
 				removeReservation(oldRoom, reservation);
 
-				newRoom.occpuancy.push(copyReservation(reservation));
+				newRoom.occupancy.push(copyReservation(reservation));
 
                 idxOldRoom = roomIndex(rooms, oldRoom);
                 idxNewRoom = roomIndex(rooms, newRoom);

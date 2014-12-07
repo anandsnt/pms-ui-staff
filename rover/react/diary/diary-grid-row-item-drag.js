@@ -23,7 +23,7 @@ var GridRowItemDrag = React.createClass({
 		e.stopPropagation();
 		e.preventDefault();	
 		if(e.button === 0) {
-			//document.addEventListener('mouseup', this.__onMouseUp);
+			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
 
 			page_offset = this.getDOMNode().getBoundingClientRect();
@@ -46,7 +46,7 @@ var GridRowItemDrag = React.createClass({
 			function() {
 				props.iscroll.grid.disable();
 				props.iscroll.timeline.disable();
-				this.__onMouseUp();
+				
 			});
 		}
 	},
@@ -82,12 +82,12 @@ var GridRowItemDrag = React.createClass({
 			props = this.props,
 			item = this.state.currentDragItem;
 
-		//document.removeEventListener('mouseup', this.__onMouseUp);
+		document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__dbMouseMove);
 
 		
-		/*e.stopPropagation();
-		e.preventDefault();*/
+		e.stopPropagation();
+		e.preventDefault();
 
 		if(state.dragging) {
 			this.setState({
@@ -135,6 +135,9 @@ var GridRowItemDrag = React.createClass({
 			});
 		}
 	},
+	componentDidMount: function() {
+		this.getDOMNode().addEventListener('mousedown', this.__onMouseDown);
+	},
 	getInitialState: function() {
 		return {
 			dragging: false,
@@ -163,7 +166,7 @@ var GridRowItemDrag = React.createClass({
 			style:       style,
 			className:   props.className + className,
 			children:    props.children,
-			onMouseDown: this.__onMouseDown
+			
 		}));
 	}
 });
