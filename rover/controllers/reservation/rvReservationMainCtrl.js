@@ -839,11 +839,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var hourMinutes = timeParts[0].split(":");
                 hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkinTime = {
-                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                    ampm: timeParts[1]
-                }
-                // reservationDetails.reservation_card.arrival_time = parseInt($scope.reservationData.checkinTime.hh) + ":" + $scope.reservationData.checkinTime.mm + " " + $scope.reservationData.checkinTime.ampm;
+                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+                        ampm: timeParts[1]
+                    }
+                    // reservationDetails.reservation_card.arrival_time = parseInt($scope.reservationData.checkinTime.hh) + ":" + $scope.reservationData.checkinTime.mm + " " + $scope.reservationData.checkinTime.ampm;
             }
 
 
@@ -854,11 +854,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 //flooring to nearest 15th as the select element's options are in 15s
                 hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkoutTime = {
-                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                    ampm: timeParts[1]
-                }
-                // reservationDetails.reservation_card.late_checkout_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
+                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+                        ampm: timeParts[1]
+                    }
+                    // reservationDetails.reservation_card.late_checkout_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
             }
             //  reservationDetails.reservation_card.departureDate ! = null   
             else if (reservationDetails.reservation_card.departure_time) {
@@ -867,11 +867,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 //flooring to nearest 15th as the select element's options are in 15s
                 hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkoutTime = {
-                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                    ampm: timeParts[1]
-                }
-                // reservationDetails.reservation_card.departure_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
+                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+                        ampm: timeParts[1]
+                    }
+                    // reservationDetails.reservation_card.departure_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
             }
 
 
@@ -947,16 +947,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
                 });
 
-                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
-                    guests: {
-                        adults: "",
-                        children: "",
-                        infants: ""
-                    },
-                    rate: {
-                        id: ""
-                    }
-                }
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate];
             }
             if (reservationDetails.reservation_card.payment_method_used !== "" && reservationDetails.reservation_card.payment_method_used !== null) {
                 $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
@@ -1534,7 +1525,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             });
         }
 
-        $scope.computeHourlyTotalandTaxes = function() {            
+        $scope.computeHourlyTotalandTaxes = function() {
             $scope.reservationData.totalStayCost = 0.0;
             $scope.reservationData.totalTax = 0.0;
             $scope.reservationData.taxDetails = {};

@@ -464,8 +464,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 		}
 
-		$scope.handleNoEdit = function(event) {
+		$scope.handleNoEdit = function(event, roomId, rateId) {
 			event.stopPropagation();
+			$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
+			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 			if (!$scope.stateCheck.stayDatesMode) {
 				$scope.enhanceStay();
 			}
