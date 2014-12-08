@@ -556,7 +556,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						$scope.reservationData.depositData.description = data.deposit_policy.description;
 						$scope.reservationData.depositData.depositSuccess = !$scope.reservationData.depositData.isDepositRequired;
 						$scope.reservationData.depositData.attempted = false;
-						$scope.reservationData.depositData.depositAttemptFailure = false;						
+						$scope.reservationData.depositData.depositAttemptFailure = false;
+						$scope.$broadcast("UPDATEDEPOSIT");
 					}
 				};
 				var roomAmount = parseFloat(room.amount).toFixed(2);

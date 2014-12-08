@@ -342,7 +342,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		var createReservation = function() {
 			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-				$scope.$emit('PROMPTCARD');
+				$timeout(function() {
+					$scope.$emit('PROMPTCARD');
+				}, 3000);
 				$scope.$watch("reservationData.guest.id", save);
 				$scope.$watch("reservationData.company.id", save);
 				$scope.$watch("reservationData.travelAgent.id", save);
@@ -445,6 +447,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			fetchPaymentMethods();
 			refreshScrolls();
 		};
+
+		$scope.$on("UPDATEDEPOSIT",function(){
+			$scope.depositData = $scope.reservationData.depositData;
+		});
 
 		var refreshScrolls = function() {
 			$timeout(function() {
