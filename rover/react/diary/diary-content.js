@@ -111,8 +111,11 @@ var DiaryContent = React.createClass({
             state = this.state;
 
     	$(window).on('resize', _.throttle(function(e) {
-    		this._recalculateGridSize();
-            this.componentWillMount();
+    		self._recalculateGridSize();
+    		setTimeout(function(){
+    			self.componentWillMount();
+    		}, 200);
+            
     	}.bind(this), 10, { leading: false, trailing: true }));
 
         setTimeout(function() {
@@ -133,12 +136,12 @@ var DiaryContent = React.createClass({
   	componentWillMount: function() {  		
   		var self = this;
 
-    	for(var k in this.state.iscroll) {
+    	for(var k in this.state.iscroll) {    		
     		if(Object.prototype.hasOwnProperty.call(this.state.iscroll, k)) {
     			if(this.state.iscroll[k] instanceof IScroll) {
     				setTimeout(function () {
     					self.state.iscroll[k].refresh(); 
-    				}, 0);
+    				}, 100);
     			}
     		}
     	}
@@ -164,10 +167,18 @@ var DiaryContent = React.createClass({
   			});
   		}
 
+		if(hops.call(this.props, 'data') && this.props.data !== nextProps.data) {
+  			this.setState({
+  				data: nextProps.data
+  			});
+  		}
+
   		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
   				viewport: nextProps.viewport
   			});
+  			$(window).resize();  			
+
   		}
 
   		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
@@ -227,7 +238,8 @@ var DiaryContent = React.createClass({
 				  				rooms: undefined,
 				  				grid: undefined,				  				
 				  			},
-				  			stats: props.stats
+				  			stats: props.stats,
+				  			data : props.data
 						};
 		
 		display.width 				= display.hours / viewport.hours * viewport.width;

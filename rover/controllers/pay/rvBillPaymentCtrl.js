@@ -266,7 +266,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Action - On click submit payment button
 	*/
 	$scope.submitPayment = function(){
-
 		if($scope.saveData.paymentType == '' || $scope.saveData.paymentType == null){
 			$scope.errorMessage = ["Please select payment type"];
 		} else if($scope.renderData.defaultPaymentAmount == '' || $scope.renderData.defaultPaymentAmount == null){
@@ -442,7 +441,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			value.isSelected = false;
 		});
 		$scope.cardsList[index].isSelected = true;
-		$scope.saveData.payment_type_id =  $scope.cardsList[index].id;
+		$scope.saveData.payment_type_id =  $scope.cardsList[index].value;
 		$scope.showCCPage = false;
 		if($scope.isStandAlone)	{
 			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
@@ -458,7 +457,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		console.log(data);
 		$scope.newPaymentInfo = data;
-		savePayment(data);
+		$scope.showCCPage = false;
+		setTimeout(function(){
+			savePayment(data);
+		}, 200);
+		
+		
 	});
 
 	$scope.$on("MLI_ERROR", function(e,data){

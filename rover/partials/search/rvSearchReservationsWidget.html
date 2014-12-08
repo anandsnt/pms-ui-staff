@@ -5,7 +5,7 @@
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
-	    	<input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-focus="focusOnSearchText()"
+	    	<input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()"
 	        ng-model="textInQueryBox" focus-me="focusSearchField"/>
 	    </div>
 	    <div class="entry dates">
@@ -93,8 +93,7 @@
 	                        <div class="room-info">
 								<!-- Confirm the logic of READY and NOT-READY -->
 	                        	<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
-	                        		<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
-	                        			{{row.room}}
+	                        		<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" ng-bind-html="escapeNull(row.room)|highlight:textInQueryBox:false">
 	                        		</span>			
 	                        	</span>
 
@@ -130,10 +129,9 @@
 						<span class="h2">Check that you didn't mispell the <strong>Name</strong> or 
 							<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or 
 							<strong>Confirmation</strong> number
-							<span ng-show="results.length==0 && showAddNewGuestButton">, or  </span>  
-							<a ui-sref="rover.reservation.search">Add a New Guest <a/>
+							<span ng-show="results.length==0 && showAddNewGuestButton">, or    
+							<a ui-sref="rover.reservation.search">Add a New Guest <a/></span>
 						</span>
-
 						.
 					</div>
 				</li>
