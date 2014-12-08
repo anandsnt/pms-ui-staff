@@ -837,30 +837,37 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     }
 
                     if(data) {
-                        if(data.fromDate === data.toDate) {
-                            var start_date  = parseDate(data.fromDate, data.arrivalTime),
-                                end_date    = parseDate(data.toDate, data.departureTime);
+                        var start_date   = parseDate(data.fromDate, data.arrivalTime),
+                            end_date     = parseDate(data.toDate, data.departureTime),
+                            __start_date = new Date(data.fromDate),
+                            __end_date   = new Date(data.toDate);
 
-                            return {
-                                start_date:         start_date,
-                                end_date:           end_date,
-                                adults:             data.adults,
-                                children:           data.children,
-                                infants:            data.infants,
-                                room_type_id:       data.roomTypeID,
-                                guest_first_name:   data.guestFirstName,
-                                guest_last_name:    data.guestLastName,
-                                company_id:         data.companyID,
-                                travel_agent_id:    data.TravelAgenID
-                            };
-                        }
+                            __start_date.setHours(0);
+                            __end_date.setHours(0);
+                            __start_date.setMinutes(0);
+                            __end_date.setMinutes(0);
+                            
+                        return {
+                            __start_date:       __start_date,
+                            __end_date:         __end_date,
+                            start_date:         start_date,
+                            end_date:           end_date,
+                            adults:             data.adults,
+                            children:           data.children,
+                            infants:            data.infants,
+                            room_type_id:       data.roomTypeID,
+                            guest_first_name:   data.guestFirstName,
+                            guest_last_name:    data.guestLastName,
+                            company_id:         data.companyID,
+                            travel_agent_id:    data.TravelAgenID
+                        };
                     }
 
                     /*Method to parse object time props into MS*/
                     function parseDate(ms, timeObj) {
                         var t_a, t_b;
 
-                        if(timeObj.ampm === 'AM') {
+                        if(timeObj.ampm === 'PM') {
                             t_a = (12 + parseInt(timeObj.hh, 10)) * 3600000;
                         } else {
                             t_a = (parseInt(timeObj.hh, 10)) * 3600000;

@@ -53,6 +53,13 @@ sntRover
 	    $scope.stats 	= $scope.availability_count;
 	    $scope.selectedReservations = [];
 
+	    var isVaultDataSet = false;
+     	var vaultData = rvDiarySrv.ArrivalFromCreateReservation();
+     	
+     	if(vaultData) {           
+            isVaultDataSet = true;
+        }
+
 	    var number_of_items_resetted = 0;
 		$scope.gridProps = {
 			/* Meta data object - allows us to use a single point of reference for various object properties.
@@ -102,11 +109,11 @@ sntRover
 			time span.
 		*/
 			display: {
-				x_offset: 				   payload.display.x_offset.getTime(),
+				x_offset: 				   isVaultDataSet ? (vaultData.start_date-7200000)  : payload.display.x_offset.getTime(),
 				x_0: 					   undefined,
-				x_origin:                  payload.display.x_origin.getTime(),
-				x_n:                       payload.display.x_n.getTime(),
-				x_n_time:                  (!payload.display.x_n_time ? payload.display.x_n.toComponents().time.convertToReferenceInterval(15) : payload.display.x_n_time),
+				x_origin:                  isVaultDataSet ? vaultData.start_date: payload.display.x_origin.getTime(),
+				x_n:                       isVaultDataSet ? (vaultData.__start_date): payload.display.x_n.getTime(),
+				x_n_time:                  isVaultDataSet ? (vaultData.__start_date.toComponents().time.convertToReferenceInterval(15)): (!payload.display.x_n_time ? payload.display.x_n.toComponents().time.convertToReferenceInterval(15) : payload.display.x_n_time),
 				x_p: 	                   payload.display.x_p.getTime(),
 				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
 				width: 						undefined,
