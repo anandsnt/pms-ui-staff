@@ -738,15 +738,22 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.onFromDateChanged = function(date){
 			$scope.fromDate = date;
 			$scope.focusSearchField = true;
+			RVSearchSrv.fromDate = date;
 			$scope.fetchSearchResults();
-			RVSearchSrv.fromDate = date;		
+					
 		};
 		$scope.onToDateChanged = function(date){
 			$scope.toDate = date;
 			$scope.focusSearchField = true;
-			$scope.fetchSearchResults();
 			RVSearchSrv.toDate = date;
+			$scope.fetchSearchResults();
 
+		};
+
+		$scope.clearToDateClicked = function(){
+			$scope.toDate = ''; 
+			RVSearchSrv.toDate = '';
+			$scope.fetchSearchResults();
 		};
 
 		$scope.getTimeConverted = function(time){
