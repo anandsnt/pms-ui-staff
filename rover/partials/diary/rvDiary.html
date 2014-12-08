@@ -51,22 +51,22 @@
             <div id="diary-rates" class="faux-select-options hidden"  ng-class="{'showing-search': gridProps.filter.rate_type === 'Corporate'}">
                 <div class="header">
                     
-                    <label class="radio inline">
+                    <label class="radio inline" ng-click="clickedOnRateType()">
                         <span class="icon-form icon-radio" ng-class="{checked: gridProps.filter.rate_type === 'Standard'}"></span>
                         <input name="rate-type" 
                                id="standard-rate" 
                                value="Standard" 
                                ng-model="gridProps.filter.rate_type" 
-                               type="radio" />
+                               type="radio"/>
                         Standard
                     </label>
-                    <label class="radio inline">
+                    <label class="radio inline" ng-click="clickedOnRateType()">
                         <span class="icon-form icon-radio" ng-class="{checked: gridProps.filter.rate_type === 'Corporate'}"></span>
                         <input name="rate-type" 
                                id="corporate-rate" 
                                value="Corporate" 
                                ng-model="gridProps.filter.rate_type" 
-                               type="radio" />
+                               type="radio"/>
                         Corporate 
                         <span  id="selected-company" class="placeholder" ng-hide="gridProps.filter.rate" >
                             Select account
@@ -74,10 +74,10 @@
                         <span  id="selected-company" class="placeholder active" ng-show="gridProps.filter.rate" >
                             {{gridProps.filter.rate.label}}
                         </span>
-                        <button type="button" id="diary-corporate-ok" class="icons icon-ok-10" ng-show="gridProps.filter.rate">
+                        <button type="button" id="diary-corporate-ok" class="icons icon-ok-10" ng-show="gridProps.filter.rate" ng-click="compCardOrTravelAgSelected()">
                             Add
                         </button>
-                        <button type="button" id="diary-corporate-cancel" class="icons icon-remove-10" ng-show="gridProps.filter.rate">
+                        <button type="button" id="diary-corporate-cancel" class="icons icon-remove-10" ng-show="gridProps.filter.rate" ng-click="discardSelectedCompCardOrTravelAg()">
                             Cancel
                         </button>
                     </label> 
