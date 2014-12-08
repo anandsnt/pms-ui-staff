@@ -846,7 +846,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             __end_date.setHours(0);
                             __start_date.setMinutes(0);
                             __end_date.setMinutes(0);
-                            
+
                         return {
                             __start_date:       __start_date,
                             __end_date:         __end_date,
