@@ -543,7 +543,9 @@
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
-    "START_PAYMENT_PROCESS": "Start Payment Process"
+    "START_PAYMENT_PROCESS": "Start Payment Process",
+    "APPLY_CUSTOMRATE" : "Apply Custom Rate",
+    "MODIFY_CUSTOMRATE" : "Modify Custom Rate"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",

@@ -137,83 +137,110 @@ sntRover.controller('reservationActionsController', [
 		// the listner must be destroyed when no needed anymore
 		$scope.$on('$destroy', postchargeAdded);
 		$scope.creditCardTypes = [];
+	
 		var openDepositPopup = function(){
-			var passData = {
-						 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
-						 		"details":{
-						 			"firstName":$scope.guestCardData.contactInfo.first_name,
-						 			"lastName":$scope.guestCardData.contactInfo.last_name,
-						 			"isDisplayReference":$scope.ifReferanceForCC,
-						 			"creditCardTypes":$scope.creditCardTypes
-						 		}
-						};
-			$scope.passData = passData;
-			ngDialog.open({
-						template: '/assets/partials/reservationCard/rvReservationDepositPopup.html',
-						className: '',
-						controller:'RVReservationDepositController',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-			    });
-		
+			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN") && !$scope.reservationData.justCreatedRes){
+				var feeDetails = (typeof $scope.depositDetails.attached_card ==="undefined") ? {}: $scope.depositDetails.attached_card.fees_information;
+				var passData = {
+							 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+							 		"fees_information":feeDetails,
+							 		"details":{
+							 			"firstName":$scope.guestCardData.contactInfo.first_name,
+							 			"lastName":$scope.guestCardData.contactInfo.last_name,
+							 			"isDisplayReference":$scope.ifReferanceForCC,
+							 			"creditCardTypes":$scope.creditCardTypes
+							 		}
+							};
+				$scope.passData = passData;
+				ngDialog.close(); //close any existing popups
+				ngDialog.open({
+							template: '/assets/partials/reservationCard/rvReservationDepositPopup.html',
+							className: '',
+							controller:'RVReservationDepositController',
+							scope: $scope,
+							closeByDocument: false,
+							closeByEscape: false
+				    });
+			}
+			else{
+				return;
+			};
+			
 		};
 
-		//openDepositPopup();
 		$scope.ifReferanceForCC = false;
+		$scope.depositDetails ={};
 
-		var checkifReferenceIsPresentForCc = function(cancellationCharge, nights){
+		/**************************************************************************/
+		/* Entering staycard we check if any deposit is left else noraml checkin 
+		/*
+		/**************************************************************************/
+
+		var fetchDepositDetailsSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.depositDetails = data;
+
+			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone){
+				if(!$scope.depositPopupData.isShown){
+					openDepositPopup();
+					$scope.depositPopupData.isShown = true;
+				};				
+			};
+		};
+
+		$scope.fetchDepositDetails = function(){
+			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,fetchDepositDetailsSuccess);
+		};
+
+		var fetcCreditCardTypes = function(cancellationCharge, nights){
 			var successCallback = function(data){
+				console.log("fetcCreditCardTypes");
+				console.log(data);
 				$scope.$emit('hideLoader');
 				data.forEach(function(item) {
 		          if(item.name === 'CC'){
 				     $scope.creditCardTypes = item.values;
 				  };
 				});
-				openDepositPopup();
+				$scope.fetchDepositDetails();
 			};
 			$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback)
 		};
 
-		//checkifReferenceIsPresentForCc();
+		fetcCreditCardTypes();
 
 
-		$scope.goToCheckin = function() {
-				var deposit= false;
-				if(deposit){
-					openDepositPopup();
-				}
-				else{
-						var afterRoomUpdate = function() {
-						if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
-							if ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null) {
+		var startCheckin = function() {
+				var afterRoomUpdate = function() {
+					if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
+						if ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null) {
 								$scope.$emit('showLoader');
 								ngDialog.open({
 									template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
 									controller: 'RVValidateEmailPhoneCtrl',
 									scope: $scope
 								});
-							} else {
-								if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
+						} else {
+							if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
 									//TO DO:Go to room assignemt view
 									$state.go("rover.reservation.staycard.roomassignment", {
 										"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 										"room_type": $scope.reservationData.reservation_card.room_type_code,
 										"clickedButton": "checkinButton"
 									});
-								} else if ($scope.reservationData.reservation_card.is_force_upsell == "true" && $scope.reservationData.reservation_card.is_upsell_available == "true") {
+							} else if ($scope.reservationData.reservation_card.is_force_upsell == "true" && $scope.reservationData.reservation_card.is_upsell_available == "true") {
 									//TO DO : gO TO ROOM UPGRAFED VIEW
 									$state.go('rover.reservation.staycard.upgrades', {
 										"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 										"clickedButton": "checkinButton"
 									});
-								} else {
+							} else {
 									$state.go('rover.reservation.staycard.billcard', {
 										"reservationId": $scope.reservationData.reservation_card.reservation_id,
 										"clickedButton": "checkinButton",
 										"userId": $scope.guestCardData.userId
 									});
-								}
+							}
 							}
 						} else {
 							//Prompt user to add a Guest Card
@@ -227,7 +254,6 @@ sntRover.controller('reservationActionsController', [
 								closeByEscape: false
 							});
 						};
-					};
 				};
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
@@ -255,6 +281,27 @@ sntRover.controller('reservationActionsController', [
 			}
 		};
 
+		/**************************************************************************/
+		/* Before checking in we check if any deposit is left else noraml checkin 
+		/*
+		/**************************************************************************/
+		var checkinDepositDetailsSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.depositDetails = data;
+			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
+		};
+
+		var checkforDeposit = function(){
+			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,checkinDepositDetailsSuccess);
+		};
+		//only show deposit popup once
+		var checkinAttemptCount = 0;
+		$scope.goToCheckin = function(){
+			(checkinAttemptCount ===0) ?  checkforDeposit() :startCheckin();
+			checkinAttemptCount ++;
+		};
+
+		/******************************************/
 		$scope.showPutInQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
 			var displayPutInQueue = false;
 			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
@@ -310,7 +357,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
-		var promptCancel = function(penalty, nights,isDisplayReference) {
+		var promptCancel = function(penalty, nights , isPercent) {
 			
 			var passData = {
 			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -331,11 +378,14 @@ sntRover.controller('reservationActionsController', [
 					state: 'CONFIRM',
 					cards: false,
 					penalty: penalty,
-					isDisplayReference :isDisplayReference,
 					penaltyText: (function() {
 						if (nights) {
 							return penalty + (penalty > 1 ? " nights" : " night");
-						} else {
+						}
+						else if(isPercent){
+							return penalty + " %";
+						}
+						else {
 							return $rootScope.currencySymbol + $filter('number')(penalty, 2);
 						}
 					})()
@@ -378,20 +428,6 @@ sntRover.controller('reservationActionsController', [
 
 			var checkCancellationPolicy = function() {
 
-				var checkifReferenceIsPresent = function(cancellationCharge, nights){
-					var successCallback = function(data){
-						$scope.$emit('hideLoader');
-						var is_display_reference = false;
-						data.forEach(function(item) {
-					        if(item.name === 'CC'){
-					        	$scope.creditCardTypes = item.values;
-					        };
-						});						
-						promptCancel(cancellationCharge, nights,is_display_reference);
-					};
-					$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback)
-				};
-
 				var onCancellationDetailsFetchSuccess = function(data) {
 					$scope.$emit('hideLoader');			
 
@@ -410,16 +446,16 @@ sntRover.controller('reservationActionsController', [
 							// Make sure that the cancellation value is -lte thatn the total duration
 							cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
 							nights = true;
-						} else {
+						}
+						else {
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
+
 						if(parseInt(depositAmount) > 0){
 							showDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
 						}
 						else{
-							//promptCancel(cancellationCharge, nights);
-							
-							checkifReferenceIsPresent(cancellationCharge, nights);
+							promptCancel(cancellationCharge, nights, (data.results.penalty_type == 'percent'));
 						};
 					}
 					else{
@@ -427,8 +463,7 @@ sntRover.controller('reservationActionsController', [
 							showDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
 						}
 						else{
-							//promptCancel('', nights);
-							checkifReferenceIsPresent('', nights);
+							promptCancel('', nights, (data.results.penalty_type == 'percent'));
 						};
 					}
 					//promptCancel(cancellationCharge, nights);

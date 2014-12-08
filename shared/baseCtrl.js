@@ -63,19 +63,23 @@ function BaseCtrl($scope) {
 		var options = options ? options : {},
 			params = options["params"] ? options["params"] : null,
 			loader = options["loader"] ? options["loader"] : 'BLOCKER',
+			showLoader = loader.toUpperCase() === 'BLOCKER' ? true: false,
 			successCallBack = options["successCallBack"] ? options["successCallBack"] : $scope.fetchedCompleted,
 			failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : $scope.fetchedFailed,
 			successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null,
 			failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;		
 
-		if(loader.toUpperCase() == 'BLOCKER')
+		if(showLoader){
 			$scope.$emit('showLoader')		
+		}
 
 
 		return serviceApi(params).then(
 			//success call back
 			function(data){
-				$scope.$emit('hideLoader');
+				if(showLoader){
+					$scope.$emit('hideLoader');
+				}
 				if(successCallBack) {
 					if(successCallBackParameters){
 						successCallBack(data, successCallBackParameters);
@@ -87,13 +91,15 @@ function BaseCtrl($scope) {
 			},
 			//failure callback
 			function(error){
-				$scope.$emit('hideLoader');
+				if(showLoader){
+					$scope.$emit('hideLoader');
+				}
 				if(failureCallBack) {	
 					if(failureCallBackParameters){
 						failureCallBack(error, failureCallBackParameters);
 					}
 					else{
-						failureCallBack(data.errors);
+						failureCallBack(error);
 					}
 				}
 			}

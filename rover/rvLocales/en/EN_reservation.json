@@ -111,8 +111,6 @@
     "BILLING_INFORMATION_FOUND": "Billing information found",
     "ON_SELECTED_CARD": "On selected card",
     "APPLY_TO_RESERVATION": "Apply to reservation",
-    "DONT_APPLY": "Don't apply"
-
-
-
-
+    "DONT_APPLY": "Don't apply",
+    "APPLY_CUSTOMRATE" : "Apply Custom Rate",
+    "MODIFY_CUSTOMRATE" : "Modify Custom Rate"

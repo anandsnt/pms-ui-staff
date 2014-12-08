@@ -5,7 +5,7 @@
       <ul ng-repeat="upgrade in upgradesList" class="room-upgrades-list">
          <li>
             <div class="upgrade-title">
-               <span class="room-number ready"> {{upgrade.upgrade_room_number}} </span>
+               <span class="room-number" ng-class ="getRoomStatusClass(upgrade)"> {{upgrade.upgrade_room_number}} </span>
                <h2> {{upgrade.upgrade_room_type_name}} </h2>
                <a class="toggle has-arrow" ng-click = "toggleUpgradeDescriptionStatus($event,$index)" translate>DETAILS_LABEL</a>
             </div>

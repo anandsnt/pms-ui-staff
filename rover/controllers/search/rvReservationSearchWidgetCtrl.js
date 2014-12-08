@@ -29,7 +29,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name == "rover.search");
 		//Date picker from date should default to current business date - CICO-8490
-		$scope.fromDate = $rootScope.businessDate;
+		$scope.fromDate = RVSearchSrv.fromDate == undefined? $rootScope.businessDate : RVSearchSrv.fromDate;
+		$scope.toDate = RVSearchSrv.toDate == undefined? "" : RVSearchSrv.toDate;
+		
 		RVSearchSrv.fromDate = $rootScope.businessDate;
 
 		$scope.start = 1;
@@ -326,6 +328,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				refreshScroller();
 			} else {
 
+				if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length === 3){
+					$scope.fetchSearchResults();		
+					return false;
+				}
+
 				//see if the new query is the substring of fetch term & the fetched results count < per_page param(which is set to be 100 now)
 				//If so we will do local filtering
 				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 
@@ -371,6 +378,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			} else if($stateParams.type != undefined && query == ''){
 				dataDict.status = $stateParams.type;
 			}
+
+			if($rootScope.isSingleDigitSearch && !isNaN(query) && query.length < 3){
+				dataDict.room_search = true;
+			}
+
 			$scope.firstSearch = false;
 			$scope.fetchTerm = $scope.textInQueryBox;
 			$scope.searchResultsFetchDone = false;
@@ -661,6 +673,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.$on("OUTSIDECLICKED", function(event){
 			$scope.focusOutOnSearchText();
+			//ngDialog.close();
 		});
 
 		//please don't remove this code.... CICO-10091
@@ -709,13 +722,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 		$scope.showCalendar = function(controller) {
-			$scope.focusOnSearchText();
+			$scope.$emit("showSearchResultsArea", true);
 			$scope.focusSearchField = true;
 		    ngDialog.open({
 		        template: '/assets/partials/search/rvDatePickerPopup.html',
 		        controller: controller,
-		        className: 'ngdialog-theme-default single-date-picker',
-		        closeByDocument: true,	        
+		        className: '',
 		        scope: $scope
 		    });
 		};
@@ -726,14 +738,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.onFromDateChanged = function(date){
 			$scope.fromDate = date;
 			$scope.focusSearchField = true;
+			RVSearchSrv.fromDate = date;
 			$scope.fetchSearchResults();
-			RVSearchSrv.fromDate = date;		
+					
 		};
 		$scope.onToDateChanged = function(date){
 			$scope.toDate = date;
 			$scope.focusSearchField = true;
-			$scope.fetchSearchResults();
 			RVSearchSrv.toDate = date;
+			$scope.fetchSearchResults();
 
 		};
 
