@@ -38,7 +38,7 @@
                 <select id="room-type" 
                         name="room-type" 
                         ng-model="gridProps.filter.room_type" 
-                        ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types" ng-change="clickedOnRoomType()">
+                        ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types" ng-change="clickedOnRoomType()" class="placeholder">
                     <option value="" disabled selected="selected">Select</option>
                 </select>
             </div>
@@ -46,70 +46,53 @@
         <div class="entry rate">
             <label for="rate-type">Rate Type</label>
             <div class="faux-select" ng-click="gridProps.filter.toggleRates()">
-                {{gridProps.filter.rate_type}}
+                {{gridProps.filter.rate_type}} Rate
             </div>
-            <div id="diary-rates" class="faux-select-options hidden">
+            <div id="diary-rates" class="faux-select-options hidden"  ng-class="{'showing-search': gridProps.filter.rate_type === 'Corporate'}">
                 <div class="header">
-                    <div>
-                        <label class="radio inline">
-                            <span class="icon-form" ng-class="{active: gridProps.filter.rate_type === 'Standard'}"></span>
-                            <input name="rate-type" 
-                                   id="standard-rate" 
-                                   value="Standard" 
-                                   ng-model="gridProps.filter.rate_type" 
-                                   type="radio" />
-                            Standard
-                        </label>
-                        <label class="radio inline">
-                            <span class="icon-form" ng-class="{active: gridProps.filter.rate_type === 'Corporate'}"></span>
-                            <input name="rate-type" 
-                                   id="corporate-rate" 
-                                   value="Corporate" 
-                                   ng-model="gridProps.filter.rate_type" 
-                                   type="radio" />
-                            Corporate 
-                            <span>Select Account</span>
-                            <ul>
-                                <li ng-repeat="details in gridProps.filter.rate_type_details track by $index">
-                                    {{details.account_name}}
-                                    <span id="confirm-rate" class="icons icon-ok-20" ng-click="confirmRateSelection($index)">Confirm</span>
-                                    <span id="remove-rate" class="icons icon-remove-20" ng-click="discardRateSelection($index)">Remove</span>
-                                </li>
-                            </ul>      
-                        </label>   
-                    </div>
-                    <!-- Corporate Rate is selected & defined -->
-                    <!--<div ng-hide="gridProps.filter.rate_type === 'standard'">
-                        <label class="radio inline">
-                            <input name="rate-type" id="standard-rate" value="standard" type="radio" />
-                            Standard
-                        </label>
-                        <label class="radio inline">
-                            <input name="rate-type" id="corporate-rate" value="corporate" type="radio" checked />
-                            Corporate 
-                            <span>American Airlines</span>
-                            <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
-                            <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
-                        </label>   
-                    </div>-->
+                    
+                    <label class="radio inline">
+                        <span class="icon-form icon-radio" ng-class="{checked: gridProps.filter.rate_type === 'Standard'}"></span>
+                        <input name="rate-type" 
+                               id="standard-rate" 
+                               value="Standard" 
+                               ng-model="gridProps.filter.rate_type" 
+                               type="radio" />
+                        Standard
+                    </label>
+                    <label class="radio inline">
+                        <span class="icon-form icon-radio" ng-class="{checked: gridProps.filter.rate_type === 'Corporate'}"></span>
+                        <input name="rate-type" 
+                               id="corporate-rate" 
+                               value="Corporate" 
+                               ng-model="gridProps.filter.rate_type" 
+                               type="radio" />
+                        Corporate 
+                        <span  id="selected-company" class="placeholder" ng-hide="gridProps.filter.rate" >
+                            Select account
+                        </span>
+                        <span  id="selected-company" class="placeholder active" ng-show="gridProps.filter.rate" >
+                            {{gridProps.filter.rate.label}}
+                        </span>
+                        <button type="button" id="diary-corporate-ok" class="icons icon-ok-10" ng-show="gridProps.filter.rate">
+                            Add
+                        </button>
+                        <button type="button" id="diary-corporate-cancel" class="icons icon-remove-10" ng-show="gridProps.filter.rate">
+                            Cancel
+                        </button>
+                    </label> 
                 </div>
-                <!-- Corporate Rate Search - show only when Corporate Rate is selected -->
-                <div class="entry search" ng-show="gridProps.filter.rate_type === 'Corporate'">
-                    <a href="#" id="diary-clear-query" class="clear-query"><span class="icons icon-clear-search">Clear query</span></a>
-                    <span type="submit" name="submit" class="icons icon-search">Search</span>
-                    <input name="diary-corporate-query" id="diary-corporate-query" class="query" placeholder="Type Company or Travel Agent Name" type="search" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
-                </div>
-                <div class="entry results">
-                    <ul class="search-list" ng-hide="gridProps.filter.rate_type_details.length === 0">
-                        <li ng-repeat="name_card in gridProps.filter.rate_type_details track by $index" ng-click="setAccountID($index)">
-
-                            <div class="icon company-card" ng-if="name_card.account_type === 'COMPANY' && name_card.company_logo === ''"></div>
-                            <div class="icon travel-agent" ng-if="name_card.account_type === 'TRAVELAGENT' && name_card.company_logo == ''"></div>
-                            <img ng-src="{{name_card.company_logo}}" alt="" ng-if="name_card.company_logo !== ''" />
-                            <h4 ng-bind-html="name_card.account_name|highlight:companySearchText:false"></h4>
-                        </li>
-                    </ul>
-                </div>
+                <div id="corporate-rate-search" class="entry search" ng-show="gridProps.filter.rate_type === 'Corporate'">
+                    <a href="#" id="diary-corporate-clear-query" class="clear-query" ng-class="{'visible': corporateSearchText != ''}">
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </a>
+                    <button type="submit" name="submit" class="icons icon-search">
+                        Search
+                    </button>
+                    <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                    <input auto-complete="" auto-options="autocompleteOptions" name="diary-corporate-query" id="diary-corporate-query" class="query ui-autocomplete-input" placeholder="Type Company or Travel Agent Name" type="search" ng-model="corporateSearchText" ul-class="find-diary-card">
+                </div>                           
+                         
             </div>
         </div>
         <div class="entry switch" ng-hide="!isHourlyRateOn">

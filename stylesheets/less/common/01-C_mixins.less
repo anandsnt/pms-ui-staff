@@ -209,7 +209,7 @@
 		background-repeat: repeat;
 	}
 
-	.gradient-horizontal-three-colors(@startColor, @middleColor, @endColor) {
+	.gradient-24hours(@startColor, @middleColor, @endColor) {
 		background-image: -moz-linear-gradient(left,  @startColor 0%, @middleColor 25%, @middleColor 25%, @middleColor 50%, @middleColor 75%, @endColor 100%);
 		background-image: -ms-linear-gradient(left,  @startColor 0%,@middleColor 25%,@middleColor 25%,@middleColor 50%,@middleColor 75%,@endColor 100%);
 		background-image: -webkit-gradient(linear, left top, right top, color-stop(0%,@startColor), color-stop(25%,@middleColor), color-stop(25%,@middleColor), color-stop(50%,@middleColor), color-stop(75%,@middleColor), color-stop(100%,@endColor));
@@ -217,6 +217,17 @@
 		background-image: -o-linear-gradient(left,  @startColor 0%,@middleColor 25%,@middleColor 25%,@middleColor 50%,@middleColor 75%,@endColor 100%);
 		background-image: linear-gradient(to right,  @startColor 0%,@middleColor 25%,@middleColor 25%,@middleColor 50%,@middleColor 75%,@endColor 100%);
 		background-color: mix(@startColor, @endColor, 60%);
+		background-repeat: repeat;
+	}
+
+	.gradient-48hours(@dayColor, @nightColor) {
+		background: -moz-linear-gradient(left,  @nightColor 0%, @dayColor 15%, @dayColor 25%, @dayColor 35%, @nightColor 50%, @dayColor 65%, @dayColor 75%, @dayColor 85%, @nightColor 100%);
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,@nightColor), color-stop(15%,@dayColor), color-stop(25%,@dayColor), color-stop(35%,@dayColor), color-stop(50%,@nightColor), color-stop(65%,@dayColor), color-stop(75%,@dayColor), color-stop(85%,@dayColor), color-stop(100%,@nightColor));
+		background: -webkit-linear-gradient(left,  @nightColor 0%,@dayColor 15%,@dayColor 25%,@dayColor 35%,@nightColor 50%,@dayColor 65%,@dayColor 75%,@dayColor 85%,@nightColor 100%);
+		background: -o-linear-gradient(left,  @nightColor 0%,@dayColor 15%,@dayColor 25%,@dayColor 35%,@nightColor 50%,@dayColor 65%,@dayColor 75%,@dayColor 85%,@nightColor 100%);
+		background: -ms-linear-gradient(left,  @nightColor 0%,@dayColor 15%,@dayColor 25%,@dayColor 35%,@nightColor 50%,@dayColor 65%,@dayColor 75%,@dayColor 85%,@nightColor 100%);
+		background: linear-gradient(to right,  @nightColor 0%,@dayColor 15%,@dayColor 25%,@dayColor 35%,@nightColor 50%,@dayColor 65%,@dayColor 75%,@dayColor 85%,@nightColor 100%);
+		background-color: mix(@dayColor, @nightColor, 60%);
 		background-repeat: repeat;
 	}
 
