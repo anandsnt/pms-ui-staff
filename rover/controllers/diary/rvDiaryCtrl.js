@@ -703,11 +703,12 @@ sntRover
 		----------------------------------------------------------------
 	*/
 
-   	$scope.clearAvailability = function() {
+   	$scope.clearAvailability = function() {   		   		
 		var rooms = $scope.data,
 			room,
             m_status = meta.occupancy.status,
-			reject = function(child) {
+            id = meta.occupancy.id,
+			reject = function(child) {		
 				return angular.lowercase(child[m_status]) === 'available'; 
 			};
 
@@ -756,7 +757,7 @@ sntRover
     	$scope.callAPI(rvDiarySrv.Availability, options);
 	}
 
-    $scope.Availability = function() {	
+    $scope.Availability = function() {
 		$scope.clearAvailability();
 		$scope.resetEdit();
 		$scope.renderGrid();
@@ -819,8 +820,8 @@ sntRover
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
 			rate_type = filter.rate_type,
-			accound_id = filter.account_id; 
-			//GUID = "avl-101"//No need to manipulate this thing from service part, we are deciding
+			accound_id = filter.account_id, 
+			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
 				start = new Date(this.availability.resize.current_arrival_time);
@@ -833,7 +834,7 @@ sntRover
 			room_type_id: rt_filter,
 			rate_type: rate_type,
 			account_id: accound_id,
-			//GUID: GUID
+			GUID: GUID
 		};
 		return paramsToReturn
 	}.bind($scope.gridProps);
