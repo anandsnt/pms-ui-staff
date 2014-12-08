@@ -20,7 +20,7 @@
             <div class="entry-data has-datepicker">
                 <label for="dashboard-date-to">To</label>
                 <button id="dashboard-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(toDate) !=''}">
-                    <span class="icons icon-clear-search" ng-click="toDate = ''; fetchSearchResults();">Clear query</span>
+                    <span class="icons icon-clear-search" ng-click="clearToDateClicked()">Clear query</span>
                 </button>
 
                 <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : dateFormat}}" value="{{toDate| date : dateFormat}}" readonly="" type="text" />
