@@ -30,6 +30,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
 		$scope.renderData = data;
+		$scope.creditCardTypes = [];
+		angular.forEach($scope.renderData, function(item, key) {
+			if(item.name === 'CC'){
+				$scope.creditCardTypes = item.values;
+			};					
+		});		
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
 
