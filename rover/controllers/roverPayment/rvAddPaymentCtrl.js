@@ -379,7 +379,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	var saveNewPayment = function(){
 		var data =  {};
 		data = {
-				"add_to_guest_card": $scope.savePayment.addToGuest,
+				"add_to_guest_card": $scope.dataToSave.addToGuestCard,
 				"reservation_id": $scope.passData.reservationId,
 				"payment_type": $scope.dataToSave.paymentType
 			   };
