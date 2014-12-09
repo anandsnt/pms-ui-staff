@@ -375,7 +375,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				dataDict.is_queued_rooms_only = true;
 			} else if($stateParams.type == "VIP"){
 				dataDict.vip = true;
-			} else if($stateParams.type != undefined && query == ''){
+			} else if($stateParams.type != undefined && query == '' && $stateParams.type !== 'SEARCH_NORMAL'){
 				dataDict.status = $stateParams.type;
 			}
 
