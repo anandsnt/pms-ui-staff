@@ -6,7 +6,7 @@
 			 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			 		</div>
 					<a ng-click="openDeleteSetAsPrimaryModal(payment.id, $index)" class="active-item item-payment primary open-modal float active-item-no-transition" ng-repeat="payment in paymentData.data">
-						<span ng-show = "payment.payment_type_id == 1">
+						<span ng-show = "payment.payment_type == 'CC'">
 							<figure class="card-logo">
 								<img ng-src="/assets/{{payment.card_code}}.png" alt="" />
 							</figure> 

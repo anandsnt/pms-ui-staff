@@ -40,10 +40,11 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'rvDiaryCtrl',
             resolve: {
-                payload: function($rootScope, rvDiarySrv, $stateParams) {
-                    var start_date = new tzIndependentDate($rootScope.businessDate); //Date.now();
-                           
-                    return rvDiarySrv.load(start_date, rvDiarySrv.ArrivalFromCreateReservation());
+                propertyTime: function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchCurrentTime();
+                },
+                payload: function($rootScope, rvDiarySrv, $stateParams, $vault) {
+                    return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(), rvDiarySrv.ArrivalFromCreateReservation());
                 }
             }
         });

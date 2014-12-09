@@ -69,6 +69,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 	//NO need to show existing cards in guest card model
 	if(!$scope.isFromGuestCard){
+		$scope.showAddtoGuestCard = true;
 		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.passData.reservationId, $scope.successPaymentList);
 	}
 	else{		
@@ -273,9 +274,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		
 		$scope.$emit("hideLoader");
 		if(isNewCardAdded){
-			console.log("ccSave success isNewCardAdded");
-			if($scope.cardData.addToGuestCard){
-					console.log("addToGuestCard isNewCardAdded");
+			if($scope.cardData.cardDetails.addToGuestCard){
 				addToGuestCard(data);
 			};
 			(typeof $scope.passData.fromBill == "undefined")?saveNewCardSuccess(data):billScreenCCSaveActions(data);
@@ -316,6 +315,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 								$scope.cardData.tokenDetails.token_no;
 				data.add_to_guest_card = $scope.cardData.cardDetails.addToGuestCard;
 				data.card_name = retrieveCardName();
+
 			}
 			else{
 				creditCardType = $scope.renderData.creditCardType;
