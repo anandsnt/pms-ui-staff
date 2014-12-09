@@ -140,7 +140,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"isSelected": true,
 					"card_code": retrieveCardtype(),
 					"is_primary": false,
-					"payment_type": data.payment_name,
+					"payment_type": "CC",
 					"card_expiry": retrieveExpiryDate(),
 					"mli_token": retrieveCardNumber(),
 					"card_name": cardName,
