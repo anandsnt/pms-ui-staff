@@ -24,7 +24,7 @@
 
         <!-- Card Input type - output only if Six Payments and payment type is CC -->
         <!-- Use only for Six Payments -->
-		<div class="entry" ng-show="paymentGateway !== 'sixpayments' && dataToSave.paymentType ==='CC' ">
+		<div class="entry" ng-show="paymentGateway === 'sixpayments' && dataToSave.paymentType ==='CC' ">
 		    <label for="card-source">Card Input</label>
 		    <div class="switch-button on">
 		        <input name="card-source" id="card-source" value="card-source" type="checkbox" checked />
@@ -58,14 +58,14 @@
 
         <!-- Payment method options -->
         <div class="holder">
-        	<div class="entry full-width" ng-show="showAddtoGuestCard && addmode">
+        	<div class="entry full-width" ng-show="dataToSave.paymentType == 'CC' && !showCCPage">
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.addToGuestCard}">
         			<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.addToGuestCard}"></span>
         			<input ng-model="cardData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
         			{{'ADD_TO_GUEST_CARD' | translate}}
         		</label>
         	</div>  
-        	<div class="entry full-width" >
+        	<div class="entry full-width" ng-show="isStandAlone  && !showCCPage && dataToSave.paymentType == 'CC'">
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.authorize}">
         			<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.authorize}"></span>
         			<input ng-model="cardData.authorize" id="add-in-guest-card" value="1" type="checkbox" />
