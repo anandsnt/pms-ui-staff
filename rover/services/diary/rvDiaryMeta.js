@@ -7,7 +7,8 @@ sntRover
 			type: 'room_type_name',
 			type_id: 'room_type_id',
 			row_children: 'occupancy',
-			hk_status: 'room_status',
+			inactive_slots: 'room_inactive_slots',
+			hk_status: 'room_status',			
 			hk_status_map: {
 				'CLEAN': '',
 				'DIRTY': 'dirty',
@@ -41,6 +42,11 @@ sntRover
 		},
 		availability_count: {
 			id: 'hour'
-		}
+		},
+		inactive_rooms: {
+			id: 'room_id',
+			status: 'service_status',
+			number: 'room_no'
+		},
 	}));
 });
