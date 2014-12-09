@@ -1,5 +1,4 @@
 <!-- Credit card options - hidden until payment type is set as CC -->
-<div id="credit-card-options" ng-controller="RVCardOptionsCtrl">
 	<!-- If hidden by default, add class="hidden" -->
 	<!-- Card toggle - Use only if there are exsiting cards on file -->
 	<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || isFromCreateReservation">
@@ -38,7 +37,7 @@
 		</div>
 		<div class="entry card-number">
 			<label for="card-number">Card number (<span>No spaces</span>)</label>
-			<input name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="15" type="text" />
+			<input name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
 		</div>
 		<div class="entry card-expiry">
 			<label for="expiry-month">Expires (<span>Month/Year</span>)</label>
@@ -58,12 +57,12 @@
 		</div>
 	</div>
 	<!-- New card: Call-In -->
-	<iframe ng-show="shouldShowIframe && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
+	<iframe ng-show="paymentGateway === 'sixpayments' && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
 	<!-- Show only when creating reservation or paying the bill -->
 	<div class="actions" ng-click="cancelCardSelection()" ng-hide="hideCancelCard">
 		<button type="button" class="button blank">
 			Cancel Card selection
 		</button>
 	</div>
-</div>
+
 

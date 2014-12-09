@@ -24,7 +24,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.addmode                 = true;
 	$scope.savePayment = {};
 	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
-	var isNewCardAdded = false;
+	$scope.isNewCardAdded = false;
+	$scope.isManual = false;
 	$scope.dataToSave = {};
 
 	$scope.successRender = function(data){
@@ -86,9 +87,20 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	 * change payment type action - initial add payment screen
 	 */
 	$scope.changePaymentType = function(){
-		$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
-		$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
-		$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC") ? false: true;
+
+		if($scope.paymentGateway !== 'sixpayments'){
+			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
+			$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
+			$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC") ? false: true;
+		}else{
+			return;
+		};
+	};
+
+	$scope.changeOnsiteCallIn = function(){
+		$scope.showCCPage = ($scope.isManual) ? true:false;
+		$scope.addmode =  ($scope.isManual && $scope.cardsList.length === 0) ? true:false;
+		$scope.showInitialScreen = ($scope.isManual) ?false :true;
 	};
 
 
@@ -151,7 +163,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
 		$scope.cardData = tokenDetails;
 		renderScreen();
-		isNewCardAdded = true;
+		$scope.isNewCardAdded = true;
 		$scope.showInitialScreen       = true; 
 		$scope.$digest();
 	});
@@ -254,7 +266,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.$emit("hideLoader");
 		$scope.closeDialog();
 		var dataToGuestList = {};
-		if(isNewCardAdded){
+		if($scope.isNewCardAdded){
 			dataToGuestList = {
 				"id": data.id,
 				"isSelected": true,
@@ -279,8 +291,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	var ccSaveSuccess = function(data){
 		
 		$scope.$emit("hideLoader");
-		if(isNewCardAdded){
-			if($scope.cardData.cardDetails.addToGuestCard){
+		if($scope.isNewCardAdded){
+			if($scope.dataToSave.addToGuestCard){
 				addToGuestCard(data);
 			};
 			(typeof $scope.passData.fromBill == "undefined")?saveNewCardSuccess(data):billScreenCCSaveActions(data);
@@ -310,7 +322,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 							// "reservation_id": $scope.passData.reservationId
 					    // };	
 
-			if(isNewCardAdded){
+			if($scope.isNewCardAdded){
 				creditCardType =
 								(!$scope.cardData.tokenDetails.isSixPayment)? 
 								getCreditCardType($scope.cardData.tokenDetails.cardBrand):
@@ -319,7 +331,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 								(!$scope.cardData.tokenDetails.isSixPayment)?
 								$scope.cardData.tokenDetails.session :
 								$scope.cardData.tokenDetails.token_no;
-				data.add_to_guest_card = $scope.cardData.cardDetails.addToGuestCard;
+				data.add_to_guest_card = $scope.dataToSave.addToGuestCard;
 				data.card_name = retrieveCardName();
 
 			}
@@ -339,7 +351,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 				$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveCCToGuestCardSuccess);
 			}
 			else{
-				if(isNewCardAdded){	
+				if($scope.isNewCardAdded){	
 					data.card_expiry = 	retrieveCardExpiryForApi();
 					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
 				} else {
@@ -367,7 +379,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	var saveNewPayment = function(){
 		var data =  {};
 		data = {
-				"add_to_guest_card": $scope.savePayment.addToGuest,
+				"add_to_guest_card": $scope.dataToSave.addToGuestCard,
 				"reservation_id": $scope.passData.reservationId,
 				"payment_type": $scope.dataToSave.paymentType
 			   };
@@ -438,7 +450,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.showCCPage = false;
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;	
-		isNewCardAdded = false;
+		$scope.isNewCardAdded = false;
 	};
 
 	$scope.$on('cardSelected',function(e,data){
@@ -459,6 +471,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCCPage = false;
 		$scope.dataToSave.paymentType = "";
+		$scope.isManual = false;
 	});
 
 	
