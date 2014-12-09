@@ -8,7 +8,7 @@
 </div>
 <div role="dialog" id="modal" class="modal-show" ng-show="isManualCCEntryEnabled" ng-click="clearErrorMessage()" ng-cloak>
 <form method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC','select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
-    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></button>
+    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"  ng-click="closeDialog()"></button>
     <strong class="h2 message">New payment method</strong>
     <div class="payment-form">
         <!-- Payment type -->
@@ -24,10 +24,10 @@
 
         <!-- Card Input type - output only if Six Payments and payment type is CC -->
         <!-- Use only for Six Payments -->
-		<div class="entry" ng-show="paymentGateway !== 'sixpayments' && dataToSave.paymentType ==='CC' && addmode">
+		<div class="entry" ng-show="paymentGateway === 'sixpayments' && dataToSave.paymentType ==='CC' && !showCCPage">
 		    <label for="card-source">Card Input</label>
-		    <div class="switch-button on">
-		        <input name="card-source" id="card-source" value="card-source" type="checkbox" checked />
+		    <div class="switch-button" ng-class="{'on': !isManual}">
+		        <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="isManual" ng-change="changeOnsiteCallIn()" />
 		        <label class="data-off">
 		            <span class="value">C &amp; P</span>
 		            <span class="switch-icon">Manual</span>
@@ -38,7 +38,6 @@
 		        </label>
 		    </div>
 		</div>
-
         <!-- Selected card - Show when card is selected/added -->
        <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC'" ng-click="showCCList()">
 			<label>Credit Card (<span>Tap to change</span>)</label>
@@ -59,23 +58,23 @@
         <!-- Payment method options -->
         <div class="holder" ng-hide="showCCPage">
         	<div class="entry full-width" >
-        		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.addToGuestCard}">
-        			<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.addToGuestCard}"></span>
-        			<input ng-model="cardData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
+        		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
+        			<span class="icon-form icon-checkbox" ng-class="{'checked': dataToSave.addToGuestCard}"></span>
+        			<input ng-model="dataToSave.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
         			{{'ADD_TO_GUEST_CARD' | translate}}
         		</label>
-        	</div>  
+        	</div> <!--  
         	<div class="entry full-width" >
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.authorize}">
         			<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.authorize}"></span>
         			<input ng-model="cardData.authorize" id="add-in-guest-card" value="1" type="checkbox" />
         			Do Not Authorize Card
         		</label>
-        	</div>  
+        	</div>   -->
         </div>
 
         <!-- New CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P. Never output exsisting cards here! -->
-       <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>       
+       <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>       
 
         <!-- Buttons -->
        	<div class="actions"  ng-show="!showCCPage">
