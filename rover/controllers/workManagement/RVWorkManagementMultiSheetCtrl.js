@@ -169,7 +169,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				updateView();
 				$scope.filterUnassigned();
 				refreshView();
-				console.log($scope.multiSheetState);
 			},
 			refreshView = function() {
 				$scope.refreshScroller('unAssignedRoomList');
@@ -579,7 +578,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				};
 			});
 
-			console.log($scope.multiSheetState);
 
 			// loop each selected employees
 			if ( $scope.multiSheetState.selectedEmployees.length ) {
