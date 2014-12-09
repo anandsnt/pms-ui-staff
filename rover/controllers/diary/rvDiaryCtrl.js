@@ -819,8 +819,8 @@ sntRover
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
-			rate_type = filter.rate_type,
-			accound_id = filter.account_id, 
+			rate_type = filter.rate_type,			
+			account_id = filter.rate_type == 'Corporate' ? filter.rate.id : undefined, 
 			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
@@ -832,10 +832,12 @@ sntRover
 			start_date: start,
 			end_date: end,
 			room_type_id: rt_filter,
-			rate_type: rate_type,
-			account_id: accound_id,
+			rate_type: rate_type,			
 			GUID: GUID
 		};
+		if(account_id) {
+			paramsToReturn.account_id = account_id;
+		}
 		return paramsToReturn
 	}.bind($scope.gridProps);
 
@@ -960,8 +962,12 @@ sntRover
 	};
 
 	$scope.clickedOnRateType = function(){
-		if (!$scope.gridProps.edit.active) {
+		if($scope.gridProps.filter.rate_type === 'Standard') {
+			$scope.gridProps.filter.rate = '';
+		}
+		if (!$scope.gridProps.edit.active && $scope.gridProps.filter.rate_type === 'Standard') {
 			$scope.Availability();
+			$scope.gridProps.filter.toggleRates();
 		}
 	};	
 
@@ -1054,6 +1060,17 @@ sntRover
 	}
 
 
+	$scope.compCardOrTravelAgSelected = function(){
+		if (!$scope.gridProps.edit.active) {
+			$scope.Availability();
+			$scope.gridProps.filter.toggleRates();
+		}
+	};
+
+	$scope.discardSelectedCompCardOrTravelAg = function(){
+		$scope.gridProps.filter.rate = ''; 
+		$scope.corporateSearchText = "";
+	};
 
     // jquery autocomplete Souce handler
     // get two arguments - request object and response callback function
@@ -1131,12 +1148,9 @@ sntRover
         }
     };
 
-    var autoCompleteSelectHandler = function(event, ui) {
-    	console.log('hello');
-    	console.log(ui.item )
-    	$scope.gridProps.filter.rate = ui.item;
-        $scope.$apply();
-       
+    var autoCompleteSelectHandler = function(event, ui) {    	
+    	$scope.gridProps.filter.rate = ui.item;    	
+        $scope.$apply();      
     };
 
     $scope.autocompleteOptions = {

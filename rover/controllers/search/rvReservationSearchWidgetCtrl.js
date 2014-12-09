@@ -750,6 +750,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		};
 
+		$scope.clearToDateClicked = function(){
+			$scope.toDate = ''; 
+			RVSearchSrv.toDate = '';
+			$scope.fetchSearchResults();
+		};
+
 		$scope.getTimeConverted = function(time){
 			if(time == null || time == undefined){
 				return "";

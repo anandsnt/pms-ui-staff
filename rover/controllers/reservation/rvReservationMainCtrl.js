@@ -1398,6 +1398,27 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             checkCancellationPolicy();
         }
 
+        var showDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
+            ngDialog.open({
+                template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
+                controller: 'RVCancelReservationDepositController',
+                scope: $scope,
+                data: JSON.stringify({
+                    state: 'CONFIRM',
+                    cards: false,
+                    penalty:penalty,
+                    deposit:deposit,
+                    depositText: (function() {
+                        if (!isOutOfCancellationPeriod) {
+                            return "Within Cancellation Period. Deposit of "+$rootScope.currencySymbol+deposit+" is refundable.";
+                        } else {
+                            return "Reservation outside of cancellation period. A cancellation fee of "+$rootScope.currencySymbol+penalty+" will be charged, deposit not refundable";
+                        }
+                    })()
+                })
+             });
+        };
+
         var nextState = '';
         var nextStateParameters = '';
 
