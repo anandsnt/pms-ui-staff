@@ -947,16 +947,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
                 });
 
-                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
-                    guests: {
-                        adults: "",
-                        children: "",
-                        infants: ""
-                    },
-                    rate: {
-                        id: ""
-                    }
-                }
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.arrivalDate), 'yyyy-MM-dd')];
             }
             if (reservationDetails.reservation_card.payment_method_used !== "" && reservationDetails.reservation_card.payment_method_used !== null) {
                 $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
@@ -1397,6 +1388,27 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             checkCancellationPolicy();
         }
+
+        var showDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
+            ngDialog.open({
+                template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
+                controller: 'RVCancelReservationDepositController',
+                scope: $scope,
+                data: JSON.stringify({
+                    state: 'CONFIRM',
+                    cards: false,
+                    penalty:penalty,
+                    deposit:deposit,
+                    depositText: (function() {
+                        if (!isOutOfCancellationPeriod) {
+                            return "Within Cancellation Period. Deposit of "+$rootScope.currencySymbol+deposit+" is refundable.";
+                        } else {
+                            return "Reservation outside of cancellation period. A cancellation fee of "+$rootScope.currencySymbol+penalty+" will be charged, deposit not refundable";
+                        }
+                    })()
+                })
+             });
+        };
 
         var nextState = '';
         var nextStateParameters = '';
