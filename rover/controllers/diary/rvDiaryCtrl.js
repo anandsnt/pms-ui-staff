@@ -81,6 +81,74 @@ sntRover
 	    $scope.stats 	= $scope.availability_count;
 	    $scope.selectedReservations = [];
 
+	    var isVaultDataSet = false;
+     	var vaultData = rvDiarySrv.ArrivalFromCreateReservation();
+     	var correctTimeDate = {};
+
+     	if(vaultData) {           
+            isVaultDataSet = true;
+            console.log(vaultData);
+        } else {
+        	// we will be creating our own data base on the current time.
+        	correctTimeDate = correctTime();
+        }
+
+        function correctTime() {
+        	var date = $rootScope.businessDate;
+
+            var now  = new Date(Date.now()),
+                hh   = now.getHours(),
+                mm   = now.getMinutes(),
+                ampm = '';
+
+            var start_time;
+            var start_date;
+
+            // first decide AMP PM
+            if ( hh > 12 ) {
+                ampm = 'PM';
+            } else {
+                ampm = 'AM';
+            }
+
+            // the time must be rounded to next 15min position
+            // if the guest came in at 3:10AM it should be rounded to 3:15AM
+            if ( mm > 45 && hh + 1 < 12 ) {
+                hh += 1;
+                mm = 0;
+            } else if ( mm > 45 && hh + 1 == 12 ) {
+                if ( ampm == 'AM' ) {
+                    hh  = 12;
+                    mm = 0;
+                    ampm    = 'PM';
+                } else {
+                    hh  = 12;
+                    mm = 0;
+                    ampm    = 'AM';
+                }
+            } else if ( mm == 15 || mm == 30 || mm == 45 ) {
+                mm += 15;
+            } else {
+                do {
+                    mm += 1;
+                    if ( mm == 15 || mm == 30 || mm == 45 ) {
+                        break;
+                    }
+                } while ( mm != 15 || mm != 30 || mm != 45 );
+            };
+
+            start_time = new tzIndependentDate(date);
+            start_date   = hh * 3600000 + mm * 60000 + start_time.getTime();
+
+            start_time.setHours(0, 0);
+
+            return {
+        		'start_date'   : start_date,
+        		'__start_date' : start_time
+        	}
+        };
+
+
 	    var number_of_items_resetted = 0;
 
 	    console.log(payload.filter.arrival_time);
@@ -134,11 +202,11 @@ sntRover
 			time span.
 		*/
 			display: {
-				x_offset: 				   payload.display.x_offset.getTime(),
+				x_offset: 				   isVaultDataSet ? (vaultData.start_date-7200000) : (correctTimeDate.start_date-7200000),
 				x_0: 					   undefined,
-				x_origin:                  payload.display.x_origin.getTime(),
-				x_n:                       payload.display.x_n.getTime(),
-				x_n_time:                  (!payload.display.x_n_time ? payload.display.x_n.toComponents().time.convertToReferenceInterval(15) : payload.display.x_n_time),
+				x_origin:                  isVaultDataSet ? vaultData.start_date : correctTimeDate.start_date,
+				x_n:                       isVaultDataSet ? (vaultData.__start_date) : (correctTimeDate.__start_date),
+				x_n_time:                  isVaultDataSet ? (vaultData.__start_date.toComponents().time.convertToReferenceInterval(15)) : (correctTimeDate.__start_date.toComponents().time.convertToReferenceInterval(15)),
 				x_p: 	                   payload.display.x_p.getTime(),
 				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
 				width: 						undefined,
