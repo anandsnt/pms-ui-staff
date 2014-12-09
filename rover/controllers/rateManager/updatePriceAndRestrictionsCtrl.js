@@ -457,7 +457,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                     if($scope.data.nightly_extra_amnt !== ""){
                         restrictionDetails.nightly.value = $scope.data.nightly_sign + $scope.data.nightly_extra_amnt;
                         
-                        if($scope.data.nightly_amnt_diff !== "%"){
+                        if($scope.data.nightly_amnt_diff_sign !== "%"){
                             restrictionDetails.nightly.type = "amount_diff";
                         } else {
                             restrictionDetails.nightly.type = "percent_diff";
@@ -525,6 +525,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                     restrictionDetails.double.value = parseFloat(restrictionDetails.double.value);
                     restrictionDetails.extra_adult.value = parseFloat(restrictionDetails.extra_adult.value);
                     restrictionDetails.child.value = parseFloat(restrictionDetails.child.value);
+                    restrictionDetails.nightly.value = parseFloat(restrictionDetails.nightly.value);
                 }
             }
             details.push(restrictionDetails);
