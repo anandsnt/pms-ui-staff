@@ -91,7 +91,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         });
 
         $scope.$on('GETREFRESHACCORDIAN', function() { 
-            setTimeout(function(){$scope.refreshScroll();}, 3000);
+            setTimeout($scope.refreshScroll, 3000);
         });
     }
 ]);

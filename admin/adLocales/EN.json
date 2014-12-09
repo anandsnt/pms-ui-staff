@@ -458,7 +458,8 @@
     "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display",
     "CANCELLATION_CHARGE_CODE":"Cancellation Charge Code",
     "SELECT_CHARGE_CODE":"Select Charge Code",
-    "NO_SHOW_CHARGE_CODE":"No show charge code"
+    "NO_SHOW_CHARGE_CODE":"No show charge code",
+    "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",

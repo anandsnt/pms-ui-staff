@@ -249,7 +249,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"id": data.id,
 			"isSelected": true,
 			"is_primary":false,
-			"payment_type":data.payment_name,
+			"payment_type":"CC",
 			"payment_type_id": 1
 		};
 		$scope.cardsList.push(dataToGuestList);
@@ -291,6 +291,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	var ccSaveSuccess = function(data){
 		
 		$scope.$emit("hideLoader");
+
 		if($scope.isNewCardAdded){
 			if($scope.dataToSave.addToGuestCard){
 				addToGuestCard(data);
