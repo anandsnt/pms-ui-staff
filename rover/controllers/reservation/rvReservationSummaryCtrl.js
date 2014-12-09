@@ -680,7 +680,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				var stateParams = {
 					id: $scope.reservationData.reservationId,
 					confirmationId: $scope.reservationData.confirmNum,
-					isrefresh: false
+					isrefresh: false,
+					justCreatedRes: true
 				};
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 			} else {

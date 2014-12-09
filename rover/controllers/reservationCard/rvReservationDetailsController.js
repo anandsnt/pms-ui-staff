@@ -48,9 +48,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			};
 		}
 		
-
-		
-
+	
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
 
@@ -86,7 +84,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationData = reservationDetails;
 		
 
-
+		$scope.reservationData.justCreatedRes = (typeof $stateParams.justCreatedRes !== "undefined" && $stateParams.justCreatedRes !== "" && $stateParams.justCreatedRes !== null && $stateParams.justCreatedRes === "true") ? true :false;
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 		$scope.updateSearchCache = function() {
 			// room related details
