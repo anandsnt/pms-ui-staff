@@ -18,10 +18,12 @@ var GridRowItemDrag = React.createClass({
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
 	},
 	__onMouseDown: function(e) {
-		var page_offset, el, props = this.props;
-
+		var page_offset, el, props = this.props, state = this.state;
+		if(props.edit.active && state.dragging) {
+			return;
+		}
 		e.stopPropagation();
-		e.preventDefault();	
+		e.preventDefault();			
 		if(e.button === 0) {
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
@@ -53,6 +55,7 @@ var GridRowItemDrag = React.createClass({
 	__onMouseMove: function(e) {
 		e.stopPropagation();
 		e.preventDefault();
+
 		var state 		= this.state,
 			props 		= this.props,
 			display 	= props.display,
@@ -72,7 +75,7 @@ var GridRowItemDrag = React.createClass({
 			});
 		} else if(state.dragging) {	
 			this.setState({
-				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
+				left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
 				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
 			});
 		}
