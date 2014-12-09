@@ -127,9 +127,12 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['completed'];
 				$_updateWorkStatusFlags();
-			
-				// update 'current_hk_status' to 'task_completion_status', this should call '$scope.manualRoomStatusChanged'
-				$scope.roomDetails.current_hk_status = $scope.roomDetails.task_completion_status;
+				
+				// since this value could be empty
+				if ( !!$scope.roomDetails.task_completion_status ) {
+					// update 'current_hk_status' to 'task_completion_status', this should call '$scope.manualRoomStatusChanged'
+					$scope.roomDetails.current_hk_status = $scope.roomDetails.task_completion_status;
+				};
 			};
 
 			var params = {

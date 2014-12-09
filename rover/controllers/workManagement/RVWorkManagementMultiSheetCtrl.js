@@ -169,6 +169,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				updateView();
 				$scope.filterUnassigned();
 				refreshView();
+				console.log($scope.multiSheetState);
 			},
 			refreshView = function() {
 				$scope.refreshScroller('unAssignedRoomList');
@@ -578,13 +579,14 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				};
 			});
 
+			console.log($scope.multiSheetState);
 
 			// loop each selected employees
 			if ( $scope.multiSheetState.selectedEmployees.length ) {
 				_.each($scope.multiSheetState.selectedEmployees, function(emp) {
 
 					// loop each added rooms in assignements for this employee
-					if ( $scope.multiSheetState.assignments[emp.id].rooms.length ) {
+					if ( $scope.multiSheetState.assignments[emp.id] && $scope.multiSheetState.assignments[emp.id].rooms.length ) {
 
 						// this is the else case - there are rooms
 						_.each($scope.multiSheetState.assignments[emp.id].rooms, function(room) {
