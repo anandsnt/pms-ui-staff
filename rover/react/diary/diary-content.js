@@ -167,6 +167,12 @@ var DiaryContent = React.createClass({
   			});
   		}
 
+		if(hops.call(this.props, 'data') && this.props.data !== nextProps.data) {
+  			this.setState({
+  				data: nextProps.data
+  			});
+  		}
+
   		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
   				viewport: nextProps.viewport
@@ -232,7 +238,8 @@ var DiaryContent = React.createClass({
 				  				rooms: undefined,
 				  				grid: undefined,				  				
 				  			},
-				  			stats: props.stats
+				  			stats: props.stats,
+				  			data : props.data
 						};
 		
 		display.width 				= display.hours / viewport.hours * viewport.width;
