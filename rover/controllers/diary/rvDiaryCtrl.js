@@ -13,6 +13,7 @@ sntRover
 		'rvDiaryMetadata',
 		'rvDiaryUtil',
 		'payload',
+		'propertyTime',
 		'$vault',
 		'$stateParams',
 	function($scope, 
@@ -28,6 +29,7 @@ sntRover
 			 meta, 
 			 util, 
 			 payload,
+			 propertyTime,
 			 $vault, $stateParams) {
 
 	$scope.$emit('showLoader');
@@ -91,13 +93,12 @@ sntRover
             isVaultDataSet = true;
         } else {
         	// we will be creating our own data base on the current time.
-        	correctTimeDate = correctTime();
+        	correctTimeDate = correctTime(propertyTime);
         }
 
-        function correctTime() {
-            var now  = new Date(Date.now()),
-                hh   = now.getHours(),
-                mm   = now.getMinutes(),
+        function correctTime(propertyTime) {
+            var hh   = parseInt(propertyTime.hotel_time.hh),
+                mm   = parseInt(propertyTime.hotel_time.mm),
                 ampm = '';
 
             // first decide AMP PM
@@ -143,15 +144,13 @@ sntRover
 
             return {
         		'start_date'   : start_date,
-        		'__start_date' : __start_date
+        		'__start_date' : __start_date,
+        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + mm
         	}
         };
 
 
 	    var number_of_items_resetted = 0;
-
-	    console.log(payload.filter.arrival_time);
-	    // payload.filter.arrival_time = "6:45";
 
 		$scope.gridProps = {
 			/* Meta data object - allows us to use a single point of reference for various object properties.
@@ -291,7 +290,7 @@ sntRover
 		filter: {						
 	    	arrival_date: 				payload.display.x_n,
 	    	arrival_times:              Array.prototype.slice.call(payload.filter.arrival_times),
-	    	arrival_time: 				payload.filter.arrival_time,
+	    	arrival_time: 				isVaultDataSet ? payload.filter.arrival_time : correctTimeDate.arrival_time,
 	    	reservation_format: 		'h',
 		    range: 						12,
 	    	rate_type: 					payload.filter.rate_type,		    

@@ -40,6 +40,9 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'rvDiaryCtrl',
             resolve: {
+                propertyTime: function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchCurrentTime();
+                },
                 payload: function($rootScope, rvDiarySrv, $stateParams, $vault) {
                     return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(), rvDiarySrv.ArrivalFromCreateReservation());
                 }
