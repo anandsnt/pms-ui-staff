@@ -358,8 +358,9 @@ height: 410px;
 }
 
 /*------------------date -picker ends here-------------------------- */
-
-.ui-match { color: #F6991B; margin-right: 0px !important;}
+.ui-match { 
+  color: #F6991B !important; margin-right: 0px !important;
+}
 .post-button {
   line-height: 50px !important;
   width: 100% !important;
@@ -465,10 +466,6 @@ button.icons.icon-search{
   .icon-search{
     background-image: @icons;
   }
-}
-.switch-button .data-off .switch-icon, .switch-button .data-on .switch-icon, .switch-button .data-off .value,.switch-button .data-on .value {
-
-  font-size:12px !important;
 }
 
 /* Customizing the z-index for loader to use with the popups */
@@ -1224,4 +1221,61 @@ Padding for the ows error popup
 
 .bill-position {
   position: static !important;
+}
+
+
+/* PAYMENTS */
+
+.deposit-actions, .deposit-required-actions{
+	padding-left: 10px;
+	padding-right: 10px;
+	.button{
+	    width: 210px !important;
+	}
+	.button.blue{
+	    float:left !important;
+	}
+	.button.green{
+	    float: right !important;
+	}
+}
+.deposit-required-actions{
+	.button.blue{
+	    float:right !important;
+	}
+	.button.blank{
+	    float: left !important;
+	}
+}
+.authorised-code-text, .amount-paid{
+	text-align: center;
+	margin-right: 70px; 
+	margin-left: 70px;
+	span:first-child{
+		float:left !important;
+	}
+	span:last-child{
+		color:#ff9812 !important;
+		float:right !important;
+	}
+}
+.authorised-code-text{
+	padding-top: 15px;
+}
+.amount-paid{
+	padding-top: 10px; 
+	margin-top: 35px; 
+
+}
+
+.margin-top-1{
+  border-top: 1px solid grey !important;
+}
+
+
+.search-results li:not(.no-content).reservation a .room-number .ui-match {
+  display: inline-block;
+  margin-left: -10px;
+  padding-left: 10px;
+  border-left: 4px solid #f6991b;
 }

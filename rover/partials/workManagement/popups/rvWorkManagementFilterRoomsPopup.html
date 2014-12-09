@@ -1,27 +1,34 @@
 <div id="modal" class="modal-show" ng-cloak>
-	<div class="modal-content new-content">
+	<div class="modal-content new-content" id="filter-room-wrap">
 		<form method="post" action="" id="fitler-rooms" name="fitler-rooms" class="modal-content form fitler-rooms">
+			<style type="text/css">
+				#modal #filter-room-wrap {
+					width: 450px;
+				}
 
+				#fitler-rooms {
+					min-width: 410px;
+				}
+
+				#fitler-rooms .full-width .half-width {
+					width: 49%;
+				}
+
+				#fitler-rooms .full-width .half-width:last-child {
+					float: right;
+				}
+			</style>
 			<span class="h2 message">Filter Rooms</span>
 			<div class="full-width">     
-				<div class="entry half-width">
+	        	<div class="entry half-width">
 					<div class="select full-width">
 		                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="filters.selectedFloor" ng-class="{'placeholder': !filters.selectedFloor}" ng-options="floor.floor_number as floor.description for floor in floors">
 		                    <option value="" selected>All floors</option>
 		                </select>   
 					</div>
 				</div>
-				<div class="entry half-width">	
-					<label class="checkbox inline" ng-class="{checked: filters.vipsOnly}">
-		                <span class="icon-form icon-checkbox" ng-class="{checked: filters.vipsOnly}"></span>
-		                <input type="checkbox" ng-class="{checked: filters.vipsOnly}" ng-model="filters.vipsOnly"/>
-		                Show VIPs only
-		            </label> 
-	        	</div>
-	        </div>
-	            
-	        <div class="full-width clear-both">
-	            <div class="entry half-width">
+
+				<div class="entry half-width">
 					<div class="select">
 		                <select ng-model="filters.selectedFOStatus" ng-class="{'placeholder': !filters.selectedFOStatus}">
 		                    <!-- Add class="placeholder" if value="" is selected -->
@@ -31,6 +38,9 @@
 		                </select>
 					</div>
 				</div>
+	        </div>
+	            
+	        <div class="full-width clear-both">
 				<div class="entry half-width">
 					<div class="select">
 		                <select ng-model="filters.selectedReservationStatus" ng-class="{'placeholder': !filters.selectedReservationStatus}">
@@ -45,6 +55,19 @@
 		                </select>
 					</div>
 				</div>
+
+				<div class="entry half-width">	
+					<label class="checkbox inline" ng-class="{checked: filters.vipsOnly}">
+		                <span class="icon-form icon-checkbox" ng-class="{checked: filters.vipsOnly}"></span>
+		                <input type="checkbox" ng-class="{checked: filters.vipsOnly}" ng-model="filters.vipsOnly"/>
+		                Show VIPs only
+		            </label> 
+		            <label class="checkbox inline" ng-class="{checked: filters.showAllRooms}">
+		                <span class="icon-form icon-checkbox" ng-class="{checked: filters.showAllRooms}"></span>
+		                <input type="checkbox" ng-class="{checked: filters.showAllRooms}" ng-model="filters.showAllRooms"/>
+		                Show all rooms
+		            </label> 
+	        	</div>
 			</div>				
 			
 			<div class="entry full-width clear-both">

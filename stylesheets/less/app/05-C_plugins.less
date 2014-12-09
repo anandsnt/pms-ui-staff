@@ -202,6 +202,32 @@
                 }
             }
         }
+
+        &.find-diary-card {
+			width: 420px;
+
+			li {
+				a {
+					position: relative;
+					padding: 10px 20px 10px 50px;
+					font-size: 18px;
+					line-height: 30px;
+					font-weight: 600;
+					color: @textColor;
+					.show;
+
+					.highlight { color: @logoPrimary; }
+
+					img {
+						position: absolute;
+						top: 10px;
+						left: 10px;
+						.square(30px);
+						#border-radius > .rounded();
+					}
+				}
+			}
+		}
     }
 
 	.ui-helper-hidden-accessible { .hide; }
@@ -268,13 +294,20 @@
 					}
 				}
 
-				&.select-card { 
-					width: 520px; 
+				&.has-card,
+				&.select-card {
+					.holder {
+						.entry { 
+							width: 50%;
+							.pull-left;
 
-					.entry { 
-						&.margin { .calc-width(50, 20); }
+							&.margin { .calc-width(50, 20); }
+						}
 					}
 				}
+
+				&.has-card { width: 460px; }
+				&.select-card { width: 520px; }
 			}
 
 			/* Admin content modal window ***/
@@ -1237,6 +1270,7 @@
 					}
 				}
 
+				&.has-card { width: 460px; }
 				&.select-card { width: 520px; }
 			}
 
@@ -2386,6 +2420,68 @@
 						width: auto;
 					}
 				} 
+			}
+
+			/* Deposit required ***/
+			&.deposit-required {
+				width: 520px;
+
+				.payment-form {
+					.actions {
+						padding-top: 0;
+						border-top: 0; 
+
+		            	.button { 
+		            		display: inline-block;
+			                width: auto;
+			                line-height: 24px;
+			                padding: 15px 25px;
+
+		            		&.blank { padding: 0 25px; }
+		            		&.blue { margin-left: 20px; } 
+		            	}
+		            }
+
+		            > .actions {
+						.button {
+							line-height: 50px;
+							padding: 0 25px;
+						}
+					}
+
+					.notice { 
+						text-align: left; 
+
+						.actions { 
+			                .button { 
+			                	&.blue { margin: 0 20px 0 0; } 
+			                }
+			            }
+
+			            &.error,
+			            &.success {
+			            	font-size: 14px;
+							line-height: 1.2em;
+							text-transform: none;
+							text-align: center;
+			            }
+					}
+
+					.feedback { 
+						padding-top: 19px; 
+
+						.transaction { margin: 19px auto 0; }
+					}
+				}
+
+	            &.select-card {
+	            	.payment-form {
+		            	> .actions {
+		            		padding-top: 19px;
+		            		border-top: 1px solid rgba(0,0,0,.1);
+		            	}
+		            }
+	            }
 			}
 		}
 	}

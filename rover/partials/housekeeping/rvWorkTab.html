@@ -11,8 +11,7 @@
     <div class="select">
       <!-- standalone PMS -->
       <!-- Disable when cleaning in progrees. -->
-      <!-- ng-disabled="isCleaning" -->
-      <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disable="!!task_completion_status">
+      <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disable="isStarted">
         <option value="">  </option>
       </select>
 
@@ -37,17 +36,17 @@
       </div>
 
       <!-- 2.B Work Tab - Room is dirty -->
-      <div ng-if="!ooOsTitle && checkShow('dirty') && !isCleaning">
+      <div ng-if="!ooOsTitle && checkShow('dirty') && !isStarted">
         <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
       </div>
 
       <!-- 2.C Work Tab - Room is pickup -->
-      <div ng-if="!ooOsTitle && checkShow('pickup') && !isCleaning">
+      <div ng-if="!ooOsTitle && checkShow('pickup') && !isStarted">
         <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
       </div>
 
       <!-- 2.D Work Tab - Room cleaning in progress -->
-      <div ng-if="!ooOsTitle && isCleaning">
+      <div ng-if="!ooOsTitle && isStarted">
         <strong class="h2">Work is in Progress.</strong>
       </div>
     </div>
@@ -55,40 +54,37 @@
     
     <!-- this is a standalone hotel -->
     <div ng-if="isStandAlone">
-      <!-- 2.A Work Tab - Room is clean -->
-      <div ng-if="checkShow('clean')">
-        <strong class="h2">Room is clean.</strong>
+      <!-- Housekeeping is in progress -->
+      <div ng-if="isStarted">
+        <strong class="h2">Work is in Progress.</strong>
+        <span class="progress"></span>
+        <button type="button" class="button green action" ng-click="doneWorking()">Done!</button>
+      </div>
+
+      <!-- Housekeeping is completed -->
+      <div ng-if="isCompleted">
+        <strong class="h2">Task Completed.</strong>
         <span class="icon-no-content icon-ok"></span> 
       </div>
       
-      <!-- 2.B Work Tab - Room is dirty -->
-      <div ng-if="checkShow('dirty') && !isCleaning">
-        <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
+      <!-- Housekeeping yet to start or not required yet -->
+      <div ng-if="!isStarted && !isCompleted">
+        <!-- Room is clean -->
+        <strong ng-if="checkShow('clean')" class="h2">Room is clean.</strong>
+        
+        <!-- Room is clean -->
+        <strong ng-if="checkShow('dirty')" class="h2"> Room is <span class="red">Dirty</span>.</strong>
 
-        <div ng-if="roomDetails.assigned_maid">
-          <button type="button" class="button blue action" ng-click="startCleaning()">Start</button> 
-          <!-- Show this only if room is assigned to staff memeber -->
-          <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate, from : roomDetails.id })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
-        </div>
-      </div>
-
-      <!-- 2.C Work Tab - Room is pickup -->
-      <div ng-if="checkShow('pickup') && !isCleaning">
-        <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
-
-        <div ng-if="roomDetails.assigned_maid">
-          <button type="button" class="button blue action" ng-click="startCleaning()">Start</button>
-          <!-- Show this only if room is assigned to staff memeber -->
-          <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate, from: roomDetails.id })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
-        </div>
+        <!-- Room is pickup -->
+        <strong ng-if="checkShow('pickup')" class="h2"> <span class="orange">Pickup</span> room.</strong>
       </div>
       
-      <!-- 2.D Work Tab - Room cleaning in progress -->
-      <div ng-if="(checkShow('dirty') || checkShow('pickup')) && isCleaning">
-        <strong class="h2">Work is in Progress.</strong>
-        <span class="progress"></span>
-        <button type="button" class="button green action" ng-click="doneCleaning()">Done!</button>
+      <!-- To start cleaning -->
+      <div ng-if="isOpen">
+        <button type="button" class="button blue action" ng-click="startWorking()">Start</button>
+        <a ng-if="roomDetails.assigned_maid" ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate, from: roomDetails.id })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
       </div>
+
     </div>
 
   </div>

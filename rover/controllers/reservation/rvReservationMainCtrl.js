@@ -217,6 +217,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 }
             };
         };
+
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
             $scope.reservationDetails.guestCard.id = "";
@@ -225,6 +226,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationDetails.companyCard.futureReservations = 0;
             $scope.reservationDetails.travelAgent.id = "";
             $scope.reservationDetails.travelAgent.futureReservations = 0;
+
+            $scope.viewState = {
+                isAddNewCard: false,
+                pendingRemoval: {
+                    status: false,
+                    cardType: ""
+                },
+                identifier: "CREATION",
+                lastCardSlot: {
+                    cardType: ""
+                },
+                reservationStatus: {
+                    confirm: false,
+                    number: null
+                }
+            };
         };
 
 
@@ -810,6 +827,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.departureDate = reservationDetails.reservation_card.departure_date;
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
+            $scope.reservationData.isHourly = reservationDetails.reservation_card.is_hourly_reservation;
+
             /** CICO-6135
              *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
              */
@@ -818,37 +837,44 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var timeParts = reservationDetails.reservation_card.arrival_time.trim().split(" ");
                 //flooring to nearest 15th as the select element's options are in 15s
                 var hourMinutes = timeParts[0].split(":");
-                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
+                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkinTime = {
                     hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
                     mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
                     ampm: timeParts[1]
                 }
+                // reservationDetails.reservation_card.arrival_time = parseInt($scope.reservationData.checkinTime.hh) + ":" + $scope.reservationData.checkinTime.mm + " " + $scope.reservationData.checkinTime.ampm;
             }
+
+
             // Handling late checkout
             if (reservationDetails.reservation_card.is_opted_late_checkout && reservationDetails.reservation_card.late_checkout_time) {
                 var timeParts = reservationDetails.reservation_card.late_checkout_time.trim().split(" ");
                 var hourMinutes = timeParts[0].split(":");
                 //flooring to nearest 15th as the select element's options are in 15s
-                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
+                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkoutTime = {
                     hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
                     mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
                     ampm: timeParts[1]
                 }
+                // reservationDetails.reservation_card.late_checkout_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
             }
             //  reservationDetails.reservation_card.departureDate ! = null   
             else if (reservationDetails.reservation_card.departure_time) {
                 var timeParts = reservationDetails.reservation_card.departure_time.trim().split(" ");
                 var hourMinutes = timeParts[0].split(":");
                 //flooring to nearest 15th as the select element's options are in 15s
-                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
+                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkoutTime = {
                     hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
                     mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
                     ampm: timeParts[1]
                 }
+                // reservationDetails.reservation_card.departure_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
             }
+
+
 
             // cards
             $scope.reservationData.company.id = $scope.reservationListData.company_id;
@@ -879,6 +905,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             */
             $scope.reservationData.stayDays = [];
             $scope.reservationData.rooms[0].rateId = [];
+            $scope.reservationData.rooms[0].stayDates = {};
 
             $scope.reservationData.is_modified = false;
 
@@ -1460,6 +1487,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var updateSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.deposit_amount;
+                    $scope.$broadcast('UPDATEFEE');
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
                     if (nextState) {
@@ -1498,6 +1526,48 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
 
             $scope.invokeApi(RVReservationSummarySrv.fetchInitialData, {}, fetchSuccess, fetchFailure);
+        }
+
+        $scope.resetAddons = function() {
+            angular.forEach($scope.reservationData.rooms, function(room) {
+                room.addons = []
+            });
+        }
+
+        $scope.computeHourlyTotalandTaxes = function() {            
+            $scope.reservationData.totalStayCost = 0.0;
+            $scope.reservationData.totalTax = 0.0;
+            $scope.reservationData.taxDetails = {};
+            _.each($scope.reservationData.rooms, function(room, roomNumber) {
+                var taxes = $scope.otherData.hourlyTaxInfo[0];
+                room.amount = 0.0;
+                _.each(room.stayDates, function(stayDate) {
+                    stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
+                    if (isNaN(stayDate.rateDetails.modified_amount)) {
+                        stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+                    }
+                    room.amount = parseFloat(room.amount) + parseFloat(stayDate.rateDetails.modified_amount);
+
+                });
+                room.rateTotal = room.amount;
+                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal);
+
+                if (taxes) {
+                    /**
+                     * Calculating taxApplied just for the arrival date, as this being the case for hourly reservations.
+                     */
+                    var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes.tax, roomNumber);
+                    _.each(taxApplied.taxDescription, function(description, index) {
+                        if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+                            $scope.reservationData.taxDetails[description.id] = description;
+                        } else {
+                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
+                        }
+                    });
+                    $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+                    $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
+                }
+            });
         }
     }
 ]);
