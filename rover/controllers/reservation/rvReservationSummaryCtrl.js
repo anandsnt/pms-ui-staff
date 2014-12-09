@@ -66,7 +66,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 		};
 
-		$scope.$on("UPDATEFEE",$scope.calculateFee);
+		$scope.$on("UPDATEFEE", $scope.calculateFee);
 
 		// CICO-9457 : Data for fees details.
 
@@ -212,7 +212,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.showCC = false;
 			$scope.showSelectedCreditCard = true;
 			// CICO-9457 : Data for fees details - standalone only.	
-			if($scope.isStandAlone)	{
+			if ($scope.isStandAlone) {
 				$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 				$scope.setupFeeData();
 			}
@@ -241,7 +241,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			return referenceTextAvailable;
 		};
 
-		$scope.tryAgain = function(){
+		$scope.tryAgain = function() {
 			$scope.errorMessage = "";
 			$scope.depositData.attempted = false;
 			$scope.depositData.depositSuccess = false;
@@ -250,7 +250,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.payDeposit = function() {
 			var onPaymentSuccess = function(data) {
-				console.log(data);
+					console.log(data);
 					$scope.depositData.attempted = true;
 					$scope.depositData.depositSuccess = true;
 					$scope.depositData.authorizationCode = data.authorization_code;
@@ -309,15 +309,52 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		// set the previous state -- 
 
 		if ($stateParams.reservation != "HOURLY") {
-			$rootScope.setPrevState = {
-				title: $filter('translate')('ENHANCE_STAY'),
-				name: 'rover.reservation.staycard.mainCard.addons',
-				param: {
-					from_date: $scope.reservationData.arrivalDate,
-					to_date: $scope.reservationData.departureDate
+			if ($rootScope.isAddonOn) {
+				$rootScope.setPrevState = {
+					title: $filter('translate')('ENHANCE_STAY'),
+					name: 'rover.reservation.staycard.mainCard.addons',
+					param: {
+						from_date: $scope.reservationData.arrivalDate,
+						to_date: $scope.reservationData.departureDate
+					}
+				};
+			} else {
+				$rootScope.setPrevState = {
+					title: $filter('translate')('ROOM_RATES'),
+					name: 'rover.reservation.staycard.mainCard.roomType',
+					param: {
+						from_date: $scope.reservationData.arrivalDate,
+						to_date: $scope.reservationData.departureDate,
+						view: "ROOM_RATE",
+						company_id: null,
+						travel_agent_id: null,
+						fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
+					}
 				}
-			};
+			}
+		}
+
+		var save = function() {
+			if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
+				$scope.saveReservation();
+			}
 		};
+
+		var createReservation = function() {
+			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+				$timeout(function() {
+					$scope.$emit('PROMPTCARD');
+				}, 3000);
+				$scope.$watch("reservationData.guest.id", save);
+				$scope.$watch("reservationData.company.id", save);
+				$scope.$watch("reservationData.travelAgent.id", save);
+			} else {
+				$scope.saveReservation();
+			}
+		}
+
+		// 	};
+		// };
 
 
 		$scope.isContinueDisabled = function() {
@@ -332,11 +369,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			return (idPresent || isPaymentTypeNotSelected || !depositPaid);
 		};
 
-		var save = function() {
-			if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
-				$scope.saveReservation();
-			}
-		};
+
 
 		$scope.init = function() {
 
@@ -356,27 +389,37 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($stateParams.reservation == "HOURLY") {
 				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
-				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
-				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
-
-				if (temporaryReservationDataFromDiaryScreen) {
-					var getRoomsSuccess = function(data) {
-						var roomsArray = {};
-						angular.forEach(data.rooms, function(value, key) {
-							var roomKey = value.id;
-							roomsArray[roomKey] = value;
-						});
-						$scope.createReservationDataFromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
-					};
-					$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
+				if (!$rootScope.isAddonOn || $stateParams.mode == "EDIT_HOURLY") {
+					var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
+					temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
+					if (temporaryReservationDataFromDiaryScreen) {
+						var getRoomsSuccess = function(data) {
+							var roomsArray = {};
+							angular.forEach(data.rooms, function(value, key) {
+								var roomKey = value.id;
+								roomsArray[roomKey] = value;
+							});
+							$scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
+							createReservation();
+							refreshScrolls();
+						};
+						$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
+					}
+				} else {
+					createReservation();
+					refreshScrolls();
 				}
 				$scope.depositData = {};
-				$scope.depositData.isDepositRequired = false;
-				$scope.depositData.description = "";
-				$scope.reservationData.depositAmount = 0.00;
-				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
-				$scope.depositData.attempted = false;
-				$scope.depositData.depositAttemptFailure = false;
+				if (!$scope.reservationData.depositData) {
+					$scope.depositData.isDepositRequired = false;
+					$scope.depositData.description = "";
+					$scope.reservationData.depositAmount = 0.00;
+					$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
+					$scope.depositData.attempted = false;
+					$scope.depositData.depositAttemptFailure = false;
+				} else {
+					$scope.depositData = $scope.reservationData.depositData;
+				}
 				$scope.fetchDemoGraphics();
 			} else {
 				$scope.depositData = {};
@@ -386,14 +429,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
 				$scope.depositData.attempted = false;
 				$scope.depositData.depositAttemptFailure = false;
-				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-					$scope.$emit('PROMPTCARD');
-					$scope.$watch("reservationData.guest.id", save);
-					$scope.$watch("reservationData.company.id", save);
-					$scope.$watch("reservationData.travelAgent.id", save);
-				} else {
-					$scope.saveReservation();
-				}
+				createReservation();
 			}
 
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
@@ -412,14 +448,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			refreshScrolls();
 		};
 
-		var resetDepositInfo = function(deposit_policy) {
-			$scope.depositData = {};
-			$scope.depositData.isDepositRequired = true;
-			$scope.depositData.description = deposit_policy.description;
-			$scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
-			$scope.depositData.attempted = false;
-			$scope.depositData.depositAttemptFailure = false;
-		}
+		$scope.$on("UPDATEDEPOSIT",function(){
+			$scope.depositData = $scope.reservationData.depositData;
+		});
 
 		var refreshScrolls = function() {
 			$timeout(function() {
@@ -427,162 +458,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.refreshScroller('paymentInfo');
 			}, 1500);
 		};
-
-		var ratesFetched = function(data) {
-			$scope.otherData.taxesMeta = data.tax_codes;
-			$scope.otherData.hourlyTaxInfo = data.tax_information;
-			$scope.reservationData.totalTax = 0;
-			$scope.computeHourlyTotalandTaxes();
-			
-			if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-				$scope.$emit('PROMPTCARD');
-				$scope.$watch("reservationData.guest.id", save);
-				$scope.$watch("reservationData.company.id", save);
-				$scope.$watch("reservationData.travelAgent.id", save);
-			} else {
-				$scope.saveReservation();
-			}
-
-			$timeout(function() {
-				$scope.$emit('hideLoader');
-			}, 500);
-		};
-
-		$scope.createReservationDataFromDiary = function(roomsArray, tData) {
-
-			angular.forEach(tData.rooms, function(value, key) {
-				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
-				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
-				value['roomNumber'] = roomsArray[value.room_id].room_no;
-			});
-
-			this.rooms = [];
-			this.rooms = tData.rooms;
-			this.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
-			this.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
-			var arrivalTimeSplit = tData.arrival_time.split(":");
-
-			this.checkinTime.hh = arrivalTimeSplit[0];
-			this.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
-			if (this.checkinTime.mm.length == 1) {
-				this.checkinTime.mm = "0" + this.checkinTime.mm;
-			}
-			this.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
-			if (!(this.checkinTime.ampm === "AM" || this.checkinTime.ampm === "PM")) {
-				if (parseInt(this.checkinTime.hh) >= 12) {
-					this.checkinTime.hh = Math.abs(parseInt(this.checkinTime.hh) - 12) + "";
-
-					this.checkinTime.ampm = "PM";
-				} else {
-					this.checkinTime.ampm = "AM";
-				}
-			}
-			if (Math.abs(parseInt(this.checkinTime.hh) - 12) == 0 || this.checkinTime.hh === "00" || this.checkinTime.hh === "0") {
-				this.checkinTime.hh = "12";
-			}
-			if (this.checkinTime.hh.length == 1) {
-				this.checkinTime.hh = "0" + this.checkinTime.hh;
-			}
-
-			var departureTimeSplit = tData.departure_time.split(":");
-			this.checkoutTime.hh = departureTimeSplit[0];
-			this.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
-
-			if (this.checkoutTime.mm.length == 1) {
-				this.checkoutTime.mm = "0" + this.checkoutTime.mm;
-			}
-			this.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
-
-			if (!(this.checkoutTime.ampm === "AM" || this.checkoutTime.ampm === "PM")) {
-				if (parseInt(this.checkoutTime.hh) >= 12) {
-					this.checkoutTime.hh = Math.abs(parseInt(this.checkoutTime.hh) - 12) + "";
-					this.checkoutTime.ampm = "PM";
-				} else {
-					this.checkoutTime.ampm = "AM";
-				}
-			}
-			if (Math.abs(parseInt(this.checkoutTime.hh) - 12) == "0" || this.checkoutTime.hh === "00" || this.checkoutTime.hh === "0") {
-				this.checkoutTime.hh = "12";
-			}
-			if (this.checkoutTime.hh.length == 1) {
-				this.checkoutTime.hh = "0" + this.checkoutTime.hh;
-			}
-			var hResData = tData.rooms[0];
-
-			this.reservationId = hResData.reservation_id;
-			this.confirmNum = hResData.confirmation_id;
-
-
-			if (this.reservationId) {
-				$scope.viewState.identifier = "CONFIRM";
-			} else {
-				$scope.viewState.identifier = "CREATION";
-				$scope.viewState.reservationStatus.confirm = false;
-			}
-
-			$scope.reservationDetails.guestCard = {};
-			$scope.reservationDetails.guestCard.id = hResData.guest_card_id;
-			$scope.reservationDetails.travelAgent = {};
-			$scope.reservationDetails.travelAgent.id = hResData.travel_agent_id;
-			$scope.reservationDetails.companyCard = {};
-			$scope.reservationDetails.companyCard.id = hResData.company_card_id;
-
-
-			$scope.reservationData.guest = {};
-			$scope.reservationData.guest.id = hResData.guest_card_id;
-			$scope.reservationData.travelAgent = {};
-			$scope.reservationData.travelAgent.id = hResData.travel_agent_id;
-			$scope.reservationData.company = {};
-			$scope.reservationData.company.id = hResData.company_card_id;
-
-			$scope.initGuestCard();
-			$scope.initCompanyCard();
-			$scope.initTravelAgentCard();
-
-
-			this.totalStayCost = 0;
-			var rateIdSet = [];
-			var self = this;
-			_.each(this.rooms, function(room) {
-				room.stayDates = {};
-				rateIdSet.push(room.rateId);
-				room.rateTotal = room.amount;
-				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(room.amount);
-				var success = function(data) {
-					room.rateName = data.name;
-					if (data.deposit_policy_id) {
-						resetDepositInfo(data.deposit_policy);
-					}
-					refreshScrolls();
-				};
-				var roomAmount = parseFloat(room.amount).toFixed(2);
-				$scope.invokeApi(RVReservationSummarySrv.getRateDetails, {
-					id: room.rateId
-				}, success);
-				for (var ms = new tzIndependentDate(self.arrivalDate) * 1, last = new tzIndependentDate(self.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-
-					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
-						guests: {
-							adults: room.numAdults,
-							children: room.numChildren,
-							infants: room.numInfants
-						},
-						rate: {
-							id: room.rateId
-						},
-						rateDetails: {
-							actual_amount: roomAmount,
-							modified_amount: roomAmount,
-							is_discount_allowed: 'true'
-						}
-					};
-				}
-			});
-
-			$scope.invokeApi(RVReservationSummarySrv.getTaxDetails, {
-				rate_ids: rateIdSet
-			}, ratesFetched);
-		}.bind($scope.reservationData);
 
 		/**
 		 * Fetches all the payment methods
@@ -628,7 +503,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				}
 
 			});
-			if($scope.reservationData.paymentType.type.value == 'CC'){
+			if ($scope.reservationData.paymentType.type.value == 'CC') {
 
 				postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
 			}
@@ -814,7 +689,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$state.go('rover.reservation.search');
 			}
 		};
-		
+
 		$scope.reservationData.paymentType.type.value = "";
 
 		$scope.changePaymentType = function() {
@@ -1045,10 +920,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		//From diary screen create reservation guest data is available only after reaching the summary ctrl
 		//At that time iframe fname and lname is set as null or undefined since data not available
 		//here refreshing the iframe with name of guest
-		$scope.$on("resetGuestTab", function(e, data){
+		$scope.$on("resetGuestTab", function(e, data) {
 			var guestData = {
 				"fname": $scope.reservationData.guest.firstName,
-				"lname":  $scope.reservationData.guest.lastName
+				"lname": $scope.reservationData.guest.lastName
 			};
 			//CICO-11413 - Since card name is taken from pass data.
 			$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
