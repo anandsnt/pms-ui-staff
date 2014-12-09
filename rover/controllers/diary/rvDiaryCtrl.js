@@ -89,22 +89,16 @@ sntRover
 
      	if(vaultData) {           
             isVaultDataSet = true;
-            console.log(vaultData);
         } else {
         	// we will be creating our own data base on the current time.
         	correctTimeDate = correctTime();
         }
 
         function correctTime() {
-        	var date = $rootScope.businessDate;
-
             var now  = new Date(Date.now()),
                 hh   = now.getHours(),
                 mm   = now.getMinutes(),
                 ampm = '';
-
-            var start_time;
-            var start_date;
 
             // first decide AMP PM
             if ( hh > 12 ) {
@@ -139,14 +133,17 @@ sntRover
                 } while ( mm != 15 || mm != 30 || mm != 45 );
             };
 
-            start_time = new tzIndependentDate(date);
-            start_date   = hh * 3600000 + mm * 60000 + start_time.getTime();
+            var date         = $rootScope.businessDate,
+            	fromDate     = new tzIndependentDate(date).getTime(),
+            	ms           = new tzIndependentDate(fromDate).setHours(0, 0, 0),
+            	start_date   = (hh * 3600000) + (mm * 60000) + ms,
+            	__start_date = new tzIndependentDate(date);
 
-            start_time.setHours(0, 0);
+            __start_date.setHours(0, 0, 0);
 
             return {
         		'start_date'   : start_date,
-        		'__start_date' : start_time
+        		'__start_date' : __start_date
         	}
         };
 
