@@ -32,13 +32,11 @@
             <table class="shift-details" ng-show="detailsList.length>0">
                 <caption class="closed" ng-hide="details.status ==='OPEN'">
                     <strong>
-                        {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}}
-                    </strong> 
+                        {{data.selectedCashier}} |</strong>  {{details.status}} by {{details.user}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}}
                 </caption>
                 <caption class="opened" ng-show="details.status ==='OPEN'">
                      <strong>
-                        {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}} 
-                    </strong> 
+                        {{data.selectedCashier}} |</strong>  Opened by {{details.user}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}} 
                 </caption>
                 <tbody>
                     <tr>

@@ -28,9 +28,21 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     $scope.data.isRevenueToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
+    $scope.data.selectedCashier = "";
 	
     $scope.setScroller('employee-content');
     $scope.setScroller('department-content');
+
+    var retrieveCashierName = function(){
+        if($scope.data.filterData.selectedCashier !== ""){
+            angular.forEach($scope.data.filterData.cashiers,function(item, index) {
+                if(item.id == $scope.data.filterData.selectedCashier){
+                   $scope.data.selectedCashier = item.name;
+                }
+            });
+        };
+    };
+    retrieveCashierName();    
 
 	/* Handling different date picker clicks */
 	$scope.clickedFromDate = function(){
@@ -441,6 +453,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.cashierFilterChanged = function(){
        //call filter service
        callCashierFilterService();
+       retrieveCashierName();
     };
 
     /* Cashier filter ends here */
