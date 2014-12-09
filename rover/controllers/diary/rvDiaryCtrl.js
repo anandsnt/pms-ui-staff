@@ -373,7 +373,6 @@ sntRover
 		    $scope.onDragStart = function(room, reservation) {
 		    	prevRoom = room;
 		    	prevTime = reservation[meta.occupancy.start_date];
-
 		    	if($scope.gridProps.edit.active) {
 		    		console.log('Reservation room transfer initiated:  ', room, reservation);
 		    	}
@@ -381,15 +380,14 @@ sntRover
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
 		    	var availability;
-
 		    	if($scope.gridProps.edit.active) {
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
-
+			    	
 					if(availability) {
 				    	util.reservationRoomTransfer($scope.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
 					    
 				    	$scope.gridProps.currentResizeItemRow = nextRoom;
-
+				    	resizeEndForExistingReservation(nextRoom, reservation);
 				    	$scope.renderGrid();
 				    }
 				}
@@ -779,7 +777,7 @@ sntRover
 			
 			rate_type 	= this.filter.rate_type,
 			
-			room_id 	= this.currentResizeItem.room_id,
+			room_id 	= this.currentResizeItemRow.id,
 			reservation_id = this.currentResizeItem.reservation_id,
 
 			arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time;

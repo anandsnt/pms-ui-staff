@@ -19,9 +19,7 @@ var GridRowItemDrag = React.createClass({
 	},
 	__onMouseDown: function(e) {
 		var page_offset, el, props = this.props, state = this.state;
-		if(props.edit.active && state.dragging) {
-			return;
-		}
+		
 		e.stopPropagation();
 		e.preventDefault();			
 		if(e.button === 0) {
@@ -64,6 +62,15 @@ var GridRowItemDrag = React.createClass({
 			adj_height 	= display.row_height + display.row_height_margin,
 			model;
 
+		if(!props.edit.active && !props.edit.passive){
+			return;
+		}
+
+		if(props.edit.active && (props.data.key != props.currentDragItem.key)){
+			return;
+		}
+		
+
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
 
@@ -91,7 +98,14 @@ var GridRowItemDrag = React.createClass({
 		
 		e.stopPropagation();
 		e.preventDefault();
+		/*if(!props.edit.active && !props.edit.passive){
+			return;
+		}*/
 
+		if(state.dragging && props.edit.active && (props.data.key != props.currentDragItem.key)){
+			return;
+		}
+		
 		if(state.dragging) {
 			this.setState({
 				dragging: false,
