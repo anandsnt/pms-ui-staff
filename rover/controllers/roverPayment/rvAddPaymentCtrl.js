@@ -27,6 +27,11 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.isNewCardAdded = false;
 	$scope.isManual = false;
 	$scope.dataToSave = {};
+	$scope.setScroller('cardsList');
+
+    var refreshCardScroll = function() {
+        $scope.refreshScroller('cardsList');
+    };
 
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
@@ -57,6 +62,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		 		 	$scope.cardsList.push(obj);
 				};
 			});
+			refreshCardScroll();
 		};
 		
 		angular.forEach($scope.cardsList, function(value, key) {
@@ -92,6 +98,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
 			$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC") ? false: true;
+			refreshCardScroll();
 		}else{
 			return;
 		};
@@ -101,6 +108,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.showCCPage = ($scope.isManual) ? true:false;
 		$scope.addmode =  ($scope.isManual && $scope.cardsList.length === 0) ? true:false;
 		$scope.showInitialScreen = ($scope.isManual) ?false :true;
+		refreshCardScroll();
 	};
 
 
