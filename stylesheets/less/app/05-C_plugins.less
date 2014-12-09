@@ -202,6 +202,32 @@
                 }
             }
         }
+
+        &.find-diary-card {
+			width: 420px;
+
+			li {
+				a {
+					position: relative;
+					padding: 10px 20px 10px 50px;
+					font-size: 18px;
+					line-height: 30px;
+					font-weight: 600;
+					color: @textColor;
+					.show;
+
+					.highlight { color: @logoPrimary; }
+
+					img {
+						position: absolute;
+						top: 10px;
+						left: 10px;
+						.square(30px);
+						#border-radius > .rounded();
+					}
+				}
+			}
+		}
     }
 
 	.ui-helper-hidden-accessible { .hide; }
