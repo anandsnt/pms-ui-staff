@@ -66,19 +66,18 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // strip $scope.fullCheckinTime to generate hh, mm, ampm
         // map $scope.fullCheckinTime to $scope.reservationData.checkinTime
         $scope.mapToCheckinTime = function() {
+                // strip 'fullCheckinTime' to generate hh, mm, ampm
+                var ampm = $scope.fullCheckinTime.split(' ')[1];
+                var time = $scope.fullCheckinTime.split(' ')[0];
+                var hh   = time.length ? time.split(':')[0] : '';
+                var mm   = time.length ? time.split(':')[1] : '';
 
-            // strip 'fullCheckinTime' to generate hh, mm, ampm
-            var ampm = $scope.fullCheckinTime.split(' ')[1];
-            var time = $scope.fullCheckinTime.split(' ')[0];
-            var hh   = time.length ? time.split(':')[0] : '';
-            var mm   = time.length ? time.split(':')[1] : '';
+                // map fullCheckinTime to $scope.reservationData.checkinTime
+                $scope.reservationData.checkinTime.hh = isNaN(parseInt(hh)) ? '' : parseInt(hh) < 10 ? '0'+hh : hh;
+                $scope.reservationData.checkinTime.mm = mm || '';
+                $scope.reservationData.checkinTime.ampm = ampm || '';
 
-            // map fullCheckinTime to $scope.reservationData.checkinTime
-            $scope.reservationData.checkinTime.hh = isNaN(parseInt(hh)) ? '' : parseInt(hh) < 10 ? '0'+hh : hh;
-            $scope.reservationData.checkinTime.mm = mm || '';
-            $scope.reservationData.checkinTime.ampm = ampm || '';
-
-            $scope.setDepartureHours();
+                $scope.setDepartureHours();
         };
 
 
@@ -499,45 +498,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else{
                 $scope.shouldShowNights = true;
                 $scope.shouldShowHours = false;
+                $scope.clearArrivalAndDepartureTime();
             };
         };
 
-    }
-]);
-
-// This code will be assimilated, resistance is futile
-// Code will be assimilated to become part of a better IMH234
-// auto complete feature
-sntRover.directive('autoComplete', ['highlightFilter',
-    function(highlightFilter) {
-        return {
-            restrict: 'A',
-            scope: {
-                autoOptions: '=autoOptions',
-                ngModel: '='
-            },
-            link: function(scope, el, attrs) {
-                $(el).autocomplete(scope.autoOptions)
-                    .data('ui-autocomplete')
-                    ._renderItem = function(ul, item) {
-                        ul.addClass('find-cards');
-
-                        var $content = highlightFilter(item.label, scope.ngModel),
-                            $result = $("<a></a>").html($content),
-                            defIcon = item.type === 'COMPANY' ? 'icon-company' : 'icon-travel-agent',
-                            $image = '';
-
-                        if (item.image) {
-                            $image = '<img src="' + item.image + '">';
-                        } else {
-                            $image = '<span class="icons ' + defIcon + '"></span>';
-                        }
-
-                        $($image).prependTo($result);
-
-                        return $('<li></li>').append($result).appendTo(ul);
-                    };
-            }
-        };
     }
 ]);
