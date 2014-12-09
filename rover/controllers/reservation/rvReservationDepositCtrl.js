@@ -190,6 +190,23 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 					$scope.feeData.feesInfo = data.fees_information;
 					$scope.setupFeeData();
 				}
+				if($scope.newPaymentInfo.cardDetails.addToGuestCard){
+					var cardCode = $scope.depositData.card_type;
+					var cardNumber = $scope.depositData.cardNumber;
+					var dataToGuestList = {
+						"card_code": cardCode,
+						"mli_token": cardNumber,
+						"card_expiry": $scope.depositData.expiry_date,
+						"card_name": $scope.newPaymentInfo.cardDetails.userName,
+						"id": data.id,
+						"isSelected": true,
+						"is_primary":false,
+						"payment_type":data.payment_name,
+						"payment_type_id": 1
+					};
+					$scope.cardsList.push(dataToGuestList);
+					$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+				}
 			};
 			
 			var paymentData = {

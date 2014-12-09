@@ -195,6 +195,23 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.makePaymentButtonDisabled         = false;
 		$scope.paymentId = data.id;
 		$scope.shouldCardAvailable 				 = true;
+		if($scope.cardValues.cardDetails.addToGuestCard){
+			var cardCode = $scope.depositBalanceMakePaymentData.card_code.toLowerCase();
+			var cardNumber = $scope.depositBalanceMakePaymentData.ending_with;
+			var dataToGuestList = {
+				"card_code": cardCode,
+				"mli_token": cardNumber,
+				"card_expiry": $scope.depositBalanceMakePaymentData.card_expiry,
+				"card_name": $scope.cardValues.cardDetails.userName,
+				"id": data.id,
+				"isSelected": true,
+				"is_primary":false,
+				"payment_type":"CC",
+				"payment_type_id": 1
+			};
+			$scope.cardsList.push(dataToGuestList);
+			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		}
 	
 		
 	};
