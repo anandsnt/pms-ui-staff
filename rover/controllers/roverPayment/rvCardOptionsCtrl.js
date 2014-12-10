@@ -13,6 +13,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
 			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
+			$scope.cardData.cardType = swipedDataToRenderInScreen.cardType;
 			if(swipedDataToRenderInScreen.swipeFrom == "guestCard"){
 				$scope.showAddtoGuestCard = false;
 			} else {
