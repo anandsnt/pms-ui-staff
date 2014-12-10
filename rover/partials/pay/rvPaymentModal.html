@@ -45,7 +45,7 @@
                 </div>
 
             <!-- Selected card - Show when card is selected/added-->
-            <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo && !showCCPage" ng-click="showGuestCreditCardList()">
+            <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo && !showCCPage && isManual" ng-click="showGuestCreditCardList()">
                 <label>{{'CREDIT_CARD' | translate}} (<span translate>TAP_TO_CHANGE</span>)</label>
                 <label class="active-item item-payment">
                     <figure class="card-logo">
