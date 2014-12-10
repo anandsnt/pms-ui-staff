@@ -71,11 +71,13 @@ sntRover
 	/*BEGIN CONFIGURATION 
 	/*--------------------------------------------------*/
 	/*DATE UI CONFIG*/
+		var minDate = new tzIndependentDate($rootScope.businessDate);
+		minDate.setDate(minDate.getDate() - 1);
 		$scope.dateOptions = {
 	    	showOn: 'button',
 	    	dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
-	    	minDate: new tzIndependentDate($rootScope.businessDate),
+	    	minDate: minDate,
 	    	yearRange: '-0:'
 	    };
 
@@ -441,12 +443,16 @@ sntRover
 		    $scope.onDragStart = function(room, reservation) {
 		    	prevRoom = room;
 		    	prevTime = reservation[meta.occupancy.start_date];
+		    	console.log('in drag start');
+		    	console.log(reservation.arrival)
+		    	console.log(reservation.departure);
 		    	if($scope.gridProps.edit.active) {
 		    		console.log('Reservation room transfer initiated:  ', room, reservation);
 		    	}
 		};
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
+		    	
 		    	var availability;
 		    	if($scope.gridProps.edit.active) {
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
@@ -456,7 +462,27 @@ sntRover
 					    
 				    	$scope.gridProps.currentResizeItemRow = nextRoom;
 				    	resizeEndForExistingReservation(nextRoom, reservation);
-				    	$scope.renderGrid();
+				    	
+		    				
+				    	
+						
+						console.log($scope.gridProps.mode);
+						//$scope.resetEdit();
+						//$scope.renderGrid();
+						var og_r_item = props.edit.originalRowItem,
+		    			og_item =  props.edit.originalItem;
+
+						/*$scope.gridProps.currentResizeItem = reservation;						
+						$scope.gridProps.edit.currentResizeItem = reservation;    //Planned to transfer the non-namespaced currentResizeItem/Row to here
+						$scope.gridProps.edit.currentResizeItemRow = nextRoom;
+						$scope.gridProps.currentResizeItemRow = nextRoom;*/
+						setTimeout(function(){
+							$scope.onSelect(nextRoom, reservation, false, 'edit');
+
+						}, 50)
+						
+						
+				    	
 				    }
 				}
 		};
