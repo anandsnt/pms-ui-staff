@@ -66,7 +66,10 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 			dataToPassConfirmScreen.rooms.push(rooms);
 			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
 			$scope.closeDialog();
-			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {reservation: 'HOURLY'})
+			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
+				reservation: 'HOURLY',
+				mode:'EDIT_HOURLY'
+			})
 		};
 
 		$scope.confirm = function() {

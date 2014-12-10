@@ -57,21 +57,23 @@
 			
 
         <!-- Payment method options -->
-        <div class="holder" ng-hide="showCCPage">
+        <div class="holder" ng-show="!showCCPage && dataToSave.paymentType === 'CC' && isNewCardAdded">
         	<div class="entry full-width" >
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
         			<span class="icon-form icon-checkbox" ng-class="{'checked': dataToSave.addToGuestCard}"></span>
         			<input ng-model="dataToSave.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
         			{{'ADD_TO_GUEST_CARD' | translate}}
         		</label>
-        	</div> <!--  
+        	</div> 
+        	<!--  
         	<div class="entry full-width" >
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.authorize}">
         			<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.authorize}"></span>
         			<input ng-model="cardData.authorize" id="add-in-guest-card" value="1" type="checkbox" />
         			Do Not Authorize Card
         		</label>
-        	</div>   -->
+        	</div>  
+        	-->
         </div>
 
         <!-- New CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P. Never output exsisting cards here! -->
@@ -89,4 +91,3 @@
     </div>
 </form>
 </div>
-
