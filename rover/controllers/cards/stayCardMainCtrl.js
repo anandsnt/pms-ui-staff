@@ -556,8 +556,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			this.rooms = [];
 			this.rooms = tData.rooms;
-			this.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
-			this.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
+			$scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
+			$scope.reservationData.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
 			var arrivalTimeSplit = tData.arrival_time.split(":");
 
 			this.checkinTime.hh = arrivalTimeSplit[0];
@@ -641,11 +641,31 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			this.totalStayCost = 0;
 			var rateIdSet = [];
 			var self = this;
-			_.each(this.rooms, function(room) {
+			angular.forEach($scope.reservationData.rooms, function(room,index) {
 				room.stayDates = {};
-				rateIdSet.push(room.rateId);
-				room.rateTotal = room.amount;
-				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(room.amount);
+				rateIdSet.push(tData.rooms[index].rateId);
+				// amount: 32
+				// numAdults: 1
+				// numChildren: 0
+				// numInfants: 0
+				// rateId: 787
+				// roomNumber: "07"
+				// roomTypeId: "62"
+				// roomTypeName: "Standard Cabin"
+				// room_id: 588
+				// room_no: "07"
+				// room_type: "Standard Cabin"
+				room.numAdults = tData.rooms[index].numAdults;
+				room.numChildren = tData.rooms[index].numChildren;
+				room.numInfants = tData.rooms[index].numInfants;
+				room.roomTypeId = tData.rooms[index].roomTypeId;
+				room.amount = tData.rooms[index].amount;
+
+				room.rateId = tData.rooms[index].rateId;
+				room.roomAmount = tData.rooms[index].amount;
+				
+
+				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {
 					room.rateName = data.name;
 					if (data.deposit_policy_id) {
@@ -658,11 +678,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						$scope.$broadcast("UPDATEDEPOSIT");
 					}
 				};
-				var roomAmount = parseFloat(room.amount).toFixed(2);
+				var roomAmount = parseFloat(room.roomAmount).toFixed(2);
 				$scope.invokeApi(RVReservationSummarySrv.getRateDetails, {
 					id: room.rateId
 				}, success);
-				for (var ms = new tzIndependentDate(self.arrivalDate) * 1, last = new tzIndependentDate(self.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
 
 					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
 						guests: {
