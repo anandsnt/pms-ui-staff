@@ -30,7 +30,7 @@ var GridRowItemDrag = React.createClass({
 			
 			el = props.viewport.element();
 
-			console.log(el.parent()[0].scrollLeft);
+			
 			this.setState({
 				left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
 				top: page_offset.top - el.offset().top - el[0].scrollTop,
@@ -71,6 +71,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
+		console.log(props.currentDragItem);
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 

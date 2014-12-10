@@ -443,16 +443,12 @@ sntRover
 		    $scope.onDragStart = function(room, reservation) {
 		    	prevRoom = room;
 		    	prevTime = reservation[meta.occupancy.start_date];
-		    	console.log('in drag start');
-		    	console.log(reservation.arrival)
-		    	console.log(reservation.departure);
 		    	if($scope.gridProps.edit.active) {
 		    		console.log('Reservation room transfer initiated:  ', room, reservation);
 		    	}
 		};
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
-		    	
 		    	var availability;
 		    	if($scope.gridProps.edit.active) {
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
@@ -466,20 +462,22 @@ sntRover
 		    				
 				    	
 						
-						console.log($scope.gridProps.mode);
-						//$scope.resetEdit();
-						//$scope.renderGrid();
-						var og_r_item = props.edit.originalRowItem,
-		    			og_item =  props.edit.originalItem;
+						
+						
+						
+						var og_r_item = $scope.gridProps.edit.originalRowItem,
+		    			og_item =  $scope.gridProps.edit.originalItem;
 
-						/*$scope.gridProps.currentResizeItem = reservation;						
-						$scope.gridProps.edit.currentResizeItem = reservation;    //Planned to transfer the non-namespaced currentResizeItem/Row to here
-						$scope.gridProps.edit.currentResizeItemRow = nextRoom;
-						$scope.gridProps.currentResizeItemRow = nextRoom;*/
+						$scope.resetEdit();
+						$scope.renderGrid();
+						$scope.$emit('showLoader');
 						setTimeout(function(){
-							$scope.onSelect(nextRoom, reservation, false, 'edit');
-
-						}, 50)
+							$scope.onSelect(nextRoom, reservation, false, 'edit');							
+	
+					    	$scope.gridProps.edit.originalRowItem = og_r_item;
+					    	$scope.gridProps.edit.originalItem = og_item;
+							$scope.$emit('hideLoader');
+						}, 350)
 						
 						
 				    	
