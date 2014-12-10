@@ -361,8 +361,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		angular.forEach($scope.cardsList, function(value, key) {
 			value.isSelected = false;
 		});
-
-		if($scope.newPaymentInfo.addToGuestCard){
+		if($scope.newPaymentInfo.cardDetails.addToGuestCard){
 			var cardCode = $scope.defaultPaymentTypeCard;
 			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
 			var dataToGuestList = {
@@ -373,7 +372,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"id": data.id,
 				"isSelected": true,
 				"is_primary":false,
-				"payment_type":data.payment_name,
+				"payment_type":"CC",
 				"payment_type_id": 1
 			};
 			$scope.cardsList.push(dataToGuestList);
