@@ -61,6 +61,16 @@
 			
 			<!-- New Card form - this is same as in {modals/pay-bill/card-attached.html}, lines 98-129 -->
 			<div class="payment-form for-deposit" id="set-payment" >
+				<div class="entry full-width">
+				<label for="payment-type">Payment type</label>
+				<div class="select">
+					<select name="payment-type" id="payment-type" class="placeholder">
+						<option value="" selected>Select Payment Type</option>
+					    <option ng-repeat="paymentData in passData.details.paymentTypes" value="{{paymentData.name}}" ng-selected="{{paymentData.name === depositData.paymentType}}">{{paymentData.description}}</option>
+						
+			        </select>
+			    </div>
+			</div>
 				<div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-hide="shouldShowMakePaymentScreen"></div>
 			
 				<div class="entry full-width" ng-click="showAddCardSection()" ng-show="shouldShowMakePaymentScreen && shouldCardAvailable" id="selected-card"><label>Credit Card (<span>Tap to change</span>)</label><label class="active-item item-payment" id="pay-with-discover">

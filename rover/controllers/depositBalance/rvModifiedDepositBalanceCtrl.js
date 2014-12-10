@@ -21,7 +21,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
 		value.card_expiry = value.expiry_date;//Same comment above
 	});
-	
+	console.log(">>>>>>>>>>>>>>>")
+console.log($scope.depositBalanceData)
+console.log($scope.reservationData)
 	
 	$scope.shouldShowExistingCards = true;
 	$scope.shouldShowAddNewCard   = true;
@@ -38,7 +40,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.hideCancelCard = true;
 	$scope.isDisplayReference = false;
 	$scope.referanceText = "";
-
+	
 
 	var checkReferencetextAvailableForCC = function(){
 		angular.forEach($scope.depositBalanceData.data.credit_card_types, function(value, key) {
