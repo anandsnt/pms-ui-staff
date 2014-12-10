@@ -174,7 +174,6 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 					}
 					else{
 						angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
-										console.log( value.cardcode +"-------"+ $scope.depositData.card_type.toUpperCase()+"-------"+value.is_display_reference)
 							if($scope.depositData.card_type.toUpperCase() === value.cardcode){
 									$scope.isDisplayReference = (value.is_display_reference)? true:false;
 								};					
