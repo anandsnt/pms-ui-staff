@@ -8314,8 +8314,7 @@
         }
     }
 
-/* Rooms                    ==============================*/
-    
+/* Rooms                    ==============================*/ 
     .worksheet-options {
         position: fixed;
         bottom: 0;
@@ -10473,6 +10472,7 @@
     
 /* Room Diary                ==============================*/
     .diary-content {
+        
         .diary-header {
             position: relative;
             height: 90px;
@@ -10500,7 +10500,7 @@
                 select { padding: 12px 10px; }
 
                 &.date { 
-                    #pixel-to-percent > .width(380, 2048); 
+                    .calc-width(20, 11);
 
                     .entry-data {
                         background: @white @calendar no-repeat 92% 16px;
@@ -10552,7 +10552,7 @@
                 }
 
                 &.time { 
-                    #pixel-to-percent > .width(300, 2048); 
+                    .calc-width(14, 11);
 
                     select {
                         font-size: 24px;
@@ -10566,11 +10566,11 @@
                     }
                 }
 
-                &.room { #pixel-to-percent > .width(380, 2048); }
+                &.room {  .calc-width(18, 12); } 
 
                 &.rate { 
                     position: relative;
-                    #pixel-to-percent > .width(498, 2048);
+                    .calc-width(24, 12);
 
                     .faux-select { 
                         position: relative;
@@ -10596,7 +10596,7 @@
                 }
 
                 &.switch { 
-                    #pixel-to-percent > .width(240, 2048); 
+                    .calc-width(12, 12);
 
                     .switch-button {
                         background: rgba(0,0,0,.1);
@@ -10653,21 +10653,56 @@
                     }
                 }
 
+                &.reset {
+                    padding-right: 10px;
+                    width: 70px;
+
+                    .button {
+                        .size(50px, 100%);
+                    }
+                }
+
                 &.edit {
-                    width: 100%;
-                    padding-right: 5px;
+                    padding: 10px 10px 0 10px;
+                    .size(60px, 100%);
 
                     .guest {
-                        float: left;
+                        line-height: 50px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        color: @white;
+                        .calc-width(100, 380);
+                        .pull-left;
 
-                        h1 {
-                            color: #fff;
+                        h1 { 
+                            display: inline-block;
+                            font-size: 20px;
+                            margin-right: 15px; 
                         }
+
+                        span { margin: 0 5px; }
                     }
 
                     .actions {
-                        float: right;
-                        text-align: center;
+                        width: 380px;
+                        .pull-left;
+
+                        .button {
+                            line-height: 48px;
+                            margin-right: 10px;
+
+                            &.green {
+                                padding: 0 40px;
+                            }
+
+                            &.blank {
+                                margin-right: 0;
+                                color: rgba(0,0,0,.5);
+
+                                &:hover,
+                                &:active { color: @white; }
+                            }
+                        }
                     }
                 }
             }
@@ -10817,51 +10852,6 @@
             &.editing {
                 height: 150px;
                 background: @purpleStart;
-
-                .reservation-details {
-                    padding: 10px 10px 0 10px;
-                    .pull-left;
-                    .size(60px, 100%);
-
-                    p {
-                        font-size: 20px;
-                        line-height: 50px;
-                        text-transform: uppercase;
-                        font-weight: 600;
-                        color: @white;
-                        width: 70%;
-                        .pull-left;
-
-                        strong { 
-                            font-weight: 600;
-                            margin-right: 15px; 
-                        }
-
-                        span { margin: 0 5px; }
-                    }
-
-                    .actions {
-                        width: 30%;
-                        .pull-left;
-                       
-                        .button {
-                            line-height: 48px;
-                            margin-right: 10px;
-
-                            &.green {
-                                padding: 0 40px;
-                            }
-
-                            &.blank {
-                                margin-right: 0;
-                                color: rgba(0,0,0,.5);
-
-                                &:hover,
-                                &:active { color: @white; }
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -10875,10 +10865,11 @@
                 position: absolute;
                 top: 0;
                 left: 120px;
-                z-index: 1099;
+                z-index: 1090;
                 height: 80px;
                 background: darken(@darkBlue, 40);
                 cursor: default;
+                overflow: visible;
                 .box-shadow(~'inset 0 -20px 0 #fcfcfc, 0 1px 2px rgba(0,0,0,.15)');
                 .calc-width(100, 120);
 
@@ -10898,43 +10889,89 @@
                             width: 100%;
                             .calc-height(100, 5);
 
-                            a.set-times {
+                            .set-times {
                                 position: absolute;
-                                z-index: 11000;
-                                font-size: 12px;
-                                line-height: 16px;
-                                font-weight: 600;
                                 text-transform: uppercase;
-                                color: @white;
-                                padding: 5px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                z-index: 11000;
                                 .size(40px, 60px);
-                                .gradient(@orangeStart, @orangeEnd);
-                                #border-radius > .rounded(6px);
-                                -webkit-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
-                                -moz-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
-                                -ms-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
-                                -o-transition: all 0.03s cubic-bezier(0.1, 0.1, 0.25, 0.1);
 
-                                span { 
-                                    font-size: 14px;
+                                .title {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    font-size: 12px;
+                                    line-height: 16px;
+                                    color: @white;
+                                    padding: 5px;
+                                    z-index: 9;
+                                    .square(100%);
                                     .show;
+                                    .gradient(@logoGradientStart, @logoGradientEnd);
+                                    #border-radius > .rounded(6px);
+
+                                    .time {
+                                        font-size: 16px;
+                                        .show;
+                                    }                        
+                                }
+
+                                .count {
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    color: @logoPrimary;
+                                    background: @white;
+                                    text-align: right;
+                                    font-size: 18px;
+                                    line-height: 40px;
+                                    padding-right: 10px;
+                                    z-index: 1;
+                                    .size(40px, 80%);
+                                    #border-radius > .right(6px);
                                 }
 
                                 &:after {
                                     content: "";
                                     position: absolute;
-                                    bottom: -5px;
+                                    bottom: -10px;
                                     left: 0;
                                     .square(0px);
-                                    border-top: 5px solid transparent;
-                                    border-bottom: 5px solid transparent;
-                                    border-left: 5px solid @orangeEnd;
+                                    border-top: 10px solid transparent;
+                                    border-bottom: 10px solid transparent;
+                                    border-left: 10px solid @orangeEnd;
+                                }
+
+                                &.arrival { 
+                                    width: 100px; 
+
+                                    .title { 
+                                        width: 60px;
+                                        .box-shadow(1px 0 2px rgba(0,0,0,.15));
+                                    }
                                 }
 
                                 &.editing { 
-                                    .gradient(@purpleStart, @purpleEnd); 
 
-                                    &:after { border-left: 5px solid @purpleEnd; }
+                                    .title { .gradient(@purpleStart, @purpleEnd); }
+
+                                    .line {
+                                        position: absolute;
+                                        top: 40px;
+                                        left: 0;
+                                        background: @purpleEnd;
+                                        .size(2000px, 2px);
+                                        .show;
+                                    }
+                                    
+                                    &.arrival { 
+                                        width: 60px;
+
+                                        .title { width: 100%; }
+                                    }
+
+                                    &:after { border-left: 10px solid @purpleEnd; }
                                 }
                             }
                         }
@@ -10958,28 +10995,54 @@
                                     width: 25%;
                                     z-index: 1;
 
+                                    &.date {
+                                        bottom: auto;
+                                        top: -15px;
+                                        left: 0;
+                                        font-weight: 400;
+                                        text-transform: uppercase;
+                                        white-space: nowrap;
+                                        width: 100%;
+                                    }
+
                                     &.interval-1 { 
                                         left: 0;
                                         border-left: 2px solid rgba(255,255,255,.5);
                                         height: 20px;
+
+                                        &.active { left: -1px; } 
                                     }
 
                                     &.interval-2 { 
                                         left: 25%;
                                         border-left: 1px solid rgba(255,255,255,.3);
                                         height: 10px; 
+
+                                        &.active { #calc-position > .left(25, 1); }
                                     }
                                     
                                     &.interval-3 { 
                                         left: 50%;
                                         border-left: 1px solid rgba(255,255,255,.3);
                                         height: 16px; 
+
+                                        &.active { #calc-position > .left(50, 1); }
                                     }
 
                                     &.interval-4 { 
                                         left: 75%;
                                         border-left: 1px solid rgba(255,255,255,.3);
                                         height: 10px; 
+
+                                        &.active { #calc-position > .left(75, 1); }
+                                    }
+
+                                    &.active {
+                                        top: 0;
+                                        border-color: @red;
+                                        border-width: 2px;
+                                        .show;
+                                        .size(2000px, auto);
                                     }
                                 }
                             }
@@ -11004,15 +11067,20 @@
                     }
 
                     > .occupancy {
-                        li {
-                            float: left;
-                            height: 20px;
-                            margin-bottom: 0px;
-                        }
+                        background: @white;
+                        overflow: hidden;
+                        .size(20px, 100%);
+                        .float;
 
-                        &::after {
-                            content: '';
-                            clear: both;
+                        li {
+                            font-size: 14px;
+                            line-height: 20px;
+                            font-weight: 600;
+                            vertical-align: middle;
+                            color: @darkBlue;
+                            margin: 0;
+                            height: 100%;
+                            .pull-left;
                         }
                     }
                 }
@@ -11024,7 +11092,7 @@
                 left: 0;
                 padding: 10px;
                 background: @grey1;
-                z-index: 1099; //9990; CHANGED
+                z-index: 1099;
                 .box-shadow(2px 5px 5px rgba(0,0,0,.15));
                 .size(90px, 120px);
 
@@ -11103,291 +11171,309 @@
                 }
 
                 > .wrapper {
-                    position: relative; //CHANGED
+                    position: relative;
                     height: auto;
                     overflow: hidden;
+                }
 
-                    > .room-title {
-                        margin: 5px 0 5px 10px;
-                        text-align: right;
-                        text-transform: uppercase;
-                        background: @white;
-                        overflow: hidden;
+                li {
+                    margin: 5px 0 5px 10px;
+                    text-align: right;
+                    text-transform: uppercase;
+                    background: @white;
+                    overflow: hidden;
 
-                        &.occupied { 
-                            color: @grey2;
-                            background: @grey1; }
-                        
-                        &.dirty { 
-                            color: @red;
-                            background: lighten(@red, 30); 
-                        }                
+                    &.occupied { 
+                        color: @grey2;
+                        background: @grey1; }
+                    
+                    &.dirty { 
+                        color: @red;
+                        background: lighten(@red, 30); 
+                    }                
 
-                        &:first-child { margin-top: 0; }
-                        &:last-child { margin-bottom: 0; }
-                    } 
-                }          
+                    &:first-child { margin-top: 0; }
+                    &:last-child { margin-bottom: 0; }
+                }     
             }
 
             .diary-grid {
                 position: absolute;
                 top: 90px;
                 left: 120px;
-                z-index: 1049; //1099; CHANGED
+                z-index: 1049;
                 .calc-height(100, 90);
                 .calc-width(100, 120);
 
                 > .wrapper {
-                    position: absolute; //CHANGED
+                    position: absolute;
                     overflow: hidden;
                     height: 100%;
 
-                    > .iScrollVerticalScrollbar { display: none; }
+                    > .iScrollVerticalScrollbar { .hide; }
                     > .iScrollHorizontalScrollbar {                 
                         top: auto !important;
                         bottom: 10px !important;
                         left: 10px;
-                        right: 10px; //CHANGED
+                        right: 10px;
                     }
                     
                     > .grid {
-                        position: absolute; //relative; CHANGED
+                        position: absolute;
                         height: auto;
+                    }
+                }
 
-                        .occupancy-block {
-                            position: absolute;
-                            z-index: 1099; //1149; CHANGED
-                            .show;
-                            .float;
+                .occupancy-block {
+                    position: absolute;
+                    z-index: 1099;
+                    .show;
+                    .float;
 
-                            &.dragstate {
-                                z-index: 1149;
-                                opacity: 0.45;
+                    &.dragstate {
+                        z-index: 1149;
+                        opacity: 0.45;
 
-                                span {
-                                    &.occupied {
-                                        cursor: @dragging, move;
-                                        cursor: @dragging 16 16, move; 
-                                    }
-                                }
-                            }
-
-                            span {
-                                font-weight: 600;
-                                text-transform: uppercase;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                .pull-left; 
-                                .show;
-
-                                &.occupied {
-                                    position: relative;
-                                    color: @white;
-                                    cursor: @draggable, pointer;
-                                    cursor: @draggable 16 16, pointer;
-
-                                    &:after,
-                                    &:before {
-                                        content: "";
-                                        position: absolute;
-                                        background-image: @icons;
-                                        background-repeat: no-repeat;
-                                        .show;
-
-                                        @media @highdpi {
-                                            background-image: @icons2x;
-                                            background-size: 120px;
-                                        }
-                                    }
-
-                                    &:before { 
-                                        .hide;
-                                        #fade > .out();
-                                        .icons > .icon-diary-move-reservation();
-                                    }
-
-                                    &:hover { 
-                                        &:before { 
-                                            .show; 
-                                            #fade > .in(); 
-                                        }
-                                    }
-
-                                    &.check-in {
-                                        .gradient(@greenStart, @greenEnd);
-                                        
-                                        &:after {
-                                            .guest-status > .check-in;
-                                            background-color: transparent;
-                                        }
-                                    }
-
-                                    &.inhouse {
-                                        .gradient(@blueStart, @blueEnd);
-
-                                        &:after {
-                                            .guest-status > .inhouse;
-                                            background-color: transparent;
-                                        }
-                                    }
-
-                                    &.check-out,
-                                    &.departed {
-                                        .gradient(@redStart, @redEnd);
-
-                                        &:after {
-                                            .guest-status > .check-out;
-                                            background-color: transparent;
-                                        }
-                                    }
-
-                                    &.departed {
-                                        color: rgba(255,255,255,.6);
-                                        cursor: default;
-
-                                        &:after { .opacity(60); }
-
-                                        &:before {
-                                            top: 0;
-                                            left: 0;
-                                            right: 0;
-                                            bottom: 0;
-                                            background-image: none;
-                                            #fade > .in();
-                                            .opacity(60);
-                                            .show;
-                                            .candystripe(rgba(255,118,37,.5), -45deg);
-                                        }
-                                    }
-
-                                    &.ooo,
-                                    &.oos {
-                                        &:hover { 
-                                            &:before { 
-                                                .hide; 
-                                                #fade > .out(); 
-                                            }
-                                        }
-                                    }
-
-                                    &.ooo {
-                                        .gradient(@greyStart, @greyEnd);
-
-                                        &:after {
-                                            .icons > .icon-diary-ooo;
-                                            background-color: transparent;
-                                        }
-                                    }
-
-                                    &.oos {
-                                        background: @greyStart;
-
-                                        &:after {
-                                            .icons > .icon-diary-oos;
-                                            background-color: transparent;
-                                        }
-                                    }
-
-                                    &.editing { 
-                                        .gradient(@purpleStart, @purpleEnd); 
-
-                                        &:before {
-                                            .show; 
-                                            #fade > .in();
-                                            .icons > .icon-diary-edit-reservation();
-                                        }
-                                    }
-                                }
-
-                                &.available {
-                                    color: @white;
-                                    cursor: pointer;
-                                    .gradient(@orangeStart, @orangeEnd);
-                                    
-
-                                    &.reserved { 
-                                        cursor: default;
-
-                                        &:after {
-                                            content: "";
-                                            position: absolute;
-                                            top: 0;
-                                            left: 0;
-                                            right: 0;
-                                            bottom: 0;
-                                            .candystripe(rgba(255,118,37,.5), -45deg);
-                                            #move > .candystripe();
-                                        }
-                                    }
-                                }
-
-                                &.maintenance { 
-                                    position: relative;
-                                    .gradient(@grey4, @gcard); 
-
-                                    &:after {
-                                        content: "";
-                                        position: absolute;
-                                        background-image: @icons;
-                                        background-repeat: no-repeat;
-                                        .icons > .icon-diary-maintenance;
-                                        .show;
-
-                                        @media @highdpi {
-                                            background-image: @icons2x;
-                                            background-size: 120px;
-                                        }
-                                    }
-                                }                        
+                        span {
+                            &.occupied {
+                                cursor: @dragging, move;
+                                cursor: @dragging 16 16, move; 
                             }
                         }
+                    }
 
-                        > .grid-row {
-                            position: relative; 
-                            margin: 5px 0;
-                            background: @white;
-                            overflow: hidden;
-                            width: 100%;
-                            .float;
+                    span {
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        .nowrap();
+                        .pull-left; 
+                        .show;
 
-                            .hour {
-                                border-right: 1px solid rgba(0,0,0,.1);
-                                background-size: 100%;
-                                background-image: -moz-linear-gradient(0px 50%, transparent 25%, rgba(0,0,0,.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,.1) 75%, transparent 76%);
-                                background-image: -ms-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);                   
-                                background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, transparent), color-stop(25%,rgba(0,0,0,0.1)), color-stop(26%, transparent), color-stop(50%, transparent), color-stop(50%,rgba(0,0,0,0.1)), color-stop(51%, transparent), color-stop(75%, transparent), color-stop(75%,rgba(0,0,0,0.1)), color-stop(76%, transparent));
-                                background-image: -webkit-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                                background-image: -o-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                                background-image: linear-gradient(to right, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                                background-repeat: no-repeat;
-                                .pull-left; 
+                        &.occupied {
+                            position: relative;
+                            color: @white;
+                            cursor: @draggable, pointer;
+                            cursor: @draggable 16 16, pointer;
 
-                                &:nth-child(odd) { background-color: rgba(0,0,0,.05); }
-                            }
-
-                            &.occupied { background-color: @grey2; }
-                            &.dirty { background: lighten(@red, 35); }
-
-                            &:first-child { margin-top: 0; }
-                            &:last-child { margin-bottom: 0; }
-
+                            &:after,
                             &:before {
                                 content: "";
                                 position: absolute;
-                                left: 0px;
-                                top: 0px;
-                                right: 0px;
-                                bottom: 0px;
-                                z-index: 1399;
-                                pointer-events: none;
-                                .square(100%);
+                                background-image: @icons;
+                                background-repeat: no-repeat;
                                 .show;
-                                .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-                                /*border-bottom: 1px solid #ddd;
-                                //.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15)); CHANGED*/
+
+                                @media @highdpi {
+                                    background-image: @icons2x;
+                                    background-size: 120px;
+                                }
+                            }
+
+                            &:before { 
+                                .hide;
+                                #fade > .out();
+                                .icons > .icon-diary-move-reservation();
+                            }
+
+                            &:hover { 
+                                &:before { 
+                                    .show; 
+                                    #fade > .in(); 
+                                }
+                            }
+
+                            &.check-in {
+                                .gradient(@greenStart, @greenEnd);
+                                
+                                &:after {
+                                    .guest-status > .check-in;
+                                    background-color: transparent;
+                                }
+                            }
+
+                            &.inhouse {
+                                .gradient(@blueStart, @blueEnd);
+
+                                &:after {
+                                    .guest-status > .inhouse;
+                                    background-color: transparent;
+                                }
+                            }
+
+                            &.check-out,
+                            &.departed {
+                                .gradient(@redStart, @redEnd);
+
+                                &:after {
+                                    .guest-status > .check-out;
+                                    background-color: transparent;
+                                }
+                            }
+
+                            &.departed,
+                            &.blocked {
+                                color: rgba(255,255,255,.6);
+                                cursor: default;
+
+                                &:after { .opacity(60); }
+
+                                &:before {
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    background-image: none;
+                                    #fade > .in();
+                                    .opacity(60);
+                                    .show;
+                                    .candystripe(rgba(255,118,37,.5), -45deg);
+                                }
+                            }
+
+                            &.blocked {
+                                color: rgba(255,255,255,.6);
+                                cursor: default;
+                                .gradient(@greyStart, @greyEnd);
+
+                                &:after {
+                                    .icons > .icon-diary-ooo;
+                                    background-color: transparent;
+                                }
+
+                                &:before {
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    background-image: none;
+                                    .show;
+                                    .candystripe(rgba(0,0,0,.15), -45deg);
+                                    #move > .candystripe();
+                                }
+                            }
+
+                            &.ooo,
+                            &.oos {
+                                &:hover { 
+                                    &:before { 
+                                        .hide; 
+                                        #fade > .out(); 
+                                    }
+                                }
+                            }
+
+                            &.ooo {
+                                .gradient(@greyStart, @greyEnd);
+
+                                &:after {
+                                    .icons > .icon-diary-ooo;
+                                    background-color: transparent;
+                                }
+                            }
+
+                            &.oos {
+                                background: @greyStart;
+
+                                &:after {
+                                    .icons > .icon-diary-oos;
+                                    background-color: transparent;
+                                }
+                            }
+
+                            &.editing { 
+                                .gradient(@purpleStart, @purpleEnd); 
+
+                                &:before {
+                                    .show; 
+                                    #fade > .in();
+                                    .icons > .icon-diary-edit-reservation();
+                                }
                             }
                         }
+
+                        &.available {
+                            color: @white;
+                            cursor: pointer;
+                            .gradient(@orangeStart, @orangeEnd);
+                            
+
+                            &.reserved { 
+                                cursor: default;
+
+                                &:after {
+                                    content: "";
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    .candystripe(rgba(255,118,37,.5), -45deg);
+                                    #move > .candystripe();
+                                }
+                            }
+                        }
+
+                        &.maintenance { 
+                            position: relative;
+                            .gradient(@grey4, @gcard); 
+
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                background-image: @icons;
+                                background-repeat: no-repeat;
+                                .icons > .icon-diary-maintenance;
+                                .show;
+
+                                @media @highdpi {
+                                    background-image: @icons2x;
+                                    background-size: 120px;
+                                }
+                            }
+                        }                        
+                    }
+                }
+
+                .grid-row {
+                    position: relative; 
+                    margin: 5px 0;
+                    background: @white;
+                    width: 100%;
+                    .float;
+
+                    .hour {
+                        border-right: 1px solid rgba(0,0,0,.1);
+                        background-size: 100%;
+                        background-image: -moz-linear-gradient(0px 50%, transparent 25%, rgba(0,0,0,.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,.1) 75%, transparent 76%);
+                        background-image: -ms-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);                   
+                        background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, transparent), color-stop(25%,rgba(0,0,0,0.1)), color-stop(26%, transparent), color-stop(50%, transparent), color-stop(50%,rgba(0,0,0,0.1)), color-stop(51%, transparent), color-stop(75%, transparent), color-stop(75%,rgba(0,0,0,0.1)), color-stop(76%, transparent));
+                        background-image: -webkit-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                        background-image: -o-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                        background-image: linear-gradient(to right, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                        background-repeat: no-repeat;
+                        .pull-left; 
+
+                        &:nth-child(odd) { background-color: rgba(0,0,0,.05); }
+                    }
+
+                    &.occupied { background-color: @grey2; }
+                    &.dirty { background: lighten(@red, 35); }
+
+                    &:first-child { margin-top: 0; }
+                    &:last-child { margin-bottom: 0; }
+
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        left: 0px;
+                        top: 0px;
+                        right: 0px;
+                        bottom: 0px;
+                        z-index: 1399;
+                        pointer-events: none;
+                        .square(100%);
+                        .show;
+                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
                     }
                 }
             }
@@ -11420,7 +11506,6 @@
                 .diary-grid {
                     .occupancy-block {
                         span {
-                            height: 60px;
                             line-height: 60px;
 
                             &.occupied,
@@ -11441,7 +11526,8 @@
                                     .square(30px);
                                 }
 
-                                &.departed {
+                                &.departed,
+                                &.blocked {
                                     &:before {
                                         top: 0;
                                         right: 0;
@@ -11451,7 +11537,8 @@
                                 }
 
                                 &.ooo,
-                                &.oos {
+                                &.oos,
+                                &.blocked {
                                     text-indent: 40px; 
 
                                     &:after {
@@ -11478,7 +11565,7 @@
                         }
                     } 
 
-                    li {
+                    .grid-row {
                         line-height: 60px;
                         height: 60px;
 
@@ -11517,102 +11604,102 @@
                 }
 
                 .diary-grid {
-                    > .wrapper {
-                        > .grid {
-                            span { height: 24px; }
-                            
-                            > .occupancy-block {
-                                span {
-                                    font-size: 12px;
-                                    line-height: 24px;
+                    .occupancy-block {
+                        span {
+                            font-size: 12px;
+                            line-height: 24px;
+                            height: 24px;
 
-                                    &.occupied,
-                                    &.available { padding: 0 5px; }
+                            &.occupied,
+                            &.available { padding: 0 5px; }
 
-                                    &.occupied {
-                                        text-indent: 20px;
+                            &.occupied {
+                                text-indent: 20px;
 
-                                        &:after {
-                                            top: 0;
-                                            left: 5px;
-                                            background-size: 80px;
-                                            .square(24px);
-                                        }
-
-                                        &:before { 
-                                            top: 0;
-                                            right: 5px;
-                                            background-size: 80px;
-                                            .square(24px);
-                                        }
-
-                                        &.check-in {
-                                            &:after { background-position: 5px -73px; }
-                                        }
-
-                                        &.inhouse {
-                                            &:after { background-position:  5px -126px; }
-                                        }
-
-                                        &.check-out,
-                                        &.departed {
-                                            &:after { background-position: 5px -100px; }
-                                        }
-
-                                        &.departed {
-                                            &:before {
-                                                top: 0;
-                                                right: 0;
-                                                background-size: 20px 20px;
-                                                .size(24px, 100%);
-                                            }
-                                        }
-
-                                        &.ooo,
-                                        &.oos {
-                                            text-indent: 25px; 
-
-                                            &:after {
-                                                top: 0;
-                                                left: 10px;
-                                                background-size: 60px;
-                                                .square(24px);
-                                            }  
-                                        }
-
-                                        &.ooo {
-                                            &:after { background-position: 0 -3044px; }
-                                        }
-
-                                        &.oos {
-                                            &:after { background-position: 0 -3074px; }
-                                        }
-                                    }      
-
-                                    &.available {
-                                        &.reserved {                                   
-                                            &:after { background-size: 20px 20px; }
-                                        }
-                                    }   
-
-                                    &.maintenance { 
-                                        &:after {
-                                            top: 0;
-                                            background-size: 60px;
-                                            background-position: 5px -2955px;
-                                            #calc-position > .left(50, 12);
-                                            .square(24px);
-                                        }
-                                    }               
+                                &:after {
+                                    top: 0;
+                                    left: 5px;
+                                    background-size: 80px;
+                                    .square(24px);
                                 }
-                            }
 
-                            > .grid-row {
-                                line-height: 24px;
-                                height: 24px;
-                                margin: 0;
-                            }
+                                &:before { 
+                                    top: 0;
+                                    right: 5px;
+                                    background-size: 80px;
+                                    .square(24px);
+                                }
+
+                                &.check-in {
+                                    &:after { background-position: 5px -73px; }
+                                }
+
+                                &.inhouse {
+                                    &:after { background-position:  5px -126px; }
+                                }
+
+                                &.check-out,
+                                &.departed {
+                                    &:after { background-position: 5px -100px; }
+                                }
+
+                                &.departed,
+                                &.blocked {
+                                    &:before {
+                                        top: 0;
+                                        right: 0;
+                                        background-size: 20px 20px;
+                                        .size(24px, 100%);
+                                    }
+                                }
+
+                                &.ooo,
+                                &.oos,
+                                &.blocked {
+                                    text-indent: 25px; 
+
+                                    &:after {
+                                        top: 0;
+                                        left: 10px;
+                                        background-size: 60px;
+                                        .square(24px);
+                                    }  
+                                }
+
+                                &.ooo,
+                                &.blocked {
+                                    &:after { background-position: 0 -3044px; }
+                                }
+
+                                &.oos {
+                                    &:after { background-position: 0 -3074px; }
+                                }
+                            }      
+
+                            &.available {
+                                &.reserved {                                   
+                                    &:after { background-size: 20px 20px; }
+                                }
+                            }   
+
+                            &.maintenance { 
+                                &:after {
+                                    top: 0;
+                                    background-size: 60px;
+                                    background-position: 5px -2955px;
+                                    #calc-position > .left(50, 12);
+                                    .square(24px);
+                                }
+                            }               
                         }
+                    }
+
+                    .grid-row {
+                        line-height: 24px;
+                        height: 24px;
+                        margin: 0;
+
+                        span { height: 24px; }
                     }
                 }
             }
