@@ -44,24 +44,51 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.feeData = {};
 		var zeroAmount = parseFloat("0.00");
 
+		// CICO-11591 : To show or hide fees calculation details.
+		$scope.isShowFees = function(){
+			var isShowFees = false;
+			var feesData = $scope.feeData;
+			if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
+				isShowFees = false;
+			}
+			else if((feesData.defaultAmount  > feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
+				isShowFees = true;
+			}
+			return isShowFees;
+		};
+
 		// CICO-9457 : To calculate fee - for standalone only
 		$scope.calculateFee = function() {
 
 			if ($scope.isStandAlone) {
 				var feesInfo = $scope.feeData.feesInfo;
 				var amountSymbol = "";
+				var feePercent  = zeroAmount;
+				var minFees = zeroAmount;
 
-				if (typeof feesInfo != 'undefined' && feesInfo != null) amountSymbol = feesInfo.amount_symbol;
+				if (typeof feesInfo != 'undefined' && feesInfo != null){
+					amountSymbol = feesInfo.amount_symbol;
+					feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+					minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+				}
+				
 				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
-					parseFloat($scope.reservationData.depositAmount);
-				var feePercent = parseFloat($scope.feeData.actualFees);
+								parseFloat($scope.reservationData.depositAmount);
+				
+				$scope.feeData.minFees = minFees;
+				$scope.feeData.defaultAmount = totalAmount;
+				
+				if($scope.isShowFees()){
 
-				if (amountSymbol == "percent") {
-					var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
-					$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
-				} else {
-					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+					if (amountSymbol == "percent") {
+						var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
+						$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+						$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+					}
+					else {
+						$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
+						$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+					}
 				}
 			}
 		};
@@ -76,16 +103,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var defaultAmount = $scope.reservationData ?
 				parseFloat($scope.reservationData.depositAmount) : zeroAmount;
 
-			if (typeof feesInfo.amount != 'undefined' && feesInfo != null) {
+			var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+			$scope.feeData.minFees = minFees;
+			$scope.feeData.defaultAmount = defaultAmount;
 
-				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
-				$scope.feeData.actualFees = feesAmount;
+			if($scope.isShowFees()){
 
-				if (amountSymbol == "percent") $scope.calculateFee();
-				else {
-					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+				if (typeof feesInfo.amount != 'undefined' && feesInfo != null) {
+
+					var amountSymbol = feesInfo.amount_symbol;
+					var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+					$scope.feeData.actualFees = feesAmount;
+
+					if (amountSymbol == "percent") $scope.calculateFee();
+					else {
+						$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+						$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+					}
 				}
 			}
 		};
