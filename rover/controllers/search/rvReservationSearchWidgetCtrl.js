@@ -529,7 +529,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.textInQueryBox = "";
 			$scope.fetchTerm = "";
 			$scope.firstSearch = true;
+
 			RVSearchSrv.totalSearchResults = 0;
+
+			//Clear search fields
+			$scope.fromDate = $rootScope.businessDate;
+			$scope.toDate = "";
 			//$scope.start = 1;
 			//$scope.end = 100;
 
