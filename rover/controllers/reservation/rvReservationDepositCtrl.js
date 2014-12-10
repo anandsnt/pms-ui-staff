@@ -108,7 +108,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				
 				var feesInfo = $scope.feeData.feesInfo;
 				var amountSymbol = "";
-				if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
+				var feePercent  = zeroAmount;
+
+				if (typeof feesInfo != 'undefined' && feesInfo != null){
+					amountSymbol = feesInfo.amount_symbol;
+					feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+				}
 
 				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
 								parseFloat($scope.reservationData.depositAmount);

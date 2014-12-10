@@ -116,7 +116,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
-			if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
+			var feePercent  = zeroAmount;
+
+			if (typeof feesInfo != 'undefined' && feesInfo != null){
+				amountSymbol = feesInfo.amount_symbol;
+				feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+			}
 
 			var totalAmount = ($scope.depositBalanceMakePaymentData.amount == "") ? zeroAmount :
 							parseFloat($scope.depositBalanceMakePaymentData.amount);

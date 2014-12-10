@@ -63,11 +63,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.isStandAlone) {
 				var feesInfo = $scope.feeData.feesInfo;
 				var amountSymbol = "";
+				var feePercent  = zeroAmount;
 
-				if (typeof feesInfo != 'undefined' && feesInfo != null) amountSymbol = feesInfo.amount_symbol;
+				if (typeof feesInfo != 'undefined' && feesInfo != null){
+					amountSymbol = feesInfo.amount_symbol;
+					feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+				}
+				
 				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
 					parseFloat($scope.reservationData.depositAmount);
-				var feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+				
 
 				var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
 				$scope.feeData.minFees = minFees;
