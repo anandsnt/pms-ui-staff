@@ -12,8 +12,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			cardType: ""
 		};
 
-		$s = $scope;
-
 		$scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;
 			$scope.setTitle(heading);
