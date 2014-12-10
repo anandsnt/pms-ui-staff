@@ -44,13 +44,19 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 							parseFloat($scope.renderData.defaultPaymentAmount);
 			var feePercent  = parseFloat($scope.feeData.actualFees);
 
-			if(amountSymbol == "percent"){
-				var calculatedFee = parseFloat(totalAmount * (feePercent/100));
-				$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
-				$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
-			}
-			else{
-				$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+			var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+			$scope.feeData.minFees = minFees;
+			$scope.feeData.defaultAmount = totalAmount;
+			
+			if(totalAmount  > minFees){
+				if(amountSymbol == "percent"){
+					var calculatedFee = parseFloat(totalAmount * (feePercent/100));
+					$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+				}
+				else{
+					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+				}
 			}
 		}
 	};
@@ -63,16 +69,22 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			var defaultAmount = $scope.renderData ?
 			 	parseFloat($scope.renderData.defaultPaymentAmount) : zeroAmount;
 			
-			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
-				
-				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
-				$scope.feeData.actualFees = feesAmount;
-				
-				if(amountSymbol == "percent") $scope.calculateFee();
-				else{
-					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+			var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+			$scope.feeData.minFees = minFees;
+			$scope.feeData.defaultAmount = defaultAmount;
+
+			if(defaultAmount  > minFees){
+				if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+					
+					var amountSymbol = feesInfo.amount_symbol;
+					var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+					$scope.feeData.actualFees = feesAmount;
+					
+					if(amountSymbol == "percent") $scope.calculateFee();
+					else{
+						$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+						$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+					}
 				}
 			}
 		}
