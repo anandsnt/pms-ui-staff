@@ -62,7 +62,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 		$scope.showHideCreditCard = function(){
 			if($scope.depositData.paymentType ==="CC"){
-				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions;
+				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions();
 			};
 		};
 
