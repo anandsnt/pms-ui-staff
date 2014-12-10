@@ -33,7 +33,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			isDisplayReference:false,
 			referanceText:""
 		};
-		$scope.depositData.paymentType = "";
+		$scope.depositData.paymentType = (typeof $scope.reservationData.reservation_card.payment_method_used !== "undefined")?$scope.reservationData.reservation_card.payment_method_used :"";
 
 		$scope.reservationData = {};
 		$scope.reservationData.depositAmount = "";
