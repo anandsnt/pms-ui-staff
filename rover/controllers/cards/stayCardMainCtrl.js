@@ -255,12 +255,15 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		$scope.noRoutingToReservation = function(){
 			ngDialog.close();
+			that.reloadStaycard();
+
 		};
 
 		$scope.applyRoutingToReservation = function(){
 			var routingApplySuccess = function(data){
 				$scope.$emit("hideLoader");
 				ngDialog.close();
+				that.reloadStaycard();
 			};
 
 			var params = {};
@@ -273,6 +276,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		$scope.okClickedForConflictingRoutes = function(){
 			ngDialog.close();
+			that.reloadStaycard();
+
 		};
 
 		this.showConfirmRoutingPopup = function(type, id){
@@ -322,6 +327,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.contractRoutingType = "COMPANY";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
 					return false;
+				}else{
+					that.reloadStaycard();
 				}
 
 			};
@@ -360,25 +367,28 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.removeCard($scope.viewState.lastCardSlot);
 					$scope.viewState.lastCardSlot = "";
 				}
-				/**
-				 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
-				 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
-				 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
-				 * 	However, in the confirmation screen the identifier would be "CONFIRM"
-				 */
-				if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-						"confirmationId": $stateParams.confirmationId,
-						"isrefresh": false
-					});
-				}
 				$scope.$emit('hideLoader');
 				that.attachCompanyTACardRoutings(card);
 			}, function() {
 				$scope.cardRemoved();
 				$scope.$emit('hideLoader');
 			});
+		};
+
+		/**
+		 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
+		 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
+		 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
+		 * 	However, in the confirmation screen the identifier would be "CONFIRM"
+		 */
+		this.reloadStaycard = function(){
+			if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
+				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+					"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": false
+				});
+			}
 		};
 
 		$scope.cardRemoved = function(card) {
