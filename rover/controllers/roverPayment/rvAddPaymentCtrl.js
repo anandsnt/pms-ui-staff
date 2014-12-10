@@ -171,7 +171,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
 		$scope.cardData = tokenDetails;
 		renderScreen();
-		$scope.isNewCardAdded = true;
+		if(!$scope.isFromGuestCard){
+			$scope.isNewCardAdded = true;
+		}
+		
 		$scope.showInitialScreen       = true; 
 		$scope.$digest();
 	});
@@ -426,7 +429,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
 		{
 			data.user_id = $scope.passData.userId;
-			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, saveToGuestCardSuccess);
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, addToGuestCardOnSwipe);
 		} else {
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successSwipePayment);
 		}
@@ -444,7 +447,28 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
 		}
+		if($scope.dataToSave.addToGuestCard){
+				addToGuestCardOnSwipe(data);
+		};
+		
+		
 		$scope.closeDialog();
+	};
+	var addToGuestCardOnSwipe  = function(data){
+		$scope.$emit("hideLoader");
+		var dataToGuestList = {
+			"card_code": $scope.swipedCardDataToSave.cardType.toLowerCase(),
+			"mli_token": $scope.swipedCardDataToSave.cardNumber.slice(-4),
+			"card_expiry":$scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear,
+			"card_name": $scope.swipedCardDataToSave.nameOnCard,
+			"id": data.id,
+			"isSelected": true,
+			"is_primary":false,
+			"payment_type":"CC",
+			"payment_type_id": 1
+		};
+		$scope.cardsList.push(dataToGuestList);
+		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 	};
 
 		/*
@@ -475,6 +499,11 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.renderData.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
 		$scope.renderData.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
 		$scope.renderData.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
+		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom != "guestCard"){
+			$scope.isNewCardAdded = true;
+		}
+		
+		$scope.showInitialScreen       = true; 
 	});
 
 	$scope.$on('cancelCardSelection',function(e,data){
