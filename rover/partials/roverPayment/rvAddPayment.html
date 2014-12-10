@@ -8,7 +8,7 @@
 </div>
 <div role="dialog" id="modal" class="modal-show" ng-show="isManualCCEntryEnabled" ng-click="clearErrorMessage()" ng-cloak>
 <form method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC','select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
-    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"  ng-click="closeDialog()"></button>
+    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <strong class="h2 message">New payment method</strong>
     <div class="payment-form">

@@ -137,6 +137,7 @@ sntRover.controller('reservationActionsController', [
 		// the listner must be destroyed when no needed anymore
 		$scope.$on('$destroy', postchargeAdded);
 		$scope.creditCardTypes = [];
+		$scope.paymentTypes = [];
 	
 		var openDepositPopup = function(){
 			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN") && !$scope.reservationData.justCreatedRes){
@@ -148,7 +149,8 @@ sntRover.controller('reservationActionsController', [
 							 			"firstName":$scope.guestCardData.contactInfo.first_name,
 							 			"lastName":$scope.guestCardData.contactInfo.last_name,
 							 			"isDisplayReference":$scope.ifReferanceForCC,
-							 			"creditCardTypes":$scope.creditCardTypes
+							 			"creditCardTypes":$scope.creditCardTypes,
+							 			"paymentTypes":$scope.paymentTypes
 							 		}
 							};
 				$scope.passData = passData;
@@ -197,6 +199,7 @@ sntRover.controller('reservationActionsController', [
 				console.log("fetcCreditCardTypes");
 				console.log(data);
 				$scope.$emit('hideLoader');
+				$scope.paymentTypes = data;
 				data.forEach(function(item) {
 		          if(item.name === 'CC'){
 				     $scope.creditCardTypes = item.values;
