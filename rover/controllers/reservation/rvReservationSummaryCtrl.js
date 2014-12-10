@@ -8,7 +8,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		if ($scope.reservationData.reservationId != '') {
 			$scope.isSubmitButtonEnabled = true;
 		}
-
+		var that = this;
+		$a = $scope;
 		$scope.isSixPaymentGatewayVisible = false;
 		$scope.isIframeVisible = false;
 		$scope.isCallInOnsiteButtonVisible = false;
@@ -526,6 +527,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.guest.sendConfirmMailTo = $scope.reservationData.guest.email;
 			}
 			$scope.refreshPaymentScroller();
+
+		};
+		$scope.goToConfirmationScreen = function() {
+			$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+				"id": $scope.reservationData.reservationId,
+				"confirmationId": $scope.reservationData.confirmNum
+			})
 		};
 
 		$scope.confirmReservation = function() {
@@ -535,7 +543,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				if (value.value == $scope.reservationData.paymentType.type.value) {
 					postData.payment_type.type_id = value.id;
 				}
-
 			});
 			if ($scope.reservationData.paymentType.type.value == 'CC') {
 
@@ -562,6 +569,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.proceedCreatingReservation = function() {
+			console.log("proceedCreatingReservation");
 			var postData = $scope.computeReservationDataforUpdate(false, true);
 			// return false;
 			var saveSuccess = function(data) {
@@ -609,12 +617,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
 				$scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
 
-				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
-					"id": data.id,
-					"confirmationId": data.confirm_no
-				});
+				//that.attachCompanyTACardRoutings();
 				// $scope.data.MLIData = {};
 			};
+
+			
 
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
@@ -638,12 +645,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 
 			var updateSuccess = function(data) {
+				$scope.$emit('hideLoader');
+
 				$scope.viewState.identifier = "UPDATED";
+				//TODO: what is this?
 				$scope.reservationData.is_routing_available = data.is_routing_available;
-				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+				/*$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum
-				});
+				});*/
+				//that.attachCompanyTACardRoutings();
+
 			};
 			postData.payment_type = {};
 			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
@@ -661,6 +673,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				postData.reservationId = $scope.reservationData.reservationId;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
 			} else {
+
 				//updating reservation
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
 			}
@@ -679,6 +692,152 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 
+
+		/*this.showConfirmRoutingPopup = function(type, id){
+
+			ngDialog.open({
+				template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+
+		};
+
+		this.showConflictingRoutingPopup = function(type, id){
+
+			ngDialog.open({
+				template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+
+		};*/
+
+		
+		/*this.hasTravelAgent = function(){
+			hasTravelAgent = false;
+			if($scope.reservationData.travelAgent.id !== null 
+				&& $scope.reservationData.travelAgent.id !== undefined){
+				hasTravelAgent = true;
+			}
+			return hasTravelAgent;
+		}; 
+
+		this.hasCompanyCard = function(){
+			hasCompanyCard = false;
+			if($scope.reservationData.company.id !== null 
+				&& $scope.reservationData.company.id !== undefined){
+				hasCompanyCard = true;
+			}
+			return hasCompanyCard;
+
+		};*/
+
+		/*$scope.applyRoutingToReservation = function(){
+			var routingApplySuccess = function(data){
+				$scope.$emit("hideLoader");
+				ngDialog.close();
+
+				if($scope.contractRoutingType == 'TRAVEL_AGENT' 
+					&& that.hasCompanyCard() 
+					&& $scope.routingInfo.company.routings_count > 0){
+					
+					$scope.contractRoutingType = "COMPANY";
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+					return false;
+				} else {
+					//Proceed with reservation creation flow
+					$scope.goToConfirmationScreen();
+				}
+			};
+
+			var params = {};
+			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
+			//params.reservation_id = $scope.reservationData.reservationId;
+			params.reservation_ids = [];
+			for(var i in $scope.reservationData.reservations){
+				params.reservation_ids.push($scope.reservationData.reservations[i].id)
+			}
+			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
+
+		};*/
+
+		/*$scope.noRoutingToReservation = function(){
+			ngDialog.close();
+
+			if($scope.contractRoutingType == 'TRAVEL_AGENT' 
+				&& that.hasCompanyCard() 
+				&& $scope.routingInfo.company.routings_count > 0){
+				
+				$scope.contractRoutingType = "COMPANY";
+				that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+				return false;
+
+				
+			} else {
+				//Proceed with reservation creation flow
+				$scope.goToConfirmationScreen();
+			}
+			//$scope.goToConfirmationScreen();
+		};*/
+
+		/*$scope.okClickedForConflictingRoutes = function(){
+			$scope.goToConfirmationScreen();
+			ngDialog.close();
+		};*/
+
+		/*this.attachCompanyTACardRoutings = function(){
+			var fetchSuccessofDefaultRouting = function(data){
+				$scope.$emit("hideLoader");
+				$scope.routingInfo = data;
+				console.log(data);
+				if(data.has_conflicting_routes){
+					$scope.conflict_cards = [];
+					if(that.hasTravelAgent() && data.travel_agent.routings_count > 0){
+						console.log("insde hasTravelAgent");
+						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
+					}
+					if(that.hasCompanyCard() && data.company.routings_count > 0){
+						console.log("inside hasCompanyCard");
+						$scope.conflict_cards.push($scope.reservationData.company.name)
+					}
+					console.log($scope.conflict_cards);
+
+					that.showConflictingRoutingPopup();
+
+					return false;
+				}
+
+				if(that.hasTravelAgent() &&data.travel_agent.routings_count > 0){
+					$scope.contractRoutingType = "TRAVEL_AGENT";
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
+					return false;
+
+				}
+				if(that.hasCompanyCard() && data.company.routings_count > 0){
+					$scope.contractRoutingType = "COMPANY";
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+					return false;
+
+				} else {
+					//ngDialog.close();
+					$scope.goToConfirmationScreen();
+				}
+
+			};
+			
+			if(that.hasTravelAgent() || that.hasCompanyCard()) {
+				var params = {};
+				params.reservation_id = $scope.reservationData.reservationId;
+				params.travel_agent_id = $scope.reservationData.travelAgent.id;
+				params.company_id = $scope.reservationData.company.id;
+				
+				$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
+			}else {
+				$scope.goToConfirmationScreen();
+
+			}
+		};*/
 
 		/**
 		 * Click handler for confirm button -
@@ -701,7 +860,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.errorMessage.length > 0) {
 				return false;
 			}
-
 			$scope.proceedCreatingReservation();
 		};
 

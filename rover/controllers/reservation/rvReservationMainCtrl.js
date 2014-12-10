@@ -8,6 +8,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
+        var that = this;
+
         //setting the main header of the screen
         $scope.heading = "Reservations";
 
@@ -1412,6 +1414,165 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         var nextState = '';
         var nextStateParameters = '';
 
+        this.showConfirmRoutingPopup = function(type, id){
+
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+
+        };
+
+        this.showConflictingRoutingPopup = function(type, id){
+
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+
+        };
+
+        this.hasTravelAgent = function(){
+            hasTravelAgent = false;
+            if($scope.reservationData.travelAgent.id !== null 
+                && $scope.reservationData.travelAgent.id !== undefined){
+                hasTravelAgent = true;
+            }
+            return hasTravelAgent;
+        }; 
+
+        this.hasCompanyCard = function(){
+            hasCompanyCard = false;
+            if($scope.reservationData.company.id !== null 
+                && $scope.reservationData.company.id !== undefined){
+                hasCompanyCard = true;
+            }
+            return hasCompanyCard;
+
+        };
+
+        $scope.applyRoutingToReservation = function(){
+            var routingApplySuccess = function(data){
+                $scope.$emit("hideLoader");
+                ngDialog.close();
+
+                if($scope.contractRoutingType == 'TRAVEL_AGENT' 
+                    && that.hasCompanyCard() 
+                    && $scope.routingInfo.company.routings_count > 0){
+                    
+                    $scope.contractRoutingType = "COMPANY";
+                    that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+                    return false;
+                } /*else {
+                    //Proceed with reservation creation flow
+                    $scope.goToConfirmationScreen();
+                }*/
+            };
+
+            var params = {};
+            params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
+            //params.reservation_id = $scope.reservationData.reservationId;
+            params.reservation_ids = [];
+            for(var i in $scope.reservationData.reservations){
+                params.reservation_ids.push($scope.reservationData.reservations[i].id)
+            }
+            $scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
+
+        };
+
+       /* $scope.goToConfirmationScreen = function() {
+            $state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+                "id": $scope.reservationData.reservationId,
+                "confirmationId": $scope.reservationData.confirmNum
+            })
+        };*/
+
+        $scope.noRoutingToReservation = function(){
+            ngDialog.close();
+
+            if($scope.contractRoutingType == 'TRAVEL_AGENT' 
+                && that.hasCompanyCard() 
+                && $scope.routingInfo.company.routings_count > 0){
+                
+                $scope.contractRoutingType = "COMPANY";
+                that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+                return false;
+
+                
+            } /*else {
+                //Proceed with reservation creation flow
+                $scope.goToConfirmationScreen();
+            }*/
+            //$scope.goToConfirmationScreen();
+        };
+
+        $scope.okClickedForConflictingRoutes = function(){
+            //$scope.goToConfirmationScreen();
+            ngDialog.close();
+        };
+
+        this.attachCompanyTACardRoutings = function(){
+            console.log('attachCompanyTACardRoutings');
+            var fetchSuccessofDefaultRouting = function(data){
+                $scope.$emit("hideLoader");
+                $scope.routingInfo = data;
+                console.log(data);
+                if(data.has_conflicting_routes){
+                    $scope.conflict_cards = [];
+                    if(that.hasTravelAgent() && data.travel_agent.routings_count > 0){
+                        console.log("insde hasTravelAgent");
+                        $scope.conflict_cards.push($scope.reservationData.travelAgent.name)
+                    }
+                    if(that.hasCompanyCard() && data.company.routings_count > 0){
+                        console.log("inside hasCompanyCard");
+                        $scope.conflict_cards.push($scope.reservationData.company.name)
+                    }
+                    console.log($scope.conflict_cards);
+
+                    that.showConflictingRoutingPopup();
+
+                    return false;
+                }
+
+                if(that.hasTravelAgent() &&data.travel_agent.routings_count > 0){
+                    $scope.contractRoutingType = "TRAVEL_AGENT";
+                    that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
+                    return false;
+
+                }
+                if(that.hasCompanyCard() && data.company.routings_count > 0){
+                    $scope.contractRoutingType = "COMPANY";
+                    that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+                    return false;
+
+                } /*else {
+                    //ngDialog.close();
+                    $scope.goToConfirmationScreen();
+                }*/
+
+            };
+            
+            if(that.hasTravelAgent() || that.hasCompanyCard()) {
+                var params = {};
+                params.reservation_id = $scope.reservationData.reservationId;
+                params.travel_agent_id = $scope.reservationData.travelAgent.id;
+                params.company_id = $scope.reservationData.company.id;
+                /*//TODO: Actual API call
+                //fetchSuccessofDefaultRouting();
+                params.reservation_id = [];
+                for(var i in $scope.reservationData.reservations){
+                    params.reservation_id.push($scope.reservationData.reservations[i].id)
+                }*/
+
+                $scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
+            }/*else {
+                $scope.goToConfirmationScreen();
+
+            }*/
+        };
+
         $scope.saveReservation = function(navigateTo, stateParameters) {
             nextState = navigateTo;
             nextStateParameters = stateParameters;
@@ -1484,6 +1645,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
                     $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
                     $scope.$emit('hideLoader');
+
+                    that.attachCompanyTACardRoutings();
                     if (nextState) {
                         if (!nextStateParameters) {
                             nextStateParameters = {};
