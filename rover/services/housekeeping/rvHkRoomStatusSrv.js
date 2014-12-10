@@ -47,6 +47,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		this.fetchRoomList = function(params) {
 			var deferred = $q.defer(),
 				url = '/house/search.json?query=' + params.key + '&date=' + params.businessDate + '&page=' + params.page + '&per_page=' + params.perPage;
+				// house/search.json?query=''&reservation_status[]=VACANT&room_type_ids[]=14&page=9&per_page=1
 
 			$http.get(url)
 				.success(function(response, status) {
@@ -91,6 +92,48 @@ sntRover.service('RVHkRoomStatusSrv', [
 					} else {
 						deferred.reject(response);
 					}
+				});
+
+			return deferred.promise;
+		}
+
+		this.fetchRoomListPost = function(params) {
+			var deferred = $q.defer(),
+				url = '/house/search.json';
+
+			BaseWebSrvV2.postJSON(url, params)
+				.then(function(response) {
+					var roomList = response.data;
+
+					for (var i = 0, j = roomList.rooms.length; i < j; i++) {
+						var room = roomList.rooms[i];
+
+						// lets set this so that we can avoid
+						room.display_room = true;
+
+						// reduce scope search
+						room.description = room.hk_status.description;
+
+						room.is_occupied = room.is_occupied == 'true' ? true : false;
+						room.is_vip = room.is_vip == 'true' ? true : false;
+
+						// single calculate the class required
+						// will require additional call from details page
+						that.setRoomStatusClass(room, roomList.checkin_inspected_only);
+
+						// set the leaveStatusClass or enterStatusClass value
+						that.setReservationStatusClass(room);
+
+						room.timeOrIn = calculateTimeOrIn(room);
+						room.timeOrOut = calculateTimeOrOut(room);
+
+						room.assigned_staff = calculateAssignedStaff(room);
+
+						room.ooOsTitle = calculateOoOsTitle(room);
+					}
+					deferred.resolve(roomList);
+				}.bind(this), function(data) {
+					deferred.reject(data);
 				});
 
 			return deferred.promise;

@@ -141,12 +141,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			localStorage.setItem( 'roomListScrollTopPos', roomsEl.scrollTop );
 		};
 
+		$scope.showFilters = function() {
+			$scope.filterOpen = true;
+		};
+
 		$scope.filterDoneButtonPressed = function() {
 			$scope.filterOpen = false;
 			$scope.$emit( 'showLoader' );
 			$timeout(function() {
 				$scope.rooms = [];
-				$_postProcessRooms();
+				$_callRoomsApi();
 			}, 100);
 
 			// save the current edited filter to RVHkRoomStatusSrv
@@ -470,6 +474,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_postProcessRooms() {
+			console.log('_postProcessRooms');
+
 			var _roomCopy = {};
 
 			if (!!$_roomList && !!$_roomList.rooms && $_roomList.rooms.length) {
@@ -536,9 +542,64 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 
-		function $_calculateFilters() {
+		function $_callRoomsApi() {
+			var filter               = RVHkRoomStatusSrv.currentFilters,
+				reservation_status   = [],
+				front_office_status  = [],
+				house_keeping_status = [],
+				room_type_ids        = [],
+				floor_start          = false,
+				floor_end            = false,
+				params               = {
+					businessDate : $rootScope.businessDate,
+					page         : $_page,
+					perPage      : $_perPage
+				};
 
-		};
+			// process the floors
+			if ( !filter.showAllFloors ) {
+				floor_start = filter.floorFilterStart || filter.floorFilterSingle;
+				floor_end   = filter.floorFilterEnd || filter.floorFilterSingle;
+			}
+
+			// process the reservation status
+			if ( filter.vacant )   { reservation_status.push('VACANT'); };
+			if ( filter.occupied ) { reservation_status.push('OCCUPIED'); };
+			if ( filter.queued )   { reservation_status.push('QUEUED'); };
+
+			// process front office status
+			if ( filter.stayover )     { front_office_status.push('STAY_OVER'); }
+			if ( filter.not_reserved ) { front_office_status.push('NOT_RESERVED'); }
+			if ( filter.arrival )      { front_office_status.push('ARRIVAL'); }
+			if ( filter.arrived )      { front_office_status.push('ARRIVED'); }
+			if ( filter.dayuse )       { front_office_status.push('DAY_USE'); }
+			if ( filter.dueout )       { front_office_status.push('DUE_OUT'); }
+			if ( filter.departed )     { front_office_status.push('DEPARTED'); }
+
+			// process house keeping status
+			if ( filter.dirty )          { house_keeping_status.push('DIRTY'); }
+			if ( filter.clean )          { house_keeping_status.push('CLEAN'); }
+			if ( filter.inspected )      { house_keeping_status.push('INSPECTED'); }
+			if ( filter.pickup )         { house_keeping_status.push('PICKUP'); }
+			if ( filter.out_of_order )   { house_keeping_status.push('OO'); }
+			if ( filter.out_of_service ) { house_keeping_status.push('OS'); }
+
+			// process room type ids
+			_.each(RVHkRoomStatusSrv.roomTypes, function(type) {
+				if (type.isSelected) { room_type_ids.push(type.id); };
+			});
+
+			// fill request param
+			if ( reservation_status.length )     { params['reservation_status']   = reservation_status; };
+			if ( front_office_status.length )    { params['front_office_status']  = front_office_status; };
+			if ( house_keeping_status.length )   { params['house_keeping_status'] = house_keeping_status; };
+			if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
+			if ( floor_start )                   { params['floor_start']          = floor_start; };
+			if ( floor_end )                     { params['floor_end']            = floor_end; };
+			if ( $scope.query )                  { params['key']                  = $scope.query; };
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, params, $_fetchRoomListCallback);
+		}
 
 
 
