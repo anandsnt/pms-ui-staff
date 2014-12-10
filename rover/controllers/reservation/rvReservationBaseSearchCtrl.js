@@ -316,6 +316,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 reservationDataToKeepinVault.toDate         = new tzIndependentDate($scope.reservationData.departureDate).getTime();
                 reservationDataToKeepinVault.arrivalTime    = $scope.reservationData.checkinTime;
                 reservationDataToKeepinVault.departureTime  = $scope.reservationData.checkoutTime;
+                reservationDataToKeepinVault.minHours       = $scope.reservationData.resHours;
                 reservationDataToKeepinVault.adults         = roomData.numAdults;
                 reservationDataToKeepinVault.children       = roomData.numChildren;
                 reservationDataToKeepinVault.infants        = roomData.numInfants;
