@@ -1723,8 +1723,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     room.amount = parseFloat(room.amount) + parseFloat(stayDate.rateDetails.modified_amount);
 
                 });
-                room.rateTotal = room.amount;
-                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal);
+                room.rateTotal = room.amount;               
 
                 if (taxes) {
                     /**
@@ -1795,7 +1794,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     addOnCumulative += parseInt(finalRate);
                     addon.effectivePrice = finalRate;
                 });
-                $scope.reservationData.totalStayCost = parseFloat(room.rateTotal) + parseFloat(addOnCumulative);
+                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost)+ parseFloat(room.rateTotal) + parseFloat(addOnCumulative);
             });
         }
     }
