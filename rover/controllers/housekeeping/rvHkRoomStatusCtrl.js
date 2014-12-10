@@ -481,10 +481,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			if (!!$_roomList && !!$_roomList.rooms && $_roomList.rooms.length) {
 				// load first 13 a small delay (necessary) - for filters to work properly
 				$timeout(function() {
-					$_calculateFilters();
-
-					// empty all
-					$scope.rooms = [];
 
 					// load first 13;
 					for (var i = 0; i < 13; i++) {
