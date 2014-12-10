@@ -24,11 +24,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
          *
          */
 
-        $scope.setDepartureHours = function() {
+        $scope.setDepartureHours = function(force) {
 
             // must not allow user to set hours less than 3
-            if ( $scope.reservationData.resHours < 3 ) {
-                $scope.reservationData.resHours = 3;
+            var correctHours = function(value) {
+                $scope.reservationData.resHours = value;
+            };
+            if ( (force || $scope.reservationData.resHours) && $scope.reservationData.resHours < 3 ) {
+                $timeout(correctHours.bind(null, 3), 100);
             };
 
             var checkinHour = parseInt($scope.reservationData.checkinTime.hh);
@@ -313,6 +316,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 reservationDataToKeepinVault.toDate         = new tzIndependentDate($scope.reservationData.departureDate).getTime();
                 reservationDataToKeepinVault.arrivalTime    = $scope.reservationData.checkinTime;
                 reservationDataToKeepinVault.departureTime  = $scope.reservationData.checkoutTime;
+                reservationDataToKeepinVault.minHours       = $scope.reservationData.resHours;
                 reservationDataToKeepinVault.adults         = roomData.numAdults;
                 reservationDataToKeepinVault.children       = roomData.numChildren;
                 reservationDataToKeepinVault.infants        = roomData.numInfants;
