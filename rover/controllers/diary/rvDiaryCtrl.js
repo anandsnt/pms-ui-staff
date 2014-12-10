@@ -1120,19 +1120,11 @@ sntRover
 	}
 
 	var correctRoomType = function() {
-		if ( !$scope.gridProps.filter.room_type ) {
-			var data,
-				room_type_id,
-				matched;
+		var data = $vault.get('searchReservationData'),
+			room_type_id,
+			matched;
 
-			data = $vault.get('searchReservationData');
-			
-			if(data) {
-			    data = JSON.parse(data);
-			} else {
-				return;
-			}
-
+		if ( !!data ) {
 			room_type_id = isNaN(parseInt(data.roomTypeID)) ? 'All' : data.roomTypeID;
 
 			match = _.find($scope.gridProps.filter.room_types, function(item) {
@@ -1143,11 +1135,11 @@ sntRover
 
 			// trigger call
 			$scope.clickedOnRoomType();
-		};
 
-		setTimeout(function() {
-			$vault.remove('searchReservationData');
-		}, 10);
+			setTimeout(function() {
+				$vault.remove('searchReservationData');
+			}, 10);
+		};
 	};
 
 	$scope.eventAfterRendering = function() {
