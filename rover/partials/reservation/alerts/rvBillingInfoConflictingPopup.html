@@ -2,7 +2,7 @@
 	<div class="modal-content new-content form warning">
 	    <div>
 	    	<span translate>CONFLICTING_BILLING_INFO_EXISTS_ON</span>
-			<span ng-repeat="card in conflict_cards">{{card}} <span translate>CARD</span>{{$last ? '. ' : ', '}}</span>
+			<span ng-repeat="card in conflict_cards">{{card}} {{$last ? '. ' : ', '}}</span>
 			<span translate>PLEASE_UPDATE_MANUALLY</span>
 			
 		</div>
