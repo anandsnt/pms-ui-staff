@@ -28,7 +28,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name == "rover.search");
+		
 		//Date picker from date should default to current business date - CICO-8490
+		//Get the date stored in service, and clear the service
 		$scope.fromDate = RVSearchSrv.fromDate == undefined? $rootScope.businessDate : RVSearchSrv.fromDate;
 		$scope.toDate = RVSearchSrv.toDate == undefined? "" : RVSearchSrv.toDate;
 		RVSearchSrv.fromDate = $rootScope.businessDate;
@@ -371,11 +373,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		}; //end of displayFilteredResults
 
 		$scope.fetchSearchResults = function(){
-			alert("fetch search reservationdetails");
-
 			var query = $scope.textInQueryBox.trim();
 			if($scope.escapeNull(query) == "" && $scope.escapeNull($stateParams.type) == ""){
-				alert("retrun false");
 				return false;
 			}
 			var dataDict = {};
@@ -768,7 +767,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.toDate = date;
 			$scope.focusSearchField = true;
 			//RVSearchSrv.toDate = date;
-			alert("on to date changed");
 			$scope.fetchSearchResults();
 
 		};
