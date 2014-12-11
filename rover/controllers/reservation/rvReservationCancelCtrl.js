@@ -260,6 +260,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCC = false;
 		$scope.cancellationData.paymentType = "";
+		$scope.isManual = false;
 	});
 
 	$scope.$on('cardSelected',function(e,data){
