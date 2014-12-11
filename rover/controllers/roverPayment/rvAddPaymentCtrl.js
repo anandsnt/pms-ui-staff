@@ -174,9 +174,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
 		$scope.cardData = tokenDetails;
 		renderScreen();
-		if(!$scope.isFromGuestCard){
+		// if(!$scope.isFromGuestCard){
 			$scope.isNewCardAdded = true;
-		}
+		// }
 		
 		$scope.showInitialScreen       = true; 
 		$scope.$digest();

@@ -146,7 +146,7 @@
 	var refreshCardsList = function() {
 		$timeout(function() {
 			$scope.refreshScroller('cardsList');
-		}, 300);
+		}, 2000);
 	};
 
 	var retrieveCardtype = function(){
