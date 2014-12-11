@@ -205,7 +205,7 @@ sntRover.controller('reservationActionsController', [
 				});
 				$scope.fetchDepositDetails();
 			};
-			$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback)
+			$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
 		};
 
 		fetcCreditCardTypes();
@@ -552,7 +552,8 @@ sntRover.controller('reservationActionsController', [
 			$scope.$emit('hideLoader');
 			// $scope.depositBalanceData = data;
 			$scope.depositBalanceData = data;
-			
+			console.log("------------------------------");
+			console.log($scope.paymentTypes)
 			$scope.passData = { 
 			    "details": {
 			    	"firstName": $scope.data.guest_details.first_name,
