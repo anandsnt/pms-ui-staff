@@ -480,6 +480,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				'click': true
 			});
 			$scope.setScroller('paymentInfo');
+			$scope.setScroller('cardsList');
+
 			fetchPaymentMethods();
 			refreshScrolls();
 		};
@@ -492,6 +494,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$timeout(function() {
 				$scope.refreshScroller('reservationSummary');
 				$scope.refreshScroller('paymentInfo');
+				$scope.refreshScroller('cardsList');
 			}, 1500);
 		};
 
@@ -740,12 +743,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.changeOnsiteCallIn = function(){
 		 $scope.isManual ? $scope.showCC = true : "";
+		 refreshScrolls();
 		};
 
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				
 				($rootScope.paymentGateway === 'sixpayments')  ? "": $scope.showCC = true;
+				refreshScrolls();
 				/*
 				 
 				 * Comment out .if existing cards needed remove comments
