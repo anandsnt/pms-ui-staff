@@ -330,10 +330,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Action - On click submit payment button
 	*/
 	$scope.submitPayment = function(){
-		if($scope.saveData.paymentType == '' || $scope.saveData.paymentType == null){
-			$scope.errorMessage = ["Please select payment type"];
+		if($scope.saveData.paymentType === '' || $scope.saveData.paymentType === null){
+			$timeout(function() {
+				$scope.errorMessage = ["Please select payment type"];
+			}, 1000);
 		} else if($scope.renderData.defaultPaymentAmount == '' || $scope.renderData.defaultPaymentAmount == null){
-			$scope.errorMessage = ["Please enter amount"];
+			$timeout(function() {
+				$scope.errorMessage = ["Please enter amount"];
+			}, 1000);
 		} else {
 			
 			$scope.errorMessage = "";
