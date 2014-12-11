@@ -40,6 +40,7 @@
 
 //=require ../rover/react/diary/util.js
 //=require ../rover/react/diary/diary-toggle.js
+//=require ../rover/react/diary/diary-grid-row-inactive-rooms.js
 //=require ../rover/react/diary/diary-toggle-panel.js
 //=require ../rover/react/diary/diary-grid-row-item-drag.js
 //=require ../rover/react/diary/diary-grid-row-item.js

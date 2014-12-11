@@ -11,8 +11,8 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 		var cancelReservation = function(with_deposit_refund) {
 			var onCancelSuccess = function(data) {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
+					"id": $stateParams.id || $scope.reservationData.reservationId,
+					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
 					"isrefresh": false
 				});
 				$scope.closeDialog();
@@ -21,7 +21,7 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
-				id: $scope.reservationData.reservation_card.reservation_id
+				id: $scope.reservationData.reservation_card.reservation_id || $scope.reservationData.reservationId
 			};
 			cancellationParameters.with_deposit_refund = with_deposit_refund;
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess);

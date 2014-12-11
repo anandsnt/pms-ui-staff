@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout) {
 
         BaseCtrl.call(this, $scope);
 
@@ -7,6 +7,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
+
+        var that = this;
 
         //setting the main header of the screen
         $scope.heading = "Reservations";
@@ -837,37 +839,44 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var timeParts = reservationDetails.reservation_card.arrival_time.trim().split(" ");
                 //flooring to nearest 15th as the select element's options are in 15s
                 var hourMinutes = timeParts[0].split(":");
-                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
+                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkinTime = {
-                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                    ampm: timeParts[1]
-                }
+                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+                        ampm: timeParts[1]
+                    }
+                    // reservationDetails.reservation_card.arrival_time = parseInt($scope.reservationData.checkinTime.hh) + ":" + $scope.reservationData.checkinTime.mm + " " + $scope.reservationData.checkinTime.ampm;
             }
+
+
             // Handling late checkout
             if (reservationDetails.reservation_card.is_opted_late_checkout && reservationDetails.reservation_card.late_checkout_time) {
                 var timeParts = reservationDetails.reservation_card.late_checkout_time.trim().split(" ");
                 var hourMinutes = timeParts[0].split(":");
                 //flooring to nearest 15th as the select element's options are in 15s
-                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
+                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkoutTime = {
-                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                    ampm: timeParts[1]
-                }
+                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+                        ampm: timeParts[1]
+                    }
+                    // reservationDetails.reservation_card.late_checkout_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
             }
             //  reservationDetails.reservation_card.departureDate ! = null   
             else if (reservationDetails.reservation_card.departure_time) {
                 var timeParts = reservationDetails.reservation_card.departure_time.trim().split(" ");
                 var hourMinutes = timeParts[0].split(":");
                 //flooring to nearest 15th as the select element's options are in 15s
-                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
+                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkoutTime = {
-                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                    ampm: timeParts[1]
-                }
+                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+                        ampm: timeParts[1]
+                    }
+                    // reservationDetails.reservation_card.departure_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
             }
+
+
 
             // cards
             $scope.reservationData.company.id = $scope.reservationListData.company_id;
@@ -939,17 +948,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     dayOfWeek: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'EEE'),
                     day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
                 });
-
-                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
-                    guests: {
-                        adults: "",
-                        children: "",
-                        infants: ""
-                    },
-                    rate: {
-                        id: ""
-                    }
-                }
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.arrivalDate), 'yyyy-MM-dd')];
             }
             if (reservationDetails.reservation_card.payment_method_used !== "" && reservationDetails.reservation_card.payment_method_used !== null) {
                 $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
@@ -1391,8 +1390,188 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             checkCancellationPolicy();
         }
 
+        var showDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
+            ngDialog.open({
+                template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
+                controller: 'RVCancelReservationDepositController',
+                scope: $scope,
+                data: JSON.stringify({
+                    state: 'CONFIRM',
+                    cards: false,
+                    penalty:penalty,
+                    deposit:deposit,
+                    depositText: (function() {
+                        if (!isOutOfCancellationPeriod) {
+                            return "Within Cancellation Period. Deposit of "+$rootScope.currencySymbol+deposit+" is refundable.";
+                        } else {
+                            return "Reservation outside of cancellation period. A cancellation fee of "+$rootScope.currencySymbol+penalty+" will be charged, deposit not refundable";
+                        }
+                    })()
+                })
+             });
+        };
+
         var nextState = '';
         var nextStateParameters = '';
+
+        this.showConfirmRoutingPopup = function(type, id){
+
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+
+        };
+
+        this.showConflictingRoutingPopup = function(type, id){
+
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+
+        };
+
+        this.hasTravelAgent = function(){
+            hasTravelAgent = false;
+            if($scope.reservationData.travelAgent.id !== null 
+                && $scope.reservationData.travelAgent.id !== undefined){
+                hasTravelAgent = true;
+            }
+            return hasTravelAgent;
+        }; 
+
+        this.hasCompanyCard = function(){
+            hasCompanyCard = false;
+            if($scope.reservationData.company.id !== null 
+                && $scope.reservationData.company.id !== undefined){
+                hasCompanyCard = true;
+            }
+            return hasCompanyCard;
+
+        };
+
+        $scope.applyRoutingToReservation = function(){
+            var routingApplySuccess = function(data){
+                $scope.$emit("hideLoader");
+                ngDialog.close();
+
+                if($scope.contractRoutingType == 'TRAVEL_AGENT' 
+                    && that.hasCompanyCard() 
+                    && $scope.routingInfo.company.routings_count > 0){
+                    
+                    $scope.contractRoutingType = "COMPANY";
+                    that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+                    return false;
+                } /*else {
+                    //Proceed with reservation creation flow
+                    $scope.goToConfirmationScreen();
+                }*/
+            };
+
+            var params = {};
+            params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
+            //params.reservation_id = $scope.reservationData.reservationId;
+            params.reservation_ids = [];
+            for(var i in $scope.reservationData.reservations){
+                params.reservation_ids.push($scope.reservationData.reservations[i].id)
+            }
+            $scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
+
+        };
+
+       /* $scope.goToConfirmationScreen = function() {
+            $state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+                "id": $scope.reservationData.reservationId,
+                "confirmationId": $scope.reservationData.confirmNum
+            })
+        };*/
+
+        $scope.noRoutingToReservation = function(){
+            ngDialog.close();
+
+            if($scope.contractRoutingType == 'TRAVEL_AGENT' 
+                && that.hasCompanyCard() 
+                && $scope.routingInfo.company.routings_count > 0){
+                
+                $scope.contractRoutingType = "COMPANY";
+                that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+                return false;
+
+                
+            } /*else {
+                //Proceed with reservation creation flow
+                $scope.goToConfirmationScreen();
+            }*/
+            //$scope.goToConfirmationScreen();
+        };
+
+        $scope.okClickedForConflictingRoutes = function(){
+            //$scope.goToConfirmationScreen();
+            ngDialog.close();
+        };
+
+        this.attachCompanyTACardRoutings = function(){
+            console.log('attachCompanyTACardRoutings');
+            var fetchSuccessofDefaultRouting = function(data){
+                $scope.$emit("hideLoader");
+                $scope.routingInfo = data;
+                console.log(data);
+                if(data.has_conflicting_routes){
+                    $scope.conflict_cards = [];
+                    if(that.hasTravelAgent() && data.travel_agent.routings_count > 0){
+                        console.log("insde hasTravelAgent");
+                        $scope.conflict_cards.push($scope.reservationData.travelAgent.name)
+                    }
+                    if(that.hasCompanyCard() && data.company.routings_count > 0){
+                        console.log("inside hasCompanyCard");
+                        $scope.conflict_cards.push($scope.reservationData.company.name)
+                    }
+                    console.log($scope.conflict_cards);
+
+                    that.showConflictingRoutingPopup();
+
+                    return false;
+                }
+
+                if(that.hasTravelAgent() &&data.travel_agent.routings_count > 0){
+                    $scope.contractRoutingType = "TRAVEL_AGENT";
+                    that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
+                    return false;
+
+                }
+                if(that.hasCompanyCard() && data.company.routings_count > 0){
+                    $scope.contractRoutingType = "COMPANY";
+                    that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+                    return false;
+
+                } /*else {
+                    //ngDialog.close();
+                    $scope.goToConfirmationScreen();
+                }*/
+
+            };
+            
+            if(that.hasTravelAgent() || that.hasCompanyCard()) {
+                var params = {};
+                params.reservation_id = $scope.reservationData.reservationId;
+                params.travel_agent_id = $scope.reservationData.travelAgent.id;
+                params.company_id = $scope.reservationData.company.id;
+                /*//TODO: Actual API call
+                //fetchSuccessofDefaultRouting();
+                params.reservation_id = [];
+                for(var i in $scope.reservationData.reservations){
+                    params.reservation_id.push($scope.reservationData.reservations[i].id)
+                }*/
+
+                $scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
+            }/*else {
+                $scope.goToConfirmationScreen();
+
+            }*/
+        };
 
         $scope.saveReservation = function(navigateTo, stateParameters) {
             nextState = navigateTo;
@@ -1466,6 +1645,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
                     $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
                     $scope.$emit('hideLoader');
+
+                    that.attachCompanyTACardRoutings();
                     if (nextState) {
                         if (!nextStateParameters) {
                             nextStateParameters = {};
@@ -1480,6 +1661,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var updateSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.deposit_amount;
+                    $scope.$broadcast('UPDATEFEE');
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
                     if (nextState) {
@@ -1523,6 +1705,96 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.resetAddons = function() {
             angular.forEach($scope.reservationData.rooms, function(room) {
                 room.addons = []
+            });
+        }
+
+        $scope.computeHourlyTotalandTaxes = function() {
+            $scope.reservationData.totalStayCost = 0.0;
+            $scope.reservationData.totalTax = 0.0;
+            $scope.reservationData.taxDetails = {};
+            _.each($scope.reservationData.rooms, function(room, roomNumber) {
+                var taxes = $scope.otherData.hourlyTaxInfo[0];
+                room.amount = 0.0;
+                _.each(room.stayDates, function(stayDate) {
+                    stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
+                    if (isNaN(stayDate.rateDetails.modified_amount)) {
+                        stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+                    }
+                    room.amount = parseFloat(room.amount) + parseFloat(stayDate.rateDetails.modified_amount);
+
+                });
+                room.rateTotal = room.amount;               
+
+                if (taxes) {
+                    /**
+                     * Calculating taxApplied just for the arrival date, as this being the case for hourly reservations.
+                     */
+                    var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes.tax, roomNumber);
+                    _.each(taxApplied.taxDescription, function(description, index) {
+                        if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+                            $scope.reservationData.taxDetails[description.id] = description;
+                        } else {
+                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
+                        }
+                    });
+                    $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+                    $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
+                }
+                //Calculate Addon Addition for the room
+                var addOnCumulative = 0;
+                $(room.addons).each(function(i, addon) {
+                    //Amount_Types
+                    // 1   ADULT   
+                    // 2   CHILD   
+                    // 3   PERSON  
+                    // 4   FLAT
+                    // The Amount Type is available in the amountType object of the selected addon
+                    // ("AT", addon.amountType.value)
+
+                    //Post Types
+                    // 1   STAY   
+                    // 2   NIGHT  
+                    // The Post Type is available in the postType object of the selected addon
+                    // ("PT", addon.postType.value)
+
+                    //TODO: IN CASE OF DATA ERRORS MAKE FLAT STAY AS DEFAULT
+
+                    var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price);
+
+                    var finalRate = baseRate;
+
+                    var getAddonRateForDay = function(amountType, baseRate, numAdults, numChildren) {
+                        if (amountType == "PERSON") {
+                            return baseRate * parseInt(parseInt(numAdults) + parseInt(numChildren));
+                        } else if (addon.amountType.value == "CHILD") {
+                            return baseRate * parseInt(numChildren);
+                        } else if (addon.amountType.value == "ADULT") {
+                            return baseRate * parseInt(numAdults);
+                        }
+                        return baseRate;
+                    };
+
+                    if (addon.postType.value == "STAY" && parseInt($scope.reservationData.numNights) > 1) {
+                        var cumulativeRate = 0
+                        _.each(currentRoom.stayDates, function(stayDate, date) {
+                            if (date !== $scope.reservationData.departureDate) cumulativeRate = parseFloat(cumulativeRate) + parseFloat(getAddonRateForDay(
+                                addon.amountType.value,
+                                baseRate,
+                                stayDate.guests.adults, // Using EACH night's occupancy information to calculate the addon's applicable amount!
+                                stayDate.guests.children)); // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
+                        });
+                        finalRate = cumulativeRate;
+                    } else {
+                        finalRate = parseFloat(getAddonRateForDay(
+                            addon.amountType.value,
+                            baseRate,
+                            room.numAdults, // Using FIRST night's occupancy information to calculate the addon's applicable amount!
+                            room.numChildren));
+                    }
+                    addOnCumulative += parseInt(finalRate);
+                    addon.effectivePrice = finalRate;
+                });
+                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost)+ parseFloat(room.rateTotal) + parseFloat(addOnCumulative);
             });
         }
     }

@@ -584,7 +584,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				_.each($scope.multiSheetState.selectedEmployees, function(emp) {
 
 					// loop each added rooms in assignements for this employee
-					if ( $scope.multiSheetState.assignments[emp.id].rooms.length ) {
+					if ( $scope.multiSheetState.assignments[emp.id] && $scope.multiSheetState.assignments[emp.id].rooms.length ) {
 
 						// this is the else case - there are rooms
 						_.each($scope.multiSheetState.assignments[emp.id].rooms, function(room) {

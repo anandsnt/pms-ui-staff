@@ -3,15 +3,16 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 	var self = this;
 	self.searchPerPage = 50;
 	self.page = 1;
-
+	self.to_date = "";
 	
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
 	
 		
 		dataToSend.fakeDataToAvoidCache = new Date();
+		self.toDate = self.toDate == undefined ? "" : self.toDate;
 		var url =  'search.json?per_page=' + self.searchPerPage 
-		+ '&page=' + self.page + '&from_date=' + self.fromDate + '&to_date=' + self.toDate;
+		+ '&page=' + self.page;
 
 		if ( useCache && !!self.data ) {
 			deferred.resolve( self.data );

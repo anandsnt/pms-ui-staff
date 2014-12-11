@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 <form method="post" action="cancel-reservation" id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-class="{'select-card':ngDialogData.state == 'PENALTY'}"><!-- Add class "select-card" when applying penalty charge -->
     <button class="modal-close" id="modal-close" type="button" ng-click="closeReservationCancelModal()"><span class="icons icon-close invert"></span></button>
@@ -43,15 +43,15 @@
                 </label>
             </div>
 
-            <div class="entry full-width" ng-hide="showCC" ng-class="{'amount': isStandAlone && feeData.feesInfo.amount}"><!-- Add class "amount" when fee exsists -->
+            <div class="entry full-width" ng-hide="showCC" ng-class="{'amount': isShowFees()}"><!-- Add class "amount" when fee exsists -->
                 <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
                 <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="ngDialogData.penalty" type="text" disabled="true" />
             
                 <!-- CICO-9457 : Use only when fee exsists in standalone -->
-                <span ng-show="isStandAlone && feeData.feesInfo.amount" class="fee">
+                <span ng-show="isShowFees()" class="fee">
                     + {{currencySymbol}}{{feeData.calculatedFee}} fee
                 </span> 
-                <span ng-show="isStandAlone && feeData.feesInfo.amount" class="total">
+                <span ng-show="isShowFees()" class="total">
                     Total:
                     <strong id="total-deposit-amount">
                         {{currencySymbol}}{{feeData.totalOfValueAndFee}}

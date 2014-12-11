@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
     <form id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation select-card"><!-- Add class "select-card" when applying penalty charge -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         <fieldset id="cancel-options">
@@ -32,11 +32,11 @@
             <div ng-include="'/assets/partials/common/notification_message.html'" ng-hide="successOccured"></div>
             <div ng-hide="errorOccured || isLoading">
                 <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-                <div class="authorised-code-text">
+                <div class="authorised-code-text" ng-show="authorizedCode !==''">
                     <span>Your authorized code is :</span>
                     <span>{{authorizedCode}}</span>
                 </div>
-                <div class="amount-paid">
+                <div class="amount-paid" ng-class="{'margin-top-1':authorizedCode !==''}">
                     <span>Amount Paid:</span> 
                     <span >{{currencySymbol}}{{reservationData.depositAmount}}</span>
                 </div>
@@ -45,7 +45,7 @@
         <div class="actions float" ng-class="{'deposit-required-actions':depositInProcess && errorOccured && !successOccured}">
             <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
             <!-- to chnage ng-lcick -->
-            <button type="button" class="button blue" ng-click="submitPayment()" ng-show="depositInProcess && errorOccured && !successOccured">Try again</button>
+            <button type="button" class="button blue" ng-click="tryAgain()" ng-show="depositInProcess && errorOccured && !successOccured">Try again</button>
         </div>
     </fieldset>
 
