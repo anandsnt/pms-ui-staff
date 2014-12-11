@@ -208,7 +208,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				len = 0,
 				i = 0,
 				room,
-				roomNo;
+				roomNo,
+				lastQuery = '';
 
 			var timer       = null,
 				delayedCall = function() {
@@ -243,7 +244,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						room.display_room = false;
 						unMatched++;
 
-						if ( unMatched === len ) {
+						if ( unMatched === len && lastQuery != $scope.query ) {
+							lastQuery = $scope.query;
+
 							if ( !!timer ) {
 								$timeout.cancel(timer);
 								timer = null;
