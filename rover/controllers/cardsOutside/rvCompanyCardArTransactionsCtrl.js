@@ -6,27 +6,30 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 		$scope.filterData = {};
 		$scope.filterData.filterActive = true;
 		$scope.filterData.showFilterFlag = 'OPEN';
-		$scope.arTransactionDetails = {};
+		
 
-		var init = function(){
+		var fetchData = function(params){
 			var arAccountsFetchSuccess = function(data) {
 			    $scope.$emit('hideLoader');
+			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
-			    console.log(data);
 			};
 
 			var failure = function(){
 			    $scope.$emit('hideLoader');
 			};
-			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, {}, arAccountsFetchSuccess, failure);
 
+			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
 		};
 
-		init();
+		var initParams = {
+			"id": 17,
+			"paid" : false,
+			"from_date":"",
+			"to_date": ""
+		};
 
-
-
-
+		fetchData( initParams );
 
 		// $scope.setScroller('cardAccountsScroller');
 
@@ -47,11 +50,23 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 		};
 
 		var showAll = function(){
-			
+			var params = {
+				"id": 17,
+				"paid" : true,
+				"from_date":"",
+				"to_date": ""
+			};
+			fetchData( params );
 		};
 
 		var showOnlyOpen = function(){
-			
+			var params = {
+				"id": 17,
+				"paid" : false,
+				"from_date":"",
+				"to_date": ""
+			};
+			fetchData( params );
 		};
 
 		$scope.chagedShowFilter = function(){
