@@ -38,12 +38,14 @@
                     <!-- Option for having 2 separate input fields for nights/hours entry. If nights is default, nights should be hidden until switch button is tapped.
                     Feel free to use just one input field id you want to -->
                     <input ng-show="shouldShowNights" name="nights-number" id="nights-number" type="tel" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
-                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-change="setDepartureHours()" />
+                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-change="setDepartureHours()"  ng-blur="setDepartureHours('force')"/>
                 </div>
             </div>
 
             <!-- Departure date -->
-            <div id="departing" class="entry" ng-class="{ 'hidden': !isNightsActive }">
+            <!-- WHY THE INLINE STYLE *&$%@#%(!#$%? -->
+            <!-- TELL ME HOW THE #%^@ AM I SUPPOSE TO TO MAKE THIS FIT PROPERLY WHEN YOU GAVE IT A STYLE: width: 32.52032520325203%; -->
+            <div id="departing" class="entry" ng-class="{ 'hidden': !isNightsActive }" style="float: right">
                 <label id="check-out-day-label" for="check-out-date">Departing <span>{{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
                 <div class="entry-data">
                     <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
@@ -54,7 +56,9 @@
             </div>
 
             <!-- Arrival time -->
-            <div id="arriving-time" class="entry" ng-class="{ 'hidden': isNightsActive }">
+            <!-- WHY THE INLINE STYLE *&$%@#%(!#$%? -->
+            <!-- TELL ME HOW THE #%^@ AM I SUPPOSE TO TO MAKE THIS FIT PROPERLY WHEN YOU GAVE IT A STYLE: width: 32.52032520325203%; -->
+            <div id="arriving-time" class="entry" ng-class="{ 'hidden': isNightsActive }" style="float: right">
                 <label for="arrival-time">Arrival Time</label>
                 <div class="select">
                     <select id="arrival-time" name="arrival-time" iscroll-stop-propagation ng-model="fullCheckinTime" ng-change="mapToCheckinTime()">
@@ -200,7 +204,9 @@
                 <label for="guest-first-name">Guest <span>(optional)</span></label>
                 <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" ng-model="searchData.guestCard.guestFirstName" ng-change="reservationGuestSearchChanged()" />
             </div>
-            <div id="last-name" class="entry no-label">
+            <!-- WHY THE INLINE STYLE *&$%@#%(!#$%? -->
+            <!-- TELL ME HOW THE #%^@ AM I SUPPOSE TO TO MAKE THIS FIT PROPERLY WHEN YOU GAVE IT A STYLE: width: 32.52032520325203%; -->
+            <div id="last-name" class="entry no-label" style="float:right">
                 <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" ng-model="searchData.guestCard.guestLastName" ng-change="reservationGuestSearchChanged()" />
             </div>
         </div>
