@@ -128,12 +128,12 @@ sntRover
             } else if ( mm == 15 || mm == 30 || mm == 45 ) {
                 mm += 15;
             } else {
-                do {
+                /*do {
                     mm += 1;
                     if ( mm == 15 || mm == 30 || mm == 45 ) {
                         break;
                     }
-                } while ( mm != 15 || mm != 30 || mm != 45 );
+                } while ( mm != 15 || mm != 30 || mm != 45 );*/
             };
 
             var date         = $rootScope.businessDate,
