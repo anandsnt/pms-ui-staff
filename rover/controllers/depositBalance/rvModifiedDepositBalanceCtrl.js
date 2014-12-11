@@ -21,9 +21,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
 		value.card_expiry = value.expiry_date;//Same comment above
 	});
-	console.log(">>>>>>>>>>>>>>>")
-console.log($scope.depositBalanceData)
-console.log($scope.reservationData)
+	
 	
 	$scope.shouldShowExistingCards = true;
 	$scope.shouldShowAddNewCard   = true;
@@ -41,13 +39,34 @@ console.log($scope.reservationData)
 	$scope.isDisplayReference = false;
 	$scope.referanceText = "";
 	
-
+	if($scope.reservationData.reservation_card.payment_method_used == "CC"){
+		$scope.shouldCardAvailable 				 = true;
+		$scope.depositBalanceMakePaymentData.card_code = $scope.reservationData.reservation_card.payment_details.card_type_image.replace(".png", "");
+		$scope.depositBalanceMakePaymentData.ending_with = $scope.reservationData.reservation_card.payment_details.card_number;
+		$scope.depositBalanceMakePaymentData.card_expiry = $scope.reservationData.reservation_card.payment_details.card_expiry;
+	}
 	var checkReferencetextAvailableForCC = function(){
 		angular.forEach($scope.depositBalanceData.data.credit_card_types, function(value, key) {
 			if($scope.depositBalanceMakePaymentData.card_code.toUpperCase() === value.cardcode){
 				$scope.isDisplayReference = (value.is_display_reference)? true:false;
 			};					
 		});				
+	};
+	$scope.changePaymentType = function(){
+		if($scope.depositBalanceMakePaymentData.payment_type == "CC"){
+			// $scope.shouldShowIframe 	   			 = false;	
+			$scope.shouldShowMakePaymentScreen       = false; 
+			// $scope.showAddtoGuestCard    			 = false;
+			// $scope.shouldShowExistingCards  		 = false;
+			$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
+			$scope.addmode = ($scope.cardsList.length>0) ? false :true;
+			// $scope.makePaymentButtonDisabled         = false;
+		} else {
+			$scope.shouldShowMakePaymentScreen       = true; 
+				$scope.addmode                 			 = false;
+				$scope.shouldShowExistingCards = false;
+				$scope.shouldCardAvailable 				 = false;
+		}
 	};
 
 	/*
@@ -261,7 +280,7 @@ console.log($scope.reservationData)
 		$scope.shouldShowExistingCards  		 = false;
 		$scope.addmode                 			 = false;
 		$scope.makePaymentButtonDisabled         = false;
-	
+		$scope.shouldCardAvailable 				 = true;
 		$scope.paymentId = $scope.depositBalanceData.data.existing_payments[index].value;
 		
 		$scope.depositBalanceMakePaymentData.card_code = $scope.depositBalanceData.data.existing_payments[index].card_code;
