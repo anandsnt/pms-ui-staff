@@ -2,17 +2,17 @@
 <form method="post" action="{action}" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab transactions">
     
     <div class="tab-header">
-        <div class="search-form has-dates" ng-class="{'open':filterActive}"> <!-- Add class "open" when showing form -->
+        <div class="search-form has-dates" ng-class="{'open':filterData.filterActive}"> <!-- Add class "open" when showing form -->
             <div class="entry filter">
-                <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterActive}"> <!-- Add class "active" when showing form -->
-                    <span class="icons icon-filter" ng-class="{'active':filterActive}"></span> <!-- Add class "active" when showing form -->
+                <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}"> <!-- Add class "active" when showing form -->
+                    <span class="icons icon-filter" ng-class="{'active':filterData.filterActive}"></span> <!-- Add class "active" when showing form -->
                 </button>
             </div>
             <div class="entry showing">
                 <div class="select">
-                    <select name="showing" id="showing">
-                        <option value="all">Show All Bills</option>
-                        <option value="open" selected>Show Open Balance</option>
+                    <select name="showing" id="showing" ng-model="filterData.showFilterFlag" ng-change="chagedShowFilter()">
+                        <option ng-selected="filterData.showFilterFlag=='ALL'" value="ALL">Show All Bills</option>
+                        <option ng-selected="filterData.showFilterFlag=='OPEN'" value="OPEN">Show Open Balance</option>
                     </select>
                 </div>
             </div>
