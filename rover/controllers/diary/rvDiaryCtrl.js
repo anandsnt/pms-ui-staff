@@ -456,12 +456,7 @@ sntRover
 					if(availability) {
 				    	util.reservationRoomTransfer($scope.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
 					    
-				    	$scope.gridProps.currentResizeItemRow = nextRoom;
-				    	//resizeEndForExistingReservation(nextRoom, reservation);
-				    	
-		    				
-				    	
-						
+				    	$scope.gridProps.currentResizeItemRow = nextRoom;				    					    			    								    							
 						
 						
 						
@@ -477,6 +472,8 @@ sntRover
 					    	$scope.gridProps.edit.originalRowItem = og_r_item;
 					    	$scope.gridProps.edit.originalItem = og_item;
 							$scope.$emit('hideLoader');
+							prevRoom = '';
+							prevTime = '';
 						}, 350)
 						
 						
@@ -777,6 +774,8 @@ sntRover
 			$scope.gridProps.mode = undefined;
 			$scope.gridProps.currentResizeItem = undefined;
 			$scope.gridProps.currentResizeItemRow = undefined;
+			//$scope.gridProps.edit.originalRowItem = undefined;
+			//$scope.gridProps.edit.originalItem = undefined;
 			$scope.gridProps.edit.currentResizeItem = undefined;    //Planned to transfer the non-namespaced currentResizeItem/Row to here
 			$scope.gridProps.edit.currentResizeItemRow = undefined; //Planned to transfer the non-namespaced currentResizeItem/Row to here
 	    };

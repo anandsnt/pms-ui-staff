@@ -124,9 +124,9 @@ var GridRowItemDrag = React.createClass({
 				
 				var prevArrival = item.arrival;
 				var newArrival = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;
-
-				if(newArrival - prevArrival <= 300000){
-					arrival = newArrival;
+				
+				if(newArrival - prevArrival <= 300000 && newArrival - prevArrival >=0){
+					arrival = item.arrival;
 				}
 				else if(delta_x < 0) {					
 					arrival = Math.floor((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;
