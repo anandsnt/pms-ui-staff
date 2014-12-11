@@ -196,8 +196,6 @@ sntRover.controller('reservationActionsController', [
 
 		var fetcCreditCardTypes = function(cancellationCharge, nights){
 			var successCallback = function(data){
-				console.log("fetcCreditCardTypes");
-				console.log(data);
 				$scope.$emit('hideLoader');
 				$scope.paymentTypes = data;
 				data.forEach(function(item) {
@@ -559,6 +557,7 @@ sntRover.controller('reservationActionsController', [
 			    "details": {
 			    	"firstName": $scope.data.guest_details.first_name,
 			    	"lastName": $scope.data.guest_details.last_name,
+			    	"paymentTypes":$scope.paymentTypes
 			    }
 			};
 			ngDialog.open({

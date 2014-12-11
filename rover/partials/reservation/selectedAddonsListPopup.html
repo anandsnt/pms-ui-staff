@@ -4,7 +4,7 @@
         <!-- Initial markup -->
         <!-- Markup as you add items -->
         <ul id="room-1-enhancements" class="enhancements-added">
-            <li ng-repeat="addon in activeRoom.addons">
+            <li ng-repeat="addon in reservationData.rooms[activeRoom].addons">
                 <span class="item">{{ addon.title }}</span>
                 <span class="count">({{ addon.quantity }})</span>
                 <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
