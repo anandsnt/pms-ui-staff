@@ -25,4 +25,7 @@
 "CALCULATION_RULE":"Calculation Rule",
 "ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
 "ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
-"SELECT_CALCULATION_RULE":"Select Calculation Rule"
+"SELECT_CALCULATION_RULE":"Select Calculation Rule",
+"FEES_CODE":"Fees code",
+"FEES":"Fees",
+"MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee"

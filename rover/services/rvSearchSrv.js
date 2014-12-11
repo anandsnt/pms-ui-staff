@@ -3,20 +3,23 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 	var self = this;
 	self.searchPerPage = 50;
 	self.page = 1;
+	self.to_date = "";
 	
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
 	
 		
 		dataToSend.fakeDataToAvoidCache = new Date();
-		var url =  'search.json?per_page=' + self.searchPerPage + '&page=' + self.page;
+		self.toDate = self.toDate == undefined ? "" : self.toDate;
+		var url =  'search.json?per_page=' + self.searchPerPage 
+		+ '&page=' + self.page;
 
 		if ( useCache && !!self.data ) {
 			deferred.resolve( self.data );
 		} else {
 			RVBaseWebSrv.getJSON(url, dataToSend).then(function(data) {
-				for(var i = 0; i < data.length; i++){
-					data[i].is_row_visible = true;
+				for(var i = 0; i < data.results.length; i++){
+					data.results[i].is_row_visible = true;
 				}
 
 				if(dataToSend.is_queued_rooms_only == true){
@@ -149,6 +152,9 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 		var deferred = $q.defer();
 		var url = '/staff/payments/search_by_cc';
 		RVBaseWebSrv.postJSON(url, swipeData).then(function(data) {
+			for(var i = 0; i < data.length; i++){
+					data[i].is_row_visible = true;
+			}
 			deferred.resolve(data);
 			self.data = data;
 		}, function(data) {

@@ -68,7 +68,7 @@
 
     "BEST_SELLER": "BESTSELLER",
     "ENHANCEMENTS": "Enhancements",
-    "GO_TO_PAYMENT": "Go to Payment",
+    "GO_TO_PAYMENT": "Book",
     "QUANTITY": "Quantity",
     "REMOVE": "Remove",
     "ADD_MORE_TO_THIS_ROOM": "Add More to This Room",
@@ -102,4 +102,15 @@
     "SHOW_STAY_DATES": "Show Stay Dates",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
-    "INVALID_CREDIT_CARD": "There is a problem with your credit card"
+    "INVALID_CREDIT_CARD": "There is a problem with your credit card",
+    "START_PAYMENT_PROCESS": "Start Payment Process",
+    "CONFLICTING_BILLING_INFO_EXISTS_ON": "conflicting billing info exists on",
+    "CARD": "card",
+    "PLEASE_UPDATE_MANUALLY": "Please update manually",
+    "OK": "ok",
+    "BILLING_INFORMATION_FOUND": "Billing information found",
+    "ON_SELECTED_CARD": "On selected card",
+    "APPLY_TO_RESERVATION": "Apply to reservation",
+    "DONT_APPLY": "Don't apply",
+    "APPLY_CUSTOMRATE" : "Apply Custom Rate",
+    "MODIFY_CUSTOMRATE" : "Modify Custom Rate"

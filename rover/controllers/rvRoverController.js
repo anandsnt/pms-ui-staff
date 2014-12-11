@@ -24,7 +24,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
 
-
+    $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
 
     //Used to add precison in amounts
@@ -66,8 +66,34 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-    $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 
+    $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+    $rootScope.paymentGateway = hotelDetails.payment_gateway;
+    $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+    $rootScope.isAddonOn = hotelDetails.is_addon_on;
+    //set MLI Merchant Id
+    try {
+      sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
+    } catch (err) {};
+    $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
+
+
+    //handle six payment iFrame communication
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var eventer = window[eventMethod];
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+    eventer(messageEvent, function(e) {
+      var responseData = e.data;
+      if (responseData.response_message == "token_created") {
+        $scope.$broadcast('six_token_recived', {
+          'six_payment_data': responseData
+        });
+      }
+      // if (responseData.response_message == "error_on_token_creation") {
+        // $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
+      // }
+    }, false);
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
@@ -81,7 +107,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    
+
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB
@@ -112,9 +138,18 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
 
+
     $scope.isDepositBalanceScreenOpened = false;
-    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function() {
-      $scope.isDepositBalanceScreenOpened = true;
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {
+      $scope.isDepositBalanceScreenOpened = value;
+    });
+    $scope.isCancelReservationPenaltyOpened = false;
+    $scope.$on("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", function(e, value) {
+      $scope.isCancelReservationPenaltyOpened = value;
+    });
+    $scope.isStayCardDepositScreenOpened = false;
+    $scope.$on("UPDATE_STAY_CARD_DEPOSIT_FLAG", function(e, value) {
+      $scope.isStayCardDepositScreenOpened = value;
     });
     $scope.searchBackButtonCaption = '';
 
@@ -178,8 +213,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             standAlone: true,
             menuIndex: "createReservation"
           }, {
-            title: "MENU_ROOM_ASSIGNMENT",
-            action: ""
+            title: "MENU_ROOM_DIARY",
+            action: 'rover.reservation.diary',
+            standAlone: true,
+            hidden: !$rootScope.isHourlyRateOn,
+            menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
             action: "",
@@ -187,7 +225,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "postcharges"
           }, {
             title: "MENU_CASHIER",
-            action: ""
+            action: "rover.financials.journal({ id: 2 })",
+            menuIndex: "cashier"
           }, {
             title: "MENU_END_OF_DAY",
             action: "",
@@ -246,10 +285,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           title: "MENU_FINANCIALS",
           //hidden: true,
           action: "",
-          iconClass: "icon-finance",
+          iconClass: "icon-financials",
           submenu: [{
-            title: "MENU_REVENUE",
-            action: ""
+            title: "MENU_JOURNAL",
+            action: "rover.financials.journal({ id : 0})",
+            menuIndex: "journals"
           }, {
             title: "MENU_ACCOUNTING",
             action: ""
@@ -335,7 +375,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
-    }
+    };
 
     $scope.$on("updateSubMenu", function(idx, item) {
       $rootScope.updateSubMenu(idx, item);
@@ -358,6 +398,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.hasLoader = false;
     });
 
+    /**
+     * in case of we want to reinitialize left menu based on new $rootScope values or something
+     * which set during it's creation, we can use
+     */
+    $scope.$on('refreshLeftMenu', function(event) {
+      setupLeftMenu();
+    });
 
     $scope.init = function() {
       BaseCtrl.call(this, $scope);
@@ -416,7 +463,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
-    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+    //(bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
     var routeChange = function(event, newURL) {
       event.preventDefault();
@@ -491,10 +538,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.isGuestCardVisible = true;
       }
     });
-    
+
     $scope.successCallBackSwipe = function(data) {
-    	
-      $scope.$broadcast('SWIPEHAPPENED', data);
+      // $scope.$broadcast('SWIPEHAPPENED', data);      
+      $scope.$broadcast('SWIPE_ACTION', data);
     };
 
     $scope.failureCallBackSwipe = function() {};
@@ -503,54 +550,56 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
 
-	$scope.numberOfCordovaCalls = 0;
+    $scope.numberOfCordovaCalls = 0;
 
-	$scope.initiateCardReader = function(){
-    	if (sntapp.cardSwipeDebug === true) {
-      	sntapp.cardReader.startReaderDebug(options);
-      	return;
-    	}
-    	
+    $scope.initiateCardReader = function() {
+      if (sntapp.cardSwipeDebug === true) {
+        sntapp.cardReader.startReaderDebug(options);
+        return;
+      }
+
       if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
-      	setTimeout(function(){
- 	    		sntapp.cardReader.startReader(options);
- 	      }, 2000);
-	    } else {
-	      		//If cordova not loaded in server, or page is not yet loaded completely
-	      		//One second delay is set so that call will repeat in 1 sec delay
-	      	if($scope.numberOfCordovaCalls < 50){
-	      		setTimeout(function(){
-	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
-				    	  $scope.initiateCardReader();
-				    }, 2000);
-	      	}
-        }	
+        setTimeout(function() {
+          sntapp.cardReader.startReader(options);
+        }, 2000);
+      } else {
+        //If cordova not loaded in server, or page is not yet loaded completely
+        //One second delay is set so that call will repeat in 1 sec delay
+        if ($scope.numberOfCordovaCalls < 50) {
+          setTimeout(function() {
+            $scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls) + parseInt(1);
+            $scope.initiateCardReader();
+          }, 2000);
+        }
+      }
     };
 
     /*
      * Start Card reader now!.
      * Time out is to call set Browser
      */
+    if ($rootScope.paymentGateway != "sixpayments") {
+      setTimeout(function() {
+        $scope.initiateCardReader();
+      }, 2000);
+    }
 
-    setTimeout(function() {
-      $scope.initiateCardReader();
-    }, 2000);
 
     /*
      * To show add new payment modal
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
      * @param {{object}} - payment data - used for swipe
      */
-    $scope.showAddNewPaymentModal = function(passData, paymentData) {
-      $scope.passData = passData;
-      $scope.paymentData = paymentData;
-      $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
-      ngDialog.open({
-        template: '/assets/partials/payment/rvPaymentModal.html',
-        controller: 'RVPaymentMethodCtrl',
-        scope: $scope
-      });
-    };
+    /* $scope.showAddNewPaymentModal = function(passData, paymentData) {
+       $scope.passData = passData;
+       $scope.paymentData = paymentData;
+       $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
+       ngDialog.open({
+         template: '/assets/partials/payment/rvPaymentModal.html',
+         controller: 'RVPaymentMethodCtrl',
+         scope: $scope
+       });
+     };*/
     /*
      * Call payment after CONTACT INFO
      */
@@ -609,9 +658,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
+
     /**
      * Handles the bussiness date change in progress
      */
+
+    var LastngDialogId = "";
+
+    $scope.closeBussinnesDatePopup = function() {
+      ngDialog.close(LastngDialogId, "");
+    };
+
+    $rootScope.$on('ngDialog.opened', function(e, $dialog) {
+      LastngDialogId = $dialog.attr('id');
+    });
+
     $rootScope.showBussinessDateChangingPopup = function() {
 
       // Hide loading message
@@ -619,7 +680,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       //if already shown no need to show again and again
       if (!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone && !$rootScope.isCurrentUserChangingBussinessDate) {
         $rootScope.isBussinessDateChanging = true;
-        ngDialog.open({
+        var $dialog = ngDialog.open({
           template: '/assets/partials/common/bussinessDateChangingPopup.html',
           className: 'ngdialog-theme-default1 modal-theme1',
           controller: 'bussinessDateChangingCtrl',
@@ -694,5 +755,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
 
     });
+
+    $scope.openPaymentDialogModal = function(passData, paymentData) {
+      $scope.passData = passData;
+      $scope.paymentData = paymentData;
+      // $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
+      ngDialog.open({
+        template: '/assets/partials/roverPayment/rvAddPayment.html',
+        controller: 'RVPaymentAddPaymentCtrl',
+        scope: $scope
+      });
+    };
   }
 ]);

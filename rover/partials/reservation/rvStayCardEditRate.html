@@ -1,0 +1,18 @@
+<div id="modal" class="modal-show" role="dialog">
+   <div>
+		<form method="post" action="{action}" id="rate-options" name="rate-options" class="modal-content form confirmation" ng-cloak>
+		    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+		    	<span class="icons icon-close invert">
+		    </button>
+
+		    <div class="actions">
+		        <button type="button" ng-click="applyCustomRate()" class="button green" ng-if="reservationParentData.is_modified != true" translate>APPLY_CUSTOMRATE</button>
+		        <!-- If rate is already edited, show this button instead: -->
+		        <button type="button" ng-click="applyCustomRate()" class="button purple" ng-if="reservationParentData.is_modified == true" translate>MODIFY_CUSTOMRATE</button>
+
+		        <button type="button" ng-click="goToRoomAndRates('ROOM_RATE')" class="button blue">Update Room &amp; Rate</button>
+		        <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
+		    </div>
+		</form>
+	</div>
+</div>

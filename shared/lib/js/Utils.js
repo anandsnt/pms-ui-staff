@@ -253,6 +253,38 @@ function getAvatharUrl(title){
     }
 }
 
+var creditCardTypes = {
+      "AMEX": 'AX',
+      "DINERS_CLUB": 'DC',
+      "DISCOVER": 'DS',
+      "JCB": 'JCB',
+      "MASTERCARD": 'MC',
+      "VISA": 'VA'
+};
+
+function getCreditCardType(cardBrand){
+    var card = cardBrand.toUpperCase();
+    return creditCardTypes[card];
+}
+
+
+var sixCreditCardTypes = {
+      "AX": 'AX',
+      "DI": 'DS',
+      "DN": 'DC',
+      "JC": 'JCB',
+      "MC": 'MC',
+      "VS": 'VA',
+      "MX": 'DS'//Six iframe reurns MX for discover. not good
+};
+
+function getSixCreditCardType(cardCode){
+    var card = cardCode.toUpperCase();
+    return sixCreditCardTypes[card];
+}
+
+
+
 /**
 * utils function convert any number to number with two decimal points.
 */
@@ -415,3 +447,14 @@ var getJqDateFormat = function(dateFormat) {
         return DateFormatInfoMappings[dateFormat][1];
     }
 };
+
+var tConvert = function(time){
+    tDict = {};
+    var t = time.split(':');
+    tDict.hh = (t[0] >= 12) ? (t[0] - 12) : t[0];
+    tDict.hh = tDict.hh == 0 ? 12 : tDict.hh;
+    tDict.mm = t[1];
+    tDict.ampm = (t[0] >= 12) ? 'PM' : 'AM';
+
+    return tDict;
+}

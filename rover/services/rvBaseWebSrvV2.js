@@ -38,12 +38,15 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
   		};
 
 		$http(httpDict).success(function(response, status) {
-	    	deferred.resolve(response)
+	    	deferred.resolve(response);
 		}).error(function(errors, status) {
 			var urlStart = url.split('?')[0];
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
 			if(status == 406){ // 406- Network error
+				deferred.reject(errors);
+			} else if(status == 422){ // 422
+					console.log("base 2");
 				deferred.reject(errors);
 			}
 			else if(status == 500){ // 500- Internal Server Error

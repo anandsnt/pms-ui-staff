@@ -49,6 +49,12 @@
 				</fieldset>
 				<!-- max guest counts ends here -->
 
+				<fieldset class="holder left">
+					<div style="height:20px;"></div>
+					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
+					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
+				</fieldset>
+
 			</fieldset>
 			<div class="actions float">
 				<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>CANCEL</button>

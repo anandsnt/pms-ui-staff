@@ -1,0 +1,29 @@
+
+	<!-- Add new Hotel Loyalty Program -->
+	<div style="display: block;" id="add-new" class="edit-data">
+		<div class="data-holder">
+			<form id="add-loyalty" class="form inline-form float">
+				<div class="form-title">
+					<h3><span>{{addEditTitle }}</span> {{'WORKSTATION' | translate}} </h3>
+					<em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+				</div>
+				<fieldset class="holder left float">
+					<ad-textbox inputtype="text" value="mapping.name" 
+						label = "{{'STATION_NAME' | translate}}" placeholder = "{{'STATION_NAME'| translate}}"  
+						styleclass="full-width" required="yes"></ad-textbox>
+					<ad-textbox inputtype="text" value="mapping.station_identifier" 
+						label = "{{'STATION_ID' | translate}}" placeholder = "{{'STATION_ID'| translate}}"  
+						styleclass="full-width" required="yes"></ad-textbox>
+				</fieldset>
+				
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()" translate>
+						CANCEL
+					</button>
+					<button type="button" id="save" class="button green" ng-click="saveMapping()" translate>
+						SAVE_CHANGES
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>

@@ -1,13 +1,24 @@
 <div class="block-item item-rate">
-	<h3 class="block-title"> <strong>ADR</strong></h3>
-	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="goToRoomAndRates('ROOM_RATE')"> 
+	<h3 class="block-title"> ADR</h3>
+	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="showEditReservationPrompt()"> 
 		<span class="number" ng-show="reservationData.reservation_card.is_rates_suppressed">
-			<strong>{{reservationData.reservation_card.text_rates_suppressed}} </strong>
+			{{reservationData.reservation_card.text_rates_suppressed}}
 		</span> 
 		<span class="number" ng-hide="reservationData.reservation_card.is_rates_suppressed">
-			<strong>{{currencySymbol}}{{reservationData.reservation_card.avg_daily_rate}}</strong>	
+			{{currencySymbol}}{{reservationData.reservation_card.avg_daily_rate}}	
 		</span> 
-	{{reservationData.reservation_card.rate_name}} 
+		<span ng-hide="reservationParentData.is_modified == true" class="rate">
+			{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}} 
+	    </span>
+		<!-- If reservation was edited, output this instead:-->
+        <span class="rate custom" ng-show="reservationParentData.is_modified == true">
+        	<span>
+        		Edited
+        	</span> 
+        	{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}} 
+        </span> 
+
+	
 	</a>
 	<!-- If reservation is not editable 
     <div class="no-view">

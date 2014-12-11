@@ -110,7 +110,14 @@ angular.module('housekeepingModule', [])
         $stateProvider.state('rover.workManagement.multiSheet', {
             url: '/multisheet/:date',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementMultiSheet.html',
-            controller: 'RVWorkManagementMultiSheetCtrl'
+            controller: 'RVWorkManagementMultiSheetCtrl',
+            resolve: {
+                allUnassigned: function(RVWorkManagementSrv, $stateParams) {
+                    return RVWorkManagementSrv.fetchAllUnassigned({
+                        date: $stateParams.date
+                    });
+                }
+            }
         });
 
         $stateProvider.state('rover.workManagement.singleSheet', {
@@ -121,6 +128,11 @@ angular.module('housekeepingModule', [])
                 wmWorkSheet: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchWorkSheet({
                         id: $stateParams.id
+                    });
+                },
+                allUnassigned: function(RVWorkManagementSrv, $stateParams) {
+                    return RVWorkManagementSrv.fetchAllUnassigned({
+                        date: $stateParams.date
                     });
                 }
             }

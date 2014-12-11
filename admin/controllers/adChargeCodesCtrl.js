@@ -206,6 +206,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule)].charge_code_id_list;
 				}
 			});
+			if($scope.prefetchData.selected_fees_code ===""){
+				$scope.prefetchData.selected_fees_code = null;
+			};
 			//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
@@ -220,7 +223,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				delete item["selected_calculation_rule"];
 				if (item["id"]) delete item["id"];
 			});
-
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		};
 		/*
@@ -365,8 +367,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To set the selected payment type based on the id and cc_type from the dropdown.
 		 */
 		$scope.changeSelectedPaymentType = function() {
-			$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
-			$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
+			if($scope.selected_payment_type.id != ""){
+				$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
+				$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
+			}
 		};
 
 		$scope.deleteTaxFromCaluculationPolicy = function(index) {

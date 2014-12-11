@@ -115,7 +115,6 @@ sntRover.controller('RVroomAssignmentController',[
                   scope: $scope
                 });
 		}else{
-			console.log(oldRoomType +"!=="+ $scope.roomType);
 			if(oldRoomType !== $scope.roomType){
 			//if(true){
 				$scope.oldRoomType = oldRoomType;
@@ -343,6 +342,9 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.getRoomStatusClassForRoom = function(room){
+		if(room.is_oos){
+			return "room-grey";
+		}
 
 		var reservationRoomStatusClass = "";
 		

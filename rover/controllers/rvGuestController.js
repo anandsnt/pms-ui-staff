@@ -10,8 +10,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			cardTabContentOffset: 170, // Height of the tab menu and the header above.			
 		};
 
-		$s = $scope;
-
 		$scope.cardVisible = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
@@ -25,7 +23,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
 					// based on search values from base screen
 					// init respective search
-					if($scope.reservationDetails.guestCard.id == ''){
+					if ($scope.reservationDetails.guestCard.id == '') {
 						if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
 							$scope.openGuestCard();
 							$scope.searchGuest();
@@ -81,8 +79,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var data = {
 				'firstname': $scope.guestCardData.contactInfo.first_name,
 				'lastname': $scope.guestCardData.contactInfo.last_name,
-				'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city 
-									+ ', '  + $scope.guestCardData.contactInfo.address.state: false,
+				'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city + ', ' + $scope.guestCardData.contactInfo.address.state : false,
 				'vip': $scope.guestCardData.contactInfo.vip
 			};
 			RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
@@ -168,7 +165,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 */
 		$scope.decloneUnwantedKeysFromContactInfo = function() {
 
-			var unwantedKeys = ["address", "birthday", "country",
+			var unwantedKeys = ["birthday", "country",
 				"is_opted_promotion_email", "job_title",
 				"mobile", "passport_expiry",
 				"passport_number", "postal_code",
@@ -185,6 +182,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
 		var currentGuestCardHeaderData = declonedData;
 		$scope.current = 'guest-contact';
+
+		/**
+		 *
+		 *to reset current data in header info for determining any change
+		 **/
+		$scope.$on('RESETHEADERDATA', function(event, data) {
+			currentGuestCardHeaderData.address = data.address;
+			currentGuestCardHeaderData.phone = data.phone;
+			currentGuestCardHeaderData.email = data.email;
+			currentGuestCardHeaderData.first_name = data.first_name;
+			currentGuestCardHeaderData.last_name = data.last_name;
+		});
 
 		/**
 		 * tab actions
@@ -221,13 +230,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var that = this;
 			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
+				$scope.$emit('hideLoader');
 				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
 				updateSearchCache();
-				$scope.$emit('hideLoader');
-			};
-			var saveUserInfoFailureCallback = function(data) {
-				$scope.$emit('hideLoader');
+				//to reset current data in contcat info for determining any change
+				$scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
 			};
 			// check if there is any chage in data.if so call API for updating data
 			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
@@ -236,7 +244,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
-				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
 			}
 		};
 
@@ -579,45 +587,47 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.searchedCompanies = [];
 				if (data.accounts.length > 0) {
 					angular.forEach(data.accounts, function(item) {
-						var companyData = {};
-						companyData.id = item.id;
-						companyData.account_name = item.account_name;
-						// companyData.lastName = item.account_last_name;
-						companyData.logo = item.company_logo;
-						if (item.address != null) {
-							companyData.address = {};
-							companyData.address.postalCode = item.address.postal_code;
-							companyData.address.city = item.address.city;
-							companyData.address.state = item.address.state;
-						}
-						if (item.current_contract != null) {
-							companyData.rate = item.current_contract;
-							companyData.rate.difference = (function() {
-								if (parseInt(companyData.rate.based_on.value) < 0) {
-									if (companyData.rate.based_on.type == "amount") {
-										return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
-									} else {
-										return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
-									}
+						if (item.account_type === 'COMPANY') {
+							var companyData = {};
+							companyData.id = item.id;
+							companyData.account_name = item.account_name;
+							// companyData.lastName = item.account_last_name;
+							companyData.logo = item.company_logo;
+							if (item.address != null) {
+								companyData.address = {};
+								companyData.address.postalCode = item.address.postal_code;
+								companyData.address.city = item.address.city;
+								companyData.address.state = item.address.state;
+							}
+							if (item.current_contract != null) {
+								companyData.rate = item.current_contract;
+								companyData.rate.difference = (function() {
+									if (parseInt(companyData.rate.based_on.value) < 0) {
+										if (companyData.rate.based_on.type == "amount") {
+											return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
+										} else {
+											return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+										}
 
-								}
-								return "";
-							})();
-
-							companyData.rate.surplus = (function() {
-								if (parseInt(companyData.rate.based_on.value) > 0) {
-									if (companyData.rate.based_on.type == "amount") {
-										return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
-									} else {
-										return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
 									}
-								}
-								return "";
-							})();
+									return "";
+								})();
+
+								companyData.rate.surplus = (function() {
+									if (parseInt(companyData.rate.based_on.value) > 0) {
+										if (companyData.rate.based_on.type == "amount") {
+											return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
+										} else {
+											return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+										}
+									}
+									return "";
+								})();
+							}
+							companyData.email = item.email;
+							companyData.phone = item.phone;
+							$scope.searchedCompanies.push(companyData);
 						}
-						companyData.email = item.email;
-						companyData.phone = item.phone;
-						$scope.searchedCompanies.push(companyData);
 					});
 				}
 				$scope.$broadcast('companySearchInitiated');
@@ -713,22 +723,28 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
 			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
-			var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
-			if (cardType == 'guest') {
-				var templateUrl = '/assets/partials/cards/alerts/futureReservationsGuest.html';
-			}
+			console.log($scope.reservationData);
+			console.log($scope.viewState);
 
-			ngDialog.open({
-				template: templateUrl,
-				className: 'ngdialog-theme-default stay-card-alerts',
-				scope: $scope,
-				closeByDocument: false,
-				closeByEscape: false,
-				data: JSON.stringify({
-					cardType: cardType,
-					card: card
-				})
-			});
+			if (!$scope.isHourly) {
+
+				var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
+				if (cardType == 'guest') {
+					var templateUrl = '/assets/partials/cards/alerts/futureReservationsGuest.html';
+				}
+
+				ngDialog.open({
+					template: templateUrl,
+					className: 'ngdialog-theme-default stay-card-alerts',
+					scope: $scope,
+					closeByDocument: false,
+					closeByEscape: false,
+					data: JSON.stringify({
+						cardType: cardType,
+						card: card
+					})
+				});
+			}
 		};
 
 		$scope.replaceCardCaller = function(cardType, card, future) {
@@ -738,7 +754,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
 			//CICO-7792
-			if ($scope.viewState.identifier == "CREATION") {
+			if ($scope.viewState.identifier == "CREATION" || $stateParams.reservation == "HOURLY") {
 				$scope.reservationData.company.id = company.id;
 				$scope.showContractedRates({
 					companyCard: company.id,
@@ -755,10 +771,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
 			} else {
+				console.log("else case");
+
 				if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('company', company, false);
 				} else {
-					$scope.checkFuture('company', company);
+					if ($stateParams.reservation != "HOURLY") {
+						$scope.checkFuture('company', company);
+					}
 				}
 			}
 
@@ -767,7 +787,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
 			//CICO-7792
-			if ($scope.viewState.identifier == "CREATION") {
+			if ($scope.viewState.identifier == "CREATION" || $stateParams.reservation == "HOURLY") {
 				// Update main reservation scope
 				$scope.reservationData.travelAgent.id = travelAgent.id;
 				$scope.showContractedRates({
@@ -788,14 +808,17 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
 					$scope.replaceCardCaller('travel_agent', travelAgent, false);
 				} else {
-					$scope.checkFuture('travel_agent', travelAgent);
+					if ($stateParams.reservation != "HOURLY") {
+						$scope.checkFuture('travel_agent', travelAgent);
+					}
 				}
 			}
 		};
 
 		$scope.selectGuest = function(guest, $event) {
+			console.log($stateParams.reservation);
 			$event.stopPropagation();
-			if ($scope.viewState.identifier == "CREATION") {
+			if ($scope.viewState.identifier == "CREATION" || $stateParams.reservation == "HOURLY") {
 				$scope.reservationData.guest.id = guest.id;
 				$scope.reservationData.guest.firstName = guest.firstName;
 				$scope.reservationData.guest.lastName = guest.lastName;
@@ -815,7 +838,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('guest', guest, false);
 				} else {
-					$scope.checkFuture('guest', guest);
+					if ($stateParams.reservation != "HOURLY") {
+						$scope.checkFuture('guest', guest);
+					}
 				}
 			}
 		};
@@ -899,16 +924,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		});
 		//Listener to update the card info from billing info
 		$scope.$on("CardInfoUpdated", function(e, card_id, card_type) {
-			if(card_type == 'COMPANY_CARD'){
+			if (card_type == 'COMPANY_CARD') {
 				$scope.reservationDetails.companyCard.id = card_id;
 				$scope.initCompanyCard();
-			}else{
+			} else {
 				$scope.reservationDetails.travelAgent.id = card_id;
 				$scope.initTravelAgentCard();
 			}
-			
+
 		});
-		
+
+		$scope.$on('PROMPTCARDENTRY', function() {
+			$scope.openGuestCard();
+		});
+
 
 		$scope.init();
 

@@ -1,29 +1,31 @@
 sntRover.controller('RVHkRoomStatusCtrl', [
 	'$scope',
 	'$rootScope',
+	'$timeout',
 	'$state',
+	'$filter',
 	'RVHkRoomStatusSrv',
 	'roomList',
 	'employees',
 	'workTypes',
 	'roomTypes',
 	'floors',
-	'$window',
-	'$timeout',
-	'$filter',
+	'ngDialog',
+	'RVWorkManagementSrv',
 	function(
 		$scope,
 		$rootScope,
+		$timeout,
 		$state,
+		$filter,
 		RVHkRoomStatusSrv,
 		roomList,
 		employees,
 		workTypes,
 		roomTypes,
 		floors,
-		$window,
-		$timeout,
-		$filter
+		ngDialog,
+		RVWorkManagementSrv
 	) {
 		// hook it up with base ctrl
 		BaseCtrl.call( this, $scope );

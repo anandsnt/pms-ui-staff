@@ -15,6 +15,8 @@ var sntRover = angular.module('sntRover',[
 		'stayCardModule', 
 		'housekeepingModule', 
 		'reportsModule', 
+		'diaryModule',
+		'FinancialsModule',
 		'cacheVaultModule', 
 		'twoMonthscalendar',
 		'acute.select', 
@@ -25,7 +27,8 @@ var sntRover = angular.module('sntRover',[
 		'orientationInputBlurModule',  
 		'multi-select', 		
 		'ngDragDrop',
-		'iscrollStopPropagation']);
+		'iscrollStopPropagation',
+		'ngReact']);
 
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
@@ -133,20 +136,20 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*	@private
 	*/
 	var $_revAnimList = [{
-		fromState: 'rover.housekeeping.roomDetails',
-		toState  : 'rover.housekeeping.roomStatus'
+		fromState : 'rover.housekeeping.roomDetails',
+		toState   : 'rover.housekeeping.roomStatus'
 	}, {
-		fromState: 'rover.reservation.staycard.billcard',
-		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
+		fromState : 'rover.reservation.staycard.billcard',
+		toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
 	}, {
-		fromState: 'rover.staycard.nights',
-		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
+		fromState : 'rover.staycard.nights',
+		toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
 	}, {
-		fromState: 'rover.companycarddetails',
-		toState  : 'rover.companycardsearch'
+		fromState : 'rover.companycarddetails',
+		toState   : 'rover.companycardsearch'
 	}, {
-		fromState: 'rover.reservation.staycard.roomassignment',
-		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
+		fromState : 'rover.reservation.staycard.roomassignment',
+		toState   : 'rover.reservation.staycard.reservationcard.reservationdetails'
 	}];
 
 
@@ -206,7 +209,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// 'scope.callback' is will be running the show
 		if ( !!options.scope ) {
 
-			// NOTE: if the controller explicitly says there is not state change
+			// NOTE: if the controller explicitly says there is no actual state change
 			// $_mustRevAnim must be set false, else check further
 			$_mustRevAnim = options.noStateChange ? false : (reverse ? options.reverse : true);
 			
@@ -286,5 +289,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			_.extend(toParams, $rootScope.setNextState.data);
 			$rootScope.setNextState = {};
 		};
+		
+		$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
 	});
 }]);

@@ -1,0 +1,60 @@
+<div id="modal" class="modal-show" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
+    <form id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation select-card"><!-- Add class "select-card" when applying penalty charge -->
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+        <fieldset id="cancel-options">
+            <span class="h2 message"> DEPOSIT REQUIRED</span>
+        </fieldset>    
+        <!-- 1. deposit Options screen -->
+        <fieldset id="cancel-options" ng-show="!paymentMode">
+            <div id="set-payment" class="payment-form">
+                <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected">
+                    <label>Credit Card (<span>Tap to change</span>)</label>
+                    <label id="pay-with-jcb" class="active-item item-payment">
+                        <figure class="card-logo">
+                          <img src="/assets/{{depositData.card_type}}.png" alt="" />
+                      </figure>
+                      <span class="number">Ending with <span class="value number">{{depositData.cardNumber}}</span></span>
+                      <span class="date">Date <span class="value date">{{depositData.expiry_date}}</span></span>
+                  </label>
+              </div>
+          </div>
+          <div class="notice deposit" ng-hide="depositInProcess || paymentMode">                        
+            <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
+            <!-- Payment fields -->
+            <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        
+            <!-- Buttons - remove class "hidden" when payment type is defined-->
+            <div class="actions deposit-actions">
+                <button type="button" class="button blue" ng-click="closeDialog()">Pay deposit later</button>
+                <button type="button" class="button green" ng-click="payDeposit()">Pay deposit now</button>
+            </div>
+        </div>
+        <div ng-hide="!depositInProcess">                        
+            <div ng-include="'/assets/partials/common/notification_message.html'" ng-hide="successOccured"></div>
+            <div ng-hide="errorOccured || isLoading">
+                <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+                <div class="authorised-code-text" ng-show="authorizedCode !==''">
+                    <span>Your authorized code is :</span>
+                    <span>{{authorizedCode}}</span>
+                </div>
+                <div class="amount-paid" ng-class="{'margin-top-1':authorizedCode !==''}">
+                    <span>Amount Paid:</span> 
+                    <span >{{currencySymbol}}{{reservationData.depositAmount}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="actions float" ng-class="{'deposit-required-actions':depositInProcess && errorOccured && !successOccured}">
+            <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
+            <!-- to chnage ng-lcick -->
+            <button type="button" class="button blue" ng-click="tryAgain()" ng-show="depositInProcess && errorOccured && !successOccured">Try again</button>
+        </div>
+    </fieldset>
+
+    <!-- 2. Apply deposit screen-->
+    <fieldset id="apply-penalty" class="credit-card" ng-show="paymentMode">
+       <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+       <div id="set-payment" class="payment-form">
+        <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"></div>
+    </div>
+</fieldset>
+</form>
+</div>

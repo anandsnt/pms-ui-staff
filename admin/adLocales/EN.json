@@ -70,13 +70,88 @@
     "MENU_MAINTAENANCE":"Maintenance",
     "MENU_FINANCIALS":"Financials",
     "MENU_ACCOUNTING":"Accounting Interface",
-    "MENU_REVENUE":"Revenue",
+    "MENU_JOURNAL":"Journal",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
     
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",
 	"DELETE":"Delete"
+,
+
+
+"CONTENT_MANAGEMENT_TITLE": "Content Management",
+"SECTION_LABEL": "Section",
+"CATEGORY_LABEL": "Category",
+"ITEM_LABEL": "Item",
+"VIEW_GRID_LABEL": "View grid",
+"VIEW_TREE_LABEL": "View tree",
+"SHOWING_LABEL": "Showing",
+"SECTIONS_OPTION": "Sections",
+"CATEGORIES_OPTION": "Categories",
+"ITEMS_OPTION": "Items",
+"FROM_SECTION_LABEL": "From Section",
+"ALL_SECTIONS_LABEL": "All Sections",
+"FROM_CATEGORIES_LABEL": "From Category",
+"ALL_CATEGORIES_LABEL": "All Categories",
+"SHOW_UNASSIGNED_LABEL": "Show only unassigned",
+"SEARCH_LABEL": "Search",
+
+"NAME_LABEL": "NAME",
+"LAST_UPDATE_LABEL": "Last Update",
+"NO_OF_CATEGORIES_LABEL": "No. of categories",
+"NO_OF_ITEMS_LABEL": "No. of items",
+"STATUS_LABEL": "Status",
+"TYPE_LABEL": "Type",
+"DELETE_LABEL": "delete",
+
+"EDIT_SECTION_LABEL": "Edit Section",
+"EDIT_CATEGORY_LABEL": "Edit Category",
+"EDIT_ITEM_LABEL": "Edit Item",
+"ADD_SECTION_LABEL": "Add Section",
+"ADD_CATEGORY_LABEL": "Add Category",
+"ADD_ITEM_LABEL": "Add Item",
+"DELETE_SECTION_LABEL": "Delete Section",
+"DELETE_CATEGORY_LABEL": "Delete Category",
+"DELETE_ITEM_LABEL": "Delete Item",
+
+"AVAILABILITY_STATUS_LABEL": "Availability Status",
+"SECTION_NAME_LABEL": "Section name",
+"CATEGORY_NAME_LABEL": "Category name",
+"ITEM_NAME_LABEL": "Item name",
+"ITEM_TYPE_LABEL": "Item type",
+"POI_LABEL": "Point Of Interest",
+"GENERAL_LABEL": "General Information",
+"LINK_LABEL": "Link",
+"DESCRIPTION_LABEL": "Description",
+"PHONE_LABEL": "Phone",
+"ADDRESS_LABEL": "Address",
+"URL_LABEL": "URL",
+
+"SECTION_ICON_LABEL": "Section icon",
+"CATEGORY_ICON_LABEL": "Category icon",
+"ITEM_IMAGE_LABEL": "Image",
+"ICON_SPEC": "(Transparent PNG, 128x128px in size)",
+"IMAGE_SPEC": "(960x600px in size)",
+"DETAILS_LABEL": "details",
+
+"ASSIGN_LABEL": "Assign ",
+"TO_SECTION_LABEL": "Assign to section",
+"TO_CATEGORY_LABEL": "Assign to category",
+
+"CONFIRM_LABEL":"Confirm",
+"SELECT_SECTION_LABEL": "Select section",
+"SELECT_CATEGORY_LABEL": "Select category",
+
+"SURE_LABEL": "Are you sure?",
+"CONTENT_NOTIFICATION_LABEL": "The following content is assigned to this section and will be marked as unassigned:",
+"NO_SECTION_MESSAGE": "Sections are not available",
+"NO_CATEGORY_MESSAGE": "Categories are not available",
+"REPLACE_ICON_LABEL" : "Replace icon",
+"REPLACE_IMAGE_LABEL" : "Replace image",
+"ADD_ICON_LABEL" : "Add icon",
+"ADD_IMAGE_LABEL" : "Add image"
+
 ,
 
 
@@ -104,7 +179,10 @@
 "CALCULATION_RULE":"Calculation Rule",
 "ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
 "ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
-"SELECT_CALCULATION_RULE":"Select Calculation Rule"
+"SELECT_CALCULATION_RULE":"Select Calculation Rule",
+"FEES_CODE":"Fees code",
+"FEES":"Fees",
+"MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee"
 ,
 
 
@@ -192,10 +270,19 @@
 "FIXED_BAND_PMS_ALERT_CODE": "PMS ALERT CODE",
 "ENTER_FIXED_BAND_PMS_ALERT_CODE": "Enter PMS Aert Code"
 
+,	
+	"WORKSTATION": "Work Station",
+	"STATION_NAME": "Work Station Name",
+	"STATION_ID": "Work Station Id",
+	"WORKSTATIONS":"Work Stations"
 ,
 	"PAYMENT_METHODS": "Payment Methods",
-	"SYSTEM_DEFINED": "(System defined)"
-,
+	"SYSTEM_DEFINED": "(System defined)",
+	"CC":"Credit Card",
+	"OFFLINE":"Offline",
+	"ROVER_ONLY":"Rover Payments Only",
+	"WEB_ONLY":"Web Payments Only",
+	"DISPLAY_REFERENCE":"Display Reference",
 
 
 "DAILY_UPSELL_SETUP":"Daily Upsell Setup",
@@ -369,11 +456,31 @@
     "MAX_ADULTS":"Max Adults",
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
-    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display",
+    "CANCELLATION_CHARGE_CODE":"Cancellation Charge Code",
+    "SELECT_CHARGE_CODE":"Select Charge Code",
+    "NO_SHOW_CHARGE_CODE":"No show charge code",
+    "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
+
+	"STATIONARY":"Stationary",
+	"CUSTOMIZE":"Customize",
+	"GUEST_BILL_TITLE": "Guest Bill",
+	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
+	"HOTEL_LOGO":"Hotel Logo",
+	"SELECT_LOGO_TYPE": "Select Hotel Logo Type",
+	"SELECT_GUEST_BILL":"Select Guest Bill",
+	"SHOW_HOTEL_ADDRESS":"Show Hotel Address",
+	"CUSTOM_TEXT":"Custom Text",
+	"HEADER":"Header",
+	"FOOTER":"Footer",
+	"CUSTOM_TEXT_PLACEHOLDER":"Add custom text, hotel name / address etc",
+	"CONFIRMATION_COMMUNICATION":"Confirmation Communications",
+	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL"
+,
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",

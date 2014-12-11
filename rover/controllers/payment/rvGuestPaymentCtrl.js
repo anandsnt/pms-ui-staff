@@ -15,46 +15,18 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 		$scope.errorMessage = message;
 	};
 	$scope.openAddNewPaymentModel = function(data){
-  	 
-  	 	if(data === undefined){
-  	 			 	var passData = {
-			  	 		"guest_id": $scope.paymentData.user_id,
-			  	 		"fromView": "guestcard"
-			  	 	};
-			  	 			  	 	
-			  	 	var paymentData = $scope.paymentData;
-			  	 	$scope.showAddNewPaymentModal(passData, paymentData);
-  	 	} else {
-  	 		
-           var  getTokenFrom = {
-              'et2': data.RVCardReadTrack2,
-              'ksn': data.RVCardReadTrack2KSN,
-              'pan': data.RVCardReadMaskedPAN
-           };
-         
-         var tokenizeSuccessCallback = function(tokenData){
-         	data.token = tokenData;
-         		var passData = {
-		  	 		"user_id": $scope.paymentData.user_id,
-			  	 	"guest_id": $scope.paymentData.guest_id,
-		  	 		"fromView": "guestcard",
-		  	 		"credit_card": data.RVCardReadCardType,
-		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
-		  	 		"name_on_card": data.RVCardReadCardName,
-		  	 		"card_expiry":data.RVCardReadExpDate,
-		  	 		"et2": data.RVCardReadTrack2,
-	             	'ksn': data.RVCardReadTrack2KSN,
-	              	'pan': data.RVCardReadMaskedPAN,
-	              	'token': tokenData,
-		  	 		"is_swiped": true  
-		  	 	};
-         	var paymentData = $scope.paymentData;
-  	 		$scope.showAddNewPaymentModal(passData, paymentData);
-         };
-         $scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
-          
-  	 	}
-  	 
+ 
+	 	var passData = {
+ 		"guest_id": $scope.guestCardData.contactInfo.user_id,
+ 		"isFromGuestCard": true,
+ 		"details":{
+ 			"firstName" : $scope.guestCardData.contactInfo.first_name,
+ 			"lastName" : $scope.guestCardData.contactInfo.last_name
+ 		}
+	 	};			  	 			  	 	
+	 	var paymentData = $scope.paymentData;
+	 	$scope.openPaymentDialogModal(passData, paymentData);
+
   	 };
   	 /*
 	 * To open set as as primary or delete payment
@@ -70,22 +42,21 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	          });
   	 };
   	 var scrollerOptions = {preventDefault: false};
-  	 $scope.setScroller('paymentList', scrollerOptions);
+  	$scope.setScroller('paymentList', scrollerOptions);
   	$scope.$on("$viewContentLoaded", function(){
 		$scope.refreshScroller('paymentList');
 	});
    	$scope.$on("REFRESHLIKESSCROLL", function(){
 		$scope.refreshScroller('paymentList');
 	}); 	
-	$scope.$on('SWIPEHAPPENED', function(event, data){
-	 	if($scope.isGuestCardVisible){
-	 		$scope.openAddNewPaymentModel(data);
-	 	}
-	 	
-	 });
+
 	 
 	 $scope.$on('ADDEDNEWPAYMENTTOGUEST', function(event, data){
+	 	if(typeof $scope.paymentData.data === "undefined"){
+	 			$scope.paymentData.data = [];
+	 	};
 	 	$scope.paymentData.data.push(data);
+	 	$scope.refreshScroller('paymentList');
 	 });
 	 
 	 

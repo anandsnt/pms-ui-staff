@@ -18,7 +18,19 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 		var deferred = $q.defer();
 		var url = 'staff/bills/print_guest_bill';
 			RVBaseWebSrv.postJSON(url, params).then(function(data) {
-				console.log(data);
+				// Manually creating charge details list & credit deatils list.
+				data.charge_details_list = [];
+				data.credit_details_list = [];
+				angular.forEach(data.fee_details,function(fees, index1){
+					angular.forEach(fees.charge_details,function(charge, index2){
+						charge.date=fees.date;
+						data.charge_details_list.push(charge);
+					});
+					angular.forEach(fees.credit_details,function(credit, index3){
+						credit.date=fees.date;
+						data.credit_details_list.push(credit);
+					});
+				});
 		   	 	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);

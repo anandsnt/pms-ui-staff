@@ -15,8 +15,8 @@
 				<tbody ng-repeat="payment in data.payments">
 					
 					<tr>
-						<td ng-if="payment.is_system_defined">
-							<strong>{{payment.description}}</strong>
+						<td ng-if="payment.is_system_defined" ng-click="editPaymentMethod($index)" ng-hide="currentClickedElement == $index">
+							<a><strong>{{payment.description}}</strong></a>
 							<em ng-if="payment.is_system_defined" translate>SYSTEM_DEFINED</em>
 						</td>
 						<td ng-if="!payment.is_system_defined" ng-click="editPaymentMethod($index)" ng-hide="currentClickedElement == $index">
@@ -27,7 +27,7 @@
 							<div class="entry">
 								<td class="activate" ng-hide="currentClickedElement == $index">
 									<div class="entry" >
-										<div class="switch-button single"  ng-class="{ on : payment.is_active == 'true' }" ng-click="toggleClickedPayment($index)">
+										<div class="switch-button single"  ng-class="{ on : payment.is_active == 'true' }" ng-click="toggleClickedPayment($index,false)">
 											<input type="checkbox">
 											<span class="switch-icon"></span>
 										</div>
@@ -43,18 +43,26 @@
 							<table id="credit_cards_types" class="grid">
 								<tbody>
 									<tr data-credit-card-id="1" ng-repeat="cc in data.credit_card_types">
-										<td>
-											<strong>{{cc.description}}</strong>
+										<td ng-if="cc.is_system_defined" ng-click="editPaymentMethodCC($index)" ng-hide="currentClickedElementCC == $index">
+											<a><strong>{{cc.description}}</strong></a>
 											<em translate>SYSTEM_DEFINED</em>
 										</td>
-										<td class="activate">
+										<td ng-if="!cc.is_system_defined" ng-click="editPaymentMethodCC($index)" ng-hide="currentClickedElementCC == $index">
+											<a><strong>{{cc.description}}</strong></a>
+										</td>
+										<td class="activate" ng-hide="currentClickedElementCC == $index">
 											<div class="entry" >
-												<div class="switch-button single"  ng-class="{ on : cc.is_active == 'true' }" ng-click="toggleClickedCC($index)">
+												<div ng-if="cc.is_system_defined" class="switch-button single"  ng-class="{ on : cc.is_active == 'true' }" ng-click="toggleClickedCC($index)">
+													<input type="checkbox">
+													<span class="switch-icon"></span>
+												</div>
+												<div ng-if="!cc.is_system_defined" class="switch-button single"  ng-class="{ on : cc.is_active == 'true' }" ng-click="toggleClickedPayment($index,true)">
 													<input type="checkbox">
 													<span class="switch-icon"></span>
 												</div>
 											</div>
 										</td>
+										<td colspan="3" ng-include="getTemplateUrlCC($index)"></td>
 									</tr>
 								</tbody>
 							</table>

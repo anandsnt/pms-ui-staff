@@ -15,7 +15,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             fetchPriceDetailsForRate();
         }
 
-        $scope.updatePopupWidth();        
+        if($scope.popupData.all_data_selected){
+            $scope.data.isHourly = $scope.calendarData.data[0][$scope.popupData.selectedDate].isHourly;
+        }
+
+        $scope.updatePopupWidth();
     };
 
     $scope.$parent.myScrollOptions = {
@@ -100,22 +104,34 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         $scope.data = {};
         $scope.data.id = '';
         $scope.data.name = '';
+
         $scope.data.single = '';
         $scope.data.double = '';
         $scope.data.extra_adult = '';
         $scope.data.child = '';
+        $scope.data.nightly = '';
+
+        $scope.data.nightly_sign = '+';
+        $scope.data.nightly_extra_amnt = '';
+        $scope.data.nightly_amnt_diff = $rootScope.currencySymbol;
+        
         $scope.data.single_sign = '+';
         $scope.data.single_extra_amnt = '';
         $scope.data.single_amnt_diff = $rootScope.currencySymbol;
+        
         $scope.data.double_sign = '+';
         $scope.data.double_extra_amnt = '';
         $scope.data.double_amnt_diff = $rootScope.currencySymbol;
+        
         $scope.data.extra_adult_sign = '+';
         $scope.data.extra_adult_extra_amnt = '';
         $scope.data.extra_adult_amnt_diff = $rootScope.currencySymbol;
+        
         $scope.data.child_sign = '+';
         $scope.data.child_extra_amnt = '';
         $scope.data.child_amnt_diff = $rootScope.currencySymbol;
+
+        
 
         //Flag to check if the rate set amounts are configured for the selected date
         $scope.data.hasAmountConfigured = true;
@@ -136,18 +152,22 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
                     if(typeof selectedDateInfo != "undefined"){
+                        $scope.data.isHourly= selectedDateInfo.isHourly;
                         //Check if the rate set amounts are configured for the selected date
                         if(selectedDateInfo.single == undefined &&
                             selectedDateInfo.double == undefined &&
                             selectedDateInfo.extra_adult == undefined &&
-                            selectedDateInfo.child == undefined){
-
+                            selectedDateInfo.child == undefined && 
+                            (selectedDateInfo.isHourly && !selectedDateInfo.nightly == undefined)){ //CICO-9555
                             $scope.data.hasAmountConfigured = false;
                         } else {
                             $scope.data.single = selectedDateInfo.single;
                             $scope.data.double = selectedDateInfo.double;
                             $scope.data.extra_adult = selectedDateInfo.extra_adult;
                             $scope.data.child = selectedDateInfo.child;
+                            //(CICO-9555                            
+                            $scope.data.nightly= selectedDateInfo.nightly;
+                            //CICO-9555)
                         }
                     }
                 }
@@ -209,6 +229,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
+                    $scope.data.isHourly = $scope.calendarData.data[i].isHourly;
                 }
             }
         }
@@ -434,6 +455,24 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                     restrictionDetails.double = {};
                     restrictionDetails.extra_adult = {};
                     restrictionDetails.child = {};
+                    restrictionDetails.nightly = {};
+
+                    //(CICO-9555
+                    if($scope.data.nightly_extra_amnt !== ""){
+                        restrictionDetails.nightly.value = $scope.data.nightly_sign + $scope.data.nightly_extra_amnt;
+                        
+                        if($scope.data.nightly_amnt_diff_sign !== "%"){
+                            restrictionDetails.nightly.type = "amount_diff";
+                        } else {
+                            restrictionDetails.nightly.type = "percent_diff";
+                        }
+                        
+                    } else {
+                        restrictionDetails.nightly.value = $scope.data.nightly;
+                        restrictionDetails.nightly.type = "amount_new";
+                    }
+                    //CICO-9555)
+
                     if($scope.data.single_extra_amnt !== ""){
                         restrictionDetails.single.value = $scope.data.single_sign + $scope.data.single_extra_amnt;
                         
@@ -490,6 +529,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                     restrictionDetails.double.value = parseFloat(restrictionDetails.double.value);
                     restrictionDetails.extra_adult.value = parseFloat(restrictionDetails.extra_adult.value);
                     restrictionDetails.child.value = parseFloat(restrictionDetails.child.value);
+                    restrictionDetails.nightly.value = parseFloat(restrictionDetails.nightly.value);
                 }
             }
             details.push(restrictionDetails);
@@ -506,7 +546,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
     * Calls the API and dismiss the popup on success
     */
     $scope.saveRestriction = function(){
-
         //The dates to which the restriction should be applied
         var datesSelected = getAllSelectedDates();
     	
@@ -528,5 +567,5 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
 
 
     $scope.init();
-    
+        
 }]);

@@ -1,0 +1,50 @@
+<section class="content current" ng-click="clearErrorMessage()">
+    <header class="content-title">
+        <h2 ng-show="!isAddMode"><span translate>EDIT_SECTION_LABEL</span> <span>{{data.name}}</span></h2>
+        <h2 ng-show="isAddMode" translate>ADD_SECTION_LABEL</h2>
+        <a ng-click="goBack()" class="action back" translate>BACK</a>
+        <a class="action remove" ng-hide="!data.id " ng-click="deleteItem(data.id)" translate>DELETE_SECTION_LABEL</a>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <form method="post" action=""  class="form float">
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3><span translate>SECTION_LABEL</span> <span translate>DETAILS_LABEL</span></h3>
+                    <em class="status"><span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong> <span translate>MANDATORY_FIELDS_MESSAGE2</span></em>
+                </div>
+                <div class="entry full-width">
+                    <label for="section-availability"><span translate>AVAILABILITY_STATUS_LABEL</span> <strong>*</strong></label>
+                    <div class="switch-button" ng-class="{'on': data.status}">
+                        <input name="section-availability" id="section-availability" value="1" type="checkbox" ng-model="data.status" />
+                        <span class="switch-icon"></span>
+                    </div>
+                </div> 
+                <div class="entry">
+                    <label for="section-name"><span translate>SECTION_NAME_LABEL</span> <strong>*</strong></label>
+                    <input type="text" name="section-name" id="section-name" placeholder="Enter section name" ng-model="data.name" required />
+                </div>
+                <div class="entry full-width">
+                    <label for="section-image"><span translate>SECTION_ICON_LABEL</span> <span translate>ICON_SPEC</span></label>
+                    <div class="file-upload with-preview small-preview">
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" ng-model="data.icon" accept="image/*" app-filereader name="section-image" id="section-image" />
+                        <button type="button" ng-if="data.icon != null && data.icon != ''" class="button brand-colors" translate>REPLACE_ICON_LABEL</button>
+                        <button type="button" ng-if="data.icon == null || data.icon == ''" class="button brand-colors" translate>ADD_ICON_LABEL</button>
+                    </div>
+                    <span class="file-preview small-preview">
+                        <img src="{{data.icon}}" alt="" />
+                    </span>
+                </div>  
+                <div class="entry full-width">
+                    <label for="item-url"><span translate>URL_LABEL </span></label>
+                    <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
+                </div>   
+            </fieldset>
+            <div class="actions float">
+                <button type="button" ng-click="goBack()" class="button blank" translate>CANCEL</button>
+                <button type="button" ng-click="saveSection()" class="button green" translate>SAVE_CHANGES</button>  
+            </div>
+        </form>
+    </section>
+</section>

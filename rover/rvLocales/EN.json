@@ -40,7 +40,11 @@
 "REMOVAL_REASON_PLACEHOLDER":"Removal reason",
 "SEARCH_OR_SELECT_CODES_PLACEHOLDER":"Search or Select codes to add",
 "FIND_PLACEHOLDER":"Find Guest, Company or Travel Agent",
-"ENTER_SPLIT_VALUE_PLACEHOLDER":"Enter split value"
+"ENTER_SPLIT_VALUE_PLACEHOLDER":"Enter split value",
+"DETAILS": "Details",
+"SAVE_ROUTE": "Save Route",
+"SAVE": "Save",
+"CANCEL": "Cancel"
 ,	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
@@ -117,7 +121,7 @@
     "MENU_MAINTAENANCE":"Maintenance",
     "MENU_FINANCIALS":"Financials",
     "MENU_ACCOUNTING":"Accounting Interface",
-    "MENU_REVENUE":"Revenue",
+    "MENU_JOURNAL":"Journal",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
     
@@ -128,6 +132,7 @@
     "SEARCH_TITLE" : "Search",
     "STAYCARD_TITLE": "Staycard",
     "ROOM_ASSIGNMENT_TITLE" : "Room Assignment",
+    "MENU_ROOM_DIARY": "Room Diary",
     "ROOM_UPGRADES_TITLE": "Room Upgrades",
     "RESERVATION_TITLE": "Reservation",
     "RATE_MANAGER_TITLE": "Rate Manager",
@@ -141,6 +146,7 @@
     "CONTACT_INFORMATION": "Contact Information",
     "CONTRACTS": "Contracts",
     "RESERVATIONS": "Reservations",
+    "FIND_CARDS":"FIND CARDS",
     
     "COMAPNY_INFO": "Company Info",
     "COUNTRY": "Country",
@@ -197,7 +203,12 @@
     "DELETE_ACCOUNT":"Delete Account",
     "DELETE_AR_ACCOUNT":"Delete AR Account?",
     "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
-    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first"
+    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first",
+    "ADD_BILLLING_INFORMATION" : "Add Billing Information",
+    "BILLING_INFORMATION" : "Billing information",
+    "ROUTES_DEFINED" : "routes defined",
+    "ACCOUNTS_RECIEVABLE_NUMBER" : "Accounts Receivable Number"
+
 
 	
 ,    
@@ -303,7 +314,8 @@
 	"CREATE_WS" : "Create Work Sheet",
 	"EMPLOYEE_NAME": "Employee name",
 	"SELECT_EMPLOYEE" : "Select Employee",
-	"MAID" : "Maid",
+	"MAID" : "Employee",
+	"EMP"  : "Employee",
 	"UNASSIGNED" : "Unassigned",
 	"ALL_UNASSIGNED" : "All unassigned",
 	"ALL_FLOORS" : "All floors",
@@ -318,7 +330,44 @@
 	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms."
 
 
-,    "PRINT_ROOM_KEY" : "Print Room Key",
+,	
+
+	"EMPLOYEE / DEPARTMENT / HOUSE":"Employee / Department / House",
+	"ALL_DEPARTMENTS":"All Departments",
+	"SELECT":"Select",
+	"EMPLOYEES":"Employees",
+	"CASHIER":"Cashier",
+	"SELECT_CASHEIR":"Select cashier",
+	"DATE_FROM":"Date From",
+	"DATE_TO":"Date To",
+	"REVENUE":"Revenue",
+	"PAYMENTS":"Payments",
+	"RESERVATION_NUMBER":"Reservation Number",
+	"TIME":"Time",
+	"DEBIT":"Debit",
+	"CREDIT":"Credit",
+	"CHARGE_GROUPS":"Charge Group",
+	"CHARGE_CODE_NAME":"Charge Code / Name",
+	"ALL_CHARGE_CODE":"All Charge Codes",
+	"SUMMARY":"Summary",
+	"PRINT":"Print",
+	"REPORT":"Report",
+	"SELECT_REPORT_TYPE":"Select Report Type",
+	"CASHIER_SUMMERY":"Cashier Summary",
+	"HISTORY":"History",
+	"NO_HISTORY":"No History",
+	"CLOSED":"Closed",
+	"OPENED":"Opened",
+	"RE_OPEN":"Re-Open",
+	"OPENING_BALANCE_CASH_MSG":"Opening balance cash",
+	"OPENING_BALANCE_CHECK_MSG":"Opening balance check",
+	"TOTAL_CASH_RECEIVED_MSG":"Total Cash received",
+	"TOTAL_IN_CHECKS_RECEIVED_MSG":"Total In Checks received",
+	"TOTAL_CLOSING_BALANCE_CASH_MSG":"Total Closing Balance Cash",
+	"TOTAL_CLOSING_BALANCE_CHECK_MSG":"Total Closing Balance Check",
+	"CLOSE_SHIFT":"Close Shift",
+	"CASH_SUBMITTED":"Cash submitted",
+	"CHECKS_SUBMITTED":"Checks submitted",    "PRINT_ROOM_KEY" : "Print Room Key",
     "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
@@ -394,7 +443,9 @@
     "EXISTING_CARDS":"Existing Cards",
     "ADD_CREDIT_CARD": "Add Credit Card",
     "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
-    "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
+    "DO_NOT_AUTHORIZE": "Do Not Authorize Card",
+    "SELECT_CREDIT_CARD":"Select Credit Card",
+    "CREDIT_CARD_LIST_EMPTY_ERROR":"Deposit refund can not be processed to this payment type. Manual processing required"
 ,	
 	"STATS_&_REPORTS_TITLE": "Stats & Reports",    
     
@@ -466,7 +517,7 @@
 
     "BEST_SELLER": "BESTSELLER",
     "ENHANCEMENTS": "Enhancements",
-    "GO_TO_PAYMENT": "Go to Payment",
+    "GO_TO_PAYMENT": "Book",
     "QUANTITY": "Quantity",
     "REMOVE": "Remove",
     "ADD_MORE_TO_THIS_ROOM": "Add More to This Room",
@@ -500,7 +551,18 @@
     "SHOW_STAY_DATES": "Show Stay Dates",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
-    "INVALID_CREDIT_CARD": "There is a problem with your credit card"
+    "INVALID_CREDIT_CARD": "There is a problem with your credit card",
+    "START_PAYMENT_PROCESS": "Start Payment Process",
+    "CONFLICTING_BILLING_INFO_EXISTS_ON": "conflicting billing info exists on",
+    "CARD": "card",
+    "PLEASE_UPDATE_MANUALLY": "Please update manually",
+    "OK": "ok",
+    "BILLING_INFORMATION_FOUND": "Billing information found",
+    "ON_SELECTED_CARD": "On selected card",
+    "APPLY_TO_RESERVATION": "Apply to reservation",
+    "DONT_APPLY": "Don't apply",
+    "APPLY_CUSTOMRATE" : "Apply Custom Rate",
+    "MODIFY_CUSTOMRATE" : "Modify Custom Rate"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
@@ -555,7 +617,11 @@
     "PROCEED" : "Proceed",
     "CANCELLATION_REASON" : "Cancellation Reason",
     "OPTIONAL" : "Optional",
-    "CANCELLATION_REASON_PLACEHOLDER" : "Cancelling because...",	
+    "CANCELLATION_REASON_PLACEHOLDER" : "Cancelling because...",
+    "PROCEED_WITH_DEPOSIT_REFUND":"REFUND DEPOSIT",
+    "PROCEED_WITHOUT_DEPOSIT_REFUND":"PROCEED WITHOUT REFUND",
+    "PENALTY_WARNING_MSG1":"Deposit of",
+    "PENALTY_WARNING_MSG2":"will not be refunded",	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",
@@ -693,6 +759,7 @@
     "ADD_ROUTES_LABEL" : "ADD ROUTES",
     "ALL_ROUTES_LABEL" : "ALL ROUTES",
     "NO_BILLS_TO_ROUTE" : "No Bills To Route",
+    "ERROR_CHARGES_EMPTY": "Unable to create empty route",
 
     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?",
     "CANCEL_HEADER" : "Cancellation falls <br/> outside of the cancellation period",
@@ -735,5 +802,30 @@
     "DISAGREE_BUTTON_LABEL":"Disagree",
     "AGREE_BUTTON_LABEL":"Agree",
     "NO_POST_ENABLED":"ROOM CHARGE ENABLED",
-    "NO_POST_DISABLED":"ROOM CHARGE DISABLED"
+    "NO_POST_DISABLED":"ROOM CHARGE DISABLED",
+
+    "INVOICE":"Invoice",
+    "GUEST_FULL_NAME":"Guest Full Name",
+    "ARRIVAL_DATE":"Arrival Date",
+    "DEPARTURE_DATE":"Departure Date",
+    "CITY":"City",
+    "STATE":"State",
+    "POSTAL_CODE":"Postal Code",
+    "COUNTRY":"Country",
+    "CONFIRMATION_NO":"Confirmation No.",
+    "ROOM_NO":"Room No.",
+    "INVOICE_NO":"Invoice No.",
+    "INVOICE_DATE":"Invoice date",
+    "DATE_OF_CHARGE":"Date of Charge",
+    "CHARGE_DESC":"Charge description",
+    "CHARGE_AMOUNT":"Charge amount",
+    "CREDIT_AMOUNT":"Credit amount",
+    "TOTAL_CHARGE":"Total Charge",
+    "TOTAL_CREDITS":"Total Credits",
+    "BALANCE":"Balance",
+    "NET_AMOUNT":"Net Amount",
+    "TOTAL_INCL_TAX":"Total Incl Tax",
+    "UPDATE":"Update",
+    "NOT_DEFINED": "Not Defined"
+
 }

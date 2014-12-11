@@ -24,7 +24,6 @@ sntRover.controller('RVPostChargeController',
 
   			$scope.closeDialog = function(){
   				ngDialog.close();
-  				$rootScope.multiplePostingNumber = "";
   			};
 
 			// // set the default bill number
@@ -207,10 +206,6 @@ sntRover.controller('RVPostChargeController',
 					item.isChosen = true;
 					item.count = 1;
 					newCount++;
-				}
-			
-				if(newCount > 1 && $rootScope.multiplePostingNumber){
-					$scope.billNumber = $rootScope.multiplePostingNumber;
 				}
 
 				item.total_price = item.modifiedPrice * item.count;
@@ -514,7 +509,6 @@ sntRover.controller('RVPostChargeController',
 				}
 				/****    CICO-6094    **/
 				var callback = function(data) {
-					$rootScope.multiplePostingNumber = dclone($scope.billNumber,[]);
 					$scope.$emit( 'hideLoader' );
 					// update the price in staycard
 					if(!$scope.isOutsidePostCharge){
@@ -543,12 +537,14 @@ sntRover.controller('RVPostChargeController',
 						//Fetch data again to refresh the screen with new data
 						$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
 						// Update Review status array.
-						var data = {};
-						data.reviewStatus = false;
-						data.billNumber = $scope.billNumber;
-						data.billIndex = $scope.reservationBillData.bills.length;
-						$scope.isAllBillsReviewed = false;
-						$scope.reviewStatusArray.push(data);
+						if(!$scope.isOutsidePostCharge){
+							var data = {};
+							data.reviewStatus = false;
+							data.billNumber = $scope.billNumber;
+							data.billIndex = $scope.reservationBillData.bills.length;
+							$scope.isAllBillsReviewed = false;
+							$scope.reviewStatusArray.push(data);
+						}
 					};
 					$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 				}

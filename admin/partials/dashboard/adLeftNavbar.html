@@ -30,7 +30,7 @@
 	</div>
 
 	<ul id="submenu" class="submenu" ng-class="{'active':menuOpen && showSubMenu && activeSubMenu.length > 0}">
-		<li ng-repeat="menuItem in activeSubMenu" ng-hide="menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])">
+		<li ng-repeat="menuItem in activeSubMenu | filter:{hidden:'!'+true}" ng-hide="menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])">
 			<a href="{{menuItem.action}}" ng-click="$emit('navToggled')" translate="{{menuItem.title}}"></a>
 		</li>
 	</ul>

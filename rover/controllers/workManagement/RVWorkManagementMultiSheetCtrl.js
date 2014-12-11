@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout) {
+sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned) {
 		BaseCtrl.call(this, $scope);
 		$scope.setHeading("Work Management");
 
@@ -7,6 +7,55 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
 		};
+
+		// saving in local variable, since it will be updated when user changes the date
+		var allUnassigned = allUnassigned;
+
+
+
+
+
+		// flag to know if we interrupted the state change
+		var $_shouldSaveFirst = true,
+			$_afterSave = null;
+
+		// auto save the sheet when moving away
+		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
+			if ( 'rover.workManagement.multiSheet' === fromState.name && $_shouldSaveFirst) {
+				e.preventDefault();
+
+				$_afterSave = function() {
+					$_shouldSaveFirst = false;
+					$state.go(toState, toParams);
+				};
+
+				$scope.saveMultiSheet();
+			};
+		});
+
+		$scope.$watch('multiSheetState.header.work_type_id', function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				$scope.saveMultiSheet({
+					work_type_id   : oldVal, 
+					callNextMethod : 'onWorkTypeChanged'
+				});
+			};
+		});
+
+		$scope.$watch('multiSheetState.selectedDate', function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				$scope.saveMultiSheet({
+					callNextMethod : 'fetchAllUnassigned',
+					nexMethodArgs  : { date: newVal }
+				});
+			};
+		});
+
+
+
+
+
+
 
 		$scope.setScroller('unAssignedRoomList');
 		$scope.setScroller("multiSelectEmployees");
@@ -62,7 +111,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 								});
 							}
 						});
-
+						
 						_.each($scope.multiSheetState.selectedEmployees, function(employee) {
 							var employee = employee.id;
 							if (!$scope.multiSheetState.assignments[employee] || reset) {
@@ -82,8 +131,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 										completed: 0
 									}
 								}
-							}
+							} else {
+								updateSummary(employee);
+							};
 						});
+
 						refreshView();
 						$scope.$emit('hideLoader');
 					},
@@ -174,6 +226,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			selectedReservationStatus: "",
 			selectedFOStatus: "",
 			vipsOnly: false,
+			showAllRooms: false,
 			checkin: {
 				after: {
 					hh: "",
@@ -235,10 +288,40 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.filterUnassigned = function() {
-			$scope.multiSheetState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned);
-			refreshView();
-			$scope.closeDialog();
+			$scope.$emit('showLoader');
+
+			$timeout(function() {
+				$scope.multiSheetState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned, allUnassigned, $scope.multiSheetState.assignments);
+				refreshView();
+				$scope.closeDialog();
+				$scope.$emit('hideLoader');
+			}, 10);
 		}
+
+		$scope.fetchAllUnassigned = function(options) {
+			var callback = function(data) {
+				allUnassigned = data;
+				
+				// for all unassigned rooms
+				// we are gonna mark each rooms with
+				// its associated work_type_id
+				// this way while saving we can determine
+				// how many different work type has been touched
+				// and how many save request must be created
+				// this process is repeated (replicated) when date changes
+				var wtid = '';
+				_.each(allUnassigned, function(item) {
+					wtid = item.id;
+					_.each(item.unassigned, function(room) {
+						room.work_type_id = wtid;
+					});
+				});
+
+				$scope.filterUnassigned();
+			};
+
+			$scope.invokeApi(RVWorkManagementSrv.fetchAllUnassigned, { date: options.date }, callback);
+		};
 
 		$scope.showCalendar = function(controller) {
 			ngDialog.open({
@@ -259,7 +342,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			});
 		}
 
+		// turn off 'save first' and state change
 		$scope.onCancel = function() {
+			$_shouldSaveFirst = false;
 			$state.go('rover.workManagement.start');
 		}
 
@@ -272,6 +357,30 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				});
 			}
 		}
+
+
+		// Super awesome method to remove/add rooms from unassigned pool
+		// nothing fancy it just shows/hides them
+		var $_updatePool = function(room, status) {
+			var thatWT = {};
+			var match  = {};
+			if ( $scope.filters.showAllRooms ) {
+				thatWT = _.find(allUnassigned, function(item) {
+					return item.id == room.work_type_id
+				});
+
+				match = _.find(thatWT.unassigned, function(item) {
+					return item === room;
+				});
+			} else {
+				match = _.find($scope.multiSheetState.unassigned, function(item) {
+					return item === room;
+				});
+			};
+			if (match) {
+				match.isAssigned = status;
+			};
+		};
 
 		/**
 		 * Assign room to the respective maid on drop
@@ -287,9 +396,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					//remove from 'unassigned','unassignedFiltered' and push to 'assignTo'
 					var droppedRoom = $scope.multiSheetState.unassignedFiltered[indexOfDropped];
 					$scope.multiSheetState.assignments[assignTo].rooms.push(droppedRoom);
-					$scope.multiSheetState.unassigned.splice(_.indexOf($scope.multiSheetState.unassigned, _.find($scope.multiSheetState.unassigned, function(item) {
-						return item === droppedRoom;
-					})), 1);
+					
+					// $scope.multiSheetState.unassigned.splice(_.indexOf($scope.multiSheetState.unassigned, _.find($scope.multiSheetState.unassigned, function(item) {
+					// 	return item === droppedRoom;
+					// })), 1);		
+					$_updatePool(droppedRoom, true);
+
 					$scope.filterUnassigned();
 					updateSummary(assignTo);
 				} else { //==Shuffling Assigned
@@ -317,8 +429,19 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			//remove from "assignee" and add "unassigned"
 			var roomList = $scope.multiSheetState.assignments[assignee].rooms;
 			var droppedRoom = roomList[indexOfDropped];
-			$scope.multiSheetState.unassigned.push(droppedRoom);
 			roomList.splice(indexOfDropped, 1);
+
+			$_updatePool(droppedRoom, false);
+
+			// if that room never was there, add it
+			// TODO: do the same for all unassigned
+			var roomInPool = _.find($scope.multiSheetState.unassigned, function(room) {
+				return room.id == droppedRoom.id
+			});
+			if ( !roomInPool ) {
+				$scope.multiSheetState.unassigned.push(droppedRoom);
+			};
+
 			$scope.filterUnassigned();
 			updateSummary(assignee);
 		}
@@ -326,7 +449,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		$scope.onDateChanged = function() {
 			updateView(true);
 		}
-
+		
 		$scope.onWorkTypeChanged = function() {
 			updateView(true);
 		}
@@ -345,48 +468,194 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			selectionHistory = [];
 			_.each($scope.employeeList, function(employee) {
 				if (employee.ticked) selectionHistory.push(employee.id);
-			})
+			});
 		}
+
+
+
+
+
+
+		// for all unassigned rooms
+		// we are gonna mark each rooms with
+		// its associated work_type_id
+		// this way while saving we can determine
+		// how many different work type has been touched
+		// and how many save request must be created
+		// this process is repeated (replicated) when date changes
+		var wtid = '';
+		_.each(allUnassigned, function(item) {
+			wtid = item.id;
+			_.each(item.unassigned, function(room) {
+				room.work_type_id = wtid;
+			});
+		});
 
 		/**
 		 * Saves the current state of the Multi sheet view
 		 */
-		$scope.saveMultiSheet = function() {
+		$scope.saveMultiSheet = function(options) {
 			var assignedRooms = [],
+				assignments   = [],
+				worktypesSet  = {},
+				saveCount     = 0;
+
+			var afterAPIcall  = function() {
+					// delay are for avoiding collisions
+					if ( options && $scope[options.callNextMethod] ) {
+						$timeout( $scope[options.callNextMethod].bind(null, options.nexMethodArgs), 50 );
+					};
+					if ( $_shouldSaveFirst && !!$_afterSave ) {
+						$timeout($_afterSave, 60);
+					};
+				},
 				onSaveSuccess = function(data) {
-					$scope.$emit("hideLoader");
-					//Update worksheet Ids
-					if (data.touched_work_sheets && data.touched_work_sheets.length) {
-						_.each(data.touched_work_sheets, function(wS) {
-							$scope.multiSheetState.assignments[wS.assignee_id].worksheetId = wS.work_sheet_id;
-						})
-					}
-					$scope.clearErrorMessage();
+					saveCount--;
+					if ( saveCount == 0 ) {
+						$scope.$emit("hideLoader");
+						//Update worksheet Ids
+						if (data.touched_work_sheets && data.touched_work_sheets.length) {
+							_.each(data.touched_work_sheets, function(wS) {
+								if ( !!$scope.multiSheetState.assignments[wS.assignee_id] ) {
+									$scope.multiSheetState.assignments[wS.assignee_id].worksheetId = wS.work_sheet_id;
+								};
+							});
+						};
+						$scope.clearErrorMessage();
+						afterAPIcall();
+					};
 				},
 				onSaveFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
-					$scope.$emit("hideLoader");
+
+					saveCount--;
+					if ( saveCount == 0 ) {
+						$scope.$emit("hideLoader");
+						afterAPIcall();
+					};
 				};
 
-			var assignments = [];
-			_.each($scope.multiSheetState.selectedEmployees, function(employee) {
-				var assignment = {};
-				assignment.assignee_id = employee.id;
-				assignment.work_sheet_id = $scope.multiSheetState.assignments[employee.id].worksheetId;
-				assignment.room_ids = [];
-				_.each($scope.multiSheetState.assignments[employee.id].rooms, function(room) {
-					assignment.room_ids.push(room.id);
-				})
-				assignments.push(assignment);
+
+			// lets create a set of worktypes that will have the following data structure
+			// {
+			//		'4'  : {
+			//				'date'        : 'value from header',
+			//				'task_id'     : 'same as key -> 4',
+			//				'assignments' : [{
+			//									'assignee_id' : 'employee id',
+			//									'room_ids'    : [ array of assigned room's id ]
+			//									---------- cant include 'worksheet_id' ----------
+			//								}, {
+			//									'assignee_id' : 'employee id',
+			//									'room_ids'    : [ array of assigned room's id ]
+			//									---------- cant include 'worksheet_id' ----------
+			//								}]
+			//			   },
+			//		'20' : {
+			//				'date'        : 'value from header',
+			//				'task_id'     : 'same as key -> 20',
+			//				'assignments' : [{
+			//									'assignee_id' : 'employee id',
+			//									'room_ids'    : [ array of assigned room's id ]
+			//									---------- cant include 'worksheet_id' ----------
+			//								}, {
+			//									'assignee_id' : 'employee id',
+			//									'room_ids'    : [ array of assigned room's id ]
+			//									---------- cant include 'worksheet_id' ----------
+			//								}]
+			//			  }
+			// }
+			worktypesSet = {};
+
+
+			// initialize each of the worktype in worktypesSet
+			// with the plain object structure
+			_.each($scope.workTypes, function(type) {
+				worktypesSet[type.id.toString()] = {
+					'date'        : $scope.multiSheetState.selectedDate,
+					'task_id'     : type.id,
+					'assignments' : []
+				};
 			});
 
-			$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
-				"date": $scope.multiSheetState.selectedDate,
-				"task_id": $scope.multiSheetState.header.work_type_id,
-				"order": "",
-				"assignments": assignments
-			}, onSaveSuccess, onSaveFailure);
-		}
+
+			// loop each selected employees
+			if ( $scope.multiSheetState.selectedEmployees.length ) {
+				_.each($scope.multiSheetState.selectedEmployees, function(emp) {
+
+					// loop each added rooms in assignements for this employee
+					if ( $scope.multiSheetState.assignments[emp.id] && $scope.multiSheetState.assignments[emp.id].rooms.length ) {
+
+						// this is the else case - there are rooms
+						_.each($scope.multiSheetState.assignments[emp.id].rooms, function(room) {
+
+							var emp_id  = emp.id,
+								room    = room,
+								room_id = room.id;
+
+							var wt_id            = '',
+								thoseAssignments = [],
+								i                = 0,
+								j                = 0,
+								found            = false;
+
+							// if room has prop 'work_type_id' use that else use value from header
+							wt_id = room.hasOwnProperty('work_type_id') ? room['work_type_id'].toString() : $scope.multiSheetState.header.work_type_id.toString();
+
+							// use the wt_id to point exact worktype from worktypesSet
+							// and access its assignments array
+							thoseAssignments = worktypesSet[wt_id]['assignments'];
+
+							// loop assignments array and find the object
+							// with matching employee id and push the current room's room_id
+							// no _.each() since we need to break out
+							for (i = 0, j = thoseAssignments.length; i < j; i++) {
+								if ( emp_id == thoseAssignments[i]['assignee_id'] ) {
+									thoseAssignments[i]['room_ids'].push(room_id);
+									found = true;
+									break;
+								};
+							};
+
+							// if assignments array was empty
+							// initate it with the following
+							if ( !found ) {
+								thoseAssignments.push({
+									'assignee_id' : emp_id,
+									'room_ids'    : [room_id]
+								});
+								found = true;
+							};
+						});
+					} else {
+						var wt_id = $scope.multiSheetState.header.work_type_id.toString();
+						var thoseAssignments = worktypesSet[wt_id]['assignments'];
+						thoseAssignments.push({
+							'assignee_id' : emp.id,
+							'room_ids'    : []
+						});
+					};	// inner if '$scope.multiSheetState.assignments[emp.id]' ends
+				});
+				
+				// rooms have been sorted into different worktype entries
+				// lets save those worktypes that have assignments
+				_.each(worktypesSet, function(set) {
+					if (set.assignments.length) {
+						saveCount++;
+						$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, set, onSaveSuccess, onSaveFailure);
+					};
+				});
+
+				// if we do not have anything to save
+				if ( saveCount == 0 ) {
+					afterAPIcall();
+				};
+			} else {
+				afterAPIcall();
+			};
+		};
+
+
 
 		$scope.printWorkSheet = function() {
 			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo)
