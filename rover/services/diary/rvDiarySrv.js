@@ -826,8 +826,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return deferred.promise;                    
                 };
 
-                this.properDateTimeCreation = function() {
-                    console.log('hey');
+                this.properDateTimeCreation = function() {                    
                     var data       = $vault.get('searchReservationData'),
                         start_date = new tzIndependentDate($rootScope.businessDate);
 

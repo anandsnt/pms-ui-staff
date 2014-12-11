@@ -457,7 +457,7 @@ sntRover
 				    	util.reservationRoomTransfer($scope.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
 					    
 				    	$scope.gridProps.currentResizeItemRow = nextRoom;
-				    	resizeEndForExistingReservation(nextRoom, reservation);
+				    	//resizeEndForExistingReservation(nextRoom, reservation);
 				    	
 		    				
 				    	
@@ -473,7 +473,7 @@ sntRover
 						$scope.$emit('showLoader');
 						setTimeout(function(){
 							$scope.onSelect(nextRoom, reservation, false, 'edit');							
-	
+							$scope.gridProps.currentResizeItemRow = nextRoom;
 					    	$scope.gridProps.edit.originalRowItem = og_r_item;
 					    	$scope.gridProps.edit.originalItem = og_item;
 							$scope.$emit('hideLoader');
@@ -550,7 +550,7 @@ sntRover
 	    	var avData = data.availability;
 	    	if(avData.new_rate_amount == null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
-	    	}
+	    	}	    	
 	    	this.edit.originalRowItem.old_price = avData.old_rate_amount;
 	    	this.currentResizeItemRow.new_price = avData.new_rate_amount;
 	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;

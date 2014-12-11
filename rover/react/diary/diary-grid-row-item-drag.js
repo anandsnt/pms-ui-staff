@@ -71,7 +71,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
-		console.log(props.currentDragItem);
+		
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
@@ -123,8 +123,14 @@ var GridRowItemDrag = React.createClass({
 				props.iscroll.grid.enable();
 				
 				var prevArrival = item.arrival;
-
-				item.arrival = Math.floor((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;
+				
+				if(delta_x < 0) {
+					arrival = Math.floor((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;
+				}
+				else{
+					arrival = Math.ceil((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;					
+				}
+				item.arrival = arrival;
 				var diff = item.arrival - prevArrival;
 				item.departure = item.departure + diff;				
 				props.__onDragStop(e, state.left, state.top, item);
