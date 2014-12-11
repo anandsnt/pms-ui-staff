@@ -13,8 +13,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$stateParams){
 					
 	BaseCtrl.call(this, $scope);
-	// console.log(">>>>>>>>>>>>>>>>>>")
-// console.log($scope.reservationData)
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
 	//console.log($scope.depositBalanceData.data.existing_payments)
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
@@ -40,10 +38,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.hideCancelCard = true;
 	$scope.isDisplayReference = false;
 	$scope.referanceText = "";
+	$scope.shouldShowWaiting = false;
 	//To show add to guest card checkbox
 	$scope.isAddToGuestCardVisible = false;
 	$scope.isSwipedCardSave = false;
 	$scope.isManual = false;
+	 
+    
 	if($scope.reservationData.reservation_card.payment_method_used == "CC"){
 		$scope.shouldCardAvailable 				 = true;
 		$scope.depositBalanceMakePaymentData.payment_type = "CC";
@@ -51,6 +52,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.ending_with = $scope.reservationData.reservation_card.payment_details.card_number;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.reservationData.reservation_card.payment_details.card_expiry;
 	}
+	if($rootScope.paymentGateway == "sixpayments"){
+    	//initilayy C&P ACTIVE
+    	$scope.shouldCardAvailable = false;
+    	$scope.makePaymentButtonDisabled = false;
+    }
 	var checkReferencetextAvailableForCC = function(){
 		angular.forEach($scope.depositBalanceData.data.credit_card_types, function(value, key) {
 			if($scope.depositBalanceMakePaymentData.card_code.toUpperCase() === value.cardcode){
@@ -78,6 +84,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false:true;
 		$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 		$scope.addmode = ($scope.cardsList.length>0) ? false :true;
+		//in case c&p no need to show attached CC
+		$scope.shouldCardAvailable 				 = ($scope.shouldShowMakePaymentScreen) ? false: true;
 		refreshCardScroll();
 	};
 	/*
@@ -210,41 +218,67 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.feeData.feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
 		$scope.setupFeeData();
 	}
-
+	// $scope.successChipAndPinToken = function(){
+		// alert("hahaha")
+	// };
 	/*
 	 * call make payment API on clicks select payment
 	 */
 	$scope.clickedMakePayment = function(){
 
 
-		// var dataToMakePaymentApi = {
-			// "guest_payment_id": $scope.paymentId,
-			// "reservation_id": $scope.reservationData.reservation_card.reservation_id,
-			// "amount": $scope.depositBalanceMakePaymentData.amount
-		// };
-		var dataToSrv = {
-			"postData": {
-				"payment_type": "CC",//FOR NOW - Since there is no drop down to select another payment type
-				"amount": $scope.depositBalanceMakePaymentData.amount,
-				"payment_type_id": $scope.paymentId,
-				"credit_card_type" : $scope.depositBalanceMakePaymentData.card_code.toUpperCase(),
-			},
-			"reservation_id": $scope.reservationData.reservation_card.reservation_id
-		};
-		if($scope.isAddToGuestCardVisible){
-		  dataToSrv.postData.add_to_guest_card	= $scope.depositBalanceMakePaymentData.add_to_guest_card;
-		}
-		if($scope.isDisplayReference){
-			dataToSrv.postData.reference_text = $scope.referanceText;
-		};
-		if($scope.isStandAlone){
-			if($scope.feeData.calculatedFee)
-				dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
-			if($scope.feeData.feesInfo)
-				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
-		}
-		alert(JSON.stringify(dataToSrv));
-		$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
+			
+			var dataToSrv = {
+				"postData": {
+					"payment_type": "CC",//FOR NOW - Since there is no drop down to select another payment type
+					"amount": $scope.depositBalanceMakePaymentData.amount,
+					"payment_type_id": $scope.paymentId,
+					"credit_card_type" : $scope.depositBalanceMakePaymentData.card_code.toUpperCase(),
+				},
+				"reservation_id": $scope.reservationData.reservation_card.reservation_id
+			};
+			if($scope.isAddToGuestCardVisible){
+			  dataToSrv.postData.add_to_guest_card	= $scope.depositBalanceMakePaymentData.add_to_guest_card;
+			}
+			if($scope.isDisplayReference){
+				dataToSrv.postData.reference_text = $scope.referanceText;
+			};
+			if($scope.isStandAlone){
+				if($scope.feeData.calculatedFee)
+					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
+				if($scope.feeData.feesInfo)
+					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+			}
+		
+			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual){
+				dataToSrv.postData.is_emv_request = true;
+				
+				
+				
+				$scope.shouldShowWaiting = true;
+
+				
+				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					$scope.shouldShowWaiting = false;
+					$scope.closeDialog();
+				},function(error){
+					$scope.errorMessage = error;
+					$scope.shouldShowWaiting = false;
+				});
+// 				
+				// setTimeout(function(){
+					// ngDialog.close("firstDialog");
+				// }, 3000);
+				
+				
+				
+				
+			} else {
+				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
+			}
+			
+		// }
+
 
 	};
 	/*

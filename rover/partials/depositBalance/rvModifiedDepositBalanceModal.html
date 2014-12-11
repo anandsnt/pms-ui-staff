@@ -1,6 +1,6 @@
 <div role="dialog" id="modal" class="modal-show" ng-cloak ng-click="clearErrorMessage()">
 	
-	<form name="deposit-balance" method="post" id="deposit-balance" class="modal-content form deposit-balance" action="{action}">
+	<form ng-show="!shouldShowWaiting" name="deposit-balance" method="post" id="deposit-balance" class="modal-content form deposit-balance" action="{action}">
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDepositModal()">
 			<span class="icons icon-close invert"> </span>
 		</button>
@@ -71,7 +71,6 @@
 				        </select>
 				    </div>
 				</div>
-				{{depositBalanceMakePaymentData.payment_type}} -- {{paymentGateway}} -- {{shouldShowMakePaymentScreen}}
 				<div class="entry" ng-show="paymentGateway == 'sixpayments' && depositBalanceMakePaymentData.payment_type =='CC' && shouldShowMakePaymentScreen">
 				    <label for="card-source">Card Input</label>
 				    <div class="switch-button" ng-class="{'on': !isManual}">
@@ -147,4 +146,11 @@
 			</div>
 		</fieldset>
 	</form>
+	<div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
+			<div class="centeralign alert-box">
+				WAITING FOR PAYMENT COMPLETION 
+			</div>
+			<div class="waiting-payment">&nbsp;</div>
+		</div>
+	
 </div>
