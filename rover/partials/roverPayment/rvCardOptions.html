@@ -1,7 +1,7 @@
 <!-- Credit card options - hidden until payment type is set as CC -->
 	<!-- If hidden by default, add class="hidden" -->
 	<!-- Card toggle - Use only if there are exsiting cards on file -->
-	<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || isFromCreateReservation">
+	<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0">
 		<li ng-class="{'active':!addmode}" ng-click="addmode = false">
 			Existing Cards
 		</li>
@@ -50,7 +50,7 @@
 		</div>  
 		<div class="entry card-ccv">
 			<label for="ccv">CCV</label>
-			<input name="ccv" id="ccv" placeholder="CCV" ng-model="cardData.CCV" maxlength="3" size="4" type="text" />
+			<input name="ccv" id="ccv" placeholder="CCV" ng-model="cardData.CCV" maxlength="4" size="4" type="text" />
 		</div>
 		<div class="entry card-action">
 			<button type="button" class="button blue" ng-click="getToken($event)">Add</button>
