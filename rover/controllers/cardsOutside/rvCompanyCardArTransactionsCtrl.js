@@ -16,7 +16,11 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 
 		// $scope.$on('refreshAccountsScroll', refreshScroller);
 
-		
+		$scope.filterActive = true;
+
+		$scope.clickedFilter = function(){
+			$scope.filterActive = !$scope.filterActive;
+		};
 
 	}
 ]);

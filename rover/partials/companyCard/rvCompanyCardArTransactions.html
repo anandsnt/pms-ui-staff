@@ -2,10 +2,10 @@
 <form method="post" action="{action}" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab transactions">
     
     <div class="tab-header">
-        <div class="search-form has-dates"> <!-- Add class "open" when showing form -->
+        <div class="search-form has-dates" ng-class="{'open':filterActive}"> <!-- Add class "open" when showing form -->
             <div class="entry filter">
-                <button type="button" class="filter button with-icon only-icon"> <!-- Add class "active" when showing form -->
-                    <span class="icons icon-filter"></span> <!-- Add class "active" when showing form -->
+                <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterActive}"> <!-- Add class "active" when showing form -->
+                    <span class="icons icon-filter" ng-class="{'active':filterActive}"></span> <!-- Add class "active" when showing form -->
                 </button>
             </div>
             <div class="entry showing">
@@ -75,7 +75,47 @@
     <!-- If there are open bills: -->
     <div class="tab-details scrollable">
         <div class="wrapper">
-            {tabs/ar-transactions.html}
+
+            <ul class="search-results">
+                <li class="reservation transaction">
+                    <!-- Not using <a> here since 1) you don't use hrefs at all and 2) it'll interfere with the checkbox -->
+                    <div class="faux-anchor" class="guest-{reservation-status}"> <!-- see options in {dashboard/front-desk.html} -->
+                        <figure class="guest-image"><!-- add class "accompany" if it's a accompanying guest -->
+                            <img src="{primary-guest-image}" alt="" />
+                            <!-- if it's accompanying guest, show this as well:
+                            <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
+                            <!-- if VIP guest:
+                            <span class="vip">VIP</span> -->
+                        </figure>
+                        <div class="data">
+                            <h2><span>{Lastname}</span>, <span>{Firstname}</span></h2>
+                            <span class="confirmation">2680117</span>
+                            <div class="arrival">
+                                <span class="guest-status small-icon check-in">check-in</span>
+                                {arrival date}
+                            </div>
+                            <div class="departure">
+                                <span class="guest-status small-icon check-out">check-out</span>
+                                {departure date}
+                            </div>
+                        </div>
+                        <div class="amount">${bill cost}</div>
+                        <div class="switch-button"> <!-- add class "on" when checkbox checked -->
+                            <input value="" type="checkbox" />
+                            <label class="data-off">
+                                <span class="value">Open</span>
+                                <span class="switch-icon">Paid</span>
+                            </label>
+                            <label class="data-on">
+                                <span class="switch-icon">Open</span>
+                                <span class="value">Paid</span>
+                            </label>
+                        </div>
+                    </div>
+                </li>
+                ... repeat
+            </ul>
+
          </div>
     </div>
 
