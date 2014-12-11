@@ -44,9 +44,8 @@ angular.module('housekeepingModule', [])
                         });
                     } else {
                         return RVHkRoomStatusSrv.fetchRoomListPost({
-                            businessDate: $rootScope.businessDate,
-                            page: $stateParams.page || 1,
-                            perPage: $stateParams.perPage || 50
+                            businessDate : $rootScope.businessDate,
+                            isStandAlone : $rootScope.isStandAlone
                         });
                     }
                 },

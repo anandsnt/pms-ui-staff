@@ -51,12 +51,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// The filters should be re initialized if we are navigating from dashborad to search
 		// In back navigation (From room details to search), we would retain the filters.
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-			if ((fromState.name === 'rover.housekeeping.roomDetails'
-				&& toState.name !== 'rover.housekeeping.roomStatus')
+			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus')
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
-
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
 		});	
@@ -71,8 +68,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_defaultWorkType = '',
 			$_defaultEmp      = '';
 
-		var $_page            = 1,
-			$_perPage         = $window.innerWidth < 599 ? 25 : 50;
+		var $_page            = $scope.currentFilters.page,
+			$_perPage         = $scope.currentFilters.perPage,
+			$_defaultPage     = 1,
+			$_defaultPerPage  = $window.innerWidth < 599 ? 25 : 50,
+			$_oldFilterValues = {};
 
 		var $_roomsEl         = document.getElementById( 'rooms' ),
 			$_filterRoomsEl   = document.getElementById( 'filter-rooms' );
@@ -151,17 +151,34 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.filterDoneButtonPressed = function() {
-			$scope.filterOpen = false;
-			$scope.$emit( 'showLoader' );
-			$timeout(function() {
-				$scope.rooms = [];
-				$_callRoomsApi();
-			}, 100);
+			var _hasFilterChanged = _.find(RVHkRoomStatusSrv.currentFilters, function(value, key) {
+				return $_oldFilterValues[key] != value;
+			});
 
-			// save the current edited filter to RVHkRoomStatusSrv
-			// so that they can exist even after HKSearchCtrl init
-			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
-			RVHkRoomStatusSrv.roomTypes = $scope.roomTypes;
+			var _makeCall = function() {
+				$scope.filterOpen = false;
+				$scope.$emit( 'showLoader' );
+
+				$timeout(function() {
+					$scope.rooms = [];
+					$_callRoomsApi();
+				}, 100);
+
+				// save the current edited filter to RVHkRoomStatusSrv
+				// so that they can exist even after HKSearchCtrl init
+				RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+				RVHkRoomStatusSrv.roomTypes = $scope.roomTypes;
+
+				// copy new filter settings
+				$_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
+			};
+
+			// reset page details if filter changes
+			if ( _hasFilterChanged ) {
+				$_resetPageCounts();
+			};
+
+			_makeCall();
 		};
 
 		// when user changes the employee filter
@@ -171,19 +188,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// if work type is null reset filter by employee
 			if ( !$scope.currentFilters.filterByWorkType ) {
 				$scope.topFilter.byEmployee = '';
-				$_calculateFilters();
+				$scope.applyEmpfilter();
 			} else {
-				// call caluculate filter in else since
-				// resetting filterByEmployee will call applyEmpfilter 
-				// which in turn will call calculateFilters
-				$_calculateFilters();
+				$scope.filterDoneButtonPressed();
 			}
 		};
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
 			$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-			$_calculateFilters();
+			$scope.filterDoneButtonPressed();
 		};
 
 		$scope.filterByQuery = function() {
@@ -455,8 +469,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				};
 
 				var _setUpWorkTypeEmployees = function() {
-					$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
-					$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
+					$_defaultWorkType = $scope.currentFilters.filterByWorkType;
+					$_defaultEmp      = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
 
 					// time to decide if this is an employee
 					// who has an active work sheets
@@ -481,6 +495,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$_postProcessRooms();
 				}, 10);
 			};
+
+			$scope.currentFilters.page       = $_page;
+			$scope.currentFilters.perPage    = $_perPage;
+			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
 		};
 
 
@@ -686,6 +704,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					};
 				}
 			}
+		};
+
+		function $_resetPageCounts () {
+			$scope.currentFilters.page    = $_defaultPage;
+			$scope.currentFilters.perPage = $_defaultPerPage;
+
+			$_page    = $_defaultPage;
+			$_perPage = $_defaultPerPage;
 		};
 
 

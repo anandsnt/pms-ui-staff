@@ -29,9 +29,11 @@ sntRover.service('RVHkRoomStatusSrv', [
 				"floorFilterStart"     : "",
 				"floorFilterEnd"       : "",
 				"showAllFloors"        : true,
-				"filterByWorkTypeId"   : "",
+				"filterByWorkType"     : "",
 				"filterByEmployeeName" : "",
-				"query"                : ""
+				"query"                : "",
+				"page"                 : 1,
+				"perPage"              : $window.innerWidth < 599 ? 25 : 50
 			};
 		}
 
@@ -49,8 +51,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 				floor_end            = false,
 				params               = {
 					businessDate : passedParams.businessDate,
-					page         : passedParams.page || 1,
-					perPage      : passedParams.perPage || 50
+					page         : filter.page,
+					perPage      : filter.perPage
 				};
 
 			// process the floors
@@ -94,6 +96,17 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if ( floor_start )                   { params['floor_start']          = floor_start; };
 			if ( floor_end )                     { params['floor_end']            = floor_end; };
 			if ( filter.query )                  { params['query']                = filter.query; };
+
+			// filter by worktype and employee
+			if ( filter.filterByEmployeeName ) {
+				params['assignee_id'] = filter.filterByEmployeeName;
+			};
+			if ( filter.filterByWorkType ) {
+				params['work_type_id'] = filter.filterByWorkType;
+			} else if (passedParams.work_type_id) {
+				params['work_type_id'] = passedParams.work_type_id;
+				filter.filterByWorkType = passedParams.work_type_id;
+			}
 
 			return params;
 		}.bind(this);
@@ -157,44 +170,62 @@ sntRover.service('RVHkRoomStatusSrv', [
 		}
 
 		this.fetchRoomListPost = function(passedParams) {
-			var deferred = $q.defer(),
-				url      = '/house/search.json';
-				params   = $_prepareParams(passedParams);
+			var deferred     = $q.defer(),
+				url          = '/house/search.json',
+				passedParams = passedParams,
+				params       = {},
+				work_type_id;
 
-			BaseWebSrvV2.postJSON(url, params)
-				.then(function(response) {
-					var roomList = response.data;
+			var _makeTheCall = function(workTypes) {
+				if ( !!workTypes ) {
+					work_type_id = workTypes[0]['id'];
+					_.extend( passedParams, {'work_type_id' : work_type_id} );
+				};
 
-					for (var i = 0, j = roomList.rooms.length; i < j; i++) {
-						var room = roomList.rooms[i];
+				params = $_prepareParams(passedParams);
 
-						// lets set this so that we can avoid
-						room.display_room = true;
+				BaseWebSrvV2.postJSON(url, params)
+					.then(function(response) {
+						var roomList = response.data;
 
-						// reduce scope search
-						room.description = room.hk_status.description;
+						for (var i = 0, j = roomList.rooms.length; i < j; i++) {
+							var room = roomList.rooms[i];
 
-						room.is_occupied = room.is_occupied == 'true' ? true : false;
-						room.is_vip = room.is_vip == 'true' ? true : false;
+							// lets set this so that we can avoid
+							room.display_room = true;
 
-						// single calculate the class required
-						// will require additional call from details page
-						that.setRoomStatusClass(room, roomList.checkin_inspected_only);
+							// reduce scope search
+							room.description = room.hk_status.description;
 
-						// set the leaveStatusClass or enterStatusClass value
-						that.setReservationStatusClass(room);
+							room.is_occupied = room.is_occupied == 'true' ? true : false;
+							room.is_vip = room.is_vip == 'true' ? true : false;
 
-						room.timeOrIn = calculateTimeOrIn(room);
-						room.timeOrOut = calculateTimeOrOut(room);
+							// single calculate the class required
+							// will require additional call from details page
+							that.setRoomStatusClass(room, roomList.checkin_inspected_only);
 
-						room.assigned_staff = calculateAssignedStaff(room);
+							// set the leaveStatusClass or enterStatusClass value
+							that.setReservationStatusClass(room);
 
-						room.ooOsTitle = calculateOoOsTitle(room);
-					}
-					deferred.resolve(roomList);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
+							room.timeOrIn = calculateTimeOrIn(room);
+							room.timeOrOut = calculateTimeOrOut(room);
+
+							room.assigned_staff = calculateAssignedStaff(room);
+
+							room.ooOsTitle = calculateOoOsTitle(room);
+						}
+						deferred.resolve(roomList);
+					}.bind(this), function(data) {
+						deferred.reject(data);
+					});
+			};
+
+			if ( passedParams.isStandAlone ) {
+				this.fetchWorkTypes()
+					.then(_makeTheCall);
+			} else {
+				_makeTheCall();
+			}
 
 			return deferred.promise;
 		}

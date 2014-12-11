@@ -38,6 +38,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$stateParams = $stateParams;
 
 	$rootScope.setPrevState = {};
+	$rootScope.setNextState = {};
 
 	/**
 	*	if this is true animation will be revesed, no more checks
@@ -48,7 +49,81 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	var $_mustRevAnim = false,
 		$_userReqBack = false,
 		$_prevStateName = null,
-		$_prevStateParam = null;
+		$_prevStateParam = null,
+		$_prevStateTitle = null;
+
+	var StateStore = function(stateName, checkAgainst) {
+		var self = this;
+
+		this.stateName    = stateName;
+		this.checkAgainst = checkAgainst;
+
+		this.fromState = false;
+		this.fromParam = {};
+		this.fromTitle = '';
+
+		this.update = function(toState, fromState, fromParam) {
+			if ( toState != this.stateName ) {
+				return;
+			};
+
+			for (var i = 0; i < self.checkAgainst.length; i++) {
+				if ( self.checkAgainst[i] == fromState ) {
+					self.fromState = fromState;
+					self.fromParam = fromParam;
+					self.fromTitle = $rootScope.getPrevStateTitle();
+					break;
+				};
+			};
+		};
+
+		this.getOriginState = function() {
+			var ret, name, params, title;
+
+			if (self.fromState) {
+				name  = self.fromState;
+				param = angular.copy(self.fromParam);
+				title = self.fromTitle;
+
+				ret = {
+					'name'  : name,
+					'param' : param,
+					'title' : title
+				};
+
+				this.fromState = false;
+				this.fromParam = {};
+				this.fromTitle = '';
+			} else {
+				return false;
+			}
+
+			return ret;
+		};
+
+		this.useOriginal = function(title) {
+			return title === self.fromTitle ? false : self.fromTitle ? true : false;
+		};
+	};
+
+	$rootScope.diaryState = new StateStore('rover.reservation.diary', ['rover.dashboard.manager', 'rover.reservation.search']);
+
+
+
+	var $_backTitleDict = {
+		'SHOWING DASHBOARD' : 'DASHBOARD',
+		'RESERVATIONS'      : 'CREATE RESERVATION'
+	}
+
+	var $_savePrevStateTitle = function(title) {
+		var upperCase = title.toUpperCase();
+		$_prevStateTitle = $_backTitleDict[upperCase] ? $_backTitleDict[upperCase] : title;
+	};
+
+	$rootScope.getPrevStateTitle = function() {
+		return $_prevStateTitle;
+	};
+
 
 	/**
 	*	revAnimList is an array of objects that holds
@@ -203,5 +278,13 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 		// reset this flag
 		$rootScope.returnBack = false;
+
+		// capture the prev state document title;
+		$_savePrevStateTitle(document.title);
+
+		if ( $rootScope.setNextState.data ) {
+			_.extend(toParams, $rootScope.setNextState.data);
+			$rootScope.setNextState = {};
+		};
 	});
 }]);

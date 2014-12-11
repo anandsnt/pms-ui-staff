@@ -14,7 +14,7 @@
 </div>
 
 <!-- Search form -->
-<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form has-filters" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone &&!topFilter.byWorkType), 'showing-filters': filterOpen }">
+<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form has-filters" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone && (!topFilter.byWorkType || hasActiveWorkSheet)), 'showing-filters': filterOpen }">
     <a id="show-filters" class="filter button white with-icon only-icon" ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         <span translate>FILTER_ROOMS</span>
@@ -40,7 +40,7 @@
             </select>
         </div>
         <!-- If Work type is set to All, don't show this dropdown -->
-        <div class="select">
+        <div ng-hide="hasActiveWorkSheet" class="select">
             <select id="employees"  ng-disabled="!topFilter.byWorkType" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="emp.id as emp.maid_name for emp in employees" ng-change="applyEmpfilter()">
                 <option value="">All Employees</option>
             </select>
