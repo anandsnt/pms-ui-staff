@@ -96,30 +96,55 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 	$scope.feeData = {};
 	var zeroAmount = parseFloat("0.00");
-	
+
+	// CICO-11591 : To show or hide fees calculation details.
+	$scope.isShowFees = function(){
+		var isShowFees = false;
+		var feesData = $scope.feeData;
+		if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
+			isShowFees = false;
+		}
+		else if((feesData.defaultAmount  > feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
+			isShowFees = true;
+		}
+		return isShowFees;
+	};
+
 	// CICO-9457 : To calculate fee
 	$scope.calculateFee = function(){
 		if($scope.isStandAlone){
 			
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
-			if(typeof feesInfo != 'undefined' && feesInfo!= null) amountSymbol = feesInfo.amount_symbol;
+			var feePercent  = zeroAmount;
+			var minFees = zeroAmount;
+
+			if (typeof feesInfo != 'undefined' && feesInfo != null){
+				amountSymbol = feesInfo.amount_symbol;
+				feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+				minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+			}
 
 			var totalAmount = ($scope.depositBalanceMakePaymentData.amount == "") ? zeroAmount :
 							parseFloat($scope.depositBalanceMakePaymentData.amount);
-			var feePercent  = parseFloat($scope.feeData.actualFees);
 
-			if(amountSymbol == "percent"){
-				var calculatedFee = parseFloat(totalAmount * (feePercent/100));
-				$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
-				$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
-			}
-			else{
-				$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+			$scope.feeData.minFees = minFees;
+			$scope.feeData.defaultAmount = totalAmount;
+
+			if($scope.isShowFees()){
+				if(amountSymbol == "percent"){
+					var calculatedFee = parseFloat(totalAmount * (feePercent/100));
+					$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+				}
+				else{
+					$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+				}
 			}
 		}
 	};
-
+	
 	// CICO-9457 : Data for fees details.
 	$scope.setupFeeData = function(){
 		
@@ -127,16 +152,22 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		var defaultAmount = $scope.depositBalanceMakePaymentData ?
 		 	parseFloat($scope.depositBalanceMakePaymentData.amount) : zeroAmount;
 		
-		if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
-			
-			var amountSymbol = feesInfo.amount_symbol;
-			var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
-			$scope.feeData.actualFees = feesAmount;
-			
-			if(amountSymbol == "percent") $scope.calculateFee();
-			else{
-				$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
-				$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+		var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+		$scope.feeData.minFees = minFees;
+		$scope.feeData.defaultAmount = defaultAmount;
+
+		if($scope.isShowFees()){
+			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+				
+				var amountSymbol = feesInfo.amount_symbol;
+				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+				$scope.feeData.actualFees = feesAmount;
+				
+				if(amountSymbol == "percent") $scope.calculateFee();
+				else{
+					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+				}
 			}
 		}
 	};
@@ -195,6 +226,23 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.makePaymentButtonDisabled         = false;
 		$scope.paymentId = data.id;
 		$scope.shouldCardAvailable 				 = true;
+		if($scope.cardValues.cardDetails.addToGuestCard){
+			var cardCode = $scope.depositBalanceMakePaymentData.card_code.toLowerCase();
+			var cardNumber = $scope.depositBalanceMakePaymentData.ending_with;
+			var dataToGuestList = {
+				"card_code": cardCode,
+				"mli_token": cardNumber,
+				"card_expiry": $scope.depositBalanceMakePaymentData.card_expiry,
+				"card_name": $scope.cardValues.cardDetails.userName,
+				"id": data.id,
+				"isSelected": true,
+				"is_primary":false,
+				"payment_type":"CC",
+				"payment_type_id": 1
+			};
+			$scope.cardsList.push(dataToGuestList);
+			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		}
 	
 		
 	};

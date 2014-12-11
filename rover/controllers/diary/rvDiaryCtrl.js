@@ -13,6 +13,7 @@ sntRover
 		'rvDiaryMetadata',
 		'rvDiaryUtil',
 		'payload',
+		'propertyTime',
 		'$vault',
 		'$stateParams',
 	function($scope, 
@@ -28,6 +29,7 @@ sntRover
 			 meta, 
 			 util, 
 			 payload,
+			 propertyTime,
 			 $vault, $stateParams) {
 
 	$scope.$emit('showLoader');
@@ -36,6 +38,8 @@ sntRover
 	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
 
+	//updating the left side menu
+    $scope.$emit("updateRoverLeftMenu", "diaryReservation");
 
 	// data for next state
 	$rootScope.setNextState = {
@@ -81,7 +85,73 @@ sntRover
 	    $scope.stats 	= $scope.availability_count;
 	    $scope.selectedReservations = [];
 
+	    var isVaultDataSet = false;
+     	var vaultData = rvDiarySrv.ArrivalFromCreateReservation();
+     	var correctTimeDate = {};
+
+     	if(vaultData) {           
+            isVaultDataSet = true;
+        } else {
+        	// we will be creating our own data base on the current time.
+        	correctTimeDate = correctTime(propertyTime);
+        }
+
+        function correctTime(propertyTime) {
+            var hh   = parseInt(propertyTime.hotel_time.hh),
+                mm   = parseInt(propertyTime.hotel_time.mm),
+                ampm = '';
+
+            // first decide AMP PM
+            if ( hh > 12 ) {
+                ampm = 'PM';
+            } else {
+                ampm = 'AM';
+            }
+
+            // the time must be rounded to next 15min position
+            // if the guest came in at 3:10AM it should be rounded to 3:15AM
+            if ( mm > 45 && hh + 1 < 12 ) {
+                hh += 1;
+                mm = 0;
+            } else if ( mm > 45 && hh + 1 == 12 ) {
+                if ( ampm == 'AM' ) {
+                    hh  = 12;
+                    mm = 0;
+                    ampm    = 'PM';
+                } else {
+                    hh  = 12;
+                    mm = 0;
+                    ampm    = 'AM';
+                }
+            } else if ( mm == 15 || mm == 30 || mm == 45 ) {
+                mm += 15;
+            } else {
+                do {
+                    mm += 1;
+                    if ( mm == 15 || mm == 30 || mm == 45 ) {
+                        break;
+                    }
+                } while ( mm != 15 || mm != 30 || mm != 45 );
+            };
+
+            var date         = $rootScope.businessDate,
+            	fromDate     = new tzIndependentDate(date).getTime(),
+            	ms           = new tzIndependentDate(fromDate).setHours(0, 0, 0),
+            	start_date   = (hh * 3600000) + (mm * 60000) + ms,
+            	__start_date = new tzIndependentDate(date);
+
+            __start_date.setHours(0, 0, 0);
+
+            return {
+        		'start_date'   : start_date,
+        		'__start_date' : __start_date,
+        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + mm
+        	}
+        };
+
+
 	    var number_of_items_resetted = 0;
+
 		$scope.gridProps = {
 			/* Meta data object - allows us to use a single point of reference for various object properties.
 		       If a property name expected changes, update it here so it will propagate throughout the application.
@@ -130,11 +200,11 @@ sntRover
 			time span.
 		*/
 			display: {
-				x_offset: 				   payload.display.x_offset.getTime(),
+				x_offset: 				   isVaultDataSet ? (vaultData.start_date-7200000) : (correctTimeDate.start_date-7200000),
 				x_0: 					   undefined,
-				x_origin:                  payload.display.x_origin.getTime(),
-				x_n:                       payload.display.x_n.getTime(),
-				x_n_time:                  (!payload.display.x_n_time ? payload.display.x_n.toComponents().time.convertToReferenceInterval(15) : payload.display.x_n_time),
+				x_origin:                  isVaultDataSet ? vaultData.start_date : correctTimeDate.start_date,
+				x_n:                       isVaultDataSet ? (vaultData.__start_date) : (correctTimeDate.__start_date),
+				x_n_time:                  isVaultDataSet ? (vaultData.__start_date.toComponents().time.convertToReferenceInterval(15)) : (correctTimeDate.__start_date.toComponents().time.convertToReferenceInterval(15)),
 				x_p: 	                   payload.display.x_p.getTime(),
 				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
 				width: 						undefined,
@@ -148,7 +218,7 @@ sntRover
 				px_per_int: 				undefined,
 				px_per_hr: 					undefined,
 				currency_symbol:            $rootScope.currencySymbol,
-				min_hours: 					payload.display.min_hours
+				min_hours: 					isVaultDataSet && vaultData.minHours ? vaultData.minHours : payload.display.min_hours
 			},
 
 			availability: {
@@ -220,11 +290,10 @@ sntRover
 		filter: {						
 	    	arrival_date: 				payload.display.x_n,
 	    	arrival_times:              Array.prototype.slice.call(payload.filter.arrival_times),
-	    	arrival_time: 				payload.filter.arrival_time,
+	    	arrival_time: 				isVaultDataSet ? payload.filter.arrival_time : correctTimeDate.arrival_time,
 	    	reservation_format: 		'h',
 		    range: 						12,
-	    	rate_type: 					payload.filter.rate_type,
-		    rate_type_details: 			[],
+	    	rate_type: 					payload.filter.rate_type,		    
 		    rate:                        undefined,
 	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
@@ -297,22 +366,12 @@ sntRover
 		    BEGIN CORPORATE RATE METHODS 
 		  ________________________________________________________
 		*/
-		$scope.confirmRateSelection = function(idx) {
-			var details = $scope.gridProps.filter.rate_type_details;
-
-			$scope.gridProps.filter.rate = $scope.gridProps.filter.rate_type_details[idx];
-	    };    
-
-		$scope.discardRateSelection = function(idx) {
-			//var details = $scope.gridProps.filter.rate_type_details;
-			$scope.gridProps.filter.rate_type_details = [];
-			$scope.gridProps.filter.rate = undefined;
-	    };
+		
 
         $scope.companySearchTextEntered = function() {
-            if($scope.companySearchText.length === 1) {
-                $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
-            } else if($scope.companySearchText.length > 2){
+            if($scope.corporateSearchText.length === 1) {
+                $scope.corporateSearchText = $scope.corporateSearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
+            } else if($scope.corporateSearchText.length > 2){
                 displayFilteredResults();
             }
 	    };
@@ -536,20 +595,10 @@ sntRover
 			var DS = rvDiarySrv.data_Store, hourly_rates = [];
 
         	RMFilterOptionsSrv.fetchCompanyCard({ 
-        		query: $scope.companySearchText.trim() 
+        		query: $scope.corporateSearchText.trim() 
         	})
             .then(function(data) {
-            	var applicable_accounts = _.filter(data.accounts, function(account) {
-            		var contract = account.current_contract;
 
-            		if(_.isObject(contract) && _.has(contract, 'id')) {
-            			hourly_rates.push(contract);
-
-            			return _.findWhere(hourly_rates, { id: contract.id });
-            		}
-            	});
-            	//$scope.gridProps.filter.rate_type_details = data.accounts;
-				$scope.gridProps.filter.rate_type_details = applicable_accounts;//companyCardResults = data.accounts;
             }, responseError);  
         }, 500);
 
@@ -568,12 +617,7 @@ sntRover
 			//$scope.debug();
 		};
 
-		$scope.setAccountID = function(index) {
-			if(index < $scope.gridProps.filter.rate_type_details.length)
-				$scope.gridProps.filter.account_id = $scope.gridProps.filter.rate_type_details[index].id;
-			else
-				console.warn('index passed to find is greater than array length of companyCardResults')
-		}
+		
 
 	    $scope.isSelected = function(room, reservation) {
 	    	return _.isBoolean(reservation.selected) && reservation.selected;
@@ -727,11 +771,12 @@ sntRover
 		----------------------------------------------------------------
 	*/
 
-   	$scope.clearAvailability = function() {
+   	$scope.clearAvailability = function() {   		   		
 		var rooms = $scope.data,
 			room,
             m_status = meta.occupancy.status,
-			reject = function(child) {
+            id = meta.occupancy.id,
+			reject = function(child) {		
 				return angular.lowercase(child[m_status]) === 'available'; 
 			};
 
@@ -780,7 +825,7 @@ sntRover
     	$scope.callAPI(rvDiarySrv.Availability, options);
 	}
 
-    $scope.Availability = function() {	
+    $scope.Availability = function() {
 		$scope.clearAvailability();
 		$scope.resetEdit();
 		$scope.renderGrid();
@@ -827,13 +872,16 @@ sntRover
 	var getAvailabilityCallingParams = function() {
 		var filter 		= _.extend({}, this.filter),
 			time_span 	= Time({ hours: this.display.min_hours }), 
-			start_date 	= new Date(this.display.x_n), 
-			start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
+			start_date 	= new Date(this.display.x_n),
+			getIndex    = filter.arrival_times.indexOf(filter.arrival_time),
+			// correction  = getIndex % 4 != 0 ? 900000 : 0,
+			correction  = 0,
+			start_time 	= new Date((getIndex * 900000) - correction + start_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
 							 start_time.hours,
-							 start_time.minutes, 
+							 start_time.minutes,
 							 0, 0),
 			end = new Date(start.getFullYear(),
 						   start.getMonth(),
@@ -842,9 +890,9 @@ sntRover
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
-			rate_type = filter.rate_type,
-			accound_id = filter.account_id; 
-			//GUID = "avl-101"//No need to manipulate this thing from service part, we are deciding
+			rate_type = filter.rate_type,			
+			account_id = filter.rate_type == 'Corporate' ? filter.rate.id : undefined, 
+			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
 				start = new Date(this.availability.resize.current_arrival_time);
@@ -855,10 +903,12 @@ sntRover
 			start_date: start,
 			end_date: end,
 			room_type_id: rt_filter,
-			rate_type: rate_type,
-			account_id: accound_id,
-			//GUID: GUID
+			rate_type: rate_type,			
+			GUID: GUID
 		};
+		if(account_id) {
+			paramsToReturn.account_id = account_id;
+		}
 		return paramsToReturn
 	}.bind($scope.gridProps);
 
@@ -983,37 +1033,16 @@ sntRover
 	};
 
 	$scope.clickedOnRateType = function(){
-		if (!$scope.gridProps.edit.active) {
+		if($scope.gridProps.filter.rate_type === 'Standard') {
+			$scope.gridProps.filter.rate = '';
+		}
+		if (!$scope.gridProps.edit.active && $scope.gridProps.filter.rate_type === 'Standard') {
 			$scope.Availability();
+			$scope.gridProps.filter.toggleRates();
 		}
 	};	
-	/*$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {		
-		
-		if(newValue !== oldValue) {
 
-		}
-	});*/
 
-/*	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
-
-		if(newValue !== oldValue) {
-
-		}
-	});*/
-	/*TODO - PASS COMPANY ID HERE*/
-	/*$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
-
-		if(newValue !== oldValue) {
-			if (!$scope.gridProps.edit.active) {
-				$scope.Availability();
-			}		
-		}	
-	});*/
-	/*
-		----------------------------------------------------------------
-		END WATCHERS
-		----------------------------------------------------------------
-	*/
 
 
 	/*
@@ -1090,16 +1119,144 @@ sntRover
 		}						
 	}
 
-	$scope.eventAfterRendering = function(){
-		$scope.$apply(function(){			
+	var correctRoomType = function() {
+		var data = $vault.get('searchReservationData'),
+			room_type_id,
+			matched;
+
+		if ( !!data ) {
+			room_type_id = isNaN(parseInt(data.roomTypeID)) ? 'All' : data.roomTypeID;
+
+			match = _.find($scope.gridProps.filter.room_types, function(item) {
+				return room_type_id == item.id;
+			});
+
+			$scope.gridProps.filter.room_type = match;
+
+			// trigger call
+			$scope.clickedOnRoomType();
+
+			setTimeout(function() {
+				$vault.remove('searchReservationData');
+			}, 10);
+		};
+	};
+
+	$scope.eventAfterRendering = function() {
+		$scope.$apply(function(){
 			$scope.$emit('hideLoader');
 			$scope.resetEdit();
 		});
+
+		setTimeout(correctRoomType, 100);
+
 		setTimeout(function(){
 			switchToEditModeIfPassed();
 		}, 1000);
-				
-	}
+	};	
 
-	
+
+	$scope.compCardOrTravelAgSelected = function(){
+		if (!$scope.gridProps.edit.active) {
+			$scope.Availability();
+			$scope.gridProps.filter.toggleRates();
+		}
+	};
+
+	$scope.discardSelectedCompCardOrTravelAg = function(){
+		$scope.gridProps.filter.rate = ''; 
+		$scope.corporateSearchText = "";
+	};
+
+    // jquery autocomplete Souce handler
+    // get two arguments - request object and response callback function
+    var autoCompleteSourceHandler = function(request, response) {
+
+        var companyCardResults = [],
+            lastSearchText = '',
+            eachItem = {},
+            hasItem = false,
+            img_url = '';
+
+        // process the fetched data as per our liking
+        // add make sure to call response callback function
+        // so that jquery could show the suggestions on the UI
+        var processDisplay = function(data) {
+            $scope.$emit("hideLoader");
+
+            angular.forEach(data.accounts, function(item) {
+                eachItem = {};
+
+                eachItem = {
+                    label: item.account_name,
+                    value: item.account_name,
+                    image: item.company_logo,
+
+                    // only for our understanding
+                    // jq-ui autocomplete wont use it
+                    type: item.account_type,
+                    id: item.id,
+                    corporateid: '',
+                    iataNumber: ''
+                };
+
+                if(item.company_logo === '') {
+                	img_url = item.account_type === 'COMPANY' ? '/assets/avatar-company.png' : '/assets/avatar-travel-agent.png';
+                	eachItem.image = img_url;
+                }
+
+                // making sure that the newly created 'eachItem'
+                // doesnt exist in 'companyCardResults' array
+                // so as to avoid duplicate entry
+                hasItem = _.find($scope.companyCardResults, function(item) {
+                    return eachItem.id === item.id;
+                });
+
+                // yep we just witnessed an loop inside loop, its necessary
+                // worst case senario - too many results and 'eachItem' is-a-new-item
+                // will loop the entire 'companyCardResults'
+                if (!hasItem) {
+                    companyCardResults.push(eachItem);
+                };
+            });
+
+            // call response callback function
+            // with the processed results array
+            response(companyCardResults);
+        };
+
+        // fetch data from server
+        var fetchData = function() {
+            if (request.term != '' && lastSearchText != request.term) {
+                $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, {
+                    'query': request.term
+                }, processDisplay);
+                lastSearchText = request.term;
+            }
+        };
+
+        // quite simple to understand
+        if (request.term.length === 0) {
+            companyCardResults = [];
+            lastSearchText = "";
+        } else if (request.term.length > 2) {
+            fetchData();
+        }
+    };
+
+    var autoCompleteSelectHandler = function(event, ui) {    	
+    	$scope.gridProps.filter.rate = ui.item;    	
+        $scope.$apply();      
+    };
+
+    $scope.autocompleteOptions = {
+        delay: 0,
+        position: {
+             my : "right top", 
+             at: "right bottom",
+            collision: 'flip'
+        },
+        source: autoCompleteSourceHandler,
+        select: autoCompleteSelectHandler
+    };
 }]);

@@ -5,7 +5,7 @@
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
-	    	<input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-focus="focusOnSearchText()"
+	    	<input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()"
 	        ng-model="textInQueryBox" focus-me="focusSearchField"/>
 	    </div>
 	    <div class="entry dates">
@@ -20,7 +20,7 @@
             <div class="entry-data has-datepicker">
                 <label for="dashboard-date-to">To</label>
                 <button id="dashboard-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(toDate) !=''}">
-                    <span class="icons icon-clear-search" ng-click="toDate = ''; fetchSearchResults();">Clear query</span>
+                    <span class="icons icon-clear-search" ng-click="clearToDateClicked()">Clear query</span>
                 </button>
 
                 <input name="dashboard-date-to" id="dashboard-date-to" class="datepicker" placeholder="{{toDate | date : dateFormat}}" value="{{toDate| date : dateFormat}}" readonly="" type="text" />
@@ -108,7 +108,7 @@
 	                            <span class="guest-status {{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
 	                            <time datetime="{arrival timestamp}">
 	                                <span>{{row.arrival_date| date : dateFormat}}</span>
-	                                <span>{{row.arrival_time}}</span>
+	                                <span>{{getTimeConverted(row.arrival_time)}}</span>
 	                            </time>
 	                        </div>
 
@@ -116,7 +116,7 @@
 	                            <span class="guest-status {{getGuestStatusIconForDeparture(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForDeparture(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
 	                            <time datetime="{departure timestamp}">
 	                                <span>{{row.departure_date| date : dateFormat}}</span>
-	                                <span>{{row.departure_time}}</span>
+	                                <span>{{getTimeConverted(row.departure_time)}}</span>
 	                            </time>
 	                        </div>
 	                    </div>
@@ -129,10 +129,9 @@
 						<span class="h2">Check that you didn't mispell the <strong>Name</strong> or 
 							<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or 
 							<strong>Confirmation</strong> number
-							<span ng-show="results.length==0 && showAddNewGuestButton">, or  </span>  
-							<a ui-sref="rover.reservation.search">Add a New Guest <a/>
+							<span ng-show="results.length==0 && showAddNewGuestButton">, or    
+							<a ui-sref="rover.reservation.search">Add a New Guest <a/></span>
 						</span>
-
 						.
 					</div>
 				</li>

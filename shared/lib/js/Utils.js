@@ -452,6 +452,7 @@ var tConvert = function(time){
     tDict = {};
     var t = time.split(':');
     tDict.hh = (t[0] >= 12) ? (t[0] - 12) : t[0];
+    tDict.hh = tDict.hh == 0 ? 12 : tDict.hh;
     tDict.mm = t[1];
     tDict.ampm = (t[0] >= 12) ? 'PM' : 'AM';
 

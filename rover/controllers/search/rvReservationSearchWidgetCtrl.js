@@ -28,9 +28,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name == "rover.search");
+		
 		//Date picker from date should default to current business date - CICO-8490
-		$scope.fromDate = $rootScope.businessDate;
+		//Get the date stored in service, and clear the service
+		$scope.fromDate = RVSearchSrv.fromDate == undefined? $rootScope.businessDate : RVSearchSrv.fromDate;
+		$scope.toDate = RVSearchSrv.toDate == undefined? "" : RVSearchSrv.toDate;
 		RVSearchSrv.fromDate = $rootScope.businessDate;
+		RVSearchSrv.toDate = '';
+		
+		//RVSearchSrv.fromDate = $rootScope.businessDate;
 
 		$scope.start = 1;
 		$scope.end = RVSearchSrv.searchPerPage;
@@ -188,6 +194,17 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.isLateCheckoutList = (type === 'LATE_CHECKOUT') ? true : false;
 		});
 
+		//
+		$scope.$on("clearSearchDateValues", function(event, flag) {
+			$scope.$apply(function(){
+				$scope.fromDate = $rootScope.businessDate;
+				$scope.toDate = '';
+			});
+			//RVSearchSrv.fromDate = $rootScope.businessDate;
+			RVSearchSrv.toDate = '';
+			
+		});
+
 		/**
 		 * reciever function to show/hide the search result area.
 		 */
@@ -276,8 +293,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 					($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 					($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
-					($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 ||
-					($scope.escapeNull(value.travel_agent).toString()).indexOf($scope.textInQueryBox) >= 0 ||
+					($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+					($scope.escapeNull(value.travel_agent).toString()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 					($scope.escapeNull(value.company).toString()).indexOf($scope.textInQueryBox) >= 0)
 				{
 					$scope.results[i].is_row_visible = true;
@@ -356,7 +373,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		}; //end of displayFilteredResults
 
 		$scope.fetchSearchResults = function(){
-
 			var query = $scope.textInQueryBox.trim();
 			if($scope.escapeNull(query) == "" && $scope.escapeNull($stateParams.type) == ""){
 				return false;
@@ -373,13 +389,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				dataDict.is_queued_rooms_only = true;
 			} else if($stateParams.type == "VIP"){
 				dataDict.vip = true;
-			} else if($stateParams.type != undefined && query == ''){
+			} else if($stateParams.type != undefined && query == '' && $stateParams.type !== 'SEARCH_NORMAL'){
 				dataDict.status = $stateParams.type;
 			}
 
 			if($rootScope.isSingleDigitSearch && !isNaN(query) && query.length < 3){
 				dataDict.room_search = true;
 			}
+			dataDict.from_date = $scope.fromDate;
+			dataDict.to_date = $scope.toDate;
 
 			$scope.firstSearch = false;
 			$scope.fetchTerm = $scope.textInQueryBox;
@@ -511,7 +529,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.textInQueryBox = "";
 			$scope.fetchTerm = "";
 			$scope.firstSearch = true;
+
 			RVSearchSrv.totalSearchResults = 0;
+
+			//Clear search fields
+			$scope.fromDate = $rootScope.businessDate;
+			$scope.toDate = "";
 			//$scope.start = 1;
 			//$scope.end = 100;
 
@@ -534,9 +557,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function(reservationID, confirmationID) {
+
 			$scope.currentReservationID = reservationID;
 			$scope.currentConfirmationID = confirmationID;
 			RVSearchSrv.data = $scope.results;
+			RVSearchSrv.fromDate = $scope.fromDate;
+			RVSearchSrv.toDate = $scope.toDate;
+
+
 			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
@@ -720,7 +748,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 		$scope.showCalendar = function(controller) {
-			$scope.focusOnSearchText();
+			$scope.$emit("showSearchResultsArea", true);
 			$scope.focusSearchField = true;
 		    ngDialog.open({
 		        template: '/assets/partials/search/rvDatePickerPopup.html',
@@ -736,15 +764,32 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.onFromDateChanged = function(date){
 			$scope.fromDate = date;
 			$scope.focusSearchField = true;
+			//RVSearchSrv.fromDate = date;
+			RVSearchSrv.page = 1;
+			$scope.start = 1;
+			$scope.end = $scope.start + $scope.results.length - 1;
+			$scope.nextAction = false;
+			$scope.prevAction = false;
 			$scope.fetchSearchResults();
-			RVSearchSrv.fromDate = date;		
+					
 		};
 		$scope.onToDateChanged = function(date){
 			$scope.toDate = date;
 			$scope.focusSearchField = true;
+			RVSearchSrv.page = 1;
+			$scope.start = 1;
+			$scope.end = $scope.start + $scope.results.length - 1;
+			$scope.nextAction = false;
+			$scope.prevAction = false;
+			//RVSearchSrv.toDate = date;
 			$scope.fetchSearchResults();
-			RVSearchSrv.toDate = date;
 
+		};
+
+		$scope.clearToDateClicked = function(){
+			$scope.toDate = ''; 
+			RVSearchSrv.toDate = '';
+			$scope.fetchSearchResults();
 		};
 
 		$scope.getTimeConverted = function(time){

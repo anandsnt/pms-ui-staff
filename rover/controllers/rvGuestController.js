@@ -10,8 +10,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			cardTabContentOffset: 170, // Height of the tab menu and the header above.			
 		};
 
-		$s = $scope;
-
 		$scope.cardVisible = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
@@ -773,6 +771,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
 			} else {
+				console.log("else case");
+
 				if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('company', company, false);
 				} else {

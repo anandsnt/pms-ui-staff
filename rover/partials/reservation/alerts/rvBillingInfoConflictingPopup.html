@@ -1,0 +1,16 @@
+<div id ="modal" class="modal-show">
+	<div class="modal-content new-content form warning">
+	    <div>
+	    	<span translate>CONFLICTING_BILLING_INFO_EXISTS_ON</span>
+			<span ng-repeat="card in conflict_cards">{{card}} {{$last ? '. ' : ', '}}</span>
+			<span translate>PLEASE_UPDATE_MANUALLY</span>
+			
+		</div>
+
+	    <div class="actions">
+	        <button type="button" class="button green" ng-click="okClickedForConflictingRoutes();" translate>OK</button>
+	    </div>
+	</div>
+</div>
+
+

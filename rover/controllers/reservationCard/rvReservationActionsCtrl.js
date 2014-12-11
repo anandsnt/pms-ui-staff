@@ -139,8 +139,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.creditCardTypes = [];
 	
 		var openDepositPopup = function(){
-
-			if($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN"){
+			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN") && !$scope.reservationData.justCreatedRes){
 				var feeDetails = (typeof $scope.depositDetails.attached_card ==="undefined") ? {}: $scope.depositDetails.attached_card.fees_information;
 				var passData = {
 							 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -195,8 +194,6 @@ sntRover.controller('reservationActionsController', [
 
 		var fetcCreditCardTypes = function(cancellationCharge, nights){
 			var successCallback = function(data){
-				console.log("fetcCreditCardTypes");
-				console.log(data);
 				$scope.$emit('hideLoader');
 				data.forEach(function(item) {
 		          if(item.name === 'CC'){

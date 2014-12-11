@@ -5,28 +5,37 @@
 		<em ng-if="data.isHourly">Price adjustment for all Occupancies</em>
 	</div>
 
-	<div class="price-fields" ng-if="data.isHourly">
-		<label>ALL OCCUPANCIES</label>		
-		<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-				<input type="text" size="7" ng-model="data.nightly" ng-class="{'strike-through': data.nightly_extra_amnt != ''}" ng-disabled="data.nightly_extra_amnt != '' || data.nightly == undefined" force-decimal-zero-dir>
-			</span> <span class="or"> OR</span> </span>
-		<span class="inp-field-after-or select">
-			<select style="width:70px;" ng-model="data.nightly_sign" ng-disabled="data.nightly == undefined">
-				<option value="+">+</option>
-				<option value="-">-</option>
-			</select> </span>
-		<span class="inp-field">
-			<input type="text"  size="7" ng-model="data.nightly_extra_amnt" ng-disabled="data.nightly == undefined">
-		</span>
-		<span class="inp-field select">
-			<select style="width:70px;" ng-model="data.nightly_amnt_diff" ng-disabled="data.nightly == undefined">
-				<option value="%">%</option>
-				<option value="{{currencySymbol}}">{{currencySymbol}}</option>
-			</select> </span>
-		<br clear="all">		
-	</div>
+	<section ng-if="data.isHourly">
+		<div class="price-fields">
+			<label>ALL OCCUPANCIES</label>		
+			<span ng-if = "!popupData.all_data_selected">
+				<span class="inp-field-before-or">
+					<input type="text" size="7" ng-model="data.nightly" ng-class="{'strike-through': data.nightly_extra_amnt != ''}" ng-disabled="data.nightly_extra_amnt != '' || data.nightly == undefined" force-decimal-zero-dir>
+				</span> 
+					<span class="or"> 
+						OR
+					</span> 
+			</span>
+			<span class="inp-field-after-or select">
+				<select style="width:70px;" ng-model="data.nightly_sign" ng-disabled="data.nightly == undefined">
+					<option value="+">+</option>
+					<option value="-">-</option>
+				</select> 
+			</span>
+			<span class="inp-field">
+				<input type="text"  size="7" ng-model="data.nightly_extra_amnt" ng-disabled="data.nightly == undefined">
+			</span>
+			<span class="inp-field select">
+				<select style="width:70px;" ng-model="data.nightly_amnt_diff_sign" ng-disabled="data.nightly == undefined">
+					<option value="%">%</option>
+					<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+				</select> 
+			</span>
+			<br clear="all">		
+		</div>
+	</section>
 	
-	<section class="price-fields" ng-if="!data.isHourly">
+	<section ng-if="!data.isHourly">
 		<div class="price-fields">
 			<label>SINGLE</label>			
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
