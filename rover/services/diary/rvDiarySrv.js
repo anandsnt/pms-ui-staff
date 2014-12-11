@@ -913,7 +913,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             guest_first_name:   data.guestFirstName,
                             guest_last_name:    data.guestLastName,
                             company_id:         data.companyID,
-                            travel_agent_id:    data.TravelAgenID
+                            travel_agent_id:    data.TravelAgenID,
+                            minHours:           parseInt(data.minHours)
                         };
                     }
 

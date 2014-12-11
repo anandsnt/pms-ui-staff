@@ -369,15 +369,23 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		var editPromptDialogId;
 
 		$scope.showEditReservationPrompt = function() {
-			if ($scope.reservationData.reservation_card.is_hourly_reservation) {
-				$scope.applyCustomRate();
-			} else {
-				editPromptDialogId = ngDialog.open({
-					template: '/assets/partials/reservation/rvStayCardEditRate.html',
-					className: 'ngdialog-theme-default',
-					scope: $scope,
-					closeByDocument: false,
-					closeByEscape: false
+			if ($rootScope.isStandAlone) {
+				if ($scope.reservationData.reservation_card.is_hourly_reservation) {
+					$scope.applyCustomRate();
+				} else {
+					editPromptDialogId = ngDialog.open({
+						template: '/assets/partials/reservation/rvStayCardEditRate.html',
+						className: 'ngdialog-theme-default',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
+				}
+			}else{
+				$state.go('rover.reservation.staycard.billcard', {
+					reservationId: $scope.reservationData.reservation_card.reservation_id,
+					clickedButton: "viewBillButton",
+					userId: $scope.guestCardData.userId
 				});
 			}
 		}
@@ -435,6 +443,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 			if (($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkinTime.mm != '') || ($scope.reservationParentData.checkoutTime.hh != '' && $scope.reservationParentData.checkoutTime.mm != '') || ($scope.reservationParentData.checkinTime.hh == '' && $scope.reservationParentData.checkinTime.mm == '') || ($scope.reservationParentData.checkoutTime.hh == '' && $scope.reservationParentData.checkoutTime.mm == '')) {
 				var postData = $scope.computeReservationDataforUpdate();
+				//CICO-11705
+				postData.reservationId = $scope.reservationParentData.reservationId;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		};

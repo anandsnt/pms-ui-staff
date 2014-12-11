@@ -15,6 +15,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             fetchPriceDetailsForRate();
         }
 
+        if($scope.popupData.all_data_selected){
+            $scope.data.isHourly = $scope.calendarData.data[0][$scope.popupData.selectedDate].isHourly;
+        }
+
         $scope.updatePopupWidth();
     };
 
@@ -139,30 +143,28 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         //Get the rate/restriction details for the selected cell
         if($scope.popupData.all_data_selected) {
             selectedDateInfo.restrictions = $scope.calendarData.rate_restrictions[$scope.popupData.selectedDate];
-
+            $scope.data.isHourly= $scope.calendarData.data[0][$scope.popupData.selectedDate].isHourly;                        
         } else {
             for(var i in $scope.calendarData.data){
                 if($scope.calendarData.data[i].id == $scope.popupData.selectedRoomType){
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
-
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
                     if(typeof selectedDateInfo != "undefined"){
+                        $scope.data.isHourly= selectedDateInfo.isHourly;
                         //Check if the rate set amounts are configured for the selected date
                         if(selectedDateInfo.single == undefined &&
                             selectedDateInfo.double == undefined &&
                             selectedDateInfo.extra_adult == undefined &&
                             selectedDateInfo.child == undefined && 
                             (selectedDateInfo.isHourly && !selectedDateInfo.nightly == undefined)){ //CICO-9555
-
                             $scope.data.hasAmountConfigured = false;
                         } else {
                             $scope.data.single = selectedDateInfo.single;
                             $scope.data.double = selectedDateInfo.double;
                             $scope.data.extra_adult = selectedDateInfo.extra_adult;
                             $scope.data.child = selectedDateInfo.child;
-                            //(CICO-9555
-                            $scope.data.isHourly= selectedDateInfo.isHourly;
+                            //(CICO-9555                            
                             $scope.data.nightly= selectedDateInfo.nightly;
                             //CICO-9555)
                         }
@@ -226,6 +228,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
+                    $scope.data.isHourly = $scope.calendarData.data[i].isHourly;
                 }
             }
         }

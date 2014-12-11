@@ -802,6 +802,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(){
+		if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
+			//TO DO:Go to room assignemt view
+			$state.go("rover.reservation.staycard.roomassignment", {
+				"reservation_id": $scope.reservationBillData.reservation_id,
+				"room_type": $scope.reservationBillData.room_type,
+				"clickedButton": "checkinButton"
+			});
+			return false;
+		}
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 		

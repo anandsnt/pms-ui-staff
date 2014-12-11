@@ -866,8 +866,10 @@ sntRover
 			start 		= new Date(this.currentResizeItem.arrival),
 			end 		= new Date(this.currentResizeItem.departure),
 			
-			rate_type 	= this.filter.rate_type,
-			
+			rate_type 	= ( this.currentResizeItem.travel_agent_id == null || this.currentResizeItem.travel_agent_id == '') && 
+						( this.currentResizeItem.company_card_id == null || this.currentResizeItem.company_card_id == '') ? 'Standard': 'Corporate',
+			account_id  = rate_type == 'Corporate' ? (this.currentResizeItem.travel_agent_id ? this.currentResizeItem.travel_agent_id : this.currentResizeItem.company_card_id) : undefined,
+
 			room_id 	= this.currentResizeItemRow.id,
 			reservation_id = this.currentResizeItem.reservation_id,
 
@@ -876,7 +878,6 @@ sntRover
 
 			depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;				
 			depTime 	= depTime.hours + ":" + depTime.minutes + ":" + depTime.seconds;
-
             var params = {
                 room_id:            room_id,
                 reservation_id:     reservation_id,
@@ -886,7 +887,10 @@ sntRover
                 end_time:           depTime,
                 rate_type:          rate_type,
             };
-
+            if(account_id) {            	
+				params.account_id = account_id;
+			}
+			
 		return params
 	}.bind($scope.gridProps);
 
