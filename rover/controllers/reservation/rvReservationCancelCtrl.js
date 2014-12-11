@@ -20,6 +20,8 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			expiry_date:"",
 			card_type:""
 		};
+
+		$scope.cancellationData.paymentType = "";
 		
 		if($scope.ngDialogData.penalty > 0){
 			$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
@@ -28,11 +30,38 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.setScroller('cardsList');
 
 		var checkReferencetextAvailableForCC = function(){
-			angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
-				if($scope.cancellationData.card_type.toUpperCase() === value.cardcode){
-					$scope.isDisplayReference = (value.is_display_reference)? true:false;
-				};					
-			});				
+			if($scope.cancellationData.paymentType !=="CC"){
+
+				angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
+					console.log(value.name+"-----"+$scope.cancellationData.paymentType+"-_-----"+value.is_display_reference)
+					if(value.name == $scope.cancellationData.paymentType){
+						$scope.isDisplayReference = (value.is_display_reference)? true:false;
+					}
+				});			
+			}
+			else
+			{
+				angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
+					if($scope.cancellationData.card_type.toUpperCase() === value.cardcode){
+						$scope.isDisplayReference = (value.is_display_reference)? true:false;
+					};					
+				});		
+			}
+		};
+
+
+		$scope.changeOnsiteCallIn = function(){
+		 $scope.isManual ? $scope.showCC = true : "";
+		};
+
+
+		$scope.showHideCreditCard = function(){
+			if($scope.cancellationData.paymentType ==="CC"){
+				($rootScope.paymentGateway === 'sixpayments')  ? "": $scope.showCC = true;
+			}
+			else{
+				checkReferencetextAvailableForCC();
+			};
 		};
 
 		$scope.feeData = {};
@@ -171,8 +200,9 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		$scope.applyPenalty = function() {
 			var reservationId = $stateParams.id;
 			$scope.ngDialogData.applyPenalty = true;
-			$scope.showCC = true;
+			//$scope.showCC = true;
 			$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
+			$scope.ngDialogData.state = 'PENALTY';
 		};
 
 		$scope.cancelReservation = function() {
@@ -226,10 +256,12 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 	$scope.$on("MLI_ERROR", function(e,data){
 		$scope.errorMessage = data;
 	});
-
+	
 	$scope.$on('cancelCardSelection',function(e,data){
-		$scope.ngDialogData.state = 'CONFIRM';
+		$scope.showCC = false;
+		$scope.cancellationData.paymentType = "";
 	});
+
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);
 	});
