@@ -159,18 +159,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$scope.filterOpen = false;
 				$scope.$emit( 'showLoader' );
 
-				$timeout(function() {
-					$scope.rooms = [];
-					$_callRoomsApi();
-				}, 100);
-
-				// save the current edited filter to RVHkRoomStatusSrv
-				// so that they can exist even after HKSearchCtrl init
 				RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
 				RVHkRoomStatusSrv.roomTypes = $scope.roomTypes;
 
 				// copy new filter settings
 				$_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
+
+				$timeout(function() {
+					$_callRoomsApi();
+				}, 100);
 			};
 
 			// reset page details if filter changes
@@ -196,7 +193,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
-			$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
+			$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
 			$scope.filterDoneButtonPressed();
 		};
 
