@@ -143,12 +143,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         //Get the rate/restriction details for the selected cell
         if($scope.popupData.all_data_selected) {
             selectedDateInfo.restrictions = $scope.calendarData.rate_restrictions[$scope.popupData.selectedDate];
-
+            $scope.data.isHourly= $scope.calendarData.data[0][$scope.popupData.selectedDate].isHourly;                        
         } else {
             for(var i in $scope.calendarData.data){
                 if($scope.calendarData.data[i].id == $scope.popupData.selectedRoomType){
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
-
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
                     if(typeof selectedDateInfo != "undefined"){
