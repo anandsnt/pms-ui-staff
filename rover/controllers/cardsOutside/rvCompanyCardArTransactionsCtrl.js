@@ -20,7 +20,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 			};
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, {}, arAccountsFetchSuccess, failure);
 
-		}
+		};
 
 		init();
 
@@ -47,16 +47,11 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 		};
 
 		var showAll = function(){
-			angular.forEach($scope.data.bills,function(item, index) {
-                item.show = true;
-            }
+			
 		};
 
 		var showOnlyOpen = function(){
-			angular.forEach($scope.data.bills,function(item, index) {
-                if(item.paid) item.show = false;
-                else item.show = true;
-            }
+			
 		};
 
 		$scope.chagedShowFilter = function(){
