@@ -146,7 +146,7 @@
 	var refreshCardsList = function() {
 		$timeout(function() {
 			$scope.refreshScroller('cardsList');
-		}, 300);
+		}, 2000);
 	};
 
 	var retrieveCardtype = function(){
@@ -199,7 +199,7 @@
 			add_to_guest_card: $scope.newPaymentInfo.cardDetails.addToGuestCard,
 			name_on_card: retrieveName(),
 			payment_type: "CC",
-			reservation_id: $scope.reservationData.reservation_card.reservation_id,
+			reservation_id: $scope.passData.reservationId,
 			token: cardToken,
 			card_expiry: cardExpiry
 		};
@@ -250,7 +250,7 @@
 		var cancellationParameters = {
 			reason: $scope.cancellationData.reason,
 			payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
-			id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId
+			id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId
 		};
 		if($scope.ngDialogData.isDisplayReference){
 			cancellationParameters.reference_text = $scope.referanceText;
@@ -294,7 +294,7 @@
 				"amount": $scope.ngDialogData.penalty,
 				"payment_type_id":($scope.cancellationData.paymentType === 'CC') ? $scope.cancellationData.selectedCard :null
 			},
-			"reservation_id": $stateParams.id
+			"reservation_id":$scope.passData.reservationId
 		};
 	// add to guest card only if new card is added and checkbox is selected
 	if($scope.newCardAdded){
@@ -310,7 +310,7 @@
 	};
 
 	$scope.applyPenalty = function() {
-		var reservationId = $stateParams.id;
+		var reservationId = $scope.passData.reservationId;
 		$scope.ngDialogData.applyPenalty = true;
 	//$scope.showCC = true;
 	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);

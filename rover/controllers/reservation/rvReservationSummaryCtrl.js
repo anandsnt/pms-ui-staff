@@ -36,8 +36,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 		$scope.addmode = true;
 		$scope.showCC = false;
-		$scope.showAddtoGuestCard = true;
-		$scope.shouldShowAddNewCard = true;
+		$scope.addtoGuestCard = true;
 		//$scope.isFromCreateReservation = true;
 		$scope.renderData = {};
 		$scope.isManual = false;
@@ -220,7 +219,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.token = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
 				$scope.newPaymentInfo.tokenDetails.session :
 				$scope.newPaymentInfo.tokenDetails.token_no;
-			data.add_to_guest_card = $scope.newPaymentInfo.cardDetails.addToGuestCard;
+			//data.add_to_guest_card = $scope.newPaymentInfo.cardDetails.addToGuestCard;
 			data.card_code = retrieveCardtype();
 			data.card_expiry = retrieveExpiryDateForSave();
 			data.card_name = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
@@ -480,6 +479,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				'click': true
 			});
 			$scope.setScroller('paymentInfo');
+			$scope.setScroller('cardsList');
+
 			fetchPaymentMethods();
 			refreshScrolls();
 		};
@@ -492,6 +493,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$timeout(function() {
 				$scope.refreshScroller('reservationSummary');
 				$scope.refreshScroller('paymentInfo');
+				$scope.refreshScroller('cardsList');
 			}, 1500);
 		};
 
@@ -669,6 +671,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
 			}
 
+
+			postData.add_to_guest_card = $scope.addtoGuestCard;
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
@@ -740,12 +744,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.changeOnsiteCallIn = function(){
 		 $scope.isManual ? $scope.showCC = true : "";
+		 refreshScrolls();
 		};
 
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				
 				($rootScope.paymentGateway === 'sixpayments')  ? "": $scope.showCC = true;
+				refreshScrolls();
 				/*
 				 
 				 * Comment out .if existing cards needed remove comments

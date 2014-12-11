@@ -16,7 +16,6 @@
 
         <div class="payment-form">
             <!-- Payment type -->
-               <!-- Payment type -->
                 <div id="payment-type" class="entry full-width" ng-hide="showCCPage">
                     <label for="payment-type" translate>PAYMENT_TYPE</label>
                     <div class="select">
@@ -45,7 +44,7 @@
                 </div>
 
             <!-- Selected card - Show when card is selected/added-->
-            <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo && !showCCPage && (paymentGateway !== 'sixpayments' || isManual)" ng-click="showGuestCreditCardList()">
+            <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo && !showCCPage && (paymentGateway !== 'sixpayments' || isManual) && saveData.paymentType === 'CC'" ng-click="showGuestCreditCardList()">
                 <label>{{'CREDIT_CARD' | translate}} (<span translate>TAP_TO_CHANGE</span>)</label>
                 <label class="active-item item-payment">
                     <figure class="card-logo">
