@@ -89,6 +89,14 @@
                 <label for="reference">Reference</label>
                 <input name="reference" id="reference" ng-model="referanceText" type="text" />
             </div>
+            
+            <div class="entry full-width" ng-show="!showCC && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual)">
+                <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': dataToSave.addToGuestCard}"></span>
+                    <input ng-model="dataToSave.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
+                    {{'ADD_TO_GUEST_CARD' | translate}}
+                </label>
+            </div> 
 
 
             <!-- Buttons -->
