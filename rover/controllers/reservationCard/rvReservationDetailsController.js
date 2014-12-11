@@ -443,6 +443,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 			if (($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkinTime.mm != '') || ($scope.reservationParentData.checkoutTime.hh != '' && $scope.reservationParentData.checkoutTime.mm != '') || ($scope.reservationParentData.checkinTime.hh == '' && $scope.reservationParentData.checkinTime.mm == '') || ($scope.reservationParentData.checkoutTime.hh == '' && $scope.reservationParentData.checkoutTime.mm == '')) {
 				var postData = $scope.computeReservationDataforUpdate();
+				//CICO-11705
+				postData.reservationId = $scope.reservationParentData.reservationId;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		};
