@@ -60,13 +60,13 @@
               <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>
 
             <!-- Fields -->
-            <div class="entry full-width" ng-hide="showCCPage" ng-class="{'amount':isStandAlone && feeData.feesInfo.amount}">
+            <div class="entry full-width" ng-hide="showCCPage" ng-class="{'amount': isShowFees()}">
                 <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
                 <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
-                <span ng-show="isStandAlone && feeData.feesInfo.amount" class="fee">
+                <span  ng-show="isShowFees()" class="fee">
                     + {{currencySymbol}}{{feeData.calculatedFee}} fee
                 </span>
-                <span ng-show="isStandAlone && feeData.feesInfo.amount" class="total">
+                <span  ng-show="isShowFees()" class="total">
                     Total:
                     <strong id="total-deposit-amount">
                         {{currencySymbol}}{{feeData.totalOfValueAndFee}}

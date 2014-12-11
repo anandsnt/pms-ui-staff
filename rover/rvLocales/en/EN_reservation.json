@@ -104,5 +104,13 @@
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
     "START_PAYMENT_PROCESS": "Start Payment Process",
+    "CONFLICTING_BILLING_INFO_EXISTS_ON": "conflicting billing info exists on",
+    "CARD": "card",
+    "PLEASE_UPDATE_MANUALLY": "Please update manually",
+    "OK": "ok",
+    "BILLING_INFORMATION_FOUND": "Billing information found",
+    "ON_SELECTED_CARD": "On selected card",
+    "APPLY_TO_RESERVATION": "Apply to reservation",
+    "DONT_APPLY": "Don't apply",
     "APPLY_CUSTOMRATE" : "Apply Custom Rate",
     "MODIFY_CUSTOMRATE" : "Modify Custom Rate"
