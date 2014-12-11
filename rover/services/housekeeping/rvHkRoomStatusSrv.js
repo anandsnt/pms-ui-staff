@@ -95,7 +95,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
 			if ( floor_start )                   { params['floor_start']          = floor_start; };
 			if ( floor_end )                     { params['floor_end']            = floor_end; };
-			if ( filter.query )                  { params['query']                = filter.query; };
 
 			// filter by worktype and employee
 			if ( filter.filterByEmployeeName ) {
@@ -106,7 +105,12 @@ sntRover.service('RVHkRoomStatusSrv', [
 			} else if (passedParams.work_type_id) {
 				params['work_type_id'] = passedParams.work_type_id;
 				filter.filterByWorkType = passedParams.work_type_id;
-			}
+			};
+
+			// search query
+			if ( passedParams.query ) {
+				params['query'] = passedParams.query;
+			};
 
 			return params;
 		}.bind(this);

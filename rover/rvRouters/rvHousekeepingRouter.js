@@ -31,16 +31,19 @@ angular.module('housekeepingModule', [])
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
 
-                        return RVHkRoomStatusSrv.fetchRoomList({
-                            businessDate: $rootScope.businessDate,
-                            page: $stateParams.page || 1,
-                            perPage: $stateParams.perPage || 50
+                        // return RVHkRoomStatusSrv.fetchRoomList({
+                        //     businessDate: $rootScope.businessDate,
+                        //     page: $stateParams.page || 1,
+                        //     perPage: $stateParams.perPage || 50
+                        // });
+                        return RVHkRoomStatusSrv.fetchRoomListPost({
+                            businessDate : $rootScope.businessDate,
+                            isStandAlone : $rootScope.isStandAlone
                         });
                     } else if (!!$stateParams && !!$stateParams.businessDate) {
-                        return RVHkRoomStatusSrv.fetchRoomList({
-                            businessDate: $stateParams.businessDate,
-                            page: $stateParams.page || 1,
-                            perPage: $stateParams.perPage || 50
+                        return RVHkRoomStatusSrv.fetchRoomListPost({
+                            businessDate : $stateParams.businessDate,
+                            isStandAlone : $rootScope.isStandAlone
                         });
                     } else {
                         return RVHkRoomStatusSrv.fetchRoomListPost({

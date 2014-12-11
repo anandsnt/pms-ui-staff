@@ -4,6 +4,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'$timeout',
 	'$state',
 	'$filter',
+	'$window',
 	'RVHkRoomStatusSrv',
 	'roomList',
 	'employees',
@@ -18,6 +19,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$timeout,
 		$state,
 		$filter,
+		$window,
 		RVHkRoomStatusSrv,
 		roomList,
 		employees,
@@ -81,6 +83,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var $_activeWorksheetData = [],
 			$_tobeAssignedRoom    = {};
+
+		var $_uiFilterQuery = '';
 
 		$scope.resultFrom         = $_page,
 		$scope.resultUpto         = $_perPage,
@@ -203,75 +207,81 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var unMatched = 0,
 				len = 0,
 				i = 0,
-				timer = null,
-				delayedRequest = function() {
-					if ( !!timer ) {
-						$timeout.cancel(timer);
-						timer = null;
-					}
+				room,
+				roomNo;
 
-					if ( $scope.query !== $_lastQuery ) {
-						$_lastQuery = $scope.query;
+			var timer       = null,
+				delayedCall = function() {
+					// TODO: me fix this hack
+					$('#rooms-query').blur();
 
-						$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
-							key: $scope.query,
-							businessDate: $rootScope.businessDate,
-							page: $_page,
-							perPage: $_perPage
-						}, function(data) {
-							RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-							$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
-							localStorage.removeItem('roomListScrollTopPos');
+					$_uiFilterQuery = $scope.query;
+					$_resetPageCounts();
+					$_callRoomsApi();
+				};
 
-							$_fetchRoomListCallback(data);
-						});
+
+			if ( $scope.rooms.length ) {
+				$_refreshScroll();
+				for (len = $scope.rooms.length; i < len; i++) {
+					room = $scope.rooms[i]
+					roomNo = room.room_no.toUpperCase();
+
+					// user cleared search
+					if (!$scope.query) {
+						break;
+						return;
 					};
-				};
 
-			$_refreshScroll();
-			for (len = $scope.rooms.length; i < len; i++) {
-				var room = $scope.rooms[i]
-				var roomNo = room.room_no.toUpperCase();
-
-				// user cleared search
-				if (!$scope.query) {
-					$_postProcessRooms();
-					break;
-					return;
-				};
-
-				// show all rooms
-				room.display_room = true;
-
-				if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
+					// show all rooms
 					room.display_room = true;
-					unMatched--;
-				} else {
-					room.display_room = false;
-					unMatched++;
 
-					if ( unMatched === len ) {
-						$_page = 1;
+					if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
+						room.display_room = true;
+						unMatched--;
+					} else {
+						room.display_room = false;
+						unMatched++;
 
-						// search in server
-						if ( !!timer ) {
-							$timeout.cancel(timer);
-							timer = null;
-							timer = $timeout(delayedRequest, 1000);
-						} else {
-							timer = $timeout(delayedRequest, 1000);
+						if ( unMatched === len ) {
+							if ( !!timer ) {
+								$timeout.cancel(timer);
+								timer = null;
+							};
+
+							timer = $timeout(delayedCall, 1500);
 						};
 					};
 				};
+			// } else {
+			// 	if ( !!timer ) {
+			// 		$timeout.cancel(timer);
+			// 		timer = null;
+			// 	};
+
+			// 	timer = $timeout(delayedCall, 100);
 			};
 		};
 
 		$scope.clearSearch = function() {
 			$scope.query = '';
 
-			// call the filter again maually
-			// can't help it
-			$scope.filterByQuery();
+			// pass empty string to show any hidden;
+			$_uiFilter('');
+
+			if ( !$scope.rooms.length ) {
+				$('#rooms-query').blur();
+
+				$_uiFilterQuery = $scope.query;
+				$_resetPageCounts();
+				$_callRoomsApi();
+			};
+		};
+
+		$scope.removeQuery = function() {
+			if ( !!$scope.query ) {
+				$scope.clearSearch();
+			};
 		};
 
 		$scope.isFilterChcked = function() {
@@ -587,7 +597,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 
-		function $_postProcessRooms() {
+		function $_postProcessRooms(uiFilter) {
 			var _roomCopy     = {},
 				_totalLen     = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0,
 				_processCount = 0,
@@ -619,6 +629,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.rooms = [];
 
 			if ( _totalLen ) {
+				if ( !!$_uiFilterQuery ) {
+					$_uiFilter($_uiFilterQuery);
+				};
+
 				_processCount = Math.min(_totalLen, _minCount);
 
 				// load first 13 a small delay (necessary) - for filters to work properly
@@ -666,43 +680,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
 				businessDate : $rootScope.businessDate,
 				page         : $_page,
-				perPage      : $_perPage
+				perPage      : $_perPage,
+				query        : $scope.query
 			}, $_fetchRoomListCallback);
 		};
 
 		function $_calculateFilters() {
-			var source = $_roomList.rooms;
-			if ( Object.prototype.toString.apply(source) !== '[object Array]' ) {
-				return;
-			};
 
-			$scope.noResultsFound = 0;
-
-			for (var i = 0, j = source.length; i < j; i++) {
-				var room = source[i];
-
-				if ($rootScope.isStandAlone) {
-					// any matched work type ids of room to chosen work type id
-					var workTypeMatch = _.find(room.work_type_ids, function(id) {
-						return id == $scope.currentFilters.filterByWorkType;
-					});
-
-					// Filter by work type
-					if (!!$scope.currentFilters.filterByWorkType && !workTypeMatch) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					};
-
-					// Filter by employee name, strach that the id
-					// TODO: currently we only get room.assignee_maid, we need this like this room.assignee_maid{ name: 'name', id: id } 
-					if (!!$scope.currentFilters.filterByEmployee && room.assignee_maid.id != $scope.currentFilters.filterByEmployee) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					};
-				}
-			}
 		};
 
 		function $_resetPageCounts () {
@@ -711,6 +695,29 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			$_page    = $_defaultPage;
 			$_perPage = $_defaultPerPage;
+		};
+
+		function $_uiFilter(query) {
+			var _query = query || $_uiFilterQuery;
+
+			if ( !_query ) {
+				for (i = 0, j = $scope.rooms.length; i < j; i++) {
+					$scope.rooms[i].display_room = true;
+				};
+				return;
+			};
+
+			for (i = 0, j = $scope.rooms.length; i < j; i++) {
+				$scope.rooms[i].display_room = true;
+
+				if ( (roomNo).indexOf(_query.toUpperCase()) === 0 ) {
+					$scope.rooms[i].display_room = true;
+				} else {
+					$scope.rooms[i].display_room = false;
+				};
+			};
+
+			$_uiFilterQuery = '';
 		};
 
 
