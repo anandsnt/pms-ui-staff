@@ -123,20 +123,23 @@ var GridRowItemDrag = React.createClass({
 				props.iscroll.grid.enable();
 				
 				var prevArrival = item.arrival;
-				
-				if(delta_x < 0) {
+				var newArrival = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;
+
+				if(newArrival - prevArrival <= 300000){
+					arrival = newArrival;
+				}
+				else if(delta_x < 0) {					
 					arrival = Math.floor((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;
 				}
-				else{
+				else if(delta_x > 0){										
 					arrival = Math.ceil((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;					
 				}
+				
+
 				item.arrival = arrival;
 				var diff = item.arrival - prevArrival;
 				item.departure = item.departure + diff;				
-				props.__onDragStop(e, state.left, state.top, item);
-				/*setTimeout(function(){
-					props.angular_evt.onSelect(props.row_data, item, !item.selected, 'edit');
-				}, 0)*/
+				props.__onDragStop(e, state.left, state.top, item);				
 				
 			});
 		} else if(this.state.mouse_down) {
