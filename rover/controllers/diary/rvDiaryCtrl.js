@@ -1027,9 +1027,11 @@ sntRover
 	};
 
 	$scope.clickedOnRoomType = function(){
-		if (!$scope.gridProps.edit.active) {
+		if ( !$scope.gridProps.edit.active && !!$scope.gridProps.filter.room_type ) {
 			$scope.Availability();
-		}
+		} else if ( $scope.gridProps.filter.room_type == null ) {
+			$scope.clearAvailability();
+		};
 	};
 
 	$scope.clickedOnRateType = function(){
@@ -1258,5 +1260,15 @@ sntRover
         },
         source: autoCompleteSourceHandler,
         select: autoCompleteSelectHandler
+    };
+
+    $scope.resetEverything = function() {
+    	// return;
+
+    	$scope.clearAvailability();
+
+    	$scope.resetEdit();
+
+    	$scope.renderGrid();
     };
 }]);
