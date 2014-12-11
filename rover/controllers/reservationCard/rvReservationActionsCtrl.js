@@ -367,7 +367,8 @@ sntRover.controller('reservationActionsController', [
 			 		"details":{
 			 			"firstName":$scope.guestCardData.contactInfo.first_name,
 			 			"lastName":$scope.guestCardData.contactInfo.last_name,
-			 			"creditCardTypes":$scope.creditCardTypes
+			 			"creditCardTypes":$scope.creditCardTypes,
+			 			"paymentTypes":$scope.paymentTypes
 			 		}
 			 };
 
