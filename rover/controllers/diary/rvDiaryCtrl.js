@@ -71,11 +71,13 @@ sntRover
 	/*BEGIN CONFIGURATION 
 	/*--------------------------------------------------*/
 	/*DATE UI CONFIG*/
+		var minDate = new tzIndependentDate($rootScope.businessDate);
+		minDate.setDate(minDate.getDate() - 1);
 		$scope.dateOptions = {
 	    	showOn: 'button',
 	    	dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
-	    	minDate: new tzIndependentDate($rootScope.businessDate),
+	    	minDate: minDate,
 	    	yearRange: '-0:'
 	    };
 
@@ -126,12 +128,12 @@ sntRover
             } else if ( mm == 15 || mm == 30 || mm == 45 ) {
                 mm += 15;
             } else {
-                do {
+                /*do {
                     mm += 1;
                     if ( mm == 15 || mm == 30 || mm == 45 ) {
                         break;
                     }
-                } while ( mm != 15 || mm != 30 || mm != 45 );
+                } while ( mm != 15 || mm != 30 || mm != 45 );*/
             };
 
             var date         = $rootScope.businessDate,
@@ -441,7 +443,6 @@ sntRover
 		    $scope.onDragStart = function(room, reservation) {
 		    	prevRoom = room;
 		    	prevTime = reservation[meta.occupancy.start_date];
-
 		    	if($scope.gridProps.edit.active) {
 		    		console.log('Reservation room transfer initiated:  ', room, reservation);
 		    	}
@@ -449,16 +450,34 @@ sntRover
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
 		    	var availability;
-
 		    	if($scope.gridProps.edit.active) {
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
-
+			    	
 					if(availability) {
 				    	util.reservationRoomTransfer($scope.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
 					    
-				    	$scope.gridProps.currentResizeItemRow = nextRoom;
+				    	$scope.gridProps.currentResizeItemRow = nextRoom;				    					    			    								    							
+						
+						
+						
+						var og_r_item = $scope.gridProps.edit.originalRowItem,
+		    			og_item =  $scope.gridProps.edit.originalItem;
 
-				    	$scope.renderGrid();
+						$scope.resetEdit();
+						$scope.renderGrid();
+						$scope.$emit('showLoader');
+						setTimeout(function(){
+							$scope.onSelect(nextRoom, reservation, false, 'edit');							
+							$scope.gridProps.currentResizeItemRow = nextRoom;
+					    	$scope.gridProps.edit.originalRowItem = og_r_item;
+					    	$scope.gridProps.edit.originalItem = og_item;
+							$scope.$emit('hideLoader');
+							prevRoom = '';
+							prevTime = '';
+						}, 350)
+						
+						
+				    	
 				    }
 				}
 		};
@@ -528,7 +547,7 @@ sntRover
 	    	var avData = data.availability;
 	    	if(avData.new_rate_amount == null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
-	    	}
+	    	}	    	
 	    	this.edit.originalRowItem.old_price = avData.old_rate_amount;
 	    	this.currentResizeItemRow.new_price = avData.new_rate_amount;
 	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
@@ -755,6 +774,8 @@ sntRover
 			$scope.gridProps.mode = undefined;
 			$scope.gridProps.currentResizeItem = undefined;
 			$scope.gridProps.currentResizeItemRow = undefined;
+			//$scope.gridProps.edit.originalRowItem = undefined;
+			//$scope.gridProps.edit.originalItem = undefined;
 			$scope.gridProps.edit.currentResizeItem = undefined;    //Planned to transfer the non-namespaced currentResizeItem/Row to here
 			$scope.gridProps.edit.currentResizeItemRow = undefined; //Planned to transfer the non-namespaced currentResizeItem/Row to here
 	    };
@@ -845,9 +866,10 @@ sntRover
 			start 		= new Date(this.currentResizeItem.arrival),
 			end 		= new Date(this.currentResizeItem.departure),
 			
-			rate_type 	= this.filter.rate_type,
-			
-			room_id 	= this.currentResizeItem.room_id,
+			rate_type 	= ( this.currentResizeItem.travel_agent_id == null || this.currentResizeItem.travel_agent_id == '') && 
+						( this.currentResizeItem.company_card_id == null || this.currentResizeItem.company_card_id == '') ? 'Standard': 'Corporate';
+			account_id  = rate_type == 'Corporate' ? (this.currentResizeItem.travel_agent_id ? this.currentResizeItem.travel_agent_id : this.currentResizeItem.company_card_id) : undefined,
+			room_id 	= this.currentResizeItemRow.id,
 			reservation_id = this.currentResizeItem.reservation_id,
 
 			arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time;
@@ -855,7 +877,6 @@ sntRover
 
 			depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;				
 			depTime 	= depTime.hours + ":" + depTime.minutes + ":" + depTime.seconds;
-
             var params = {
                 room_id:            room_id,
                 reservation_id:     reservation_id,
@@ -865,7 +886,10 @@ sntRover
                 end_time:           depTime,
                 rate_type:          rate_type,
             };
-
+            if(account_id) {            	
+				params.account_id = account_id;
+			}
+			
 		return params
 	}.bind($scope.gridProps);
 

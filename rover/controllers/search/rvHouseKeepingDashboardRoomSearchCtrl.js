@@ -9,11 +9,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 		BaseCtrl.call(this, $scope);
 		$scope.query = '';
-		$scope.showPickup = false;
-		$scope.showInspected = false;
 		$scope.isSearchResultsShowing = false;
-
-		$scope.showQueued = false;
 
 		$scope.rooms = [];
 
@@ -24,137 +20,218 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		//inorder to hide/show searhc results area from outide we can use this
 		$scope.$on("showSearchResultsArea", function(event, showSearchResultsArea){
 			$scope.showSearchResultsArea = showSearchResultsArea;
-
 		});
 
 		//setting the scroller for view
 		var scrollerOptions = { click: true, preventDefault: false };
 	  	$scope.setScroller('result_showing_area', scrollerOptions);
 
-		var afterFetch = function(data) {
-			$scope.noScroll = true;
-
-
-			// making unique copies of array
-			// slicing same array not good.
-			// say thanks to underscore.js
-			var smallPart = _.compact( data.rooms );
-			var restPart  = _.compact( data.rooms );
-
-			// smaller part consisit of enogh rooms
-			// that will fill in the screen
-			smallPart = smallPart.slice( 0, 20 );
-			restPart  = restPart.slice( 20 );
-
-			// first load the small part
-			$scope.rooms = smallPart;
-
-			// load the rest after a small delay
-			$timeout(function() {
-
-				// push the rest of the rooms into $scope.rooms
-				// remember slicing is only happening on the Ctrl and not on Srv
-				$scope.rooms.push.apply( $scope.rooms, restPart );
-
-				// finally hide the loaded
-				// in almost every case this will not block UX
-				$scope.$emit( 'hideLoader' );
-
-				refreshScroller();
-			// execute this after this much time
-			// as the animation is in progress
-			}, 200);
-		};
-
-		/**
-		* function used for refreshing the scroller
-		*/
-		var refreshScroller = function(){  
+	  	var refreshScroller = function(){  
 			$scope.refreshScroller('result_showing_area');
 		};
 
-		var fetchRooms = function() {
 
-			//Fetch the roomlist if necessary
-			if ( $scope.rooms.length == 0) {
+
+
+	  	// internal variables
+	  	var $_roomList,
+	  		$_page = 1,
+	  		$_perPage = 50,
+	  		$_lastQuery = '';
+
+	  	// inital page related properties
+	  	$scope.resultFrom = $_page,
+	  	$scope.resultUpto = $_perPage,
+	  	$scope.totalCount = 0;
+	  	$scope.disablePrevBtn = true;
+	  	$scope.disableNextBtn = true;
+
+
+
+
+	  	function $_fetchRoomListCallback(data) {
+	  		if ( !!data ) {
+	  			$_roomList = data;
+	  		};
+
+	  		$scope.totalCount = $_roomList.total_count;
+
+	  		if ( $_page === 1 ) {
+	  			$scope.resultFrom = 1;
+	  			$scope.resultUpto = $scope.totalCount < $_perPage ? $scope.totalCount : $_perPage;
+	  			$scope.disablePrevBtn = true;
+	  			$scope.disableNextBtn = $scope.totalCount > $_perPage ? false : true;
+	  		} else {
+	  			$scope.resultFrom = $_perPage * ($_page - 1) + 1;
+	  			$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.totalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.totalCount;
+	  			$scope.disablePrevBtn = false;
+	  			$scope.disableNextBtn = $scope.resultUpto === $scope.totalCount ? true : false;
+	  		}
+
+	  		$timeout(function() {
+				$_postProcessRooms();
+			}, 10);
+	  	};
+
+
+
+
+	  	function $_postProcessRooms() {
+	  		var _roomCopy;
+
+	  		if (!!$_roomList && !!$_roomList.rooms && $_roomList.rooms.length) {
+	  			// empty all
+	  			$scope.rooms = [];
+
+	  			// load first 13;
+	  			for (var i = 0; i < 13; i++) {
+	  				_roomCopy = angular.copy( $_roomList.rooms[i] );
+	  				$scope.rooms.push( _roomCopy );
+	  			};
+
+	  			// load the rest after a small delay
+	  			$timeout(function() {
+
+	  				// load the rest
+	  				for (var i = 13, j = $_roomList.rooms.length; i < j; i++) {
+	  					_roomCopy = angular.copy( $_roomList.rooms[i] );
+	  					$scope.rooms.push( _roomCopy );
+	  				};
+
+	  				refreshScroller();
+
+	  				$scope.$emit('hideLoader');
+	  			}, 150);
+	  		} else {
+	  			console.log('oops no rooms');
+	  			$scope.$emit('hideLoader');
+	  		}
+	  	};
+
+
+
+
+
+	  	$scope.loadNextPage = function() {
+	  		if ($scope.disableNextBtn) {
+	  			return;
+	  		};
+
+	  		$_page++;
+	  		$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+	  			key: !!$scope.query ? $scope.query : '',
+	  			businessDate: $rootScope.businessDate,
+	  			page: $_page,
+	  			perPage: $_perPage
+	  		}, $_fetchRoomListCallback);
+	  	};
+
+	  	$scope.loadPrevPage = function() {
+	  		if ($scope.disablePrevBtn) {
+	  			return;
+	  		};
+
+	  		$_page--;
+	  		$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+	  			key: !!$scope.query ? $scope.query : '',
+	  			businessDate: $rootScope.businessDate,
+	  			page: $_page,
+	  			perPage: $_perPage
+	  		}, $_fetchRoomListCallback);
+	  	};
+
+
+
+
+
+	  	//Fetch the roomlist if necessary
+		var fetchRooms = function() {
+			if ( $scope.rooms && $scope.rooms.length == 0 ) {
 				$scope.$emit('showLoader');
 
 				RVHkRoomStatusSrv.fetchRoomList({
-					businessDate: $rootScope.businessDate
+					key: $scope.query,
+					businessDate: $rootScope.businessDate,
+					page: $_page,
+					perPage: $_perPage
 				}).then(function(data) {
-						$scope.showPickup = data.use_pickup;
-						$scope.showInspected = data.use_inspected;
-						$scope.showQueued = data.is_queue_rooms_on;
-						for(var i = 0; i < data.rooms.length; i++){
-							data.rooms[i].display_room = false;
-						}
-						afterFetch( data );
-					}, function() {
-						$scope.$emit('hideLoader');
-					});	
+					$_fetchRoomListCallback(data);
+				}, function() {
+					$scope.$emit('hideLoader');
+				});
 			}
 		};
-
 		fetchRooms();
 
-		var queryFilterFunction = function(){
-			// since no filer we will have to
-			// loop through all rooms			
-			$scope.$apply(function(){
-				var isAnyMatchFound = false;
-				for (var i = 0, j = $scope.rooms.length; i < j; i++) {
-					var room = $scope.rooms[i]
-					var roomNo = room.room_no.toUpperCase();
 
 
-					// now match the room no and
-					// and show hide as required
-					// must match first occurance of the search query
 
-					if ( $scope.query.toUpperCase().trim() !== '' && (roomNo).indexOf($scope.query.toUpperCase()) === 0 ) {
-						room.display_room = true;
 
-						isAnyMatchFound = true;						
-					} else {
-						room.display_room = false;
-					}
-				}
-				if(isAnyMatchFound){
-					$scope.isSearchResultsShowing = true;
-				}
-				else{
-					$scope.isSearchResultsShowing = false;					
-				}
-				// refresh scroll when all ok
-				refreshScroller();	
-			});		
-		}
-		/**
-		*  Filter Function for filtering our the room list
-		*/
 		$scope.filterByQuery = function() {
+			var unMatched = 0,
+				len = 0,
+				i = 0,
+				timer = null,
+				delayedRequest = function() {
+					if ( !!timer ) {
+						$timeout.cancel(timer);
+						timer = null;
+					}
 
-			//in order to reduce the number of processing room list procceesing, 
-			// (ui hangs for a while if room length cross some hundreds) 			
-			if($scope.queryFunctionProccessing){
-				if($scope.query.trim().length == 0){
-					$scope.clearResults();
-				}
-				else if($scope.showSearchResultsArea == false){
-					$scope.focusedOnQueryBox();
-				}
-				clearTimeout($scope.queryFunctionProccessing);
-				$scope.queryFunctionProccessing = setTimeout(function(){
-					queryFilterFunction();
-				}, 300);
-			}
-			else{
-				$scope.queryFunctionProccessing = setTimeout(function(){
-					queryFilterFunction();
-				}, 300);
-			}
+					if ( $scope.query !== $_lastQuery ) {
+						$_lastQuery = $scope.query;
 
+						$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+							key: $scope.query,
+							businessDate: $rootScope.businessDate,
+							page: $_page,
+							perPage: $_perPage
+						}, $_fetchRoomListCallback);
+					};
+				};
+
+			refreshScroller();
+			for (len = $scope.rooms.length; i < len; i++) {
+				var room = $scope.rooms[i]
+				var roomNo = room.room_no.toUpperCase();
+
+				// user cleared search
+				if (!$scope.query) {
+					$_postProcessRooms();
+					break;
+					return;
+				};
+
+				// show all rooms
+				room.display_room = true;
+
+				if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
+					room.display_room = true;
+
+					unMatched--;
+				} else {
+					room.display_room = false;
+
+					unMatched++;
+
+					if ( unMatched === len ) {
+						$_page = 1;
+
+						// search in server
+						if ( !!timer ) {
+							$timeout.cancel(timer);
+							timer = null;
+							timer = $timeout(delayedRequest, 1000);
+						} else {
+							timer = $timeout(delayedRequest, 1000);
+						};
+					};
+				};
+			};
 		};
+
+
+
 
 	   	/**
 	   	* function to execute on clicking clear icon button

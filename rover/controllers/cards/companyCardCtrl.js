@@ -142,6 +142,8 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 		$scope.$on("companySearchInitiated", function() {
 			$scope.companySearchIntiated = true;
 			$scope.companies = $scope.searchedCompanies;
+			console.log("company search inititaled");
+			console.log($scope.companies);
 			$scope.$broadcast("refreshCompaniesScroll");
 		})
 
@@ -212,16 +214,14 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 					$scope.viewState.pendingRemoval.status = false;
 					//if a new card has been added, reset the future count to zero
 					$scope.viewState.pendingRemoval.cardType = "";
-					if ($scope.reservationDetails.companyCard.futureReservations <= 0 || $stateParams.reservation == "HOURLY") {
+					if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
 						$scope.replaceCardCaller('company', {
 							id: data.id
 						}, false);
 					} else {
-						if ($stateParams.reservation != "HOURLY") {
-							$scope.checkFuture('company', {
-								id: data.id
-							});
-						}
+						$scope.checkFuture('company', {
+							id: data.id
+						});
 					}
 					$scope.reservationDetails.companyCard.futureReservations = 0;
 				}

@@ -30,4 +30,8 @@
 "REMOVAL_REASON_PLACEHOLDER":"Removal reason",
 "SEARCH_OR_SELECT_CODES_PLACEHOLDER":"Search or Select codes to add",
 "FIND_PLACEHOLDER":"Find Guest, Company or Travel Agent",
-"ENTER_SPLIT_VALUE_PLACEHOLDER":"Enter split value"
+"ENTER_SPLIT_VALUE_PLACEHOLDER":"Enter split value",
+"DETAILS": "Details",
+"SAVE_ROUTE": "Save Route",
+"SAVE": "Save",
+"CANCEL": "Cancel"
