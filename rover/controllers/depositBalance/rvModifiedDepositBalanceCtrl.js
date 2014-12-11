@@ -410,6 +410,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	});
 	
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender){
+		$scope.shouldShowMakePaymentScreen       = false; 
+		$scope.addmode                 			 = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 		//Not good
 		$scope.swipedCardHolderName = swipedCardDataToRender.nameOnCard;
