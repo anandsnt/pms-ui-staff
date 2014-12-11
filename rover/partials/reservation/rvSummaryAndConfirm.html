@@ -232,6 +232,14 @@
                       <!-- Credit card options - hidden until CC set as payment type -->
                     <!-- <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="reservationData.paymentType.type.value=== 'CC' && showCC"></div> -->
 
+                <div class="entry full-width" ng-show="reservationData.paymentType.type.value !== ''">
+                    <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': addtoGuestCard}">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': addToGuestCard}"></span>
+                        <input ng-model="addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
+                        {{'ADD_TO_GUEST_CARD' | translate}}
+                    </label>
+                </div> 
+
 
                     <!-- Use only if deposit is required -->
                     <div class="notice deposit" ng-if="depositData.isDepositRequired" ng-hide="depositData.attempted || showCC">                        
