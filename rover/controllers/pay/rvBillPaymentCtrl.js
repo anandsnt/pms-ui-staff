@@ -25,6 +25,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.renderData.referanceText = "";
 		$scope.swipedCardDataToSave  = {};
 		$scope.cardData = {};
+		$scope.newCardAdded = false;
 		
 	};
 
@@ -275,6 +276,24 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.handleCloseDialog();
 		//To refresh the view bill screen 
 		$scope.$emit('PAYMENT_SUCCESS');
+
+		if($scope.newPaymentInfo.addToGuestCard){
+				var cardCode = $scope.defaultPaymentTypeCard;
+				var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
+				var dataToGuestList = {
+					"card_code": cardCode,
+					"mli_token": cardNumber,
+					"card_expiry": $scope.defaultPaymentTypeCardExpiry,
+					"card_name": $scope.newPaymentInfo.cardDetails.userName,
+					"id": data.id,
+					"isSelected": true,
+					"is_primary":false,
+					"payment_type":"CC",
+					"payment_type_id": 1
+				};
+				$scope.cardsList.push(dataToGuestList);
+				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		};
 	};
 
 	/*
@@ -297,6 +316,15 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
+
+			// add to guest card only if new card is added and checkbox is selected
+			if($scope.newCardAdded){
+				dataToSrv.postData.add_to_guest_card =  $scope.newPaymentInfo.addToGuestCard;
+			}
+			else{
+				dataToSrv.postData.add_to_guest_card =  false;
+			};
+
 			
 			if($scope.isStandAlone){
 				if($scope.feeData.calculatedFee)
@@ -384,6 +412,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.feeData.feesInfo = data.fees_information;
 			$scope.setupFeeData();
 		}
+		$scope.newCardAdded = true;
 	};
 	/*
 	* To save new card
@@ -440,6 +469,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.setupFeeData();
 		}
 		checkReferencetextAvailableForCC();
+		$scope.newCardAdded = false;
 	};
 
 	$scope.$on('cardSelected',function(e,data){

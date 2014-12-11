@@ -91,6 +91,15 @@
                 <div class="notice error">Payment failed. Try again or change payment method.</div>
             </div> 
 
+             <div class="entry full-width" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual)">
+                <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': dataToSave.addToGuestCard}"></span>
+                    <input ng-model="dataToSave.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
+                    {{'ADD_TO_GUEST_CARD' | translate}}
+                </label>
+            </div> 
+
+
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage">
                 <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
