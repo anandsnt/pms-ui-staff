@@ -831,8 +831,7 @@ sntRover
 	}.bind($scope.gridProps);
 
 	var failureCallBackOfAvailabilityFetching = function(errorMessage){
-		$scope.errorMessage = errorMessage;
-		alert('Error in Availability fetching: ' + $scope.errorMessage) //TODO: Discss with Stj & change
+		$scope.errorMessage = errorMessage;		
 	}
 
 	var callAvailabilityAPI = function(){

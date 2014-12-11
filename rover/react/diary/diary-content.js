@@ -156,7 +156,7 @@ var DiaryContent = React.createClass({
     	}
   	},
   	componentWillReceiveProps: function(nextProps) {
-  		console.log('yeah called');
+  		
   		var hops = Object.prototype.hasOwnProperty,
   			self = this;
   		/*if(this.props.viewport !== nextProps.viewport ||
