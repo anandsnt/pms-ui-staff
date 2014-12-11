@@ -43,7 +43,7 @@ angular.module('housekeepingModule', [])
                             perPage: $stateParams.perPage || 50
                         });
                     } else {
-                        return RVHkRoomStatusSrv.fetchRoomList({
+                        return RVHkRoomStatusSrv.fetchRoomListPost({
                             businessDate: $rootScope.businessDate,
                             page: $stateParams.page || 1,
                             perPage: $stateParams.perPage || 50

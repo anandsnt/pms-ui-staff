@@ -77,6 +77,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		var $_roomsEl         = document.getElementById( 'rooms' ),
 			$_filterRoomsEl   = document.getElementById( 'filter-rooms' );
 
+		var $_activeWorksheetData = [],
+			$_tobeAssignedRoom    = {};
+
 		$scope.resultFrom         = $_page,
 		$scope.resultUpto         = $_perPage,
 		$scope.totalCount         = 0;
@@ -94,13 +97,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
 
+		$scope.assignRoom = {};
+
 
 
 		/* ***** ***** ***** ***** ***** */
 
 
 
-		$_fetchRoomListCallback();
+		$_fetchRoomListCallback(roomList);
 
 
 
@@ -114,7 +119,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			$_page++;
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
 				key: !!$scope.query ? $scope.query : '',
 				businessDate: $rootScope.businessDate,
 				page: $_page,
@@ -128,7 +133,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			$_page--;
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
 				key: !!$scope.query ? $scope.query : '',
 				businessDate: $rootScope.businessDate,
 				page: $_page,
@@ -138,7 +143,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// store the current room list scroll position
 		$scope.roomListItemClicked = function(room) {
-			localStorage.setItem( 'roomListScrollTopPos', roomsEl.scrollTop );
+			localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
 		};
 
 		$scope.showFilters = function() {
@@ -166,19 +171,19 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// if work type is null reset filter by employee
 			if ( !$scope.currentFilters.filterByWorkType ) {
 				$scope.topFilter.byEmployee = '';
-				$scope.applyEmpfilter();
+				$_calculateFilters();
 			} else {
 				// call caluculate filter in else since
 				// resetting filterByEmployee will call applyEmpfilter 
 				// which in turn will call calculateFilters
-				$scope.filterDoneButtonPressed();
+				$_calculateFilters();
 			}
 		};
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
 			$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-			$scope.filterDoneButtonPressed();
+			$_calculateFilters();
 		};
 
 		$scope.filterByQuery = function() {
@@ -314,6 +319,98 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.currentFilters.floorFilterStart = '';
 			$scope.currentFilters.floorFilterEnd = '';
 			$scope.currentFilters.floorFilterSingle = '';
+		};
+
+
+		$scope.closeDialog = function() {
+		    $scope.errorMessage = "";
+		    ngDialog.close();
+		}
+
+		$scope.findEmpAry = function() {
+			var workid = $scope.assignRoom.work_type_id || $scope.topFilter.byWorkType,
+				ret    =  _.find($_activeWorksheetData, function(item) {
+					return item.id === workid;
+				});
+
+			return !!ret ? ret.employees : [];
+		};
+
+		$scope.openAssignRoomModal = function(room) {
+			$_tobeAssignedRoom = room;
+
+			$scope.assignRoom.rooms = [$_tobeAssignedRoom.id];
+			$scope.assignRoom.work_type_id = $scope.topFilter.byWorkType;
+			$scope.activeWorksheetEmp = [];
+
+			var _onSuccess = function(response) {
+					$scope.$emit('hideLoader');
+
+					$_activeWorksheetData = response.data;
+					$scope.activeWorksheetEmp = $scope.findEmpAry();
+					ngDialog.open({
+					    template: '/assets/partials/housekeeping/rvAssignRoomPopup.html',
+					    className: 'ngdialog-theme-default',
+					    closeByDocument: true,
+					    scope: $scope,
+					    data: []
+					});
+					
+				},
+				_onError = function() {
+					$scope.$emit('hideLoader');
+				};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchActiveWorksheetEmp, {}, _onSuccess, _onError);
+		};
+
+		$scope.assignRoomWorkTypeChanged = function() {
+			$scope.activeWorksheetEmp = $scope.findEmpAry();
+		};
+
+		$scope.submitAssignRoom = function() {
+		    $scope.errorMessage = "";
+		    if (!$scope.assignRoom.work_type_id) {
+		        $scope.errorMessage = ['Please select a work type.'];
+		        return false;
+		    }
+		    if (!$scope.assignRoom.user_id) {
+		        $scope.errorMessage = ['Please select an employele.'];
+		        return false;
+		    }
+		    var _onAssignSuccess = function(data) {
+		            $scope.$emit('hideLoader');
+		            
+		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
+		            	return emp.id === $scope.assignRoom.user_id
+		            });
+		            $_tobeAssignedRoom.canAssign = false;
+		            $_tobeAssignedRoom.assigned_staff = {
+		            	'name': angular.copy(assignee.name),
+		            	'class': 'assigned'
+		            };
+
+		            $scope.assignRoom = {};
+
+		            $scope.closeDialog();
+		        },
+		        _onAssignFailure = function(errorMessage) {
+		            $scope.$emit('hideLoader');
+		            $scope.errorMessage = errorMessage;
+		        },
+		        _data = {
+			        "date": $rootScope.businessDate,
+			        "task_id": $scope.assignRoom.work_type_id,
+			        "order": "",
+			        "assignments": [{
+			            "assignee_id": $scope.assignRoom.user_id,
+			            "room_ids": $scope.assignRoom.rooms,
+			            "work_sheet_id": "",
+			            "from_search": true
+			        }]
+			    };
+
+		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, _data, _onAssignSuccess, _onAssignFailure);
 		};
 
 
@@ -474,38 +571,48 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_postProcessRooms() {
-			console.log('_postProcessRooms');
+			var _roomCopy     = {},
+				_totalLen     = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0,
+				_processCount = 0,
+				_minCount     = 13;
 
-			var _roomCopy = {};
-
-			if (!!$_roomList && !!$_roomList.rooms && $_roomList.rooms.length) {
-				// load first 13 a small delay (necessary) - for filters to work properly
-				$timeout(function() {
-
-					// load first 13;
-					for (var i = 0; i < 13; i++) {
+			var _hideLoader = function() {
+					$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
+					$scope.$emit( 'hideLoader' );
+				},
+				_firstInsert = function(count) {
+					for (var i = 0; i < count; i++) {
 						_roomCopy = angular.copy( $_roomList.rooms[i] );
 						$scope.rooms.push( _roomCopy );
 					};
-				}, 10);
+
+					if ( _totalLen < _minCount ) {
+						_hideLoader();
+					};
+				},
+				_secondInsert = function(startCount) {
+					for (var i = startCount; i < _totalLen; i++) {
+						_roomCopy = angular.copy( $_roomList.rooms[i] );
+						$scope.rooms.push( _roomCopy );
+					};
+
+					_hideLoader();
+				};
+
+			$scope.rooms = [];
+
+			if ( _totalLen ) {
+				_processCount = Math.min(_totalLen, _minCount);
+
+				// load first 13 a small delay (necessary) - for filters to work properly
+				$timeout(_firstInsert.bind(null, _processCount), 10);
 
 				// load the rest after a small delay - DOM can process it all
-				$timeout(function() {
-
-					// load the rest
-					for (var i = 13, j = $_roomList.rooms.length; i < j; i++) {
-						_roomCopy = angular.copy( $_roomList.rooms[i] );
-						$scope.rooms.push( _roomCopy );
-					};
-
-					// scroll to the previous room list scroll position
-					$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
-
-					$scope.$emit( 'hideLoader' );
-				}, 30);
+				if ( _totalLen > _minCount ) {
+					$timeout(_secondInsert.bind(null, _processCount), 30);
+				};
 			} else {
-				$scope.rooms = [];
-				$scope.$emit( 'hideLoader' );
+				_hideLoader();
 			}
 		};
 
@@ -539,63 +646,47 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_callRoomsApi() {
-			var filter               = RVHkRoomStatusSrv.currentFilters,
-				reservation_status   = [],
-				front_office_status  = [],
-				house_keeping_status = [],
-				room_type_ids        = [],
-				floor_start          = false,
-				floor_end            = false,
-				params               = {
-					businessDate : $rootScope.businessDate,
-					page         : $_page,
-					perPage      : $_perPage
-				};
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
+				businessDate : $rootScope.businessDate,
+				page         : $_page,
+				perPage      : $_perPage
+			}, $_fetchRoomListCallback);
+		};
 
-			// process the floors
-			if ( !filter.showAllFloors ) {
-				floor_start = filter.floorFilterStart || filter.floorFilterSingle;
-				floor_end   = filter.floorFilterEnd || filter.floorFilterSingle;
+		function $_calculateFilters() {
+			var source = $_roomList.rooms;
+			if ( Object.prototype.toString.apply(source) !== '[object Array]' ) {
+				return;
+			};
+
+			$scope.noResultsFound = 0;
+
+			for (var i = 0, j = source.length; i < j; i++) {
+				var room = source[i];
+
+				if ($rootScope.isStandAlone) {
+					// any matched work type ids of room to chosen work type id
+					var workTypeMatch = _.find(room.work_type_ids, function(id) {
+						return id == $scope.currentFilters.filterByWorkType;
+					});
+
+					// Filter by work type
+					if (!!$scope.currentFilters.filterByWorkType && !workTypeMatch) {
+						room.display_room = false;
+						$scope.noResultsFound++;
+						continue;
+					};
+
+					// Filter by employee name, strach that the id
+					// TODO: currently we only get room.assignee_maid, we need this like this room.assignee_maid{ name: 'name', id: id } 
+					if (!!$scope.currentFilters.filterByEmployee && room.assignee_maid.id != $scope.currentFilters.filterByEmployee) {
+						room.display_room = false;
+						$scope.noResultsFound++;
+						continue;
+					};
+				}
 			}
-
-			// process the reservation status
-			if ( filter.vacant )   { reservation_status.push('VACANT'); };
-			if ( filter.occupied ) { reservation_status.push('OCCUPIED'); };
-			if ( filter.queued )   { reservation_status.push('QUEUED'); };
-
-			// process front office status
-			if ( filter.stayover )     { front_office_status.push('STAY_OVER'); }
-			if ( filter.not_reserved ) { front_office_status.push('NOT_RESERVED'); }
-			if ( filter.arrival )      { front_office_status.push('ARRIVAL'); }
-			if ( filter.arrived )      { front_office_status.push('ARRIVED'); }
-			if ( filter.dayuse )       { front_office_status.push('DAY_USE'); }
-			if ( filter.dueout )       { front_office_status.push('DUE_OUT'); }
-			if ( filter.departed )     { front_office_status.push('DEPARTED'); }
-
-			// process house keeping status
-			if ( filter.dirty )          { house_keeping_status.push('DIRTY'); }
-			if ( filter.clean )          { house_keeping_status.push('CLEAN'); }
-			if ( filter.inspected )      { house_keeping_status.push('INSPECTED'); }
-			if ( filter.pickup )         { house_keeping_status.push('PICKUP'); }
-			if ( filter.out_of_order )   { house_keeping_status.push('OO'); }
-			if ( filter.out_of_service ) { house_keeping_status.push('OS'); }
-
-			// process room type ids
-			_.each(RVHkRoomStatusSrv.roomTypes, function(type) {
-				if (type.isSelected) { room_type_ids.push(type.id); };
-			});
-
-			// fill request param
-			if ( reservation_status.length )     { params['reservation_status']   = reservation_status; };
-			if ( front_office_status.length )    { params['front_office_status']  = front_office_status; };
-			if ( house_keeping_status.length )   { params['house_keeping_status'] = house_keeping_status; };
-			if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
-			if ( floor_start )                   { params['floor_start']          = floor_start; };
-			if ( floor_end )                     { params['floor_end']            = floor_end; };
-			if ( $scope.query )                  { params['key']                  = $scope.query; };
-
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, params, $_fetchRoomListCallback);
-		}
+		};
 
 
 
@@ -683,7 +774,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				if ( !$scope.disablePrevBtn ) {
 					$scope.loadPrevPage();
 				} else {
-					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
 						businessDate: $rootScope.businessDate,
 						page: $_page,
 						perPage: $_perPage

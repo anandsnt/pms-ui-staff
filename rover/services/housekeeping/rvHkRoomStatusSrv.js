@@ -9,28 +9,29 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		this.initFilters = function() {
 			return {
-				"dirty": false,
-				"pickup": false,
-				"clean": false,
-				"inspected": false,
-				"out_of_order": false,
-				"out_of_service": false,
-				"vacant": false,
-				"occupied": false,
-				"stayover": false,
-				"not_reserved": false,
-				"arrival": false,
-				"arrived": false,
-				"dueout": false,
-				"departed": false,
-				"dayuse": false,
-				"queued": false,
-				"floorFilterSingle": '',
-				"floorFilterStart": '',
-				"floorFilterEnd": '',
-				'showAllFloors': true,
-				'filterByWorkTypeId': '',
-				'filterByEmployeeName': ''
+				"dirty"                : false,
+				"pickup"               : false,
+				"clean"                : false,
+				"inspected"            : false,
+				"out_of_order"         : false,
+				"out_of_service"       : false,
+				"vacant"               : false,
+				"occupied"             : false,
+				"stayover"             : false,
+				"not_reserved"         : false,
+				"arrival"              : false,
+				"arrived"              : false,
+				"dueout"               : false,
+				"departed"             : false,
+				"dayuse"               : false,
+				"queued"               : false,
+				"floorFilterSingle"    : "",
+				"floorFilterStart"     : "",
+				"floorFilterEnd"       : "",
+				"showAllFloors"        : true,
+				"filterByWorkTypeId"   : "",
+				"filterByEmployeeName" : "",
+				"query"                : ""
 			};
 		}
 
@@ -38,8 +39,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		var that = this;
 
-		function $_callRoomsApi() {
-			var filter               = RVHkRoomStatusSrv.currentFilters,
+		var $_prepareParams = function(passedParams) {
+			var filter               = this.currentFilters,
 				reservation_status   = [],
 				front_office_status  = [],
 				house_keeping_status = [],
@@ -47,9 +48,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 				floor_start          = false,
 				floor_end            = false,
 				params               = {
-					businessDate : $rootScope.businessDate,
-					page         : $_page,
-					perPage      : $_perPage
+					businessDate : passedParams.businessDate,
+					page         : passedParams.page || 1,
+					perPage      : passedParams.perPage || 50
 				};
 
 			// process the floors
@@ -81,7 +82,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if ( filter.out_of_service ) { house_keeping_status.push('OS'); }
 
 			// process room type ids
-			_.each(RVHkRoomStatusSrv.roomTypes, function(type) {
+			_.each(this.roomTypes, function(type) {
 				if (type.isSelected) { room_type_ids.push(type.id); };
 			});
 
@@ -92,10 +93,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
 			if ( floor_start )                   { params['floor_start']          = floor_start; };
 			if ( floor_end )                     { params['floor_end']            = floor_end; };
-			if ( $scope.query )                  { params['key']                  = $scope.query; };
+			if ( filter.query )                  { params['query']                = filter.query; };
 
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, params, $_fetchRoomListCallback);
-		}
+			return params;
+		}.bind(this);
 
 		/**
 		 * Method to search Employees from the Work Management Landing page
@@ -106,7 +107,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 		this.fetchRoomList = function(params) {
 			var deferred = $q.defer(),
 				url = '/house/search.json?query=' + params.key + '&date=' + params.businessDate + '&page=' + params.page + '&per_page=' + params.perPage;
-				// house/search.json?query=''&reservation_status[]=VACANT&room_type_ids[]=14&page=9&per_page=1
 
 			$http.get(url)
 				.success(function(response, status) {
@@ -156,9 +156,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		}
 
-		this.fetchRoomListPost = function(params) {
+		this.fetchRoomListPost = function(passedParams) {
 			var deferred = $q.defer(),
-				url = '/house/search.json';
+				url      = '/house/search.json';
+				params   = $_prepareParams(passedParams);
 
 			BaseWebSrvV2.postJSON(url, params)
 				.then(function(response) {
@@ -270,6 +271,21 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
+		// fetch list of all employees with a worksheet for each work type
+		this.fetchActiveWorksheetEmp = function() {
+			var url = "/api/work_sheets/active";
+			var deferred = $q.defer();
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
 		// get all all WorkTypes
 		var workTypesList = [];
 		this.fetchWorkTypes = function() {
@@ -291,7 +307,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
-		// get the dadwadadaw d
+		// get the Work Assignments for a particular emp
 		this.fetchWorkAssignments = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/work_assignments';
@@ -531,12 +547,14 @@ sntRover.service('RVHkRoomStatusSrv', [
 				return false;
 			};
 
-			if (room.assignee_maid) {
+			if ( !!room.assignee_maid.name ) {
+				room.canAssign = false;
 				return {
-					'name': angular.copy(room.assignee_maid),
+					'name': angular.copy(room.assignee_maid.name),
 					'class': 'assigned'
 				}
 			} else {
+				room.canAssign = true;
 				return {
 					'name': 'Unassigned',
 					'class': 'unassigned'
