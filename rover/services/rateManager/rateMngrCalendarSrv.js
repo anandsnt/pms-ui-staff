@@ -70,6 +70,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 					roomDetailsParams.to_date = params.to_date;
 					roomDetailsParams.id = calendarData.data[0].id;
 					roomDetailsParams.rate = calendarData.data[0].name;
+					roomDetailsParams.isHourly = calendarData.data[0].is_hourly;
 
 					that.fetchRoomTypeCalenarData(roomDetailsParams, deferred);
 				}else{
@@ -257,7 +258,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   	   	if (rateData === null){
 		   			rateData ={
 		   				id : rate.id,
-		   				name : rate.name
+		   				name : rate.name,
+		   				isHourly : rate.is_hourly
 		   			};
 		   			dailyRatesData.push(rateData);
 		   		}
