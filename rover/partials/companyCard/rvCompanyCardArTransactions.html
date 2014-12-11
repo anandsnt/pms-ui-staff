@@ -1,0 +1,90 @@
+<!-- Company Card Tab - AR Transactions -->
+<form method="post" action="{action}" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab transactions">
+    
+    <div class="tab-header">
+        <div class="search-form has-dates"> <!-- Add class "open" when showing form -->
+            <div class="entry filter">
+                <button type="button" class="filter button with-icon only-icon"> <!-- Add class "active" when showing form -->
+                    <span class="icons icon-filter"></span> <!-- Add class "active" when showing form -->
+                </button>
+            </div>
+            <div class="entry showing">
+                <div class="select">
+                    <select name="showing" id="showing">
+                        <option value="all">Show All Bills</option>
+                        <option value="open" selected>Show Open Balance</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry search">
+                <button class="clear-query">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <button type="submit" name="submit" class="icons icon-search">Search</button>
+                <input name="ar-transaction-query" id="ar--query" class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off" />
+            </div>
+            <div class="entry dates">
+                <div class="entry-data has-datepicker">
+                    <label for="ar-transaction-date-from">From</label>
+                    <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input name="ar-transaction-date-from" id="ar-transaction-date-from" type="text" class="datepicker" value="" readonly />
+                </div>
+                <div class="entry-data has-datepicker">
+                    <label for="ar-transaction-date-to">To</label>
+                    <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input name="ar-transaction-date-to" id="ar-transaction-date-to" type="text" class="datepicker" value="" readonly />
+                </div>
+            </div>
+        </div>
+        <ul class="totals">
+            <li>
+                <div class="data">
+                    <span class="label">Open guest bills</span>
+                    <span class="value">{number}</span>
+                </div>
+                <button type="button" class="button green">Pay All</button> <!-- Show only when open bills exsits -->
+            </li>
+            <li>
+                <div class="data">
+                    <span class="label">Amount received</span>
+                    <span class="value green">${value}</span>
+                    <!-- If $0:
+                    <span class="value red">${value}</span> -->
+                </div>
+                <button type="button" class="button purple with-icon only-icon">
+                    <span class="icons icon-pencil"></span>
+                </button>
+            </li>
+            <li>
+                <div class="data">
+                    <span class="label">Amount owed</span>
+                    <span class="value red">${value}</span>
+                    <!-- If $0:
+                    <span class="value green">${value}</span> -->
+                </div>
+            </li>
+            <li>
+                <button type="button" class="button white purple-text">Past Payments</button>
+                <button type="button" class="button blue with-icon only-icon">
+                    <span class="icons icon-print"></span>
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- If there are open bills: -->
+    <div class="tab-details scrollable">
+        <div class="wrapper">
+            {tabs/ar-transactions.html}
+         </div>
+    </div>
+
+    <!-- When no open bills / all bills paid 
+    <div class="tab-details no-content">
+        <div class="info">
+            <span class="icon-no-content icon-ok"></span>
+            <strong class="h1">No Transactions</strong>
+            <span class="h2">Outstanding Guest Bills paid</span>
+        </div>
+    </div> -->
+</form>
