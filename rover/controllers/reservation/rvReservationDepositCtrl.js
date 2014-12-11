@@ -33,7 +33,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			isDisplayReference:false,
 			referanceText:""
 		};
-		$scope.depositData.paymentType = "";
+		$scope.depositData.paymentType = (typeof $scope.reservationData.reservation_card.payment_method_used !== "undefined")?$scope.reservationData.reservation_card.payment_method_used :"";
 
 		$scope.reservationData = {};
 		$scope.reservationData.depositAmount = "";
@@ -62,7 +62,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 		$scope.showHideCreditCard = function(){
 			if($scope.depositData.paymentType ==="CC"){
-				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions;
+				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions();
 			};
 		};
 
@@ -174,7 +174,6 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 					}
 					else{
 						angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
-										console.log( value.cardcode +"-------"+ $scope.depositData.card_type.toUpperCase()+"-------"+value.is_display_reference)
 							if($scope.depositData.card_type.toUpperCase() === value.cardcode){
 									$scope.isDisplayReference = (value.is_display_reference)? true:false;
 								};					

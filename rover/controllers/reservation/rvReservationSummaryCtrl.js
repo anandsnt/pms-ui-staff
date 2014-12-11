@@ -40,6 +40,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.shouldShowAddNewCard = true;
 		//$scope.isFromCreateReservation = true;
 		$scope.renderData = {};
+		$scope.isManual = false;
 
 		$scope.feeData = {};
 		var zeroAmount = parseFloat("0.00");
@@ -123,6 +124,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.$on('cancelCardSelection', function() {
 			$scope.showCC = false;
 			$scope.reservationData.paymentType.type.value = "";
+			$scope.isManual = false;
 		});
 
 		$scope.$on("MLI_ERROR", function(e, data) {
@@ -692,9 +694,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.reservationData.paymentType.type.value = "";
 
+		$scope.changeOnsiteCallIn = function(){
+		 $scope.isManual ? $scope.showCC = true : "";
+		};
+
 		$scope.changePaymentType = function() {
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
-				$scope.showCC = true;
+				
+				($rootScope.paymentGateway === 'sixpayments')  ? "": $scope.showCC = true;
 				/*
 				 
 				 * Comment out .if existing cards needed remove comments

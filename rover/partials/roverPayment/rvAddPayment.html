@@ -40,7 +40,7 @@
 		    </div>
 		</div>
         <!-- Selected card - Show when card is selected/added -->
-       <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC'" ng-click="showCCList()">
+       <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual)" ng-click="showCCList()">
 			<label>Credit Card (<span>Tap to change</span>)</label>
 			<label class="active-item item-payment" id="pay-with-amex">
 				<figure class="card-logo">

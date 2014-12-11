@@ -1,6 +1,6 @@
 <div id="modal" class="modal-show" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
     <form method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
-        <button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <strong class="h2 message">Deposit required</strong>
         <div class="payment-form">
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <!-- Selected card - Show when card is selected/added -->
-            <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC'">
+            <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual)">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
