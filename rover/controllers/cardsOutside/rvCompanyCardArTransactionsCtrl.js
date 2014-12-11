@@ -3,6 +3,22 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 
 		BaseCtrl.call(this, $scope);
 
+		var init = function(){
+			var arAccountsFetchSuccess = function(data) {
+			    $scope.$emit('hideLoader');
+			    alert("fetch success");
+			    $console.log(data);
+			};
+			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, {}, arAccountsFetchSuccess);
+
+		}
+
+		init();
+
+
+
+
+
 		// $scope.setScroller('cardAccountsScroller');
 
 		// var refreshScroller = function() {
