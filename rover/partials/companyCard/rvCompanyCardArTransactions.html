@@ -40,14 +40,14 @@
             <li>
                 <div class="data">
                     <span class="label">Open guest bills</span>
-                    <span class="value">{number}</span>
+                    <span class="value">{{arTransactionDetails.open_guest_bills}}</span>
                 </div>
                 <button type="button" class="button green">Pay All</button> <!-- Show only when open bills exsits -->
             </li>
             <li>
                 <div class="data">
                     <span class="label">Amount received</span>
-                    <span class="value green">${value}</span>
+                    <span class="value green">{{currencySymbol}}{{arTransactionDetails.available_credit}}</span>
                     <!-- If $0:
                     <span class="value red">${value}</span> -->
                 </div>
@@ -58,7 +58,7 @@
             <li>
                 <div class="data">
                     <span class="label">Amount owed</span>
-                    <span class="value red">${value}</span>
+                    <span class="value red">{{currencySymbol}}{{arTransactionDetails.amount_owing}}</span>
                     <!-- If $0:
                     <span class="value green">${value}</span> -->
                 </div>
@@ -73,18 +73,18 @@
     </div>
 
     <!-- If there are open bills: -->
-    <div class="tab-details scrollable">
+    <div class="tab-details scrollable" ng-if="arTransactionDetails.open_guest_bills > 0">
         <div class="wrapper">
             {tabs/ar-transactions.html}
          </div>
     </div>
 
-    <!-- When no open bills / all bills paid 
-    <div class="tab-details no-content">
+    <!-- When no open bills / all bills paid -->
+    <div class="tab-details no-content" ng-if="arTransactionDetails.open_guest_bills == 0">
         <div class="info">
             <span class="icon-no-content icon-ok"></span>
             <strong class="h1">No Transactions</strong>
             <span class="h2">Outstanding Guest Bills paid</span>
         </div>
-    </div> -->
+    </div>
 </form>

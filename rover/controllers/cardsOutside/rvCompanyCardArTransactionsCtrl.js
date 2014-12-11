@@ -2,14 +2,19 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 	function($scope, RVCompanyCardSrv, $timeout) {
 
 		BaseCtrl.call(this, $scope);
+		$s = $scope;
 
 		var init = function(){
 			var arAccountsFetchSuccess = function(data) {
 			    $scope.$emit('hideLoader');
-			    alert("fetch success");
-			    $console.log(data);
+			    $scope.arTransactionDetails = data;
+			    console.log(data);
 			};
-			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, {}, arAccountsFetchSuccess);
+
+			var failure = function(){
+			    $scope.$emit('hideLoader');
+			};
+			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, {}, arAccountsFetchSuccess, failure);
 
 		}
 
