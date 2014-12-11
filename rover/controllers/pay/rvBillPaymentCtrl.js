@@ -32,7 +32,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	var refreshCardsList = function() { 			
 		$timeout(function() {
 			$scope.refreshScroller('cardsList');
-		}, 300);
+		}, 2000);
 	};
 
 	$scope.feeData = {};
@@ -520,9 +520,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.$on("MLI_ERROR", function(e,data){
 		$scope.errorMessage = data;
 	});
+	
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCCPage = false;
 		$scope.isManual = false;
+		$scope.saveData.paymentType = "";
 	});
 	
 	$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){

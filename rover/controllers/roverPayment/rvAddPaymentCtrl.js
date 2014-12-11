@@ -3,8 +3,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	 '$scope', 
 	 '$state', 
 	 'ngDialog',
-	 'RVPaymentSrv', 
-	function($rootScope, $scope, $state, ngDialog, RVPaymentSrv){
+	 'RVPaymentSrv','$timeout',
+	function($rootScope, $scope, $state, ngDialog, RVPaymentSrv,$timeout){
 
    //save/select card actions
         // +-----------------+-------------------------------+
@@ -29,8 +29,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.dataToSave = {};
 	$scope.setScroller('cardsList');
 
-    var refreshCardScroll = function() {
-        $scope.refreshScroller('cardsList');
+    var refreshCardsList = function() {
+        $timeout(function() {
+			$scope.refreshScroller('cardsList');
+		}, 2000);
     };
 
 	$scope.successRender = function(data){
@@ -62,7 +64,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		 		 	$scope.cardsList.push(obj);
 				};
 			});
-			refreshCardScroll();
+			
 		};
 		
 		angular.forEach($scope.cardsList, function(value, key) {
@@ -72,6 +74,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		});
 
 		$scope.addmode = $scope.cardsList.length > 0 ? false:true;
+		refreshCardsList();
 		//To render swiped data in the add screen
 		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			$scope.dataToSave.paymentType = "CC";
@@ -98,7 +101,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
 			$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC") ? false: true;
-			refreshCardScroll();
+			refreshCardsList();
 		}else{
 			return;
 		};
@@ -108,7 +111,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.showCCPage = ($scope.isManual) ? true:false;
 		$scope.addmode =  ($scope.isManual && $scope.cardsList.length === 0) ? true:false;
 		$scope.showInitialScreen = ($scope.isManual) ?false :true;
-		refreshCardScroll();
+		refreshCardsList();
 	};
 
 
