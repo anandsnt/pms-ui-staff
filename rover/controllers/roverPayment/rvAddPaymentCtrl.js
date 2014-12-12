@@ -21,12 +21,13 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 
 	BaseCtrl.call(this, $scope);
-	$scope.addmode                 = true;
-	$scope.savePayment = {};
+	$scope.addmode         = true;
+	$scope.savePayment     = {};
 	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
-	$scope.isNewCardAdded = false;
-	$scope.isManual = false;
-	$scope.dataToSave = {};
+	$scope.isNewCardAdded  = false;
+	$scope.isManual        = false;
+	$scope.dataToSave      = {};
+	$scope.cardsList       = [];
 	$scope.setScroller('cardsList');
 	$scope.showCCPage = false;
 	$scope.shouldShowWaiting = false;
@@ -49,8 +50,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		});		
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
-
-	$scope.cardsList = [];
 
 	$scope.successPaymentList = function(data){
 		$scope.$emit("hideLoader");
@@ -77,7 +76,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		});
 
 		$scope.addmode = $scope.cardsList.length > 0 ? false:true;
-		refreshCardsList();
+		
 		//To render swiped data in the add screen
 		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			$scope.dataToSave.paymentType = "CC";
@@ -85,6 +84,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.addmode                = true;	
 			$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
 		}
+		refreshCardsList();
 	};
 	//NO need to show existing cards in guest card model
 	if(!$scope.isFromGuestCard){
@@ -104,15 +104,16 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC" && $scope.isManual) ? true: false;
 			$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC" && !$scope.isManual) ? false: true;
-			
 			refreshCardsList();
 		}else{
 			$scope.isNewCardAdded = ($scope.dataToSave.paymentType == "CC" && !$scope.isManual) ? true : false;
 			return;
 		};
+
+		refreshCardsList();
 	};
 
-	$scope.changeOnsiteCallIn = function(){
+	$scope.changeOnsiteCallIn = function(){		
 		$scope.showCCPage = ($scope.isManual) ? true:false;
 		$scope.addmode =  ($scope.isManual && $scope.cardsList.length === 0) ? true:false;
 		$scope.showInitialScreen = ($scope.isManual) ?false :true;
@@ -123,9 +124,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 
 	$scope.showCCList = function(){
+		refreshCardsList();
 		$scope.showCCPage =  true;
 		$scope.addmode = false;
-		refreshCardsList();
 	};
 
     //retrieve card type based on paymnet gateway
