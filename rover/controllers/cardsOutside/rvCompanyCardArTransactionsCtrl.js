@@ -3,6 +3,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
+		var init = function(){
+			fetchData();
+		};
 
 		$scope.filterData = {
 			'id': ($stateParams.id != 'add') ? $stateParams.id : '',
@@ -85,5 +88,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    $scope.$on('toDateChanged',function(){
 	        fetchData();
 	    });
+
+	    init();
 		
 }]);

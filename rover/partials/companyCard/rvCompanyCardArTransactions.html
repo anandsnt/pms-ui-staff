@@ -82,10 +82,11 @@
     <div class="tab-details scrollable" ng-if="arTransactionDetails.open_guest_bills > 0">
         <div class="wrapper">
 
-            <ul class="search-results">
+            <ul class="search-results" ng-repeat="transaction in arTransactionDetails.ar_transactions">
                 <li class="reservation transaction">
                     <!-- Not using <a> here since 1) you don't use hrefs at all and 2) it'll interfere with the checkbox -->
                     <div class="faux-anchor" class="guest-{reservation-status}"> <!-- see options in {dashboard/front-desk.html} -->
+
                         <figure class="guest-image"><!-- add class "accompany" if it's a accompanying guest -->
                             <img src="{primary-guest-image}" alt="" />
                             <!-- if it's accompanying guest, show this as well:
@@ -94,18 +95,18 @@
                             <span class="vip">VIP</span> -->
                         </figure>
                         <div class="data">
-                            <h2><span>{Lastname}</span>, <span>{Firstname}</span></h2>
-                            <span class="confirmation">2680117</span>
+                            <h2><span>{{transaction.guest_first_name}}</span>, <span>{{transaction.guest_last_name}}</span></h2>
+                            <span class="confirmation">{{transaction.reservation_confirm_no}}</span>
                             <div class="arrival">
                                 <span class="guest-status small-icon check-in">check-in</span>
-                                {arrival date}
+                                {{transaction.reservation_arrival_date}}
                             </div>
                             <div class="departure">
                                 <span class="guest-status small-icon check-out">check-out</span>
-                                {departure date}
+                                {{transaction.reservation_dep_date}}
                             </div>
                         </div>
-                        <div class="amount">${bill cost}</div>
+                        <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
                         <div class="switch-button"> <!-- add class "on" when checkbox checked -->
                             <input value="" type="checkbox" />
                             <label class="data-off">
@@ -119,7 +120,6 @@
                         </div>
                     </div>
                 </li>
-                ... repeat
             </ul>
 
          </div>
