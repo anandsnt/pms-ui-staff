@@ -40,7 +40,11 @@
 "REMOVAL_REASON_PLACEHOLDER":"Removal reason",
 "SEARCH_OR_SELECT_CODES_PLACEHOLDER":"Search or Select codes to add",
 "FIND_PLACEHOLDER":"Find Guest, Company or Travel Agent",
-"ENTER_SPLIT_VALUE_PLACEHOLDER":"Enter split value"
+"ENTER_SPLIT_VALUE_PLACEHOLDER":"Enter split value",
+"DETAILS": "Details",
+"SAVE_ROUTE": "Save Route",
+"SAVE": "Save",
+"CANCEL": "Cancel"
 ,	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
@@ -200,7 +204,12 @@
     "DELETE_ACCOUNT":"Delete Account",
     "DELETE_AR_ACCOUNT":"Delete AR Account?",
     "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
-    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first"
+    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first",
+    "ADD_BILLLING_INFORMATION" : "Add Billing Information",
+    "BILLING_INFORMATION" : "Billing information",
+    "ROUTES_DEFINED" : "routes defined",
+    "ACCOUNTS_RECIEVABLE_NUMBER" : "Accounts Receivable Number"
+
 
 	
 ,    
@@ -545,6 +554,14 @@
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
     "START_PAYMENT_PROCESS": "Start Payment Process",
+    "CONFLICTING_BILLING_INFO_EXISTS_ON": "conflicting billing info exists on",
+    "CARD": "card",
+    "PLEASE_UPDATE_MANUALLY": "Please update manually",
+    "OK": "ok",
+    "BILLING_INFORMATION_FOUND": "Billing information found",
+    "ON_SELECTED_CARD": "On selected card",
+    "APPLY_TO_RESERVATION": "Apply to reservation",
+    "DONT_APPLY": "Don't apply",
     "APPLY_CUSTOMRATE" : "Apply Custom Rate",
     "MODIFY_CUSTOMRATE" : "Modify Custom Rate"
 ,    

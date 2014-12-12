@@ -30,11 +30,27 @@ angular.module('housekeepingModule', [])
                         for (var i = 0; i < filtersToApply.length; i++) {
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
+
+                        // return RVHkRoomStatusSrv.fetchRoomList({
+                        //     businessDate: $rootScope.businessDate,
+                        //     page: $stateParams.page || 1,
+                        //     perPage: $stateParams.perPage || 50
+                        // });
+                        return RVHkRoomStatusSrv.fetchRoomListPost({
+                            businessDate : $rootScope.businessDate,
+                            isStandAlone : $rootScope.isStandAlone
+                        });
+                    } else if (!!$stateParams && !!$stateParams.businessDate) {
+                        return RVHkRoomStatusSrv.fetchRoomListPost({
+                            businessDate : $stateParams.businessDate,
+                            isStandAlone : $rootScope.isStandAlone
+                        });
+                    } else {
+                        return RVHkRoomStatusSrv.fetchRoomListPost({
+                            businessDate : $rootScope.businessDate,
+                            isStandAlone : $rootScope.isStandAlone
+                        });
                     }
-                    var businessDate = $stateParams.businessDate || $rootScope.businessDate;
-                    return RVHkRoomStatusSrv.fetchRoomList({
-                        businessDate: businessDate
-                    });
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope) {
                     return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];
