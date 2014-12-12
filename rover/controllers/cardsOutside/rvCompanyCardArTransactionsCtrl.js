@@ -1,5 +1,5 @@
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout',
-	function($scope, RVCompanyCardSrv, $timeout) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', '$stateParams',
+	function($scope, RVCompanyCardSrv, $timeout, $stateParams) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -7,6 +7,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 		$scope.filterData.filterActive = true;
 		$scope.filterData.showFilterFlag = 'OPEN';
 		
+
 
 		var fetchData = function(params){
 			var arAccountsFetchSuccess = function(data) {
