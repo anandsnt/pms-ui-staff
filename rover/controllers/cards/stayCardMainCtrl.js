@@ -12,8 +12,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			cardType: ""
 		};
 
-		$s = $scope;
-
 		$scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;
 			$scope.setTitle(heading);
@@ -565,7 +563,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			});
 
 			this.rooms = [];
-			this.rooms = tData.rooms;
+			$scope.reservationData.rooms = tData.rooms;
 			$scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
 			$scope.reservationData.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
 			var arrivalTimeSplit = tData.arrival_time.split(":");
@@ -670,6 +668,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				room.numInfants = tData.rooms[index].numInfants;
 				room.roomTypeId = tData.rooms[index].roomTypeId;
 				room.amount = tData.rooms[index].amount;
+				room.room_id = tData.rooms[index].room_id;
+				room.room_no = tData.rooms[index].room_no;
+				room.room_type = tData.rooms[index].room_type;
 
 				room.rateId = tData.rooms[index].rateId;
 				room.roomAmount = tData.rooms[index].amount;
