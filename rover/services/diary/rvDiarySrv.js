@@ -874,13 +874,12 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             }
                         } else if ( mm == 15 || mm == 30 || mm == 45 ) {
                             mm += 15;
+                        } else if ( Math.max(mm, 15) == 15 ) {
+                            mm = 15;
+                        } else if ( Math.max(mm, 30) == 30 ) {
+                            mm = 30;
                         } else {
-                            do {
-                                mm += 1;
-                                if ( mm == 15 || mm == 30 || mm == 45 ) {
-                                    break;
-                                }
-                            } while ( mm != 15 || mm != 30 || mm != 45 );
+                            mm = 45;
                         };
 
                         start_date.setHours(hh, mm);
