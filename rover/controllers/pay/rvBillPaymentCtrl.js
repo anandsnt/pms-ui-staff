@@ -26,6 +26,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.swipedCardDataToSave  = {};
 		$scope.cardData = {};
 		$scope.newCardAdded = false;
+		$scope.shouldShowWaiting = false;
 		
 	};
 
@@ -358,7 +359,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			else{
 				dataToSrv.postData.add_to_guest_card =  false;
 			};
-
+			
 			
 			if($scope.isStandAlone && $scope.isShowFees()){
 				if($scope.feeData.calculatedFee)
@@ -380,7 +381,33 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC
 				}
 			}
-			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment);
+			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual){
+				dataToSrv.postData.is_emv_request = true;
+				
+				
+				
+				$scope.shouldShowWaiting = true;
+
+				
+				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					$scope.shouldShowWaiting = false;
+					$scope.closeDialog();
+				},function(error){
+					$scope.errorMessage = error;
+					$scope.shouldShowWaiting = false;
+				});
+// 				
+				// setTimeout(function(){
+					// ngDialog.close("firstDialog");
+				// }, 3000);
+				
+				
+				
+				
+			} else {
+				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
+			}
+			//$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment);
 		}
 
 	};

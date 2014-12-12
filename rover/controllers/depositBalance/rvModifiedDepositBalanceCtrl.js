@@ -73,15 +73,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 	$scope.changePaymentType = function(){
 		if($scope.depositBalanceMakePaymentData.payment_type == "CC"){
-			// $scope.shouldShowIframe 	   			 = false;	
-			$scope.shouldShowMakePaymentScreen       = false; 
-			// $scope.showAddtoGuestCard    			 = false;
-			// $scope.shouldShowExistingCards  		 = false;
-			$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
-			$scope.addmode = ($scope.cardsList.length>0) ? false :true;
-			// $scope.makePaymentButtonDisabled         = false;
-			refreshScroll();
 
+			if($rootScope.paymentGateway != "sixpayments"){
+			
+				$scope.shouldShowMakePaymentScreen       = false; 
+				$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
+				$scope.addmode = ($scope.cardsList.length>0) ? false :true;
+				refreshScroll();
+			}
 		} else {
 			$scope.shouldShowMakePaymentScreen       = true; 
 				$scope.addmode                 			 = false;
@@ -261,12 +260,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		
 			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual){
 				dataToSrv.postData.is_emv_request = true;
-				
-				
-				
 				$scope.shouldShowWaiting = true;
-
-				
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
 					$scope.shouldShowWaiting = false;
 					$scope.closeDialog();
@@ -274,20 +268,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					$scope.errorMessage = error;
 					$scope.shouldShowWaiting = false;
 				});
-// 				
-				// setTimeout(function(){
-					// ngDialog.close("firstDialog");
-				// }, 3000);
-				
-				
-				
 				
 			} else {
 				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 			}
 			
-		// }
-
 
 	};
 	/*
