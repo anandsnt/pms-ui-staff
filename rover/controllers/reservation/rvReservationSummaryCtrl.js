@@ -9,37 +9,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.isSubmitButtonEnabled = true;
 		}
 		var that = this;
-		$scope.isSixPaymentGatewayVisible = false;
-		$scope.isIframeVisible = false;
-		$scope.isCallInOnsiteButtonVisible = false;
-		$scope.isMLICreditCardVisible = false;
-		if ($scope.reservationData.paymentType.type.value === 'CC') {
-			$scope.isMLICreditCardVisible = true;
-		}
-		$scope.isOnsiteActive = false;
-
-		if ($rootScope.paymentGateway === "sixpayments") {
-			$scope.isCallInOnsiteButtonVisible = true;
-			$scope.isOnsiteActive = true;
-			$scope.isIframeVisible = false;
-		}
-
-		// var absoluteUrl = $location.$$absUrl;
-		// domainUrl = absoluteUrl.split("/staff#/")[0];
-		// $scope.iFrameUrl = domainUrl + "/api/ipage/index.html?amount=" + $filter('number')($scope.reservationData.totalStayCost, 2) + '&card_holder_first_name=' + $scope.guestCardData.contactInfo.first_name + '&card_holder_last_name=' + $scope.guestCardData.contactInfo.last_name + '&service_action=createtoken';
-
+		
 		$scope.passData = {
-			"details": {}
+			"details": {
+				"firstName" : $scope.reservationData.guest.firstName,
+				"lastName" : $scope.reservationData.guest.lastName
+			}
 		};
 
-		$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
-		$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 		$scope.addmode = true;
 		$scope.showCC = false;
 		$scope.addtoGuestCard = true;
 		//$scope.isFromCreateReservation = true;
 		$scope.renderData = {};
 		$scope.isManual = false;
+		$scope.isNewCardAdded =  false;
 
 		$scope.feeData = {};
 		var zeroAmount = parseFloat("0.00");
@@ -166,7 +150,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		var addToGuestCard = function(data) {
 			var dataToGuestList = {};
-			if (isNewCardAdded) {
+			if ($scope.isNewCardAdded) {
 				var cardName = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
 					$scope.newPaymentInfo.cardDetails.userName :
 					($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
@@ -193,8 +177,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
 
-		var isNewCardAdded = false;
-
 		var savenewCc = function() {
 			var ccSaveSuccess = function(data) {
 
@@ -210,8 +192,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.feeData.feesInfo = data.fees_information;
 					$scope.setupFeeData();
 				}
-				isNewCardAdded = true;
-				addToGuestCard(data);
+				$scope.isNewCardAdded = true;
 			};
 
 			var data = {};
@@ -651,6 +632,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit('hideLoader');
 				$scope.viewState.identifier = "UPDATED";				
 				$scope.reservationData.is_routing_available = data.is_routing_available;
+				addToGuestCard(data);
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum
