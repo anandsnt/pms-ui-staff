@@ -450,7 +450,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     } else if(occupancy[m.status]   === 'checkedout') {
                         occupancy[m.status]         = 'check-out';
                     } else if(occupancy[m.status]   === 'checking_out') {
-                        occupancy[m.status]         = 'check-out';
+                        occupancy[m.status]         = 'departed';
                     } else if(occupancy[m.status]    ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
@@ -813,8 +813,13 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         end_date:           data.end_date,
                         end_time:           data.end_time,
                         rate_type:          data.rate_type,
-                    }
 
+                    }
+                    if(data.rate_type == 'Corporate') {
+                        if(data.account_id){                            
+                            _.extend(params, { account_id: data.account_id });
+                        }
+                    }
                     //Webservice calling section
                     var deferred = $q.defer();
                     var url = '/api/hourly_availability/room';
@@ -913,7 +918,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             guest_first_name:   data.guestFirstName,
                             guest_last_name:    data.guestLastName,
                             company_id:         data.companyID,
-                            travel_agent_id:    data.TravelAgenID
+                            travel_agent_id:    data.TravelAgenID,
+                            minHours:           parseInt(data.minHours)
                         };
                     }
 

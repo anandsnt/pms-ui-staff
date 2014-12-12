@@ -7,7 +7,7 @@
                     <span class="value">{{reservationData.numNights}}</span>
                 </a>
                 <div id="sidebar-nights" class="settings-content">
-                    <a class="stay-dates" data-transition="nested-view" ng-click="stayDatesClicked()">
+                    <a class="stay-dates" data-transition="nested-view" ng-class="{ disabled: isHourly}" ng-click="isHourly || stayDatesClicked()">
                         <div class="check-in">
                             <span class="title" >{{'ARRIVING_LABEL'|translate}} <span translate>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></span>
                             <strong class="date">{{reservationData.arrivalDate|date:fullDateFullMonthYear}}</strong>
@@ -30,13 +30,13 @@
                          <span ng-show="room.varyingOccupancy" translate>VAR_OCCUPANCY</span>
                         <div class="select adults">
                             <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults" ng-change="validateOccupant(room, 'adult');updateOccupancy($index);checkOccupancyLimit()">
+                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults" ng-change="onOccupancyChange(room,'adult',$index)">
                                 <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                             </select>
                         </div>
                         <div class="select children">
                             <label for="room-{{index+1}}-children" class="label" translate>CHILDREN</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="room.numChildren" ng-change="validateOccupant(room, 'children');updateOccupancy($index);checkOccupancyLimit()">
+                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="room.numChildren" ng-change="onOccupancyChange(room,'children',$index)">
                                 <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
                             </select>
                         </div>
@@ -51,7 +51,7 @@
                         <div id="room-{{index+1}}-details" class="room-details" ng-hide="room.roomTypeId == '' || room.rateId == ''">
                             <h4>
                                 {{room.roomTypeName}}
-                                <button id="remove-room-{{index+1}}" ng-click="editRoomRates($index)" type="button" class="edit-room icons icon-edit-10" translate>EDIT_ROOM_LABEL</button>
+                                <button id="remove-room-{{index+1}}" ng-hide="isHourly" ng-click="editRoomRates($index)" type="button" class="edit-room icons icon-edit-10" translate>EDIT_ROOM_LABEL</button>
                             </h4>
                             <ul class="rate-and-enhancements">
                                 <li>

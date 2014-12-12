@@ -45,9 +45,11 @@
 					</div>
 				</div>
 
-
 				<!-- show For charge codes of the code type TAX or FEES , for standalone hotels-->
 				<div class="entry full-width">
+					
+					<ad-textbox value="prefetchData.minimum_amount_for_fees" ng-show="(prefetchData.selected_charge_code_type == '1' || prefetchData.selected_charge_code_type == '6') && !isPmsConfigured" inputtype="text" value="" label = "{{'MINIMUM_AMOUNT_TO_CHARGE_FEE'| translate}}" placeholder = "" styleclass="full-width" ></ad-textbox>
+
 					<div ng-show="(prefetchData.selected_charge_code_type == '1' || prefetchData.selected_charge_code_type == '6') && !isPmsConfigured" class="entry full-width" >
 						<label translate> AMOUNT </label>
 						
@@ -65,6 +67,7 @@
 	                        </select>
 						</div>
 					</div>
+
 					<!-- show For charge codes of the code type TAX only -->
 					<div ng-show="(prefetchData.selected_charge_code_type == '1') && !isPmsConfigured">
 						<ad-dropdown label="{{'AMOUNT_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'SELECT_AMOUNT_TYPE' | translate}}" list="prefetchData.amount_types" selected-Id="prefetchData.selected_amount_type" ></ad-dropdown>
