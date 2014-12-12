@@ -18,7 +18,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.authorizedCode = "";
 		$scope.showCCPage = false;
 		$scope.newCardAdded = false;
-		
+		$scope.shouldShowWaiting = false;
 		
 		$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
 		
@@ -374,7 +374,21 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;
 			};
 			$scope.isLoading =  true;
-			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment,paymentFailed);
+			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual){
+				dataToSrv.postData.is_emv_request = true;
+				$scope.shouldShowWaiting = true;
+				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					$scope.shouldShowWaiting = false;
+					successPayment();
+				},function(error){
+					$scope.errorMessage = error;
+					$scope.shouldShowWaiting = false;
+				});
+				
+			} else {
+				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment,paymentFailed);
+			}
+		//	$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment,paymentFailed);
 		};
 	};
 
