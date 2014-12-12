@@ -831,7 +831,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return deferred.promise;                    
                 };
 
-                this.properDateTimeCreation = function() {
+                this.properDateTimeCreation = function() {                    
                     var data       = $vault.get('searchReservationData'),
                         start_date = new tzIndependentDate($rootScope.businessDate);
 
@@ -875,12 +875,12 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         } else if ( mm == 15 || mm == 30 || mm == 45 ) {
                             mm += 15;
                         } else {
-                            do {
+                           /* do {
                                 mm += 1;
                                 if ( mm == 15 || mm == 30 || mm == 45 ) {
                                     break;
                                 }
-                            } while ( mm != 15 || mm != 30 || mm != 45 );
+                            } while ( mm != 15 || mm != 30 || mm != 45 );*/
                         };
 
                         start_date.setHours(hh, mm);

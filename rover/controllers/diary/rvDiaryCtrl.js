@@ -456,8 +456,19 @@ sntRover
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
 			    	
 					if(availability) {
-				    	util.reservationRoomTransfer($scope.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
-					    
+				    	util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
+						
+						//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
+						if(nextRoom.id !== prevRoom.id){
+							var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), prevRoom.id);
+							if(roomIndex != -1) {
+								var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), reservation.reservation_id);
+								if(occupancyIndex != -1){
+									$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
+								}
+							}							
+						}
+
 				    	$scope.gridProps.currentResizeItemRow = nextRoom;				    					    			    								    							
 						
 						
@@ -761,8 +772,7 @@ sntRover
 
 
  		$scope.editCancel = function() {
-	    	var props = $scope.gridProps;
-	    	
+	    	var props = $scope.gridProps;	    	
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
 
 	    	$scope.resetEdit();
@@ -837,8 +847,7 @@ sntRover
 	}.bind($scope.gridProps);
 
 	var failureCallBackOfAvailabilityFetching = function(errorMessage){
-		$scope.errorMessage = errorMessage;
-		alert('Error in Availability fetching: ' + $scope.errorMessage) //TODO: Discss with Stj & change
+		$scope.errorMessage = errorMessage;		
 	}
 
 	var callAvailabilityAPI = function(){
@@ -873,8 +882,9 @@ sntRover
 			end 		= new Date(this.currentResizeItem.departure),
 			
 			rate_type 	= ( this.currentResizeItem.travel_agent_id == null || this.currentResizeItem.travel_agent_id == '') && 
-						( this.currentResizeItem.company_card_id == null || this.currentResizeItem.company_card_id == '') ? 'Standard': 'Corporate';
+						( this.currentResizeItem.company_card_id == null || this.currentResizeItem.company_card_id == '') ? 'Standard': 'Corporate',
 			account_id  = rate_type == 'Corporate' ? (this.currentResizeItem.travel_agent_id ? this.currentResizeItem.travel_agent_id : this.currentResizeItem.company_card_id) : undefined,
+
 			room_id 	= this.currentResizeItemRow.id,
 			reservation_id = this.currentResizeItem.reservation_id,
 
