@@ -454,8 +454,18 @@ sntRover
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
 			    	
 					if(availability) {
-				    	util.reservationRoomTransfer($scope.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
-					    
+				    	util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
+					    for(var i = 0; i < $scope.gridProps.data.length; i++) {
+					    	if($scope.gridProps.data[i].id == prevRoom.id) {
+					    		var occupancyLength = $scope.gridProps.data[i].occupancy.length;
+					    		for(var k = 0; k < occupancyLength; k++){
+					    			if(_.has($scope.gridProps.data[i].occupancy[k], 'reservation_id') && $scope.gridProps.data[i].occupancy[k].reservation_id == reservation.reservation_id){
+					    				$scope.gridProps.data[i].occupancy.splice(k);
+					    				occupancyLength--;
+					    			}
+					    		}
+					    	}
+					    }
 				    	$scope.gridProps.currentResizeItemRow = nextRoom;				    					    			    								    							
 						
 						
@@ -759,7 +769,7 @@ sntRover
 
  		$scope.editCancel = function() {
 	    	var props = $scope.gridProps;
-	    	
+	    	console.log('removing from cancel');
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
 
 	    	$scope.resetEdit();
