@@ -8,7 +8,7 @@ ng-show="showDashboard">
 		<div ng-include="'/assets/partials/dashboard/rvDbGreetingMessageSection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGuestsSection.html'"></div>
 		<div ng-hide="!isStandAlone" ng-include="'/assets/partials/dashboard/rvDbOccupancySection.html'"></div>
-		<div ng-hide="!isStandAlone" ng-include="'/assets/partials/dashboard/rvDbAvgDailyRateSection.html'"></div>
+		<div ng-hide="!isStandAlone" ng-include="'/assets/partials/dashboard/rvDbAvgDailyRateSection.html'" ng-if="!isHourlyRateOn"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbRoomSection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbUpSellSection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbRateOfTheDaySection.html'"></div>

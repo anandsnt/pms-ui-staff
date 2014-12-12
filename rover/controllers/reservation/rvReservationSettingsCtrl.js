@@ -1,10 +1,11 @@
-sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state',
-    function($scope, RVReservationBaseSearchSrv, $state) {
+sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams',
+    function($scope, RVReservationBaseSearchSrv, $state, $stateParams) {
         $scope.reservationSettingsVisible = false;
 
         var resizableMinWidth = 30;
         var resizableMaxWidth = 260;
         $scope.reservationSettingsWidth = resizableMinWidth;
+        $scope.isHourly = ( $stateParams.reservation == 'HOURLY' ) ? true : false;
         /**
          * scroller options
          */
@@ -91,7 +92,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         });
 
         $scope.$on('GETREFRESHACCORDIAN', function() { 
-            setTimeout(function(){$scope.refreshScroll();}, 3000);
+            setTimeout($scope.refreshScroll, 3000);
         });
     }
 ]);
