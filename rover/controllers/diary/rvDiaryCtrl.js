@@ -455,17 +455,18 @@ sntRover
 			    	
 					if(availability) {
 				    	util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
-					    for(var i = 0; i < $scope.gridProps.data.length; i++) {
-					    	if($scope.gridProps.data[i].id == prevRoom.id) {
-					    		var occupancyLength = $scope.gridProps.data[i].occupancy.length;
-					    		for(var k = 0; k < occupancyLength; k++){
-					    			if(_.has($scope.gridProps.data[i].occupancy[k], 'reservation_id') && $scope.gridProps.data[i].occupancy[k].reservation_id == reservation.reservation_id){
-					    				$scope.gridProps.data[i].occupancy.splice(k);
-					    				occupancyLength--;
-					    			}
-					    		}
-					    	}
-					    }
+						
+						//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
+						if(nextRoom.id !== prevRoom.id){
+							var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), prevRoom.id);
+							if(roomIndex != -1) {
+								var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), reservation.reservation_id);
+								if(occupancyIndex != -1){
+									$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
+								}
+							}							
+						}
+
 				    	$scope.gridProps.currentResizeItemRow = nextRoom;				    					    			    								    							
 						
 						
