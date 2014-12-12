@@ -21,19 +21,19 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 
 	BaseCtrl.call(this, $scope);
-	$scope.addmode                 = true;
-	$scope.savePayment = {};
+	$scope.addmode         = true;
+	$scope.savePayment     = {};
 	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
-	$scope.isNewCardAdded = false;
-	$scope.isManual = false;
-	$scope.dataToSave = {};
+	$scope.isNewCardAdded  = false;
+	$scope.isManual        = false;
+	$scope.dataToSave      = {};
+	$scope.cardsList       = [];
 	$scope.setScroller('cardsList');
 
     var refreshCardsList = function() {
         $timeout(function() {
 			$scope.refreshScroller('cardsList');
-			console.log("scrollllllllllllllllllllllllllllllllllllllllll")
-		}, 5000);
+		}, 2000);
     };
 
     refreshCardsList();
@@ -49,8 +49,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		});		
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
-
-	$scope.cardsList = [];
 
 	$scope.successPaymentList = function(data){
 		$scope.$emit("hideLoader");
@@ -85,7 +83,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.addmode                = true;	
 			$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
 		}
-		$scope.refreshScroller('cardsList');
+		refreshCardsList();
 	};
 	//NO need to show existing cards in guest card model
 	if(!$scope.isFromGuestCard){
@@ -109,23 +107,19 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			return;
 		};
 
-		$scope.refreshScroller('cardsList');
+		refreshCardsList();
 	};
 
-	$scope.changeOnsiteCallIn = function(){
-		console.log("9u89033289r34hf43uifguig")
-		
+	$scope.changeOnsiteCallIn = function(){		
 		$scope.showCCPage = ($scope.isManual) ? true:false;
 		$scope.addmode =  ($scope.isManual && $scope.cardsList.length === 0) ? true:false;
 		$scope.showInitialScreen = ($scope.isManual) ?false :true;
-		$timeout(function() {
-			$scope.refreshScroller('cardsList');
-		}, 2000);
+		refreshCardsList();
 	};
 
 
 	$scope.showCCList = function(){
-		$scope.refreshScroller('cardsList');
+		refreshCardsList();
 		$scope.showCCPage =  true;
 		$scope.addmode = false;
 	};
