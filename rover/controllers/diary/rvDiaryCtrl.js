@@ -772,8 +772,7 @@ sntRover
 
 
  		$scope.editCancel = function() {
-	    	var props = $scope.gridProps;
-	    	console.log('removing from cancel');
+	    	var props = $scope.gridProps;	    	
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
 
 	    	$scope.resetEdit();

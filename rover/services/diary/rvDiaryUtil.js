@@ -173,8 +173,7 @@ sntRover
 					idx = i;
 					return idx;
 				}
-			}
-			console.log('in reservationIndex: '  + idx);
+			}			
 			return idx;		
 		};
 
@@ -199,8 +198,7 @@ sntRover
 		};
 
 		removeReservation = function(room, reservation) {
-			var idx = reservationIndex(room, reservation);
-			console.log('in removeReservation: ' + idx);
+			var idx = reservationIndex(room, reservation);			
 			if(idx > -1) {
 				return room.occupancy.splice(idx, 1);
 			}
@@ -231,12 +229,7 @@ sntRover
 
 			oldRoom = copyRoom(room);
 
-			console.log('nextRoom');
-			console.log(nextRoom);
-			console.log('room');
-			console.log(room);
 			if(nextRoom.id !== room.id) {
-				console.log('in first')
 				newRoom = copyRoom(nextRoom);
 
 				removeReservation(oldRoom, reservation);
@@ -254,8 +247,7 @@ sntRover
                 if(idxNewRoom > -1 && idxNewRoom < data.length) {
                     data[idxNewRoom] = newRoom;
                 }
-			} else {
-				console.log('in sec')
+			} else {				
 				updateReservation(oldRoom, reservation);
 			}
 		};
