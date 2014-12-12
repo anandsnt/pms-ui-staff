@@ -124,10 +124,10 @@ var TimelineResizeGrip = React.createClass({
 			reservation_status === "AVAILABLE" )) {
 			return true;
 		}
-		else if ( (reservation_status === "INHOUSE" || reservation_status === "CHECKING_OUT") && direction == "DEPARTURE"){
+		else if ( (reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "DEPARTURE"){
 			return true;
 		}
-		else if((reservation_status === "INHOUSE" || reservation_status === "CHECKING_OUT") && direction == "ARRIVAL"){
+		else if((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "ARRIVAL"){
 			return false;
 		}
 		return false;
