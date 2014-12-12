@@ -100,23 +100,14 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 	this.chipAndPinGetToken = function(postData){
 		var deferred = $q.defer();
 		var url = '/api/cc/get_token.json';
-		RVBaseWebSrv.postJSON(url, postData).then(function(data) {
+		RVBaseWebSrvV2.postJSON(url, postData).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
 			});	
 		return deferred.promise;
 	};
-	// this.sixPaymentSwipe = function(){
-		// var deferred = $q.defer();
-		// var url = '/api/cc/get_token';
-		// RVBaseWebSrv.getJSON(url).then(function(data) {
-			    // deferred.resolve(data);
-			// },function(data){
-			    // deferred.reject(data);
-			// });	
-		// return deferred.promise;	
-	// };
+	
 	
 	
 }]);

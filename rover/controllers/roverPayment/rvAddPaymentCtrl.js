@@ -437,10 +437,40 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"guest_id": $scope.passData.userId
 		};
 		
-		$scope.invokeApi(RVPaymentSrv.chipAndPinGetToken, {}, successSixSwipe);
+		$scope.invokeApi(RVPaymentSrv.chipAndPinGetToken, data, successSixSwipe);
 	};
 	var successSixSwipe = function(response){
-		console.log(response);
+		$scope.$emit("hideLoader");
+		var cardType = response.card_type.toLowerCase();
+		var endingWith = response.ending_with;
+		var expiryDate = response.expiry_date.slice(-2)+"/"+response.expiry_date.substring(0, 2);
+		if($scope.passData.fromBill == undefined){
+			$scope.paymentData.reservation_card.payment_method_used = "CC";
+			$scope.paymentData.reservation_card.payment_details.card_type_image = cardType+".png";
+			$scope.paymentData.reservation_card.payment_details.card_number = endingWith;
+			$scope.paymentData.reservation_card.payment_details.card_expiry = 	expiryDate;
+		} else {
+			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardType;
+			$scope.paymentData.bills[billNumber].credit_card_details.card_number = endingWith;
+			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;	
+		}
+		if($scope.dataToSave.addToGuestCard){
+				var dataToGuestList = {
+					"card_code": cardType,
+					"mli_token": endingWith,
+					"card_expiry": expiryDate,
+					"card_name": "",
+					"id": response.id,
+					"isSelected": true,
+					"is_primary":false,
+					"payment_type":"CC",
+					"payment_type_id": 1
+				};
+				$scope.cardsList.push(dataToGuestList);
+				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		};
+		$scope.closeDialog();
+		
 	};
 	var saveDataFromSwipe = function(){
 		var data 			= $scope.swipedCardDataToSave;
