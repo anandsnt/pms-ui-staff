@@ -18,6 +18,7 @@
                 <strong id="arrival-date-day" class="day">{{gridProps.filter.arrival_date.getDate()}}</strong>
                 <span id="arrival-date-month" class="month">{{gridProps.filter.arrival_date.toComponents().date.monthName}}</span>
                 <span id="arrival-date-year" class="year">{{gridProps.filter.arrival_date.getFullYear()}}</span>
+                <span ng-show="emptyDate" style="font-size: 24px; font-weight: 600; padding: 14px 0 0 15px; display: block;">Select</span>
             </div>
         </div>
         <div class="entry time">
