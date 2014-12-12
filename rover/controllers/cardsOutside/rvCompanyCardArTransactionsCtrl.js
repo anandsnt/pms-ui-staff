@@ -13,7 +13,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'showFilterFlag': 'OPEN',
 			'fromDate': $rootScope.businessDate,
 			'toDate': '',
-			'isShowPaid': ''
+			'isShowPaid': '',
+			'textQuery': '',
+			'pageNo':'1',
+			'perPage':'50'
 		};
 		
 		// In the case of new card, handle the generated id upon saving the card.
@@ -27,7 +30,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				"id": $scope.filterData.id,
 				"paid" : $scope.filterData.isShowPaid,
 				"from_date":$scope.filterData.fromDate,
-				"to_date": $scope.filterData.toDate
+				"to_date": $scope.filterData.toDate,
+				"query": $scope.filterData.textInQueryBox,
+				"page_no" : $scope.filterData.pageNo,
+				"per_page": $scope.filterData.perPage
 			};
 			return paramsToSend;
 		};
@@ -90,5 +96,15 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    });
 
 	    init();
+	    /**
+		 * function to perform filtering/request data from service in change event of query box
+		 */
+		$scope.queryEntered = function() {
+			
+			var queryText = $scope.filterData.textInQueryBox;
+			//setting first letter as captial: soumya
+			$scope.filterData.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+			fetchData();
+		}; //end of query entered
 		
 }]);
