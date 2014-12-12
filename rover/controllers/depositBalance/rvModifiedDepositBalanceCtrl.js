@@ -35,7 +35,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.depositBalanceMakePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.depositBalanceMakePaymentData.add_to_guest_card = false;
 	$scope.makePaymentButtonDisabled = true;
-	$scope.hideCancelCard = true;
 	$scope.isDisplayReference = false;
 	$scope.referanceText = "";
 	$scope.shouldShowWaiting = false;
@@ -43,6 +42,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.isAddToGuestCardVisible = false;
 	$scope.isSwipedCardSave = false;
 	$scope.isManual = false;
+	$scope.setScroller('cardsList');
+
+
+	var refreshScroll = function() {
+		$timeout(function() {
+			$scope.refreshScroller('cardsList');
+		}, 1500);
+	};
 	 
     
 	if($scope.reservationData.reservation_card.payment_method_used == "CC"){
@@ -66,17 +73,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 	$scope.changePaymentType = function(){
 		if($scope.depositBalanceMakePaymentData.payment_type == "CC"){
+
 			if($rootScope.paymentGateway != "sixpayments"){
 			
-				// $scope.shouldShowIframe 	   			 = false;	
 				$scope.shouldShowMakePaymentScreen       = false; 
-				// $scope.showAddtoGuestCard    			 = false;
-				// $scope.shouldShowExistingCards  		 = false;
 				$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 				$scope.addmode = ($scope.cardsList.length>0) ? false :true;
-				// $scope.makePaymentButtonDisabled         = false;
+				refreshScroll();
 			}
-			
 		} else {
 			$scope.shouldShowMakePaymentScreen       = true; 
 				$scope.addmode                 			 = false;
@@ -392,6 +396,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.shouldShowExistingCards  		 = true;
 		$scope.addmode                 			 = false;
 		$scope.makePaymentButtonDisabled         = false;
+		refreshCardScroll();
 	};
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.shouldShowMakePaymentScreen       = true; 
