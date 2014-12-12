@@ -32,7 +32,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
     var refreshCardsList = function() {
         $timeout(function() {
 			$scope.refreshScroller('cardsList');
-		}, 2000);
+			console.log("scrollllllllllllllllllllllllllllllllllllllllll")
+		}, 5000);
     };
 
     refreshCardsList();
@@ -76,7 +77,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		});
 
 		$scope.addmode = $scope.cardsList.length > 0 ? false:true;
-		refreshCardsList();
+		
 		//To render swiped data in the add screen
 		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			$scope.dataToSave.paymentType = "CC";
@@ -84,6 +85,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.addmode                = true;	
 			$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
 		}
+		$scope.refreshScroller('cardsList');
 	};
 	//NO need to show existing cards in guest card model
 	if(!$scope.isFromGuestCard){
@@ -103,24 +105,29 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
 			$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC") ? false: true;
-			refreshCardsList();
 		}else{
 			return;
 		};
+
+		$scope.refreshScroller('cardsList');
 	};
 
 	$scope.changeOnsiteCallIn = function(){
+		console.log("9u89033289r34hf43uifguig")
+		
 		$scope.showCCPage = ($scope.isManual) ? true:false;
 		$scope.addmode =  ($scope.isManual && $scope.cardsList.length === 0) ? true:false;
 		$scope.showInitialScreen = ($scope.isManual) ?false :true;
-		refreshCardsList();
+		$timeout(function() {
+			$scope.refreshScroller('cardsList');
+		}, 2000);
 	};
 
 
 	$scope.showCCList = function(){
+		$scope.refreshScroller('cardsList');
 		$scope.showCCPage =  true;
 		$scope.addmode = false;
-		refreshCardsList();
 	};
 
     //retrieve card type based on paymnet gateway
