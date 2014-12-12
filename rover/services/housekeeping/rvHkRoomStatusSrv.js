@@ -55,61 +55,62 @@ sntRover.service('RVHkRoomStatusSrv', [
 					perPage      : filter.perPage
 				};
 
-			// process the floors
-			if ( !filter.showAllFloors ) {
-				floor_start = filter.floorFilterStart || filter.floorFilterSingle;
-				floor_end   = filter.floorFilterEnd || filter.floorFilterSingle;
-			}
+			// if there is a search query, ignore all other filters. Reset page to 1
+			if ( filter.query ) {
+				params['query'] = filter.query;
+			} else {
 
-			// process the reservation status
-			if ( filter.vacant )   { reservation_status.push('VACANT'); };
-			if ( filter.occupied ) { reservation_status.push('OCCUPIED'); };
-			if ( filter.queued )   { reservation_status.push('QUEUED'); };
+				// process the reservation status
+				if ( filter.vacant )   { reservation_status.push('VACANT'); };
+				if ( filter.occupied ) { reservation_status.push('OCCUPIED'); };
+				if ( filter.queued )   { reservation_status.push('QUEUED'); };
 
-			// process front office status
-			if ( filter.stayover )     { front_office_status.push('STAY_OVER'); }
-			if ( filter.not_reserved ) { front_office_status.push('NOT_RESERVED'); }
-			if ( filter.arrival )      { front_office_status.push('ARRIVAL'); }
-			if ( filter.arrived )      { front_office_status.push('ARRIVED'); }
-			if ( filter.dayuse )       { front_office_status.push('DAY_USE'); }
-			if ( filter.dueout )       { front_office_status.push('DUE_OUT'); }
-			if ( filter.departed )     { front_office_status.push('DEPARTED'); }
+				// process front office status
+				if ( filter.stayover )     { front_office_status.push('STAY_OVER'); };
+				if ( filter.not_reserved ) { front_office_status.push('NOT_RESERVED'); };
+				if ( filter.arrival )      { front_office_status.push('ARRIVAL'); };
+				if ( filter.arrived )      { front_office_status.push('ARRIVED'); };
+				if ( filter.dayuse )       { front_office_status.push('DAY_USE'); };
+				if ( filter.dueout )       { front_office_status.push('DUE_OUT'); };
+				if ( filter.departed )     { front_office_status.push('DEPARTED'); };
 
-			// process house keeping status
-			if ( filter.dirty )          { house_keeping_status.push('DIRTY'); }
-			if ( filter.clean )          { house_keeping_status.push('CLEAN'); }
-			if ( filter.inspected )      { house_keeping_status.push('INSPECTED'); }
-			if ( filter.pickup )         { house_keeping_status.push('PICKUP'); }
-			if ( filter.out_of_order )   { house_keeping_status.push('OO'); }
-			if ( filter.out_of_service ) { house_keeping_status.push('OS'); }
+				// process house keeping status
+				if ( filter.dirty )          { house_keeping_status.push('DIRTY'); };
+				if ( filter.clean )          { house_keeping_status.push('CLEAN'); };
+				if ( filter.inspected )      { house_keeping_status.push('INSPECTED'); };
+				if ( filter.pickup )         { house_keeping_status.push('PICKUP'); };
+				if ( filter.out_of_order )   { house_keeping_status.push('OO'); };
+				if ( filter.out_of_service ) { house_keeping_status.push('OS'); };
 
-			// process room type ids
-			_.each(this.roomTypes, function(type) {
-				if (type.isSelected) { room_type_ids.push(type.id); };
-			});
+				// fill request param
+				if ( reservation_status.length )     { params['reservation_status']   = reservation_status; };
+				if ( front_office_status.length )    { params['front_office_status']  = front_office_status; };
+				if ( house_keeping_status.length )   { params['house_keeping_status'] = house_keeping_status; };
+				if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
+				if ( floor_start )                   { params['floor_start']          = floor_start; };
+				if ( floor_end )                     { params['floor_end']            = floor_end; };
 
-			// fill request param
-			if ( reservation_status.length )     { params['reservation_status']   = reservation_status; };
-			if ( front_office_status.length )    { params['front_office_status']  = front_office_status; };
-			if ( house_keeping_status.length )   { params['house_keeping_status'] = house_keeping_status; };
-			if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
-			if ( floor_start )                   { params['floor_start']          = floor_start; };
-			if ( floor_end )                     { params['floor_end']            = floor_end; };
+				// process the floors
+				if ( !filter.showAllFloors ) {
+					floor_start = filter.floorFilterStart || filter.floorFilterSingle;
+					floor_end   = filter.floorFilterEnd || filter.floorFilterSingle;
+				};
 
-			// filter by worktype and employee
-			if ( filter.filterByEmployeeName ) {
-				params['assignee_id'] = filter.filterByEmployeeName;
-			};
-			if ( filter.filterByWorkType ) {
-				params['work_type_id'] = filter.filterByWorkType;
-			} else if (passedParams.work_type_id) {
-				params['work_type_id'] = passedParams.work_type_id;
-				filter.filterByWorkType = passedParams.work_type_id;
-			};
+				// process room type ids
+				_.each(this.roomTypes, function(type) {
+					if (type.isSelected) { room_type_ids.push(type.id); };
+				});
 
-			// search query
-			if ( passedParams.query ) {
-				params['query'] = passedParams.query;
+				// filter by worktype and employee
+				if ( filter.filterByEmployeeName ) {
+					params['assignee_id'] = filter.filterByEmployeeName;
+				};
+				if ( filter.filterByWorkType ) {
+					params['work_type_id'] = filter.filterByWorkType;
+				} else if (passedParams.work_type_id) {
+					params['work_type_id'] = passedParams.work_type_id;
+					filter.filterByWorkType = passedParams.work_type_id;
+				};
 			};
 
 			return params;
