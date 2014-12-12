@@ -7,8 +7,10 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		defaultDate = tzIndependentDate(Date.now()),
 		fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
 		toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date,
-		fromDateOffset = _.isEmpty(fromDate) ? (new Date()).getMonth() - businessDate.getMonth() : undefined,
-		toDateOffset = _.isEmpty(toDate) ? fromDateOffset - 1 : undefined;
+		/* Removing the below lines of code as a fix for CICO-11228
+		 fromDateOffset = _.isEmpty(fromDate) ? (new Date()).getMonth() - businessDate.getMonth() : undefined,
+		 toDateOffset = _.isEmpty(toDate) ? fromDateOffset - 1 : undefined;
+		*/
 
 	$scope.setUpData = function() {		
 		$scope.fromDate = fromDate;
@@ -19,11 +21,12 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 			changeYear: true,
 			changeMonth: true,
 			yearRange: "-5:+5", //Show 5 years in past & 5 years in future
-			showCurrentAtPos: fromDateOffset,
+			// showCurrentAtPos: fromDateOffset,
 			onSelect: function(dateText, datePicker) {
-				if(fromDateOffset) { datePicker.drawMonth += fromDateOffset; 
+				/* Removing the below lines of code as a fix for CICO-11228
+				 if(fromDateOffset) { datePicker.drawMonth += fromDateOffset; 
 					$scope.fromDateOptions.showCurrentAtPos = fromDateOffset = undefined; }
-
+				*/	
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.toDate = $scope.fromDate;
 				}
@@ -34,12 +37,13 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 			firstDay: 1,
 			changeYear: true,
 			changeMonth: true,
-			showCurrentAtPos: toDateOffset,
+			// showCurrentAtPos: toDateOffset,
 			yearRange: "-5:+5",
 			onSelect: function(dateText, datePicker) {
-				if(toDateOffset) { datePicker.drawMonth += toDateOffset; 
-					$scope.toDateOptions.showCurrentAtPos = toDateOffset = undefined; }
-
+				/* Removing the below lines of code as a fix for CICO-11228
+				 if(toDateOffset) { datePicker.drawMonth += toDateOffset; 
+				 	$scope.toDateOptions.showCurrentAtPos = toDateOffset = undefined; }
+				*/ 
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.fromDate = $scope.toDate;
 				}
