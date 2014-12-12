@@ -450,7 +450,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     } else if(occupancy[m.status]   === 'checkedout') {
                         occupancy[m.status]         = 'check-out';
                     } else if(occupancy[m.status]   === 'checking_out') {
-                        occupancy[m.status]         = 'check-out';
+                        occupancy[m.status]         = 'departed';
                     } else if(occupancy[m.status]    ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
