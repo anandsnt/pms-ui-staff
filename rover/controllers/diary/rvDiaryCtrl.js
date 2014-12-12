@@ -77,10 +77,7 @@ sntRover
 	    	dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
 	    	minDate: minDate,
-	    	yearRange: '-0:',
-	    	beforeShow: function(input, inst) {
-	    	    $scope.emptyDate = false;
-	    	},
+	    	yearRange: '-0:'
 	    };
 
 	    _.extend($scope, payload);
@@ -1013,12 +1010,8 @@ sntRover
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
 			filter 	= props.filter,
-			arrival_ms = _.size(filter.arrival_date) > 1 ? filter.arrival_date.getTime() : false,
+			arrival_ms = filter.arrival_date.getTime(),
 			time_set; 
-
-		if ( !arrival_ms ) {
-			return;
-		};
 	
 		if(newValue !== oldValue) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
@@ -1325,9 +1318,8 @@ sntRover
 				time_set; 
 
 			var callback = function() {
-				$scope.gridProps.filter.arrival_time = "";
-				$scope.gridProps.filter.arrival_date = {};
-				$scope.emptyDate = true;
+				$scope.gridProps.filter.arrival_time = '';
+				$scope.gridProps.filter.arrival_date = new tzIndependentDate($rootScope.businessDate);
 
 				$scope.gridProps.filter.rate_type = "Standard";
 				$scope.gridProps.filter.room_type = "";
@@ -1341,9 +1333,6 @@ sntRover
 			};
 		
 	        time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
-
-	        console.log(arrival_ms);
-	        console.log(time_set);
 
 	        $scope.gridProps.display = util.deepCopy(time_set.display);
 	    	
