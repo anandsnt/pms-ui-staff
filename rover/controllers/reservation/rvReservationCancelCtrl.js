@@ -292,21 +292,35 @@
 				"bill_number": 1,
 				"payment_type": $scope.cancellationData.paymentType,
 				"amount": $scope.ngDialogData.penalty,
-				"payment_type_id":($scope.cancellationData.paymentType === 'CC') ? $scope.cancellationData.selectedCard :null
+				"payment_type_id":($scope.cancellationData.paymentType === 'CC' && $scope.cancellationData.selectedCard !== -1) ? $scope.cancellationData.selectedCard :null
 			},
 			"reservation_id":$scope.passData.reservationId
 		};
-	// add to guest card only if new card is added and checkbox is selected
-	if($scope.newCardAdded){
-		dataToSrv.postData.add_to_guest_card =  $scope.cancellationData.addToGuestCard;
-	}
-	else{
-		dataToSrv.postData.add_to_guest_card =  false;
-	};
-	if($scope.isDisplayReference){
-		dataToSrv.postData.reference_text = $scope.referanceText;
-	};
-	$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment);
+		// add to guest card only if new card is added and checkbox is selected
+		if($scope.newCardAdded){
+			dataToSrv.postData.add_to_guest_card =  $scope.cancellationData.addToGuestCard;
+		}
+		else{
+			dataToSrv.postData.add_to_guest_card =  false;
+		};
+		if($scope.isDisplayReference){
+			dataToSrv.postData.reference_text = $scope.referanceText;
+		};
+		if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual){
+			dataToSrv.postData.is_emv_request = true;
+			$scope.shouldShowWaiting = true;
+			RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+				$scope.shouldShowWaiting = false;
+				successPayment(response);
+			},function(error){
+				$scope.errorMessage = error;
+				$scope.shouldShowWaiting = false;
+			});
+			
+		} else {
+			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
+		}
+		//$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment);
 	};
 
 	$scope.applyPenalty = function() {

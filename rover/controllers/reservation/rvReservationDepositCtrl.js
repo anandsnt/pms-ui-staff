@@ -352,7 +352,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 					"bill_number": 1,
 					"payment_type": $scope.depositData.paymentType,
 					"amount": $scope.reservationData.depositAmount,
-					"payment_type_id":($scope.depositData.paymentType === 'CC') ? $scope.depositData.selectedCard :null
+					"payment_type_id":($scope.depositData.paymentType === 'CC' && $scope.depositData.selectedCard !== -1) ? $scope.depositData.selectedCard :null
 				},
 				"reservation_id": $stateParams.id
 			};
@@ -379,10 +379,11 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.shouldShowWaiting = true;
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
 					$scope.shouldShowWaiting = false;
-					successPayment();
+					successPayment(response);
 				},function(error){
-					$scope.errorMessage = error;
+				//	$scope.errorMessage = error;
 					$scope.shouldShowWaiting = false;
+					paymentFailed();
 				});
 				
 			} else {

@@ -383,12 +383,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			}
 			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual){
 				dataToSrv.postData.is_emv_request = true;
-				
-				
-				
 				$scope.shouldShowWaiting = true;
-
-				
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
 					$scope.shouldShowWaiting = false;
 					$scope.closeDialog();
@@ -396,13 +391,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					$scope.errorMessage = error;
 					$scope.shouldShowWaiting = false;
 				});
-// 				
-				// setTimeout(function(){
-					// ngDialog.close("firstDialog");
-				// }, 3000);
-				
-				
-				
 				
 			} else {
 				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
