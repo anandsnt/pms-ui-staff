@@ -1,13 +1,33 @@
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout',
-	function($scope, RVCompanyCardSrv, $timeout) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.filterData = {};
-		$scope.filterData.filterActive = true;
-		$scope.filterData.showFilterFlag = 'OPEN';
+		$scope.filterData = {
+			'id': ($stateParams.id != 'add') ? $stateParams.id : '',
+			'filterActive': true,
+			'showFilterFlag': 'OPEN',
+			'fromDate': $rootScope.businessDate,
+			'toDate': '',
+			'isShowPaid': ''
+		};
 		
-
+		// In the case of new card, handle the generated id upon saving the card.
+		$scope.$on("IDGENERATED", function(id) {
+			console.log("IDGENERATED");
+			$scope.filterData.id = $scope.contactInformation.id;
+		});
+		// Get parameters for fetch data
+		var getParamsToSend = function(){
+			var paramsToSend = {
+				"id": $scope.filterData.id,
+				"paid" : $scope.filterData.isShowPaid,
+				"from_date":$scope.filterData.fromDate,
+				"to_date": $scope.filterData.toDate
+			};
+			return paramsToSend;
+		};
+		// To fetch data for ar transactions
 		var fetchData = function(params){
 			var arAccountsFetchSuccess = function(data) {
 			    $scope.$emit('hideLoader');
@@ -19,61 +39,50 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', 'RVCompanyCard
 			    $scope.$emit('hideLoader');
 			};
 
+			var params = getParamsToSend();
+			console.log(params);
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
 		};
-
-		var initParams = {
-			"id": 17,
-			"paid" : false,
-			"from_date":"",
-			"to_date": ""
-		};
-
-		fetchData( initParams );
-
-		// $scope.setScroller('cardAccountsScroller');
-
-		// var refreshScroller = function() {
-		// 	$timeout(function() {
-		// 		if ($scope.myScroll && $scope.myScroll['cardAccountsScroller']) {
-		// 			$scope.myScroll['cardAccountsScroller'].refresh();
-		// 		}
-		// 		$scope.refreshScroller('cardAccountsScroller');
-		// 	}, 500)
-		// };
-
-		// $scope.$on('refreshAccountsScroll', refreshScroller);
-
-
+		// To click filter button
 		$scope.clickedFilter = function(){
 			$scope.filterData.filterActive = !$scope.filterData.filterActive;
 		};
 
-		var showAll = function(){
-			var params = {
-				"id": 17,
-				"paid" : true,
-				"from_date":"",
-				"to_date": ""
-			};
-			fetchData( params );
-		};
-
-		var showOnlyOpen = function(){
-			var params = {
-				"id": 17,
-				"paid" : false,
-				"from_date":"",
-				"to_date": ""
-			};
-			fetchData( params );
-		};
-
+		// To handle show filter changes
 		$scope.chagedShowFilter = function(){
-			console.log($scope.filterData.showFilterFlag);
-			if($scope.filterData.showFilterFlag == 'ALL') showAll();
-			else showOnlyOpen();
+			if($scope.filterData.showFilterFlag == 'ALL')
+				$scope.filterData.isShowPaid = '';
+			else
+				$scope.filterData.isShowPaid = false;
+			fetchData();
 		};
 
-	}
-]);
+		/* Handling different date picker clicks */
+		$scope.clickedFromDate = function(){
+			$scope.popupCalendar('FROM');
+		};
+		$scope.clickedToDate = function(){
+			$scope.popupCalendar('TO');
+		};
+		// Show calendar popup.
+		$scope.popupCalendar = function(clickedOn) {
+			$scope.clickedOn = clickedOn;
+	      	ngDialog.open({
+	      		template:'/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+		        controller: 'RVArTransactionsDatePickerController',
+		        className: '',
+		        scope: $scope
+	      	});
+	    };
+
+	    // To handle from date change
+	    $scope.$on('fromDateChanged',function(){
+	        fetchData();
+	    });
+
+		// To handle to date change
+	    $scope.$on('toDateChanged',function(){
+	        fetchData();
+	    });
+		
+}]);
