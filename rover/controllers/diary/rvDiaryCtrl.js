@@ -976,7 +976,7 @@ sntRover
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
 			filter 	= props.filter,
-			arrival_ms = _.size(filter.arrival_date) > 1 ? filter.arrival_date.getTime() : false,
+			arrival_ms = filter.arrival_date instanceof Date ? filter.arrival_date.getTime() : false,
 			time_set; 
 
 		if ( !arrival_ms ) {

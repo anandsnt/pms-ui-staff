@@ -20,7 +20,9 @@ var Timeline = React.createClass({
 
 				time = (time > 23) ? 0 : time;
 			}
-		})(); 
+		})();
+
+		var shortDate = props.filter.arrival_date instanceof Date ? props.filter.arrival_date.toComponents().date.toShortDateString() : '';
 
 		/*CREATE TIMELINE*/
 		for(var i = 0, len = display.hours; i < len; i++) {
@@ -29,6 +31,18 @@ var Timeline = React.createClass({
 			interval_spans.push(React.DOM.span({
 				className: 'hour-display'
 			}, segment_hour_display[i]));
+
+			if ( i % 6 == 0 ) {
+				interval_spans.push(React.DOM.span({
+					className: 'hour-display',
+					style: {
+						'bottom'         : '45px',
+						'width'          : 'auto',
+						'text-transform' : 'uppercase',
+						'line-height'    : '1'
+					}
+				}, shortDate));
+			};
 
 			for(var j = 0; j < display.intervals_per_hour; j++) {
 				interval_spans.push(React.DOM.span({
