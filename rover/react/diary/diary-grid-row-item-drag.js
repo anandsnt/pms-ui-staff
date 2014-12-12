@@ -71,6 +71,9 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
+		if(props.currentDragItem.reservation_status !== 'check-in'){
+			return;
+		}
 		
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
