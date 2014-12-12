@@ -127,6 +127,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	$scope.showGuestCreditCardList = function(){
 		$scope.showCCPage = true;	
+		refreshCardsList();
 	};
 
 	var checkReferencetextAvailable = function(){
@@ -148,6 +149,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	$scope.changeOnsiteCallIn = function(){
 		 $scope.isManual ? $scope.showGuestCreditCardList() : "";
+		 refreshCardsList();
 	};
 
 	$scope.showHideCreditCard = function(){
@@ -155,6 +157,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		if($scope.saveData.paymentType == "CC"){
 			if($scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
+				 refreshCardsList();
 			}			
 		} else {
 			$scope.showCreditCardInfo = false;

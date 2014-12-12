@@ -1324,7 +1324,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                      $scope.creditCardTypes = item.values;
                   };
                 });
-                $scope.fetchDepositDetails();
             };
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
         };
