@@ -281,6 +281,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchArAccountsList = function(params){
 			var deferred = $q.defer();
+			//var url = "api/accounts/"+params.id+"/ar_transactions?paid="+params.paid+"&from_date="+params.from_date+"&to_date="+params.from_date;
     		var url = "api/accounts/"+params.id+"/bills?paid="+params.paid+"&from_date="+params.from_date+"&to_date="+params.from_date;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
