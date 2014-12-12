@@ -570,7 +570,6 @@ sntRover
 	    }
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
-	    	console.log('moving');
 	    	$scope.toggleRows($scope.gridProps.filter.show_all_rooms, current_scroll_pos);
 	    };
 
@@ -792,8 +791,6 @@ sntRover
 
 	var successCallBackOfAvailabilityFetching = function(data, successParams){
 		var row_item_data;		
-
-		console.log(data);
 
 		if(data.length) {
 			row_item_data 	= data[0];					
@@ -1299,9 +1296,6 @@ sntRover
 			};
 		
 	        time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
-
-	        console.log(arrival_ms);
-	        console.log(time_set);
 
 	        $scope.gridProps.display = util.deepCopy(time_set.display);
 	    	
