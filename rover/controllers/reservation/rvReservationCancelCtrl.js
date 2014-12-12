@@ -51,6 +51,19 @@
 				}
 			};
 
+			// CICO-11591 : To show or hide fees calculation details.
+			$scope.isShowFees = function(){
+				var isShowFees = false;
+				var feesData = $scope.feeData;
+				if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
+					isShowFees = false;
+				}
+				else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
+					isShowFees = true;
+				}
+				return isShowFees;
+			};
+
 
 			$scope.changeOnsiteCallIn = function(){
 				$scope.isManual ? $scope.showCC = true : "";

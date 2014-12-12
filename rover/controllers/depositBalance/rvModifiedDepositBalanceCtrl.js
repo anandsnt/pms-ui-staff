@@ -153,7 +153,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
 			isShowFees = false;
 		}
-		else if((feesData.defaultAmount  > feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
+		else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
 			isShowFees = true;
 		}
 		return isShowFees;

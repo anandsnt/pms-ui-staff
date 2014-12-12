@@ -118,14 +118,19 @@ var TimelineResizeGrip = React.createClass({
 			original_item = 		state.currentResizeItem,
 			direction = 			props.itemProp.toUpperCase(),
 			reservation_status = 	original_item.reservation_status.toUpperCase();
+		console.log('reservation_status');
+		console.log(reservation_status);
 		if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
 			reservation_status === "AVAILABLE" )) {
 			return true;
 		}
-		else if(direction == "ARRIVAL"){
+		else if ( (reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "DEPARTURE"){
+			return true;
+		}
+		else if((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "ARRIVAL"){
 			return false;
 		}
-		return true;
+		return false;
 	},	
 	getDefaultProps: function() {
 		return {
