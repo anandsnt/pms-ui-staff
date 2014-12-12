@@ -548,8 +548,8 @@ sntRover
 	    	if(avData.new_rate_amount == null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
 	    	}	    	
-	    	this.edit.originalRowItem.old_price = avData.old_rate_amount;
-	    	this.currentResizeItemRow.new_price = avData.new_rate_amount;
+	    	this.edit.originalRowItem.old_price = parseFloat(avData.old_rate_amount);
+	    	this.currentResizeItemRow.new_price = parseFloat(avData.new_rate_amount);
 	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
 	    	this.currentResizeItemRow.departureTime = successParams.end_time;
 	    	this.currentResizeItemRow.departureDate = successParams.end_date.toComponents().date.toDateString();
