@@ -50,6 +50,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		// reset all the filters
+		if ( RVHkRoomStatusSrv.currentFilters.page < 1 ) {
+			RVHkRoomStatusSrv.currentFilters.page = 1;
+		};
 		$scope.currentFilters = angular.copy(RVHkRoomStatusSrv.currentFilters);
 
 		// The filters should be re initialized if we are navigating from dashborad to search
@@ -57,6 +60,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus')
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
+				
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
 				$scope.currentFilters = angular.copy(RVHkRoomStatusSrv.currentFilters);
 
@@ -95,7 +99,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.disableNextBtn     = true;
 
 		$scope.filterOpen         = false;
-		$scope.query              = '';
+		$scope.query              = $scope.currentFilters.query;
 		$scope.noResultsFound     = 0;
 
 		$scope.isStandAlone       = $rootScope.isStandAlone;
@@ -129,9 +133,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_page++;
 			$_updateFilters('page', $_page);
 
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-				businessDate: $rootScope.businessDate,
-			}, $_fetchRoomListCallback);
+			$_callRoomsApi();
 		};
 
 		$scope.loadPrevPage = function() {
@@ -142,9 +144,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_page--;
 			$_updateFilters('page', $_page);
 
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-				businessDate: $rootScope.businessDate,
-			}, $_fetchRoomListCallback);
+			$_callRoomsApi();
 		};
 
 		// store the current room list scroll position
