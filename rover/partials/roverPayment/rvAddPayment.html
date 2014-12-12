@@ -57,6 +57,7 @@
 			
 
         <!-- Payment method options -->
+        {{showCCPage}}=={{dataToSave.paymentType}}**{{isNewCardAdded}}>>{{isFromGuestCard}}
         <div class="holder" ng-show="!showCCPage && dataToSave.paymentType === 'CC' && isNewCardAdded && !isFromGuestCard">
         	<div class="entry full-width" >
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
