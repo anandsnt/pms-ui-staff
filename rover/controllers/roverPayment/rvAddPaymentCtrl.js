@@ -35,6 +35,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		}, 2000);
     };
 
+    refreshCardsList();
+
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
 		$scope.renderData = data;
@@ -118,6 +120,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.showCCList = function(){
 		$scope.showCCPage =  true;
 		$scope.addmode = false;
+		refreshCardsList();
 	};
 
     //retrieve card type based on paymnet gateway
