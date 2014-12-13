@@ -132,7 +132,6 @@ var DiaryContent = React.createClass({
         	if(scrollToPos < 0) {
         		scrollToPos = 0;
         	}
-        	console.log(scrollToPos);
             self.state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
             self.state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
             self.state.angular_evt.onScrollEnd(Math.abs(self.state.iscroll.grid.x) / self.state.display.px_per_ms + self.state.display.x_n);
@@ -198,7 +197,17 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
   			this.setState({
   				display: nextProps.display
-  			});  			  			
+  			});
+
+  			setTimeout(function() {
+  				var scrollToPos = (this.state.display.x_origin - this.state.display.x_n - 7200000) * this.state.display.px_per_ms;
+  				if(scrollToPos < 0) {
+  					scrollToPos = 0;
+  				}
+  			    this.state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
+  			    this.state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
+  			    this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n);
+  			}.bind(this), 1000);		  			
   		}
 
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {

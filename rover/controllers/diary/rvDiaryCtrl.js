@@ -126,13 +126,12 @@ sntRover
                 }
             } else if ( mm == 15 || mm == 30 || mm == 45 ) {
                 mm += 15;
+            } else if ( Math.max(mm, 15) == 15 ) {
+                mm = 15;
+            } else if ( Math.max(mm, 30) == 30 ) {
+                mm = 30;
             } else {
-                /*do {
-                    mm += 1;
-                    if ( mm == 15 || mm == 30 || mm == 45 ) {
-                        break;
-                    }
-                } while ( mm != 15 || mm != 30 || mm != 45 );*/
+                mm = 45;
             };
 
             var date         = $rootScope.businessDate,
@@ -146,7 +145,7 @@ sntRover
             return {
         		'start_date'   : start_date,
         		'__start_date' : __start_date,
-        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + mm
+        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + (mm == 0 ? '00' : mm)
         	}
         };
 
@@ -820,8 +819,6 @@ sntRover
 	var successCallBackOfAvailabilityFetching = function(data, successParams){
 		var row_item_data;		
 
-		console.log(data);
-
 		if(data.length) {
 			row_item_data 	= data[0];					
 			if(this.availability.resize.current_arrival_time !== null && 
@@ -1010,6 +1007,8 @@ sntRover
 			filter = props.filter,
 			arrival_ms = !!_.size($_resetObj) ? $_resetObj.start_date : filter.arrival_date.getTime(),
 			time_set;
+
+		console.log( new Date(arrival_ms) );
 	
 		if(newValue !== oldValue) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
