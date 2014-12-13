@@ -115,7 +115,7 @@
 			        <label for="reference">Reference</label>
 			        <input name="reference" id="reference" ng-model="referanceText" type="text" />
 			    </div>
-			    <div class="entry full-width add-to-guest payment-checkbox-container" style="float:left;" ng-show="isAddToGuestCardVisible && !depositPaidSuccesFully">
+			    <div class="entry full-width add-to-guest payment-checkbox-container" style="float:left;" ng-show="isAddToGuestCardVisible && !depositPaidSuccesFully && shouldShowMakePaymentScreen">
 			        <label class="checkbox add-to-guest" ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}" >
 			        	<span class="icon-form icon-checkbox" ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}"></span>
 						<input type="checkbox" ng-model="depositBalanceMakePaymentData.add_to_guest_card" >

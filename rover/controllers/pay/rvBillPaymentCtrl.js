@@ -60,7 +60,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			isShowFees = false;
 		}
 		else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
-			isShowFees = true;
+			isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.saveData.paymentType !=='CC') && $scope.saveData.paymentType !=="") ? true :false;
 		}
 		return isShowFees;
 	};
