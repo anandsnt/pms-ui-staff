@@ -38,6 +38,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				"page_no" : $scope.filterData.pageNo,
 				"per_page": $scope.filterData.perPage
 			};
+			//CICO-10323. for hotels with single digit search, 
+			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
+			if($rootScope.isSingleDigitSearch && 
+				!isNaN($scope.filterData.textInQueryBox) && 
+				$scope.filterData.textInQueryBox.length < 3){
+				
+				paramsToSend.room_search = true;
+			}
 			return paramsToSend;
 		};
 		// To fetch data for ar transactions
@@ -117,7 +125,27 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			var queryText = $scope.filterData.textInQueryBox;
 			//setting first letter as captial
 			$scope.filterData.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+			
+			if (queryText.length < 3 && isCharacterWithSingleDigit(queryText)) {
+				return false;
+			}
 			fetchData();
+		
 		}; //end of query entered
+
+		/**
+		* Single digit search done based on the settings in admin
+		* The single digit search is done only for numeric characters.
+		* CICO-10323 
+		*/
+		function isCharacterWithSingleDigit(searchTerm){
+			if($rootScope.isSingleDigitSearch){
+				return isNaN(searchTerm);
+			} else {
+				return true;
+			}
+		};
+
+		
 		
 }]);
