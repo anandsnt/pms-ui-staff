@@ -76,6 +76,15 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			};					
 		});				
 	};
+
+	var checkReferencetextAvailableFornonCC = function(){
+		angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
+			console.log(value.name+"----------"+$scope.depositBalanceMakePaymentData.payment_type+"----"+value.is_display_reference)
+			if(value.name == $scope.depositBalanceMakePaymentData.payment_type){
+				$scope.isDisplayReference =  (value.is_display_reference)? true:false;
+				}
+		});		
+	};
 	$scope.changePaymentType = function(){
 		if($scope.depositBalanceMakePaymentData.payment_type == "CC"){
 
@@ -87,10 +96,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				refreshScroll();
 			}
 		} else {
-			$scope.shouldShowMakePaymentScreen       = true; 
+				$scope.shouldShowMakePaymentScreen       = true; 
 				$scope.addmode                 			 = false;
 				$scope.shouldShowExistingCards = false;
 				$scope.shouldCardAvailable 				 = false;
+				checkReferencetextAvailableFornonCC();
 		}
 	};
 	$scope.changeOnsiteCallIn = function(){
