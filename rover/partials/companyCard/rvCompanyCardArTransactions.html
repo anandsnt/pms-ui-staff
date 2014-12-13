@@ -83,7 +83,7 @@
         <div class="wrapper">
 
             <ul class="search-results" ng-repeat="transaction in arTransactionDetails.ar_transactions">
-                <li class="reservation transaction">
+                <li class="reservation transaction" ng-click="goToReservationDetails(transaction.reservation_id, transaction.reservation_confirm_no)">
                     <!-- Not using <a> here since 1) you don't use hrefs at all and 2) it'll interfere with the checkbox -->
                     <div class="faux-anchor" class="guest-{reservation-status}"> <!-- see options in {dashboard/front-desk.html} -->
 

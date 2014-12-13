@@ -8,7 +8,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			fetchData();
 			$scope.setScroller('ar-transaction-list');
 		};
-		
+
 		// Initializing filter data
 		$scope.filterData = {
 			'id': $scope.contactInformation.id,
@@ -152,6 +152,16 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			}
 		};
 
-		
+		/**
+		 * function to execute on clicking on each result
+		 */
+		$scope.goToReservationDetails = function(reservationID, confirmationID) {
+
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+				id: reservationID,
+				confirmationId: confirmationID,
+				isrefresh: true
+			});
+		};
 		
 }]);
