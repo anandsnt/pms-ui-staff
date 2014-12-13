@@ -40,37 +40,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		$scope.selectAdditional = function() {
 			ngDialog.close();
 		};
-
-		$scope.reserveRoom = function(nextRoom, occupancy){
-
-			var dataToPassConfirmScreen = {};
-			dataToPassConfirmScreen.arrival_date = nextRoom.arrivalDate;
-			dataToPassConfirmScreen.arrival_time = nextRoom.arrivalTime;
-			
-			dataToPassConfirmScreen.departure_date = nextRoom.departureDate;
-			dataToPassConfirmScreen.departure_time = nextRoom.departureTime;			
-			var rooms = {
-				room_id: next.room.id,
-				rateId:  next.room.rate_id,
-				amount: roomXfer.next.room.new_price,
-				reservation_id: next.occupancy.reservation_id,
-				confirmation_id: next.occupancy.confirmation_number,
-				numAdults: next.occupancy.numAdults, 	
-	    		numChildren : next.occupancy.numChildren,
-	    		numInfants 	: next.occupancy.numChildren,
-	    		guest_card_id: next.occupancy.guest_card_id,
-	    		company_card_id: next.occupancy.company_card_id,
-	    		travel_agent_id: next.occupancy.travel_agent_id,
-			}
-			dataToPassConfirmScreen.rooms = [];
-			dataToPassConfirmScreen.rooms.push(rooms);
-			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
-			$scope.closeDialog();
-			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
-				reservation: 'HOURLY',
-				mode:'EDIT_HOURLY'
-			})
-		};
+		
 
 		$scope.confirm = function() {
 			$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);
