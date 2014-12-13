@@ -56,7 +56,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.refreshScroller('cardsList');
 		}, 1500);
 	};
-	 
+	var setMakePaymentStatus = function(){
+		$scope.makePaymentButtonDisabled = ($scope.depositBalanceMakePaymentData.payment_type === '' || $scope.depositBalanceMakePaymentData.payment_type === null) ? true:false;
+	};
+	setMakePaymentStatus();
     
 	if($scope.reservationData.reservation_card.payment_method_used == "CC"){
 		$scope.shouldCardAvailable 				 = true;
@@ -70,6 +73,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
     	$scope.shouldCardAvailable = false;
     	$scope.makePaymentButtonDisabled = false;
     }
+
 	var checkReferencetextAvailableForCC = function(){
 		angular.forEach($scope.depositBalanceData.data.credit_card_types, function(value, key) {
 			if($scope.depositBalanceMakePaymentData.card_code.toUpperCase() === value.cardcode){
@@ -80,17 +84,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 	var checkReferencetextAvailableFornonCC = function(){
 		angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
-			console.log(value.name+"----------"+$scope.depositBalanceMakePaymentData.payment_type+"----"+value.is_display_reference)
 			if(value.name == $scope.depositBalanceMakePaymentData.payment_type){
 				$scope.isDisplayReference =  (value.is_display_reference)? true:false;
 				}
 		});		
 	};
 	$scope.changePaymentType = function(){
-		if($scope.depositBalanceMakePaymentData.payment_type == "CC"){
-
-			if($rootScope.paymentGateway != "sixpayments"){
-			
+		if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
+			if($rootScope.paymentGateway != "sixpayments"){			
 				$scope.shouldShowMakePaymentScreen       = false; 
 				$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 				$scope.addmode = ($scope.cardsList.length>0) ? false :true;
@@ -102,7 +103,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.shouldShowExistingCards = false;
 				$scope.shouldCardAvailable 				 = false;
 				checkReferencetextAvailableFornonCC();
-		}
+		};
+		setMakePaymentStatus();
 	};
 	$scope.changeOnsiteCallIn = function(){
 		$scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false:true;
@@ -249,18 +251,18 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * call make payment API on clicks select payment
 	 */
 	$scope.clickedMakePayment = function(){
-
-
 			
 			var dataToSrv = {
 				"postData": {
 					"payment_type": $scope.depositBalanceMakePaymentData.payment_type,
 					"amount": $scope.depositBalanceMakePaymentData.amount,
-					"payment_type_id": $scope.paymentId,
-					"credit_card_type" : $scope.depositBalanceMakePaymentData.card_code.toUpperCase(),
+					"payment_type_id": $scope.paymentId
 				},
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
+			if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
+				dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase()
+			}
 			if($scope.isAddToGuestCardVisible){
 			  dataToSrv.postData.add_to_guest_card	= $scope.depositBalanceMakePaymentData.add_to_guest_card;
 			}
@@ -273,22 +275,22 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				if($scope.feeData.feesInfo)
 					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
-		
-			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type == "CC"){
-				dataToSrv.postData.is_emv_request = true;
-				$scope.shouldShowWaiting = true;
-				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
-					$scope.shouldShowWaiting = false;
-					$scope.closeDialog();
-				},function(error){
-					$scope.errorMessage = error;
-					$scope.shouldShowWaiting = false;
-				});
-				
-			} else {
-				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
-			}
-			
+			if(!$scope.makePaymentButtonDisabled){
+				if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type == "CC"){
+					dataToSrv.postData.is_emv_request = true;
+					$scope.shouldShowWaiting = true;
+					RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+						$scope.shouldShowWaiting = false;
+						$scope.closeDialog();
+					},function(error){
+						$scope.errorMessage = error;
+						$scope.shouldShowWaiting = false;
+					});
+					
+				} else {
+					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
+				}
+			};		
 
 	};
 	/*
