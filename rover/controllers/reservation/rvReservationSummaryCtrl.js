@@ -173,7 +173,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"payment_type": data.payment_name
 				};
 			};
-			console.log(dataToGuestList)
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
 
@@ -275,7 +274,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				onPaymentFailure = function(errorMessage) {
 					$scope.depositData.attempted = true;
 					$scope.depositData.depositAttemptFailure = true;
-					$scope.errorMessage = errorMessage;
+					// $scope.errorMessage = errorMessage;
 					$scope.$emit('hideLoader');
 				};
 
@@ -303,8 +302,28 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.checkReferencetextAvailable()) {
 				dataToMakePaymentApi.postData.reference_text = $scope.reservationData.referanceText;
 			};
-
-			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToMakePaymentApi, onPaymentSuccess, onPaymentFailure);
+			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.reservationData.paymentType.type.value == "CC"){
+				dataToMakePaymentApi.postData.is_emv_request = true;
+			//	$scope.shouldShowWaiting = true;
+				ngDialog.open({
+					template: '/assets/partials/reservation/rvWaitingDialog.html',
+					className: 'ngdialog-theme-default',
+					closeByDocument: false,
+					scope: $scope
+				});
+				RVPaymentSrv.submitPaymentOnBill(dataToMakePaymentApi).then(function(response) {
+					//$scope.shouldShowWaiting = false;
+					$scope.closeDialog();
+					onPaymentSuccess(response);
+				},function(error){
+					onPaymentFailure(error);
+					$scope.closeDialog();
+					//$scope.shouldShowWaiting = false;
+				});
+				
+			} else {
+				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToMakePaymentApi, onPaymentSuccess, onPaymentFailure);
+			}
 
 		};
 
