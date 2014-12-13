@@ -273,7 +273,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.isAddNewCard = false;
 			$scope.errorMessage = "";
 			$scope.$broadcast("clearCardContactErrorMessage");
-			$scope.$broadcast("IDGENERATED",{ id:$scope.contactInformation.id });
+			$scope.$broadcast("IDGENERATED",{ 'id': data.id });
 		};
 
 		/**

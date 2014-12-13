@@ -2,24 +2,20 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
+		console.log("ID = "+$scope.contactInformation.id);
 
 		$scope.filterData = {
-			'id': ($stateParams.id != 'add') ? $stateParams.id : '',
+			'id': $scope.contactInformation.id,
 			'filterActive': true,
 			'showFilterFlag': 'OPEN',
 			'fromDate': $rootScope.businessDate,
 			'toDate': '',
+			'textInQueryBox':'',
 			'isShowPaid': '',
-			'textQuery': '',
 			'pageNo':'1',
 			'perPage':'50'
 		};
 		
-		// In the case of new card, handle the generated id upon saving the card.
-		$scope.$on("IDGENERATED", function(id) {
-			console.log("IDGENERATED");
-			$scope.filterData.id = $scope.contactInformation.id;
-		});
 		// Get parameters for fetch data
 		var getParamsToSend = function(){
 			var paramsToSend = {
@@ -33,6 +29,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			};
 			return paramsToSend;
 		};
+
 		// To fetch data for ar transactions
 		var fetchData = function(params){
 			var arAccountsFetchSuccess = function(data) {
@@ -47,8 +44,20 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			var params = getParamsToSend();
 			console.log(params);
-			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
+			if(typeof params.id != 'undefined')
+				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
 		};
+
+		// In the case of new card, handle the generated id upon saving the card.
+		$scope.$on("IDGENERATED", function(event,data) {
+			console.log("IDGENERATED = "+data.id);
+			$scope.filterData.id = data.id;
+			fetchData();
+		});
+
+		// Fetching data initially
+		fetchData();
+
 		// To click filter button
 		$scope.clickedFilter = function(){
 			$scope.filterData.filterActive = !$scope.filterData.filterActive;
