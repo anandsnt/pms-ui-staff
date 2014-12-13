@@ -34,7 +34,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		next.arrivalDate 		= newArrivalDateComp.date.day + ' ' + newArrivalDateComp.date.month + ' ' + newArrivalDateComp.date.year;
 		next.departureDate 		= newDepartureDateComp.date.day + ' ' + newDepartureDateComp.date.month + ' ' + newDepartureDateComp.date.year;
 
-		$scope.price = roomXfer.next.room.new_price - roomXfer.current.room.old_price;
+		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
 
 
 		$scope.selectAdditional = function() {
@@ -61,9 +61,15 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 	    		guest_card_id: next.occupancy.guest_card_id,
 	    		company_card_id: next.occupancy.company_card_id,
 	    		travel_agent_id: next.occupancy.travel_agent_id,
+	    		payment: {
+	    			payment_type: next.occupancy.payment_type,
+	    			payment_method_used: next.occupancy.payment_method_used,
+	    			payment_method_description: next.occupancy.payment_method_description
+	    		}
 			}
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
+
 			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
 			$scope.closeDialog();
 			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
