@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1653,9 +1653,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
                     $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
-                    $scope.$emit('hideLoader');
 
+
+
+                    $scope.$broadcast('PROMPTCARDENTRY');
+
+
+                    $scope.$emit('hideLoader');
                     that.attachCompanyTACardRoutings();
+
                     if (nextState) {
                         if (!nextStateParameters) {
                             nextStateParameters = {};

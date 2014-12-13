@@ -31,7 +31,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					}
 					if (searchData.company.id != null) {
 						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
-							$scope.switchCard('company-card');
+							if ($stateParams.reservation && $stateParams.reservation != 'HOURLY' && $stateParams.mode && $stateParams.mode != 'OTHER') {
+								$scope.switchCard('company-card');
+							}
 						}
 						$scope.reservationDetails.companyCard.id = searchData.company.id;
 						$scope.initCompanyCard({
@@ -40,7 +42,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					}
 					if (searchData.travelAgent.id != null) {
 						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
-							$scope.switchCard('travel-agent-card');
+							if ($stateParams.reservation && $stateParams.reservation != 'HOURLY' && $stateParams.mode && $stateParams.mode != 'OTHER') {
+								$scope.switchCard('travel-agent-card');
+							}
 						}
 						$scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
 						$scope.initTravelAgentCard({
@@ -925,7 +929,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		});
 
 		$scope.$on('PROMPTCARDENTRY', function() {
-			$scope.openGuestCard();
+			if (!$scope.reservationDetails.guestCard.id) {
+				$scope.openGuestCard();
+			}
 		});
 
 
