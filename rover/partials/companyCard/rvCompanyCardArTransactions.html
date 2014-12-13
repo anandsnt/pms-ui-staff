@@ -15,12 +15,12 @@
                         <option ng-selected="filterData.showFilterFlag=='OPEN'" value="OPEN">Show Open Balance</option>
                     </select>
                 </div>
-            </div>
+            </div> 
             <div class="entry search">
                 <button ng-click="filterData.textInQueryBox = ''; $event.preventDefault(); "  ng-class="{'visible': escapeNull(filterData.textInQueryBox) !='' }" class="clear-query">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <button ng-click="queryEntered();$event.preventDefault();" type="submit" name="submit" class="icons icon-search">Search</button>
+                <button ng-click="queryEntered();$event.preventDefault();" name="submit" class="icons icon-search">Search</button>
                 <input ng-change="queryEntered()" ng-model="filterData.textInQueryBox" name="ar-transaction-query" id="ar--query" class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off" />
             </div>
             <div class="entry dates">
@@ -79,7 +79,7 @@
     </div>
 
     <!-- If there are open bills: -->
-    <div class="tab-details scrollable" ng-if="arTransactionDetails.open_guest_bills > 0">
+    <div class="tab-details scrollable" ng-if="arTransactionDetails.open_guest_bills > 0" ng-iscroll="ar-transaction-list">
         <div class="wrapper">
 
             <ul class="search-results" ng-repeat="transaction in arTransactionDetails.ar_transactions">
@@ -99,15 +99,15 @@
                             <span class="confirmation">{{transaction.reservation_confirm_no}}</span>
                             <div class="arrival">
                                 <span class="guest-status small-icon check-in">check-in</span>
-                                {{transaction.reservation_arrival_date}}
+                                {{transaction.reservation_arrival_date| date : dateFormat}}
                             </div>
                             <div class="departure">
                                 <span class="guest-status small-icon check-out">check-out</span>
-                                {{transaction.reservation_dep_date}}
+                                {{transaction.reservation_dep_date| date : dateFormat}}
                             </div>
                         </div>
                         <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
-                        <div class="switch-button"> <!-- add class "on" when checkbox checked -->
+                        <div class="switch-button" ng-class="{on: transaction.paid}" ng-click="transaction.paid = !transaction.paid; toggleTransaction()"> <!-- add class "on" when checkbox checked -->
                             <input value="" type="checkbox" />
                             <label class="data-off">
                                 <span class="value">Open</span>

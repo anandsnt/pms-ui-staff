@@ -5,6 +5,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		BaseCtrl.call(this, $scope);
 		var init = function(){
 			fetchData();
+			$scope.setScroller('ar-transaction-list');
+
 		};
 
 		$scope.filterData = {
@@ -16,7 +18,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'isShowPaid': '',
 			'textQuery': '',
 			'pageNo':'1',
-			'perPage':'50'
+			'perPage':'50',
+			'textInQueryBox': ''
 		};
 		
 		// In the case of new card, handle the generated id upon saving the card.
@@ -39,10 +42,15 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 		// To fetch data for ar transactions
 		var fetchData = function(params){
+			console.log("fetchdata");
 			var arAccountsFetchSuccess = function(data) {
 			    $scope.$emit('hideLoader');
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
+				setTimeout(function() {
+					$scope.refreshScroller('ar-transaction-list');
+				}, 0)
+			    console.log($scope.arTransactionDetails);
 			};
 
 			var failure = function(){
@@ -95,6 +103,11 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	        fetchData();
 	    });
 
+	    $scope.toggleTransaction = function(){
+	    	//$scope.transaction.paid = !$scope.transaction.paid;
+	    	console.log("call API");
+	    };
+
 	    init();
 	    /**
 		 * function to perform filtering/request data from service in change event of query box
@@ -102,7 +115,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.queryEntered = function() {
 			
 			var queryText = $scope.filterData.textInQueryBox;
-			//setting first letter as captial: soumya
+			//setting first letter as captial
 			$scope.filterData.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 			fetchData();
 		}; //end of query entered
