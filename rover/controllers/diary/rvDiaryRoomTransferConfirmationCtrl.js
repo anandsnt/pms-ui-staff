@@ -44,7 +44,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		$scope.selectAdditional = function() {
 			ngDialog.close();
 		};
-		
+
 
 		$scope.confirm = function() {
 			$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);

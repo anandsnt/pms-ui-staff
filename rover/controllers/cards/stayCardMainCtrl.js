@@ -257,28 +257,28 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		};
 
-		$scope.applyRoutingToReservation = function(){
-			var routingApplySuccess = function(data){
+		$scope.applyRoutingToReservation = function() {
+			var routingApplySuccess = function(data) {
 				$scope.$emit("hideLoader");
 				ngDialog.close();
 				that.reloadStaycard();
 			};
 
 			var params = {};
-			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
+			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id : $scope.reservationData.company.id;
 			params.reservation_ids = [];
 			params.reservation_ids.push($scope.reservationData.reservationId)
-			
+
 			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
 		};
 
-		$scope.okClickedForConflictingRoutes = function(){
+		$scope.okClickedForConflictingRoutes = function() {
 			ngDialog.close();
 			that.reloadStaycard();
 
 		};
 
-		this.showConfirmRoutingPopup = function(type, id){
+		this.showConfirmRoutingPopup = function(type, id) {
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
 				className: 'ngdialog-theme-default',
@@ -286,7 +286,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			});
 		};
 
-		this.showConflictingRoutingPopup = function(type, id){
+		this.showConflictingRoutingPopup = function(type, id) {
 
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
@@ -296,18 +296,18 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		};
 
-		this.attachCompanyTACardRoutings = function(card){
+		this.attachCompanyTACardRoutings = function(card) {
 
-			var fetchSuccessofDefaultRouting = function(data){
+			var fetchSuccessofDefaultRouting = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.routingInfo = data;
-				if(data.has_conflicting_routes){
+				if (data.has_conflicting_routes) {
 					$scope.conflict_cards = [];
-					if(card == 'travel_agent' && data.travel_agent.routings_count > 0){
+					if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
 						console.log("is travel agent");
 						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
 					}
-					if(card == 'company' && data.company.routings_count > 0){
+					if (card == 'company' && data.company.routings_count > 0) {
 						console.log("is company");
 						$scope.conflict_cards.push($scope.reservationData.company.name)
 					}
@@ -315,39 +315,39 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					return false;
 				}
 
-				if(card == 'travel_agent' && data.travel_agent.routings_count > 0){
+				if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
 					$scope.contractRoutingType = "TRAVEL_AGENT";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
 					return false;
 
 				}
-				if(card == 'company' && data.company.routings_count > 0){
+				if (card == 'company' && data.company.routings_count > 0) {
 					$scope.contractRoutingType = "COMPANY";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
 					return false;
-				}else{
+				} else {
 					that.reloadStaycard();
 				}
 
 			};
-			
+
 			var params = {};
 			params.reservation_id = $scope.reservationData.reservationId;
 
-			if(card == 'travel_agent'){
+			if (card == 'travel_agent') {
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
-			} else if (card == 'company'){
+			} else if (card == 'company') {
 				params.company_id = $scope.reservationData.company.id;
 			}
-			
+
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
 		};
 
 		$scope.replaceCard = function(card, cardData, future) {
-			if(card == 'company'){ 
+			if (card == 'company') {
 				$scope.reservationData.company.id = cardData.id;
 				$scope.reservationData.company.name = cardData.account_name;
-			} else if (card == 'travel_agent'){
+			} else if (card == 'travel_agent') {
 				$scope.reservationData.travelAgent.id = cardData.id;
 				$scope.reservationData.travelAgent.name = cardData.account_name;
 			}
@@ -379,7 +379,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
 		 * 	However, in the confirmation screen the identifier would be "CONFIRM"
 		 */
-		this.reloadStaycard = function(){
+		this.reloadStaycard = function() {
 			if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
@@ -649,7 +649,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			this.totalStayCost = 0;
 			var rateIdSet = [];
 			var self = this;
-			angular.forEach($scope.reservationData.rooms, function(room,index) {
+			angular.forEach($scope.reservationData.rooms, function(room, index) {				
 				room.stayDates = {};
 				rateIdSet.push(tData.rooms[index].rateId);
 				// amount: 32
@@ -674,7 +674,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 				room.rateId = tData.rooms[index].rateId;
 				room.roomAmount = tData.rooms[index].amount;
-				
+
 
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {

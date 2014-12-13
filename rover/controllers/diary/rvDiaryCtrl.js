@@ -581,7 +581,12 @@ sntRover
 	    		numInfants 	: next.occupancy.numChildren,
 	    		guest_card_id: next.occupancy.guest_card_id,
 	    		company_card_id: next.occupancy.company_card_id,
-	    		travel_agent_id: next.occupancy.travel_agent_id,
+	    		travel_agent_id: next.occupancy.travel_agent_id,	    		
+	    		payment: {
+	    			payment_type: next.occupancy.payment_type,
+	    			payment_method_used: next.occupancy.payment_method_used,
+	    			payment_method_description: next.occupancy.payment_method_description
+	    		}
 			}
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
@@ -1202,6 +1207,8 @@ sntRover
 			
 		}						
 	}
+
+
 
 	var correctRoomType = function() {
 		if ( !$scope.gridProps.filter.room_type ) {
