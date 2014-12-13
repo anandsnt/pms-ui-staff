@@ -279,6 +279,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.shouldShowWaiting = true;
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
 					$scope.shouldShowWaiting = false;
+					$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
+					$scope.$apply();
 					$scope.closeDialog();
 				},function(error){
 					$scope.errorMessage = error;
@@ -335,7 +337,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 */
 	$scope.successMakePayment = function(){
 		$scope.$emit("hideLoader");
-		
+		//$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
 			$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 			$scope.$apply();
