@@ -275,18 +275,21 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				if($scope.feeData.feesInfo)
 					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
+
 			if(!$scope.makePaymentButtonDisabled){
 				if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type == "CC"){
-					dataToSrv.postData.is_emv_request = true;
-					$scope.shouldShowWaiting = true;
-					RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
-						$scope.shouldShowWaiting = false;
-						$scope.closeDialog();
-					},function(error){
-						$scope.errorMessage = error;
-						$scope.shouldShowWaiting = false;
-					});
-					
+				dataToSrv.postData.is_emv_request = true;
+				$scope.shouldShowWaiting = true;
+				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					$scope.shouldShowWaiting = false;
+					$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
+					$scope.$apply();
+					$scope.closeDialog();
+				},function(error){
+					$scope.errorMessage = error;
+					$scope.shouldShowWaiting = false;
+				});
+				
 				} else {
 					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 				}
@@ -337,7 +340,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 */
 	$scope.successMakePayment = function(){
 		$scope.$emit("hideLoader");
-		
+		//$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
 			$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 			$scope.$apply();
