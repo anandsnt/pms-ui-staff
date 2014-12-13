@@ -1179,11 +1179,11 @@ sntRover
 				return room_type_id == item.id;
 			});
 
-			$scope.gridProps.filter.room_type = match;
-
-			// trigger call
-			$scope.clickedOnRoomType();
+			$scope.gridProps.filter.room_type = match;		
 		};
+		//CICO-11718
+		// trigger call
+		$scope.clickedOnRoomType();
 
 		setTimeout(function() {
 			$vault.remove('searchReservationData');
