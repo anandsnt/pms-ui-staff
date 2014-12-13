@@ -423,7 +423,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 	
 	$scope.addNewPayment = function(){
-		if(!$scope.isManual && $rootScope.paymentGateway == "sixpayments"){
+		if(!$scope.isManual && $rootScope.paymentGateway == "sixpayments" && $scope.dataToSave.paymentType ==='CC'){
 			sixPaymentSwipe();
 		} else if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			saveDataFromSwipe();
