@@ -1322,7 +1322,36 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         var cancellationCharge = 0;
         var nights = false;
         var depositAmount = 0;
+        $scope.creditCardTypes = [];
+        $scope.paymentTypes = [];
+
+
+        var fetcCreditCardTypes = function(cancellationCharge, nights){
+            var successCallback = function(data){
+                $scope.$emit('hideLoader');
+                $scope.paymentTypes = data;
+                data.forEach(function(item) {
+                  if(item.name === 'CC'){
+                     $scope.creditCardTypes = item.values;
+                  };
+                });
+            };
+            $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
+        };
+
+        fetcCreditCardTypes();
         var promptCancel = function(penalty, nights) {
+
+            var passData = {
+                    "reservationId": $scope.reservationData.reservationId,
+                    "details":{
+                        "firstName":$scope.guestCardData.contactInfo.first_name,
+                        "lastName":$scope.guestCardData.contactInfo.last_name,
+                        "creditCardTypes":$scope.creditCardTypes,
+                        "paymentTypes":$scope.paymentTypes
+                    }
+             };
+            $scope.passData = passData;
             ngDialog.open({
                 template: '/assets/partials/reservationCard/rvCancelReservation.html',
                 controller: 'RVCancelReservation',
