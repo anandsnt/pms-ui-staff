@@ -814,7 +814,7 @@ sntRover
  		$scope.editCancel = function() {
 	    	var props = $scope.gridProps;	    	
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
-
+	    	$scope.errorMessage = '';
 	    	$scope.resetEdit();
 	    	$scope.renderGrid();
 	    };
@@ -902,6 +902,7 @@ sntRover
 	}
 
     $scope.Availability = function() {
+    	$scope.errorMessage = '';
 		$scope.clearAvailability();
 		$scope.resetEdit();
 		$scope.renderGrid();
@@ -1022,7 +1023,7 @@ sntRover
 	});
 	var callDiaryAPIsAgainstNewDate = function(start_date, end_date, callback){
 		$scope.$emit('showLoader');
-		
+		$scope.errorMessage = '';
 		rvDiarySrv.callOccupancyAndAvailabilityCount(start_date, end_date)
 		.then(function(data){
 
@@ -1374,6 +1375,7 @@ sntRover
 
 				number_of_items_resetted = 0;
 
+				$scope.errorMessage = '';
 				$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();	
