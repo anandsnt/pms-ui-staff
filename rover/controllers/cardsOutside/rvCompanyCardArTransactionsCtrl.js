@@ -26,7 +26,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.$on("viewFromCardsOutside", function(event,data) {
 			console.log("viewFromCardsOutside");
 			$scope.filterData.viewFromOutside = true;
-			$scope.filterData.id = ($stateParams.id == 'add'): '': $stateParams.id;
+			$scope.filterData.id = ($stateParams.id == 'add')? '': $stateParams.id;
 		});
 		
 		console.log("$scope.filterData.viewFromOutside"+$scope.filterData.viewFromOutside);
