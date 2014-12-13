@@ -34,7 +34,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		next.arrivalDate 		= newArrivalDateComp.date.day + ' ' + newArrivalDateComp.date.month + ' ' + newArrivalDateComp.date.year;
 		next.departureDate 		= newDepartureDateComp.date.day + ' ' + newDepartureDateComp.date.month + ' ' + newDepartureDateComp.date.year;
 
-		$scope.price = roomXfer.next.room.new_price - roomXfer.current.room.old_price;
+		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
 
 
 		$scope.selectAdditional = function() {

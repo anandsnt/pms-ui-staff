@@ -77,10 +77,7 @@ sntRover
 	    	dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
 	    	minDate: minDate,
-	    	yearRange: '-0:',
-	    	beforeShow: function(input, inst) {
-	    	    $scope.emptyDate = false;
-	    	},
+	    	yearRange: '-0:'
 	    };
 
 	    _.extend($scope, payload);
@@ -601,8 +598,8 @@ sntRover
 	    	if(avData.new_rate_amount == null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
 	    	}	    	
-	    	this.edit.originalRowItem.old_price = avData.old_rate_amount;
-	    	this.currentResizeItemRow.new_price = avData.new_rate_amount;
+	    	this.edit.originalRowItem.old_price = parseFloat(avData.old_rate_amount);
+	    	this.currentResizeItemRow.new_price = parseFloat(avData.new_rate_amount);
 	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
 	    	this.currentResizeItemRow.departureTime = successParams.end_time;
 	    	this.currentResizeItemRow.departureDate = successParams.end_date.toComponents().date.toDateString();
@@ -1054,12 +1051,8 @@ sntRover
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
 			filter 	= props.filter,
-			arrival_ms = _.size(filter.arrival_date) > 1 ? filter.arrival_date.getTime() : false,
+			arrival_ms = filter.arrival_date.getTime(),
 			time_set; 
-
-		if ( !arrival_ms ) {
-			return;
-		};
 	
 		if(newValue !== oldValue) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
@@ -1230,11 +1223,11 @@ sntRover
 				return room_type_id == item.id;
 			});
 
-			$scope.gridProps.filter.room_type = match;
-
-			// trigger call
-			$scope.clickedOnRoomType();
+			$scope.gridProps.filter.room_type = match;		
 		};
+		//CICO-11718
+		// trigger call
+		$scope.clickedOnRoomType();
 
 		setTimeout(function() {
 			$vault.remove('searchReservationData');
@@ -1366,9 +1359,8 @@ sntRover
 				time_set; 
 
 			var callback = function() {
-				$scope.gridProps.filter.arrival_time = "";
-				$scope.gridProps.filter.arrival_date = {};
-				$scope.emptyDate = true;
+				$scope.gridProps.filter.arrival_time = '';
+				$scope.gridProps.filter.arrival_date = new tzIndependentDate($rootScope.businessDate);
 
 				$scope.gridProps.filter.rate_type = "Standard";
 				$scope.gridProps.filter.room_type = "";
@@ -1383,9 +1375,6 @@ sntRover
 			};
 		
 	        time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
-
-	        console.log(arrival_ms);
-	        console.log(time_set);
 
 	        $scope.gridProps.display = util.deepCopy(time_set.display);
 	    	
