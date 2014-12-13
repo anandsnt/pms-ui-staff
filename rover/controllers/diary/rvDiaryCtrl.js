@@ -597,7 +597,6 @@ sntRover
 	    }
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
-	    	console.log('moving');
 	    	$scope.toggleRows($scope.gridProps.filter.show_all_rooms, current_scroll_pos);
 	    };
 
@@ -977,22 +976,22 @@ sntRover
 			}
 		}
 	});
-	var callDiaryAPIsAgainstNewDate = function(start_date, end_date, callback){
+
+	var callDiaryAPIsAgainstNewDate = function(start_date, end_date){
 		$scope.$emit('showLoader');
 		
 		rvDiarySrv.callOccupancyAndAvailabilityCount(start_date, end_date)
 		.then(function(data){
 
-			$scope.gridProps.data 	= data.room;
-    		
+			$scope.gridProps.data = data.room;
 
     		$scope.gridProps.stats = data.availability_count;
 
 			$scope.gridProps.display.x_0 = $scope.gridProps.viewport.row_header_right;					
 			
 			//Resetting as per CICO-11314
-			if (callback ) {
-				callback();
+			if ( !!_.size($_resetObj) ) {
+				$_resetObj.callback();
 			} else {
 				$scope.gridProps.filter.rate_type = "Standard";
 				$scope.gridProps.filter.arrival_time = "00:00";
@@ -1006,12 +1005,11 @@ sntRover
 		});		
 	};
 
-
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
-			filter 	= props.filter,
-			arrival_ms = filter.arrival_date.getTime(),
-			time_set; 
+			filter = props.filter,
+			arrival_ms = !!_.size($_resetObj) ? $_resetObj.start_date : filter.arrival_date.getTime(),
+			time_set;
 	
 		if(newValue !== oldValue) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
@@ -1021,13 +1019,42 @@ sntRover
 			if($scope.gridProps.edit.active || $scope.gridProps.edit.passive) {
 				//$scope.Availability();
 			}
-			
-					
 	    	
 			callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
-			
 		}
-	});
+	} );
+
+	var $_resetObj = {};
+
+    $scope.resetEverything = function() {
+    	var _sucessCallback = function(propertyTime) {
+	    	$_resetObj = correctTime(propertyTime);
+
+			$_resetObj.callback = function() {
+				$scope.gridProps.filter.arrival_time = '';
+				$scope.gridProps.filter.rate_type = 'Standard';
+				$scope.gridProps.filter.room_type = '';
+				number_of_items_resetted = 0;
+				$scope.renderGrid();	
+				$scope.$emit('hideLoader');	
+
+				$timeout(function() {
+					$_resetObj = {};
+				}, 100);
+			};
+
+			// change date to triggeer a change
+			$scope.gridProps.filter.arrival_date = new tzIndependentDate($rootScope.businessDate);
+    	};
+
+    	$scope.clearAvailability();
+		$scope.resetEdit();
+		$scope.renderGrid();
+
+    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
+    };
+
+
 
 	$scope.dateTransfer = function() {
 		var props = $scope.gridProps,
@@ -1309,40 +1336,5 @@ sntRover
         },
         source: autoCompleteSourceHandler,
         select: autoCompleteSelectHandler
-    };
-
-    $scope.resetEverything = function() {
-    	var _sucessCallback = function(propertyTime) {
-	    	var correctedTime = correctTime(propertyTime),
-	    		arrival_ms = correctedTime.start_date,
-				time_set; 
-
-			var callback = function() {
-				$scope.gridProps.filter.arrival_time = '';
-				$scope.gridProps.filter.arrival_date = new tzIndependentDate($rootScope.businessDate);
-
-				$scope.gridProps.filter.rate_type = "Standard";
-				$scope.gridProps.filter.room_type = "";
-
-				number_of_items_resetted = 0;
-
-				$scope.clearAvailability();
-				$scope.resetEdit();
-				$scope.renderGrid();	
-				$scope.$emit('hideLoader');	
-			};
-		
-	        time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
-
-	        $scope.gridProps.display = util.deepCopy(time_set.display);
-	    	
-			callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate(), callback);
-    	};
-
-    	$scope.clearAvailability();
-		$scope.resetEdit();
-		$scope.renderGrid();
-
-    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
     };
 }]);

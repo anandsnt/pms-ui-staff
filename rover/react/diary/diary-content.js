@@ -132,6 +132,7 @@ var DiaryContent = React.createClass({
         	if(scrollToPos < 0) {
         		scrollToPos = 0;
         	}
+        	console.log(scrollToPos);
             self.state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
             self.state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
             self.state.angular_evt.onScrollEnd(Math.abs(self.state.iscroll.grid.x) / self.state.display.px_per_ms + self.state.display.x_n);
