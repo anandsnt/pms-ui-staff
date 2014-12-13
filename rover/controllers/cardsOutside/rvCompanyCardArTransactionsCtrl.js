@@ -5,6 +5,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		BaseCtrl.call(this, $scope);
 
 		var init = function(){
+			$scope.arTransactionDetails = {};
+			$scope.arTransactionDetails.ar_transactions = [];
+
 			fetchData();
 			$scope.setScroller('ar-transaction-list');
 		};
@@ -20,7 +23,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'isShowPaid': '',
 			'start': 1,
 			'pageNo':1,
-			'perPage':2,
+			'perPage':50,
 			'textInQueryBox': '',
 			'viewFromOutside': false
 		};
