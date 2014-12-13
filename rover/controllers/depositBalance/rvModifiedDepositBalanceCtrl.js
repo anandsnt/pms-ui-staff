@@ -56,10 +56,30 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.refreshScroller('cardsList');
 		}, 1500);
 	};
-	var setMakePaymentStatus = function(){
-		$scope.makePaymentButtonDisabled = ($scope.depositBalanceMakePaymentData.payment_type === '' || $scope.depositBalanceMakePaymentData.payment_type === null) ? true:false;
+
+
+	$scope.disableMakePayment = function(){
+		 if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
+			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
+		}
+		else{
+			return true;
+		};
 	};
-	setMakePaymentStatus();
+
+	/*
+	 * class based on the make payment button status
+	 */
+	$scope.showMakePaymentButtonStatus = function(){
+		var buttonClass = "";
+		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
+				buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "green" :"grey";
+		} else {
+			buttonClass = "grey";
+		};
+		return buttonClass;
+	};
+	
     
 	if($scope.reservationData.reservation_card.payment_method_used == "CC"){
 		$scope.shouldCardAvailable 				 = true;
@@ -113,7 +133,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.shouldCardAvailable 				 = false;
 				checkReferencetextAvailableFornonCC();
 		};
-		setMakePaymentStatus();
 	};
 	$scope.changeOnsiteCallIn = function(){
 		$scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false:true;
@@ -324,18 +343,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.isAddToGuestCardVisible 			 = true;
 		
 	};
-	/*
-	 * class based on the make payment button status
-	 */
-	$scope.showMakePaymentButtonStatus = function(){
-		var buttonClass = "";
-		if($scope.makePaymentButtonDisabled){
-			buttonClass = "grey";
-		} else {
-			buttonClass = "green";
-		}
-		return buttonClass;
-	};
+	
 
 
 	$scope.closeDepositModal = function(){
