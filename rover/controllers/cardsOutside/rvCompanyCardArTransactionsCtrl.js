@@ -1,6 +1,6 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -12,7 +12,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// Initializing filter data
 		$scope.filterData = {
 			'id': $scope.contactInformation == undefined? "" :$scope.contactInformation.id,
-			'filterActive': true,
+			'filterActive': false,
 			'showFilterFlag': 'OPEN',
 			'fromDate': $rootScope.businessDate,
 			'toDate': '',
@@ -105,6 +105,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$scope.filterData.isShowPaid = '';
 			else
 				$scope.filterData.isShowPaid = false;
+			initPaginationParams();
 			fetchData();
 		};
 
@@ -128,12 +129,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	    // To handle from date change
 	    $scope.$on('fromDateChanged',function(){
+	    	console.log("from date changed");
 	    	initPaginationParams();
 	        fetchData();
 	    });
 
 		// To handle to date change
 	    $scope.$on('toDateChanged',function(){
+	    	console.log("to date changed");
 	    	initPaginationParams();
 	        fetchData();
 	    });
@@ -143,7 +146,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    	console.log("call API");
 	    };
 
-	    init();
 	    /**
 		 * function to perform filtering/request data from service in change event of query box
 		 */
@@ -153,11 +155,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			//setting first letter as captial
 			$scope.filterData.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 			
-			$scope.filterData = 1;
-			$scope.filterData.end = $scope.filterData.start + $scope.results.length - 1;
-			$scope.nextAction = false;
-			$scope.prevAction = false;
-
+			initPaginationParams();
 			if (queryText.length < 3 && isCharacterWithSingleDigit(queryText)) {
 				return false;
 			}
@@ -180,7 +178,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 
 		var initPaginationParams = function(){
-			RVSearchSrv.page = 1;
+			$scope.filterData.pageNo = 1;
 			$scope.filterData.start = 1;
 			$scope.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
 			$scope.nextAction = false;
@@ -201,6 +199,17 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			fetchData();
 		};
 
+		$scope.clearSearchField = function(){
+			$scope.filterData.textInQueryBox = '';
+			initPaginationParams();
+			fetchData();
+		};
+
+		$scope.clearToDateField = function(){
+			$scope.filterData.toDate = '';
+			initPaginationParams();
+			fetchData();
+		};
 		$scope.isNextButtonDisabled = function(){
 			var isDisabled = false;
 			//if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
@@ -227,11 +236,16 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.goToReservationDetails = function(reservationID, confirmationID) {
 			console.log("$scope.filterData.viewFromOutside"+$scope.filterData.viewFromOutside);
 			if($scope.filterData.viewFromOutside){
+				console.log(reservationID);
+				console.log(confirmationID);
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					id: reservationID,
 					confirmationId: confirmationID,
 					isrefresh: true
 				});
 			}
-		}		
+		}	
+
+	    init();
+
 }]);

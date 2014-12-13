@@ -17,7 +17,7 @@
                 </div>
             </div> 
             <div class="entry search">
-                <button ng-click="filterData.textInQueryBox = ''; $event.preventDefault(); "  ng-class="{'visible': escapeNull(filterData.textInQueryBox) !='' }" class="clear-query">
+                <button ng-click="$event.preventDefault(); clearSearchField();"  ng-class="{'visible': escapeNull(filterData.textInQueryBox) !='' }" class="clear-query">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
                 <button ng-click="queryEntered();$event.preventDefault();" name="submit" class="icons icon-search">Search</button>
@@ -26,15 +26,12 @@
             <div class="entry dates">
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-from">From</label>
-                    <button ng-click="filterData.fromDate = ''; $event.preventDefault(); " class="clear-query" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}">
-                        <span class="icons icon-clear-search">Clear query</span>
-                    </button>
                     <input ng-click="clickedFromDate()" name="ar-transaction-date-from" id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" readonly />
                     <button ng-click="clickedFromDate()" type="button" class="ui-datepicker-trigger"></button>
                 </div>
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-to">To</label>
-                    <button  ng-click="filterData.toDate = ''; $event.preventDefault();" class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
+                    <button  ng-click="$event.preventDefault(); clearToDateField();" class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
                         <span class="icons icon-clear-search">Clear query</span>
                     </button>
                     <input  name="ar-transaction-date-to" id="ar-transaction-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" readonly />
@@ -70,7 +67,7 @@
                 </div>
             </li>
             <li>
-                <button type="button" class="button white purple-text">Past Payments</button>
+                <button type="button" class="button white purple-text" ng-hide="true">Past Payments</button>
                 <button type="button" class="button blue with-icon only-icon">
                     <span class="icons icon-print"></span>
                 </button>
@@ -82,8 +79,8 @@
     <div class="tab-details scrollable" ng-if="arTransactionDetails.open_guest_bills > 0" ng-iscroll="ar-transaction-list">
         <div class="wrapper">
 
-            <ul class="search-results" ng-repeat="transaction in arTransactionDetails.ar_transactions">
-                <li class="reservation transaction" ng-click="goToReservationDetails(transaction.reservation_id, transaction.reservation_confirm_no)">
+            <ul class="search-results">
+                <li class="reservation transaction" ng-click="goToReservationDetails(transaction.reservation_id, transaction.reservation_confirm_no)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
                     <!-- Not using <a> here since 1) you don't use hrefs at all and 2) it'll interfere with the checkbox -->
                     <div class="faux-anchor" class="guest-{reservation-status}"> <!-- see options in {dashboard/front-desk.html} -->
 
@@ -107,7 +104,8 @@
                             </div>
                         </div>
                         <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
-                        <div class="switch-button" ng-class="{on: transaction.paid}" ng-click="transaction.paid = !transaction.paid; toggleTransaction()"> <!-- add class "on" when checkbox checked -->
+                        <!--ng-click="transaction.paid = !transaction.paid; toggleTransaction()" -->
+                        <div class="switch-button" ng-class="{on: transaction.paid}"> <!-- add class "on" when checkbox checked -->
                             <input value="" type="checkbox" />
                             <label class="data-off">
                                 <span class="value">Open</span>
