@@ -20,9 +20,16 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'isShowPaid': '',
 			'pageNo':'1',
 			'perPage':'50',
-			'textInQueryBox': ''
+			'viewFromOutside': false
 		};
+		// Navigation via cards outside.
+		$scope.$on("viewFromCardsOutside", function(event,data) {
+			console.log("viewFromCardsOutside");
+			$scope.filterData.viewFromOutside = true;
+			$scope.filterData.id = ($stateParams.id == 'add'): '': $stateParams.id;
+		});
 		
+		console.log("$scope.filterData.viewFromOutside"+$scope.filterData.viewFromOutside);
 		// Get parameters for fetch data
 		var getParamsToSend = function(){
 			var paramsToSend = {
@@ -74,6 +81,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.filterData.id = data.id;
 			fetchData();
 		});
+
 
 		// To click filter button
 		$scope.clickedFilter = function(){
@@ -156,12 +164,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function(reservationID, confirmationID) {
-
-			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
-				id: reservationID,
-				confirmationId: confirmationID,
-				isrefresh: true
-			});
+			console.log("$scope.filterData.viewFromOutside"+$scope.filterData.viewFromOutside);
+			if($scope.filterData.viewFromOutside){
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+					id: reservationID,
+					confirmationId: confirmationID,
+					isrefresh: true
+				});
+			}
 		};
 		
 }]);
