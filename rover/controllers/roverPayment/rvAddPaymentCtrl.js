@@ -101,9 +101,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.changePaymentType = function(){
 
 		if($scope.paymentGateway !== 'sixpayments'){
-			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC" && $scope.isManual) ? true: false;
+			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
 			$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
-			$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC" && !$scope.isManual) ? false: true;
+			$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC") ? false: true;
 			refreshCardsList();
 		}else{
 			$scope.isNewCardAdded = ($scope.dataToSave.paymentType == "CC" && !$scope.isManual) ? true : false;
