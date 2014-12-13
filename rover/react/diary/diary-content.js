@@ -200,7 +200,11 @@ var DiaryContent = React.createClass({
   			});
 
   			setTimeout(function() {
-  				var scrollToPos = (this.state.display.x_origin - this.state.display.x_n - 7200000) * this.state.display.px_per_ms;
+  				var origin = this.state.display.x_origin,
+  					time00 = new Date(origin),
+  					time00 = time00.setHours(0, 0, 0),
+  					scrollToPos = (origin - time00 - 7200000) * this.state.display.px_per_ms;
+
   				if(scrollToPos < 0) {
   					scrollToPos = 0;
   				}

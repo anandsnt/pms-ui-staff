@@ -1005,10 +1005,8 @@ sntRover
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
 			filter = props.filter,
-			arrival_ms = !!_.size($_resetObj) ? $_resetObj.start_date : filter.arrival_date.getTime(),
+			arrival_ms = filter.arrival_date.getTime(),
 			time_set;
-
-		console.log( new Date(arrival_ms) );
 	
 		if(newValue !== oldValue) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
@@ -1043,7 +1041,7 @@ sntRover
 			};
 
 			// change date to triggeer a change
-			$scope.gridProps.filter.arrival_date = new tzIndependentDate($rootScope.businessDate);
+			$scope.gridProps.filter.arrival_date = new Date($_resetObj.start_date);
     	};
 
     	$scope.clearAvailability();
