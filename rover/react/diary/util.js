@@ -224,7 +224,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				},
 				toShortDateString: function() {
 					console.log(this.day);
-					return this.monthNameShort + ' ' + (this.day < 9 ? '0' : '') + this.day;
+					return this.monthNameShort + ' ' + (this.day < 10 ? '0' : '') + this.day;
 				}
 			},
 			time: new Time({
