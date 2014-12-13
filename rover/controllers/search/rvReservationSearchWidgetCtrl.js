@@ -392,7 +392,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			} else if($stateParams.type != undefined && query == '' && $stateParams.type !== 'SEARCH_NORMAL'){
 				dataDict.status = $stateParams.type;
 			}
-
+			//CICO-10323. for hotels with single digit search, 
+			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
 			if($rootScope.isSingleDigitSearch && !isNaN(query) && query.length < 3){
 				dataDict.room_search = true;
 			}

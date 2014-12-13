@@ -1,9 +1,15 @@
+
 sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog',
 	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
-		console.log("ID = "+$scope.contactInformation.id);
 
+		var init = function(){
+			fetchData();
+			$scope.setScroller('ar-transaction-list');
+		};
+		
+		// Initializing filter data
 		$scope.filterData = {
 			'id': $scope.contactInformation.id,
 			'filterActive': true,
@@ -13,7 +19,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'textInQueryBox':'',
 			'isShowPaid': '',
 			'pageNo':'1',
-			'perPage':'50'
+			'perPage':'50',
+			'textInQueryBox': ''
 		};
 		
 		// Get parameters for fetch data
@@ -27,15 +34,28 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				"page_no" : $scope.filterData.pageNo,
 				"per_page": $scope.filterData.perPage
 			};
+			//CICO-10323. for hotels with single digit search, 
+			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
+			if($rootScope.isSingleDigitSearch && 
+				!isNaN($scope.filterData.textInQueryBox) && 
+				$scope.filterData.textInQueryBox.length < 3){
+				
+				paramsToSend.room_search = true;
+			}
 			return paramsToSend;
 		};
 
 		// To fetch data for ar transactions
 		var fetchData = function(params){
+			console.log("fetchdata");
 			var arAccountsFetchSuccess = function(data) {
 			    $scope.$emit('hideLoader');
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
+				setTimeout(function() {
+					$scope.refreshScroller('ar-transaction-list');
+				}, 0)
+			    console.log($scope.arTransactionDetails);
 			};
 
 			var failure = function(){
@@ -54,9 +74,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.filterData.id = data.id;
 			fetchData();
 		});
-
-		// Fetching data initially
-		fetchData();
 
 		// To click filter button
 		$scope.clickedFilter = function(){
@@ -100,15 +117,41 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	        fetchData();
 	    });
 
+	    $scope.toggleTransaction = function(){
+	    	//$scope.transaction.paid = !$scope.transaction.paid;
+	    	console.log("call API");
+	    };
+
+	    init();
 	    /**
 		 * function to perform filtering/request data from service in change event of query box
 		 */
 		$scope.queryEntered = function() {
 			
 			var queryText = $scope.filterData.textInQueryBox;
-			//setting first letter as captial: soumya
+			//setting first letter as captial
 			$scope.filterData.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+			
+			if (queryText.length < 3 && isCharacterWithSingleDigit(queryText)) {
+				return false;
+			}
 			fetchData();
+		
 		}; //end of query entered
+
+		/**
+		* Single digit search done based on the settings in admin
+		* The single digit search is done only for numeric characters.
+		* CICO-10323 
+		*/
+		function isCharacterWithSingleDigit(searchTerm){
+			if($rootScope.isSingleDigitSearch){
+				return isNaN(searchTerm);
+			} else {
+				return true;
+			}
+		};
+
+		
 		
 }]);
