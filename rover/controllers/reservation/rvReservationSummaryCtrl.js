@@ -29,10 +29,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var zeroAmount = parseFloat("0.00");
 
 		// CICO-11591 : To show or hide fees calculation details.
-		$scope.isShowFees = function(){
+		$scope.isShowFees = function() {
 			var isShowFees = false;
 			var feesData = $scope.feeData;
-			if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
+			if (typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null) {
 				isShowFees = false;
 			}
 			else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
@@ -47,29 +47,28 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.isStandAlone) {
 				var feesInfo = $scope.feeData.feesInfo;
 				var amountSymbol = "";
-				var feePercent  = zeroAmount;
+				var feePercent = zeroAmount;
 				var minFees = zeroAmount;
 
-				if (typeof feesInfo != 'undefined' && feesInfo != null){
+				if (typeof feesInfo != 'undefined' && feesInfo != null) {
 					amountSymbol = feesInfo.amount_symbol;
-					feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+					feePercent = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 					minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
 				}
-				
+
 				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
-								parseFloat($scope.reservationData.depositAmount);
-				
+					parseFloat($scope.reservationData.depositAmount);
+
 				$scope.feeData.minFees = minFees;
 				$scope.feeData.defaultAmount = totalAmount;
-				
-				if($scope.isShowFees()){
+
+				if ($scope.isShowFees()) {
 
 					if (amountSymbol == "percent") {
 						var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
 						$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
-					}
-					else {
+					} else {
 						$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
 					}
@@ -91,7 +90,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.feeData.minFees = minFees;
 			$scope.feeData.defaultAmount = defaultAmount;
 
-			if($scope.isShowFees()){
+			if ($scope.isShowFees()) {
 
 				if (typeof feesInfo.amount != 'undefined' && feesInfo != null) {
 
@@ -424,6 +423,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($stateParams.reservation == "HOURLY") {
 				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
+				$scope.reservationData.paymentType.type.value = "";
 				if (!$rootScope.isAddonOn || $stateParams.mode == "EDIT_HOURLY") {
 					var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 					temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
@@ -434,6 +434,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 								var roomKey = value.id;
 								roomsArray[roomKey] = value;
 							});
+							if ($stateParams.mode == "EDIT_HOURLY") {
+								var room = temporaryReservationDataFromDiaryScreen.rooms[0];
+								if (!!room.payment.payment_method_used) {
+									$scope.reservationData.paymentType.type.description = room.payment.payment_method_description;
+									$scope.reservationData.paymentType.type.value = room.payment.payment_method_used;
+								}
+							}
 							$scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
 							createReservation();
 							refreshScrolls();
@@ -485,7 +492,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			refreshScrolls();
 		};
 
-		$scope.$on("UPDATEDEPOSIT",function(){
+		$scope.$on("UPDATEDEPOSIT", function() {
 			$scope.depositData = $scope.reservationData.depositData;
 		});
 
@@ -505,7 +512,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.paymentMethods = data;
 				$scope.$emit('hideLoader');
 
-				var reservationDataPaymentTypeValue = JSON.stringify($scope.reservationData.paymentType.type.value);
+				var reservationDataPaymentTypeValue = $scope.reservationData.paymentType.type.value;
 				var payments = _.where(data, {
 					value: reservationDataPaymentTypeValue
 				});
@@ -624,7 +631,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				// $scope.data.MLIData = {};
 			};
 
-			
+
 
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
@@ -649,7 +656,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var updateSuccess = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.viewState.identifier = "UPDATED";				
+				$scope.viewState.identifier = "UPDATED";
 				$scope.reservationData.is_routing_available = data.is_routing_available;
 				addToGuestCard(data);
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
@@ -657,7 +664,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"confirmationId": $scope.reservationData.confirmNum
 				});
 			};
-			
+
 			postData.payment_type = {};
 			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
 				if (value.value == $scope.reservationData.paymentType.type.value) {
@@ -737,8 +744,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$state.go('rover.reservation.search');
 			}
 		};
-
-		$scope.reservationData.paymentType.type.value = "";
+		// CICO-9512
+		// $scope.reservationData.paymentType.type.value = "";
 
 		$scope.changeOnsiteCallIn = function(){
 		 $scope.isManual ? $scope.showCC = true : "";

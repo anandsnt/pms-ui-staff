@@ -83,6 +83,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
     
 	if($scope.reservationData.reservation_card.payment_method_used == "CC"){
 		$scope.shouldCardAvailable 				 = true;
+		
+		// $scope.paymentId = $scope.reservationData.reservation_card.payment_details;
 		$scope.depositBalanceMakePaymentData.payment_type = "CC";
 		$scope.depositBalanceMakePaymentData.card_code = $scope.reservationData.reservation_card.payment_details.card_type_image.replace(".png", "");
 		$scope.depositBalanceMakePaymentData.ending_with = $scope.reservationData.reservation_card.payment_details.card_number;
@@ -279,14 +281,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		}
 		
 	}
-	// $scope.successChipAndPinToken = function(){
-		// alert("hahaha")
-	// };
+
 	/*
 	 * call make payment API on clicks select payment
 	 */
 	$scope.clickedMakePayment = function(){
-			
+		
 			var dataToSrv = {
 				"postData": {
 					"payment_type": $scope.depositBalanceMakePaymentData.payment_type,
@@ -311,7 +311,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
 
-			if(!$scope.makePaymentButtonDisabled){
+			// if(!$scope.disableMakePayment()){
 				if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type == "CC"){
 				dataToSrv.postData.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
@@ -331,7 +331,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				} else {
 					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 				}
-			};		
+			// };		
 
 	};
 	/*

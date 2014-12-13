@@ -16,26 +16,25 @@ angular.module('housekeepingModule', [])
                 roomList: function(RVHkRoomStatusSrv, $stateParams, $rootScope) {
                     if (!!$stateParams && !!$stateParams.roomStatus) {
                         var filterStatus = {
-                            'INHOUSE_DIRTY': ['dirty', 'stayover'],
-                            'INHOUSE_CLEAN': ['clean', 'stayover'],
-                            'DEPARTURES_DIRTY': ['dueout', 'departed', 'dirty'],
-                            'DEPARTURES_CLEAN': ['dueout', 'departed', 'clean'],
-                            'OCCUPIED': ['occupied'],
-                            'VACANT_READY': ['vacant', 'clean', 'inspected'],
-                            'VACANT_NOT_READY': ['vacant', 'dirty'],
-                            'OUTOFORDER_OR_SERVICE': ['out_of_order', 'out_of_service'],
-                            'QUEUED_ROOMS': ['queued']
+                            'INHOUSE_DIRTY'         : ['dirty', 'stayover'],
+                            'INHOUSE_CLEAN'         : ['clean', 'stayover'],
+                            'DEPARTURES_DIRTY'      : ['dueout', 'departed', 'dirty'],
+                            'DEPARTURES_CLEAN'      : ['dueout', 'departed', 'clean'],
+                            'OCCUPIED'              : ['occupied'],
+                            'VACANT_READY'          : ['vacant', 'clean', 'inspected'],
+                            'VACANT_NOT_READY'      : ['vacant', 'dirty'],
+                            'OUTOFORDER_OR_SERVICE' : ['out_of_order', 'out_of_service'],
+                            'QUEUED_ROOMS'          : ['queued']
                         }
                         var filtersToApply = filterStatus[$stateParams.roomStatus];
                         for (var i = 0; i < filtersToApply.length; i++) {
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
 
-                        // return RVHkRoomStatusSrv.fetchRoomList({
-                        //     businessDate: $rootScope.businessDate,
-                        //     page: $stateParams.page || 1,
-                        //     perPage: $stateParams.perPage || 50
-                        // });
+                        // RESET: since a housekeeping dashboard can disturb these props
+                        RVHkRoomStatusSrv.currentFilters.page  = 1;
+                        RVHkRoomStatusSrv.currentFilters.query = '';
+
                         return RVHkRoomStatusSrv.fetchRoomListPost({
                             businessDate : $rootScope.businessDate,
                             isStandAlone : $rootScope.isStandAlone
@@ -43,7 +42,7 @@ angular.module('housekeepingModule', [])
                     } else if (!!$stateParams && !!$stateParams.businessDate) {
                         return RVHkRoomStatusSrv.fetchRoomListPost({
                             businessDate : $stateParams.businessDate,
-                            isStandAlone : $rootScope.isStandAlone
+                            isStandAlone : $stateParams.isStandAlone
                         });
                     } else {
                         return RVHkRoomStatusSrv.fetchRoomListPost({

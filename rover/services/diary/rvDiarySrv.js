@@ -435,7 +435,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room = this.dataStore.get('_room.values.id')[occupancy.room_id],
                         room_type = room.room_type; 
 
-                    
+                    occupancy.arrival_date = occupancy.arrival_date.replace(/-/g, '/');
+                    occupancy.departure_date = occupancy.departure_date.replace(/-/g, '/');
                     if(!occupancy[m.start_date]) occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
                     if(!occupancy[m.end_date]) occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
                     if(!occupancy[m.maintenance]) occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
@@ -874,13 +875,12 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             }
                         } else if ( mm == 15 || mm == 30 || mm == 45 ) {
                             mm += 15;
+                        } else if ( Math.max(mm, 15) == 15 ) {
+                            mm = 15;
+                        } else if ( Math.max(mm, 30) == 30 ) {
+                            mm = 30;
                         } else {
-                           /* do {
-                                mm += 1;
-                                if ( mm == 15 || mm == 30 || mm == 45 ) {
-                                    break;
-                                }
-                            } while ( mm != 15 || mm != 30 || mm != 45 );*/
+                            mm = 45;
                         };
 
                         start_date.setHours(hh, mm);

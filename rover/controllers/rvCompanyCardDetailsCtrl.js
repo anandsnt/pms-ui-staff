@@ -1,5 +1,5 @@
-sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout',
-	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout) {
+sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope',
+	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope) {
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id == "add") ? true : false;
@@ -17,6 +17,8 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
+		console.log("aaaaaaa");
+		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
 		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 		$scope.headerBackButtonClicked = function(){
@@ -273,6 +275,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.isAddNewCard = false;
 			$scope.errorMessage = "";
 			$scope.$broadcast("clearCardContactErrorMessage");
+			$scope.$broadcast("IDGENERATED",{ 'id': data.id });
 		};
 
 		/**
