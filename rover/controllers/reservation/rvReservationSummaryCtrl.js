@@ -292,7 +292,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				dataToMakePaymentApi.postData.payment_type_id = $scope.reservationData.selectedPaymentId;
 			};
 
-			if ($scope.isStandAlone) {
+			if($scope.isShowFees()){
 				if ($scope.feeData.calculatedFee)
 					dataToMakePaymentApi.postData.fees_amount = $scope.feeData.calculatedFee;
 				if ($scope.feeData.feesInfo)
