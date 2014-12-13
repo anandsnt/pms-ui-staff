@@ -68,7 +68,8 @@ console.log("-----------------------");
 		$scope.showHideCreditCard = function(){
 			if($scope.depositData.paymentType ==="CC"){
 				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions();
-			};
+			}
+
 		};
 
 
@@ -193,7 +194,6 @@ console.log("-----------------------");
 		};
 
 		if($scope.isStandAlone) {
-			console.log($scope.passData);
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
 		};
@@ -209,6 +209,14 @@ console.log("-----------------------");
 				if(value.name == $scope.depositData.paymentType){
 					if($scope.depositData.paymentType != "CC"){
 						$scope.isDisplayReference = (value.is_display_reference)? true:false;
+
+						// To handle fees details on reservation deposits,
+						// While we change payment methods
+						// Handling Credit Cards seperately.
+						if(value.name != "CC"){
+							$scope.feeData.feesInfo = value.charge_code.fees_information;
+						}
+						$scope.setupFeeData();
 					}
 					else{
 						angular.forEach($scope.passData.details.creditCardTypes, function(value, key) {
@@ -367,7 +375,7 @@ console.log("-----------------------");
 				dataToSrv.postData.add_to_guest_card =  false;
 			};
 
-			if($scope.isStandAlone){
+			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee)
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
 				if($scope.feeData.feesInfo)

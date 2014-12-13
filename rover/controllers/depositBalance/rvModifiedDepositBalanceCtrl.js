@@ -86,7 +86,16 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
 			if(value.name == $scope.depositBalanceMakePaymentData.payment_type){
 				$scope.isDisplayReference =  (value.is_display_reference)? true:false;
+
+				// To handle fees details on reservation summary,
+				// While we change payment methods
+				// Handling Credit Cards seperately.
+				if(value.name != "CC"){
+					$scope.feeData.feesInfo = value.charge_code.fees_information;
 				}
+				$scope.setupFeeData();
+
+			}
 		});		
 	};
 	$scope.changePaymentType = function(){
@@ -269,7 +278,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			if($scope.isDisplayReference){
 				dataToSrv.postData.reference_text = $scope.referanceText;
 			};
-			if($scope.isStandAlone){
+			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee)
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
 				if($scope.feeData.feesInfo)

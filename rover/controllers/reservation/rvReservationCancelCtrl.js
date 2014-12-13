@@ -38,6 +38,14 @@
 						
 						if(value.name == $scope.cancellationData.paymentType){
 							$scope.isDisplayReference = (value.is_display_reference)? true:false;
+
+							// To handle fees details on reservation cancel,
+							// While we change payment methods
+							// Handling Credit Cards seperately.
+							if(value.name != "CC"){
+								$scope.feeData.feesInfo = value.charge_code.fees_information;
+							}
+							$scope.setupFeeData();
 						}
 					});			
 				}
@@ -51,18 +59,7 @@
 				}
 			};
 
-			// CICO-11591 : To show or hide fees calculation details.
-			$scope.isShowFees = function(){
-				var isShowFees = false;
-				var feesData = $scope.feeData;
-				if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
-					isShowFees = false;
-				}
-				else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
-					isShowFees = true;
-				}
-				return isShowFees;
-			};
+			
 
 
 			$scope.changeOnsiteCallIn = function(){
@@ -82,79 +79,80 @@
 			$scope.feeData = {};
 			var zeroAmount = parseFloat("0.00");
 
-	// CICO-11591 : To show or hide fees calculation details.
-	$scope.isShowFees = function(){
-		var isShowFees = false;
-		var feesData = $scope.feeData;
-		if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
-			isShowFees = false;
-		}
-		else if((feesData.defaultAmount  > feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
-			isShowFees = true;
-		}
-		return isShowFees;
-	};
-
-	// CICO-9457 : To calculate fee - for standalone only
-	$scope.calculateFee = function() {
-
-		if ($scope.isStandAlone) {
-			var feesInfo = $scope.feeData.feesInfo;
-			var amountSymbol = "";
-			var feePercent  = zeroAmount;
-			var minFees = zeroAmount;
-
-			if (typeof feesInfo != 'undefined' && feesInfo != null){
-				amountSymbol = feesInfo.amount_symbol;
-				feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
-				minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
-			}
-			var totalAmount = ($scope.ngDialogData.penalty == "") ? zeroAmount :
-			parseFloat($scope.ngDialogData.penalty);
-
-			$scope.feeData.minFees = minFees;
-			$scope.feeData.defaultAmount = totalAmount;
-
-			if($scope.isShowFees()){
-				if (amountSymbol == "percent") {
-					var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
-					$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+			// CICO-11591 : To show or hide fees calculation details.
+			$scope.isShowFees = function(){
+				var isShowFees = false;
+				var feesData = $scope.feeData;
+				if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
+					isShowFees = false;
 				}
-				else {
-					$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+				else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
+					isShowFees = true;
 				}
-			}
-		}
-	};
+				return isShowFees;
+			};
+	
 
-	// CICO-9457 : Data for fees details.
-	$scope.setupFeeData = function(){
+			// CICO-9457 : To calculate fee - for standalone only
+			$scope.calculateFee = function() {
 
-		var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
-		var defaultAmount = $scope.ngDialogData ?
-		parseFloat($scope.ngDialogData.penalty) : zeroAmount;
+				if ($scope.isStandAlone) {
+					var feesInfo = $scope.feeData.feesInfo;
+					var amountSymbol = "";
+					var feePercent  = zeroAmount;
+					var minFees = zeroAmount;
 
-		var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
-		$scope.feeData.minFees = minFees;
-		$scope.feeData.defaultAmount = defaultAmount;
+					if (typeof feesInfo != 'undefined' && feesInfo != null){
+						amountSymbol = feesInfo.amount_symbol;
+						feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+						minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+					}
+					var totalAmount = ($scope.ngDialogData.penalty == "") ? zeroAmount :
+					parseFloat($scope.ngDialogData.penalty);
 
-		if($scope.isShowFees()){
-			if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+					$scope.feeData.minFees = minFees;
+					$scope.feeData.defaultAmount = totalAmount;
 
-				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
-				$scope.feeData.actualFees = feesAmount;
-
-				if(amountSymbol == "percent") $scope.calculateFee();
-				else{
-					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+					if($scope.isShowFees()){
+						if (amountSymbol == "percent") {
+							var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
+							$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+							$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+						}
+						else {
+							$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
+							$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+						}
+					}
 				}
-			}
-		}
-	};
+			};
+
+			// CICO-9457 : Data for fees details.
+			$scope.setupFeeData = function(){
+
+				var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
+				var defaultAmount = $scope.ngDialogData ?
+				parseFloat($scope.ngDialogData.penalty) : zeroAmount;
+
+				var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+				$scope.feeData.minFees = minFees;
+				$scope.feeData.defaultAmount = defaultAmount;
+
+				if($scope.isShowFees()){
+					if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+
+						var amountSymbol = feesInfo.amount_symbol;
+						var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+						$scope.feeData.actualFees = feesAmount;
+
+						if(amountSymbol == "percent") $scope.calculateFee();
+						else{
+							$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+							$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+						}
+					}
+				}
+			};
 
 	var refreshCardsList = function() {
 		$timeout(function() {
@@ -216,7 +214,7 @@
 			token: cardToken,
 			card_expiry: cardExpiry
 		};
-		if($scope.isStandAlone){
+		if($scope.isShowFees()){
 			if($scope.feeData.calculatedFee)
 				paymentData.fees_amount = $scope.feeData.calculatedFee;
 			if($scope.feeData.feesInfo)
