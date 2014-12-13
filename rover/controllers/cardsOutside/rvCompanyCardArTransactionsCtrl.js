@@ -80,6 +80,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			var params = getParamsToSend();
 			console.log(params);
+
 			if(typeof params.id != 'undefined' && params.id != ''){
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
 			}
@@ -127,11 +128,13 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	    // To handle from date change
 	    $scope.$on('fromDateChanged',function(){
+	    	initPaginationParams();
 	        fetchData();
 	    });
 
 		// To handle to date change
 	    $scope.$on('toDateChanged',function(){
+	    	initPaginationParams();
 	        fetchData();
 	    });
 
@@ -175,6 +178,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				return true;
 			}
 		};
+
+		var initPaginationParams = function(){
+			RVSearchSrv.page = 1;
+			$scope.filterData.start = 1;
+			$scope.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
+			$scope.nextAction = false;
+			$scope.prevAction = false;
+		}
 
 		$scope.loadNextSet = function(){
 			$scope.filterData.pageNo++;
