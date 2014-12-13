@@ -440,6 +440,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.shouldShowMakePaymentScreen       = true; 
 		//$scope.shouldShowExistingCards  		 = false;
 		$scope.addmode                 			 = false;
+		$scope.depositBalanceMakePaymentData.payment_type = "";
 	});
 	
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender){
