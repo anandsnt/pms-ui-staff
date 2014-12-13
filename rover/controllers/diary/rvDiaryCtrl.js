@@ -545,12 +545,57 @@ sntRover
 		    		occupancy: row_item_data,
 	    		}
 	    	};
-			ngDialog.open({
-				template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
-				controller: 'RVDiaryRoomTransferConfirmationCtrl',
-				scope: $scope
-			});	    	
+	    	$scope.price = $scope.roomXfer.next.room.new_price - $scope.roomXfer.current.room.old_price;
+	    	if($scope.price != 0) {
+				ngDialog.open({
+					template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
+					controller: 'RVDiaryRoomTransferConfirmationCtrl',
+					scope: $scope
+				});	    	
+			}
+			else{
+				$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);
+			}
 	    };
+
+		$scope.reserveRoom = function(nextRoom, occupancy){
+
+			var dataToPassConfirmScreen = {},
+			roomXfer = $scope.roomXfer,
+			current = (roomXfer.current),
+			next = (roomXfer.next);
+			dataToPassConfirmScreen.arrival_date = nextRoom.arrivalDate;
+			dataToPassConfirmScreen.arrival_time = nextRoom.arrivalTime;
+			
+			dataToPassConfirmScreen.departure_date = nextRoom.departureDate;
+			dataToPassConfirmScreen.departure_time = nextRoom.departureTime;			
+			var rooms = {
+				room_id: next.room.id,
+				rateId:  next.room.rate_id,
+				amount: roomXfer.next.room.new_price,
+				reservation_id: next.occupancy.reservation_id,
+				confirmation_id: next.occupancy.confirmation_number,
+				numAdults: next.occupancy.numAdults, 	
+	    		numChildren : next.occupancy.numChildren,
+	    		numInfants 	: next.occupancy.numChildren,
+	    		guest_card_id: next.occupancy.guest_card_id,
+	    		company_card_id: next.occupancy.company_card_id,
+	    		travel_agent_id: next.occupancy.travel_agent_id,	    		
+	    		payment: {
+	    			payment_type: next.occupancy.payment_type,
+	    			payment_method_used: next.occupancy.payment_method_used,
+	    			payment_method_description: next.occupancy.payment_method_description
+	    		}
+			}
+			dataToPassConfirmScreen.rooms = [];
+			dataToPassConfirmScreen.rooms.push(rooms);
+			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
+			$scope.closeDialog();
+			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
+				reservation: 'HOURLY',
+				mode:'EDIT_HOURLY'
+			})
+		};
 
 	    var successCallBackOfResizeExistingReservation = function(data, successParams){
 	    	var avData = data.availability;
@@ -769,7 +814,7 @@ sntRover
  		$scope.editCancel = function() {
 	    	var props = $scope.gridProps;	    	
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
-
+	    	$scope.errorMessage = '';
 	    	$scope.resetEdit();
 	    	$scope.renderGrid();
 	    };
@@ -855,6 +900,7 @@ sntRover
 	}
 
     $scope.Availability = function() {
+    	$scope.errorMessage = '';
 		$scope.clearAvailability();
 		$scope.resetEdit();
 		$scope.renderGrid();
@@ -976,7 +1022,7 @@ sntRover
 
 	var callDiaryAPIsAgainstNewDate = function(start_date, end_date){
 		$scope.$emit('showLoader');
-		
+		$scope.errorMessage = '';
 		rvDiarySrv.callOccupancyAndAvailabilityCount(start_date, end_date)
 		.then(function(data){
 
@@ -1185,6 +1231,8 @@ sntRover
 			
 		}						
 	}
+
+
 
 	var correctRoomType = function() {
 		if ( !$scope.gridProps.filter.room_type ) {
