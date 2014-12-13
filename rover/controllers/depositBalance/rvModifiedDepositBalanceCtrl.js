@@ -33,6 +33,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				};
 			});
 	$scope.addmode = ($scope.cardsList.length>0) ? false :true;
+
 	$scope.shouldShowMakePaymentScreen = true;
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;

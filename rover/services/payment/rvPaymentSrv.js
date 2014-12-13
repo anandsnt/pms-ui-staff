@@ -97,10 +97,12 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			});	
 		return deferred.promise;
 	};
-	this.chipAndPinGetToken = function(){
+	this.chipAndPinGetToken = function(postData){
 		var deferred = $q.defer();
 		var url = '/api/cc/get_token.json';
-		RVBaseWebSrv.getJSON(url).then(function(data) {
+		console.log(">>>>>>>>>>>>");
+		console.log(postData);
+		RVBaseWebSrvV2.postJSON(url, postData).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
