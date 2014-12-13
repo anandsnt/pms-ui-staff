@@ -24,14 +24,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'textInQueryBox': '',
 			'viewFromOutside': false
 		};
-		// Navigation via cards outside.
-		$scope.$on("viewFromCardsOutside", function(event,data) {
-			console.log("viewFromCardsOutside");
+
+		if(typeof $stateParams.type != 'undefined'){
 			$scope.filterData.viewFromOutside = true;
 			$scope.filterData.id = ($stateParams.id == 'add')? '': $stateParams.id;
-		});
+		}
 		
-		console.log("$scope.filterData.viewFromOutside"+$scope.filterData.viewFromOutside);
 		// Get parameters for fetch data
 		var getParamsToSend = function(){
 			var paramsToSend = {
@@ -82,8 +80,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			var params = getParamsToSend();
 			console.log(params);
-			if(typeof params.id != 'undefined'){
-				alert("before fetch");
+			if(typeof params.id != 'undefined' && params.id != ''){
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
 			}
 		};
