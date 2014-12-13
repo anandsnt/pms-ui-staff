@@ -11,7 +11,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		
 		// Initializing filter data
 		$scope.filterData = {
-			'id': $scope.contactInformation.id,
+			'id': $scope.contactInformation == undefined? "" :$scope.contactInformation.id,
 			'filterActive': true,
 			'showFilterFlag': 'OPEN',
 			'fromDate': $rootScope.businessDate,
@@ -74,8 +74,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			var params = getParamsToSend();
 			console.log(params);
-			if(typeof params.id != 'undefined')
+			if(typeof params.id != 'undefined'){
+				alert("before fetch");
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
+			}
 		};
 
 		// In the case of new card, handle the generated id upon saving the card.
@@ -185,7 +187,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.isNextButtonDisabled = function(){
 			var isDisabled = false;
 			//if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
-
+			if(typeof $scope.arTransactionDetails == "undefined")
+				return true;
 			if($scope.filterData.end >= $scope.arTransactionDetails.total_count){
 				isDisabled = true;
 			}
