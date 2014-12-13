@@ -84,11 +84,10 @@
                     {{'ADD_TO_GUEST_CARD' | translate}}
                 </label>
             </div> 
-
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
-                <button type="button" id="pay" class="button green modal-close" ng-click="submitPayment()" translate>MAKE PAYMENT</button>
+                <button type="button" id="pay" ng-disabled="saveData.paymentType === ''" ng-class="{'gray':saveData.paymentType === '','green':saveData.paymentType !== ''}" class="button" ng-click="submitPayment()" translate>MAKE PAYMENT</button>
             </div>
         </div>
     </form>
