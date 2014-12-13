@@ -421,6 +421,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($stateParams.reservation == "HOURLY") {
 				$scope.$emit('showLoader');
 				$scope.reservationData.isHourly = true;
+				$scope.reservationData.paymentType.type.value = "";
 				if (!$rootScope.isAddonOn || $stateParams.mode == "EDIT_HOURLY") {
 					var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 					temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
