@@ -133,9 +133,9 @@
             <span class="h2">Outstanding Guest Bills paid</span>
         </div>
     </div>
-    <div class="search-pagination" ng-show="totalSearchResults > searchPerPage && results.length > 0">
+    <div class="search-pagination" ng-show="arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-        <p>Showing <strong>12</strong> of <strong id="total-count">100</strong> items</p>
-    </div>
+        <p>Showing <strong>{{filterData.start}}-{{filterData.end}}</strong> of <strong id="total-count">{{arTransactionDetails.total_count}}</strong> items</p>
+    </div> 
 </form>

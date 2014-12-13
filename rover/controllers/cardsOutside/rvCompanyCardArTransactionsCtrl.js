@@ -17,9 +17,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'toDate': '',
 			'isShowPaid': '',
 			'textQuery': '',
-			'pageNo':'1',
-			'perPage':'50',
-			'textInQueryBox': ''
+			'pageNo':1,
+			'perPage':2,
+			'textInQueryBox': '',
+			'start': 1
 		};
 		
 		// In the case of new card, handle the generated id upon saving the card.
@@ -50,15 +51,24 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 		// To fetch data for ar transactions
 		var fetchData = function(params){
-			console.log("fetchdata");
+			
 			var arAccountsFetchSuccess = function(data) {
 			    $scope.$emit('hideLoader');
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
 				setTimeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
-				}, 0)
-			    console.log($scope.arTransactionDetails);
+				}, 0);
+
+				// Compute the start, end and total count parameters
+				if($scope.nextAction){
+					$scope.filterData.start = $scope.filterData.start + $scope.filterData.perPage ;
+				}
+				if($scope.prevAction){
+					$scope.filterData.start = $scope.filterData.start - $scope.filterData.perPage ;
+
+				}
+				$scope.filterData.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
 			};
 
 			var failure = function(){
@@ -126,9 +136,15 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			//setting first letter as captial
 			$scope.filterData.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 			
+			$scope.filterData = 1;
+			$scope.filterData.end = $scope.filterData.start + $scope.results.length - 1;
+			$scope.nextAction = false;
+			$scope.prevAction = false;
+
 			if (queryText.length < 3 && isCharacterWithSingleDigit(queryText)) {
 				return false;
 			}
+			
 			fetchData();
 		
 		}; //end of query entered
@@ -146,6 +162,36 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			}
 		};
 
-		
+		$scope.loadNextSet = function(){
+			$scope.filterData.pageNo++;
+			$scope.nextAction = true;
+			$scope.prevAction = false;
+			fetchData();
+		};
+
+		$scope.loadPrevSet = function(){
+			$scope.filterData.pageNo--;
+			$scope.nextAction = false;
+			$scope.prevAction = true;
+			fetchData();
+		};
+
+		$scope.isNextButtonDisabled = function(){
+			var isDisabled = false;
+			//if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
+
+			if($scope.filterData.end >= $scope.arTransactionDetails.total_count){
+				isDisabled = true;
+			}
+			return isDisabled;
+		};
+
+		$scope.isPrevButtonDisabled = function(){
+			var isDisabled = false;
+			if($scope.filterData.pageNo == 1){
+				isDisabled = true;
+			}
+			return isDisabled;
+		};
 		
 }]);
