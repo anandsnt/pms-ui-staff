@@ -91,8 +91,8 @@
                             <img src="{{transaction.guest_image}}" alt="" />
                             <!-- if it's accompanying guest, show this as well:
                             <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
-                            <!-- if VIP guest:
-                            <span class="vip">VIP</span> -->
+                            <!-- if VIP guest: -->
+                            <span class="vip" ng-if="transaction.guest_is_vip">VIP</span>
                         </figure>
                         <div class="data">
                             <h2><span>{{transaction.guest_first_name}}</span>, <span>{{transaction.guest_last_name}}</span></h2>

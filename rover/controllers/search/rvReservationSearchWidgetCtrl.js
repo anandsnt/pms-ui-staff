@@ -360,11 +360,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					applyFilters();
 
 				} else {
-					RVSearchSrv.page = 1;
-					$scope.start = 1;
-					$scope.end = $scope.start + $scope.results.length - 1;
-					$scope.nextAction = false;
-					$scope.prevAction = false;
+					initPaginationParams();
 					$scope.fetchSearchResults();		
 				}
 				// we have changed data, so we are refreshing the scrollerbar
@@ -758,33 +754,27 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		        scope: $scope
 		    });
 		};
-		// For dashboard button search(DUEIN, STAYOVER, DUEOUT etc)
-		// the search API is called in router via resolve method.
-		// The scope mismatch for date params would occur.
-		// so the FROM DATE and TO DATE are kept in service. 
+
+		var initPaginationParams = function(){
+			RVSearchSrv.page = 1;
+			$scope.start = 1;
+			$scope.end = $scope.start + $scope.results.length - 1;
+			$scope.nextAction = false;
+			$scope.prevAction = false;
+		}
+		
 		$scope.onFromDateChanged = function(date){
 			$scope.fromDate = date;
 			$scope.focusSearchField = true;
-			//RVSearchSrv.fromDate = date;
-			RVSearchSrv.page = 1;
-			$scope.start = 1;
-			$scope.end = $scope.start + $scope.results.length - 1;
-			$scope.nextAction = false;
-			$scope.prevAction = false;
+			initPaginationParams();
 			$scope.fetchSearchResults();
-					
 		};
+
 		$scope.onToDateChanged = function(date){
 			$scope.toDate = date;
 			$scope.focusSearchField = true;
-			RVSearchSrv.page = 1;
-			$scope.start = 1;
-			$scope.end = $scope.start + $scope.results.length - 1;
-			$scope.nextAction = false;
-			$scope.prevAction = false;
-			//RVSearchSrv.toDate = date;
+			initPaginationParams();
 			$scope.fetchSearchResults();
-
 		};
 
 		$scope.clearToDateClicked = function(){
