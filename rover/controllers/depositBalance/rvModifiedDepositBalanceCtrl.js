@@ -26,8 +26,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.shouldShowAddNewCard   = true;
 	$scope.showExistingAndAddNewPayments = true;
 	$scope.showOnlyAddCard = false;
-	$scope.cardsList = $scope.depositBalanceData.data.existing_payments;
-	$scope.addmode = ($scope.cardsList.length>0) ? true :false;
+	$scope.cardsList =[];
+	angular.forEach($scope.depositBalanceData.data.existing_payments, function(obj, index){
+				if (obj.is_credit_card) {
+		 		 	$scope.cardsList.push(obj);
+				};
+			});
+	$scope.addmode = ($scope.cardsList.length>0) ? false :true;
+
 	$scope.shouldShowMakePaymentScreen = true;
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;
@@ -71,6 +77,15 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			};					
 		});				
 	};
+
+	var checkReferencetextAvailableFornonCC = function(){
+		angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
+			console.log(value.name+"----------"+$scope.depositBalanceMakePaymentData.payment_type+"----"+value.is_display_reference)
+			if(value.name == $scope.depositBalanceMakePaymentData.payment_type){
+				$scope.isDisplayReference =  (value.is_display_reference)? true:false;
+				}
+		});		
+	};
 	$scope.changePaymentType = function(){
 		if($scope.depositBalanceMakePaymentData.payment_type == "CC"){
 
@@ -82,10 +97,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				refreshScroll();
 			}
 		} else {
-			$scope.shouldShowMakePaymentScreen       = true; 
+				$scope.shouldShowMakePaymentScreen       = true; 
 				$scope.addmode                 			 = false;
 				$scope.shouldShowExistingCards = false;
 				$scope.shouldCardAvailable 				 = false;
+				checkReferencetextAvailableFornonCC();
 		}
 	};
 	$scope.changeOnsiteCallIn = function(){

@@ -35,7 +35,7 @@
 				if($scope.cancellationData.paymentType !=="CC"){
 
 					angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
-						console.log(value.name+"-----"+$scope.cancellationData.paymentType+"-_-----"+value.is_display_reference)
+						
 						if(value.name == $scope.cancellationData.paymentType){
 							$scope.isDisplayReference = (value.is_display_reference)? true:false;
 						}
@@ -227,22 +227,20 @@
 
 	var onFetchPaymentsSuccess = function(data) {
 		$scope.$emit('hideLoader');
-		$scope.cardsInPaymentMethods = _.where(data.existing_payments, {
+		
+		$scope.cardsList = _.where(data.existing_payments, {
 			is_credit_card: true
 		});
-		$scope.cardsInPaymentMethods.forEach(function(card) {
+		
+		$scope.cardsList.forEach(function(card) {
 			card.mli_token = card.ending_with;
 			delete card.ending_with;    
 			card.card_expiry = card.expiry_date;
 			delete card.expiry_date; 
 		});
-		if ($scope.cardsInPaymentMethods.length > 0) {
-			$scope.ngDialogData.cards = true;
-	//$scope.cancellationData.viewCardsList = true;
-	$scope.cardsList = $scope.cardsInPaymentMethods;
-	refreshCardsList();
-	}
-	$scope.ngDialogData.state = 'PENALTY';
+		$scope.addmode = $scope.cardsList.length>0 ? false :true;
+		refreshCardsList();
+		$scope.ngDialogData.state = 'PENALTY';
 	};
 
 
@@ -339,9 +337,8 @@
 	$scope.applyPenalty = function() {
 		var reservationId = $scope.passData.reservationId;
 		$scope.ngDialogData.applyPenalty = true;
-	//$scope.showCC = true;
-	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
-	$scope.ngDialogData.state = 'PENALTY';
+	    $scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
+	
 	};
 
 	$scope.onCardClick = function(){
