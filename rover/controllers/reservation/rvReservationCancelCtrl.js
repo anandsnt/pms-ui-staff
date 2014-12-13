@@ -286,6 +286,12 @@
 			$scope.cardsList.push(dataToGuestList);
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
+		$scope.depositPaidSuccesFully = true;
+		$scope.authorizedCode = data.authorization_code;
+		
+	};
+
+	$scope.cancelReservation = function(){
 		cancelReservation();
 	};
 	/*

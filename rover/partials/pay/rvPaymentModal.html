@@ -44,7 +44,7 @@
                 </div>
 
             <!-- Selected card - Show when card is selected/added-->
-            <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo && !showCCPage && (paymentGateway !== 'sixpayments' || isManual) && saveData.paymentType === 'CC'" ng-click="showGuestCreditCardList()">
+            <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo && !showCCPage && (paymentGateway !== 'sixpayments' || isManual) && saveData.paymentType === 'CC' && !depositPaidSuccesFully" ng-click="showGuestCreditCardList()">
                 <label>{{'CREDIT_CARD' | translate}} (<span translate>TAP_TO_CHANGE</span>)</label>
                 <label class="active-item item-payment">
                     <figure class="card-logo">
@@ -59,7 +59,7 @@
               <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>
 
             <!-- Fields -->
-            <div class="entry full-width" ng-hide="showCCPage" ng-class="{'amount': isShowFees()}">
+            <div class="entry full-width" ng-hide="showCCPage || depositPaidSuccesFully" ng-class="{'amount': isShowFees()}">
                 <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
                 <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
                 <span  ng-show="isShowFees()" class="fee">
@@ -72,23 +72,44 @@
                     </strong>
                 </span>
             </div> 
-            <div class="entry full-width reference" ng-show="!showCCPage && referenceTextAvailable">
+            <div class="entry full-width reference" ng-show="!showCCPage && referenceTextAvailable && !depositPaidSuccesFully">
                 <label for="reference">Reference</label>
                 <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
             </div> 
+            <!-- Success feedback -->
+            <div class="feedback" ng-show="!showCCPage && depositPaidSuccesFully">
+                <div class="notice success">Amount paid!</div>
+                <ul class="transaction">
+                    <li ng-show="authorizedCode !==''">
+                        Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
+                    </li>
+                    <li>
+                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}}</span>
+                    </li>
+                </ul>
+            </div> 
 
-            <div class="entry full-width" ng-show="showCreditCardInfo && !showCCPage && newCardAdded && (paymentGateway !== 'sixpayments' || isManual)">
+            <!-- Fail feedback -->
+            <div class="feedback" ng-show="errorOccured">
+                <div class="notice error">Payment failed. Try again or change payment method.</div>
+            </div> 
+
+            <div class="entry full-width" ng-show="showCreditCardInfo && !showCCPage && newCardAdded && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully">
                 <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': newPaymentInfo.addToGuestCard}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': newPaymentInfo.addToGuestCard}"></span>
                     <input ng-model="newPaymentInfo.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
                     {{'ADD_TO_GUEST_CARD' | translate}}
                 </label>
             </div> 
+
             <!-- Buttons -->
-            <div class="actions" ng-hide="showCCPage">
+            <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
-                <button type="button" id="pay" ng-disabled="saveData.paymentType === ''" ng-class="{'gray':saveData.paymentType === '','green':saveData.paymentType !== ''}" class="button" ng-click="submitPayment()" translate>MAKE PAYMENT</button>
+                <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'gray':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" translate>MAKE PAYMENT</button>
             </div>
+             <div class="actions" ng-hide="!depositPaidSuccesFully">
+                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CLOSE</button>
+             </div>   
         </div>
     </form>
     <div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">

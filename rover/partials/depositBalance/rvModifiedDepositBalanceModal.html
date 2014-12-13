@@ -87,7 +87,8 @@
 				</div>
 				<div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"   ng-hide="shouldShowMakePaymentScreen"></div>
 			
-				<div class="entry full-width" ng-click="showAddCardSection()" ng-show="shouldShowMakePaymentScreen && shouldCardAvailable && !depositPaidSuccesFully" id="selected-card"><label>Credit Card (<span>Tap to change</span>)</label><label class="active-item item-payment" id="pay-with-discover">
+
+				<div class="entry full-width" ng-click="showAddCardSection()" ng-show="shouldShowMakePaymentScreen  && !depositPaidSuccesFully && shouldCardAvailable && depositBalanceMakePaymentData.payment_type ==='CC' && (paymentGateway !== 'sixpayments' || isManual)" id="selected-card"><label>Credit Card (<span>Tap to change</span>)</label><label class="active-item item-payment" id="pay-with-discover">
 	                    <figure class="card-logo">
 	                        <img alt="" src="/assets/{{depositBalanceMakePaymentData.card_code}}.png">
 	                    </figure>
@@ -144,7 +145,7 @@
 						Close
 					</button>
 					<span ng-hide="depositPaidSuccesFully">
-						<button type="button" ng-disabled="makePaymentButtonActive" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()" id="make-payment" class="button modal-close" >
+						<button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()" id="make-payment" class="button modal-close" >
 							Make Payment
 						</button>
 					</span>

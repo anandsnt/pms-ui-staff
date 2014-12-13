@@ -27,7 +27,20 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.cardData = {};
 		$scope.newCardAdded = false;
 		$scope.shouldShowWaiting = false;
+		$scope.depositPaidSuccesFully = false;		
+		$scope.saveData.paymentType = '';
+		$scope.defaultPaymentTypeOfBill = '';
 		
+	};
+
+
+	$scope.disableMakePayment = function(){
+		 if($scope.saveData.paymentType.length > 0){
+			return false
+		}
+		else{
+			return true;
+		};
 	};
 
 	var refreshCardsList = function() { 			
@@ -307,7 +320,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	var successPayment = function(data){
 		$scope.$emit("hideLoader");
-		$scope.handleCloseDialog();
+		$scope.depositPaidSuccesFully = true;
+		$scope.authorizedCode = data.authorization_code;
+		
+		//$scope.handleCloseDialog();
 		//To refresh the view bill screen 
 		$scope.$emit('PAYMENT_SUCCESS');
 		if($scope.newPaymentInfo.addToGuestCard){
