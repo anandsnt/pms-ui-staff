@@ -851,7 +851,7 @@ sntRover
             m_status = meta.occupancy.status,
             id = meta.occupancy.id,
 			reject = function(child) {		
-				return angular.lowercase(child[m_status]) === 'available'; 
+				return angular.lowercase(child[m_status]) === 'available' || angular.lowercase(child[m_status]) === 'blocked'; 
 			};
 
 		for(var i = 0, len = rooms.length; i < len; i++) {
