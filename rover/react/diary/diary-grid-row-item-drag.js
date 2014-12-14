@@ -125,18 +125,25 @@ var GridRowItemDrag = React.createClass({
 				
 				props.iscroll.grid.enable();
 				
-				var prevArrival = item.arrival;
-				var newArrival = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;
-				
-				if(newArrival - prevArrival <= 300000 && newArrival - prevArrival >=0){
+				var prevArrival = item.arrival,
+					fifteenMin	= 900000,
+					commonFactor= ((((state.element_x + delta_x) / px_per_ms) + x_origin) / fifteenMin),
+					newArrival  =  commonFactor * fifteenMin,
+					ceiled 		= Math.ceil(commonFactor) * fifteenMin,
+					floored 	= Math.floor(commonFactor) * fifteenMin,
+					diffC_NA	= Math.abs(ceiled - newArrival), //diff b/w ceiled & new Arrival,
+					diffF_NA	= Math.abs(floored - newArrival); //diff b/w floored & new Arrival,
+
+					
+				if(newArrival - prevArrival <= 300000 && newArrival - prevArrival >= 0){	
 					arrival = item.arrival;
 				}
-				else if(delta_x < 0) {					
-					arrival = Math.floor((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;
+				else if(diffC_NA < diffF_NA){
+					arrival = ceiled;
 				}
-				else if(delta_x > 0){										
-					arrival = Math.ceil((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000) * 900000;					
-				}
+				else if(diffC_NA > diffF_NA){
+					arrival = floored;
+				}				
 				
 
 				item.arrival = arrival;

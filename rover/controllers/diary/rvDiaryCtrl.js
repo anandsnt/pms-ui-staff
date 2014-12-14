@@ -1215,13 +1215,11 @@ sntRover
 					if(_.has(occupancy, 'reservation_id')) {
 						if(occupancy['reservation_id'] == reservation_id){
 							row_item_data = occupancy;
+							row_data = room_detail;
 						}
 					}
 				})				
-				
-				if(row_item_data) {					
-					row_data = room_detail;
-				}				
+							
 			});						   	
 			if(row_data){	   		
 	   			$scope.$apply(function(){	   			
