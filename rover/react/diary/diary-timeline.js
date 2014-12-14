@@ -20,7 +20,20 @@ var Timeline = React.createClass({
 
 				time = (time > 23) ? 0 : time;
 			}
-		})(); 
+		})();
+
+		var today = props.filter.arrival_date,
+			clone = new tzIndependentDate( today.valueOf() ),
+			tmrow = new tzIndependentDate( clone.setDate(clone.getDate() + 1) ),
+			todayShortDate,
+			tmrowShortDate;
+
+		if ( today instanceof Date ) {
+			todayShortDate = today.toComponents().date.toShortDateString();
+			tmrowShortDate = tmrow.toComponents().date.toShortDateString();
+		} else {
+			todayShortDate = tmrowShortDate = '';
+		};
 
 		/*CREATE TIMELINE*/
 		for(var i = 0, len = display.hours; i < len; i++) {
@@ -29,6 +42,18 @@ var Timeline = React.createClass({
 			interval_spans.push(React.DOM.span({
 				className: 'hour-display'
 			}, segment_hour_display[i]));
+
+			if ( i % 6 == 0 ) {
+				interval_spans.push(React.DOM.span({
+					className: 'hour-display',
+					style: {
+						'bottom'         : '45px',
+						'width'          : 'auto',
+						'text-transform' : 'uppercase',
+						'line-height'    : '1'
+					}
+				}, (i < 23 ? todayShortDate : tmrowShortDate) ));
+			};
 
 			for(var j = 0; j < display.intervals_per_hour; j++) {
 				interval_spans.push(React.DOM.span({

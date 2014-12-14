@@ -196,6 +196,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$emit("hideLoader");
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
+			$rootScope.$broadcast("IDGENERATED",{ 'id': data.id });
 			callCompanyCardServices();
 			//New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
