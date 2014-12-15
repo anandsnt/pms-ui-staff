@@ -268,6 +268,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.depositData.attempted = true;
 					$scope.depositData.depositSuccess = true;
 					$scope.depositData.authorizationCode = data.authorization_code;
+					// $scope.reservationData.selectedPaymentId = 
 					$scope.$emit('hideLoader');
 				},
 				onPaymentFailure = function(errorMessage) {
@@ -364,7 +365,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 						travel_agent_id: null,
 						fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
 					}
-				}
+				};
 			}
 		}
 
@@ -385,7 +386,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			} else {
 				$scope.saveReservation();
 			}
-		}
+		};
 
 		// 	};
 		// };
@@ -576,6 +577,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 
 
+		};
+		$scope.clickedContinueButton = function(){
+			console.log("============DEPOSIT-----------");
+			console.log($scope.depositData.isDepositRequired);
+			if($scope.depositData.isDepositRequired){
+				$scope.proceedCreatingReservation();
+			} else {
+				
+			}
 		};
 
 		$scope.proceedCreatingReservation = function() {
