@@ -217,7 +217,7 @@ sntRover.controller('reservationActionsController', [
 			
 				var afterRoomUpdate = function() {
 					if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
-							if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "false") && ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null)) {
+							if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog == null) && ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null)) {
 									$scope.$emit('showLoader');
 									ngDialog.open({
 										template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
