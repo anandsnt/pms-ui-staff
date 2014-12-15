@@ -79,7 +79,7 @@
     </div>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- If there are open bills: -->
-    <div class="tab-details scrollable" ng-if="arTransactionDetails.open_guest_bills > 0" ng-iscroll="ar-transaction-list">
+    <div class="tab-details scrollable" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list">
         <div class="wrapper">
             
             <ul class="search-results">
@@ -127,7 +127,7 @@
     </div>
 
     <!-- When no open bills / all bills paid -->
-    <div class="tab-details no-content" ng-if="arTransactionDetails.open_guest_bills == 0">
+    <div class="tab-details no-content" ng-show="arTransactionDetails.ar_transactions.length == 0">
         <div class="info">
             <span class="icon-no-content icon-ok"></span>
             <strong class="h1">No Transactions</strong>
