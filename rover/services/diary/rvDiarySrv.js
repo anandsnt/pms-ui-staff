@@ -435,7 +435,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room = this.dataStore.get('_room.values.id')[occupancy.room_id],
                         room_type = room.room_type; 
 
-                    
+                    occupancy.arrival_date = occupancy.arrival_date.replace(/-/g, '/');
+                    occupancy.departure_date = occupancy.departure_date.replace(/-/g, '/');
                     if(!occupancy[m.start_date]) occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
                     if(!occupancy[m.end_date]) occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
                     if(!occupancy[m.maintenance]) occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
@@ -496,15 +497,20 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         selected    = args.shift(),
                         m           = meta.occupancy,
                         room        = this.dataStore.get('_room.values.id')[slot.id],
-                        room_type   = room.room_type;                        
+                        room_type   = room.room_type,
+                        slot_statues = {
+                            'WEBBOOKING': 'blocked',
+                            'AVAILABLE' : 'available'
+                        };  
                     /*
                         Configrue Available slot to mirror occupancy, execpt
                         set revervation_id for the collection so the resize
                         will work on all as a group.
                     */
+
                     if(!slot.room_id) {
                         slot.room_id                = room.id;
-                        slot.reservation_status     = 'available';
+                        slot.reservation_status     = slot_statues[slot.status];
                         slot.room_service_status    = '';
                         slot.reservation_id         = guid;
                         slot.selected               = selected;

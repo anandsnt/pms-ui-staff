@@ -22,7 +22,18 @@ var Timeline = React.createClass({
 			}
 		})();
 
-		var shortDate = props.filter.arrival_date instanceof Date ? props.filter.arrival_date.toComponents().date.toShortDateString() : '';
+		var today = props.filter.arrival_date,
+			clone = new tzIndependentDate( today.valueOf() ),
+			tmrow = new tzIndependentDate( clone.setDate(clone.getDate() + 1) ),
+			todayShortDate,
+			tmrowShortDate;
+
+		if ( today instanceof Date ) {
+			todayShortDate = today.toComponents().date.toShortDateString();
+			tmrowShortDate = tmrow.toComponents().date.toShortDateString();
+		} else {
+			todayShortDate = tmrowShortDate = '';
+		};
 
 		/*CREATE TIMELINE*/
 		for(var i = 0, len = display.hours; i < len; i++) {
@@ -41,7 +52,7 @@ var Timeline = React.createClass({
 						'text-transform' : 'uppercase',
 						'line-height'    : '1'
 					}
-				}, shortDate));
+				}, (i < 23 ? todayShortDate : tmrowShortDate) ));
 			};
 
 			for(var j = 0; j < display.intervals_per_hour; j++) {
