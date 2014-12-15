@@ -6,9 +6,7 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		businessDate = tzIndependentDate($rootScope.businessDate),
 		defaultDate = tzIndependentDate(Date.now()),
 		fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
-		toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date,
-		fromDateOffset = _.isEmpty(fromDate) ? (new Date()).getMonth() - businessDate.getMonth() : undefined,
-		toDateOffset = _.isEmpty(toDate) ? fromDateOffset - 1 : undefined;
+		toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date;
 
 	$scope.setUpData = function() {		
 		$scope.fromDate = fromDate;
@@ -18,12 +16,8 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 			firstDay: 1,
 			changeYear: true,
 			changeMonth: true,
-			yearRange: "-5:+5", //Show 5 years in past & 5 years in future
-			showCurrentAtPos: fromDateOffset,
+			yearRange: "-5:+5", //Show 5 years in past & 5 years in future			
 			onSelect: function(dateText, datePicker) {
-				if(fromDateOffset) { datePicker.drawMonth += fromDateOffset; 
-					$scope.fromDateOptions.showCurrentAtPos = fromDateOffset = undefined; }
-
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.toDate = $scope.fromDate;
 				}
@@ -33,13 +27,9 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		$scope.toDateOptions = {
 			firstDay: 1,
 			changeYear: true,
-			changeMonth: true,
-			showCurrentAtPos: toDateOffset,
+			changeMonth: true,			
 			yearRange: "-5:+5",
 			onSelect: function(dateText, datePicker) {
-				if(toDateOffset) { datePicker.drawMonth += toDateOffset; 
-					$scope.toDateOptions.showCurrentAtPos = toDateOffset = undefined; }
-
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.fromDate = $scope.toDate;
 				}
@@ -54,7 +44,6 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 	$scope.updateClicked = function() {
 		filterData.begin_date = $scope.fromDate;
 		filterData.end_date = $scope.toDate;
-
 		filterData.selected_date_range = dateFilter($scope.fromDate, $rootScope.dateFormat) +
 										 ' to ' + 
 										 dateFilter($scope.toDate, $rootScope.dateFormat);

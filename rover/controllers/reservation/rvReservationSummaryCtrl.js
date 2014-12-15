@@ -51,7 +51,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
 				isShowFees = false;
 			}
-			else if((feesData.defaultAmount  > feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
+			else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
 				isShowFees = true;
 			}
 			return isShowFees;
@@ -645,17 +645,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var updateSuccess = function(data) {
 				$scope.$emit('hideLoader');
-
-				$scope.viewState.identifier = "UPDATED";
-				//TODO: what is this?
+				$scope.viewState.identifier = "UPDATED";				
 				$scope.reservationData.is_routing_available = data.is_routing_available;
-				/*$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum
-				});*/
-				//that.attachCompanyTACardRoutings();
-
+				});
 			};
+			
 			postData.payment_type = {};
 			angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
 				if (value.value == $scope.reservationData.paymentType.type.value) {
