@@ -46,7 +46,7 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		* -- Emulate a click to navigate to the next month
 		*/
 		if (!toDate) {
-			$($(".ui-datepicker-next")[1]).click();
+			$("#toDatePicker .ui-datepicker-next").click();
 		}			
 	}, 300);
 
