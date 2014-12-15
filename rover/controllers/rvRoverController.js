@@ -766,5 +766,31 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         scope: $scope
       });
     };
+    
+    
+    // $scope.shouldShowWaiting = true;
+				// ngDialog.open({
+// 					
+					// template: '/assets/partials/reservation/rvWaitingDialog.html',
+					// className: 'ngdialog-theme-default',
+					// scope: $scope
+				// });
+// 				
+				// // RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					// // alert("success");
+					// // console.log(response);
+					// // $scope.shouldShowWaiting = false;
+				// // },function(){
+					// // alert("error");
+					// // $scope.shouldShowWaiting = false;
+					// // //$rootScope.netWorkError = true;
+					// // //$scope.isPosting = false;
+				// // });
+// // 				
+				// setTimeout(function(){
+					// ngDialog.close("firstDialog");
+				// }, 3000);
+//     
+    
   }
 ]);

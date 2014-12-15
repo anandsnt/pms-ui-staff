@@ -291,5 +291,27 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.addCreditAmount = function(params){
+			var deferred = $q.defer();
+			var url = "api/accounts/"+params.id+"/edit_credit_amount";
+			rvBaseWebSrvV2.postJSON(url,params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.payForReservation = function(params){
+			var deferred = $q.defer();
+			var url = "api/accounts/"+params.id+"/mark_reservations_as_paid";
+			rvBaseWebSrvV2.postJSON(url,params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
 	}
 ]);

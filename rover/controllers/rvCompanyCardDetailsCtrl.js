@@ -17,7 +17,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
-		console.log("aaaaaaa");
+		
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
 		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
