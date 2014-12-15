@@ -212,15 +212,19 @@ sntRover.controller('reservationActionsController', [
 
 
 		var startCheckin = function() {
+			
+			
+			
 				var afterRoomUpdate = function() {
 					if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
-						if ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null) {
-								$scope.$emit('showLoader');
-								ngDialog.open({
-									template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
-									controller: 'RVValidateEmailPhoneCtrl',
-									scope: $scope
-								});
+							if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "false") && ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null)) {
+									$scope.$emit('showLoader');
+									ngDialog.open({
+										template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+										controller: 'RVValidateEmailPhoneCtrl',
+										scope: $scope
+									});
+						
 						} else {
 							if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
 									//TO DO:Go to room assignemt view
