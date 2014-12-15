@@ -3,131 +3,17 @@ admin.service('ADDailyWorkAssignmentSrv', [
     'ADBaseWebSrvV2',
     function($q, ADBaseWebSrvV2) {
 
-    	/*
-    	* To fetch task types
-    	* 
-    	* @param {object}
-    	* @return {object} defer promise
-    	*/  
-    	this.fetchWorkType = function() {
-    	    var deferred = $q.defer(),
-    	        url      = 'api/work_types';
-
-    	    ADBaseWebSrvV2.getJSON(url)
-    	        .then(function(data) {
-                    // since not avail from server
-                    _.each(data.results, function(item) {
-                        item.is_system_defined = false;
-                    });
-    	            deferred.resolve(data.results);
-    	        }, function(errorMessage) {
-    	            deferred.reject(errorMessage);
-    	        });
-
-    	    return deferred.promise;
-    	};
-
-    	/*
-    	* To add new task type
-    	* 
-    	* @param {object}
-    	* @return {object} defer promise
-    	*/  
-    	this.addTaskType = function(item) {
-    	    var deferred = $q.defer(),
-    	        url      = '';
-
-    	    ADBaseWebSrvV2.getJSON(url, params)
-    	        .then(function(data) {
-    	            deferred.resolve(data);
-    	        }, function(errorMessage) {
-    	            deferred.reject(errorMessage);
-    	        });
-
-			// temp, delete later
-			this.taskType.push(item);
-			deferred.resolve(this.taskType);
-			// temp, delete later
-
-    	    return deferred.promise;
-    	};
+        var self = this;
 
         /*
-        * To delete a work type
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
-        this.deleteWorkType = function(params) {
+         * To fetch task types
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
+        this.fetchWorkType = function() {
             var deferred = $q.defer(),
-                url      = 'api/work_types/' + params.id;
-
-            ADBaseWebSrvV2.deleteJSON(url)
-                .then(function(data) {
-                    deferred.resolve(data);
-                }, function(errorMessage) {
-                    deferred.reject(errorMessage);
-                });
-
-            return deferred.promise;
-        };
-
-        /*
-        * To update a work type
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
-        this.putWorkType = function(params) {
-            var deferred = $q.defer(),
-                url      = 'api/work_types/' + params.id,
-                params   = _.omit(params, 'id');
-
-            ADBaseWebSrvV2.putJSON(url, params)
-                .then(function(data) {
-                    deferred.resolve(data);
-                }, function(errorMessage) {
-                    deferred.reject(errorMessage);
-                });
-
-            return deferred.promise;
-        };
-
-        /*
-        * To add a new work type
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
-        this.postWorkType = function(params) {
-            var deferred = $q.defer(),
-                url      = 'api/work_types/',
-                params   = _.omit(params, 'id');
-
-            ADBaseWebSrvV2.postJSON(url, params)
-                .then(function(data) {
-                    deferred.resolve(data);
-                }, function(errorMessage) {
-                    deferred.reject(errorMessage);
-                });
-
-            return deferred.promise;
-        };
-
-
-
-
-
-
-        /*
-        * To fetch work shifts
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
-        this.fetchWorkShift = function() {
-            var deferred = $q.defer(),
-                url      = 'api/shifts/';
+                url = 'api/work_types';
 
             ADBaseWebSrvV2.getJSON(url)
                 .then(function(data) {
@@ -144,14 +30,39 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         /*
-        * To delete a work shift
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
-        this.deleteWorkShift = function(params) {
+         * To add new task type
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
+        this.addTaskType = function(item) {
             var deferred = $q.defer(),
-                url      = 'api/shifts/' + params.id;
+                url = '';
+
+            ADBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            // temp, delete later
+            this.taskType.push(item);
+            deferred.resolve(this.taskType);
+            // temp, delete later
+
+            return deferred.promise;
+        };
+
+        /*
+         * To delete a work type
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
+        this.deleteWorkType = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/work_types/' + params.id;
 
             ADBaseWebSrvV2.deleteJSON(url)
                 .then(function(data) {
@@ -164,15 +75,103 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         /*
-        * To add a new work shift
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
+         * To update a work type
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
+        this.putWorkType = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/work_types/' + params.id,
+                params = _.omit(params, 'id');
+
+            ADBaseWebSrvV2.putJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+         * To add a new work type
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
+        this.postWorkType = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/work_types/',
+                params = _.omit(params, 'id');
+
+            ADBaseWebSrvV2.postJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+
+
+        /*
+         * To fetch work shifts
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
+        this.fetchWorkShift = function() {
+            var deferred = $q.defer(),
+                url = 'api/shifts/';
+
+            ADBaseWebSrvV2.getJSON(url)
+                .then(function(data) {
+                    // since not avail from server
+                    _.each(data.results, function(item) {
+                        item.is_system_defined = false;
+                    });
+                    deferred.resolve(data.results);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+         * To delete a work shift
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
+        this.deleteWorkShift = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/shifts/' + params.id;
+
+            ADBaseWebSrvV2.deleteJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+         * To add a new work shift
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
         this.postWorkShift = function(params) {
             var deferred = $q.defer(),
-                url      = 'api/shifts/',
-                params   = _.omit(params, 'id');
+                url = 'api/shifts/',
+                params = _.omit(params, 'id');
 
             ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
@@ -185,15 +184,15 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         /*
-        * To update a work shift
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
+         * To update a work shift
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
         this.putWorkShift = function(params) {
             var deferred = $q.defer(),
-                url      = 'api/shifts/' + params.id,
-                params   = _.omit(params, 'id');
+                url = 'api/shifts/' + params.id,
+                params = _.omit(params, 'id');
 
             ADBaseWebSrvV2.putJSON(url, params)
                 .then(function(data) {
@@ -207,21 +206,20 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
 
 
-
-
-
         /*
-        * fetch additional APIs and preserve
-        *
-        * @param {object}
-        * @return {object} defer promise
-        */  
+         * fetch additional APIs and preserve
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
+
+
         var roomTypesList = [];
         this.fetchRoomTypes = function() {
             var deferred = $q.defer(),
-                url      = 'api/room_types/';
+                url = 'api/room_types/';
 
-            if ( roomTypesList.length ) {
+            if (roomTypesList.length) {
                 deferred.resolve(roomTypesList);
             } else {
                 ADBaseWebSrvV2.getJSON(url)
@@ -236,12 +234,16 @@ admin.service('ADDailyWorkAssignmentSrv', [
             return deferred.promise;
         };
 
+        this.resetRoomTypesList = function() {
+            roomTypesList = [];
+        }
+
         var resHkStatusList = [];
         this.fetchResHkStatues = function() {
             var deferred = $q.defer(),
-                url      = '/api/reservation_hk_statuses';
+                url = '/api/reservation_hk_statuses';
 
-            if ( resHkStatusList.length ) {
+            if (resHkStatusList.length) {
                 deferred.resolve(resHkStatusList);
             } else {
                 ADBaseWebSrvV2.getJSON(url)
@@ -259,9 +261,9 @@ admin.service('ADDailyWorkAssignmentSrv', [
         var foStatusList = [];
         this.fetchFoStatues = function() {
             var deferred = $q.defer(),
-                url      = '/api/front_office_statuses';
+                url = '/api/front_office_statuses';
 
-            if ( foStatusList.length ) {
+            if (foStatusList.length) {
                 deferred.resolve(foStatusList);
             } else {
                 ADBaseWebSrvV2.getJSON(url)
@@ -279,9 +281,9 @@ admin.service('ADDailyWorkAssignmentSrv', [
         var HkStatusList = [];
         this.fetchHkStatues = function() {
             var deferred = $q.defer(),
-                url      = '/api/tasks/hk_applicable_statuses'; // CICO-8620 Need to get only valid statuses here
+                url = '/api/tasks/hk_applicable_statuses'; // CICO-8620 Need to get only valid statuses here
 
-            if ( HkStatusList.length ) {
+            if (HkStatusList.length) {
                 deferred.resolve(HkStatusList);
             } else {
                 ADBaseWebSrvV2.getJSON(url)
@@ -297,14 +299,14 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         /*
-        * To fetch task lists
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
+         * To fetch task lists
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
         this.fetchTaskList = function() {
             var deferred = $q.defer(),
-                url      = 'api/tasks/';
+                url = 'api/tasks/';
 
             ADBaseWebSrvV2.getJSON(url)
                 .then(function(data) {
@@ -317,14 +319,14 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         /*
-        * To delete a Task list item
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
+         * To delete a Task list item
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
         this.deleteTaskListItem = function(params) {
             var deferred = $q.defer(),
-                url      = 'api/tasks/' + params.id;
+                url = 'api/tasks/' + params.id;
 
             ADBaseWebSrvV2.deleteJSON(url)
                 .then(function(data) {
@@ -337,14 +339,14 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         /*
-        * To add a Task list item
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
+         * To add a Task list item
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
         this.postTaskListItem = function(params) {
             var deferred = $q.defer(),
-                url      = 'api/tasks/';
+                url = 'api/tasks/';
 
             ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
@@ -357,15 +359,15 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         /*
-        * To update a Task list item
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
+         * To update a Task list item
+         *
+         * @param {object}
+         * @return {object} defer promise
+         */
         this.putTaskListItem = function(params) {
             var deferred = $q.defer(),
-                url      = 'api/tasks/' + params.id,
-                params   = _.omit(params, 'id');
+                url = 'api/tasks/' + params.id,
+                params = _.omit(params, 'id');
 
             ADBaseWebSrvV2.putJSON(url, params)
                 .then(function(data) {
@@ -376,5 +378,5 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
             return deferred.promise;
         };
-	}
+    }
 ]);
