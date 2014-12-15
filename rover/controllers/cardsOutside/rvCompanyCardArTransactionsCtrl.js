@@ -3,7 +3,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state) {
 
 		BaseCtrl.call(this, $scope);
-
+		$scope.errorMessage = '';
+		
 		var init = function(){
 			fetchData();
 			$scope.setScroller('ar-transaction-list');
@@ -23,6 +24,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'perPage':2,
 			'textInQueryBox': '',
 			'viewFromOutside': false
+		};
+
+		$scope.arTransactionDetails = {
+			'available_credit' : parseFloat("0.00").toFixed(2),
+			'amount_owing' : parseFloat("0.00").toFixed(2),
+			'open_guest_bills' : 0,
+			'total_count': 0,
+			'ar_transactions':[]
 		};
 
 		if(typeof $stateParams.type != 'undefined'){
@@ -57,6 +66,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			
 			var arAccountsFetchSuccess = function(data) {
 			    $scope.$emit('hideLoader');
+			    $scope.errorMessage = '';
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
 				setTimeout(function() {
@@ -74,8 +84,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$scope.filterData.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
 			};
 
-			var failure = function(){
+			var failure = function(errorMessage){
 			    $scope.$emit('hideLoader');
+			    $scope.errorMessage = errorMessage;
 			};
 
 			var params = getParamsToSend();
@@ -245,6 +256,36 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				});
 			}
 		}	
+
+		$scope.addCreditAmount = function(){
+			ngDialog.open({
+	      		template:'/assets/partials/companyCard/rvArTransactionsAddCredits.html',
+		        controller: 'RVArTransactionsAddCreditsController',
+		        className: '',
+		        scope: $scope
+	      	});
+		};
+
+		 // clicked pay all button
+	    $scope.clickedPayAll = function(){
+
+	        var addCreditAmountSuccess = function(data) {
+	            $scope.$emit('hideLoader');
+	            $scope.arTransactionDetails.amount_owing = data.amount_owing;
+	            $scope.arTransactionDetails.available_credit = data.available_credit;
+	            $scope.errorMessage = '';
+	        };
+
+	        var failure = function(errorMessage){
+	            $scope.$emit('hideLoader');
+	            $scope.errorMessage = errorMessage;
+	        };
+
+	        var params = {
+	            'id':$scope.filterData.id
+	        };
+	        $scope.invokeApi(RVCompanyCardSrv.payForReservation, params, addCreditAmountSuccess, failure);
+	    };
 
 	    init();
 

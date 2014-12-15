@@ -2,6 +2,7 @@
 <form method="post" action="{action}" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab transactions">
     
     <div class="tab-header">
+
         <div class="search-form has-dates" ng-class="{'open':filterData.filterActive}"> <!-- Add class "open" when showing form -->
             <div class="entry filter">
                 <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}"> <!-- Add class "active" when showing form -->
@@ -39,29 +40,30 @@
                 </div>
             </div>
         </div>
+        
         <ul class="totals">
             <li>
                 <div class="data">
                     <span class="label">Open guest bills</span>
                     <span class="value">{{arTransactionDetails.open_guest_bills}}</span>
                 </div>
-                <button type="button" class="button green">Pay All</button> <!-- Show only when open bills exsits -->
+                <button ng-click="clickedPayAll()" type="button" class="button green">Pay All</button> <!-- Show only when open bills exsits -->
             </li>
             <li>
                 <div class="data">
                     <span class="label">Amount received</span>
-                    <span class="value green">{{currencySymbol}}{{arTransactionDetails.available_credit}}</span>
+                    <span class="value" ng-class="{'red': arTransactionDetails.available_credit == '0.00','green': arTransactionDetails.available_credit != '0.00'}">{{currencySymbol}}{{arTransactionDetails.available_credit}}</span>
                     <!-- If $0:
                     <span class="value red">${value}</span> -->
                 </div>
-                <button type="button" class="button purple with-icon only-icon">
+                <button ng-click="addCreditAmount()" type="button" class="button purple with-icon only-icon">
                     <span class="icons icon-pencil"></span>
                 </button>
             </li>
             <li>
                 <div class="data">
                     <span class="label">Amount owed</span>
-                    <span class="value red">{{currencySymbol}}{{arTransactionDetails.amount_owing}}</span>
+                    <span class="value" ng-class="{'green': arTransactionDetails.amount_owing == '0.00','red': arTransactionDetails.amount_owing != '0.00'}">{{currencySymbol}}{{arTransactionDetails.amount_owing}}</span>
                     <!-- If $0:
                     <span class="value green">${value}</span> -->
                 </div>
@@ -73,12 +75,13 @@
                 </button>
             </li>
         </ul>
-    </div>
 
+    </div>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- If there are open bills: -->
     <div class="tab-details scrollable" ng-if="arTransactionDetails.open_guest_bills > 0" ng-iscroll="ar-transaction-list">
         <div class="wrapper">
-
+            
             <ul class="search-results">
                 <li class="reservation transaction" ng-click="goToReservationDetails(transaction.reservation_id, transaction.reservation_confirm_no)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
                     <!-- Not using <a> here since 1) you don't use hrefs at all and 2) it'll interfere with the checkbox -->
