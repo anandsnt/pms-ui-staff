@@ -24,7 +24,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.renderData = {};
 		$scope.isManual = false;
 		$scope.isNewCardAdded =  false;
+		// clear error notifications
 		$scope.errorMessage = "";
+		$scope.depositData = {
+			"depositAttemptFailure" : false,
+			"attempted" : false
+		};
 
 		$scope.feeData = {};
 		var zeroAmount = parseFloat("0.00");
