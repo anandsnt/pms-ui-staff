@@ -173,6 +173,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 		    
 		} else {
+			$scope.shouldShowIframe 	   			 = false;	
+			$scope.shouldShowMakePaymentScreen       = true; 
+			$scope.showAddtoGuestCard    			 = false;
+			$scope.shouldShowExistingCards  		 = false;
+			$scope.addmode                 			 = false;
+			$scope.makePaymentButtonDisabled         = false;
+			$scope.shouldCardAvailable 				 = true;
+			$scope.isAddToGuestCardVisible 			 = true;
 			
 			//To render the selected card data
 			$scope.depositBalanceMakePaymentData.card_code = getSixCreditCardType($scope.cardValues.tokenDetails.card_type).toLowerCase();
@@ -345,8 +353,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * setting payment id 
 	 */
 	$scope.successSavePayment = function(data){
-		console.log("====="+JSON.stringify(data));
-		$scope.$emit("hideLoader");
 		$scope.shouldShowIframe 	   			 = false;	
 		$scope.shouldShowMakePaymentScreen       = true; 
 		$scope.showAddtoGuestCard    			 = false;
