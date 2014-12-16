@@ -5,12 +5,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					'RVDepositBalanceSrv',
 					'RVPaymentSrv',
 					'$stateParams',
+					'$filter',
 		function($scope,
 				ngDialog,
 				$rootScope,
 				RVDepositBalanceSrv,
 				RVPaymentSrv,
-				$stateParams){
+				$stateParams,
+				$filter){
 					
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
@@ -38,7 +40,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;
 	$scope.depositBalanceMakePaymentData = {};
-	$scope.depositBalanceMakePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
+	$scope.depositBalanceMakePaymentData.amount = $filter('number') ($scope.depositBalanceData.data.outstanding_stay_total,2);
 	$scope.depositBalanceMakePaymentData.add_to_guest_card = false;
 	$scope.makePaymentButtonDisabled = true;
 	$scope.isDisplayReference = false;
