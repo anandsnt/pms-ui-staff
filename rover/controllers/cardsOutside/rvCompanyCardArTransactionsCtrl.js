@@ -156,9 +156,27 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	        fetchData();
 	    });
 
-	    $scope.toggleTransaction = function(){
-	    	//$scope.transaction.paid = !$scope.transaction.paid;
+	    $scope.toggleTransaction = function(index){
+	    	$scope.arTransactionDetails.ar_transactions[index].paid = true;
 	    	console.log("call API");
+	    	var payTransactionSuccess = function(data) {
+	            $scope.$emit('hideLoader');
+	            $scope.arTransactionDetails.available_credit = data.available_credit;
+	            $scope.errorMessage = '';
+	            $scope.arTransactionDetails.ar_transactions[index].paid = true;
+	        };
+
+	        var failure = function(errorMessage){
+	            $scope.$emit('hideLoader');
+	            $scope.errorMessage = errorMessage;
+	            $scope.arTransactionDetails.ar_transactions[index].paid = false;
+	        };
+	        //$scope.errorMessage ='Insufficient credit on account to pay Guest Bill';
+	        var params = {
+	            'id':$scope.filterData.id,
+	            'reservation_id': $scope.arTransactionDetails.ar_transactions[index].reservation_id
+	        };
+	        $scope.invokeApi(RVCompanyCardSrv.payForReservation, params, payTransactionSuccess, failure);
 	    };
 
 	    /**
@@ -248,18 +266,30 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		/**
 		 * function to execute on clicking on each result
 		 */
-		$scope.goToReservationDetails = function(reservationID, confirmationID) {
+		$scope.goToReservationDetails = function(index, $event) {
 			console.log("$scope.filterData.viewFromOutside"+$scope.filterData.viewFromOutside);
-			if($scope.filterData.viewFromOutside){
-				console.log(reservationID);
-				console.log(confirmationID);
-				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
-					id: reservationID,
-					confirmationId: confirmationID,
-					isrefresh: true
-				});
+
+			console.log($event);
+
+			var element = $event.target;
+			var isClikedToggle = false;
+			if(element.className =='switch-button' || element.parentNode.className =='switch-button'){
+				isClikedToggle = true;
+				$scope.toggleTransaction(index);
 			}
-		}	
+			console.log(element.className);
+			console.log(element.parentNode.className);
+
+			if($scope.filterData.viewFromOutside && !isClikedToggle){
+				console.log($scope.arTransactionDetails.ar_transactions[index].reservation_id);
+				console.log($scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no);
+				/*$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+					id: $scope.arTransactionDetails.ar_transactions[index].reservation_id,
+					confirmationId: $scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no,
+					isrefresh: true
+				});*/
+			}
+		};
 
 		$scope.addCreditAmount = function(){
 			ngDialog.open({

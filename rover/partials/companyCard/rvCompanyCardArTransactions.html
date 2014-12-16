@@ -83,7 +83,7 @@
         <div class="wrapper">
             
             <ul class="search-results">
-                <li class="reservation transaction" ng-click="goToReservationDetails(transaction.reservation_id, transaction.reservation_confirm_no)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
+                <li class="reservation transaction" ng-click="goToReservationDetails($index, $event)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
                     <!-- Not using <a> here since 1) you don't use hrefs at all and 2) it'll interfere with the checkbox -->
                     <div class="faux-anchor" class="guest-{reservation-status}"> <!-- see options in {dashboard/front-desk.html} -->
 
@@ -108,7 +108,7 @@
                         </div>
                         <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
                         <!--ng-click="transaction.paid = !transaction.paid; toggleTransaction()" -->
-                        <div class="switch-button" ng-class="{on: transaction.paid}"> <!-- add class "on" when checkbox checked -->
+                        <div ng-click="toggleTransaction($index)" class="switch-button" ng-class="{on: transaction.paid}"><!-- add class "on" when checkbox checked -->
                             <input value="" type="checkbox" />
                             <label class="data-off">
                                 <span class="value">Open</span>
