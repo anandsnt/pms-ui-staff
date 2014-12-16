@@ -274,8 +274,11 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				name_on_card: retrieveName(),
 				payment_type: "CC",
 				reservation_id: $scope.passData.reservationId,
-				token: cardToken,
-				card_expiry: cardExpiry
+				token: cardToken
+			};
+
+			if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
+				paymentData.card_expiry = cardExpiry;
 			};
 
 			if($scope.depositData.isDisplayReference){
@@ -403,19 +406,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 	
 	$scope.payDeposit = function() {
-
-		// if($scope.depositData.selectedCard !== -1){
-			$scope.submitPayment();
-		// }
-		// else{
-		// 	$scope.showCCPage = true;
-		// 	refreshCardsList();
-		// };
+		$scope.submitPayment();
 	};	
 
 	$scope.onCardClick = function(){
 		$scope.showCCPage = true;
-		$scope.addmode = false;
+		$scope.addmode = $scope.cardsList.length>0 ?false:true;
 		refreshCardsList();
 	};
 
@@ -438,6 +434,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		$scope.newPaymentInfo = data;
 		$scope.showCCPage = false;
+		$scope.cardSelected = false;
 		savePayment();
 	});
 
