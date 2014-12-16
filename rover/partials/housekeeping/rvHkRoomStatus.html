@@ -61,7 +61,7 @@
 </ul>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && hasActiveWorkSheet, 'no-options': !isStandAlone}" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary' && hasActiveWorkSheet}" div-touch-move-stop-propogate>
+<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && hasActiveWorkSheet, 'no-options': !isStandAlone}" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary' && hasActiveWorkSheet, 'no-pagination': (disablePrevBtn && disableNextBtn)}" div-touch-move-stop-propogate>
   <ul class="wrapper search-results" ng-hide="rooms.length === 0">
     <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
         <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ totalCount }}</strong> items</p>
