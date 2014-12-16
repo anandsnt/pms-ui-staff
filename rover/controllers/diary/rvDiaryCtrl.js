@@ -1087,7 +1087,7 @@ sntRover
 			};
 
 			// change date to triggeer a change
-			$scope.gridProps.filter.arrival_date = new Date($_resetObj.start_date);
+			$scope.gridProps.filter.arrival_date = new Date($rootScope.businessDate);
     	};
 
     	$scope.clearAvailability();
