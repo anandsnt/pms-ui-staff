@@ -107,8 +107,8 @@
                             </div>
                         </div>
                         <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
-                        <!--ng-click="transaction.paid = !transaction.paid; toggleTransaction()" -->
-                        <div ng-click="toggleTransaction($index)" class="switch-button" ng-class="{on: transaction.paid}"><!-- add class "on" when checkbox checked -->
+                        
+                        <div ng-click="toggleTransaction($index)" class="switch-button" ng-class="{'on': transaction.paid}"><!-- add class "on" when checkbox checked -->
                             <input value="" type="checkbox" />
                             <label class="data-off">
                                 <span class="value">Open</span>
