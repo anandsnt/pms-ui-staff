@@ -7,9 +7,9 @@
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-        <span class="message h2">Add Amount</span>
+        <span class="message h2" translate>ADD_AMOUNT</span>
         <span class="text">
-            Available amount: 
+            <span translate>AVAILABLE_AMOUNT</span>: 
             <strong class="green" ng-hide="addedCreditAmount>0">{{currencySymbol}}{{existingCreditAmount}}</strong>
             <!-- When some value is entered in the input field below, update this content as user types in numbers:-->
             <strong class="red" ng-show="addedCreditAmount>0">{{currencySymbol}}{{existingCreditAmount}}</strong>
@@ -18,7 +18,7 @@
         </span>
 
         <div class="entry full-width">
-            <label for="amount">Amount (<span>{{currencySymbol}}</span>)</label>
+            <label for="amount"><span translate>AMOUNT</span> (<span>{{currencySymbol}}</span>)</label>
             <div class="select">
                 <select ng-model="selectedSymbol" name="amount-type" id="amount-type">
                     <option value="add" seleted>+</option>
@@ -29,8 +29,8 @@
         </div>  
 
         <div class="actions">
-            <button ng-click="savebuttonClick()" type="button" class="button green">Save</button>
-            <button ng-click="closeDialog()" type="button" class="button blank">Cancel</button>
+            <button ng-click="savebuttonClick()" type="button" class="button green" translate>SAVE</button>
+            <button ng-click="closeDialog()" type="button" class="button blank" translate>CANCEL</button>
         </div>
     </form>
 </div>
