@@ -157,26 +157,27 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    });
 
 	    $scope.toggleTransaction = function(index){
-	    	$scope.arTransactionDetails.ar_transactions[index].paid = true;
-	    	console.log("call API");
+	    	$scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
+	    	
 	    	var payTransactionSuccess = function(data) {
 	            $scope.$emit('hideLoader');
-	            $scope.arTransactionDetails.available_credit = data.available_credit;
 	            $scope.errorMessage = '';
-	            $scope.arTransactionDetails.ar_transactions[index].paid = true;
+	            $scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
+	            $scope.arTransactionDetails.ar_transactions[index].paid = data.paid;
 	        };
 
 	        var failure = function(errorMessage){
 	            $scope.$emit('hideLoader');
 	            $scope.errorMessage = errorMessage;
-	            $scope.arTransactionDetails.ar_transactions[index].paid = false;
+	            $scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
 	        };
 	        //$scope.errorMessage ='Insufficient credit on account to pay Guest Bill';
 	        var params = {
-	            'id':$scope.filterData.id,
-	            'reservation_id': $scope.arTransactionDetails.ar_transactions[index].reservation_id
+	            'id': $scope.filterData.id,
+	            'transaction_id': $scope.arTransactionDetails.ar_transactions[index].transaction_id,
+	            'paid': $scope.arTransactionDetails.ar_transactions[index].paid
 	        };
-	        $scope.invokeApi(RVCompanyCardSrv.payForReservation, params, payTransactionSuccess, failure);
+	        $scope.invokeApi(RVCompanyCardSrv.payForReservation, params, payTransactionSuccess ,failure);
 	    };
 
 	    /**
@@ -303,11 +304,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		 // clicked pay all button
 	    $scope.clickedPayAll = function(){
 
-	        var addCreditAmountSuccess = function(data) {
+	        var payAllSuccess = function(data) {
 	            $scope.$emit('hideLoader');
-	            $scope.arTransactionDetails.amount_owing = data.amount_owing;
-	            $scope.arTransactionDetails.available_credit = data.available_credit;
 	            $scope.errorMessage = '';
+	            $scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
 	        };
 
 	        var failure = function(errorMessage){
@@ -318,7 +318,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	        var params = {
 	            'id':$scope.filterData.id
 	        };
-	        $scope.invokeApi(RVCompanyCardSrv.payForReservation, params, addCreditAmountSuccess, failure);
+	        $scope.invokeApi(RVCompanyCardSrv.payAll, params, payAllSuccess, failure);
 	    };
 
 	    init();
