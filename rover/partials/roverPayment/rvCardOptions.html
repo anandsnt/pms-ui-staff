@@ -1,88 +1,68 @@
 <!-- Credit card options - hidden until payment type is set as CC -->
-			<div id="credit-card-options" ng-controller="RVCardOptionsCtrl">
-				<!-- If hidden by default, add class="hidden" -->
-				<!-- Card toggle - Use only if there are exsiting cards on file -->
-				<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || isFromCreateReservation">
-					<li ng-class="{'active':!addmode}" ng-click="addmode = false">
-						Existing Cards
-					</li>
-					<li ng-class="{'active':addmode}" ng-click="addmode = true">
-						Add New Card
-					</li>
-				</ul>
+	<!-- If hidden by default, add class="hidden" -->
+	<!-- Card toggle - Use only if there are exsiting cards on file -->
+	<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0">
+		<li ng-class="{'active':!addmode}" ng-click="addmode = false">
+			Existing Cards
+		</li>
+		<li ng-class="{'active':addmode}" ng-click="addmode = true">
+			Add New Card
+		</li>
+	</ul>
+	<!-- Exsiting cards - use only when they exsit -->
+	<div id="cc-exsiting-card" class="cards-list scrollable" ng-show="!addmode" ng-iscroll="cardsList" style="max-height:250px;height:auto;">
+		<div class="wrapper">
 
-				<!-- Booking source - Use only when creating new reservation -->
-				<div class="entry" ng-show="paymentGateway == 'sixpayments' && addmode" >
-					<!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
-					<label for="booking-source">Guest Location</label>
-					<div class="switch-button" ng-class="{'on': !shouldShowIframe}">
-						<input name="booking-source" value="booking-source" type="checkbox" ng-model="isCallIn" ng-change="changeOnsiteCallIn()" />
-						<label class="data-off" > 
-							<span class="value" >On-Site</span> 
-							<span class="switch-icon" >Call-In</span>
-						 </label>
-						<label class="data-on" > 
-							<span class="switch-icon" >On-Site</span> 
-							<span class="value" >Call-In</span> 
-						</label> 
-					</div>
-				</div>
+			<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card"> <!-- Add class "primary" when selected -->
+				<figure class="card-logo">
+					<img src="/assets/{{card.card_code}}.png" alt="">
+				</figure>
+				<span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{card.mli_token}}</span></span>
+				<span class="date">{{'DATE' | translate}} <span class="value date">{{card.card_expiry}}</span></span>
+				<span class="icons icon-ok-10" ng-show="cardselectedIndex === $index"></span>
+			</label>
+		</div>
+	</div>
 
-				<!-- Exsiting cards - use only when they exsit -->
-				<div id="cc-exsiting-card" class="cards-list scrollable" ng-show="!addmode" ng-iscroll="cardsList" style="max-height:250px;height:auto;">
-					<div class="wrapper">
-
-						<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card"> <!-- Add class "primary" when selected -->
-							<figure class="card-logo">
-								<img src="/assets/{{card.card_code}}.png" alt="">
-							</figure>
-							<span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{card.mli_token}}</span></span>
-							<span class="date">{{'DATE' | translate}} <span class="value date">{{card.card_expiry}}</span></span>
-							<span class="icons icon-ok-10" ng-show="cardselectedIndex === $index"></span>
-						</label>
-					</div>
-				</div>
-
-				<!-- New card: On-Site -->
-				<div id="cc-new-card" class="new-card" ng-show="!shouldShowIframe && addmode && shouldShowAddNewCard">
-					<!-- Add class 'hidden' if there are exsiting cards as they are displayed first -->
-					<div class="entry card-number">
-						<label for="card-number">Card number (<span>No spaces</span>)</label>
-						<input name="card-number" ng-model="cardData.cardNumber" placeholder="Enter Card number" value="" maxlength="16" type="text" />
-					</div>
-					<div class="entry card-expiry">
-						<label for="expiry-month">Expires (<span>Month/Year</span>)</label>
-						<input name="expiry-month" ng-model="cardData.expiryMonth" id="expiry-month" placeholder="MM" value="" maxlength="2" size="3" type="text" />
-						<input name="expiry-year" ng-model="cardData.expiryYear" id="expiry-year" placeholder="YY"  value="" maxlength="2" size="3" type="text" />
-					</div>
-					<div class="entry card-name">
-						<label for="name-on-card">Name on card</label>
-						<input name="name-on-card" ng-model="cardData.userName" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
-					</div>
-					<div class="entry card-ccv">
-						<label for="ccv">CCV</label>
-						<input name="ccv" id="ccv" ng-model="cardData.CCV" placeholder="CCV" value="" maxlength="4" size="4" type="text" />
-					</div>
-					<div class="entry card-action">
-						<button type="button" class="button blue" ng-click="getToken($event)">
-							Add
-						</button>
-					</div>
-				</div>
-
-				<!-- New card: Call-In -->
-					<iframe ng-show="shouldShowIframe && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
-					<div class="entry full-width" ng-show="showAddtoGuestCard && addmode">
-						<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.addToGuestCard}">
-							<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.addToGuestCard}"></span>
-							<input ng-model="cardData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
-							{{'ADD_TO_GUEST_CARD' | translate}}
-						</label>
-					</div>  
-				<!-- Show only when creating reservation or paying the bill -->
-				<div class="actions" ng-click="cancelCardSelection()" ng-hide="hideCancelCard">
-					<button type="button" class="button blank">
-						Cancel Card selection
-					</button>
-				</div>
+	<!-- New card: MLI form -->
+	<div id="cc-new-card" class="new-card" ng-show="!shouldShowIframe && addmode && shouldShowAddNewCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+		<div class="entry card-type">
+			<label for="card-type">Card type </label>
+			<div class="select">
+				<select name="card-type" ng-disabled="!isManualCCEntryEnabled" ng-model="cardData.cardType" class="placeholder">
+					<option value="" selected>Select Card type</option>
+					<option ng-repeat="cardType in creditCardTypes" value="{{cardType.cardcode}}" ng-selected="cardType.cardcode == cardData.cardType">{{cardType.cardname}}</option>
+				</select>
 			</div>
+		</div>
+		<div class="entry card-number">
+			<label for="card-number">Card number (<span>No spaces</span>)</label>
+			<input name="card-number" ng-disabled="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
+		</div>
+		<div class="entry card-expiry">
+			<label for="expiry-month">Expires (<span>Month/Year</span>)</label>
+			<input name="expiry-month" ng-disabled="!isManualCCEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
+			<input name="expiry-year" ng-disabled="!isManualCCEntryEnabled" id="expiry-year" placeholder="YY"  ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
+		</div>
+		<div class="entry card-name">
+			<label for="name-on-card">Name on card</label>
+			<input name="name-on-card" id="name-on-card" placeholder="Enter name on card" ng-model="cardData.userName"type="text" />
+		</div>  
+		<div class="entry card-ccv">
+			<label for="ccv">CCV</label>
+			<input name="ccv" id="ccv" placeholder="CCV" ng-model="cardData.CCV" maxlength="4" size="4" type="text" />
+		</div>
+		<div class="entry card-action">
+			<button type="button" class="button blue" ng-click="getToken($event)">Add</button>
+		</div>
+	</div>
+	<!-- New card: Call-In -->
+	<iframe ng-show="paymentGateway === 'sixpayments' && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
+	<!-- Show only when creating reservation or paying the bill -->
+	<div class="actions" ng-click="cancelCardSelection()" ng-hide="hideCancelCard">
+		<button type="button" class="button blank">
+			Cancel Card selection
+		</button>
+	</div>
+
+

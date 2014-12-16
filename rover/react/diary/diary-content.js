@@ -53,29 +53,38 @@ var DiaryContent = React.createClass({
 			break;
 		}
  
-	},
+	},	
 	__onDragStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(arguments));
 	},
-	__onDragStop: function(e, left, row_item_data) {
+	__onDragStop: function(e, left, top, row_item_data) {
 		var state 			= this.state,
 			rowHeight 		= state.display.row_height + state.display.row_height_margin,
 			viewport 		= state.viewport.element(),
-			curPos 			= e.pageY - viewport.offset().top - state.iscroll.grid.y, //viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
-			rowNumber 		= (curPos / rowHeight).toFixed(),
+			curPos 			= e.pageY - state.iscroll.grid.y - viewport.offset().top,// e.pageY - viewport.offset().top - state.iscroll.grid.y    viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
+			rowNumber 		= Math.floor(curPos / rowHeight),
 			row_data 		= state.data[rowNumber],
-			delta 			= Number((left - row_item_data.left).toFixed(3));
+			delta 			= Number((left - row_item_data.left).toFixed(3)),
+			props = 				this.props,			
+			display = 				props.display,
+			delta_x = 				e.pageX - state.origin_x, 
+			x_origin = 				(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			px_per_int = 			display.px_per_int,
+			px_per_ms = 			display.px_per_ms;
+			
 
-		if(rowNumber * (state.display.row_height + state.display.row_height_margin) < e.pageY) {
-			rowNumber++;
-		}
+		//console.log((left -props.display.x_0 - props.iscroll.grid.x))
 		
-		row_item_data.left = left;
-		row_item_data.right = row_item_data.right + delta;
-
-		row_item_data.start_date = row_item_data.left / state.display.px_per_ms + state.display.x_n; //.x_origin;
-		row_item_data.end_date = row_item_data.right / state.display.px_per_ms + state.display.x_n; //.x_origin;
-
+		/*row_item_data.left = left;*/
+		var right = row_item_data.departure + delta;
+		
+		//row_item_data.arrival = left / state.display.px_per_ms + state.display.x_n; //.x_origin;
+		//row_item_data.departure = right / state.display.px_per_ms + state.display.x_n; //.x_origin;
+		
+		this.setState({
+			currentResizeItem: row_item_data,
+			currentResizeItemRow: row_data
+		});
 		this.state.angular_evt.onDragEnd(row_data, row_item_data);		
 	},
 	/*Message transport between timeline and grid:
@@ -105,7 +114,9 @@ var DiaryContent = React.createClass({
 			currentResizeItemRow: row_data
 		});
 	},
-
+	componentDidUpdate: function(){				
+		this.componentWillMount();
+	},
 	componentDidMount: function() {		
 		var self = this,
             state = this.state;
@@ -114,7 +125,7 @@ var DiaryContent = React.createClass({
     		self._recalculateGridSize();
     		setTimeout(function(){
     			self.componentWillMount();
-    		}, 200);
+    		}, 1000);
             
     	}.bind(this), 10, { leading: false, trailing: true }));
 
@@ -147,6 +158,7 @@ var DiaryContent = React.createClass({
     	}
   	},
   	componentWillReceiveProps: function(nextProps) {
+  		
   		var hops = Object.prototype.hasOwnProperty,
   			self = this;
   		/*if(this.props.viewport !== nextProps.viewport ||
@@ -161,6 +173,9 @@ var DiaryContent = React.createClass({
   				edit: nextProps.edit
   			});
   		}*/
+		 
+
+		    				
 		if(hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
   			this.setState({
   				stats: nextProps.stats
@@ -176,15 +191,17 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
   				viewport: nextProps.viewport
-  			});
-  			$(window).resize();  			
+  			});  			 		
 
   		}
 
   		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
   			this.setState({
   				display: nextProps.display
-  			});  			  			
+  			},
+  			function(){
+  				this._recalculateGridSize();
+  			});
   		}
 
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {

@@ -64,11 +64,19 @@
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
 
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
+            <div class= "entry full-width">
+                <label><span translate>BILLING_INFORMATION</span>
+                    <span ng-show ="contactInformation.account_details !== undefined"> ({{contactInformation.account_details.routes_count}} 
+                        <span translate>ROUTES_DEFINED</span>) 
+                    </span>
+                </label>
+                <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation(account_type)" ng-show="isStandAlone" translate>ADD_BILLLING_INFORMATION</a>
+            </div>
 
-            <rv-textbox value="contactInformation.account_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox>
+            <!-- <rv-textbox value="contactInformation.account_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox> -->
 
-             <div class="entry margin">
-                <label for="company-card-arn">Accounts Receivable Number</label>
+            <div class="entry margin">
+                <label for="company-card-arn" translate>ACCOUNTS_RECIEVABLE_NUMBER</label>
                 <input type="text" ng-model="contactInformation.account_details.accounts_receivable_number" placeholder="AR Number" ng-readonly="true" ng-disabled="true">
             </div>
             <div class="entry">

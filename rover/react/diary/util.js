@@ -192,7 +192,19 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 						'September',
 						'October',
 						'November',
-						'December'];
+						'December'],
+			__MONTHS_SHORT = ['Jan',
+								'Feb',
+								'Mar',
+								'Apr',
+								'May',
+								'Jun',
+								'Jul',
+								'Aug',
+								'Sep',
+								'Oct',
+								'Nov',
+								'Dec'];
 
 		return {
 			date: {
@@ -200,14 +212,17 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				weekday: __DAYS[this.getDay()],
 				month: this.getMonth(),
 				monthName: __MONTHS[this.getMonth()],
+				monthNameShort: __MONTHS_SHORT[this.getMonth()],
 				year: this.getFullYear(),
 				toDateString: function() {
 					return this.year + '-' + (this.month+1) + '-' + (this.day.length < 2 ? '0' : '') + this.day;
 				},
 				fromDate: function() {
 					var tmp = this.toLocaleDateString().replace(/\//g, '-').split('-').reverse();
-
 					return tmp.shift() + '-' + temp.reverse().join('-');
+				},
+				toShortDateString: function() {
+					return this.monthNameShort + ' ' + (this.day < 10 ? '0' : '') + this.day;
 				}
 			},
 			time: new Time({

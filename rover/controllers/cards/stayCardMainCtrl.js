@@ -1,8 +1,9 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
+		var that = this;
 		if ($scope.guestCardData.cardHeaderImage == undefined || $scope.guestCardData.cardHeaderImage == "") {
 			$scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
 		}
@@ -141,6 +142,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.travelAgent.id;
 				$scope.travelAgentInformation = data;
+
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('travelAgentFetchComplete');
@@ -249,7 +251,107 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
+		$scope.noRoutingToReservation = function(){
+			ngDialog.close();
+			that.reloadStaycard();
+
+		};
+
+		$scope.applyRoutingToReservation = function() {
+			var routingApplySuccess = function(data) {
+				$scope.$emit("hideLoader");
+				ngDialog.close();
+				that.reloadStaycard();
+			};
+
+			var params = {};
+			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id : $scope.reservationData.company.id;
+			params.reservation_ids = [];
+			params.reservation_ids.push($scope.reservationData.reservationId)
+
+			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
+		};
+
+		$scope.okClickedForConflictingRoutes = function() {
+			ngDialog.close();
+			that.reloadStaycard();
+
+		};
+
+		this.showConfirmRoutingPopup = function(type, id) {
+			ngDialog.open({
+				template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		};
+
+		this.showConflictingRoutingPopup = function(type, id) {
+
+			ngDialog.open({
+				template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+
+		};
+
+		this.attachCompanyTACardRoutings = function(card) {
+
+			var fetchSuccessofDefaultRouting = function(data) {
+				$scope.$emit("hideLoader");
+				$scope.routingInfo = data;
+				if (data.has_conflicting_routes) {
+					$scope.conflict_cards = [];
+					if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
+						console.log("is travel agent");
+						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
+					}
+					if (card == 'company' && data.company.routings_count > 0) {
+						console.log("is company");
+						$scope.conflict_cards.push($scope.reservationData.company.name)
+					}
+					that.showConflictingRoutingPopup();
+					return false;
+				}
+
+				if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
+					$scope.contractRoutingType = "TRAVEL_AGENT";
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
+					return false;
+
+				}
+				if (card == 'company' && data.company.routings_count > 0) {
+					$scope.contractRoutingType = "COMPANY";
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+					return false;
+				} else {
+					that.reloadStaycard();
+				}
+
+			};
+
+			var params = {};
+			params.reservation_id = $scope.reservationData.reservationId;
+
+			if (card == 'travel_agent') {
+				params.travel_agent_id = $scope.reservationData.travelAgent.id;
+			} else if (card == 'company') {
+				params.company_id = $scope.reservationData.company.id;
+			}
+
+			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
+		};
+
 		$scope.replaceCard = function(card, cardData, future) {
+			if (card == 'company') {
+				$scope.reservationData.company.id = cardData.id;
+				$scope.reservationData.company.name = cardData.account_name;
+			} else if (card == 'travel_agent') {
+				$scope.reservationData.travelAgent.id = cardData.id;
+				$scope.reservationData.travelAgent.name = cardData.account_name;
+			}
+
 			//Replace card with the selected one
 			$scope.invokeApi(RVCompanyCardSrv.replaceCard, {
 				'reservation': typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
@@ -263,24 +365,28 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.removeCard($scope.viewState.lastCardSlot);
 					$scope.viewState.lastCardSlot = "";
 				}
-				/**
-				 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
-				 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
-				 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
-				 * 	However, in the confirmation screen the identifier would be "CONFIRM"
-				 */
-				if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-						"confirmationId": $stateParams.confirmationId,
-						"isrefresh": false
-					});
-				}
 				$scope.$emit('hideLoader');
+				that.attachCompanyTACardRoutings(card);
 			}, function() {
 				$scope.cardRemoved();
 				$scope.$emit('hideLoader');
 			});
+		};
+
+		/**
+		 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
+		 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
+		 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
+		 * 	However, in the confirmation screen the identifier would be "CONFIRM"
+		 */
+		this.reloadStaycard = function() {
+			if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
+				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+					"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": false
+				});
+			}
 		};
 
 		$scope.cardRemoved = function(card) {
@@ -419,5 +525,197 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// 	CICO-7792 END
 		}
 
+
+		var ratesFetched = function(data, saveReservation) {
+			var save = function() {
+				if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
+					$scope.saveReservation();
+				} else {
+					$scope.$emit('PROMPTCARD');
+				}
+			};
+
+			$scope.otherData.taxesMeta = data.tax_codes;
+			$scope.otherData.hourlyTaxInfo = data.tax_information;
+			$scope.reservationData.totalTax = 0;
+			$scope.computeHourlyTotalandTaxes();
+			if (saveReservation) {
+				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+					$scope.$emit('PROMPTCARD');
+					$scope.$watch("reservationData.guest.id", save);
+					$scope.$watch("reservationData.company.id", save);
+					$scope.$watch("reservationData.travelAgent.id", save);
+				} else {
+					$scope.saveReservation();
+				}
+			}
+
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 500);
+		};
+
+		$scope.populateDatafromDiary = function(roomsArray, tData, saveReservation) {
+			angular.forEach(tData.rooms, function(value, key) {
+				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
+				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
+				value['roomNumber'] = roomsArray[value.room_id].room_no;
+			});
+
+			this.rooms = [];
+			$scope.reservationData.rooms = tData.rooms;
+			$scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
+			$scope.reservationData.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
+			var arrivalTimeSplit = tData.arrival_time.split(":");
+
+			this.checkinTime.hh = arrivalTimeSplit[0];
+			this.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
+			if (this.checkinTime.mm.length == 1) {
+				this.checkinTime.mm = "0" + this.checkinTime.mm;
+			}
+			this.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
+			if (!(this.checkinTime.ampm === "AM" || this.checkinTime.ampm === "PM")) {
+				if (parseInt(this.checkinTime.hh) >= 12) {
+					this.checkinTime.hh = Math.abs(parseInt(this.checkinTime.hh) - 12) + "";
+
+					this.checkinTime.ampm = "PM";
+				} else {
+					this.checkinTime.ampm = "AM";
+				}
+			}
+			if (Math.abs(parseInt(this.checkinTime.hh) - 12) == 0 || this.checkinTime.hh === "00" || this.checkinTime.hh === "0") {
+				this.checkinTime.hh = "12";
+			}
+			if (this.checkinTime.hh.length == 1) {
+				this.checkinTime.hh = "0" + this.checkinTime.hh;
+			}
+
+			var departureTimeSplit = tData.departure_time.split(":");
+			this.checkoutTime.hh = departureTimeSplit[0];
+			this.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
+
+			if (this.checkoutTime.mm.length == 1) {
+				this.checkoutTime.mm = "0" + this.checkoutTime.mm;
+			}
+			this.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
+
+			if (!(this.checkoutTime.ampm === "AM" || this.checkoutTime.ampm === "PM")) {
+				if (parseInt(this.checkoutTime.hh) >= 12) {
+					this.checkoutTime.hh = Math.abs(parseInt(this.checkoutTime.hh) - 12) + "";
+					this.checkoutTime.ampm = "PM";
+				} else {
+					this.checkoutTime.ampm = "AM";
+				}
+			}
+			if (Math.abs(parseInt(this.checkoutTime.hh) - 12) == "0" || this.checkoutTime.hh === "00" || this.checkoutTime.hh === "0") {
+				this.checkoutTime.hh = "12";
+			}
+			if (this.checkoutTime.hh.length == 1) {
+				this.checkoutTime.hh = "0" + this.checkoutTime.hh;
+			}
+			var hResData = tData.rooms[0];
+
+			this.reservationId = hResData.reservation_id;
+			this.confirmNum = hResData.confirmation_id;
+
+
+			if (this.reservationId) {
+				$scope.viewState.identifier = "CONFIRM";
+			} else {
+				$scope.viewState.identifier = "CREATION";
+				$scope.viewState.reservationStatus.confirm = false;
+			}
+
+			$scope.reservationDetails.guestCard = {};
+			$scope.reservationDetails.guestCard.id = hResData.guest_card_id;
+			$scope.reservationDetails.travelAgent = {};
+			$scope.reservationDetails.travelAgent.id = hResData.travel_agent_id;
+			$scope.reservationDetails.companyCard = {};
+			$scope.reservationDetails.companyCard.id = hResData.company_card_id;
+
+
+			$scope.reservationData.guest = {};
+			$scope.reservationData.guest.id = hResData.guest_card_id;
+			$scope.reservationData.travelAgent = {};
+			$scope.reservationData.travelAgent.id = hResData.travel_agent_id;
+			$scope.reservationData.company = {};
+			$scope.reservationData.company.id = hResData.company_card_id;
+
+			$scope.initGuestCard();
+			$scope.initCompanyCard();
+			$scope.initTravelAgentCard();
+
+
+			this.totalStayCost = 0;
+			var rateIdSet = [];
+			var self = this;
+			angular.forEach($scope.reservationData.rooms, function(room, index) {				
+				room.stayDates = {};
+				rateIdSet.push(tData.rooms[index].rateId);
+				// amount: 32
+				// numAdults: 1
+				// numChildren: 0
+				// numInfants: 0
+				// rateId: 787
+				// roomNumber: "07"
+				// roomTypeId: "62"
+				// roomTypeName: "Standard Cabin"
+				// room_id: 588
+				// room_no: "07"
+				// room_type: "Standard Cabin"
+				room.numAdults = tData.rooms[index].numAdults;
+				room.numChildren = tData.rooms[index].numChildren;
+				room.numInfants = tData.rooms[index].numInfants;
+				room.roomTypeId = tData.rooms[index].roomTypeId;
+				room.amount = tData.rooms[index].amount;
+				room.room_id = tData.rooms[index].room_id;
+				room.room_no = tData.rooms[index].room_no;
+				room.room_type = tData.rooms[index].room_type;
+
+				room.rateId = tData.rooms[index].rateId;
+				room.roomAmount = tData.rooms[index].amount;
+
+
+				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
+				var success = function(data) {
+					room.rateName = data.name;
+					if (data.deposit_policy_id) {
+						$scope.reservationData.depositData = {};
+						$scope.reservationData.depositData.isDepositRequired = true;
+						$scope.reservationData.depositData.description = data.deposit_policy.description;
+						$scope.reservationData.depositData.depositSuccess = !$scope.reservationData.depositData.isDepositRequired;
+						$scope.reservationData.depositData.attempted = false;
+						$scope.reservationData.depositData.depositAttemptFailure = false;
+						$scope.$broadcast("UPDATEDEPOSIT");
+					}
+				};
+				var roomAmount = parseFloat(room.roomAmount).toFixed(2);
+				$scope.invokeApi(RVReservationSummarySrv.getRateDetails, {
+					id: room.rateId
+				}, success);
+				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+
+					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+						guests: {
+							adults: room.numAdults,
+							children: room.numChildren,
+							infants: room.numInfants
+						},
+						rate: {
+							id: room.rateId
+						},
+						rateDetails: {
+							actual_amount: roomAmount,
+							modified_amount: roomAmount,
+							is_discount_allowed: 'true'
+						}
+					};
+				}
+			});
+
+			$scope.invokeApi(RVReservationSummarySrv.getTaxDetails, {
+				rate_ids: rateIdSet
+			}, ratesFetched);
+		}.bind($scope.reservationData);
 	}
 ]);

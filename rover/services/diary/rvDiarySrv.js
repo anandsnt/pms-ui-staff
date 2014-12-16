@@ -1,5 +1,5 @@
-sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault',
-        function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault) {
+sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault', '$rootScope',
+        function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault, $rootScope) {
                 /* DATA STORE w/ set functions */
                 function STORE() {
                     if(!(this instanceof STORE)) {
@@ -435,7 +435,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room = this.dataStore.get('_room.values.id')[occupancy.room_id],
                         room_type = room.room_type; 
 
-                    
+                    occupancy.arrival_date = occupancy.arrival_date.replace(/-/g, '/');
+                    occupancy.departure_date = occupancy.departure_date.replace(/-/g, '/');
                     if(!occupancy[m.start_date]) occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
                     if(!occupancy[m.end_date]) occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
                     if(!occupancy[m.maintenance]) occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
@@ -450,7 +451,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     } else if(occupancy[m.status]   === 'checkedout') {
                         occupancy[m.status]         = 'check-out';
                     } else if(occupancy[m.status]   === 'checking_out') {
-                        occupancy[m.status]         = 'check-out';
+                        occupancy[m.status]         = 'departed';
                     } else if(occupancy[m.status]    ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
@@ -496,15 +497,20 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         selected    = args.shift(),
                         m           = meta.occupancy,
                         room        = this.dataStore.get('_room.values.id')[slot.id],
-                        room_type   = room.room_type;                        
+                        room_type   = room.room_type,
+                        slot_statues = {
+                            'WEBBOOKING': 'blocked',
+                            'AVAILABLE' : 'available'
+                        };  
                     /*
                         Configrue Available slot to mirror occupancy, execpt
                         set revervation_id for the collection so the resize
                         will work on all as a group.
                     */
+
                     if(!slot.room_id) {
                         slot.room_id                = room.id;
-                        slot.reservation_status     = 'available';
+                        slot.reservation_status     = slot_statues[slot.status];
                         slot.room_service_status    = '';
                         slot.reservation_id         = guid;
                         slot.selected               = selected;
@@ -573,7 +579,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             time = util.gridTimeComponents(create_reservation_data.start_date, 48);
 
                             _data_Store.set({ 
-                                filter: {   
+                                filter: {
                                     arrival_time:     (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
                                     min_hours:        (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
                                     room_type_id:     create_reservation_data.room_type_id, 
@@ -813,8 +819,13 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         end_date:           data.end_date,
                         end_time:           data.end_time,
                         rate_type:          data.rate_type,
-                    }
 
+                    }
+                    if(data.rate_type == 'Corporate') {
+                        if(data.account_id){                            
+                            _.extend(params, { account_id: data.account_id });
+                        }
+                    }
                     //Webservice calling section
                     var deferred = $q.defer();
                     var url = '/api/hourly_availability/room';
@@ -826,6 +837,61 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return deferred.promise;                    
                 };
 
+                this.properDateTimeCreation = function() {                    
+                    var data       = $vault.get('searchReservationData'),
+                        start_date = new tzIndependentDate($rootScope.businessDate);
+
+                    if(data) {
+                        data = JSON.parse(data);
+                        start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
+                    } else {
+                        correctTime();
+                    };
+
+                    return start_date;
+
+                    function correctTime() {
+                        var now = new Date(Date.now()),
+                            hh   = now.getHours(),
+                            mm   = now.getMinutes(),
+                            ampm = '';
+
+                        // first decide AMP PM
+                        if ( hh > 12 ) {
+                            ampm = 'PM';
+                        } else {
+                            ampm = 'AM';
+                        }
+
+                        // the time must be rounded to next 15min position
+                        // if the guest came in at 3:10AM it should be rounded to 3:15AM
+                        if ( mm > 45 && hh + 1 < 12 ) {
+                            hh += 1;
+                            mm = 0;
+                        } else if ( mm > 45 && hh + 1 == 12 ) {
+                            if ( ampm == 'AM' ) {
+                                hh  = 12;
+                                mm = 0;
+                                ampm    = 'PM';
+                            } else {
+                                hh  = 12;
+                                mm = 0;
+                                ampm    = 'AM';
+                            }
+                        } else if ( mm == 15 || mm == 30 || mm == 45 ) {
+                            mm += 15;
+                        } else if ( Math.max(mm, 15) == 15 ) {
+                            mm = 15;
+                        } else if ( Math.max(mm, 30) == 30 ) {
+                            mm = 30;
+                        } else {
+                            mm = 45;
+                        };
+
+                        start_date.setHours(hh, mm);
+                    };
+                };
+
                 /*Process data points set during create reservation that redirects here*/
                 this.ArrivalFromCreateReservation = function() {
                     var data = $vault.get('searchReservationData');
@@ -835,32 +901,44 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     }
 
                     if(data) {
-                        if(data.fromDate === data.toDate) {
-                            var start_date  = parseDate(data.fromDate, data.arrivalTime),
-                                end_date    = parseDate(data.toDate, data.departureTime);
+                        var start_date   = parseDate(data.fromDate, data.arrivalTime),
+                            end_date     = parseDate(data.toDate, data.departureTime),
+                            __start_date = new Date(data.fromDate),
+                            __end_date   = new Date(data.toDate);
 
-                            return {
-                                start_date:         start_date,
-                                end_date:           end_date,
-                                adults:             data.adults,
-                                children:           data.children,
-                                infants:            data.infants,
-                                room_type_id:       data.roomTypeID,
-                                guest_first_name:   data.guestFirstName,
-                                guest_last_name:    data.guestLastName,
-                                company_id:         data.companyID,
-                                travel_agent_id:    data.TravelAgenID
-                            };
-                        }
+                            __start_date.setHours(0);
+                            __end_date.setHours(0);
+                            __start_date.setMinutes(0);
+                            __end_date.setMinutes(0);
+
+                        return {
+                            __start_date:       __start_date,
+                            __end_date:         __end_date,
+                            start_date:         start_date,
+                            end_date:           end_date,
+                            adults:             data.adults,
+                            children:           data.children,
+                            infants:            data.infants,
+                            room_type_id:       data.roomTypeID,
+                            guest_first_name:   data.guestFirstName,
+                            guest_last_name:    data.guestLastName,
+                            company_id:         data.companyID,
+                            travel_agent_id:    data.TravelAgenID,
+                            minHours:           parseInt(data.minHours)
+                        };
                     }
 
                     /*Method to parse object time props into MS*/
                     function parseDate(ms, timeObj) {
                         var t_a, t_b;
 
-                        if(timeObj.ampm === 'AM') {
+                        // since the date passed from the reservation search screen will
+                        // also have the hour and minutes, so lets reset that to zero
+                        // update it will the passed down hours, read further
+                        var ms = new tzIndependentDate(ms).setHours(0, 0, 0);
+
+                        if(timeObj.ampm === 'PM') {
                             t_a = (12 + parseInt(timeObj.hh, 10)) * 3600000;
-                            
                         } else {
                             t_a = (parseInt(timeObj.hh, 10)) * 3600000;
                         }

@@ -28,13 +28,13 @@ sntRover
             var ret,
                 ms_per_day          = 43200000,
                 ms_per_hr           = 3600000,
-                perspective_offset  = (arrival_ms instanceof Date ? new Date(Date.now()).toComponents().time.hours : 0),
-                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(Date.now()).toComponents().time.hours,0,0) : arrival_ms), 
+                perspective_offset  = (arrival_ms instanceof Date ? new Date(arrival_ms).toComponents().time.hours : 0),
+                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(arrival_ms).toComponents().time.hours, new Date(arrival_ms).toComponents().time.minutes, 0) : arrival_ms), 
                 x_max               = (display_total_hours - perspective_offset) * ms_per_hr, 
                 x_min               = (display_total_hours * ms_per_hr - x_max),
                 x_right             = x_origin + x_max, 
                 x_left              = x_origin - x_min,
-                x_offset            = x_origin - (ms_per_hr * 2); 
+                x_offset            = x_origin - (ms_per_hr * 2);
 
             ret = {
                 x_offset: new Date(x_offset),
@@ -167,14 +167,13 @@ sntRover
 
 		reservationIndex = function(room, reservation) {
 			var idx = -1, occupancy = room.occupancy;
-
+			
 			for(var i = 0, len = occupancy.length; i < len; i++) {
 				if(occupancy[i].reservation_id === reservation.reservation_id) {
 					idx = i;
 					return idx;
 				}
-			}
-
+			}			
 			return idx;		
 		};
 
@@ -199,8 +198,7 @@ sntRover
 		};
 
 		removeReservation = function(room, reservation) {
-			var idx = reservationIndex(room, reservation);
-		
+			var idx = reservationIndex(room, reservation);			
 			if(idx > -1) {
 				return room.occupancy.splice(idx, 1);
 			}
@@ -236,7 +234,7 @@ sntRover
 
 				removeReservation(oldRoom, reservation);
 
-				newRoom.occpuancy.push(copyReservation(reservation));
+				newRoom.occupancy.push(copyReservation(reservation));
 
                 idxOldRoom = roomIndex(rooms, oldRoom);
                 idxNewRoom = roomIndex(rooms, newRoom);
@@ -249,7 +247,7 @@ sntRover
                 if(idxNewRoom > -1 && idxNewRoom < data.length) {
                     data[idxNewRoom] = newRoom;
                 }
-			} else {
+			} else {				
 				updateReservation(oldRoom, reservation);
 			}
 		};

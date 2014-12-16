@@ -118,14 +118,18 @@ var TimelineResizeGrip = React.createClass({
 			original_item = 		state.currentResizeItem,
 			direction = 			props.itemProp.toUpperCase(),
 			reservation_status = 	original_item.reservation_status.toUpperCase();
+
 		if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
 			reservation_status === "AVAILABLE" )) {
 			return true;
 		}
-		else if(direction == "ARRIVAL"){
+		else if ( (reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "DEPARTURE"){
+			return true;
+		}
+		else if((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "ARRIVAL"){
 			return false;
 		}
-		return true;
+		return false;
 	},	
 	getDefaultProps: function() {
 		return {
@@ -175,7 +179,6 @@ var TimelineResizeGrip = React.createClass({
 					props.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
             		props.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
             		//state.onScrollEnd(Math.abs(props.iscroll.grid.x) / px_per_ms + x_origin);
-
 				} else {
 					this.setState({
 						mode: 					undefined,
@@ -193,28 +196,53 @@ var TimelineResizeGrip = React.createClass({
 		} 
 	},
 	render: function() {
-		var self = this,
-			props 				= this.props,
-			direction 			= props.itemProp,
-			currentResizeItem 	= this.state.currentResizeItem,
-			x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
-			px_per_ms 			= props.display.px_per_ms,
-			label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
-			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
-			grip_text = '';
+			var self = this,
+				props 				= this.props,
+				direction 			= props.itemProp,
+				currentResizeItem 	= this.state.currentResizeItem,
+				x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
+				px_per_ms 			= props.display.px_per_ms,
+				label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
+				label_class         = (direction === 'arrival' ? 'arrival' : 'departure'),
+				left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
+				count_txt           = props.meta.availability_count.total > 0 ? props.meta.availability_count.total : false,
+				classes             = "set-times " + label_class,
+				time_txt            = '';
 
-		if(currentResizeItem) {
-		 	grip_text = label + ' ' + (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+			if(currentResizeItem) {
+			 	time_txt = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+			}
+
+			if(this.props.edit.active) {
+				classes += " editing";
+			}
+
+			return React.DOM.div({
+					className: classes,
+					style: {
+						left: left + 'px'
+					}
+				},
+				React.DOM.span({
+					className: 'title'
+				},
+					React.DOM.label({}, label),
+					React.DOM.span({
+						className: 'time'
+					}, time_txt)
+				),
+				// React.DOM.span({
+				// 	className: 'count',
+				// 	style: {
+				// 		display: direction === 'arrival' ? (this.props.edit.active || !count_txt ? 'none' : 'inline') : 'none'
+				// 	}
+				// }, count_txt),
+				React.DOM.span({
+					className: 'line',
+					style: {
+						display: this.props.edit.active ? 'inline' : 'none'
+					}
+				})
+			);
 		}
-		var classes = "set-times";
-		if(this.props.edit.active) {
-			classes += " editing";
-		}
-		return this.transferPropsTo(React.DOM.a({
-			className: classes,
-			style: {
-				left: left + 'px'		
-			},			
-		}, grip_text));
-	}
 });

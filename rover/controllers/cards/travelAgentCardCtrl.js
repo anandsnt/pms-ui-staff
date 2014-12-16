@@ -124,8 +124,10 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
-			}, 1000);
-			callCompanyCardServices();
+			}, 1000);			
+			if(!isNew){
+				callCompanyCardServices();	
+			}
 		});
 
 
@@ -196,22 +198,21 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$emit("hideLoader");
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
+			$rootScope.$broadcast("IDGENERATED",{ 'id': data.id });
 			callCompanyCardServices();
 			//New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
 				if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
 					//if a new card has been added, reset the future count to zero
-					if ($scope.reservationDetails.travelAgent.futureReservations <= 0 || $stateParams.reservation == "HOURLY") {
+					if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
 						$scope.replaceCardCaller('travel_agent', {
 							id: data.id
 						}, false);
 					} else {
-						if ($stateParams.reservation != "HOURLY") {
-							$scope.checkFuture('travel_agent', {
-								id: data.id
-							});
-						}
+						$scope.checkFuture('travel_agent', {
+							id: data.id
+						});
 					}
 					$scope.reservationDetails.travelAgent.futureReservations = 0;
 					$scope.viewState.pendingRemoval.cardType = "";
