@@ -197,28 +197,53 @@ var TimelineResizeGrip = React.createClass({
 		} 
 	},
 	render: function() {
-		var self = this,
-			props 				= this.props,
-			direction 			= props.itemProp,
-			currentResizeItem 	= this.state.currentResizeItem,
-			x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
-			px_per_ms 			= props.display.px_per_ms,
-			label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
-			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
-			grip_text = '';
+			var self = this,
+				props 				= this.props,
+				direction 			= props.itemProp,
+				currentResizeItem 	= this.state.currentResizeItem,
+				x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
+				px_per_ms 			= props.display.px_per_ms,
+				label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
+				label_class         = (direction === 'arrival' ? 'arrival' : 'departure'),
+				left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
+				count_txt           = props.meta.availability_count.total > 0 ? props.meta.availability_count.total : false,
+				classes             = "set-times " + label_class,
+				time_txt            = '';
 
-		if(currentResizeItem) {
-		 	grip_text = label + ' ' + (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+			if(currentResizeItem) {
+			 	time_txt = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+			}
+
+			if(this.props.edit.active) {
+				classes += " editing";
+			}
+
+			return React.DOM.div({
+					className: classes,
+					style: {
+						left: left + 'px'
+					}
+				},
+				React.DOM.span({
+					className: 'title'
+				},
+					React.DOM.label({}, label),
+					React.DOM.span({
+						className: 'time'
+					}, time_txt)
+				),
+				// React.DOM.span({
+				// 	className: 'count',
+				// 	style: {
+				// 		display: direction === 'arrival' ? (this.props.edit.active || !count_txt ? 'none' : 'inline') : 'none'
+				// 	}
+				// }, count_txt),
+				React.DOM.span({
+					className: 'line',
+					style: {
+						display: this.props.edit.active ? 'inline' : 'none'
+					}
+				})
+			);
 		}
-		var classes = "set-times";
-		if(this.props.edit.active) {
-			classes += " editing";
-		}
-		return this.transferPropsTo(React.DOM.a({
-			className: classes,
-			style: {
-				left: left + 'px'		
-			},			
-		}, grip_text));
-	}
 });
