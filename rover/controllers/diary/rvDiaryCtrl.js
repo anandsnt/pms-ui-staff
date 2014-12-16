@@ -846,7 +846,7 @@ sntRover
 	*/
 
    	$scope.clearAvailability = function() {   		   		
-		var rooms = $scope.data,
+		var rooms = $scope.gridProps.data,
 			room,
             m_status = meta.occupancy.status,
             id = meta.occupancy.id,
