@@ -166,24 +166,34 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 
 
-		var $_filterByQuery = function() {
+
+		var $_filterByQuery = function(forced) {
 			var _makeCall = function() {
-				RVHkRoomStatusSrv.currentFilters.query = $scope.query;
+					RVHkRoomStatusSrv.currentFilters.query = $scope.query;
 
-				$_resetPageCounts();
+					$_resetPageCounts();
 
-				$timeout(function() {
-					$_callRoomsApi();
-					$_lastQuery = $scope.query;
-				}, 10);
-			};
+					$timeout(function() {
+						$_callRoomsApi();
+						$_lastQuery = $scope.query;
+					}, 10);
+				};
 
-			if ( $scope.query.length > 2 && $scope.query != $_lastQuery ) {
-				_makeCall();
+			if ( $rootScope.isSingleDigitSearch ) {
+				if (forced || $scope.query != $_lastQuery) {
+					_makeCall();
+				};
+			} else {
+				if ( forced ||
+						($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
+						($scope.query.length > 2 && $scope.query != $_lastQuery)
+				) {
+					_makeCall();
+				};
 			};
 		};
 
-		$scope.filterByQuery = _.throttle($_filterByQuery, 1500);
+		$scope.filterByQuery = _.throttle($_filterByQuery, 1000, { leading: false });
 
 		$scope.clearResults = function() {
 			$scope.query = '';
