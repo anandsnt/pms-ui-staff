@@ -24,6 +24,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.renderData = {};
 		$scope.isManual = false;
 		$scope.isNewCardAdded =  false;
+		$scope.errorMessage = "";
 
 		$scope.feeData = {};
 		var zeroAmount = parseFloat("0.00");
