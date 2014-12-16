@@ -202,20 +202,6 @@ var DiaryContent = React.createClass({
   			function(){
   				this._recalculateGridSize();
   			});
-
-  			setTimeout(function() {
-  				var origin = this.state.display.x_origin,
-  					time00 = new Date(origin),
-  					time00 = time00.setHours(0, 0, 0),
-  					scrollToPos = (origin - time00 - 7200000) * this.state.display.px_per_ms;
-
-  				if(scrollToPos < 0) {
-  					scrollToPos = 0;
-  				}
-  			    this.state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
-  			    this.state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
-  			    this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n);
-  			}.bind(this), 1000);		  			
   		}
 
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
