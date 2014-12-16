@@ -276,23 +276,17 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    	}
 	    };
 
-		/**
+		/*
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function(index, $event) {
 
 			var element = $event.target;
-			var isClikedToggle = false;
-			if(element.className =='switch-button' || element.parentNode.className =='switch-button'){
-				isClikedToggle = true;
+
+			if(element.className =='switch-button' || element.className =='switch-button on' || element.parentNode.className =='switch-button' || element.parentNode.className =='switch-button on'){
 				$scope.toggleTransaction(index);
 			}
-
-			console.log(element.className);
-			console.log(element.parentNode.className);
-			console.log("isClikedToggle ="+isClikedToggle);
-
-			if($scope.filterData.viewFromOutside && !isClikedToggle){
+			else if($scope.filterData.viewFromOutside){
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					id: $scope.arTransactionDetails.ar_transactions[index].reservation_id,
 					confirmationId: $scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no,
@@ -307,8 +301,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	        var payAllSuccess = function(data) {
 	            $scope.$emit('hideLoader');
 	            $scope.errorMessage = '';
-	            $scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
-	            $scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
+	            //$scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
+	            //$scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
+	            fetchData();
 	        };
 
 	        var failure = function(errorMessage){
