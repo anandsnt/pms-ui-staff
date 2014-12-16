@@ -73,6 +73,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    $scope.errorMessage = '';
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
+			    $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
 				setTimeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
 				}, 0);
@@ -156,30 +157,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	        fetchData();
 	    });
 
-	    $scope.toggleTransaction = function(index){
-	    	$scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
-	    	
-	    	var payTransactionSuccess = function(data) {
-	            $scope.$emit('hideLoader');
-	            $scope.errorMessage = '';
-	            $scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
-	            $scope.arTransactionDetails.ar_transactions[index].paid = data.paid;
-	        };
-
-	        var failure = function(errorMessage){
-	            $scope.$emit('hideLoader');
-	            $scope.errorMessage = errorMessage;
-	            $scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
-	        };
-	        //$scope.errorMessage ='Insufficient credit on account to pay Guest Bill';
-	        var params = {
-	            'id': $scope.filterData.id,
-	            'transaction_id': $scope.arTransactionDetails.ar_transactions[index].transaction_id,
-	            'paid': $scope.arTransactionDetails.ar_transactions[index].paid
-	        };
-	        $scope.invokeApi(RVCompanyCardSrv.payForReservation, params, payTransactionSuccess ,failure);
-	    };
-
+	    
 	    /**
 		 * function to perform filtering/request data from service in change event of query box
 		 */
@@ -264,13 +242,44 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		};
 
+		/*
+		 * Function to handle paid/open toggle button click.
+		 */
+		$scope.toggleTransaction = function(index){
+	    	$scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
+	    	
+	    	var transactionSuccess = function(data) {
+	            $scope.$emit('hideLoader');
+	            $scope.errorMessage = '';
+	            $scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
+	            $scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
+	        };
+
+	        var failure = function(errorMessage){
+	            $scope.$emit('hideLoader');
+	            $scope.errorMessage = errorMessage;
+	            $scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
+	        };
+	        
+	        var params = {
+	            'id': $scope.filterData.id,
+	            'transaction_id': $scope.arTransactionDetails.ar_transactions[index].transaction_id
+	        };
+
+	        if($scope.arTransactionDetails.ar_transactions[index].paid){
+	        	// To pay API call
+	        	$scope.invokeApi(RVCompanyCardSrv.payForReservation, params, transactionSuccess ,failure);
+	    	}
+	    	else{
+	    		// To Open Api call
+	    		$scope.invokeApi(RVCompanyCardSrv.openForReservation, params, transactionSuccess ,failure);
+	    	}
+	    };
+
 		/**
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function(index, $event) {
-			console.log("$scope.filterData.viewFromOutside"+$scope.filterData.viewFromOutside);
-
-			console.log($event);
 
 			var element = $event.target;
 			var isClikedToggle = false;
@@ -278,36 +287,28 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				isClikedToggle = true;
 				$scope.toggleTransaction(index);
 			}
+
 			console.log(element.className);
 			console.log(element.parentNode.className);
+			console.log("isClikedToggle ="+isClikedToggle);
 
 			if($scope.filterData.viewFromOutside && !isClikedToggle){
-				console.log($scope.arTransactionDetails.ar_transactions[index].reservation_id);
-				console.log($scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no);
-				/*$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					id: $scope.arTransactionDetails.ar_transactions[index].reservation_id,
 					confirmationId: $scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no,
 					isrefresh: true
-				});*/
+				});
 			}
 		};
 
-		$scope.addCreditAmount = function(){
-			ngDialog.open({
-	      		template:'/assets/partials/companyCard/rvArTransactionsAddCredits.html',
-		        controller: 'RVArTransactionsAddCreditsController',
-		        className: '',
-		        scope: $scope
-	      	});
-		};
-
-		 // clicked pay all button
+		// clicked pay all button
 	    $scope.clickedPayAll = function(){
 
 	        var payAllSuccess = function(data) {
 	            $scope.$emit('hideLoader');
 	            $scope.errorMessage = '';
 	            $scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
+	            $scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
 	        };
 
 	        var failure = function(errorMessage){
@@ -320,6 +321,16 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	        };
 	        $scope.invokeApi(RVCompanyCardSrv.payAll, params, payAllSuccess, failure);
 	    };
+
+	    // Show add credits amount popup
+		$scope.addCreditAmount = function(){
+			ngDialog.open({
+	      		template:'/assets/partials/companyCard/rvArTransactionsAddCredits.html',
+		        controller: 'RVArTransactionsAddCreditsController',
+		        className: '',
+		        scope: $scope
+	      	});
+		};
 
 	    init();
 

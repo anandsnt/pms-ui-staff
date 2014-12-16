@@ -305,7 +305,18 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.payForReservation = function(params){
 			var deferred = $q.defer();
 			var url = "api/accounts/"+params.id+"/ar_transactions/"+params.transaction_id+"/pay";
-			rvBaseWebSrvV2.postJSON(url,params).then(function(data) {
+			rvBaseWebSrvV2.postJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.openForReservation = function(params){
+			var deferred = $q.defer();
+			var url = "api/accounts/"+params.id+"/ar_transactions/"+params.transaction_id+"/open";
+			rvBaseWebSrvV2.postJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
