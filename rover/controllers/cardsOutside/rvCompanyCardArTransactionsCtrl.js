@@ -95,7 +95,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			};
 
 			var params = getParamsToSend();
-			console.log(params);
 
 			if(typeof params.id != 'undefined' && params.id != ''){
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
@@ -104,7 +103,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// In the case of new card, handle the generated id upon saving the card.
 		$scope.$on("IDGENERATED", function(event,data) {
-			console.log("IDGENERATED = "+data.id);
 			$scope.filterData.id = data.id;
 			fetchData();
 		});

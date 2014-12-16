@@ -5,7 +5,8 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
     
     $scope.existingCreditAmount = $scope.arTransactionDetails.available_credit;
     $scope.addedCreditAmount = '';
-
+    $scope.selectedSymbol = 'add';
+    
     // save button click to update credit amount
     $scope.savebuttonClick = function(){
 
