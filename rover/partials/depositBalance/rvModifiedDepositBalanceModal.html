@@ -135,11 +135,13 @@
 	                    <li ng-hide="authorizedCode.length === 0">
 	                        Your Authorize code is: <span class="auth" >{{authorizedCode}}</span>
 	                    </li>
-	                    <li>
+	                    <li ng-show="isShowFees()">
+                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        </span>
+	                    </li>
+	                    <li ng-show="!isShowFees()">
 	                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}}
-		                    <span ng-show="isShowFees()" class="fee">
-					    	&nbsp;+ {{currencySymbol}}{{feeData.calculatedFee}} fee
-					    	</span> </span>
+	                        </span>
 	                    </li>
 	                </ul>
 	            </div>
