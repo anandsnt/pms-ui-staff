@@ -179,7 +179,6 @@ var TimelineResizeGrip = React.createClass({
 					props.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
             		props.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
             		//state.onScrollEnd(Math.abs(props.iscroll.grid.x) / px_per_ms + x_origin);
-
 				} else {
 					this.setState({
 						mode: 					undefined,
