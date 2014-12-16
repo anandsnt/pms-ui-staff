@@ -26,6 +26,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.depositPaidSuccesFully = false;
 	$scope.shouldShowExistingCards = true;
 	$scope.shouldShowAddNewCard   = true;
+	$scope.authorizedCode = "";
 	$scope.showExistingAndAddNewPayments = true;
 	$scope.showOnlyAddCard = false;
 	$scope.cardsList =[];
@@ -83,7 +84,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 	
     
-	if($scope.reservationData.reservation_card.payment_method_used == "CC"){
+	if($scope.reservationData.reservation_card.payment_method_used === "CC"){
 		$scope.shouldCardAvailable 				 = true;
 		
 		// $scope.paymentId = $scope.reservationData.reservation_card.payment_details;
@@ -92,6 +93,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.ending_with = $scope.reservationData.reservation_card.payment_details.card_number;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.reservationData.reservation_card.payment_details.card_expiry;
 	}
+	else{
+		$scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
+	};
 	if($rootScope.paymentGateway == "sixpayments"){
     	//initilayy C&P ACTIVE
     	$scope.shouldCardAvailable = false;
