@@ -136,7 +136,10 @@
 	                        Your Authorize code is: <span class="auth" >{{authorizedCode}}</span>
 	                    </li>
 	                    <li>
-	                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}}</span>
+	                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}}
+		                    <span ng-show="isShowFees()" class="fee">
+					    	&nbsp;+ {{currencySymbol}}{{feeData.calculatedFee}} fee
+					    	</span> </span>
 	                    </li>
 	                </ul>
 	            </div>

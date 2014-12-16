@@ -323,7 +323,7 @@
 		if($scope.isDisplayReference){
 			dataToSrv.postData.reference_text = $scope.referanceText;
 		};
-		if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual){
+		if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.cancellationData.paymentType === 'CC'){
 			dataToSrv.postData.is_emv_request = true;
 			$scope.shouldShowWaiting = true;
 			RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
