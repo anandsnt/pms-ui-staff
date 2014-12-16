@@ -68,6 +68,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+    // $rootScope.isManualCCEntryEnabled = false;
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
@@ -89,6 +90,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.$broadcast('six_token_recived', {
           'six_payment_data': responseData
         });
+        $scope.$digest();
       }
       // if (responseData.response_message == "error_on_token_creation") {
         // $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
