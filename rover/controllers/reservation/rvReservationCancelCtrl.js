@@ -211,8 +211,10 @@
 			name_on_card: retrieveName(),
 			payment_type: "CC",
 			reservation_id: $scope.passData.reservationId,
-			token: cardToken,
-			card_expiry: cardExpiry
+			token: cardToken
+		};
+		if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
+			paymentData.card_expiry = cardExpiry;
 		};
 		if($scope.isShowFees()){
 			if($scope.feeData.calculatedFee)
@@ -347,7 +349,7 @@
 
 	$scope.onCardClick = function(){
 		$scope.showCC = true;
-		$scope.addmode = false;
+		$scope.addmode = $scope.cardsList.length>0 ?false:true;
 	};
 	var setCreditCardFromList = function(index){
 		$scope.cancellationData.selectedCard = $scope.cardsList[index].value;
@@ -366,6 +368,7 @@
 
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		$scope.newPaymentInfo = data;
+		$scope.showCC = false;
 		savePayment();
 	});
 

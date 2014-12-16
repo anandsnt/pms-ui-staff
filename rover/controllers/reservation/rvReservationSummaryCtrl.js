@@ -185,10 +185,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		var savenewCc = function() {
+
 			var ccSaveSuccess = function(data) {
 
 				$scope.$emit('hideLoader');
-				$scope.showCC = false;
 				$scope.showSelectedCreditCard = true;
 				$scope.reservationData.selectedPaymentId = data.id;
 				$scope.renderData.creditCardType = retrieveCardtype();
@@ -200,6 +200,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.setupFeeData();
 				}
 				$scope.isNewCardAdded = true;
+				refreshScrolls();
 			};
 
 			var data = {};
@@ -209,7 +210,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.newPaymentInfo.tokenDetails.token_no;
 			//data.add_to_guest_card = $scope.newPaymentInfo.cardDetails.addToGuestCard;
 			data.card_code = retrieveCardtype();
-			data.card_expiry = retrieveExpiryDateForSave();
+			if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
+				data.card_expiry = retrieveExpiryDateForSave();
+			};
 			data.card_name = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
 				$scope.newPaymentInfo.cardDetails.userName :
 				($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
@@ -218,8 +221,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.$on("TOKEN_CREATED", function(e, data) {
+			$rootScope.$emit("showLoader");
 			$scope.newPaymentInfo = data;
+			$scope.showSelectedCreditCard = false;
+			$scope.showCC = false;
 			savenewCc();
+			//$scope.$digest();
 		});
 
 		/*
@@ -239,6 +246,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 				$scope.setupFeeData();
 			}
+
+			refreshScrolls();
 			$scope.isNewCardAdded = false;
 		};
 
