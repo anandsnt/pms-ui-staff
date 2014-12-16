@@ -25,9 +25,11 @@
 
 			$scope.cancellationData.paymentType = "";
 
+
+			$scope.ngDialogData.penalty = $filter("number")($scope.ngDialogData.penalty,2);
 			if($scope.ngDialogData.penalty > 0){
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
-			}
+			};
 
 			$scope.setScroller('cardsList');
 

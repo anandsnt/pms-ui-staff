@@ -138,8 +138,8 @@
                         </li>                        
                     </ul>
                     <div class="actions">
-                        <button type="button" class="button white blue-text" ng-click = "openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</a>
-                        <button type="button" class="button white brand-text" ng-click="setDemographics()">Demographics</a>
+                        <button type="button" class="button white blue-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click = "openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</a>
+                        <button type="button" class="button white brand-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click="setDemographics()">Demographics</a>
                     </div>
                     <button class="add-new-button" ng-hide="true">+ Accompanying Guest</button>
                     <form id="room-1-accompany" class="form hidden"> <!-- Remove class hidden when button above clicked -->

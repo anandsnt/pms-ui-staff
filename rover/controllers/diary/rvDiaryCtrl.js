@@ -1087,7 +1087,7 @@ sntRover
 			};
 
 			// change date to triggeer a change
-			$scope.gridProps.filter.arrival_date = new Date($_resetObj.start_date);
+			$scope.gridProps.filter.arrival_date = new tzIndependentDate( $rootScope.businessDate );
     	};
 
     	$scope.clearAvailability();
@@ -1134,7 +1134,11 @@ sntRover
 		$scope.gridProps.availability.resize.last_departure_time = null;
 		if(!$scope.gridProps.edit.active) {
 			$scope.Availability();
-		}
+		} else if ( $scope.gridProps.filter.arrival_time == '' ) {
+			$scope.clearAvailability();
+			$scope.resetEdit();
+			$scope.renderGrid();
+		};
 	};
 
 	$scope.clickedOnRoomType = function(){
@@ -1142,6 +1146,8 @@ sntRover
 			$scope.Availability();
 		} else if ( $scope.gridProps.filter.room_type == null ) {
 			$scope.clearAvailability();
+			$scope.resetEdit();
+			$scope.renderGrid();
 		};
 	};
 
