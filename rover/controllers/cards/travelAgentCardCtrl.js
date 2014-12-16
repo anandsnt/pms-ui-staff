@@ -124,8 +124,10 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
-			}, 1000);
-			callCompanyCardServices();
+			}, 1000);			
+			if(!isNew){
+				callCompanyCardServices();	
+			}
 		});
 
 
