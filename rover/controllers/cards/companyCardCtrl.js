@@ -129,8 +129,9 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
-
-			callCompanyCardServices();
+			if(!isNew){
+				callCompanyCardServices();	
+			}				
 		});
 
 		$scope.$on("companyCardDetached", function() {
