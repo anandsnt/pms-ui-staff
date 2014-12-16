@@ -50,9 +50,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 				floor_start          = false,
 				floor_end            = false,
 				params               = {
-					businessDate : passedParams.businessDate,
-					page         : filter.page,
-					perPage      : filter.perPage
+					'date'     : passedParams.businessDate,
+					'page'     : filter.page,
+					'per_page' : filter.perPage
 				};
 
 			// if there is a search query, ignore all other filters. Reset page to 1

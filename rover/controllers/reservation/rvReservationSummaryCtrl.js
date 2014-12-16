@@ -563,7 +563,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 				"id": $scope.reservationData.reservationId,
 				"confirmationId": $scope.reservationData.confirmNum
-			})
+			});
 		};
 
 		$scope.confirmReservation = function() {

@@ -205,8 +205,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var $_filterByQuery = function(forced) {
 			var _makeCall = function() {
-					$scope.currentFilters.query = $scope.query;
-					RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+					$_updateFilters('query', $scope.query);
 
 					$_resetPageCounts();
 
@@ -216,15 +215,21 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					}, 10);
 				};
 
-			if ( forced || 
-					($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
-					($scope.query.length > 2 && $scope.query != $_lastQuery)
+			if ( $rootScope.isSingleDigitSearch ) {
+				if (forced || $scope.query != $_lastQuery) {
+					_makeCall();
+				};
+			} else {
+				if ( forced ||
+						($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
+						($scope.query.length > 2 && $scope.query != $_lastQuery)
 				) {
-				_makeCall();
+					_makeCall();
+				};
 			};
 		};
 
-		$scope.filterByQuery = _.throttle($_filterByQuery, 1500);
+		$scope.filterByQuery = _.throttle($_filterByQuery, 1000, { leading: false });
 
 		$scope.clearSearch = function() {
 			$scope.query = '';
@@ -612,7 +617,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		function $_updateFilters (key, value) {
 			$scope.currentFilters[key]       = value;
 			RVHkRoomStatusSrv.currentFilters = angular.copy($scope.currentFilters);
-			console.log(RVHkRoomStatusSrv.currentFilters);
 		};
 
 		function $_resetPageCounts () {
