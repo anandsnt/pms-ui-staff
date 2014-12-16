@@ -76,8 +76,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showMakePaymentButtonStatus = function(){
 		var buttonClass = "";
 		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-				buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "green" :"grey";
-		} else {
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "green" :"grey";
+		}else {
 			buttonClass = "grey";
 		};
 		return buttonClass;
@@ -86,12 +86,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
     
 	if($scope.reservationData.reservation_card.payment_method_used === "CC"){
 		$scope.shouldCardAvailable 				 = true;
-		
-		// $scope.paymentId = $scope.reservationData.reservation_card.payment_details;
 		$scope.depositBalanceMakePaymentData.payment_type = "CC";
 		$scope.depositBalanceMakePaymentData.card_code = $scope.reservationData.reservation_card.payment_details.card_type_image.replace(".png", "");
 		$scope.depositBalanceMakePaymentData.ending_with = $scope.reservationData.reservation_card.payment_details.card_number;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.reservationData.reservation_card.payment_details.card_expiry;
+		$scope.paymentId = $scope.reservationData.reservation_card.payment_details.id;
 	}
 	else{
 		$scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
