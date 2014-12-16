@@ -89,6 +89,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.$broadcast('six_token_recived', {
           'six_payment_data': responseData
         });
+        $scope.$digest();
       }
       // if (responseData.response_message == "error_on_token_creation") {
         // $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
