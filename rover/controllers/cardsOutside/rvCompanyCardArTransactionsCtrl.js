@@ -5,6 +5,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		BaseCtrl.call(this, $scope);
 
 		var init = function(){
+			console.log("init transactions");
+			$scope.arTransactionDetails = {};
+			$scope.arTransactionDetails.ar_transactions = [];
+
 			fetchData();
 			$scope.setScroller('ar-transaction-list');
 		};
@@ -20,7 +24,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'isShowPaid': '',
 			'start': 1,
 			'pageNo':1,
-			'perPage':2,
+			'perPage':50,
 			'textInQueryBox': '',
 			'viewFromOutside': false
 		};
@@ -180,7 +184,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		var initPaginationParams = function(){
 			$scope.filterData.pageNo = 1;
 			$scope.filterData.start = 1;
-			$scope.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
+			$scope.filterData.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
 			$scope.nextAction = false;
 			$scope.prevAction = false;
 		}

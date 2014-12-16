@@ -219,11 +219,9 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				},
 				fromDate: function() {
 					var tmp = this.toLocaleDateString().replace(/\//g, '-').split('-').reverse();
-
 					return tmp.shift() + '-' + temp.reverse().join('-');
 				},
 				toShortDateString: function() {
-					console.log(this.day);
 					return this.monthNameShort + ' ' + (this.day < 10 ? '0' : '') + this.day;
 				}
 			},

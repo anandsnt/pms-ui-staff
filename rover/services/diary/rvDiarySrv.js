@@ -497,15 +497,20 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         selected    = args.shift(),
                         m           = meta.occupancy,
                         room        = this.dataStore.get('_room.values.id')[slot.id],
-                        room_type   = room.room_type;                        
+                        room_type   = room.room_type,
+                        slot_statues = {
+                            'WEBBOOKING': 'blocked',
+                            'AVAILABLE' : 'available'
+                        };  
                     /*
                         Configrue Available slot to mirror occupancy, execpt
                         set revervation_id for the collection so the resize
                         will work on all as a group.
                     */
+
                     if(!slot.room_id) {
                         slot.room_id                = room.id;
-                        slot.reservation_status     = 'available';
+                        slot.reservation_status     = slot_statues[slot.status];
                         slot.room_service_status    = '';
                         slot.reservation_id         = guid;
                         slot.selected               = selected;

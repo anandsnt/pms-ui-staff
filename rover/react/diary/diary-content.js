@@ -53,7 +53,7 @@ var DiaryContent = React.createClass({
 			break;
 		}
  
-	},
+	},	
 	__onDragStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(arguments));
 	},
@@ -114,7 +114,9 @@ var DiaryContent = React.createClass({
 			currentResizeItemRow: row_data
 		});
 	},
-
+	componentDidUpdate: function(){				
+		this.componentWillMount();
+	},
 	componentDidMount: function() {		
 		var self = this,
             state = this.state;
@@ -123,7 +125,7 @@ var DiaryContent = React.createClass({
     		self._recalculateGridSize();
     		setTimeout(function(){
     			self.componentWillMount();
-    		}, 200);
+    		}, 1000);
             
     	}.bind(this), 10, { leading: false, trailing: true }));
 
@@ -189,15 +191,31 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
   				viewport: nextProps.viewport
-  			});
-  			$(window).resize();  			
+  			});  			 		
 
   		}
 
   		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
   			this.setState({
   				display: nextProps.display
-  			});  			  			
+  			},
+  			function(){
+  				this._recalculateGridSize();
+  			});
+
+  			setTimeout(function() {
+  				var origin = this.state.display.x_origin,
+  					time00 = new Date(origin),
+  					time00 = time00.setHours(0, 0, 0),
+  					scrollToPos = (origin - time00 - 7200000) * this.state.display.px_per_ms;
+
+  				if(scrollToPos < 0) {
+  					scrollToPos = 0;
+  				}
+  			    this.state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
+  			    this.state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
+  			    this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n);
+  			}.bind(this), 1000);		  			
   		}
 
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
