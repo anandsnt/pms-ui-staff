@@ -8,8 +8,6 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 			refreshScroller();
 		});
 
-		$scope.routesCount = 5;
-
 		//trigger the billing information popup
 	    $scope.openBillingInformation = function(accountType){
 
