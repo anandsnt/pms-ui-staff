@@ -43,8 +43,9 @@ angular.module('stayCardModule', [])
                 propertyTime: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchCurrentTime();
                 },
-                payload: function($rootScope, rvDiarySrv, $stateParams, $vault) {
-                    return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(), rvDiarySrv.ArrivalFromCreateReservation());
+                payload: function($rootScope, rvDiarySrv, $stateParams, $vault, hotelDetails) {
+                    var start_date = (hotelDetails.business_date);
+                    return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
                 }
             }
         });
