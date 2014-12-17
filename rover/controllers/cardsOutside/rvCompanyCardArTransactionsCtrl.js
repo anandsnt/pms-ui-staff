@@ -1,6 +1,6 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -285,10 +285,15 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$scope.toggleTransaction(index);
 			}
 			else if($scope.filterData.viewFromOutside){
+				$vault.set('cardId', $stateParams.id);
+				$vault.set('type', $stateParams.type);
+				$vault.set('query', $stateParams.query);
+
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					id: $scope.arTransactionDetails.ar_transactions[index].reservation_id,
 					confirmationId: $scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no,
-					isrefresh: true
+					isrefresh: true,
+					isFromCards: true
 				});
 			}
 		};

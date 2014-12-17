@@ -350,7 +350,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			} else if ($scope.isDiscard) {
 				// On discarded - prevent save call
 			} else {
-				saveContactInformation($scope.contactInformation);
+				//saveContactInformation($scope.contactInformation);
 			}
 		});
 		// To handle click on save new card button on screen.

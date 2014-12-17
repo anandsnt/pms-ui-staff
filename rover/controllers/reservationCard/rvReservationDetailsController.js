@@ -13,7 +13,22 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
+			if ($stateParams.isFromCards) {
+
+				$rootScope.setPrevState = {
+					title: 'Company card',
+					name: 'rover.companycarddetails',
+	    			param: {id:$vault.get('cardId'), 
+	    					type: $vault.get('type'), 
+	    					query :$vault.get('query')
+	    				}
+				};
+
+			}
+			
+
+
+		/*if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
 			};
@@ -52,7 +67,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.updateSearchCache();
 				$state.go('rover.search', backParam);
 			};
-		}
+		}*/
 
 
 		//CICO-10568
