@@ -280,17 +280,9 @@ admin.controller('ADRulesRestrictionCtrl', [
             // need to combine individuals HH:MM:ap to single hours entry
             // and remove the individuals before posting
             if ( $scope.singleRule.advance_hour || $scope.singleRule.advance_min ) {
-                var hh, mm;
-
-                if ($scope.singleRule.advance_primetime === 'PM') {
-                    hh = $scope.singleRule.advance_hour ? ($scope.singleRule.advance_hour < 12 ? ($scope.singleRule.advance_hour * 1) + 12 : $scope.singleRule.advance_hour) : '00';
-                } else {
-                    hh = $scope.singleRule.advance_hour || '00';
-                }
-
-                mm = $scope.singleRule.advance_min ? $scope.singleRule.advance_min : '00';
-
-                $scope.singleRule.advance_time = hh + ':' + mm;
+                $scope.singleRule.advance_time = getTimeFormated($scope.singleRule.advance_hour,
+                                                                $scope.singleRule.advance_min,
+                                                                $scope.singleRule.advance_primetime);
 
                 // remove these before sending
                 var withoutEach = _.omit($scope.singleRule, 'advance_hour');
