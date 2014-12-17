@@ -162,25 +162,19 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				var cardName = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
 					$scope.newPaymentInfo.cardDetails.userName :
 					($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
-				dataToGuestList = {
-					"id": data.id,
-					"isSelected": true,
-					"card_code": retrieveCardtype(),
-					"is_primary": false,
-					"payment_type": "CC",
-					"card_expiry": retrieveExpiryDate(),
-					"mli_token": retrieveCardNumber(),
-					"card_name": cardName,
-					"payment_type_id": 1
-				};
-			} else {
-				dataToGuestList = {
-					"id": data.id,
-					"isSelected": true,
-					"is_primary": false,
-					"payment_type": data.payment_name
-				};
-			};
+					dataToGuestList = {
+						"id": data.id,
+						"isSelected": true,
+						"card_code": retrieveCardtype(),
+						"is_primary": false,
+						"payment_type": "CC",
+						"card_expiry": retrieveExpiryDate(),
+						"mli_token": retrieveCardNumber(),
+						"card_name": cardName,
+						"payment_type_id": 1
+					};
+			} 
+			
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
 
@@ -288,6 +282,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.depositData.depositSuccess = true;
 					$scope.depositData.authorizationCode = data.authorization_code;
 					$scope.reservationData.selectedPaymentId = data.payment_method.id;
+					//On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
+					if($scope.reservationData.paymentType.type.value === "CC"){
+						$scope.isNewCardAdded = true;
+					} else {
+						$scope.isNewCardAdded = false;
+					}
 					$scope.$emit('hideLoader');
 				},
 				onPaymentFailure = function(errorMessage) {
@@ -413,7 +413,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.isContinueDisabled = function() {
 			var depositPaid = false;
-			if ($scope.depositData.isDepositRequired) {
+			
+			if ($scope.depositData.isDepositRequired && $scope.reservationData.isValidDeposit) {
 				depositPaid = $scope.depositData.attempted ? true : false;
 			} else {
 				depositPaid = true;
