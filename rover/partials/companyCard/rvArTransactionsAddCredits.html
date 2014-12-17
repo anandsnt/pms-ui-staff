@@ -21,8 +21,8 @@
             <label for="amount"><span translate>AMOUNT</span> (<span>{{currencySymbol}}</span>)</label>
             <div class="select">
                 <select ng-model="selectedSymbol" name="amount-type" id="amount-type">
-                    <option value="add" seleted>+</option>
-                    <option value="subtract">-</option>
+                    <option value="+" seleted>+</option>
+                    <option value="-">-</option>
                 </select>
             </div>
             <input ng-keyup="addCreditAmount()" ng-model="addedCreditAmount" name="amount" id="amount" value="{{addedCreditAmount}}" type="text" />
