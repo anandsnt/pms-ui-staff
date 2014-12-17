@@ -400,7 +400,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 
-		var showDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
+		var showCancelReservationWithDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
 				controller: 'RVCancelReservationDepositController',
@@ -458,7 +458,7 @@ sntRover.controller('reservationActionsController', [
 						}
 
 						if(parseInt(depositAmount) > 0){
-							showDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
+							showCancelReservationWithDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
 						}
 						else{
 							promptCancel(cancellationCharge, nights, (data.results.penalty_type == 'percent'));
@@ -466,7 +466,7 @@ sntRover.controller('reservationActionsController', [
 					}
 					else{
 						if(parseInt(depositAmount) > 0){
-							showDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
+							showCancelReservationWithDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
 						}
 						else{
 							promptCancel('', nights, (data.results.penalty_type == 'percent'));
@@ -554,10 +554,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.successCallBackFetchDepositBalance = function(data){
 
 			$scope.$emit('hideLoader');
-			// $scope.depositBalanceData = data;
 			$scope.depositBalanceData = data;
-			console.log("------------------------------");
-			console.log($scope.paymentTypes)
 			$scope.passData = { 
 			    "details": {
 			    	"firstName": $scope.data.guest_details.first_name,

@@ -105,11 +105,12 @@
                     <li ng-show="authorizedCode !==''">
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
-                    <li>
+                    <li ng-if="isShowFees()">
+                        Amount paid: <span class="value">{{currencySymbol}}{{ngDialogData.penalty}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        </span>
+                    </li>
+                    <li ng-if="!isShowFees()">
                         Amount paid: <span class="value">{{currencySymbol}}{{ngDialogData.penalty}}
-                            <span ng-show="isShowFees()" class="fee">
-                                &nbsp;+ {{currencySymbol}}{{feeData.calculatedFee}} fee
-                            </span> 
                         </span>
                     </li>
                 </ul>
