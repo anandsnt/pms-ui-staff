@@ -1,6 +1,6 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$timeout', '$window',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $timeout, $window) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -251,5 +251,29 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		}	
 
 	    init();
+
+	    // To print the current screen details.
+	    $scope.clickedPrintButton = function(){
+		
+			/*
+			 *	=====[ READY TO PRINT ]=====
+			 */
+			// this will show the popup
+		    $timeout(function() {
+		    	/*
+		    	 *	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	 */
+
+		        $window.print();
+
+		        if ( sntapp.cordovaLoaded ) {
+		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		        };
+		    }, 100);
+
+		    /*
+		     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
+		     */
+	    };
 
 }]);

@@ -5,6 +5,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		$scope.isAddNewCard = ($stateParams.id == "add") ? true : false;
 		$scope.isDiscard = false;
 		$scope.isPromptOpened = false;
+		$scope.isLogoPrint = true;
 		//setting the heading of the screen
 		if ($stateParams.type == "COMPANY") {
 			if ($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_COMPANY_CARD');
