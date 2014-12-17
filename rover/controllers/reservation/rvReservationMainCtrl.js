@@ -1632,7 +1632,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var postData = $scope.computeReservationDataforUpdate(true, true);
                 var saveSuccess = function(data) {
-                    $scope.reservationData.depositAmount = data.reservations[0].deposit_amount;
+                     var totalDeposit = 0;
+                    //calculate sum of each reservation deposits
+                    angular.forEach(data.reservations, function(reservation, key) {
+                        totalDeposit = parseInt(totalDeposit) + parseInt(reservation.deposit_amount);
+                    });
+                    $scope.reservationData.depositAmount = totalDeposit;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
                         angular.forEach(data.reservations, function(reservation, key) {
