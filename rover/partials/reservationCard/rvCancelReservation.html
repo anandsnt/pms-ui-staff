@@ -120,7 +120,7 @@
             <!-- Buttons -->
             <div class="actions" ng-hide="showCC || depositPaidSuccesFully">
                 <button type="button" class="button blank modal-close" ng-click="closeReservationCancelModal()">Close</button>
-                <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'gray':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" ng-click="submitPayment()">Make Payment</button> 
+                <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'grey':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" ng-click="submitPayment()">Make Payment</button> 
             </div>
             <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="cancelReservation()" translate>CANCEL_RESERVATION</button>
