@@ -259,9 +259,11 @@
                         <div class="notice success">Deposit paid</div>
                         <ul class="transaction">
                             <li ng-show="depositData.authorizationCode!==''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>
-                            <li>Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}}  <span ng-show="isShowFees()" class="fee">
-                             &nbsp; + {{currencySymbol}}{{feeData.calculatedFee}} fee
-                            </span> </span>
+                            <li ng-if="isShowFees()">Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                            </span>
+                            </li>
+                             <li ng-if="!isShowFees()">Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}}
+                             </span>
                             </li>
                         </ul>
                     </div>
