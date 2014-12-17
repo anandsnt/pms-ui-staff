@@ -37,9 +37,6 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 		$scope.depositData.paymentType = (typeof $scope.reservationData.reservation_card.payment_method_used !== "undefined")?$scope.reservationData.reservation_card.payment_method_used :"";
 
-console.log($scope.depositData.paymentType);
-console.log("-----------------------");
-
 		$scope.reservationData = {};
 		$scope.reservationData.depositAmount = "";
 		$scope.depositPolicyName = "";
@@ -277,8 +274,11 @@ console.log("-----------------------");
 				name_on_card: retrieveName(),
 				payment_type: "CC",
 				reservation_id: $scope.passData.reservationId,
-				token: cardToken,
-				card_expiry: cardExpiry
+				token: cardToken
+			};
+
+			if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
+				paymentData.card_expiry = cardExpiry;
 			};
 
 			if($scope.depositData.isDisplayReference){
@@ -406,19 +406,12 @@ console.log("-----------------------");
 
 	
 	$scope.payDeposit = function() {
-
-		// if($scope.depositData.selectedCard !== -1){
-			$scope.submitPayment();
-		// }
-		// else{
-		// 	$scope.showCCPage = true;
-		// 	refreshCardsList();
-		// };
+		$scope.submitPayment();
 	};	
 
 	$scope.onCardClick = function(){
 		$scope.showCCPage = true;
-		$scope.addmode = false;
+		$scope.addmode = $scope.cardsList.length>0 ?false:true;
 		refreshCardsList();
 	};
 
@@ -440,6 +433,8 @@ console.log("-----------------------");
 
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		$scope.newPaymentInfo = data;
+		$scope.showCCPage = false;
+		$scope.cardSelected = false;
 		savePayment();
 	});
 
