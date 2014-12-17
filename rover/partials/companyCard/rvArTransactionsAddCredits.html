@@ -20,7 +20,7 @@
         <div class="entry full-width">
             <label for="amount"><span translate>AMOUNT</span> (<span>{{currencySymbol}}</span>)</label>
             <div class="select">
-                <select ng-model="selectedSymbol" name="amount-type" id="amount-type">
+                <select ng-change="addCreditAmount()" ng-model="selectedSymbol" name="amount-type" id="amount-type">
                     <option value="+" seleted>+</option>
                     <option value="-">-</option>
                 </select>
