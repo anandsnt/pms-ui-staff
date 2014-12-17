@@ -537,14 +537,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var _roomCopy     = {},
 				_totalLen     = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0,
 				_processCount = 0,
-				_minCount     = 13;
+				_minCount     = 13,
+				i             = 0;
 
 			var _hideLoader = function() {
+					$_roomList = {};
 					$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
 					$scope.$emit( 'hideLoader' );
 				},
 				_firstInsert = function(count) {
-					for (var i = 0; i < count; i++) {
+					$scope.rooms = [];
+
+					for (i = 0; i < count; i++) {
 						_roomCopy = angular.copy( $_roomList.rooms[i] );
 						$scope.rooms.push( _roomCopy );
 					};
@@ -554,7 +558,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					};
 				},
 				_secondInsert = function(startCount) {
-					for (var i = startCount; i < _totalLen; i++) {
+					for (i = startCount; i < _totalLen; i++) {
 						_roomCopy = angular.copy( $_roomList.rooms[i] );
 						$scope.rooms.push( _roomCopy );
 					};
@@ -562,17 +566,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					_hideLoader();
 				};
 
-			$scope.rooms = [];
-
 			if ( _totalLen ) {
 				_processCount = Math.min(_totalLen, _minCount);
 
-				// load first 13 a small delay (necessary) - for filters to work properly
-				$timeout(_firstInsert.bind(null, _processCount), 10);
+				// load first 13 a small delay
+				$timeout(_firstInsert.bind(null, _processCount), 100);
 
 				// load the rest after a small delay - DOM can process it all
 				if ( _totalLen > _minCount ) {
-					$timeout(_secondInsert.bind(null, _processCount), 30);
+					$timeout(_secondInsert.bind(null, _processCount), 300);
 				};
 			} else {
 				_hideLoader();
@@ -610,7 +612,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		function $_callRoomsApi() {
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-				businessDate : $rootScope.businessDate,
+				date : $rootScope.businessDate,
 			}, $_fetchRoomListCallback);
 		};
 
@@ -707,19 +709,24 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			var callPulldownAction = function() {
-				if ( !$scope.disablePrevBtn ) {
-					$scope.loadPrevPage();
+				if ( $scope.disablePrevBtn ) {
+					$_resetPageCounts();
+					$_callRoomsApi();
 				} else {
-					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-						businessDate: $rootScope.businessDate,
-						page: $_page,
-						perPage: $_perPage
-					}, $_fetchRoomListCallback);
+					$scope.loadPrevPage();
 				};
 			};
 
 			var callPullUpAction = function() {
 				$scope.loadNextPage();
+			};
+
+			var genTranslate = function(x, y, z) {
+				var x = (x || 0) + 'px',
+					y = (y || 0) + 'px',
+					z = (z || 0) + 'px';
+
+				return 'translate3d(' + x + ', ' + y + ', ' + z + ')';
 			};
 
 			// set of excutions to be executed when
@@ -733,7 +740,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						pulling = true;
 						e.preventDefault();
 						diff = (nowY - startY);
-						translateDiff = 'translate3d(0, ' + diff + 'px, 0)';
+						translateDiff = genTranslate(0, diff, 0);
 						$rooms.style.WebkitTransition = '';
 						$rooms.style.webkitTransform = translateDiff;
 					};
@@ -774,7 +781,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var touch = e.touches ? e.touches[0] : e, 
 					diff = 0,
 					addTransition = '-webkit-transform 0.3s',
-					translateZero = 'translate3d(0, 0, 0)',
+					translateZero = genTranslate();
 					commonEx = function() {
 						if (pulling) {
 							e.preventDefault();
@@ -801,6 +808,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					notifyPullDownAction();
 					$timeout(function() {
 						$refresh.classList.remove('show');
+						$load.classList.remove('show');
 						if ( abs(diff) > trigger ) {
 							$_refreshScroll();
 						}
@@ -814,12 +822,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$load.style.webkitTransform = translateZero;
 					notifyPullUpAction();
 					$timeout(function() {
+						$refresh.classList.remove('show');
 						$load.classList.remove('show');
 						if ( abs(diff) > trigger ) {
 							$_refreshScroll();
 						}
 					}, 320);
 				} else {
+					$refresh.classList.remove('show');
+					$load.classList.remove('show');
 					$rooms.removeEventListener(touchMoveHandler);
 					return;
 				};
