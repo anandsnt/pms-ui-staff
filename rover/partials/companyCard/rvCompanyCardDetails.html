@@ -52,19 +52,19 @@
                             <a translate>CONTACT_INFORMATION</a>
                         </li>
 
-                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
+                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                             <a translate>CONTRACTS</a>
                         </li>
 
-                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-accounts'}" ng-click="switchTabTo($event, 'cc-ar-accounts')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
+                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-accounts'}" ng-click="switchTabTo($event, 'cc-ar-accounts')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
                             <a translate>AR_ACCOUNT</a>
                         </li>
 
-                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-transactions'}" ng-click="switchTabTo($event, 'cc-ar-transactions')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
+                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-transactions'}" ng-click="switchTabTo($event, 'cc-ar-transactions')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
                             <a translate>AR_TRANSACTIONS</a>
                         </li>
 
-                        <li  ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
+                        <li class="with-filters" ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
                             <a translate>RESERVATIONS</a>
                         </li>
                     </ul>
