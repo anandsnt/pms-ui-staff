@@ -2,8 +2,14 @@
 	<div class="modal-content confirmation">
 	    <button type="button" id="modal-close" class="modal-close" ng-click="noRoutingToReservation()"><span class="icons icon-close invert"></span></button>
 	    <span class="h2 message" translate>BILLING_INFORMATION_FOUND</span>
-	    <span class="text" ng-if="contractRoutingType == 'TRAVEL_AGENT'" translate>ON_SELECTED_CARD<strong> {{reservationData.travelAgent.name}}</strong></span>
-	    <span class="text" ng-if="contractRoutingType == 'COMPANY'" translate>ON_SELECTED_CARD<strong> {{reservationData.company.name}}</strong></span>
+	    <span class="text" ng-if="contractRoutingType == 'TRAVEL_AGENT'">
+	    	<span translate>ON_SELECTED_CARD</span>
+	    	<strong> {{reservationData.travelAgent.name}}</strong>
+	    </span>
+	    <span class="text" ng-if="contractRoutingType == 'COMPANY'">
+	    	<span translate>ON_SELECTED_CARD</span>
+	    	<strong> {{reservationData.company.name}}</strong>
+	    </span>
 
 	    <div class="actions">
 	        <button type="button" class="button green" ng-click="applyRoutingToReservation()" translate>APPLY_TO_RESERVATION<span ng-if="reservationData.isHourly && reservationData.reservations.length > 1">s</span></button>

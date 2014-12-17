@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams) {
 
         BaseCtrl.call(this, $scope);
 
@@ -59,6 +59,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             // intialize reservation object
             $scope.reservationData = {
                 isHourly: false,
+                isValidDeposit : false,
                 arrivalDate: '',
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
@@ -1322,7 +1323,36 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         var cancellationCharge = 0;
         var nights = false;
         var depositAmount = 0;
+        $scope.creditCardTypes = [];
+        $scope.paymentTypes = [];
+
+
+        var fetcCreditCardTypes = function(cancellationCharge, nights){
+            var successCallback = function(data){
+                $scope.$emit('hideLoader');
+                $scope.paymentTypes = data;
+                data.forEach(function(item) {
+                  if(item.name === 'CC'){
+                     $scope.creditCardTypes = item.values;
+                  };
+                });
+            };
+            $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
+        };
+
+        fetcCreditCardTypes();
         var promptCancel = function(penalty, nights) {
+
+            var passData = {
+                    "reservationId": $scope.reservationData.reservationId,
+                    "details":{
+                        "firstName":$scope.guestCardData.contactInfo.first_name,
+                        "lastName":$scope.guestCardData.contactInfo.last_name,
+                        "creditCardTypes":$scope.creditCardTypes,
+                        "paymentTypes":$scope.paymentTypes
+                    }
+             };
+            $scope.passData = passData;
             ngDialog.open({
                 template: '/assets/partials/reservationCard/rvCancelReservation.html',
                 controller: 'RVCancelReservation',
@@ -1603,6 +1633,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var postData = $scope.computeReservationDataforUpdate(true, true);
                 var saveSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.reservations[0].deposit_amount;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
                         angular.forEach(data.reservations, function(reservation, key) {
                             angular.forEach($scope.reservationData.rooms, function(room, key) {
@@ -1653,9 +1684,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
                     $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
-                    $scope.$emit('hideLoader');
 
+
+
+                    $scope.$broadcast('PROMPTCARDENTRY');
+
+
+                    $scope.$emit('hideLoader');
                     that.attachCompanyTACardRoutings();
+
                     if (nextState) {
                         if (!nextStateParameters) {
                             nextStateParameters = {};
@@ -1670,6 +1707,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var updateSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.deposit_amount;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
                     $scope.$broadcast('UPDATEFEE');
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;

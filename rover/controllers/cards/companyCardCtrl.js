@@ -129,8 +129,9 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
-
-			callCompanyCardServices();
+			if(!isNew){
+				callCompanyCardServices();	
+			}				
 		});
 
 		$scope.$on("companyCardDetached", function() {
@@ -207,6 +208,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			$scope.$emit("hideLoader");
 			$scope.reservationDetails.companyCard.id = data.id;
 			$scope.contactInformation.id = data.id;
+			$rootScope.$broadcast("IDGENERATED",{ 'id': data.id });
 			callCompanyCardServices();
 			//New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
