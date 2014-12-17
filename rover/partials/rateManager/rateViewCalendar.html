@@ -38,8 +38,9 @@
 								<div>
 									<div>
 										<span ng-repeat="restriction in calendarData.all_rates[date] track by $index" 
-											  ng-if="toggleRestrictionIconView()"
-											  class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} </span>
+											  ng-show="toggleRestrictionIconView()"
+											  class="restriction-icon right {{calendarData.restriction_types[restriction.type_id].background_class}} {{calendarData.restriction_types[restriction.type_id].icon}}"> {{restriction.days}} 
+										</span>											  
 									</div>
 								</div>
 							</div>

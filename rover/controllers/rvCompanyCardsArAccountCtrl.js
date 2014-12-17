@@ -39,9 +39,11 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				})
 			};
 			var dataToSend = $scope.arAccountDetails;
-			dataToSend.id = $scope.contactInformation.id
+			dataToSend.id = $scope.contactInformation.id;
+			presentArDetails.id = $scope.contactInformation.id;
 			var presentArDetailsAfterEdit = JSON.parse(JSON.stringify($scope.arAccountDetails));
 			var dataNotUpdated = false;
+			
 			//check if data was edited
 			if (!angular.equals(presentArDetailsAfterEdit, presentArDetails)) {
 				dataNotUpdated = true;

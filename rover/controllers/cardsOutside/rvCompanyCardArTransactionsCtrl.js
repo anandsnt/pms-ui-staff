@@ -1,11 +1,11 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$timeout', '$window',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $timeout, $window) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window) {
 
 		BaseCtrl.call(this, $scope);
-
+		$scope.errorMessage = '';
+		
 		var init = function(){
-			console.log("init transactions");
 			$scope.arTransactionDetails = {};
 			$scope.arTransactionDetails.ar_transactions = [];
 
@@ -27,6 +27,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'perPage':50,
 			'textInQueryBox': '',
 			'viewFromOutside': false
+		};
+
+		$scope.arTransactionDetails = {
+			'available_credit' : parseFloat("0.00").toFixed(2),
+			'amount_owing' : parseFloat("0.00").toFixed(2),
+			'open_guest_bills' : 0,
+			'total_count': 0,
+			'ar_transactions':[]
 		};
 
 		if(typeof $stateParams.type != 'undefined'){
@@ -61,8 +69,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			
 			var arAccountsFetchSuccess = function(data) {
 			    $scope.$emit('hideLoader');
+			    $scope.errorMessage = '';
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
+			    $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
 				setTimeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
 				}, 0);
@@ -78,12 +88,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$scope.filterData.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
 			};
 
-			var failure = function(){
+			var failure = function(errorMessage){
 			    $scope.$emit('hideLoader');
+			    $scope.errorMessage = errorMessage;
 			};
 
 			var params = getParamsToSend();
-			console.log(params);
 
 			if(typeof params.id != 'undefined' && params.id != ''){
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
@@ -92,7 +102,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// In the case of new card, handle the generated id upon saving the card.
 		$scope.$on("IDGENERATED", function(event,data) {
-			console.log("IDGENERATED = "+data.id);
 			$scope.filterData.id = data.id;
 			fetchData();
 		});
@@ -133,23 +142,17 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	    // To handle from date change
 	    $scope.$on('fromDateChanged',function(){
-	    	console.log("from date changed");
 	    	initPaginationParams();
 	        fetchData();
 	    });
 
 		// To handle to date change
 	    $scope.$on('toDateChanged',function(){
-	    	console.log("to date changed");
 	    	initPaginationParams();
 	        fetchData();
 	    });
 
-	    $scope.toggleTransaction = function(){
-	    	//$scope.transaction.paid = !$scope.transaction.paid;
-	    	console.log("call API");
-	    };
-
+	    
 	    /**
 		 * function to perform filtering/request data from service in change event of query box
 		 */
@@ -234,21 +237,95 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		};
 
-		/**
+		/*
+		 * Function to handle paid/open toggle button click.
+		 */
+		$scope.toggleTransaction = function(index){
+	    	$scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
+	    	
+	    	var transactionSuccess = function(data) {
+	            $scope.$emit('hideLoader');
+	            $scope.errorMessage = '';
+	            $scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
+	            $scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
+	        };
+
+	        var failure = function(errorMessage){
+	            $scope.$emit('hideLoader');
+	            $scope.errorMessage = errorMessage;
+	            $scope.arTransactionDetails.ar_transactions[index].paid = !$scope.arTransactionDetails.ar_transactions[index].paid;
+	        };
+	        
+	        var params = {
+	            'id': $scope.filterData.id,
+	            'transaction_id': $scope.arTransactionDetails.ar_transactions[index].transaction_id
+	        };
+
+	        if($scope.arTransactionDetails.ar_transactions[index].paid){
+	        	// To pay API call
+	        	$scope.invokeApi(RVCompanyCardSrv.payForReservation, params, transactionSuccess ,failure);
+	    	}
+	    	else{
+	    		// To Open Api call
+	    		$scope.invokeApi(RVCompanyCardSrv.openForReservation, params, transactionSuccess ,failure);
+	    	}
+	    };
+
+		/*
 		 * function to execute on clicking on each result
 		 */
-		$scope.goToReservationDetails = function(reservationID, confirmationID) {
-			console.log("$scope.filterData.viewFromOutside"+$scope.filterData.viewFromOutside);
-			if($scope.filterData.viewFromOutside){
-				console.log(reservationID);
-				console.log(confirmationID);
+		$scope.goToReservationDetails = function(index, $event) {
+
+			var element = $event.target;
+
+			if(element.className =='switch-button' || element.className =='switch-button on' || element.parentNode.className =='switch-button' || element.parentNode.className =='switch-button on'){
+				$scope.toggleTransaction(index);
+			}
+			else if($scope.filterData.viewFromOutside){
+				$vault.set('cardId', $stateParams.id);
+				$vault.set('type', $stateParams.type);
+				$vault.set('query', $stateParams.query);
+
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
-					id: reservationID,
-					confirmationId: confirmationID,
-					isrefresh: true
+					id: $scope.arTransactionDetails.ar_transactions[index].reservation_id,
+					confirmationId: $scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no,
+					isrefresh: true,
+					isFromCards: true
 				});
 			}
-		}	
+		};
+
+		// clicked pay all button
+	    $scope.clickedPayAll = function(){
+
+	        var payAllSuccess = function(data) {
+	            $scope.$emit('hideLoader');
+	            $scope.errorMessage = '';
+	            //$scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
+	            //$scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
+	            fetchData();
+	        };
+
+	        var failure = function(errorMessage){
+	            $scope.$emit('hideLoader');
+	            $scope.errorMessage = errorMessage;
+	        };
+
+	        var params = {
+	            'id':$scope.filterData.id
+	        };
+	        $scope.invokeApi(RVCompanyCardSrv.payAll, params, payAllSuccess, failure);
+	    };
+
+	    // Show add credits amount popup
+		$scope.addCreditAmount = function(){
+			ngDialog.open({
+	      		template:'/assets/partials/companyCard/rvArTransactionsAddCredits.html',
+		        controller: 'RVArTransactionsAddCreditsController',
+		        className: '',
+		        scope: $scope
+	      	});
+		};
 
 	    init();
 
