@@ -251,7 +251,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
-		$scope.noRoutingToReservation = function(){
+		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
 			that.reloadStaycard();
 
@@ -649,7 +649,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			this.totalStayCost = 0;
 			var rateIdSet = [];
 			var self = this;
-			angular.forEach($scope.reservationData.rooms, function(room, index) {				
+			angular.forEach($scope.reservationData.rooms, function(room, index) {
 				room.stayDates = {};
 				rateIdSet.push(tData.rooms[index].rateId);
 				// amount: 32
@@ -679,6 +679,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {
 					room.rateName = data.name;
+					$scope.reservationData.demographics.market = !data.market_segment_id ? '' : data.market_segment_id;
+					$scope.reservationData.demographics.source = !data.source_id ? '' : data.source_id;
 					if (data.deposit_policy_id) {
 						$scope.reservationData.depositData = {};
 						$scope.reservationData.depositData.isDepositRequired = true;
