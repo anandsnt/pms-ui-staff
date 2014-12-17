@@ -27,6 +27,9 @@
             <div class="entry dates">
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-from" translate>FROM</label>
+                    <button  ng-click="$event.preventDefault(); clearFromDateField();" class="clear-query" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}">
+                        <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+                    </button>
                     <input ng-click="clickedFromDate()" name="ar-transaction-date-from" id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" readonly />
                     <button ng-click="clickedFromDate()" type="button" class="ui-datepicker-trigger"></button>
                 </div>
