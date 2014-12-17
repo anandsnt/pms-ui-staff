@@ -1,35 +1,39 @@
 sntRover.service('RVHkRoomStatusSrv', [
 	'$http',
 	'$q',
+	'rvBaseWebSrvV2',
 	'$window',
 	'BaseWebSrvV2',
 	'$rootScope',
-	function($http, $q, $window, BaseWebSrvV2, $rootScope) {
+	function($http, $q, RVBaseWebSrvV2, $window, BaseWebSrvV2, $rootScope) {
 
 		this.initFilters = function() {
 			return {
-				"dirty": false,
-				"pickup": false,
-				"clean": false,
-				"inspected": false,
-				"out_of_order": false,
-				"out_of_service": false,
-				"vacant": false,
-				"occupied": false,
-				"stayover": false,
-				"not_reserved": false,
-				"arrival": false,
-				"arrived": false,
-				"dueout": false,
-				"departed": false,
-				"dayuse": false,
-				"queued": false,
-				"floorFilterSingle": '',
-				"floorFilterStart": '',
-				"floorFilterEnd": '',
-				'showAllFloors': true,
-				'filterByWorkTypeId': '',
-				'filterByEmployeeName': ''
+				"dirty"                : false,
+				"pickup"               : false,
+				"clean"                : false,
+				"inspected"            : false,
+				"out_of_order"         : false,
+				"out_of_service"       : false,
+				"vacant"               : false,
+				"occupied"             : false,
+				"stayover"             : false,
+				"not_reserved"         : false,
+				"arrival"              : false,
+				"arrived"              : false,
+				"dueout"               : false,
+				"departed"             : false,
+				"dayuse"               : false,
+				"queued"               : false,
+				"floorFilterSingle"    : "",
+				"floorFilterStart"     : "",
+				"floorFilterEnd"       : "",
+				"showAllFloors"        : true,
+				"filterByWorkType"     : "",
+				"filterByEmployeeName" : "",
+				"query"                : "",
+				"page"                 : 1,
+				"perPage"              : $window.innerWidth < 599 ? 25 : 50
 			};
 		}
 
@@ -37,23 +41,103 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		var that = this;
 
-		this.cacheDirty = true;
+		var $_prepareParams = function(passedParams) {
+			var filter               = this.currentFilters,
+				reservation_status   = [],
+				front_office_status  = [],
+				house_keeping_status = [],
+				room_type_ids        = [],
+				floor_start          = false,
+				floor_end            = false,
+				params               = {
+					'date'     : passedParams.businessDate,
+					'page'     : filter.page,
+					'per_page' : filter.perPage
+				};
+
+			// if there is a search query, ignore all other filters. Reset page to 1
+			if ( filter.query ) {
+				params['query'] = filter.query;
+			} else {
+
+				// process the reservation status
+				if ( filter.vacant )   { reservation_status.push('VACANT'); };
+				if ( filter.occupied ) { reservation_status.push('OCCUPIED'); };
+				if ( filter.queued )   { reservation_status.push('QUEUED'); };
+
+				// process front office status
+				if ( filter.stayover )     { front_office_status.push('STAY_OVER'); };
+				if ( filter.not_reserved ) { front_office_status.push('NOT_RESERVED'); };
+				if ( filter.arrival )      { front_office_status.push('ARRIVAL'); };
+				if ( filter.arrived )      { front_office_status.push('ARRIVED'); };
+				if ( filter.dayuse )       { front_office_status.push('DAY_USE'); };
+				if ( filter.dueout )       { front_office_status.push('DUE_OUT'); };
+				if ( filter.departed )     { front_office_status.push('DEPARTED'); };
+
+				// process house keeping status
+				if ( filter.dirty )          { house_keeping_status.push('DIRTY'); };
+				if ( filter.clean )          { house_keeping_status.push('CLEAN'); };
+				if ( filter.inspected )      { house_keeping_status.push('INSPECTED'); };
+				if ( filter.pickup )         { house_keeping_status.push('PICKUP'); };
+				if ( filter.out_of_order )   { house_keeping_status.push('OO'); };
+				if ( filter.out_of_service ) { house_keeping_status.push('OS'); };
+
+				// fill request param
+				if ( reservation_status.length )     { params['reservation_status']   = reservation_status; };
+				if ( front_office_status.length )    { params['front_office_status']  = front_office_status; };
+				if ( house_keeping_status.length )   { params['house_keeping_status'] = house_keeping_status; };
+				if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
+				if ( floor_start )                   { params['floor_start']          = floor_start; };
+				if ( floor_end )                     { params['floor_end']            = floor_end; };
+
+				// process the floors
+				if ( !filter.showAllFloors ) {
+					floor_start = filter.floorFilterStart || filter.floorFilterSingle;
+					floor_end   = filter.floorFilterEnd || filter.floorFilterSingle;
+				};
+
+				// process room type ids
+				_.each(this.roomTypes, function(type) {
+					if (type.isSelected) { room_type_ids.push(type.id); };
+				});
+
+				// filter by worktype and employee
+				if ( filter.filterByEmployeeName ) {
+					params['assignee_id'] = filter.filterByEmployeeName;
+				};
+				if ( filter.filterByWorkType ) {
+					params['work_type_id'] = filter.filterByWorkType;
+				} else if (passedParams.work_type_id) {
+					params['work_type_id'] = passedParams.work_type_id;
+					filter.filterByWorkType = passedParams.work_type_id;
+				};
+			};
+
+			return params;
+		}.bind(this);
 
 		var roomList = {};
-		this.fetchRoomList = function(params) {
-			var deferred = $q.defer();
-			var url = '/house/search.json?date=' + params.businessDate;
+		this.fetchRoomListPost = function(passedParams) {
+			var deferred     = $q.defer(),
+				url          = '/house/search.json',
+				passedParams = passedParams,
+				params       = {},
+				work_type_id;
 
-			$http.get(url)
-				.success(function(response, status) {
-					if (response.status == "success") {
+			var _makeTheCall = function(workTypes) {
+				if ( !!workTypes ) {
+					work_type_id = workTypes[0]['id'];
+					_.extend( passedParams, {'work_type_id' : work_type_id} );
+				};
+
+				params = $_prepareParams(passedParams);
+
+				BaseWebSrvV2.postJSON(url, params)
+					.then(function(response) {
 						roomList = response.data;
 
 						for (var i = 0, j = roomList.rooms.length; i < j; i++) {
 							var room = roomList.rooms[i];
-
-							// lets set this so that we can avoid
-							room.display_room = true;
 
 							// reduce scope search
 							room.description = room.hk_status.description;
@@ -75,19 +159,18 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 							room.ooOsTitle = calculateOoOsTitle(room);
 						}
-
 						deferred.resolve(roomList);
-					}
-				}.bind(this))
-				.error(function(response, status) {
-					if (status == 401) {
-						// 401- Unauthorized
-						// so lets redirect to login page
-						$window.location.href = '/house/logout';
-					} else {
-						deferred.reject(response);
-					}
-				});
+					}.bind(this), function(data) {
+						deferred.reject(data);
+					});
+			};
+
+			if ( passedParams.isStandAlone ) {
+				this.fetchWorkTypes()
+					.then(_makeTheCall);
+			} else {
+				_makeTheCall();
+			}
 
 			return deferred.promise;
 		}

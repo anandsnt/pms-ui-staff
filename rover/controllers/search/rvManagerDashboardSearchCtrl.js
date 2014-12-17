@@ -19,6 +19,13 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
     };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
+    //Clear the from date and to date options from search box. 
+
+    //To clear date boxes when we come to dashboard through main menu
+    //timeout given because rvReservationSearchWidgetCtrl init happens after some time
+    setTimeout(function(){
+        $scope.$broadcast("clearSearchDateValues", false);
+    }, 500);
 
     /**
     * recieved event from search controller on focusedout.

@@ -58,7 +58,8 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
 			var dataToAdd = {
 				"room_number": updateData.room_number,
-                "room_type": that.getRoomTypeName(updateData.room_type_id)
+                "room_type": that.getRoomTypeName(updateData.room_type_id),
+                "room_id" : data.room_id
 			};
 			that.addToRoomsArray(dataToAdd);
 			

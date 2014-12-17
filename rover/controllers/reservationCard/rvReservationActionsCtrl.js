@@ -137,6 +137,7 @@ sntRover.controller('reservationActionsController', [
 		// the listner must be destroyed when no needed anymore
 		$scope.$on('$destroy', postchargeAdded);
 		$scope.creditCardTypes = [];
+		$scope.paymentTypes = [];
 	
 		var openDepositPopup = function(){
 			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN") && !$scope.reservationData.justCreatedRes){
@@ -148,7 +149,8 @@ sntRover.controller('reservationActionsController', [
 							 			"firstName":$scope.guestCardData.contactInfo.first_name,
 							 			"lastName":$scope.guestCardData.contactInfo.last_name,
 							 			"isDisplayReference":$scope.ifReferanceForCC,
-							 			"creditCardTypes":$scope.creditCardTypes
+							 			"creditCardTypes":$scope.creditCardTypes,
+							 			"paymentTypes":$scope.paymentTypes
 							 		}
 							};
 				$scope.passData = passData;
@@ -194,9 +196,8 @@ sntRover.controller('reservationActionsController', [
 
 		var fetcCreditCardTypes = function(cancellationCharge, nights){
 			var successCallback = function(data){
-				console.log("fetcCreditCardTypes");
-				console.log(data);
 				$scope.$emit('hideLoader');
+				$scope.paymentTypes = data;
 				data.forEach(function(item) {
 		          if(item.name === 'CC'){
 				     $scope.creditCardTypes = item.values;
@@ -204,22 +205,26 @@ sntRover.controller('reservationActionsController', [
 				});
 				$scope.fetchDepositDetails();
 			};
-			$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback)
+			$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
 		};
 
 		fetcCreditCardTypes();
 
 
 		var startCheckin = function() {
+			
+			
+			
 				var afterRoomUpdate = function() {
 					if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
-						if ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null) {
-								$scope.$emit('showLoader');
-								ngDialog.open({
-									template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
-									controller: 'RVValidateEmailPhoneCtrl',
-									scope: $scope
-								});
+							if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog == null) && ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null)) {
+									$scope.$emit('showLoader');
+									ngDialog.open({
+										template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+										controller: 'RVValidateEmailPhoneCtrl',
+										scope: $scope
+									});
+						
 						} else {
 							if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
 									//TO DO:Go to room assignemt view
@@ -364,7 +369,8 @@ sntRover.controller('reservationActionsController', [
 			 		"details":{
 			 			"firstName":$scope.guestCardData.contactInfo.first_name,
 			 			"lastName":$scope.guestCardData.contactInfo.last_name,
-			 			"creditCardTypes":$scope.creditCardTypes
+			 			"creditCardTypes":$scope.creditCardTypes,
+			 			"paymentTypes":$scope.paymentTypes
 			 		}
 			 };
 
@@ -394,7 +400,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 
-		var showDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
+		var showCancelReservationWithDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
 				controller: 'RVCancelReservationDepositController',
@@ -452,7 +458,7 @@ sntRover.controller('reservationActionsController', [
 						}
 
 						if(parseInt(depositAmount) > 0){
-							showDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
+							showCancelReservationWithDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
 						}
 						else{
 							promptCancel(cancellationCharge, nights, (data.results.penalty_type == 'percent'));
@@ -460,7 +466,7 @@ sntRover.controller('reservationActionsController', [
 					}
 					else{
 						if(parseInt(depositAmount) > 0){
-							showDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
+							showCancelReservationWithDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
 						}
 						else{
 							promptCancel('', nights, (data.results.penalty_type == 'percent'));
@@ -548,13 +554,12 @@ sntRover.controller('reservationActionsController', [
 		$scope.successCallBackFetchDepositBalance = function(data){
 
 			$scope.$emit('hideLoader');
-			// $scope.depositBalanceData = data;
 			$scope.depositBalanceData = data;
-			
 			$scope.passData = { 
 			    "details": {
 			    	"firstName": $scope.data.guest_details.first_name,
 			    	"lastName": $scope.data.guest_details.last_name,
+			    	"paymentTypes":$scope.paymentTypes
 			    }
 			};
 			ngDialog.open({

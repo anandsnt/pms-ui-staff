@@ -12,8 +12,6 @@
 
             <div class="entry-data has-datepicker">
                 <label for="dashboard-date-from">From</label>
-
-                
                 <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}"/>
                 <button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
             </div>
@@ -108,7 +106,7 @@
 	                            <span class="guest-status {{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
 	                            <time datetime="{arrival timestamp}">
 	                                <span>{{row.arrival_date| date : dateFormat}}</span>
-	                                <span>{{row.arrival_time}}</span>
+	                                <span>{{getTimeConverted(row.arrival_time)}}</span>
 	                            </time>
 	                        </div>
 
@@ -116,7 +114,7 @@
 	                            <span class="guest-status {{getGuestStatusIconForDeparture(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForDeparture(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
 	                            <time datetime="{departure timestamp}">
 	                                <span>{{row.departure_date| date : dateFormat}}</span>
-	                                <span>{{row.departure_time}}</span>
+	                                <span>{{getTimeConverted(row.departure_time)}}</span>
 	                            </time>
 	                        </div>
 	                    </div>

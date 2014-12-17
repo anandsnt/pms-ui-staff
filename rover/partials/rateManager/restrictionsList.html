@@ -9,7 +9,7 @@
 			<ul>
 				<li class="restriction-type"
 				ng-repeat="restrictionType in data.restrictionTypes"
-				ng-hide="restrictionType.isOnRate || restrictionType.hideOnHourly"
+				ng-hide="restrictionType.isOnRate || (restrictionType.hideOnHourly == true && data.isHourly) || (!data.isHourly && !data.id && restrictionType.hideOnHourly == true && data.isHourly != false)"
 					ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView)}"
 					style="cursor: pointer;">
 				<div class="restrictions-container" ng-click="toggleRestrictions(restrictionType.id, restrictionType.days,$index)">

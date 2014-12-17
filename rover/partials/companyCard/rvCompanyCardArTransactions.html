@@ -1,0 +1,139 @@
+<!-- Company Card Tab - AR Transactions -->
+<form method="post" action="{action}" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab transactions">
+    
+    <div class="tab-header">
+        <div class="search-form has-dates" ng-class="{'open':filterData.filterActive}"> <!-- Add class "open" when showing form -->
+            <div class="entry filter">
+                <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}"> <!-- Add class "active" when showing form -->
+                    <span class="icons icon-filter" ng-class="{'active':filterData.filterActive}"></span> <!-- Add class "active" when showing form -->
+                </button>
+            </div>
+            <div class="entry showing">
+                <div class="select">
+                    <select name="showing" id="showing" ng-model="filterData.showFilterFlag" ng-change="chagedShowFilter()">
+                        <option ng-selected="filterData.showFilterFlag=='ALL'" value="ALL">Show All Bills</option>
+                        <option ng-selected="filterData.showFilterFlag=='OPEN'" value="OPEN">Show Open Balance</option>
+                    </select>
+                </div>
+            </div> 
+            <div class="entry search">
+                <button ng-click="$event.preventDefault(); clearSearchField();"  ng-class="{'visible': escapeNull(filterData.textInQueryBox) !='' }" class="clear-query">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <button ng-click="queryEntered();$event.preventDefault();" name="submit" class="icons icon-search">Search</button>
+                <input ng-change="queryEntered()" ng-model="filterData.textInQueryBox" name="ar-transaction-query" id="ar--query" class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off" />
+            </div>
+            <div class="entry dates">
+                <div class="entry-data has-datepicker">
+                    <label for="ar-transaction-date-from">From</label>
+                    <input ng-click="clickedFromDate()" name="ar-transaction-date-from" id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" readonly />
+                    <button ng-click="clickedFromDate()" type="button" class="ui-datepicker-trigger"></button>
+                </div>
+                <div class="entry-data has-datepicker">
+                    <label for="ar-transaction-date-to">To</label>
+                    <button  ng-click="$event.preventDefault(); clearToDateField();" class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </button>
+                    <input  name="ar-transaction-date-to" id="ar-transaction-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" readonly />
+                    <button ng-click="clickedToDate()" type="button" class="ui-datepicker-trigger"></button>
+                </div>
+            </div>
+        </div>
+        <ul class="totals">
+            <li>
+                <div class="data">
+                    <span class="label">Open guest bills</span>
+                    <span class="value">{{arTransactionDetails.open_guest_bills}}</span>
+                </div>
+                <button type="button" class="button green">Pay All</button> <!-- Show only when open bills exsits -->
+            </li>
+            <li>
+                <div class="data">
+                    <span class="label">Amount received</span>
+                    <span class="value green">{{currencySymbol}}{{arTransactionDetails.available_credit}}</span>
+                    <!-- If $0:
+                    <span class="value red">${value}</span> -->
+                </div>
+                <button type="button" class="button purple with-icon only-icon">
+                    <span class="icons icon-pencil"></span>
+                </button>
+            </li>
+            <li>
+                <div class="data">
+                    <span class="label">Amount owed</span>
+                    <span class="value red">{{currencySymbol}}{{arTransactionDetails.amount_owing}}</span>
+                    <!-- If $0:
+                    <span class="value green">${value}</span> -->
+                </div>
+            </li>
+            <li>
+                <button type="button" class="button white purple-text" ng-hide="true">Past Payments</button>
+                <button type="button" class="button blue with-icon only-icon">
+                    <span class="icons icon-print"></span>
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- If there are open bills: -->
+    <div class="tab-details scrollable" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list">
+        <div class="wrapper">
+
+            <ul class="search-results">
+                <li class="reservation transaction" ng-click="goToReservationDetails(transaction.reservation_id, transaction.reservation_confirm_no)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
+                    <!-- Not using <a> here since 1) you don't use hrefs at all and 2) it'll interfere with the checkbox -->
+                    <div class="faux-anchor" class="guest-{reservation-status}"> <!-- see options in {dashboard/front-desk.html} -->
+
+                        <figure class="guest-image"><!-- add class "accompany" if it's a accompanying guest -->
+                            <img src="{{transaction.guest_image}}" alt="" />
+                            <!-- if it's accompanying guest, show this as well:
+                            <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
+                            <!-- if VIP guest: -->
+                            <span class="vip" ng-if="transaction.guest_is_vip">VIP</span>
+                        </figure>
+                        <div class="data">
+                            <h2><span>{{transaction.guest_first_name}}</span>, <span>{{transaction.guest_last_name}}</span></h2>
+                            <span class="confirmation">{{transaction.reservation_confirm_no}}</span>
+                            <div class="arrival">
+                                <span class="guest-status small-icon check-in">check-in</span>
+                                {{transaction.reservation_arrival_date| date : dateFormat}}
+                            </div>
+                            <div class="departure">
+                                <span class="guest-status small-icon check-out">check-out</span>
+                                {{transaction.reservation_dep_date| date : dateFormat}}
+                            </div>
+                        </div>
+                        <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
+                        <!--ng-click="transaction.paid = !transaction.paid; toggleTransaction()" -->
+                        <div class="switch-button" ng-class="{on: transaction.paid}"> <!-- add class "on" when checkbox checked -->
+                            <input value="" type="checkbox" />
+                            <label class="data-off">
+                                <span class="value">Open</span>
+                                <span class="switch-icon">Paid</span>
+                            </label>
+                            <label class="data-on">
+                                <span class="switch-icon">Open</span>
+                                <span class="value">Paid</span>
+                            </label>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+         </div>
+    </div>
+
+    <!-- When no open bills / all bills paid -->
+    <div class="tab-details no-content" ng-show="arTransactionDetails.ar_transactions.length == 0">
+        <div class="info">
+            <span class="icon-no-content icon-ok"></span>
+            <strong class="h1">No Transactions</strong>
+            <span class="h2">Outstanding Guest Bills paid</span>
+        </div>
+    </div>
+    <div class="search-pagination" ng-show="arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0">
+        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+        <p>Showing <strong>{{filterData.start}}-{{filterData.end}}</strong> of <strong id="total-count">{{arTransactionDetails.total_count}}</strong> items</p>
+    </div> 
+</form>

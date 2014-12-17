@@ -13,6 +13,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
 			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
+			$scope.cardData.cardType = swipedDataToRenderInScreen.cardType;
 			if(swipedDataToRenderInScreen.swipeFrom == "guestCard"){
 				$scope.showAddtoGuestCard = false;
 			} else {
@@ -51,8 +52,11 @@ sntRover.controller('RVCardOptionsCtrl',
 		
 		var time = new Date().getTime();
 		$scope.shouldShowAddNewCard = true;
-		var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
-		var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
+		if(typeof $scope.passData !==" undefined"){
+			var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
+			var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
+		};
+		
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
 		if($rootScope.paymentGateway == "sixpayments"){
 			$scope.shouldShowAddNewCard = false;
