@@ -573,7 +573,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						$scope.rooms.push( _roomCopy );
 					};
 
-					if ( _totalLen < _minCount ) {
+					if ( _totalLen <= _minCount ) {
 						_hideLoader();
 					};
 				},
@@ -632,7 +632,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		function $_callRoomsApi() {
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-				date : $rootScope.businessDate,
+				date : $rootScope.businessDate
 			}, $_fetchRoomListCallback);
 		};
 
