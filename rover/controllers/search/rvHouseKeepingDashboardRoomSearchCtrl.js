@@ -37,6 +37,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  	var $_roomList,
 	  		$_page = 1,
 	  		$_perPage = 50,
+	  		$_defaultPage = 0,
 	  		$_lastQuery = '';
 
 	  	// inital page related properties
@@ -49,196 +50,155 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 
 
-	  	function $_fetchRoomListCallback(data) {
-	  		if ( !!data ) {
-	  			$_roomList = data;
-	  		};
-
-	  		$scope.totalCount = $_roomList.total_count;
-
-	  		if ( $_page === 1 ) {
-	  			$scope.resultFrom = 1;
-	  			$scope.resultUpto = $scope.totalCount < $_perPage ? $scope.totalCount : $_perPage;
-	  			$scope.disablePrevBtn = true;
-	  			$scope.disableNextBtn = $scope.totalCount > $_perPage ? false : true;
-	  		} else {
-	  			$scope.resultFrom = $_perPage * ($_page - 1) + 1;
-	  			$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.totalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.totalCount;
-	  			$scope.disablePrevBtn = false;
-	  			$scope.disableNextBtn = $scope.resultUpto === $scope.totalCount ? true : false;
-	  		}
-
-	  		$timeout(function() {
-				$_postProcessRooms();
-			}, 10);
+	  function $_fetchRoomListCallback(data) {
+	  	if ( !!data ) {
+	  		$_roomList = data;
 	  	};
+
+	  	$scope.totalCount = $_roomList.total_count;
+
+	  	if ( $_page === 1 ) {
+	  		$scope.resultFrom = 1;
+	  		$scope.resultUpto = $scope.totalCount < $_perPage ? $scope.totalCount : $_perPage;
+	  		$scope.disablePrevBtn = true;
+	  		$scope.disableNextBtn = $scope.totalCount > $_perPage ? false : true;
+	  	} else {
+	  		$scope.resultFrom = $_perPage * ($_page - 1) + 1;
+	  		$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.totalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.totalCount;
+	  		$scope.disablePrevBtn = false;
+	  		$scope.disableNextBtn = $scope.resultUpto === $scope.totalCount ? true : false;
+	  	}
+
+	  	
+  		$timeout(function() {
+  			$_postProcessRooms();
+  		}, 10);
+
+	  	RVHkRoomStatusSrv.currentFilters.page = $_page;
+	  };
 
 
 
 
 	  	function $_postProcessRooms() {
-	  		var _roomCopy;
+			var _roomCopy     = {},
+				_totalLen     = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0,
+				_processCount = 0,
+				_minCount     = 13;
 
-	  		if (!!$_roomList && !!$_roomList.rooms && $_roomList.rooms.length) {
-	  			// empty all
-	  			$scope.rooms = [];
+			var _hideLoader = function() {
+					refreshScroller();
+					$scope.$emit( 'hideLoader' );
+				},
+				_firstInsert = function(count) {
+					for (var i = 0; i < count; i++) {
+						_roomCopy = angular.copy( $_roomList.rooms[i] );
+						$scope.rooms.push( _roomCopy );
+					};
 
-	  			// load first 13;
-	  			for (var i = 0; i < 13; i++) {
-	  				_roomCopy = angular.copy( $_roomList.rooms[i] );
-	  				$scope.rooms.push( _roomCopy );
-	  			};
+					if ( _totalLen < _minCount ) {
+						_hideLoader();
+					};
+				},
+				_secondInsert = function(startCount) {
+					for (var i = startCount; i < _totalLen; i++) {
+						_roomCopy = angular.copy( $_roomList.rooms[i] );
+						$scope.rooms.push( _roomCopy );
+					};
 
-	  			// load the rest after a small delay
-	  			$timeout(function() {
+					_hideLoader();
+				};
 
-	  				// load the rest
-	  				for (var i = 13, j = $_roomList.rooms.length; i < j; i++) {
-	  					_roomCopy = angular.copy( $_roomList.rooms[i] );
-	  					$scope.rooms.push( _roomCopy );
-	  				};
+			$scope.rooms = [];
 
-	  				refreshScroller();
+			if ( _totalLen ) {
+				_processCount = Math.min(_totalLen, _minCount);
 
-	  				$scope.$emit('hideLoader');
-	  			}, 150);
-	  		} else {
-	  			console.log('oops no rooms');
-	  			$scope.$emit('hideLoader');
-	  		}
-	  	};
+				// load first 13 a small delay (necessary) - for filters to work properly
+				$timeout(_firstInsert.bind(null, _processCount), 10);
+
+				// load the rest after a small delay - DOM can process it all
+				if ( _totalLen > _minCount ) {
+					$timeout(_secondInsert.bind(null, _processCount), 30);
+				};
+			} else {
+				_hideLoader();
+			}
+		};
 
 
 
 
 
 	  	$scope.loadNextPage = function() {
-	  		if ($scope.disableNextBtn) {
-	  			return;
-	  		};
+			if ( $scope.disableNextBtn ) {
+				return;
+			};
 
-	  		$_page++;
-	  		$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
-	  			key: !!$scope.query ? $scope.query : '',
-	  			businessDate: $rootScope.businessDate,
-	  			page: $_page,
-	  			perPage: $_perPage
-	  		}, $_fetchRoomListCallback);
-	  	};
+			$_page++;
+			RVHkRoomStatusSrv.currentFilters.page = $_page;
+
+			$_callRoomsApi();
+		};
 
 	  	$scope.loadPrevPage = function() {
-	  		if ($scope.disablePrevBtn) {
-	  			return;
-	  		};
+			if ($scope.disablePrevBtn) {
+				return;
+			};
 
-	  		$_page--;
-	  		$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
-	  			key: !!$scope.query ? $scope.query : '',
-	  			businessDate: $rootScope.businessDate,
-	  			page: $_page,
-	  			perPage: $_perPage
-	  		}, $_fetchRoomListCallback);
-	  	};
+			$_page--;
+			RVHkRoomStatusSrv.currentFilters.page = $_page;
 
-
-
-
-
-	  	//Fetch the roomlist if necessary
-		var fetchRooms = function() {
-			if ( $scope.rooms && $scope.rooms.length == 0 ) {
-				$scope.$emit('showLoader');
-
-				RVHkRoomStatusSrv.fetchRoomList({
-					key: $scope.query,
-					businessDate: $rootScope.businessDate,
-					page: $_page,
-					perPage: $_perPage
-				}).then(function(data) {
-					$_fetchRoomListCallback(data);
-				}, function() {
-					$scope.$emit('hideLoader');
-				});
-			}
+			$_callRoomsApi();
 		};
-		fetchRooms();
 
 
 
 
 
-		$scope.filterByQuery = function() {
-			var unMatched = 0,
-				len = 0,
-				i = 0,
-				timer = null,
-				delayedRequest = function() {
-					if ( !!timer ) {
-						$timeout.cancel(timer);
-						timer = null;
-					}
+		function $_callRoomsApi() {
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
+				businessDate : $rootScope.businessDate,
+			}, $_fetchRoomListCallback);
+		};
 
-					if ( $scope.query !== $_lastQuery ) {
+
+
+
+
+
+		var $_filterByQuery = function(forced) {
+			var _makeCall = function() {
+					RVHkRoomStatusSrv.currentFilters.query = $scope.query;
+
+					$_resetPageCounts();
+
+					$timeout(function() {
+						$_callRoomsApi();
 						$_lastQuery = $scope.query;
-
-						$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
-							key: $scope.query,
-							businessDate: $rootScope.businessDate,
-							page: $_page,
-							perPage: $_perPage
-						}, $_fetchRoomListCallback);
-					};
+					}, 10);
 				};
 
-			refreshScroller();
-			for (len = $scope.rooms.length; i < len; i++) {
-				var room = $scope.rooms[i]
-				var roomNo = room.room_no.toUpperCase();
-
-				// user cleared search
-				if (!$scope.query) {
-					$_postProcessRooms();
-					break;
-					return;
+			if ( $rootScope.isSingleDigitSearch ) {
+				if (forced || $scope.query != $_lastQuery) {
+					_makeCall();
 				};
-
-				// show all rooms
-				room.display_room = true;
-
-				if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
-					room.display_room = true;
-
-					unMatched--;
-				} else {
-					room.display_room = false;
-
-					unMatched++;
-
-					if ( unMatched === len ) {
-						$_page = 1;
-
-						// search in server
-						if ( !!timer ) {
-							$timeout.cancel(timer);
-							timer = null;
-							timer = $timeout(delayedRequest, 1000);
-						} else {
-							timer = $timeout(delayedRequest, 1000);
-						};
-					};
+			} else {
+				if ( forced ||
+						($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
+						($scope.query.length > 2 && $scope.query != $_lastQuery)
+				) {
+					_makeCall();
 				};
 			};
 		};
 
+		$scope.filterByQuery = _.throttle($_filterByQuery, 1000, { leading: false });
 
-
-
-	   	/**
-	   	* function to execute on clicking clear icon button
-	   	*/
-	    $scope.clearResults = function(){
-		  	$scope.query = "";
-		  	$scope.$emit("showDashboardArea", true);
+		$scope.clearResults = function() {
+			$scope.query = '';
+			$scope.rooms = [];
+			$scope.$emit("showDashboardArea", true);
 		  	 //we are setting the header accrdoing to house keeping dashboard
    			$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');
 		  	$scope.showSearchResultsArea = false;
@@ -247,7 +207,14 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		  		clearTimeout($scope.queryFunctionProccessing);
 		  		$scope.queryFunctionProccessing = null;
 		  	}
-	  	};
+		};
+
+		function $_resetPageCounts () {
+			$_page = $_defaultPage;
+			RVHkRoomStatusSrv.currentFilters.page = $_page;
+		};
+
+
 
 		/**
 		* when focused on query box, we need to show the search results area
@@ -268,6 +235,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			$timeout(function() {
 				if(!$scope.isSearchResultsShowing && $scope.query.length ===0){
 					$scope.query = "";
+					$scope.rooms = [];
 					$scope.showSearchResultsArea = false;
 					$scope.$emit("showDashboardArea", true);
 					$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');	
