@@ -525,20 +525,33 @@ sntRover
 			});
 	    }.bind($scope.gridProps);
 
+
+	    var openEditConfirmationPopup = function() {
+			ngDialog.open({
+				template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
+				controller: 'RVDiaryRoomTransferConfirmationCtrl',
+				scope: $scope
+			});	    	
+	    };
+
+
 	    $scope.editSave = function() {
 	    	var props 			= $scope.gridProps,
 	    		row_data 		= props.currentResizeItemRow, //util.copyRoom(props.currentResizeItemRow),
 	    		row_item_data 	= props.currentResizeItem, //util.copyReservation(props.currentResizeItem),
 	    		px_per_ms 		= props.display.px_per_ms,
-	    		x_origin 		= props.display.x_n;
+	    		x_origin 		= props.display.x_n,
+	    		originalRow     = props.edit.originalRowItem,
+	    		originalOccupancy = props.edit.originalItem;
+
 
 	    	//row_item_data[meta.occupancy.start_date] = row_item_data.left / px_per_ms + x_origin;
 	    	//row_item_data[meta.occupancy.end_date] 	 = row_item_data.right / px_per_ms + x_origin; 
 
 	    	$scope.roomXfer = {
 	    		current: {
-		    		room:  props.edit.originalRowItem,
-		    		occupancy: props.edit.originalItem
+		    		room:  originalRow,
+		    		occupancy: originalOccupancy
 		    	},
 		    	next: {
 		    		room:  row_data,
@@ -547,14 +560,30 @@ sntRover
 	    	};
 	    	$scope.price = $scope.roomXfer.next.room.new_price - $scope.roomXfer.current.room.old_price;
 	    	if($scope.price != 0) {
-				ngDialog.open({
-					template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
-					controller: 'RVDiaryRoomTransferConfirmationCtrl',
-					scope: $scope
-				});	    	
+				openEditConfirmationPopup();
 			}
 			else{
-				$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);
+				// please refer this (CICO-11782)
+				// https://stayntouch.atlassian.net/secure/attachment/19602/From%20Edit%20Mode%20To.pdf
+				if(originalRow.room_type_id === row_data.room_type_id) {
+					if ((originalOccupancy.arrival !== row_item_data.arrival) || 
+						(originalOccupancy.departure !== row_item_data.departure)) {
+						
+						$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);		
+					}
+					else{
+						if(originalRow.id !== row_data.id) {
+							saveReservation(row_item_data, row_data);
+						}
+						else {
+							$scope.resetEdit();
+							$scope.renderGrid();
+
+						}
+					}
+				}
+				
+				
 			}
 	    };
 
@@ -1099,35 +1128,10 @@ sntRover
     	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
     };
 
-
-
-	$scope.dateTransfer = function() {
-		var props = $scope.gridProps,
-			filter 	= props.filter,
-			arrival_ms = filter.arrival_date.getTime(),
-			time_set; 
-
-		if(newValue !== oldValue) {	
-            time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
-
-            $scope.gridProps.display = util.deepCopy(time_set.display);
-
-			$scope.renderGrid();
-
-			if($scope.gridProps.edit.active || $scope.gridProps.edit.passive) {
-				$scope.Availability();
-			}
-
-			rvDiarySrv.Occupancy(time_set.toStartDate(), time_set.toEndDate())				
-			.then(function(data) {
-
-				//$scope.gridProps.filter = _.extend({}, $scope.gridProps.filter);
-				//$scope.gridProps.filter.arrival_time = $scope.gridProps.filter.arrival_times[0];
-				
-				$scope.renderGrid();
-			}, responseError);	
-		}
+	var saveReservation = function(reservation, roomDetails){
+		
 	};
+
 	
 	$scope.clickedOnArrivalTime = function(){
 		$scope.gridProps.availability.resize.current_arrival_time = null;
