@@ -846,7 +846,7 @@ sntRover
 	*/
 
    	$scope.clearAvailability = function() {   		   		
-		var rooms = $scope.data,
+		var rooms = $scope.gridProps.data,
 			room,
             m_status = meta.occupancy.status,
             id = meta.occupancy.id,
@@ -1053,7 +1053,6 @@ sntRover
 			filter = props.filter,
 			arrival_ms = filter.arrival_date.getTime(),
 			time_set;
-	
 		if(newValue !== oldValue) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
 
@@ -1087,7 +1086,10 @@ sntRover
 			};
 
 			// change date to triggeer a change
-			$scope.gridProps.filter.arrival_date = new tzIndependentDate( $rootScope.businessDate );
+			var x = new Date( $rootScope.businessDate );
+			x.setHours(0);
+			x.setMinutes(0);
+			$scope.gridProps.filter.arrival_date = x;
     	};
 
     	$scope.clearAvailability();
