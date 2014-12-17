@@ -840,7 +840,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.properDateTimeCreation = function() {                    
                     var data       = $vault.get('searchReservationData'),
                         start_date = new tzIndependentDate($rootScope.businessDate);
-
+                    console.log('am in properDateTimeCreation');
                     if(data) {
                         data = JSON.parse(data);
                         start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
