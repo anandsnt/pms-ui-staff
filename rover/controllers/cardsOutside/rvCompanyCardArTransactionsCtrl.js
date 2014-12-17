@@ -18,7 +18,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'id': $scope.contactInformation == undefined? "" :$scope.contactInformation.id,
 			'filterActive': false,
 			'showFilterFlag': 'OPEN',
-			'fromDate': $rootScope.businessDate,
+			'fromDate': '',
 			'toDate': '',
 			'textInQueryBox':'',
 			'isShowPaid': '',
@@ -214,6 +214,11 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		$scope.clearToDateField = function(){
 			$scope.filterData.toDate = '';
+			initPaginationParams();
+			fetchData();
+		};
+		$scope.clearFromDateField = function(){
+			$scope.filterData.fromDate = '';
 			initPaginationParams();
 			fetchData();
 		};
