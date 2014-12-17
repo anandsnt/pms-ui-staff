@@ -83,7 +83,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		};
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
-		params.room_no = parseInt($scope.upgradesList[index].upgrade_room_number, 10);
+		params.room_no = $scope.upgradesList[index].upgrade_room_number;
 		params.upsell_amount_id = parseInt($scope.upgradesList[index].upsell_amount_id, 10);
 		$scope.selectedUpgrade.room_id = $scope.upgradesList[index].room_id;
 		$scope.selectedUpgrade.room_no = $scope.upgradesList[index].upgrade_room_number;
