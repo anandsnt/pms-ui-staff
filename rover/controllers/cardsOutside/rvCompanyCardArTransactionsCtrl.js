@@ -6,7 +6,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.errorMessage = '';
 		
 		var init = function(){
-			console.log("init transactions");
 			$scope.arTransactionDetails = {};
 			$scope.arTransactionDetails.ar_transactions = [];
 
@@ -143,14 +142,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	    // To handle from date change
 	    $scope.$on('fromDateChanged',function(){
-	    	console.log("from date changed");
 	    	initPaginationParams();
 	        fetchData();
 	    });
 
 		// To handle to date change
 	    $scope.$on('toDateChanged',function(){
-	    	console.log("to date changed");
 	    	initPaginationParams();
 	        fetchData();
 	    });
