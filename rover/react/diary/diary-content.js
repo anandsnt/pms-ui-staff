@@ -131,7 +131,7 @@ var DiaryContent = React.createClass({
 		    state.angular_evt.onScrollEnd(Math.abs(state.iscroll.grid.x) / state.display.px_per_ms + reset.x_n);
 		};
 
-		!!reset && setTimeout( initScroll, 1000 );
+		!!reset && setTimeout( initScroll, 500 );
 	},
 	componentDidMount: function() {		
 		var self = this,

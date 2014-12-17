@@ -62,7 +62,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         }
 		$scope.isAddPayment = true;
         $scope.$broadcast('showaddpayment');
-	}	
+	};
     /**
     * Listener to track the ngDialog open event.
     * We save the id for the ngDialog to close nested dialog for disabling manual payment addition.

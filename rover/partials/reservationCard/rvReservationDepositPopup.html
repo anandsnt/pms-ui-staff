@@ -80,8 +80,13 @@
                     <li ng-show="authorizedCode !==''">
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
-                    <li>
-                        Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}}</span>
+                    <li ng-if="isShowFees()">
+                        Amount paid: <span class="value"> {{currencySymbol}}{{reservationData.depositAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        </span> 
+                    </li>
+                    <li ng-if="!isShowFees()">
+                        Amount paid: <span class="value"> {{currencySymbol}}{{reservationData.depositAmount}}
+                        </span> 
                     </li>
                 </ul>
             </div> 

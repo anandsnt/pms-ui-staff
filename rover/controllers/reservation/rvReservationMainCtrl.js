@@ -59,6 +59,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             // intialize reservation object
             $scope.reservationData = {
                 isHourly: false,
+                isValidDeposit : false,
                 arrivalDate: '',
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
@@ -1632,6 +1633,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var postData = $scope.computeReservationDataforUpdate(true, true);
                 var saveSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.reservations[0].deposit_amount;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
                         angular.forEach(data.reservations, function(reservation, key) {
                             angular.forEach($scope.reservationData.rooms, function(room, key) {
@@ -1705,6 +1707,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var updateSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.deposit_amount;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
                     $scope.$broadcast('UPDATEFEE');
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
