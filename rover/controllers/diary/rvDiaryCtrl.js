@@ -18,6 +18,7 @@ sntRover
 		'$stateParams',
 		'RVReservationBaseSearchSrv',
 		'$timeout',
+		'RVReservationSummarySrv',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -32,7 +33,7 @@ sntRover
 			 util, 
 			 payload,
 			 propertyTime,
-			 $vault, $stateParams, RVReservationBaseSearchSrv, $timeout) {
+			 $vault, $stateParams, RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv) {
 
 	$scope.$emit('showLoader');
 
@@ -339,7 +340,6 @@ sntRover
 		}
 	};
 
-
 	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
 			  	
 		/*--------------------------------------------------*/
@@ -627,7 +627,13 @@ sntRover
 		};
 
 	    var successCallBackOfResizeExistingReservation = function(data, successParams){
-	    	var avData = data.availability;
+	    	var avData = data.availability,
+	    		props  = $scope.gridProps;
+	    	/*if(avData.is_available){
+	    		util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);	
+	    		$scope.renderGrid();
+	    		return;
+	    	}*/
 	    	if(avData.new_rate_amount == null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
 	    	}	    	
@@ -982,9 +988,7 @@ sntRover
 			time_span 	= Time({ hours: this.display.min_hours }), 
 			start_date 	= new Date(this.display.x_n),
 			getIndex    = filter.arrival_times.indexOf(filter.arrival_time),
-			// correction  = getIndex % 4 != 0 ? 900000 : 0,
-			correction  = 0,
-			start_time 	= new Date((getIndex * 900000) - correction + start_date.getTime()).toComponents().time,
+			start_time 	= new Date((getIndex * 900000) + start_date.getTime()).toComponents().time,
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
@@ -1049,7 +1053,7 @@ sntRover
 		}
 	});
 
-	var callDiaryAPIsAgainstNewDate = function(start_date, end_date){
+	var callDiaryAPIsAgainstNewDate = function(start_date, end_date, arrival_time){
 		$scope.$emit('showLoader');
 		$scope.errorMessage = '';
 		rvDiarySrv.callOccupancyAndAvailabilityCount(start_date, end_date)
@@ -1066,7 +1070,7 @@ sntRover
 				$_resetObj.callback();
 			} else {
 				$scope.gridProps.filter.rate_type = "Standard";
-				$scope.gridProps.filter.arrival_time = "00:00";
+				$scope.gridProps.filter.arrival_time = arrival_time ? arrival_time: "00:00";
 				$scope.gridProps.filter.room_type = "";
 				number_of_items_resetted = 0;
 				$scope.clearAvailability();
@@ -1128,8 +1132,45 @@ sntRover
     	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
     };
 
+    var formReservationParams = function(reservation, roomDetails) {
+    	var arrDate 	= roomDetails.arrivalDate,
+    		depDate   	= roomDetails.departureDate,
+    		arrTime 	= roomDetails.arrivalTime.split(":"),
+    		depTime 	= roomDetails.departureTime.split(":");
+
+
+    		arrTime 	= getTimeFormated(arrTime[0], arrTime[1]),
+    		depTime 	= getTimeFormated(depTime[0], depTime[1])
+    	
+    	return {
+    		'room_id'		: [roomDetails.id],
+    		'arrival_date'	: arrDate,
+    		'arrival_time'	: arrTime,
+    		'departure_date': depDate,
+    		'departure_time': depTime,
+    		'reservationId' : reservation.reservation_id,
+    	}
+    }
+
 	var saveReservation = function(reservation, roomDetails){
-		
+		var params = formReservationParams(reservation, roomDetails)
+		var options = {
+    		params: 			params,
+    		successCallBack: 	successCallBackOfSaveReservation,	 
+    		failureCallBack: 	failureCallBackOfSaveReservation,      		
+	    }
+	    $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
+	};
+
+	var successCallBackOfSaveReservation = function(data){		
+		//$scope.gridProps.filter.arrival_date = new Date($scope.gridProps.filter.arrival_date);
+		$scope.clearAvailability();
+		$scope.resetEdit();
+		$scope.renderGrid();		
+	};
+
+	var failureCallBackOfSaveReservation = function(errorMessage){
+		$scope.errorMessage = errorMessage;		
 	};
 
 	
