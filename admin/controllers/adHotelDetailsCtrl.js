@@ -40,7 +40,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			var fetchSuccess = function(data){
 				$scope.data = data.data;
 				$scope.data.brands = [];
-				$scope.data.is_external_references_import_on = "false";
+				$scope.data.is_external_references_import_on = false;
 				$scope.data.external_references_import_freq = "";
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
