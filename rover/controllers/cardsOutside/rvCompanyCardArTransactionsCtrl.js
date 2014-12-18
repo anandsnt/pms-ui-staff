@@ -332,6 +332,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	      	});
 		};
 
+		$scope.getTimeConverted = function(time){
+			if(time == null || time == undefined){
+				return "";
+			}
+			var timeDict = tConvert(time);
+			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
+		};
+
 	    init();
 
 }]);
