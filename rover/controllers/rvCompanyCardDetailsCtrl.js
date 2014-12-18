@@ -3,6 +3,8 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id == "add") ? true : false;
+
+
 		$scope.isDiscard = false;
 		$scope.isPromptOpened = false;
 		//setting the heading of the screen
@@ -23,11 +25,11 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		 * @param{string} is the value of that tab
 		 */
 		$scope.switchTabTo = function($event, tabToSwitch) {
-			if($event !== undefined && $event !== ""){
+			if ($event !== undefined && $event !== "") {
 				$event.stopPropagation();
-				$event.stopImmediatePropagation();	
+				$event.stopImmediatePropagation();
 			}
-			
+
 			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 
 				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
@@ -60,24 +62,25 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		};
 		//CICO-11664 
 		//To default the AR transactions tab while navigating back from staycard
-		if($stateParams.isBackFromStaycard){
+		if ($stateParams.isBackFromStaycard) {
 			//timeout added to wait untill the tab initalization and data initialization is complete
-			$timeout(function(){
+			$timeout(function() {
 				$scope.currentSelectedTab = 'cc-ar-transactions';
 				$scope.switchTabTo('', 'cc-ar-transactions');
 				$scope.$apply();
 			}, 3000);
 		}
-		
+
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
 		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
-		$scope.headerBackButtonClicked = function(){
-	        $state.go(
-	        	"rover.companycardsearch",
-	        	{ "textInQueryBox": $stateParams.query }
-	        );
-	   	};
+		$scope.headerBackButtonClicked = function() {
+			$state.go(
+				"rover.companycardsearch", {
+					"textInQueryBox": $stateParams.query
+				}
+			);
+		};
 		$scope.isContactInformationSaved = false;
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
@@ -88,8 +91,6 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 			$scope.account_type = $stateParams.type;
 		}
-
-
 
 
 
@@ -237,9 +238,9 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		//we assumes that id will be equal to "add" in case for add, other for edit
 		if (typeof id !== "undefined" && id === "add") {
 			$scope.contactInformation = {};
-			if (typeof $stateParams.firstname !== "undefined" && $stateParams.firstname !== "") {
+			if (typeof $stateParams.query !== "undefined" && $stateParams.query !== "") {
 				$scope.contactInformation.account_details = {};
-				$scope.contactInformation.account_details.account_name = $stateParams.firstname;
+				$scope.contactInformation.account_details.account_name = $stateParams.query;
 			}
 
 			//setting as null dictionary, will help us in saving..
@@ -290,7 +291,9 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.isAddNewCard = false;
 			$scope.errorMessage = "";
 			$scope.$broadcast("clearCardContactErrorMessage");
-			$scope.$broadcast("IDGENERATED",{ 'id': data.id });
+			$scope.$broadcast("IDGENERATED", {
+				'id': data.id
+			});
 		};
 
 		/**
@@ -366,7 +369,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 				// On discarded - prevent save call
 			} else {
 				//CICO-11664 to handle the back navigation from staycard.
-				if(!$stateParams.isBackFromStaycard){
+				if (!$stateParams.isBackFromStaycard) {
 					saveContactInformation($scope.contactInformation);
 				}
 			}
@@ -385,7 +388,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		$scope.clikedDiscardCard = function() {
 			$scope.isDiscard = true;
 			$state.go('rover.companycardsearch', {
-				'textInQueryBox': $stateParams.firstname
+				'textInQueryBox': $stateParams.query
 			});
 			$scope.isAddNewCard = false;
 			ngDialog.close();
