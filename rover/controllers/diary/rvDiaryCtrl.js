@@ -1090,6 +1090,7 @@ sntRover
 			};
 
 			$scope.gridProps.filter.arrival_date = today;
+			$scope.gridProps.display.min_hours = 4;
 	    	$scope.gridProps.edit.reset_scroll = {
 	    		'x_n'      : today,
 	    		'x_origin' : $_resetObj.start_date

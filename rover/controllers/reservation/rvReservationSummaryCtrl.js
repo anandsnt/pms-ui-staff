@@ -292,6 +292,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.payDeposit = function() {
 			var onPaymentSuccess = function(data) {
 					console.log(data);
+					//On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
+					if($scope.reservationData.paymentType.type.value === "CC"){
+						$scope.isNewCardAdded = true;
+					} else {
+						$scope.isNewCardAdded = false;
+					}
 					$scope.depositData.attempted = true;
 					$scope.depositData.depositSuccess = true;
 					$scope.depositData.authorizationCode = data.authorization_code;
