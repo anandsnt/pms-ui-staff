@@ -177,13 +177,14 @@ sntRover.controller('reservationActionsController', [
 		/* Entering staycard we check if any deposit is left else noraml checkin 
 		/*
 		/**************************************************************************/
-
+		$scope.depositDetails.isFromCheckin = false;
 		var fetchDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
 
 			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone){
 				if(!$scope.depositPopupData.isShown){
+					$scope.depositDetails.isFromCheckin = false;
 					openDepositPopup();
 					$scope.depositPopupData.isShown = true;
 				};				
@@ -286,6 +287,10 @@ sntRover.controller('reservationActionsController', [
 			}
 		};
 
+		$scope.$on("PROCEED_CHECKIN",function(){
+			startCheckin();
+		});
+
 		/**************************************************************************/
 		/* Before checking in we check if any deposit is left else noraml checkin 
 		/*
@@ -293,6 +298,7 @@ sntRover.controller('reservationActionsController', [
 		var checkinDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
+			$scope.depositDetails.isFromCheckin = true;
 			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
 		};
 

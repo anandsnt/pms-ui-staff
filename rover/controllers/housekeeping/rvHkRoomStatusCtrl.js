@@ -82,7 +82,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_perPage         = $scope.currentFilters.perPage,
 			$_defaultPage     = 1,
 			$_defaultPerPage  = $window.innerWidth < 599 ? 25 : 50,
-			$_oldFilterValues = {};
+			$_oldFilterValues = angular.copy( $scope.currentFilters );
 
 		var $_roomsEl         = document.getElementById( 'rooms' ),
 			$_filterRoomsEl   = document.getElementById( 'filter-rooms' );
@@ -108,6 +108,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
+		$_oldRoomTypes            = angular.copy( $scope.roomTypes );
 
 		$scope.assignRoom = {};
 
@@ -157,31 +158,55 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.filterDoneButtonPressed = function() {
-			var _hasFilterChanged = _.find(RVHkRoomStatusSrv.currentFilters, function(value, key) {
-				return $_oldFilterValues[key] != value;
-			});
+			var _hasFilterChanged   = false,
+				_hasRoomTypeChanged = false;
 
 			var _makeCall = function() {
 				$scope.filterOpen = false;
 				$scope.$emit( 'showLoader' );
 
-				RVHkRoomStatusSrv.currentFilters = angular.copy($scope.currentFilters);
-				RVHkRoomStatusSrv.roomTypes = angular.copy($scope.roomTypes);
+				$_resetPageCounts();
 
-				// copy new filter settings
-				$_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
+				RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
+				$_oldFilterValues                = angular.copy( $scope.currentFilters );
+
+				RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
+				$_oldRoomTypes              = angular.copy( $scope.roomTypes );
 
 				$timeout(function() {
 					$_callRoomsApi();
 				}, 100);
 			};
 
-			// reset page details if filter changes
-			if ( _hasFilterChanged ) {
-				$_resetPageCounts();
+			// if other than page number any other filter has changed
+			for (key in $_oldFilterValues) {
+				if ( $_oldFilterValues.hasOwnProperty(key) ) {
+					if ( key == 'page' ) {
+						continue;
+					} else if ( $_oldFilterValues[key] != $scope.currentFilters[key] ) {
+						_hasFilterChanged = true;
+						break;
+					};
+				};
 			};
 
-			_makeCall();
+			// if any room types has changed
+			if ( _.size($scope.roomTypes) ) {
+				for (key in $_oldRoomTypes) {
+					if ( $_oldRoomTypes.hasOwnProperty(key) ) {
+						if ( $_oldRoomTypes[key]['isSelected'] != $scope.roomTypes[key]['isSelected'] ) {
+							_hasRoomTypeChanged = true;
+							break;
+						};
+					};
+				};
+			};
+
+			if ( _hasFilterChanged || _hasRoomTypeChanged ) {
+				$timeout(_makeCall, 10);
+			} else {
+				$scope.filterOpen = false;
+			};
 		};
 
 		// when user changes the employee filter
@@ -250,16 +275,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.clearFilters = function() {
-			_.each($scope.currentFilters, function(value, key, list) {
-				list[key] = false;
-			});
+			_.each($scope.roomTypes, function(type) { type.isSelected = false; });
+			RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
 
-			angular.forEach($scope.roomTypes, function(roomType, id) {
-				roomType.isSelected = false;
-			});
-
-			// this is the default state
-			$scope.currentFilters['showAllFloors'] = true;
+			$scope.currentFilters            = RVHkRoomStatusSrv.initFilters();
+			RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
 
 			$_refreshScroll();
 		};
@@ -537,24 +557,28 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var _roomCopy     = {},
 				_totalLen     = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0,
 				_processCount = 0,
-				_minCount     = 13;
+				_minCount     = 13,
+				i             = 0;
 
 			var _hideLoader = function() {
+					$_roomList = {};
 					$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
 					$scope.$emit( 'hideLoader' );
 				},
 				_firstInsert = function(count) {
-					for (var i = 0; i < count; i++) {
+					$scope.rooms = [];
+
+					for (i = 0; i < count; i++) {
 						_roomCopy = angular.copy( $_roomList.rooms[i] );
 						$scope.rooms.push( _roomCopy );
 					};
 
-					if ( _totalLen < _minCount ) {
+					if ( _totalLen <= _minCount ) {
 						_hideLoader();
 					};
 				},
 				_secondInsert = function(startCount) {
-					for (var i = startCount; i < _totalLen; i++) {
+					for (i = startCount; i < _totalLen; i++) {
 						_roomCopy = angular.copy( $_roomList.rooms[i] );
 						$scope.rooms.push( _roomCopy );
 					};
@@ -562,17 +586,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					_hideLoader();
 				};
 
-			$scope.rooms = [];
-
 			if ( _totalLen ) {
 				_processCount = Math.min(_totalLen, _minCount);
 
-				// load first 13 a small delay (necessary) - for filters to work properly
-				$timeout(_firstInsert.bind(null, _processCount), 10);
+				// load first 13 a small delay
+				$timeout(_firstInsert.bind(null, _processCount), 100);
 
 				// load the rest after a small delay - DOM can process it all
 				if ( _totalLen > _minCount ) {
-					$timeout(_secondInsert.bind(null, _processCount), 30);
+					$timeout(_secondInsert.bind(null, _processCount), 300);
 				};
 			} else {
 				_hideLoader();
@@ -610,7 +632,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		function $_callRoomsApi() {
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-				businessDate : $rootScope.businessDate,
+				date : $rootScope.businessDate
 			}, $_fetchRoomListCallback);
 		};
 
@@ -707,14 +729,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			var callPulldownAction = function() {
-				if ( !$scope.disablePrevBtn ) {
-					$scope.loadPrevPage();
+				if ( $scope.disablePrevBtn ) {
+					$_resetPageCounts();
+					$_callRoomsApi();
 				} else {
-					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-						businessDate: $rootScope.businessDate,
-						page: $_page,
-						perPage: $_perPage
-					}, $_fetchRoomListCallback);
+					$scope.loadPrevPage();
 				};
 			};
 
@@ -722,21 +741,49 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$scope.loadNextPage();
 			};
 
+			var genTranslate = function(x, y, z) {
+				var x = (x || 0) + 'px',
+					y = (y || 0) + 'px',
+					z = (z || 0) + 'px';
+
+				return 'translate3d(' + x + ', ' + y + ', ' + z + ')';
+			};
+
+			var hideNremove = function() {
+
+			};
+
 			// set of excutions to be executed when
 			// the user is swiping across the screen
 			var touchMoveHandler = function(e) {
 				e.stopPropagation();
-				var touch = e.touches ? e.touches[0] : e,
-					diff = 0,
-					translateDiff = '',
-					commonEx = function() {
-						pulling = true;
-						e.preventDefault();
-						diff = (nowY - startY);
-						translateDiff = 'translate3d(0, ' + diff + 'px, 0)';
-						$rooms.style.WebkitTransition = '';
-						$rooms.style.webkitTransform = translateDiff;
-					};
+
+				var touch         = e.touches ? e.touches[0] : e,
+					diff          = 0,
+					translateZero = genTranslate(),
+					translateDiff = '';
+
+				var commonEx = function() {
+					e.preventDefault();
+
+					pulling       = true;
+					diff          = (nowY - startY);
+					translateDiff = genTranslate(0, diff, 0);
+
+					$rooms.style.WebkitTransition = '';
+					$rooms.style.webkitTransform  = translateDiff;
+				};
+
+				var resetIndicators = function() {
+					$rooms.style.webkitTransform   = translateZero;
+					$refresh.style.webkitTransform = translateZero;
+					$load.style.webkitTransform    = translateZero;
+
+					$timeout(function() {
+						$refresh.classList.remove('show');
+						$load.classList.remove('show');
+					}, 320);
+				};
 
 				// if not touching or we are not on top or bottom of scroll area
 				if (!touching && this.scrollTop !== scrollBarOnTop && this.scrollTop !== scrollBarOnBot) {
@@ -745,25 +792,31 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				nowY = touch.y || touch.pageY;
 
-				// if: user swiped more than 20 pixels
-				if ( abs(nowY - startY) > 20 ) {
-					// if: pull down on page start, else: pull up on page end
-					if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
-						commonEx();
-						$refresh.classList.add('show');
-						$refresh.style.WebkitTransition = '';
-						$refresh.style.webkitTransform = translateDiff;
-						notifyPullDownAction(diff);
-					} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
-						commonEx();
-						$load.classList.add('show');
-						$load.style.WebkitTransition = '';
-						$load.style.webkitTransform = translateDiff;
-						notifyPullUpAction(diff);
-					} else {
-						pulling = false;
-						return;
-					};
+				// if: pull down on page start, else: pull up on page end
+				if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
+					commonEx();
+					$refresh.classList.add('show');
+
+					$refresh.style.WebkitTransition = '';
+					$refresh.style.webkitTransform  = translateDiff;
+
+					notifyPullDownAction(diff);
+				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+					commonEx();
+					$load.classList.add('show');
+
+					$load.style.WebkitTransition = '';
+					$load.style.webkitTransform  = translateDiff;
+
+					notifyPullUpAction(diff);
+				} else {
+					pulling = false;
+					return;
+				};
+
+				// sometimes the user may manually scrol to it original state
+				if ( nowY - startY == 0 ) {
+					resetIndicators();
 				};
 			};
 
@@ -771,56 +824,70 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// the user stops touching the screen
 			// TODO: need to bind very similar for 'touchcancel' event
 			var touchEndHandler = function(e) {
-				var touch = e.touches ? e.touches[0] : e, 
-					diff = 0,
+				var touch         = e.touches ? e.touches[0] : e, 
+					diff          = 0,
 					addTransition = '-webkit-transform 0.3s',
-					translateZero = 'translate3d(0, 0, 0)',
-					commonEx = function() {
-						if (pulling) {
-							e.preventDefault();
-						};
-						diff = (nowY - startY);
-						$rooms.style.WebkitTransition = addTransition;
-						$rooms.style.webkitTransform = translateZero;
-						$rooms.removeEventListener(touchMoveHandler);
+					translateZero = genTranslate();
 
-						touching = false;
-						pulling = false;
+				var commonEx = function() {
+					if ( pulling ) {
+						e.preventDefault();
 					};
+
+					diff     = (nowY - startY);
+					touching = false;
+					pulling  = false;
+
+					$rooms.style.WebkitTransition = addTransition;
+					$rooms.style.webkitTransform  = translateZero;
+
+					$rooms.removeEventListener(touchMoveHandler);
+				};
+
+				var resetIndicators = function() {
+					$rooms.style.WebkitTransition = addTransition;
+					$rooms.style.webkitTransform  = translateZero;
+
+					$refresh.style.WebkitTransition = addTransition;
+					$refresh.style.webkitTransform  = translateZero;
+
+					$load.style.WebkitTransition = addTransition;
+					$load.style.webkitTransform  = translateZero;
+
+					$rooms.removeEventListener(touchMoveHandler);
+
+					$timeout(function() {
+						$refresh.classList.remove('show');
+						$load.classList.remove('show');
+						if ( abs(diff) > trigger ) {
+							$_refreshScroll();
+						}
+					}, 320);
+				};
 
 				nowY = touch ? (touch.y || touch.pageY) : nowY;
 
 				// if: pull down on page start, else: pull up on page end
 				if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
 					commonEx();
+
 					if ( abs(diff) > trigger ) {
 						callPulldownAction();
-					}
-					$refresh.style.WebkitTransition = addTransition;
-					$refresh.style.webkitTransform = translateZero;
+					};
+
 					notifyPullDownAction();
-					$timeout(function() {
-						$refresh.classList.remove('show');
-						if ( abs(diff) > trigger ) {
-							$_refreshScroll();
-						}
-					}, 320);
+					resetIndicators();
 				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
 					commonEx();
+
 					if ( abs(diff) > trigger ) {
 						callPullUpAction();
-					}
-					$load.style.WebkitTransition = addTransition;
-					$load.style.webkitTransform = translateZero;
+					};
+
 					notifyPullUpAction();
-					$timeout(function() {
-						$load.classList.remove('show');
-						if ( abs(diff) > trigger ) {
-							$_refreshScroll();
-						}
-					}, 320);
+					resetIndicators();
 				} else {
-					$rooms.removeEventListener(touchMoveHandler);
+					resetIndicators();
 					return;
 				};
 			};
@@ -843,9 +910,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				if ( this.scrollTop === scrollBarOnTop ) {
 					$refresh.style.WebkitTransition = '';
 					$refresh.classList.add('show');
+					/***/
+					$load.style.WebkitTransition = '';
+					$load.classList.remove('show');
 				} else if ( this.scrollTop === scrollBarOnBot ) {
 					$load.style.WebkitTransition = '';
 					$load.classList.add('show');
+					/***/
+					$refresh.style.WebkitTransition = '';
+					$refresh.classList.remove('show');
 				};
 
 				// only bind 'touchmove' when required
