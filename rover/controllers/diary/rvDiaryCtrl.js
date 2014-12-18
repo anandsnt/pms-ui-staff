@@ -627,23 +627,39 @@ sntRover
 		};
 
 	    var successCallBackOfResizeExistingReservation = function(data, successParams){
-	    	var avData = data.availability,
-	    		props  = $scope.gridProps;
-	    	/*if(avData.is_available){
-	    		util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);	
-	    		$scope.renderGrid();
+	    	var avData 		= data.availability,
+	    		props  		= $scope.gridProps,
+	    		oItem 		= props.edit.originalItem,
+	    		oRowItem 	= props.edit.originalRowItem;
+
+			//if API returns that move is not allowed then we have to revert back	    		
+	    	if(avData.is_available){
+	    		util.reservationRoomTransfer($scope.gridProps.data, oRowItem, props.currentResizeItemRow, oItem);		     		
+				 console.log(oRowItem);
+				 console.log(oItem);
+				$scope.gridProps.currentResizeItem.arrival = oItem.arrival;
+				$scope.gridProps.currentResizeItem.departure = oItem.departure;
+				/*$scope.gridProps.currentResizeItemRow = oRowItem;
+				$scope.gridProps.edit.originalRowItem = oRowItem;
+				$scope.gridProps.edit.originalItem = oItem;
+				$scope.gridProps.edit.currentResizeItem = oItem;    //Planned to transfer the non-namespaced currentResizeItem/Row to here
+				$scope.gridProps.edit.currentResizeItemRow = oRowItem; */
+				// $scope.resetEdit();
+	     		$scope.renderGrid();
+
+	    		
 	    		return;
-	    	}*/
+	    	}
 	    	if(avData.new_rate_amount == null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
 	    	}	    	
 	    	this.edit.originalRowItem.old_price = parseFloat(avData.old_rate_amount);
 	    	this.currentResizeItemRow.new_price = parseFloat(avData.new_rate_amount);
 	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
-	    	this.currentResizeItemRow.departureTime = successParams.end_time;
-	    	this.currentResizeItemRow.departureDate = successParams.end_date.toComponents().date.toDateString();
-    		this.currentResizeItemRow.arrivalTime = successParams.begin_time;
-	    	this.currentResizeItemRow.arrivalDate = successParams.begin_date.toComponents().date.toDateString(); 
+	    	this.currentResizeItemRow.departureTime = successParams.params.end_time;
+	    	this.currentResizeItemRow.departureDate = successParams.params.end_date.toComponents().date.toDateString();
+    		this.currentResizeItemRow.arrivalTime = successParams.params.begin_time;
+	    	this.currentResizeItemRow.arrivalDate = successParams.params.begin_date.toComponents().date.toDateString(); 
 	    	this.currentResizeItem.numAdults 	= 1; 	
 	    	this.currentResizeItem.numChildren 	= 0;
 	    	this.currentResizeItem.numInfants 	= 0;
@@ -661,7 +677,11 @@ sntRover
 	    		params: 			params,
 	    		successCallBack: 	successCallBackOfResizeExistingReservation,	 
 	    		failureCallBack: 	failureCallBackOfResizeExistingReservation,  
-	    		successCallBackParameters:  params 	
+	    		successCallBackParameters:  {
+					params : params,
+					row_data: row_data,
+					row_item_data: row_item_data
+	    		}
 	    	}
 	    	$scope.callAPI(rvDiarySrv.roomAvailabilityCheckAgainstReservation, options);
 	    };  
@@ -946,39 +966,39 @@ sntRover
 	};
 
 	var getEditReservationParams = function(){
-			var filter 	= _.extend({}, this.filter),
-			time_span 	= Time({ hours: this.min_hours }), 
-			
-			start_date 	= new Date(this.display.x_n), 
-			start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
-			
-			start 		= new Date(this.currentResizeItem.arrival),
-			end 		= new Date(this.currentResizeItem.departure),
-			
-			rate_type 	= ( this.currentResizeItem.travel_agent_id == null || this.currentResizeItem.travel_agent_id == '') && 
-						( this.currentResizeItem.company_card_id == null || this.currentResizeItem.company_card_id == '') ? 'Standard': 'Corporate',
-			account_id  = rate_type == 'Corporate' ? (this.currentResizeItem.travel_agent_id ? this.currentResizeItem.travel_agent_id : this.currentResizeItem.company_card_id) : undefined,
+		var filter 	= _.extend({}, this.filter),
+		time_span 	= Time({ hours: this.min_hours }), 
+		
+		start_date 	= new Date(this.display.x_n), 
+		start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
+		
+		start 		= new Date(this.currentResizeItem.arrival),
+		end 		= new Date(this.currentResizeItem.departure),
+		
+		rate_type 	= ( this.currentResizeItem.travel_agent_id == null || this.currentResizeItem.travel_agent_id == '') && 
+					( this.currentResizeItem.company_card_id == null || this.currentResizeItem.company_card_id == '') ? 'Standard': 'Corporate',
+		account_id  = rate_type == 'Corporate' ? (this.currentResizeItem.travel_agent_id ? this.currentResizeItem.travel_agent_id : this.currentResizeItem.company_card_id) : undefined,
 
-			room_id 	= this.currentResizeItemRow.id,
-			reservation_id = this.currentResizeItem.reservation_id,
+		room_id 	= this.currentResizeItemRow.id,
+		reservation_id = this.currentResizeItem.reservation_id,
 
-			arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time;
-			arrivalTime = arrivalTime.hours + ":" + arrivalTime.minutes + ":" + arrivalTime.seconds,
+		arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time;
+		arrivalTime = arrivalTime.hours + ":" + arrivalTime.minutes + ":" + arrivalTime.seconds,
 
-			depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;				
-			depTime 	= depTime.hours + ":" + depTime.minutes + ":" + depTime.seconds;
-            var params = {
-                room_id:            room_id,
-                reservation_id:     reservation_id,
-                begin_date:         start,
-                begin_time:         arrivalTime,
-                end_date:           end,
-                end_time:           depTime,
-                rate_type:          rate_type,
-            };
-            if(account_id) {            	
-				params.account_id = account_id;
-			}
+		depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;				
+		depTime 	= depTime.hours + ":" + depTime.minutes + ":" + depTime.seconds;
+        var params = {
+            room_id:            room_id,
+            reservation_id:     reservation_id,
+            begin_date:         start,
+            begin_time:         arrivalTime,
+            end_date:           end,
+            end_time:           depTime,
+            rate_type:          rate_type,
+        };
+        if(account_id) {            	
+			params.account_id = account_id;
+		}
 			
 		return params
 	}.bind($scope.gridProps);
