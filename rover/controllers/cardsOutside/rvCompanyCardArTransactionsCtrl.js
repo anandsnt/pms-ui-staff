@@ -66,8 +66,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// To fetch data for ar transactions
 		var fetchData = function(params){
+			$scope.arDetailsFetched = false;
 			
 			var arAccountsFetchSuccess = function(data) {
+				$scope.arDetailsFetched = true;
 			    $scope.$emit('hideLoader');
 			    $scope.errorMessage = '';
 			    $scope.arTransactionDetails = {};
