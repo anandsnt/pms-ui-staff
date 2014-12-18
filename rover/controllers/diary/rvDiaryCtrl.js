@@ -562,7 +562,7 @@ sntRover
 		    		occupancy: row_item_data,
 	    		}
 	    	};
-	    	$scope.price = $scope.roomXfer.next.room.new_price - $scope.roomXfer.current.room.old_price;
+	    	$scope.price = $scope.roomXfer.next.room.new_price ? ($scope.roomXfer.next.room.new_price - $scope.roomXfer.current.room.old_price) : 0;
 	    	if($scope.price != 0) {
 				openEditConfirmationPopup();
 			}
@@ -638,22 +638,24 @@ sntRover
 	    		lastArrTime = this.availability.resize.last_arrival_time,
 	    		lastDepTime = this.availability.resize.last_departure_time;
 
-
 			//if API returns that move is not allowed then we have to revert back	    		
 	    	if(!avData.is_available){
-	    		//util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);		     		
 
+	    		
 				if(!lastArrTime && !lastDepTime) {
 					lastArrTime = oItem.arrival;
 					lastDepTime = oItem.departure;
 				}
-				this.currentResizeItem.arrival = lastArrTime;
+				this.currentResizeItem.arrival   = lastArrTime;
 				this.currentResizeItem.departure = lastDepTime;
-
-	     		$scope.renderGrid();
-
-	    		
+	    		if(oRowItem.id !== props.currentResizeItemRow) {	    			
+	    			util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);		     		
+	    			/*this.currentResizeItem = oItem;
+	    			this.currentResizeItemRow = oRowItem;*/	    			
+	    		}				
+	    		$scope.renderGrid();
 	    		return;
+	    		
 	    	}
 	    	if(avData.new_rate_amount == null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
