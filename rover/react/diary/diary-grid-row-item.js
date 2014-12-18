@@ -72,6 +72,7 @@ var GridRowItem = React.createClass({
 			angular_evt:    	props.angular_evt, 
 			__onDragStart:  	props.__onDragStart,
 			__onDragStop: 		props.__onDragStop,
+			__onResizeCommand: 	props.__onResizeCommand,
 			currentDragItem:    props.currentResizeItem,
 			style: 			   { 
 				display: 'block',

@@ -390,7 +390,8 @@ sntRover
 	    	var copy,
 	    		selection,
 	    		props = $scope.gridProps,
-	    		edit  = props.edit;   	    	
+	    		edit  = props.edit;	    			 
+
 	    	if(!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch(command_message) {
 
@@ -400,6 +401,8 @@ sntRover
 				    			row_data: row_data, 
 				    			row_item_data: row_item_data 
 				    		});
+				    		$scope.gridProps.availability.resize.last_arrival_time = null;
+	    					$scope.gridProps.availability.resize.last_departure_time = null;
 				    		resizeEndForExistingReservation (row_data, row_item_data);
 				    		$scope.renderGrid();
 				    	}
@@ -631,21 +634,22 @@ sntRover
 	    	var avData 		= data.availability,
 	    		props  		= $scope.gridProps,
 	    		oItem 		= props.edit.originalItem,
-	    		oRowItem 	= props.edit.originalRowItem;
+	    		oRowItem 	= props.edit.originalRowItem,
+	    		lastArrTime = this.availability.resize.last_arrival_time,
+	    		lastDepTime = this.availability.resize.last_departure_time;
+
 
 			//if API returns that move is not allowed then we have to revert back	    		
-	    	if(avData.is_available){
-	    		util.reservationRoomTransfer($scope.gridProps.data, oRowItem, props.currentResizeItemRow, oItem);		     		
-				 console.log(oRowItem);
-				 console.log(oItem);
-				$scope.gridProps.currentResizeItem.arrival = oItem.arrival;
-				$scope.gridProps.currentResizeItem.departure = oItem.departure;
-				/*$scope.gridProps.currentResizeItemRow = oRowItem;
-				$scope.gridProps.edit.originalRowItem = oRowItem;
-				$scope.gridProps.edit.originalItem = oItem;
-				$scope.gridProps.edit.currentResizeItem = oItem;    //Planned to transfer the non-namespaced currentResizeItem/Row to here
-				$scope.gridProps.edit.currentResizeItemRow = oRowItem; */
-				// $scope.resetEdit();
+	    	if(!avData.is_available){
+	    		//util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);		     		
+
+				if(!lastArrTime && !lastDepTime) {
+					lastArrTime = oItem.arrival;
+					lastDepTime = oItem.departure;
+				}
+				this.currentResizeItem.arrival = lastArrTime;
+				this.currentResizeItem.departure = lastDepTime;
+
 	     		$scope.renderGrid();
 
 	    		
@@ -661,6 +665,8 @@ sntRover
 	    	this.currentResizeItemRow.departureDate = successParams.params.end_date.toComponents().date.toDateString();
     		this.currentResizeItemRow.arrivalTime = successParams.params.begin_time;
 	    	this.currentResizeItemRow.arrivalDate = successParams.params.begin_date.toComponents().date.toDateString(); 
+	    	this.availability.resize.last_arrival_time = this.currentResizeItem[meta.occupancy.start_date];
+	    	this.availability.resize.last_departure_time = this.currentResizeItem[meta.occupancy.end_date];
 	    	this.currentResizeItem.numAdults 	= 1; 	
 	    	this.currentResizeItem.numChildren 	= 0;
 	    	this.currentResizeItem.numInfants 	= 0;

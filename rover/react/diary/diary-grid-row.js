@@ -79,6 +79,7 @@ var GridRow = React.createClass({
 				row_offset: 	props.row_number * (display.row_height + display.row_height_margin),
 				__onDragStart:  props.__onDragStart,
 				__onDragStop: 	props.__onDragStop,
+				__onResizeCommand: 	props.__onResizeCommand,
 				currentResizeItem: props.currentResizeItem,
 				currentResizeItemRow: props.currentResizeItemRow
 			});
