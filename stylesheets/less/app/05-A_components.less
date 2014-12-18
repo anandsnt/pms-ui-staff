@@ -2307,12 +2307,7 @@
                                                 .query { .calc-width(100, 10); }
                                             }
 
-                                            &.dates {
-                                                padding: 0;
-                                                margin: 0;
-                                                border: 0;
-                                                .calc-width(40, 70);
-                                            }
+                                            &.dates { .calc-width(40, 70); }
                                         }
 
                                         &.open { 
@@ -2323,6 +2318,12 @@
                                                 margin-right: 10px;
                                                 border-right: 1px solid rgba(0,0,0,.1);
                                                 visibility: visible;
+
+                                                &.dates {
+                                                    padding: 0;
+                                                    margin: 0;
+                                                    border: 0;
+                                                }
                                             }
                                         }
                                     }
