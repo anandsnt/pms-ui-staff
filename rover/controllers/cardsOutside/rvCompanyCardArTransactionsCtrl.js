@@ -73,6 +73,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
 			    $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
+			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
 				setTimeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
 				}, 0);
@@ -304,8 +305,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    $scope.clickedPayAll = function(){
 
 	        var payAllSuccess = function(data) {
+	        	console.log(data);
 	            $scope.$emit('hideLoader');
-	            $scope.errorMessage = '';
+	            //$scope.errorMessage = '';
 	            //$scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
 	            //$scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
 	            fetchData();
