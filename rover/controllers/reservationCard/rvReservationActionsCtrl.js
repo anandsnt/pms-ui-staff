@@ -140,7 +140,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.paymentTypes = [];
 	
 		var openDepositPopup = function(){
-			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN") && !$scope.reservationData.justCreatedRes){
+			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN")){
 				var feeDetails = (typeof $scope.depositDetails.attached_card ==="undefined") ? {}: $scope.depositDetails.attached_card.fees_information;
 				var passData = {
 							 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -185,7 +185,10 @@ sntRover.controller('reservationActionsController', [
 			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone){
 				if(!$scope.depositPopupData.isShown){
 					$scope.depositDetails.isFromCheckin = false;
-					openDepositPopup();
+					if(!$scope.reservationData.justCreatedRes)
+					{
+						openDepositPopup();
+					};
 					$scope.depositPopupData.isShown = true;
 				};				
 			};
@@ -299,7 +302,13 @@ sntRover.controller('reservationActionsController', [
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
 			$scope.depositDetails.isFromCheckin = true;
-			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
+			if(!$scope.reservationData.justCreatedRes){
+				((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
+			}
+			else{
+				startCheckin();
+			};
+			
 		};
 
 		var checkforDeposit = function(){
