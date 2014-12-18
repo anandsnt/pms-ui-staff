@@ -1649,6 +1649,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             });
                         });
                         $scope.reservationData.reservations = data.reservations;
+                        $scope.reservationData.reservationIds = [];
+                        angular.forEach(data.reservations, function(reservation, key) {
+                            $scope.reservationData.reservationIds.push(reservation.id);
+                        });
                         $scope.reservationData.reservationId = $scope.reservationData.reservations[0].id;
                         $scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
                         $scope.reservationData.status = $scope.reservationData.reservations[0].status;
