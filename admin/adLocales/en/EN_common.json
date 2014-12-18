@@ -16,6 +16,7 @@
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
     "MENU_CREATE_RESERVATION" : "Create Reservation",
+    "MENU_ROOM_DIARY": "Room Diary",
     "MENU_ROOM_ASSIGNMENT":"Room Assignment",
     "MENU_POST_CHARGES":"Post Charges",
     "MENU_CASHIER":"Cashier",

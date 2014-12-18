@@ -69,6 +69,11 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 		};
 
+		$scope.proceedCheckin = function(){
+			$scope.closeDialog();
+			$scope.$emit("PROCEED_CHECKIN");
+		};
+
 
 		$scope.tryAgain = function(){
 			$scope.depositInProcess = false;
