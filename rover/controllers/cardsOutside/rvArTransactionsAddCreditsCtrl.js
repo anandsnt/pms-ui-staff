@@ -12,12 +12,7 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
 
         var addCreditAmountSuccess = function(data) {
             $scope.$emit('hideLoader');
-            if(data.errors.length > 0){
-                $scope.errorMessage = data.errors;
-            }
-            else{
-                $scope.errorMessage = "";
-            }
+            $scope.errorMessage = "";
             ngDialog.close();
 
             $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);

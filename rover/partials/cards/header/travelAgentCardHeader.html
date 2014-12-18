@@ -28,6 +28,9 @@
             <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('travel_agent')" translate="">Save new card</button>
             <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('travel_agent')" translate="">Discard</button>
         </div>
+        <div class="card-actions" ng-hide="viewState.isAddNewCard">
+            <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachCard('travel_agent')" translate="">Detach Card</button>
+        </div>
 	</section>
 	<section ng-if="searchMode">
 		<div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">

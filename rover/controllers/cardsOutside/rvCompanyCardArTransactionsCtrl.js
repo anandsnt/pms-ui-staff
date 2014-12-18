@@ -305,11 +305,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    $scope.clickedPayAll = function(){
 
 	        var payAllSuccess = function(data) {
-	        	console.log(data);
 	            $scope.$emit('hideLoader');
-	            //$scope.errorMessage = '';
-	            //$scope.arTransactionDetails.available_credit = parseFloat(data.available_credits).toFixed(2);
-	            //$scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
+	            console.log(data);
+	            if(data.errors.length > 0){
+	                $scope.errorMessage = data.errors;
+	            }
+	            else{
+	                $scope.errorMessage = "";
+	            }
 	            fetchData();
 	        };
 
