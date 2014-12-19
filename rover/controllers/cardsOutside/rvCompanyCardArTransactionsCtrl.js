@@ -66,8 +66,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// To fetch data for ar transactions
 		var fetchData = function(clearErrorMsg){
-			
+			$scope.arDetailsFetched = false;
 			var arAccountsFetchSuccess = function(data) {
+				$scope.arDetailsFetched = true;
 			    $scope.$emit('hideLoader');
 			    
 			    if(typeof clearErrorMsg == 'undefined' || clearErrorMsg)
@@ -340,6 +341,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		        className: '',
 		        scope: $scope
 	      	});
+		};
+
+		$scope.getTimeConverted = function(time){
+			if(time == null || time == undefined){
+				return "";
+			}
+			var timeDict = tConvert(time);
+			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 		};
 
 	    init();

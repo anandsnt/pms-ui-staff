@@ -1631,7 +1631,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                  */
 
                 var postData = $scope.computeReservationDataforUpdate(true, true);
-                var saveSuccess = function(data) {                    
+                var saveSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.reservations[0].deposit_amount;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
@@ -1770,13 +1770,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             _.each($scope.reservationData.rooms, function(room, roomNumber) {
                 var taxes = $scope.otherData.hourlyTaxInfo[0];
                 room.amount = 0.0;
-                _.each(room.stayDates, function(stayDate) {
-                    stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
-                    if (isNaN(stayDate.rateDetails.modified_amount)) {
-                        stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+                _.each(room.stayDates, function(stayDate, date) {
+                    if (date == $scope.reservationData.arrivalDate) {
+                        stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
+                        if (isNaN(stayDate.rateDetails.modified_amount)) {
+                            stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+                        }
+                        room.amount = parseFloat(room.amount) + parseFloat(stayDate.rateDetails.modified_amount);
                     }
-                    room.amount = parseFloat(room.amount) + parseFloat(stayDate.rateDetails.modified_amount);
-
                 });
                 room.rateTotal = room.amount;
 

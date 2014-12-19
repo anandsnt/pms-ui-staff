@@ -13,16 +13,12 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
-		if(!isEmptyObject(that.usersArray) && !params.isAdminSnt ){
-			deferred.resolve(that.usersArray);
-		} else {
-			ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				that.saveUserArray(data);
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
 			});	
-		}
 		return deferred.promise;
 	};
 	/**

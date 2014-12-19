@@ -325,8 +325,8 @@
 	"HK_FROM": "From",
 	"HK_TO": "To",
 
-	"PULL_REFRESH": "Pull down to refesh...",
-	"RELEASE_REFRESH": "Release to refesh...",
+	"PULL_REFRESH": "Pull down to refresh...",
+	"RELEASE_REFRESH": "Release to refresh...",
 	"PULL_LOAD_NEXT": "Pull up to load next page...",
 	"RELEASE_LOAD_NEXT": "Release to load next page...",
 	"PULL_LOAD_PREV": "Pull down to load previous page...",

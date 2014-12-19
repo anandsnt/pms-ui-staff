@@ -134,6 +134,47 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.switchTabTo($event, 'cc-ar-accounts');
 		};
 
+		/**
+		 * function to switch to new tab, will set $scope.currentSelectedTab to param variable
+		 * @param{string} is the value of that tab
+		 */
+		$scope.switchTabTo = function($event, tabToSwitch) {
+			if ($event !== undefined && $event !== "") {
+				$event.stopPropagation();
+				$event.stopImmediatePropagation();
+			}
+
+			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
+
+				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
+					$scope.errorMessage = ["Please save " + $scope.cardTypeText + " card first"];
+					if ($stateParams.type == "COMPANY") {
+						$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
+					} else {
+						$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('TA_SAVE_PROMPT')]);
+					}
+					return;
+				} else {
+					saveContactInformation($scope.contactInformation);
+					$scope.$broadcast("ContactTabActivated");
+				}
+
+			}
+			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
+				$scope.$broadcast("saveContract");
+			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
+				$scope.$broadcast("saveArAccount");
+			}
+			if (tabToSwitch == 'cc-ar-accounts') {
+				$scope.$broadcast("arAccountTabActive");
+				$scope.$broadcast("refreshAccountsScroll");
+			}
+			if (tabToSwitch == 'cc-contracts') {
+				$scope.$broadcast("refreshContractsScroll");
+			}
+			$scope.currentSelectedTab = tabToSwitch;
+		};
+
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
@@ -141,6 +182,15 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.showArAccountButtonClick($event);
 		};
 
+		//CICO-11664 
+		//To default the AR transactions tab while navigating back from staycard
+		if ($stateParams.isBackFromStaycard) {
+			$scope.isArTabAvailable = true;
+			$scope.currentSelectedTab = 'cc-ar-transactions';
+			$scope.$broadcast('setgenerateNewAutoAr', true);
+			$scope.switchTabTo('', 'cc-ar-transactions');
+			$scope.$apply();
+		};
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
