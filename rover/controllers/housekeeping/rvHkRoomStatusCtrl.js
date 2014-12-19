@@ -103,9 +103,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.query              = $scope.currentFilters.query;
 		$scope.noResultsFound     = 0;
 
-		$scope.isStandAlone       = $rootScope.isStandAlone;
-		$scope.isMaintenanceStaff = $rootScope.isMaintenanceStaff;
-		$scope.hasActiveWorkSheet = false;
+		$scope.isStandAlone         = $rootScope.isStandAlone;
+		$scope.isMaintenanceStaff   = $rootScope.isMaintenanceStaff;
+		$scope.isMaintenanceManager = $rootScope.isMaintenanceManager
+		$scope.hasActiveWorkSheet   = false;
 
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
@@ -279,7 +280,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			_.each($scope.roomTypes, function(type) { type.isSelected = false; });
 			RVHkRoomStatusSrv.roomTypes = _.extend( {}, $scope.roomTypes );
 
-			$scope.currentFilters            = RVHkRoomStatusSrv.initFilters();
+			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
+			if ( $scope.isStandAlone ) {
+				$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
+				$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
+			};
 			RVHkRoomStatusSrv.currentFilters = _.extend( {}, $scope.currentFilters );
 
 			$_refreshScroll();
