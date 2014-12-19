@@ -114,6 +114,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// To click filter button
 		$scope.clickedFilter = function(){
 			$scope.filterData.filterActive = !$scope.filterData.filterActive;
+			$scope.$emit('ARTransactionSearchFilter', $scope.filterData.filterActive);
 		};
 
 		// To handle show filter changes

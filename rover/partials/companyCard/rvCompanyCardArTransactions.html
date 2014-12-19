@@ -3,10 +3,10 @@
     
     <div class="tab-header">
 
-        <div class="search-form has-dates" ng-class="{'open':filterData.filterActive}"> <!-- Add class "open" when showing form -->
+        <div class="search-form has-dates" ng-class="{'open':filterData.filterActive}">
             <div class="entry filter">
-                <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}"> <!-- Add class "active" when showing form -->
-                    <span class="icons icon-filter" ng-class="{'active':filterData.filterActive}"></span> <!-- Add class "active" when showing form -->
+                <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}">
+                    <span class="icons icon-filter" ng-class="{'active':filterData.filterActive}"></span> 
                 </button>
             </div>
             <div class="entry showing">
@@ -50,14 +50,13 @@
                     <span class="label" translate>OPEN_GUEST_BILLS</span>
                     <span class="value">{{arTransactionDetails.open_guest_bills}}</span>
                 </div>
-                <button ng-click="clickedPayAll()" type="button" class="button green" translate>PAY_ALL</button> <!-- Show only when open bills exsits -->
+                <button ng-show="arTransactionDetails.open_guest_bills > 0" ng-click="clickedPayAll()" type="button" class="button green" translate>PAY_ALL</button>
             </li>
             <li>
                 <div class="data">
                     <span class="label" translate>AMOUNT_RECIEVED</span>
                     <span class="value" ng-class="{'red': arTransactionDetails.available_credit == '0.00','green': arTransactionDetails.available_credit != '0.00'}">{{currencySymbol}}{{arTransactionDetails.available_credit}}</span>
-                    <!-- If $0:
-                    <span class="value red">${value}</span> -->
+                    
                 </div>
                 <button ng-click="addCreditAmount()" type="button" class="button purple with-icon only-icon">
                     <span class="icons icon-pencil"></span>
@@ -67,13 +66,12 @@
                 <div class="data">
                     <span class="label" translate>AMOUNT_OWED</span>
                     <span class="value" ng-class="{'green': arTransactionDetails.amount_owing == '0.00','red': arTransactionDetails.amount_owing != '0.00'}">{{currencySymbol}}{{arTransactionDetails.amount_owing}}</span>
-                    <!-- If $0:
-                    <span class="value green">${value}</span> -->
+                    
                 </div>
             </li>
             <li>
                 <button type="button" class="button white purple-text" ng-hide="true" translate>PAST_PAYMENTS</button>
-                <button ng-click="clickedPrintButton()" type="button" class="button blue with-icon only-icon">
+                <button ng-show="arTransactionDetails.open_guest_bills > 0" ng-click="clickedPrintButton()" type="button" class="button blue with-icon only-icon">
                     <span class="icons icon-print"></span>
                 </button>
             </li>
@@ -87,14 +85,10 @@
             
             <ul class="search-results">
                 <li class="reservation transaction" ng-click="goToReservationDetails($index, $event)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
-                    <!-- Not using <a> here since 1) you don't use hrefs at all and 2) it'll interfere with the checkbox -->
-                    <div class="faux-anchor" class="guest-{reservation-status}"> <!-- see options in {dashboard/front-desk.html} -->
-
-                        <figure class="guest-image"><!-- add class "accompany" if it's a accompanying guest -->
+                    
+                    <div class="faux-anchor" class="guest-{reservation-status}"> 
+                        <figure class="guest-image">
                             <img src="{{transaction.guest_image}}" alt="" />
-                            <!-- if it's accompanying guest, show this as well:
-                            <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
-                            <!-- if VIP guest: -->
                             <span class="vip" ng-if="transaction.guest_is_vip">VIP</span>
                         </figure>
                         <div class="data">
@@ -111,7 +105,7 @@
                         </div>
                         <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
                         
-                        <div class="switch-button" ng-class="{'on': transaction.paid}"><!-- add class "on" when checkbox checked -->
+                        <div class="switch-button" ng-class="{'on': transaction.paid}">
                             <input value="" type="checkbox" />
                             <label class="data-off">
                                 <span class="value" translate>OPEN</span>

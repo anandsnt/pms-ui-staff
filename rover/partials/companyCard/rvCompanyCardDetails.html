@@ -56,11 +56,11 @@
                             <a translate>CONTRACTS</a>
                         </li>
 
-                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-accounts'}" ng-click="switchTabTo($event, 'cc-ar-accounts')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
+                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-accounts'}" ng-click="switchTabTo($event, 'cc-ar-accounts')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
                             <a translate>AR_ACCOUNT</a>
                         </li>
 
-                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-transactions'}" ng-click="switchTabTo($event, 'cc-ar-transactions')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
+                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-transactions','with-filters':isWithFilters }" ng-click="switchTabTo($event, 'cc-ar-transactions')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
                             <a translate>AR_TRANSACTIONS</a>
                         </li>
 
@@ -76,7 +76,7 @@
                     <!-- Company Card Tab 3 Ar accounts -->
                     <span ng-controller="companyCardArAccountCtrl" ng-include="'/assets/partials/companyCard/rvcompanyCardArAccount.html'" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable"></span>
                     <!-- Company Card Tab 4 AR Transactions -->
-                    <span ng-controller="RVCompanyCardArTransactionsCtrl" ng-include="'/assets/partials/companyCard/rvCompanyCardArTransactions.html'" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable"></span>
+                    <span ng-controller="RVCompanyCardArTransactionsCtrl" ng-include="'/assets/partials/companyCard/rvCompanyCardArTransactions.html'" ng-show="(contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable) && currentSelectedTab == 'cc-ar-transactions'"></span>
                     <!-- Company Card Tab 5 Resevations -->
                     <span ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></span>
                 </div>

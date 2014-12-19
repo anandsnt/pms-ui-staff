@@ -59,8 +59,16 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			if (tabToSwitch == 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
 			}
+			if (tabToSwitch == 'cc-ar-transactions') {
+				$scope.isWithFilters = false;
+			}
 			$scope.currentSelectedTab = tabToSwitch;
 		};
+
+		$scope.$on('ARTransactionSearchFilter', function(e, data) {
+			$scope.isWithFilters = data;
+		});
+
 		//CICO-11664 
 		//To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
