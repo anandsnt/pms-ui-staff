@@ -3,6 +3,13 @@
     <h3>Guests</h3> 
     <!-- <button ui-sref="rover.reservation.staycard.mainCard.summaryAndConfirmFromOutide({'room_id':['180','181'],'arrival_date':'2014-07-15','departure_date':'2014-07-16', 'arrival_time': '04:30', 'departure_time': '09:15'})">GO TO CONFIRMATION RESERVATION SCREEN</button>    -->
      <!-- <button ng-click="setReservationDataFromDiaryScreen()">GO TO CONFIRMATION RESERVATION SCREEN</button> -->
+
+     <!-- to delete -->
+ <!-- Switch hotel dropdown : HOTEL ADMIN-->
+ <select ng-model="hotelDetails.userHotelsData.current_hotel_id" ng-change="redirectToHotel(hotelDetails.userHotelsData.current_hotel_id)">
+    <option ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list" value="{{hotel.hotel_id}}" ng-selected ="{{ hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id}}"> {{hotel.hotel_name}}</option>
+ </select>
+<!-- to delete -->
     <ul class="actions" ng-class="{'col5': statisticsData.guests.is_pre_checkin_only ==='true'}">
         
         <li>

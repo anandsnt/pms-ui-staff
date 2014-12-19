@@ -793,6 +793,18 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 					// ngDialog.close("firstDialog");
 				// }, 3000);
 //     
+
+
+//to delete
+$scope.redirectToHotel = function(hotel_id) {
+  console.log(hotel_id)
+      RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
+        //CICO-9816 bug fix
+        $('body').addClass('no-animation');
+        $window.location.href = "/staff";
+      }, function() {
+      });
+    };
+//to delete
     
-  }
-]);
+}]);
