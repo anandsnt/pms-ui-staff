@@ -386,7 +386,7 @@ sntRover
 		  ________________________________________________________
 		*/
 
-	    $scope.onSelect = function(row_data, row_item_data, selected, command_message) {
+	    $scope.onSelect = function(row_data, row_item_data, selected, command_message) {	    	
 	    	var copy,
 	    		selection,
 	    		props = $scope.gridProps,
@@ -402,8 +402,7 @@ sntRover
 				    			row_item_data: row_item_data 
 				    		});
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
-	    					$scope.gridProps.availability.resize.last_departure_time = null;
-				    		resizeEndForExistingReservation (row_data, row_item_data);
+	    					$scope.gridProps.availability.resize.last_departure_time = null;				    		
 				    		$scope.renderGrid();
 				    	}
 
@@ -439,62 +438,7 @@ sntRover
 		    }
 	    };
 
-		(function() {    /*React callbacks for grid events*/
-			var prevRoom, prevTime;
-
-		    $scope.onDragStart = function(room, reservation) {
-		    	prevRoom = room;
-		    	prevTime = reservation[meta.occupancy.start_date];
-		    	if($scope.gridProps.edit.active) {
-		    		console.log('Reservation room transfer initiated:  ', room, reservation);
-		    	}
-		};
-
-		    $scope.onDragEnd = function(nextRoom, reservation) {
-		    	var availability;
-		    	if($scope.gridProps.edit.active) {
-			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
-			    	
-					if(availability) {
-				    	util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
-						
-						//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
-						if(nextRoom.id !== prevRoom.id){
-							var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), prevRoom.id);
-							if(roomIndex != -1) {
-								var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), reservation.reservation_id);
-								if(occupancyIndex != -1){
-									$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
-								}
-							}							
-						}
-
-				    	$scope.gridProps.currentResizeItemRow = nextRoom;				    					    			    								    							
-						
-						
-						
-						var og_r_item = $scope.gridProps.edit.originalRowItem,
-		    			og_item =  $scope.gridProps.edit.originalItem;
-
-						$scope.resetEdit();
-						$scope.renderGrid();
-						$scope.$emit('showLoader');
-						setTimeout(function(){
-							$scope.onSelect(nextRoom, reservation, false, 'edit');							
-							$scope.gridProps.currentResizeItemRow = nextRoom;
-					    	$scope.gridProps.edit.originalRowItem = og_r_item;
-					    	$scope.gridProps.edit.originalItem = og_item;
-							$scope.$emit('hideLoader');
-							prevRoom = '';
-							prevTime = '';
-						}, 350)
-						
-						
-				    	
-				    }
-				}
-		};
-		})();
+		
 
 	 	$scope.onResizeStart = function(row_data, row_item_data) {
 		};
@@ -630,6 +574,46 @@ sntRover
 			})
 		};
 
+		(function() {    /*React callbacks for grid events*/
+			var prevRoom, prevTime;
+
+		    $scope.onDragStart = function(room, reservation) {
+		    	prevRoom = room;
+		    	prevTime = reservation[meta.occupancy.start_date];
+		    	if($scope.gridProps.edit.active) {
+		    		console.log('Reservation room transfer initiated:  ', room, reservation);
+		    	}
+			};
+
+		    $scope.onDragEnd = function(nextRoom, reservation) {
+		    	var availability;
+		    	if($scope.gridProps.edit.active) {
+			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
+			    	
+					if(availability) {
+				    	util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
+						$scope.gridProps.currentResizeItemRow = nextRoom;
+						//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
+						if(nextRoom.id !== prevRoom.id){
+							var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), prevRoom.id);
+							if(roomIndex != -1) {
+								var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), reservation.reservation_id);
+								if(occupancyIndex != -1){
+									$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
+								}
+							}							
+						}
+				    					    					    			    								    							
+						resizeEndForExistingReservation (nextRoom, reservation);																														
+						prevRoom = '';
+						prevTime = '';
+										    	
+				    }
+				}
+		};
+		})();
+
+
 	    var successCallBackOfResizeExistingReservation = function(data, successParams){
 	    	var avData 		= data.availability,
 	    		props  		= $scope.gridProps,
@@ -640,28 +624,7 @@ sntRover
 
 			//if API returns that move is not allowed then we have to revert back	    		
 	    	if(!avData.is_available){
-
-	    		
-				if(!lastArrTime && !lastDepTime) {
-					lastArrTime = oItem.arrival;
-					lastDepTime = oItem.departure;
-				}
-				
-	    		if(oRowItem.id !== props.currentResizeItemRow) {	
-
-	    			console.log(oItem.arrival);
-	    			console.log(this.currentResizeItem.arrival);
-	    			console.log(lastArrTime);
-	    			oItem.arrival   = lastArrTime;
-					oItem.departure = lastDepTime;	
-	    			util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);		     		
-	    			$scope.renderGrid();
-	    			return;
-	    			/*this.currentResizeItem = oItem;
-	    			this.currentResizeItemRow = oRowItem;*/	    			
-	    		}
-	    		this.currentResizeItem.arrival   = lastArrTime;
-				this.currentResizeItem.departure = lastDepTime;				
+	    		util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);			
 	    		$scope.renderGrid();
 	    		return;
 	    		
@@ -669,18 +632,17 @@ sntRover
 	    	if(avData.new_rate_amount == null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
 	    	}	    	
+
 	    	this.edit.originalRowItem.old_price = parseFloat(avData.old_rate_amount);
 	    	this.currentResizeItemRow.new_price = parseFloat(avData.new_rate_amount);
 	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
 	    	this.currentResizeItemRow.departureTime = successParams.params.end_time;
-	    	this.currentResizeItemRow.departureDate = successParams.params.end_date.toComponents().date.toDateString();
+	    	this.currentResizeItemRow.departureDate = new Date(successParams.params.end_date).toComponents().date.toDateString();
     		this.currentResizeItemRow.arrivalTime = successParams.params.begin_time;
-	    	this.currentResizeItemRow.arrivalDate = successParams.params.begin_date.toComponents().date.toDateString(); 
+	    	this.currentResizeItemRow.arrivalDate = new Date(successParams.params.begin_date).toComponents().date.toDateString(); 
 	    	this.availability.resize.last_arrival_time = this.currentResizeItem[meta.occupancy.start_date];
 	    	this.availability.resize.last_departure_time = this.currentResizeItem[meta.occupancy.end_date];
-	    	this.currentResizeItem.numAdults 	= 1; 	
-	    	this.currentResizeItem.numChildren 	= 0;
-	    	this.currentResizeItem.numInfants 	= 0;
+	    	
 	    }.bind($scope.gridProps);
 	    
 	    var failureCallBackOfResizeExistingReservation = function(errorMessage){
