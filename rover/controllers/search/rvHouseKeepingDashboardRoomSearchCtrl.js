@@ -41,9 +41,10 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  		$_lastQuery = '';
 
 	  	// inital page related properties
-	  	$scope.resultFrom = $_page,
-	  	$scope.resultUpto = $_perPage,
-	  	$scope.totalCount = 0;
+	  	$scope.resultFrom     = $_page,
+	  	$scope.resultUpto     = $_perPage,
+	  	$scope.netTotalCount  = 0;
+	  	$scope.uiTotalCount   = 0;
 	  	$scope.disablePrevBtn = true;
 	  	$scope.disableNextBtn = true;
 
@@ -51,23 +52,28 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 
 	  function $_fetchRoomListCallback(data) {
-	  	if ( !!data ) {
-	  		$_roomList = data;
-	  	};
+	  	if ( !!_.size(data) ) {
+			$_roomList = _.extend({}, data);
+		} else {
+			$_roomList = {};
+		};
 
-	  	$scope.totalCount = $_roomList.total_count;
+		// clear old results and update total counts
+		$scope.rooms         = [];
+		$scope.netTotalCount = $_roomList.total_count;
+		$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
 
-	  	if ( $_page === 1 ) {
-	  		$scope.resultFrom = 1;
-	  		$scope.resultUpto = $scope.totalCount < $_perPage ? $scope.totalCount : $_perPage;
-	  		$scope.disablePrevBtn = true;
-	  		$scope.disableNextBtn = $scope.totalCount > $_perPage ? false : true;
-	  	} else {
-	  		$scope.resultFrom = $_perPage * ($_page - 1) + 1;
-	  		$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.totalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.totalCount;
-	  		$scope.disablePrevBtn = false;
-	  		$scope.disableNextBtn = $scope.resultUpto === $scope.totalCount ? true : false;
-	  	}
+		if ( $_page === 1 ) {
+			$scope.resultFrom = 1;
+			$scope.resultUpto = $scope.netTotalCount < $_perPage ? $scope.netTotalCount : $_perPage;
+			$scope.disablePrevBtn = true;
+			$scope.disableNextBtn = $scope.netTotalCount > $_perPage ? false : true;
+		} else {
+			$scope.resultFrom = $_perPage * ($_page - 1) + 1;
+			$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.netTotalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.netTotalCount;
+			$scope.disablePrevBtn = false;
+			$scope.disableNextBtn = $scope.resultUpto === $scope.netTotalCount ? true : false;
+		}
 
 	  	
   		$timeout(function() {
@@ -81,49 +87,50 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 
 	  	function $_postProcessRooms() {
-			var _roomCopy     = {},
-				_totalLen     = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0,
-				_processCount = 0,
-				_minCount     = 13;
+	  		var _roomCopy     = {},
+	  			_processCount = 0,
+	  			_minCount     = 13,
+	  			i             = 0;
 
-			var _hideLoader = function() {
-					refreshScroller();
-					$scope.$emit( 'hideLoader' );
-				},
-				_firstInsert = function(count) {
-					for (var i = 0; i < count; i++) {
-						_roomCopy = angular.copy( $_roomList.rooms[i] );
-						$scope.rooms.push( _roomCopy );
-					};
+	  		// if   : results -> load 0 to '_processCount' after a small delay
+	  		// else : empty and hide loader
+	  		if ( $scope.uiTotalCount ) {
+	  			_processCount = Math.min( $scope.uiTotalCount, _minCount );
+	  			$timeout(_firstInsert, 100);
+	  		} else {
+	  			$scope.rooms = [];
+	  			_hideLoader();
+	  		};
 
-					if ( _totalLen < _minCount ) {
-						_hideLoader();
-					};
-				},
-				_secondInsert = function(startCount) {
-					for (var i = startCount; i < _totalLen; i++) {
-						_roomCopy = angular.copy( $_roomList.rooms[i] );
-						$scope.rooms.push( _roomCopy );
-					};
+	  		function _firstInsert () {
+	  			for ( i = 0; i < _processCount; i++ ) {
+	  				_roomCopy = _.extend( {}, $_roomList.rooms[i] );
+	  				$scope.rooms.push( _roomCopy );
+	  			};
 
-					_hideLoader();
-				};
+	  			// if   : more than '_minCount' results -> load '_processCount' to last
+	  			// else : hide loader
+	  			if ( $scope.uiTotalCount > _minCount ) {
+	  				$timeout(_secondInsert, 100);
+	  			} else {
+	  				_hideLoader();
+	  			};
+	  		};
 
-			$scope.rooms = [];
+	  		function _secondInsert () {
+	  			for ( i = _processCount; i < $scope.uiTotalCount; i++ ) {
+	  				_roomCopy = _.extend( {}, $_roomList.rooms[i] );
+	  				$scope.rooms.push( _roomCopy );
+	  			};
 
-			if ( _totalLen ) {
-				_processCount = Math.min(_totalLen, _minCount);
+	  			_hideLoader();
+	  		};
 
-				// load first 13 a small delay (necessary) - for filters to work properly
-				$timeout(_firstInsert.bind(null, _processCount), 10);
-
-				// load the rest after a small delay - DOM can process it all
-				if ( _totalLen > _minCount ) {
-					$timeout(_secondInsert.bind(null, _processCount), 30);
-				};
-			} else {
-				_hideLoader();
-			}
+	  		function _hideLoader () {
+	  			$_roomList = {};
+	  			refreshScroller();
+	  			$scope.$emit( 'hideLoader' );
+	  		};
 		};
 
 
@@ -157,9 +164,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 
 		function $_callRoomsApi() {
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-				businessDate : $rootScope.businessDate,
-			}, $_fetchRoomListCallback);
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
 		};
 
 

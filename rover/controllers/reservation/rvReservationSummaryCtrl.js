@@ -157,6 +157,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.errorMessage = data;
 		});
 
+		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {
+			$scope.errorMessage = data;
+		});
+
+		$scope.$on("FAILURE_SAVE_RESERVATION", function(e, data) {
+			$scope.errorMessage = data;
+		});
+
 		var addToGuestCard = function(data) {
 			var dataToGuestList = {};
 			// if($scope.isSixCardSwiped){

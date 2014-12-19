@@ -29,8 +29,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 				"floorFilterStart"     : "",
 				"floorFilterEnd"       : "",
 				"showAllFloors"        : true,
-				"filterByWorkType"     : "",
-				"filterByEmployeeName" : "",
+				"filterByWorkType"     : false,
+				"filterByEmployeeName" : false,
 				"query"                : "",
 				"page"                 : 1,
 				"perPage"              : $window.innerWidth < 599 ? 25 : 50
@@ -50,7 +50,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 				floor_start          = false,
 				floor_end            = false,
 				params               = {
-					'date'     : passedParams.businessDate,
 					'page'     : filter.page,
 					'per_page' : filter.perPage
 				};
@@ -59,6 +58,17 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if ( filter.query ) {
 				params['query'] = filter.query;
 			} else {
+
+				// process the floors
+				if ( !filter.showAllFloors ) {
+					floor_start = filter.floorFilterStart || filter.floorFilterSingle;
+					floor_end   = filter.floorFilterEnd || filter.floorFilterSingle;
+				};
+
+				// process room type ids
+				_.each(this.roomTypes, function(type) {
+					if (type.isSelected) { room_type_ids.push(type.id); };
+				});
 
 				// process the reservation status
 				if ( filter.vacant )   { reservation_status.push('VACANT'); };
@@ -90,26 +100,25 @@ sntRover.service('RVHkRoomStatusSrv', [
 				if ( floor_start )                   { params['floor_start']          = floor_start; };
 				if ( floor_end )                     { params['floor_end']            = floor_end; };
 
-				// process the floors
-				if ( !filter.showAllFloors ) {
-					floor_start = filter.floorFilterStart || filter.floorFilterSingle;
-					floor_end   = filter.floorFilterEnd || filter.floorFilterSingle;
-				};
 
-				// process room type ids
-				_.each(this.roomTypes, function(type) {
-					if (type.isSelected) { room_type_ids.push(type.id); };
-				});
+				if ( passedParams.isStandAlone || $rootScope.isStandAlone ) {
+					// filter by worktype and employee
+					if ( passedParams.allEmployeesSelected && typeof filter.filterByEmployeeName == 'boolean' ) {
+						params['all_employees_selected'] = true;
+					} else {
+						if ( filter.filterByEmployeeName ) {
+							params['assignee_id'] = filter.filterByEmployeeName;
+						} else {
+							params['all_employees_selected'] = true;
+						};
+					}
 
-				// filter by worktype and employee
-				if ( filter.filterByEmployeeName ) {
-					params['assignee_id'] = filter.filterByEmployeeName;
-				};
-				if ( filter.filterByWorkType ) {
-					params['work_type_id'] = filter.filterByWorkType;
-				} else if (passedParams.work_type_id) {
-					params['work_type_id'] = passedParams.work_type_id;
-					filter.filterByWorkType = passedParams.work_type_id;
+					if ( filter.filterByWorkType ) {
+						params['work_type_id'] = filter.filterByWorkType;
+					} else if (passedParams.work_type_id) {
+						params['work_type_id'] = passedParams.work_type_id;
+						filter.filterByWorkType = passedParams.work_type_id;
+					};
 				};
 			};
 
