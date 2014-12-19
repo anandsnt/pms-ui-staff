@@ -13,6 +13,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.setScroller('ar-transaction-list');
 		};
 
+		// Refresh the scroller when the tab is active.
+		$rootScope.$on("arTransactionTabActive", function(event) {
+			console.log("AR tab active");
+			setTimeout(function() {
+				$scope.refreshScroller('ar-transaction-list');
+			}, 100);
+		});
+
 		// Initializing filter data
 		$scope.filterData = {
 			'id': $scope.contactInformation == undefined? "" :$scope.contactInformation.id,

@@ -30,6 +30,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 				$scope.$broadcast("contactTabActive");
 			}
 			else if (tabToSwitch == 'cc-ar-transactions') {
+				$scope.$broadcast("arTransactionTabActive");
 				$scope.isWithFilters = false;
 			}
 			if (!$scope.viewState.isAddNewCard) {
