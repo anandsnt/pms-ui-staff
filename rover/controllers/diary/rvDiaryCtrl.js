@@ -646,13 +646,22 @@ sntRover
 					lastArrTime = oItem.arrival;
 					lastDepTime = oItem.departure;
 				}
-				this.currentResizeItem.arrival   = lastArrTime;
-				this.currentResizeItem.departure = lastDepTime;
-	    		if(oRowItem.id !== props.currentResizeItemRow) {	    			
+				
+	    		if(oRowItem.id !== props.currentResizeItemRow) {	
+
+	    			console.log(oItem.arrival);
+	    			console.log(this.currentResizeItem.arrival);
+	    			console.log(lastArrTime);
+	    			oItem.arrival   = lastArrTime;
+					oItem.departure = lastDepTime;	
 	    			util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);		     		
+	    			$scope.renderGrid();
+	    			return;
 	    			/*this.currentResizeItem = oItem;
 	    			this.currentResizeItemRow = oRowItem;*/	    			
-	    		}				
+	    		}
+	    		this.currentResizeItem.arrival   = lastArrTime;
+				this.currentResizeItem.departure = lastDepTime;				
 	    		$scope.renderGrid();
 	    		return;
 	    		
@@ -982,8 +991,8 @@ sntRover
 		start_date 	= new Date(this.display.x_n), 
 		start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
 		
-		start 		= new Date(this.currentResizeItem.arrival),
-		end 		= new Date(this.currentResizeItem.departure),
+		start 		= new Date(this.currentResizeItem.arrival).toComponents().date.toDateString(),
+		end 		= new Date(this.currentResizeItem.departure).toComponents().date.toDateString(),
 		
 		rate_type 	= ( this.currentResizeItem.travel_agent_id == null || this.currentResizeItem.travel_agent_id == '') && 
 					( this.currentResizeItem.company_card_id == null || this.currentResizeItem.company_card_id == '') ? 'Standard': 'Corporate',
