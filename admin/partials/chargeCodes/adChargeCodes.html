@@ -2,10 +2,10 @@
 	<div>
 		<header class="content-title float">
 			<h2 translate>
-				CHARGE_CODE
+				CHARGE_CODES
 			</h2>
 			<span class="count">
-				({{data.charge_codes.length}})
+				({{totalCount}})
 			</span>
 			<a ng-click="addNewClicked()" class="action add" translate>ADD_NEW</a>
 			<a ng-show="data.is_connected_to_pms =='true'"  ng-click="importFromPmsClicked($event)" class="action import" translate>IMPORT_FROM_PMS</a>
