@@ -113,22 +113,28 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB
-      var FLO_MGR = 'floor_&_maintenance_manager',
-          FLO_STF = 'floor_&_maintenance_staff',
-          FLO_MGR_ID = 10,
-          FLO_STF_ID = 11
-          isFloMgr = false,
-          isFloStf = false;
-
-      isFloMgr = _.find(roles, function(item) {
-        return item.id === FLO_MGR_ID || item.name === FLO_MGR;
-      });
+      var FLO_STF    = 'floor_&_maintenance_staff',
+          FLO_STF_ID = 11,
+          isFloStf   = false;
 
       isFloStf = _.find(roles, function(item) {
         return item.id === FLO_STF_ID || item.name === FLO_STF;
       });
 
-      return isFloMgr || isFloStf ? true : false;
+      return isFloStf ? true : false;
+    })(hotelDetails.current_user.roles);
+
+    $rootScope.isMaintenanceManager = (function(roles) {
+      // Values taken form DB
+      var FLO_MGR    = 'floor_&_maintenance_manager',
+          FLO_MGR_ID = 10,
+          isFloMgr   = false;
+
+      isFloMgr = _.find(roles, function(item) {
+        return item.id === FLO_MGR_ID || item.name === FLO_MGR;
+      });
+
+      return isFloMgr ? true : false;
     })(hotelDetails.current_user.roles);
 
     $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
