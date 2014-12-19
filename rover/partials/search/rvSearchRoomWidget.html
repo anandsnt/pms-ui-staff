@@ -14,9 +14,9 @@
 	<div ng-show="showSearchResultsArea">
 
 		<!-- Rooms list -->
-		<section id="dashboard-search" class="content scrollable" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results': rooms.length==0}">
+		<section id="dashboard-search" class="content scrollable" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results': uiTotalCount == 0}">
 			<div class="wrapper" id="rooms">
-				<ul id="dashboard-search-results" class="search-results" ng-hide="rooms.length === 0">
+				<ul id="dashboard-search-results" class="search-results" ng-hide="uiTotalCount == 0">
 					<li class="room" ng-repeat="room in rooms">
 						<a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" ng-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
 							<div class="data">
@@ -57,7 +57,7 @@
 				    </li>
 				</ul>
 				<!-- Empty -->
-				<ul id="dashboard-search-results" class="search-results" ng-show="rooms.length === 0">
+				<ul id="dashboard-search-results" class="search-results" ng-show="uiTotalCount == 0">
 					<li class="no-content">
 						<div class="info">
 							<span class="icon-no-content icon-room"></span>
@@ -65,14 +65,14 @@
 							<span class="h2">Search by <strong>Room Number</strong></span>
 						</div>
 					</li>
-				</ul>				
+				</ul>			
 			</div>
 		</section>
 
 		<div class="search-pagination" ng-show="(rooms | filter:{display_room:true}).length === 50 && (!disablePrevBtn || !disableNextBtn)">
 		    <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="disableNextBtn">Next</button>
 		    <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="disablePrevBtn">Previous</button>
-		    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ totalCount }}</strong> items</p>
+		    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
 		</div>
 
 	</div>

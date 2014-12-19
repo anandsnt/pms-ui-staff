@@ -576,8 +576,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			function _firstInsert () {
-				$scope.rooms = [];
-
 				for ( i = 0; i < _processCount; i++ ) {
 					_roomCopy = _.extend( {}, $_roomList.rooms[i] );
 					$scope.rooms.push( _roomCopy );
