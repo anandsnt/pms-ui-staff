@@ -41,7 +41,7 @@
         </div>
         <!-- If Work type is set to All, don't show this dropdown -->
         <div class="select">
-            <select id="employees"  ng-disabled="!topFilter.byWorkType" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="emp.id as emp.maid_name for emp in employees" ng-change="applyEmpfilter()">
+            <select id="employees" ng-disabled="!topFilter.byWorkType" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="emp.id as emp.maid_name for emp in employees" ng-change="applyEmpfilter()">
                 <option value="">All Employees</option>
             </select>
         </div>
@@ -108,31 +108,23 @@
         </a>
     </li>
 
-    <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
+    <li class="mobile-pagination on-bottom-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
         <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ totalCount }}</strong> items</p>
         <p class="pull-msg" ng-show="!disableNextBtn">Pull up to load next page</p>
     </li>
   </ul>
   
   <!-- Empty -->
-  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="!isStandAlone && (rooms.length === 0)">
+  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="rooms.length === 0">
     <li class="no-content">
       <div class="info">
         <span class="icon-no-content icon-room"></span>
-        <strong class="h1">No Matching Rooms</strong>
-        <span ng-show="(rooms | filter:{display_room:true}).length) == 0" class="h2">Modify the <strong>Filters</strong></span>
-        <span ng-show="rooms.length == 0" class="h2">Search by <strong>Room Number</strong></span>
+        <strong ng-show="!isStandAlone || !topFilter.byEmployee" class="h1">No Matching Rooms</strong>
+        <strong ng-show="isStandAlone && !!topFilter.byEmployee" class="h1">No Rooms Assigned</strong>
+        <span class="h2">Modify the <strong>Filters</strong> or</span>
+        <span class="h2">Search by <strong>Room Number</strong></span>
       </div>
     </li>
-  </ul>
-
-  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="isStandAlone && (rooms.length === 0)">
-      <li class="no-content">
-          <div class="info">
-              <span class="icon-no-content icon-room"></span>
-              <strong class="h1">No Rooms Assigned</strong>
-          </div>
-      </li>
   </ul>
 </section>
 

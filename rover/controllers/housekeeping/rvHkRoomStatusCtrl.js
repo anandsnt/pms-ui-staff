@@ -224,6 +224,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
+			console.log($scope.topFilter.byEmployee);
 			$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
 			$scope.filterDoneButtonPressed();
 		};
@@ -403,7 +404,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		function $_fetchRoomListCallback(data) {
 			if ( !!data ) {
 				$_roomList = data;
-			};
+			} else {
+				$_roomList = {};
+			}
 
 			$scope.totalCount = $_roomList.total_count;
 
@@ -560,45 +563,47 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				_minCount     = 13,
 				i             = 0;
 
-			var _hideLoader = function() {
-					$_roomList = {};
-					$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
-					$scope.$emit( 'hideLoader' );
-				},
-				_firstInsert = function(count) {
-					$scope.rooms = [];
-
-					for (i = 0; i < count; i++) {
-						_roomCopy = angular.copy( $_roomList.rooms[i] );
-						$scope.rooms.push( _roomCopy );
-					};
-
-					if ( _totalLen <= _minCount ) {
-						_hideLoader();
-					};
-				},
-				_secondInsert = function(startCount) {
-					for (i = startCount; i < _totalLen; i++) {
-						_roomCopy = angular.copy( $_roomList.rooms[i] );
-						$scope.rooms.push( _roomCopy );
-					};
-
-					_hideLoader();
-				};
-
+			// if   : results -> load 0 to '_processCount' after a small delay
+			// else : empty and hide loader
 			if ( _totalLen ) {
 				_processCount = Math.min(_totalLen, _minCount);
-
-				// load first 13 a small delay
-				$timeout(_firstInsert.bind(null, _processCount), 100);
-
-				// load the rest after a small delay - DOM can process it all
-				if ( _totalLen > _minCount ) {
-					$timeout(_secondInsert.bind(null, _processCount), 300);
-				};
+				$timeout(_firstInsert, 100);
 			} else {
+				$scope.rooms = [];
 				_hideLoader();
-			}
+			};
+
+			function _firstInsert () {
+				$scope.rooms = [];
+
+				for (i = 0; i < _processCount; i++) {
+					_roomCopy = angular.copy( $_roomList.rooms[i] );
+					$scope.rooms.push( _roomCopy );
+				};
+
+				// if   : more than '_minCount' results -> load '_processCount' to last
+				// else : hide loader
+				if ( _totalLen > _minCount ) {
+					$timeout(_secondInsert, 100);
+				} else {
+					_hideLoader();
+				};
+			};
+
+			function _secondInsert () {
+				for (i = _processCount; i < _totalLen; i++) {
+					_roomCopy = angular.copy( $_roomList.rooms[i] );
+					$scope.rooms.push( _roomCopy );
+				};
+
+				_hideLoader();
+			};
+
+			function _hideLoader () {
+				$_roomList = {};
+				$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
+				$scope.$emit( 'hideLoader' );
+			};
 		};
 
 
