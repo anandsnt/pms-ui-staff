@@ -12,14 +12,8 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
 
         var addCreditAmountSuccess = function(data) {
             $scope.$emit('hideLoader');
-            if(data.errors.length > 0){
-                $scope.errorMessage = data.errors;
-            }
-            else{
-                $scope.errorMessage = "";
-            }
+            $scope.errorMessage = "";
             ngDialog.close();
-
             $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
             $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
         };
@@ -40,6 +34,7 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
     
     // upon entering credit amount
     $scope.addCreditAmount = function(){
+
         $scope.totalCreditAmount = parseFloat(parseFloat($scope.existingCreditAmount) + parseFloat($scope.selectedSymbol + $scope.addedCreditAmount)).toFixed(2);
     };
 
