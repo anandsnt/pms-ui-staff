@@ -7,6 +7,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 
 		$scope.isDiscard = false;
 		$scope.isPromptOpened = false;
+		$scope.isLogoPrint = true;
 		//setting the heading of the screen
 		if ($stateParams.type == "COMPANY") {
 			if ($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_COMPANY_CARD');
@@ -18,6 +19,66 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			else $scope.heading = $filter('translate')('TA_CARD');
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
+		}
+
+		/**
+		 * function to switch to new tab, will set $scope.currentSelectedTab to param variable
+		 * @param{string} is the value of that tab
+		 */
+		$scope.switchTabTo = function($event, tabToSwitch) {
+			if ($event !== undefined && $event !== "") {
+				$event.stopPropagation();
+				$event.stopImmediatePropagation();
+			}
+
+			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
+
+				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
+					$scope.errorMessage = ["Please save " + $scope.cardTypeText + " card first"];
+					if ($stateParams.type == "COMPANY") {
+						$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
+					} else {
+						$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('TA_SAVE_PROMPT')]);
+					}
+					return;
+				} else {
+					saveContactInformation($scope.contactInformation);
+					$scope.$broadcast("ContactTabActivated");
+				}
+
+			}
+			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
+				$scope.$broadcast("saveContract");
+			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
+				$scope.$broadcast("saveArAccount");
+			}
+			if (tabToSwitch == 'cc-ar-accounts') {
+				$scope.$broadcast("arAccountTabActive");
+				$scope.$broadcast("refreshAccountsScroll");
+			}
+			if (tabToSwitch == 'cc-contracts') {
+				$scope.$broadcast("refreshContractsScroll");
+			}
+			if (tabToSwitch == 'cc-ar-transactions') {
+				$rootScope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
+			$scope.currentSelectedTab = tabToSwitch;
+		};
+
+		$scope.$on('ARTransactionSearchFilter', function(e, data) {
+			$scope.isWithFilters = data;
+		});
+
+		//CICO-11664 
+		//To default the AR transactions tab while navigating back from staycard
+		if ($stateParams.isBackFromStaycard) {
+			//timeout added to wait untill the tab initalization and data initialization is complete
+			$timeout(function() {
+				$scope.currentSelectedTab = 'cc-ar-transactions';
+				$scope.switchTabTo('', 'cc-ar-transactions');
+				$scope.$apply();
+			}, 3000);
 		}
 
 		$rootScope.$broadcast("viewFromCardsOutside");
