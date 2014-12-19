@@ -963,8 +963,29 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.arrivalDate), 'yyyy-MM-dd')];
             }
             if (reservationDetails.reservation_card.payment_method_used !== "" && reservationDetails.reservation_card.payment_method_used !== null) {
+           
                 $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
                 $scope.reservationData.paymentType.type.value = reservationDetails.reservation_card.payment_method_used;
+                if($scope.reservationData.paymentType.type.value == "CC"){
+                	$scope.renderData = {};
+                	$scope.renderData.creditCardType = reservationDetails.reservation_card.payment_details.card_type_image.replace(".png", "").toLowerCase();
+					$scope.renderData.endingWith = reservationDetails.reservation_card.payment_details.card_number;
+					$scope.renderData.cardExpiry = reservationDetails.reservation_card.payment_details.card_expiry;
+					$scope.renderData.isSwiped = reservationDetails.reservation_card.payment_details.is_swiped;
+					$scope.reservationData.selectedPaymentId = reservationDetails.reservation_card.payment_details.id;
+					//CICO-11579 - To show credit card if C&P swiped or manual.
+					//In other cases condition in HTML will work
+					if($rootScope.paymentGateway == "sixpayments"){
+						if(reservationDetails.reservation_card.payment_details.is_swiped){
+							//can't set manual true..that is why added this flag.. Added in HTML too
+							$scope.reservationEditMode = true;
+						} else {
+							$scope.isManual = true;
+						}
+					} 
+					$scope.showSelectedCreditCard = true;
+										
+                }
             }
 
 
