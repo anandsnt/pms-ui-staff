@@ -841,10 +841,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		// CICO-9512
 		// $scope.reservationData.paymentType.type.value = "";
 
-		$scope.changeOnsiteCallIn = function(){
-		 $scope.isManual ? $scope.showCC = true : "";
-		 $scope.isManual = !$scope.isManual;
-		 refreshScrolls(); 
+		$scope.changeOnsiteCallIn = function(){		 
+		//	 $scope.isManual = !$scope.isManual;
+			 $scope.isManual ? $scope.showCC = true : "";
+			 refreshScrolls(); 
 		};
 
 		$scope.changePaymentType = function() {
