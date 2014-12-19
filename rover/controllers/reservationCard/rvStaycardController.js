@@ -75,6 +75,7 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			$scope.$parent.heading = data;
 			
 			if(data == "Guest Bill") $scope.$parent.addNoPrintClass = true;
+			else if(data == "Stay Card") $scope.$parent.isLogoPrint = true;
 			else $scope.$parent.addNoPrintClass = false;
 		});
 
