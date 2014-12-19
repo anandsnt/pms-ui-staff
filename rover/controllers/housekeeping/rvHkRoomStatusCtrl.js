@@ -53,7 +53,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		if ( RVHkRoomStatusSrv.currentFilters.page < 1 ) {
 			RVHkRoomStatusSrv.currentFilters.page = 1;
 		};
-		$scope.currentFilters = angular.copy(RVHkRoomStatusSrv.currentFilters);
+		$scope.currentFilters = _.extend( {}, RVHkRoomStatusSrv.currentFilters );
 
 		// The filters should be re initialized if we are navigating from dashborad to search
 		// In back navigation (From room details to search), we would retain the filters.
@@ -62,7 +62,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
 				
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				$scope.currentFilters = angular.copy(RVHkRoomStatusSrv.currentFilters);
+				$scope.currentFilters = _.extend( {}, RVHkRoomStatusSrv.currentFilters );
 
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
@@ -82,7 +82,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_perPage         = $scope.currentFilters.perPage,
 			$_defaultPage     = 1,
 			$_defaultPerPage  = $window.innerWidth < 599 ? 25 : 50,
-			$_oldFilterValues = angular.copy( $scope.currentFilters );
+			$_oldFilterValues = _.extend( {}, $scope.currentFilters );
 
 		var $_roomsEl         = document.getElementById( 'rooms' ),
 			$_filterRoomsEl   = document.getElementById( 'filter-rooms' );
@@ -94,7 +94,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.resultFrom         = $_page,
 		$scope.resultUpto         = $_perPage,
-		$scope.totalCount         = 0;
+		$scope.netTotalCount      = 0;
+		$scope.uiTotalCount       = 0;
 		$scope.disablePrevBtn     = true;
 		$scope.disableNextBtn     = true;
 
@@ -108,7 +109,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
-		$_oldRoomTypes            = angular.copy( $scope.roomTypes );
+		$_oldRoomTypes            = _.extend( {}, $scope.roomTypes );
 
 		$scope.assignRoom = {};
 
@@ -167,11 +168,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				$_resetPageCounts();
 
-				RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
-				$_oldFilterValues                = angular.copy( $scope.currentFilters );
+				RVHkRoomStatusSrv.currentFilters = _.extend( {}, $scope.currentFilters );
+				$_oldFilterValues                = _.extend( {}, $scope.currentFilters );
 
-				RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
-				$_oldRoomTypes              = angular.copy( $scope.roomTypes );
+				RVHkRoomStatusSrv.roomTypes = _.extend( {}, $scope.roomTypes );
+				$_oldRoomTypes              = _.extend( {}, $scope.roomTypes );
 
 				$timeout(function() {
 					$_callRoomsApi();
@@ -224,7 +225,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
-			console.log($scope.topFilter.byEmployee);
 			$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
 			$scope.filterDoneButtonPressed();
 		};
@@ -277,10 +277,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.clearFilters = function() {
 			_.each($scope.roomTypes, function(type) { type.isSelected = false; });
-			RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
+			RVHkRoomStatusSrv.roomTypes = _.extend( {}, $scope.roomTypes );
 
 			$scope.currentFilters            = RVHkRoomStatusSrv.initFilters();
-			RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
+			RVHkRoomStatusSrv.currentFilters = _.extend( {}, $scope.currentFilters );
 
 			$_refreshScroll();
 		};
@@ -368,7 +368,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		            });
 		            $_tobeAssignedRoom.canAssign = false;
 		            $_tobeAssignedRoom.assigned_staff = {
-		            	'name': angular.copy(assignee.name),
+		            	'name': _.extend( {}, assignee.name ),
 		            	'class': 'assigned'
 		            };
 
@@ -402,24 +402,27 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_fetchRoomListCallback(data) {
-			if ( !!data ) {
-				$_roomList = data;
+			if ( !!_.size(data) ) {
+				$_roomList = _.extend({}, data);
 			} else {
 				$_roomList = {};
-			}
+			};
 
-			$scope.totalCount = $_roomList.total_count;
+			// clear old results and update total counts
+			$scope.rooms         = [];
+			$scope.netTotalCount = $_roomList.total_count;
+			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
 
 			if ( $_page === 1 ) {
 				$scope.resultFrom = 1;
-				$scope.resultUpto = $scope.totalCount < $_perPage ? $scope.totalCount : $_perPage;
+				$scope.resultUpto = $scope.netTotalCount < $_perPage ? $scope.netTotalCount : $_perPage;
 				$scope.disablePrevBtn = true;
-				$scope.disableNextBtn = $scope.totalCount > $_perPage ? false : true;
+				$scope.disableNextBtn = $scope.netTotalCount > $_perPage ? false : true;
 			} else {
 				$scope.resultFrom = $_perPage * ($_page - 1) + 1;
-				$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.totalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.totalCount;
+				$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.netTotalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.netTotalCount;
 				$scope.disablePrevBtn = false;
-				$scope.disableNextBtn = $scope.resultUpto === $scope.totalCount ? true : false;
+				$scope.disableNextBtn = $scope.resultUpto === $scope.netTotalCount ? true : false;
 			}
 
 			// filter stuff
@@ -558,15 +561,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		function $_postProcessRooms() {
 			var _roomCopy     = {},
-				_totalLen     = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0,
 				_processCount = 0,
 				_minCount     = 13,
 				i             = 0;
 
 			// if   : results -> load 0 to '_processCount' after a small delay
 			// else : empty and hide loader
-			if ( _totalLen ) {
-				_processCount = Math.min(_totalLen, _minCount);
+			if ( $scope.uiTotalCount ) {
+				_processCount = Math.min( $scope.uiTotalCount, _minCount );
 				$timeout(_firstInsert, 100);
 			} else {
 				$scope.rooms = [];
@@ -576,14 +578,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			function _firstInsert () {
 				$scope.rooms = [];
 
-				for (i = 0; i < _processCount; i++) {
-					_roomCopy = angular.copy( $_roomList.rooms[i] );
+				for ( i = 0; i < _processCount; i++ ) {
+					_roomCopy = _.extend( {}, $_roomList.rooms[i] );
 					$scope.rooms.push( _roomCopy );
 				};
 
 				// if   : more than '_minCount' results -> load '_processCount' to last
 				// else : hide loader
-				if ( _totalLen > _minCount ) {
+				if ( $scope.uiTotalCount > _minCount ) {
 					$timeout(_secondInsert, 100);
 				} else {
 					_hideLoader();
@@ -591,8 +593,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			function _secondInsert () {
-				for (i = _processCount; i < _totalLen; i++) {
-					_roomCopy = angular.copy( $_roomList.rooms[i] );
+				for ( i = _processCount; i < $scope.uiTotalCount; i++ ) {
+					_roomCopy = _.extend( {}, $_roomList.rooms[i] );
 					$scope.rooms.push( _roomCopy );
 				};
 
@@ -636,14 +638,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_callRoomsApi() {
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {
-				date : $rootScope.businessDate
-			}, $_fetchRoomListCallback);
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
 		};
 
 		function $_updateFilters (key, value) {
 			$scope.currentFilters[key]       = value;
-			RVHkRoomStatusSrv.currentFilters = angular.copy($scope.currentFilters);
+			RVHkRoomStatusSrv.currentFilters = _.extend( {}, $scope.currentFilters );
 		};
 
 		function $_resetPageCounts () {
