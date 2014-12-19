@@ -36,18 +36,17 @@ angular.module('housekeepingModule', [])
                         RVHkRoomStatusSrv.currentFilters.query = '';
 
                         return RVHkRoomStatusSrv.fetchRoomListPost({
-                            businessDate : $rootScope.businessDate,
-                            isStandAlone : $rootScope.isStandAlone
+                            isStandAlone         : $rootScope.isStandAlone,
+                            allEmployeesSelected : !$rootScope.isMaintenanceStaff
                         });
                     } else if (!!$stateParams && !!$stateParams.businessDate) {
                         return RVHkRoomStatusSrv.fetchRoomListPost({
-                            businessDate : $stateParams.businessDate,
                             isStandAlone : $stateParams.isStandAlone
                         });
                     } else {
                         return RVHkRoomStatusSrv.fetchRoomListPost({
-                            businessDate : $rootScope.businessDate,
-                            isStandAlone : $rootScope.isStandAlone
+                            isStandAlone         : $rootScope.isStandAlone,
+                            allEmployeesSelected : !$rootScope.isMaintenanceStaff
                         });
                     }
                 },

@@ -108,6 +108,7 @@
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage">
                 <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
+                <button type="button" class="button green" ng-if="depositDetails.isFromCheckin && depositPaidSuccesFully" ng-click="proceedCheckin()">Proceed check in</button>
                 <button type="button" class="button blue" ng-click="tryAgain()" ng-show="depositInProcess && errorOccured && !depositPaidSuccesFully">Try again</button>
             </div>
         </div>

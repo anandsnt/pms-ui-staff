@@ -59,7 +59,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             // intialize reservation object
             $scope.reservationData = {
                 isHourly: false,
-                isValidDeposit : false,
+                isValidDeposit: false,
                 arrivalDate: '',
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
@@ -1327,14 +1327,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.paymentTypes = [];
 
 
-        var fetcCreditCardTypes = function(cancellationCharge, nights){
-            var successCallback = function(data){
+        var fetcCreditCardTypes = function(cancellationCharge, nights) {
+            var successCallback = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.paymentTypes = data;
                 data.forEach(function(item) {
-                  if(item.name === 'CC'){
-                     $scope.creditCardTypes = item.values;
-                  };
+                    if (item.name === 'CC') {
+                        $scope.creditCardTypes = item.values;
+                    };
                 });
             };
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
@@ -1344,14 +1344,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         var promptCancel = function(penalty, nights) {
 
             var passData = {
-                    "reservationId": $scope.reservationData.reservationId,
-                    "details":{
-                        "firstName":$scope.guestCardData.contactInfo.first_name,
-                        "lastName":$scope.guestCardData.contactInfo.last_name,
-                        "creditCardTypes":$scope.creditCardTypes,
-                        "paymentTypes":$scope.paymentTypes
-                    }
-             };
+                "reservationId": $scope.reservationData.reservationId,
+                "details": {
+                    "firstName": $scope.guestCardData.contactInfo.first_name,
+                    "lastName": $scope.guestCardData.contactInfo.last_name,
+                    "creditCardTypes": $scope.creditCardTypes,
+                    "paymentTypes": $scope.paymentTypes
+                }
+            };
             $scope.passData = passData;
             ngDialog.open({
                 template: '/assets/partials/reservationCard/rvCancelReservation.html',
@@ -1710,8 +1710,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         $state.go(nextState, nextStateParameters);
                     }
                 }
+
                 var saveFailure = function(data) {
                     $scope.errorMessage = data;
+                    $scope.$broadcast('FAILURE_SAVE_RESERVATION', data);
+                    $scope.$emit('hideLoader');
+                }
+
+                var updateFailure = function(data) {
+                    $scope.errorMessage = data;
+                    $scope.$broadcast('FAILURE_UPDATE_RESERVATION', data);
                     $scope.$emit('hideLoader');
                 }
 
@@ -1733,7 +1741,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
                     postData.reservationId = $scope.reservationData.reservationId;
-                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
+                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
