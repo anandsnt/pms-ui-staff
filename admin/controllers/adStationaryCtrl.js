@@ -2,6 +2,9 @@ admin.controller('ADStationaryCtrl',['$scope','ADStationarySrv',function($scope,
 
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
+	$scope.fileName = "Choose File....";
+   	$scope.location_image_file = $scope.fileName;
+   	
 
 	$scope.init = function(){
 		var successCallbackOfFetch = function(data){
@@ -31,5 +34,22 @@ admin.controller('ADStationaryCtrl',['$scope','ADStationarySrv',function($scope,
 		//calling the save api
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
+
+	$scope.$watch(function(){
+		return $scope.data.location_image;
+	}, function(logo) {
+				if(logo == 'false')
+					$scope.fileName = "Choose File....";
+				$scope.hotel_logo_file = $scope.fileName;
+			}
+		);
+		/**
+    *   To handle show hide status for the logo delete button
+    */
+    $scope.isLogoAvailable = function(logo){
+    	if(logo != '/assets/logo.png' && logo != 'false')
+    		return true;
+    	else return false;
+    };
 
 }]);

@@ -1653,8 +1653,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var postData = $scope.computeReservationDataforUpdate(true, true);
                 var saveSuccess = function(data) {
-                    $scope.reservationData.depositAmount = data.reservations[0].deposit_amount;
-                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
+
+                    var totalDeposit = 0;
+                    //calculate sum of each reservation deposits
+                    angular.forEach(data.reservations, function(reservation, key) {
+                        totalDeposit = parseInt(totalDeposit) + parseInt(reservation.deposit_amount);
+                    });
+                    $scope.reservationData.depositAmount = totalDeposit;
+                    $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
+
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
                         angular.forEach(data.reservations, function(reservation, key) {
                             angular.forEach($scope.reservationData.rooms, function(room, key) {
@@ -1664,6 +1672,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             });
                         });
                         $scope.reservationData.reservations = data.reservations;
+                        $scope.reservationData.reservationIds = [];
+                        angular.forEach(data.reservations, function(reservation, key) {
+                            $scope.reservationData.reservationIds.push(reservation.id);
+                        });
                         $scope.reservationData.reservationId = $scope.reservationData.reservations[0].id;
                         $scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
                         $scope.reservationData.status = $scope.reservationData.reservations[0].status;
@@ -1736,7 +1748,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var updateSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.deposit_amount;
-                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
+                    $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
                     $scope.$broadcast('UPDATEFEE');
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
