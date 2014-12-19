@@ -316,7 +316,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"bill_number": 1,
 					"payment_type": $scope.reservationData.paymentType.type.value,
 					"amount": $scope.reservationData.depositAmount,
-					"payment_type_id": null
+					"payment_type_id": null,
+					"reservation_ids":$scope.reservationData.reservationIds
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
@@ -840,10 +841,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		// CICO-9512
 		// $scope.reservationData.paymentType.type.value = "";
 
-		$scope.changeOnsiteCallIn = function(){
-		 $scope.isManual ? $scope.showCC = true : "";
-		 $scope.isManual = !$scope.isManual;
-		 refreshScrolls(); 
+		$scope.changeOnsiteCallIn = function(){		 
+		//	 $scope.isManual = !$scope.isManual;
+			 $scope.isManual ? $scope.showCC = true : "";
+			 refreshScrolls(); 
 		};
 
 		$scope.changePaymentType = function() {
