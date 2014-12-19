@@ -219,7 +219,7 @@ sntRover
 				px_per_int: 				undefined,
 				px_per_hr: 					undefined,
 				currency_symbol:            $rootScope.currencySymbol,
-				min_hours: 					payload.display.min_hours
+				min_hours: 					isVaultDataSet ? vaultData.minHours : payload.display.min_hours
 			},
 
 			availability: {

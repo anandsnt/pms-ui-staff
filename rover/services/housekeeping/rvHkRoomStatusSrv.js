@@ -104,7 +104,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 				// filter by worktype and employee
 				if ( filter.filterByEmployeeName ) {
 					params['assignee_id'] = filter.filterByEmployeeName;
-				};
+				} else {
+					params['all_employees_selected'] = true;
+				}
 				if ( filter.filterByWorkType ) {
 					params['work_type_id'] = filter.filterByWorkType;
 				} else if (passedParams.work_type_id) {
