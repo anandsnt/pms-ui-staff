@@ -23,76 +23,14 @@
                     <div class="check-in-dates">
                         <span class="guest-status small-icon check-in">check-in</span>
                         {{getSimplifiedDayName(reservationData.arrivalDate)}}, {{reservationData.arrivalDate | date:dateFormat}}
-                        <div class="check-data icons icon-time time-in">
-                            <div class="select hour">
-                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh" ng-change="modifyCheckinCheckoutTime()">
-                                    <option value="" selected>HH</option>
-                                    <option value="01">01</option>
-                                    <option value="02">02</option>
-                                    <option value="03">03</option>
-                                    <option value="04">04</option>
-                                    <option value="05">05</option>
-                                    <option value="06">06</option>
-                                    <option value="07">07</option>
-                                    <option value="08">08</option>
-                                    <option value="09">09</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
-                            </div>
-                            <div class="select minutes">
-                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()">
-                                    <option value="00">00</option>
-                                    <option value="15">15</option>
-                                    <option value="30">30</option>
-                                    <option value="45">45</option>
-                                </select>
-                            </div>
-                            <div class="select ampm">
-                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.ampm" ng-change="modifyCheckinCheckoutTime()">
-                                    <option value="AM">AM</option>
-                                    <option value="PM">PM</option>
-                                </select>
-                            </div>
-                        </div>
+                        <span ng-if="!!reservationData.checkinTime.hh" class="check-data-set icons icon-time time-in">{{time.arrival}}</span>
+                        <span ng-if="!reservationData.checkinTime.hh" class="check-data-not-set icons icon-time time-in">Not Set</span>
                     </div>
                     <div class="check-out-dates">
                         <span class="guest-status small-icon check-out">check-out</span>
                         {{getSimplifiedDayName(reservationData.departureDate)}}, {{reservationData.departureDate | date:dateFormat}}
-                        <div class="check-data icons icon-time time-out">
-                            <div class="select hour">
-                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh" ng-change="modifyCheckinCheckoutTime()">
-                                    <option value="" selected>HH</option>
-                                    <option value="01">01</option>
-                                    <option value="02">02</option>
-                                    <option value="03">03</option>
-                                    <option value="04">04</option>
-                                    <option value="05">05</option>
-                                    <option value="06">06</option>
-                                    <option value="07">07</option>
-                                    <option value="08">08</option>
-                                    <option value="09">09</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
-                            </div>
-                            <div class="select minutes">
-                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.mm" ng-change="modifyCheckinCheckoutTime()">
-                                    <option value="00">00</option>
-                                    <option value="15">15</option>
-                                    <option value="30">30</option>
-                                    <option value="45">45</option>
-                                </select>
-                            </div>
-                            <div class="select ampm">
-                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.ampm" ng-change="modifyCheckinCheckoutTime()">
-                                    <option value="AM">AM</option>
-                                    <option value="PM">PM</option>
-                                </select>
-                            </div>
-                        </div>
+                        <span ng-if="!!reservationData.checkoutTime.hh" class="check-data-set icons icon-time time-out">{{time.departure}}</span>
+                        <span ng-if="!reservationData.checkoutTime.hh" class="check-data-not-set icons icon-time time-out">Not Set</span>
                     </div>
                 </div>
 

@@ -16,6 +16,12 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
     };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
+    
+    //To clear date boxes when we come to dashboard through main menu
+    //timeout given because rvReservationSearchWidgetCtrl init happens after some time
+    setTimeout(function(){
+        $scope.$broadcast("clearSearchDateValues", false);
+    }, 500);
 
     $scope.$on("$includeContentLoaded", function(){
         //we are showing the add new guest button in searhc only if it is standalone & search result is empty

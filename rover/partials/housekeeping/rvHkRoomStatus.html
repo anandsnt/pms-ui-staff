@@ -3,9 +3,14 @@
 <!-- Navbar -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
-<div id="pull-refresh-notify" ng-hide="filterOpen" ng-class="{'has-options': isStandAlone }">
-  <span id="icon"></span>
-  <span id="ref-text" translate>PULL_REFRESH</span>
+<div id="pull-refresh-page" ng-hide="filterOpen" ng-class="{'has-options': isStandAlone }">
+  <span id="refresh-icon"></span>
+  <span id="refresh-text" translate>PULL_REFRESH</span>
+</div>
+
+<div id="pull-load-next" ng-hide="filterOpen">
+  <span id="load-icon"></span>
+  <span id="load-text" translate>PULL_LOAD</span>
 </div>
 
 <!-- Search form -->
@@ -56,9 +61,15 @@
 </ul>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && hasActiveWorkSheet, 'no-options': !isStandAlone}" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary' && hasActiveWorkSheet}" div-touch-move-stop-propogate>
-  <ul class="wrapper search-results" ng-hide="rooms.length === 0 || (rooms | filter:{display_room:true}).length === 0">
-    <li class="room" bindonce ng-repeat="room in rooms track by $index" ng-show="room.display_room">
+<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && hasActiveWorkSheet, 'no-options': !isStandAlone}" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary' && hasActiveWorkSheet, 'no-pagination': (disablePrevBtn && disableNextBtn)}" div-touch-move-stop-propogate>
+  <ul class="wrapper search-results" ng-hide="rooms.length === 0">
+    <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
+        <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ totalCount }}</strong> items</p>
+        <p class="pull-msg" ng-show="!disablePrevBtn">Pull down to load previous page</p>
+        <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
+    </li>
+
+    <li class="room" bindonce ng-repeat="room in rooms track by $index">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
           <div class="data">
             <h2 class="{{ room.roomStatusClass }}" bo-text="room.room_no"></h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
@@ -82,6 +93,7 @@
           </div>
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">
+            <!-- Show only if room is assigned -->
             <!-- if room is assigned -->
             <span ng-if="isStandAlone && !room.canAssign" bo-text="room.assigned_staff.name" bo-class="room.assigned_staff.class"></span>
             <span ng-if="isStandAlone && room.canAssign" class="{{ room.assigned_staff.class }}" ng-click="$event.stopPropagation(); openAssignRoomModal(room)">{{ room.assigned_staff.name }}</span>
@@ -95,28 +107,40 @@
           </figure>
         </a>
     </li>
+
+    <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
+        <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ totalCount }}</strong> items</p>
+        <p class="pull-msg" ng-show="!disableNextBtn">Pull up to load next page</p>
+    </li>
   </ul>
   
   <!-- Empty -->
-  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="!isStandAlone && (rooms.length === 0 || (rooms | filter:{display_room:true}).length === 0)">
+  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="!isStandAlone && (rooms.length === 0)">
     <li class="no-content">
       <div class="info">
         <span class="icon-no-content icon-room"></span>
-        <strong class="h1">Find Rooms</strong>
-        <span class="h2">Search by <strong>Room Number</strong></span>
+        <strong class="h1">No Matching Rooms</strong>
+        <span ng-show="(rooms | filter:{display_room:true}).length) == 0" class="h2">Modify the <strong>Filters</strong></span>
+        <span ng-show="rooms.length == 0" class="h2">Search by <strong>Room Number</strong></span>
       </div>
     </li>
   </ul>
 
-  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="isStandAlone && (rooms.length === 0 || (rooms | filter:{display_room:true}).length === 0)">
-        <li class="no-content">
-            <div class="info">
-                <span class="icon-no-content icon-room"></span>
-                <strong class="h1">No Rooms Assigned</strong>
-            </div>
-        </li>
-    </ul> 
+  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="isStandAlone && (rooms.length === 0)">
+      <li class="no-content">
+          <div class="info">
+              <span class="icon-no-content icon-room"></span>
+              <strong class="h1">No Rooms Assigned</strong>
+          </div>
+      </li>
+  </ul>
 </section>
+
+<div class="search-pagination hk-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
+    <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="disableNextBtn">Next</button>
+    <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="disablePrevBtn">Previous</button>
+    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ totalCount }}</strong> items</p>
+</div>
 
 <!-- Rooms filters -->
 <section id="filter-rooms" class="content" ng-class="{ 'hidden' : !filterOpen, 'showing-filters': filterOpen }">

@@ -13,6 +13,9 @@ sntRover.directive('outsideClickHandler', function($window) {
         }
 
       });
+      scope.$on('$destroy', function() {
+             w.off('click');
+        });
     }
   }
 });

@@ -49,9 +49,9 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	* 
 	*	@private
 	*/
-	var $_mustRevAnim    = false,
-		$_userReqBack    = false,
-		$_prevStateName  = null,
+	var $_mustRevAnim = false,
+		$_userReqBack = false,
+		$_prevStateName = null,
 		$_prevStateParam = null,
 		$_prevStateTitle = null;
 
@@ -289,7 +289,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			_.extend(toParams, $rootScope.setNextState.data);
 			$rootScope.setNextState = {};
 		};
-
+		
 		$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
 	});
 }]);

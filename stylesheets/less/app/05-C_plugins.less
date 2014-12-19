@@ -2483,6 +2483,42 @@
 		            }
 	            }
 			}
+
+			/* Transaction amount received ***/
+			&.transaction-amount {
+				width: 280px;
+
+				.text {
+					.red { 
+						color: @red;
+						text-decoration: line-through;
+						clear: right;
+					}
+					
+					.green { color: @green; }
+				}
+
+				.entry {
+                    .float;
+
+                    .select {
+                        width: 30%;
+                        margin-right: 10px;
+                        .pull-left;
+                    }
+
+                    input {
+                        .calc-width(70, 10);
+                        .pull-left;
+                    }
+				}
+
+				.actions {
+					margin-top: 20px;
+					padding-top: 19px;
+					border-top: 1px solid rgba(0,0,0,.1);
+				}
+			}
 		}
 	}
 

@@ -4,8 +4,10 @@
       <div class="modal-header">
          <h1 translate>BILLING_INFO_TITLE</h1>
 
-         <em><span translate>CONFIRMATION_LABEL</span> #{{reservationData.confirm_no}}</em>
-         <button type="button" id="new-route" class="button" ng-class = "{'green': isInitialPage, 'white':!isInitialPage}" ng-click="headerButtonClicked()">{{getHeaderButtonLabel()}}</button>
+         <em ng-if = "billingEntity !== 'TRAVEL_AGENT_DEFAULT_BILLING' && billingEntity !== 'COMPANY_CARD_DEFAULT_BILLING'"><span translate>CONFIRMATION_LABEL</span> #{{reservationData.confirm_no}}</em>
+         <em ng-if = "billingEntity == 'TRAVEL_AGENT_DEFAULT_BILLING'">{{attachedEntities.travel_agent.name}}</em>
+         <em ng-if = "billingEntity == 'COMPANY_CARD_DEFAULT_BILLING'">{{attachedEntities.company_card.name}}</em>
+         <button type="button" id="new-route" class="button" ng-class = "{'green': isInitialPage, 'white':!isInitialPage}" ng-click="headerButtonClicked()" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'">{{getHeaderButtonLabel()}}</button>
       </div>
       <div ng-iscroll='homeScroll' ng-iscroll-delay='100' style="position: relative;overflow: hidden;height:510px;">
          <div class = "wrapper">

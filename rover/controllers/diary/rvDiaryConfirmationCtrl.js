@@ -50,20 +50,29 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
                     _.extend($scope.vaultSelections, convertTimeFormat(vFormat, occupancy));
                     _.extend($scope.selection, convertTimeFormat(dFormat, occupancy));
-
+                    var selected_type;
                     _.each($scope.selectedReservations, function(obj, idx, list) {
                         var item = {
                                 room_id: obj.room.id,
                                 room_no: obj.room.room_no,
                                 room_type: obj.room.room_type_name,
-                                amount: obj.occupancy.amount,
+                                amount: parseFloat(obj.occupancy.amount).toFixed(2),
                                 rateId: obj.occupancy.rate_id,
                                 numAdults: ($scope.reservationsSettings ? $scope.reservationsSettings.adults : 1),
                                 numChildren: ($scope.reservationsSettings ? $scope.reservationsSettings.children : 0),
-                                numInfants: ($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0)
+                                numInfants: ($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0),                                
                             },
                             local_version = util.shallowCopy({}, item);
 
+                        if( $scope.gridProps.filter.rate_type === 'Corporate') {
+                            selected_type = $scope.gridProps.filter.rate.type;
+                            if(selected_type === "COMPANY") {
+                                item.company_card_id = $scope.gridProps.filter.rate.id;                                
+                            }
+                            if(selected_type === "TRAVELAGENT") {
+                                item.travel_agent_id = $scope.gridProps.filter.rate.id;                            
+                            }
+                        }
                         $scope.vaultSelections.rooms.push(item);
 
                         local_version.amount = $scope.currencySymbol + ' ' + local_version.amount;
@@ -97,6 +106,8 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         };
 
         $scope.routeToSummary = function() {
+            console.log('vault data');
+            console.log( $scope.vaultSelections);
             $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
             //CICO-9429                  
             if ($rootScope.isAddonOn) {

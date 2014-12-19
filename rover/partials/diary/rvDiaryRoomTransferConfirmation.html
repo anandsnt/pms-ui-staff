@@ -4,7 +4,7 @@
     <span class="h2 message">
     	Move results in a price change of:
     	<!-- if price increase: -->
-    	<span class="red" >{{currencySymbol}} {{price}}</span>
+    	<span class="red" >{{currencySymbol}} {{price | number:2}}</span>
     	<!-- if price decrease:
     	<span class="green">- ${price}</span> -->
     </span>
@@ -22,7 +22,7 @@
             </li>
             <li class="type">{{roomXfer.current.room.room_type_name}}</li>
             <li class="room">{{roomXfer.current.room.number}}</li>
-            <li class="price">{{currencySymbol}} {{roomXfer.current.room.old_price}}</li>
+            <li class="price">{{currencySymbol}} {{roomXfer.current.room.old_price | number:2}}</li>
 		</ul>
 	</div>
 	<div class="diary-moved">
@@ -38,12 +38,12 @@
             </li>
             <li class="type">{{roomXfer.next.room.room_type_name}}</li>
             <li class="room">{{roomXfer.next.room.number}}</li>
-            <li class="price">{{currencySymbol}} {{roomXfer.next.room.new_price}}</li>
+            <li class="price">{{currencySymbol}} {{roomXfer.next.room.new_price | number:2}}</li>
 		</ul>
 	</div>
 
     <div class="actions">
-        <button type="button" class="button brand-colors">Move without Rate Change</button>
+        <button type="button" class="button brand-colors" ng-click="moveWithoutRateChange()">Move without Rate Change</button>
         <button type="button" class="button green" ng-click="confirm()">Apply Payment</button>
         <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button> 
     </div>

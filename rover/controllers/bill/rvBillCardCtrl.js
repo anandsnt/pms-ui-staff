@@ -157,7 +157,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	    if($scope.clickedButton == "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
 	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
 	     	setTimeout(function(){
-	     		$scope.openPleaseSwipe();
+	     		if($scope.reservationBillData.is_disabled_cc_swipe == "false" || $scope.reservationBillData.is_disabled_cc_swipe == "" || $scope.reservationBillData.is_disabled_cc_swipe == null){
+	     			$scope.openPleaseSwipe();
+	     		}
+	     		
 	        }, 200);
 	    };
 		$scope.reservationBillData = reservationBillData;
@@ -802,6 +805,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(){
+		if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
+			//TO DO:Go to room assignemt view
+			$state.go("rover.reservation.staycard.roomassignment", {
+				"reservation_id": $scope.reservationBillData.reservation_id,
+				"room_type": $scope.reservationBillData.room_type,
+				"clickedButton": "checkinButton"
+			});
+			return false;
+		}
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 		
@@ -809,7 +821,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKIN"){
 			errorMsg = "Signature is missing";
 			$scope.showErrorPopup(errorMsg);
-		} else if(!$scope.saveData.termsAndConditions){
+		} else if(!$scope.saveData.termsAndConditions && ($scope.reservationBillData.is_disabled_terms_conditions_checkin == "false" || $scope.reservationBillData.is_disabled_terms_conditions_checkin == "" || $scope.reservationBillData.is_disabled_terms_conditions_checkin == null)){
 			errorMsg = "Please check agree to the Terms & Conditions";
 			$scope.showErrorPopup(errorMsg);
 		} else {

@@ -27,4 +27,5 @@
 "ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
 "SELECT_CALCULATION_RULE":"Select Calculation Rule",
 "FEES_CODE":"Fees code",
-"FEES":"Fees"
+"FEES":"Fees",
+"MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee"

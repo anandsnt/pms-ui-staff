@@ -54,12 +54,12 @@
 				<span style="float:right" ng-hide="currentExpandedRow===$index || !!rate.is_hourly">
 					<img class="down" src="/assets/arrow-down.png" ng-click="expandRow($index)">
 				</span>
-				<span style="float:right" ng-show="currentExpandedRow===$index">
+				<span style="float:right" ng-show="currentExpandedRow===$index && !rate.is_hourly">
 					<img class="up" src="/assets/arrow-up.png" ng-click="expandRow($index)">
 				</span>
 			</td>
 
-			<td ng-repeat="date in calendarData.dates track by $index" class="cell" ng-hide="currentExpandedRow===$parent.$index" >
+			<td ng-repeat="date in calendarData.dates track by $index" class="cell" ng-hide="currentExpandedRow===$parent.$index && !rate.is_hourly" >
 				<div class="cell-container">
 					<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
 						<div>
@@ -80,7 +80,7 @@
 					<div class="cell-overlay" ng-if="isHistoryDate(date)"></div>
 				</div>
 			</td>
-			<td ng-repeat="date in calendarData.dates track by $index" class="cell" ng-show="currentExpandedRow===$parent.$index" >
+			<td ng-repeat="date in calendarData.dates track by $index" class="cell" ng-show="currentExpandedRow===$parent.$index && !rate.is_hourly" >
 				<div class="exp cell-container">
 					<div class="exp cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
 						<div>

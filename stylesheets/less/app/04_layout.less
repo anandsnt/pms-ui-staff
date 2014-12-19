@@ -185,17 +185,21 @@ body { overflow: hidden; }
 			/* HK search ***/
 			&#rooms {
 				top: 120px;
-				.calc-height(100, 120);
+				.calc-height(100, 180);
 
 				&.no-options {
 					top: 120px;
-					.calc-height(100, 120);
+					.calc-height(100, 180);
 				}
 
 				&.has-summary {
 					top: 120px;
-					.calc-height(100, 170);
+					.calc-height(100, 230);
 				}
+			}
+
+			&.no-pagination#rooms {
+				.calc-height(100, 130);
 			}
 
 			&#filter-rooms {
@@ -237,17 +241,21 @@ body { overflow: hidden; }
 			/* HK search ***/
 			&#rooms {
 				top: 120px;
-				.calc-height(100, 120);
+				.calc-height(100, 180);
 
 				&.no-options {
 					top: 120px;
-					.calc-height(100, 120);
+					.calc-height(100, 180);
 				}
 
 				&.has-summary {
 					top: 220px;
-					.calc-height(100, 220);
+					.calc-height(100, 280);
 				}
+			}
+
+			&.no-pagination#rooms {
+				.calc-height(100, 130);
 			}
 
 			&#filter-rooms {
@@ -595,6 +603,7 @@ body { overflow: hidden; }
 		padding: 10px;
 		background: rgba(0,0,0,.1);
 		overflow: hidden;
+		z-index: 3;
 		.hide; 
 
 		.entry {

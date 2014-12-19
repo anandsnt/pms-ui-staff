@@ -156,7 +156,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         // open the form to add a new rule
         $scope.openAddNewRule = function() {
             $scope.rulesTitle = 'New';
-
+            $scope.updateRule = false;
             // identify the restriction
             if ( this.item.description === 'Cancellation Penalties' ) {
                 $scope.showCancelForm = true;

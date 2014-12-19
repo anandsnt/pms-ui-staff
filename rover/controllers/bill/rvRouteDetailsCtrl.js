@@ -7,14 +7,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.showChargeCodes = false;
     $scope.isBillingGroup = true;
     $scope.paymentDetails = null;
-
     if($scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
         $scope.paymentDetails = $scope.selectedEntity.credit_card_details;
         $scope.paymentDetails.mli_token = $scope.selectedEntity.credit_card_details.card_number;
         $scope.paymentDetails.credit_card = $scope.selectedEntity.credit_card_details.card_code;
         $scope.isAddPayment = true;
     }
-    
+
     /**
     * Initializing the scrollers for the screen
     */
@@ -63,7 +62,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         }
 		$scope.isAddPayment = true;
         $scope.$broadcast('showaddpayment');
-	}	
+	};
     /**
     * Listener to track the ngDialog open event.
     * We save the id for the ngDialog to close nested dialog for disabling manual payment addition.
@@ -294,12 +293,65 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, id, successCallback, errorCallback);
     };
 
-    $scope.fetchBillsForReservation();
+    $scope.fetchDefaultAccountRouting = function(){
+
+        var successCallback = function(data) {
+            $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
+            $scope.selectedEntity.attached_billing_groups = data.billing_groups;
+            $scope.$parent.$emit('hideLoader');
+
+        };
+        var params = {};
+        params.id = $scope.selectedEntity.id;
+        $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
+
+    };
+    /**
+    * function to fetch available billing groups from the server
+    */
+    $scope.fetchAllBillingGroups = function(){
+        
+            var successCallback = function(data) {
+                $scope.availableBillingGroups = data;
+                if(data.length == 0)
+                    $scope.isBillingGroup = false;
+                $scope.$parent.$emit('hideLoader');
+                $scope.fetchDefaultAccountRouting();
+
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.$emit('displayErrorMessage',errorMessage);
+            };
+            
+           
+            $scope.invokeApi(RVBillinginfoSrv.fetchAllBillingGroups, '', successCallback, errorCallback);
+    };  
+
+    $scope.fetchAllChargeCodes = function(){
+        var successCallback = function(data) {
+            $scope.availableChargeCodes = data;
+            $scope.fetchAllBillingGroups();
+        };
+        var errorCallback = function(errorMessage) {
+            $scope.$parent.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage',errorMessage);
+        };
+        
+        $scope.invokeApi(RVBillinginfoSrv.fetchAllChargeCodes, '', successCallback, errorCallback);
+    };
+
+    if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
+        $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING"){
+        $scope.fetchBillsForReservation();
+    }else {
+        $scope.fetchAllChargeCodes();
+
+    }
     /**
     * function to trigger the filtering when the search text is entered
     */
     $scope.chargeCodeEntered = function(){
-    	console.log($scope.chargeCodeSearchText);
         $scope.showChargeCodes = false;
 	   	displayFilteredResultsChargeCodes();
 	   	var queryText = $scope.chargeCodeSearchText;
@@ -396,18 +448,31 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
                 return;
             }
-           $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
+            if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
+                $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING"){
+                $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
+            }
+
+            var defaultRoutingSaveSuccess = function(){
+                $scope.$parent.$emit('hideLoader');
+                ngDialog.close();
+            };
            
            /*
-                     * If user selects the new bill option,
-                     * we'll first create the bill and then save the route for that bill
-                     */
+             * If user selects the new bill option,
+             * we'll first create the bill and then save the route for that bill
+             */
            if($scope.selectedEntity.to_bill == 'new'){
                 $scope.createNewBill();
             }else if($scope.paymentDetails != null){
                 $scope.savePayment();
             }else{
-                $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+                if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
+                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"){
+                    $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess, $scope.errorCallback);
+                }else {
+                    $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+                }
             }
             
     };

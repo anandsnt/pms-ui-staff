@@ -27,7 +27,7 @@
                         name="arrival-time" 
                         ng-model="gridProps.filter.arrival_time" 
                         ng-options="arrival_time as arrival_time for arrival_time in gridProps.filter.arrival_times" ng-change="clickedOnArrivalTime()">
-                    <option value="" disabled selected="selected">Select</option>
+                    <option value="" selected="selected">Select</option>
                     <!--<option value={{arrival_time}}>{{arrival_time}}</option> -->
                 </select>
             </div>
@@ -39,7 +39,7 @@
                         name="room-type" 
                         ng-model="gridProps.filter.room_type" 
                         ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types" ng-change="clickedOnRoomType()" class="placeholder">
-                    <option value="" disabled selected="selected">Select</option>
+                    <option value="" selected="selected">Select</option>
                 </select>
             </div>
         </div>
@@ -122,6 +122,12 @@
                     <span class="value">24</span>
                 </label>
             </div>
+        </div>
+        <div class="entry reset">
+            <label for="diary-reset">Re-Set</label>
+            <button type="button" class="button white with-icon only-icon" ng-click="resetEverything()">
+                <span class="icons icon-reset"></span>
+            </button>
         </div>
        
         <!--<div class="actions">

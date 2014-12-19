@@ -167,14 +167,13 @@ sntRover
 
 		reservationIndex = function(room, reservation) {
 			var idx = -1, occupancy = room.occupancy;
-
+			
 			for(var i = 0, len = occupancy.length; i < len; i++) {
 				if(occupancy[i].reservation_id === reservation.reservation_id) {
 					idx = i;
 					return idx;
 				}
-			}
-
+			}			
 			return idx;		
 		};
 
@@ -199,8 +198,7 @@ sntRover
 		};
 
 		removeReservation = function(room, reservation) {
-			var idx = reservationIndex(room, reservation);
-		
+			var idx = reservationIndex(room, reservation);			
 			if(idx > -1) {
 				return room.occupancy.splice(idx, 1);
 			}
@@ -236,7 +234,7 @@ sntRover
 
 				removeReservation(oldRoom, reservation);
 
-				newRoom.occpuancy.push(copyReservation(reservation));
+				newRoom.occupancy.push(copyReservation(reservation));
 
                 idxOldRoom = roomIndex(rooms, oldRoom);
                 idxNewRoom = roomIndex(rooms, newRoom);
@@ -249,7 +247,7 @@ sntRover
                 if(idxNewRoom > -1 && idxNewRoom < data.length) {
                     data[idxNewRoom] = newRoom;
                 }
-			} else {
+			} else {				
 				updateReservation(oldRoom, reservation);
 			}
 		};

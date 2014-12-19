@@ -32,6 +32,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.setHeadingTitle($scope.heading);
 
 			$scope.$parent.hideSidebar = true;
+			$scope.time = {
+				arrival: $scope.reservationData.checkinTime.hh + ':' + $scope.reservationData.checkinTime.mm + ' ' + $scope.reservationData.checkinTime.ampm,
+				departure: $scope.reservationData.checkoutTime.hh + ':' + $scope.reservationData.checkoutTime.mm + ' ' + $scope.reservationData.checkoutTime.ampm
+			};
 			$scope.disableCheckin = true;
 			totalRoomsAvailable = 0;
 			$scope.isConfirmationEmailSent = ($scope.otherData.isGuestPrimaryEmailChecked || $scope.otherData.isGuestAdditionalEmailChecked) ? true : false;
@@ -142,7 +146,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					postData.reservation_ids.push(reservation.id);
 				});
 			}
-			
+
 			var emailSentSuccess = function(data) {
 				$scope.reservationStatus.confirmed = true;
 				updateBackButton();
@@ -174,7 +178,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var data = {
 				'data': dataToUpdate,
-				'userId': $scope.reservationData.guest.id
+				'userId': $scope.reservationData.guest.id || $scope.reservationDetails.guestCard.id
 			};
 
 			var updateGuestEmailSuccessCallback = function(data) {
@@ -330,7 +334,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		$scope.goToSearchClicked = function() {
 			$scope.initReservationData();
 			//$state.go('rover.reservation.search');
-			$state.go('rover.search','');
+			$state.go('rover.search', '');
 		};
 
 		$scope.modifyCheckinCheckoutTime = function() {

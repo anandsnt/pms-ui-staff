@@ -49,6 +49,7 @@
 	"NEW_TA_CARD": "New Travel Agent Card",
 
     "AR_ACCOUNT":"AR Account",
+    "AR_TRANSACTIONS":"AR Transactions",
     "CREATE_ACCOUNT":"Create Account",
     "AR_NUMBER":"AR NUMBER",
     "AR_ADDRESS":"AR ADDRESS",
@@ -64,6 +65,11 @@
     "DELETE_ACCOUNT":"Delete Account",
     "DELETE_AR_ACCOUNT":"Delete AR Account?",
     "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
-    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first"
+    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first",
+    "ADD_BILLLING_INFORMATION" : "Add Billing Information",
+    "BILLING_INFORMATION" : "Billing information",
+    "ROUTES_DEFINED" : "routes defined",
+    "ACCOUNTS_RECIEVABLE_NUMBER" : "Accounts Receivable Number"
+
 
 	
