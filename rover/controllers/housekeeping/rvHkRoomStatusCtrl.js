@@ -6,9 +6,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'$filter',
 	'$window',
 	'RVHkRoomStatusSrv',
-	'roomList',
+	'fetchPayload',
 	'employees',
-	'workTypes',
 	'roomTypes',
 	'floors',
 	'ngDialog',
@@ -21,9 +20,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$filter,
 		$window,
 		RVHkRoomStatusSrv,
-		roomList,
+		fetchPayload,
 		employees,
-		workTypes,
 		roomTypes,
 		floors,
 		ngDialog,
@@ -81,8 +79,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		var $_page            = $scope.currentFilters.page,
 			$_perPage         = $scope.currentFilters.perPage,
 			$_defaultPage     = 1,
-			$_defaultPerPage  = $window.innerWidth < 599 ? 25 : 50,
-			$_oldFilterValues = _.extend( {}, $scope.currentFilters );
+			$_defaultPerPage  = $window.innerWidth < 599 ? 25 : 50;
 
 		var $_roomsEl         = document.getElementById( 'rooms' ),
 			$_filterRoomsEl   = document.getElementById( 'filter-rooms' );
@@ -91,6 +88,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_tobeAssignedRoom    = {};
 
 		var $_lastQuery = '';
+
+		var $_oldFilterValues = _.extend( {}, RVHkRoomStatusSrv.currentFilters ),
+			$_oldRoomTypes    = _.extend( {}, roomTypes );
 
 		$scope.resultFrom         = $_page,
 		$scope.resultUpto         = $_perPage,
@@ -110,9 +110,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
-		$_oldRoomTypes            = _.extend( {}, $scope.roomTypes );
 
-		$scope.assignRoom = {};
+		$scope.workTypes          = [];
+		$scope.employees          = [];
+
+		$scope.assignRoom         = {};
 
 
 
@@ -120,7 +122,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 
-		$_fetchRoomListCallback(roomList);
+		// true represent that this is a fetchPayload call
+		// and the worktypes and assignments has already be fetched
+		$_fetchRoomListCallback(fetchPayload.roomList, true);
 
 
 
@@ -197,6 +201,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				for (key in $_oldRoomTypes) {
 					if ( $_oldRoomTypes.hasOwnProperty(key) ) {
 						if ( $_oldRoomTypes[key]['isSelected'] != $scope.roomTypes[key]['isSelected'] ) {
+							console.log( key + 'has changed' );
 							_hasRoomTypeChanged = true;
 							break;
 						};
@@ -406,7 +411,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 
-		function $_fetchRoomListCallback(data) {
+		function $_fetchRoomListCallback(data, alreadyFetched) {
 			if ( !!_.size(data) ) {
 				$_roomList = _.extend({}, data);
 			} else {
@@ -436,26 +441,32 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.showQueued = $_roomList.is_queue_rooms_on || false;
 
 			// need to work extra for standalone PMS
-			if ($rootScope.isStandAlone) {
-				$scope.workTypes = workTypes;
-				$scope.employees = employees;
+			if ( $rootScope.isStandAlone ) {
+				if ( !$scope.workTypes.length ) {
+					$scope.workTypes = fetchPayload.workTypes;
+				};
+				if ( !$scope.employees.length ) {
+					$scope.employees = employees;
+				};
 
 				// for mobile view spilt
 				$scope.currentView = 'rooms';
-				$scope.changeView = function(view) {
-					$scope.currentView = view;
+				if ( !$scope.changeView ) {
+					$scope.changeView = function(view) {
+						$scope.currentView = view;
+					};
 				};
 
 				var _setUpWorkTypeEmployees = function() {
 					$_defaultWorkType = $scope.currentFilters.filterByWorkType;
-					$_defaultEmp      = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
+					$_defaultEmp      = $scope.currentFilters.filterByEmployeeName;
 
 					// time to decide if this is an employee
 					// who has an active work sheets
-					$_checkHasActiveWorkSheet();
+					$_checkHasActiveWorkSheet(alreadyFetched);
 				}
 
-				if ( workTypes.length && employees.length ) {
+				if ( (!!$scope.workTypes && $scope.workTypes.length) && (!!$scope.employees && $scope.employees.length) ) {
 					_setUpWorkTypeEmployees();
 				} else {
 					$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
@@ -483,25 +494,24 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 
-		function $_checkHasActiveWorkSheet() {
+		function $_checkHasActiveWorkSheet(alreadyFetched) {
 			var _params = {
 					'date': $rootScope.businessDate,
 					'employee_ids': [$_defaultEmp || $rootScope.userId], // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
 					'work_type_id': $_defaultWorkType
 				},
 				_callback = function(data) {
-					$scope.topFilter.byWorkType = $_defaultWorkType;
-					$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
+					$scope.hasActiveWorkSheet = !!data.work_sheets && !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
 
-					$scope.hasActiveWorkSheet = !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
+					$scope.topFilter.byWorkType = $_defaultWorkType;
+					$scope.topFilter.byEmployee = $_defaultEmp;
 
 					// set an active user in filterByEmployee, set the mobile tab to to summary
 					if ($scope.hasActiveWorkSheet) {
-						$scope.topFilter.byEmployee = $_defaultEmp;
-						$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-
-						$_caluculateCounts(data.work_sheets[0].work_assignments);
 						$scope.currentView = 'summary';
+						$_caluculateCounts(data.work_sheets[0].work_assignments);
+					} else {
+						$scope.currentView = 'rooms';
 					};
 
 					// need delay, just need it
@@ -513,12 +523,22 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// directly, since the flags in $rootScope may not be ready
 				// no worries since a person with active worksheet may not have access to admin screens
 				_failed = function() {
+					$scope.topFilter.byWorkType = '';
+					$scope.topFilter.byEmployee = '';
+					$scope.currentView = 'rooms';
+
 					$timeout(function() {
 						$_postProcessRooms();
 					}, 10);
 				};
 
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
+			// if the assignements has been loaded
+			// as part of the inital load, just process it
+			if ( alreadyFetched ) {
+				_callback.call(null, fetchPayload.assignments);
+			} else {
+				$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
+			};
 		};
 
 
