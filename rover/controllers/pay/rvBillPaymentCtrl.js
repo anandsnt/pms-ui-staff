@@ -321,8 +321,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	var successPayment = function(data){
 		$scope.$emit("hideLoader");
 		$scope.depositPaidSuccesFully = true;
-		$scope.authorizedCode = data.authorization_code;
-		
+		$scope.authorizedCode = data.authorization_code;		
 		//$scope.handleCloseDialog();
 		//To refresh the view bill screen 
 		$scope.$emit('PAYMENT_SUCCESS');
@@ -393,7 +392,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				if(!$scope.showCreditCardInfo){
 					$scope.errorMessage = ["Please select/add credit card"];
 					$scope.showHideCreditCard();
-					return false;
 				} else {
 					$scope.errorMessage = "";
 					dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC
@@ -404,7 +402,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				$scope.shouldShowWaiting = true;
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
 					$scope.shouldShowWaiting = false;
-					$scope.closeDialog();
+					successPayment(response);
 				},function(error){
 					$scope.errorMessage = error;
 					$scope.shouldShowWaiting = false;
