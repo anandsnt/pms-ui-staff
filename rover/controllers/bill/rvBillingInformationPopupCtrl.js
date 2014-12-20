@@ -69,7 +69,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
         	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type == 'ATTACHED_ENTITY')? true: false; 
-            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;            
+            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
+            if($scope.selectedEntity.entity_type !='RESERVATION')  
+                   $scope.selectedEntity.guest_id = null;       
         }
         else if(type === 'RESERVATIONS'){
         	var data = $scope.results.reservations[index];
@@ -112,15 +114,12 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			else{
 				$scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
 			}
-			console.log($scope.selectedEntity);
         }
 	}
 
     /*function to select the attached entity
     */
     $scope.selectAttachedEntity = function(index,type){
-            console.log($scope.attachedEntities);
-        console.log($scope.billingEntity);
 
             $scope.isEntitySelected = true;
             $scope.isInitialPage = false;

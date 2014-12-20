@@ -86,7 +86,7 @@
             <ul class="search-results">
                 <li class="reservation transaction" ng-click="goToReservationDetails($index, $event)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
                     
-                    <div class="faux-anchor" class="guest-{reservation-status}"> 
+                    <a class="faux-anchor" class="guest-{reservation-status}"> 
                         <figure class="guest-image">
                             <img src="{{transaction.guest_image}}" alt="" />
                             <span class="vip" ng-if="transaction.guest_is_vip">VIP</span>
@@ -121,7 +121,7 @@
                                 <span class="value" translate>PAID</span>
                             </label>
                         </div>
-                    </div>
+                    </a>
                 </li>
             </ul>
 
