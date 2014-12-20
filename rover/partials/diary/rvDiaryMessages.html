@@ -1,0 +1,17 @@
+<div role="dialog" id="modal" class="modal-show"> <!--modal-content diary-move -->
+  <div ng-cloak class="modal-content">
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+	    	<span class="icons icon-close invert">
+	    </button>
+		<span class="h2 message">
+			<!-- if price increase: -->
+			<span class="red" ng-repeat="msg in messages">{{msg}}</span>
+			<!-- if price decrease:
+			<span class="green">- ${price}</span> -->
+		</span>
+		<div class="actions">        	
+        	<button type="button" class="button red" ng-click="closeDialog()">Ok</button> 
+    	</div>
+   </div>
+
+</div>

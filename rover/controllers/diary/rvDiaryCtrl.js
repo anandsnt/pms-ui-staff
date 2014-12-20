@@ -477,6 +477,13 @@ sntRover
 			});
 	    }.bind($scope.gridProps);
 
+	    var openMessageShowingPopup = function(){
+			ngDialog.open({
+				template: 'assets/partials/diary/rvDiaryMessages.html',
+				scope: $scope,
+				controller: 'RVDiaryMessageShowingCtrl'				
+			});	 
+	    };
 
 	    var openEditConfirmationPopup = function() {
 			ngDialog.open({
@@ -626,8 +633,7 @@ sntRover
 	    		lastDepTime = this.availability.resize.last_departure_time;
 
 			//if API returns that move is not allowed then we have to revert back	    		
-	    	if(!avData.is_available){
-	    		$scope.errorMessage = avData.message;
+	    	if(!avData.is_available){	    		
 	    		if(!lastArrTime && !lastDepTime) {	    			
 	    			//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
 					if(props.currentResizeItemRow.id !== oRowItem.id){
@@ -675,8 +681,8 @@ sntRover
 					this.currentResizeItem.arrival = lastArrTime;
 	    			this.currentResizeItem.departure = lastDepTime;	  			
 	    		}
-	    		
-	    					
+	    		$scope.message = avData.message;
+				openMessageShowingPopup();
 	    		$scope.renderGrid();
 	    		return;
 	    		
@@ -1204,6 +1210,7 @@ sntRover
     };
 
     var formReservationParams = function(reservation, roomDetails) {
+
     	var arrDate 	= roomDetails.arrivalDate,
     		depDate   	= roomDetails.departureDate,
     		arrTime 	= roomDetails.arrivalTime.split(":"),

@@ -38,6 +38,26 @@ var GridRowItem = React.createClass({
 			});
 		}
 	},	
+	__formInnerText: function(data, meta) {
+		var caption,
+			props   = this.props,
+			display = props.display;
+			
+		switch(data[meta.status]) {
+			case 'available':
+				caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
+				break;
+			case 'blocked':
+				caption = 'Web Booking In Progress';
+				break;
+			default:
+				caption = data[meta.guest];
+				break
+		}
+		return caption;
+
+
+	},
 	render: function() {
 
 		var props 					= this.props,
@@ -54,7 +74,7 @@ var GridRowItem = React.createClass({
 			maintenance_time_span 	= data[m.maintenance] * px_per_int, 
 			reservation_time_span 	= (end_time_ms - start_time_ms) * px_per_ms,  
 			is_temp_reservation 	= data[m.status] === 'available',
-			innerText 				= (is_temp_reservation ? display.currency_symbol + ' ' + parseFloat(data[m.rate]).toFixed(2) + ' | ' + data[m.room_type] : data[m.guest]),
+			innerText 				= this.__formInnerText(data, m),
 			className 				= (!is_temp_reservation ? 'occupied ' : '') + 
 																data[m.status] + (state.editing ? ' editing' : '') + 
 																(is_temp_reservation && data.selected ? ' reserved' : '');
