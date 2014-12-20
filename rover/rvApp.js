@@ -19,7 +19,6 @@ var sntRover = angular.module('sntRover',[
 		'FinancialsModule',
 		'cacheVaultModule', 
 		'twoMonthscalendar',
-		'acute.select', 
 		'documentTouchMovePrevent', 
 		'divTouchMoveStopPropogate', 
 		'pasvaz.bindonce', 
