@@ -1732,19 +1732,19 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         }
                         $state.go(nextState, nextStateParameters);
                     }
-                }
+                };
 
                 var saveFailure = function(data) {
                     $scope.errorMessage = data;
                     $scope.$broadcast('FAILURE_SAVE_RESERVATION', data);
                     $scope.$emit('hideLoader');
-                }
+                };
 
                 var updateFailure = function(data) {
                     $scope.errorMessage = data;
                     $scope.$broadcast('FAILURE_UPDATE_RESERVATION', data);
                     $scope.$emit('hideLoader');
-                }
+                };
 
                 var updateSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.deposit_amount;
@@ -1769,7 +1769,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
             }
-        }
+        };
 
         $scope.fetchDemoGraphics = function() {
 
@@ -1789,13 +1789,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
 
             $scope.invokeApi(RVReservationSummarySrv.fetchInitialData, {}, fetchSuccess, fetchFailure);
-        }
+        };
 
         $scope.resetAddons = function() {
             angular.forEach($scope.reservationData.rooms, function(room) {
                 room.addons = []
             });
-        }
+        };
 
         $scope.computeHourlyTotalandTaxes = function() {
             $scope.reservationData.totalStayCost = 0.0;
@@ -1886,7 +1886,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 });
                 $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal) + parseFloat(addOnCumulative);
             });
-        }
+        };
 
         //CICO-11716
         $scope.onOccupancyChange = function(room, occupantType, idx) {
@@ -1895,7 +1895,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.validateOccupant(room, occupantType);
                 $scope.checkOccupancyLimit(null, true);
             }
-        }
+        };
 
     }
 ]);
