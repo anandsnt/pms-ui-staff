@@ -44,6 +44,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
     };
 
    	$scope.calculateGetParams = function(tableParams){
+        console.log("calculateGetParams");
     	var getParams = {};
 		getParams.per_page = $scope.displyCount;
 		getParams.page = tableParams.page();

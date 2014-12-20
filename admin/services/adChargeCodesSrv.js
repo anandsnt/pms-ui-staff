@@ -3,11 +3,12 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 	/**
     *   A getter method to return the charge codes list
     */
-	this.fetch = function(){
+	this.fetch = function(params){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/list.json';
-		
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		console.log("here");
+		console.log(params);
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
