@@ -70,9 +70,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 							if ( passedParams.assignee_id ) {
 								params['assignee_id']       = passedParams.assignee_id;
 								filter.filterByEmployeeName = passedParams.assignee_id;
-							}
-						} else {
-							params['all_employees_selected'] = true;
+							} else {
+								params['all_employees_selected'] = true;
+							};
 						};
 					} else {
 						if ( filter.filterByWorkType ) {
@@ -80,9 +80,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 							if ( filter.filterByEmployeeName ) {
 								params['assignee_id'] = filter.filterByEmployeeName;
-							}
-						} else {
-							params['all_employees_selected'] = true;
+							} else {
+								params['all_employees_selected'] = true;
+							};
 						};
 					};
 				};
