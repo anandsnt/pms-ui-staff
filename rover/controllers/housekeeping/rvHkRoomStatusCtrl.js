@@ -116,9 +116,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
-		console.log($scope.roomTypes[0]);
-		console.log($_oldRoomTypes[0]);
-
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -233,11 +230,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.applyEmpfilter = function() {
 			$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
 			$scope.filterDoneButtonPressed();
-		};
-
-		$scope.debug = function() {
-			console.log($scope.roomTypes[0]);
-			console.log($_oldRoomTypes[0]);
 		};
 
 		var $_filterByQuery = function(forced) {
