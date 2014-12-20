@@ -1350,7 +1350,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	      //if it is zero, then we will request for webservice
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
 	        value = $scope.availableChargeCodes[i];
-	        if (($scope.escapeNull(value.code).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 || 
+	        if (($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 || 
 	            ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ) 
 	            {
 	               $scope.availableChargeCodes[i].is_row_visible = true;

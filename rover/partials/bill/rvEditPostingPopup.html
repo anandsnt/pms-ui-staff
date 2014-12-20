@@ -37,7 +37,7 @@
                     <div class="search-results" >
                         <ul id="search-list" >
                             <li ng-repeat="chargeCode in availableChargeCodes" ng-click="selectChargeCode(chargeCode.id)" ng-show="chargeCode.is_row_visible === true">
-                                <h4 class="text-bold first-text" ng-class="{'grey':isChargeCodeSelected(chargeCode)}"></h4> &nbsp;
+                                <h4 class="text-bold first-text" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.name|highlight:chargecodeData.chargeCodeSearchText:false"></h4> &nbsp;
                                 <h4 class="text-bold" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.description|highlight:chargecodeData.chargeCodeSearchText:false"></h4>
                             </li>
                         </ul>
