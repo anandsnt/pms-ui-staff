@@ -227,8 +227,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 					additionalParams['assignee_id'] = paramEmployeeId;
 				};
 
-				console.log(additionalParams);
-
 				_.extend( passedParams, additionalParams, {'initialLoad': true} );
 
 				this.fetchRoomListPost( passedParams ).then( _resolveData );
@@ -269,23 +267,23 @@ sntRover.service('RVHkRoomStatusSrv', [
 		}
 
 		// fetch all room types
-		var roomTypes = [];
+		this.roomTypes = [];
 		this.fetchRoomTypes = function() {
 			var url = 'api/room_types?exclude_pseudo=true&exclude_suite=true';
 			var deferred = $q.defer();
 
-			if (roomTypes.length) {
-				deferred.resolve(roomTypes);
+			if ( this.roomTypes.length ) {
+				deferred.resolve(this.roomTypes);
 			} else {
 				BaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-						roomTypes = data.results;
-						angular.forEach(roomTypes, function(type, i) {
+						this.roomTypes = data.results;
+						angular.forEach(this.roomTypes, function(type, i) {
 							type.isSelected = false;
 						});
 
-						deferred.resolve(roomTypes);
-					}, function(data) {
+						deferred.resolve(this.roomTypes);
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			};
