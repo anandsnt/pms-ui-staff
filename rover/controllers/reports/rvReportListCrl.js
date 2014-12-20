@@ -20,8 +20,9 @@ sntRover.controller('RVReportListCrl', [
 				hasCicoFilter,
 				hasUserFilter,
 				hasSortDate,
-				hasSortUser;
-
+				hasSortUser,
+                hasIncludeNotes,
+                hasIncludeVip;
 
             // until date is business date and from date is a week ago
             var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
@@ -53,6 +54,10 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['reportIconCls'] = 'icon-check-in';
                         break;
 
+                    case 'In-House Guests':
+                        reportList[i]['reportIconCls'] = 'inhouse';
+                        break;
+
                     default:
                         reportList[i]['reportIconCls'] = '';
                         break;
@@ -60,36 +65,44 @@ sntRover.controller('RVReportListCrl', [
 
                 reportList[i]['show_filter'] = false;
 
-                // checking if has date filter
-                hasDateFilter = _.find(reportList[i]['filters'], function(item) {
-                    return item.value === 'DATE_RANGE';
-                });
-                reportList[i]['hasDateFilter'] = hasDateFilter ? true : false;
+                for (var i = 0, j = reportList[i]['filters'].length; i < j; i++) {
+                    var filter = reportList[i]['filters'];
 
-                // checking if has cico filter
-                // TODO: addiing the 'cicoOptions' can be done on server and provided as such
-                hasCicoFilter = _.find(reportList[i]['filters'], function(item) {
-                    return item.value === 'CICO';
-                });
-                reportList[i]['hasCicoFilter'] = hasCicoFilter ? true : false;
-                if (hasCicoFilter) {
-                    reportList[i]['cicoOptions'] = [{
-                        value: 'BOTH',
-                        label: 'Show Check Ins and  Check Outs'
-                    }, {
-                        value: 'IN',
-                        label: 'Show only Check Ins'
-                    }, {
-                        value: 'OUT',
-                        label: 'Show only Check Outs'
-                    }];
+                    // checking if has date filter
+                    if ( filter.value === 'DATE_RANGE' ) {
+                        reportList[i]['hasDateFilter'] = true;
+                    };
+
+                    // checking if has cico filter
+                    if ( filter.value === 'CICO' ) {
+                        reportList[i]['hasCicoFilter'] = true;
+                        reportList[i]['cicoOptions'] = [{
+                            value: 'BOTH',
+                            label: 'Show Check Ins and  Check Outs'
+                        }, {
+                            value: 'IN',
+                            label: 'Show only Check Ins'
+                        }, {
+                            value: 'OUT',
+                            label: 'Show only Check Outs'
+                        }];
+                    };
+
+                    // checking if has user filter
+                    if ( filter.value === 'USER' ) {
+                        reportList[i]['hasUserFilter'] = true;
+                    };
+
+                    // checking if include notes filter
+                    if ( filter.value === 'INCLUDE_NOTES' ) {
+                        reportList[i]['hasIncludeNotes'] = true;
+                    };
+
+                    // checking if include notes filter
+                    if ( filter.value === 'VIP_ONLY' ) {
+                        reportList[i]['hasIncludeVip'] = true;
+                    };
                 };
-
-                // checking if has user filter
-                hasUserFilter = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'USER';
-                });
-                reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
 
                 // sort by options
                 reportList[i].sortByOptions = reportList[i]['sort_fields']
@@ -98,7 +111,9 @@ sntRover.controller('RVReportListCrl', [
                 sortDate = _.find(reportList[i]['sort_fields'], function(item) {
                     return item.value === 'DATE';
                 });
-                reportList[i].chosenSortBy = sortDate.value;
+                if ( !!sortDate ) {
+                    reportList[i].chosenSortBy = sortDate.value;
+                };
 
                 // set the from and untill dates
                 reportList[i].fromDate = fromDate;

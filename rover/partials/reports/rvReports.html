@@ -45,6 +45,22 @@
 							</div>
 						</div>
 
+						<div class="filter" ng-if="item.hasIncludeNotes">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNotes}"></span>
+								<input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters" class="ng-pristine ng-valid">
+								<label class="ng-binding">Include Notes</label>
+							</label>
+						</div>
+
+						<div class="filter" ng-if="item.hasIncludeVip">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeVip}"></span>
+								<input type="checkbox" ng-model="item.chosenIncludeVip" name="room-filters" class="ng-pristine ng-valid">
+								<label class="ng-binding">Include Vip</label>
+							</label>
+						</div>
+
 						<div class="sort" ng-if="item.sortByOptions">
 							<label>Sort By</label>
 							<div class="select">
