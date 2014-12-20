@@ -185,7 +185,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       return statesForDashbaord[$rootScope.default_dashboard];
     };
 
-    if ($rootScope.isStandAlone) {
+    if ($rootScope.isStandAlone && $rootScope.default_dashboard ==="MANAGER") {
       // OBJECT WITH THE MENU STRUCTURE
       $scope.menu = [{
           title: "MENU_DASHBOARD",
