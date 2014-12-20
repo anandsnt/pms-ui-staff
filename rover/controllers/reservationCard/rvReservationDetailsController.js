@@ -13,7 +13,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
+		if ($stateParams.isFromCards) {
+			$rootScope.setPrevState = {
+				title: 'AR Transactions',
+				name: 'rover.companycarddetails',
+    			param: {id:$vault.get('cardId'), 
+    					type: $vault.get('type'), 
+    					query :$vault.get('query'),
+    					isBackFromStaycard : true
+    				},
+				};
+
+		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
 			};

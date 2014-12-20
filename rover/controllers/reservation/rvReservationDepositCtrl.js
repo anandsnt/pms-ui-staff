@@ -41,6 +41,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.reservationData.depositAmount = "";
 		$scope.depositPolicyName = "";
 		$scope.reservationData.referanceText = "";
+		$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true:false;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 		$scope.reservationData.depositAmount = $filter('number')(parseInt($scope.depositDetails.deposit_amount), 2);
 		
@@ -67,6 +68,11 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions();
 			}
 
+		};
+
+		$scope.proceedCheckin = function(){
+			$scope.closeDialog();
+			$scope.$emit("PROCEED_CHECKIN");
 		};
 
 

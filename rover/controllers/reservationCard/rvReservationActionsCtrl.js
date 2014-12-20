@@ -140,7 +140,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.paymentTypes = [];
 	
 		var openDepositPopup = function(){
-			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN") && !$scope.reservationData.justCreatedRes){
+			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN")){
 				var feeDetails = (typeof $scope.depositDetails.attached_card ==="undefined") ? {}: $scope.depositDetails.attached_card.fees_information;
 				var passData = {
 							 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -177,14 +177,18 @@ sntRover.controller('reservationActionsController', [
 		/* Entering staycard we check if any deposit is left else noraml checkin 
 		/*
 		/**************************************************************************/
-
+		$scope.depositDetails.isFromCheckin = false;
 		var fetchDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
 
 			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone){
 				if(!$scope.depositPopupData.isShown){
-					openDepositPopup();
+					$scope.depositDetails.isFromCheckin = false;
+					if(!$scope.reservationData.justCreatedRes)
+					{
+						openDepositPopup();
+					};
 					$scope.depositPopupData.isShown = true;
 				};				
 			};
@@ -286,6 +290,10 @@ sntRover.controller('reservationActionsController', [
 			}
 		};
 
+		$scope.$on("PROCEED_CHECKIN",function(){
+			startCheckin();
+		});
+
 		/**************************************************************************/
 		/* Before checking in we check if any deposit is left else noraml checkin 
 		/*
@@ -293,7 +301,14 @@ sntRover.controller('reservationActionsController', [
 		var checkinDepositDetailsSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.depositDetails = data;
-			((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
+			$scope.depositDetails.isFromCheckin = true;
+			if(!$scope.reservationData.justCreatedRes){
+				((typeof $scope.depositDetails.deposit_policy !== "undefined") &&  parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone)? openDepositPopup() : startCheckin();
+			}
+			else{
+				startCheckin();
+			};
+			
 		};
 
 		var checkforDeposit = function(){

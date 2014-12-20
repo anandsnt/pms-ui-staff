@@ -116,6 +116,22 @@ var DiaryContent = React.createClass({
 	},
 	componentDidUpdate: function(){				
 		this.componentWillMount();
+
+		var props = this.props,
+			state = this.state,
+			reset = props.edit.reset_scroll;
+
+		var initScroll = function() {
+			var scrollToPos = (reset.x_origin - reset.x_n - 7200000) * state.display.px_per_ms;
+			if(scrollToPos < 0) {
+				scrollToPos = 0;
+			}
+			state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
+		    state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
+		    state.angular_evt.onScrollEnd(Math.abs(state.iscroll.grid.x) / state.display.px_per_ms + reset.x_n);
+		};
+
+		!!reset && setTimeout( initScroll, 500 );
 	},
 	componentDidMount: function() {		
 		var self = this,

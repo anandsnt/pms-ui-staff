@@ -218,7 +218,7 @@ sntRover
 				px_per_int: 				undefined,
 				px_per_hr: 					undefined,
 				currency_symbol:            $rootScope.currencySymbol,
-				min_hours: 					payload.display.min_hours
+				min_hours: 					isVaultDataSet ? vaultData.minHours : payload.display.min_hours
 			},
 
 			availability: {
@@ -274,7 +274,8 @@ sntRover
 				originalItem: 				undefined,
 				originalRowItem: 			undefined,
 				currentResizeItem:          undefined,
-				currentResizeItemRow:       undefined
+				currentResizeItemRow:       undefined,
+				reset_scroll:               undefined
 			},
 		/*
 			Filter options found above the React grid.   This section is mainly Angular controlled, however,
@@ -584,9 +585,10 @@ sntRover
 	    		payment: {
 	    			payment_type: next.occupancy.payment_type,
 	    			payment_method_used: next.occupancy.payment_method_used,
-	    			payment_method_description: next.occupancy.payment_method_description
+	    			payment_method_description: next.occupancy.payment_method_description,
+	    			payment_details: next.occupancy.payment_details
 	    		}
-			}
+			};
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
 			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
@@ -594,7 +596,7 @@ sntRover
 			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
 				reservation: 'HOURLY',
 				mode:'EDIT_HOURLY'
-			})
+			});
 		};
 
 	    var successCallBackOfResizeExistingReservation = function(data, successParams){
@@ -642,6 +644,7 @@ sntRover
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
 	    	$scope.toggleRows($scope.gridProps.filter.show_all_rooms, current_scroll_pos);
+	    	$scope.gridProps.edit.reset_scroll = undefined;
 	    };
 
 	    /* FOR LATER USE
@@ -1070,14 +1073,16 @@ sntRover
 
     $scope.resetEverything = function() {
     	var _sucessCallback = function(propertyTime) {
-	    	$_resetObj = correctTime(propertyTime);
+	    	var today = new tzIndependentDate( $rootScope.businessDate );
+			today.setHours(0, 0, 0);
 
+	    	$_resetObj = correctTime(propertyTime);
 			$_resetObj.callback = function() {
 				$scope.gridProps.filter.arrival_time = '';
 				$scope.gridProps.filter.rate_type = 'Standard';
 				$scope.gridProps.filter.room_type = '';
 				number_of_items_resetted = 0;
-				$scope.renderGrid();	
+				$scope.renderGrid();
 				$scope.$emit('hideLoader');	
 
 				$timeout(function() {
@@ -1085,18 +1090,23 @@ sntRover
 				}, 100);
 			};
 
-			// change date to triggeer a change
-			var x = new Date( $rootScope.businessDate );
-			x.setHours(0);
-			x.setMinutes(0);
-			$scope.gridProps.filter.arrival_date = x;
+			$scope.gridProps.filter.arrival_date = today;
+			$scope.gridProps.display.min_hours = 4;
+	    	$scope.gridProps.edit.reset_scroll = {
+	    		'x_n'      : today,
+	    		'x_origin' : $_resetObj.start_date
+	    	};
     	};
 
-    	$scope.clearAvailability();
-		$scope.resetEdit();
-		$scope.renderGrid();
 
-    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
+    	// making sure no previous reset in progress
+    	if ( ! $scope.gridProps.edit.reset_scroll ) {
+	    	$scope.clearAvailability();
+			$scope.resetEdit();
+			$scope.renderGrid();
+
+	    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
+    	};
     };
 
 
