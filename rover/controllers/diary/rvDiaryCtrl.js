@@ -228,6 +228,9 @@ sntRover
 					current_departure_time: null,
 					last_arrival_time : null,
 					last_departure_time: null,
+				},
+				drag: {
+					lastRoom: null,
 				}
 			},
 
@@ -401,6 +404,7 @@ sntRover
 				    			row_data: row_data, 
 				    			row_item_data: row_item_data 
 				    		});
+				    		console.log('oeyddf');
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
 	    					$scope.gridProps.availability.resize.last_departure_time = null;				    		
 				    		$scope.renderGrid();
@@ -578,37 +582,35 @@ sntRover
 			var prevRoom, prevTime;
 
 		    $scope.onDragStart = function(room, reservation) {
+		    	this.availability.drag.lastRoom = room;
 		    	prevRoom = room;
 		    	prevTime = reservation[meta.occupancy.start_date];
 		    	if($scope.gridProps.edit.active) {
-		    		console.log('Reservation room transfer initiated:  ', room, reservation);
+		    		console.log('Reservation room transfer from:  ', room.room_no, reservation.reservation_primary_guest_full_name);
 		    	}
-			};
+			}.bind($scope.gridProps);
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
+		    	console.log('toRoom: ' + nextRoom.room_no);
 		    	var availability;
 		    	if($scope.gridProps.edit.active) {
+		    		console.log('hey am here1');
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
-			    	
-					if(availability) {
-				    	util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
-						$scope.gridProps.currentResizeItemRow = nextRoom;
-						//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
-						if(nextRoom.id !== prevRoom.id){
-							var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), prevRoom.id);
-							if(roomIndex != -1) {
-								var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), reservation.reservation_id);
-								if(occupancyIndex != -1){
-									$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
-								}
-							}							
+			    	//availability = true;
+					
+						if(prevRoom.id !== nextRoom.id){
+							console.log('room transfer')
+				    		util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
+							$scope.renderGrid();
 						}
+						$scope.gridProps.currentResizeItemRow = nextRoom;
+						
 				    					    					    			    								    							
 						resizeEndForExistingReservation (nextRoom, reservation);																														
 						prevRoom = '';
 						prevTime = '';
 										    	
-				    }
+				    
 				}
 		};
 		})();
@@ -624,7 +626,56 @@ sntRover
 
 			//if API returns that move is not allowed then we have to revert back	    		
 	    	if(!avData.is_available){
-	    		util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);			
+	    		if(!lastArrTime && !lastDepTime) {
+	    			console.log('in 1');
+	    			//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
+					if(props.currentResizeItemRow.id !== oRowItem.id){
+						util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);
+						var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.currentResizeItemRow.id);
+						if(roomIndex != -1) {
+							var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), oItem.reservation_id);
+							if(occupancyIndex != -1){
+								$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
+							}
+						}							
+					}
+					var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), oRowItem.id);
+					if(roomIndex != -1) {
+						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), oItem.reservation_id);
+						if(occupancyIndex != -1){
+							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = this.currentResizeItem;
+						}
+					}			
+					this.currentResizeItem.arrival = oItem.arrival;
+	    			this.currentResizeItem.departure = oItem.departure;
+	    		}
+	    		else{
+	    			console.log('yes here last room: ' + this.availability.drag.lastRoom.room_no + " current room: " + props.currentResizeItemRow.room_no);
+	    			
+	    			//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
+					if(props.currentResizeItemRow.id !== this.availability.drag.lastRoom.id){
+						util.reservationRoomTransfer(this.data, this.availability.drag.lastRoom, props.currentResizeItemRow, props.currentResizeItem);
+					
+						var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.currentResizeItemRow.id);
+						if(roomIndex != -1) {
+							var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), props.currentResizeItem.reservation_id);
+							if(occupancyIndex != -1){
+								$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
+							}
+						}							
+					}
+					var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), this.availability.drag.lastRoom.id);
+					if(roomIndex != -1) {
+						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), props.currentResizeItem.reservation_id);
+						if(occupancyIndex != -1){
+							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = this.currentResizeItem;
+						}
+					}	
+					this.currentResizeItem.arrival = lastArrTime;
+	    			this.currentResizeItem.departure = lastDepTime;	  			
+	    		}
+	    		
+	    					
 	    		$scope.renderGrid();
 	    		return;
 	    		
@@ -642,7 +693,18 @@ sntRover
 	    	this.currentResizeItemRow.arrivalDate = new Date(successParams.params.begin_date).toComponents().date.toDateString(); 
 	    	this.availability.resize.last_arrival_time = this.currentResizeItem[meta.occupancy.start_date];
 	    	this.availability.resize.last_departure_time = this.currentResizeItem[meta.occupancy.end_date];
-	    	
+	    	if(this.availability.drag.lastRoom && (this.availability.drag.lastRoom.id !== this.currentResizeItemRow.id)){
+	    		console.log('removing');
+		    	var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), this.availability.drag.lastRoom.id);
+				if(roomIndex != -1) {
+					var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), this.currentResizeItem.reservation_id);
+					if(occupancyIndex != -1){
+						$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
+					}
+				}
+			}
+	    	this.availability.drag.lastRoom = this.currentResizeItemRow;
+	    	$scope.renderGrid();
 	    }.bind($scope.gridProps);
 	    
 	    var failureCallBackOfResizeExistingReservation = function(errorMessage){
