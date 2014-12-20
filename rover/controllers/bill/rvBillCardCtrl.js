@@ -1134,8 +1134,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	$scope.splitTypeisAmount = true;
 	$scope.chargeCodeActive = false;
-	$scope.selectedChargeCode = "";
+	$scope.selectedChargeCode = {};
 	$scope.chargeCodeData = chargeCodeData.results;
+	$scope.availableChargeCodes = chargeCodeData.results;
 
 	$scope.getAllchargeCodes = function (callback) {
     	callback($scope.chargeCodeData);
@@ -1200,6 +1201,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 */
 
 	$scope.openEditChargePopup = function(){
+		$scope.selectedChargeCode = {
+			"id": "",
+			"name": "",
+			"description": "",
+			"associcated_charge_groups": []
+		};
 		ngDialog.open({
     		template: '/assets/partials/bill/rvEditPostingPopup.html',
     		className: '',
@@ -1307,6 +1314,83 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 
 	};
+/*----------------------------edit charge drop down implementation--------------------------------------*/
+	$scope.chargecodeData = {};
+	$scope.chargecodeData.chargeCodeSearchText = "";
+
+	$scope.selectChargeCode = function(id){
+		 for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+		 	 if($scope.availableChargeCodes[i].id === id){
+		 	 	$scope.selectedChargeCode = $scope.availableChargeCodes[i];
+		 	 }
+		 }
+		$scope.showChargeCodes = false;
+		$scope.chargecodeData.chargeCodeSearchText = "";
+	};
+		 	/**
+  	* function to perform filering on results.
+  	* if not fouund in the data, it will request for webservice
+  	*/
+  	var displayFilteredResultsChargeCodes = function(){ 
+
+	    //if the entered text's length < 3, we will show everything, means no filtering    
+	    if($scope.chargecodeData.chargeCodeSearchText.length < 3){
+	      //based on 'is_row_visible' parameter we are showing the data in the template      
+	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+	          $scope.availableChargeCodes[i].is_row_visible = true;
+	          $scope.availableChargeCodes[i].is_selected = true;
+	      }     
+	      $scope.refreshScroller('chargeCodesList');
+	      // we have changed data, so we are refreshing the scrollerbar
+	      //$scope.refreshScroller('cards_search_scroller');      
+	    }
+	    else{
+	      var value = ""; 
+	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+	      //if it is zero, then we will request for webservice
+	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+	        value = $scope.availableChargeCodes[i];
+	        if (($scope.escapeNull(value.code).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 || 
+	            ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ) 
+	            {
+	               $scope.availableChargeCodes[i].is_row_visible = true;
+	            }
+	        else {
+	          $scope.availableChargeCodes[i].is_row_visible = false;
+	        }
+	              
+	      }
+	      // we have changed data, so we are refreshing the scrollerbar
+	      //$scope.refreshScroller('cards_search_scroller');    
+	      $scope.refreshScroller('chargeCodesList');              
+	    }
+  	};	
+	/**
+    * function to clear the charge code search text
+    */
+	$scope.clearResults = function(){
+	  	$scope.chargecodeData.chargeCodeSearchText = "";
+	};
+    /**
+    * function to show available charge code list on clicking the dropdown
+    */
+    $scope.showAvailableChargeCodes = function(){
+        $scope.clearResults ();
+        displayFilteredResultsChargeCodes();
+        $scope.showChargeCodes = !$scope.showChargeCodes;
+    }; 
+
+     /**
+    * function to trigger the filtering when the search text is entered
+    */
+    $scope.chargeCodeEntered = function(){
+        $scope.showChargeCodes = false;
+	   	displayFilteredResultsChargeCodes();
+	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
+	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+    };
+
+/*---------------------------edit charge drop down implementation---------------------------------------*/
 
 /*----------- edit/remove/split ends here ---------------*/
 
