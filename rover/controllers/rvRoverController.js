@@ -284,7 +284,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }, {
             title: "MENU_TASK_MANAGEMENT",
             action: "rover.workManagement.start",
-            menuIndex: "workManagement"
+            menuIndex: "workManagement",
+            hidden: $rootScope.isHourlyRateOn
+
           }, {
             title: "MENU_MAINTAENANCE",
             action: ""
