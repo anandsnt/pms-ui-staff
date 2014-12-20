@@ -70,17 +70,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.isWithFilters = data;
 		});
 
-		//CICO-11664 
-		//To default the AR transactions tab while navigating back from staycard
-		if ($stateParams.isBackFromStaycard) {
-			//timeout added to wait untill the tab initalization and data initialization is complete
-			$timeout(function() {
-				$scope.currentSelectedTab = 'cc-ar-transactions';
-				$scope.switchTabTo('', 'cc-ar-transactions');
-				$scope.$apply();
-			}, 3000);
-		}
-
+		
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
 		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
@@ -190,7 +180,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-			$scope.$apply();
+			//$scope.$apply();
 		};
 
 		$scope.$on('ARNumberChanged', function(e, data) {
