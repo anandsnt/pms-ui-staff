@@ -40,12 +40,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 $scope.successPaymentList = function(data) {
             $scope.$emit("hideLoader");
             $scope.cardsList = data;
-            console.log("-------------reached-----------");
-            console.log($scope.cardsList);
         };
-		if(typeof $scope.cardsList == 'undefined'){
-			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.guest.id, $scope.successPaymentList);
-		}
+        $scope.fetchGuestCreditCards = function(){
+        	if(typeof $scope.cardsList == 'undefined'){
+				$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.guest.id, $scope.successPaymentList);
+			}
+        };
+        if(!(typeof $scope.reservationData.guest.id == 'undefined' || $scope.reservationData.guest.id == '' || $scope.reservationData.guest.id == null)){
+        	$scope.fetchGuestCreditCards();
+        }
+		
         
 
 		// CICO-11591 : To show or hide fees calculation details.
@@ -1110,6 +1114,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.passData.details.firstName = $scope.reservationData.guest.firstName;
 			$scope.passData.details.lastName = $scope.reservationData.guest.lastName;
 			$scope.$broadcast("refreshIframe", guestData);
+			$scope.fetchGuestCreditCards();
 		});
 
 		$scope.init();
