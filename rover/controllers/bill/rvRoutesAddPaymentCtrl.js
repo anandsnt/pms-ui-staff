@@ -10,6 +10,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	$scope.saveData.payment_type_description =  "";
 	$scope.saveData.card_expiry_month = "";
 	$scope.saveData.card_expiry_year = "";
+	
 	/**
     * MLI session set up
     */
@@ -40,6 +41,14 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
             var successCallback = function(data) {
                 
                 $scope.availablePaymentTypes = data;
+                $scope.ccPaymentDetails = {};
+                for(var i in data){
+                	if(data[i].name == "CC"){
+                		$scope.ccPaymentDetails = data[i];
+                	}
+                }
+
+                console.log($scope.ccPaymentDetails);
                 $scope.$parent.$emit('hideLoader');
                 $scope.refreshScroller('newpaymentview');
             };
