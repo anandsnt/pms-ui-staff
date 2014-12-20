@@ -582,6 +582,7 @@ sntRover
 			var prevRoom, prevTime;
 
 		    $scope.onDragStart = function(room, reservation) {
+		    	$scope.errorMessage = '';
 		    	this.availability.drag.lastRoom = room;
 		    	prevRoom = room;
 		    	prevTime = reservation[meta.occupancy.start_date];
@@ -626,8 +627,8 @@ sntRover
 
 			//if API returns that move is not allowed then we have to revert back	    		
 	    	if(!avData.is_available){
-	    		if(!lastArrTime && !lastDepTime) {
-	    			console.log('in 1');
+	    		$scope.errorMessage = avData.message;
+	    		if(!lastArrTime && !lastDepTime) {	    			
 	    			//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
 					if(props.currentResizeItemRow.id !== oRowItem.id){
 						util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);
