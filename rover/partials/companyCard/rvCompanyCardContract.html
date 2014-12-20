@@ -1,6 +1,6 @@
-<div id="cc-contracts" name="cc-contracts" class="form card-tab contracts"  ng-show="currentSelectedTab == 'cc-contracts'">
+<form id="cc-contracts" name="cc-contracts" class="form card-tab contracts"  ng-show="currentSelectedTab == 'cc-contracts'">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <div id="cc-contracts-header" class="tab-header">
+    <div id="cc-contracts-header" class="tab-header with-filters">
         <div class="entry">
             <div class="select" ng-hide="contractList.isAddMode">
                 <select iscroll-stop-propagation name="company-contract" ng-model="contractList.contractSelected">
@@ -194,4 +194,4 @@
 		    </div>    
         </div>    
     </div>
-</div>
+</form>

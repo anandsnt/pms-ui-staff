@@ -575,9 +575,10 @@ sntRover
 	    		payment: {
 	    			payment_type: next.occupancy.payment_type,
 	    			payment_method_used: next.occupancy.payment_method_used,
-	    			payment_method_description: next.occupancy.payment_method_description
+	    			payment_method_description: next.occupancy.payment_method_description,
+	    			payment_details: next.occupancy.payment_details
 	    		}
-			}
+			};
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
 			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
@@ -585,7 +586,7 @@ sntRover
 			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
 				reservation: 'HOURLY',
 				mode:'EDIT_HOURLY'
-			})
+			});
 		};
 
 		(function() {    /*React callbacks for grid events*/

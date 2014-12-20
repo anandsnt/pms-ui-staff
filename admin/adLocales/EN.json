@@ -155,7 +155,7 @@
 
 ,
 
-
+"CHARGE_CODES":"Charge Codes",
 "CHARGE_CODE":"Charge Code",
 "DETAILS":"details",
 "DESC_PLACEHOLDER":"Enter Description",
@@ -484,7 +484,8 @@
 	"FOOTER":"Footer",
 	"CUSTOM_TEXT_PLACEHOLDER":"Add custom text, hotel name / address etc",
 	"CONFIRMATION_COMMUNICATION":"Confirmation Communications",
-	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL"
+	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL",
+	"LOCATION_IMAGE":"LOCATION IMAGE"
 ,
 
 

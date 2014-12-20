@@ -1487,8 +1487,7 @@
                         .hide;
 
                         .card-tabs-nav {
-                            width: 100%;
-                            height: 50px;
+                            .size(50px, 100%);
 
                             li {
                                 margin: 5px 0 0 0;
@@ -1550,7 +1549,7 @@
                                 &.social-lobby {
                                     .pull-right;
 
-                                    &.ui-state-active {
+                                    &.ui-tabs-active {
                                         background: @softRed;
 
                                         a {
@@ -1560,7 +1559,7 @@
                                 }
 
                                 &.with-filters {
-                                    &.ui-state-active { 
+                                    &.ui-tabs-active { 
                                         position: relative;
 
                                         &:after {
@@ -2304,15 +2303,11 @@
                                             &.search {
                                                 .calc-width(38, 10);
 
+                                                .clear-query { right: 10px; }
                                                 .query { .calc-width(100, 10); }
                                             }
 
-                                            &.dates {
-                                                padding: 0;
-                                                margin: 0;
-                                                border: 0;
-                                                .calc-width(40, 70);
-                                            }
+                                            &.dates { .calc-width(40, 70); }
                                         }
 
                                         &.open { 
@@ -2323,6 +2318,12 @@
                                                 margin-right: 10px;
                                                 border-right: 1px solid rgba(0,0,0,.1);
                                                 visibility: visible;
+
+                                                &.dates {
+                                                    padding: 0;
+                                                    margin: 0;
+                                                    border: 0;
+                                                }
                                             }
                                         }
                                     }
@@ -2331,19 +2332,17 @@
                                         padding: 20px;
                                         .calc-width(100, 80);
                                         .pull-left;
-                                        .float;
 
                                         li {
+                                            display: inline-block;
                                             line-height: 1em;
                                             padding: 0 20px;
                                             margin: 0;
                                             border-right: 1px solid rgba(0,0,0,.1);
-                                            .show;
-                                            .pull-left;
 
                                             .data {
+                                                display: inline-block;
                                                 margin-right: 10px;
-                                                .pull-left;
 
                                                 .label {
                                                     margin: 0;
@@ -2362,9 +2361,9 @@
                                                 }
                                             }
 
-
                                             .button {
                                                 height: 40px;
+                                                .pull-right;
 
                                                 &.white { margin-right: 10px; }
                                                 &.with-icon { width: 40px; }

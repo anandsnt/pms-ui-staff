@@ -189,7 +189,8 @@ admin.controller('ADRulesRestrictionCtrl', [
                 
                 // clear any previous data
                 $scope.singleRule = data;
-                
+
+                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
                 /*var amtString = $scope.singleRule.amount + '',
                     num       = amtString.split('.')[0],
                     dec       = amtString.split('.')[1] * 1;

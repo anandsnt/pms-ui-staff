@@ -134,6 +134,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 				$scope.addmode = ($scope.cardsList.length>0) ? false :true;
 				refreshScroll();
+			} else {
+				$scope.isManual = false;
 			}
 		} else {
 				$scope.shouldShowMakePaymentScreen       = true; 

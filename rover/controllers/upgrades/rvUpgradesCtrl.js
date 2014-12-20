@@ -123,7 +123,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 			};
 			var params = {};
 			params.reservation_id = parseInt($stateParams.reservation_id, 10);
-			params.room_no = parseInt($scope.upgradesList[index].upgrade_room_number, 10);
+			params.room_no = $scope.upgradesList[index].upgrade_room_number
 			var selectedRoomNumber = params.room_no;
 			var selectedTypeDescription = $scope.upgradesList[index].upgrade_room_type_name;
 			var selectedTypeCode = $scope.upgradesList[index].upgrade_room_type;
@@ -165,7 +165,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		/**
 		 * function to set the color coding for the room number based on the room status
 		 */
-		$scope.getRoomStatusClass = function() {
+		$scope.getTopbarRoomStatusClass = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status
 			var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status; 
 			var foStatus = $scope.reservationData.reservation_card.fo_status;
