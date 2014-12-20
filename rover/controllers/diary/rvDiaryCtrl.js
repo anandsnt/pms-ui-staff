@@ -19,6 +19,7 @@ sntRover
 		'RVReservationBaseSearchSrv',
 		'$timeout',
 		'RVReservationSummarySrv',
+		'RVCompanyCardSrv',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -33,7 +34,9 @@ sntRover
 			 util, 
 			 payload,
 			 propertyTime,
-			 $vault, $stateParams, RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv) {
+			 $vault, 
+			 $stateParams, 
+			 RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv, RVCompanyCardSrv) {
 
 	$scope.$emit('showLoader');
 
@@ -95,60 +98,10 @@ sntRover
             isVaultDataSet = true;
         } else {
         	// we will be creating our own data base on the current time.
-        	correctTimeDate = correctTime(propertyTime);
+        	correctTimeDate = util.correctTime(propertyTime);
         }
 
-        function correctTime(propertyTime) {
-            var hh   = parseInt(propertyTime.hotel_time.hh),
-                mm   = parseInt(propertyTime.hotel_time.mm),
-                ampm = '';
-
-            // first decide AMP PM
-            if ( hh > 12 ) {
-                ampm = 'PM';
-            } else {
-                ampm = 'AM';
-            }
-
-            // the time must be rounded to next 15min position
-            // if the guest came in at 3:10AM it should be rounded to 3:15AM
-            if ( mm > 45 && hh + 1 < 12 ) {
-                hh += 1;
-                mm = 0;
-            } else if ( mm > 45 && hh + 1 == 12 ) {
-                if ( ampm == 'AM' ) {
-                    hh  = 12;
-                    mm = 0;
-                    ampm    = 'PM';
-                } else {
-                    hh  = 12;
-                    mm = 0;
-                    ampm    = 'AM';
-                }
-            } else if ( mm == 15 || mm == 30 || mm == 45 ) {
-                mm += 15;
-            } else if ( Math.max(mm, 15) == 15 ) {
-                mm = 15;
-            } else if ( Math.max(mm, 30) == 30 ) {
-                mm = 30;
-            } else {
-                mm = 45;
-            };
-
-            var date         = $rootScope.businessDate,
-            	fromDate     = new tzIndependentDate(date).getTime(),
-            	ms           = new tzIndependentDate(fromDate).setHours(0, 0, 0),
-            	start_date   = (hh * 3600000) + (mm * 60000) + ms,
-            	__start_date = new tzIndependentDate(date);
-
-            __start_date.setHours(0, 0, 0);
-
-            return {
-        		'start_date'   : start_date,
-        		'__start_date' : __start_date,
-        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + (mm == 0 ? '00' : mm)
-        	}
-        };
+       
 
 
 	    var number_of_items_resetted = 0;
@@ -404,6 +357,10 @@ sntRover
 				    			row_data: row_data, 
 				    			row_item_data: row_item_data 
 				    		});
+				    		if(!row_item_data.reservation_primary_guest_full_name) {
+				    			var account_id = row_item_data.travel_agent_id ? row_item_data.travel_agent_id : row_item_data.company_card_id
+				    			fetchAccountName(account_id)
+				    		}
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
 	    					$scope.gridProps.availability.resize.last_departure_time = null;				    		
 				    		$scope.renderGrid();
@@ -441,7 +398,25 @@ sntRover
 		    }
 	    };
 
-		
+	    var successCallBackOfFetchAccountName= function(data) {
+	    	this.edit.originalItem.account_name = data.account_details.account_name;
+	    }.bind($scope.gridProps);
+
+	    var failureCallBackOfFetchAccountName = function(errorMessage){
+	    	$scope.errorMessage = errorMessage;
+	    };
+
+		var fetchAccountName = function(account_id){
+			var params = {
+				id: account_id
+			};
+			var options = {
+	    		params: 			params,
+	    		successCallBack: 	successCallBackOfFetchAccountName,	 
+	    		failureCallBack: 	failureCallBackOfFetchAccountName,      		
+		    }
+		    $scope.callAPI(RVCompanyCardSrv.fetchContactInformation, options);			
+		}
 
 	 	$scope.onResizeStart = function(row_data, row_item_data) {
 		};
@@ -1177,7 +1152,7 @@ sntRover
 	    	var today = new tzIndependentDate( $rootScope.businessDate );
 			today.setHours(0, 0, 0);
 
-	    	$_resetObj = correctTime(propertyTime);
+	    	$_resetObj = util.correctTime(propertyTime);
 			$_resetObj.callback = function() {
 				$scope.gridProps.filter.arrival_time = '';
 				$scope.gridProps.filter.rate_type = 'Standard';
