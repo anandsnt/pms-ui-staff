@@ -357,13 +357,24 @@ sntRover
 				    			row_data: row_data, 
 				    			row_item_data: row_item_data 
 				    		});
+				    		//setting scroll posiions when in edit mode
+				    		var x_n = payload.display.x_n instanceof Date ? payload.display.x_n : new Date(payload.display.x_n);
+				    		x_n.setHours(0, 0, 0);
+				    		var x_origin = row_item_data.arrival;
+				    		$scope.gridProps.edit.reset_scroll = {
+	    						'x_n'      : x_n.getTime(),
+	    						'x_origin' : x_origin
+	    					};
+	    					//if guest name is not found, we have to show account name
 				    		if(!row_item_data.reservation_primary_guest_full_name) {
 				    			var account_id = row_item_data.travel_agent_id ? row_item_data.travel_agent_id : row_item_data.company_card_id
 				    			fetchAccountName(account_id)
 				    		}
+				    		
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
 	    					$scope.gridProps.availability.resize.last_departure_time = null;				    		
 				    		$scope.renderGrid();
+				    		$scope.gridProps.edit.reset_scroll = {};
 				    	}
 
 		    		break;	 

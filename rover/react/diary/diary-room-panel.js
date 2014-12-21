@@ -1,6 +1,19 @@
 var RoomPanel = React.createClass({
-	componentDidUpdate: function(){				
-		this.props.iscroll.rooms.refresh();
+	componentDidUpdate: function(){	
+		console.log(this.props.edit);
+		var state 	= this.state,
+			props 	= this.props,
+			data 	= props.data,
+			display = props.display,
+			rowHeight = display.row_height + display.row_height_margin,
+			rowNumber = props.edit.active ? _.indexOf(_.pluck(data, 'id'), props.edit.originalRowItem.id) : 0;
+
+		var scrollYPos = rowNumber * rowHeight;
+		console.log('data');
+		console.log(data);
+		
+		this.props.iscroll.rooms.scrollTo(0, -scrollYPos, 0, 1000);	
+		this.props.iscroll.rooms.refresh();	
 	},
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;
