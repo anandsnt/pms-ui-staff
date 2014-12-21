@@ -98,11 +98,11 @@ sntRover
             isVaultDataSet = true;
         } else {
         	// we will be creating our own data base on the current time.
-        	correctTimeDate = util.correctTime(propertyTime);
+        	var coming_date = payload.display.x_n instanceof Date ? payload.display.x_n.toComponents().date.toDateString().replace(/-/g, '/') : payload.display.x_n;
+        	correctTimeDate = util.correctTime(coming_date, propertyTime);
         }
 
        
-
 
 	    var number_of_items_resetted = 0;
 
@@ -646,7 +646,8 @@ sntRover
 							if(occupancyIndex != -1){
 								$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
 							}
-						}							
+						}	
+
 					}
 					var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), this.availability.drag.lastRoom.id);
 					if(roomIndex != -1) {
@@ -655,6 +656,7 @@ sntRover
 							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = this.currentResizeItem;
 						}
 					}	
+					this.currentResizeItemRow = this.availability.drag.lastRoom;
 					this.currentResizeItem.arrival = lastArrTime;
 	    			this.currentResizeItem.departure = lastDepTime;	  			
 	    		}
@@ -1152,7 +1154,7 @@ sntRover
 	    	var today = new tzIndependentDate( $rootScope.businessDate );
 			today.setHours(0, 0, 0);
 
-	    	$_resetObj = util.correctTime(propertyTime);
+	    	$_resetObj = util.correctTime(today.toComponents().date.toDateString().replace(/-/g, '/'), propertyTime);
 			$_resetObj.callback = function() {
 				$scope.gridProps.filter.arrival_time = '';
 				$scope.gridProps.filter.rate_type = 'Standard';
@@ -1338,7 +1340,7 @@ sntRover
 				})				
 							
 			});						   	
-			if(row_data){	   		
+			if(row_data){
 	   			$scope.$apply(function(){	   			
 	   				$scope.onSelect(row_data, row_item_data, false, 'edit');
 	   			});

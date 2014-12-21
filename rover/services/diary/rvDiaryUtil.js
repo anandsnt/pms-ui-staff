@@ -278,7 +278,7 @@ sntRover
 	    };
 
 
-	    correctTime = function(propertyTime) {
+	    correctTime = function(date_string, propertyTime) {
             var hh   = parseInt(propertyTime.hotel_time.hh),
                 mm   = parseInt(propertyTime.hotel_time.mm),
                 ampm = '';
@@ -315,7 +315,7 @@ sntRover
                 mm = 45;
             };
 
-            var date         = $rootScope.businessDate,
+            var date         = date_string,
             	fromDate     = new tzIndependentDate(date).getTime(),
             	ms           = new tzIndependentDate(fromDate).setHours(0, 0, 0),
             	start_date   = (hh * 3600000) + (mm * 60000) + ms,
