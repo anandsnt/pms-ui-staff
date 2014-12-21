@@ -121,18 +121,30 @@ var DiaryContent = React.createClass({
 			state = this.state,
 			reset = props.edit.reset_scroll;
 
-		var initScroll = function() {
+		var setScrollerPositions = function() {
 			var scrollToPos = (reset.x_origin - reset.x_n - 7200000) * state.display.px_per_ms;
 
 			if(scrollToPos < 0) {
 				scrollToPos = 0;
 			}					
-			state.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
-		    state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
+			
+		    state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 0);
+
+			
+			var data 	= props.data,
+			display = props.display,
+			rowHeight = display.row_height + display.row_height_margin,
+			rowNumber = state.edit.active ? _.indexOf(_.pluck(data, 'id'), state.edit.originalRowItem.id) - 2 : 0,
+			rowNumber = rowNumber > 0 ? rowNumber : 0;
+
+			var scrollYPos = rowNumber * rowHeight;
+
+			state.iscroll.grid.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
+			state.iscroll.rooms.scrollTo(0, -scrollYPos, 0, 0);	
 		    state.angular_evt.onScrollEnd(Math.abs(state.iscroll.grid.x) / state.display.px_per_ms + reset.x_n);
 		};
 
-		!!reset && setTimeout( initScroll, 500 );
+		!!reset && setTimeout( setScrollerPositions, 500 );
 	},
 	componentDidMount: function() {		
 		var self = this,
