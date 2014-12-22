@@ -131,13 +131,13 @@
 								<option value="excel">Save/E-mail as Excel</option>
 							</select>
 						</div>
-						<button class="button with-icon only-icon blue" button="button" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span></button>
+						<button class="button with-icon only-icon blue" button="button" ng-click="emailReport()"><span class="icons icon-email"></span></button>
 						<button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span></button>
-						<button class="button with-icon only-icon purple" button="button" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span></button>
+						<button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()"><span class="icons icon-save"></span></button>
 					</div>
 				</div>
 
-				<div class="report-totals">
+				<div class="report-totals" ng-if="firstHalf && restHalf">
 					<ul class="col2 left-align" ng-if="firstHalf">
 						<li ng-repeat="item in firstHalf">
 							{{ item.label }}
@@ -155,10 +155,10 @@
 	
 				<div id="report-content" class="report-content scrollable" ng-iscroll="report-details-scroll">
 					<div class="wrapper" height>
-						<table>
+						<table class="guest-reports">
 
 							<!-- Reports table header -->
-							<thead ng-if="results.length">
+							<thead ng-if="!!headers.length">
 								<tr>
 									<!-- <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}" ng-class="{ 'align-right' : $first }">{{ item.value }}</th> -->
 									<!-- Fix for CICO-10246  -->
@@ -166,6 +166,18 @@
 								</tr>
 								<tr class="bottom-row" ng-if="subHeaders">
 									<th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
+								</tr>
+							</thead>
+							
+							<!-- Reports sort by header -->
+							<thead ng-if="!headers.length">
+								<tr>
+									<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+									"sorting-asc" when ASC sorting
+									"sorting-desc" when DESC sorting -->
+									<th class="name" ng-repeat="sortBy in chosenReport.sortByOptions" ng-class="{'sorting-asc': chosenReport.chosenSortBy}">
+										<span class="sort">{{ sortBy.description }}</span>
+									</th>
 								</tr>
 							</thead>
 
@@ -177,10 +189,12 @@
 								</tr>
 								<tr>
 									<td colspan="{{ leftColSpan }}">
-										From
-										<span>{{ displayedReport.fromDate | date:dateFormat }}</span>
-										To
-										<span>{{ displayedReport.untilDate | date:dateFormat }}</span>
+										<div ng-if="chosenReport.hasDateFilter">
+											From
+											<span>{{ displayedReport.fromDate | date:dateFormat }}</span>
+											To
+											<span>{{ displayedReport.untilDate | date:dateFormat }}</span>
+										</div>
 										<br>
 										<div ng-if="chosenReport.chosenCico">
 											Transaction type
@@ -190,6 +204,8 @@
 											Users
 											<span>{{ userNames }}</span>
 										</div>
+										<!-- Never REMOVE this span -->
+										<span> &nbsp; </span>
 									</td>
 									<td colspan="{{ rightColSpan }}">
 										Business date

@@ -125,8 +125,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			            headers[i] = 'Selected Late Check Out Time';
 			            break;
 			        };
-			    }
-			}
+			    };
+			};
 
 
 			// hack to set the colspan for reports details tfoot - 'Check In / Check Out' or 'Upsell'
@@ -293,6 +293,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );
 		    }, 100);
+		};
+
+		$scope.emailReport = function() {
+			alert( 'Email Report API yet to be completed/implemented/integrated' );
+		};
+
+		$scope.saveFullReport = function() {
+			alert( 'Save Full Report API yet to be completed/implemented/integrated' );
 		};
 
 		var reportSubmit = $rootScope.$on('report.submit', function() {

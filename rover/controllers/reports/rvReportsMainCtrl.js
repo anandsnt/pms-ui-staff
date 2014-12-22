@@ -119,17 +119,45 @@ sntRover.controller('RVReportsMainCtrl', [
 		        return;
 		    };
 
+		    // create basic param
 		    var params = {
-		    	id:          chosenReport.id,
-		    	from_date:   $filter( 'date' )( fromDate, 'yyyy/MM/dd' ),
-		    	to_date:     $filter( 'date' )( untilDate, 'yyyy/MM/dd' ),
-		    	user_ids:    chosenReport.chosenUsers || '',
-		    	checked_in:  getProperCICOVal( 'checked_in' ),
-		    	checked_out: getProperCICOVal( 'checked_out' ),
-		    	sort_field:  chosenReport.chosenSortBy || '',
-		    	page:        page,
-		    	per_page:    resultPerPageOverride || $scope.resultsPerPage
-		    }
+		    	id       : chosenReport.id,
+		    	page     : page,
+		    	per_page : resultPerPageOverride || $scope.resultsPerPage
+		    };
+
+		    // include dates
+			if ( chosenReport.hasDateFilter ) {
+				params['from_date'] = $filter( 'date' )( fromDate, 'yyyy/MM/dd' );
+				params['to_date']   = $filter( 'date' )( untilDate, 'yyyy/MM/dd' );
+			};
+
+			// include CICO filter 
+			if ( chosenReport.hasCicoFilter ) {
+				params['checked_in']  = getProperCICOVal( 'checked_in' );
+				params['checked_out'] = getProperCICOVal( 'checked_out' );
+			};
+
+			// include user ids
+			if ( chosenReport.hasUserFilter ) {
+				params['user_ids'] = chosenReport.chosenUsers || [];
+			};
+
+			// include sort bys
+			if ( chosenReport.sortByOptions ) {
+				params['sort_field'] = chosenReport.chosenSortBy || '';
+			};
+
+			// include notes
+			if ( chosenReport.hasIncludeNotes ) {
+				params['include_notes'] = chosenReport.hasIncludeNotes;
+			};
+
+			// include user ids
+			if ( chosenReport.hasIncludeVip ) {
+				params['vip_only'] = chosenReport.hasIncludeVip;
+			};
+
 
 		    var callback = function(response) {
 		    	if ( changeView ) {

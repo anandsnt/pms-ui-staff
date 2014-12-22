@@ -32,8 +32,6 @@ sntRover.controller('RVReportListCrl', [
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
-                console.log( reportList[i] ); 
-
                 // add report icon class
                 switch (reportList[i]['title']) {
                     case 'Check In / Check Out':
