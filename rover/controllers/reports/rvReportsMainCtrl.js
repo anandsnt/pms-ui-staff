@@ -132,6 +132,12 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['to_date']   = $filter( 'date' )( untilDate, 'yyyy/MM/dd' );
 			};
 
+			// include times
+			if ( chosenReport.hasTimeFilter ) {
+				params['from_time'] = chosenReport.fromTime || '';
+				params['to_time']   = chosenReport.untilTime || '';
+			};
+
 			// include CICO filter 
 			if ( chosenReport.hasCicoFilter ) {
 				params['checked_in']  = getProperCICOVal( 'checked_in' );
@@ -150,12 +156,17 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include notes
 			if ( chosenReport.hasIncludeNotes ) {
-				params['include_notes'] = chosenReport.hasIncludeNotes;
+				params['include_notes'] = chosenReport.chosenIncludeNotes;
 			};
 
 			// include user ids
 			if ( chosenReport.hasIncludeVip ) {
-				params['vip_only'] = chosenReport.hasIncludeVip;
+				params['vip_only'] = chosenReport.chosenIncludeVip;
+			};
+
+			// include cancelled
+			if ( chosenReport.hasIncludeCancelled ) {
+				params['include_canceled'] = chosenReport.chosenIncludeCancelled
 			};
 
 

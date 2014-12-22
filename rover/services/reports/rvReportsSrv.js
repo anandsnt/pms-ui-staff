@@ -40,25 +40,6 @@ sntRover.service('RVreportsSrv', [
 
 			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
-
-					// for TESTING ONLY
-					var data = data;
-					var note1 = {
-									date: '12-12-2014',
-									name: 'Alex',
-									note: 'This is a dummy note added from the UI > service -> rvReportsSrv.js'
-								};
-					var note2 = {
-									date: '12-10-2014',
-									name: 'Jon',
-									note: 'This is a dummy note added from the UI > service -> rvReportsSrv.js'
-								};
-					angular.forEach(data.results, function(item) {
-						item.notes.push(note1);
-						item.notes.push(note2);
-					});
-
-
 					deferred.resolve(data);
 				}.bind(this), function(data){
 					deferred.reject(data);

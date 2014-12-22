@@ -17,12 +17,14 @@ sntRover.controller('RVReportListCrl', [
 		*/
 		var postProcess = function(reportList) {
             var hasDateFilter,
+                hasTimeFilter,
                 hasCicoFilter,
                 hasUserFilter,
                 hasSortDate,
                 hasSortUser,
                 hasIncludeNotes,
-                hasIncludeVip;
+                hasIncludeVip,
+                hasIncludeCancelled;
 
             // until date is business date and from date is a week ago
             var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
@@ -52,6 +54,14 @@ sntRover.controller('RVReportListCrl', [
 
                     case 'Web Check In Conversion':
                         reportList[i]['reportIconCls'] = 'icon-check-in';
+                        break;
+
+                    case 'In-House Guests':
+                        reportList[i]['reportIconCls'] = 'guest-status inhouse';
+                        break;
+
+                    case 'Arrival':
+                        reportList[i]['reportIconCls'] = 'guest-status check-in';
                         break;
 
                     default:
@@ -95,13 +105,13 @@ sntRover.controller('RVReportListCrl', [
                 // sort by options
                 reportList[i].sortByOptions = reportList[i]['sort_fields']
 
-                // CICO-8010: for Yotel make "date" default sort by filter
-                sortDate = _.find(reportList[i]['sort_fields'], function(item) {
-                    return item.value === 'DATE';
-                });
-                if ( !!sortDate ) {
-                    reportList[i].chosenSortBy = sortDate.value;
-                };
+                // // CICO-8010: for Yotel make "date" default sort by filter
+                // sortDate = _.find(reportList[i]['sort_fields'], function(item) {
+                //     return item.value === 'DATE';
+                // });
+                // if ( !!sortDate ) {
+                //     reportList[i].chosenSortBy = sortDate.value;
+                // };
 
                 hasIncludeNotes = _.find($scope.reportList[i]['filters'], function(item) {
                     return item.value === 'INCLUDE_NOTES';
@@ -112,6 +122,20 @@ sntRover.controller('RVReportListCrl', [
                     return item.value === 'VIP_ONLY';
                 });
                 reportList[i]['hasIncludeVip'] = hasIncludeVip ? true : false;
+
+                hasIncludeCancelled = _.find($scope.reportList[i]['filters'], function(item) {
+                    return item.value === 'INCLUDE_CANCELED';
+                });
+                reportList[i]['hasIncludeCancelled'] = hasIncludeCancelled ? true : false;
+
+                hasTimeFilter = _.find($scope.reportList[i]['filters'], function(item) {
+                    return item.value === 'TIME_RANGE';
+                });
+                reportList[i]['hasTimeFilter'] = hasTimeFilter ? true : false;
+                if ( !!hasTimeFilter ) {
+                    reportList[i]['hasTimeFilter'] = true;
+                    reportList[i]['timeFilterOptions'] = $_createTimeSlots();
+                };
                 
                 // set the from and untill dates
                 reportList[i].fromDate = fromDate;
@@ -132,5 +156,38 @@ sntRover.controller('RVReportListCrl', [
 
             $scope.genReport();
         };
+
+
+        // little helpers
+        function $_createTimeSlots () {
+            var _ret  = [],
+                _hh   = '',
+                _mm   = '',
+                _step = 15;
+
+            var i = m = 0,
+                h = -1;
+
+            for (i = 0; i < 96; i++) {
+                if ( i % 4 == 0 ) {
+                    h++;
+                    m = 0;
+                } else {
+                    m += _step;
+                }
+
+                _hh = h < 10 ? '0' + h : h;
+                _mm = m < 10 ? '0' + m : m;
+
+                _ret.push({
+                    'value' : _hh + ':' + _mm,
+                    'name' : _hh + ':' + _mm
+                });
+            };
+
+            return _ret;
+        };
+
+
     }
 ]);

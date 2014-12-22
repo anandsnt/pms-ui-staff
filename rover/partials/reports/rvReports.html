@@ -15,63 +15,7 @@
 							<em>{{ item.description }}</em>
 						</div>
 					</a>
-					<div class="configure-report" ng-show="item.show_filter">
-						<div class="date-range" ng-if="item.hasDateFilter">
-							<label>Date range</label>
-							<div class="has-datepicker">
-								<input type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" readonly>
-							</div>	
-							<span class="span-to"> To </span>
-							<div class="has-datepicker">
-								<input type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" readonly>
-							</div>
-						</div>
-
-						<div class="filter" ng-if="item.hasCicoFilter">
-							<label>Transaction Type</label>
-							<div class="select">
-								<select name="" id="" ng-model="item.chosenCico" ng-options="cico.value as cico.label for cico in item.cicoOptions">
-									<option value="">Transaction Type</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="filter" ng-if="HIDE_THIS_FEATURE">
-							<label>User</label>
-							<div class="select">
-								<select name="" id="" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in userList">
-									<option value="">User</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="filter" ng-if="item.hasIncludeNotes">
-							<label class="checkbox">
-								<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNotes}"></span>
-								<input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters" class="ng-pristine ng-valid">
-								<label class="ng-binding">Include Notes</label>
-							</label>
-						</div>
-
-						<div class="filter" ng-if="item.hasIncludeVip">
-							<label class="checkbox">
-								<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeVip}"></span>
-								<input type="checkbox" ng-model="item.chosenIncludeVip" name="room-filters" class="ng-pristine ng-valid">
-								<label class="ng-binding">Include Vip</label>
-							</label>
-						</div>
-
-						<div class="sort" ng-if="item.sortByOptions">
-							<label>Sort By</label>
-							<div class="select">
-								<select name="" id="" ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions">
-									<option value="">Sort By</option>
-								</select>
-							</div>
-						</div>
-
-						<a class="button green" ng-click="setnGenReport()">Show Report</a>
-					</div>
+					<div class="configure-report" ng-show="item.show_filter" ng-include="'/assets/partials/reports/rvReportListFilters.html'"></div>
 				</li>
 			</ul>
 		</div>
@@ -79,47 +23,7 @@
 
 	<section id="reports-details-wrap" class="content scrollable reports-wrapper" role="main" ng-show="showReportDetails">
 		<div ng-controller="RVReportDetailsCtrl">
-			<div id="report-update">
-				<div class="date-range" ng-if="chosenReport.hasDateFilter">
-					<label>Date range</label>
-					<div class="has-datepicker">
-						<input id="chosenReportFrom" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
-					</div>
-					<span class="span-to">To</span>
-					<div class="has-datepicker">
-						<input id="chosenReportTo" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
-					</div>
-				</div>
-
-				<div class="filter" ng-if="chosenReport.hasCicoFilter">
-					<label>Transaction Type</label>
-					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
-							<option value="">Transaction Type</option>
-						</select>
-					</div>
-				</div>
-
-				<div class="filter" ng-if="HIDE_THIS_FEATURE">
-					<label>User</label>
-					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in userList">
-							<option value="">User</option>
-						</select>
-					</div>
-				</div>
-
-				<div class="sort" ng-if="chosenReport.sortByOptions">
-					<label>Sort by</label>
-					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
-							<option value="">Sort By</option>
-						</select>
-					</div>
-				</div>
-
-				<a class="button green" ng-click="fetchUpdatedReport()">Update Report</a>
-			</div>
+			<div id="report-update" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
 
 			<section id="report-details" class="content stay-card-inner">
 				<div class="report-header">
@@ -227,7 +131,7 @@
 							</tfoot>
 							
 							<!-- Reports table content -->
-							<tbody ng-if="!parsedApi">
+							<tbody ng-if="!parsedApiFor">
 								<tr ng-repeat="each in results track by $index">
 									<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
 									<!-- yeah thats hard :( -->
@@ -237,47 +141,9 @@
 								</tr>
 							</tbody>
 
-							<tbody ng-if="parsedApi == 'In-House Guests'">
-								<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': each.isNote }">
-									<td ng-if="!each.isNote" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
-										<strong class="title">{{ each.room_no }}</strong>
-										<span class="status">{{ each.status }}</span>
-									</td>
-									<td ng-if="!each.isNote">
-										<strong class="title">{{ each.name }}</strong>
-										<span class="confirmation">{{ each.confirm_no }}</span>
-										<span ng-if="is_vip === 'Y'">&#8226; <span class="vip">VIP</span></span>
-									</td>
-									<td ng-if="!each.isNote">
-										<div class="arrival-departure">
-											<span class="guest-status check-in">check-in</span>
-											<time>
-												<span>{{ each.arrival_date }}</span>
-												<span>{{ each.arrival_time }}</span>
-											</time>
-										</div>
-										<div class="departing">
-											<span class="guest-status check-out">check-out</span>
-											<time>
-												<span>{{ each.departure_date }}</span>
-												<span>{{ each.departure_time }}</span>
-											</time>
-										</div>
-										<div ng-if="each.hours" class="hours">{{ each.hours }}</div> 
-									</td>
-									<td ng-if="!each.isNote">
-										<span class="room">{{ each.room_type }}</span>
-										<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
-									</td>
+							<tbody ng-if="parsedApiFor == 'In-House Guests'" ng-include="'/assets/partials/reports/rvInHouseGuestReport.html'"></tbody>
 
-									<td ng-if="each.isNote">
-										<strong><time>{{ each.date }}</time> &#8226; <span>{{ each.name }}</span></strong>
-			                            <span>{{ each.note }}</span>
-									</td>
-								</tr>
-							</tbody>
-
-
+							<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
 
 						</table>
 					</div>

@@ -16,7 +16,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
 		};
 
-		$scope.parsedApi = undefined;
+		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
 		
 		// common methods to do things after fetch report
@@ -30,8 +30,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.chosenReport = RVreportsSrv.getChoosenReport();
 			
-			$scope.setTitle( $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title );
-			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title;
+			$scope.setTitle( $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '' );
+			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '';
 
 
 			// for hard coding styles for report headers
@@ -147,15 +147,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// dirty hack to get the val() not model value
 			// delay as it cost time for ng-bindings
 			$timeout(function() {
-				$scope.displayedReport = {};
-				$scope.displayedReport.fromDate = $( '#chosenReportFrom' ).val();
-				$scope.displayedReport.untilDate = $( '#chosenReportTo' ).val();
+				$scope.displayedReport           = {};
+				$scope.displayedReport.fromDate  = $( '#chosenReportFromDate' ).val();
+				$scope.displayedReport.untilDate = $( '#chosenReportToDate' ).val();
+				$scope.displayedReport.fromTime  = $( '#chosenReportFromTime' ).val();
+				$scope.displayedReport.untilTime = $( '#chosenReportToTime' ).val();
 			}, 100);
 
 
 			// new more detailed reports
-			if ( $scope.chosenReport.title === 'In-House Guests' ) {
-				$scope.parsedApi = 'In-House Guests';
+			if ( $scope.chosenReport.title === 'In-House Guests' || $scope.chosenReport.title === 'Arrival' ) {
+				$scope.parsedApiFor = $scope.chosenReport.title;
 				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 			};
 		};
@@ -362,7 +364,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var i = j = k = l = 0;
 
-			if ( $scope.parsedApi = 'In-House Guests' ) {
+			if ( $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Arrival' ) {
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					
 					_eachItem = angular.copy( apiResponse[i] );
