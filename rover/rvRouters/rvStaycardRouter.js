@@ -36,15 +36,19 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.diary', {
-            url: '/diary/:reservation_id',
+            url: '/diary/?reservation_id&checkin_date',
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'rvDiaryCtrl',
             resolve: {
                 propertyTime: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchCurrentTime();
                 },
-                payload: function($rootScope, rvDiarySrv, $stateParams, $vault) {
-                    return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(), rvDiarySrv.ArrivalFromCreateReservation());
+                payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData) {
+                    var start_date = baseSearchData.businessDate;
+                    if($stateParams.checkin_date){
+                        start_date = $stateParams.checkin_date;
+                    }
+                    return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
                 }
             }
         });
@@ -151,7 +155,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.reservationcard.reservationdetails', {
-            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes',
+            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards',
             templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController',
             resolve: {

@@ -25,9 +25,11 @@
 
 			$scope.cancellationData.paymentType = "";
 
+
+			$scope.ngDialogData.penalty = $filter("number")($scope.ngDialogData.penalty,2);
 			if($scope.ngDialogData.penalty > 0){
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
-			}
+			};
 
 			$scope.setScroller('cardsList');
 
@@ -211,8 +213,10 @@
 			name_on_card: retrieveName(),
 			payment_type: "CC",
 			reservation_id: $scope.passData.reservationId,
-			token: cardToken,
-			card_expiry: cardExpiry
+			token: cardToken
+		};
+		if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
+			paymentData.card_expiry = cardExpiry;
 		};
 		if($scope.isShowFees()){
 			if($scope.feeData.calculatedFee)
@@ -321,7 +325,7 @@
 		if($scope.isDisplayReference){
 			dataToSrv.postData.reference_text = $scope.referanceText;
 		};
-		if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual){
+		if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.cancellationData.paymentType === 'CC'){
 			dataToSrv.postData.is_emv_request = true;
 			$scope.shouldShowWaiting = true;
 			RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
@@ -347,7 +351,7 @@
 
 	$scope.onCardClick = function(){
 		$scope.showCC = true;
-		$scope.addmode = false;
+		$scope.addmode = $scope.cardsList.length>0 ?false:true;
 	};
 	var setCreditCardFromList = function(index){
 		$scope.cancellationData.selectedCard = $scope.cardsList[index].value;
@@ -366,6 +370,7 @@
 
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		$scope.newPaymentInfo = data;
+		$scope.showCC = false;
 		savePayment();
 	});
 

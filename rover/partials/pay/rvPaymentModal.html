@@ -83,8 +83,13 @@
                     <li ng-show="authorizedCode !==''">
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
-                    <li>
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}}</span>
+                    <li ng-if="isShowFees()">
+                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        </span>
+                    </li>
+                    <li ng-if="!isShowFees()">
+                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}}
+                        </span>
                     </li>
                 </ul>
             </div> 
@@ -105,7 +110,7 @@
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
-                <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'gray':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" translate>MAKE PAYMENT</button>
+                <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" translate>MAKE PAYMENT</button>
             </div>
              <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CLOSE</button>

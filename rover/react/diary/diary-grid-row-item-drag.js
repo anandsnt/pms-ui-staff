@@ -58,9 +58,12 @@ var GridRowItemDrag = React.createClass({
 		var state 		= this.state,
 			props 		= this.props,
 			display 	= props.display,
+			px_per_ms 	= display.px_per_ms,
 			delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
 			delta_y 	= e.pageY - state.origin_y - state.offset_y, 
 			adj_height 	= display.row_height + display.row_height_margin,
+			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			fifteenMin	= 900000,
 			model;
 
 		if(!props.edit.active && !props.edit.passive){
@@ -86,7 +89,23 @@ var GridRowItemDrag = React.createClass({
 				props.__onDragStart(props.row_data, model);
 			});
 		} else if(state.dragging) {	
+			model = (props.currentDragItem);
+
+			var commonFactor= ((((state.element_x + delta_x) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
+				newArrival  = (commonFactor * fifteenMin);			
+			
+			var diff = newArrival - model.arrival;			
+			model.arrival = newArrival;
+			model.departure = model.departure + diff;
+
 			this.setState({
+				currentResizeItem: 	model,
+				resizing: true			
+			}, function() {
+				props.__onResizeCommand(model);
+			});
+			this.setState({
+				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
 				left: (((state.element_x + delta_x)) / display.px_per_int).toFixed() * display.px_per_int, 
 				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
 			});
@@ -128,7 +147,7 @@ var GridRowItemDrag = React.createClass({
 				var prevArrival = item.arrival,
 					fifteenMin	= 900000,
 					commonFactor= ((((state.element_x + delta_x) / px_per_ms) + x_origin) / fifteenMin),
-					newArrival  =  commonFactor * fifteenMin,
+					newArrival  = commonFactor * fifteenMin,
 					ceiled 		= Math.ceil(commonFactor) * fifteenMin,
 					floored 	= Math.floor(commonFactor) * fifteenMin,
 					diffC_NA	= Math.abs(ceiled - newArrival), //diff b/w ceiled & new Arrival,

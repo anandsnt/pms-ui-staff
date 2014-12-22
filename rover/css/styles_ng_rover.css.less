@@ -643,10 +643,6 @@ Padding for the ows error popup
   -moz-user-select: none;
   user-select: none;
 
-  &.no-scroll {
-    overflow-y: hidden;
-  }
-
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -666,6 +662,35 @@ Padding for the ows error popup
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+}
+
+.content#rooms {
+  .search-results {
+    min-height: -webkit-calc(100%);
+    min-height: -moz-calc(100%);
+    min-height: calc(100%);
+    padding-bottom: 60px;
+  }
+
+  .on-bottom-pagination {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .content#rooms {
+    .search-results {
+      min-height: initial;
+      padding-bottom: 0;
+    }
+
+    .on-bottom-pagination {
+      position: static;
+    }
+  }
 }
 
 
@@ -1346,4 +1371,8 @@ Padding for the ows error popup
   margin-left: -10px;
   padding-left: 10px;
   border-left: 4px solid #f6991b;
+}
+
+.deposit-balance .content-right .deposit-amount.full-width{
+  border-bottom: none !important;
 }

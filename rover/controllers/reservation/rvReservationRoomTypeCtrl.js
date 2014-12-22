@@ -1149,6 +1149,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.filteredRates = $($scope.displayData.availableRates).filter(function() {
 					return this.rate.name.match(re);
 				})
+				if($scope.filteredRates.length){
+					// CICO-11119
+					$scope.isRateFilterActive = true;	
+				}				
 			} else {
 				$scope.filteredRates = [];
 			}

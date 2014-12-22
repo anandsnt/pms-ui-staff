@@ -595,13 +595,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                  }
                              });
                         } 
-
+                        var start_date = time.toStartDate();
+                        var end_date = time.x_p;
+                        end_date.setHours(0,0,0);
                         $q.all([Maintenance.read(), 
                                 RoomType.read(), 
                                 InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                                 Room.read(),                                                                 
                                 Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
-                                AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
+                                AvailabilityCount.read(dateRange(start_date, end_date))])
                                 .then(function(data_array) {
                                     _.reduce([
                                           Maintenance, 
@@ -837,10 +839,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return deferred.promise;                    
                 };
 
-                this.properDateTimeCreation = function() {                    
+                this.properDateTimeCreation = function(start_date) {                    
                     var data       = $vault.get('searchReservationData'),
-                        start_date = new tzIndependentDate($rootScope.businessDate);
-
+                        start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
+                    
                     if(data) {
                         data = JSON.parse(data);
                         start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );

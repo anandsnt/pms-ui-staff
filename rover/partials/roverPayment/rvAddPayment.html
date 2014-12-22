@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-show="!isManualCCEntryEnabled" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-show="showManualEntryDisabledPopup" ng-cloak>
 	<div class="modal-content">
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
@@ -6,7 +6,7 @@
 		<span class="h3 message solo">Manual Credit Card Updates are Disabled!</span>
 	</div>
 </div>
-<div role="dialog" id="modal" class="modal-show" ng-show="isManualCCEntryEnabled" ng-click="clearErrorMessage()" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-show="!showManualEntryDisabledPopup" ng-click="clearErrorMessage()" ng-cloak>
 <form ng-show="!shouldShowWaiting" method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC','select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
     <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>

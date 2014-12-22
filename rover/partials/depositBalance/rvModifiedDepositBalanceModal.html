@@ -96,7 +96,7 @@
 	                    <span class="date">Date <span class="value date">{{depositBalanceMakePaymentData.card_expiry}}</span></span>
 	                </label>
 	            </div>
-				<div class="entry full-width" ng-show="shouldShowMakePaymentScreen && !depositPaidSuccesFully" ng-class="{'amount': isShowFees()}"><!-- Add class "amount" when fee exsists -->
+				<div class="entry full-width deposit-amount" ng-show="shouldShowMakePaymentScreen && !depositPaidSuccesFully" ng-class="{'amount': isShowFees()}"><!-- Add class "amount" when fee exsists -->
 				    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
 				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" value="{{depositBalanceMakePaymentData.amount}}" type="text" />
 				    <!-- CICO-9457 : Use only when fee exsists in standalone -->
@@ -132,11 +132,16 @@
 			     <div class="feedback" ng-show="shouldShowMakePaymentScreen && depositPaidSuccesFully">
 	                <div class="notice success">Deposit paid!</div>
 	                <ul class="transaction">
-	                    <li ng-show="authorizedCode !==''">
+	                    <li ng-hide="authorizedCode.length === 0">
 	                        Your Authorize code is: <span class="auth" >{{authorizedCode}}</span>
 	                    </li>
-	                    <li>
-	                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}}</span>
+	                    <li ng-if="isShowFees()">
+                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        </span>
+	                    </li>
+	                    <li ng-if="!isShowFees()">
+	                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}}
+	                        </span>
 	                    </li>
 	                </ul>
 	            </div>

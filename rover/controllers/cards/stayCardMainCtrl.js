@@ -251,7 +251,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
-		$scope.noRoutingToReservation = function(){
+		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
 			that.reloadStaycard();
 
@@ -568,50 +568,49 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.reservationData.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
 			var arrivalTimeSplit = tData.arrival_time.split(":");
 
-			this.checkinTime.hh = arrivalTimeSplit[0];
-			this.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
-			if (this.checkinTime.mm.length == 1) {
-				this.checkinTime.mm = "0" + this.checkinTime.mm;
+			$scope.reservationData.checkinTime.hh = arrivalTimeSplit[0];
+			$scope.reservationData.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
+			if ($scope.reservationData.checkinTime.mm.length == 1) {
+				$scope.reservationData.checkinTime.mm = "0" + $scope.reservationData.checkinTime.mm;
 			}
-			this.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
-			if (!(this.checkinTime.ampm === "AM" || this.checkinTime.ampm === "PM")) {
-				if (parseInt(this.checkinTime.hh) >= 12) {
-					this.checkinTime.hh = Math.abs(parseInt(this.checkinTime.hh) - 12) + "";
-
-					this.checkinTime.ampm = "PM";
+			$scope.reservationData.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
+			if (!($scope.reservationData.checkinTime.ampm === "AM" || $scope.reservationData.checkinTime.ampm === "PM")) {
+				if (parseInt($scope.reservationData.checkinTime.hh) >= 12) {
+					$scope.reservationData.checkinTime.hh = Math.abs(parseInt($scope.reservationData.checkinTime.hh) - 12) + "";
+					$scope.reservationData.checkinTime.ampm = "PM";
 				} else {
-					this.checkinTime.ampm = "AM";
+					$scope.reservationData.checkinTime.ampm = "AM";
 				}
 			}
-			if (Math.abs(parseInt(this.checkinTime.hh) - 12) == 0 || this.checkinTime.hh === "00" || this.checkinTime.hh === "0") {
-				this.checkinTime.hh = "12";
+			if (Math.abs(parseInt($scope.reservationData.checkinTime.hh) - 12) == 0 || $scope.reservationData.checkinTime.hh === "00" || $scope.reservationData.checkinTime.hh === "0") {
+				$scope.reservationData.checkinTime.hh = "12";
 			}
-			if (this.checkinTime.hh.length == 1) {
-				this.checkinTime.hh = "0" + this.checkinTime.hh;
+			if ($scope.reservationData.checkinTime.hh.length == 1) {
+				$scope.reservationData.checkinTime.hh = "0" + $scope.reservationData.checkinTime.hh;
 			}
 
 			var departureTimeSplit = tData.departure_time.split(":");
-			this.checkoutTime.hh = departureTimeSplit[0];
-			this.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
+			$scope.reservationData.checkoutTime.hh = departureTimeSplit[0];
+			$scope.reservationData.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
 
-			if (this.checkoutTime.mm.length == 1) {
-				this.checkoutTime.mm = "0" + this.checkoutTime.mm;
+			if ($scope.reservationData.checkoutTime.mm.length == 1) {
+				$scope.reservationData.checkoutTime.mm = "0" + $scope.reservationData.checkoutTime.mm;
 			}
-			this.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
+			$scope.reservationData.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
 
-			if (!(this.checkoutTime.ampm === "AM" || this.checkoutTime.ampm === "PM")) {
-				if (parseInt(this.checkoutTime.hh) >= 12) {
-					this.checkoutTime.hh = Math.abs(parseInt(this.checkoutTime.hh) - 12) + "";
-					this.checkoutTime.ampm = "PM";
+			if (!($scope.reservationData.checkoutTime.ampm === "AM" || $scope.reservationData.checkoutTime.ampm === "PM")) {
+				if (parseInt($scope.reservationData.checkoutTime.hh) >= 12) {
+					$scope.reservationData.checkoutTime.hh = Math.abs(parseInt($scope.reservationData.checkoutTime.hh) - 12) + "";
+					$scope.reservationData.checkoutTime.ampm = "PM";
 				} else {
-					this.checkoutTime.ampm = "AM";
+					$scope.reservationData.checkoutTime.ampm = "AM";
 				}
 			}
-			if (Math.abs(parseInt(this.checkoutTime.hh) - 12) == "0" || this.checkoutTime.hh === "00" || this.checkoutTime.hh === "0") {
-				this.checkoutTime.hh = "12";
+			if (Math.abs(parseInt($scope.reservationData.checkoutTime.hh) - 12) == "0" || $scope.reservationData.checkoutTime.hh === "00" || $scope.reservationData.checkoutTime.hh === "0") {
+				$scope.reservationData.checkoutTime.hh = "12";
 			}
-			if (this.checkoutTime.hh.length == 1) {
-				this.checkoutTime.hh = "0" + this.checkoutTime.hh;
+			if ($scope.reservationData.checkoutTime.hh.length == 1) {
+				$scope.reservationData.checkoutTime.hh = "0" + $scope.reservationData.checkoutTime.hh;
 			}
 			var hResData = tData.rooms[0];
 
@@ -649,7 +648,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			this.totalStayCost = 0;
 			var rateIdSet = [];
 			var self = this;
-			angular.forEach($scope.reservationData.rooms, function(room, index) {				
+			angular.forEach($scope.reservationData.rooms, function(room, index) {
 				room.stayDates = {};
 				rateIdSet.push(tData.rooms[index].rateId);
 				// amount: 32
@@ -679,6 +678,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {
 					room.rateName = data.name;
+					$scope.reservationData.demographics.market = !data.market_segment_id ? '' : data.market_segment_id;
+					$scope.reservationData.demographics.source = !data.source_id ? '' : data.source_id;
 					if (data.deposit_policy_id) {
 						$scope.reservationData.depositData = {};
 						$scope.reservationData.depositData.isDepositRequired = true;

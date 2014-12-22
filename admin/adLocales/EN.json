@@ -52,6 +52,7 @@
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
     "MENU_CREATE_RESERVATION" : "Create Reservation",
+    "MENU_ROOM_DIARY": "Room Diary",
     "MENU_ROOM_ASSIGNMENT":"Room Assignment",
     "MENU_POST_CHARGES":"Post Charges",
     "MENU_CASHIER":"Cashier",
@@ -483,7 +484,8 @@
 	"FOOTER":"Footer",
 	"CUSTOM_TEXT_PLACEHOLDER":"Add custom text, hotel name / address etc",
 	"CONFIRMATION_COMMUNICATION":"Confirmation Communications",
-	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL"
+	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL",
+	"LOCATION_IMAGE":"LOCATION IMAGE"
 ,
 
 

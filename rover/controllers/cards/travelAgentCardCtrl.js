@@ -29,11 +29,18 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			} else if (tabToSwitch == 'cc-contact-info') {
 				$scope.$broadcast("contactTabActive");
 			}
-
+			else if (tabToSwitch == 'cc-ar-transactions') {
+				$scope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
+
+		$scope.$on('ARTransactionSearchFilter', function(e, data) {
+			$scope.isWithFilters = data;
+		});
 
 		var presentContactInfo = {};
 		/*-------AR account starts here-----------*/
@@ -124,8 +131,10 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
-			}, 1000);
-			callCompanyCardServices();
+			}, 1000);			
+			if(!isNew){
+				callCompanyCardServices();	
+			}
 		});
 
 

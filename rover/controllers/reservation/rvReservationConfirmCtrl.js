@@ -178,7 +178,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var data = {
 				'data': dataToUpdate,
-				'userId': $scope.reservationData.guest.id
+				'userId': $scope.reservationData.guest.id || $scope.reservationDetails.guestCard.id
 			};
 
 			var updateGuestEmailSuccessCallback = function(data) {
