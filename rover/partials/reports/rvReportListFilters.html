@@ -9,7 +9,7 @@
 	</div>
 </div>
 
-<div class="date-range" ng-if="item.hasTimeFilter">
+<div class="time-range" ng-if="item.hasTimeFilter">
 	<label>{{ item.hasTimeFilter.description }}</label>
 	<div class="select">
         <select name="time-from" ng-model="item.fromTime" ng-options="time.value as time.name for time in item.timeFilterOptions">
@@ -45,7 +45,7 @@
 <div class="filter" ng-if="item.hasIncludeNotes">
 	<label class="checkbox">
 		<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNotes}"></span>
-		<input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters" class="ng-pristine ng-valid">
+		<input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters">
 		<label class="ng-binding">{{ item.hasIncludeNotes.description }}</label>
 	</label>
 </div>
@@ -53,7 +53,7 @@
 <div class="filter" ng-if="item.hasIncludeVip">
 	<label class="checkbox">
 		<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeVip}"></span>
-		<input type="checkbox" ng-model="item.chosenIncludeVip" name="room-filters" class="ng-pristine ng-valid">
+		<input type="checkbox" ng-model="item.chosenIncludeVip" name="room-filters">
 		<label class="ng-binding">{{ item.hasIncludeVip.description }}</label>
 	</label>
 </div>
@@ -61,7 +61,7 @@
 <div class="filter" ng-if="item.hasIncludeCancelled">
 	<label class="checkbox">
 		<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeCancelled}"></span>
-		<input type="checkbox" ng-model="item.chosenIncludeCancelled" name="room-filters" class="ng-pristine ng-valid">
+		<input type="checkbox" ng-model="item.chosenIncludeCancelled" name="room-filters">
 		<label class="ng-binding">{{ item.hasIncludeCancelled.description }}</label>
 	</label>
 </div>

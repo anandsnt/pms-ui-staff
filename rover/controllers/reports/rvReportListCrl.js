@@ -89,7 +89,6 @@ sntRover.controller('RVReportListCrl', [
                     return item.value === 'TIME_RANGE';
                 });
                 if ( !!reportList[i]['hasTimeFilter'] ) {
-                    reportList[i]['hasTimeFilter'] = true;
                     reportList[i]['timeFilterOptions'] = $_createTimeSlots();
                 };
 

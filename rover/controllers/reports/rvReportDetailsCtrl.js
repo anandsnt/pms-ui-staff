@@ -18,6 +18,37 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
+
+		// faux select init
+		$scope.fauxSelectOpen = false;
+		$scope.fauxTitle      = 'Select';
+		$scope.fauxSelectClicked = function(e) {
+			var selectCount = 0;
+
+			if ( !!e ) {
+				e.stopPropagation();
+				$scope.fauxSelectOpen = $scope.fauxSelectOpen ? false : true;
+			};
+			
+			if ( $scope.chosenReport.chosenIncludeNotes ) {
+				selectCount++;
+				$scope.fauxTitle = $scope.chosenReport.hasIncludeNotes.description;
+			};
+			if ( $scope.chosenReport.chosenIncludeCancelled ) {
+				selectCount++;
+				$scope.fauxTitle = $scope.chosenReport.hasIncludeCancelled.description;
+			};
+			if ( $scope.chosenReport.chosenIncludeVip ) {
+				selectCount++;
+				$scope.fauxTitle = $scope.chosenReport.hasIncludeVip.description;
+			};
+
+			if (selectCount > 1) {
+				$scope.fauxTitle = selectCount + ' Selected';
+			} else if ( selectCount == 0 ) {
+				$scope.fauxTitle = 'Select';
+			};
+		};
 		
 		// common methods to do things after fetch report
 		var afterFetch = function() {
@@ -36,6 +67,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset this
 			$scope.parsedApiFor = undefined;
 
+			// re-init faux select
+			$scope.fauxSelectClicked();
+
+			// is this guest reports
+			if ( $scope.chosenReport.title == 'Arrival' ||
+					$scope.chosenReport.title == 'Cancelation & No Show' ||
+					$scope.chosenReport.title == 'Departure' ||
+					$scope.chosenReport.title == 'In-House Guests' ) {
+				$scope.isGuestReport = true;
+			};
 
 			// for hard coding styles for report headers
 			// if the header count is greater than 4

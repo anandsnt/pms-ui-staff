@@ -42,6 +42,31 @@
 	</div>
 </div>
 
+<div class="options" ng-if="chosenReport.hasIncludeNotes || chosenReport.hasIncludeCancelled || chosenReport.hasIncludeVip">
+    <label for="report-options">Options</label>
+    <div class="faux-select placeholder" ng-click="fauxSelectClicked($event)">{{ fauxTitle }}</div>
+    <!-- When single checkbox selected 
+    <div class="faux-select">{Option}</div>
+    -->
+    <!-- When multiple checkboxes selected 
+    <div class="faux-select">{count} selected ...</div>
+    -->
+    <div class="faux-select-options" ng-class="{ 'hidden': !fauxSelectOpen }"> <!-- Remove class "hidden" when ".faux-select" clicked -->
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeNotes">
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeNotes" name="room-filters">
+            {{ chosenReport.hasIncludeNotes.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeCancelled">
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeCancelled" name="room-filters">
+            {{ chosenReport.hasIncludeCancelled.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeVip">
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeVip" name="room-filters">
+            {{ chosenReport.hasIncludeVip.description }}
+        </label>
+    </div>
+</div>
+
 <div class="sort" ng-if="chosenReport.sortByOptions">
 	<label>Sort by</label>
 	<div class="select">
