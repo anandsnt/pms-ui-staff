@@ -106,8 +106,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         };
 
         $scope.routeToSummary = function() {
-            console.log('vault data');
-            console.log( $scope.vaultSelections);
+            
             $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
             //CICO-9429                  
             if ($rootScope.isAddonOn) {

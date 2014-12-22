@@ -3,8 +3,13 @@
     <form method="post" action="" id="diary-header" name="diary-header" class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
         <div class="entry edit" ng-show="gridProps.edit.active">
             <div class="guest">
-                <h1>{{gridProps.edit.originalItem.reservation_primary_guest_full_name}}</h1>
-            </div>
+                <h1 ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                    {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
+                </h1>
+                <h1 ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name"> 
+                    {{gridProps.edit.originalItem.account_name}}   
+                </h1>
+            </div>            
             <div class="actions">
                 <button id="edit-staycard" class="button white" ng-click="openStayCard()">StayCard</button>
                 <button id="edit-save" class="button green" ng-click="editSave()">Save</button>

@@ -56,6 +56,21 @@
 				<label translate>GETTING_TO_THE_HOTEL</label>
 				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.confirmation_template_text"></ad-textarea>
 			</div>
+
+			<div class="entry full-width">
+				<label translate>LOCATION_IMAGE</label>
+				<div class="file-upload with-preview">
+					<span class="input">{{location_image_file}}</span>
+					<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.location_image)" ng-click = "data.location_image = 'false'"></a>
+					<input type="file" ng-model="data.location_image" accept="image/*" app-filereader />
+					<button type="button" class="button brand-colors">
+						Choose file
+					</button>
+				</div>
+				<span class="file-preview"> <img ng-src="{{data.location_image}}" alt="" height="112" width="auto"> </span>
+			</div>
+
+
 		</fieldset>
 
 		<div class="actions float">
