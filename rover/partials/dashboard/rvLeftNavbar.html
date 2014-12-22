@@ -1,8 +1,19 @@
-<nav id="main-menu" role="navigation" ng-animate="animate" ng-class="{'menu-open': menuOpen, 'menu-closing' : !menuOpen}">
+<nav id="main-menu" role="navigation" ng-animate="animate" ng-class="{'menu-open': menuOpen, 'menu-closing' : !menuOpen,'menu-hotel':switchHotelOn}">
 	<a id="{{menuImage}}" class="nav-toggle" ng-class="{'active': menuOpen}" ng-click="toggleDrawerMenu()">Menu</a>
 	
 	<div id="nav" ng-show="isHotelAdmin || isHotelStaff">
-		<h5>Menu</h5>
+
+		<!-- Property switch -->
+		<div class="change-hotel" ng-show="hotelDetails.userHotelsData.hotel_list.length>0">
+			<h5 ng-click="switchHotelOn = !switchHotelOn">{{hotelDetails.userHotelsData.currentHotelName}}</h5>
+			<dl class="dropdown">
+				<dt>Change hotel:</dt>
+				<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list"><a ng-click="redirectToHotel(hotel.hotel_id)">{{ hotel.hotel_name}}</a></dd>
+			</dl>
+		</div>
+
+		<!-- If only 1 hotel available don't show the switch, just show this: -->
+		<h5 ng-hide="hotelDetails.userHotelsData.hotel_list.length>0">Menu</h5>
 
 		<ul id="large-menu" class="main">
 			<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" ng-click="updateSubMenu($index,menuItem)">
