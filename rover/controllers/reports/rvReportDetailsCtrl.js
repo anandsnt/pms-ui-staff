@@ -156,7 +156,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 			// new more detailed reports
-			if ( $scope.chosenReport.title === 'In-House Guests' || $scope.chosenReport.title === 'Arrival' ) {
+			if ( $scope.chosenReport.title === 'In-House Guests' || $scope.chosenReport.title === 'Arrival' || $scope.chosenReport.title === 'Departure' ) {
 				$scope.parsedApiFor = $scope.chosenReport.title;
 				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 			};
@@ -317,7 +317,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		$scope.saveFullReport = function() {
-			alert( 'Save Full Report API yet to be completed/implemented/integrated' );
+			alert( 'Download Full Report API yet to be completed/implemented/integrated' );
 		};
 
 		var reportSubmit = $rootScope.$on('report.submit', function() {

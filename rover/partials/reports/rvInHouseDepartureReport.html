@@ -30,7 +30,7 @@
 		<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
 	</td>
 
-	<td ng-if="each.isNote">
+	<td ng-if="each.isNote" colspan="3">
 		<strong><time>{{ each.date }}</time> &#8226; <span>{{ each.name }}</span></strong>
 		<span>{{ each.note }}</span>
 	</td>

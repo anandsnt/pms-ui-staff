@@ -64,6 +64,10 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['reportIconCls'] = 'guest-status check-in';
                         break;
 
+                    case 'Departure':
+                        reportList[i]['reportIconCls'] = 'guest-status check-out';
+                        break;
+
                     default:
                         reportList[i]['reportIconCls'] = '';
                         break;
@@ -103,7 +107,10 @@ sntRover.controller('RVReportListCrl', [
                 reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
 
                 // sort by options
-                reportList[i].sortByOptions = reportList[i]['sort_fields']
+                reportList[i].sortByOptions = reportList[i]['sort_fields'];
+                if ( reportList[i]['sort_fields'] && reportList[i]['sort_fields'].length ) {
+                    reportList[i].sortByOptions[ reportList[i]['sort_fields'].length - 1 ]['colspan'] = 2;
+                };
 
                 // // CICO-8010: for Yotel make "date" default sort by filter
                 // sortDate = _.find(reportList[i]['sort_fields'], function(item) {
