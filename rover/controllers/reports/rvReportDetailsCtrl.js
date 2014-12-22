@@ -259,13 +259,24 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// refetch the report while sorting with..
 		// Note: we are resetting page to page #1
 		$scope.sortResultBy = function(sortBy) {
-			console.log( sortBy );
-			console.log( $scope.chosenReport.sortByOptions );
+			if ( !sortBy ) {
+				return;
+			};
 
-			//$scope.chosenReport.chosenSortBy = sortField;
+			// un-select sort dir of others
+			_.each($scope.chosenReport.sortByOptions, function(item) {
+				if ( item.value != sortBy.value ) {
+					item.sortDir = undefined;
+				};
+			});
+
+			// select sort_dir for clicked item
+			sortBy.sortDir = (sortBy.sortDir == undefined || sortBy.sortDir == false) ? true : false;
+
+			$scope.chosenReport.chosenSortBy = sortBy.value;
 
 			// should-we-change-view, specify-page, per-page-value
-			//$scope.genReport( false, 1 );
+			$scope.genReport( false, 1 );
 		};
 
 		// refetch the reports with new filter values

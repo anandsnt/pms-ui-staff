@@ -152,6 +152,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include sort bys
 			if ( chosenReport.sortByOptions ) {
 				params['sort_field'] = chosenReport.chosenSortBy || '';
+
+				var chosenSortBy = _.find(chosenReport.sortByOptions, function(item) {
+					return item.value == chosenReport.chosenSortBy;
+				});
+				if ( !!chosenSortBy && typeof chosenSortBy.sortDir == 'boolean' ) {
+					params['sort_dir'] = chosenSortBy.sortDir;
+				};
 			};
 
 			// include notes

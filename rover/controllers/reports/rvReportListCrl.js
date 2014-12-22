@@ -136,7 +136,7 @@ sntRover.controller('RVReportListCrl', [
                 reportList[i].sortByOptions = reportList[i]['sort_fields'];
                 if ( reportList[i].sortByOptions && reportList[i]['sort_fields'].length ) {
                     for (var k = 0, l = reportList[i].sortByOptions.length; k < l; k++) {
-                        reportList[i].sortByOptions[k]['sortDir'] = false;
+                        reportList[i].sortByOptions[k]['sortDir'] = undefined;
                         if ( k == l - 1 ) {
                             reportList[i].sortByOptions[k]['colspan'] = 2;
                         };

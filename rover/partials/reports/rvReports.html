@@ -21,45 +21,44 @@
 		</div>
 	</section>
 
-	<section id="reports-details-wrap" class="content scrollable reports-wrapper" role="main" ng-show="showReportDetails">
+	<section id="report-details" class="content reports-wrapper" role="main" ng-show="showReportDetails">
 		<div ng-controller="RVReportDetailsCtrl">
 			<div id="report-update" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
 
-			<section id="report-details" class="content stay-card-inner">
-				<div class="report-header">
-					<div class="actions">
-						<div class="select" ng-if="HIDE_THIS_FEATURE">
-							<select name="" id="">
-								<option value="pdf">Save/E-mail as PDF</option>
-								<option value="word">Save/E-mail as Word</option>
-								<option value="excel">Save/E-mail as Excel</option>
-							</select>
-						</div>
-						<button class="button with-icon only-icon blue" button="button" ng-click="emailReport()"><span class="icons icon-email"></span></button>
-						<button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span></button>
-						<button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()"><span class="icons icon-save"></span></button>
+			<div class="report-header">
+				<div class="actions">
+					<div class="select" ng-if="HIDE_THIS_FEATURE">
+						<select name="" id="">
+							<option value="pdf">Save/E-mail as PDF</option>
+							<option value="word">Save/E-mail as Word</option>
+							<option value="excel">Save/E-mail as Excel</option>
+						</select>
 					</div>
+					<button class="button with-icon only-icon blue" button="button" ng-click="emailReport()"><span class="icons icon-email"></span></button>
+					<button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span></button>
+					<button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()"><span class="icons icon-save"></span></button>
 				</div>
+			</div>
 
-				<div class="report-totals" ng-if="firstHalf && restHalf">
-					<ul class="col2 left-align" ng-if="firstHalf">
-						<li ng-repeat="item in firstHalf">
-							{{ item.label }}
-							<span ng-class="item.class">{{ item.value }}</span>
-						</li>
-					</ul>
-					
-					<ul class="col2 right-align" ng-if="restHalf">
-						<li ng-repeat="item in restHalf">
-							{{ item.label }}
-							<span ng-class="item.class">{{ item.value }}</span>
-						</li>
-					</ul>
-				</div>
-	
-				<div id="report-content" class="report-content no-totals scrollable" ng-iscroll="report-details-scroll">
-					<div class="wrapper">
-						<table class="guest-reports">
+			<div class="report-totals" ng-if="firstHalf && restHalf">
+				<ul class="col2 left-align" ng-if="firstHalf">
+					<li ng-repeat="item in firstHalf">
+						{{ item.label }}
+						<span ng-class="item.class">{{ item.value }}</span>
+					</li>
+				</ul>
+				
+				<ul class="col2 right-align" ng-if="restHalf">
+					<li ng-repeat="item in restHalf">
+						{{ item.label }}
+						<span ng-class="item.class">{{ item.value }}</span>
+					</li>
+				</ul>
+			</div>
+
+			<div id="report-content" class="report-content no-totals scrollable" ng-iscroll="report-details-scroll">
+				<div class="wrapper">
+					<table class="guest-reports">
 
 							<!-- Reports table header -->
 							<thead ng-if="!!headers.length">
@@ -79,80 +78,75 @@
 									<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
 									"sorting-asc" when ASC sorting
 									"sorting-desc" when DESC sorting -->
-									<th class="name" ng-repeat="sortBy in chosenReport.sortByOptions">
-										<div style="position:relative">
-											<input type="checkbox" ng-model="sortBy.sortDir" ng-click="sortResultBy(sortBy)">
-											<span class="sort" ng-class="{'sorting-asc': sortBy.sortDir, 'sorting-desc': !sortBy.sortDir}">{{ sortBy.description }}</span>
-										</div>
+									<th class="name" ng-repeat="sortBy in chosenReport.sortByOptions" ng-click="sortResultBy(sortBy)">
+										<span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}">{{ sortBy.description }}</span>
 									</th>
 								</tr>
 							</thead>
 
-							<!-- Reports table footer -->
-							<tfoot>
-								<tr class="totals" ng-if="resultsTotalRow">
-									<td>Total</td>
-									<td ng-repeat="item in resultsTotalRow track by $index">{{ item }}</td>
-								</tr>
-								<tr>
-									<td colspan="{{ leftColSpan }}">
-										<div ng-if="chosenReport.hasDateFilter">
-											From
-											<span>{{ displayedReport.fromDate | date:dateFormat }}</span>
-											To
-											<span>{{ displayedReport.untilDate | date:dateFormat }}</span>
-										</div>
-										<br>
-										<div ng-if="chosenReport.chosenCico">
-											Transaction type
-											<span>{{ transcationTypes }}</span>
-										</div>
-										<div ng-if="chosenReport.chosenUsers">
-											Users
-											<span>{{ userNames }}</span>
-										</div>
-										<!-- Never REMOVE this span -->
-										<span> &nbsp; </span>
-									</td>
-									<td colspan="{{ rightColSpan }}">
-										Business date
-										<span>{{ userInfo.business_date | date:dateFormat }}</span>
-										<br>
-										User
-										<span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-										<br>
-										<ul class="pagination" ng-if="pagination.length">
-											<li class="title">
-												Pages:
-												<li ng-repeat="page in pagination" ng-class="{'active': page.active}" ng-click="fetchNextPage()">
-													{{ page.no }}
-												</li>
+						<!-- Reports table footer -->
+						<tfoot>
+							<tr class="totals" ng-if="resultsTotalRow">
+								<td>Total</td>
+								<td ng-repeat="item in resultsTotalRow track by $index">{{ item }}</td>
+							</tr>
+							<tr>
+								<td colspan="{{ leftColSpan }}">
+									<div ng-if="chosenReport.hasDateFilter">
+										From
+										<span>{{ displayedReport.fromDate | date:dateFormat }}</span>
+										To
+										<span>{{ displayedReport.untilDate | date:dateFormat }}</span>
+									</div>
+									<br>
+									<div ng-if="chosenReport.chosenCico">
+										Transaction type
+										<span>{{ transcationTypes }}</span>
+									</div>
+									<div ng-if="chosenReport.chosenUsers">
+										Users
+										<span>{{ userNames }}</span>
+									</div>
+									<!-- Never REMOVE this span -->
+									<span> &nbsp; </span>
+								</td>
+								<td colspan="{{ rightColSpan }}">
+									Business date
+									<span>{{ userInfo.business_date | date:dateFormat }}</span>
+									<br>
+									User
+									<span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+									<br>
+									<ul class="pagination" ng-if="pagination.length">
+										<li class="title">
+											Pages:
+											<li ng-repeat="page in pagination" ng-class="{'active': page.active}" ng-click="fetchNextPage()">
+												{{ page.no }}
 											</li>
-										</ul>
-									</td>
-								</tr>
-							</tfoot>
-							
-							<!-- Reports table content -->
-							<tbody ng-if="!parsedApiFor">
-								<tr ng-repeat="each in results track by $index">
-									<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
-									<!-- yeah thats hard :( -->
-									<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out')}">
-										{{ item }}
-									</td>
-								</tr>
-							</tbody>
+										</li>
+									</ul>
+								</td>
+							</tr>
+						</tfoot>
+						
+						<!-- Reports table content -->
+						<tbody ng-if="!parsedApiFor">
+							<tr ng-repeat="each in results track by $index">
+								<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
+								<!-- yeah thats hard :( -->
+								<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out')}">
+									{{ item }}
+								</td>
+							</tr>
+						</tbody>
 
-							<tbody ng-if="parsedApiFor == 'In-House Guests' || parsedApiFor == 'Departure'" ng-include="'/assets/partials/reports/rvInHouseDepartureReport.html'"></tbody>
+						<tbody ng-if="parsedApiFor == 'In-House Guests' || parsedApiFor == 'Departure'" ng-include="'/assets/partials/reports/rvInHouseDepartureReport.html'"></tbody>
 
-							<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
+						<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
 
-						</table>
-					</div>
-				</div>				
-			</section>
+					</table>
+				</div>
+			</div>
 		</div>
 	</section>
-
 </div>
