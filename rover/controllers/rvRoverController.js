@@ -28,9 +28,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.hotelDetails = hotelDetails;
     //set current hotel name
     $scope.hotelDetails.userHotelsData.currentHotelName = "";    
-    angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, key) {
+    angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
           if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id){
              $scope.hotelDetails.userHotelsData.currentHotelName = hotel.hotel_name;
+             $scope.hotelDetails.userHotelsData.hotel_list.splice(index,1);
           };
     });
 
