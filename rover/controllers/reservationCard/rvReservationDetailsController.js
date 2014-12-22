@@ -493,9 +493,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		};
 
-		$scope.showDiaryScreen = function() {
+		$scope.showDiaryScreen = function() {			
+			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 			$state.go('rover.reservation.diary', {
-				reservation_id: $scope.reservationData.reservation_card.reservation_id
+				reservation_id: $scope.reservationData.reservation_card.reservation_id,
+				checkin_date: $scope.reservationData.reservation_card.arrival_date,
 			});
 		};
 

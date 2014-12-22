@@ -78,7 +78,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 			toolTipLookUp = {};
 
 			angular.forEach(data.results, function(item, index) {
-				var valueActual, valueTarget;
+				var valueActual, valueTarget, actual;
 
 				itemDate = Date.parse(item.date); //parse string datetime value to locale ms
 				
@@ -92,7 +92,14 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 				// NOTE :: Check if replaced harcoded 10 with item.actual
 				// var valueActual = Math.floor((Math.random() * 100) + 1);
-				actualData.push(item.actual || 0); 
+
+                if(item.actual === null){
+                   actual = 0; 
+                }
+                else{
+                    actual = (item.actual % 1 === 0) ? item.actual : item.actual.toFixed(2);
+                }
+				actualData.push(parseInt(actual));
 				toolTipLookUp[itemDate].actual = valueActual;
 
 				// NOTE :: Check if replaced harcoded 10 with item.target
@@ -331,9 +338,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 						interval: {
 							width: $scope.uiOptions.columnWidth
 						},
+                        // CICO-11038: Max value set to 90 as it will show up 100 in highchart!!
 						yAxis: {
-							max: max,
-							step: parseInt(max / 10, 10)
+							max: 90,
+                            min: 0
 						}
 					};
 
