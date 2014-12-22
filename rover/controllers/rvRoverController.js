@@ -26,11 +26,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
-    //set current hotel name
-    $scope.hotelDetails.userHotelsData.currentHotelName = "";    
+    //set current hotel details
+    $scope.currentHotelData = {
+      "name":"",
+      "id":""
+    };    
     angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
           if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id){
-             $scope.hotelDetails.userHotelsData.currentHotelName = hotel.hotel_name;
+             $scope.currentHotelData.name = hotel.hotel_name;
+             $scope.currentHotelData.id   = hotel.hotel_id;
              $scope.hotelDetails.userHotelsData.hotel_list.splice(index,1);
           };
     });

@@ -5,7 +5,7 @@
 
 		<!-- Property switch -->
 		<div class="change-hotel" ng-show="hotelDetails.userHotelsData.hotel_list.length>0">
-			<h5 ng-click="showHotelSwitchList = !showHotelSwitchList">{{hotelDetails.userHotelsData.currentHotelName}}</h5>
+			<h5 ng-click="showHotelSwitchList = !showHotelSwitchList">{{currentHotelData.name}}</h5>
 			<dl class="dropdown">
 				<dt>Change hotel:</dt>
 				<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list"><a ng-click="redirectToHotel(hotel.hotel_id)">{{ hotel.hotel_name}}</a></dd>
