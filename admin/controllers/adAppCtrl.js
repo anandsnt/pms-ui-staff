@@ -91,8 +91,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/staycard/search",
 						standAlone : true
 					}, {
-						title: "MENU_ROOM_ASSIGNMENT",
-						action: "staff#/staff/diary/reservations",
+						title: "MENU_ROOM_DIARY",
+						action: "staff#/staff/staycard/diary/",
 						standAlone: true,
 						hidden: !$rootScope.isHourlyRatesEnabled
 					}, {
@@ -147,7 +147,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: "staff#/staff/workmanagement/start"
+						action: "staff#/staff/workmanagement/start",
+						menuIndex: "workManagement",
+			            hidden: $rootScope.isHourlyRatesEnabled
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""

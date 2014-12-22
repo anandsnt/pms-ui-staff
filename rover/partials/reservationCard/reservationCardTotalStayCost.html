@@ -7,11 +7,11 @@
 		<span class="number" ng-hide="reservationData.reservation_card.is_rates_suppressed">
 			{{currencySymbol}}{{reservationData.reservation_card.avg_daily_rate}}	
 		</span> 
-		<span ng-hide="reservationParentData.is_modified == true" class="rate">
+		<span ng-hide="reservationParentData.is_modified == true && isStandAlone" class="rate">
 			{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}} 
 	    </span>
 		<!-- If reservation was edited, output this instead:-->
-        <span class="rate custom" ng-show="reservationParentData.is_modified == true">
+        <span class="rate custom" ng-show="reservationParentData.is_modified == true && isStandAlone">
         	<span>
         		Edited
         	</span> 

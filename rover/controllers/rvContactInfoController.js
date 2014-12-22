@@ -75,16 +75,14 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
           if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
             $scope.viewState.pendingRemoval.status = false;
             $scope.viewState.pendingRemoval.cardType = "";
-            if ($scope.reservationDetails.guestCard.futureReservations <= 0 || $stateParams.reservation == "HOURLY") {
+            if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
               $scope.replaceCardCaller('guest', {
                 id: data.id
               }, false);
-            } else {
-              if ($stateParams.reservation != "HOURLY") {
+            } else {             
                 $scope.checkFuture('guest', {
                   id: data.id
-                });
-              }
+                });              
             }
             // $scope.replaceCard('guest', {
             //   id: data.id

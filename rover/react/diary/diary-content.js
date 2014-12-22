@@ -53,29 +53,38 @@ var DiaryContent = React.createClass({
 			break;
 		}
  
-	},
+	},	
 	__onDragStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(arguments));
 	},
-	__onDragStop: function(e, left, row_item_data) {
+	__onDragStop: function(e, left, top, row_item_data) {
 		var state 			= this.state,
 			rowHeight 		= state.display.row_height + state.display.row_height_margin,
 			viewport 		= state.viewport.element(),
-			curPos 			= e.pageY - viewport.offset().top - state.iscroll.grid.y, //viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
-			rowNumber 		= (curPos / rowHeight).toFixed(),
+			curPos 			= e.pageY - state.iscroll.grid.y - viewport.offset().top,// e.pageY - viewport.offset().top - state.iscroll.grid.y    viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
+			rowNumber 		= Math.floor(curPos / rowHeight),
 			row_data 		= state.data[rowNumber],
-			delta 			= Number((left - row_item_data.left).toFixed(3));
+			delta 			= Number((left - row_item_data.left).toFixed(3)),
+			props = 				this.props,			
+			display = 				props.display,
+			delta_x = 				e.pageX - state.origin_x, 
+			x_origin = 				(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			px_per_int = 			display.px_per_int,
+			px_per_ms = 			display.px_per_ms;
+			
 
-		if(rowNumber * (state.display.row_height + state.display.row_height_margin) < e.pageY) {
-			rowNumber++;
-		}
+		//console.log((left -props.display.x_0 - props.iscroll.grid.x))
 		
-		row_item_data.left = left;
-		row_item_data.right = row_item_data.right + delta;
-
-		row_item_data.start_date = row_item_data.left / state.display.px_per_ms + state.display.x_n; //.x_origin;
-		row_item_data.end_date = row_item_data.right / state.display.px_per_ms + state.display.x_n; //.x_origin;
-
+		/*row_item_data.left = left;*/
+		var right = row_item_data.departure + delta;
+		
+		//row_item_data.arrival = left / state.display.px_per_ms + state.display.x_n; //.x_origin;
+		//row_item_data.departure = right / state.display.px_per_ms + state.display.x_n; //.x_origin;
+		
+		this.setState({
+			currentResizeItem: row_item_data,
+			currentResizeItemRow: row_data
+		});
 		this.state.angular_evt.onDragEnd(row_data, row_item_data);		
 	},
 	/*Message transport between timeline and grid:
@@ -105,7 +114,40 @@ var DiaryContent = React.createClass({
 			currentResizeItemRow: row_data
 		});
 	},
+	componentDidUpdate: function(){				
+		this.componentWillMount();
 
+		var props = this.props,
+			state = this.state,
+			reset = props.edit.reset_scroll;
+
+		var setScrollerPositions = function() {
+			var scrollToPos = (reset.x_origin - reset.x_n - 7200000) * state.display.px_per_ms;
+
+			if(scrollToPos < 0) {
+				scrollToPos = 0;
+			}					
+			
+		   
+			
+			var data 	= props.data,
+			display = props.display,
+			rowHeight = display.row_height + display.row_height_margin,
+			rowNumber = state.edit.active ? _.indexOf(_.pluck(data, 'id'), state.edit.originalRowItem.id) - 2 : 0,
+			rowNumber = rowNumber > 0 ? rowNumber : 0;
+
+			var scrollYPos = rowNumber * rowHeight;
+			state.iscroll.timeline.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
+			state.iscroll.grid.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
+			state.iscroll.rooms.scrollTo(0, -scrollYPos, 0, 0);
+			state.iscroll.timeline.refresh();
+			state.iscroll.grid.refresh();
+			
+		    state.angular_evt.onScrollEnd(Math.abs(state.iscroll.grid.x) / state.display.px_per_ms + reset.x_n);
+		};
+
+		!!reset && setTimeout( setScrollerPositions, 500 );
+	},
 	componentDidMount: function() {		
 		var self = this,
             state = this.state;
@@ -114,7 +156,7 @@ var DiaryContent = React.createClass({
     		self._recalculateGridSize();
     		setTimeout(function(){
     			self.componentWillMount();
-    		}, 200);
+    		}, 1000);
             
     	}.bind(this), 10, { leading: false, trailing: true }));
 
@@ -147,6 +189,7 @@ var DiaryContent = React.createClass({
     	}
   	},
   	componentWillReceiveProps: function(nextProps) {
+  		
   		var hops = Object.prototype.hasOwnProperty,
   			self = this;
   		/*if(this.props.viewport !== nextProps.viewport ||
@@ -161,6 +204,9 @@ var DiaryContent = React.createClass({
   				edit: nextProps.edit
   			});
   		}*/
+		 
+
+		    				
 		if(hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
   			this.setState({
   				stats: nextProps.stats
@@ -176,15 +222,17 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
   				viewport: nextProps.viewport
-  			});
-  			$(window).resize();  			
+  			});  			 		
 
   		}
 
   		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
   			this.setState({
   				display: nextProps.display
-  			});  			  			
+  			},
+  			function(){
+  				this._recalculateGridSize();
+  			});
   		}
 
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
@@ -272,6 +320,7 @@ var DiaryContent = React.createClass({
 			display: 			state.display,
 			meta:           	state.meta,
 			data: 				state.data,
+			edit:               state.edit,
 			filter: 			state.filter,
 			iscroll: 			state.iscroll,
 			__onGridScroll: 	self.__onGridScroll,
@@ -307,6 +356,7 @@ var DiaryContent = React.createClass({
 			currentResizeItem: 		props.currentResizeItem,
 			currentResizeItemRow: 	props.currentResizeItemRow,
 			angular_evt: 			state.angular_evt,
+			__onResizeCommand: 		self.__onResizeCommand,
 			__onGridScroll: 		self.__onGridScroll,
 			__onGridScrollEnd: 		self.__onGridScrollEnd,
 			__onDragStart: 			self.__onDragStart,

@@ -1,6 +1,6 @@
 sntRover
-.factory('rvDiaryUtil', ['rvDiaryMetadata',
-    function (rvDiaryMetadata) {
+.factory('rvDiaryUtil', ['rvDiaryMetadata', '$rootScope',
+    function (rvDiaryMetadata, $rootScope) {
     	var meta = rvDiaryMetadata,
     		occ_meta = meta.occupancy,
     		rom_meta = meta.room,
@@ -167,14 +167,13 @@ sntRover
 
 		reservationIndex = function(room, reservation) {
 			var idx = -1, occupancy = room.occupancy;
-
+			
 			for(var i = 0, len = occupancy.length; i < len; i++) {
 				if(occupancy[i].reservation_id === reservation.reservation_id) {
 					idx = i;
 					return idx;
 				}
-			}
-
+			}			
 			return idx;		
 		};
 
@@ -199,8 +198,7 @@ sntRover
 		};
 
 		removeReservation = function(room, reservation) {
-			var idx = reservationIndex(room, reservation);
-		
+			var idx = reservationIndex(room, reservation);			
 			if(idx > -1) {
 				return room.occupancy.splice(idx, 1);
 			}
@@ -236,7 +234,7 @@ sntRover
 
 				removeReservation(oldRoom, reservation);
 
-				newRoom.occpuancy.push(copyReservation(reservation));
+				newRoom.occupancy.push(copyReservation(reservation));
 
                 idxOldRoom = roomIndex(rooms, oldRoom);
                 idxNewRoom = roomIndex(rooms, newRoom);
@@ -249,7 +247,7 @@ sntRover
                 if(idxNewRoom > -1 && idxNewRoom < data.length) {
                     data[idxNewRoom] = newRoom;
                 }
-			} else {
+			} else {				
 				updateReservation(oldRoom, reservation);
 			}
 		};
@@ -279,6 +277,59 @@ sntRover
 	    	}
 	    };
 
+
+	    correctTime = function(date_string, propertyTime) {
+            var hh   = parseInt(propertyTime.hotel_time.hh),
+                mm   = parseInt(propertyTime.hotel_time.mm),
+                ampm = '';
+
+            // first decide AMP PM
+            if ( hh > 12 ) {
+                ampm = 'PM';
+            } else {
+                ampm = 'AM';
+            }
+
+            // the time must be rounded to next 15min position
+            // if the guest came in at 3:10AM it should be rounded to 3:15AM
+            if ( mm > 45 && hh + 1 < 12 ) {
+                hh += 1;
+                mm = 0;
+            } else if ( mm > 45 && hh + 1 == 12 ) {
+                if ( ampm == 'AM' ) {
+                    hh  = 12;
+                    mm = 0;
+                    ampm    = 'PM';
+                } else {
+                    hh  = 12;
+                    mm = 0;
+                    ampm    = 'AM';
+                }
+            } else if ( mm == 15 || mm == 30 || mm == 45 ) {
+                mm += 15;
+            } else if ( Math.max(mm, 15) == 15 ) {
+                mm = 15;
+            } else if ( Math.max(mm, 30) == 30 ) {
+                mm = 30;
+            } else {
+                mm = 45;
+            };
+
+            var date         = date_string,
+            	fromDate     = new tzIndependentDate(date).getTime(),
+            	ms           = new tzIndependentDate(fromDate).setHours(0, 0, 0),
+            	start_date   = (hh * 3600000) + (mm * 60000) + ms,
+            	__start_date = new tzIndependentDate(date);
+
+            __start_date.setHours(0, 0, 0);
+
+            return {
+        		'start_date'   : start_date,
+        		'__start_date' : __start_date,
+        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + (mm == 0 ? '00' : mm)
+        	}
+        };
+
 		return {
             gridTimeComponents: gridTimeComponents,
 			clearRoomQuery: clearRoomQuery,
@@ -294,7 +345,8 @@ sntRover
 			shallowCopy: shallowCopy,
 			copyArray: copyArray,
 			deepCopy: deepCopy,
-			mixin: mixin
+			mixin: mixin,
+			correctTime: correctTime
 		}; 	
 	}
 ]);

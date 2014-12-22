@@ -185,17 +185,21 @@ body { overflow: hidden; }
 			/* HK search ***/
 			&#rooms {
 				top: 120px;
-				.calc-height(100, 120);
+				.calc-height(100, 180);
 
 				&.no-options {
 					top: 120px;
-					.calc-height(100, 120);
+					.calc-height(100, 180);
 				}
 
 				&.has-summary {
 					top: 120px;
-					.calc-height(100, 170);
+					.calc-height(100, 230);
 				}
+			}
+
+			&.no-pagination#rooms {
+				.calc-height(100, 130);
 			}
 
 			&#filter-rooms {
@@ -237,17 +241,21 @@ body { overflow: hidden; }
 			/* HK search ***/
 			&#rooms {
 				top: 120px;
-				.calc-height(100, 120);
+				.calc-height(100, 180);
 
 				&.no-options {
 					top: 120px;
-					.calc-height(100, 120);
+					.calc-height(100, 180);
 				}
 
 				&.has-summary {
 					top: 220px;
-					.calc-height(100, 220);
+					.calc-height(100, 280);
 				}
+			}
+
+			&.no-pagination#rooms {
+				.calc-height(100, 130);
 			}
 
 			&#filter-rooms {
@@ -386,7 +394,7 @@ body { overflow: hidden; }
 	.nav-bar { 
 		position: relative;
 		height: 50px;
-		padding: 10px;
+		padding: 5px 10px;
 		text-align: center;
 		z-index: 99;
 		.show;
@@ -395,26 +403,35 @@ body { overflow: hidden; }
 
 		h1 {
 			font-size: 18px;
-			font-weight: 700;
 			line-height: 18px;
+			font-weight: 700;
 			vertical-align: middle;
 			clear: none;
 
-			span {
+			.hotel,
+			.user {
 				font-size: 12px;
 				line-height: 1em;
 				font-weight: 400;
-				color: @grey3;
 				.show;
+			}
 
-				strong,
-				span { .hide; }
+			.user {
+				color: @grey3;
+
+				strong { .hide; }
+
+				.date {
+					&.updating {
+						color: @logoPrimary;
+						#blink > .infinite();
+					}
+				}
 			}
 		}
 
 		.switch-button,
 		.back-button,
-		.icon-alert,
 		.logo  { .hide; }
 
 		.back-button {
@@ -422,9 +439,7 @@ body { overflow: hidden; }
 			top: 5px;
 			left: 40px;
 
-			&.show-mobile {
-				.show;
-			}	
+			&.show-mobile { .show; }	
 		}
 	}
 
@@ -435,31 +450,15 @@ body { overflow: hidden; }
 
 			.back-button {top: 10px; }
 
-			h1 { 
-				font-size: 24px; 
-				line-height: 26px;
+			h1 {
+				.hotel,
+				.user { font-size: 13px; }
 
-				span {
-					font-size: 14px;
-
-					strong { 
+				.user {
+					strong {
 						display: inline;
 						font-weight: 600; 
-						margin-right: 5px;
-					}
-
-					span {
-						display: inline;
-						margin-left: 5px;
-					}
-
-					.date {
-						margin-left: 5px;
-
-						&.updating {
-							color: @logoPrimary;
-							#blink > .infinite();
-						}
+						margin-right: 10px;
 					}
 				}
 			}
@@ -527,26 +526,18 @@ body { overflow: hidden; }
 				.show;
 			}
 
-			.icon-alert {
-				position: absolute;
-				top: 15px;
-				padding: 0 10px 0 30px;
-				font-weight: 600;
-				line-height: 30px;
-				.size(30px, auto);
-				.show;
+			h1 {
+				font-size: 24px;
 
-				&.late-check-out {
-					right: 220px; 
-					color: @white;
-					background-color: @red;
+				.hotel {
+					display: inline;
+					font-size: 24px;
+					font-weight: 700;
+					color: @grey3;
+					margin-right: 10px;
 				}
 
-				&.queued-rooms {
-					right: 300px; 
-					color: @red;
-					background-color: @white;
-				}
+				.user { font-size: 14px; }
 			}			
 
 			.logo { 
@@ -595,6 +586,7 @@ body { overflow: hidden; }
 		padding: 10px;
 		background: rgba(0,0,0,.1);
 		overflow: hidden;
+		z-index: 3;
 		.hide; 
 
 		.entry {
@@ -1030,6 +1022,11 @@ body { overflow: hidden; }
 					right: 25px;
 					border-left: 5px solid @white;
 				}
+			}
+
+			&:disabled {
+				opacity: 0.3;
+				cursor: default;
 			}
 		}
 	}

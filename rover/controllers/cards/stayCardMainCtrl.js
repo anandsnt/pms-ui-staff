@@ -251,34 +251,34 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
-		$scope.noRoutingToReservation = function(){
+		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
 			that.reloadStaycard();
 
 		};
 
-		$scope.applyRoutingToReservation = function(){
-			var routingApplySuccess = function(data){
+		$scope.applyRoutingToReservation = function() {
+			var routingApplySuccess = function(data) {
 				$scope.$emit("hideLoader");
 				ngDialog.close();
 				that.reloadStaycard();
 			};
 
 			var params = {};
-			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id: $scope.reservationData.company.id;
+			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id : $scope.reservationData.company.id;
 			params.reservation_ids = [];
 			params.reservation_ids.push($scope.reservationData.reservationId)
-			
+
 			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
 		};
 
-		$scope.okClickedForConflictingRoutes = function(){
+		$scope.okClickedForConflictingRoutes = function() {
 			ngDialog.close();
 			that.reloadStaycard();
 
 		};
 
-		this.showConfirmRoutingPopup = function(type, id){
+		this.showConfirmRoutingPopup = function(type, id) {
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvBillingInfoConfirmPopup.html',
 				className: 'ngdialog-theme-default',
@@ -286,7 +286,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			});
 		};
 
-		this.showConflictingRoutingPopup = function(type, id){
+		this.showConflictingRoutingPopup = function(type, id) {
 
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvBillingInfoConflictingPopup.html',
@@ -296,18 +296,18 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		};
 
-		this.attachCompanyTACardRoutings = function(card){
+		this.attachCompanyTACardRoutings = function(card) {
 
-			var fetchSuccessofDefaultRouting = function(data){
+			var fetchSuccessofDefaultRouting = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.routingInfo = data;
-				if(data.has_conflicting_routes){
+				if (data.has_conflicting_routes) {
 					$scope.conflict_cards = [];
-					if(card == 'travel_agent' && data.travel_agent.routings_count > 0){
+					if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
 						console.log("is travel agent");
 						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
 					}
-					if(card == 'company' && data.company.routings_count > 0){
+					if (card == 'company' && data.company.routings_count > 0) {
 						console.log("is company");
 						$scope.conflict_cards.push($scope.reservationData.company.name)
 					}
@@ -315,39 +315,39 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					return false;
 				}
 
-				if(card == 'travel_agent' && data.travel_agent.routings_count > 0){
+				if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
 					$scope.contractRoutingType = "TRAVEL_AGENT";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
 					return false;
 
 				}
-				if(card == 'company' && data.company.routings_count > 0){
+				if (card == 'company' && data.company.routings_count > 0) {
 					$scope.contractRoutingType = "COMPANY";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
 					return false;
-				}else{
+				} else {
 					that.reloadStaycard();
 				}
 
 			};
-			
+
 			var params = {};
 			params.reservation_id = $scope.reservationData.reservationId;
 
-			if(card == 'travel_agent'){
+			if (card == 'travel_agent') {
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
-			} else if (card == 'company'){
+			} else if (card == 'company') {
 				params.company_id = $scope.reservationData.company.id;
 			}
-			
+
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
 		};
 
 		$scope.replaceCard = function(card, cardData, future) {
-			if(card == 'company'){ 
+			if (card == 'company') {
 				$scope.reservationData.company.id = cardData.id;
 				$scope.reservationData.company.name = cardData.account_name;
-			} else if (card == 'travel_agent'){
+			} else if (card == 'travel_agent') {
 				$scope.reservationData.travelAgent.id = cardData.id;
 				$scope.reservationData.travelAgent.name = cardData.account_name;
 			}
@@ -379,7 +379,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
 		 * 	However, in the confirmation screen the identifier would be "CONFIRM"
 		 */
-		this.reloadStaycard = function(){
+		this.reloadStaycard = function() {
 			if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
@@ -568,50 +568,49 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.reservationData.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
 			var arrivalTimeSplit = tData.arrival_time.split(":");
 
-			this.checkinTime.hh = arrivalTimeSplit[0];
-			this.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
-			if (this.checkinTime.mm.length == 1) {
-				this.checkinTime.mm = "0" + this.checkinTime.mm;
+			$scope.reservationData.checkinTime.hh = arrivalTimeSplit[0];
+			$scope.reservationData.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
+			if ($scope.reservationData.checkinTime.mm.length == 1) {
+				$scope.reservationData.checkinTime.mm = "0" + $scope.reservationData.checkinTime.mm;
 			}
-			this.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
-			if (!(this.checkinTime.ampm === "AM" || this.checkinTime.ampm === "PM")) {
-				if (parseInt(this.checkinTime.hh) >= 12) {
-					this.checkinTime.hh = Math.abs(parseInt(this.checkinTime.hh) - 12) + "";
-
-					this.checkinTime.ampm = "PM";
+			$scope.reservationData.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
+			if (!($scope.reservationData.checkinTime.ampm === "AM" || $scope.reservationData.checkinTime.ampm === "PM")) {
+				if (parseInt($scope.reservationData.checkinTime.hh) >= 12) {
+					$scope.reservationData.checkinTime.hh = Math.abs(parseInt($scope.reservationData.checkinTime.hh) - 12) + "";
+					$scope.reservationData.checkinTime.ampm = "PM";
 				} else {
-					this.checkinTime.ampm = "AM";
+					$scope.reservationData.checkinTime.ampm = "AM";
 				}
 			}
-			if (Math.abs(parseInt(this.checkinTime.hh) - 12) == 0 || this.checkinTime.hh === "00" || this.checkinTime.hh === "0") {
-				this.checkinTime.hh = "12";
+			if (Math.abs(parseInt($scope.reservationData.checkinTime.hh) - 12) == 0 || $scope.reservationData.checkinTime.hh === "00" || $scope.reservationData.checkinTime.hh === "0") {
+				$scope.reservationData.checkinTime.hh = "12";
 			}
-			if (this.checkinTime.hh.length == 1) {
-				this.checkinTime.hh = "0" + this.checkinTime.hh;
+			if ($scope.reservationData.checkinTime.hh.length == 1) {
+				$scope.reservationData.checkinTime.hh = "0" + $scope.reservationData.checkinTime.hh;
 			}
 
 			var departureTimeSplit = tData.departure_time.split(":");
-			this.checkoutTime.hh = departureTimeSplit[0];
-			this.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
+			$scope.reservationData.checkoutTime.hh = departureTimeSplit[0];
+			$scope.reservationData.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
 
-			if (this.checkoutTime.mm.length == 1) {
-				this.checkoutTime.mm = "0" + this.checkoutTime.mm;
+			if ($scope.reservationData.checkoutTime.mm.length == 1) {
+				$scope.reservationData.checkoutTime.mm = "0" + $scope.reservationData.checkoutTime.mm;
 			}
-			this.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
+			$scope.reservationData.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
 
-			if (!(this.checkoutTime.ampm === "AM" || this.checkoutTime.ampm === "PM")) {
-				if (parseInt(this.checkoutTime.hh) >= 12) {
-					this.checkoutTime.hh = Math.abs(parseInt(this.checkoutTime.hh) - 12) + "";
-					this.checkoutTime.ampm = "PM";
+			if (!($scope.reservationData.checkoutTime.ampm === "AM" || $scope.reservationData.checkoutTime.ampm === "PM")) {
+				if (parseInt($scope.reservationData.checkoutTime.hh) >= 12) {
+					$scope.reservationData.checkoutTime.hh = Math.abs(parseInt($scope.reservationData.checkoutTime.hh) - 12) + "";
+					$scope.reservationData.checkoutTime.ampm = "PM";
 				} else {
-					this.checkoutTime.ampm = "AM";
+					$scope.reservationData.checkoutTime.ampm = "AM";
 				}
 			}
-			if (Math.abs(parseInt(this.checkoutTime.hh) - 12) == "0" || this.checkoutTime.hh === "00" || this.checkoutTime.hh === "0") {
-				this.checkoutTime.hh = "12";
+			if (Math.abs(parseInt($scope.reservationData.checkoutTime.hh) - 12) == "0" || $scope.reservationData.checkoutTime.hh === "00" || $scope.reservationData.checkoutTime.hh === "0") {
+				$scope.reservationData.checkoutTime.hh = "12";
 			}
-			if (this.checkoutTime.hh.length == 1) {
-				this.checkoutTime.hh = "0" + this.checkoutTime.hh;
+			if ($scope.reservationData.checkoutTime.hh.length == 1) {
+				$scope.reservationData.checkoutTime.hh = "0" + $scope.reservationData.checkoutTime.hh;
 			}
 			var hResData = tData.rooms[0];
 
@@ -649,7 +648,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			this.totalStayCost = 0;
 			var rateIdSet = [];
 			var self = this;
-			angular.forEach($scope.reservationData.rooms, function(room,index) {
+			angular.forEach($scope.reservationData.rooms, function(room, index) {
 				room.stayDates = {};
 				rateIdSet.push(tData.rooms[index].rateId);
 				// amount: 32
@@ -674,11 +673,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 				room.rateId = tData.rooms[index].rateId;
 				room.roomAmount = tData.rooms[index].amount;
-				
+
 
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {
 					room.rateName = data.name;
+					$scope.reservationData.demographics.market = !data.market_segment_id ? '' : data.market_segment_id;
+					$scope.reservationData.demographics.source = !data.source_id ? '' : data.source_id;
 					if (data.deposit_policy_id) {
 						$scope.reservationData.depositData = {};
 						$scope.reservationData.depositData.isDepositRequired = true;

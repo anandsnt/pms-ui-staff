@@ -435,7 +435,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room = this.dataStore.get('_room.values.id')[occupancy.room_id],
                         room_type = room.room_type; 
 
-                    
+                    occupancy.arrival_date = occupancy.arrival_date.replace(/-/g, '/');
+                    occupancy.departure_date = occupancy.departure_date.replace(/-/g, '/');
                     if(!occupancy[m.start_date]) occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
                     if(!occupancy[m.end_date]) occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
                     if(!occupancy[m.maintenance]) occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
@@ -450,7 +451,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     } else if(occupancy[m.status]   === 'checkedout') {
                         occupancy[m.status]         = 'check-out';
                     } else if(occupancy[m.status]   === 'checking_out') {
-                        occupancy[m.status]         = 'check-out';
+                        occupancy[m.status]         = 'departed';
                     } else if(occupancy[m.status]    ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
@@ -496,15 +497,20 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         selected    = args.shift(),
                         m           = meta.occupancy,
                         room        = this.dataStore.get('_room.values.id')[slot.id],
-                        room_type   = room.room_type;                        
+                        room_type   = room.room_type,
+                        slot_statues = {
+                            'WEBBOOKING': 'blocked',
+                            'AVAILABLE' : 'available'
+                        };  
                     /*
                         Configrue Available slot to mirror occupancy, execpt
                         set revervation_id for the collection so the resize
                         will work on all as a group.
                     */
+
                     if(!slot.room_id) {
                         slot.room_id                = room.id;
-                        slot.reservation_status     = 'available';
+                        slot.reservation_status     = slot_statues[slot.status];
                         slot.room_service_status    = '';
                         slot.reservation_id         = guid;
                         slot.selected               = selected;
@@ -589,13 +595,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                  }
                              });
                         } 
-
+                        var start_date = time.toStartDate();
+                        var end_date = time.x_p;
+                        end_date.setHours(0,0,0);
                         $q.all([Maintenance.read(), 
                                 RoomType.read(), 
                                 InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                                 Room.read(),                                                                 
                                 Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
-                                AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
+                                AvailabilityCount.read(dateRange(start_date, end_date))])
                                 .then(function(data_array) {
                                     _.reduce([
                                           Maintenance, 
@@ -813,8 +821,13 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         end_date:           data.end_date,
                         end_time:           data.end_time,
                         rate_type:          data.rate_type,
-                    }
 
+                    }
+                    if(data.rate_type == 'Corporate') {
+                        if(data.account_id){                            
+                            _.extend(params, { account_id: data.account_id });
+                        }
+                    }
                     //Webservice calling section
                     var deferred = $q.defer();
                     var url = '/api/hourly_availability/room';
@@ -826,10 +839,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return deferred.promise;                    
                 };
 
-                this.properDateTimeCreation = function() {
+                this.properDateTimeCreation = function(start_date) {                    
                     var data       = $vault.get('searchReservationData'),
-                        start_date = new tzIndependentDate($rootScope.businessDate);
-
+                        start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
+                    
                     if(data) {
                         data = JSON.parse(data);
                         start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
@@ -869,13 +882,12 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             }
                         } else if ( mm == 15 || mm == 30 || mm == 45 ) {
                             mm += 15;
+                        } else if ( Math.max(mm, 15) == 15 ) {
+                            mm = 15;
+                        } else if ( Math.max(mm, 30) == 30 ) {
+                            mm = 30;
                         } else {
-                            do {
-                                mm += 1;
-                                if ( mm == 15 || mm == 30 || mm == 45 ) {
-                                    break;
-                                }
-                            } while ( mm != 15 || mm != 30 || mm != 45 );
+                            mm = 45;
                         };
 
                         start_date.setHours(hh, mm);

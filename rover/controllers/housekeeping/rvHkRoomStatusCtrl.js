@@ -4,10 +4,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'$timeout',
 	'$state',
 	'$filter',
+	'$window',
 	'RVHkRoomStatusSrv',
-	'roomList',
+	'fetchPayload',
 	'employees',
-	'workTypes',
 	'roomTypes',
 	'floors',
 	'ngDialog',
@@ -18,138 +18,459 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$timeout,
 		$state,
 		$filter,
+		$window,
 		RVHkRoomStatusSrv,
-		roomList,
+		fetchPayload,
 		employees,
-		workTypes,
 		roomTypes,
 		floors,
 		ngDialog,
 		RVWorkManagementSrv
 	) {
-
 		// hook it up with base ctrl
-		BaseCtrl.call(this, $scope);
-
-
+		BaseCtrl.call( this, $scope );
 
 		// set the previous state
 		$rootScope.setPrevState = {
-			title: $filter('translate')('DASHBOARD'),
+			title: $filter( 'translate' )( 'DASHBOARD' ),
 			name: 'rover.dashboard'
 		}
 
-
-
 		// set title in header
-		$scope.setTitle($filter('translate')('ROOM_STATUS'));
-		$scope.heading = $filter('translate')('ROOM_STATUS');
-		$scope.$emit("updateRoverLeftMenu", "roomStatus");
+		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
+		$scope.heading = $filter( 'translate')('ROOM_STATUS');
+		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );	
+		
+
+
+		/* ***** ***** ***** ***** ***** */
+
 
 
 		// reset all the filters
-		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
+		if ( RVHkRoomStatusSrv.currentFilters.page < 1 ) {
+			RVHkRoomStatusSrv.currentFilters.page = 1;
+		};
+		$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
 
-		// The filters should be re initialized in we are navigating from dashborad to search
+		// The filters should be re initialized if we are navigating from dashborad to search
 		// In back navigation (From room details to search), we would retain the filters.
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
+			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus')
+				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
+				
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
-				localStorage.removeItem('roomListScrollTopPos');
+				$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
+
+				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
-		});
+		});	
 
 
 
-		// internal variables
-		var $_roomList = {},
+		/* ***** ***** ***** ***** ***** */
+
+
+
+		var $_roomList        = {},
 			$_defaultWorkType = '',
-			$_defaultEmp = '';
+			$_defaultEmp      = '';
 
-		// filter open or close
-		$scope.filterOpen = false;
+		var $_page            = $scope.currentFilters.page,
+			$_perPage         = $scope.currentFilters.perPage,
+			$_defaultPage     = 1,
+			$_defaultPerPage  = $window.innerWidth < 599 ? 25 : 50;
 
-		// filter stuff
-		$scope.showPickup = roomList.use_pickup || false;
-		$scope.showInspected = roomList.use_inspected || false;
-		$scope.showQueued = roomList.is_queue_rooms_on || false;
+		var $_roomsEl         = document.getElementById( 'rooms' ),
+			$_filterRoomsEl   = document.getElementById( 'filter-rooms' );
 
-		// empty the search query
-		$scope.query = '';
+		var $_activeWorksheetData = [],
+			$_tobeAssignedRoom    = {};
 
-		// default no results found
-		$scope.noResultsFound = 0;
+		var $_lastQuery = '';
 
-		// has active work sheets?
-		$scope.hasActiveWorkSheet = false;
+		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
+			$_oldRoomTypes    = angular.copy( roomTypes );
+
+		$scope.resultFrom         = $_page,
+		$scope.resultUpto         = $_perPage,
+		$scope.netTotalCount      = 0;
+		$scope.uiTotalCount       = 0;
+		$scope.disablePrevBtn     = true;
+		$scope.disableNextBtn     = true;
+
+		$scope.filterOpen         = false;
+		$scope.query              = $scope.currentFilters.query;
+		$scope.noResultsFound     = 0;
+
+		$scope.isStandAlone         = $rootScope.isStandAlone;
+		$scope.isMaintenanceStaff   = $rootScope.isMaintenanceStaff;
+		$scope.isMaintenanceManager = $rootScope.isMaintenanceManager
+		$scope.hasActiveWorkSheet   = false;
+
+		$scope.roomTypes          = roomTypes;
+		$scope.floors             = floors;
+
+		$scope.workTypes          = [];
+		$scope.employees          = [];
+
+		$scope.assignRoom         = {};
 
 
-		// ALL PMS: assign the resolved data to scope
-		// common to all typr of PMS 
-		$scope.roomTypes = roomTypes;
-		$scope.floors = floors;
 
-		// keeping these withing the scope
-		$scope.isStandAlone = $rootScope.isStandAlone;
-		$scope.isMaintenanceStaff = $rootScope.isMaintenanceStaff;
-		$scope.hasActiveWorkSheet = false;
+		/* ***** ***** ***** ***** ***** */
 
 
 
-
-		// first process rooms
-		$_fetchRoomListCallback(roomList);
-
-
+		// true represent that this is a fetchPayload call
+		// and the worktypes and assignments has already be fetched
+		$_fetchRoomListCallback(fetchPayload.roomList, true);
 
 
 
-		function $_fetchRoomListCallback(data) {
-			if ( !!data ) {
-				$_roomList = data;
+		/* ***** ***** ***** ***** ***** */
+
+
+
+		$scope.loadNextPage = function() {
+			if ( $scope.disableNextBtn ) {
+				return;
 			};
 
-			$scope.totalCount = $_roomList.total_count;
+			$_page++;
+			$_updateFilters('page', $_page);
+
+			$_callRoomsApi();
+		};
+
+		$scope.loadPrevPage = function() {
+			if ($scope.disablePrevBtn) {
+				return;
+			};
+
+			$_page--;
+			$_updateFilters('page', $_page);
+
+			$_callRoomsApi();
+		};
+
+		// store the current room list scroll position
+		$scope.roomListItemClicked = function(room) {
+			localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
+		};
+
+		$scope.showFilters = function() {
+			$scope.filterOpen = true;
+		};
+
+		$scope.filterDoneButtonPressed = function() {
+			var _hasFilterChanged   = false,
+				_hasRoomTypeChanged = false;
+
+			var _makeCall = function() {
+				$scope.filterOpen = false;
+				$scope.$emit( 'showLoader' );
+
+				$_resetPageCounts();
+
+				RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
+				$_oldFilterValues                = angular.copy( $scope.currentFilters );
+
+				RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
+				$_oldRoomTypes              = angular.copy( $scope.roomTypes );
+
+				$timeout(function() {
+					$_callRoomsApi();
+				}, 100);
+			};
+
+			// if other than page number any other filter has changed
+			for (key in $scope.currentFilters) {
+				if ( $scope.currentFilters.hasOwnProperty(key) ) {
+					if ( key == 'page' ) {
+						continue;
+					} else if ( $scope.currentFilters[key] != $_oldFilterValues[key] ) {
+						_hasFilterChanged = true;
+						break;
+					};
+				};
+			};
+
+			// if any room types has changed
+			if ( $scope.roomTypes.length ) {
+				for (var i = 0, j = $scope.roomTypes.length; i < j; i++) {
+					if ( $scope.roomTypes[i]['isSelected'] != $_oldRoomTypes[i]['isSelected'] ) {
+						_hasRoomTypeChanged = true;
+						break;
+					};
+				};
+			};
+
+			if ( _hasFilterChanged || _hasRoomTypeChanged ) {
+				$timeout(_makeCall, 100);
+			} else {
+				$scope.filterOpen = false;
+			};
+		};
+
+		// when user changes the employee filter
+		$scope.applyWorkTypefilter = function() {
+			$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
+
+			// if work type is null reset filter by employee
+			if ( !$scope.currentFilters.filterByWorkType ) {
+				$scope.topFilter.byEmployee = '';
+				$scope.applyEmpfilter();
+			} else {
+				$scope.filterDoneButtonPressed();
+			}
+		};
+
+		// when user changes the employee filter
+		$scope.applyEmpfilter = function() {
+			$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
+			$scope.filterDoneButtonPressed();
+		};
+
+		var $_filterByQuery = function(forced) {
+			var _makeCall = function() {
+					$_updateFilters('query', $scope.query);
+
+					$_resetPageCounts();
+
+					$timeout(function() {
+						$_callRoomsApi();
+						$_lastQuery = $scope.query;
+					}, 10);
+				};
+
+			if ( $rootScope.isSingleDigitSearch ) {
+				if (forced || $scope.query != $_lastQuery) {
+					_makeCall();
+				};
+			} else {
+				if ( forced ||
+						($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
+						($scope.query.length > 2 && $scope.query != $_lastQuery)
+				) {
+					_makeCall();
+				};
+			};
+		};
+
+		$scope.filterByQuery = _.throttle($_filterByQuery, 1000, { leading: false });
+
+		$scope.clearSearch = function() {
+			$scope.query = '';
+			$_filterByQuery('forced');
+		};
+
+		$scope.isFilterChcked = function() {
+			var key, ret;
+			for (key in $scope.currentFilters) {
+				if ( key != 'showAllFloors' && !!$scope.currentFilters[key] ) {
+					ret = true;
+					break;
+				} else {
+					ret = false;
+				}
+			}
+			return ret;
+		};
+
+		$scope.clearFilters = function() {
+			_.each($scope.roomTypes, function(type) { type.isSelected = false; });
+			RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
+
+			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
+			if ( $scope.isStandAlone ) {
+				$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
+				$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
+			};
+			RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
+
+			$_refreshScroll();
+		};
+
+		$scope.validateFloorSelection = function(type) {
+			if (type == 'SINGLE_FLOOR') {
+				$scope.currentFilters.floorFilterStart = '';
+				$scope.currentFilters.floorFilterEnd = '';
+
+			}
+
+			if (type == 'FROM_FLOOR' || type == 'TO_FLOOR') {
+				$scope.currentFilters.floorFilterSingle = '';
+			}
+		};
+
+		$scope.allFloorsClicked = function() {
+			$scope.currentFilters.showAllFloors = !$scope.currentFilters.showAllFloors;
+			$scope.currentFilters.floorFilterStart = '';
+			$scope.currentFilters.floorFilterEnd = '';
+			$scope.currentFilters.floorFilterSingle = '';
+		};
+
+		$scope.closeDialog = function() {
+		    $scope.errorMessage = "";
+		    ngDialog.close();
+		}
+
+		var $_findEmpAry = function() {
+			var workid = $scope.assignRoom.work_type_id || $scope.topFilter.byWorkType,
+				ret    =  _.find($_activeWorksheetData, function(item) {
+					return item.id === workid;
+				});
+
+			return !!ret ? ret.employees : [];
+		};
+
+		$scope.openAssignRoomModal = function(room) {
+			$_tobeAssignedRoom = room;
+
+			$scope.assignRoom.rooms = [$_tobeAssignedRoom.id];
+			$scope.assignRoom.work_type_id = $scope.topFilter.byWorkType;
+			$scope.activeWorksheetEmp = [];
+
+			var _onSuccess = function(response) {
+					$scope.$emit('hideLoader');
+
+					$_activeWorksheetData = response.data;
+					$scope.activeWorksheetEmp = $_findEmpAry();
+					ngDialog.open({
+					    template: '/assets/partials/housekeeping/rvAssignRoomPopup.html',
+					    className: 'ngdialog-theme-default',
+					    closeByDocument: true,
+					    scope: $scope,
+					    data: []
+					});
+					
+				},
+				_onError = function() {
+					$scope.$emit('hideLoader');
+				};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchActiveWorksheetEmp, {}, _onSuccess, _onError);
+		};
+
+		$scope.assignRoomWorkTypeChanged = function() {
+			$scope.activeWorksheetEmp = $_findEmpAry();
+		};
+
+		$scope.submitAssignRoom = function() {
+		    $scope.errorMessage = "";
+		    if (!$scope.assignRoom.work_type_id) {
+		        $scope.errorMessage = ['Please select a work type.'];
+		        return false;
+		    }
+		    if (!$scope.assignRoom.user_id) {
+		        $scope.errorMessage = ['Please select an employele.'];
+		        return false;
+		    }
+		    var _onAssignSuccess = function(data) {
+		            $scope.$emit('hideLoader');
+		            
+		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
+		            	return emp.id === $scope.assignRoom.user_id
+		            });
+		            $_tobeAssignedRoom.canAssign = false;
+		            $_tobeAssignedRoom.assigned_staff = {
+		            	'name': assignee.name,
+		            	'class': 'assigned'
+		            };
+
+		            $scope.assignRoom = {};
+
+		            $scope.closeDialog();
+		        },
+		        _onAssignFailure = function(errorMessage) {
+		            $scope.$emit('hideLoader');
+		            $scope.errorMessage = errorMessage;
+		        },
+		        _data = {
+			        "date": $rootScope.businessDate,
+			        "task_id": $scope.assignRoom.work_type_id,
+			        "order": "",
+			        "assignments": [{
+			            "assignee_id": $scope.assignRoom.user_id,
+			            "room_ids": $scope.assignRoom.rooms,
+			            "work_sheet_id": "",
+			            "from_search": true
+			        }]
+			    };
+
+		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, _data, _onAssignSuccess, _onAssignFailure);
+		};
+
+
+
+		/* ***** ***** ***** ***** ***** */
+
+
+
+		function $_fetchRoomListCallback(data, alreadyFetched) {
+			if ( !!_.size(data) ) {
+				$_roomList = angular.copy( data );
+			} else {
+				$_roomList = {};
+			};
+
+			// clear old results and update total counts
+			$scope.rooms         = [];
+			$scope.netTotalCount = $_roomList.total_count;
+			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
+
+			if ( $_page === 1 ) {
+				$scope.resultFrom = 1;
+				$scope.resultUpto = $scope.netTotalCount < $_perPage ? $scope.netTotalCount : $_perPage;
+				$scope.disablePrevBtn = true;
+				$scope.disableNextBtn = $scope.netTotalCount > $_perPage ? false : true;
+			} else {
+				$scope.resultFrom = $_perPage * ($_page - 1) + 1;
+				$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.netTotalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.netTotalCount;
+				$scope.disablePrevBtn = false;
+				$scope.disableNextBtn = $scope.resultUpto === $scope.netTotalCount ? true : false;
+			}
 
 			// filter stuff
 			$scope.showPickup = $_roomList.use_pickup || false;
 			$scope.showInspected = $_roomList.use_inspected || false;
 			$scope.showQueued = $_roomList.is_queue_rooms_on || false;
 
-			// if not showing loading
-			$scope.$emit('showLoader');
-
 			// need to work extra for standalone PMS
-			if ($rootScope.isStandAlone) {
-				$scope.workTypes = workTypes;
-				$scope.employees = employees;
+			if ( $rootScope.isStandAlone ) {
+				if ( !$scope.workTypes.length ) {
+					$scope.workTypes = fetchPayload.workTypes;
+				};
+				if ( !$scope.employees.length ) {
+					$scope.employees = employees;
+				};
 
 				// for mobile view spilt
 				$scope.currentView = 'rooms';
-				$scope.changeView = function(view) {
-					$scope.currentView = view;
+				if ( !$scope.changeView ) {
+					$scope.changeView = function(view) {
+						$scope.currentView = view;
+					};
 				};
 
-				var _preHasActiveWorkSheet = function() {
-					if ( $rootScope.isMaintenanceStaff ) {
-						$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
-						$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
-					};
+				var _setUpWorkTypeEmployees = function() {
+					$_defaultWorkType = $scope.currentFilters.filterByWorkType;
+					$_defaultEmp      = $scope.currentFilters.filterByEmployeeName;
 
 					// time to decide if this is an employee
 					// who has an active work sheets
-					$_checkHasActiveWorkSheet();
+					$_checkHasActiveWorkSheet(alreadyFetched);
 				}
 
-				if ( workTypes.length && employees.length ) {
-					_preHasActiveWorkSheet();
+				if ( (!!$scope.workTypes && $scope.workTypes.length) && (!!$scope.employees && $scope.employees.length) ) {
+					_setUpWorkTypeEmployees();
 				} else {
 					$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
 						$scope.workTypes = data;
 						$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
 							$scope.employees = data;
-							_preHasActiveWorkSheet();
+							_setUpWorkTypeEmployees();
 						});
 					});
 				};
@@ -160,30 +481,34 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$_postProcessRooms();
 				}, 10);
 			};
+
+			$_updateFilters('page', $_page);
 		};
 
 
 
+		/* ***** ***** ***** ***** ***** */
 
-		function $_checkHasActiveWorkSheet(argument) {
+
+
+		function $_checkHasActiveWorkSheet(alreadyFetched) {
 			var _params = {
 					'date': $rootScope.businessDate,
 					'employee_ids': [$_defaultEmp || $rootScope.userId], // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
 					'work_type_id': $_defaultWorkType
 				},
 				_callback = function(data) {
-					$scope.topFilter.byWorkType = $_defaultWorkType;
-					$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
+					$scope.hasActiveWorkSheet = !!data.work_sheets && !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
 
-					$scope.hasActiveWorkSheet = !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
+					$scope.topFilter.byWorkType = $_defaultWorkType;
+					$scope.topFilter.byEmployee = $_defaultEmp;
 
 					// set an active user in filterByEmployee, set the mobile tab to to summary
-					if ( $scope.hasActiveWorkSheet ) {
-						$scope.topFilter.byEmployee = $_defaultEmp;
-						$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-
-						$_caluculateCounts(data.work_sheets[0].work_assignments);
+					if ($scope.hasActiveWorkSheet) {
 						$scope.currentView = 'summary';
+						$_caluculateCounts(data.work_sheets[0].work_assignments);
+					} else {
+						$scope.currentView = 'rooms';
 					};
 
 					// need delay, just need it
@@ -193,14 +518,30 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				},
 				// it will fail if returning from admin to room status
 				// directly, since the flags in $rootScope may not be ready
+				// no worries since a person with active worksheet may not have access to admin screens
 				_failed = function() {
+					$scope.topFilter.byWorkType = '';
+					$scope.topFilter.byEmployee = '';
+					$scope.currentView = 'rooms';
+
 					$timeout(function() {
 						$_postProcessRooms();
 					}, 10);
 				};
 
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
+			// if the assignements has been loaded
+			// as part of the inital load, just process it
+			if ( alreadyFetched ) {
+				_callback.call(null, fetchPayload.assignments);
+			} else {
+				$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
+			};
 		};
+
+
+
+		/* ***** ***** ***** ***** ***** */
+
 
 		function $_caluculateCounts(assignments) {
 			$scope.counts = {
@@ -236,480 +577,106 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 
+		/* ***** ***** ***** ***** ***** */
+
 
 
 		function $_postProcessRooms() {
-			var _roomCopy;
+			var _roomCopy     = {},
+				_processCount = 0,
+				_minCount     = 13,
+				i             = 0;
 
-			if (!!$_roomList && !!$_roomList.rooms && $_roomList.rooms.length) {
-				
-				// load first 13 a small delay (necessary) - for filters to work properly
-				$timeout(function() {
-					$_calculateFilters();
-
-					// empty all
-					$scope.rooms = [];
-
-					// load first 13;
-					for (var i = 0; i < 13; i++) {
-						_roomCopy = angular.copy( $_roomList.rooms[i] );
-						$scope.rooms.push( _roomCopy );
-					};
-				}, 100);
-
-				// load the rest after a small delay - DOM can process it all
-				$timeout(function() {
-
-					// load the rest
-					for (var i = 13, j = $_roomList.rooms.length; i < j; i++) {
-						_roomCopy = angular.copy( $_roomList.rooms[i] );
-						$scope.rooms.push( _roomCopy );
-					};
-
-					// scroll to the previous room list scroll position
-					var toPos = localStorage.getItem('roomListScrollTopPos');
-					$_refreshScroll(toPos);
-
-					$scope.$emit('hideLoader');
-
-					// execute this after this much time
-				}, 300);
+			// if   : results -> load 0 to '_processCount' after a small delay
+			// else : empty and hide loader
+			if ( $scope.uiTotalCount ) {
+				_processCount = Math.min( $scope.uiTotalCount, _minCount );
+				$timeout(_firstInsert, 100);
 			} else {
-				$scope.$emit('hideLoader');
-			}
+				$scope.rooms = [];
+				_hideLoader();
+			};
+
+			function _firstInsert () {
+				for ( i = 0; i < _processCount; i++ ) {
+					_roomCopy = angular.copy( $_roomList.rooms[i] );
+					$scope.rooms.push( _roomCopy );
+				};
+
+				// if   : more than '_minCount' results -> load '_processCount' to last
+				// else : hide loader
+				if ( $scope.uiTotalCount > _minCount ) {
+					$timeout(_secondInsert, 100);
+				} else {
+					_hideLoader();
+				};
+			};
+
+			function _secondInsert () {
+				for ( i = _processCount; i < $scope.uiTotalCount; i++ ) {
+					_roomCopy = angular.copy( $_roomList.rooms[i] );
+					$scope.rooms.push( _roomCopy );
+				};
+
+				_hideLoader();
+			};
+
+			function _hideLoader () {
+				$_roomList = {};
+				$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
+				$scope.$emit( 'hideLoader' );
+			};
 		};
 
 
 
-		var roomsEl = document.getElementById('rooms');
-		var filterRoomsEl = document.getElementById('filter-rooms');
+		/* ***** ***** ***** ***** ***** */
 
-		// stop browser bounce while swiping on rooms element
-		angular.element(roomsEl)
-			.on('touchmove', function(e) {
-				e.stopPropagation();
-			});
 
-		// stop browser bounce while swiping on filter-options element
-		angular.element(filterRoomsEl)
-			.on('touchmove', function(e) {
-				e.stopPropagation();
-			});
 
 		function $_refreshScroll(toPos) {
-			if (roomsEl.scrollTop === toPos) {
+			if ( $_roomsEl.scrollTop === toPos ) {
 				return;
 			};
 
-			if (isNaN(parseInt(toPos))) {
+			if ( isNaN(parseInt(toPos)) ) {
 				var toPos = 0;
 			} else {
-				localStorage.removeItem('roomListScrollTopPos');
+				localStorage.removeItem( 'roomListScrollTopPos' );
 			}
 
 			// must delay untill DOM is ready to jump
 			$timeout(function() {
-				roomsEl.scrollTop = toPos;
+				$_roomsEl.scrollTop = toPos;
 			}, 10);
 		};
 
 
 
-		// store the current room list scroll position
-		$scope.roomListItemClicked = function(room) {
-			localStorage.setItem('roomListScrollTopPos', roomsEl.scrollTop);
-		}
+		/* ***** ***** ***** ***** ***** */
 
-		/**
-		 *  Function to Update the filter service on changing the filter state
-		 *  @param {string} name of the filter to be updated
-		 */
-		$scope.checkboxClicked = function(item) {
-			RVHkRoomStatusSrv.toggleFilter(item);
-		}
 
-		$scope.showFilters = function() {
-			$scope.filterOpen = true;
+
+		function $_callRoomsApi() {
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
 		};
 
-		/**
-		 *  A method to handle the filter done button
-		 *  Refresh the room list scroll
-		 *  Emits a call to dismiss the filter screen
-		 */
-		$scope.filterDoneButtonPressed = function() {
-			$scope.filterOpen = false;
-			$scope.$emit('showLoader');
-			$timeout(function() {
-				$_postProcessRooms();
-			}, 100);
-
-			// save the current edited filter to RVHkRoomStatusSrv
-			// so that they can exist even after HKSearchCtrl init
-			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
-			RVHkRoomStatusSrv.roomTypes = $scope.roomTypes;
+		function $_updateFilters (key, value) {
+			$scope.currentFilters[key]       = value;
+			RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
 		};
 
-		// when user changes the employee filter
-		$scope.applyWorkTypefilter = function() {
-			$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
-
-			// if work type is null reset filter by employee
-			if (!$scope.currentFilters.filterByWorkType) {
-				$scope.topFilter.byEmployee = '';
-				$scope.applyEmpfilter();
-			} else {
-				// call caluculate filter in else since
-				// resetting filterByEmployee will call applyEmpfilter 
-				// which in turn will call calculateFilters
-				$scope.filterDoneButtonPressed();
-			}
-		};
-
-		// when user changes the employee filter
-		$scope.applyEmpfilter = function() {
-			$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-			$scope.filterDoneButtonPressed();
+		function $_resetPageCounts () {
+			$_page = $_defaultPage;
+			$_updateFilters('page', $_defaultPage);
 		};
 
 
 
-		/**
-		 *  A method which checks the filter option status and see if the room should be displayed
-		 */
-		function $_calculateFilters() {
-			var source = $_roomList.rooms;
-			if ( Object.prototype.toString.apply(source) !== '[object Array]' ) {
-				return;
-			};
-
-			$scope.noResultsFound = 0;
-			var roomTypesUnSelected = true;
-
-			//If all room types are unselected, we should show all rooms.
-			angular.forEach($scope.roomTypes, function(roomType, id) {
-				if (roomType.isSelected) {
-					roomTypesUnSelected = false;
-				}
-				return false;
-			});
-
-
-			for (var i = 0, j = source.length; i < j; i++) {
-				var room = source[i];
-
-				if ($rootScope.isStandAlone) {
-					// any matched work type ids of room to chosen work type id
-					var workTypeMatch = _.find(room.work_type_ids, function(id) {
-						return id == $scope.currentFilters.filterByWorkType;
-					});
-
-					// Filter by work type
-					if (!!$scope.currentFilters.filterByWorkType && !workTypeMatch) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					};
-
-					// Filter by employee name, strach that the id
-					// TODO: currently we only get room.assignee_maid, we need this like this room.assignee_maid{ name: 'name', id: id } 
-					if (!!$scope.currentFilters.filterByEmployee && room.assignee_maid.id != $scope.currentFilters.filterByEmployee) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					};
-				}
-
-
-				//Filter by Floors
-				//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.
-				if ($scope.currentFilters.floorFilterStart || $scope.currentFilters.floorFilterEnd || $scope.currentFilters.floorFilterSingle) {
-					if (room.floor.floor_number == null) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-				}
-
-				if ($scope.currentFilters.floorFilterSingle != '' && room.floor.floor_number != $scope.currentFilters.floorFilterSingle) {
-					room.display_room = false;
-					$scope.noResultsFound++;
-					continue;
-				}
-
-				if ($scope.currentFilters.floorFilterStart != '' && room.floor.floor_number < $scope.currentFilters.floorFilterStart) {
-					room.display_room = false;
-					$scope.noResultsFound++;
-					continue;
-				}
-
-				if ($scope.currentFilters.floorFilterEnd != '' && room.floor.floor_number > $scope.currentFilters.floorFilterEnd) {
-					room.display_room = false;
-					$scope.noResultsFound++;
-					continue;
-				}
-
-				// filter by room type
-				if (!!room.room_type.id) {
-					var matchedRoomType = _.find($scope.roomTypes, function(type) {
-						return type.id == room.room_type.id;
-					});
-					if (!roomTypesUnSelected && !matchedRoomType.isSelected) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-				};
-
-				// filter by status in filter section, HK_STATUS
-				if ($scope.isAnyFilterTrue(['dirty', 'pickup', 'clean', 'inspected'])) {
-					if (!$scope.currentFilters.dirty && (room.hk_status.value === "DIRTY")) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-					if (!$scope.currentFilters.pickup && (room.hk_status.value === "PICKUP")) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-					if (!$scope.currentFilters.clean && (room.hk_status.value === "CLEAN")) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-					if (!$scope.currentFilters.inspected && (room.hk_status.value === "INSPECTED")) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-				}
-
-				// filter by status in filter section, OCCUPANCY_STATUS
-				if ($scope.isAnyFilterTrue(["vacant", "occupied", "queued"])) {
-					/**
-					 *CICO-10255
-					 *Jos had reported an issue (Housekeeping - Filter screen when you click "show vacant" the "show queued" is also automatically marked)
-					 *		 				* Have removed invocation of these two functions
-					 * Also modified below condition.. Hide queued rooms IFF both vacant and queued are unchecked
-					 */
-					if (!$scope.currentFilters.queued && !$scope.currentFilters.vacant && room.is_queued) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-
-					// If queued, that get priority. Do not show anything which is "not queued" and vacant
-					if (!$scope.currentFilters.vacant && !room.is_queued && !room.is_occupied) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-
-					// If queued, that get priority.
-					if (!$scope.currentFilters.occupied && !room.is_queued && room.is_occupied) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-				}
-
-				// Filter by status in filter section, ROOM_RESERVATION_STATUS
-				// For this status, pass the test, if any condition applies.
-				// NOTE : This must be the last set of checks, as we make display_room = true and mark continue here.
-				if ($scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse'])) {
-					if ($scope.currentFilters.stayover && room.room_reservation_status.indexOf("Stayover") >= 0) {
-						room.display_room = true;
-						continue;
-					}
-					if ($scope.currentFilters.not_reserved && room.room_reservation_status.indexOf("Not Reserved") >= 0) {
-						room.display_room = true;
-						continue;
-					}
-					if ($scope.currentFilters.arrival && room.room_reservation_status.indexOf("Arrival") >= 0) {
-						room.display_room = true;
-						continue;
-					}
-					if ($scope.currentFilters.arrived && room.room_reservation_status.indexOf("Arrived") >= 0) {
-						room.display_room = true;
-						continue;
-					}
-					if ($scope.currentFilters.dueout && room.room_reservation_status.indexOf("Due out") >= 0) {
-						room.display_room = true;
-						continue;
-					}
-					if ($scope.currentFilters.departed && room.room_reservation_status.indexOf("Departed") >= 0) {
-						room.display_room = true;
-						continue;
-					}
-					if ($scope.currentFilters.dayuse && room.room_reservation_status.indexOf("Day use") >= 0) {
-						room.display_room = true;
-						continue;
-					}
-
-					room.display_room = false;
-					$scope.noResultsFound++;
-					continue;
-				}
-
-				// filter by status in filter section, room reservation HK_STATUS
-				// NOTE: This must be the last set of checks, as we make display_room = true and mark continue here.
-				// NOTE: in future the internal check may become common - check only 'room_reservation_hk_status'
-				if ($scope.isAnyFilterTrue(['out_of_order', 'out_of_service'])) {
-					if ($scope.currentFilters.out_of_order && (room.hk_status.value === "OO" || (room.hasOwnProperty('room_reservation_hk_status') && room.room_reservation_hk_status == 3))) {
-						room.display_room = true;
-						continue;
-					}
-					if ($scope.currentFilters.out_of_service && (room.hk_status.value === "OS" || (room.hasOwnProperty('room_reservation_hk_status') && room.room_reservation_hk_status == 2))) {
-						room.display_room = true;
-						continue;
-					}
-
-					room.display_room = false;
-					$scope.noResultsFound++;
-					continue;
-				}
-
-				room.display_room = true;
-			}
-
-
-		};
-
-		/**
-		 *  Filter Function for filtering our the room list
-		 */
-		$scope.filterByQuery = function() {
-
-			// since no filer we will have to
-			// loop through all rooms
-			for (var i = 0, j = $scope.rooms.length; i < j; i++) {
-				var room = $scope.rooms[i]
-				var roomNo = room.room_no.toUpperCase();
-
-				// if the query is empty
-				// apply any filter options
-				// and return
-				if (!$scope.query) {
-					$_postProcessRooms();
-					break;
-					return;
-				};
-
-				// let remove any changed applied by filter
-				// show all rooms
-				room.display_room = true;
-
-				// now match the room no and
-				// and show hide as required
-				// must match first occurance of the search query
-				if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
-					room.display_room = true;
-				} else {
-					room.display_room = false;
-				}
-			}
-
-			// refresh scroll when all ok
-			$_refreshScroll();
-		}
-
-		/**
-		 *  A method to clear the search term
-		 */
-		$scope.clearSearch = function() {
-			$scope.query = '';
-
-			// call the filter again maually
-			// can't help it
-			$scope.filterByQuery();
-		}
-
-		/**
-		 *   A method to determine if any filter checked
-		 *   @return {Boolean} false if none of the filter is checked
-		 */
-		$scope.isFilterChcked = function() {
-			var key, ret;
-			for (key in $scope.currentFilters) {
-				if (key != 'showAllFloors' && !!$scope.currentFilters[key]) {
-					ret = true;
-					break;
-				} else {
-					ret = false;
-				}
-			}
-			return ret;
-		}
-
-		/**
-		 *  A method to check if any filter in the given set is set to true
-		 *  @param {Array} filter arry to be evaluated
-		 *  @return {Boolean} true if any filter is set to true
-		 */
-		$scope.isAnyFilterTrue = function(filterArray) {
-			var ret = false;
-
-			for (var i = 0, j = filterArray.length; i < j; i++) {
-				if ($scope.currentFilters[filterArray[i]] === true) {
-					ret = true;
-					break;
-				}
-			};
-
-			return ret;
-		}
-
-		/**
-		 *  A method to uncheck all the filter options
-		 */
-		$scope.clearFilters = function() {
-			_.each($scope.currentFilters, function(value, key, list) {
-				list[key] = false;
-			});
-
-			angular.forEach($scope.roomTypes, function(roomType, id) {
-				roomType.isSelected = false;
-			});
-
-			// this is the default state
-			$scope.currentFilters['showAllFloors'] = true;
-
-			$_refreshScroll();
-		}
-
-		/**
-		 * Click handler for floor selection drop-down
-		 * If we select a single floor option, the from-floor/to-floor should be initialised to none.
-		 * If we select the from-floor/ to-floor option, the single-floor initialized to none.
-		 */
-		$scope.validateFloorSelection = function(type) {
-			if (type == 'SINGLE_FLOOR') {
-				$scope.currentFilters.floorFilterStart = '';
-				$scope.currentFilters.floorFilterEnd = '';
-
-			}
-
-			if (type == 'FROM_FLOOR' || type == 'TO_FLOOR') {
-				$scope.currentFilters.floorFilterSingle = '';
-			}
-		};
-
-		/**
-		 * Click handler for All-Floors checkbox
-		 */
-		$scope.allFloorsClicked = function() {
-			$scope.currentFilters.showAllFloors = !$scope.currentFilters.showAllFloors;
-			$scope.currentFilters.floorFilterStart = '';
-			$scope.currentFilters.floorFilterEnd = '';
-			$scope.currentFilters.floorFilterSingle = '';
-		};
+		/* ***** ***** ***** ***** ***** */
 
 
 
-		// could be moved to a directive,
-		// but addicted by the amount of control
-		// and power it gives here
 		var $_pullUpDownModule = function() {
 
 			// YOU SHALL NOT BOUNCE!
@@ -718,80 +685,236 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			});
 
 			// caching DOM nodes invloved 
-			var $rooms = document.getElementById('rooms'),
-				$notify = document.getElementById('pull-refresh-notify'),
-				$arrow = document.getElementById('icon'),
-				$notifyTxt = document.getElementById('ref-text');
+			var $rooms        = document.getElementById( 'rooms' ),
+				$roomsList    = $rooms.children[0];
+				$refresh      = document.getElementById( 'pull-refresh-page' ),
+				$refreshArrow = document.getElementById( 'refresh-icon' ),
+				$refreshTxt   = document.getElementById( 'refresh-text' ),
+				$load         = document.getElementById( 'pull-load-next' ),
+				$loadArrow    = document.getElementById( 'load-icon' ),
+				$loadTxt      = document.getElementById( 'load-text' );
 
 			// flags and variables necessary
-			var touching = false,
-				pulling = false,
-				startY = 0,
-				nowY = 0,
-				initTop = $rooms.scrollTop,
-				trigger = 110;
+			var touching       = false,
+				pulling        = false,
+				startY         = 0,
+				nowY           = 0,
+				trigger        = 110,
+				scrollBarOnTop = 0,
+				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight,
+				abs = Math.abs;
 
-			// translate cache
-			var PULL_REFRESH = $filter('translate')('PULL_REFRESH'),
-				RELEASE_REFRESH = $filter('translate')('RELEASE_REFRESH');
+			// translate const.
+			var PULL_REFRESH      = $filter( 'translate' )( 'PULL_REFRESH' ),
+				RELEASE_REFRESH   = $filter( 'translate' )( 'RELEASE_REFRESH' ),
+				PULL_LOAD_NEXT    = $filter( 'translate' )( 'PULL_LOAD_NEXT' ),
+				RELEASE_LOAD_NEXT = $filter( 'translate' )( 'RELEASE_LOAD_NEXT' ),
+				PULL_LOAD_PREV    = $filter( 'translate' )( 'PULL_LOAD_PREV' ),
+				RELEASE_LOAD_PREV = $filter( 'translate' )( 'RELEASE_LOAD_PREV' );
 
-			// methods to modify the $notifyText and rotate $arrow
-			var loadNotify = function(diff) {
-				if (!diff) {
-					$arrow.className = '';
-					$notifyTxt.innerHTML = PULL_REFRESH;
+			// methods to modify the $refreshText and rotate $refreshArrow
+			var notifyPullDownAction = function(diff) {
+				if ( !diff ) {
+					$refreshArrow.className = '';
+					$refreshTxt.innerHTML = $scope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
 					return;
 				};
 
-				if (diff > trigger - 40) {
-					$arrow.className = 'rotate';
+				if ( diff > trigger - 40 ) {
+					$refreshArrow.className = 'rotate';
 				} else {
-					$arrow.className = '';
+					$refreshArrow.className = '';
 				}
 
-				if (diff > trigger - 30) {
-					$notifyTxt.innerHTML = RELEASE_REFRESH;
+				if ( diff > trigger - 30 ) {
+					$refreshTxt.innerHTML = $scope.disablePrevBtn ? RELEASE_REFRESH : RELEASE_LOAD_PREV;
 				} else {
-					$notifyTxt.innerHTML = PULL_REFRESH;
+					$refreshTxt.innerHTML = $scope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
 				}
+			};
+
+			var notifyPullUpAction = function(diff) {
+				if ( !diff ) {
+					$loadArrow.className = '';
+					$loadTxt.innerHTML = PULL_LOAD_NEXT;
+					return;
+				};
+
+				if ( abs(diff) > trigger - 40 ) {
+					$loadArrow.className = 'rotate';
+				} else {
+					$loadArrow.className = '';
+				}
+
+				if ( abs(diff) > trigger - 30 ) {
+					$loadTxt.innerHTML = RELEASE_LOAD_NEXT;
+				} else {
+					$loadTxt.innerHTML = PULL_LOAD_NEXT;
+				}
+			};
+
+			var callPulldownAction = function() {
+				if ( $scope.disablePrevBtn ) {
+					$_resetPageCounts();
+					$_callRoomsApi();
+				} else {
+					$scope.loadPrevPage();
+				};
+			};
+
+			var callPullUpAction = function() {
+				$scope.loadNextPage();
+			};
+
+			var genTranslate = function(x, y, z) {
+				var x = (x || 0) + 'px',
+					y = (y || 0) + 'px',
+					z = (z || 0) + 'px';
+
+				return 'translate3d(' + x + ', ' + y + ', ' + z + ')';
+			};
+
+			var hideNremove = function() {
+
 			};
 
 			// set of excutions to be executed when
 			// the user is swiping across the screen
 			var touchMoveHandler = function(e) {
-				var touch = e.touches ? e.touches[0] : e;
+				e.stopPropagation();
 
-				// if not touching or we are not on top of scroll area
-				if (!touching || this.scrollTop > initTop) {
+				var touch         = e.touches ? e.touches[0] : e,
+					diff          = 0,
+					translateZero = genTranslate(),
+					translateDiff = '';
+
+				var commonEx = function() {
+					e.preventDefault();
+
+					pulling       = true;
+					diff          = (nowY - startY);
+					translateDiff = genTranslate(0, diff, 0);
+
+					$rooms.style.WebkitTransition = '';
+					$rooms.style.webkitTransform  = translateDiff;
+				};
+
+				var resetIndicators = function() {
+					$rooms.style.webkitTransform   = translateZero;
+					$refresh.style.webkitTransform = translateZero;
+					$load.style.webkitTransform    = translateZero;
+
+					$timeout(function() {
+						$refresh.classList.remove('show');
+						$load.classList.remove('show');
+					}, 320);
+				};
+
+				// if not touching or we are not on top or bottom of scroll area
+				if (!touching && this.scrollTop !== scrollBarOnTop && this.scrollTop !== scrollBarOnBot) {
 					return;
 				};
 
 				nowY = touch.y || touch.pageY;
 
-				// again a precaution
-				// that the user has started pull down
-				if (startY > nowY) {
-					pulling: false;
-					return;
+				// if: pull down on page start, else: pull up on page end
+				if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
+					commonEx();
+					$refresh.classList.add('show');
+
+					$refresh.style.WebkitTransition = '';
+					$refresh.style.webkitTransform  = translateDiff;
+
+					notifyPullDownAction(diff);
+				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+					commonEx();
+					$load.classList.add('show');
+
+					$load.style.WebkitTransition = '';
+					$load.style.webkitTransform  = translateDiff;
+
+					notifyPullUpAction(diff);
 				} else {
-					pulling: true;
-				}
+					pulling = false;
+					return;
+				};
 
-				// only when everything checks out
-				// prevent default to block the scrolling
-				e.preventDefault();
+				// sometimes the user may manually scrol to it original state
+				if ( nowY - startY == 0 ) {
+					resetIndicators();
+				};
+			};
 
-				// don't remove, you will learn soon why not
-				$rooms.style.WebkitTransition = '';
-				$notify.style.WebkitTransition = '';
+			// set of excutions to be executed when
+			// the user stops touching the screen
+			// TODO: need to bind very similar for 'touchcancel' event
+			var touchEndHandler = function(e) {
+				var touch         = e.touches ? e.touches[0] : e, 
+					diff          = 0,
+					addTransition = '-webkit-transform 0.3s',
+					translateZero = genTranslate();
 
-				var diff = (nowY - startY);
+				var commonEx = function() {
+					if ( pulling ) {
+						e.preventDefault();
+					};
 
-				// we move with the swipe
-				$rooms.style.webkitTransform = 'translate3d(0, ' + diff + 'px, 0)';
-				$notify.style.webkitTransform = 'translate3d(0, ' + diff + 'px, 0)';
+					diff     = (nowY - startY);
+					touching = false;
+					pulling  = false;
 
-				loadNotify(diff);
+					$rooms.style.WebkitTransition = addTransition;
+					$rooms.style.webkitTransform  = translateZero;
+
+					$rooms.removeEventListener(touchMoveHandler);
+				};
+
+				var resetIndicators = function() {
+					$rooms.style.WebkitTransition = addTransition;
+					$rooms.style.webkitTransform  = translateZero;
+
+					$refresh.style.WebkitTransition = addTransition;
+					$refresh.style.webkitTransform  = translateZero;
+
+					$load.style.WebkitTransition = addTransition;
+					$load.style.webkitTransform  = translateZero;
+
+					$rooms.removeEventListener(touchMoveHandler);
+
+					$timeout(function() {
+						$refresh.classList.remove('show');
+						$load.classList.remove('show');
+						if ( abs(diff) > trigger ) {
+							$_refreshScroll();
+						}
+					}, 320);
+				};
+
+				nowY = touch ? (touch.y || touch.pageY) : nowY;
+
+				// if: pull down on page start, else: pull up on page end
+				if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
+					commonEx();
+
+					if ( abs(diff) > trigger ) {
+						callPulldownAction();
+					};
+
+					notifyPullDownAction();
+					resetIndicators();
+				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+					commonEx();
+
+					if ( abs(diff) > trigger ) {
+						callPullUpAction();
+					};
+
+					notifyPullUpAction();
+					resetIndicators();
+				} else {
+					resetIndicators();
+					return;
+				};
 			};
 
 			// set of excutions to be executed when
@@ -799,85 +922,41 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var touchStartHandler = function(e) {
 				var touch = e.touches ? e.touches[0] : e;
 
-				// if we are not on top of scroll area
-				if (this.scrollTop > initTop) {
-					return;
-				};
+				// a minor hack since we have a rooms injection throttle
+				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight;
 
 				touching = true;
 				pulling = false;
 				startY = touch.y || touch.pageY;
 
 				$rooms.style.WebkitTransition = '';
-				$notify.style.WebkitTransition = '';
-				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
-				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
 
-				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
-				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
-
-				$notify.classList.add('show');
+				// if: pull down on page start, else: pull up on page end
+				if ( this.scrollTop === scrollBarOnTop ) {
+					$refresh.style.WebkitTransition = '';
+					$refresh.classList.add('show');
+					/***/
+					$load.style.WebkitTransition = '';
+					$load.classList.remove('show');
+				} else if ( this.scrollTop === scrollBarOnBot ) {
+					$load.style.WebkitTransition = '';
+					$load.classList.add('show');
+					/***/
+					$refresh.style.WebkitTransition = '';
+					$refresh.classList.remove('show');
+				};
 
 				// only bind 'touchmove' when required
 				$rooms.addEventListener('touchmove', touchMoveHandler, false);
 			};
 
-			// set of excutions to be executed when
-			// the user stops touching the screen
-			// TODO: need to bind very similar for 'touchcancel' event
-			var touchEndHandler = function(e) {
-				var touch = e.touches ? e.touches[0] : e;
-
-				// if we are not on top of scroll area
-				if (this.scrollTop > initTop) {
-					return;
-				};
-
-				// gotta prevent only when
-				// user has already pulled down
-				if (pulling) {
-					e.preventDefault();
-				};
-
-				touching = false;
-				pulling = false;
-				nowY = touch ? (touch.y || touch.pageY) : nowY;
-
-				var diff = (nowY - startY);
-
-				// if we have hit the trigger refresh room list
-				if (diff > trigger) {
-					// fetchRooms
-					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
-						businessDate: $rootScope.businessDate,
-						refresh: true
-					}, $_fetchRoomListCallback);
-				}
-
-				// for the smooth transition back
-				$rooms.style.WebkitTransition = '-webkit-transform 0.3s';
-				$notify.style.WebkitTransition = '-webkit-transform 0.3s';
-
-				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
-				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
-
-				// 'touchmove' handler is not necessary
-				$rooms.removeEventListener(touchMoveHandler);
-
-				$timeout(function() {
-					$notify.classList.remove('show');
-				}, 320);
-
-				loadNotify();
-			};
-
 			// bind the 'touchstart' handler
 			$rooms.addEventListener('touchstart', touchStartHandler, false);
 
-			// bind the 'touchend' handler
+			// bind the 'touchstart' handler
 			$rooms.addEventListener('touchend', touchEndHandler, false);
 
-			// bind the 'touchcancel' handler
+			// bind the 'touchstart' handler
 			$rooms.addEventListener('touchcancel', touchEndHandler, false);
 
 			// remove the DOM binds when this scope is distroyed
@@ -894,111 +973,27 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$_pullUpDownModule();
 
 
+
+		/* ***** ***** ***** ***** ***** */
+
+
+
+		// stop browser bounce while swiping on rooms element
+		angular.element( $_roomsEl )
+			.on('touchmove', function(e) {
+				e.stopPropagation();
+			});
+
+		// stop browser bounce while swiping on filter-options element
+		angular.element( $_filterRoomsEl )
+			.on('touchmove', function(e) {
+				e.stopPropagation();
+			});
+
 		// There are a lot of bindings that need to cleared
 		$scope.$on('$destroy', function() {
-			angular.element(roomsEl).off('ontouchmove');
-			angular.element(filterRoomsEl).off('ontouchmove');
+			angular.element( $_roomsEl ).off('ontouchmove');
+			angular.element( $_filterRoomsEl ).off('ontouchmove');
 		});
-
-
-
-
-
-		// NEW FEATURES, will be moved to a proper place when working on 10222
-		$scope.assignRoom = {};
-
-		$scope.closeDialog = function() {
-		    $scope.errorMessage = "";
-		    ngDialog.close();
-		}
-
-		var activeWorksheetData = [];
-		var tobeAssignedRoom = {};
-		var findEmpAry = function() {
-			var workid = $scope.assignRoom.work_type_id || $scope.topFilter.byWorkType,
-				ret    =  _.find(activeWorksheetData, function(item) {
-					return item.id === workid;
-				});
-
-			return !!ret ? ret.employees : [];
-		};
-
-		$scope.openAssignRoomModal = function(room) {
-			tobeAssignedRoom = room;
-
-			$scope.assignRoom.rooms = [tobeAssignedRoom.id];
-			$scope.assignRoom.work_type_id = $scope.topFilter.byWorkType;
-			$scope.activeWorksheetEmp = [];
-
-			var onSuccess = function(response) {
-					$scope.$emit('hideLoader');
-
-					activeWorksheetData = response.data;
-					$scope.activeWorksheetEmp = findEmpAry();
-					ngDialog.open({
-					    template: '/assets/partials/housekeeping/rvAssignRoomPopup.html',
-					    className: 'ngdialog-theme-default',
-					    closeByDocument: true,
-					    scope: $scope,
-					    data: []
-					});
-					
-				},
-				onError = function() {
-					$scope.$emit('hideLoader');
-				};
-
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchActiveWorksheetEmp, {}, onSuccess, onError);
-		};
-
-		$scope.assignRoomWorkTypeChanged = function() {
-			$scope.activeWorksheetEmp = findEmpAry();
-		};
-
-		$scope.submitAssignRoom = function() {
-		    $scope.errorMessage = "";
-		    if (!$scope.assignRoom.work_type_id) {
-		        $scope.errorMessage = ['Please select a work type.'];
-		        return false;
-		    }
-		    if (!$scope.assignRoom.user_id) {
-		        $scope.errorMessage = ['Please select an employele.'];
-		        return false;
-		    }
-		    var onAssignSuccess = function(data) {
-		            $scope.$emit('hideLoader');
-		            
-		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
-		            	return emp.id === $scope.assignRoom.user_id
-		            });
-		            tobeAssignedRoom.canAssign = false;
-		            tobeAssignedRoom.assigned_staff = {
-		            	'name': angular.copy(assignee.name),
-		            	'class': 'assigned'
-		            };
-
-		            $scope.assignRoom = {};
-
-		            $scope.closeDialog();
-		        },
-		        onAssignFailure = function(errorMessage) {
-		            $scope.$emit('hideLoader');
-		            $scope.errorMessage = errorMessage;
-		        },
-		        data = {
-			        "date": $rootScope.businessDate,
-			        "task_id": $scope.assignRoom.work_type_id,
-			        "order": "",
-			        "assignments": [{
-			            "assignee_id": $scope.assignRoom.user_id,
-			            "room_ids": $scope.assignRoom.rooms,
-			            "work_sheet_id": "",
-			            "from_search": true
-			        }]
-			    };
-
-		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, data, onAssignSuccess, onAssignFailure);
-		};
-
 	}
 ]);

@@ -36,11 +36,11 @@
 	    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	    <span class="message h2">Date Range Update</span>
 
-	    <fieldset class="holder left">
+	    <fieldset id="fromDatePicker" class="holder left">
 	    	<strong class="h3">From <span>{{fromDate| date:'MMMM dd, y'}}</span></strong>
 	    	<div ui-date="fromDateOptions" ng-model="fromDate" ui-date-format="yy-mm-dd"></div>
 	    </fieldset>
-	    <fieldset class="holder right">
+	    <fieldset id="toDatePicker" class="holder right">
 	    	<strong class="h3">To <span>{{toDate | date:'MMMM dd, y'}}</span></strong>
 	    	<div ui-date="toDateOptions" ng-model="toDate" ui-date-format="yy-mm-dd"></div>
 	    </fieldset>
