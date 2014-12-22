@@ -235,7 +235,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
 
 		if ($stateParams.id != "add") {
-			if (typeof $scope.currentCard != "undefined") {
+			if (!!$scope.currentCard) {
 				$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
 					"account_id": $scope.currentCard
 				}, fetchContractsListSuccessCallback, fetchFailureCallback);

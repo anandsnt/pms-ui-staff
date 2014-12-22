@@ -36,11 +36,19 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			} else if (tabToSwitch == 'cc-contact-info') {
 				$scope.$broadcast("contactTabActive");
 			}
-
+			else if (tabToSwitch == 'cc-ar-transactions') {
+				$scope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
+
+		$scope.$on('ARTransactionSearchFilter', function(e, data) {
+			$scope.isWithFilters = data;
+		});
+
 		/*-------AR account starts here-----------*/
 
 		$scope.showARTab = function($event) {
@@ -129,8 +137,9 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
-
-			callCompanyCardServices();
+			if(!isNew){
+				callCompanyCardServices();	
+			}				
 		});
 
 		$scope.$on("companyCardDetached", function() {

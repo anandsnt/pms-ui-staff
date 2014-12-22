@@ -31,6 +31,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.setScroller('cardsList');
 	$scope.showCCPage = false;
 	$scope.shouldShowWaiting = false;
+	$scope.showManualEntryDisabledPopup = ($rootScope.isManualCCEntryEnabled) ? false : true;
     var refreshCardsList = function() {
         $timeout(function() {
 			$scope.refreshScroller('cardsList');
@@ -79,6 +80,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		
 		//To render swiped data in the add screen
 		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+			$scope.showManualEntryDisabledPopup = false;
 			$scope.dataToSave.paymentType = "CC";
 			$scope.showCCPage 			  = true;
 			$scope.addmode                = true;	

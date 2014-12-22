@@ -57,7 +57,7 @@
                 </div>
             </div>
              <!-- Selected/added credit card -->
-            <div id="selected-card" class="entry full-width" ng-show="!showCC && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully" ng-click="onCardClick()">
+            <div id="selected-card" class="entry full-width" ng-show="!showCC && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && cancellationData.cardNumber.length>0" ng-click="onCardClick()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
@@ -105,8 +105,13 @@
                     <li ng-show="authorizedCode !==''">
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
-                    <li>
-                        Amount paid: <span class="value">{{currencySymbol}}{{ngDialogData.penalty}}</span>
+                    <li ng-if="isShowFees()">
+                        Amount paid: <span class="value">{{currencySymbol}}{{ngDialogData.penalty}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        </span>
+                    </li>
+                    <li ng-if="!isShowFees()">
+                        Amount paid: <span class="value">{{currencySymbol}}{{ngDialogData.penalty}}
+                        </span>
                     </li>
                 </ul>
             </div> 
@@ -115,7 +120,7 @@
             <!-- Buttons -->
             <div class="actions" ng-hide="showCC || depositPaidSuccesFully">
                 <button type="button" class="button blank modal-close" ng-click="closeReservationCancelModal()">Close</button>
-                <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'gray':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" ng-click="submitPayment()">Make Payment</button> 
+                <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'grey':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" ng-click="submitPayment()">Make Payment</button> 
             </div>
             <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="cancelReservation()" translate>CANCEL_RESERVATION</button>

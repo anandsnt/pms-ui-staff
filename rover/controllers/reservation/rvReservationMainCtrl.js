@@ -59,6 +59,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             // intialize reservation object
             $scope.reservationData = {
                 isHourly: false,
+                isValidDeposit: false,
                 arrivalDate: '',
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
@@ -962,8 +963,29 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.arrivalDate), 'yyyy-MM-dd')];
             }
             if (reservationDetails.reservation_card.payment_method_used !== "" && reservationDetails.reservation_card.payment_method_used !== null) {
+           
                 $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
                 $scope.reservationData.paymentType.type.value = reservationDetails.reservation_card.payment_method_used;
+                if($scope.reservationData.paymentType.type.value == "CC"){
+                	$scope.renderData = {};
+                	$scope.renderData.creditCardType = reservationDetails.reservation_card.payment_details.card_type_image.replace(".png", "").toLowerCase();
+					$scope.renderData.endingWith = reservationDetails.reservation_card.payment_details.card_number;
+					$scope.renderData.cardExpiry = reservationDetails.reservation_card.payment_details.card_expiry;
+					$scope.renderData.isSwiped = reservationDetails.reservation_card.payment_details.is_swiped;
+					$scope.reservationData.selectedPaymentId = reservationDetails.reservation_card.payment_details.id;
+					//CICO-11579 - To show credit card if C&P swiped or manual.
+					//In other cases condition in HTML will work
+					if($rootScope.paymentGateway == "sixpayments"){
+						if(reservationDetails.reservation_card.payment_details.is_swiped){
+							//can't set manual true..that is why added this flag.. Added in HTML too
+							$scope.reservationEditMode = true;
+						} else {
+							$scope.isManual = true;
+						}
+					} 
+					$scope.showSelectedCreditCard = true;
+										
+                }
             }
 
 
@@ -1326,14 +1348,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.paymentTypes = [];
 
 
-        var fetcCreditCardTypes = function(cancellationCharge, nights){
-            var successCallback = function(data){
+        var fetcCreditCardTypes = function(cancellationCharge, nights) {
+            var successCallback = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.paymentTypes = data;
                 data.forEach(function(item) {
-                  if(item.name === 'CC'){
-                     $scope.creditCardTypes = item.values;
-                  };
+                    if (item.name === 'CC') {
+                        $scope.creditCardTypes = item.values;
+                    };
                 });
             };
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
@@ -1343,14 +1365,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         var promptCancel = function(penalty, nights) {
 
             var passData = {
-                    "reservationId": $scope.reservationData.reservationId,
-                    "details":{
-                        "firstName":$scope.guestCardData.contactInfo.first_name,
-                        "lastName":$scope.guestCardData.contactInfo.last_name,
-                        "creditCardTypes":$scope.creditCardTypes,
-                        "paymentTypes":$scope.paymentTypes
-                    }
-             };
+                "reservationId": $scope.reservationData.reservationId,
+                "details": {
+                    "firstName": $scope.guestCardData.contactInfo.first_name,
+                    "lastName": $scope.guestCardData.contactInfo.last_name,
+                    "creditCardTypes": $scope.creditCardTypes,
+                    "paymentTypes": $scope.paymentTypes
+                }
+            };
             $scope.passData = passData;
             ngDialog.open({
                 template: '/assets/partials/reservationCard/rvCancelReservation.html',
@@ -1631,7 +1653,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 var postData = $scope.computeReservationDataforUpdate(true, true);
                 var saveSuccess = function(data) {
-                    $scope.reservationData.depositAmount = data.reservations[0].deposit_amount;
+
+                    var totalDeposit = 0;
+                    //calculate sum of each reservation deposits
+                    angular.forEach(data.reservations, function(reservation, key) {
+                        totalDeposit = parseInt(totalDeposit) + parseInt(reservation.deposit_amount);
+                    });
+                    $scope.reservationData.depositAmount = totalDeposit;
+                    $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
+
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
                         angular.forEach(data.reservations, function(reservation, key) {
                             angular.forEach($scope.reservationData.rooms, function(room, key) {
@@ -1641,6 +1672,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             });
                         });
                         $scope.reservationData.reservations = data.reservations;
+                        $scope.reservationData.reservationIds = [];
+                        angular.forEach(data.reservations, function(reservation, key) {
+                            $scope.reservationData.reservationIds.push(reservation.id);
+                        });
                         $scope.reservationData.reservationId = $scope.reservationData.reservations[0].id;
                         $scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
                         $scope.reservationData.status = $scope.reservationData.reservations[0].status;
@@ -1697,14 +1732,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         }
                         $state.go(nextState, nextStateParameters);
                     }
-                }
+                };
+
                 var saveFailure = function(data) {
                     $scope.errorMessage = data;
+                    $scope.$broadcast('FAILURE_SAVE_RESERVATION', data);
                     $scope.$emit('hideLoader');
-                }
+                };
+
+                var updateFailure = function(data) {
+                    $scope.errorMessage = data;
+                    $scope.$broadcast('FAILURE_UPDATE_RESERVATION', data);
+                    $scope.$emit('hideLoader');
+                };
 
                 var updateSuccess = function(data) {
                     $scope.reservationData.depositAmount = data.deposit_amount;
+                    $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
                     $scope.$broadcast('UPDATEFEE');
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
@@ -1719,12 +1764,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
                     postData.reservationId = $scope.reservationData.reservationId;
-                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
+                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
             }
-        }
+        };
 
         $scope.fetchDemoGraphics = function() {
 
@@ -1744,13 +1789,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
 
             $scope.invokeApi(RVReservationSummarySrv.fetchInitialData, {}, fetchSuccess, fetchFailure);
-        }
+        };
 
         $scope.resetAddons = function() {
             angular.forEach($scope.reservationData.rooms, function(room) {
                 room.addons = []
             });
-        }
+        };
 
         $scope.computeHourlyTotalandTaxes = function() {
             $scope.reservationData.totalStayCost = 0.0;
@@ -1759,13 +1804,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             _.each($scope.reservationData.rooms, function(room, roomNumber) {
                 var taxes = $scope.otherData.hourlyTaxInfo[0];
                 room.amount = 0.0;
-                _.each(room.stayDates, function(stayDate) {
-                    stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
-                    if (isNaN(stayDate.rateDetails.modified_amount)) {
-                        stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+                _.each(room.stayDates, function(stayDate, date) {
+                    if (date == $scope.reservationData.arrivalDate) {
+                        stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
+                        if (isNaN(stayDate.rateDetails.modified_amount)) {
+                            stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
+                        }
+                        room.amount = parseFloat(room.amount) + parseFloat(stayDate.rateDetails.modified_amount);
                     }
-                    room.amount = parseFloat(room.amount) + parseFloat(stayDate.rateDetails.modified_amount);
-
                 });
                 room.rateTotal = room.amount;
 
@@ -1840,7 +1886,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 });
                 $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal) + parseFloat(addOnCumulative);
             });
-        }
+        };
 
         //CICO-11716
         $scope.onOccupancyChange = function(room, occupantType, idx) {
@@ -1849,7 +1895,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.validateOccupant(room, occupantType);
                 $scope.checkOccupancyLimit(null, true);
             }
-        }
+        };
 
     }
 ]);

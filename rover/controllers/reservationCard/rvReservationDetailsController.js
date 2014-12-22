@@ -13,7 +13,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
+		if ($stateParams.isFromCards) {
+			$rootScope.setPrevState = {
+				title: 'AR Transactions',
+				name: 'rover.companycarddetails',
+    			param: {id:$vault.get('cardId'), 
+    					type: $vault.get('type'), 
+    					query :$vault.get('query'),
+    					isBackFromStaycard : true
+    				},
+				};
+
+		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
 			};
@@ -482,9 +493,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		};
 
-		$scope.showDiaryScreen = function() {
+		$scope.showDiaryScreen = function() {			
+			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 			$state.go('rover.reservation.diary', {
-				reservation_id: $scope.reservationData.reservation_card.reservation_id
+				reservation_id: $scope.reservationData.reservation_card.reservation_id,
+				checkin_date: $scope.reservationData.reservation_card.arrival_date,
 			});
 		};
 

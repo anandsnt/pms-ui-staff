@@ -32,7 +32,9 @@ sntRover
 			end_date: 'departure',	
 			maintenance: 'maintenance',
 			rate: 'amount',
-			room_status: 'room_service_status'
+			room_status: 'room_service_status',
+			tr_ag_name: 'travel_agent_name',
+			cmp_name : 'company_card_name'
 		},
 		availability: {
 			id: 'reservation_id',
