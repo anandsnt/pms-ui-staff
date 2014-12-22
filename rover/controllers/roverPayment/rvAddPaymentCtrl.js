@@ -183,6 +183,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	
 	//retrieve token from paymnet gateway
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
+		console.log("==========================");
+		console.log(JSON.stringify(tokenDetails));
 		$scope.cardData = tokenDetails;
 		renderScreen();
 		// if(!$scope.isFromGuestCard){
@@ -379,6 +381,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			else{
 				if($scope.isNewCardAdded){	
 					data.card_expiry = 	retrieveCardExpiryForApi();
+					console.log(">>>"+JSON.stringify($scope.cardData.cardDetails));
+					data.card_code   = (!$scope.cardData.tokenDetails.isSixPayment)?
+										$scope.cardData.cardDetails.cardType : 
+										getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
 				} else {
 					$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, ccSaveSuccess);  
