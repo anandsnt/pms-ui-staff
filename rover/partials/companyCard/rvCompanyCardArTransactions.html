@@ -80,13 +80,13 @@
     </div>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- If there are open bills: -->
-    <div class="tab-details scrollable" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list">
+    <div class="tab-details scrollable" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list" ng-iscroll-delay="500">
         <div class="wrapper">
             
             <ul class="search-results">
                 <li class="reservation transaction" ng-click="goToReservationDetails($index, $event)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
                     
-                    <div class="faux-anchor" class="guest-{reservation-status}"> 
+                    <a class="faux-anchor" class="guest-{reservation-status}"> 
                         <figure class="guest-image">
                             <img src="{{transaction.guest_image}}" alt="" />
                             <span class="vip" ng-if="transaction.guest_is_vip">VIP</span>
@@ -121,7 +121,7 @@
                                 <span class="value" translate>PAID</span>
                             </label>
                         </div>
-                    </div>
+                    </a>
                 </li>
             </ul>
 

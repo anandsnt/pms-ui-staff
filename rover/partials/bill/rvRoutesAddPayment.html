@@ -15,7 +15,7 @@
                         <div class="select">
                            <select name="payment-type" ng-model = "saveData.credit_card" id="payment-type" class="placeholder" >
                               <option value="" translate>SELECT_CREDIT_CARD_LABEL</option>
-                              <option value="{{creditcard.cardcode}}" ng-repeat = "creditcard in availablePaymentTypes[0].values">{{creditcard.cardname}}</option>
+                              <option value="{{creditcard.cardcode}}" ng-repeat = "creditcard in ccPaymentDetails.values">{{creditcard.cardname}}</option>
                               
                            </select>
                         </div>

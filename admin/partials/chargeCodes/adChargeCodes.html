@@ -5,47 +5,82 @@
 				CHARGE_CODE
 			</h2>
 			<span class="count">
-				({{data.charge_codes.length}})
+				({{totalCount}})
 			</span>
 			<a ng-click="addNewClicked()" class="action add" translate>ADD_NEW</a>
 			<a ng-show="data.is_connected_to_pms =='true'"  ng-click="importFromPmsClicked($event)" class="action import" translate>IMPORT_FROM_PMS</a>
 		</header>
 		<section class="content-scroll">
-	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-	<div id="new-form-holder" ng-if="isAdd" ng-include="getTemplateUrl()"></div>
-		<div id="new-form-holder"></div>
-		<table class="grid datatable" ng-table="tableParams" template-pagination="nil">
-			<tbody>
-				<tr ng-repeat="item in $data">
-					<td header-class="text-left width-20" data-title="'Code'" sortable="'charge_code'" ng-click="editSelected($index, item.value)" ng-hide="currentClickedElement == $index && isEdit">
-						<a data-colspan="1" class="edit-data-inline">
-							{{item.charge_code}}
-						</a>
-					</td>
-					<td header-class="text-left width-20"   header-class="text-left" data-title="'Description'" ng-hide="currentClickedElement == $index && isEdit">
-						{{item.description}}
-					</td>
-					<td header-class="width-20" data-title="'Group'" sortable="'charge_group'" ng-hide="currentClickedElement == $index && isEdit" >
-						{{item.charge_group}}
-					</td>
-					<td header-class="text-left width-20" header-class="text-center" data-title="'Type'" ng-hide="currentClickedElement == $index && isEdit">
-						{{item.charge_code_type}}
-					</td>
-					<td header-class="text-left width-20" data-title="'Tax'"  ng-hide="currentClickedElement == $index && isEdit">
-						<div class="linkwith" ng-repeat="link in item.link_with">
-							{{link}}
-						</div>
-					</td>
-					<td header-class="text-left width-20" data-title="'Delete'"  class="delete" ng-hide="currentClickedElement == $index && isEdit">
-						<a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(item.value)">item.value</a>
-					</td>
-					
-					<td colspan="6" ng-include="getTemplateUrl()" ng-if="currentClickedElement == $index && isEdit"></td>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+			
+			<span class="count-show">Show</span>
+			<div class="select table-count rates-table-count">
+				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
+			</div>
+			<span class="count-entries">entries</span>
+				
+			<div class="entry table-search">
+				<span class="search-text">Search</span>
+				<span class="icons icon-search" name="submit" type="submit"></span>
+				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+		    </div>
 
-				</tr>
-			</tbody>
-		</table>
+			<div id="new-form-holder" ng-if="isAdd" ng-include="getTemplateUrl()"></div>
+			<div id="new-form-holder"></div>
+			<table class="grid datatable" ng-table="tableParams" template-pagination="custom/pager">
+				<tbody>
+					<tr ng-repeat="item in $data">
+						<td header-class="text-left width-20" data-title="'Code'" sortable="'charge_code'" ng-click="editSelected($index, item.value)" ng-hide="currentClickedElement == $index && isEdit">
+							<a data-colspan="1" class="edit-data-inline">
+								{{item.charge_code}}
+							</a>
+						</td>
+						<td header-class="text-left width-20"   header-class="text-left" data-title="'Description'" ng-hide="currentClickedElement == $index && isEdit">
+							{{item.description}}
+						</td>
+						<td header-class="width-20" data-title="'Group'" sortable="'charge_group'" ng-hide="currentClickedElement == $index && isEdit" >
+							{{item.charge_group}}
+						</td>
+						<td header-class="text-left width-20" header-class="text-center" data-title="'Type'" ng-hide="currentClickedElement == $index && isEdit">
+							{{item.charge_code_type}}
+						</td>
+						<td header-class="text-left width-20" data-title="'Tax'"  ng-hide="currentClickedElement == $index && isEdit">
+							<div class="linkwith" ng-repeat="link in item.link_with">
+								{{link}}
+							</div>
+						</td>
+						<td header-class="text-left width-20" data-title="'Delete'"  class="delete" ng-hide="currentClickedElement == $index && isEdit">
+							<a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(item.value)">item.value</a>
+						</td>
+						
+						<td colspan="6" ng-include="getTemplateUrl()" ng-if="currentClickedElement == $index && isEdit"></td>
+
+					</tr>
+				</tbody>
+			</table>
 		</section>
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
 	</div>
 </section>

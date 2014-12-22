@@ -1,7 +1,7 @@
 admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll',
 	function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
 
-		BaseCtrl.call(this, $scope);
+		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.$emit("changedSelectedMenu", 5);
 		$scope.currentClickedElement = -1;
 		$scope.currentClickedTaxElement = -1;
@@ -15,10 +15,46 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.selected_payment_type.id = -1;
 		$scope.prefetchData = {};
 
+
+
+		$scope.fetchTableData = function($defer, params){
+			var getParams = $scope.calculateGetParams(params);
+			console.log(getParams);
+			var fetchSuccessOfItemList = function(data){
+				$scope.$emit('hideLoader');
+				//No expanded rate view
+				$scope.currentClickedElement = -1;
+				$scope.totalCount = data.total_count;
+				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+				$scope.data = data.charge_codes;
+				$scope.currentPage = params.page();
+	        	params.total(data.total_count);
+	            $defer.resolve($scope.data);
+			};
+			$scope.invokeApi(ADChargeCodesSrv.fetch, getParams, fetchSuccessOfItemList);
+		}
+
+
+		$scope.loadTable = function(){
+			$scope.tableParams = new ngTableParams({
+			        page: 1,  // show first page
+			        count: $scope.displyCount, // count per page
+			        sorting: {
+			            charge_code: 'asc' // initial sorting
+			        }
+			    }, {
+			        total: 0, // length of data
+			        getData: $scope.fetchTableData
+			    }
+			);
+		}
+
+		$scope.loadTable();
+
 		/*
 		 * To fetch charge code list
 		 */
-		$scope.fetchChargeCodes = function() {
+		/*$scope.fetchChargeCodes = function() {
 			var fetchSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.data = data;
@@ -42,7 +78,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			};
 			$scope.invokeApi(ADChargeCodesSrv.fetch, {}, fetchSuccessCallback);
 		};
-		$scope.fetchChargeCodes();
+		$scope.fetchChargeCodes();*/
 		/*
 		 * To fetch the charge code details for add screen.
 		 */

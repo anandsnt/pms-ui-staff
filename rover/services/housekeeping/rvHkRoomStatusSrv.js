@@ -59,6 +59,34 @@ sntRover.service('RVHkRoomStatusSrv', [
 				params['query'] = filter.query;
 			} else {
 
+				if ( passedParams.isStandAlone || $rootScope.isStandAlone ) {
+					// if: for initial load cases
+					// else: for normal case
+					if ( passedParams.initialLoad ) {
+						if ( passedParams.work_type_id ) {
+							params['work_type_id']  = passedParams.work_type_id;
+							filter.filterByWorkType = passedParams.work_type_id;
+
+							if ( passedParams.assignee_id ) {
+								params['assignee_id']       = passedParams.assignee_id;
+								filter.filterByEmployeeName = passedParams.assignee_id;
+							};
+						} else {
+							params['all_employees_selected'] = true;
+						};
+					} else {
+						if ( filter.filterByWorkType ) {
+							params['work_type_id'] = filter.filterByWorkType;
+
+							if ( filter.filterByEmployeeName ) {
+								params['assignee_id'] = filter.filterByEmployeeName;
+							} else {
+								params['all_employees_selected'] = true;
+							};
+						};
+					};
+				};
+
 				// process the floors
 				if ( !filter.showAllFloors ) {
 					floor_start = filter.floorFilterStart || filter.floorFilterSingle;
@@ -99,27 +127,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 				if ( room_type_ids.length )          { params['room_type_ids']        = room_type_ids; };
 				if ( floor_start )                   { params['floor_start']          = floor_start; };
 				if ( floor_end )                     { params['floor_end']            = floor_end; };
-
-
-				if ( passedParams.isStandAlone || $rootScope.isStandAlone ) {
-					// filter by worktype and employee
-					if ( passedParams.allEmployeesSelected && typeof filter.filterByEmployeeName == 'boolean' ) {
-						params['all_employees_selected'] = true;
-					} else {
-						if ( filter.filterByEmployeeName ) {
-							params['assignee_id'] = filter.filterByEmployeeName;
-						} else {
-							params['all_employees_selected'] = true;
-						};
-					}
-
-					if ( filter.filterByWorkType ) {
-						params['work_type_id'] = filter.filterByWorkType;
-					} else if (passedParams.work_type_id) {
-						params['work_type_id'] = passedParams.work_type_id;
-						filter.filterByWorkType = passedParams.work_type_id;
-					};
-				};
 			};
 
 			return params;
@@ -129,64 +136,114 @@ sntRover.service('RVHkRoomStatusSrv', [
 		this.fetchRoomListPost = function(passedParams) {
 			var deferred     = $q.defer(),
 				url          = '/house/search.json',
-				passedParams = passedParams,
-				params       = {},
-				work_type_id;
+				params       = $_prepareParams( passedParams );
 
-			var _makeTheCall = function(workTypes) {
-				if ( !!workTypes ) {
-					work_type_id = workTypes[0]['id'];
-					_.extend( passedParams, {'work_type_id' : work_type_id} );
-				};
+			BaseWebSrvV2.postJSON(url, params)
+				.then(function(response) {
+					roomList = response.data;
 
-				params = $_prepareParams(passedParams);
+					for (var i = 0, j = roomList.rooms.length; i < j; i++) {
+						var room = roomList.rooms[i];
 
-				BaseWebSrvV2.postJSON(url, params)
-					.then(function(response) {
-						roomList = response.data;
+						// reduce scope search
+						room.description = room.hk_status.description;
 
-						for (var i = 0, j = roomList.rooms.length; i < j; i++) {
-							var room = roomList.rooms[i];
+						room.is_occupied = room.is_occupied == 'true' ? true : false;
+						room.is_vip = room.is_vip == 'true' ? true : false;
 
-							// reduce scope search
-							room.description = room.hk_status.description;
+						// single calculate the class required
+						// will require additional call from details page
+						that.setRoomStatusClass(room, roomList.checkin_inspected_only);
 
-							room.is_occupied = room.is_occupied == 'true' ? true : false;
-							room.is_vip = room.is_vip == 'true' ? true : false;
+						// set the leaveStatusClass or enterStatusClass value
+						that.setReservationStatusClass(room);
 
-							// single calculate the class required
-							// will require additional call from details page
-							that.setRoomStatusClass(room, roomList.checkin_inspected_only);
+						room.timeOrIn = calculateTimeOrIn(room);
+						room.timeOrOut = calculateTimeOrOut(room);
 
-							// set the leaveStatusClass or enterStatusClass value
-							that.setReservationStatusClass(room);
+						room.assigned_staff = calculateAssignedStaff(room);
 
-							room.timeOrIn = calculateTimeOrIn(room);
-							room.timeOrOut = calculateTimeOrOut(room);
-
-							room.assigned_staff = calculateAssignedStaff(room);
-
-							room.ooOsTitle = calculateOoOsTitle(room);
-						}
-						deferred.resolve(roomList);
-					}.bind(this), function(data) {
-						deferred.reject(data);
-					});
-			};
-
-			if ( passedParams.isStandAlone ) {
-				this.fetchWorkTypes()
-					.then(_makeTheCall);
-			} else {
-				_makeTheCall();
-			}
+						room.ooOsTitle = calculateOoOsTitle(room);
+					}
+					deferred.resolve(roomList);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
 
 			return deferred.promise;
 		}
 
-		this.clearRoomList = function() {
-			roomList = [];
-		};
+		// batch loading a lot of things
+		this.fetchPayload = function(passedParams) {
+			var deferred           = $q.defer();
+				passedParams       = passedParams,
+				paramWorkTypeId    = false,
+				paramEmployeeId    = false,
+				additionalParams   = {},
+				fetchedWorkTypes   = {},
+				fetchedAssignments = {};
+
+			if ( passedParams.isStandAlone || $rootScope.isStandAlone ) {
+				this.fetchWorkTypes().then( _fetchWorkAssignments.bind(this) );
+			} else {
+				_fetchRoomListPost.call(this);;
+			}
+
+			function _fetchWorkAssignments (workTypes) {
+				fetchedWorkTypes = workTypes;
+				paramWorkTypeId  = workTypes[0]['id'];
+
+				var params = {
+					'date'         : $rootScope.businessDate,
+					'employee_ids' : [$rootScope.userId],
+					'work_type_id' : workTypes[0]['id']
+				};
+
+				this.fetchWorkAssignments( params ).then( _checkHasActiveWorkSheet.bind(this) );
+			};
+
+			function _checkHasActiveWorkSheet (assignments) {
+				var _hasActiveWorkSheet = !!assignments.work_sheets.length && !!assignments.work_sheets[0].work_assignments && !!assignments.work_sheets[0].work_assignments.length;
+
+				if ( _hasActiveWorkSheet ) {
+					paramEmployeeId = $rootScope.userId;
+				} else {
+					paramEmployeeId = false;
+					paramWorkTypeId = false;
+				}
+
+				fetchedAssignments = assignments;
+
+				// make the call
+				_fetchRoomListPost.call(this);
+			};
+
+			function _fetchRoomListPost () {
+				if ( paramWorkTypeId ) {
+					additionalParams['work_type_id'] = paramWorkTypeId;
+				};
+
+				if ( paramEmployeeId ) {
+					additionalParams['assignee_id'] = paramEmployeeId;
+				};
+
+				_.extend( passedParams, additionalParams, {'initialLoad': true} );
+
+				this.fetchRoomListPost( passedParams ).then( _resolveData );
+			};
+
+			function _resolveData (roomList) {
+				var payload = {
+					'roomList':    roomList,
+					'workTypes':   fetchedWorkTypes,
+					'assignments': fetchedAssignments
+				};
+
+				deferred.resolve(payload);
+			};
+
+			return deferred.promise;
+		}
 
 		// Get all floors for the current hotel.
 		var hotelFloors = [];
@@ -210,23 +267,23 @@ sntRover.service('RVHkRoomStatusSrv', [
 		}
 
 		// fetch all room types
-		var roomTypes = [];
+		this.roomTypes = [];
 		this.fetchRoomTypes = function() {
 			var url = 'api/room_types?exclude_pseudo=true&exclude_suite=true';
 			var deferred = $q.defer();
 
-			if (roomTypes.length) {
-				deferred.resolve(roomTypes);
+			if ( this.roomTypes.length ) {
+				deferred.resolve(this.roomTypes);
 			} else {
 				BaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-						roomTypes = data.results;
-						angular.forEach(roomTypes, function(type, i) {
+						this.roomTypes = data.results;
+						angular.forEach(this.roomTypes, function(type, i) {
 							type.isSelected = false;
 						});
 
-						deferred.resolve(roomTypes);
-					}, function(data) {
+						deferred.resolve(this.roomTypes);
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			};
@@ -560,5 +617,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 					false;
 			}
 		};
+
 	}
 ]);

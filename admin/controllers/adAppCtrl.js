@@ -147,7 +147,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: "staff#/staff/workmanagement/start"
+						action: "staff#/staff/workmanagement/start",
+						menuIndex: "workManagement",
+			            hidden: $rootScope.isHourlyRatesEnabled
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""
