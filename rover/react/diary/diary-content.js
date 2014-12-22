@@ -128,8 +128,7 @@ var DiaryContent = React.createClass({
 				scrollToPos = 0;
 			}					
 			
-		    state.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 0);
-
+		   
 			
 			var data 	= props.data,
 			display = props.display,
@@ -138,9 +137,12 @@ var DiaryContent = React.createClass({
 			rowNumber = rowNumber > 0 ? rowNumber : 0;
 
 			var scrollYPos = rowNumber * rowHeight;
-
+			state.iscroll.timeline.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
 			state.iscroll.grid.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
-			state.iscroll.rooms.scrollTo(0, -scrollYPos, 0, 0);	
+			state.iscroll.rooms.scrollTo(0, -scrollYPos, 0, 0);
+			state.iscroll.timeline.refresh();
+			state.iscroll.grid.refresh();
+			
 		    state.angular_evt.onScrollEnd(Math.abs(state.iscroll.grid.x) / state.display.px_per_ms + reset.x_n);
 		};
 

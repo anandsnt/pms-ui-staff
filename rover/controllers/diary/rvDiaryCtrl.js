@@ -374,7 +374,7 @@ sntRover
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
 	    					$scope.gridProps.availability.resize.last_departure_time = null;				    		
 				    		$scope.renderGrid();
-				    		$scope.gridProps.edit.reset_scroll = {};
+				    		
 				    	}
 
 		    		break;	 
