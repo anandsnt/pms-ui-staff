@@ -19,7 +19,9 @@ html {
 #availability,
 .logo-hide, 
 .text-hide,
-.no-print { display: none !important; }
+.no-print,
+.reservation-tabs-nav,
+.reservation-list { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
@@ -280,6 +282,8 @@ q:before, q:after {content: ""}
 
 /* Cards                    ==============================*/
     .cards {
+        position: relative;
+        z-index: 9999;
         .hide;
 
         .cards-wrapper { 
@@ -289,7 +293,6 @@ q:before, q:after {content: ""}
                 height: 30px;
 
                 .card-header {
-                    .guest-image { .hide; }
 
                     form,
                     .card-search-form {
@@ -318,7 +321,11 @@ q:before, q:after {content: ""}
                         }
                     }
 
+                    .guest-image,
                     .card-actions { .hide; }
+
+                    &.second,
+                    &.third { .hide; }
                 }
             }
 
@@ -390,6 +397,8 @@ q:before, q:after {content: ""}
                 }
             }
         }
+
+        .ui-resizable-handle { .hide; }
 
         &.open,
         &.fullscreen { .show; }

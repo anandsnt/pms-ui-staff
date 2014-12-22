@@ -21,6 +21,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			}
 	    };
 		$scope.refreshIframe = function(){
+			console.log("refresh iframe");
 			var iFrame = document.getElementById('sixIframe');
 			iFrame.src = iFrame.src;
 		};

@@ -50,7 +50,7 @@
                 <div class="entry full-width" ng-class="{'amount': isShowFees()}">
                     <label for="amount">Amount to pay (<span>$</span>)</label>
                     <!--     <input name="amount" id="amount" value="{value}" type="text" /> -->
-                    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" />
+                    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!isDepositEditable" />
                     <!-- Use only when fee exsists -->
                     <span ng-show="isShowFees()" class="fee">
                         + {{currencySymbol}}{{feeData.calculatedFee}} fee
@@ -68,7 +68,8 @@
                     <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
                 </div>
                 <div class="actions">
-                    <button type="button" class="button blue" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null" ng-click="closeDialog()">Pay deposit later</button>
+                    <button type="button" class="button blue"  ng-if="!depositDetails.isFromCheckin" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null" ng-click="closeDialog()">Pay deposit later</button>
+                    <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin"  ng-hide="depositData.paymentType ==='' || depositData.paymentType === null"ng-click="proceedCheckin()">Pay deposit later</button>
                     <button type="button" class="button green" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null" ng-click="payDeposit()">Pay deposit now</button>
                 </div>
             </div>

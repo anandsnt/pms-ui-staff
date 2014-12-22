@@ -1,6 +1,6 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -12,6 +12,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			fetchData();
 			$scope.setScroller('ar-transaction-list');
 		};
+
+		// Refresh the scroller when the tab is active.
+		$rootScope.$on("arTransactionTabActive", function(event) {
+			console.log("AR tab active");
+			setTimeout(function() {
+				$scope.refreshScroller('ar-transaction-list');
+			}, 100);
+		});
 
 		// Initializing filter data
 		$scope.filterData = {
@@ -66,8 +74,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// To fetch data for ar transactions
 		var fetchData = function(clearErrorMsg){
-			
+			$scope.arDetailsFetched = false;
 			var arAccountsFetchSuccess = function(data) {
+				$scope.arDetailsFetched = true;
 			    $scope.$emit('hideLoader');
 			    
 			    if(typeof clearErrorMsg == 'undefined' || clearErrorMsg)
@@ -114,6 +123,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// To click filter button
 		$scope.clickedFilter = function(){
 			$scope.filterData.filterActive = !$scope.filterData.filterActive;
+			$scope.$emit('ARTransactionSearchFilter', $scope.filterData.filterActive);
 		};
 
 		// To handle show filter changes
@@ -341,6 +351,38 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	      	});
 		};
 
+		$scope.getTimeConverted = function(time){
+			if(time == null || time == undefined){
+				return "";
+			}
+			var timeDict = tConvert(time);
+			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
+		};
+
 	    init();
+
+	    // To print the current screen details.
+	    $scope.clickedPrintButton = function(){
+		
+			/*
+			 *	=====[ READY TO PRINT ]=====
+			 */
+			// this will show the popup
+		    $timeout(function() {
+		    	/*
+		    	 *	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	 */
+
+		        $window.print();
+
+		        if ( sntapp.cordovaLoaded ) {
+		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		        };
+		    }, 100);
+
+		    /*
+		     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
+		     */
+	    };
 
 }]);
