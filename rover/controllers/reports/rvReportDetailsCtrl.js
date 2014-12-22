@@ -364,7 +364,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var i = j = k = l = 0;
 
-			if ( $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Arrival' ) {
+			if ( $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Departure' ) {
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					
 					_eachItem = angular.copy( apiResponse[i] );
