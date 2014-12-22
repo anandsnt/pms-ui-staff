@@ -40,6 +40,23 @@ sntRover.service('RVreportsSrv', [
 
 			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
+
+					// for TESTING ONLY
+					var data = data;
+					var notes = [{
+									date: '12-12-2014',
+									name: 'vijay',
+									note: 'dwadawdawd wadw adaw daw dawd wad aw'
+								}, {
+									date: '12-10-2014',
+									name: 'ann',
+									note: 'dwadawdawd wadw adaw daw dawd wad aw'
+								}];
+					angular.forEach(data.results, function(item) {
+						item.notes = notes;
+					});
+
+
 					deferred.resolve(data);
 				}.bind(this), function(data){
 					deferred.reject(data);

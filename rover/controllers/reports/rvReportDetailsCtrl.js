@@ -15,6 +15,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.refreshScroller( 'report-details-scroll' );
 			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
 		};
+
+		$scope.parsedApi = undefined;
+		$scope.currencySymbol = $rootScope.currencySymbol;
 		
 		// common methods to do things after fetch report
 		var afterFetch = function() {
@@ -148,6 +151,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.displayedReport.fromDate = $( '#chosenReportFrom' ).val();
 				$scope.displayedReport.untilDate = $( '#chosenReportTo' ).val();
 			}, 100);
+
+
+			// new more detailed reports
+			if ( $scope.chosenReport.title === 'In-House Guests' ) {
+				$scope.parsedApi = 'In-House Guests';
+				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
+			};
 		};
 
 		// we are gonna need to drop some pagination
@@ -237,6 +247,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				$scope.genReport( false, this.page.no );
 			}
+		};
+
+		$scope.sortResultBy = function(sortField) {
+			$scope.chosenReport.chosenSortBy = sortField;
+			$scope.fetchUpdatedReport();
 		};
 
 		// fetch next page on pagination change
@@ -334,5 +349,45 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
+
+
+		// parse API to template helpers
+		// since API response and Template Design are 
+		// trying to F*(|< each others A$/
+		function $_parseApiToTemplate (apiResponse) {
+			var _retResult = [],
+				_eachItem  = {},
+				_notes     = [],
+				_eachNote  = {};
+
+			var i = j = k = l = 0;
+
+			if ( $scope.parsedApi = 'In-House Guests' ) {
+				for (i = 0, j = apiResponse.length; i < j; i++) {
+					
+					_eachItem = angular.copy( apiResponse[i] );
+					_notes    = angular.copy( apiResponse[i]['notes'] );
+
+					if ( _notes.length ) {
+						_eachItem.rowspan = 2;
+					};
+					_retResult.push( _eachItem );
+
+					if ( _notes.length ) {
+						for (k = 0, l = _notes.length; k < l; k++) {
+							_eachNote        = angular.copy( _notes[k] );
+							_eachNote.isNote = true;
+							_retResult.push( _eachNote );
+						};
+					};
+				};
+			};
+
+
+			return _retResult;
+		};
+
+
+
     }
 ]);

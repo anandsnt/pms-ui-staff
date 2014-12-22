@@ -153,8 +153,8 @@
 					</ul>
 				</div>
 	
-				<div id="report-content" class="report-content scrollable" ng-iscroll="report-details-scroll">
-					<div class="wrapper" height>
+				<div id="report-content" class="report-content no-totals scrollable" ng-iscroll="report-details-scroll">
+					<div class="wrapper">
 						<table class="guest-reports">
 
 							<!-- Reports table header -->
@@ -175,7 +175,7 @@
 									<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
 									"sorting-asc" when ASC sorting
 									"sorting-desc" when DESC sorting -->
-									<th class="name" ng-repeat="sortBy in chosenReport.sortByOptions" ng-class="{'sorting-asc': chosenReport.chosenSortBy}">
+									<th class="name" ng-repeat="sortBy in chosenReport.sortByOptions" ng-class="{'sorting-asc': chosenReport.chosenSortBy}" ng-click="sortResultBy(sortBy.value)">
 										<span class="sort">{{ sortBy.description }}</span>
 									</th>
 								</tr>
@@ -227,7 +227,7 @@
 							</tfoot>
 							
 							<!-- Reports table content -->
-							<tbody>
+							<tbody ng-if="!parsedApi">
 								<tr ng-repeat="each in results track by $index">
 									<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
 									<!-- yeah thats hard :( -->
@@ -236,6 +236,49 @@
 									</td>
 								</tr>
 							</tbody>
+
+							<tbody ng-if="parsedApi == 'In-House Guests'">
+								<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': each.isNote }">
+									<td ng-if="!each.isNote" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
+										<strong class="title">{{ each.room_no }}</strong>
+										<span class="status">{{ each.status }}</span>
+									</td>
+									<td ng-if="!each.isNote">
+										<strong class="title">{{ each.name }}</strong>
+										<span class="confirmation">{{ each.confirm_no }}</span>
+										<span ng-if="is_vip === 'Y'">&#8226; <span class="vip">VIP</span></span>
+									</td>
+									<td ng-if="!each.isNote">
+										<div class="arrival-departure">
+											<span class="guest-status check-in">check-in</span>
+											<time>
+												<span>{{ each.arrival_date }}</span>
+												<span>{{ each.arrival_time }}</span>
+											</time>
+										</div>
+										<div class="departing">
+											<span class="guest-status check-out">check-out</span>
+											<time>
+												<span>{{ each.departure_date }}</span>
+												<span>{{ each.departure_time }}</span>
+											</time>
+										</div>
+										<div ng-if="each.hours" class="hours">{{ each.hours }}</div> 
+									</td>
+									<td ng-if="!each.isNote">
+										<span class="room">{{ each.room_type }}</span>
+										<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
+									</td>
+
+									<td ng-if="each.isNote">
+										<strong><time>{{ each.date }}</time> &#8226; <span>{{ each.name }}</span></strong>
+			                            <span>{{ each.note }}</span>
+									</td>
+								</tr>
+							</tbody>
+
+
+
 						</table>
 					</div>
 				</div>				
