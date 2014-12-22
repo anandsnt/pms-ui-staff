@@ -13,11 +13,14 @@
 	</div>
 
 	<!-- Title -->
-	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}
-		{{userInfo.last_name}} </strong> | <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em><em class="blink_text" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em></span>
-	</h1>
-
-	<a class="icons icon-alert queued-rooms" id="queue-rooms" ng-show="isQueuedRoomsTurnedOn && shouldShowLateCheckout" ng-click = "clickedOnQueuedRoomsIcon()">{{userInfo.queue_rooms_count}}</a>
-
-	<a id="late-checkout-alert" ng-click="clickedOnHeaderLateCheckoutIcon($event)"  class="icons icon-alert late-check-out" ng-show="isLateCheckoutTurnedOn && shouldShowLateCheckout"> {{userInfo.late_checkout_count}} </a>
+	  <!-- Title -->
+    <h1>
+        <strong class="hotel">{{hotelDetails.userHotelsData.currentHotelName}}</strong>
+        {{heading | translate}}
+        <div class="user">
+            <strong>{{userInfo.first_name}}
+		{{userInfo.last_name}}</strong>
+             <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em><em class="blink_text" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
+        </div>
+    </h1>
 </header>

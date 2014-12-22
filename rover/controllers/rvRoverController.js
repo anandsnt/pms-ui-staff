@@ -26,6 +26,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
+    //set current hotel name
+    $scope.hotelDetails.userHotelsData.currentHotelName = "";    
+    angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, key) {
+          if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id){
+             $scope.hotelDetails.userHotelsData.currentHotelName = hotel.hotel_name;
+          };
+    });
+
 
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;
