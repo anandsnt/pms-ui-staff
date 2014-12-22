@@ -788,42 +788,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       });
     };
     
-    
-    // $scope.shouldShowWaiting = true;
-				// ngDialog.open({
-// 					
-					// template: '/assets/partials/reservation/rvWaitingDialog.html',
-					// className: 'ngdialog-theme-default',
-					// scope: $scope
-				// });
-// 				
-				// // RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
-					// // alert("success");
-					// // console.log(response);
-					// // $scope.shouldShowWaiting = false;
-				// // },function(){
-					// // alert("error");
-					// // $scope.shouldShowWaiting = false;
-					// // //$rootScope.netWorkError = true;
-					// // //$scope.isPosting = false;
-				// // });
-// // 				
-				// setTimeout(function(){
-					// ngDialog.close("firstDialog");
-				// }, 3000);
-//     
-
-
-//to delete
-$scope.redirectToHotel = function(hotel_id) {
-  console.log(hotel_id)
-      RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
-        //CICO-9816 bug fix
-        $('body').addClass('no-animation');
-        $window.location.href = "/staff";
-      }, function() {
-      });
+    $scope.redirectToHotel = function(hotel_id) {
+          RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
+            $('body').addClass('no-animation');
+            $window.location.href = "/staff";
+          }, function() {
+          });
     };
-//to delete
+
     
 }]);
