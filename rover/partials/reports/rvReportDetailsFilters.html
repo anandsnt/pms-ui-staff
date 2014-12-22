@@ -1,5 +1,5 @@
 <div class="date-range" ng-if="chosenReport.hasDateFilter">
-	<label>Date range</label>
+	<label>{{ chosenReport.hasDateFilter.description }}</label>
 	<div class="has-datepicker">
 		<input id="chosenReportFromDate" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
 	</div>
@@ -10,7 +10,7 @@
 </div>
 
 <div class="date-range" ng-if="chosenReport.hasTimeFilter">
-	<label>Time range</label>
+	<label>{{ chosenReport.hasTimeFilter.description }}</label>
 	<div class="select">
         <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions">
         	<option value="">From Time</option>
@@ -25,7 +25,7 @@
 </div>
 
 <div class="filter" ng-if="chosenReport.hasCicoFilter">
-	<label>Transaction Type</label>
+	<label>{{ chosenReport.hasCicoFilter.description }}</label>
 	<div class="select">
 		<select name="" id="" ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
 			<option value="">Transaction Type</option>

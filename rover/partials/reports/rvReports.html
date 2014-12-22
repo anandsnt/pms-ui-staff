@@ -10,7 +10,7 @@
 						<div class="data">
 							<h2>
 								{{ item.title }}
-								<span>{{ item.sub_title }}</span>
+								<span ng-if="item.sub_title">{{ item.sub_title }}</span>
 							</h2>
 							<em>{{ item.description }}</em>
 						</div>
@@ -79,8 +79,11 @@
 									<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
 									"sorting-asc" when ASC sorting
 									"sorting-desc" when DESC sorting -->
-									<th class="name" ng-repeat="sortBy in chosenReport.sortByOptions" ng-class="{'sorting-asc': chosenReport.chosenSortBy}" ng-click="sortResultBy(sortBy.value)" colspan="sortBy.colspan">
-										<span class="sort">{{ sortBy.description }}</span>
+									<th class="name" ng-repeat="sortBy in chosenReport.sortByOptions">
+										<div style="position:relative">
+											<input type="checkbox" ng-model="sortBy.sortDir" ng-click="sortResultBy(sortBy)">
+											<span class="sort" ng-class="{'sorting-asc': sortBy.sortDir, 'sorting-desc': !sortBy.sortDir}">{{ sortBy.description }}</span>
+										</div>
 									</th>
 								</tr>
 							</thead>

@@ -30,8 +30,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.chosenReport = RVreportsSrv.getChoosenReport();
 			
-			$scope.setTitle( $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '' );
-			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '';
+			$scope.setTitle( $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title );
+			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title;
+
+			// reset this
+			$scope.parsedApiFor = undefined;
 
 
 			// for hard coding styles for report headers
@@ -233,6 +236,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// fetch next page on pagination change
 		$scope.fetchNextPage = function(returnToPage) {
 			if ( !!returnToPage ) {
+				// should-we-change-view, specify-page, per-page-value
 				$scope.genReport( false, returnToPage );
 			} else {
 				// user clicked on current page
@@ -247,17 +251,27 @@ sntRover.controller('RVReportDetailsCtrl', [
 				currPage.active = false;
 				this.page.active = true;
 
+				// should-we-change-view, specify-page, per-page-value
 				$scope.genReport( false, this.page.no );
 			}
 		};
 
-		$scope.sortResultBy = function(sortField) {
-			$scope.chosenReport.chosenSortBy = sortField;
-			$scope.fetchUpdatedReport();
+		// refetch the report while sorting with..
+		// Note: we are resetting page to page #1
+		$scope.sortResultBy = function(sortBy) {
+			console.log( sortBy );
+			console.log( $scope.chosenReport.sortByOptions );
+
+			//$scope.chosenReport.chosenSortBy = sortField;
+
+			// should-we-change-view, specify-page, per-page-value
+			//$scope.genReport( false, 1 );
 		};
 
-		// fetch next page on pagination change
+		// refetch the reports with new filter values
+		// Note: not resetting page to page #1
 		$scope.fetchUpdatedReport = function() {
+			// should-we-change-view, specify-page, per-page-value
 		    $scope.genReport( false );
 		};
 
@@ -278,6 +292,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		       $scope.returnToPage = currPage.no;
 		    }
 
+		    // should-we-change-view, specify-page, per-page-value
 		    $scope.genReport( false, 1, 1000 );
 		};
 
@@ -370,12 +385,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					_eachItem = angular.copy( apiResponse[i] );
 					_notes    = angular.copy( apiResponse[i]['notes'] );
 
-					if ( _notes.length ) {
+					if ( _notes && _notes.length ) {
 						_eachItem.rowspan = 2;
 					};
 					_retResult.push( _eachItem );
 
-					if ( _notes.length ) {
+					if ( _notes && _notes.length ) {
 						for (k = 0, l = _notes.length; k < l; k++) {
 							_eachNote        = angular.copy( _notes[k] );
 							_eachNote.isNote = true;
