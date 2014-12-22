@@ -52,6 +52,10 @@ var GridRowItem = React.createClass({
 				break;
 			default:
 				caption = data[meta.guest];
+				//in case of guest name is blank, we have to show account name againstg taht.
+				if(!caption) {						
+					caption = data[meta.tr_ag_name] ? data[meta.tr_ag_name] : data[meta.cmp_name];
+				}
 				break
 		}
 		return caption;

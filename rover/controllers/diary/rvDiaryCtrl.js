@@ -19,7 +19,6 @@ sntRover
 		'RVReservationBaseSearchSrv',
 		'$timeout',
 		'RVReservationSummarySrv',
-		'RVCompanyCardSrv',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -36,7 +35,7 @@ sntRover
 			 propertyTime,
 			 $vault, 
 			 $stateParams, 
-			 RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv, RVCompanyCardSrv) {
+			 RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv) {
 
 	$scope.$emit('showLoader');
 
@@ -367,8 +366,7 @@ sntRover
 	    					};
 	    					//if guest name is not found, we have to show account name
 				    		if(!row_item_data.reservation_primary_guest_full_name) {
-				    			var account_id = row_item_data.travel_agent_id ? row_item_data.travel_agent_id : row_item_data.company_card_id
-				    			fetchAccountName(account_id)
+				    			$scope.gridProps.edit.originalItem.account_name = row_item_data.company_card_name ? row_item_data.company_card_name : row_item_data.travel_agent_name;				    			
 				    		}
 				    		
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
@@ -408,26 +406,7 @@ sntRover
 		    	}
 		    }
 	    };
-
-	    var successCallBackOfFetchAccountName= function(data) {
-	    	this.edit.originalItem.account_name = data.account_details.account_name;
-	    }.bind($scope.gridProps);
-
-	    var failureCallBackOfFetchAccountName = function(errorMessage){
-	    	$scope.errorMessage = errorMessage;
-	    };
-
-		var fetchAccountName = function(account_id){
-			var params = {
-				id: account_id
-			};
-			var options = {
-	    		params: 			params,
-	    		successCallBack: 	successCallBackOfFetchAccountName,	 
-	    		failureCallBack: 	failureCallBackOfFetchAccountName,      		
-		    }
-		    $scope.callAPI(RVCompanyCardSrv.fetchContactInformation, options);			
-		}
+	    
 
 	 	$scope.onResizeStart = function(row_data, row_item_data) {
 		};
