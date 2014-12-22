@@ -643,6 +643,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"confirmationId": $scope.reservationData.confirmNum
 				});
 			};
+			
+			postData.reservation_ids = $scope.reservationData.reservationIds;
+
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
