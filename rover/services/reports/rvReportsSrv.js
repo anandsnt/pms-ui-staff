@@ -43,17 +43,19 @@ sntRover.service('RVreportsSrv', [
 
 					// for TESTING ONLY
 					var data = data;
-					var notes = [{
+					var note1 = {
 									date: '12-12-2014',
-									name: 'vijay',
-									note: 'dwadawdawd wadw adaw daw dawd wad aw'
-								}, {
+									name: 'Alex',
+									note: 'This is a dummy note added from the UI > service -> rvReportsSrv.js'
+								};
+					var note2 = {
 									date: '12-10-2014',
-									name: 'ann',
-									note: 'dwadawdawd wadw adaw daw dawd wad aw'
-								}];
+									name: 'Jon',
+									note: 'This is a dummy note added from the UI > service -> rvReportsSrv.js'
+								};
 					angular.forEach(data.results, function(item) {
-						item.notes = notes;
+						item.notes.push(note1);
+						item.notes.push(note2);
 					});
 
 
