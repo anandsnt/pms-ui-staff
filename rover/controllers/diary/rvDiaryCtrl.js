@@ -19,7 +19,6 @@ sntRover
 		'RVReservationBaseSearchSrv',
 		'$timeout',
 		'RVReservationSummarySrv',
-		'RVCompanyCardSrv',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -36,7 +35,7 @@ sntRover
 			 propertyTime,
 			 $vault, 
 			 $stateParams, 
-			 RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv, RVCompanyCardSrv) {
+			 RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv) {
 
 	$scope.$emit('showLoader');
 
@@ -98,11 +97,11 @@ sntRover
             isVaultDataSet = true;
         } else {
         	// we will be creating our own data base on the current time.
-        	correctTimeDate = util.correctTime(propertyTime);
+        	var coming_date = payload.display.x_n instanceof Date ? payload.display.x_n.toComponents().date.toDateString().replace(/-/g, '/') : payload.display.x_n;
+        	correctTimeDate = util.correctTime(coming_date, propertyTime);
         }
 
        
-
 
 	    var number_of_items_resetted = 0;
 
@@ -357,13 +356,23 @@ sntRover
 				    			row_data: row_data, 
 				    			row_item_data: row_item_data 
 				    		});
+				    		//setting scroll posiions when in edit mode
+				    		var x_n = payload.display.x_n instanceof Date ? payload.display.x_n : new Date(payload.display.x_n);
+				    		x_n.setHours(0, 0, 0);
+				    		var x_origin = row_item_data.arrival;
+				    		$scope.gridProps.edit.reset_scroll = {
+	    						'x_n'      : x_n.getTime(),
+	    						'x_origin' : x_origin
+	    					};
+	    					//if guest name is not found, we have to show account name
 				    		if(!row_item_data.reservation_primary_guest_full_name) {
-				    			var account_id = row_item_data.travel_agent_id ? row_item_data.travel_agent_id : row_item_data.company_card_id
-				    			fetchAccountName(account_id)
+				    			$scope.gridProps.edit.originalItem.account_name = row_item_data.company_card_name ? row_item_data.company_card_name : row_item_data.travel_agent_name;				    			
 				    		}
+				    		
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
 	    					$scope.gridProps.availability.resize.last_departure_time = null;				    		
 				    		$scope.renderGrid();
+				    		
 				    	}
 
 		    		break;	 
@@ -397,26 +406,7 @@ sntRover
 		    	}
 		    }
 	    };
-
-	    var successCallBackOfFetchAccountName= function(data) {
-	    	this.edit.originalItem.account_name = data.account_details.account_name;
-	    }.bind($scope.gridProps);
-
-	    var failureCallBackOfFetchAccountName = function(errorMessage){
-	    	$scope.errorMessage = errorMessage;
-	    };
-
-		var fetchAccountName = function(account_id){
-			var params = {
-				id: account_id
-			};
-			var options = {
-	    		params: 			params,
-	    		successCallBack: 	successCallBackOfFetchAccountName,	 
-	    		failureCallBack: 	failureCallBackOfFetchAccountName,      		
-		    }
-		    $scope.callAPI(RVCompanyCardSrv.fetchContactInformation, options);			
-		}
+	    
 
 	 	$scope.onResizeStart = function(row_data, row_item_data) {
 		};
@@ -646,7 +636,8 @@ sntRover
 							if(occupancyIndex != -1){
 								$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
 							}
-						}							
+						}	
+
 					}
 					var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), this.availability.drag.lastRoom.id);
 					if(roomIndex != -1) {
@@ -655,6 +646,7 @@ sntRover
 							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = this.currentResizeItem;
 						}
 					}	
+					this.currentResizeItemRow = this.availability.drag.lastRoom;
 					this.currentResizeItem.arrival = lastArrTime;
 	    			this.currentResizeItem.departure = lastDepTime;	  			
 	    		}
@@ -1152,7 +1144,7 @@ sntRover
 	    	var today = new tzIndependentDate( $rootScope.businessDate );
 			today.setHours(0, 0, 0);
 
-	    	$_resetObj = util.correctTime(propertyTime);
+	    	$_resetObj = util.correctTime(today.toComponents().date.toDateString().replace(/-/g, '/'), propertyTime);
 			$_resetObj.callback = function() {
 				$scope.gridProps.filter.arrival_time = '';
 				$scope.gridProps.filter.rate_type = 'Standard';
@@ -1338,7 +1330,7 @@ sntRover
 				})				
 							
 			});						   	
-			if(row_data){	   		
+			if(row_data){
 	   			$scope.$apply(function(){	   			
 	   				$scope.onSelect(row_data, row_item_data, false, 'edit');
 	   			});
