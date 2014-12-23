@@ -16,44 +16,36 @@ sntRover.controller('RVReportListCrl', [
         *   @param {Array} - reportList: which points to $scope.$parent.reportList, see end of this function
 		*/
 		var postProcess = function(reportList) {
-            var hasDateFilter,
-                hasTimeFilter,
-                hasCicoFilter,
-                hasUserFilter,
-                hasSortDate,
-                hasSortUser,
-                hasIncludeNotes,
-                hasIncludeVip,
-                hasIncludeCancelled;
 
             // until date is business date and from date is a week ago
-            var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
-                dateParts    = businessDate.match(/(\d+)/g),
-                fromDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
-                untilDate    = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            var businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+                dateParts     = businessDate.match(/(\d+)/g),
+                fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
+                untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
+                hasFauxSelect = false;
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
                 // add report icon class
                 switch (reportList[i]['title']) {
                     case 'Check In / Check Out':
-                        reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-check-in-check-out';
                         break;
 
                     case 'Upsell':
-                        reportList[i]['reportIconCls'] = 'icon-upsell';
-                        break;
-
-                    case 'Late Check Out':
-                        reportList[i]['reportIconCls'] = 'icon-late-check-out';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-upsell';
                         break;
 
                     case 'Web Check Out Conversion':
-                        reportList[i]['reportIconCls'] = 'icon-check-out';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-check-out';
                         break;
 
                     case 'Web Check In Conversion':
-                        reportList[i]['reportIconCls'] = 'icon-check-in';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-check-in';
+                        break;
+
+                    case 'Late Check Out':
+                        reportList[i]['reportIconCls'] = 'guest-status late-check-out';
                         break;
 
                     case 'In-House Guests':
@@ -73,7 +65,7 @@ sntRover.controller('RVReportListCrl', [
                         break;
 
                     default:
-                        reportList[i]['reportIconCls'] = '';
+                        reportList[i]['reportIconCls'] = 'icon-report';
                         break;
                 };
 
@@ -85,6 +77,17 @@ sntRover.controller('RVReportListCrl', [
                     // check for date filter and keep a ref to that item
                     if ( item.value === 'DATE_RANGE' ) {
                         reportList[i]['hasDateFilter'] = item;
+
+                        // for 'Cancelation & No Show' report the description should be 'Arrival Date Range'
+                        // rather than the default 'Date Range'
+                        if ( reportList[i]['title'] == 'Cancelation & No Show' ) {
+                            reportList[i]['hasDateFilter']['description'] = 'Arrival Date Range';
+                        };
+                    };
+
+                    // check for cancellation date filter and keep a ref to that item
+                    if ( item.value === 'CANCELATION_DATE_RANGE' ) {
+                        reportList[i]['hasCancelDateFilter'] = item;
                     };
 
                     // check for time filter and keep a ref to that item
@@ -118,33 +121,48 @@ sntRover.controller('RVReportListCrl', [
                     // check for include notes filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_NOTES' ) {
                         reportList[i]['hasIncludeNotes'] = item;
+                        hasFauxSelect = true;
                     };
 
                     // check for vip filter and keep a ref to that item
                     if ( item.value === 'VIP_ONLY' ) {
                         reportList[i]['hasIncludeVip'] = item;
+                        hasFauxSelect = true;
                     };
 
                     // check for include cancelled filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_CANCELED' ) {
                         reportList[i]['hasIncludeCancelled'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // check for include no show filter and keep a ref to that item
+                    if ( item.value === 'INCLUDE_NO_SHOW' ) {
+                        reportList[i]['hasIncludeNoShow'] = item;
+                        hasFauxSelect = true;
                     };
                 });
 
+                // NEW! faux select DS and logic
+                if ( hasFauxSelect ) {
+                    reportList[i]['fauxSelectOpen'] = false;
+                    reportList[i]['fauxTitle']      = 'Select';
+                };
+
                 // sort by options
-                reportList[i].sortByOptions = reportList[i]['sort_fields'];
-                if ( reportList[i].sortByOptions && reportList[i]['sort_fields'].length ) {
-                    for (var k = 0, l = reportList[i].sortByOptions.length; k < l; k++) {
-                        reportList[i].sortByOptions[k]['sortDir'] = undefined;
-                        if ( k == l - 1 ) {
-                            reportList[i].sortByOptions[k]['colspan'] = 2;
+                if ( reportList[i]['sort_fields'] && reportList[i]['sort_fields'].length ) {
+                    _.each(reportList[i]['sort_fields'], function(item, index, list) {
+                        item['sortDir'] = undefined;
+                        if ( index == (list.length - 1) ) {
+                            item['colspan'] = 2;
                         };
-                    };
+                    });
+                    reportList[i].sortByOptions = reportList[i]['sort_fields'];
                 };
 
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ( $rootScope.currentHotelData == 'Yotel London Heathrow' ) {
-                    var sortDate = _.find(reportList[i]['sort_fields'], function(item) {
+                    var sortDate = _.find(reportList[i].sortByOptions, function(item) {
                         return item.value === 'DATE';
                     });
                     if ( !!sortDate ) {
@@ -153,9 +171,11 @@ sntRover.controller('RVReportListCrl', [
                 };
                 
                 // set the from and untill dates
-                reportList[i].fromDate = fromDate;
-                reportList[i].untilDate = untilDate;
-            }
+                reportList[i].fromDate        = fromDate;
+                reportList[i].fromCancelDate  = fromDate;
+                reportList[i].untilDate       = untilDate;
+                reportList[i].untilCancelDate = untilDate;
+            };
 
             $scope.refreshScroller( 'report-list-scroll' );
         }( $scope.$parent.reportList );
