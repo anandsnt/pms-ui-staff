@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': !each.isCancel }">
+<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': each.isCancel }">
 	<td ng-if="!each.isCancel" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<span class="status red">{{ each.cancel_date }}</span>
         <span class="penalty">{{ currencySymbol }}{{ each.cancel_penalty }}</span>
@@ -12,14 +12,14 @@
 		<div class="arrival-departure">
 			<span class="guest-status" ng-class="{ 'cancel': (each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
 			<time>
-				<span>{{ each.arrival_date }}</span>
+				<span>{{ each.arrival_date | date : dateFormat }}</span>
 				<span>{{ each.arrival_time }}</span>
 			</time>
 		</div>
 		<div class="departing">
 			<span class="guest-status" ng-class="{ 'cancel': (each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
 			<time>
-				<span>{{ each.departure_date }}</span>
+				<span>{{ each.departure_date | date : dateFormat }}</span>
 				<span>{{ each.departure_time }}</span>
 			</time>
 		</div>
