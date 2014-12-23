@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': each.isNote }">
+<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': !each.isNote }">
 	<td ng-if="!each.isNote" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<span class="status red">{{ each.cancel_date }}</span>
         <span class="penalty">{{ currencySymbol }}{{ each.cancel_penalty }}</span>

@@ -6518,7 +6518,6 @@
                     bottom: 20px; 
                 }
 
-
                 table {
                    width: 100%;
                     font-size: 14px;
@@ -6681,6 +6680,7 @@
 
                                     &.title {
                                         font-size: 20px;
+                                        line-height: 20px;
                                         font-weight: 700;
                                         text-transform: none;
                                         .show;
@@ -6784,8 +6784,8 @@
                                     &[colspan] {
                                         color: @grey3;
                                         text-transform: none;
-                                        padding-top: 0;
                                         font-weight: 400;
+                                        padding: 0 10px 20px 10px;
 
                                         strong { 
                                             color: @textColor;
@@ -6794,6 +6794,8 @@
 
                                             &.red { color: @red; }
                                         }
+
+                                        span { .show; }
                                     }
                                 } 
                             }
