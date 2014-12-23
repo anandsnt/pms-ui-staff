@@ -20,6 +20,7 @@ html {
 .logo-hide, 
 .text-hide,
 .no-print,
+.search-pagination,
 .reservation-tabs-nav,
 .reservation-list { display: none !important; }
 
@@ -38,6 +39,49 @@ h4, .h4 { page-break-after: avoid; }
 
 q {quotes: none}
 q:before, q:after {content: ""}
+
+table {
+    margin: 0;
+    width: 100%;
+    text-transform: uppercase;
+    table-layout: auto;
+    border-collapse: collapse; 
+    border-spacing: 0;
+
+    tr {
+        page-break-after: auto;
+        page-break-inside: avoid;
+
+        th { white-space: normal; }
+
+        th,
+        td {
+            font-size: 10pt;
+            line-height: 1em;
+            vertical-align: top;
+            text-align: left;
+            page-break-after: auto;
+            page-break-inside: avoid;
+            white-space: normal;
+            padding: 8pt 4pt;
+        }
+
+        td { border-bottom: 1px solid @grey2; }
+    }
+
+    thead {
+        tr {
+           th {
+                font-weight: 600;
+                background: @grey1;
+            } 
+        }
+    }
+
+    tfoot {
+        td { border-bottom: 0; }
+    }
+}
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
@@ -149,11 +193,16 @@ q:before, q:after {content: ""}
         }
 
         .logo {
-            margin: 0 auto;
+            margin: 0 auto 12pt auto;
             .size(30px, 135px);
             .show;
 
-            img { .size(100%, auto); }
+            img { 
+                filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+                filter: gray;
+                -webkit-filter: grayscale(100%);
+                .size(100%, auto);
+            }
         }
 
         &.logo-print {
@@ -165,6 +214,48 @@ q:before, q:after {content: ""}
         &.no-print { .hide; }  
     }
 
+/* Guest status             ==============================*/
+    .guest-status {
+        background-color: transparent !important;
+        border: 1px solid @textColor;
+        .square(38px);
+
+        &.pre-check-in,
+        &.check-in,
+        &.check-out,
+        &.inhouse,
+        &.late-check-out,
+        &.cancel { 
+            background-image: @iconPrint; 
+            background-size: 40px;
+        }
+
+        &.pre-check-in,
+        &.check-in { background-position: 11px 11px; }
+        &.check-out { background-position: 11px -30px; }
+        &.inhouse { background-position: 11px -69px; }
+        &.late-check-out { background-position: 11px -109px; }
+        &.cancel { background-position: 11px -149px; }
+
+        &.small-icon {
+            background-size: 40px;
+            .square(28px); 
+
+            &.pre-check-in,
+            &.check-in { background-position: 6px 6px; }
+            &.check-out { background-position: 6px -34px; }
+            &.inhouse { background-position: 6px -74px; }
+            &.late-check-out { background-position: 7px -114px; }
+            &.cancel { background-position: 6px -154px; }
+        }
+
+        &.arrival,
+        &.departed { background-color: @grey1; }
+        
+        &.no-show,
+        &.cancel { border-color: @grey2; }
+    }
+      
 /* 5. COMPONENTS
 ==========================================================*/
 
@@ -191,7 +282,7 @@ q:before, q:after {content: ""}
 
                         .data {
                             position: relative;
-                            padding: 10px 240px 0 0;
+                            padding: 10px 240px 10px 0;
                             .calc-width(100, 200);
                             .pull-left;
 
@@ -215,25 +306,27 @@ q:before, q:after {content: ""}
                             .departure {
                                 position: absolute;
                                 top: 10px;
-                                width: 120px;
+                                width: 240px;
                                 font-size: 11pt;
-                                line-height: 20px;
+                                line-height: 1em;
                                 .pull-left;
 
-                                .guest-status { 
-                                    margin-right: 4pt;
-                                    .square(20px); 
+                                .guest-status { margin-right: 4pt; }
+
+                                .time { 
+                                    color: @grey3;
+                                    .show;
                                 }
                             }
 
-                            .arrival { right: 200px; }
+                            .arrival { right: 280px; }
                             .departure { right: 40px; }
                         }
 
                         .amount {
                             font-size: 18pt;
                             font-weight: 300;
-                            line-height: 40px;
+                            line-height: 44px;
                             width: 140px;
                             .pull-left;
 
@@ -242,7 +335,7 @@ q:before, q:after {content: ""}
 
                         .switch-button { 
                             font-size: 10pt;
-                            line-height: 40px;
+                            line-height: 44px;
                             text-align: right;
                             width: 60px;
                             .pull-left;
@@ -257,13 +350,16 @@ q:before, q:after {content: ""}
                             .data-on { 
                                 .hide; 
 
-                                .value { color: @green; }
+                                .value { color: @grey3; }
                             }
 
                             .data-off { 
                                 .show; 
 
-                                .value { color: @red; }
+                                .value { 
+                                    color: @textColor;
+                                    font-weight: 600;
+                                }
                             }
 
                             &.on {
@@ -284,6 +380,7 @@ q:before, q:after {content: ""}
     .cards {
         position: relative;
         z-index: 9999;
+        size: landscape;
         .hide;
 
         .cards-wrapper { 
@@ -293,7 +390,7 @@ q:before, q:after {content: ""}
                 height: 30px;
 
                 .card-header {
-
+                    
                     form,
                     .card-search-form {
                         float: none;
@@ -385,9 +482,6 @@ q:before, q:after {content: ""}
                                             font-weight: 300;
                                             color: @textColor;
                                             .show;
-
-                                            &.green { color: @green; }
-                                            &.red { color: @red; }
                                         }
                                     }
                                 }
@@ -404,85 +498,211 @@ q:before, q:after {content: ""}
         &.fullscreen { .show; }
     }
 
-/* Reports 					==============================*/
-	#reports { .hide; }
-	
-	#report-update { .hide; }
+/* Reports                  ==============================*/
+    #reports,
+    #report-update { .hide; }
 
-	#reports-details-wrap {
-		position: static !important;
-		height: auto !important;
-		overflow: auto !important;
-		background: transparent !important;
-	}
+    #report-details {
+        position: static !important;
+        height: auto !important;
+        overflow: auto !important;
 
-	#report-details {
-		position: static !important;
-		height: auto !important;
-		overflow: auto !important;
-		background: transparent !important;
+        .report-header { .hide; }
 
-		.report-header { .hide; }
+        .report-totals { 
+            margin-bottom: 1em;
+            clear: both;
+            .float;
 
-		.report-totals { 
+            ul {
+                li {
+                    font-size: 10pt;
+                    line-height: 12pt;
+                    margin: 0 16pt 0 0;
+                    color: @grey3;
+                    text-transform: uppercase;
+                    .pull-left;
 
-			padding: .3cm 0;
-			margin: 0 .5cm .75cm;
-			border-top: 2px solid rgba(0,0,0,.1);
+                    span {
+                        font-size: 24pt;
+                        line-height: 1em;
+                        font-weight: 300;
+                        color: @textColor;
+                        .show;
 
-			ul li {
-				font-size: 13px;
-			}
-		}
+                        &.green,
+                        &.red,
+                        &.orange { font-weight: 600; }
+                    }
 
-		.report-content {
-			height: auto !important;
+                    &.sub { color: @grey3; }
+                    &:last-child { margin-right: 0; }
+                }
 
-			> .wrapper { padding: 0; }
+                &.col2 {
+                    &:nth-child(2) {
+                        li { 
+                            .pull-right; 
 
-			table {
-				table-layout: fixed;
-				border-collapse: collapse; 
-				margin-bottom: 0;
+                            &:first-child { margin-right: 0; }
+                            &:last-child { margin-right: 16pt; }
+                        }
+                    }
+                }
+            }
+        }
 
-				tr {	
-					page-break-after: always;
-					page-break-inside: avoid;
-						
-					th,
-					td {
-						page-break-after:always !important;
-						page-break-inside: avoid !important;
-						white-space: normal !important;
-						overflow: visible !important;
-						vertical-align: top !important;
-						background: transparent !important;
-						line-height: 1.1;
-						padding: .2cm 1cm .2cm 0;
-						border-bottom: 1px solid rgba(0,0,0,.1);
-						min-width: 15%;
-						max-width: 30%;
-						width: 30%;
-						word-break: break-all;
-					}
-				}
+        .report-content {
 
-				tfoot {
-					tr {
-						td {
-							color: @grey3;
-							border-bottom: 0;
-							padding-top: .5cm;
+            table {
+                thead {
+                    tr {
+                        &.bottom-row {
+                            th {
+                                font-weight: 400;
+                                color: @grey3;
+                                background: transparent;
+                                border-bottom: 1px solid @grey3;
+                            }
+                        }
+                    }
+                }
 
-							span { color: @textColor; }
+                tfoot {
+                    tr {
+                        td {
+                            font-size: 8pt;
+                            line-height: 10pt;
+                            color: @grey3;
 
-							.pagination { .hide(); }
-						}
-					}
-				}
-			}
-		}
-	}
+                            span { color: @textColor; }
+
+                            .pagination { .hide; }                            
+
+                            &:last-child { text-align: right; }
+                        }
+                        
+                        &.totals {
+                            td { 
+                                font-size: 10pt;
+                                line-height: 1em;
+                                font-weight: 600;
+                                color: @textColor;
+                                border-top: 1px solid @grey2;
+                            }  
+                        }
+                    }
+                }
+
+                &.guest-reports {
+
+                    tr {
+                        th { 
+                            &.room { width: 2.5cm; }
+                            &.name { width: 5cm; }
+                            &.date { width: 7cm; }
+                        }
+
+                        td {
+                            font-weight: 600;
+                            border-bottom: 0;
+
+                            strong {
+                                font-weight: 600;
+                                .show;
+
+                                &.title {
+                                    font-size: 12pt;
+                                    font-weight: 700;
+                                    text-transform: none;
+                        
+                                    &.unassigned { color: @grey3; }
+                                }
+                            }
+
+                            .confirmation { margin-right: 5px; }
+
+                            .status { .show; }
+
+                            .vip {
+                                font-size: 10pt;
+                                line-height: 1em;
+                                font-weight: 400;
+                                text-align: left;
+                                background: transparent;
+                                color: @grey3;
+                                margin-left: 5px;
+                                .size(auto);
+                            }
+
+                            .arrival-departure,
+                            .departing {
+                                .size(30px, 3cm);
+                                .pull-left;
+
+                                .guest-status { 
+                                    margin-right: 5px;
+                                    .square(30px); 
+
+                                    &.check-in { background-position: 7px 6px; }
+                                    &.check-out { background-position: 7px -32px; }
+                                    &.cancel { background-position: 7px -153px; }
+                                }
+
+                                time {      
+                                    span { .show; }
+                                }
+                            }
+
+                            .arrival-departure { margin-right: 10px; }
+
+                            .hours {
+                                font-size: 18px;
+                                line-height: 30px;
+                                font-weight: 600;
+                                text-align: center;
+                                border: 1px solid @textColor;
+                                margin-left: 10px;
+                                .square(30px);
+                                .pull-left;
+                            }
+
+                            .room,
+                            .rate {
+                                text-align: right;
+                                .show;
+
+                                strong { display: inline; }
+                            }
+
+                            &:first-child { min-width: 2.5cm; }
+
+                            &[rowspan] { border-bottom: 1px solid @grey2; }
+                        }
+
+                        &.row-break {
+                            td { 
+                                border-bottom: 1px solid @grey2; 
+
+                                &[colspan] {
+                                    color: @grey3;
+                                    text-transform: none;
+                                    padding-top: 0;
+                                    font-weight: 400;
+
+                                    strong { 
+                                        color: @textColor;
+                                        text-transform: uppercase;
+                                        font-weight: 600;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 /* Work Management          ==============================*/
     #worksheet-content {
@@ -513,51 +733,39 @@ q:before, q:after {content: ""}
                 line-height: 1em;
                 font-weight: 700;
                 margin: 0;
+                color: @textColor;
                 .size(30pt, 4cm);
                 .pull-left;
                 
-                &.clean,
-                &.inspected { color: @green; }
-                &.dirty,
-                &.pickup { color: @red; }
-                &.out { color: @grey3; }
+                &.out { color: @grey2; }
             }
 
             &.single-sheet {
                 padding: 4pt 34pt 4pt 0 !important;
 
                 .reservation-status {
-                    margin-top: 3pt;
-                    .size(24pt, 6.5cm);
+                    .size(40px, 6.5cm);
                     .pull-left;
 
                     .guest-status { 
                         margin-right: 8pt;
-                        .square(24pt);
-
-                        &.check-in { background-position: 8px -112px; }
-                        &.check-out { background-position: 8px -152px; }
-                        &.inhouse { background-position: 8px -192px; }
-                        &.no-show { display: none !important; }
                     }
 
                     .current,
                     .next { 
                         font-size: 10pt;
-                        line-height: 24pt;
+                        line-height: 40px;
                         text-transform: uppercase;
-                        .size(24pt, 50%);
+                        .size(40px, 50%);
                         .pull-left;
-
-                        &.check-in { color: @green; }
-                        &.check-out { color: @red; }
-                        &.inhouse { color: @blue; }
                     }
                 }
 
                 .icon-queued {
-                    background-position: 6px -4175px;
                     margin-right: 4pt;
+                    background-image: @iconPrint; 
+                    background-size: 40px;
+                    background-position: 0px -188px;
                     .hide-text;
                     .square(30pt);
                     .show;
@@ -567,7 +775,9 @@ q:before, q:after {content: ""}
                 .vip {
                     font-size: 8pt;
                     line-height: 20pt;
-                    margin: 5pt 4pt 0 0;
+                    margin: 5pt 12pt 0 0;
+                    color: @grey3;
+                    background-color: transparent;
                     .square(20pt);
                     .pull-right;
                 }
@@ -590,13 +800,13 @@ q:before, q:after {content: ""}
 
                     &.red { 
                         background: transparent !important;
-                        border: 2px solid @grey3;
+                        border: 1px dashed @textColor;
                     }
                 }
 
                 .no-action { 
                     background: transparent !important;
-                    border: 2px solid @green;
+                    border: 1px solid @grey2;
 
                     &:after {
                         content: "✔";
@@ -607,7 +817,7 @@ q:before, q:after {content: ""}
                         text-align: center;
                         font-size: 20pt;
                         line-height: 30pt;
-                        color: @green;
+                        color: @grey2;
                         .square(100%);
                         .show;
                     }
@@ -633,46 +843,33 @@ q:before, q:after {content: ""}
                 }
 
                 .guest {
-                    padding-left: 30pt;   
-                    width: 4cm;
-                    .pull-left;                 
-                    
+                    padding-left: 30pt;  
+                    width: 4cm; 
+                    .pull-left;
+
                     &:before {
                         content: "";
                         position: absolute;
                         top: 0;
                         left: 0;
-                        background-image: @icons;
+                        background-image: @iconPrint;
                         background-repeat: no-repeat;
+                        background-size: 40px;
+                        border: 1px solid @textColor;
                         .square(24pt);
                         .show;
                     }
 
-                    &.check-in {
-                        color: @green; 
-
-                        &:before {
-                            background-color: @green;
-                            background-position: 8px -112px; 
-                        }
+                    &.check-in { 
+                        &:before { background-position: 8px 8px; } 
                     }
 
                     &.check-out { 
-                        color: @red; 
-
-                        &:before {
-                            background-color: @red;
-                            background-position: 8px -152px;
-                        }
+                        &:before { background-position: 8px -32px; } 
                     }
 
                     &.inhouse { 
-                        color: @blue; 
-
-                        &:before {
-                            background-color: @blue;
-                            background-position: 8px -192px;
-                        }
+                        &:before { background-position: 8px -72px; } 
                     }
 
                     &.no-show { 
@@ -697,28 +894,22 @@ q:before, q:after {content: ""}
 
                     &.clean,
                     &.inspected { 
-                        color: @green; 
-
                         &:before {
                             content: "✔";
                             text-align: center;
                             font-size: 20pt;
                             line-height: 30pt;
-                            color: @green;
-                            border: 2px solid @green;
+                            color: @grey2;
+                            border: 1px solid @grey1;
                             .show;
                         }
-
                     }
-
-                    &.dirty { color: @red; }
-                    &.pickup { color: @orange; }
 
                     &.dirty,
                     &.pickup {
                         &:before { 
                             content: "";
-                            border: 2px solid @grey3; 
+                            border: 1px dashed @textColor; 
                         }
                     }
                 }
@@ -807,22 +998,12 @@ q:before, q:after {content: ""}
                             span { 
                                 display: inline-block;
 
-                                &.completed { margin-right: 8pt; }
-                                &.total { padding-left: 8pt; border-left: 1px solid @grey3; }
-                            }
+                                &.completed { margin-right: 4pt; }
 
-                            &.shift { 
-                                .total { color: @grey3; }
-                            }
-                            
-                            &.departures { 
-                                color: @red;
-                                .total { border-color: @red; }
-                            }
-                            
-                            &.stayovers { 
-                                color: @blue;
-                                .total { border-color: @blue; }
+                                &.total { 
+                                    padding-left: 4pt; 
+                                    border-left: 1px solid @textColor; 
+                                }
                             }
                         }
                     }
@@ -886,7 +1067,7 @@ q:before, q:after {content: ""}
                     text-transform: uppercase;
                     line-height: 40px;
                     margin: 0;
-                    
+
                     &.payment {
                         padding-left: -webkit-calc(~"90% - 130px");
                         padding-left: -moz-calc(~"90% - 130px");
@@ -934,7 +1115,7 @@ q:before, q:after {content: ""}
                             .name { .calc-width(40, 30); }
                             .code { .calc-width(30, 30); }
                             .number { .calc-width(20, 30); }
-                        }                       
+                        }                      
                     }
                 }  
 
@@ -952,37 +1133,11 @@ q:before, q:after {content: ""}
 
                 /* 3rd level **/
                 .grid-items {
-                    margin: 0;
-                    width: 100%;
-                    text-transform: uppercase;
-                    table-layout: auto;
-                    border-collapse: collapse; 
-                    border-spacing: 0;
                     .hide;
-
-                    tr {
-                        page-break-after: always;
-                        page-break-inside: avoid;
-
-                        th { white-space: normal; }
-
-                        th,
-                        td {
-                            font-size: 10pt;
-                            line-height: 1em;
-                            vertical-align: top;
-                            text-align: left;
-                            page-break-after: always;
-                            page-break-inside: avoid;
-                            white-space: normal;
-                            padding: 8pt 4pt;
-                        }
-
-                        td { border-bottom: 1px solid @grey3; }
-                    }
 
                     thead {
                         th { 
+                            background: transparent;
                             font-weight: 400;
                             color: @grey3;
                             border-bottom: 1px solid @grey3;
@@ -992,7 +1147,7 @@ q:before, q:after {content: ""}
 
                 &.print-details {
                     .grid-header { background: transparent; }
-                    
+
                     .grid-group {
                         > .toggle {
                             background: @grey1;
@@ -1020,13 +1175,7 @@ q:before, q:after {content: ""}
                 .pull-left;
 
                 .shift-details {
-                    margin: 0;
-                    width: 100%;
-                    text-transform: uppercase;
-                    table-layout: auto;
-                    border-collapse: collapse; 
-                    border-spacing: 0;
-
+                    
                     caption {
                         font-size: 10pt;
                         color: @grey3;
@@ -1038,32 +1187,20 @@ q:before, q:after {content: ""}
                     }
 
                     tr {
-                        page-break-after: always;
-                        page-break-inside: avoid;
 
                         th,
                         td { 
-                            font-size: 10pt;
                             line-height: 18pt; 
-                            vertical-align: top;
-                            text-align: left;
-                            page-break-after: always;
-                            page-break-inside: avoid;
-                            white-space: normal;
-                            padding: 8pt 4pt;
+                            border-bottom: 1px solid @grey3;
                         }
 
-                        th { 
-                            width: 80%; 
-                            white-space: normal;
-                        }
+                        th { width: 80%; }
 
                         td {
                             width: 20%;
                             font-size: 18pt;
                             font-weight: 600;
                             text-align: right;
-                            border-bottom: 1px solid @grey3;
 
                             &.entry { 
                                 font-size: 10pt;
@@ -1160,15 +1297,8 @@ q:before, q:after {content: ""}
         .complete-registration { .hide; }
 
         .registration-content {
-            position: static;
-            height: 100%;
-            overflow: visible;
 
             .registration-summary {
-
-                .bill-summary {
-                    top: 0 !important;
-                }
 
                 #bills-tabs-nav,
                 .bill-summary-wrapper,
@@ -1179,33 +1309,11 @@ q:before, q:after {content: ""}
                     .show;
 
                     table {
-                        margin: 0;
-                        width: 100%;
-                        text-transform: uppercase;
-                        table-layout: auto;
-                        border-collapse: collapse; 
-                        border-spacing: 0;
+                        th,
+                        td { font-size: 9pt; }
 
-                        tr {
-                            page-break-after: auto;
-                            page-break-inside: avoid;
-
-                            th { 
-                                white-space: normal; 
-                                font-weight: 600;
-                            }
-
-                            th,
-                            td {
-                                font-size: 9pt;
-                                line-height: 1em;
-                                vertical-align: top;
-                                text-align: left;
-                                page-break-after: auto;
-                                page-break-inside: avoid;
-                                white-space: normal;
-                            }
-                        }
+                        th { font-weight: 600; }
+                        td { border-bottom: 0; }
                     }
 
                     .invoice-logo {
@@ -1224,6 +1332,9 @@ q:before, q:after {content: ""}
                             position: absolute;
                             top: 0;
                             right: 0;
+                            filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+                            filter: gray;
+                            -webkit-filter: grayscale(100%);
                             .size(40px, auto);
                         }
                     }
