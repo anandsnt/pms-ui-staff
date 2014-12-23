@@ -349,7 +349,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 	var paymentFailed = function(data){
 		$scope.$emit('hideLoader');
-		//$scope.errorMessage = data;
+		$scope.paymentErrorMessage = data[0];
 		$scope.errorOccured = true;
 		$scope.depositPaidSuccesFully = false;
 		$scope.isLoading =  false; 

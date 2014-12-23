@@ -1,0 +1,78 @@
+<div class="date-range" ng-if="item.hasDateFilter">
+	<label>{{ item.hasDateFilter.description }}</label>
+	<div class="has-datepicker">
+		<input type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" readonly>
+	</div>	
+	<span class="span-to"> To </span>
+	<div class="has-datepicker">
+		<input type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" readonly>
+	</div>
+</div>
+
+<div class="time-range" ng-if="item.hasTimeFilter">
+	<label>{{ item.hasTimeFilter.description }}</label>
+	<div class="select">
+        <select name="time-from" ng-model="item.fromTime" ng-options="time.value as time.name for time in item.timeFilterOptions">
+        	<option value="">From Time</option>
+        </select>
+    </div>
+    <span>to</span>
+    <div class="select">
+        <select name="time-to" ng-model="item.untilTime" ng-options="time.value as time.name for time in item.timeFilterOptions">
+        	<option value="">Until Time</option>
+        </select>
+    </div>
+</div>
+
+<div class="filter" ng-if="item.hasCicoFilter">
+	<label>{{ item.hasCicoFilter.description }}</label>
+	<div class="select">
+		<select name="" id="" ng-model="item.chosenCico" ng-options="cico.value as cico.label for cico in item.cicoOptions">
+			<option value="">Transaction Type</option>
+		</select>
+	</div>
+</div>
+
+<div class="filter" ng-if="HIDE_THIS_FEATURE">
+	<label>User</label>
+	<div class="select">
+		<select name="" id="" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in userList">
+			<option value="">User</option>
+		</select>
+	</div>
+</div>
+
+<div class="filter" ng-if="item.hasIncludeNotes">
+	<label class="checkbox">
+		<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNotes}"></span>
+		<input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters">
+		<label class="ng-binding">{{ item.hasIncludeNotes.description }}</label>
+	</label>
+</div>
+
+<div class="filter" ng-if="item.hasIncludeVip">
+	<label class="checkbox">
+		<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeVip}"></span>
+		<input type="checkbox" ng-model="item.chosenIncludeVip" name="room-filters">
+		<label class="ng-binding">{{ item.hasIncludeVip.description }}</label>
+	</label>
+</div>
+
+<div class="filter" ng-if="item.hasIncludeCancelled">
+	<label class="checkbox">
+		<span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeCancelled}"></span>
+		<input type="checkbox" ng-model="item.chosenIncludeCancelled" name="room-filters">
+		<label class="ng-binding">{{ item.hasIncludeCancelled.description }}</label>
+	</label>
+</div>
+
+<div class="sort" ng-if="item.sortByOptions">
+	<label>Sort By</label>
+	<div class="select">
+		<select name="" id="" ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions">
+			<option value="">Sort By</option>
+		</select>
+	</div>
+</div>
+
+<a class="button green" ng-click="setnGenReport()">Show Report</a>
