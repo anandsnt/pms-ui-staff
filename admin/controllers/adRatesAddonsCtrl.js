@@ -47,8 +47,6 @@ admin.controller('ADRatesAddonsCtrl', [
 
 
 		$scope.fetchTableData = function($defer, params) {
-
-			var params = params;
 			var getParams = $scope.calculateGetParams(params);
 			$scope.currentClickedAddon = -1;
 

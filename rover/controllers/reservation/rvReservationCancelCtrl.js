@@ -165,8 +165,7 @@
 	var retrieveCardtype = function(){
 		var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 		getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
-		getCreditCardType($scope.newPaymentInfo.tokenDetails.cardBrand).toLowerCase()
-		;
+		getCreditCardType($scope.newPaymentInfo.cardDetails.cardType).toLowerCase();
 		return cardType;
 	};
 
@@ -215,6 +214,9 @@
 			reservation_id: $scope.passData.reservationId,
 			token: cardToken
 		};
+		paymentData.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+								getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
+								$scope.newPaymentInfo.cardDetails.cardType;
 		if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
 			paymentData.card_expiry = cardExpiry;
 		};

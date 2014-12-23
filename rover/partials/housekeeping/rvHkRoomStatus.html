@@ -298,7 +298,7 @@
 
             <div class="holder" ng-if="isStandAlone">
               <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
-              <div class="entry radio-check" ng-repeat= "type in roomTypes track by $index" >
+              <div class="entry radio-check" ng-repeat= "type in roomTypes track by $index">
                 <label class="checkbox">
                   <span class="icon-form icon-checkbox" ng-class = "{'checked' : type.isSelected}"></span>
                   <input type="checkbox" ng-model="type.isSelected" name="room-filters">
