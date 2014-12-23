@@ -94,7 +94,7 @@
 
             <!-- Fail feedback -->
             <div class="feedback" ng-show="errorOccured">
-                <div class="notice error">Payment failed. Try again or change payment method.</div>
+                <div class="notice error">{{paymentErrorMessage}}</div>
             </div> 
 
              <div class="entry full-width" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && !errorOccured">
