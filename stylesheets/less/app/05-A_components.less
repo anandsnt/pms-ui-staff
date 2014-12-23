@@ -852,21 +852,23 @@
                             position: relative;
 
                             .data {
-                                .calc-width(65, 150);
+                                .calc-width(70, 150);
 
                                 h2 { margin-bottom: 6px; }
 
                                 .confirmation,
                                 .arrival,
                                 .departure {
+                                    line-height: 20px;
                                     .show;
                                     .pull-left;
                                 }
 
+                                .confirmation { margin: 0; }
+
                                 .arrival,
                                 .departure {
-                                    line-height: 20px;
-                                    margin-right: 20px;
+                                    margin-left: 20px;
                                     .float;
 
                                     .guest-status { 
@@ -875,9 +877,10 @@
                                         float: none;
                                         .square(20px); 
                                     }
-                                }
 
-                                &.departure { margin-right: 0; }
+                                    .date { margin-right: 5px; }
+                                    .time { color: @grey3; }
+                                }
                             }
 
                             .amount {
@@ -887,7 +890,7 @@
                                 color: @textColor;
                                 margin: 5px 40px 0 0;
                                 .pull-left;
-                                .calc-width(35, 150);
+                                .calc-width(30, 150);
 
                                 &.paid { color: @grey3; }
                             }
