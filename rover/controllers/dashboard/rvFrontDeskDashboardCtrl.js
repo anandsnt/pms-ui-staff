@@ -15,7 +15,7 @@ sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', fu
 
     $scope.tomorrow = tzIndependentDate ($rootScope.businessDate);
     $scope.tomorrow.setDate ($scope.tomorrow.getDate() + 1); 
-    $scope.dayAfterTomorrow = tzIndependentDate ($rootScope.businessDate);
+    $scope.dayAfterTomorrow = tzIndependentDate ($scope.tomorrow);
     $scope.dayAfterTomorrow.setDate ($scope.tomorrow.getDate() + 1); 
 
   	/*
