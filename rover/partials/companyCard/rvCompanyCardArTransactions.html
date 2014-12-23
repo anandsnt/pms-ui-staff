@@ -96,16 +96,17 @@
                             <span class="confirmation">{{transaction.reservation_confirm_no}}</span>
                             <div class="arrival">
                                 <span class="guest-status small-icon check-in">CHECK-IN</span>
-                                <span>{{transaction.reservation_arrival_date| date : dateFormat}} 
-                                    <span ng-if="transaction.is_hourly">&nbsp;{{getTimeConverted(transaction.reservation_arrival_time)}}</span>
-                                </span>
+                                <time>
+                                    <span class="date">{{transaction.reservation_arrival_date| date : dateFormat}}</span>
+                                    <span ng-if="transaction.is_hourly" class="time">{{getTimeConverted(transaction.reservation_arrival_time)}}</span>
+                                </time>
                             </div>
                             <div class="departure">
                                 <span class="guest-status small-icon check-out">CHECK_OUT</span>
-                                <span>{{transaction.reservation_dep_date| date : dateFormat}}
-                                    <span ng-if="transaction.is_hourly">&nbsp;{{getTimeConverted(transaction.reservation_dep_time)}}</span>
-                                </span>
-                                
+                                <time>
+                                    <span class="date">{{transaction.reservation_dep_date| date : dateFormat}}</span>
+                                    <span ng-if="transaction.is_hourly" class="time">{{getTimeConverted(transaction.reservation_dep_time)}}</span>
+                                </time>                                
                             </div>
                         </div>
                         <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
