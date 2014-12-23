@@ -134,6 +134,10 @@ sntRover.controller('RVReportListCrl', [
                     if ( item.value === 'INCLUDE_CANCELED' ) {
                         reportList[i]['hasIncludeCancelled'] = item;
                         hasFauxSelect = true;
+
+                        if ( reportList[i].title == 'Cancelation & No Show' ) {
+                            reportList[i]['chosenIncludeCancelled'] = true;
+                        };
                     };
 
                     // check for include no show filter and keep a ref to that item
