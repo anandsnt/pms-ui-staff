@@ -1945,9 +1945,6 @@
                                 }
 
                                 .tab-details {
-                                    position: relative;
-                                    overflow: hidden;
-                                    .calc-height(100, 80); /* %, px */
 
                                     .wrapper { padding: 20px; }
                                     .iScrollVerticalScrollbar { 
@@ -2268,6 +2265,12 @@
                                 }
                             }
 
+                            &.reservations {
+                                .tab-details {
+                                    &.with-pagination { .calc-height(100, 140); }
+                                }
+                            }
+
                             /* Transactions ***/
                             &.transactions {
                                 
@@ -2387,6 +2390,8 @@
 
                                 .tab-details {
                                     .wrapper { padding: 0; }
+
+                                    &.with-pagination { .calc-height(100, 140); }
                                 }
                             }
                         }
