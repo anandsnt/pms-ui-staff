@@ -14,8 +14,12 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
             $scope.$emit('hideLoader');
             $scope.errorMessage = "";
             ngDialog.close();
+
+            var credits = parseFloat(data.available_credit).toFixed(2);
+            if(credits == '-0.00') credits = parseFloat('0.00').toFixed(2);
+
             $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
-            $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
+            $scope.arTransactionDetails.available_credit = credits;
         };
 
         var failure = function(errorMessage){
