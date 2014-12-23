@@ -274,6 +274,13 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	            $scope.arTransactionDetails.available_credit = credits;
 	            $scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
+
+	            if($scope.filterData.showFilterFlag == 'OPEN' && $scope.arTransactionDetails.ar_transactions[index].paid){
+	            	$scope.arTransactionDetails.total_count--;
+	            }
+	            if($scope.filterData.showFilterFlag == 'OPEN' && !$scope.arTransactionDetails.ar_transactions[index].paid){
+	            	$scope.arTransactionDetails.total_count++;
+	            }
 	        };
 
 	        var failure = function(errorMessage){
