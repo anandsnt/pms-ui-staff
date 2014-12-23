@@ -1,0 +1,37 @@
+<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': each.isNote }">
+	<td ng-if="!each.isNote" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
+		<strong ng-if="each.room_no" class="title">{{ each.room_no }}</strong>
+		<strong ng-if="!each.room_no" class="title unassigned">N/A</strong>
+	</td>
+	<td ng-if="!each.isNote">
+		<strong class="title">{{ each.name }}</strong>
+		<span class="confirmation">{{ each.confirm_no }}</span>
+		<span ng-if="is_vip === 'Y'"> &#8226; <span class="vip">VIP</span></span>
+	</td>
+	<td ng-if="!each.isNote">
+		<div class="arrival-departure">
+			<span class="guest-status check-in">check-in</span>
+			<time>
+				<span>{{ each.arrival_date }}</span>
+				<span>{{ each.arrival_time }}</span>
+			</time>
+		</div>
+		<div class="departing">
+			<span class="guest-status check-out">check-out</span>
+			<time>
+				<span>{{ each.departure_date }}</span>
+				<span>{{ each.departure_time }}</span>
+			</time>
+		</div>
+		<div ng-if="each.hours" class="hours">{{ each.hours }}</div> 
+	</td>
+	<td ng-if="!each.isNote">
+		<span class="room">{{ each.room_type }}</span>
+		<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
+	</td>
+
+	<td ng-if="each.isNote" colspan="3">
+		<strong><time>{{ each.date }}</time> &#8226; <span>{{ each.name }}</span></strong>
+		<span>{{ each.note }}</span>
+	</td>
+</tr>

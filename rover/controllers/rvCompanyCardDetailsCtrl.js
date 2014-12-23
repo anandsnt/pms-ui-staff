@@ -26,6 +26,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		 * @param{string} is the value of that tab
 		 */
 		$scope.switchTabTo = function($event, tabToSwitch) {
+			
 			if ($event !== undefined && $event !== "") {
 				$event.stopPropagation();
 				$event.stopImmediatePropagation();
@@ -59,10 +60,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			if (tabToSwitch == 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
 			}
-			if (tabToSwitch == 'cc-ar-transactions') {
-				$rootScope.$broadcast("arTransactionTabActive");
-				$scope.isWithFilters = false;
-			}
+			
 			$scope.currentSelectedTab = tabToSwitch;
 		};
 
@@ -130,6 +128,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		 * @param{string} is the value of that tab
 		 */
 		$scope.switchTabTo = function($event, tabToSwitch) {
+			
 			if ($event !== undefined && $event !== "") {
 				$event.stopPropagation();
 				$event.stopImmediatePropagation();
@@ -162,6 +161,10 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			}
 			if (tabToSwitch == 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
+			}
+			if (tabToSwitch == 'cc-ar-transactions') {
+				$rootScope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
 			}
 			$scope.currentSelectedTab = tabToSwitch;
 		};

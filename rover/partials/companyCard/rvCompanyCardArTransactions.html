@@ -80,7 +80,7 @@
     </div>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- If there are open bills: -->
-    <div class="tab-details scrollable" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list">
+    <div class="tab-details scrollable" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list" ng-iscroll-delay="500">
         <div class="wrapper">
             
             <ul class="search-results">

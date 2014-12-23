@@ -97,7 +97,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                    actual = 0; 
                 }
                 else{
-                    actual = (item.actual % 1 === 0) ? item.actual : item.actual.toFixed(2);
+                    actual = (item.actual % 1 === 0) ? item.actual : Math.round(item.actual);
                 }
                 actualData.push(parseInt(actual));
                 toolTipLookUp[itemDate].actual = valueActual;
