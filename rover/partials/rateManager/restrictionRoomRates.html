@@ -18,8 +18,8 @@
 			</span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.nightly_sign" ng-disabled="data.nightly == undefined">
-					<option value="+">+</option>
-					<option value="-">-</option>
+					<option ng-selected="data.nightly_sign == '+'" value="+">+</option>
+					<option ng-selected="data.nightly_sign == '-'" value="-">-</option>
 				</select> 
 			</span>
 			<span class="inp-field">
@@ -27,8 +27,8 @@
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.nightly_amnt_diff_sign" ng-disabled="data.nightly == undefined">
-					<option value="%">%</option>
-					<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+					<option ng-selected="data.nightly_amnt_diff_sign == '%'" value="%">%</option>
+					<option ng-selected="data.nightly_amnt_diff_sign == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
 			</span>
 			<br clear="all">		
@@ -43,16 +43,16 @@
 				</span> <span class="or"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.single_sign" ng-disabled="data.single == undefined">
-					<option value="+">+</option>
-					<option value="-">-</option>
+					<option ng-selected="data.single_sign == '+'" value="+">+</option>
+					<option ng-selected="data.single_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
 				<input type="text"  size="7" ng-model="data.single_extra_amnt" ng-disabled="data.single == undefined">
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.single_amnt_diff" ng-disabled="data.single == undefined">
-					<option value="%">%</option>
-					<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+					<option ng-selected="data.single_amnt_diff == '%'" value="%">%</option>
+					<option ng-selected="data.single_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
 			</span>
 			<br clear="all">			
@@ -65,16 +65,16 @@
 				</span> <span class="or"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.double_sign" ng-disabled="data.double == undefined">
-					<option value="+">+</option>
-					<option value="-">-</option>
+					<option ng-selected="data.double_sign == '+'" value="+">+</option>
+					<option ng-selected="data.double_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field" >
 				<input type="text" ng-model="data.double_extra_amnt" size="7" ng-disabled="data.double == undefined">
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.double_amnt_diff" ng-disabled="data.double == undefined">
-					<option value='%'>%</option>
-					<option value='{{currencySymbol}}'>{{currencySymbol}}</option>
+					<option ng-selected="data.double_amnt_diff == '%'" value='%'>%</option>
+					<option ng-selected="data.double_amnt_diff == currencySymbol" value='{{currencySymbol}}'>{{currencySymbol}}</option>
 				</select> 
 			</span>
 		</div>
@@ -86,16 +86,16 @@
 				</span> <span class="or"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.extra_adult_sign" ng-disabled = 'data.extra_adult == undefined'>
-					<option value="+">+</option>
-					<option value="-">-</option>
+					<option ng-selected="data.extra_adult_sign == '+'" value="+">+</option>
+					<option ng-selected="data.extra_adult_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
 				<input type="text"  size="7" ng-model="data.extra_adult_extra_amnt" ng-disabled = 'data.extra_adult == undefined'>
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.extra_adult_amnt_diff" ng-disabled = 'data.extra_adult == undefined'>
-					<option value="%">%</option>
-					<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+					<option ng-selected="data.extra_adult_amnt_diff == '%'" value="%">%</option>
+					<option ng-selected="data.extra_adult_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
 			</span>
 		</div>
@@ -107,16 +107,16 @@
 				</span> <span class="or"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.child_sign" ng-disabled = 'data.child == undefined'>
-					<option value="+">+</option>
-					<option value="-">-</option>
+					<option ng-selected="data.child_sign == '+'" value="+">+</option>
+					<option ng-selected="data.child_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
 				<input type="text"  size="7" ng-model="data.child_extra_amnt" ng-disabled = 'data.child == undefined'>
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.child_amnt_diff" ng-disabled = 'data.child == undefined'>
-					<option value="%">%</option>
-					<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+					<option ng-selected="data.child_amnt_diff == '%'" value="%">%</option>
+					<option ng-selected="data.child_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
 			</span>
 		</div>
