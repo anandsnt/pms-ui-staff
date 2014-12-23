@@ -1,12 +1,12 @@
-<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }">
+<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }" ng-click="fauxSelectClicked();">
 	<div ng-include="'/assets/partials/common/header.html'"></div>
 	
-	<section id="reports" class="content scrollable reports-wrapper" role="main" ng-hide="showReportDetails" ng-controller="RVReportListCrl" ng-iscroll="report-list-scroll" iscroll-stop-propagation>
+	<section id="reports" class="content scrollable reports-wrapper" role="main" ng-hide="showReportDetails" ng-controller="RVReportListCrl" ng-iscroll="report-list-scroll">
 		<div class="wrapper">
 			<ul class="reports-list">
 				<li ng-repeat="item in reportList">
 					<a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter()">
-						<span class="icon-report" ng-class="item.reportIconCls"></span>
+						<span ng-class="item.reportIconCls"></span>
 						<div class="data">
 							<h2>
 								{{ item.title }}
@@ -56,7 +56,7 @@
 				</ul>
 			</div>
 
-			<div id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': !totals }" ng-iscroll="report-details-scroll">
+			<div id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': (chosenReport.title == 'In-House Guests' || chosenReport.title == 'Departure'), 'no-sorting': (chosenReport.title == 'Cancelation & No Show') }" ng-iscroll="report-details-scroll">
 				<div class="wrapper">
 					<table ng-class="{ 'guest-reports': isGuestReport }">
 
@@ -143,6 +143,8 @@
 						<tbody ng-if="parsedApiFor == 'In-House Guests' || parsedApiFor == 'Departure'" ng-include="'/assets/partials/reports/rvInHouseDepartureReport.html'"></tbody>
 
 						<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
+
+						<tbody ng-if="parsedApiFor == 'Cancelation & No Show'" ng-include="'/assets/partials/reports/rvCancellationReport.html'"></tbody>
 
 					</table>
 				</div>

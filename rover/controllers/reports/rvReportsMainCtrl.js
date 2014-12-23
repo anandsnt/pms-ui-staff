@@ -59,6 +59,21 @@ sntRover.controller('RVReportsMainCtrl', [
 			},
 		};
 
+		$scope.fromDateOptionsNoMax = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
+		};
+
 		$scope.untilDateOptions = {
 			dateFormat: $rootScope.jqDateFormat,
 			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
@@ -71,6 +86,36 @@ sntRover.controller('RVReportsMainCtrl', [
 			},
 			onSelect: function(value) {
 				$scope.fromDateOptions.maxDate = value;
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
+		};
+
+		$scope.fromDateOptionsNoMax = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
+		};
+
+		$scope.untilDateOptionsNoMax = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
 			},
 			onClose: function(value) {
 				$('#ui-datepicker-div');
@@ -106,6 +151,61 @@ sntRover.controller('RVReportsMainCtrl', [
 		    };
 		};
 
+		// common faux select method
+		$scope.fauxSelectClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if ( !e ) {
+				_.each($scope.reportList, function(item) {
+					item.fauxSelectOpen = false;
+				});
+				return;
+			};
+
+			if ( !item ) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.fauxSelectOpen = item.fauxSelectOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+
+		$scope.fauxOptionClicked = function(e, item) {
+			var selectCount = 0;
+
+			if ( !item ) {
+				return;
+			};
+
+			e.stopPropagation();
+			
+			if ( item.chosenIncludeNotes ) {
+				selectCount++;
+				item.fauxTitle = item.hasIncludeNotes.description;
+			};
+			if ( item.chosenIncludeCancelled ) {
+				selectCount++;
+				item.fauxTitle = item.hasIncludeCancelled.description;
+			};
+			if ( item.chosenIncludeVip ) {
+				selectCount++;
+				item.fauxTitle = item.hasIncludeVip.description;
+			};
+			if ( item.chosenIncludeNoShow ) {
+				selectCount++;
+				item.fauxTitle = item.hasIncludeNoShow.description;
+			};
+
+			if (selectCount > 1) {
+				item.fauxTitle = selectCount + ' Selected';
+			} else if ( selectCount == 0 ) {
+				item.fauxTitle = 'Select';
+			};
+		};
+
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
 			var chosenReport = RVreportsSrv.getChoosenReport(),
@@ -130,6 +230,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			if ( !!chosenReport.hasDateFilter ) {
 				params['from_date'] = $filter( 'date' )( fromDate, 'yyyy/MM/dd' );
 				params['to_date']   = $filter( 'date' )( untilDate, 'yyyy/MM/dd' );
+			};
+
+			// include cancel dates
+			if ( !!chosenReport.hasCancelDateFilter ) {
+				params['cancel_from_date'] = $filter( 'date' )( chosenReport.fromCancelDate, 'yyyy/MM/dd' );
+				params['cancel_to_date']   = $filter( 'date' )( chosenReport.untilCancelDate, 'yyyy/MM/dd' );
 			};
 
 			// include times
@@ -174,6 +280,11 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include cancelled
 			if ( chosenReport.hasIncludeCancelled ) {
 				params['include_canceled'] = chosenReport.chosenIncludeCancelled;
+			};
+
+			// include no show
+			if ( chosenReport.hasIncludeNoShow ) {
+				params['include_no_show'] = chosenReport.chosenIncludeNoShow;
 			};
 
 

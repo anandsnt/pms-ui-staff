@@ -419,7 +419,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	var retrieveCardtype = function(){
 		var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 					getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
-					getCreditCardType($scope.newPaymentInfo.tokenDetails.cardBrand).toLowerCase()
+					getCreditCardType($scope.newPaymentInfo.cardDetails.cardType).toLowerCase()
 					;
 		return cardType;
 	};
@@ -487,13 +487,16 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		var expiryMonth = data.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
 		var expiryYear  = data.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
 		var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
+    	var cardCode = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+					   getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
+					   $scope.newPaymentInfo.cardDetails.cardType;
     	// we will not attach new payment to reservation
 		var dataToSave = {
 				"card_expiry": expiryDate,
 				"name_on_card": $scope.newPaymentInfo.cardDetails.userName,
 				"payment_type": "CC",
 				"token": cardToken,
-				"card_code": retrieveCardtype()
+				"card_code": cardCode
 		};
 		
 	    $scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToSave, successNewPayment);

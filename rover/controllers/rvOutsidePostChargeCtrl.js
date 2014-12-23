@@ -97,6 +97,11 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showNoMatches = false;
 				$scope.refreshApi = true;
 				
+				// CICO-11081 - Default page should be displayed when no data is entered in Search fields
+				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0){
+					$scope.showInitialSearchScreen = true;
+					$scope.$apply();
+				}
 				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0 
 																&& $scope.reservationsArray.length == 0){
 					$scope.showInitialSearchScreen = true;
