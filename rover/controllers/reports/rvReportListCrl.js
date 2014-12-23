@@ -79,56 +79,56 @@ sntRover.controller('RVReportListCrl', [
 
                 reportList[i]['show_filter'] = false;
 
-                // checking if has date filter
-                reportList[i]['hasDateFilter'] = _.find(reportList[i]['filters'], function(item) {
-                    return item.value === 'DATE_RANGE';
-                });
+                // going around and taking a note on filtes
+                _.each(reportList[i]['filters'], function(item) {
+                    
+                    // check for date filter and keep a ref to that item
+                    if ( item.value === 'DATE_RANGE' ) {
+                        reportList[i]['hasDateFilter'] = item;
+                    };
 
-                // checking if has time filter
-                reportList[i]['hasTimeFilter'] = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'TIME_RANGE';
-                });
-                if ( !!reportList[i]['hasTimeFilter'] ) {
-                    reportList[i]['timeFilterOptions'] = $_createTimeSlots();
-                };
+                    // check for time filter and keep a ref to that item
+                    // create std 15min stepped time slots
+                    if ( item.value === 'TIME_RANGE' ) {
+                        reportList[i]['hasTimeFilter']     = item;
+                        reportList[i]['timeFilterOptions'] = $_createTimeSlots();
+                    };
 
-                // checking if has cico filter
-                // TODO: addiing the 'cicoOptions' can be done on server and provided as such
-                reportList[i]['hasCicoFilter'] = _.find(reportList[i]['filters'], function(item) {
-                    return item.value === 'CICO';
-                });
-                if ( reportList[i]['hasCicoFilter'] ) {
-                    reportList[i]['cicoOptions'] = [{
-                        value: 'BOTH',
-                        label: 'Show Check Ins and  Check Outs'
-                    }, {
-                        value: 'IN',
-                        label: 'Show only Check Ins'
-                    }, {
-                        value: 'OUT',
-                        label: 'Show only Check Outs'
-                    }];
-                };
+                    // check for CICO filter and keep a ref to that item
+                    // create the CICO filter options
+                    if ( item.value === 'CICO' ) {
+                        reportList[i]['hasCicoFilter'] = item;
+                        reportList[i]['cicoOptions'] = [{
+                            value: 'BOTH',
+                            label: 'Show Check Ins and  Check Outs'
+                        }, {
+                            value: 'IN',
+                            label: 'Show only Check Ins'
+                        }, {
+                            value: 'OUT',
+                            label: 'Show only Check Outs'
+                        }];
+                    };
 
-                // checking if has user filter
-                hasUserFilter = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'USER';
-                });
-                reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
+                    // check for user filter and keep a ref to that item
+                    if ( item.value === 'USER' ) {
+                        reportList[i]['hasUserFilter'] = item;
+                    };
 
-                // checking if has include notes
-                reportList[i]['hasIncludeNotes'] = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'INCLUDE_NOTES';
-                });
+                    // check for include notes filter and keep a ref to that item
+                    if ( item.value === 'INCLUDE_NOTES' ) {
+                        reportList[i]['hasIncludeNotes'] = item;
+                    };
 
-                // checking if has include vip
-                reportList[i]['hasIncludeVip'] = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'VIP_ONLY';
-                });
+                    // check for vip filter and keep a ref to that item
+                    if ( item.value === 'VIP_ONLY' ) {
+                        reportList[i]['hasIncludeVip'] = item;
+                    };
 
-                // checking if has include cancelled
-                reportList[i]['hasIncludeCancelled'] = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'INCLUDE_CANCELED';
+                    // check for include cancelled filter and keep a ref to that item
+                    if ( item.value === 'INCLUDE_CANCELED' ) {
+                        reportList[i]['hasIncludeCancelled'] = item;
+                    };
                 });
 
                 // sort by options
@@ -152,7 +152,6 @@ sntRover.controller('RVReportListCrl', [
                     };
                 };
                 
-                
                 // set the from and untill dates
                 reportList[i].fromDate = fromDate;
                 reportList[i].untilDate = untilDate;
@@ -169,7 +168,6 @@ sntRover.controller('RVReportListCrl', [
 
         $scope.setnGenReport = function() {
             RVreportsSrv.setChoosenReport( this.item );
-
             $scope.genReport();
         };
 
