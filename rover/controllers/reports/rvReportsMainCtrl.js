@@ -59,6 +59,21 @@ sntRover.controller('RVReportsMainCtrl', [
 			},
 		};
 
+		$scope.fromDateOptionsNoMax = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
+		};
+
 		$scope.untilDateOptions = {
 			dateFormat: $rootScope.jqDateFormat,
 			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
@@ -71,6 +86,36 @@ sntRover.controller('RVReportsMainCtrl', [
 			},
 			onSelect: function(value) {
 				$scope.fromDateOptions.maxDate = value;
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
+		};
+
+		$scope.fromDateOptionsNoMax = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
+		};
+
+		$scope.untilDateOptionsNoMax = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
 			},
 			onClose: function(value) {
 				$('#ui-datepicker-div');
