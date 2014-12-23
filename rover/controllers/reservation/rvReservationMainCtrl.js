@@ -1657,7 +1657,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     var totalDeposit = 0;
                     //calculate sum of each reservation deposits
                     angular.forEach(data.reservations, function(reservation, key) {
-                        totalDeposit = parseInt(totalDeposit) + parseInt(reservation.deposit_amount);
+                        totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                     });
                     $scope.reservationData.depositAmount = totalDeposit;
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
