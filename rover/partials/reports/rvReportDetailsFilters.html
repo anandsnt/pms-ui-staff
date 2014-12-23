@@ -25,13 +25,13 @@
 <div class="date-range" ng-if="chosenReport.hasTimeFilter">
 	<label>{{ chosenReport.hasTimeFilter.description }}</label>
 	<div class="select">
-        <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions">
+        <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
         	<option value="">From Time</option>
         </select>
     </div>
     <span>to</span>
     <div class="select">
-        <select id="chosenReportFromTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions">
+        <select id="chosenReportFromTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
         	<option value="">Until Time</option>
         </select>
     </div>

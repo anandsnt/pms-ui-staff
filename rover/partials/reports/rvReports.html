@@ -74,11 +74,11 @@
 							
 							<!-- Reports sort by header -->
 							<thead ng-if="!headers.length">
+								<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+								"sorting-asc" when ASC sorting
+								"sorting-desc" when DESC sorting -->
 								<tr>
-									<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
-									"sorting-asc" when ASC sorting
-									"sorting-desc" when DESC sorting -->
-									<th ng-repeat="sortBy in chosenReport.sortByOptions" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
+									<th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
 										<span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
 									</th>
 								</tr>

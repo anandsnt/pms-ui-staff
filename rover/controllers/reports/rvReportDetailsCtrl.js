@@ -36,15 +36,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset this
 			$scope.parsedApiFor = undefined;
 
-			// re-init faux select
-			$scope.fauxSelectClicked();
-
-			// is this guest reports
+			// is this guest reports or not
 			if ( $scope.chosenReport.title == 'Arrival' ||
 					$scope.chosenReport.title == 'Cancelation & No Show' ||
 					$scope.chosenReport.title == 'Departure' ||
 					$scope.chosenReport.title == 'In-House Guests' ) {
 				$scope.isGuestReport = true;
+			} else {
+				$scope.isGuestReport = false;
 			};
 
 			// for hard coding styles for report headers
@@ -399,7 +398,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var _retResult = [],
 				_eachItem  = {},
 				_notes     = [],
-				_eachNote  = {};
+				_eachNote  = {},
+				_cancelRes = {};
 
 			var i = j = k = l = 0;
 
@@ -423,6 +423,23 @@ sntRover.controller('RVReportDetailsCtrl', [
 							_retResult.push( _eachNote );
 						};
 					};
+				};
+			} else if ( $scope.parsedApiFor == 'Cancelation & No Show' ) {
+				for (i = 0, j = apiResponse.length; i < j; i++) {
+					_eachItem  = angular.copy( apiResponse[i] );
+
+					if ( !!apiResponse[i]['cancel_reason'] ) {
+						_eachItem.rowspan = 2;	// since there will alway be just one cancel reason entry
+						_retResult.push( _eachItem );
+
+						_cancelRes = {
+							isCancel : true,
+							reason   : angular.copy( apiResponse[i]['cancel_reason'] )
+						};
+						_retResult.push( _cancelRes );
+					} else {
+						_retResult.push( _eachItem );
+					}
 				};
 			} else {
 				_retResult = apiResponse;
