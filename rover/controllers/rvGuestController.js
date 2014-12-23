@@ -575,7 +575,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'city': $scope.searchData.guestCard.guestCity,
 					'membership_no': $scope.searchData.guestCard.guestLoyaltyNumber
 				};
-				$scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
+				if(shouldSearch()){
+					$scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
+				}
 			} else {
 				$scope.guestSearchIntiated = false;
 				$scope.searchedGuests = [];
@@ -583,6 +585,26 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$broadcast('guestSearchStopped');
 			}
 		};
+
+		var previousSearchData = {
+		      'lastName': '',
+		      'firstName': '',
+		      'city': '',
+		      'loyaltyNumber': ''
+		    }
+
+		var shouldSearch = function(){
+			if( previousSearchData.lastName == $scope.searchData.guestCard.guestLastName && previousSearchData.firstName == $scope.searchData.guestCard.guestFirstName &&
+				previousSearchData.city == $scope.searchData.guestCard.guestCity && previousSearchData.loyaltyNumber == $scope.searchData.guestCard.guestLoyaltyNumber ){
+				return false;
+			}
+			previousSearchData.lastName = $scope.searchData.guestCard.guestLastName;
+			previousSearchData.firstName = $scope.searchData.guestCard.guestFirstName;
+			previousSearchData.city = $scope.searchData.guestCard.guestCity;
+			previousSearchData.loyaltyNumber = $scope.searchData.guestCard.guestLoyaltyNumber;
+			return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 ||
+				$scope.searchData.guestCard.guestCity != '' || $scope.searchData.guestCard.guestLoyaltyNumber != '');
+		}
 
 		$scope.searchCompany = function() {
 			var successCallBackFetchCompanies = function(data) {
