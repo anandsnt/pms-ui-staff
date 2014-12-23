@@ -134,6 +134,10 @@ sntRover.controller('RVReportListCrl', [
                     if ( item.value === 'INCLUDE_CANCELED' ) {
                         reportList[i]['hasIncludeCancelled'] = item;
                         hasFauxSelect = true;
+
+                        if ( reportList[i].title == 'Cancelation & No Show' ) {
+                            reportList[i]['chosenIncludeCancelled'] = true;
+                        };
                     };
 
                     // check for include no show filter and keep a ref to that item
@@ -158,6 +162,22 @@ sntRover.controller('RVReportListCrl', [
                         };
                     });
                     reportList[i].sortByOptions = reportList[i]['sort_fields'];
+                };
+
+                // for arrival report the sort by items must be
+                // ordered in a specific way as per the design
+                // [date - name - room] > TO > [room - name - date]
+                if ( reportList[i].title == 'Arrival' ) {
+                    var dateSortBy = angular.copy( reportList[i].sortByOptions[0] ),
+                        roomSortBy = angular.copy( reportList[i].sortByOptions[2] );
+
+                    dateSortBy['colspan'] = 2;
+                    roomSortBy['colspan'] = 0;
+
+                    reportList[i].sortByOptions[0] = roomSortBy;
+                    reportList[i].sortByOptions[2] = dateSortBy;
+
+                    console.log( reportList[i].sortByOptions );
                 };
 
                 // CICO-8010: for Yotel make "date" default sort by filter
