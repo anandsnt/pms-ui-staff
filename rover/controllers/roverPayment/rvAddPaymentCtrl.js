@@ -31,7 +31,14 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.setScroller('cardsList');
 	$scope.showCCPage = false;
 	$scope.shouldShowWaiting = false;
-	$scope.showManualEntryDisabledPopup = ($rootScope.isManualCCEntryEnabled) ? false : true;
+	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+		$scope.showManualEntryDisabledPopup = false;
+		$scope.showCCPage = true;
+	}
+	else{
+		$scope.showManualEntryDisabledPopup = ($rootScope.isManualCCEntryEnabled) ? false : true;
+	};
+	
     var refreshCardsList = function() {
         $timeout(function() {
 			$scope.refreshScroller('cardsList');
