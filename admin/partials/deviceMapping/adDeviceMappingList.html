@@ -33,7 +33,7 @@
 						<td data-title="'Action'" header-class="width-10" class="delete" ng-hide="currentClickedElement == $index" >
 							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDeviceMapping($index, workStations.id)"></a>
 						</td>
-						<td colspan="3" ng-include="getTemplateUrl($index,workStations.id)"></td>
+						<td colspan="3" ng-include="getTemplateUrl($index,workStations.id)" ng-show="currentClickedElement == $index && isEditMode"></td>
 					</tr>
 				</tbody>
 			</table>

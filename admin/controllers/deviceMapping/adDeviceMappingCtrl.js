@@ -7,6 +7,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	$scope.mapping = {};
 	$scope.isAddMode = false;
 	$scope.addEditTitle = "";
+	$scope.isEditMode = false;
    /*
     * To fetch list of device mappings
     */
@@ -64,6 +65,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		$scope.mapping = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
+		$scope.isEditMode = true;
 		$scope.addEditTitle = "EDIT";
 	 	var successCallbackRender = function(data){	
 	 		$scope.mapping = data;
@@ -103,6 +105,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
     * To handle click event
     */	
 	$scope.clickCancel = function(){
+		$scope.isEditMode = false;
 		$scope.currentClickedElement = -1;
 	};	
    /*
@@ -138,6 +141,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	    		 $scope.data.work_stations[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
 	    	 }
     		$scope.currentClickedElement = -1;
+    		$scope.isEditMode = false;
     	};
 		var data = {
 			"name": $scope.mapping.name,
