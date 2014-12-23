@@ -272,7 +272,8 @@
 
                     <!-- Deposit payment failed -->
                     <div class="feedback" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted &&depositData.depositAttemptFailure">
-                        <div class="notice error">Payment failed. Try again or change payment method.</div>
+                        <!-- <div class="notice error">Payment failed. Try again or change payment method.</div> -->
+                         <div class="notice error">{{paymentErrorMessage}}</div>
                     </div> 
 
                     <div class="actions" ng-hide="showCC">

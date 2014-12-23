@@ -183,7 +183,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.showCCPage = false;
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;			
-		$scope.renderData.creditCardType = retrieveCardtype();
+		$scope.renderData.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment)?
+										getCreditCardType($scope.cardData.cardDetails.cardType).toLowerCase() : 
+										getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 		$scope.renderData.cardExpiry = retrieveExpiryDate();
 		$scope.renderData.endingWith = retrieveCardNumber();		
 	};
@@ -192,9 +194,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
 		$scope.cardData = tokenDetails;
 		renderScreen();
-		// if(!$scope.isFromGuestCard){
-			$scope.isNewCardAdded = true;
-		// }
+		$scope.isNewCardAdded = true;
 		
 		$scope.showInitialScreen       = true; 
 		$scope.$digest();
@@ -270,7 +270,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
 	var addToGuestCard = function(data){
-		var cardCode = retrieveCardtype();
+		var cardCode = (!$scope.cardData.tokenDetails.isSixPayment)?
+										getCreditCardType($scope.cardData.cardDetails.cardType).toLowerCase() : 
+										getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();;
 		var cardNumber = retrieveCardNumber();
 		var cardExpiry = retrieveExpiryDate();
 		var dataToGuestList = {
@@ -358,7 +360,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			if($scope.isNewCardAdded){
 				creditCardType =
 								(!$scope.cardData.tokenDetails.isSixPayment)? 
-								getCreditCardType($scope.cardData.tokenDetails.cardBrand):
+								getCreditCardType($scope.cardData.cardDetails.cardType):
 								getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 				data.token = 
 								(!$scope.cardData.tokenDetails.isSixPayment)?
@@ -378,7 +380,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			};	
 			if($scope.isFromGuestCard){
 				data.add_to_guest_card = true;
-				data.card_code =  retrieveCardtype();
+				data.card_code =  (!$scope.cardData.tokenDetails.isSixPayment)?
+									$scope.cardData.cardDetails.cardType: 
+									getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 				data.user_id = $scope.passData.guest_id;
 				data.card_expiry = 	retrieveCardExpiryForApi();
 				$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data,saveCCToGuestCardSuccess);
@@ -386,6 +390,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			else{
 				if($scope.isNewCardAdded){	
 					data.card_expiry = 	retrieveCardExpiryForApi();
+					data.card_code   = (!$scope.cardData.tokenDetails.isSixPayment)?
+										$scope.cardData.cardDetails.cardType: 
+										getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess);
 				} else {
 					$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, ccSaveSuccess);  
