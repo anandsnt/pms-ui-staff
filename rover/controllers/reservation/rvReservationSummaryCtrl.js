@@ -136,7 +136,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var retrieveCardtype = function() {
 			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 				getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase() :
-				getCreditCardType($scope.newPaymentInfo.tokenDetails.cardBrand).toLowerCase();
+				getCreditCardType($scope.newPaymentInfo.cardDetails.cardType).toLowerCase();
 			return cardType;
 		};
 
@@ -228,7 +228,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.newPaymentInfo.tokenDetails.session :
 				$scope.newPaymentInfo.tokenDetails.token_no;
 			//data.add_to_guest_card = $scope.newPaymentInfo.cardDetails.addToGuestCard;
-			data.card_code = retrieveCardtype();
+			data.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
+								getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase() :
+								$scope.newPaymentInfo.cardDetails.cardType;
 			if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
 				data.card_expiry = retrieveExpiryDateForSave();
 			};
@@ -324,7 +326,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				onPaymentFailure = function(errorMessage) {
 					$scope.depositData.attempted = true;
 					$scope.depositData.depositAttemptFailure = true;
-					// $scope.errorMessage = errorMessage;
+					$scope.paymentErrorMessage = errorMessage[0];
 					$scope.$emit('hideLoader');
 				};
 
