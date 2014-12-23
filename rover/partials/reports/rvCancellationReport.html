@@ -1,7 +1,7 @@
 <tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': each.isNote }">
 	<td ng-if="!each.isNote" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
-		<span class="status red">{{ cancel_date }}</span>
-        <span class="penalty">{{ currencySymbol }}{{ penalty }}</span>
+		<span class="status red">{{ each.cancel_date }}</span>
+        <span class="penalty">{{ currencySymbol }}{{ each.cancel_penalty }}</span>
 	</td>
 	<td ng-if="!each.isNote">
 		<strong class="title">{{ each.name }}</strong>
@@ -10,14 +10,14 @@
 	</td>
 	<td ng-if="!each.isNote">
 		<div class="arrival-departure">
-			<span class="guest-status {'cancel' or 'no-show'}">{'cancel' or 'no-show'}</span>
+			<span class="guest-status" ng-class="{ 'cancel': (each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
 			<time>
 				<span>{{ each.arrival_date }}</span>
 				<span>{{ each.arrival_time }}</span>
 			</time>
 		</div>
 		<div class="departing">
-			<span class="guest-status {'cancel' or 'no-show'}">{'cancel' or 'no-show'}</span>
+			<span class="guest-status" ng-class="{ 'cancel': (each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
 			<time>
 				<span>{{ each.departure_date }}</span>
 				<span>{{ each.departure_time }}</span>

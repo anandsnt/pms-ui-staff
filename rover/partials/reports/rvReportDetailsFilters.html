@@ -12,24 +12,26 @@
 <div class="date-range" ng-if="chosenReport.hasDateFilter">
 	<label>{{ chosenReport.hasDateFilter.description }}</label>
 	<div class="has-datepicker">
-		<input id="chosenReportFromDate" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
+		<input ng-if="chosenReport.title != 'Arrival' && chosenReport.title != 'Departure'" id="chosenReportFromDate" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
+        <input ng-if="chosenReport.title == 'Arrival' || chosenReport.title == 'Departure'" id="chosenReportFromDate" type="text" class="range-datepicker" ui-date="fromDateOptionsNoMax" ng-model="chosenReport.fromDate" readonly>
 	</div>
 	<span class="span-to">To</span>
 	<div class="has-datepicker">
-		<input id="chosenReportToDate" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
+		<input ng-if="chosenReport.title != 'Arrival' && chosenReport.title != 'Departure'" id="chosenReportToDate" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
+        <input ng-if="chosenReport.title == 'Arrival' || chosenReport.title == 'Departure'" id="chosenReportToDate" type="text" class="range-datepicker" ui-date="untilDateOptionsNoMax" ng-model="chosenReport.untilDate" readonly>
 	</div>
 </div>
 
 <div class="date-range" ng-if="chosenReport.hasTimeFilter">
 	<label>{{ chosenReport.hasTimeFilter.description }}</label>
 	<div class="select">
-        <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
+        <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions">
         	<option value="">From Time</option>
         </select>
     </div>
     <span>to</span>
     <div class="select">
-        <select id="chosenReportFromTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
+        <select id="chosenReportFromTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions">
         	<option value="">Until Time</option>
         </select>
     </div>
@@ -47,7 +49,7 @@
 <div class="filter" ng-if="HIDE_THIS_FEATURE">
 	<label>User</label>
 	<div class="select">
-		<select name="" id="" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in userList" iscroll-stop-propagation>
+		<select name="" id="" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in userList">
 			<option value="">User</option>
 		</select>
 	</div>
