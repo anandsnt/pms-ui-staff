@@ -30,8 +30,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.chosenReport = RVreportsSrv.getChoosenReport();
 			
-			$scope.setTitle( $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title );
-			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title;
+			$scope.setTitle( $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '') );
+			$scope.$parent.heading = $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '');
 
 			// reset this
 			$scope.parsedApiFor = undefined;
@@ -403,7 +403,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var i = j = k = l = 0;
 
-			if ( $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Departure' ) {
+			if ( $scope.parsedApiFor === 'Arrival' ||
+					$scope.parsedApiFor == 'In-House Guests' ||
+					$scope.parsedApiFor == 'Departure' ) {
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					
 					_eachItem = angular.copy( apiResponse[i] );
@@ -422,13 +424,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 				};
-			};
-
-			if ( $scope.parsedApiFor == 'Cancelation & No Show' ) {
-				for (i = 0, j = apiResponse.length; i < j; i++) {
-
-				};
-			};
+			} else {
+				_retResult = apiResponse;
+			}
 
 			return _retResult;
 		};

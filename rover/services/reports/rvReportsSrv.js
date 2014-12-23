@@ -40,24 +40,6 @@ sntRover.service('RVreportsSrv', [
 
 			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
-
-					var data = data;
-					_.each(data.results, function(item) {
-						if ( !item.notes ) {
-							item.notes = [];
-						};
-						item.notes.push({
-							name: 'Hello',
-							date: '12/12/12',
-							note: 'This is a dummy note added from the Angular service - rvReportsSrv.js:L43'
-						}, {
-							name: 'World',
-							date: '10/10/12',
-							note: 'This is a dummy note added from the Angular service - rvReportsSrv.js:L43'
-						});
-					});
-
-
 					deferred.resolve(data);
 				}.bind(this), function(data){
 					deferred.reject(data);
