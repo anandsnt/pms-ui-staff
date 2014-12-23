@@ -6031,7 +6031,7 @@
 
         li {
             padding: 0;
-            .clickable;
+            .faux-clickable;
 
             .toggle-filter {
                 color: @textColor;
@@ -6086,6 +6086,7 @@
                     color: @grey3;
                     font-size: 14px;
                     text-transform: uppercase;
+                    margin-bottom: 0;
                     .show;
                 }
 
@@ -6094,10 +6095,11 @@
                 .date-range,
                 .time-range,
                 .filter,
-                .sort {
+                .sort,
+                .options {
                     position: relative;
-                    padding-right: 20px;
-                    margin-right: 20px;
+                    padding-right: 10px;
+                    margin-right: 10px;
                     .pull-left;
 
                     &:after {
@@ -6124,8 +6126,6 @@
                     .select {
                         .calc-width(50, 20);
                         .pull-left;
-
-                        input { width: 100%; }
                     }
 
                     span {
@@ -6140,11 +6140,28 @@
                     } 
                 }
 
-                .date-range { width: 320px; }
-                .time-range { width: 240px; }
+                .date-range { 
+                    width: 300px; 
+
+                    input {
+                        width: 100%;
+                        cursor: pointer;
+                        background: @white @calendar no-repeat 90% 11px;
+                        .no-transition();
+
+                        &:hover,
+                        &:active { background-position: 90% -39px; }
+
+                        @media @highdpi {
+                            background-image: @calendar2x;
+                        }
+                    }
+                }
+
+                .time-range { width: 220px; }
 
                 .filter {
-                    width: 260px;
+                    width: 240px;
 
                     select,
                     .icon-search { width: 100%; }
@@ -6158,15 +6175,64 @@
                 }
 
                 .sort {
-                    width: 140px;
+                    width: 100px;
 
                     select { width: 100%; }
+                }
+
+                .options {
+                    width: 180px;
+
+                    .faux-select { 
+                        position: relative;
+                        padding: 0 10px;
+                        line-height: 40px;
+                        cursor: pointer;
+                        .nowrap();
+                        .faux-clickable;
+
+                        &.placeholder {
+                            color: @grey3;
+                            font-style: italic;
+                        }
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            background: @white @selectArrow no-repeat 50% 50%;
+                            background-size: 6px 4px;
+                            pointer-events: none;
+                            z-index: 999;
+                            .size(100%, 25px);
+                            #border-radius > .right();
+                        }
+                    }
+                }
+
+                .faux-select-options {
+                    .faux-clickable;
+                    .transition;
+                    #fade > .in();
+
+                    .radio,
+                    .checkbox {
+                        padding-left: 40px;
+                        #border-radius > .rounded(0);
+                        .box-shadow(0 1px 0 rgba(0,0,0,.15));
+
+                        .icon-form { left: 10px; }
+                    }
+
+                    &.hidden { #fade > .out(); }
                 }
 
                 .button {
                     margin-top: 24px;
                     padding: 0;
-                    width: 140px;
+                    padding: 0;
+                    width: 80px;
                     .pull-right;
                 }
             }
@@ -6232,7 +6298,6 @@
 
             .date-range,
             .time-range {
-
                 .has-datepicker,
                 .select {
                     .calc-width(50, 20);
@@ -6253,11 +6318,24 @@
                 }
             }
 
-            .date-range { width: 320px; }
-            .time-range { width: 240px; }
+            .date-range { 
+                width: 300px; 
+
+                input {
+                    width: 100%;
+                    cursor: pointer;
+                    background: @white @calendar no-repeat 90% 11px;
+                    .no-transition();
+
+                    &:hover,
+                    &:active { background-position: 90% -39px; }
+                }
+            }            
+
+            .time-range { width: 220px; }
 
             .filter {
-                width: 260px;
+                width: 240px;
 
                 select,
                 .icon-search { width: 100%; }
@@ -6271,7 +6349,7 @@
             }
 
             .sort {
-                width: 140px;
+                width: 100px;
 
                 select { width: 100%; }
             }
@@ -6733,6 +6811,7 @@
             }
         }
     }
+
 /* Reservations             ==============================*/
     .create-reservation {
         position: relative;
