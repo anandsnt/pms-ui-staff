@@ -10,25 +10,20 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
     * getter method to fetch rooms list
     * @return {object} room list
     */	
-	this.fetchRoomList = function(){
+	this.fetchRoomList = function(params){
+
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms.json';	
-		if(!isEmptyObject(that.roomsArray)){
-			deferred.resolve(that.roomsArray);
-		} else {
-			ADBaseWebSrv.getJSON(url).then(function(data) {
-				that.saveRoomsArray(data);
-				deferred.resolve(data);
-			},function(errorMessage){
-				deferred.reject(errorMessage);
-			});
-		}
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
+			//that.saveRoomsArray(data);
+			deferred.resolve(data);
+		},function(errorMessage){
+			deferred.reject(errorMessage);
+		});
 		
 		return deferred.promise;
 	};
-	this.saveRoomsArray = function(data){
-		that.roomsArray = data;
-	};
+
    /*
     * getter method for the room details of hotel
     * @return {object} room details
