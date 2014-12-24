@@ -282,7 +282,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				reservation_id: $scope.passData.reservationId,
 				token: cardToken
 			};
-			paymentData.card_code = scope.newPaymentInfo.tokenDetails.isSixPayment?
+			paymentData.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 									getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
 									$scope.newPaymentInfo.cardDetails.cardType;
 

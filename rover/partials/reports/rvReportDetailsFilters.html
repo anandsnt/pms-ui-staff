@@ -1,11 +1,17 @@
 <div class="date-range" ng-if="chosenReport.hasCancelDateFilter">
     <label>{{ chosenReport.hasCancelDateFilter.description }}</label>
     <div class="has-datepicker">
-        <input type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromCancelDate" readonly>
+        <input id="chosenReportFromCancelDate" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromCancelDate" readonly>
+        <button ng-if="chosenReport.title == 'Cancelation & No Show'" ng-show="chosenReport.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')" style="background: #9d9d9d;">Clear query</span>
+        </button>
     </div>  
     <span class="span-to"> To </span>
     <div class="has-datepicker">
-        <input type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilCancelDate" readonly>
+        <input id="chosenReportUntilCancelDate" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilCancelDate" readonly>
+        <button ng-if="chosenReport.title == 'Cancelation & No Show'" ng-show="chosenReport.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')" style="background: #9d9d9d;">Clear query</span>
+        </button>
     </div>
 </div>
 
@@ -14,24 +20,30 @@
 	<div class="has-datepicker">
 		<input ng-if="chosenReport.title != 'Arrival' && chosenReport.title != 'Departure'" id="chosenReportFromDate" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
         <input ng-if="chosenReport.title == 'Arrival' || chosenReport.title == 'Departure'" id="chosenReportFromDate" type="text" class="range-datepicker" ui-date="fromDateOptionsNoMax" ng-model="chosenReport.fromDate" readonly>
+        <button ng-if="chosenReport.title == 'Cancelation & No Show'" ng-show="chosenReport.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')" style="background: #9d9d9d;">Clear query</span>
+        </button>
 	</div>
 	<span class="span-to">To</span>
 	<div class="has-datepicker">
 		<input ng-if="chosenReport.title != 'Arrival' && chosenReport.title != 'Departure'" id="chosenReportToDate" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
         <input ng-if="chosenReport.title == 'Arrival' || chosenReport.title == 'Departure'" id="chosenReportToDate" type="text" class="range-datepicker" ui-date="untilDateOptionsNoMax" ng-model="chosenReport.untilDate" readonly>
+        <button ng-if="chosenReport.title == 'Cancelation & No Show'" ng-show="chosenReport.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')" style="background: #9d9d9d;">Clear query</span>
+        </button>
 	</div>
 </div>
 
 <div class="date-range" ng-if="chosenReport.hasTimeFilter">
 	<label>{{ chosenReport.hasTimeFilter.description }}</label>
 	<div class="select">
-        <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions">
+        <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
         	<option value="">From Time</option>
         </select>
     </div>
     <span>to</span>
     <div class="select">
-        <select id="chosenReportFromTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions">
+        <select id="chosenReportFromTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
         	<option value="">Until Time</option>
         </select>
     </div>

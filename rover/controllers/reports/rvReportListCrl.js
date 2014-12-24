@@ -9,6 +9,13 @@ sntRover.controller('RVReportListCrl', [
 
         $scope.setScroller( 'report-list-scroll', {preventDefault: false} );
 
+        // until date is business date and from date is a week ago
+        var businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+            dateParts     = businessDate.match(/(\d+)/g),
+            fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
+            untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
+            hasFauxSelect = false;
+
         /**
         *   Post processing fetched data to modify and add additional data
         *   Note: This is a self executing function
@@ -17,12 +24,12 @@ sntRover.controller('RVReportListCrl', [
 		*/
 		var postProcess = function(reportList) {
 
-            // until date is business date and from date is a week ago
-            var businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
-                dateParts     = businessDate.match(/(\d+)/g),
-                fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
-                untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
-                hasFauxSelect = false;
+            // re-cal just it case (totally useless in my opinon)
+            businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd');
+            dateParts     = businessDate.match(/(\d+)/g);
+            fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7);
+            untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            hasFauxSelect = false;
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
@@ -134,6 +141,10 @@ sntRover.controller('RVReportListCrl', [
                     if ( item.value === 'INCLUDE_CANCELED' ) {
                         reportList[i]['hasIncludeCancelled'] = item;
                         hasFauxSelect = true;
+
+                        if ( reportList[i].title == 'Cancelation & No Show' ) {
+                            reportList[i]['chosenIncludeCancelled'] = true;
+                        };
                     };
 
                     // check for include no show filter and keep a ref to that item
@@ -160,6 +171,34 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].sortByOptions = reportList[i]['sort_fields'];
                 };
 
+                // for (arrival, departure) report the sort by items must be
+                // ordered in a specific way as per the design
+                // [date - name - room] > TO > [room - name - date]
+                if ( reportList[i].title == 'Arrival' || reportList[i].title == 'Departure' ) {
+                    var dateSortBy = angular.copy( reportList[i].sortByOptions[0] ),
+                        roomSortBy = angular.copy( reportList[i].sortByOptions[2] );
+
+                    dateSortBy['colspan'] = 2;
+                    roomSortBy['colspan'] = 0;
+
+                    reportList[i].sortByOptions[0] = roomSortBy;
+                    reportList[i].sortByOptions[2] = dateSortBy;
+                };
+
+                // for in-house report the sort by items must be
+                // ordered in a specific way as per the design
+                // [name - room] > TO > [room - name]
+                if ( reportList[i].title == 'In-House Guests' ) {
+                    var nameSortBy = angular.copy( reportList[i].sortByOptions[0] ),
+                        roomSortBy = angular.copy( reportList[i].sortByOptions[1] );
+
+                    nameSortBy['colspan'] = 2;
+                    roomSortBy['colspan'] = 0;
+
+                    reportList[i].sortByOptions[0] = roomSortBy;
+                    reportList[i].sortByOptions[1] = nameSortBy;
+                };
+
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ( $rootScope.currentHotelData == 'Yotel London Heathrow' ) {
                     var sortDate = _.find(reportList[i].sortByOptions, function(item) {
@@ -170,11 +209,22 @@ sntRover.controller('RVReportListCrl', [
                     };
                 };
                 
-                // set the from and untill dates
-                reportList[i].fromDate        = fromDate;
-                reportList[i].fromCancelDate  = fromDate;
-                reportList[i].untilDate       = untilDate;
-                reportList[i].untilCancelDate = untilDate;
+                // set the from and untill dates as business date (which is untilDate)
+                if ( reportList[i].title == 'Arrival' || reportList[i].title == 'Departure' ) {
+                    reportList[i].fromDate  = untilDate;
+                    reportList[i].untilDate = untilDate;
+                } else {
+                    // set the from and untill dates
+                    reportList[i].fromDate        = fromDate;
+                    reportList[i].fromCancelDate  = fromDate;
+                    reportList[i].untilDate       = untilDate;
+                    reportList[i].untilCancelDate = untilDate;
+                };
+
+                // for this report user can remove dates
+                if ( reportList[i].title == 'Cancelation & No Show' ) {
+                    reportList[i]['canRemoveDate'] = true;
+                };
             };
 
             $scope.refreshScroller( 'report-list-scroll' );

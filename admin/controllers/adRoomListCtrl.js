@@ -4,14 +4,47 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 	*/
 
 	$scope.errorMessage = '';
-
-	
-	//inheriting from base controller
-	BaseCtrl.call(this, $scope);
+	//inheriting from base table controller
+	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 	
 
+	$scope.fetchTableData = function($defer, params){
+		var getParams = $scope.calculateGetParams(params);
+		var fetchSuccessOfItemList = function(data){
+			$scope.$emit('hideLoader');
+			//No expanded rate view
+			$scope.currentClickedElement = -1;
+			$scope.totalCount = data.number_of_rooms_configured;
+			$scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
+			$scope.data = data.rooms;
+			$scope.currentPage = params.page();
+        	params.total($scope.totalCount);
+            $defer.resolve($scope.data);
 
-	var fetchSuccessOfRoomList = function(data){
+		};
+		$scope.invokeApi(ADRoomSrv.fetchRoomList, getParams, fetchSuccessOfItemList);
+	}
+
+
+	$scope.loadTable = function(){
+		$scope.tableParams = new ngTableParams({
+		        page: 1,  // show first page
+		        count: $scope.displyCount, // count per page
+		        sorting: {
+		            name: 'asc' // initial sorting
+		        }
+		    }, {
+		        total: 0, // length of data
+		        getData: $scope.fetchTableData
+		    }
+		);
+	}
+
+	$scope.loadTable();
+	
+
+
+	/*var fetchSuccessOfRoomList = function(data){
 		$scope.data = data;
 		//applying sorting functionality in room list
 		$scope.roomList = new ngTableParams({
@@ -38,7 +71,7 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 		$scope.errorMessage = errorMessage ;
 	};
 	
-	$scope.invokeApi(ADRoomSrv.fetchRoomList, {}, fetchSuccessOfRoomList, fetchFailedOfRoomList);	
+	$scope.invokeApi(ADRoomSrv.fetchRoomList, {}, fetchSuccessOfRoomList, fetchFailedOfRoomList);	*/
 
 
 }]);

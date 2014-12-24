@@ -41,7 +41,7 @@
 		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close" translate>CANCEL</button>
 	</div>
 </div>
-<div ng-show="isLoggedIn && startProcess && isTimePastMidnight" class="modal-content new-content form warning padding-30">
+<div ng-show="isLoggedIn && startProcess && isTimePastMidnight" class="modal-content new-content eod form warning">
 	<h3 class="actions-end-of-day-text" translate>ARE_YOU_SURE</h3>
 	 <div class="actions float actions-end-of-day-container">
 	 	<button id="try-again" class="button green end-of-day-button" ng-click="continueClicked()" translate>CONTINUE_WITH_END_OF_DAY</button>
