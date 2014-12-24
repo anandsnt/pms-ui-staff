@@ -56,7 +56,16 @@
 				</ul>
 			</div>
 
-			<div id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': (chosenReport.title == 'In-House Guests' || chosenReport.title == 'Departure'), 'no-sorting': (chosenReport.title == 'Cancelation & No Show') }" ng-iscroll="report-details-scroll">
+			<!-- Report content -->
+			<div ng-hide="results.length" class="report-content no-content"> 
+				<div class="info">
+					<span class="icon-no-content icon-reports"></span>
+					<strong class="h1">No reports found</strong>
+					<span class="h2">Try changing search criteria or modify dates</span>
+				</div>
+			</div>
+
+			<div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': (chosenReport.title == 'In-House Guests' || chosenReport.title == 'Departure' || chosenReport.title == 'Arrival' || chosenReport.title == 'Cancelation & No Show'), 'no-sorting': (chosenReport.title == 'Cancelation & No Show') }" ng-iscroll="report-details-scroll">
 				<div class="wrapper">
 					<table ng-class="{ 'guest-reports': isGuestReport }">
 
@@ -74,11 +83,11 @@
 							
 							<!-- Reports sort by header -->
 							<thead ng-if="!headers.length">
+								<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+								"sorting-asc" when ASC sorting
+								"sorting-desc" when DESC sorting -->
 								<tr>
-									<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
-									"sorting-asc" when ASC sorting
-									"sorting-desc" when DESC sorting -->
-									<th ng-repeat="sortBy in chosenReport.sortByOptions" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
+									<th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
 										<span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
 									</th>
 								</tr>
@@ -98,7 +107,6 @@
 										To
 										<span>{{ displayedReport.untilDate | date:dateFormat }}</span>
 									</div>
-									<br>
 									<div ng-if="chosenReport.chosenCico">
 										Transaction type
 										<span>{{ transcationTypes }}</span>
