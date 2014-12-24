@@ -413,6 +413,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 					if ( _notes && _notes.length ) {
 						_eachItem.rowspan = _notes.length + 1;
+					} else {
+						_eachItem.addCls = 'row-break';
 					};
 					_retResult.push( _eachItem );
 
@@ -420,6 +422,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 						for (k = 0, l = _notes.length; k < l; k++) {
 							_eachNote        = angular.copy( _notes[k] );
 							_eachNote.isNote = true;
+							if (k == l - 1) {
+								_eachNote.addCls = 'row-break';
+							};
 							_retResult.push( _eachNote );
 						};
 					};
@@ -433,11 +438,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_retResult.push( _eachItem );
 
 						_cancelRes = {
+							addCls   : 'row-break',
 							isCancel : true,
 							reason   : angular.copy( apiResponse[i]['cancel_reason'] )
 						};
 						_retResult.push( _cancelRes );
 					} else {
+						_eachItem.addCls = 'row-break';
 						_retResult.push( _eachItem );
 					}
 				};

@@ -629,6 +629,14 @@ table {
                             &:first-child { min-width: 2.5cm; }
 
                             &[rowspan] { border-bottom: 1px solid @grey2; }
+
+                            &.is-note {
+                                color: @grey3;
+
+                                strong {
+                                    color: @textColor;
+                                }
+                            }
                         }
 
                         &.row-break {
