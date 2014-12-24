@@ -113,8 +113,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				};
 			}
 
-			//skip sending messages if no mail id is provided and go to the next screen
-			if (!$scope.otherData.additionalEmail && !$scope.reservationData.guest.email) {
+			// skip sending messages if no mail id is provided or none of the emails are checked, go to the next screen
+			if ((!$scope.otherData.additionalEmail && !$scope.reservationData.guest.email) || (!$scope.otherData.isGuestPrimaryEmailChecked && !$scope.otherData.isGuestAdditionalEmailChecked)) {
 				$scope.reservationStatus.confirmed = true;
 				updateBackButton();
 				return false;
@@ -134,10 +134,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 
 			postData.emails = [];
-			if (!!$scope.reservationData.guest.email)
+			if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked)
 				postData.emails.push($scope.reservationData.guest.email);
 
-			if (!!$scope.otherData.additionalEmail)
+			if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked)
 				postData.emails.push($scope.otherData.additionalEmail);
 
 			if ($scope.reservationData.isHourly) {
