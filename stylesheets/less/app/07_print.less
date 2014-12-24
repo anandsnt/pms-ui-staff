@@ -39,13 +39,56 @@ h4, .h4 { page-break-after: avoid; }
 q {quotes: none}
 q:before, q:after {content: ""}
 
+table {
+    margin: 0;
+    width: 100%;
+    text-transform: uppercase;
+    table-layout: auto;
+    border-collapse: collapse; 
+    border-spacing: 0;
+
+    tr {
+        page-break-after: auto;
+        page-break-inside: avoid;
+
+        th { white-space: normal; }
+
+        th,
+        td {
+            font-size: 10pt;
+            line-height: 1em;
+            vertical-align: top;
+            text-align: left;
+            page-break-after: auto;
+            page-break-inside: avoid;
+            white-space: normal;
+            padding: 8pt 4pt;
+        }
+
+        td { border-bottom: 1px solid @grey2; }
+    }
+
+    thead {
+        tr {
+           th {
+                font-weight: 600;
+                background: @grey1;
+            } 
+        }
+    }
+
+    tfoot {
+        td { border-bottom: 0; }
+    }
+}
+
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
 /* 4. LAYOUT
 ==========================================================*/
-	
-/* App screens				==============================*/
-	.container {
+    
+/* App screens              ==============================*/
+    .container {
         position: static;
         top: 0 !important; 
         left: 0 !important;
@@ -119,8 +162,8 @@ q:before, q:after {content: ""}
     .iScrollVerticalScrollbar,
     .iScrollHorizontalScrollbar { .hide; }
 
-/* Nav Bar 					==============================*/
-	.nav-bar {
+/* Nav Bar                  ==============================*/
+    .nav-bar {
         position: relative;
         height: auto;
         padding: 0;
@@ -404,85 +447,232 @@ q:before, q:after {content: ""}
         &.fullscreen { .show; }
     }
 
-/* Reports 					==============================*/
-	#reports { .hide; }
-	
-	#report-update { .hide; }
+/* Reports                  ==============================*/
+    #reports,
+    #report-update { .hide; }
 
-	#reports-details-wrap {
-		position: static !important;
-		height: auto !important;
-		overflow: auto !important;
-		background: transparent !important;
-	}
+    #report-details {
+        position: static !important;
+        height: auto !important;
+        overflow: auto !important;
+        background: transparent !important;
 
-	#report-details {
-		position: static !important;
-		height: auto !important;
-		overflow: auto !important;
-		background: transparent !important;
+        .report-header { .hide; }
 
-		.report-header { .hide; }
+        .report-totals { 
+            margin-bottom: 1em;
+            clear: both;
+            .float;
 
-		.report-totals { 
+            ul {
+                li {
+                    font-size: 10pt;
+                    line-height: 12pt;
+                    margin: 0 16pt 0 0;
+                    color: @grey3;
+                    text-transform: uppercase;
+                    .pull-left;
 
-			padding: .3cm 0;
-			margin: 0 .5cm .75cm;
-			border-top: 2px solid rgba(0,0,0,.1);
+                    span {
+                        font-size: 24pt;
+                        line-height: 1em;
+                        font-weight: 300;
+                        color: @textColor;
+                        .show;
 
-			ul li {
-				font-size: 13px;
-			}
-		}
+                        &.green { font-weight: 600; color: @green; }
+                        &.red { font-weight: 600; color: @red; }
+                        &.orange { font-weight: 600; color: @logoPrimary; }
+                    }
 
-		.report-content {
-			height: auto !important;
+                    &.sub { color: @grey3; }
+                    &:last-child { margin-right: 0; }
+                }
 
-			> .wrapper { padding: 0; }
+                &.col2 {
+                    &:nth-child(2) {
+                        li { 
+                            .pull-right; 
 
-			table {
-				table-layout: fixed;
-				border-collapse: collapse; 
-				margin-bottom: 0;
+                            &:first-child { margin-right: 0; }
+                            &:last-child { margin-right: 16pt; }
+                        }
+                    }
+                }
+            }
+        }
 
-				tr {	
-					page-break-after: always;
-					page-break-inside: avoid;
-						
-					th,
-					td {
-						page-break-after:always !important;
-						page-break-inside: avoid !important;
-						white-space: normal !important;
-						overflow: visible !important;
-						vertical-align: top !important;
-						background: transparent !important;
-						line-height: 1.1;
-						padding: .2cm 1cm .2cm 0;
-						border-bottom: 1px solid rgba(0,0,0,.1);
-						min-width: 15%;
-						max-width: 30%;
-						width: 30%;
-						word-break: break-all;
-					}
-				}
+        .report-content {
 
-				tfoot {
-					tr {
-						td {
-							color: @grey3;
-							border-bottom: 0;
-							padding-top: .5cm;
+            table {
+                thead {
+                    tr {
+                        &.bottom-row {
+                            th {
+                                font-weight: 400;
+                                color: @grey3;
+                                background: transparent;
+                                border-bottom: 1px solid @grey3;
+                            }
+                        }
+                    }
+                }
 
-							span { color: @textColor; }
+                tfoot {
+                    tr {
+                        td {
+                            font-size: 8pt;
+                            line-height: 10pt;
+                            color: @grey3;
+                            span { color: @textColor; }
 
-							.pagination { .hide(); }
-						}
-					}
-				}
-			}
-		}
-	}
+                            .pagination { .hide; }                            
+
+                            &:last-child { text-align: right; }
+                        }
+                        
+                        &.totals {
+                            td { 
+                                font-size: 10pt;
+                                line-height: 1em;
+                                font-weight: 600;
+                                color: @textColor;
+                                border-top: 1px solid @grey2;
+                            }  
+                        }
+                    }
+                }
+
+                &.guest-reports {
+
+                    tr {
+                        th { 
+                            &.room { width: 2.5cm; }
+                            &.name { width: 5cm; }
+                            &.date { width: 7cm; }
+                        }
+
+                        td {
+                            font-weight: 600;
+                            border-bottom: 0;
+
+                            strong {
+                                font-weight: 600;
+                                .show;
+
+                                &.title {
+                                    font-size: 12pt;
+                                    font-weight: 700;
+                                    text-transform: none;
+                        
+                                    &.unassigned { color: @grey3; }
+                                }
+                            }
+
+                            .confirmation { margin-right: 5px; }
+
+                            .status {
+                                .show;
+
+                                &.red { color: @red; }
+                            }
+
+                            .penalty { color: @red; }
+
+                            .vip {
+                                font-size: 10pt;
+                                line-height: 1em;
+                                font-weight: 400;
+                                text-align: left;
+                                background: transparent;
+                                color: darken(@yellow, 10);
+                                margin-left: 5px;
+                                .size(auto);
+                            }
+
+                            .arrival-departure,
+                            .departing {
+                                .size(30px, 3cm);
+                                .pull-left;
+
+                                .guest-status { 
+                                    margin-right: 5px;
+                                    .square(30px); 
+                                }
+
+                                time {      
+                                    span { .show; }
+                                }
+                            }
+
+                            .arrival-departure { margin-right: 10px; }
+
+                            .hours {
+                                font-size: 18px;
+                                line-height: 30px;
+                                font-weight: 600;
+                                text-align: center;
+                                border: 1px solid @textColor;
+                                margin-left: 10px;
+                                .square(30px);
+                                .pull-left;
+                            }
+
+                            .room,
+                            .rate {
+                                text-align: right;
+                                .show;
+
+                                strong { display: inline; }
+                            }
+
+                            &:first-child { min-width: 2.5cm; }
+
+                            &[rowspan] { border-bottom: 1px solid @grey2; }
+
+                            &.is-note {
+                                color: @grey3;
+                                font-weight: 400;
+
+                                strong {
+                                    color: @textColor;
+                                }
+
+                                > span {
+                                    display: block;
+                                }
+
+                                .note-by-name {
+                                    display: inline !important;
+                                }
+                            }
+                        }
+
+                        &.row-break {
+                            td { 
+                                border-bottom: 1px solid @grey2; 
+
+                                &[colspan] {
+                                    color: @grey3;
+                                    text-transform: none;
+                                    padding-top: 0;
+                                    font-weight: 400;
+
+                                    strong { 
+                                        color: @textColor;
+                                        text-transform: uppercase;
+                                        font-weight: 600;
+
+                                        &.red { color: @red; }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 /* Work Management          ==============================*/
     #worksheet-content {
@@ -952,34 +1142,7 @@ q:before, q:after {content: ""}
 
                 /* 3rd level **/
                 .grid-items {
-                    margin: 0;
-                    width: 100%;
-                    text-transform: uppercase;
-                    table-layout: auto;
-                    border-collapse: collapse; 
-                    border-spacing: 0;
                     .hide;
-
-                    tr {
-                        page-break-after: always;
-                        page-break-inside: avoid;
-
-                        th { white-space: normal; }
-
-                        th,
-                        td {
-                            font-size: 10pt;
-                            line-height: 1em;
-                            vertical-align: top;
-                            text-align: left;
-                            page-break-after: always;
-                            page-break-inside: avoid;
-                            white-space: normal;
-                            padding: 8pt 4pt;
-                        }
-
-                        td { border-bottom: 1px solid @grey3; }
-                    }
 
                     thead {
                         th { 
@@ -1020,12 +1183,6 @@ q:before, q:after {content: ""}
                 .pull-left;
 
                 .shift-details {
-                    margin: 0;
-                    width: 100%;
-                    text-transform: uppercase;
-                    table-layout: auto;
-                    border-collapse: collapse; 
-                    border-spacing: 0;
 
                     caption {
                         font-size: 10pt;
@@ -1038,32 +1195,20 @@ q:before, q:after {content: ""}
                     }
 
                     tr {
-                        page-break-after: always;
-                        page-break-inside: avoid;
 
                         th,
                         td { 
-                            font-size: 10pt;
                             line-height: 18pt; 
-                            vertical-align: top;
-                            text-align: left;
-                            page-break-after: always;
-                            page-break-inside: avoid;
-                            white-space: normal;
-                            padding: 8pt 4pt;
+                            border-bottom: 1px solid @grey3;
                         }
 
-                        th { 
-                            width: 80%; 
-                            white-space: normal;
-                        }
+                        th { width: 80%; }
 
                         td {
                             width: 20%;
                             font-size: 18pt;
                             font-weight: 600;
                             text-align: right;
-                            border-bottom: 1px solid @grey3;
 
                             &.entry { 
                                 font-size: 10pt;
@@ -1179,33 +1324,11 @@ q:before, q:after {content: ""}
                     .show;
 
                     table {
-                        margin: 0;
-                        width: 100%;
-                        text-transform: uppercase;
-                        table-layout: auto;
-                        border-collapse: collapse; 
-                        border-spacing: 0;
+                        th,
+                        td { font-size: 9pt; }
 
-                        tr {
-                            page-break-after: auto;
-                            page-break-inside: avoid;
-
-                            th { 
-                                white-space: normal; 
-                                font-weight: 600;
-                            }
-
-                            th,
-                            td {
-                                font-size: 9pt;
-                                line-height: 1em;
-                                vertical-align: top;
-                                text-align: left;
-                                page-break-after: auto;
-                                page-break-inside: avoid;
-                                white-space: normal;
-                            }
-                        }
+                        th { font-weight: 600; }
+                        td { border-bottom: 0; }
                     }
 
                     .invoice-logo {
