@@ -44,7 +44,7 @@
 			<label>Credit Card (<span>Tap to change</span>)</label>
 			<label class="active-item item-payment" id="pay-with-amex">
 				<figure class="card-logo">
-					<img src="/assets/{{renderData.creditCardType}}.png" alt="">
+					<img ng-src="/assets/{{renderData.creditCardType}}.png" alt="">
 				</figure>
 				<span class="number">Ending with 
 					<span class="value number">{{renderData.endingWith}}</span>
@@ -90,7 +90,7 @@
 		</div>
     </div>
 </form>
-<div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
+<div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;" ng-cloak>
 	<div class="centeralign alert-box">
 		WAITING FOR PAYMENT COMPLETION 
 	</div>

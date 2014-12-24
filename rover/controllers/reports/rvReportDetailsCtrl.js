@@ -18,37 +18,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
-
-		// faux select init
-		$scope.fauxSelectOpen = false;
-		$scope.fauxTitle      = 'Select';
-		$scope.fauxSelectClicked = function(e) {
-			var selectCount = 0;
-
-			if ( !!e ) {
-				e.stopPropagation();
-				$scope.fauxSelectOpen = $scope.fauxSelectOpen ? false : true;
-			};
-			
-			if ( $scope.chosenReport.chosenIncludeNotes ) {
-				selectCount++;
-				$scope.fauxTitle = $scope.chosenReport.hasIncludeNotes.description;
-			};
-			if ( $scope.chosenReport.chosenIncludeCancelled ) {
-				selectCount++;
-				$scope.fauxTitle = $scope.chosenReport.hasIncludeCancelled.description;
-			};
-			if ( $scope.chosenReport.chosenIncludeVip ) {
-				selectCount++;
-				$scope.fauxTitle = $scope.chosenReport.hasIncludeVip.description;
-			};
-
-			if (selectCount > 1) {
-				$scope.fauxTitle = selectCount + ' Selected';
-			} else if ( selectCount == 0 ) {
-				$scope.fauxTitle = 'Select';
-			};
-		};
 		
 		// common methods to do things after fetch report
 		var afterFetch = function() {
@@ -61,21 +30,20 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.chosenReport = RVreportsSrv.getChoosenReport();
 			
-			$scope.setTitle( $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title );
-			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title;
+			$scope.setTitle( $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '') );
+			$scope.$parent.heading = $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '');
 
 			// reset this
 			$scope.parsedApiFor = undefined;
 
-			// re-init faux select
-			$scope.fauxSelectClicked();
-
-			// is this guest reports
+			// is this guest reports or not
 			if ( $scope.chosenReport.title == 'Arrival' ||
 					$scope.chosenReport.title == 'Cancelation & No Show' ||
 					$scope.chosenReport.title == 'Departure' ||
 					$scope.chosenReport.title == 'In-House Guests' ) {
 				$scope.isGuestReport = true;
+			} else {
+				$scope.isGuestReport = false;
 			};
 
 			// for hard coding styles for report headers
@@ -200,7 +168,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 			// new more detailed reports
-			if ( $scope.chosenReport.title === 'In-House Guests' || $scope.chosenReport.title === 'Arrival' || $scope.chosenReport.title === 'Departure' ) {
+			if ( $scope.chosenReport.title === 'In-House Guests' ||
+					$scope.chosenReport.title === 'Arrival' ||
+					$scope.chosenReport.title === 'Departure' ||
+					$scope.chosenReport.title === 'Cancelation & No Show' ) {
 				$scope.parsedApiFor = $scope.chosenReport.title;
 				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 			};
@@ -427,18 +398,21 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var _retResult = [],
 				_eachItem  = {},
 				_notes     = [],
-				_eachNote  = {};
+				_eachNote  = {},
+				_cancelRes = {};
 
 			var i = j = k = l = 0;
 
-			if ( $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Departure' ) {
+			if ( $scope.parsedApiFor === 'Arrival' ||
+					$scope.parsedApiFor == 'In-House Guests' ||
+					$scope.parsedApiFor == 'Departure' ) {
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					
 					_eachItem = angular.copy( apiResponse[i] );
 					_notes    = angular.copy( apiResponse[i]['notes'] );
 
 					if ( _notes && _notes.length ) {
-						_eachItem.rowspan = 2;
+						_eachItem.rowspan = _notes.length + 1;
 					};
 					_retResult.push( _eachItem );
 
@@ -450,8 +424,26 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 				};
-			};
+			} else if ( $scope.parsedApiFor == 'Cancelation & No Show' ) {
+				for (i = 0, j = apiResponse.length; i < j; i++) {
+					_eachItem  = angular.copy( apiResponse[i] );
 
+					if ( !!apiResponse[i]['cancel_reason'] ) {
+						_eachItem.rowspan = 2;	// since there will alway be just one cancel reason entry
+						_retResult.push( _eachItem );
+
+						_cancelRes = {
+							isCancel : true,
+							reason   : angular.copy( apiResponse[i]['cancel_reason'] )
+						};
+						_retResult.push( _cancelRes );
+					} else {
+						_retResult.push( _eachItem );
+					}
+				};
+			} else {
+				_retResult = apiResponse;
+			}
 
 			return _retResult;
 		};

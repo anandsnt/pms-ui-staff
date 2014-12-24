@@ -263,8 +263,9 @@ var creditCardTypes = {
 };
 
 function getCreditCardType(cardBrand){
-    var card = cardBrand.toUpperCase();
-    return creditCardTypes[card];
+    var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
+    var cardArray = ['AX','DC','DS','JCB','MC','VA'];
+    return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
 }
 
 
