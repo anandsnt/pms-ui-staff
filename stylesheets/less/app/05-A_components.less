@@ -6768,13 +6768,20 @@
 
                                 &.is-note {
                                     color: @grey3;
+                                    font-weight: 400;
 
                                     strong {
                                         color: @textColor;
-                                        span {
-                                            display: inline !important;
-                                        }
                                     }
+
+                                    > span {
+                                        display: block;
+                                    }
+
+                                    .note-by-name {
+                                        display: inline !important;
+                                    }
+
                                 }
                             }
 

@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index" class="{{ each.addCls }}">
+<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
 	<td ng-if="!each.isNote" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<strong ng-if="each.room_no" class="title">{{ each.room_no }}</strong>
 		<strong ng-if="!each.room_no" class="title unassigned">N/A</strong>
@@ -10,14 +10,14 @@
 	</td>
 	<td ng-if="!each.isNote">
 		<div class="arrival-departure">
-			<span class="guest-status check-in">check-in</span>
+			<span class="guest-status check-in" ng-class="{ 'cancel': (each.status =='Canceled') }">check-in</span>
 			<time>
 				<span>{{ each.arrival_date | date : dateFormat }}</span>
 				<span>{{ each.arrival_time }}</span>
 			</time>
 		</div>
 		<div class="departing">
-			<span class="guest-status check-out">check-out</span>
+			<span class="guest-status check-out" ng-class="{ 'cancel': (each.status =='Canceled') }">check-out</span>
 			<time>
 				<span>{{ each.departure_date | date : dateFormat }}</span>
 				<span>{{ each.departure_time }}</span>
@@ -30,8 +30,14 @@
 		<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
 	</td>
 
-	<td ng-if="each.isNote" colspan="3">
-		<strong><time>{{ each.date | date : dateFormat }}</time> &#8226; <span>{{ each.name }}</span></strong>
+	<td ng-if="each.isCancel" class="is-note" colspan="3">
+		<strong class="red">Cancellation Reason</strong>
+		<span>{{ cancel_reason }}</span>
+	</td>
+
+	<td ng-if="each.isNote" class="is-note" colspan="3">
+		<strong ng-if="each.isHeading">Notes</strong>
+		<span><time>{{ each.date | date : dateFormat }}</time><span ng-if="each.name" class="note-by-name"> &#8226; {{ each.name }}</span></span>
 		<span>{{ each.note }}</span>
 	</td>
 </tr>

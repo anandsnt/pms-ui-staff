@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index" class="{{ each.addCls }}">
+<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
 	<td ng-if="!each.isNote" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<strong class="title">{{ each.room_no }}</strong>
 		<span class="status">{{ each.status }}</span>
@@ -30,8 +30,14 @@
 		<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
 	</td>
 
+	<td ng-if="each.isCancel" class="is-note" colspan="3">
+		<strong class="red">Cancellation Reason</strong>
+		<span>{{ cancel_reason }}</span>
+	</td>
+
 	<td ng-if="each.isNote" class="is-note" colspan="3">
-		<strong><time>{{ each.date | date : dateFormat }}</time><span ngif="each.name"> &#8226; {{ each.name }}</span></strong>
+		<strong ng-if="each.isHeading">Notes</strong>
+		<span><time>{{ each.date | date : dateFormat }}</time><span ng-if="each.name" class="note-by-name"> &#8226; {{ each.name }}</span></span>
 		<span>{{ each.note }}</span>
 	</td>
 </tr>

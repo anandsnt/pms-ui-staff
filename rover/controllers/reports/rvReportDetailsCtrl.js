@@ -395,62 +395,78 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// since API response and Template Design are 
 		// trying to F*(|< each others A$/
 		function $_parseApiToTemplate (apiResponse) {
-			var _retResult = [],
-				_eachItem  = {},
-				_notes     = [],
-				_eachNote  = {},
-				_cancelRes = {};
+			var _retResult   = [],
+				_eachItem    = {},
+				_eachNote    = {},
+				_cancelRes   = {},
+				_customItems = [];
 
-			var i = j = k = l = 0;
+			var i = j = k = l = m = n = 0;
 
-			if ( $scope.parsedApiFor === 'Arrival' ||
+			if ( $scope.parsedApiFor == 'Arrival' ||
 					$scope.parsedApiFor == 'In-House Guests' ||
-					$scope.parsedApiFor == 'Departure' ) {
-				for (i = 0, j = apiResponse.length; i < j; i++) {
-					
-					_eachItem = angular.copy( apiResponse[i] );
-					_notes    = angular.copy( apiResponse[i]['notes'] );
+					$scope.parsedApiFor == 'Departure' ||
+					$scope.parsedApiFor == 'Cancelation & No Show' ) {
 
-					if ( _notes && _notes.length ) {
-						_eachItem.rowspan = _notes.length + 1;
-					} else {
-						_eachItem.addCls = 'row-break';
+				for (i = 0, j = apiResponse.length; i < j; i++) {
+					_eachItem    = angular.copy( apiResponse[i] );
+					_customItems = [];
+					_cancelRes   = {};
+					_eachNote    = {};
+
+					// first check for cancel reason
+					// if so then create a custom entry
+					// and push to '_customItems'
+					if ( !!_eachItem['cancel_reason'] ) {
+						_cancelRes = {
+							isCancel : true,
+							reason   : angular.copy( _eachItem['cancel_reason'] )
+						};
+						_customItems.push( _cancelRes );
 					};
+
+					// second check for notes
+					// if so then create a custom entry for
+					// each note and push each to '_customItems'
+					if ( !!_eachItem['notes'] && !!_eachItem['notes'].length ) {
+						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
+							_eachNote        = angular.copy( _eachItem['notes'][k] );
+							_eachNote.isNote = true;
+							if ( k == 0 ) {
+								_eachNote.isHeading = true;
+							};
+							_customItems.push( _eachNote );
+						};
+					};
+
+					// since this tr won't have any (figuritive) childs
+					if ( !_customItems.length ) {
+						_eachItem.trCls = 'row-break';
+					};
+
+					// if we found custom items
+					// set row span for the parent tr a rowspan
+					// mark the class that must be added to the last tr
+					if ( !!_customItems.length ) {
+						_eachItem.rowspan = _customItems.length + 1;
+						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
+					};
+
+					// push '_eachItem' into '_retResult'
 					_retResult.push( _eachItem );
 
-					if ( _notes && _notes.length ) {
-						for (k = 0, l = _notes.length; k < l; k++) {
-							_eachNote        = angular.copy( _notes[k] );
-							_eachNote.isNote = true;
-							if (k == l - 1) {
-								_eachNote.addCls = 'row-break';
-							};
-							_retResult.push( _eachNote );
-						};
+					// push each item in '_customItems' in ot '_retResult'
+					for (m = 0, n = _customItems.length; m < n; m++) {
+						_retResult.push( _customItems[m] );
 					};
-				};
-			} else if ( $scope.parsedApiFor == 'Cancelation & No Show' ) {
-				for (i = 0, j = apiResponse.length; i < j; i++) {
-					_eachItem  = angular.copy( apiResponse[i] );
-
-					if ( !!apiResponse[i]['cancel_reason'] ) {
-						_eachItem.rowspan = 2;	// since there will alway be just one cancel reason entry
-						_retResult.push( _eachItem );
-
-						_cancelRes = {
-							addCls   : 'row-break',
-							isCancel : true,
-							reason   : angular.copy( apiResponse[i]['cancel_reason'] )
-						};
-						_retResult.push( _cancelRes );
-					} else {
-						_eachItem.addCls = 'row-break';
-						_retResult.push( _eachItem );
-					}
 				};
 			} else {
 				_retResult = apiResponse;
-			}
+			};
+
+			// dont remove
+			console.log( 'API reponse changed as follows: ');
+			console.log( _retResult );
 
 			return _retResult;
 		};
