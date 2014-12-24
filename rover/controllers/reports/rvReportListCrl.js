@@ -203,7 +203,7 @@ sntRover.controller('RVReportListCrl', [
                 };
                 
                 // set the from and untill dates as business date (which is untilDate)
-                if ( reportList[i].title == 'Arrival' ) {
+                if ( reportList[i].title == 'Arrival' || reportList[i].title == 'Departure' ) {
                     reportList[i].fromDate  = untilDate;
                     reportList[i].untilDate = untilDate;
                 } else {
