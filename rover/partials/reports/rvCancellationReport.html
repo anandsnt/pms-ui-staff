@@ -1,37 +1,37 @@
-<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': each.isNote }">
-	<td ng-if="!each.isNote" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
+<tr ng-repeat="each in results track by $index" ng-class="{ 'row-break': each.isCancel }">
+	<td ng-if="!each.isCancel" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<span class="status red">{{ each.cancel_date }}</span>
         <span class="penalty">{{ currencySymbol }}{{ each.cancel_penalty }}</span>
 	</td>
-	<td ng-if="!each.isNote">
+	<td ng-if="!each.isCancel">
 		<strong class="title">{{ each.name }}</strong>
 		<span class="confirmation">{{ each.confirm_no }}</span>
-		<span ng-if="is_vip === 'Y'"> &#8226; <span class="vip">VIP</span></span>
+		<span ng-if="each.is_vip"> &#8226; <span class="vip">VIP</span></span>
 	</td>
-	<td ng-if="!each.isNote">
+	<td ng-if="!each.isCancel">
 		<div class="arrival-departure">
 			<span class="guest-status" ng-class="{ 'cancel': (each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
 			<time>
-				<span>{{ each.arrival_date }}</span>
+				<span>{{ each.arrival_date | date : dateFormat }}</span>
 				<span>{{ each.arrival_time }}</span>
 			</time>
 		</div>
 		<div class="departing">
 			<span class="guest-status" ng-class="{ 'cancel': (each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
 			<time>
-				<span>{{ each.departure_date }}</span>
+				<span>{{ each.departure_date | date : dateFormat }}</span>
 				<span>{{ each.departure_time }}</span>
 			</time>
 		</div>
 		<div ng-if="each.hours" class="hours">{{ each.hours }}</div> 
 	</td>
-	<td ng-if="!each.isNote">
+	<td ng-if="!each.isCancel">
 		<span class="room">{{ each.room_type }}</span>
 		<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
 	</td>
 
-	<td ng-if="each.isNote" colspan="3">
+	<td ng-if="each.isCancel" colspan="3">
 		<strong class="red">Cancellation Reason</strong>
-		<span>{{ reason }}</span>
+		<span>{{ cancel_reason }}</span>
 	</td>
 </tr>
