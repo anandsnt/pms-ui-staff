@@ -8,7 +8,7 @@
     </div>  
     <span class="span-to"> To </span>
     <div class="has-datepicker">
-        <input id="chosenReportUntilCancelDate" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilCancelDate" readonly>
+        <input id="chosenReportToCancelDate" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilCancelDate" readonly>
         <button ng-if="chosenReport.title == 'Cancelation & No Show'" ng-show="chosenReport.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')" style="background: #9d9d9d;">Clear query</span>
         </button>

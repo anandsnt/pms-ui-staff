@@ -163,7 +163,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.displayedReport.fromDate  = $( '#chosenReportFromDate' ).val();
 				$scope.displayedReport.untilDate = $( '#chosenReportToDate' ).val();
 				$scope.displayedReport.fromCancelDate  = $( '#chosenReportFromCancelDate' ).val();
-				$scope.displayedReport.untilCancelDate = $( '#chosenReportToCancelDate' ).val();
+				$scope.displayedReport.untilCancelDate = $( '#chosenReportUntilCancelDate' ).val();
 			}, 100);
 
 
