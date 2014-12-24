@@ -31,18 +31,30 @@ var TimelineResizeGrip = React.createClass({
 			px_per_ms = 			display.px_per_ms,
 			model = 				state.currentResizeItem, 
 			direction = 			props.itemProp,
+			newValue = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000,
 			opposite =      		((direction === 'departure') ? 'arrival' : 'departure'),
-			isResizable=			this.__whetherResizable(),
+			isResizable=			this.__whetherResizable( opposite, newValue),
 			last_left;
 
 		e.stopPropagation();
 		e.preventDefault();
 		
 		if(!isResizable){
+			newValue = model[direction];
+			/*console.log('yera');
 			props.iscroll.timeline.enable();
 			document.removeEventListener('mouseup', this.__onMouseUp);
-			document.removeEventListener('mousemove', this.__onMouseMove);			
-			return false;
+			document.removeEventListener('mousemove', this.__onMouseMove);	
+			this.setState({
+				mouse_down: 		false,
+				resizing: 			false,
+				currentResizeItem: 	model
+			}, function() {
+				props.__onResizeEnd(state.row, model);
+
+				//props.__onResizeCommand(model);
+			});		*/
+			
 		}
 
 		if(!state.resizing &&
@@ -61,7 +73,7 @@ var TimelineResizeGrip = React.createClass({
 			last_left = model[direction];
 
 			//if(Math.abs(model[direction]-model[opposite]) >= props.display.min_hours * 3600000) {
-			model[direction] = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000; 
+			model[direction] = newValue; 
 			
 			//if(Math.abs(model[direction]-model[opposite]) < props.display.min_hours * 3600000) {
 			//	model[direction] = last_left;
@@ -112,14 +124,23 @@ var TimelineResizeGrip = React.createClass({
 		e.stopPropagation();
 		e.preventDefault();
 	},
-	__whetherResizable: function(){
+	__whetherResizable: function(opposite, value){
 		var props = 				this.props,
 			state =					this.state,
 			original_item = 		state.currentResizeItem,
 			direction = 			props.itemProp.toUpperCase(),
-			reservation_status = 	original_item.reservation_status.toUpperCase();
-
-		if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
+			fifteenMin =			900000,
+			reservation_status = 	original_item.reservation_status.toUpperCase(),
+			difference	= (opposite == 'departure' ? (original_item[opposite] - value) :(value - original_item[opposite]) );
+		
+		if((difference) < (fifteenMin)) {
+			
+			return false;
+		}
+		
+		 
+		
+		else if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
 			reservation_status === "AVAILABLE" )) {
 			return true;
 		}
@@ -128,7 +149,7 @@ var TimelineResizeGrip = React.createClass({
 		}
 		else if((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "ARRIVAL"){
 			return false;
-		}
+		}		
 		return false;
 	},	
 	getDefaultProps: function() {

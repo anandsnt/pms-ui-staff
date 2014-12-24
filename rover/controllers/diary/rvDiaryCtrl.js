@@ -360,6 +360,9 @@ sntRover
 				    		var x_n = payload.display.x_n instanceof Date ? payload.display.x_n : new Date(payload.display.x_n);
 				    		x_n.setHours(0, 0, 0);
 				    		var x_origin = row_item_data.arrival;
+				    		console.log('-------')
+				    		console.log(new Date(row_item_data.arrival));
+				    		console.log(new Date(row_item_data.departure));
 				    		$scope.gridProps.edit.reset_scroll = {
 	    						'x_n'      : x_n.getTime(),
 	    						'x_origin' : x_origin
@@ -559,7 +562,7 @@ sntRover
 
 		    $scope.onDragStart = function(room, reservation) {
 		    	$scope.errorMessage = '';
-		    	this.availability.drag.lastRoom = room;
+		    	this.availability.drag.lastRoom = util.copyRoom(room);
 		    	prevRoom = room;
 		    	prevTime = reservation[meta.occupancy.start_date];
 		    	if($scope.gridProps.edit.active) {
@@ -577,7 +580,7 @@ sntRover
 				    		util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
 							$scope.renderGrid();
 						}
-						$scope.gridProps.currentResizeItemRow = nextRoom;
+						$scope.gridProps.currentResizeItemRow = util.copyRoom(nextRoom);
 						
 				    					    					    			    								    							
 						resizeEndForExistingReservation (nextRoom, reservation);																														
@@ -600,7 +603,8 @@ sntRover
 
 			//if API returns that move is not allowed then we have to revert back	    		
 	    	if(!avData.is_available){	    		
-	    		if(!lastArrTime && !lastDepTime) {	    			
+	    		if(!lastArrTime && !lastDepTime) {
+	    			console.log('yeah here 1');	    			
 	    			//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
 					if(props.currentResizeItemRow.id !== oRowItem.id){
 						util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);
@@ -617,15 +621,16 @@ sntRover
 					if(roomIndex != -1) {
 						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), oItem.reservation_id);
 						if(occupancyIndex != -1){
-							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = this.currentResizeItem;
+							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = util.copyReservation( this.currentResizeItem);
 						}
-					}	
-					this.currentResizeItemRow = oRowItem;							
+					}
+					console.log(new Date(oItem.arrival));
+					this.currentResizeItemRow = util.copyRoom(oRowItem);							
 					this.currentResizeItem.arrival = oItem.arrival;
 	    			this.currentResizeItem.departure = oItem.departure;
 	    		}
 	    		else{	    			
-	    			
+	    			console.log('yeah here 2');	
 	    			//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
 					if(props.currentResizeItemRow.id !== this.availability.drag.lastRoom.id){
 						util.reservationRoomTransfer(this.data, this.availability.drag.lastRoom, props.currentResizeItemRow, props.currentResizeItem);
@@ -678,7 +683,7 @@ sntRover
 					}
 				}
 			}
-	    	this.availability.drag.lastRoom = this.currentResizeItemRow;
+	    	this.availability.drag.lastRoom = util.copyRoom(this.currentResizeItemRow);
 	    	$scope.renderGrid();
 	    }.bind($scope.gridProps);
 	    
@@ -885,8 +890,18 @@ sntRover
 
 
  		$scope.editCancel = function() {
-	    	var props = $scope.gridProps;	    	
-	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
+	    	var props = $scope.gridProps;
+	    	
+	    	roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.edit.originalRowItem.id);
+	    	data = $scope.gridProps.data;
+	    	console.log($scope.gridProps.data[roomIndex].arrival);
+	    	console.log('props.edit.originalItem');	 
+	    	console.log(props.edit.originalItem.arrival);
+	    	console.log('props.currentResizeItem');
+	    	console.log(props.currentResizeItem.arrival);
+	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);	    	
+
+
 	    	$scope.errorMessage = '';
 	    	$scope.resetEdit();
 	    	$scope.renderGrid();
