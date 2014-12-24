@@ -56,6 +56,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			onClose: function(value) {
 				$('#ui-datepicker-div');
 				$('#ui-datepicker-overlay').remove();
+				$scope.showCanRemoveDate();
 			},
 		};
 
@@ -71,6 +72,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			onClose: function(value) {
 				$('#ui-datepicker-div');
 				$('#ui-datepicker-overlay').remove();
+				$scope.showCanRemoveDate();
 			},
 		};
 
@@ -90,21 +92,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			onClose: function(value) {
 				$('#ui-datepicker-div');
 				$('#ui-datepicker-overlay').remove();
-			},
-		};
-
-		$scope.fromDateOptionsNoMax = {
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-			},
-			onClose: function(value) {
-				$('#ui-datepicker-div');
-				$('#ui-datepicker-overlay').remove();
+				$scope.showCanRemoveDate();
 			},
 		};
 
@@ -120,8 +108,37 @@ sntRover.controller('RVReportsMainCtrl', [
 			onClose: function(value) {
 				$('#ui-datepicker-div');
 				$('#ui-datepicker-overlay').remove();
+				$scope.showCanRemoveDate();
 			},
 		};
+
+
+
+
+		$scope.showCanRemoveDate = function() {
+			var cancellationReport = _.find($scope.reportList, function(item) {
+			    return item.title == 'Cancelation & No Show';
+			});
+
+			if ( !!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] ) {
+			    cancellationReport['canRemoveDate'] = true;
+			};
+
+			if ( !!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] ) {
+			    cancellationReport['canRemoveDate'] = true;
+			};
+		};
+
+		$scope.clearDateFromFilter = function(list, key1, key2) {
+			if ( list.hasOwnProperty(key1) && list.hasOwnProperty(key2) ) {
+				list[key1] = undefined;
+				list[key2] = undefined;
+				list['canRemoveDate'] = false;
+			};
+		};
+
+
+
 
 		// auto correct the CICO value;
 		var getProperCICOVal = function(type) {
@@ -209,16 +226,9 @@ sntRover.controller('RVReportsMainCtrl', [
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
 			var chosenReport = RVreportsSrv.getChoosenReport(),
-				fromDate     = chosenReport.fromDate,
-				untilDate    = chosenReport.untilDate,
 				changeView   = typeof changeView === 'boolean' ? changeView : true,
 				page         = !!loadPage ? loadPage : 1;
 				
-
-		    if ( !fromDate || !untilDate ) {
-		        return;
-		    };
-
 		    // create basic param
 		    var params = {
 		    	id       : chosenReport.id,
@@ -228,14 +238,14 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		    // include dates
 			if ( !!chosenReport.hasDateFilter ) {
-				params['from_date'] = $filter( 'date' )( fromDate, 'yyyy/MM/dd' );
-				params['to_date']   = $filter( 'date' )( untilDate, 'yyyy/MM/dd' );
+				params['from_date'] = $filter( 'date' )( chosenReport.fromDate, 'yyyy/MM/dd' );
+				params['to_date']   = $filter( 'date' )( chosenReport.untilDate, 'yyyy/MM/dd' );
 			};
 
 			// include cancel dates
 			if ( !!chosenReport.hasCancelDateFilter ) {
 				params['cancel_from_date'] = $filter( 'date' )( chosenReport.fromCancelDate, 'yyyy/MM/dd' );
-				params['cancel_to_date']   = $filter( 'date' )( chosenReport.untilCancelDate, 'yyyy/MM/dd' );
+				params['cancel_to_date']   = $filter( 'date' )( chosenReport.untilCancelDate, 'yyyy/MM/dd' );	
 			};
 
 			// include times
