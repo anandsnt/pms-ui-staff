@@ -363,7 +363,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	    // To print the current screen details.
 	    $scope.clickedPrintButton = function(){
-		
+			
+			// CICO-11667 to enable landscpe printing on transactions page.
+			$("#paper-orientation").addClass("print-landscape-mode");
+			
 			/*
 			 *	=====[ READY TO PRINT ]=====
 			 */
@@ -378,11 +381,16 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		        if ( sntapp.cordovaLoaded ) {
 		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		        };
+
+		        // Removing the class.
+		        $("#paper-orientation").removeClass("print-landscape-mode");
+
 		    }, 100);
 
 		    /*
 		     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
 		     */
+
 	    };
 
 }]);
