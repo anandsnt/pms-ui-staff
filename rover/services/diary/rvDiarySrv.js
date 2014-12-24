@@ -595,13 +595,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                  }
                              });
                         } 
-
+                        var start_date = time.toStartDate();
+                        var end_date = time.x_p;
+                        end_date.setHours(0,0,0);
                         $q.all([Maintenance.read(), 
                                 RoomType.read(), 
                                 InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                                 Room.read(),                                                                 
                                 Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
-                                AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
+                                AvailabilityCount.read(dateRange(start_date, end_date))])
                                 .then(function(data_array) {
                                     _.reduce([
                                           Maintenance, 

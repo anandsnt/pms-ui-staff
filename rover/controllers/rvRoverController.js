@@ -26,6 +26,19 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
+    //set current hotel details
+    $scope.currentHotelData = {
+      "name":"",
+      "id":""
+    };    
+    angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
+          if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id){
+             $scope.currentHotelData.name = hotel.hotel_name;
+             $scope.currentHotelData.id   = hotel.hotel_id;
+             $scope.hotelDetails.userHotelsData.hotel_list.splice(index,1);
+          };
+    });
+
 
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;
@@ -185,7 +198,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       return statesForDashbaord[$rootScope.default_dashboard];
     };
 
-    if ($rootScope.isStandAlone) {
+    if ($rootScope.isStandAlone && $rootScope.default_dashboard ==="MANAGER") {
       // OBJECT WITH THE MENU STRUCTURE
       $scope.menu = [{
           title: "MENU_DASHBOARD",
@@ -284,7 +297,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }, {
             title: "MENU_TASK_MANAGEMENT",
             action: "rover.workManagement.start",
-            menuIndex: "workManagement"
+            menuIndex: "workManagement",
+            hidden: $rootScope.isHourlyRateOn
+
           }, {
             title: "MENU_MAINTAENANCE",
             action: ""
@@ -775,30 +790,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       });
     };
     
+    $scope.redirectToHotel = function(hotel_id) {
+          RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
+            $('body').addClass('no-animation');
+            $window.location.href = "/staff";
+          }, function() {
+          });
+    };
+
     
-    // $scope.shouldShowWaiting = true;
-				// ngDialog.open({
-// 					
-					// template: '/assets/partials/reservation/rvWaitingDialog.html',
-					// className: 'ngdialog-theme-default',
-					// scope: $scope
-				// });
-// 				
-				// // RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
-					// // alert("success");
-					// // console.log(response);
-					// // $scope.shouldShowWaiting = false;
-				// // },function(){
-					// // alert("error");
-					// // $scope.shouldShowWaiting = false;
-					// // //$rootScope.netWorkError = true;
-					// // //$scope.isPosting = false;
-				// // });
-// // 				
-				// setTimeout(function(){
-					// ngDialog.close("firstDialog");
-				// }, 3000);
-//     
-    
-  }
-]);
+}]);

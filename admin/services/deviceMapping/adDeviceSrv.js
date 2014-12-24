@@ -3,12 +3,12 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
     * To fetch the list of device mapping
     * @return {object} mapping list json
     */
-	this.fetch = function(){
+	this.fetch = function(params){
 		
 		var deferred = $q.defer();
 		var url = '/api/workstations.json';
 
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

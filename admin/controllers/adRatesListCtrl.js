@@ -21,7 +21,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		var fetchSuccessOfHotelSettings = function(data){
 			if(data.pms_type !== null)
 				$scope.isConnectedToPMS = true;
-		}
+		};
 		$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
 	};
 	$scope.checkPMSConnection();
@@ -40,7 +40,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
             $defer.resolve($scope.data);
 		};
 		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);
-	}
+	};
 
 
 	$scope.loadTable = function(){
@@ -55,7 +55,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		        getData: $scope.fetchTableData
 		    }
 		);
-	}
+	};
 
 	$scope.loadTable();
 
@@ -76,7 +76,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		    }, 1000);
 		};
 		$scope.invokeApi(ADRatesSrv.importRates, {}, fetchSuccessOfItemList);
-	}
+	};
 
 	/**
 	* To fetch and display the rate popover
@@ -134,7 +134,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.mouseLeavePopover = function(){
 		$scope.popoverRates = {};
 		$scope.mouseEnterPopover = false;
-	}
+	};
 
 	/**
 	* To fetch the popover template for Based on popover

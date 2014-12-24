@@ -15,6 +15,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.refreshScroller( 'report-details-scroll' );
 			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
 		};
+
+		$scope.parsedApiFor = undefined;
+		$scope.currencySymbol = $rootScope.currencySymbol;
 		
 		// common methods to do things after fetch report
 		var afterFetch = function() {
@@ -27,9 +30,21 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.chosenReport = RVreportsSrv.getChoosenReport();
 			
-			$scope.setTitle( $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title );
-			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title;
+			$scope.setTitle( $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '') );
+			$scope.$parent.heading = $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '');
 
+			// reset this
+			$scope.parsedApiFor = undefined;
+
+			// is this guest reports or not
+			if ( $scope.chosenReport.title == 'Arrival' ||
+					$scope.chosenReport.title == 'Cancelation & No Show' ||
+					$scope.chosenReport.title == 'Departure' ||
+					$scope.chosenReport.title == 'In-House Guests' ) {
+				$scope.isGuestReport = true;
+			} else {
+				$scope.isGuestReport = false;
+			};
 
 			// for hard coding styles for report headers
 			// if the header count is greater than 4
@@ -125,8 +140,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			            headers[i] = 'Selected Late Check Out Time';
 			            break;
 			        };
-			    }
-			}
+			    };
+			};
 
 
 			// hack to set the colspan for reports details tfoot - 'Check In / Check Out' or 'Upsell'
@@ -144,10 +159,22 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// dirty hack to get the val() not model value
 			// delay as it cost time for ng-bindings
 			$timeout(function() {
-				$scope.displayedReport = {};
-				$scope.displayedReport.fromDate = $( '#chosenReportFrom' ).val();
-				$scope.displayedReport.untilDate = $( '#chosenReportTo' ).val();
+				$scope.displayedReport           = {};
+				$scope.displayedReport.fromDate  = $( '#chosenReportFromDate' ).val();
+				$scope.displayedReport.untilDate = $( '#chosenReportToDate' ).val();
+				$scope.displayedReport.fromCancelDate  = $( '#chosenReportFromDate' ).val();
+				$scope.displayedReport.untilCancelDate = $( '#chosenReportToDate' ).val();
 			}, 100);
+
+
+			// new more detailed reports
+			if ( $scope.chosenReport.title === 'In-House Guests' ||
+					$scope.chosenReport.title === 'Arrival' ||
+					$scope.chosenReport.title === 'Departure' ||
+					$scope.chosenReport.title === 'Cancelation & No Show' ) {
+				$scope.parsedApiFor = $scope.chosenReport.title;
+				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
+			};
 		};
 
 		// we are gonna need to drop some pagination
@@ -221,6 +248,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// fetch next page on pagination change
 		$scope.fetchNextPage = function(returnToPage) {
 			if ( !!returnToPage ) {
+				// should-we-change-view, specify-page, per-page-value
 				$scope.genReport( false, returnToPage );
 			} else {
 				// user clicked on current page
@@ -235,12 +263,38 @@ sntRover.controller('RVReportDetailsCtrl', [
 				currPage.active = false;
 				this.page.active = true;
 
+				// should-we-change-view, specify-page, per-page-value
 				$scope.genReport( false, this.page.no );
 			}
 		};
 
-		// fetch next page on pagination change
+		// refetch the report while sorting with..
+		// Note: we are resetting page to page #1
+		$scope.sortResultBy = function(sortBy) {
+			if ( !sortBy ) {
+				return;
+			};
+
+			// un-select sort dir of others
+			_.each($scope.chosenReport.sortByOptions, function(item) {
+				if ( item.value != sortBy.value ) {
+					item.sortDir = undefined;
+				};
+			});
+
+			// select sort_dir for clicked item
+			sortBy.sortDir = (sortBy.sortDir == undefined || sortBy.sortDir == false) ? true : false;
+
+			$scope.chosenReport.chosenSortBy = sortBy.value;
+
+			// should-we-change-view, specify-page, per-page-value
+			$scope.genReport( false, 1 );
+		};
+
+		// refetch the reports with new filter values
+		// Note: not resetting page to page #1
 		$scope.fetchUpdatedReport = function() {
+			// should-we-change-view, specify-page, per-page-value
 		    $scope.genReport( false );
 		};
 
@@ -261,6 +315,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		       $scope.returnToPage = currPage.no;
 		    }
 
+		    // should-we-change-view, specify-page, per-page-value
 		    $scope.genReport( false, 1, 1000 );
 		};
 
@@ -295,6 +350,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    }, 100);
 		};
 
+		$scope.emailReport = function() {
+			alert( 'Email Report API yet to be completed/implemented/integrated' );
+		};
+
+		$scope.saveFullReport = function() {
+			alert( 'Download Full Report API yet to be completed/implemented/integrated' );
+		};
+
 		var reportSubmit = $rootScope.$on('report.submit', function() {
 			afterFetch();
 			findBackNames();
@@ -326,5 +389,89 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
+
+
+		// parse API to template helpers
+		// since API response and Template Design are 
+		// trying to F*(|< each others A$/
+		function $_parseApiToTemplate (apiResponse) {
+			var _retResult   = [],
+				_eachItem    = {},
+				_eachNote    = {},
+				_cancelRes   = {},
+				_customItems = [];
+
+			var i = j = k = l = m = n = 0;
+
+			if ( $scope.parsedApiFor == 'Arrival' ||
+					$scope.parsedApiFor == 'In-House Guests' ||
+					$scope.parsedApiFor == 'Departure' ||
+					$scope.parsedApiFor == 'Cancelation & No Show' ) {
+
+				for (i = 0, j = apiResponse.length; i < j; i++) {
+					_eachItem    = angular.copy( apiResponse[i] );
+					_customItems = [];
+					_cancelRes   = {};
+					_eachNote    = {};
+
+					// first check for cancel reason
+					// if so then create a custom entry
+					// and push to '_customItems'
+					if ( !!_eachItem['cancel_reason'] ) {
+						_cancelRes = {
+							isCancel : true,
+							reason   : angular.copy( _eachItem['cancel_reason'] )
+						};
+						_customItems.push( _cancelRes );
+					};
+
+					// second check for notes
+					// if so then create a custom entry for
+					// each note and push each to '_customItems'
+					if ( !!_eachItem['notes'] && !!_eachItem['notes'].length ) {
+						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
+							_eachNote        = angular.copy( _eachItem['notes'][k] );
+							_eachNote.isNote = true;
+							if ( k == 0 ) {
+								_eachNote.isHeading = true;
+							};
+							_customItems.push( _eachNote );
+						};
+					};
+
+					// since this tr won't have any (figuritive) childs
+					if ( !_customItems.length ) {
+						_eachItem.trCls = 'row-break';
+					};
+
+					// if we found custom items
+					// set row span for the parent tr a rowspan
+					// mark the class that must be added to the last tr
+					if ( !!_customItems.length ) {
+						_eachItem.rowspan = _customItems.length + 1;
+						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
+					};
+
+					// push '_eachItem' into '_retResult'
+					_retResult.push( _eachItem );
+
+					// push each item in '_customItems' in ot '_retResult'
+					for (m = 0, n = _customItems.length; m < n; m++) {
+						_retResult.push( _customItems[m] );
+					};
+				};
+			} else {
+				_retResult = apiResponse;
+			};
+
+			// dont remove
+			console.log( 'API reponse changed as follows: ');
+			console.log( _retResult );
+
+			return _retResult;
+		};
+
+
+
     }
 ]);
