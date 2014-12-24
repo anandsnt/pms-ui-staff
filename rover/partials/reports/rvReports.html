@@ -101,7 +101,15 @@
 							</tr>
 							<tr>
 								<td colspan="{{ leftColSpan }}">
+									<div ng-if="chosenReport.hasCancelDateFilter">
+										<label ng-if="chosenReport.title == 'Cancelation & No Show'">Cancellation Dates: </label>
+										From
+										<span>{{ displayedReport.fromCancelDate | date:dateFormat }}</span>
+										To
+										<span>{{ displayedReport.untilCancelDate | date:dateFormat }}</span>
+									</div>
 									<div ng-if="chosenReport.hasDateFilter">
+										<label ng-if="chosenReport.title == 'Cancelation & No Show'">Arrival Dates: </label>
 										From
 										<span>{{ displayedReport.fromDate | date:dateFormat }}</span>
 										To
