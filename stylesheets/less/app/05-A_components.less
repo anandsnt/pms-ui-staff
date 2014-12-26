@@ -6156,6 +6156,25 @@
                             background-image: @calendar2x;
                         }
                     }
+
+                    .clear-query {
+                        position: absolute;
+                        top: 2px;
+                        right: 2px;
+                        bottom: 2px;
+                        background: #fff;
+
+                        .icons {
+                            background-color: @grey2;
+                            .square(15px);
+                            #border-radius > .rounded(15px);
+                        }
+
+                        &:hover,
+                        &.active { 
+                            .icons { background-color: @logoPrimary; }
+                        }
+                    }
                 }
 
                 .time-range { width: 220px; }
@@ -6329,6 +6348,25 @@
 
                     &:hover,
                     &:active { background-position: 90% -39px; }
+                }
+
+                .clear-query {
+                    position: absolute;
+                    top: 2px;
+                    right: 2px;
+                    bottom: 2px;
+                    background: #fff;
+
+                    .icons {
+                        background-color: @grey2;
+                        .square(15px);
+                        #border-radius > .rounded(15px);
+                    }
+
+                    &:hover,
+                    &.active { 
+                        .icons { background-color: @logoPrimary; }
+                    }
                 }
             }            
 

@@ -2,15 +2,15 @@
     <label>{{ item.hasCancelDateFilter.description }}</label>
     <div class="has-datepicker">
         <input type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromCancelDate" readonly>
-        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCancelDate', 'untilCancelDate')" style="background: #9d9d9d;">Clear query</span>
+        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.canRemoveDate" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
         </button>
     </div>  
     <span class="span-to"> To </span>
     <div class="has-datepicker">
         <input type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilCancelDate" readonly>
-        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCancelDate', 'untilCancelDate')" style="background: #9d9d9d;">Clear query</span>
+        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.canRemoveDate" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
         </button>
     </div>
 </div>
@@ -20,16 +20,16 @@
     <div class="has-datepicker">
         <input ng-if="item.title != 'Arrival' && item.title != 'Departure'" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" readonly>
         <input ng-if="item.title == 'Arrival' || item.title == 'Departure'" type="text" class="range-datepicker" ui-date="fromDateOptionsNoMax" ng-model="item.fromDate" readonly>
-        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDate', 'untilDate')" style="background: #9d9d9d;">Clear query</span>
+        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.canRemoveDate" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDate', 'untilDate')">Clear query</span>
         </button>
     </div>
     <span class="span-to"> To </span>
     <div class="has-datepicker">
         <input ng-if="item.title != 'Arrival' && item.title != 'Departure'" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" readonly>
         <input ng-if="item.title == 'Arrival' || item.title == 'Departure'" type="text" class="range-datepicker" ui-date="untilDateOptionsNoMax" ng-model="item.untilDate" readonly>
-        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.canRemoveDate" class="clear-query" style="position: absolute; top: 2px; right: 2px; bottom: 2px; background: #fff;">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDate', 'untilDate')" style="background: #9d9d9d;">Clear query</span>
+        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.canRemoveDate" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDate', 'untilDate')">Clear query</span>
         </button>
     </div>
 </div>

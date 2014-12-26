@@ -453,6 +453,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 
 					// push '_eachItem' into '_retResult'
+					_eachItem.isReport = true;
 					_retResult.push( _eachItem );
 
 					// push each item in '_customItems' in ot '_retResult'
