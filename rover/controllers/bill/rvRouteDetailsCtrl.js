@@ -534,6 +534,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 }else{
                     data.reservation_id = $scope.paymentDetails.reservation_id;
                     data.payment_type = $scope.paymentDetails.payment_type;
+                    data.bill_number = $scope.paymentDetails.bill_number;
                 }
 
                 console.log(data);

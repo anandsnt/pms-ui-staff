@@ -26,7 +26,6 @@ admin
                 var dLastSelectedDate = '',
                     lastSelectedDate = '',
                     businessDate = tzIndependentDate($rootScope.businessDate);
-                $scope.otherData.setChanged = true;
                 $scope.fromDateOptions = _.extend({
                     minDate: businessDate,
                     onSelect: function() {
