@@ -1,14 +1,14 @@
 <tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
-	<td ng-if="!each.isCancel" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
+	<td ng-if="each.isReport" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<span class="status red">{{ each.cancel_date }}</span>
         <span class="penalty">{{ currencySymbol }}{{ each.cancel_penalty }}</span>
 	</td>
-	<td ng-if="!each.isCancel">
+	<td ng-if="each.isReport">
 		<strong class="title">{{ each.name }}</strong>
 		<span class="confirmation">{{ each.confirm_no }}</span>
 		<span ng-if="each.is_vip"> &#8226; <span class="vip">VIP</span></span>
 	</td>
-	<td ng-if="!each.isCancel">
+	<td ng-if="each.isReport">
 		<div class="arrival-departure">
 			<span class="guest-status" ng-class="{ 'cancel': (each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
 			<time>
@@ -25,14 +25,14 @@
 		</div>
 		<div ng-if="each.total_time" class="hours">{{ each.total_time }}</div> 
 	</td>
-	<td ng-if="!each.isCancel">
+	<td ng-if="each.isReport">
 		<span class="room">{{ each.room_type }}</span>
 		<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
 	</td>
 
 	<td ng-if="each.isCancel" class="is-note" colspan="3">
 		<strong class="red">Cancellation Reason</strong>
-		<span>{{ cancel_reason }}</span>
+		<span>{{ each.reason }}</span>
 	</td>
 
 	<td ng-if="each.isNote" class="is-note" colspan="3">
