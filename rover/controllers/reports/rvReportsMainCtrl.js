@@ -120,11 +120,11 @@ sntRover.controller('RVReportsMainCtrl', [
 			    return item.title == 'Cancelation & No Show';
 			});
 
-			if ( !!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] ) {
+			if ( !!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] && (!!cancellationReport['fromCancelDate'] || !!cancellationReport['untilCancelDate']) ) {
 			    cancellationReport['canRemoveDate'] = true;
 			};
 
-			if ( !!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] ) {
+			if ( !!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] && (!!cancellationReport['fromDate'] || !!cancellationReport['untilDate']) ) {
 			    cancellationReport['canRemoveDate'] = true;
 			};
 		};
