@@ -1,4 +1,4 @@
-<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }">
+<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }" ng-click="fauxSelectClicked();">
 	<div ng-include="'/assets/partials/common/header.html'"></div>
 	
 	<section id="reports" class="content scrollable reports-wrapper" role="main" ng-hide="showReportDetails" ng-controller="RVReportListCrl" ng-iscroll="report-list-scroll">
@@ -6,143 +6,71 @@
 			<ul class="reports-list">
 				<li ng-repeat="item in reportList">
 					<a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter()">
-						<span class="icon-report" ng-class="item.reportIconCls"></span>
+						<span ng-class="item.reportIconCls"></span>
 						<div class="data">
 							<h2>
 								{{ item.title }}
-								<span>{{ item.sub_title }}</span>
+								<span ng-if="item.sub_title">{{ item.sub_title }}</span>
 							</h2>
 							<em>{{ item.description }}</em>
 						</div>
 					</a>
-					<div class="configure-report" ng-show="item.show_filter">
-						<div class="date-range" ng-if="item.hasDateFilter">
-							<label>Date range</label>
-							<div class="has-datepicker">
-								<input type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" readonly>
-							</div>	
-							<span class="span-to"> To </span>
-							<div class="has-datepicker">
-								<input type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" readonly>
-							</div>
-						</div>
-
-						<div class="filter" ng-if="item.hasCicoFilter">
-							<label>Transaction Type</label>
-							<div class="select">
-								<select name="" id="" ng-model="item.chosenCico" ng-options="cico.value as cico.label for cico in item.cicoOptions">
-									<option value="">Transaction Type</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="filter" ng-if="HIDE_THIS_FEATURE">
-							<label>User</label>
-							<div class="select">
-								<select name="" id="" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in userList">
-									<option value="">User</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="sort" ng-if="item.sortByOptions">
-							<label>Sort By</label>
-							<div class="select">
-								<select name="" id="" ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions">
-									<option value="">Sort By</option>
-								</select>
-							</div>
-						</div>
-
-						<a class="button green" ng-click="setnGenReport()">Show Report</a>
-					</div>
+					<div class="configure-report" ng-show="item.show_filter" ng-include="'/assets/partials/reports/rvReportListFilters.html'"></div>
 				</li>
 			</ul>
 		</div>
 	</section>
 
-	<section id="reports-details-wrap" class="content scrollable reports-wrapper" role="main" ng-show="showReportDetails">
+	<section id="report-details" class="content reports-wrapper" role="main" ng-show="showReportDetails">
 		<div ng-controller="RVReportDetailsCtrl">
-			<div id="report-update">
-				<div class="date-range" ng-if="chosenReport.hasDateFilter">
-					<label>Date range</label>
-					<div class="has-datepicker">
-						<input id="chosenReportFrom" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
-					</div>
-					<span class="span-to">To</span>
-					<div class="has-datepicker">
-						<input id="chosenReportTo" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
-					</div>
-				</div>
+			<div id="report-update" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
 
-				<div class="filter" ng-if="chosenReport.hasCicoFilter">
-					<label>Transaction Type</label>
-					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
-							<option value="">Transaction Type</option>
+			<div class="report-header">
+				<div class="actions">
+					<div class="select" ng-if="HIDE_THIS_FEATURE">
+						<select name="" id="">
+							<option value="pdf">Save/E-mail as PDF</option>
+							<option value="word">Save/E-mail as Word</option>
+							<option value="excel">Save/E-mail as Excel</option>
 						</select>
 					</div>
+					<button class="button with-icon only-icon blue" button="button" ng-click="emailReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span></button>
+					<button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span></button>
+					<button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span></button>
 				</div>
-
-				<div class="filter" ng-if="HIDE_THIS_FEATURE">
-					<label>User</label>
-					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in userList">
-							<option value="">User</option>
-						</select>
-					</div>
-				</div>
-
-				<div class="sort" ng-if="chosenReport.sortByOptions">
-					<label>Sort by</label>
-					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
-							<option value="">Sort By</option>
-						</select>
-					</div>
-				</div>
-
-				<a class="button green" ng-click="fetchUpdatedReport()">Update Report</a>
 			</div>
 
-			<section id="report-details" class="content stay-card-inner">
-				<div class="report-header">
-					<div class="actions">
-						<div class="select" ng-if="HIDE_THIS_FEATURE">
-							<select name="" id="">
-								<option value="pdf">Save/E-mail as PDF</option>
-								<option value="word">Save/E-mail as Word</option>
-								<option value="excel">Save/E-mail as Excel</option>
-							</select>
-						</div>
-						<button class="button with-icon only-icon blue" button="button" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span></button>
-						<button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span></button>
-						<button class="button with-icon only-icon purple" button="button" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span></button>
-					</div>
-				</div>
+			<div class="report-totals" ng-if="firstHalf && restHalf">
+				<ul class="col2 left-align" ng-if="firstHalf">
+					<li ng-repeat="item in firstHalf">
+						{{ item.label }}
+						<span ng-class="item.class">{{ item.value }}</span>
+					</li>
+				</ul>
+				
+				<ul class="col2 right-align" ng-if="restHalf">
+					<li ng-repeat="item in restHalf">
+						{{ item.label }}
+						<span ng-class="item.class">{{ item.value }}</span>
+					</li>
+				</ul>
+			</div>
 
-				<div class="report-totals">
-					<ul class="col2 left-align" ng-if="firstHalf">
-						<li ng-repeat="item in firstHalf">
-							{{ item.label }}
-							<span ng-class="item.class">{{ item.value }}</span>
-						</li>
-					</ul>
-					
-					<ul class="col2 right-align" ng-if="restHalf">
-						<li ng-repeat="item in restHalf">
-							{{ item.label }}
-							<span ng-class="item.class">{{ item.value }}</span>
-						</li>
-					</ul>
+			<!-- Report content -->
+			<div ng-hide="results.length" class="report-content no-content"> 
+				<div class="info">
+					<span class="icon-no-content icon-reports"></span>
+					<strong class="h1">No reports found</strong>
+					<span class="h2">Try changing search criteria or modify dates</span>
 				</div>
-	
-				<div id="report-content" class="report-content scrollable" ng-iscroll="report-details-scroll">
-					<div class="wrapper" height>
-						<table>
+			</div>
+
+			<div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': (chosenReport.title == 'In-House Guests' || chosenReport.title == 'Departure' || chosenReport.title == 'Arrival' || chosenReport.title == 'Cancelation & No Show'), 'no-sorting': (chosenReport.title == 'Cancelation & No Show') }" ng-iscroll="report-details-scroll">
+				<div class="wrapper">
+					<table ng-class="{ 'guest-reports': isGuestReport }">
 
 							<!-- Reports table header -->
-							<thead ng-if="results.length">
+							<thead ng-if="!!headers.length">
 								<tr>
 									<!-- <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}" ng-class="{ 'align-right' : $first }">{{ item.value }}</th> -->
 									<!-- Fix for CICO-10246  -->
@@ -152,63 +80,83 @@
 									<th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
 								</tr>
 							</thead>
-
-							<!-- Reports table footer -->
-							<tfoot>
-								<tr class="totals" ng-if="resultsTotalRow">
-									<td>Total</td>
-									<td ng-repeat="item in resultsTotalRow track by $index">{{ item }}</td>
-								</tr>
+							
+							<!-- Reports sort by header -->
+							<thead ng-if="!headers.length">
+								<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+								"sorting-asc" when ASC sorting
+								"sorting-desc" when DESC sorting -->
 								<tr>
-									<td colspan="{{ leftColSpan }}">
+									<th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
+										<span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
+									</th>
+								</tr>
+							</thead>
+
+						<!-- Reports table footer -->
+						<tfoot>
+							<tr class="totals" ng-if="resultsTotalRow">
+								<td>Total</td>
+								<td ng-repeat="item in resultsTotalRow track by $index">{{ item }}</td>
+							</tr>
+							<tr>
+								<td colspan="{{ leftColSpan }}">
+									<div ng-if="chosenReport.hasDateFilter">
 										From
 										<span>{{ displayedReport.fromDate | date:dateFormat }}</span>
 										To
 										<span>{{ displayedReport.untilDate | date:dateFormat }}</span>
-										<br>
-										<div ng-if="chosenReport.chosenCico">
-											Transaction type
-											<span>{{ transcationTypes }}</span>
-										</div>
-										<div ng-if="chosenReport.chosenUsers">
-											Users
-											<span>{{ userNames }}</span>
-										</div>
-									</td>
-									<td colspan="{{ rightColSpan }}">
-										Business date
-										<span>{{ userInfo.business_date | date:dateFormat }}</span>
-										<br>
-										User
-										<span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-										<br>
-										<ul class="pagination" ng-if="pagination.length">
-											<li class="title">
-												Pages:
-												<li ng-repeat="page in pagination" ng-class="{'active': page.active}" ng-click="fetchNextPage()">
-													{{ page.no }}
-												</li>
+									</div>
+									<div ng-if="chosenReport.chosenCico">
+										Transaction type
+										<span>{{ transcationTypes }}</span>
+									</div>
+									<div ng-if="chosenReport.chosenUsers">
+										Users
+										<span>{{ userNames }}</span>
+									</div>
+									<!-- Never REMOVE this span -->
+									<span> &nbsp; </span>
+								</td>
+								<td colspan="{{ rightColSpan }}">
+									Business date
+									<span>{{ userInfo.business_date | date:dateFormat }}</span>
+									<br>
+									User
+									<span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+									<br>
+									<ul class="pagination" ng-if="pagination.length">
+										<li class="title">
+											Pages:
+											<li ng-repeat="page in pagination" ng-class="{'active': page.active}" ng-click="fetchNextPage()">
+												{{ page.no }}
 											</li>
-										</ul>
-									</td>
-								</tr>
-							</tfoot>
-							
-							<!-- Reports table content -->
-							<tbody>
-								<tr ng-repeat="each in results track by $index">
-									<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
-									<!-- yeah thats hard :( -->
-									<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out')}">
-										{{ item }}
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>				
-			</section>
+										</li>
+									</ul>
+								</td>
+							</tr>
+						</tfoot>
+						
+						<!-- Reports table content -->
+						<tbody ng-if="!parsedApiFor">
+							<tr ng-repeat="each in results track by $index">
+								<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
+								<!-- yeah thats hard :( -->
+								<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out')}">
+									{{ item }}
+								</td>
+							</tr>
+						</tbody>
+
+						<tbody ng-if="parsedApiFor == 'In-House Guests' || parsedApiFor == 'Departure'" ng-include="'/assets/partials/reports/rvInHouseDepartureReport.html'"></tbody>
+
+						<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
+
+						<tbody ng-if="parsedApiFor == 'Cancelation & No Show'" ng-include="'/assets/partials/reports/rvCancellationReport.html'"></tbody>
+
+					</table>
+				</div>
+			</div>
 		</div>
 	</section>
-
 </div>

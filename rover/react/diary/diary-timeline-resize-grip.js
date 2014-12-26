@@ -192,7 +192,14 @@ var TimelineResizeGrip = React.createClass({
 					currentResizeItem: 		undefined,
 					currentResizeItemRow: 	undefined
 				});
-			}						
+			}
+			else if(this.props.currentResizeItem && nextProps.currentResizeItem){
+				this.setState({
+					mode: 					undefined,
+					currentResizeItem: 		nextProps.currentResizeItem,
+					currentResizeItemRow: 	nextProps.currentResizeItemRow
+				});
+			}
 		} 
 	},
 	render: function() {

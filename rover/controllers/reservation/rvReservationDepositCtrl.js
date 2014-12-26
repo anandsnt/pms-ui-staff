@@ -41,6 +41,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.reservationData.depositAmount = "";
 		$scope.depositPolicyName = "";
 		$scope.reservationData.referanceText = "";
+		$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true:false;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 		$scope.reservationData.depositAmount = $filter('number')(parseInt($scope.depositDetails.deposit_amount), 2);
 		
@@ -89,7 +90,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		var retrieveCardtype = function(){
 			var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 			getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
-			getCreditCardType($scope.newPaymentInfo.tokenDetails.cardBrand).toLowerCase()
+			getCreditCardType($scope.newPaymentInfo.cardDetails.cardType).toLowerCase()
 			;
 			return cardType;
 		};
@@ -281,6 +282,9 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				reservation_id: $scope.passData.reservationId,
 				token: cardToken
 			};
+			paymentData.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment?
+									getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
+									$scope.newPaymentInfo.cardDetails.cardType;
 
 			if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
 				paymentData.card_expiry = cardExpiry;
@@ -345,7 +349,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 	var paymentFailed = function(data){
 		$scope.$emit('hideLoader');
-		//$scope.errorMessage = data;
+		$scope.paymentErrorMessage = data[0];
 		$scope.errorOccured = true;
 		$scope.depositPaidSuccesFully = false;
 		$scope.isLoading =  false; 

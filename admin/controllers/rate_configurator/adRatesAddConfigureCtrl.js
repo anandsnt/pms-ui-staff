@@ -71,8 +71,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             newSet.friday = true;
             newSet.saturday = true;
             newSet.sunday = true;
-            //The day will be enabled in current set, 
-            //only if it is not enabled in any other sets in current date range 
+            //The day will be enabled in current set,
+            //only if it is not enabled in any other sets in current date range
             for (var i in $scope.data.sets) {
                 if ($scope.data.sets[i].monday === true) {
                     newSet.monday = false;
@@ -123,7 +123,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             newSet.room_rates = [];
 
-            //Crate the room rates array based on the available room_types 
+            //Crate the room rates array based on the available room_types
             for (var i in $scope.rateData.room_types) {
                 var roomType = {};
                 roomType.id = $scope.rateData.room_types[i].id;
@@ -245,7 +245,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }, fetchSetsInDateRangeSuccessCallback);
         };
 
-        //The Response from server may not have 
+        //The Response from server may not have
         //all the room_type details in in the set info.
         //Calculate the room_rates dict for all selected room_types (from $scope.rateData.room_types)
         var updateSetsForAllSelectedRoomTypes = function(data) {
@@ -404,7 +404,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 return false;
             }
 
-            //If not a new set, open a dialog to confirm the delete action    
+            //If not a new set, open a dialog to confirm the delete action
             $scope.deleteSetId = id;
             $scope.deleteSetIndex = index;
             $scope.deleteSetName = setName;
@@ -463,6 +463,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         //For a rate in a date range, a day can not be selected in more than one rate sets
         $scope.toggleDays = function(index, mod) {
+          $scope.otherData.setChanged = true;
             angular.forEach($scope.data.sets, function(value, key) {
                 //Deselect the day in all sets other than current selected set.
                 if (key != index) {

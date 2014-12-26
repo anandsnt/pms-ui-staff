@@ -26,6 +26,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		 * @param{string} is the value of that tab
 		 */
 		$scope.switchTabTo = function($event, tabToSwitch) {
+			
 			if ($event !== undefined && $event !== "") {
 				$event.stopPropagation();
 				$event.stopImmediatePropagation();
@@ -59,10 +60,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			if (tabToSwitch == 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
 			}
-			if (tabToSwitch == 'cc-ar-transactions') {
-				$rootScope.$broadcast("arTransactionTabActive");
-				$scope.isWithFilters = false;
-			}
+			
 			$scope.currentSelectedTab = tabToSwitch;
 		};
 
@@ -70,17 +68,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.isWithFilters = data;
 		});
 
-		//CICO-11664 
-		//To default the AR transactions tab while navigating back from staycard
-		if ($stateParams.isBackFromStaycard) {
-			//timeout added to wait untill the tab initalization and data initialization is complete
-			$timeout(function() {
-				$scope.currentSelectedTab = 'cc-ar-transactions';
-				$scope.switchTabTo('', 'cc-ar-transactions');
-				$scope.$apply();
-			}, 3000);
-		}
-
+		
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
 		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
@@ -140,6 +128,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		 * @param{string} is the value of that tab
 		 */
 		$scope.switchTabTo = function($event, tabToSwitch) {
+			
 			if ($event !== undefined && $event !== "") {
 				$event.stopPropagation();
 				$event.stopImmediatePropagation();
@@ -173,6 +162,10 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			if (tabToSwitch == 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
 			}
+			if (tabToSwitch == 'cc-ar-transactions') {
+				$rootScope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
 			$scope.currentSelectedTab = tabToSwitch;
 		};
 
@@ -190,7 +183,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-			$scope.$apply();
+			//$scope.$apply();
 		};
 
 		$scope.$on('ARNumberChanged', function(e, data) {

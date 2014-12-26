@@ -1,6 +1,6 @@
 <!-- Content -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
-<section id="details-and-payment" class="content reservations-inner">
+<section id="details-and-payment" class="content reservations-inner" ng-cloak>
     <div id="details-and-payment-content" class="reservations-content-wrapper">
         <div id="reservation-summary" class="reservation-summary scrollable" ng-iscroll='reservationSummary'>
             <div class="wrapper"> 
@@ -184,7 +184,7 @@
             </div>
          </form>
         <form class="form payment-info scrollable" ng-iscroll='paymentInfo'  ng-hide="reservationData.paymentType.type.value=== 'CC' && showCC" ng-click="clearErrorMessage()">
-            <div class="wrapper">
+            <div class="wrapper" style="height:120%;">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div id="set-payment" class="payment-form for-reservation"> 
                 <div class="entry full-width" ng-show="!showCC">
@@ -214,7 +214,8 @@
                         </label>
                     </div>
                 </div>
-                <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && reservationData.paymentType.type.value === 'CC' && !showCC &&(paymentGateway !== 'sixpayments' || isManual)" ng-click="changePaymentType()">
+               
+                <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && reservationData.paymentType.type.value === 'CC' && !showCC &&(paymentGateway !== 'sixpayments' || isManual || reservationEditMode)" ng-click="changePaymentType()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label class="active-item item-payment" id="pay-with-amex">
                     <figure class="card-logo">
@@ -225,7 +226,9 @@
                     </span>
                     <span class="date">Date 
                         <span class="value date">{{renderData.cardExpiry}}</span>
+                        <span ng-show="renderData.isSwiped" class="icons icon-swiped swiped-card"></span> 
                     </span>
+                    
                 </label>
                  </div>
 
@@ -240,7 +243,6 @@
                         {{'ADD_TO_GUEST_CARD' | translate}}
                     </label>
                 </div> 
-
 
                     <!-- Use only if deposit is required -->
                     <div class="notice deposit" ng-if="depositData.isDepositRequired && reservationData.isValidDeposit" ng-hide="depositData.attempted || showCC">                        
@@ -270,7 +272,8 @@
 
                     <!-- Deposit payment failed -->
                     <div class="feedback" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted &&depositData.depositAttemptFailure">
-                        <div class="notice error">Payment failed. Try again or change payment method.</div>
+                        <!-- <div class="notice error">Payment failed. Try again or change payment method.</div> -->
+                         <div class="notice error">{{paymentErrorMessage}}</div>
                     </div> 
 
                     <div class="actions" ng-hide="showCC">

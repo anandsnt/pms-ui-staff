@@ -134,6 +134,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 				$scope.addmode = ($scope.cardsList.length>0) ? false :true;
 				refreshScroll();
+			} else {
+				$scope.isManual = false;
 			}
 		} else {
 				$scope.shouldShowMakePaymentScreen       = true; 
@@ -157,11 +159,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
 		
 		$scope.cardValues = tokenDetails;
-		
 	    var cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
 	    	//To render the selected card data 
-	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.tokenDetails.cardBrand).toLowerCase();
+	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.cardDetails.cardType).toLowerCase();
 	    	checkReferencetextAvailableForCC();
 	    	$scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.cardDetails.cardNumber.substr($scope.cardValues.cardDetails.cardNumber.length - 4);;
 		    var dataToApiToAddNewCard = {
@@ -193,7 +194,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		          	"payment_type": "CC"
 		   };
 		}
-		
+		dataToApiToAddNewCard.card_code = (!$scope.cardValues.tokenDetails.isSixPayment)?
+										$scope.cardValues.cardDetails.cardType : 
+										getSixCreditCardType($scope.cardValues.tokenDetails.card_type).toLowerCase();
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.cardValues.tokenDetails.isSixPayment?
 					$scope.cardValues.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardValues.tokenDetails.expiry.substring(0, 2):
 					$scope.cardValues.cardDetails.expiryMonth+" / "+$scope.cardValues.cardDetails.expiryYear;
