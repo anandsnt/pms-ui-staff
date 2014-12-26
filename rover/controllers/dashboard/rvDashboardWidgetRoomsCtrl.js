@@ -13,6 +13,9 @@ sntRover.controller('rvDashboardRoomsWidgetController',['$scope', 'RVSearchSrv',
     * will update search results and show search area
     */
    $scope.clickedOnRoomButton = function(event, filterType){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
         $state.go('rover.housekeeping.roomStatus', {'roomStatus': filterType});
    };
 

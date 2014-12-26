@@ -13,6 +13,9 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     * will update search results and show search area
     */
     $scope.clickedOnGuestsToday = function(event, type, numberOfReservation) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
         //disable reservation search for house keeping 
         if(!$scope.disableReservations){ 
             var stateParams = {'type': type, 'from_page': 'DASHBOARD'};

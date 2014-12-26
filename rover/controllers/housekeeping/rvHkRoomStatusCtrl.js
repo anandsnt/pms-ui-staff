@@ -460,8 +460,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					// time to decide if this is an employee
 					// who has an active work sheets
-					$_checkHasActiveWorkSheet(alreadyFetched);
-				}
+					if ( !!$scope.currentFilters.filterByWorkType && !!$scope.currentFilters.filterByEmployeeName ) {
+						$_checkHasActiveWorkSheet(alreadyFetched);
+					} else {
+						$scope.hasActiveWorkSheet = false;
+						$scope.currentView = 'rooms';
+
+						// need delay, just need it
+						$timeout(function() {
+							$_postProcessRooms();
+						}, 10);
+					};
+				};
 
 				if ( (!!$scope.workTypes && $scope.workTypes.length) && (!!$scope.employees && $scope.employees.length) ) {
 					_setUpWorkTypeEmployees();
