@@ -162,8 +162,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.displayedReport           = {};
 				$scope.displayedReport.fromDate  = $( '#chosenReportFromDate' ).val();
 				$scope.displayedReport.untilDate = $( '#chosenReportToDate' ).val();
-				$scope.displayedReport.fromTime  = $( '#chosenReportFromTime' ).val();
-				$scope.displayedReport.untilTime = $( '#chosenReportToTime' ).val();
+				$scope.displayedReport.fromCancelDate  = $( '#chosenReportFromCancelDate' ).val();
+				$scope.displayedReport.untilCancelDate = $( '#chosenReportUntilCancelDate' ).val();
 			}, 100);
 
 
@@ -453,6 +453,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 
 					// push '_eachItem' into '_retResult'
+					_eachItem.isReport = true;
 					_retResult.push( _eachItem );
 
 					// push each item in '_customItems' in ot '_retResult'

@@ -9,6 +9,13 @@ sntRover.controller('RVReportListCrl', [
 
         $scope.setScroller( 'report-list-scroll', {preventDefault: false} );
 
+        // until date is business date and from date is a week ago
+        var businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+            dateParts     = businessDate.match(/(\d+)/g),
+            fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
+            untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
+            hasFauxSelect = false;
+
         /**
         *   Post processing fetched data to modify and add additional data
         *   Note: This is a self executing function
@@ -17,12 +24,12 @@ sntRover.controller('RVReportListCrl', [
 		*/
 		var postProcess = function(reportList) {
 
-            // until date is business date and from date is a week ago
-            var businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
-                dateParts     = businessDate.match(/(\d+)/g),
-                fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
-                untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
-                hasFauxSelect = false;
+            // re-cal just it case (totally useless in my opinon)
+            businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd');
+            dateParts     = businessDate.match(/(\d+)/g);
+            fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7);
+            untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            hasFauxSelect = false;
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
@@ -212,7 +219,12 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].fromCancelDate  = fromDate;
                     reportList[i].untilDate       = untilDate;
                     reportList[i].untilCancelDate = untilDate;
-                }
+                };
+
+                // for this report user can remove dates
+                if ( reportList[i].title == 'Cancelation & No Show' ) {
+                    reportList[i]['canRemoveDate'] = true;
+                };
             };
 
             $scope.refreshScroller( 'report-list-scroll' );
