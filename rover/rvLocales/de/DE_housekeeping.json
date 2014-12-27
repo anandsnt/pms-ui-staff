@@ -5,7 +5,7 @@
 	"HK_VACANT_CLEAN": "Vacant (Clean)",
 	"HK_OOOS": "Out Of Order / Service",
 
-	"OWS_ERROR_MSG": "The PMS Interface is not responding. StayNTouch Apps have been disabled until a connection has been re-established. Please continue to re-try or contact your PMS vendor.",
+	"OWS_ERROR_MSG": "Rover is having trouble to respond. Please re-try if the issue persists please contact our support team at support@stayntouch.com.",
 	
 	"ROOM_STATUS": "Room Status",
 	"ENTER_ROOM_NUMBER": "Enter Room Number",

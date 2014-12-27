@@ -51,6 +51,7 @@
 
                 /* Grid ***/
                 .dates-grid {
+                    table-layout: auto;
                     width: 100%;
                     border-collapse: separate; 
                     margin: 0;
@@ -859,21 +860,23 @@
                             position: relative;
 
                             .data {
-                                .calc-width(65, 150);
+                                .calc-width(70, 150);
 
                                 h2 { margin-bottom: 6px; }
 
                                 .confirmation,
                                 .arrival,
                                 .departure {
+                                    line-height: 20px;
                                     .show;
                                     .pull-left;
                                 }
 
+                                .confirmation { margin: 0; }
+
                                 .arrival,
                                 .departure {
-                                    line-height: 20px;
-                                    margin-right: 20px;
+                                    margin-left: 20px;
                                     .float;
 
                                     .guest-status { 
@@ -882,9 +885,10 @@
                                         float: none;
                                         .square(20px); 
                                     }
-                                }
 
-                                &.departure { margin-right: 0; }
+                                    .date { margin-right: 5px; }
+                                    .time { color: @grey3; }
+                                }
                             }
 
                             .amount {
@@ -894,7 +898,7 @@
                                 color: @textColor;
                                 margin: 5px 40px 0 0;
                                 .pull-left;
-                                .calc-width(35, 150);
+                                .calc-width(30, 150);
 
                                 &.paid { color: @grey3; }
                             }
@@ -1948,9 +1952,6 @@
                                 }
 
                                 .tab-details {
-                                    position: relative;
-                                    overflow: hidden;
-                                    .calc-height(100, 80); /* %, px */
 
                                     .wrapper { padding: 20px; }
                                     .iScrollVerticalScrollbar { 
@@ -2271,6 +2272,12 @@
                                 }
                             }
 
+                            &.reservations {
+                                .tab-details {
+                                    &.with-pagination { .calc-height(100, 140); }
+                                }
+                            }
+
                             /* Transactions ***/
                             &.transactions {
                                 
@@ -2390,6 +2397,8 @@
 
                                 .tab-details {
                                     .wrapper { padding: 0; }
+
+                                    &.with-pagination { .calc-height(100, 140); }
                                 }
                             }
                         }
@@ -6031,7 +6040,7 @@
 
         li {
             padding: 0;
-            .clickable;
+            .faux-clickable;
 
             .toggle-filter {
                 color: @textColor;
@@ -6086,6 +6095,7 @@
                     color: @grey3;
                     font-size: 14px;
                     text-transform: uppercase;
+                    margin-bottom: 0;
                     .show;
                 }
 
@@ -6094,10 +6104,11 @@
                 .date-range,
                 .time-range,
                 .filter,
-                .sort {
+                .sort,
+                .options {
                     position: relative;
-                    padding-right: 20px;
-                    margin-right: 20px;
+                    padding-right: 10px;
+                    margin-right: 10px;
                     .pull-left;
 
                     &:after {
@@ -6124,8 +6135,6 @@
                     .select {
                         .calc-width(50, 20);
                         .pull-left;
-
-                        input { width: 100%; }
                     }
 
                     span {
@@ -6140,11 +6149,47 @@
                     } 
                 }
 
-                .date-range { width: 320px; }
-                .time-range { width: 240px; }
+                .date-range { 
+                    width: 300px; 
+
+                    input {
+                        width: 100%;
+                        cursor: pointer;
+                        background: @white @calendar no-repeat 90% 11px;
+                        .no-transition();
+
+                        &:hover,
+                        &:active { background-position: 90% -39px; }
+
+                        @media @highdpi {
+                            background-image: @calendar2x;
+                        }
+                    }
+
+                    .clear-query {
+                        position: absolute;
+                        top: 2px;
+                        right: 2px;
+                        bottom: 2px;
+                        background: #fff;
+
+                        .icons {
+                            background-color: @grey2;
+                            .square(15px);
+                            #border-radius > .rounded(15px);
+                        }
+
+                        &:hover,
+                        &.active { 
+                            .icons { background-color: @logoPrimary; }
+                        }
+                    }
+                }
+
+                .time-range { width: 220px; }
 
                 .filter {
-                    width: 260px;
+                    width: 240px;
 
                     select,
                     .icon-search { width: 100%; }
@@ -6158,15 +6203,64 @@
                 }
 
                 .sort {
-                    width: 140px;
+                    width: 100px;
 
                     select { width: 100%; }
+                }
+
+                .options {
+                    width: 180px;
+
+                    .faux-select { 
+                        position: relative;
+                        padding: 0 10px;
+                        line-height: 40px;
+                        cursor: pointer;
+                        .nowrap();
+                        .faux-clickable;
+
+                        &.placeholder {
+                            color: @grey3;
+                            font-style: italic;
+                        }
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            background: @white @selectArrow no-repeat 50% 50%;
+                            background-size: 6px 4px;
+                            pointer-events: none;
+                            z-index: 999;
+                            .size(100%, 25px);
+                            #border-radius > .right();
+                        }
+                    }
+                }
+
+                .faux-select-options {
+                    .faux-clickable;
+                    .transition;
+                    #fade > .in();
+
+                    .radio,
+                    .checkbox {
+                        padding-left: 40px;
+                        #border-radius > .rounded(0);
+                        .box-shadow(0 1px 0 rgba(0,0,0,.15));
+
+                        .icon-form { left: 10px; }
+                    }
+
+                    &.hidden { #fade > .out(); }
                 }
 
                 .button {
                     margin-top: 24px;
                     padding: 0;
-                    width: 140px;
+                    padding: 0;
+                    width: 80px;
                     .pull-right;
                 }
             }
@@ -6232,7 +6326,6 @@
 
             .date-range,
             .time-range {
-
                 .has-datepicker,
                 .select {
                     .calc-width(50, 20);
@@ -6253,11 +6346,43 @@
                 }
             }
 
-            .date-range { width: 320px; }
-            .time-range { width: 240px; }
+            .date-range { 
+                width: 300px; 
+
+                input {
+                    width: 100%;
+                    cursor: pointer;
+                    background: @white @calendar no-repeat 90% 11px;
+                    .no-transition();
+
+                    &:hover,
+                    &:active { background-position: 90% -39px; }
+                }
+
+                .clear-query {
+                    position: absolute;
+                    top: 2px;
+                    right: 2px;
+                    bottom: 2px;
+                    background: #fff;
+
+                    .icons {
+                        background-color: @grey2;
+                        .square(15px);
+                        #border-radius > .rounded(15px);
+                    }
+
+                    &:hover,
+                    &.active { 
+                        .icons { background-color: @logoPrimary; }
+                    }
+                }
+            }            
+
+            .time-range { width: 220px; }
 
             .filter {
-                width: 260px;
+                width: 240px;
 
                 select,
                 .icon-search { width: 100%; }
@@ -6271,7 +6396,7 @@
             }
 
             .sort {
-                width: 140px;
+                width: 100px;
 
                 select { width: 100%; }
             }
@@ -6330,9 +6455,9 @@
             }
 
             .button {
-                margin-top: 22px;
+                margin-top: 24px;
                 padding: 0;
-                width: 140px;
+                .size(40px, 140px);
                 .pull-right;
             }
         }    
@@ -6432,7 +6557,7 @@
 
             .report-content {
                 position: relative;
-                .calc-height(100, 180);
+                .calc-height(100, 260);
 
                 > .wrapper { padding: 0 20px 20px 20px; }
                 > .iScrollVerticalScrollbar { 
@@ -6441,7 +6566,7 @@
                 }
 
                 table {
-                    width: 100%;
+                   width: 100%;
                     font-size: 14px;
                     line-height: 21px;
                     text-transform: uppercase;
@@ -6456,10 +6581,6 @@
                             font-weight: 600;
                             white-space: normal;
                             overflow: visible;
-                            /*
-                            min-width: 15%;
-                            max-width: 30%;
-                            */
 
                             &.align-right { text-align: right; }
                         }
@@ -6573,6 +6694,8 @@
                         tr {
                             th {
                                 line-height: 40px;
+                                height: 60px;
+                                vertical-align: top;
 
                                 .sort {  
                                     background-image: @arrowSort;
@@ -6588,7 +6711,7 @@
                                 }
 
                                 &:first-child { padding: 0; }
-                                &.room { width: 80px; }
+                                &.room { width: 90px; }
                                 &.name { width: 280px; }
                                 &.date { width: 310px; }
                             }
@@ -6604,6 +6727,7 @@
 
                                     &.title {
                                         font-size: 20px;
+                                        line-height: 20px;
                                         font-weight: 700;
                                         text-transform: none;
                                         .show;
@@ -6688,6 +6812,23 @@
                                         .size(10px, 100%);
                                     }
                                 }
+
+                                &.is-note {
+                                    color: @grey3;
+                                    font-weight: 400;
+
+                                    strong {
+                                        color: @textColor;
+                                    }
+
+                                    > span {
+                                        display: block;
+                                    }
+
+                                    .note-by-name {
+                                        display: inline !important;
+                                    }
+                                }
                             }
 
                             &.row-break {
@@ -6707,8 +6848,8 @@
                                     &[colspan] {
                                         color: @grey3;
                                         text-transform: none;
-                                        padding-top: 0;
                                         font-weight: 400;
+                                        padding: 0 10px 20px 10px;
 
                                         strong { 
                                             color: @textColor;
@@ -6717,6 +6858,8 @@
 
                                             &.red { color: @red; }
                                         }
+
+                                        span { .show; }
                                     }
                                 } 
                             }
@@ -6724,8 +6867,9 @@
                     }
                 }
 
-                &.no-totals {
-                   .calc-height(100, 50); 
+                &.no-totals,
+                &.no-content {
+                   .calc-height(100, 140); 
 
                    > .wrapper { padding: 20px; }
                    > .iScrollVerticalScrollbar { top: 20px; }
@@ -6733,6 +6877,7 @@
             }
         }
     }
+
 /* Reservations             ==============================*/
     .create-reservation {
         position: relative;
@@ -9811,10 +9956,7 @@
                     }
 
                     .icon-queued {
-                        background-position: 10px -4175px;
                         margin-right: 10px;
-                        .hide-text;
-                        .square(40px);
                         .show;
                         .pull-left;
                     }

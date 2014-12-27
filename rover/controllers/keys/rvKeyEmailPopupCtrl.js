@@ -1,5 +1,6 @@
 sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', '$state','$filter', function($rootScope, $scope, ngDialog, RVKeyPopupSrv, $state, $filter){
 	BaseCtrl.call(this, $scope);
+	$scope.errorMessage = '';
 	// Set up data for view
 	var setupData = function(){
 		var reservationId = "";
@@ -17,6 +18,7 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 			$scope.$emit('hideLoader');
 	    	$scope.data = {};
 	    	$scope.data = data;
+	    	$scope.errorMessage = '';
 	    	
 	    	// To check reservation status and select corresponding texts and classes.
 	    	if(reservationStatus == 'CHECKING_IN' ){
@@ -38,7 +40,9 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 	    };
 	    
 	  	var failureCallback = function(data){
+	  		console.log(data);
 	  		$scope.$emit('hideLoader');
+	  		$scope.errorMessage = data;
 	    };
 		
 		$scope.invokeApi(RVKeyPopupSrv.fetchKeyEmailData,{ "reservationId": reservationId }, successCallback, failureCallback);  

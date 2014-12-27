@@ -9,6 +9,13 @@ sntRover.controller('RVReportListCrl', [
 
         $scope.setScroller( 'report-list-scroll', {preventDefault: false} );
 
+        // until date is business date and from date is a week ago
+        var businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+            dateParts     = businessDate.match(/(\d+)/g),
+            fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
+            untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
+            hasFauxSelect = false;
+
         /**
         *   Post processing fetched data to modify and add additional data
         *   Note: This is a self executing function
@@ -16,44 +23,36 @@ sntRover.controller('RVReportListCrl', [
         *   @param {Array} - reportList: which points to $scope.$parent.reportList, see end of this function
 		*/
 		var postProcess = function(reportList) {
-            var hasDateFilter,
-                hasTimeFilter,
-                hasCicoFilter,
-                hasUserFilter,
-                hasSortDate,
-                hasSortUser,
-                hasIncludeNotes,
-                hasIncludeVip,
-                hasIncludeCancelled;
 
-            // until date is business date and from date is a week ago
-            var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
-                dateParts    = businessDate.match(/(\d+)/g),
-                fromDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
-                untilDate    = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            // re-cal just it case (totally useless in my opinon)
+            businessDate  = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd');
+            dateParts     = businessDate.match(/(\d+)/g);
+            fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7);
+            untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            hasFauxSelect = false;
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
                 // add report icon class
                 switch (reportList[i]['title']) {
                     case 'Check In / Check Out':
-                        reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-check-in-check-out';
                         break;
 
                     case 'Upsell':
-                        reportList[i]['reportIconCls'] = 'icon-upsell';
-                        break;
-
-                    case 'Late Check Out':
-                        reportList[i]['reportIconCls'] = 'icon-late-check-out';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-upsell';
                         break;
 
                     case 'Web Check Out Conversion':
-                        reportList[i]['reportIconCls'] = 'icon-check-out';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-check-out';
                         break;
 
                     case 'Web Check In Conversion':
-                        reportList[i]['reportIconCls'] = 'icon-check-in';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-check-in';
+                        break;
+
+                    case 'Late Check Out':
+                        reportList[i]['reportIconCls'] = 'guest-status late-check-out';
                         break;
 
                     case 'In-House Guests':
@@ -73,78 +72,136 @@ sntRover.controller('RVReportListCrl', [
                         break;
 
                     default:
-                        reportList[i]['reportIconCls'] = '';
+                        reportList[i]['reportIconCls'] = 'icon-report';
                         break;
                 };
 
                 reportList[i]['show_filter'] = false;
 
-                // checking if has date filter
-                reportList[i]['hasDateFilter'] = _.find(reportList[i]['filters'], function(item) {
-                    return item.value === 'DATE_RANGE';
-                });
+                // going around and taking a note on filtes
+                _.each(reportList[i]['filters'], function(item) {
+                    
+                    // check for date filter and keep a ref to that item
+                    if ( item.value === 'DATE_RANGE' ) {
+                        reportList[i]['hasDateFilter'] = item;
 
-                // checking if has time filter
-                reportList[i]['hasTimeFilter'] = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'TIME_RANGE';
-                });
-                if ( !!reportList[i]['hasTimeFilter'] ) {
-                    reportList[i]['timeFilterOptions'] = $_createTimeSlots();
-                };
-
-                // checking if has cico filter
-                // TODO: addiing the 'cicoOptions' can be done on server and provided as such
-                reportList[i]['hasCicoFilter'] = _.find(reportList[i]['filters'], function(item) {
-                    return item.value === 'CICO';
-                });
-                if ( reportList[i]['hasCicoFilter'] ) {
-                    reportList[i]['cicoOptions'] = [{
-                        value: 'BOTH',
-                        label: 'Show Check Ins and  Check Outs'
-                    }, {
-                        value: 'IN',
-                        label: 'Show only Check Ins'
-                    }, {
-                        value: 'OUT',
-                        label: 'Show only Check Outs'
-                    }];
-                };
-
-                // checking if has user filter
-                hasUserFilter = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'USER';
-                });
-                reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
-
-                // checking if has include notes
-                reportList[i]['hasIncludeNotes'] = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'INCLUDE_NOTES';
-                });
-
-                // checking if has include vip
-                reportList[i]['hasIncludeVip'] = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'VIP_ONLY';
-                });
-
-                // checking if has include cancelled
-                reportList[i]['hasIncludeCancelled'] = _.find($scope.reportList[i]['filters'], function(item) {
-                    return item.value === 'INCLUDE_CANCELED';
-                });
-
-                // sort by options
-                reportList[i].sortByOptions = reportList[i]['sort_fields'];
-                if ( reportList[i].sortByOptions && reportList[i]['sort_fields'].length ) {
-                    for (var k = 0, l = reportList[i].sortByOptions.length; k < l; k++) {
-                        reportList[i].sortByOptions[k]['sortDir'] = undefined;
-                        if ( k == l - 1 ) {
-                            reportList[i].sortByOptions[k]['colspan'] = 2;
+                        // for 'Cancelation & No Show' report the description should be 'Arrival Date Range'
+                        // rather than the default 'Date Range'
+                        if ( reportList[i]['title'] == 'Cancelation & No Show' ) {
+                            reportList[i]['hasDateFilter']['description'] = 'Arrival Date Range';
                         };
                     };
+
+                    // check for cancellation date filter and keep a ref to that item
+                    if ( item.value === 'CANCELATION_DATE_RANGE' ) {
+                        reportList[i]['hasCancelDateFilter'] = item;
+                    };
+
+                    // check for time filter and keep a ref to that item
+                    // create std 15min stepped time slots
+                    if ( item.value === 'TIME_RANGE' ) {
+                        reportList[i]['hasTimeFilter']     = item;
+                        reportList[i]['timeFilterOptions'] = $_createTimeSlots();
+                    };
+
+                    // check for CICO filter and keep a ref to that item
+                    // create the CICO filter options
+                    if ( item.value === 'CICO' ) {
+                        reportList[i]['hasCicoFilter'] = item;
+                        reportList[i]['cicoOptions'] = [{
+                            value: 'BOTH',
+                            label: 'Show Check Ins and  Check Outs'
+                        }, {
+                            value: 'IN',
+                            label: 'Show only Check Ins'
+                        }, {
+                            value: 'OUT',
+                            label: 'Show only Check Outs'
+                        }];
+                    };
+
+                    // check for user filter and keep a ref to that item
+                    if ( item.value === 'USER' ) {
+                        reportList[i]['hasUserFilter'] = item;
+                    };
+
+                    // check for include notes filter and keep a ref to that item
+                    if ( item.value === 'INCLUDE_NOTES' ) {
+                        reportList[i]['hasIncludeNotes'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // check for vip filter and keep a ref to that item
+                    if ( item.value === 'VIP_ONLY' ) {
+                        reportList[i]['hasIncludeVip'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // check for include cancelled filter and keep a ref to that item
+                    if ( item.value === 'INCLUDE_CANCELED' ) {
+                        reportList[i]['hasIncludeCancelled'] = item;
+                        hasFauxSelect = true;
+
+                        if ( reportList[i].title == 'Cancelation & No Show' ) {
+                            reportList[i]['chosenIncludeCancelled'] = true;
+                        };
+                    };
+
+                    // check for include no show filter and keep a ref to that item
+                    if ( item.value === 'INCLUDE_NO_SHOW' ) {
+                        reportList[i]['hasIncludeNoShow'] = item;
+                        hasFauxSelect = true;
+                    };
+                });
+
+                // NEW! faux select DS and logic
+                if ( hasFauxSelect ) {
+                    reportList[i]['fauxSelectOpen'] = false;
+                    reportList[i]['fauxTitle']      = 'Select';
+                };
+
+                // sort by options
+                if ( reportList[i]['sort_fields'] && reportList[i]['sort_fields'].length ) {
+                    _.each(reportList[i]['sort_fields'], function(item, index, list) {
+                        item['sortDir'] = undefined;
+                        if ( index == (list.length - 1) ) {
+                            item['colspan'] = 2;
+                        };
+                    });
+                    reportList[i].sortByOptions = reportList[i]['sort_fields'];
+                };
+
+                // for (arrival, departure) report the sort by items must be
+                // ordered in a specific way as per the design
+                // [date - name - room] > TO > [room - name - date]
+                if ( reportList[i].title == 'Arrival' || reportList[i].title == 'Departure' ) {
+                    var dateSortBy = angular.copy( reportList[i].sortByOptions[0] ),
+                        roomSortBy = angular.copy( reportList[i].sortByOptions[2] );
+
+                    dateSortBy['colspan'] = 2;
+                    roomSortBy['colspan'] = 0;
+
+                    reportList[i].sortByOptions[0] = roomSortBy;
+                    reportList[i].sortByOptions[2] = dateSortBy;
+                };
+
+                // for in-house report the sort by items must be
+                // ordered in a specific way as per the design
+                // [name - room] > TO > [room - name]
+                if ( reportList[i].title == 'In-House Guests' ) {
+                    var nameSortBy = angular.copy( reportList[i].sortByOptions[0] ),
+                        roomSortBy = angular.copy( reportList[i].sortByOptions[1] );
+
+                    nameSortBy['colspan'] = 2;
+                    roomSortBy['colspan'] = 0;
+
+                    reportList[i].sortByOptions[0] = roomSortBy;
+                    reportList[i].sortByOptions[1] = nameSortBy;
                 };
 
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ( $rootScope.currentHotelData == 'Yotel London Heathrow' ) {
-                    var sortDate = _.find(reportList[i]['sort_fields'], function(item) {
+                    var sortDate = _.find(reportList[i].sortByOptions, function(item) {
                         return item.value === 'DATE';
                     });
                     if ( !!sortDate ) {
@@ -152,11 +209,23 @@ sntRover.controller('RVReportListCrl', [
                     };
                 };
                 
-                
-                // set the from and untill dates
-                reportList[i].fromDate = fromDate;
-                reportList[i].untilDate = untilDate;
-            }
+                // set the from and untill dates as business date (which is untilDate)
+                if ( reportList[i].title == 'Arrival' || reportList[i].title == 'Departure' ) {
+                    reportList[i].fromDate  = untilDate;
+                    reportList[i].untilDate = untilDate;
+                } else {
+                    // set the from and untill dates
+                    reportList[i].fromDate        = fromDate;
+                    reportList[i].fromCancelDate  = fromDate;
+                    reportList[i].untilDate       = untilDate;
+                    reportList[i].untilCancelDate = untilDate;
+                };
+
+                // for this report user can remove dates
+                if ( reportList[i].title == 'Cancelation & No Show' ) {
+                    reportList[i]['canRemoveDate'] = true;
+                };
+            };
 
             $scope.refreshScroller( 'report-list-scroll' );
         }( $scope.$parent.reportList );
@@ -169,7 +238,6 @@ sntRover.controller('RVReportListCrl', [
 
         $scope.setnGenReport = function() {
             RVreportsSrv.setChoosenReport( this.item );
-
             $scope.genReport();
         };
 
