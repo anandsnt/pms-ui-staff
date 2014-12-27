@@ -1259,9 +1259,17 @@ sntRover
 	};
 
 	$scope.clickedOnRateType = function(){
-		if($scope.gridProps.filter.rate_type === 'Standard') {
+		if($scope.gridProps.filter.rate_type === 'Standard') {			
 			$scope.gridProps.filter.rate = '';
 		}
+		//CICO-11832
+		else if($scope.gridProps.filter.rate_type === 'Corporate') {
+			if($scope.gridProps.filter.rate !== '') {
+				$scope.compCardOrTravelAgSelected();
+			}
+		}
+
+
 		if (!$scope.gridProps.edit.active && $scope.gridProps.filter.rate_type === 'Standard') {
 			$scope.Availability();
 			$scope.gridProps.filter.toggleRates();
