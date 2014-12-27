@@ -359,10 +359,7 @@ sntRover
 				    		//setting scroll posiions when in edit mode
 				    		var x_n = payload.display.x_n instanceof Date ? payload.display.x_n : new Date(payload.display.x_n);
 				    		x_n.setHours(0, 0, 0);
-				    		var x_origin = row_item_data.arrival;
-				    		console.log('-------')
-				    		console.log(new Date(row_item_data.arrival));
-				    		console.log(new Date(row_item_data.departure));
+				    		var x_origin = row_item_data.arrival;				    		
 				    		$scope.gridProps.edit.reset_scroll = {
 	    						'x_n'      : x_n.getTime(),
 	    						'x_origin' : x_origin
@@ -603,8 +600,7 @@ sntRover
 
 			//if API returns that move is not allowed then we have to revert back	    		
 	    	if(!avData.is_available){	    		
-	    		if(!lastArrTime && !lastDepTime) {
-	    			console.log('yeah here 1');	    			
+	    		if(!lastArrTime && !lastDepTime) {    			
 	    			//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
 					if(props.currentResizeItemRow.id !== oRowItem.id){
 						util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);
@@ -624,13 +620,11 @@ sntRover
 							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = util.copyReservation( this.currentResizeItem);
 						}
 					}
-					console.log(new Date(oItem.arrival));
 					this.currentResizeItemRow = util.copyRoom(oRowItem);							
 					this.currentResizeItem.arrival = oItem.arrival;
 	    			this.currentResizeItem.departure = oItem.departure;
 	    		}
 	    		else{	    			
-	    			console.log('yeah here 2');	
 	    			//removing the occupancy from Old Row, some times reservationRoomTransfer is not wroking fine
 					if(props.currentResizeItemRow.id !== this.availability.drag.lastRoom.id){
 						util.reservationRoomTransfer(this.data, this.availability.drag.lastRoom, props.currentResizeItemRow, props.currentResizeItem);
@@ -894,11 +888,6 @@ sntRover
 	    	
 	    	roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.edit.originalRowItem.id);
 	    	data = $scope.gridProps.data;
-	    	console.log($scope.gridProps.data[roomIndex].arrival);
-	    	console.log('props.edit.originalItem');	 
-	    	console.log(props.edit.originalItem.arrival);
-	    	console.log('props.currentResizeItem');
-	    	console.log(props.currentResizeItem.arrival);
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);	    	
 
 

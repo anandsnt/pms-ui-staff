@@ -40,21 +40,7 @@ var TimelineResizeGrip = React.createClass({
 		e.preventDefault();
 		
 		if(!isResizable){
-			newValue = model[direction];
-			/*console.log('yera');
-			props.iscroll.timeline.enable();
-			document.removeEventListener('mouseup', this.__onMouseUp);
-			document.removeEventListener('mousemove', this.__onMouseMove);	
-			this.setState({
-				mouse_down: 		false,
-				resizing: 			false,
-				currentResizeItem: 	model
-			}, function() {
-				props.__onResizeEnd(state.row, model);
-
-				//props.__onResizeCommand(model);
-			});		*/
-			
+			newValue = model[direction];		
 		}
 
 		if(!state.resizing &&
@@ -133,13 +119,9 @@ var TimelineResizeGrip = React.createClass({
 			reservation_status = 	original_item.reservation_status.toUpperCase(),
 			difference	= (opposite == 'departure' ? (original_item[opposite] - value) :(value - original_item[opposite]) );
 		
-		if((difference) < (fifteenMin)) {
-			
+		if((difference) < (fifteenMin)) {			
 			return false;
-		}
-		
-		 
-		
+		}				 	
 		else if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
 			reservation_status === "AVAILABLE" )) {
 			return true;
