@@ -55,7 +55,8 @@ sntRover.controller('RVOutsidePostChargeController',
 			else{
 				 $scope.invokeApi(RVChargeItems.fetchAllItems, '', fetchAllItemsSuccessCallback);
 			}
-			$scope.setScroller('result_showing_area_post_charg');
+			alert("ssss")
+			$scope.setScroller('result_showing_area_post_charg', {'click':true, 'tap':true});
 			$scope.roomSearchStatus = false;
 			$scope.guestCompanySearchStatus = false;
 			/**
@@ -146,7 +147,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, dataToSrv, $scope.searchForResultsSuccess);
 				$scope.itemsVisible = false;
-				$scope.setScroller('search-guests-for-charge-content');
+				//$scope.setScroller('search-guests-for-charge-content', {	'tap': true,'click': true,	'preventDefault': false});
 				
 			};
 			$scope.clickedCancel = function(){
@@ -181,7 +182,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				data.isFromOut = true;
 				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
 			};
-			$scope.clickedReservationToPostCharge = function(reservationId){
+			$scope.clickedReservationToPostCharge = function(reservationId){alert("kkkk")
 				$scope.showPostChargesScreen();
 				$scope.invokeApi(RVChargeItems.getReservationBillDetails, reservationId, $scope.successGetBillDetails);
 			};
