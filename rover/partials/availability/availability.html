@@ -21,19 +21,16 @@
 			</div>
 
 			<!-- Title -->
-			<h1 class="h2">
-			    {{page.title}}
-			    <span>
-			        <strong>{{userInfo.first_name}}
-		{{userInfo.last_name}}</strong>
-			        <em class="date">{{userInfo.business_date | date:'EEEE, dd MMMM y'}}</em>
-			    </span>
-			</h1>
+		    <h1>
+		        <strong class="hotel">{{currentHotelData.name}}</strong>
+		        {{page.title}}
+		        <div class="user">
+		            <strong>{{userInfo.first_name}}{{userInfo.last_name}}</strong>
+		            <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
+		            <em class="date updating" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
+		        </div>
+		    </h1>
 		</header>
-		<section ng-include="getTemplateUrl()"></section>
-			
-			<!-- Graph -->
-			<!-- Highcharts graph should go here -->
-
 		
+		<section ng-include="getTemplateUrl()"></section>	
 	</div>
