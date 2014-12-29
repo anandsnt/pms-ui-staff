@@ -40,92 +40,51 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.heading = listTitle;
 		};
 
-		$scope.fromDateOptions = {
-			dateFormat: $rootScope.jqDateFormat,
-			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			beforeShow: function(input, inst) {
+
+
+
+		var datePickerCommon = {
+			dateFormat     : $rootScope.jqDateFormat,
+			numberOfMonths : 1,
+			changeYear     : true,
+			changeMonth    : true,
+			beforeShow     : function(input, inst) {
 				$('#ui-datepicker-div');
 				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
 			},
-			onSelect: function(value) {
-				$scope.untilDateOptions.minDate = value;
-			},
-			onClose: function(value) {
+			onClose        : function(value) {
 				$('#ui-datepicker-div');
 				$('#ui-datepicker-overlay').remove();
-				$scope.showCanRemoveDate();
-			},
+				$scope.showRemoveDateBtn();
+			}
 		};
 
-		$scope.fromDateOptionsNoMax = {
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-			},
-			onClose: function(value) {
-				$('#ui-datepicker-div');
-				$('#ui-datepicker-overlay').remove();
-				$scope.showCanRemoveDate();
-			},
-		};
+		$scope.fromDateOptions = angular.extend({
+			maxDate  : $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect : function(value) { $scope.untilDateOptions.minDate = value; }
+		}, datePickerCommon);
+		$scope.untilDateOptions = angular.extend({
+			maxDate  : $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect : function(value) { $scope.fromDateOptions.maxDate = value; }
+		}, datePickerCommon);
 
-		$scope.untilDateOptions = {
-			dateFormat: $rootScope.jqDateFormat,
-			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-			},
-			onSelect: function(value) {
-				$scope.fromDateOptions.maxDate = value;
-			},
-			onClose: function(value) {
-				$('#ui-datepicker-div');
-				$('#ui-datepicker-overlay').remove();
-				$scope.showCanRemoveDate();
-			},
-		};
-
-		$scope.untilDateOptionsNoMax = {
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-			},
-			onClose: function(value) {
-				$('#ui-datepicker-div');
-				$('#ui-datepicker-overlay').remove();
-				$scope.showCanRemoveDate();
-			},
-		};
+		$scope.fromDateOptionsNoLimit  = angular.extend({}, datePickerCommon);
+		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 
 
 
 
-		$scope.showCanRemoveDate = function() {
+		$scope.showRemoveDateBtn = function() {
 			var cancellationReport = _.find($scope.reportList, function(item) {
 			    return item.title == 'Cancelation & No Show';
 			});
 
 			if ( !!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] && (!!cancellationReport['fromCancelDate'] || !!cancellationReport['untilCancelDate']) ) {
-			    cancellationReport['canRemoveDate'] = true;
+			    cancellationReport['showRemove'] = true;
 			};
 
 			if ( !!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] && (!!cancellationReport['fromDate'] || !!cancellationReport['untilDate']) ) {
-			    cancellationReport['canRemoveDate'] = true;
+			    cancellationReport['showRemove'] = true;
 			};
 		};
 
@@ -133,7 +92,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			if ( list.hasOwnProperty(key1) && list.hasOwnProperty(key2) ) {
 				list[key1] = undefined;
 				list[key2] = undefined;
-				list['canRemoveDate'] = false;
+				list['showRemove'] = false;
 			};
 		};
 
