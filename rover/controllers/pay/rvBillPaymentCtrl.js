@@ -324,7 +324,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.authorizedCode = data.authorization_code;		
 		//$scope.handleCloseDialog();
 		//To refresh the view bill screen 
-		$scope.$emit('PAYMENT_SUCCESS');
+		data.billNumber = $scope.renderData.billNumberSelected;
+		$scope.$emit('PAYMENT_SUCCESS',data);
 		if($scope.newPaymentInfo.addToGuestCard){
 				var cardCode = $scope.defaultPaymentTypeCard;
 				var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
