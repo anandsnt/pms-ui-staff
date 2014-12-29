@@ -33,6 +33,9 @@ sntRover.controller('RVReportListCrl', [
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
+                // limit what values the users can pick from datepicker
+                reportList[i]['hasDateLimit'] = true;
+
                 // add report icon class
                 switch (reportList[i]['title']) {
                     case 'Check In / Check Out':
@@ -61,14 +64,19 @@ sntRover.controller('RVReportListCrl', [
 
                     case 'Arrival':
                         reportList[i]['reportIconCls'] = 'guest-status check-in';
+                        reportList[i]['hasDateLimit']  = false;
                         break;
 
                     case 'Departure':
                         reportList[i]['reportIconCls'] = 'guest-status check-out';
+                        reportList[i]['hasDateLimit']  = false;
                         break;
 
                     case 'Cancelation & No Show':
                         reportList[i]['reportIconCls'] = 'guest-status cancel';
+                        reportList[i]['hasDateLimit']  = false;
+                        reportList[i]['canRemoveDate'] = true;
+                        reportList[i]['showRemove']    = true;
                         break;
 
                     default:
@@ -219,11 +227,6 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].fromCancelDate  = fromDate;
                     reportList[i].untilDate       = untilDate;
                     reportList[i].untilCancelDate = untilDate;
-                };
-
-                // for this report user can remove dates
-                if ( reportList[i].title == 'Cancelation & No Show' ) {
-                    reportList[i]['canRemoveDate'] = true;
                 };
             };
 
