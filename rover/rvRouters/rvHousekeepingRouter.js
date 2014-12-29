@@ -12,58 +12,8 @@ angular.module('housekeepingModule', [])
             url: '/roomStatus?roomStatus&businessDate',
             templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
             controller: 'RVHkRoomStatusCtrl',
-
-            // create a generic resolve that will
-            // 1. check if its a connected
-            //      a. ignore all related filters
-            // 2. if it is a non-connected, standalone
-            //      a. if the user currently has an active worksheet -> filter [ daily_cleaning, emp_id ]
-            //      b. if the user currently doesn't have an active worksheet -> filter [ all work type, 'all_employees_selected' ]
-
-
             resolve: {
-                // roomList: function(RVHkRoomStatusSrv, $stateParams, $rootScope) {
-                //     if (!!$stateParams && !!$stateParams.roomStatus) {
-                //         var filterStatus = {
-                //             'INHOUSE_DIRTY'         : ['dirty', 'stayover'],
-                //             'INHOUSE_CLEAN'         : ['clean', 'stayover'],
-                //             'DEPARTURES_DIRTY'      : ['dueout', 'departed', 'dirty'],
-                //             'DEPARTURES_CLEAN'      : ['dueout', 'departed', 'clean'],
-                //             'OCCUPIED'              : ['occupied'],
-                //             'VACANT_READY'          : ['vacant', 'clean', 'inspected'],
-                //             'VACANT_NOT_READY'      : ['vacant', 'dirty'],
-                //             'OUTOFORDER_OR_SERVICE' : ['out_of_order', 'out_of_service'],
-                //             'QUEUED_ROOMS'          : ['queued']
-                //         }
-                //         var filtersToApply = filterStatus[$stateParams.roomStatus];
-                //         for (var i = 0; i < filtersToApply.length; i++) {
-                //             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
-                //         }
-
-                //         // RESET: since a housekeeping dashboard can disturb these props
-                //         RVHkRoomStatusSrv.currentFilters.page  = 1;
-                //         RVHkRoomStatusSrv.currentFilters.query = '';
-
-                //         return RVHkRoomStatusSrv.fetchRoomListPost({
-                //             isStandAlone : $rootScope.isStandAlone,
-                //             shouldAllEmp : $rootScope.isStandAlone && !$rootScope.isMaintenanceStaff ? true : false
-                //         });
-                //     } else if (!!$stateParams && !!$stateParams.businessDate) {
-                //         return RVHkRoomStatusSrv.fetchRoomListPost({
-                //             isStandAlone : $stateParams.isStandAlone,
-                //             shouldAllEmp : $stateParams.isStandAlone ? true : false
-                //         });
-                //     } else {
-                //         return RVHkRoomStatusSrv.fetchRoomListPost({
-                //             isStandAlone         : $rootScope.isStandAlone,
-                //             shouldAllEmp : $rootScope.isStandAlone && !$rootScope.isMaintenanceStaff ? true : false
-                //         });
-                //     }
-                // },
                 fetchPayload: function(RVHkRoomStatusSrv, $stateParams, $rootScope) { 
-
-                    // return {};
-
                     if (!!$stateParams && !!$stateParams.roomStatus) {
                         var filterStatus = {
                             'INHOUSE_DIRTY'         : ['dirty', 'stayover'],
@@ -85,28 +35,14 @@ angular.module('housekeepingModule', [])
                         RVHkRoomStatusSrv.currentFilters.page  = 1;
                         RVHkRoomStatusSrv.currentFilters.query = '';
 
-                        return RVHkRoomStatusSrv.fetchPayload({
-                            isStandAlone : $rootScope.isStandAlone,
-                            shouldAllEmp : $rootScope.isStandAlone && !$rootScope.isMaintenanceStaff ? true : false
-                        });
-                    } else if (!!$stateParams && !!$stateParams.businessDate) {
-                        return RVHkRoomStatusSrv.fetchPayload({
-                            isStandAlone : $stateParams.isStandAlone,
-                            shouldAllEmp : $stateParams.isStandAlone ? true : false
-                        });
+                        return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $rootScope.isStandAlone });
                     } else {
-                        return RVHkRoomStatusSrv.fetchPayload({
-                            isStandAlone : $rootScope.isStandAlone,
-                            shouldAllEmp : $rootScope.isStandAlone && !$rootScope.isMaintenanceStaff ? true : false
-                        });
+                        return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $stateParams.isStandAlone || $rootScope.isStandAlone );
                     }
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope) {
                     return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];
                 },
-                // workTypes: function(RVHkRoomStatusSrv, $rootScope) {
-                //     return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchWorkTypes() : [];
-                // },
                 roomTypes: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
                 },

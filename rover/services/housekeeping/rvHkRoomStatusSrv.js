@@ -83,6 +83,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 							} else {
 								params['all_employees_selected'] = true;
 							};
+						} else {
+							params['all_employees_selected'] = true;
 						};
 					};
 				};
