@@ -55,7 +55,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			onClose        : function(value) {
 				$('#ui-datepicker-div');
 				$('#ui-datepicker-overlay').remove();
-				$scope.showCanRemoveDate();
+				$scope.showRemoveDateBtn();
 			}
 		};
 
@@ -74,17 +74,17 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
-		$scope.showCanRemoveDate = function() {
+		$scope.showRemoveDateBtn = function() {
 			var cancellationReport = _.find($scope.reportList, function(item) {
 			    return item.title == 'Cancelation & No Show';
 			});
 
 			if ( !!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] && (!!cancellationReport['fromCancelDate'] || !!cancellationReport['untilCancelDate']) ) {
-			    cancellationReport['canRemoveDate'] = true;
+			    cancellationReport['showRemove'] = true;
 			};
 
 			if ( !!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] && (!!cancellationReport['fromDate'] || !!cancellationReport['untilDate']) ) {
-			    cancellationReport['canRemoveDate'] = true;
+			    cancellationReport['showRemove'] = true;
 			};
 		};
 
@@ -92,7 +92,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			if ( list.hasOwnProperty(key1) && list.hasOwnProperty(key2) ) {
 				list[key1] = undefined;
 				list[key2] = undefined;
-				list['canRemoveDate'] = false;
+				list['showRemove'] = false;
 			};
 		};
 

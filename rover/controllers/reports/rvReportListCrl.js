@@ -75,6 +75,8 @@ sntRover.controller('RVReportListCrl', [
                     case 'Cancelation & No Show':
                         reportList[i]['reportIconCls'] = 'guest-status cancel';
                         reportList[i]['hasDateLimit']  = false;
+                        reportList[i]['canRemoveDate'] = true;
+                        reportList[i]['showRemove']    = true;
                         break;
 
                     default:
@@ -225,11 +227,6 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].fromCancelDate  = fromDate;
                     reportList[i].untilDate       = untilDate;
                     reportList[i].untilCancelDate = untilDate;
-                };
-
-                // for this report user can remove dates
-                if ( reportList[i].title == 'Cancelation & No Show' ) {
-                    reportList[i]['canRemoveDate'] = true;
                 };
             };
 
