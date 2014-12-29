@@ -20,6 +20,7 @@ html {
 .logo-hide, 
 .text-hide,
 .no-print,
+.search-pagination,
 .reservation-tabs-nav,
 .reservation-list { display: none !important; }
 
@@ -86,9 +87,9 @@ table {
 ==========================================================*/
 /* 4. LAYOUT
 ==========================================================*/
-    
-/* App screens              ==============================*/
-    .container {
+	
+/* App screens				==============================*/
+	.container {
         position: static;
         top: 0 !important; 
         left: 0 !important;
@@ -154,6 +155,8 @@ table {
     .nested-view,
     .view-current { background: transparent !important; }
 
+    .scrollable { overflow: visible; }
+
     .wrapper { 
         padding: 0 !important;
         transform: translate(0px, 0px) !important;
@@ -162,8 +165,8 @@ table {
     .iScrollVerticalScrollbar,
     .iScrollHorizontalScrollbar { .hide; }
 
-/* Nav Bar                  ==============================*/
-    .nav-bar {
+/* Nav Bar 					==============================*/
+	.nav-bar {
         position: relative;
         height: auto;
         padding: 0;
@@ -180,23 +183,21 @@ table {
             font-size: 18pt;
             line-height: 1em;
 
-            span { 
-                font-size: 10pt; 
-
-                strong,
-                span { 
-                    display: inline; 
-                    font-weight: 400;
-                }
-            }
+            .hotel,
+            .user { font-size: 10pt; }
         }
 
         .logo {
-            margin: 0 auto;
+            margin: 0 auto 12pt auto;
             .size(30px, 135px);
             .show;
 
-            img { .size(100%, auto); }
+            img { 
+                filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+                filter: gray;
+                -webkit-filter: grayscale(100%);
+                .size(100%, auto);
+            }
         }
 
         &.logo-print {
@@ -208,6 +209,48 @@ table {
         &.no-print { .hide; }  
     }
 
+/* Guest status             ==============================*/
+    .guest-status {
+        background-color: transparent !important;
+        border: 1px solid @textColor;
+        .square(38px);
+
+        &.pre-check-in,
+        &.check-in,
+        &.check-out,
+        &.inhouse,
+        &.late-check-out,
+        &.cancel { 
+            background-image: @iconPrint; 
+            background-size: 40px;
+        }
+
+        &.pre-check-in,
+        &.check-in { background-position: 11px 11px; }
+        &.check-out { background-position: 11px -30px; }
+        &.inhouse { background-position: 11px -69px; }
+        &.late-check-out { background-position: 11px -109px; }
+        &.cancel { background-position: 11px -149px; }
+
+        &.small-icon {
+            background-size: 40px;
+            .square(28px); 
+
+            &.pre-check-in,
+            &.check-in { background-position: 6px 6px; }
+            &.check-out { background-position: 6px -34px; }
+            &.inhouse { background-position: 6px -74px; }
+            &.late-check-out { background-position: 7px -114px; }
+            &.cancel { background-position: 6px -154px; }
+        }
+
+        &.arrival,
+        &.departed { background-color: @grey1; }
+        
+        &.no-show,
+        &.cancel { border-color: @grey2; }
+    }
+      
 /* 5. COMPONENTS
 ==========================================================*/
 
@@ -234,7 +277,7 @@ table {
 
                         .data {
                             position: relative;
-                            padding: 10px 240px 0 0;
+                            padding: 10px 240px 10px 0;
                             .calc-width(100, 200);
                             .pull-left;
 
@@ -258,25 +301,27 @@ table {
                             .departure {
                                 position: absolute;
                                 top: 10px;
-                                width: 120px;
+                                width: 240px;
                                 font-size: 11pt;
-                                line-height: 20px;
+                                line-height: 1em;
                                 .pull-left;
 
-                                .guest-status { 
-                                    margin-right: 4pt;
-                                    .square(20px); 
+                                .guest-status { margin-right: 4pt; }
+
+                                .time { 
+                                    color: @grey3;
+                                    .show;
                                 }
                             }
 
-                            .arrival { right: 200px; }
+                            .arrival { right: 280px; }
                             .departure { right: 40px; }
                         }
 
                         .amount {
                             font-size: 18pt;
                             font-weight: 300;
-                            line-height: 40px;
+                            line-height: 44px;
                             width: 140px;
                             .pull-left;
 
@@ -285,7 +330,7 @@ table {
 
                         .switch-button { 
                             font-size: 10pt;
-                            line-height: 40px;
+                            line-height: 44px;
                             text-align: right;
                             width: 60px;
                             .pull-left;
@@ -300,13 +345,16 @@ table {
                             .data-on { 
                                 .hide; 
 
-                                .value { color: @green; }
+                                .value { color: @grey3; }
                             }
 
                             .data-off { 
                                 .show; 
 
-                                .value { color: @red; }
+                                .value { 
+                                    color: @textColor;
+                                    font-weight: 600;
+                                }
                             }
 
                             &.on {
@@ -327,6 +375,7 @@ table {
     .cards {
         position: relative;
         z-index: 9999;
+        size: landscape;
         .hide;
 
         .cards-wrapper { 
@@ -336,7 +385,7 @@ table {
                 height: 30px;
 
                 .card-header {
-
+                    
                     form,
                     .card-search-form {
                         float: none;
@@ -428,9 +477,6 @@ table {
                                             font-weight: 300;
                                             color: @textColor;
                                             .show;
-
-                                            &.green { color: @green; }
-                                            &.red { color: @red; }
                                         }
                                     }
                                 }
@@ -455,7 +501,6 @@ table {
         position: static !important;
         height: auto !important;
         overflow: auto !important;
-        background: transparent !important;
 
         .report-header { .hide; }
 
@@ -480,9 +525,9 @@ table {
                         color: @textColor;
                         .show;
 
-                        &.green { font-weight: 600; color: @green; }
-                        &.red { font-weight: 600; color: @red; }
-                        &.orange { font-weight: 600; color: @logoPrimary; }
+                        &.green,
+                        &.red,
+                        &.orange { font-weight: 600; }
                     }
 
                     &.sub { color: @grey3; }
@@ -524,6 +569,7 @@ table {
                             font-size: 8pt;
                             line-height: 10pt;
                             color: @grey3;
+
                             span { color: @textColor; }
 
                             .pagination { .hide; }                            
@@ -571,13 +617,7 @@ table {
 
                             .confirmation { margin-right: 5px; }
 
-                            .status {
-                                .show;
-
-                                &.red { color: @red; }
-                            }
-
-                            .penalty { color: @red; }
+                            .status { .show; }
 
                             .vip {
                                 font-size: 10pt;
@@ -585,7 +625,7 @@ table {
                                 font-weight: 400;
                                 text-align: left;
                                 background: transparent;
-                                color: darken(@yellow, 10);
+                                color: @grey3;
                                 margin-left: 5px;
                                 .size(auto);
                             }
@@ -598,6 +638,10 @@ table {
                                 .guest-status { 
                                     margin-right: 5px;
                                     .square(30px); 
+
+                                    &.check-in { background-position: 7px 6px; }
+                                    &.check-out { background-position: 7px -32px; }
+                                    &.cancel { background-position: 7px -153px; }
                                 }
 
                                 time {      
@@ -629,23 +673,6 @@ table {
                             &:first-child { min-width: 2.5cm; }
 
                             &[rowspan] { border-bottom: 1px solid @grey2; }
-
-                            &.is-note {
-                                color: @grey3;
-                                font-weight: 400;
-
-                                strong {
-                                    color: @textColor;
-                                }
-
-                                > span {
-                                    display: block;
-                                }
-
-                                .note-by-name {
-                                    display: inline !important;
-                                }
-                            }
                         }
 
                         &.row-break {
@@ -662,8 +689,6 @@ table {
                                         color: @textColor;
                                         text-transform: uppercase;
                                         font-weight: 600;
-
-                                        &.red { color: @red; }
                                     }
                                 }
                             }
@@ -703,51 +728,39 @@ table {
                 line-height: 1em;
                 font-weight: 700;
                 margin: 0;
+                color: @textColor;
                 .size(30pt, 4cm);
                 .pull-left;
                 
-                &.clean,
-                &.inspected { color: @green; }
-                &.dirty,
-                &.pickup { color: @red; }
-                &.out { color: @grey3; }
+                &.out { color: @grey2; }
             }
 
             &.single-sheet {
                 padding: 4pt 34pt 4pt 0 !important;
 
                 .reservation-status {
-                    margin-top: 3pt;
-                    .size(24pt, 6.5cm);
+                    .size(40px, 6.5cm);
                     .pull-left;
 
                     .guest-status { 
                         margin-right: 8pt;
-                        .square(24pt);
-
-                        &.check-in { background-position: 8px -112px; }
-                        &.check-out { background-position: 8px -152px; }
-                        &.inhouse { background-position: 8px -192px; }
-                        &.no-show { display: none !important; }
                     }
 
                     .current,
                     .next { 
                         font-size: 10pt;
-                        line-height: 24pt;
+                        line-height: 40px;
                         text-transform: uppercase;
-                        .size(24pt, 50%);
+                        .size(40px, 50%);
                         .pull-left;
-
-                        &.check-in { color: @green; }
-                        &.check-out { color: @red; }
-                        &.inhouse { color: @blue; }
                     }
                 }
 
                 .icon-queued {
-                    background-position: 6px -4175px;
                     margin-right: 4pt;
+                    background-image: @iconPrint; 
+                    background-size: 40px;
+                    background-position: 0px -188px;
                     .hide-text;
                     .square(30pt);
                     .show;
@@ -757,7 +770,9 @@ table {
                 .vip {
                     font-size: 8pt;
                     line-height: 20pt;
-                    margin: 5pt 4pt 0 0;
+                    margin: 5pt 12pt 0 0;
+                    color: @grey3;
+                    background-color: transparent;
                     .square(20pt);
                     .pull-right;
                 }
@@ -780,13 +795,13 @@ table {
 
                     &.red { 
                         background: transparent !important;
-                        border: 2px solid @grey3;
+                        border: 1px dashed @textColor;
                     }
                 }
 
                 .no-action { 
                     background: transparent !important;
-                    border: 2px solid @green;
+                    border: 1px solid @grey2;
 
                     &:after {
                         content: "✔";
@@ -797,7 +812,7 @@ table {
                         text-align: center;
                         font-size: 20pt;
                         line-height: 30pt;
-                        color: @green;
+                        color: @grey2;
                         .square(100%);
                         .show;
                     }
@@ -823,46 +838,33 @@ table {
                 }
 
                 .guest {
-                    padding-left: 30pt;   
-                    width: 4cm;
-                    .pull-left;                 
-                    
+                    padding-left: 30pt;  
+                    width: 4cm; 
+                    .pull-left;
+
                     &:before {
                         content: "";
                         position: absolute;
                         top: 0;
                         left: 0;
-                        background-image: @icons;
+                        background-image: @iconPrint;
                         background-repeat: no-repeat;
+                        background-size: 40px;
+                        border: 1px solid @textColor;
                         .square(24pt);
                         .show;
                     }
 
-                    &.check-in {
-                        color: @green; 
-
-                        &:before {
-                            background-color: @green;
-                            background-position: 8px -112px; 
-                        }
+                    &.check-in { 
+                        &:before { background-position: 8px 8px; } 
                     }
 
                     &.check-out { 
-                        color: @red; 
-
-                        &:before {
-                            background-color: @red;
-                            background-position: 8px -152px;
-                        }
+                        &:before { background-position: 8px -32px; } 
                     }
 
                     &.inhouse { 
-                        color: @blue; 
-
-                        &:before {
-                            background-color: @blue;
-                            background-position: 8px -192px;
-                        }
+                        &:before { background-position: 8px -72px; } 
                     }
 
                     &.no-show { 
@@ -887,28 +889,22 @@ table {
 
                     &.clean,
                     &.inspected { 
-                        color: @green; 
-
                         &:before {
                             content: "✔";
                             text-align: center;
                             font-size: 20pt;
                             line-height: 30pt;
-                            color: @green;
-                            border: 2px solid @green;
+                            color: @grey2;
+                            border: 1px solid @grey1;
                             .show;
                         }
-
                     }
-
-                    &.dirty { color: @red; }
-                    &.pickup { color: @orange; }
 
                     &.dirty,
                     &.pickup {
                         &:before { 
                             content: "";
-                            border: 2px solid @grey3; 
+                            border: 1px dashed @textColor; 
                         }
                     }
                 }
@@ -997,22 +993,12 @@ table {
                             span { 
                                 display: inline-block;
 
-                                &.completed { margin-right: 8pt; }
-                                &.total { padding-left: 8pt; border-left: 1px solid @grey3; }
-                            }
+                                &.completed { margin-right: 4pt; }
 
-                            &.shift { 
-                                .total { color: @grey3; }
-                            }
-                            
-                            &.departures { 
-                                color: @red;
-                                .total { border-color: @red; }
-                            }
-                            
-                            &.stayovers { 
-                                color: @blue;
-                                .total { border-color: @blue; }
+                                &.total { 
+                                    padding-left: 4pt; 
+                                    border-left: 1px solid @textColor; 
+                                }
                             }
                         }
                     }
@@ -1076,7 +1062,7 @@ table {
                     text-transform: uppercase;
                     line-height: 40px;
                     margin: 0;
-                    
+
                     &.payment {
                         padding-left: -webkit-calc(~"90% - 130px");
                         padding-left: -moz-calc(~"90% - 130px");
@@ -1124,7 +1110,7 @@ table {
                             .name { .calc-width(40, 30); }
                             .code { .calc-width(30, 30); }
                             .number { .calc-width(20, 30); }
-                        }                       
+                        }                      
                     }
                 }  
 
@@ -1146,6 +1132,7 @@ table {
 
                     thead {
                         th { 
+                            background: transparent;
                             font-weight: 400;
                             color: @grey3;
                             border-bottom: 1px solid @grey3;
@@ -1155,7 +1142,7 @@ table {
 
                 &.print-details {
                     .grid-header { background: transparent; }
-                    
+
                     .grid-group {
                         > .toggle {
                             background: @grey1;
@@ -1183,7 +1170,7 @@ table {
                 .pull-left;
 
                 .shift-details {
-
+                    
                     caption {
                         font-size: 10pt;
                         color: @grey3;
@@ -1305,15 +1292,8 @@ table {
         .complete-registration { .hide; }
 
         .registration-content {
-            position: static;
-            height: 100%;
-            overflow: visible;
 
             .registration-summary {
-
-                .bill-summary {
-                    top: 0 !important;
-                }
 
                 #bills-tabs-nav,
                 .bill-summary-wrapper,
@@ -1347,6 +1327,9 @@ table {
                             position: absolute;
                             top: 0;
                             right: 0;
+                            filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+                            filter: gray;
+                            -webkit-filter: grayscale(100%);
                             .size(40px, auto);
                         }
                     }

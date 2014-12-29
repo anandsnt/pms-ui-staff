@@ -13,14 +13,14 @@
 	</div>
 
 	<!-- Title -->
-	  <!-- Title -->
     <h1>
         <strong class="hotel">{{currentHotelData.name}}</strong>
         {{heading | translate}}
         <div class="user">
             <strong>{{userInfo.first_name}}
 		{{userInfo.last_name}}</strong>
-             <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em><em class="blink_text" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
+             <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
+             <em class="date updating" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
         </div>
     </h1>
 </header>
