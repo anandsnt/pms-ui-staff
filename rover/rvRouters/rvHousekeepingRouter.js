@@ -37,7 +37,7 @@ angular.module('housekeepingModule', [])
 
                         return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $rootScope.isStandAlone });
                     } else {
-                        return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $stateParams.isStandAlone || $rootScope.isStandAlone );
+                        return RVHkRoomStatusSrv.fetchPayload({ isStandAlone: $stateParams.isStandAlone || $rootScope.isStandAlone });
                     }
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope) {

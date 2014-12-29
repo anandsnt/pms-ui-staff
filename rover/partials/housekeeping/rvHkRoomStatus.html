@@ -48,12 +48,12 @@
     </div>
 </form>
 
-<ul id="my-worksheet-options" class="worksheet-options" ng-if="isStandAlone && hasActiveWorkSheet">
+<ul id="my-worksheet-options" class="worksheet-options" ng-show="hasActiveWorkSheet">
     <li ng-click="changeView('summary')" ng-class="{'active': currentView == 'summary'}">Summary</li>
     <li ng-click="changeView('rooms')" ng-class="{'active': currentView == 'rooms'}">Rooms</li>
 </ul>
 
-<ul id="my-worksheet-summary" class="worksheet-summary" ng-if="isStandAlone && hasActiveWorkSheet" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->
+<ul id="my-worksheet-summary" class="worksheet-summary" ng-show="hasActiveWorkSheet" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->
     <li>Time Allocated <span>{{ counts.allocated }}</span></li>
     <li>Departures <span>{{ counts.departures }}</span></li>
     <li>Stayovers <span>{{ counts.stayover }}</span></li>
@@ -61,7 +61,7 @@
 </ul>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && hasActiveWorkSheet, 'no-options': !isStandAlone}" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary' && hasActiveWorkSheet, 'no-pagination': (disablePrevBtn && disableNextBtn)}" div-touch-move-stop-propogate>
+<section id="rooms" class="content scrollable" bindonce bo-class="{'no-options': !isStandAlone}" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary', 'no-pagination': (disablePrevBtn && disableNextBtn)}" div-touch-move-stop-propogate>
   <ul class="wrapper search-results" ng-hide="uiTotalCount == 0">
     <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
         <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ netTotalCount }}</strong> items</p>

@@ -509,6 +509,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				},
 				_callback = function(data) {
 					$scope.hasActiveWorkSheet = !!data.work_sheets && !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
+					$scope.hasActiveWorkSheet = !!$scope.hasActiveWorkSheet ? true : false;
 
 					$scope.topFilter.byWorkType = $_defaultWorkType;
 					$scope.topFilter.byEmployee = $_defaultEmp;
@@ -532,12 +533,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				_failed = function() {
 					$scope.topFilter.byWorkType = '';
 					$scope.topFilter.byEmployee = '';
+
+					$scope.hasActiveWorkSheet = false;
 					$scope.currentView = 'rooms';
 
 					$timeout(function() {
 						$_postProcessRooms();
 					}, 10);
 				};
+
+			// reset before fetch/process
+			$scope.hasActiveWorkSheet = false;
+			$scope.currentView = 'rooms';
 
 			// if the assignements has been loaded
 			// as part of the inital load, just process it
@@ -980,7 +987,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// initiate $_pullUpDownModule
 		// dont move these codes outside this controller
 		// DOM node will be reported missing
-		$_pullUpDownModule();
+		if ( $window.innerWidth < 599 ) {
+			$_pullUpDownModule();
+		};
+		
 
 
 
