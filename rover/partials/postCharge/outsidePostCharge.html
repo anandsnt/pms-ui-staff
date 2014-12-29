@@ -127,7 +127,7 @@
 											<span class="vip" ng-show="row.vip==true">VIP</span>
 										</figure>
 			
-										<div class="data">
+										<span class="data">
 											<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:search.guest_company_agent:false" 
 			
 											ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
@@ -135,22 +135,22 @@
 											<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
 											</span>
 											<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:search.guest_company_agent:false"></em>
-										</div>	
+										</span>	
 			
-										<div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
+										<span class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
 											<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 												{{row.late_checkout_time}}
 											</span>
 			
 											<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
 											</span>
-										</div>	
+										</span>	
 			
-										<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
+										<strong class="room-number room-result" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
 											<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }" >
 												{{row.room}}
 											</span>			
-										</span>
+										</strong>
 			
 			
 										<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
