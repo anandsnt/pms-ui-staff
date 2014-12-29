@@ -3,7 +3,7 @@
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromCancelDate" readonly>
         <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromCancelDate" readonly>
-        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.showRemove" class="clear-query">
+        <button ng-if="item.canRemoveDate" ng-show="item.showRemove" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
         </button>
     </div>  
@@ -11,7 +11,7 @@
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilCancelDate" readonly>
         <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilCancelDate" readonly>
-        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.showRemove" class="clear-query">
+        <button ng-if="item.canRemoveDate" ng-show="item.showRemove" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
         </button>
     </div>
@@ -22,7 +22,7 @@
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" readonly>
         <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" readonly>
-        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.showRemove" class="clear-query">
+        <button ng-if="item.canRemoveDate" ng-show="item.showRemove" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDate', 'untilDate')">Clear query</span>
         </button>
     </div>
@@ -30,7 +30,7 @@
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" readonly>
         <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" readonly>
-        <button ng-if="item.title == 'Cancelation & No Show'" ng-show="item.showRemove" class="clear-query">
+        <button ng-if="item.canRemoveDate" ng-show="item.showRemove" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDate', 'untilDate')">Clear query</span>
         </button>
     </div>

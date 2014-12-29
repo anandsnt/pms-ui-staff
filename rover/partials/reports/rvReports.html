@@ -25,7 +25,7 @@
 		<div ng-controller="RVReportDetailsCtrl">
 			<div id="report-update" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
 
-			<div class="report-header">
+			<div ng-show="results.length" class="report-header">
 				<div class="actions">
 					<div class="select" ng-if="HIDE_THIS_FEATURE">
 						<select name="" id="">
