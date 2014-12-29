@@ -927,8 +927,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if(typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !=='undefined'){
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
 		}
-
-		if($rootScope.isStandAlone && finalBillBalance !== "0.00"){
+		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
+		if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType!="DB"){
 			console.log("Standalone - Final bill having balance to pay");
 			$scope.clickedPayButton();
 		}
@@ -983,12 +983,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
 		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
+		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
 		if($rootScope.isStandAlone && ActiveBillBalance == "0.00"){
 			// Checking bill balance for stand-alone only.
 			$scope.reviewStatusArray[index].reviewStatus = true;
 			$scope.findNextBillToReview();
 		}
-		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00"){
+		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType!="DB"){
 			// Show payment popup for stand-alone only.
 			$scope.clickedPayButton();
 		}
