@@ -604,4 +604,17 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 	$scope.init();
 	
+
+	/**
+	* function to determine whether to show unassignroom
+	*/
+	$scope.showUnAssignRoom = function() {
+		var r_data = $scope.reservationData.reservation_card;
+		return (r_data.reservation_status.indexOf(['CHECKING_IN', 'RESERVED']) && 
+			!!r_data.room_number && 
+			$rootScope.isStandAlone && 
+			!$scope.roomAssgnment.inProgress &&
+			!r_data.is_hourly_reservation);
+	};
+
 }]);
