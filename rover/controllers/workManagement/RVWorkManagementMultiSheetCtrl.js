@@ -9,7 +9,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		// saving in local variable, since it will be updated when user changes the date
-		var allUnassigned = allUnassigned;
+		var $_allUnassigned = allUnassigned;
 
 
 
@@ -160,6 +160,21 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				}, onFetchSuccess, onFetchFailure);
 			},
 			init = function() {
+				// for all unassigned rooms
+				// we are gonna mark each rooms with
+				// its associated work_type_id
+				// this way while saving we can determine
+				// how many different work type has been touched
+				// and how many save request must be created
+				// this process is repeated (replicated) when date changes
+				var wtid = '';
+				_.each($_allUnassigned, function(item) {
+					wtid = item.id;
+					_.each(item.unassigned, function(room) {
+						room.work_type_id = wtid;
+					});
+				});
+
 				$scope.multiSheetState.selectedEmployees = [];
 				_.each($scope.employeeList, function(employee) {
 					if (employee.ticked) {
@@ -291,7 +306,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.$emit('showLoader');
 
 			$timeout(function() {
-				$scope.multiSheetState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned, allUnassigned, $scope.multiSheetState.assignments);
+				$scope.multiSheetState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned, $_allUnassigned, $scope.multiSheetState.assignments);
 				refreshView();
 				$scope.closeDialog();
 				$scope.$emit('hideLoader');
@@ -300,7 +315,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 		$scope.fetchAllUnassigned = function(options) {
 			var callback = function(data) {
-				allUnassigned = data;
+				$_allUnassigned = data;
 				
 				// for all unassigned rooms
 				// we are gonna mark each rooms with
@@ -365,7 +380,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			var thatWT = {};
 			var match  = {};
 			if ( $scope.filters.showAllRooms ) {
-				thatWT = _.find(allUnassigned, function(item) {
+				thatWT = _.find($_allUnassigned, function(item) {
 					return item.id == room.work_type_id
 				});
 
@@ -396,12 +411,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					//remove from 'unassigned','unassignedFiltered' and push to 'assignTo'
 					var droppedRoom = $scope.multiSheetState.unassignedFiltered[indexOfDropped];
 					$scope.multiSheetState.assignments[assignTo].rooms.push(droppedRoom);
-					
-					// $scope.multiSheetState.unassigned.splice(_.indexOf($scope.multiSheetState.unassigned, _.find($scope.multiSheetState.unassigned, function(item) {
-					// 	return item === droppedRoom;
-					// })), 1);		
-					$_updatePool(droppedRoom, true);
-
+					$scope.multiSheetState.unassigned.splice(_.indexOf($scope.multiSheetState.unassigned, _.find($scope.multiSheetState.unassigned, function(item) {
+						return item === droppedRoom;
+					})), 1);
 					$scope.filterUnassigned();
 					updateSummary(assignTo);
 				} else { //==Shuffling Assigned
@@ -429,19 +441,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			//remove from "assignee" and add "unassigned"
 			var roomList = $scope.multiSheetState.assignments[assignee].rooms;
 			var droppedRoom = roomList[indexOfDropped];
+			$scope.multiSheetState.unassigned.push(droppedRoom);
 			roomList.splice(indexOfDropped, 1);
-
-			$_updatePool(droppedRoom, false);
-
-			// if that room never was there, add it
-			// TODO: do the same for all unassigned
-			var roomInPool = _.find($scope.multiSheetState.unassigned, function(room) {
-				return room.id == droppedRoom.id
-			});
-			if ( !roomInPool ) {
-				$scope.multiSheetState.unassigned.push(droppedRoom);
-			};
-
 			$scope.filterUnassigned();
 			updateSummary(assignee);
 		}
@@ -475,21 +476,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 
 
-
-		// for all unassigned rooms
-		// we are gonna mark each rooms with
-		// its associated work_type_id
-		// this way while saving we can determine
-		// how many different work type has been touched
-		// and how many save request must be created
-		// this process is repeated (replicated) when date changes
-		var wtid = '';
-		_.each(allUnassigned, function(item) {
-			wtid = item.id;
-			_.each(item.unassigned, function(room) {
-				room.work_type_id = wtid;
-			});
-		});
 
 		/**
 		 * Saves the current state of the Multi sheet view

@@ -214,7 +214,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			minDate: tzIndependentDate($rootScope.businessDate),
 			beforeShow: function(input, inst) {
 				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay" class="transparent">').insertAfter('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay"').insertAfter('#ui-datepicker-div');
 			},
 			onClose: function(dateText, inst) {
 				$('#ui-datepicker-div');

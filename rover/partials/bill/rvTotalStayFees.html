@@ -44,10 +44,10 @@
 	</div>
 	
 	<!-- Credit card -->
-	<div class="block-item item-payment" ng-class="{'bill-cc-data' : billData.credit_card_details.payment_type == 'CC'}">
+	<div class="block-item item-payment">
 		 <!-- AS PER CICO-4842 keeping cc section hidden for billnumber other than 1 -->
 		
-		<h3 ng-show="billData.credit_card_details.payment_type == 'CC'" style="float:left"><span >{{billData.guest_or_company_name}}</span></h3>
+		<h3 ng-show="billData.credit_card_details.payment_type == 'CC'" style="float:right"><span >{{billData.guest_or_company_name}}</span>
 		<a class="next-view" ng-show="billData.credit_card_details.payment_type == 'CC'" ng-click="showPaymentList()">
 			<figure class="card-logo">
 				<img ng-src="/assets/{{billData.credit_card_details.card_code}}.png" alt="">
@@ -78,7 +78,8 @@
 			<a ng-if="billData.credit_card_details.payment_type != null" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>{{'UPDATE' | translate}}</a>
 			<!-- <a ng-if="!isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a> -->
 		</h3>
-		<h3 ng-show="billData.credit_card_details.payment_type == null"> {{ 'NOT_DEFINED' | translate }} <a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a></h3>
+		<h3 ng-show="billData.credit_card_details.payment_type == null">
+		<span>{{billData.guest_or_company_name}}</span> {{ 'NOT_DEFINED' | translate }} <a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a></h3>
 	</div>
 	<!-- Show signed signature -->
 	<div class="details signature-wrapper" ng-show="showSignedSignature">

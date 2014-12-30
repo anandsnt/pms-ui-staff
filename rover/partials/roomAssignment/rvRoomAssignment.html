@@ -65,7 +65,7 @@
 			</div>
 
 		</div>
-		<button id="unassign-room" class="button red" ng-show="reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'RESERVED']) && !!reservationData.reservation_card.room_number && isStandAlone && !roomAssgnment.inProgress" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
+		<button id="unassign-room" class="button red" ng-show="showUnAssignRoom()" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
 	</div>
 
 </section>
