@@ -852,7 +852,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"name_on_card": swipedTrackDataForCheckin.RVCardReadCardName,
 						"card_expiry": cardExpiry,	
 						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
-						"do_not_cc_auth" : $scope.do_not_cc_auth,
+						"do_not_cc_auth" : true,
 					    "no_post" : !$scope.roomChargeEnabled	
 					};
 	 		    } else {

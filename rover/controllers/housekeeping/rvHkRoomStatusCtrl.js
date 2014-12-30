@@ -116,6 +116,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
+		$scope.currentView = 'rooms';
+		$scope.changeView = function(view) {
+			$scope.currentView = view;
+		};
+
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -416,7 +421,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			// clear old results and update total counts
-			$scope.rooms         = [];
+			$scope.rooms              = [];
 			$scope.netTotalCount = $_roomList.total_count;
 			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
 
@@ -446,14 +451,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.employees = employees;
 				};
 
-				// for mobile view spilt
-				$scope.currentView = 'rooms';
-				if ( !$scope.changeView ) {
-					$scope.changeView = function(view) {
-						$scope.currentView = view;
-					};
-				};
-
 				var _setUpWorkTypeEmployees = function() {
 					$_defaultWorkType = $scope.currentFilters.filterByWorkType;
 					$_defaultEmp      = $scope.currentFilters.filterByEmployeeName;
@@ -463,9 +460,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					if ( !!$scope.currentFilters.filterByWorkType && !!$scope.currentFilters.filterByEmployeeName ) {
 						$_checkHasActiveWorkSheet(alreadyFetched);
 					} else {
-						$scope.hasActiveWorkSheet = false;
-						$scope.currentView = 'rooms';
-
 						// need delay, just need it
 						$timeout(function() {
 							$_postProcessRooms();
@@ -509,13 +503,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				},
 				_callback = function(data) {
 					$scope.hasActiveWorkSheet = !!data.work_sheets && !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
-					$scope.hasActiveWorkSheet = !!$scope.hasActiveWorkSheet ? true : false;
 
 					$scope.topFilter.byWorkType = $_defaultWorkType;
 					$scope.topFilter.byEmployee = $_defaultEmp;
 
 					// set an active user in filterByEmployee, set the mobile tab to to summary
-					if ($scope.hasActiveWorkSheet) {
+					if ( !!$scope.hasActiveWorkSheet ) {
 						$scope.currentView = 'summary';
 						$_caluculateCounts(data.work_sheets[0].work_assignments);
 					} else {
@@ -543,8 +536,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				};
 
 			// reset before fetch/process
-			$scope.hasActiveWorkSheet = false;
-			$scope.currentView = 'rooms';
+			// $scope.hasActiveWorkSheet = false;
+			// $scope.currentView        = 'rooms';
 
 			// if the assignements has been loaded
 			// as part of the inital load, just process it
@@ -675,6 +668,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_callRoomsApi() {
+			$scope.hasActiveWorkSheet = false;
+			$scope.currentView        = 'rooms';
+			$scope.rooms              = [];
+
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
 		};
 

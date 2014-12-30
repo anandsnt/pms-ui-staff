@@ -103,7 +103,7 @@ angular.module('housekeepingModule', [])
                 allUnassigned: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
-                    });
+                    }); 
                 }
             }
         });
