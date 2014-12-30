@@ -51,6 +51,7 @@
 
                 /* Grid ***/
                 .dates-grid {
+                    table-layout: auto;
                     width: 100%;
                     border-collapse: separate; 
                     margin: 0;
@@ -859,21 +860,23 @@
                             position: relative;
 
                             .data {
-                                .calc-width(65, 150);
+                                .calc-width(70, 150);
 
                                 h2 { margin-bottom: 6px; }
 
                                 .confirmation,
                                 .arrival,
                                 .departure {
+                                    line-height: 20px;
                                     .show;
                                     .pull-left;
                                 }
 
+                                .confirmation { margin: 0; }
+
                                 .arrival,
                                 .departure {
-                                    line-height: 20px;
-                                    margin-right: 20px;
+                                    margin-left: 20px;
                                     .float;
 
                                     .guest-status { 
@@ -882,9 +885,10 @@
                                         float: none;
                                         .square(20px); 
                                     }
-                                }
 
-                                &.departure { margin-right: 0; }
+                                    .date { margin-right: 5px; }
+                                    .time { color: @grey3; }
+                                }
                             }
 
                             .amount {
@@ -894,7 +898,7 @@
                                 color: @textColor;
                                 margin: 5px 40px 0 0;
                                 .pull-left;
-                                .calc-width(35, 150);
+                                .calc-width(30, 150);
 
                                 &.paid { color: @grey3; }
                             }
@@ -1948,9 +1952,6 @@
                                 }
 
                                 .tab-details {
-                                    position: relative;
-                                    overflow: hidden;
-                                    .calc-height(100, 80); /* %, px */
 
                                     .wrapper { padding: 20px; }
                                     .iScrollVerticalScrollbar { 
@@ -2271,6 +2272,12 @@
                                 }
                             }
 
+                            &.reservations {
+                                .tab-details {
+                                    &.with-pagination { .calc-height(100, 140); }
+                                }
+                            }
+
                             /* Transactions ***/
                             &.transactions {
                                 
@@ -2390,6 +2397,8 @@
 
                                 .tab-details {
                                     .wrapper { padding: 0; }
+
+                                    &.with-pagination { .calc-height(100, 140); }
                                 }
                             }
                         }
@@ -6156,6 +6165,25 @@
                             background-image: @calendar2x;
                         }
                     }
+
+                    .clear-query {
+                        position: absolute;
+                        top: 2px;
+                        right: 2px;
+                        bottom: 2px;
+                        background: #fff;
+
+                        .icons {
+                            background-color: @grey2;
+                            .square(15px);
+                            #border-radius > .rounded(15px);
+                        }
+
+                        &:hover,
+                        &.active { 
+                            .icons { background-color: @logoPrimary; }
+                        }
+                    }
                 }
 
                 .time-range { width: 220px; }
@@ -6329,6 +6357,25 @@
 
                     &:hover,
                     &:active { background-position: 90% -39px; }
+                }
+
+                .clear-query {
+                    position: absolute;
+                    top: 2px;
+                    right: 2px;
+                    bottom: 2px;
+                    background: #fff;
+
+                    .icons {
+                        background-color: @grey2;
+                        .square(15px);
+                        #border-radius > .rounded(15px);
+                    }
+
+                    &:hover,
+                    &.active { 
+                        .icons { background-color: @logoPrimary; }
+                    }
                 }
             }            
 
@@ -9909,10 +9956,7 @@
                     }
 
                     .icon-queued {
-                        background-position: 10px -4175px;
                         margin-right: 10px;
-                        .hide-text;
-                        .square(40px);
                         .show;
                         .pull-left;
                     }

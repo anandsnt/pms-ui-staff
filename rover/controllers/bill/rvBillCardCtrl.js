@@ -515,7 +515,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 /*
 	  * Clicked pay button function
 	  */
-	 $scope.clickedPayButton = function(){
+	 $scope.clickedPayButton = function(isViaReviewProcess){
 
 	 	// To check for ar account details in case of direct bills		
 		if($scope.isArAccountNeeded( $scope.currentActiveBill)){
@@ -524,7 +524,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	 	$scope.paymentModalOpened = true;
 	 	$scope.removeDirectPayment = true;
-	 	 ngDialog.open({
+
+	 	if(isViaReviewProcess) $scope.isViaReviewProcess = true;
+	 	else $scope.isViaReviewProcess = false;
+
+	 	ngDialog.open({
               template: '/assets/partials/pay/rvPaymentModal.html',
               className: '',
               controller: 'RVBillPayCtrl',
@@ -927,10 +931,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if(typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !=='undefined'){
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
 		}
-
-		if($rootScope.isStandAlone && finalBillBalance !== "0.00"){
+		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
+		if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType!="DB"){
 			console.log("Standalone - Final bill having balance to pay");
-			$scope.clickedPayButton();
+			$scope.clickedPayButton(true);
 		}
 		else if(!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag){
 			// Popup to accept and save email address.
@@ -983,14 +987,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
 		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
+		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
 		if($rootScope.isStandAlone && ActiveBillBalance == "0.00"){
 			// Checking bill balance for stand-alone only.
 			$scope.reviewStatusArray[index].reviewStatus = true;
 			$scope.findNextBillToReview();
 		}
-		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00"){
+		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType!="DB"){
 			// Show payment popup for stand-alone only.
-			$scope.clickedPayButton();
+			$scope.clickedPayButton(true);
 		}
 		else{
 			$scope.reviewStatusArray[index].reviewStatus = true;
@@ -1134,8 +1139,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	$scope.splitTypeisAmount = true;
 	$scope.chargeCodeActive = false;
-	$scope.selectedChargeCode = "";
+	$scope.selectedChargeCode = {};
 	$scope.chargeCodeData = chargeCodeData.results;
+	$scope.availableChargeCodes = chargeCodeData.results;
 
 	$scope.getAllchargeCodes = function (callback) {
     	callback($scope.chargeCodeData);
@@ -1178,6 +1184,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.openRemoveChargePopup = function(){
 		ngDialog.open({
     		template: '/assets/partials/bill/rvRemoveChargePopup.html',
+    		controller:'rvBillCardPopupCtrl',
     		className: '',
     		scope: $scope
     	});
@@ -1190,6 +1197,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.openSplitChargePopup = function(){
 		ngDialog.open({
     		template: '/assets/partials/bill/rvSplitChargePopup.html',
+    		controller:'rvBillCardPopupCtrl',
     		className: '',
     		scope: $scope
     	});
@@ -1200,97 +1208,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 */
 
 	$scope.openEditChargePopup = function(){
+		$scope.selectedChargeCode = {
+			"id": "",
+			"name": "",
+			"description": "",
+			"associcated_charge_groups": []
+		};
 		ngDialog.open({
     		template: '/assets/partials/bill/rvEditPostingPopup.html',
     		className: '',
+    		controller:'rvBillCardPopupCtrl',
     		scope: $scope
     	});
-	};
-
-
-	var refreshListWithData = function(data){
-		$scope.init(data);
-		//expand list
-		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
-		$scope.calculateHeightAndRefreshScroll();
-	};
-
-	var hideLoaderAndClosePopup = function(){
-		$scope.$emit("hideLoader");
-		ngDialog.close();
-	};
-
-	var failureCallBack = function(data){
-		//hideLoaderAndClosePopup();
-		$scope.$emit("hideLoader");
-		$scope.errorMessage = data;
-	};
-
-   /*
-	 * API call remove transaction
-	 */
-
-	$scope.removeCharge = function(reason){
-		
-		var deleteData = 
-		{
-			data:{
-				"reason":reason,
-				"process":"delete"
-			},
-			"id" :$scope.selectedTransaction.id
-		};
-		var transactionDeleteSuccessCallback = function(data){		
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-			
-		};
-		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
-	};
-
-   /*
-	 * API call split transaction
-	 */
-
-	$scope.splitCharge = function(qty,isAmountType){
-
-		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
-		var splitData = {
-			"id" :$scope.selectedTransaction.id,
-			"data":{
-				"split_type": split_type,
-   				"split_value": qty
-			}
-			 
-		};
-		var transactionSplitSuccessCallback = function(data){		
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-		};
-		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback,failureCallBack);
-	};
-
-   /*
-	 * API call edit transaction
-	 */
-	$scope.editCharge = function(newAmount,chargeCode){
-		
-		var newData = 
-		{
-			"updatedDate":
-						{
-				  			"new_amount":newAmount,
-				  			"charge_code_id": chargeCode.id
-						},
-					"id" :$scope.selectedTransaction.id
-		};
-
-		var transactionEditSuccessCallback = function(data){
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-		};
-		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback,failureCallBack);
-	
+    	$scope.setScroller('chargeCodesList');
 	};
 
 
@@ -1307,6 +1237,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 
 	};
+
 
 /*----------- edit/remove/split ends here ---------------*/
 
@@ -1389,9 +1320,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 
 	 
-	 $scope.$on('PAYMENT_SUCCESS', function(event) {
+	 $scope.$on('PAYMENT_SUCCESS', function(event,data) {
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+		
+		//CICO-10906 review process continues after payment.
+		if( data.bill_balance == 0.0 && $scope.isViaReviewProcess ){
+			$timeout(function() {
+		        $scope.clickedReviewButton(data.billNumber-1);
+		    }, 3000);
+		}
 	}); 
 	//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
 	$scope.$on('HANDLE_MODAL_OPENED', function(event) {

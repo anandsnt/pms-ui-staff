@@ -808,6 +808,8 @@
 				}
 
 				.entry {
+					position: relative;
+
 					.switch-button { 
 
 						.data-off,
@@ -851,7 +853,6 @@
 					}
 
 					.search-codes {
-						position: relative;
 						.float;
 
 						input {
@@ -861,7 +862,13 @@
 
 						.mini-select {
 							.pull-left;
-						}
+						}		
+					}
+
+					.charge-code-list {
+						position: absolute;
+						top: 40px;
+						left: -20px;
 					}
 				}
 
@@ -2371,6 +2378,7 @@
 				}
 
 				.rate-grid {
+					table-layout: auto;
 					margin: 0;
 					width: 100%;
                 	border-collapse: separate;
