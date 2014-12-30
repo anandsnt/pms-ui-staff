@@ -574,7 +574,7 @@ sntRover.controller('RVPostChargeController',
 			    $scope.selectedChargeItem = null;
 				$scope.selectedChargeItem = null;
 				$scope.isResultOnFetchedItems = false;
-				$scope.fetchedData.bill_numbers = [];
+				$scope.fetchedData.bill_numbers = null;
 				
 				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					if($scope.fetchedItems[i].isChosen) {
