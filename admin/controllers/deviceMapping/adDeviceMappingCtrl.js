@@ -116,7 +116,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	$scope.deleteDeviceMapping = function(index, id){
 		var successCallbackDelete = function(data){	
 	 		$scope.$emit('hideLoader');
-	 		$scope.data.work_stations.splice(index, 1);
+	 		$scope.data.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
 	 	};
 		$scope.invokeApi(ADDeviceSrv.deleteDeviceMapping, id , successCallbackDelete);
@@ -134,11 +134,11 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 					"station_identifier": $scope.mapping.station_identifier,
 					"name": $scope.mapping.name
 				};
-    			 $scope.data.work_stations.push(pushData);
+    			 $scope.data.push(pushData);
 	    	 } else {
 	    		// To update data with new value
-	    		 $scope.data.work_stations[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
-	    		 $scope.data.work_stations[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
+	    		 $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
+	    		 $scope.data[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
 	    	 }
     		$scope.currentClickedElement = -1;
     		$scope.isEditMode = false;
