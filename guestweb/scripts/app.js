@@ -33,6 +33,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isCcAttachedFromGuestWeb = false;
+ 	$rootScope.isSixpayments = true;
  	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
