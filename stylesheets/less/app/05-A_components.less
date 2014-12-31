@@ -6156,6 +6156,7 @@
                         width: 100%;
                         cursor: pointer;
                         background: @white @calendar no-repeat 90% 11px;
+                        background-size: 20px;
                         .no-transition();
 
                         &:hover,
@@ -6353,10 +6354,15 @@
                     width: 100%;
                     cursor: pointer;
                     background: @white @calendar no-repeat 90% 11px;
+                    background-size: 20px;
                     .no-transition();
 
                     &:hover,
                     &:active { background-position: 90% -39px; }
+
+                    @media @highdpi {
+                        background-image: @calendar2x;
+                    }
                 }
 
                 .clear-query {
@@ -6566,7 +6572,7 @@
                 }
 
                 table {
-                   width: 100%;
+                    width: 100%;
                     font-size: 14px;
                     line-height: 21px;
                     text-transform: uppercase;
@@ -6799,6 +6805,8 @@
                                     padding-right: 0;
                                 }
 
+                                &:last-child { max-width: 220px; }
+
                                 &[rowspan] {
                                     position: relative;
                                     padding-bottom: 20px;
@@ -6813,7 +6821,7 @@
                                     }
                                 }
 
-                                &.is-note {
+                                /*&.is-note {
                                     color: @grey3;
                                     font-weight: 400;
 
@@ -6828,7 +6836,7 @@
                                     .note-by-name {
                                         display: inline !important;
                                     }
-                                }
+                                }*/
                             }
 
                             &.row-break {
@@ -6860,6 +6868,8 @@
                                         }
 
                                         span { .show; }
+
+                                        &:last-child { width: auto; }
                                     }
                                 } 
                             }
@@ -6873,6 +6883,22 @@
 
                    > .wrapper { padding: 20px; }
                    > .iScrollVerticalScrollbar { top: 20px; }
+                }
+            }
+        }
+    }
+
+    @media only screen and (min-width: 1024px) {
+        #report-details {
+            .report-content {
+                table {
+                    &.guest-reports {
+                        tr {
+                            td {
+                                &:last-child { max-width: auto; }
+                            }
+                        }
+                    }
                 }
             }
         }
