@@ -85,6 +85,9 @@ angular.module('housekeepingModule', [])
                 },
                 floors: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchFloors();
+                },
+                activeWorksheetEmp: function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 }
             }
         });
@@ -103,7 +106,7 @@ angular.module('housekeepingModule', [])
                 allUnassigned: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
-                    });
+                    }); 
                 }
             }
         });

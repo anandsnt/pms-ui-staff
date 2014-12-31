@@ -205,37 +205,32 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 
 
-		// from date options for date picker
-		$scope.fromDateOptions = {
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			minDate: tzIndependentDate($rootScope.businessDate),
-			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay" class="transparent">').insertAfter('#ui-datepicker-div');
+		var datePickerCommon = {
+			dateFormat     : $rootScope.jqDateFormat,
+			numberOfMonths : 1,
+			changeYear     : true,
+			changeMonth    : true,
+			beforeShow     : function(input, inst) {
+				$('#ui-datepicker-div').addClass('reservation hide-arrow');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
 			},
-			onClose: function(dateText, inst) {
-				$('#ui-datepicker-div');
+			onClose        : function(value) {
+				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
 				$('#ui-datepicker-overlay').remove();
 			}
 		};
 
-		// to date options for date picker
-		$scope.getToDateOptions = function(item) {
-			return {
-				dateFormat: $rootScope.jqDateFormat,
-				numberOfMonths: 1,
-				changeYear: true,
-				changeMonth: true,
-				minDate: tzIndependentDate($scope.updateService.from_date)
+		$scope.fromDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect : function(value) {
+				$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
+				$scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.updateService.from_date), $rootScope.dateFormat);
 			}
-		};
+		}, datePickerCommon);
 
-		$scope.fromDateChanged = function() {
-			$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
-		};
+		$scope.untilDateOptions = angular.extend({
+			minDate  : $filter('date')($rootScope.businessDate, $rootScope.dateFormat)
+		}, datePickerCommon);
 
 
 
