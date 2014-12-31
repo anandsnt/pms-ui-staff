@@ -11,6 +11,7 @@ admin.controller('ADStationaryCtrl',['$scope','ADStationarySrv',function($scope,
 			$scope.data = {};
 			$scope.data = data;
 			$scope.$emit('hideLoader');
+			$scope.hotelTemplateLogoPrefetched= data.location_image;
 		};
 		$scope.invokeApi(ADStationarySrv.fetch, {}, successCallbackOfFetch);
 	};
@@ -30,8 +31,12 @@ admin.controller('ADStationaryCtrl',['$scope','ADStationarySrv',function($scope,
 	};
 	// Save changes button actions.
 	$scope.clickedSave = function(){
+
 		var postingData = dclone($scope.data,["guest_bill_template","hotel_logo"]);
 		//calling the save api
+		if($scope.hotelTemplateLogoPrefetched == postingData.location_image){
+			postingData.location_image = "";
+		}
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
@@ -40,7 +45,7 @@ admin.controller('ADStationaryCtrl',['$scope','ADStationarySrv',function($scope,
 	}, function(logo) {
 				if(logo == 'false')
 					$scope.fileName = "Choose File....";
-				$scope.hotel_logo_file = $scope.fileName;
+				$scope.location_image_file = $scope.fileName;
 			}
 		);
 		/**
