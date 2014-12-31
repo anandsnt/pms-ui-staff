@@ -1017,7 +1017,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			// Checking last bill balance for stand-alone only.
 			if($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined'){
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
-				if(billBalance !== "0.00") $scope.reviewStatusArray[i].reviewStatus = false;
+				var paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
+				if(billBalance !== "0.00" && paymentType != "DB") $scope.reviewStatusArray[i].reviewStatus = false;
 			}
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
