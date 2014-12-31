@@ -6131,6 +6131,7 @@
                         width: 100%;
                         cursor: pointer;
                         background: @white @calendar no-repeat 90% 11px;
+                        background-size: 20px;
                         .no-transition();
 
                         &:hover,
@@ -6328,10 +6329,15 @@
                     width: 100%;
                     cursor: pointer;
                     background: @white @calendar no-repeat 90% 11px;
+                    background-size: 20px;
                     .no-transition();
 
                     &:hover,
                     &:active { background-position: 90% -39px; }
+
+                    @media @highdpi {
+                        background-image: @calendar2x;
+                    }
                 }
 
                 .clear-query {
@@ -6541,7 +6547,7 @@
                 }
 
                 table {
-                   width: 100%;
+                    width: 100%;
                     font-size: 14px;
                     line-height: 21px;
                     text-transform: uppercase;
@@ -6705,6 +6711,7 @@
                                         line-height: 20px;
                                         font-weight: 700;
                                         text-transform: none;
+                                        width: 280px;
                                         .show;
 
                                         &.unassigned { color: @grey3; }
@@ -6772,7 +6779,11 @@
                                 &:first-child { 
                                     min-width: 80px; 
                                     padding-right: 0;
+
+                                    .title { width: auto; }
                                 }
+
+                                &:last-child { max-width: 220px; }
 
                                 &[rowspan] {
                                     position: relative;
@@ -6790,19 +6801,25 @@
 
                                 &.is-note {
                                     color: @grey3;
+                                    text-transform: none;
                                     font-weight: 400;
+                                    padding: 0 10px 20px 10px;
 
-                                    strong {
+                                    strong { 
                                         color: @textColor;
+                                        text-transform: uppercase;
+                                        font-weight: 600;
+
+                                        &.red { color: @red; }
                                     }
 
-                                    > span {
-                                        display: block;
+                                    span { 
+                                        .show;
+
+                                        &.note-by-name { display: inline; } 
                                     }
 
-                                    .note-by-name {
-                                        display: inline !important;
-                                    }
+                                    &:last-child { width: auto; }
                                 }
                             }
 
@@ -6818,24 +6835,7 @@
                                         left: 0;
                                         background: @textureImage;
                                         .size(10px, 100%);
-                                    }
-
-                                    &[colspan] {
-                                        color: @grey3;
-                                        text-transform: none;
-                                        font-weight: 400;
-                                        padding: 0 10px 20px 10px;
-
-                                        strong { 
-                                            color: @textColor;
-                                            text-transform: uppercase;
-                                            font-weight: 600;
-
-                                            &.red { color: @red; }
-                                        }
-
-                                        span { .show; }
-                                    }
+                                    }                                    
                                 } 
                             }
                         }
@@ -6848,6 +6848,22 @@
 
                    > .wrapper { padding: 20px; }
                    > .iScrollVerticalScrollbar { top: 20px; }
+                }
+            }
+        }
+    }
+
+    @media only screen and (min-width: 1024px) {
+        #report-details {
+            .report-content {
+                table {
+                    &.guest-reports {
+                        tr {
+                            td {
+                                &:last-child { max-width: auto; }
+                            }
+                        }
+                    }
                 }
             }
         }

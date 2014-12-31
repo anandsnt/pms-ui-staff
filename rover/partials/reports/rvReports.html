@@ -67,7 +67,7 @@
 
 			<div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': (chosenReport.title == 'In-House Guests' || chosenReport.title == 'Departure' || chosenReport.title == 'Arrival' || chosenReport.title == 'Cancelation & No Show'), 'no-sorting': (chosenReport.title == 'Cancelation & No Show') }" ng-iscroll="report-details-scroll">
 				<div class="wrapper">
-					<table ng-class="{ 'guest-reports': isGuestReport }">
+					<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport }">
 
 							<!-- Reports table header -->
 							<thead ng-if="!!headers.length">
@@ -102,36 +102,34 @@
 							<tr>
 								<td colspan="{{ leftColSpan }}">
 									<div ng-if="chosenReport.hasCancelDateFilter">
-										<label ng-if="chosenReport.title == 'Cancelation & No Show'">Cancellation Dates: </label>
-										From
-										<span>{{ displayedReport.fromCancelDate | date:dateFormat }}</span>
-										To
-										<span>{{ displayedReport.untilCancelDate | date:dateFormat }}</span>
+										<label>Cancellation Dates - </label>
+										From: <span>{{ displayedReport.fromCancelDate | date:dateFormat }}</span>
+										To: <span>{{ displayedReport.untilCancelDate | date:dateFormat }}</span>
 									</div>
 									<div ng-if="chosenReport.hasDateFilter">
-										<label ng-if="chosenReport.title == 'Cancelation & No Show'">Arrival Dates: </label>
-										From
-										<span>{{ displayedReport.fromDate | date:dateFormat }}</span>
-										To
-										<span>{{ displayedReport.untilDate | date:dateFormat }}</span>
+										<label ng-if="chosenReport.hasCancelDateFilter">Arrival Dates - </label>
+										<label ng-if="!chosenReport.hasCancelDateFilter">Date Range - </label>
+										From: <span>{{ displayedReport.fromDate | date:dateFormat }}</span>
+										To: <span>{{ displayedReport.untilDate | date:dateFormat }}</span>
+									</div>
+									<div ng-if="chosenReport.hasTimeFilter">
+										<label>Time Range - </label>
+										From: <span>{{ chosenReport.fromTime }}</span>
+										To: <span>{{ chosenReport.untilTime }}</span>
 									</div>
 									<div ng-if="chosenReport.chosenCico">
-										Transaction type
-										<span>{{ transcationTypes }}</span>
+										Transaction type: <span>{{ transcationTypes }}</span>
 									</div>
 									<div ng-if="chosenReport.chosenUsers">
-										Users
-										<span>{{ userNames }}</span>
+										Users: <span>{{ userNames }}</span>
 									</div>
 									<!-- Never REMOVE this span -->
 									<span> &nbsp; </span>
 								</td>
 								<td colspan="{{ rightColSpan }}">
-									Business date
-									<span>{{ userInfo.business_date | date:dateFormat }}</span>
+									Business date: <span>{{ userInfo.business_date | date:dateFormat }}</span>
 									<br>
-									User
-									<span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+									User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
 									<br>
 									<ul class="pagination" ng-if="pagination.length">
 										<li class="title">
