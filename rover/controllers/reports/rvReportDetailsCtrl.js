@@ -46,6 +46,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.isGuestReport = false;
 			};
 
+			// is this is a large report
+			if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
+					$scope.chosenReport.title == 'Web Check Out Conversion' ) {
+				$scope.isLargeReport = true;
+			} else {
+				$scope.isLargeReport = false;
+			};
+
 			// for hard coding styles for report headers
 			// if the header count is greater than 4
 			// split it up into two parts
@@ -163,7 +171,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.displayedReport.fromDate  = $( '#chosenReportFromDate' ).val();
 				$scope.displayedReport.untilDate = $( '#chosenReportToDate' ).val();
 				$scope.displayedReport.fromCancelDate  = $( '#chosenReportFromCancelDate' ).val();
-				$scope.displayedReport.untilCancelDate = $( '#chosenReportUntilCancelDate' ).val();
+				$scope.displayedReport.untilCancelDate = $( '#chosenReportToCancelDate' ).val();
 			}, 100);
 
 
