@@ -27,7 +27,7 @@
 //=require ../shared/lib/js/highcharts.js
 //=require ../shared/lib/js/angular-highcharts.js
 
-//=require ../shared/directives/acuteSelect/acute-select.js
+
 //=require_tree ../shared/interceptors
 //=require_tree ../shared/directives
 //=require_tree ../shared/lib

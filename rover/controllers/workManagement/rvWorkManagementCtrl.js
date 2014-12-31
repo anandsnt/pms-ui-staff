@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees', 'workTypes', 'shifts', 'floors', '$timeout',
-	function($rootScope, $scope, employees, workTypes, shifts, floors, $timeout) {
+sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees', 'workTypes', 'shifts', 'floors', '$timeout', 'activeWorksheetEmp',
+	function($rootScope, $scope, employees, workTypes, shifts, floors, $timeout, activeWorksheetEmp) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -19,6 +19,28 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 		$scope.shifts = shifts;
 
 		$scope.floors = floors;
+
+
+
+
+		var	dailyWTemp = (!!activeWorksheetEmp.data[0] && activeWorksheetEmp.data[0].employees) || [],
+			activeEmps = [],
+			foundMatch = undefined;
+
+		if ( dailyWTemp.length ) {
+			_.each($scope.employeeList, function(item) {
+				foundMatch = _.find(dailyWTemp, function(emp) {
+					return emp.id == item.id
+				});
+
+				if ( foundMatch ) {
+					item.ticked = true;
+				};
+			});
+		};
+
+
+
 
 		// Arrived / Day Use / Due Out / Departed,Due out / Arrival,Departed / Arrival,Arrived / Departed,Due out / Departed,Arrived,Stayover,Departed,Not Defined
 
@@ -101,9 +123,41 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			var filterObject = {};
 
 			if ( filter.showAllRooms ) {
-				_.each(allUnassigned, function(item) {
-					filteredRooms = filteredRooms.concat(item.unassigned)
+				// create an array of room ids that have been assigned
+				var _rooms           = {},
+					_assignedRoomIds = [],
+					_unassigned      = [],
+					_foundMatch;
+
+				var i = j = k = l = 0;
+
+				// loop through 'alreadyAssigned' list and push the room
+				// ids to '_assignedRoomIds' array
+				_.each(alreadyAssigned, function(each) {
+					for (k = 0, l = each.rooms.length; k < l; k++) {
+						_assignedRoomIds.push( each.rooms[k].id );
+					};
 				});
+
+				// loop through 'allUnassigned', within that
+				// loop through '_unassigned', within that
+				// if the that ith room hasnt been assigned already
+				// push that ith room into 'filteredRooms'
+				for (i = 0, j = allUnassigned.length; i < j; i++) {
+					_unassigned = allUnassigned[i]['unassigned'];
+					for (k = 0, l = _unassigned.length; k < l; k++) {
+
+						_foundMatch = _.find(_assignedRoomIds, function(id) {
+							return id == _unassigned[k].id;
+						});
+
+						// only push this room in
+						// if it has not been assigned already
+						if ( !_foundMatch ) {
+							filteredRooms.push( angular.copy(_unassigned[k]) );
+						};
+					};
+				};
 			} else {
 
 				//build the approp. filterObject 
