@@ -130,19 +130,19 @@
         
         //$scope.isFetching = true;
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01"
-        var data = {'reservation_id':$rootScope.reservationID,'session_id':MLISessionId,'card_expiry':cardExpiryDate};
-        ccVerificationService.verifyCC(data).then(function(response) {
-        $scope.isFetching = false;
-        if(response.status ==="success"){
-            $rootScope.isCCOnFile = true;
-            $rootScope.isCcAttachedFromGuestWeb = true;
-            if($stateParams.isFromCheckoutNow === "true"){
-              $rootScope.ccPaymentSuccessForCheckoutNow = true;
-              $state.go('checkOutStatus');
-            }else{
-               $rootScope.ccPaymentSuccessForCheckoutLater = true;
-               $state.go('checkOutLaterSuccess',{id:$scope.fee});
-            }
+        var data = {'reservation_id':$rootScope.reservationID,'token':MLISessionId,'card_expiry':cardExpiryDate,'payment_type':"CC"};
+        ccVerificationService.verifyCC(data).then(function(response) {    
+          $scope.isFetching = false;
+          if(response.status ==="success"){
+              $rootScope.isCCOnFile = true;
+              $rootScope.isCcAttachedFromGuestWeb = true;
+              if($stateParams.isFromCheckoutNow === "true"){
+                $rootScope.ccPaymentSuccessForCheckoutNow = true;
+                $state.go('checkOutStatus');
+              }else{
+                 $rootScope.ccPaymentSuccessForCheckoutLater = true;
+                 $state.go('checkOutLaterSuccess',{id:$scope.fee});
+              }
         }
         else{
          $scope.netWorkError = true;
