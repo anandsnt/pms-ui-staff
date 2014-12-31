@@ -91,7 +91,8 @@
 	                        <div class="room-info">
 								<!-- Confirm the logic of READY and NOT-READY -->
 	                        	<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status)" >
-	                        		<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" ng-bind-html="escapeNull(row.room)|highlight:textInQueryBox:false">
+	                        		<span ng-class="{'room-highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!=''}">
+	                        			{{escapeNull(row.room)}}
 	                        		</span>			
 	                        	</span>
 
