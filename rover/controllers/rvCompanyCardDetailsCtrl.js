@@ -73,6 +73,18 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		// Handle back button Click on card details page.
 		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 		$scope.headerBackButtonClicked = function() {
+			
+			// Save details if made changes.
+			if($scope.currentSelectedTab == 'cc-contact-info'){
+				saveContactInformation($scope.contactInformation);
+			}
+			else if($scope.currentSelectedTab == 'cc-contracts') {
+				$scope.$broadcast("saveContract");
+			}
+			else if($scope.currentSelectedTab == 'cc-ar-accounts') {
+				$scope.$broadcast("saveArAccount");
+			}
+
 			$state.go(
 				"rover.companycardsearch", {
 					"textInQueryBox": $stateParams.query
