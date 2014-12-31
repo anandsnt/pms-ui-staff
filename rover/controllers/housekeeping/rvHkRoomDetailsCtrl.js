@@ -18,8 +18,6 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 			param: {}
 		}
 
-		console.log( RVHkRoomStatusSrv.currentFilters );
-
 		$scope.setTitle($filter('translate')('ROOM_DETAILS'));
 		$scope.heading = $filter('translate')('ROOM_DETAILS');
 		$scope.$emit("updateRoverLeftMenu", "roomStatus");
