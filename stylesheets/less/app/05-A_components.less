@@ -6736,6 +6736,7 @@
                                         line-height: 20px;
                                         font-weight: 700;
                                         text-transform: none;
+                                        width: 280px;
                                         .show;
 
                                         &.unassigned { color: @grey3; }
@@ -6803,6 +6804,8 @@
                                 &:first-child { 
                                     min-width: 80px; 
                                     padding-right: 0;
+
+                                    .title { width: auto; }
                                 }
 
                                 &:last-child { max-width: 220px; }
@@ -6821,22 +6824,28 @@
                                     }
                                 }
 
-                                /*&.is-note {
+                                &.is-note {
                                     color: @grey3;
+                                    text-transform: none;
                                     font-weight: 400;
+                                    padding: 0 10px 20px 10px;
 
-                                    strong {
+                                    strong { 
                                         color: @textColor;
+                                        text-transform: uppercase;
+                                        font-weight: 600;
+
+                                        &.red { color: @red; }
                                     }
 
-                                    > span {
-                                        display: block;
+                                    span { 
+                                        .show;
+
+                                        &.note-by-name { display: inline; } 
                                     }
 
-                                    .note-by-name {
-                                        display: inline !important;
-                                    }
-                                }*/
+                                    &:last-child { width: auto; }
+                                }
                             }
 
                             &.row-break {
@@ -6851,26 +6860,7 @@
                                         left: 0;
                                         background: @textureImage;
                                         .size(10px, 100%);
-                                    }
-
-                                    &[colspan] {
-                                        color: @grey3;
-                                        text-transform: none;
-                                        font-weight: 400;
-                                        padding: 0 10px 20px 10px;
-
-                                        strong { 
-                                            color: @textColor;
-                                            text-transform: uppercase;
-                                            font-weight: 600;
-
-                                            &.red { color: @red; }
-                                        }
-
-                                        span { .show; }
-
-                                        &:last-child { width: auto; }
-                                    }
+                                    }                                    
                                 } 
                             }
                         }
