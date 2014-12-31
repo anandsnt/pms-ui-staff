@@ -82,7 +82,7 @@
 		                            	
 		                                <span>{{row.departure_date| date : dateFormat}}</span>
 		                                <span ng-hide="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{getTimeConverted(row.departure_time)}}</span>
-		                                <span ng-show="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{getTimeConverted(row.late_checkout_time)}}</span>
+		                                <span ng-show="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{row.late_checkout_time}}</span>
 		                            </span>
 
 	                            </time> 

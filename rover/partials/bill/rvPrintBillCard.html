@@ -93,7 +93,7 @@
         </tfoot>
 
         <tbody>
-            <tr ng-repeat="item in printData.charge_details_list" ng-show="!item.is_tax">
+            <tr ng-repeat="item in printData.charge_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
                 <td>{{item.description}}</td>
                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>

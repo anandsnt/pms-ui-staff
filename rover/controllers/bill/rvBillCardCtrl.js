@@ -22,6 +22,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
   	
 	$scope.clickedButton = $stateParams.clickedButton;
 	$scope.saveData = {};
+	$scope.signatureData = "";
 	$scope.saveData.promotions = !!reservationBillData.is_promotions_and_email_set ? true : false;
 	$scope.saveData.termsAndConditions = false;
 	$scope.reviewStatusArray = [];
@@ -32,7 +33,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.paymentModalOpened = false;
 	$scope.showPayButton = false;
 	$scope.paymentModalSwipeHappened = false;
-
 	$scope.isSwipeHappenedDuringCheckin = false;
 
 	$scope.do_not_cc_auth = false;
@@ -445,7 +445,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	};
 	 	var paymentData = $scope.reservationBillData;	
 	 	if($scope.clickedButton == "checkinButton"){
-	 		if(!$scope.paymentModalSwipeHappened){
+	 		if(!$scope.paymentModalSwipeHappened && swipedCardData !== undefined){
 	 			$scope.isSwipeHappenedDuringCheckin = true;
 	 			swipedTrackDataForCheckin = swipedCardData;
 	 			passData.details.isClickedCheckin = true;
@@ -492,6 +492,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
+	 		
 	 	  if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
 			} else {
@@ -852,7 +853,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"name_on_card": swipedTrackDataForCheckin.RVCardReadCardName,
 						"card_expiry": cardExpiry,	
 						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
-						"do_not_cc_auth" : $scope.do_not_cc_auth,
+						"do_not_cc_auth" : true,
 					    "no_post" : !$scope.roomChargeEnabled	
 					};
 	 		    } else {
@@ -917,7 +918,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
-		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+		if($scope.signatureData == "" || $scope.signatureData == "[]"){
+			var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+		}
+		else{
+			var signatureData = $scope.signatureData;
+		}
 		var errorMsg = "";
 		var totalBal = 0;
 
@@ -1005,17 +1011,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	// To find next tab which is not reviewed before.
 	$scope.findNextBillToReview = function(){
+		var billIndex = 0;
 		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
 
 			// Checking last bill balance for stand-alone only.
 			if($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined'){
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
-				if(billBalance !== "0.00") $scope.reviewStatusArray[i].reviewStatus = false;
+				var paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
+				if(billBalance !== "0.00" && paymentType != "DB") $scope.reviewStatusArray[i].reviewStatus = false;
 			}
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
 				if($scope.reviewStatusArray.length == (i+1)) $scope.isAllBillsReviewed = true;
-				var billIndex = $scope.reviewStatusArray[i].billIndex;
+				billIndex = $scope.reviewStatusArray[i].billIndex;
 				break;
 			}
 		}
@@ -1139,8 +1147,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	$scope.splitTypeisAmount = true;
 	$scope.chargeCodeActive = false;
-	$scope.selectedChargeCode = "";
+	$scope.selectedChargeCode = {};
 	$scope.chargeCodeData = chargeCodeData.results;
+	$scope.availableChargeCodes = chargeCodeData.results;
 
 	$scope.getAllchargeCodes = function (callback) {
     	callback($scope.chargeCodeData);
@@ -1183,6 +1192,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.openRemoveChargePopup = function(){
 		ngDialog.open({
     		template: '/assets/partials/bill/rvRemoveChargePopup.html',
+    		controller:'rvBillCardPopupCtrl',
     		className: '',
     		scope: $scope
     	});
@@ -1195,6 +1205,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.openSplitChargePopup = function(){
 		ngDialog.open({
     		template: '/assets/partials/bill/rvSplitChargePopup.html',
+    		controller:'rvBillCardPopupCtrl',
     		className: '',
     		scope: $scope
     	});
@@ -1205,97 +1216,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 */
 
 	$scope.openEditChargePopup = function(){
+		$scope.selectedChargeCode = {
+			"id": "",
+			"name": "",
+			"description": "",
+			"associcated_charge_groups": []
+		};
 		ngDialog.open({
     		template: '/assets/partials/bill/rvEditPostingPopup.html',
     		className: '',
+    		controller:'rvBillCardPopupCtrl',
     		scope: $scope
     	});
-	};
-
-
-	var refreshListWithData = function(data){
-		$scope.init(data);
-		//expand list
-		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
-		$scope.calculateHeightAndRefreshScroll();
-	};
-
-	var hideLoaderAndClosePopup = function(){
-		$scope.$emit("hideLoader");
-		ngDialog.close();
-	};
-
-	var failureCallBack = function(data){
-		//hideLoaderAndClosePopup();
-		$scope.$emit("hideLoader");
-		$scope.errorMessage = data;
-	};
-
-   /*
-	 * API call remove transaction
-	 */
-
-	$scope.removeCharge = function(reason){
-		
-		var deleteData = 
-		{
-			data:{
-				"reason":reason,
-				"process":"delete"
-			},
-			"id" :$scope.selectedTransaction.id
-		};
-		var transactionDeleteSuccessCallback = function(data){		
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-			
-		};
-		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
-	};
-
-   /*
-	 * API call split transaction
-	 */
-
-	$scope.splitCharge = function(qty,isAmountType){
-
-		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
-		var splitData = {
-			"id" :$scope.selectedTransaction.id,
-			"data":{
-				"split_type": split_type,
-   				"split_value": qty
-			}
-			 
-		};
-		var transactionSplitSuccessCallback = function(data){		
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-		};
-		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback,failureCallBack);
-	};
-
-   /*
-	 * API call edit transaction
-	 */
-	$scope.editCharge = function(newAmount,chargeCode){
-		
-		var newData = 
-		{
-			"updatedDate":
-						{
-				  			"new_amount":newAmount,
-				  			"charge_code_id": chargeCode.id
-						},
-					"id" :$scope.selectedTransaction.id
-		};
-
-		var transactionEditSuccessCallback = function(data){
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-		};
-		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback,failureCallBack);
-	
+    	$scope.setScroller('chargeCodesList');
 	};
 
 
@@ -1312,6 +1245,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 
 	};
+
 
 /*----------- edit/remove/split ends here ---------------*/
 
@@ -1395,13 +1329,22 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	 
 	 $scope.$on('PAYMENT_SUCCESS', function(event,data) {
+	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
-		
 		//CICO-10906 review process continues after payment.
 		if( data.bill_balance == 0.0 && $scope.isViaReviewProcess ){
 			$timeout(function() {
-		        $scope.clickedReviewButton(data.billNumber-1);
+				// If reached final bill , proceed complete checkout
+				// Else proceed with review process
+				if(billCount == data.billNumber){
+					$scope.closeDialog();
+					$scope.clickedCompleteCheckout();
+				}
+				else{
+					$scope.clickedReviewButton(data.billNumber-1);
+				}
 		    }, 3000);
 		}
 	}); 
