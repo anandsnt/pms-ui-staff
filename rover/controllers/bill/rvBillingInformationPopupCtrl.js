@@ -11,6 +11,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.routes = [];
     $scope.errorMessage = '';
     $scope.isInitialPage = true;
+    $scope.saveData = {};
+    $scope.saveData.payment_type =  "";
+    $scope.saveData.payment_type_description =  "";
+
 
 	$scope.closeDialog = function(){
 		ngDialog.close();

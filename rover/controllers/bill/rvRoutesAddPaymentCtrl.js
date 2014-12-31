@@ -1,15 +1,10 @@
 sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', 'ngDialog', 'RVPaymentSrv', function($scope, $rootScope,$filter, ngDialog, RVPaymentSrv){
 	BaseCtrl.call(this, $scope);
 
-	$scope.saveData = {};
-	$scope.saveData.card_number  = "";
-	$scope.saveData.cvv = "";
-	$scope.saveData.credit_card  =  "";
-	$scope.saveData.name_on_card =  "";
-	$scope.saveData.payment_type =  "";
-	$scope.saveData.payment_type_description =  "";
-	$scope.saveData.card_expiry_month = "";
-	$scope.saveData.card_expiry_year = "";
+	$scope.cardsList = [];
+	$scope.addmode = $scope.cardsList.length>0 ? false: true;
+	$scope.hideCancelCard = true;
+	$scope.isManual = false;
 	
 	/**
     * MLI session set up
@@ -23,6 +18,8 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	
 		$scope.cancelClicked = function(){
 			$scope.showPaymentList();
+			$scope.saveData.payment_type =  "";
+   			$scope.saveData.payment_type_description =  "";
 		};
 		/**
 	* setting the scroll options for the add payment view
@@ -33,6 +30,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
   	$scope.$on('showaddpayment', function(event){
   		$scope.refreshScroller('newpaymentview');						
 	});
+
   	/**
     * function to show available payment types from server
     */
@@ -122,7 +120,15 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 				}
 			}
 			$scope.refreshScroller('newpaymentview');
-
+			if($scope.paymentGateway !== 'sixpayments'){
+				$scope.showCCPage = ($scope.saveData.payment_type == "CC") ? true: false;
+				$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
+			}
 		}
+
+		$scope.changeOnsiteCallIn = function(){
+			$scope.showCCPage = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
+			$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
+		};
 	
 }]);

@@ -1,5 +1,5 @@
 <div id="modal" class="modal-show" role="dialog">
-   <form method="post" action="billing-information" id="billing-information" name="billing-information" class="modal-content billing-information">
+   <form method="post" action="billing-information" id="billing-information" name="billing-information" class="modal-content billing-information" ng-class="{'add-card':saveData.payment_type === 'CC'}">
       <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
       <div class="modal-header">
          <h1 translate>BILLING_INFO_TITLE</h1>

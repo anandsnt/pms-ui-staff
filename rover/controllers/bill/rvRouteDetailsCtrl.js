@@ -14,6 +14,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.isAddPayment = true;
     }
 
+        //common payment model items
+    $scope.passData = {};
+    $scope.passData.details ={};
+    $scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
+    $scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+    $scope.setScroller('cardsList');
+
     /**
     * Initializing the scrollers for the screen
     */
