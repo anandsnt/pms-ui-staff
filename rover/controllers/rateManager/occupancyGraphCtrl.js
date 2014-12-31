@@ -363,6 +363,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         },
                         xAxis: {
                             title: { enabled: false },
+                            tickLength: 2,
                             tickPosition: 'outside',
                             opposite: true,
                             type: 'datetime',
@@ -392,16 +393,16 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         },
                         yAxis: {
                             title: { enabled: false },
-                            tickWidth: 5,
+                            tickWidth: 2,
                             tickInterval: graphDim.yAxis.step,
                             minTickInterval: graphDim.yAxis.step,
                             gridLineColor: '#bbb',
-                            tickPosition: 'inside',
+                            tickPosition: 'outside',
                             showLastLabel: true,
                             showFirstLabel: false,
                             labels: {
                                 align: 'left',
-                                x: 0,
+                                x: -10,
                                 y: -2,
                                 style: {
                                     color: '#868788',

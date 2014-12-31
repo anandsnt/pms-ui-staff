@@ -3,12 +3,14 @@
 	<div class="reservation-header">
 		<div class="data">
 			<span class="date"><span class="guest-status small-icon check-in">check-in</span>
-			{{reservationData.reservation_card.arrival_date|date:'EEEE'}}
+			<span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
+			<span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span>
 			{{reservationData.reservation_card.arrival_date|date:dateFormat}} 
 			<span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.arrival_time}} </span>
 			 </span>
 			<span class="date"><span class="guest-status small-icon check-out">check-out</span>
-			{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}
+			<span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
+			<span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span>
 			{{reservationData.reservation_card.departure_date|date:dateFormat}} 
 			<span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.departure_time}} </span>
 			</span>

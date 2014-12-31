@@ -33,7 +33,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.paymentModalOpened = false;
 	$scope.showPayButton = false;
 	$scope.paymentModalSwipeHappened = false;
-
 	$scope.isSwipeHappenedDuringCheckin = false;
 
 	$scope.do_not_cc_auth = false;
@@ -446,7 +445,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	};
 	 	var paymentData = $scope.reservationBillData;	
 	 	if($scope.clickedButton == "checkinButton"){
-	 		if(!$scope.paymentModalSwipeHappened){
+	 		if(!$scope.paymentModalSwipeHappened && swipedCardData !== undefined){
 	 			$scope.isSwipeHappenedDuringCheckin = true;
 	 			swipedTrackDataForCheckin = swipedCardData;
 	 			passData.details.isClickedCheckin = true;
@@ -493,6 +492,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
+	 		
 	 	  if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
 			} else {
@@ -853,7 +853,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"name_on_card": swipedTrackDataForCheckin.RVCardReadCardName,
 						"card_expiry": cardExpiry,	
 						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
-						"do_not_cc_auth" : $scope.do_not_cc_auth,
+						"do_not_cc_auth" : true,
 					    "no_post" : !$scope.roomChargeEnabled	
 					};
 	 		    } else {
