@@ -112,10 +112,10 @@
 										From: <span>{{ displayedReport.fromDate | date:dateFormat }}</span>
 										To: <span>{{ displayedReport.untilDate | date:dateFormat }}</span>
 									</div>
-									<div ng-if="chosenReport.hasTimeFilter">
+									<div ng-if="chosenReport.hasTimeFilter && (chosenReport.fromTime || chosenReport.untilTime)">
 										<label>Time Range - </label>
-										From: <span>{{ chosenReport.fromTime }}</span>
-										To: <span>{{ chosenReport.untilTime }}</span>
+										<label ng-if="chosenReport.fromTime">From: </label><span>{{ chosenReport.fromTime }}</span>
+										<label ng-if="chosenReport.untilTime">To: </label><span>{{ chosenReport.untilTime }}</span>
 									</div>
 									<div ng-if="chosenReport.chosenCico">
 										Transaction type: <span>{{ transcationTypes }}</span>
