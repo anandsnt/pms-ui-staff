@@ -302,12 +302,17 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			var rate = rateData[i];
 			var isDate = false;
 			for(var date in rate){
-	
+				
 				// Ignore keys other date object
-				isDateKey = !isNaN(Date.parse(date));
-				if(!isDateKey){
-					continue;
-				}
+				if (date == "id" || date == "name" || date == 'is_hourly') {
+					continue;	
+				} 
+
+				// Ignore keys other date object
+				// isDateKey = !isNaN(Date.parse(date));
+				// if(!isDateKey){
+				// 	continue;
+				// }
 				//We don't want to check the history dates
 				if( (new Date(date).getTime() < new Date(that.businessDate).getTime()) ){
 			   		continue;

@@ -9,7 +9,7 @@
          <em ng-if = "billingEntity == 'COMPANY_CARD_DEFAULT_BILLING'">{{attachedEntities.company_card.name}}</em>
          <button type="button" id="new-route" class="button" ng-class = "{'green': isInitialPage, 'white':!isInitialPage}" ng-click="headerButtonClicked()" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'">{{getHeaderButtonLabel()}}</button>
       </div>
-      <div ng-iscroll='homeScroll' ng-iscroll-delay='100' style="position: relative;overflow: hidden;height:510px;">
+      <div style="position: relative;overflow: hidden;height:510px;">
          <div class = "wrapper">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <!-- Billing Info Content -->
