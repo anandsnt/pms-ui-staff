@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned) {
+sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'activeWorksheetEmp',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, activeWorksheetEmp) {
 		BaseCtrl.call(this, $scope);
 		$scope.setHeading("Work Management");
 
@@ -160,6 +160,24 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				}, onFetchSuccess, onFetchFailure);
 			},
 			init = function() {
+				var	dailyWTemp = (!!activeWorksheetEmp.data[0] && activeWorksheetEmp.data[0].employees) || [],
+					activeEmps = [],
+					foundMatch = undefined;
+
+				if ( dailyWTemp.length ) {
+					_.each($scope.employeeList, function(item) {
+						item.ticked = false;
+
+						foundMatch = _.find(dailyWTemp, function(emp) {
+							return emp.id == item.id
+						});
+
+						if ( foundMatch ) {
+							item.ticked = true;
+						};
+					});
+				};
+
 				// for all unassigned rooms
 				// we are gonna mark each rooms with
 				// its associated work_type_id
