@@ -46,6 +46,9 @@ sntRover
 	//updating the left side menu
     $scope.$emit("updateRoverLeftMenu", "diaryReservation");
 
+    //updating the title
+    $scope.setTitle($filter( 'translate')('DIARY'));
+    
 	// data for next state
 	$rootScope.setNextState = {
 		data: {
