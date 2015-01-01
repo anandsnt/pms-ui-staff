@@ -38,8 +38,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.setScroller('paymentList', scrollerOptions); 
     $scope.setScroller('billingGroups', scrollerOptions);
     $scope.setScroller('chargeCodes', scrollerOptions); 
-    var scrollerOptionsForSearch = {click: true, preventDefault: false};
-    $scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
+    var scrollerOptionsForSearch = {click: true};
+    $scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
     $scope.chargeCodesListDivHgt = 250;
     $scope.chargeCodesListDivTop = 0;
     setTimeout(function(){

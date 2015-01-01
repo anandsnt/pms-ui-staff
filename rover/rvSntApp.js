@@ -5,7 +5,12 @@ var GlobalApp = function(){
     this.cardReader = null;
     this.iBeaconLinker = null;
     this.enableURLChange = true;
-    this.MLIOperator = new MLIOperation();
+    try{
+          this.MLIOperator = new MLIOperation();
+    }
+        catch(er){
+    };
+    
 
     this.DEBUG = true;
 

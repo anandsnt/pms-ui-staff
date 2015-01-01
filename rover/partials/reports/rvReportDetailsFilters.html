@@ -21,7 +21,7 @@
 	<label>{{ chosenReport.hasDateFilter.description }}</label>
 	<div class="has-datepicker">
         <input id="chosenReportFromDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
-        <input id="chosenReportFromDate" ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" readonly>
+        <input id="chosenReportFromDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" readonly>
         <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')">Clear query</span>
         </button>
@@ -45,7 +45,7 @@
     </div>
     <span>to</span>
     <div class="select">
-        <select id="chosenReportFromTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
+        <select id="chosenReportToTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
         	<option value="">Until Time</option>
         </select>
     </div>
@@ -111,4 +111,4 @@
 	</div>
 </div>
 
-<a class="button green" ng-click="fetchUpdatedReport()">Update Report</a>
+<a class="button green" ng-click="fetchUpdatedReport()">Update</a>

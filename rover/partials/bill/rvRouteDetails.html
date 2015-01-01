@@ -106,7 +106,7 @@
 			<div ng-show="(chargeCodeSearchText.length>2 || showChargeCodes)">
          	
          	<!-- Charge code Results / content -->
-				<div class="company-card-results charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
+				<div class="billing-info-charges charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
 					<div class="search-results" >
 						<ul id="search-list" >
 							<li ng-repeat="chargeCode in availableChargeCodes" ng-click="selectChargeCode(chargeCode.id)" ng-show="chargeCode.is_row_visible === true">
