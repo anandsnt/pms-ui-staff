@@ -2,11 +2,11 @@
 <header ng-class="{'no-print':addNoPrintClass,'logo-print':isLogoPrint}" class="nav-bar rover-header " role = "banner">
 	
 	<!--search Backbutton> -->
-	<a class="back-button" ng-if="searchBackButtonCaption!=''" ng-click="headerBackButtonClicked()">{{searchBackButtonCaption}}</a>	
+	<span class="back-button" ng-if="searchBackButtonCaption!=''" ng-click="headerBackButtonClicked()">{{searchBackButtonCaption}}</span>	
 	<!-- end of search backbutton -->
 
 	<!-- back to prev -->
-	<a class="back-button" href="" ng-if="setPrevState.title" ng-hide="setPrevState.hide" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
+	<span class="back-button" href="" ng-if="setPrevState.title" ng-hide="setPrevState.hide" ng-click="loadPrevState()">{{ setPrevState.title }}</span>
 
 	<div class="logo">
 		<img ng-src= "{{userInfo.logo}}" alt="" />
