@@ -23,12 +23,12 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		};
 
      
-    $scope.$watch(
-            function() { return $scope.errorMessage; },
-            function(error) {
-                $scope.refreshScroller('homeScroll');
-            }
-        );
+    // $scope.$watch(
+    //         function() { return $scope.errorMessage; },
+    //         function(error) {
+    //             $scope.refreshScroller('homeScroll');
+    //         }
+    //     );
     /**
     * function to get label for all routes and add routes button
     */
