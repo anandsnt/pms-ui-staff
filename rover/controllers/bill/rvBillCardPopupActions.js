@@ -92,6 +92,8 @@ sntRover.controller('rvBillCardPopupCtrl',
 /*----------------------------edit charge drop down implementation--------------------------------------*/
 	$scope.chargecodeData = {};
 	$scope.chargecodeData.chargeCodeSearchText = "";
+	var scrollerOptionsForSearch = {click: true, preventDefault: false};
+	$scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
 
 	$scope.selectChargeCode = function(id){
 		 for(var i = 0; i < $scope.availableChargeCodes.length; i++){
