@@ -137,6 +137,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			$scope.showCCPage = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
 			$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
+			$scope.$broadcast('REFRESH_IFRAME');
 		};
 		/*
 		 * on succesfully created the token
@@ -163,7 +164,6 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			$scope.paymentAddedThroughMLISwipe(swipedCardDataToSave);
 		});
 		$scope.$on('UPDATE_FLAG', function(){
-			console.log(";;;;;;;;;;;")
 			$scope.showCCPage = false;
 		});
 }]);
