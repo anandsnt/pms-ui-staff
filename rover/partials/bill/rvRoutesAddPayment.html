@@ -1,6 +1,6 @@
 <div id="new-payment-method" class="form" ng-iscroll='newpaymentview' ng-iscroll-delay='100' ng-controller = "rvRoutesAddPaymentCtrl"  style="position: relative;height:250px;overflow: hidden;">
       <div style="margin-right:20" class="payment-form">
-                     <div class="entry full-width" ng-hide = "saveData.payment_type === 'CC'">
+                     <div class="entry full-width" ng-hide = "showCCPage">
                         <label for="payment-type" translate>PAYMENT_TYPE</label>
                         <div class="select">
                            <select name="payment-type" ng-model = "saveData.payment_type" id="payment-type" class="placeholder" ng-change="selectPaymentType()">
@@ -55,8 +55,8 @@
                         <input name="name-on-card" ng-model = "saveData.name_on_card" id="name-on-card" value="" type="text" />
                      </div> -->
                      <div class="actions">
-                        <button type="button" class="button blank" ng-click = "cancelClicked()" translate>CANCEl</button>
-                        <button type="button" class="button" ng-class="{'green': saveData.payment_type != '', 'grey': saveData.payment_type == ''}" ng-disabled = "saveData.payment_type == ''" ng-click = "savePaymentDetails()" translate>ADD_PAYMENT_METHOD</button>
+                        <button type="button" class="button blank" ng-click = "cancelClicked()" ng-show="isAddPayment" translate>CANCEl</button>
+                        <!-- <button type="button" class="button" ng-hide="showCCPage" ng-class="{'green': saveData.payment_type != '', 'grey': saveData.payment_type == ''}"  ng-disabled = "saveData.payment_type == ''" ng-click = "savePaymentDetails()" translate>ADD_PAYMENT_METHOD</button> -->
                      </div>
       </div>                  
 </div>                  

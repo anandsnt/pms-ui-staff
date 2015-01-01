@@ -14,6 +14,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.saveData = {};
     $scope.saveData.payment_type =  "";
     $scope.saveData.payment_type_description =  "";
+    $scope.saveData.newPaymentFormVisible = false;
 
 
 	$scope.closeDialog = function(){
@@ -301,6 +302,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         $scope.errorMessage = error;
         
     });
-
+    
+    
+	$scope.handleCloseDialog = function(){
+		$scope.$emit('HANDLE_MODAL_OPENED');
+		$scope.closeDialog();
+	};
 	
 }]);
