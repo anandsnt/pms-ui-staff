@@ -112,29 +112,31 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 							}
 						});
 						
-						_.each($scope.multiSheetState.selectedEmployees, function(employee) {
-							var employee = employee.id;
-							if (!$scope.multiSheetState.assignments[employee] || reset) {
-								$scope.multiSheetState.assignments[employee] = {};
-								$scope.multiSheetState.assignments[employee].rooms = [];
-								$scope.multiSheetState.assignments[employee].summary = {
-									shift: {
-										completed: "00:00",
-										total: "00:00"
-									},
-									stayovers: {
-										total: 0,
-										completed: 0
-									},
-									departures: {
-										total: 0,
-										completed: 0
+						if ( !reset ) {
+							_.each($scope.multiSheetState.selectedEmployees, function(employee) {
+								var employee = employee.id;
+								if (!$scope.multiSheetState.assignments[employee] || reset) {
+									$scope.multiSheetState.assignments[employee] = {};
+									$scope.multiSheetState.assignments[employee].rooms = [];
+									$scope.multiSheetState.assignments[employee].summary = {
+										shift: {
+											completed: "00:00",
+											total: "00:00"
+										},
+										stayovers: {
+											total: 0,
+											completed: 0
+										},
+										departures: {
+											total: 0,
+											completed: 0
+										}
 									}
-								}
-							} else {
-								updateSummary(employee);
-							};
-						});
+								} else {
+									updateSummary(employee);
+								};
+							});
+						};
 
 						refreshView();
 						$scope.$emit('hideLoader');
@@ -603,8 +605,16 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 								j                = 0,
 								found            = false;
 
-							// if room has prop 'work_type_id' use that else use value from header
-							wt_id = room.hasOwnProperty('work_type_id') ? room['work_type_id'].toString() : $scope.multiSheetState.header.work_type_id.toString();
+							// if room has prop 'work_type_id' use that
+							// else if its specifically passed in use that
+							// else use value from header
+							if ( room.hasOwnProperty('work_type_id') ) {
+								wt_id = room['work_type_id'].toString();
+							} else if ( !!options && options.hasOwnProperty('work_type_id') ) {
+								wt_id = options['work_type_id'].toString();
+							} else {
+								wt_id = $scope.multiSheetState.header.work_type_id.toString();
+							}
 
 							// use the wt_id to point exact worktype from worktypesSet
 							// and access its assignments array
@@ -632,8 +642,19 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 							};
 						});
 					} else {
-						var wt_id = $scope.multiSheetState.header.work_type_id.toString();
-						var thoseAssignments = worktypesSet[wt_id]['assignments'];
+						var wt_id            = '',
+							thoseAssignments = [];
+
+						// if 'work_type_id' specifically passed in use that
+						// else use value from header
+						if ( !!options && options.hasOwnProperty('work_type_id') ) {
+							wt_id = options['work_type_id'].toString();
+						} else {
+							wt_id = $scope.multiSheetState.header.work_type_id.toString();
+						};
+
+						thoseAssignments = worktypesSet[wt_id]['assignments'];
+
 						thoseAssignments.push({
 							'assignee_id' : emp.id,
 							'room_ids'    : []
