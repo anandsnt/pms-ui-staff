@@ -550,11 +550,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"mli_token": $scope.swipedCardDataToSave.cardNumber.slice(-4),
 			"card_expiry":$scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear,
 			"card_name": $scope.swipedCardDataToSave.nameOnCard,
-			"id": data.id,
+			"id": (data !== undefined) ? data.id : "",
 			"isSelected": true,
 			"is_primary":false,
 			"payment_type":"CC",
-			"payment_type_id": 1
+			"payment_type_id": 1,
+			"is_credit_card": true
 		};
 		$scope.cardsList.push(dataToGuestList);
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);

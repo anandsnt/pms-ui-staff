@@ -40,18 +40,12 @@ var Timeline = React.createClass({
 			interval_spans = [];
 
 			interval_spans.push(React.DOM.span({
-				className: 'hour-display'
+				className: ''
 			}, segment_hour_display[i]));
 
 			if ( i % 6 == 0 ) {
 				interval_spans.push(React.DOM.span({
-					className: 'hour-display',
-					style: {
-						'bottom'         : '45px',
-						'width'          : 'auto',
-						'text-transform' : 'uppercase',
-						'line-height'    : '1'
-					}
+					className: 'date',
 				}, (i < 23 ? todayShortDate : tmrowShortDate) ));
 			};
 
