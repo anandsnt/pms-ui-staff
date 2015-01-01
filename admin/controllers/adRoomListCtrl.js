@@ -19,7 +19,7 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 			$scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
 			$scope.total_number_of_rooms = data.total_number_of_rooms;
 
-			$scope.data.is_add_available = data.is_add_available;
+			$scope.is_add_available = data.is_add_available;
 			$scope.data = data.rooms;
 			//$scope.data = data.rooms;
 
