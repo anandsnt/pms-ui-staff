@@ -30,7 +30,7 @@
 
 
 	$scope.gotToNextStep = function(fee,chargeId){
-		if(!$rootScope.isCCOnFile){
+		if(!$rootScope.isCCOnFile && !$rootScope.isSixpayments){
 			$state.go('ccVerification',{'fee':fee,'message':"Late check-out fee",'isFromCheckoutNow':false});
 		}				
 		else{

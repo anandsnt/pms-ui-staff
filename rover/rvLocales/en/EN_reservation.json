@@ -113,4 +113,5 @@
     "APPLY_TO_RESERVATION": "Apply to reservation",
     "DONT_APPLY": "Don't apply",
     "APPLY_CUSTOMRATE" : "Apply Custom Rate",
-    "MODIFY_CUSTOMRATE" : "Modify Custom Rate"
+    "MODIFY_CUSTOMRATE" : "Modify Custom Rate",
+    "DIARY": "Diary"

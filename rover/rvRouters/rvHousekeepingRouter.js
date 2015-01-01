@@ -85,6 +85,9 @@ angular.module('housekeepingModule', [])
                 },
                 floors: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchFloors();
+                },
+                activeWorksheetEmp: function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 }
             }
         });

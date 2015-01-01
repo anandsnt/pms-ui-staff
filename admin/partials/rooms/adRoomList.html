@@ -7,11 +7,11 @@
 			</h2>
 			<span class="count">
 				( {{totalCount}} )
-			<span class="status">
-				{{data.number_of_rooms_configured}} {{ 'OF' | translate }} {{data.total_number_of_rooms}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
-			</span>
+				<span class="status">
+					{{totalCount}} {{ 'OF' | translate }} {{total_number_of_rooms}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
+				</span>
 		    </span>
-			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="data.is_add_available === 'yes'">{{ 'ADD_NEW' | translate }}</a>
+			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="is_add_available === 'yes'">{{ 'ADD_NEW' | translate }}</a>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
