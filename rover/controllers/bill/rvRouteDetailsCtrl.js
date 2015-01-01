@@ -664,14 +664,15 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 										getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 						$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
 					}
-					
-				}
-			
-				
-                console.log(JSON.stringify(data));
-
-              //  
-            }else{
+					 console.log(JSON.stringify(data));
+				} else {
+					var data = {
+							"reservation_id":	$scope.reservationData.reservation_id,
+							"payment_type"  :   $scope.saveData.payment_type
+						};
+					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
+			    }
+            } else {
                 $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
             }
             
