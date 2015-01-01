@@ -527,8 +527,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// bypass rate selection from room type other than $scope.stateCheck.preferredType
 
 			var currentRoom = $scope.reservationData.rooms[$scope.activeRoom];
-
-			if ($scope.stateCheck.preferredType > 0 && roomId !== $scope.stateCheck.preferredType) {
+			// Disable room type change if stay date mode is true
+			if ($scope.stateCheck.preferredType > 0 && roomId !== $scope.stateCheck.preferredType && $scope.stateCheck.stayDatesMode) {
 				return false;
 			}
 			if ($scope.stateCheck.stayDatesMode) {

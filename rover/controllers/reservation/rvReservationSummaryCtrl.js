@@ -11,6 +11,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		var that = this;
 		
+		$rootScope.setPrevState = {
+			title: $rootScope.getPrevStateTitle()
+		};
+
 		$scope.passData = {
 			"details": {
 				"firstName" : $scope.reservationData.guest.firstName,
