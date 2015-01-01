@@ -31,6 +31,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.isRefreshOnBackToStaycard = false;
 	$scope.paymentModalOpened = false;
+	$scope.billingInfoModalOpened = false;
 	$scope.showPayButton = false;
 	$scope.paymentModalSwipeHappened = false;
 	$scope.isSwipeHappenedDuringCheckin = false;
@@ -464,10 +465,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 					
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if(swipedCardDataToRender.swipeFrom !== "payButton"){
+				if(swipedCardDataToRender.swipeFrom !== "payButton" && swipedCardDataToRender.swipeFrom !== 'billingInfo'){
 					$scope.openPaymentDialogModal(passData, paymentData);
-				} else {
+				} else if(swipedCardDataToRender.swipeFrom === "payButton") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
+				}
+				else if(swipedCardDataToRender.swipeFrom === "billingInfo") {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
 				}
   	 		
   	 	}
@@ -493,8 +497,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 	 		
-	 	  if($scope.paymentModalOpened){
+	 	    if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
+			} else if ($scope.billingInfoModalOpened) {
+				swipedCardData.swipeFrom = "billingInfo";
 			} else {
 				swipedCardData.swipeFrom = "viewBill";
 			}
@@ -1082,10 +1088,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     	$scope.reservationData.reservation_status = $scope.reservationBillData.reservation_status;
     	$scope.reservationData.user_id = $stateParams.userId;
     	$scope.reservationData.is_opted_late_checkout = false;
+    	$scope.billingInfoModalOpened = true;
 	    ngDialog.open({
 	        template: '/assets/partials/bill/rvBillingInformationPopup.html',
 	        controller: 'rvBillingInformationPopupCtrl',
 	        className: '',
+	        closeByDocument: true,
 	        scope: $scope
 	    });
     };
@@ -1351,6 +1359,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
 	$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 		$scope.paymentModalOpened = false;
+		$scope.billingInfoModalOpened = false;
 	});
 
 
