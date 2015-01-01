@@ -39,7 +39,7 @@ sntRover
 
 	$scope.$emit('showLoader');
 
-	$scope.reservationData = {};
+
 	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
 
@@ -518,6 +518,11 @@ sntRover
 	    };
 
 		$scope.reserveRoom = function(nextRoom, occupancy){
+
+			//clearing the data bf
+			/*$scope.reset_guest_details();
+			$scope.reset_company_details();
+			$scope.reset_travel_details();*/
 
 			var dataToPassConfirmScreen = {},
 			roomXfer = $scope.roomXfer,
