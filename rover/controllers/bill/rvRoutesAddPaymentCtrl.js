@@ -127,13 +127,16 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 				$scope.showCCPage = ($scope.saveData.payment_type == "CC") ? true: false;
 				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type == "CC") ? true: false;
 				$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
+			} else {
+				$scope.isManual = false;
 			}
 		};
 
 		$scope.changeOnsiteCallIn = function(){
+			$scope.$emit('CHANGE_IS_MANUAL', $scope.isManual);
 			$scope.showCCPage = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
 			$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
-			$scope.saveData.newPaymentFormVisible = true;
+			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
 		};
 		/*
 		 * on succesfully created the token

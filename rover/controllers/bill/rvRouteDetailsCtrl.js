@@ -9,6 +9,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.paymentDetails = null;
     $scope.swipedCardDataToSave = {};
     $scope.showCreditCardDropDown = false;
+   
     if($scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
         $scope.renderAddedPayment = $scope.selectedEntity.credit_card_details;
         $scope.renderAddedPayment.cardExpiry = $scope.selectedEntity.credit_card_details.card_expiry;
@@ -597,11 +598,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             
             var successCallback = function(data) {
                 $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
-                                
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage',errorMessage);
+            };
+            var successSixSwipe = function(response){
+            	$scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
             };
             
             if($scope.reservationData.reservation_id != null ){
@@ -609,14 +612,36 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 
               
 				if($scope.saveData.payment_type == 'CC'){
-					if(!isEmptyObject($scope.swipedCardDataToSave)){
+					if($rootScope.paymentGateway == "sixpayments" && !$scope.sixIsManual){
+						
+						var data = {};
+							data.reservation_id = $scope.reservationData.reservation_id;
+							data.add_to_guest_card = false;
+							data.bill_number = $scope.getSelectedBillNumber();	
+							
+						
+						$scope.$emit('UPDATE_SHOULD_SHOW_WAITING', true);
+						RVPaymentSrv.chipAndPinGetToken(data).then(function(response) {
+							$scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
+							successSixSwipe(response);
+						},function(error){
+							$scope.errorMessage = error;
+							$scope.shouldShowWaiting = false;
+						});
+						
+						
+						
+						
+						
+					} else if(!isEmptyObject($scope.swipedCardDataToSave)){
 						
 						var data 			= $scope.swipedCardDataToSave;
 						data.reservation_id =	$scope.reservationData.reservation_id;
-						
+						data.bill_number = $scope.getSelectedBillNumber();	
 						data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 						data.credit_card = $scope.swipedCardDataToSave.cardType;
 						data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
+						$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
 						
 					} else {
 						  var data = {
@@ -637,6 +662,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						data.card_code   = (!$scope.cardData.tokenDetails.isSixPayment)?
 										$scope.cardData.cardDetails.cardType: 
 										getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
+						$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
 					}
 					
 				}
@@ -644,7 +670,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 				
                 console.log(JSON.stringify(data));
 
-                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
+              //  
             }else{
                 $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
             }
@@ -660,5 +686,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     return $scope.bills[i].bill_number;
             }    
         };
+        $scope.sixIsManual = false;
+        $scope.$on('CHANGE_IS_MANUAL', function(e, value){
+        	$scope.sixIsManual = value;
+        });
 
 }]);
