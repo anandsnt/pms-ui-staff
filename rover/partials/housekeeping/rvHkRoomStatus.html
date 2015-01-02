@@ -129,8 +129,12 @@
 </section>
 
 <div class="search-pagination hk-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
-    <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="disableNextBtn">Next</button>
-    <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="disablePrevBtn">Previous</button>
+    <label for="loadNextPage" ng-click="loadNextPage()">
+        <button id="loadNextPage" type="button" class="button dark-grey next" ng-disabled="disableNextBtn">Next</button>
+    </label>
+    <label for="loadPrevPage" ng-click="loadPrevPage()">
+        <button id="loadPrevPage" type="button" class="button dark-grey prev" ng-disabled="disablePrevBtn">Previous</button>
+    </label>
     <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
 </div>
 
