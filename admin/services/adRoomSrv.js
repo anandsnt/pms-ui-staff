@@ -4,7 +4,6 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	*/
 	var that = this;
 
-    this.roomsArray = {};
     this.roomTypesArray = [];
    /*
     * getter method to fetch rooms list
@@ -15,7 +14,6 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms.json';	
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
-			//that.saveRoomsArray(data);
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
@@ -56,8 +54,6 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
                 "room_type": that.getRoomTypeName(updateData.room_type_id),
                 "room_id" : data.room_id
 			};
-			that.addToRoomsArray(dataToAdd);
-			
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
@@ -105,7 +101,6 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var url = '/admin/hotel_rooms/'+id;	
 		
 		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
-			that.updateRoomDataOnUpdate(id, "room_number", updateData.room_number);
 			that.updateRoomDataOnUpdate(id, "room_type", that.getRoomTypeName(updateData.room_type_id));
 			deferred.resolve(data);
 		},function(errorMessage){

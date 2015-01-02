@@ -118,7 +118,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	*/
 	$scope.goBack = function(){
         $state.go('admin.rooms');                  
-	}
+	};
 
 	/*
 	* method to update the room details
@@ -157,13 +157,13 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		else
 			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
 	
-	}
+	};
 
 	/**
 	* Success function of updateRoomDetails's web service call
 	*/
 	$scope.successCallbackOfUpdateRoomDetails = function(data){
 		$scope.goBack();
-	}
+	};
 
 }]);
