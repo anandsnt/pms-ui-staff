@@ -252,12 +252,18 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Default payment method attached to that bill can be viewed in initial screen
 	*/
 	$scope.init = function(){
+		
+		// CICO-12067 Handle the case when reservationId field is undefined.
+		if(typeof $scope.reservationData.reservationId == 'undefined'){
+			$scope.reservationData.reservationId = $scope.reservationData.reservation_id;
+		}
+
 		setupbasicBillData();
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
 		//$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.cardsListSuccess, '', 'NONE');
-		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.cardsListSuccess);
+		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId , $scope.cardsListSuccess);
 	};
 
 	

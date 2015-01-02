@@ -93,7 +93,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.paymentId = $scope.reservationData.reservation_card.payment_details.id;
 	}
 	else{
-		$scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
+		// Please check CICO-12046
+		if($scope.isStandAlone){
+			$scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
+		}
 	};
 	if($rootScope.paymentGateway == "sixpayments"){
     	//initilayy C&P ACTIVE
