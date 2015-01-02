@@ -2,14 +2,14 @@
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div class='smartband-image'></div>
 	<br clear='all'>
+<div id='new-area-of-details'>
+	<rv-textbox value="smartBandData.firstName" ng-model="smartBandData.firstName" label="{{'FIRST_NAME' | translate}}" placeholder = "{{ 'ENTER_FIRST_NAME' | translate}}" styleclass="margin-right-and-width" ></rv-textbox>
 
-	<rv-textbox value="smartBandData.firstName" ng-model="smartBandData.firstName" label="{{'FIRST_NAME' | translate}}" placeholder = "{{ 'ENTER_FIRST_NAME' | translate}}" ></rv-textbox>
-
-	<rv-textbox value="smartBandData.lastName" ng-model="smartBandData.lastName"  label="{{'LAST_NAME' | translate}}" placeholder = "{{ 'ENTER_LAST_NAME' | translate}}" ></rv-textbox>
+	<rv-textbox value="smartBandData.lastName" ng-model="smartBandData.lastName"  label="{{'LAST_NAME' | translate}}" placeholder = "{{ 'ENTER_LAST_NAME' | translate}}" styleclass="margin-right-and-width" ></rv-textbox>
 
 
-	<div class='entry margin only-switch full-width'>
-		<div class='payment-type-parent'>
+	<div class='entry only-switch full-width'>
+		<div class='payment-type-parent margin-right'>
 			<label for='payment-type' translate>PAYMENT_TYPE</label>
 			<div class='switch-button' ng-class="{'on': isFixedAmount}" ng-click="setPaymentType()">
 				<input id='payment-type' name='payment-type' type='checkbox' value='1'>
@@ -18,9 +18,10 @@
 			</div>
 		</div>
 		<rv-textbox value="smartBandData.fixedAmount" ng-show="isFixedAmount" ng-model="smartBandData.fixedAmount" label="Amount" placeholder = "Enter Amount" styleclass="payment-type-associated-div"></rv-textbox>
-
 		<br clear='all'>
+		</div>
 	</div>
+	<br clear='all'>
 	<a class='continue-button button green' ng-click="clickContinueButton()" translate>CONTINUE</a>
 	<a class='cancel-link' ng-click="clickContinueEdit(false)" translate>CANCEL</a>
 </div>
