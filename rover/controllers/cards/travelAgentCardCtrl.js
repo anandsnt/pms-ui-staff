@@ -196,8 +196,8 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			saveContactInformation($scope.contactInformation);
 			$scope.checkOutsideClick(targetElement);
 			$rootScope.$broadcast("saveArAccount");
+			$rootScope.$broadcast("saveContract");
 		});
-
 
 		/**
 		 * success callback of save contact data
