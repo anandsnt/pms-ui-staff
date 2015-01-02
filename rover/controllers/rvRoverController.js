@@ -451,8 +451,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     /*
      * toggle action of drawer
      */
-    $scope.toggleDrawerMenu = function() {
+    $scope.toggleDrawerMenu = function(e) {
+      if ( !!e ) {
+        e.stopPropagation();
+      };
+
       $scope.menuOpen = !$scope.menuOpen;
+      $scope.showHotelSwitchList = false;
     };
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;

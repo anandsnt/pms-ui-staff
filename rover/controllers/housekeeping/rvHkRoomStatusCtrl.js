@@ -139,7 +139,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.loadNextPage = function(e) {
 			e.stopPropagation();
-//console.log(arguments);
 			if ( $scope.disableNextBtn ) {
 				return;
 			};
@@ -151,7 +150,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.loadPrevPage = function(e) {
-			//console.log(arguments);
 			e.stopPropagation();
 
 			if ($scope.disablePrevBtn) {
