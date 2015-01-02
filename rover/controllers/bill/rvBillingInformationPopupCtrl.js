@@ -11,7 +11,15 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.routes = [];
     $scope.errorMessage = '';
     $scope.isInitialPage = true;
+    $scope.saveData = {};
+    $scope.saveData.payment_type =  "";
+    $scope.saveData.payment_type_description =  "";
+    $scope.saveData.newPaymentFormVisible = false;
+	$scope.shouldShowWaiting = false;
 
+	$scope.$on('UPDATE_SHOULD_SHOW_WAITING', function(e, value){
+		$scope.shouldShowWaiting = value;
+	});
 	$scope.closeDialog = function(){
 		ngDialog.close();
         $scope.$emit('routingPopupDismissed');
@@ -297,6 +305,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         $scope.errorMessage = error;
         
     });
-
+    
+    
+	$scope.handleCloseDialog = function(){
+		$scope.$emit('HANDLE_MODAL_OPENED');
+		$scope.closeDialog();
+	};
 	
 }]);

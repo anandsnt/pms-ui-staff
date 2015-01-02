@@ -718,5 +718,12 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				rate_ids: rateIdSet
 			}, ratesFetched);
 		}.bind($scope.reservationData);
+
+		// CICO-11991 : Handle ARRIVALS button click.
+		$scope.loadPrevState = function() {
+			$rootScope.loadPrevState();
+			$rootScope.$broadcast("OUTSIDECLICKED");
+		};
+
 	}
 ]);

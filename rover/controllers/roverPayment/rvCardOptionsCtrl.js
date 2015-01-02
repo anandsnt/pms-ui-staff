@@ -20,11 +20,15 @@ sntRover.controller('RVCardOptionsCtrl',
 				$scope.showAddtoGuestCard = true;
 			}
 	    };
+	   
 		$scope.refreshIframe = function(){
 			console.log("refresh iframe");
 			var iFrame = document.getElementById('sixIframe');
 			iFrame.src = iFrame.src;
 		};
+		$scope.$on('REFRESH_IFRAME', function(e){
+			 $scope.refreshIframe();
+		});
 		//Not a good method
 		//To fix the issue CICO-11440
 		//From diary screen create reservation guest data is available only after reaching the summary ctrl
