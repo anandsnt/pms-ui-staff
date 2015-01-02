@@ -173,8 +173,9 @@
                 </ul>
             </div> 
         </div>
-        <form class="form payment-info"  ng-show="reservationData.paymentType.type.value=== 'CC' && showCC">
+        <form class="form payment-info"  ng-show="reservationData.paymentType.type.value=== 'CC' && showCC" ng-click="clearErrorMessage()">
             <div class="wrapper">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div id="set-payment" class="payment-form for-reservation"> 
                     <!-- <div class="entry full-width"> -->
                         <!-- Credit card options - hidden until CC set as payment type -->
