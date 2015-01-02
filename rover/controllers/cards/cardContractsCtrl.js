@@ -449,7 +449,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 				if ($stateParams.id == "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
-					var account_id = currentCard;
+					var account_id = $scope.currentCard;
 				}
 				if ($scope.contractList.contractSelected) {
 					if (typeof account_id != "undefined") {
