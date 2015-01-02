@@ -213,10 +213,19 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			beforeShow     : function(input, inst) {
 				$('#ui-datepicker-div').addClass('reservation hide-arrow');
 				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+				
+				setTimeout(function() {
+					$('body').find('#ui-datepicker-overlay')
+						.on('click', function() {
+							console.log('hey clicked');
+							$('#room-out-from').blur();
+							$('#room-out-to').blur();
+						});
+				}, 100);
 			},
 			onClose        : function(value) {
 				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
-				$('#ui-datepicker-overlay').remove();
+				$('#ui-datepicker-overlay').off('click').remove();
 			}
 		};
 

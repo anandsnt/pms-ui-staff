@@ -28,8 +28,8 @@
               <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
               <div id="out-from" class="entry">
                 <label id="room-out-from-label" for="room-out-from">From <span>{{ getSimplifiedDayName(updateService.from_date) }}</span></label>
-                <div class="entry-data" ng-click="">
-                  <input name="room-out-from" id="room-out-from" type="text" class="datepicker" ui-date="fromDateOptions" ng-model="updateService.from_date" ui-date-format readonly style="display:block!important;position:static!important;margin:0!important;opacity:0">
+                <div class="entry-data ui-datepicker-trigger">
+                  <input name="room-out-from" id="room-out-from" type="text" class="datepicker" ui-date="fromDateOptions" ng-model="updateService.from_date" ui-date-format readonly style="display:block!important;position:absolute!important;left:0;right:0;top:0;bottom:0;z-index:3;margin:0!important;opacity:0">
 
                   <strong id="room-out-from-day" class="day">{{ updateService.from_date | date:'dd' }}</strong>
                   <span id="room-out-from-month" class="month">{{ updateService.from_date | date:'MMMM' }}</span>
@@ -38,8 +38,8 @@
               </div>
               <div id="out-to" class="entry">
                 <label id="room-out-to-label" for="room-out-to">To <span>{{ getSimplifiedDayName(updateService.to_date) }}</span></label>
-                <div class="entry-data" class="ui-datepicker-trigger">
-                  <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="updateService.to_date" ui-date-format readonly style="display:block!important;position:static!important;margin:0!important;opacity:0">
+                <div class="entry-data ui-datepicker-trigger">
+                  <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="updateService.to_date" ui-date-format readonly style="display:block!important;position:absolute!important;left:0;right:0;top:0;bottom:0;z-index:3;margin:0!important;opacity:0">
 
                   <strong id="room-out-to-day" class="day">{{ updateService.to_date | date:'dd' }}</strong>
                   <span id="room-out-to-month" class="month">{{ updateService.to_date | date:'MMMM' }}</span>
