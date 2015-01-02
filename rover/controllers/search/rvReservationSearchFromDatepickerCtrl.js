@@ -5,7 +5,7 @@ sntRover.controller('RVReservationSearchFromDatepickerCtrl', ['$scope', 'ngDialo
 			$scope.dateOptions = {
 				changeYear: true,
 				changeMonth: true,
-				yearRange: "+0:+5",
+				yearRange: "-5:+5",
 				onSelect: function(dateText, inst) {
 					$scope.onFromDateChanged($scope.datePicked);
 					ngDialog.close();
