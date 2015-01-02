@@ -438,6 +438,7 @@ body { overflow: hidden; }
 			position: absolute;
 			top: 5px;
 			left: 40px;
+			cursor: pointer;
 
 			&.show-mobile { .show; }	
 		}
@@ -1024,7 +1025,8 @@ body { overflow: hidden; }
 				}
 			}
 
-			&:disabled {
+			&:disabled,
+			&.disabled {
 				opacity: 0.3;
 				cursor: default;
 			}
