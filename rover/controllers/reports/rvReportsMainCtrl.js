@@ -42,6 +42,12 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
+		/**
+        * inorder to refresh after list rendering
+        */
+        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){            
+            $scope.refreshScroller( 'report-list-scroll');
+        });
 
 		var datePickerCommon = {
 			dateFormat     : $rootScope.jqDateFormat,

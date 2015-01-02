@@ -16,6 +16,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
 		};
 
+
+        /**
+        * inorder to refresh after list rendering
+        */
+        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){            
+            refreshScroll();
+        });
+
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
 		

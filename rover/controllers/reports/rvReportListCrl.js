@@ -17,6 +17,13 @@ sntRover.controller('RVReportListCrl', [
             hasFauxSelect = false;
 
         /**
+        * inorder to refresh after list rendering
+        */
+        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){            
+            $scope.refreshScroller( 'report-list-scroll');
+        });
+
+        /**
         *   Post processing fetched data to modify and add additional data
         *   Note: This is a self executing function
         *   
