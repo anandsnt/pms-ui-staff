@@ -221,6 +221,34 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
         };
 
+        $scope.reset_guest_details = function(){
+            $scope.reservationData.guest = {
+                    id: null, // if new guest, then it is null, other wise his id
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    city: '',
+                    loyaltyNumber: '',
+                    sendConfirmMailTo: ''
+            };            
+        }
+
+        $scope.reset_company_details = function() {
+            $scope.reservationData.company = {
+                            id: null, // if new company, then it is null, other wise his id
+                            name: '',
+                            corporateid: '', // Add different fields for company as in story
+            };            
+        };
+
+        $scope.reset_travel_details = function() {
+            $scope.reservationData.travelAgent = {
+                            id: null, // if new , then it is null, other wise his id
+                            name: '',
+                            iataNumber: '', // Add different fields for travelAgent as in story
+            };
+        }
+
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
             $scope.reservationDetails.guestCard.id = "";
