@@ -716,7 +716,7 @@ sntRover
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
 	    	$scope.toggleRows($scope.gridProps.filter.show_all_rooms, current_scroll_pos);
-	    	$scope.gridProps.edit.reset_scroll = undefined;
+	    	$scope.gridProps.edit.reset_scroll = undefined;	    	
 	    };
 
 	    /* FOR LATER USE
@@ -1108,7 +1108,13 @@ sntRover
 
     		$scope.gridProps.stats = data.availability_count;
 
-			$scope.gridProps.display.x_0 = $scope.gridProps.viewport.row_header_right;					
+			$scope.gridProps.display.x_0 = $scope.gridProps.viewport.row_header_right;	
+
+			$scope.gridProps.edit.reset_scroll = {
+	    		'x_n'      : $scope.gridProps.display.x_n,
+	    		'x_origin' : $scope.gridProps.display.x_origin
+	    	};
+
 			
 			//Resetting as per CICO-11314
 			if ( !!_.size($_resetObj) ) {
