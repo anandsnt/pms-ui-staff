@@ -4,7 +4,7 @@
 	<section id="reports" class="content scrollable reports-wrapper" role="main" ng-hide="showReportDetails" ng-controller="RVReportListCrl" ng-iscroll="report-list-scroll">
 		<div class="wrapper">
 			<ul class="reports-list">
-				<li ng-repeat="item in reportList">
+				<li ng-repeat="item in reportList" ngrepeatend>
 					<a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter()">
 						<span ng-class="item.reportIconCls"></span>
 						<div class="data">
