@@ -39,8 +39,6 @@ sntRover
 
 	$scope.$emit('showLoader');
 
-
-	$scope.initReservationDetails();
 	BaseCtrl.call(this, $scope);
 
 	//updating the left side menu
@@ -519,10 +517,10 @@ sntRover
 
 		$scope.reserveRoom = function(nextRoom, occupancy){
 
-			//clearing the data bf
-			/*$scope.reset_guest_details();
+			// clearing the data bf
+			$scope.reset_guest_details();
 			$scope.reset_company_details();
-			$scope.reset_travel_details();*/
+			$scope.reset_travel_details();
 
 			var dataToPassConfirmScreen = {},
 			roomXfer = $scope.roomXfer,
