@@ -89,7 +89,7 @@
               <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
               <span bo-text="room.timeOrIn"></span>
             </div>
-            <div bo-if="room.is_queued" class="queued">VACANT</div>
+            <div bo-if="!room.is_occupied" class="show-vacant">VACANT</div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">
@@ -129,8 +129,9 @@
 </section>
 
 <div class="search-pagination hk-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
-    <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="disableNextBtn">Next</button>
-    <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="disablePrevBtn">Previous</button>
+    <!-- removed buttons since they include +300ms delay on touch pads -->
+    <label class="button dark-grey next" ng-click="loadNextPage($event)" ng-class="{'disabled': disableNextBtn}">Next</label>
+    <label class="button dark-grey prev" ng-click="loadPrevPage($event)" ng-class="{'disabled': disablePrevBtn}">Previous</label>
     <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
 </div>
 
