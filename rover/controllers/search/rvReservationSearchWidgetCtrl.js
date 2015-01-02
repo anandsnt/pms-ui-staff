@@ -296,8 +296,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 					($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
 					($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-					($scope.escapeNull(value.travel_agent).toString()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-					($scope.escapeNull(value.company).toString()).indexOf($scope.textInQueryBox) >= 0) {
+					($scope.escapeNull(value.travel_agent).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+					($scope.escapeNull(value.company).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0) {
 					$scope.results[i].is_row_visible = true;
 					totalCountOfFound++;
 				} else {
@@ -552,7 +552,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		/**
 		 * function to execute on clicking on each result
 		 */
-		$scope.goToReservationDetails = function(reservationID, confirmationID) {
+		$scope.goToReservationDetails = function($event,reservationID, confirmationID) {
+			
+			$event.preventDefault();
+			$event.stopImmediatePropagation();
+  			$event.stopPropagation();
 
 			$scope.currentReservationID = reservationID;
 			$scope.currentConfirmationID = confirmationID;

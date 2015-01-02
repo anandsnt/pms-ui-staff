@@ -359,14 +359,16 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         startTime       = null,
                         endTime         = null,
                         time            = null,
+                        date_to_pass    = null,
                         matchedRooms    = [];
 
 
                     _.each(inactiveRooms, function(value, key) {
 
                         _.each(value, function(eachRoom){
-
-                            time = util.gridTimeComponents(new Date(key), 24);
+                            date_to_pass = new tzIndependentDate(key);
+                            date_to_pass.setHours(0, 0, 0);
+                            time = util.gridTimeComponents(date_to_pass, 24);
                             if(eachRoom.room_id == room.id) {
                                 startTime = time.toShijuBugStartDate(0);
                                 endTime   = time.toShijuBugEndDate(0);

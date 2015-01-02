@@ -89,7 +89,7 @@
               <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
               <span bo-text="room.timeOrIn"></span>
             </div>
-            <div bo-if="room.is_queued" class="queued">VACANT</div>
+            <div bo-if="!room.is_occupied" class="show-vacant">VACANT</div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">

@@ -1331,6 +1331,46 @@ Padding for the ows error popup
   border-bottom: none !important;
 }
 
+
 .modal-content.new-content.eod.form.warning{
   width:110% !important;
 }
+/* CICO-11897 */
+.search-results li.reservation:not(.no-content) a .room-highlight, .search-results li.reservation:not(.no-content) .faux-anchor .room-highlight{
+  display: inline-block;
+  margin-left: -10px;
+  padding-left: 10px;
+  border-left: 4px solid #f6991b;
+}
+
+.billing-info-charges {
+    overflow-y:hidden;
+    .search-results {
+      background: none repeat scroll 0 0 #fcfcfc;
+      padding: 0;
+      position: relative;
+    }
+
+    li {
+      border-bottom: 1px solid #eeeeee;
+      cursor: pointer;
+      height: 42px;
+      margin: 1px !important;
+    }
+
+    h4 {
+      clear: none;
+      float: left;
+      margin: 12px 0;
+    }
+    &.charge-code-list {
+      height: 200px;
+      margin: 0 auto 20px;
+      width: 310px;
+      z-index: 999;
+      position:absolute;
+      left:0;
+      right:0;
+    }
+}
+

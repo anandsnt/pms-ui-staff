@@ -36,7 +36,7 @@
 
 			<div class="wrapper">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo">
+				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo && !isStandAlone">
 					<table>
 						<thead>
 							<tr>
@@ -56,7 +56,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div id="billing-information" class="billing-information notice" ng-show="showIncomingBillingInfo">
+				<div id="billing-information" class="billing-information notice" ng-show="showIncomingBillingInfo && !isStandAlone">
 					<table>
 						<thead>
 							<tr>
@@ -76,21 +76,20 @@
 						</tbody>
 					</table>
 				</div>
-				<!-- -data["incoming_routing_array"] = [{"room_no"=>"12345","guest_name"=>"krishobh","details"=>"qburst clt"},{"room_no"=>"12345","guest_name"=>"krishobh","details"=>"qburst clt"}] -->
+				
 				<!-- Rate & Bill Summary -->
 				<div id="bills" class="registration-summary ui-tabs ui-widget ui-widget-content ui-corner-all" >
 					<!-- Bills summary tabs navigation -->
-			<div id="bills-tabs-nav" class="float bill-tabs" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
+					<div id="bills-tabs-nav" class="float bill-tabs" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
 						<div class="bill-tab-container"  style="width:{{getWidthForBillTabsScroll()}}px">
-						<!-- Billing instructions -->
-						<!-- <a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a> -->
-						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
-						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton'" ng-click="noPostButtonClicked()" ng-class = "{'green':roomChargeEnabled, 'red': !roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
 						
-						<!-- Add new bill -->
-						<!-- %a.button.with-icon.only-icon.brand-colors -->
-						<!-- %span.icons.icon-plus -->
-						<!-- Add new -->
+						<!-- Billing info -->
+						<a class="toggle has-arrow" ng-show="routingArrayCount>0 && !isStandAlone" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a>
+						
+						<!-- Incoming billing info -->
+						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0 && !isStandAlone" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
+						
+						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton'" ng-click="noPostButtonClicked()" ng-class = "{'green':roomChargeEnabled, 'red': !roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
 						
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all bill-tab-ul" role="tablist">
 							

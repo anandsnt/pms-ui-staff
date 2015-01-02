@@ -13,6 +13,7 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+			<div id="new-form-holder" ng-if="isAdd" ng-include="getTemplateUrl()"></div>
 			
 			<span class="count-show">Show</span>
 			<div class="select table-count rates-table-count">
@@ -26,7 +27,6 @@
 				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
 		    </div>
 
-			<div id="new-form-holder" ng-if="isAdd" ng-include="getTemplateUrl()"></div>
 			<div id="new-form-holder"></div>
 			<table class="grid datatable" ng-table="tableParams" template-pagination="custom/pager">
 				<tbody>

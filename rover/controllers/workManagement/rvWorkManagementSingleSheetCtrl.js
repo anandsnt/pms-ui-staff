@@ -221,6 +221,11 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			var onDeleteSuccess = function(data) {
 					//$state.go('rover.workManagement.start');
 					$scope.$emit("hideLoader");
+
+					// make it false so that the ctrl wont save it back again
+					// when going back to the makangement dsahboard
+					$_shouldSaveFirst = false;
+					
 					$timeout( function() {
 						$state.go('rover.workManagement.start');
 					}, 20 );

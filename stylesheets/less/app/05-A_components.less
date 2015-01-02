@@ -1163,7 +1163,14 @@
                                 margin: 0;
                                 .size(30px, 40%);
                                 .pull-left;
-                            }       
+                            }
+
+                            .show-vacant {
+                                font-size: 16px;
+                                line-height: 28px;
+                                .size(30px, 20%);
+                                .pull-left;
+                            }
                         }
 
                         &.with-image {
@@ -6438,7 +6445,7 @@
             .button {
                 margin-top: 24px;
                 padding: 0;
-                .size(40px, 140px);
+                .size(40px, 90px);
                 .pull-right;
             }
         }    
@@ -6865,6 +6872,43 @@
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @media only screen and (max-width: 970px) {
+        #report-update {
+            padding: 10px;
+
+            .date-range,
+            .time-range,
+            .filter,
+            .sort,
+            .options {
+                padding-right: 0;
+                margin-right: 10px;
+                &:after {
+                    background: none;
+                }
+            }
+
+            .date-range {
+                width: 250px;
+            }
+
+            .options {
+                width: 120px;
+            }
+
+            .date-range,
+            .time-range {
+                span {
+                    margin: 0 5px;
+                }
+            }
+
+            .faux-select-options {
+                min-width: 170px;
             }
         }
     }
