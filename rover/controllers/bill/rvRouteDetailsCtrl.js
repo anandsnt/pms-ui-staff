@@ -670,6 +670,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 							"reservation_id":	$scope.reservationData.reservation_id,
 							"payment_type"  :   $scope.saveData.payment_type
 						};
+                    data.bill_number = $scope.getSelectedBillNumber();
 					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
 			    }
             } else {
