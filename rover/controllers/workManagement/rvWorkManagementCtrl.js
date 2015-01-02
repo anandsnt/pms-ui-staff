@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees', 'workTypes', 'shifts', 'floors', '$timeout', 'activeWorksheetEmp',
-	function($rootScope, $scope, employees, workTypes, shifts, floors, $timeout, activeWorksheetEmp) {
+sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees', 'workTypes', 'shifts', 'floors', '$timeout',
+	function($rootScope, $scope, employees, workTypes, shifts, floors, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -19,27 +19,6 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 		$scope.shifts = shifts;
 
 		$scope.floors = floors;
-
-
-
-
-		var	dailyWTemp = (!!activeWorksheetEmp.data[0] && activeWorksheetEmp.data[0].employees) || [],
-			activeEmps = [],
-			foundMatch = undefined;
-
-		if ( dailyWTemp.length ) {
-			_.each($scope.employeeList, function(item) {
-				foundMatch = _.find(dailyWTemp, function(emp) {
-					return emp.id == item.id
-				});
-
-				if ( foundMatch ) {
-					item.ticked = true;
-				};
-			});
-		};
-
-
 
 
 		// Arrived / Day Use / Due Out / Departed,Due out / Arrival,Departed / Arrival,Arrived / Departed,Due out / Departed,Arrived,Stayover,Departed,Not Defined

@@ -174,6 +174,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.displayedReport.untilCancelDate = $( '#chosenReportToCancelDate' ).val();
 				$scope.displayedReport.fromTime  = $( '#chosenReportFromTime' ).val();
 				$scope.displayedReport.untilTime = $( '#chosenReportToTime' ).val();
+
+				// call again may be.. :(
+				refreshScroll();
 			}, 100);
 
 

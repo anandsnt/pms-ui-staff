@@ -304,7 +304,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			for(var date in rate){
 				
 				// Ignore keys other date object
-				if (date == "id" || date == "name" || date == 'is_hourly') {
+				if (date == "id" || date == "name" || date == 'is_hourly' || date == 'isHourly') {
 					continue;	
 				} 
 
