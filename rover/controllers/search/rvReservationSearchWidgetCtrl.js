@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog',
-	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog) {
+sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog', '$timeout',
+	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog, $timeout) {
 
 		/*
 		 * Base reservation search, will extend in some place
@@ -409,6 +409,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		$scope.focusOnSearchText = function() {
 			//we are showing the search area
+            $scope.focusSearchField = false;
 			$scope.$emit("showSearchResultsArea", true);
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
 			$vault.set('searchType', 'SEARCH_NORMAL')
@@ -754,14 +755,16 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 		$scope.showCalendar = function(controller) {
+			$scope.focusSearchField = false;
 			$scope.$emit("showSearchResultsArea", true);
-			$scope.focusSearchField = true;
-			ngDialog.open({
-				template: '/assets/partials/search/rvDatePickerPopup.html',
-				controller: controller,
-				className: '',
-				scope: $scope
-			});
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/search/rvDatePickerPopup.html',
+                    controller: controller,
+                    className: '',
+                    scope: $scope
+                });
+            }, 1000);
 		};
 
 		var initPaginationParams = function() {
@@ -774,16 +777,20 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.onFromDateChanged = function(date) {
 			$scope.fromDate = date;
-			$scope.focusSearchField = true;
 			initPaginationParams();
 			$scope.fetchSearchResults();
+			$timeout(function() {
+				$scope.focusSearchField = true;
+			}, 2000);
 		};
 
 		$scope.onToDateChanged = function(date) {
 			$scope.toDate = date;
-			$scope.focusSearchField = true;
 			initPaginationParams();
 			$scope.fetchSearchResults();
+            $timeout(function() {
+                $scope.focusSearchField = true;
+            }, 2000);
 		};
 
 		$scope.clearToDateClicked = function() {
