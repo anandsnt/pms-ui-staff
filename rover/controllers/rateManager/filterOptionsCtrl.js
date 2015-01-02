@@ -32,20 +32,8 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
 
         $scope.leftMenuDimensions.outerContainerHeight = maxSize;
         $scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;
-
-        $scope.$parent.myScrollOptions = {
-            'filter_details': {
-                scrollbars: true,
-                snap: false,
-                preventDefault: false,
-                interactiveScrollbars: true,
-            },
-            'nameOnCard': {
-                scrollbars: true,
-                snap: false,
-                interactiveScrollbars: true
-            }
-        };
+        $scope.setScroller('filter_details', {'click': true, preventDefault: false});
+        $scope.setScroller('nameOnCard', {'click': true});
 
         $scope.$on('$viewContentLoaded', function() {
             setTimeout(function() {
