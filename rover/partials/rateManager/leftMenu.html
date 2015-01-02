@@ -105,9 +105,9 @@
 			
 
 			<!-- Company Card Results / content -->
-			<div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100">
-				<div class="search-results" >
-					<ul id="search-list" >
+			<div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100" >
+				<div class="search-results" iscroll-stop-propagation>
+					<ul id="search-list">
 						<li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row)">
 							<div class="icon company-card" ng-if="escapeNull(row.account_type)=='COMPANY' && row.company_logo == ''"></div>
 							<div class="icon travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT' && row.company_logo == ''"></div>
