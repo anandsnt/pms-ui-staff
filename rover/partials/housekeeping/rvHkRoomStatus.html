@@ -129,14 +129,9 @@
 </section>
 
 <div class="search-pagination hk-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
-    <button type="button" class="button dark-grey next" ng-disabled="disableNextBtn">
-        Next
-        <span class="btn-click" ng-click="loadNextPage($event)"></span>
-    </button>
-    <button type="button" class="button dark-grey prev" ng-disabled="disablePrevBtn">
-        Previous
-        <span class="btn-click" ng-click="loadPrevPage($event)"></span>
-    </button>
+    <!-- removed buttons since they include +300ms delay on touch pads -->
+    <label class="button dark-grey next" ng-click="loadNextPage($event)" ng-class="{'disabled': disableNextBtn}">Next</label>
+    <label class="button dark-grey prev" ng-click="loadPrevPage($event)" ng-class="{'disabled': disablePrevBtn}">Previous</label>
     <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
 </div>
 
