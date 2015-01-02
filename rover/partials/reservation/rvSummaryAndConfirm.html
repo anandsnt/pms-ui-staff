@@ -193,7 +193,7 @@
                     <div class="select">
 
                         <select class="placeholder" ng-model="reservationData.paymentType.type.value"
-                            ng-change="changePaymentType()">
+                            ng-change="changePaymentType()" iscroll-stop-propagation>
                             <option value="" translate>SELECT_PAYMENT_TYPE</option>
                             <option ng-selected="paymentTypes.value == reservationData.paymentType.type.value" value="{{paymentTypes.value}}" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
                         </select>
