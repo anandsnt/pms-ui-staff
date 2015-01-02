@@ -55,7 +55,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			if(item.name === 'CC'){
 				$scope.creditCardTypes = item.values;
 			};					
-		});		
+		});	
+		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+			$scope.dataToSave.paymentType = "CC";
+		}
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
 
