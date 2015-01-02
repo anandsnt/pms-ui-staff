@@ -204,11 +204,21 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.$emit('hideLoader'); 
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
-		if('reservation_card' in $scope.reservationData){
-	    	reservationId = $scope.reservationData.reservation_card.reservation_id;
-		}
-		else if('reservationId' in $scope.reservationData){
-			reservationId = $scope.reservationData.reservationId;
+		// if('reservation_card' in $scope.reservationData){
+			// alert('reservation_card');
+	    	// reservationId = $scope.reservationData.reservation_card.reservation_id;
+		// }
+		// else if('reservationId' in $scope.reservationData){
+			// alert('reservationId');
+			// reservationId = $scope.reservationData.reservationId;
+		// } else {
+			// alert('reservationId else');
+			// reservationId = $scope.reservationBillData.reservation_id;
+		// }
+		if($scope.viewFromBillScreen){
+			reservationId = $scope.reservationBillData.reservation_id;
+		} else {
+			reservationId = $scope.reservationData.reservation_card.reservation_id;
 		}
 	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
 	    // for initial case the key we are requesting is not additional
