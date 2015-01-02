@@ -56,7 +56,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
                 "room_type": that.getRoomTypeName(updateData.room_type_id),
                 "room_id" : data.room_id
 			};
-			that.addToRoomsArray(dataToAdd);
+			//that.addToRoomsArray(dataToAdd);
 			
 			deferred.resolve(data);
 		},function(errorMessage){
