@@ -575,7 +575,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         $scope.$emit('hideLoader');   
                         $scope.selectedEntity.to_bill = data.id;    
                         $scope.bills[$scope.bills.length - 1].id = data.id;  
-                        if($scope.saveData.payment_type != null){
+                        if($scope.saveData.payment_type != null && $scope.saveData.payment_type != "" ){
                             $scope.savePayment();
                         }else{
                             $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
