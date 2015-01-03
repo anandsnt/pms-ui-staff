@@ -315,8 +315,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
 			if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
-				dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase()
+				if (typeof($scope.depositBalanceMakePaymentData.card_code) != "undefined") {
+					dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase();
+				}
 			}
+			
 			if($scope.isAddToGuestCardVisible){
 			  dataToSrv.postData.add_to_guest_card	= $scope.depositBalanceMakePaymentData.add_to_guest_card;
 			}
