@@ -442,12 +442,17 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			}
 		};			
 		var reservationId = '';
-		if('reservation_card' in $scope.reservationData){
-	    	reservationId = $scope.reservationData.reservation_card.reservation_id;
-		}
-		else if('reservationId' in $scope.reservationData){
-			reservationId = $scope.reservationData.reservationId;
-		}				
+		// if('reservation_card' in $scope.reservationData){
+	    	// reservationId = $scope.reservationData.reservation_card.reservation_id;
+		// }
+		// else if('reservationId' in $scope.reservationData){
+			// reservationId = $scope.reservationData.reservationId;
+		// }		
+		if($scope.viewFromBillScreen){
+			reservationId = $scope.reservationBillData.reservation_id;
+		} else {
+			reservationId = $scope.reservationData.reservation_card.reservation_id;
+		}		
 		data.index = index;
 		data.reservationId = reservationId;		
 		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, (data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);	
