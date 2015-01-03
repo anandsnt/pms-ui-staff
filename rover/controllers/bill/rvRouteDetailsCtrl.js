@@ -27,8 +27,14 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         //common payment model items
     $scope.passData = {};
     $scope.passData.details ={};
-    $scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
-    $scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+    if(typeof $scope.guestCardData == 'undefined' || typeof $scope.guestCardData.contactInfo == 'undefined'){
+        $scope.passData.details.firstName = '';
+        $scope.passData.details.lastName = '';
+    }
+    else{
+        $scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
+        $scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+    }
     $scope.setScroller('cardsList');
 
     /**
@@ -533,10 +539,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
              * If user selects the new bill option,
              * we'll first create the bill and then save the route for that bill
              */
+            
            if($scope.selectedEntity.to_bill == 'new'){
                 $scope.createNewBill();
             }
-            else if( $scope.saveData.payment_type != null){
+            else if( $scope.saveData.payment_type != null && $scope.saveData.payment_type != "" ){
                 $scope.savePayment();
             }
             // else if($scope.paymentDetails != null){

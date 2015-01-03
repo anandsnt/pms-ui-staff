@@ -1357,26 +1357,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 	}); 
 
-	$rootScope.$on('AR_ACCOUNT_CREATED', function(event) {
-	 	console.log("AR_ACCOUNT_CREATED");
-	 	var billCount = $scope.reservationBillData.bills.length;
-		var billNumber = parseInt($scope.currentActiveBill)+parseInt(1);
-		console.log("billCount"+billCount);
-		console.log("billNumber"+billNumber);
-		// CICO-12095 review process continues after AR Account created.
-		$timeout(function() {
-			// If reached final bill , proceed complete checkout
-			// Else proceed with review process
-			if(billCount == billNumber){
-				$scope.clickedCompleteCheckout();
-			}
-			else{
-				$scope.clickedReviewButton(billNumber-1);
-			}
-	    }, 1000);
-		
-	}); 
-
 	//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
 	$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 		$scope.paymentModalOpened = false;
