@@ -539,10 +539,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
              * If user selects the new bill option,
              * we'll first create the bill and then save the route for that bill
              */
+            
            if($scope.selectedEntity.to_bill == 'new'){
                 $scope.createNewBill();
             }
-            else if( $scope.saveData.payment_type != null){
+            else if( $scope.saveData.payment_type != null && $scope.saveData.payment_type != "" ){
                 $scope.savePayment();
             }
             // else if($scope.paymentDetails != null){
