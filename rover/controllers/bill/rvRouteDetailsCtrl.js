@@ -27,8 +27,14 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         //common payment model items
     $scope.passData = {};
     $scope.passData.details ={};
-    $scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
-    $scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+    if(typeof $scope.guestCardData == 'undefined' || typeof $scope.guestCardData.contactInfo == 'undefined'){
+        $scope.passData.details.firstName = '';
+        $scope.passData.details.lastName = '';
+    }
+    else{
+        $scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
+        $scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
+    }
     $scope.setScroller('cardsList');
 
     /**
