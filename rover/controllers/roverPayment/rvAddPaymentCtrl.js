@@ -60,7 +60,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 				$scope.dataToSave.paymentType = "CC";
 			}
-		}, 1500);
+		}, 2000);
 		
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
