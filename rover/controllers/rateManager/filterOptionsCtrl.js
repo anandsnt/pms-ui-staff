@@ -33,7 +33,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         $scope.leftMenuDimensions.outerContainerHeight = maxSize;
         $scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;
         $scope.setScroller('filter_details', {'click': true, preventDefault: false});
-        $scope.setScroller('nameOnCard', {'click': true});
+        $scope.setScroller('nameOnCard', {'click': true, 'useTransform': false});
 
         $scope.$on('$viewContentLoaded', function() {
             setTimeout(function() {
@@ -230,8 +230,11 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             }
         };
 
-        $scope.setCompanyCardFilter = function(cmpCardObj) {
+        $scope.setCompanyCardFilter = function(cmpCardObj, event) {
+            event.stopPropagation();
+            event.preventDefault();
             $scope.companySearchText = "";
+
             $scope.currentFilterData.name_cards.push(cmpCardObj);
             // reset company card result array
             $scope.companyCardResults = [];
