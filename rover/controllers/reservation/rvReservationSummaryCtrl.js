@@ -21,8 +21,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"lastName" : $scope.reservationData.guest.lastName
 			}
 		};
-		console.log("----------initial--------------")
-			console.log($scope.passData);
 		$scope.isSixCardSwiped = false;
 		$scope.addmode = true;
 		$scope.showCC = false;
