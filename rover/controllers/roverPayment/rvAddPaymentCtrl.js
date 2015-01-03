@@ -56,9 +56,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 				$scope.creditCardTypes = item.values;
 			};					
 		});	
-		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
-			$scope.dataToSave.paymentType = "CC";
-		}
+		setTimeout(function(){
+			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+				$scope.dataToSave.paymentType = "CC";
+			}
+		}, 1500);
+		
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
 
