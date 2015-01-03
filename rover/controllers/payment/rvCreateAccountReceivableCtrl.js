@@ -2,17 +2,6 @@ sntRover.controller('RVCreateAccountReceivableCtrl',['$rootScope', '$scope', '$s
 	BaseCtrl.call(this, $scope);
 	$scope.ar_number = "";
 	
-	$scope.successCreate = function(data){
-		$scope.$emit("hideLoader");
-		ngDialog.close();
-		$rootScope.$emit('AR_ACCOUNT_CREATED');
-	};
-	$scope.failureCreate = function(errorMessage){
-
-		$scope.$emit("hideLoader");
-		$scope.errorMessage = errorMessage;
-	};
-
 	$scope.createAccountReceivable = function(){
 		
 		var data = {
