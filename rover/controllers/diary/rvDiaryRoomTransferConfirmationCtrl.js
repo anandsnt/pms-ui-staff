@@ -7,7 +7,8 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 												'rvDiaryMetadata',
 												'$vault',
 												'rvDiaryUtil',
-	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta, $vault, util) {
+												'$filter',
+	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta, $vault, util, $filter) {
 
 		var roomXfer = $scope.roomXfer,
 			current = (roomXfer.current),
@@ -24,15 +25,25 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		current.arrivalTime 	= new Date(current[r.row_children][m.start_date]).toLocaleTimeString();
 		current.departureTime 	= new Date(current[r.row_children][m.end_date]).toLocaleTimeString();		
-		current.arrivalDate 	= oldArrivalDateComp.date.day + ' ' + oldArrivalDateComp.date.month + ' ' + oldArrivalDateComp.date.year;
-		current.departureDate 	= oldDepartureDateComp.date.day + ' ' + oldDepartureDateComp.date.month + ' ' + oldDepartureDateComp.date.year;
+
+		current.arrivalDate 	= tzIndependentDate(oldArrivalDateComp.date.toDateString().replace(/-/g, '/'));
+		current.arrivalDate 	= $filter('date')(current.arrivalDate, $rootScope.dateFormat);
+
+		current.departureDate 	= tzIndependentDate(oldDepartureDateComp.date.toDateString().replace(/-/g, '/'));
+		current.departureDate 	= $filter('date')(current.departureDate, $rootScope.dateFormat);
 
 
 		next.arrivalTime 		= new Date(next[r.row_children][m.start_date]).toLocaleTimeString();
 		next.departureTime 		= new Date(next[r.row_children][m.end_date]).toLocaleTimeString();
 
-		next.arrivalDate 		= newArrivalDateComp.date.day + ' ' + newArrivalDateComp.date.month + ' ' + newArrivalDateComp.date.year;
-		next.departureDate 		= newDepartureDateComp.date.day + ' ' + newDepartureDateComp.date.month + ' ' + newDepartureDateComp.date.year;
+		/*next.arrivalDate 		= newArrivalDateComp.date.day + ' ' + newArrivalDateComp.date.month + ' ' + newArrivalDateComp.date.year;
+		next.departureDate 		= newDepartureDateComp.date.day + ' ' + newDepartureDateComp.date.month + ' ' + newDepartureDateComp.date.year;*/
+
+		next.arrivalDate 	= tzIndependentDate(newArrivalDateComp.date.toDateString().replace(/-/g, '/'));
+		next.arrivalDate 	= $filter('date')(next.arrivalDate, $rootScope.dateFormat);
+
+		next.departureDate 	= tzIndependentDate(newArrivalDateComp.date.toDateString().replace(/-/g, '/'));
+		next.departureDate 	= $filter('date')(next.departureDate, $rootScope.dateFormat);
 
 		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
 
