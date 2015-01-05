@@ -89,6 +89,7 @@ sntRover
 	    $scope.data 	= $scope.room;
 	    $scope.stats 	= $scope.availability_count;
 	    $scope.selectedReservations = [];
+	    $scope.callBackAfterClosingMessagePopUp = undefined;
 
 	    var isVaultDataSet = false;
      	var vaultData = rvDiarySrv.ArrivalFromCreateReservation();
@@ -412,13 +413,6 @@ sntRover
 	 	$scope.onResizeStart = function(row_data, row_item_data) {
 		};
 
-	    $scope.debug = function() {
-	    	for(var  i = 0, len = $scope.data.length; i < len ; i++) {
-	    		if($scope.data[i].occupancy.length > 0) {
-	    			console.log($scope.data[i].room_no, $scope.data[i].occupancy);
-            	}
-	    	}
-	    }
 
 	    var resizeEndForNewReservation = function (row_data, row_item_data) {
 	    	/*$scope.gridProps.filter = util.deepCopy($scope.gridProps.filter);
@@ -449,6 +443,11 @@ sntRover
 				controller: 'RVDiaryMessageShowingCtrl'				
 			});	 
 	    };
+
+	    var setFocusOnAccountChoosingTextbox = function(){
+	    	$("#diary-corporate-query").focus();
+	    };
+
 
 	    var openEditConfirmationPopup = function() {
 			ngDialog.open({
@@ -764,8 +763,6 @@ sntRover
 				DiaryContent(_.extend(args, $scope.gridProps)),
 				document.getElementById('component-wrapper')
 			);	
-
-			//$scope.debug();
 		};
 
 		
@@ -963,6 +960,13 @@ sntRover
                 row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id }) //rvDiarySrv.data_Store.get('/room.values.id')[row_item_data.room_id],   
             });
 		}
+		else {
+			//opening the popup with messages
+			$scope.callBackAfterClosingMessagePopUp = undefined;				
+			$scope.message	= ['Sorry, No Availability found. Please change the parameter and continue'];
+			openMessageShowingPopup();
+			return;
+		}
 		$scope.renderGrid();				
 				
 	}.bind($scope.gridProps);
@@ -971,8 +975,27 @@ sntRover
 		$scope.errorMessage = errorMessage;		
 	}
 
+	var openRateTypeSelectBox = function() {
+		var rateMenu = $('.faux-select-options');
+		rateMenu.removeClass('hidden');
+	}
+
 	var callAvailabilityAPI = function(){
-		var params = getAvailabilityCallingParams();
+		var params = getAvailabilityCallingParams(),
+			filter = $scope.gridProps.filter;
+		
+		if(filter.rate_type == 'Corporate' && !filter.rate) {			
+			//if Rate type select box is not open, we have to
+			openRateTypeSelectBox();
+
+			//opening the popup with messages
+			$scope.callBackAfterClosingMessagePopUp = setFocusOnAccountChoosingTextbox;				
+			$scope.message	= ['Please choose a Company Card or Travel Agent to proceed'];
+			openMessageShowingPopup();
+
+			//we are not calling the API 
+			return;
+		}
 		var options = {
     		params: 			params,
     		successCallBack: 	successCallBackOfAvailabilityFetching,	 
@@ -1031,7 +1054,7 @@ sntRover
 		return params
 	}.bind($scope.gridProps);
 
-	var getAvailabilityCallingParams = function() {
+	var getAvailabilityCallingParams = function() {		
 		var filter 		= _.extend({}, this.filter),
 			time_span 	= Time({ hours: this.display.min_hours }), 
 			start_date 	= new Date(this.display.x_n),
@@ -1051,13 +1074,14 @@ sntRover
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
 			rate_type = filter.rate_type,			
-			account_id = filter.rate_type == 'Corporate' ? filter.rate.id : undefined, 
+			account_id = (filter.rate_type == 'Corporate' && filter.rate && filter.rate != '' ) ? filter.rate.id : undefined, 
 			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
 				start = new Date(this.availability.resize.current_arrival_time);
 				end = new Date(this.availability.resize.current_departure_time);
-			}			
+			}	
+
 		
 		var paramsToReturn = {
 			start_date: start,
@@ -1276,7 +1300,7 @@ sntRover
 		}
 		//CICO-11832
 		else if($scope.gridProps.filter.rate_type === 'Corporate') {
-			if($scope.gridProps.filter.rate !== '') {
+			if($scope.gridProps.filter.rate && $scope.gridProps.filter.rate !== '') {
 				$scope.compCardOrTravelAgSelected();
 			}
 		}

@@ -1356,6 +1356,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		    }, 3000);
 		}
 	}); 
+
 	//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
 	$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 		$scope.paymentModalOpened = false;

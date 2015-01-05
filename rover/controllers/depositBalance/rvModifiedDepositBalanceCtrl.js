@@ -145,6 +145,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.addmode                 			 = false;
 				$scope.shouldShowExistingCards = false;
 				$scope.shouldCardAvailable 				 = false;
+				$scope.isAddToGuestCardVisible 			 = false;
 				checkReferencetextAvailableFornonCC();
 		};
 	};
@@ -162,8 +163,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
 		
 		$scope.cardValues = tokenDetails;
-	    var cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
+	    var cardExpiry = "";
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
+	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
 	    	//To render the selected card data 
 	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.cardDetails.cardType).toLowerCase();
 	    	checkReferencetextAvailableForCC();
@@ -177,6 +179,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 		    
 		} else {
+			cardExpiry = ($scope.cardValues.tokenDetails.expiry!=='') ? "20"+$scope.cardValues.tokenDetails.expiry.substring(0, 2)+"-"+$scope.cardValues.tokenDetails.expiry.substring(2, 4)+"-01" : "";
 			$scope.shouldShowIframe 	   			 = false;	
 			$scope.shouldShowMakePaymentScreen       = true; 
 			$scope.showAddtoGuestCard    			 = false;
@@ -315,8 +318,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
 			if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
-				dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase()
+				if (typeof($scope.depositBalanceMakePaymentData.card_code) != "undefined") {
+					dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase();
+				}
 			}
+			
 			if($scope.isAddToGuestCardVisible){
 			  dataToSrv.postData.add_to_guest_card	= $scope.depositBalanceMakePaymentData.add_to_guest_card;
 			}

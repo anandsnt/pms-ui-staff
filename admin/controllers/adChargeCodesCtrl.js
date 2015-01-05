@@ -27,12 +27,13 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.totalCount = data.total_count;
 				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 				$scope.data = data.charge_codes;
+				$scope.is_connected_to_pms = data.is_connected_to_pms;
 				$scope.currentPage = params.page();
 	        	params.total(data.total_count);
 	            $defer.resolve($scope.data);
 			};
 			$scope.invokeApi(ADChargeCodesSrv.fetch, getParams, fetchSuccessOfItemList);
-		}
+		};
 
 
 		$scope.loadTable = function(){
@@ -47,7 +48,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			        getData: $scope.fetchTableData
 			    }
 			);
-		}
+		};
 
 		$scope.loadTable();
 
