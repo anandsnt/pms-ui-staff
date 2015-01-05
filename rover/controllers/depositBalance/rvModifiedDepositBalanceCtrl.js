@@ -145,6 +145,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.addmode                 			 = false;
 				$scope.shouldShowExistingCards = false;
 				$scope.shouldCardAvailable 				 = false;
+				$scope.isAddToGuestCardVisible 			 = false;
 				checkReferencetextAvailableFornonCC();
 		};
 	};
