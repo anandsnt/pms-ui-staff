@@ -925,7 +925,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.addmode = ($scope.cardsList.length > 0) ? false : true;
 			} else {
 				$scope.isSubmitButtonEnabled = true;
-
+				$scope.isNewCardAdded = false;
 				// To handle fees details on reservation summary,
 				// While we change payment methods.
 				// Handling Credit Cards seperately.
