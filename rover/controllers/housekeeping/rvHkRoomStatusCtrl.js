@@ -138,7 +138,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		$scope.loadNextPage = function(e) {
-			e.stopPropagation();
 			if ( $scope.disableNextBtn ) {
 				return;
 			};
@@ -150,8 +149,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.loadPrevPage = function(e) {
-			e.stopPropagation();
-
 			if ($scope.disablePrevBtn) {
 				return;
 			};
@@ -719,7 +716,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				trigger        = 110,
 				scrollBarOnTop = 0,
 				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight,
-				abs = Math.abs;
+				abs            = Math.abs,
+				ngScope        = $scope;
 
 			// translate const.
 			var PULL_REFRESH      = $filter( 'translate' )( 'PULL_REFRESH' ),
@@ -733,7 +731,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var notifyPullDownAction = function(diff) {
 				if ( !diff ) {
 					$refreshArrow.className = '';
-					$refreshTxt.innerHTML = $scope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
+					$refreshTxt.innerHTML = ngScope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
 					return;
 				};
 
@@ -744,9 +742,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				}
 
 				if ( diff > trigger - 30 ) {
-					$refreshTxt.innerHTML = $scope.disablePrevBtn ? RELEASE_REFRESH : RELEASE_LOAD_PREV;
+					$refreshTxt.innerHTML = ngScope.disablePrevBtn ? RELEASE_REFRESH : RELEASE_LOAD_PREV;
 				} else {
-					$refreshTxt.innerHTML = $scope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
+					$refreshTxt.innerHTML = ngScope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
 				}
 			};
 
@@ -771,16 +769,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			var callPulldownAction = function() {
-				if ( $scope.disablePrevBtn ) {
+				if ( ngScope.disablePrevBtn ) {
 					$_resetPageCounts();
 					$_callRoomsApi();
 				} else {
-					$scope.loadPrevPage();
+					ngScope.loadPrevPage();
 				};
 			};
 
 			var callPullUpAction = function() {
-				$scope.loadNextPage();
+				ngScope.loadNextPage();
 			};
 
 			var genTranslate = function(x, y, z) {
@@ -843,7 +841,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$refresh.style.webkitTransform  = translateDiff;
 
 					notifyPullDownAction(diff);
-				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+				} else if ( !ngScope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
 					commonEx();
 					$load.classList.add('show');
 
@@ -919,7 +917,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					notifyPullDownAction();
 					resetIndicators();
-				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+				} else if ( !ngScope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
 					commonEx();
 
 					if ( abs(diff) > trigger ) {
@@ -977,7 +975,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$rooms.addEventListener('touchcancel', touchEndHandler, false);
 
 			// remove the DOM binds when this scope is distroyed
-			$scope.$on('$destroy', function() {
+			ngScope.$on('$destroy', function() {
 				!!$rooms.length && $rooms.removeEventListener('touchstart');
 				!!$rooms.length && $rooms.removeEventListener('touchend');
 				!!$rooms.length && $rooms.removeEventListener('touchcancel');
