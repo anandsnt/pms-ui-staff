@@ -1353,7 +1353,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				else{
 					$scope.clickedReviewButton(data.billNumber-1);
 				}
-		    }, 2000);
+		    }, 3000);
 		}
 	}); 
 
