@@ -374,9 +374,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				});
 				RVPaymentSrv.submitPaymentOnBill(dataToMakePaymentApi).then(function(response) {
 					//$scope.shouldShowWaiting = false;
+					$scope.isSixCardSwiped = true;
 					$scope.closeDialog();
 					onPaymentSuccess(response);
 				},function(error){
+					$scope.isSixCardSwiped = false;
 					onPaymentFailure(error);
 					$scope.closeDialog();
 					//$scope.shouldShowWaiting = false;
@@ -903,6 +905,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.changeOnsiteCallIn = function(){		 
 		//	 $scope.isManual = !$scope.isManual;
+		console.log("changeOnsiteCallIn");
 			 $scope.isManual ? $scope.showCC = true : "";
 			 refreshScrolls(); 
 		};
@@ -924,7 +927,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.addmode = ($scope.cardsList.length > 0) ? false : true;
 			} else {
 				$scope.isSubmitButtonEnabled = true;
-
+				$scope.isNewCardAdded = false;
 				// To handle fees details on reservation summary,
 				// While we change payment methods.
 				// Handling Credit Cards seperately.
@@ -1121,8 +1124,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		//here refreshing the iframe with name of guest
 		$scope.$on("resetGuestTab", function(e, data) {
 			var guestData = {
-				"fname": $scope.reservationData.guest.firstName,
-				"lname": $scope.reservationData.guest.lastName
+				"fname": ($scope.reservationData.guest.firstName != undefined) ? $scope.reservationData.guest.firstName : $scope.guestCardData.contactInfo.first_name,
+				"lname": ($scope.reservationData.guest.lastName  != undefined) ? $scope.reservationData.guest.lastName  : $scope.guestCardData.contactInfo.last_name
 			};
 			//CICO-11413 - Since card name is taken from pass data.
 			$scope.passData.details.firstName = $scope.reservationData.guest.firstName;

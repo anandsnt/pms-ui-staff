@@ -237,7 +237,7 @@
                       <!-- Credit card options - hidden until CC set as payment type -->
                     <!-- <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="reservationData.paymentType.type.value=== 'CC' && showCC"></div> -->
 
-                <div class="entry full-width" ng-show="reservationData.paymentType.type.value !== '' && isNewCardAdded">
+                <div class="entry full-width" ng-show="isNewCardAdded">
                     <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': addtoGuestCard}">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': addToGuestCard}"></span>
                         <input ng-model="addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
