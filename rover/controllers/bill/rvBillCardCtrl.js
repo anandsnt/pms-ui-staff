@@ -1340,6 +1340,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;
+		$scope.closeDialog();
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 		//CICO-10906 review process continues after payment.
 		if( data.bill_balance == 0.0 && $scope.isViaReviewProcess ){
@@ -1347,13 +1348,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				// If reached final bill , proceed complete checkout
 				// Else proceed with review process
 				if(billCount == data.billNumber){
-					$scope.closeDialog();
 					$scope.clickedCompleteCheckout();
 				}
 				else{
 					$scope.clickedReviewButton(data.billNumber-1);
 				}
-		    }, 3000);
+		    }, 2000);
 		}
 	}); 
 
