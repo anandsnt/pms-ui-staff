@@ -374,9 +374,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				});
 				RVPaymentSrv.submitPaymentOnBill(dataToMakePaymentApi).then(function(response) {
 					//$scope.shouldShowWaiting = false;
+					$scope.isSixCardSwiped = true;
 					$scope.closeDialog();
 					onPaymentSuccess(response);
 				},function(error){
+					$scope.isSixCardSwiped = false;
 					onPaymentFailure(error);
 					$scope.closeDialog();
 					//$scope.shouldShowWaiting = false;
@@ -925,7 +927,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.addmode = ($scope.cardsList.length > 0) ? false : true;
 			} else {
 				$scope.isSubmitButtonEnabled = true;
-
+				$scope.isNewCardAdded = false;
 				// To handle fees details on reservation summary,
 				// While we change payment methods.
 				// Handling Credit Cards seperately.

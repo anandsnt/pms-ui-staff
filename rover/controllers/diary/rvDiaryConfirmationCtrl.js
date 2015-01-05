@@ -37,11 +37,12 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                             //departure_date: departure.date.day + ' ' + departure.date.monthName + ' ' + departure.date.year
                         };
                     },
-                    vFormat = function(arrival, departure) {                        
-                        return {                          
-                            arrival_date: arrival.date.year + '-' + (arrival.date.month + 1) + '-' + arrival.date.day,                            
+
+                    vFormat = function(arrival, departure) {
+                        return {
+                            arrival_date: arrival.date.year + '/' + (arrival.date.month + 1) + '/' + arrival.date.day,
                             arrival_time: arrival.time.toReservationFormat(false),
-                            departure_date: departure.date.year + '-' + (departure.date.month + 1) + '-' + departure.date.day,                            
+                            departure_date: departure.date.year + '/' + (departure.date.month + 1) + '/' + departure.date.day,
                             departure_time: departure.time.toReservationFormat(false)
                         };
                     },
@@ -116,7 +117,6 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         };
 
         $scope.routeToSummary = function() {
-            
             $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
             //CICO-9429                  
             if ($rootScope.isAddonOn) {
