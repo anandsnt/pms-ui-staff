@@ -55,6 +55,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthInYear = "MMM"; //Jan
     // Use below standard date formatter in the UI.
     $rootScope.mmddyyyyFormat = "MM-dd-yyyy"; //01-22-2014
+    $rootScope.mmddyyyyBackSlashFormat = "dd/MM/yyyy"; //01-22-2014
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
