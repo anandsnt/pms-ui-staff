@@ -374,9 +374,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				});
 				RVPaymentSrv.submitPaymentOnBill(dataToMakePaymentApi).then(function(response) {
 					//$scope.shouldShowWaiting = false;
+					$scope.isSixCardSwiped = true;
 					$scope.closeDialog();
 					onPaymentSuccess(response);
 				},function(error){
+					$scope.isSixCardSwiped = false;
 					onPaymentFailure(error);
 					$scope.closeDialog();
 					//$scope.shouldShowWaiting = false;
