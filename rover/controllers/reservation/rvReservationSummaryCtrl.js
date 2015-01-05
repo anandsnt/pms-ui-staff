@@ -46,7 +46,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.cardsList = data;
         };
         $scope.fetchGuestCreditCards = function(){
-        	if(typeof $scope.cardsList == 'undefined'){
+        	if(typeof $scope.cardsList == 'undefined' && $scope.reservationData.guest.id !== null){
 				$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.guest.id, $scope.successPaymentList);
 			}
         };
