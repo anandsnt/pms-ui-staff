@@ -532,6 +532,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             }
 
             var defaultRoutingSaveSuccess = function(){
+                $scope.$parent.$emit('hideLoader');
                 ngDialog.close();
             };
            
