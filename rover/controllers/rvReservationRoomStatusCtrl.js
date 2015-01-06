@@ -140,7 +140,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	*/
 	$scope.goToroomAssignment = function(){
 		if($scope.reservationData.reservation_card.is_hourly_reservation){
-			$state.go('rover.reservation.diary', { reservation_id: $scope.reservationData.reservation_card.reservation_id });
+			$state.go('rover.diary', { reservation_id: $scope.reservationData.reservation_card.reservation_id });
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
 		}
