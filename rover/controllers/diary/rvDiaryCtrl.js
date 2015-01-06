@@ -129,7 +129,7 @@ sntRover
 
 		    */ 
 			viewport: {
-				hours: 						12,
+				hours: 						24,
 				width: 						angular.element($window).width() - 120,
 				height: 					angular.element($window).height() - 230,
 				row_header_right: 			120, 
@@ -359,7 +359,7 @@ sntRover
 				    			row_item_data: row_item_data 
 				    		});
 				    		//setting scroll posiions when in edit mode
-				    		var x_n = payload.display.x_n instanceof Date ? payload.display.x_n : new Date(payload.display.x_n);
+				    		var x_n = props.display.x_n instanceof Date ? props.display.x_n : new Date(props.display.x_n);
 				    		x_n.setHours(0, 0, 0);
 				    		var x_origin = row_item_data.arrival;				    		
 				    		$scope.gridProps.edit.reset_scroll = {
