@@ -41,6 +41,10 @@ sntRover
 
 	BaseCtrl.call(this, $scope);
 
+	//changing the header
+  	//chnaging the heading of the page
+    $scope.heading = $filter( 'translate')('DIARY_RESERVATIONS');
+    
 	//updating the left side menu
     $scope.$emit("updateRoverLeftMenu", "diaryReservation");
 
@@ -517,9 +521,9 @@ sntRover
 		$scope.reserveRoom = function(nextRoom, occupancy){
 
 			// clearing the data bf
-			$scope.reset_guest_details();
+			/*$scope.reset_guest_details();
 			$scope.reset_company_details();
-			$scope.reset_travel_details();
+			$scope.reset_travel_details();*/
 
 			var dataToPassConfirmScreen = {},
 			roomXfer = $scope.roomXfer,

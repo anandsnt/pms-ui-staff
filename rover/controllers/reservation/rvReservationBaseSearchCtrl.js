@@ -328,7 +328,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
                 $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
 
-                $state.go('rover.reservation.diary', {
+                $state.go('rover.diary', {
                     isfromcreatereservation: true
                 });
             }
