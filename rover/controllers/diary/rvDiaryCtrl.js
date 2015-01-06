@@ -129,7 +129,7 @@ sntRover
 
 		    */ 
 			viewport: {
-				hours: 						12,
+				hours: 						24,
 				width: 						angular.element($window).width() - 120,
 				height: 					angular.element($window).height() - 230,
 				row_header_right: 			120, 
@@ -165,8 +165,8 @@ sntRover
 				width: 						undefined,
 				height: 					undefined,
 				hours: 						48,
-				row_height: 				60,
-				row_height_margin: 			5,
+				row_height: 				24, //please set to 60 when default changeed to 12 hour mode
+				row_height_margin: 			0,
 				intervals_per_hour: 		4, 
 				ms_15:                      900000,
 				px_per_ms: 					undefined,
@@ -359,7 +359,7 @@ sntRover
 				    			row_item_data: row_item_data 
 				    		});
 				    		//setting scroll posiions when in edit mode
-				    		var x_n = payload.display.x_n instanceof Date ? payload.display.x_n : new Date(payload.display.x_n);
+				    		var x_n = props.display.x_n instanceof Date ? props.display.x_n : new Date(props.display.x_n);
 				    		x_n.setHours(0, 0, 0);
 				    		var x_origin = row_item_data.arrival;				    		
 				    		$scope.gridProps.edit.reset_scroll = {
@@ -762,7 +762,7 @@ sntRover
 	 		React.renderComponent(
 				DiaryContent(_.extend(args, $scope.gridProps)),
 				document.getElementById('component-wrapper')
-			);	
+			);				
 		};
 
 		
