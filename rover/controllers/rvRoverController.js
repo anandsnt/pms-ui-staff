@@ -803,5 +803,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           });
     };
 
+    $rootScope.debug = function(m) {
+      console.log(m);
+    };
+
+    $rootScope.dodebug = function(e) {
+      console.log(e);
+    };
+
     
 }]);
