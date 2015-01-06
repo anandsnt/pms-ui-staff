@@ -230,15 +230,26 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     city: '',
                     loyaltyNumber: '',
                     sendConfirmMailTo: ''
-            };            
+            }; 
+            $scope.reservationDetails.guestCard = {
+                    id: "",
+                    futureReservations: 0
+            };
+                       
         }
 
         $scope.reset_company_details = function() {
             $scope.reservationData.company = {
-                            id: null, // if new company, then it is null, other wise his id
-                            name: '',
-                            corporateid: '', // Add different fields for company as in story
-            };            
+                id: null, // if new company, then it is null, other wise his id
+                name: '',
+                corporateid: '', // Add different fields for company as in story
+            };  
+            
+            $scope.reservationDetails.companyCard = {
+                id: "",
+                futureReservations: 0
+            }
+                          
         };
 
         $scope.reset_travel_details = function() {
@@ -246,6 +257,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             id: null, // if new , then it is null, other wise his id
                             name: '',
                             iataNumber: '', // Add different fields for travelAgent as in story
+            };
+            $scope.reservationDetails.travelAgent = {
+                    id: "",
+                    futureReservations: 0
             };
         }
 
