@@ -802,7 +802,5 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             $window.location.href = "/staff";
           }, function() {
           });
-    };
-
-    
+    };    
 }]);
