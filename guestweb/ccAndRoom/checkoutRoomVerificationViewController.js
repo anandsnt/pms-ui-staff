@@ -10,18 +10,18 @@
 	// 	$state.go('preCheckinComleted');
 	// }
 	// else 
-	// if($rootScope.isPrecheckinOnly){
- // 		$state.go('preCheckinTripDetails');
- // 	}
-	// else if($rootScope.isCheckedin){
-	// 	$state.go('checkinSuccess');
-	// }
-	// else if($rootScope.isCheckin){
-	// 	$state.go('checkinConfirmation');
-	// }
-	// else{
+	if($rootScope.isPrecheckinOnly){
+ 		$state.go('preCheckinTripDetails');
+ 	}
+	else if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else if($rootScope.isCheckin){
+		$state.go('checkinConfirmation');
+	}
+	else{
 		$scope.pageValid = true;
-	// }	
+	}	
 
 	if($scope.pageValid){
 		//setup options for error popup
