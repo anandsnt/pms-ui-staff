@@ -14,7 +14,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/MGM/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
@@ -32,12 +32,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/MGM/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/MGM/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -46,7 +46,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/MGM/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
@@ -80,7 +80,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/MGM/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
