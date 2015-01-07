@@ -183,10 +183,13 @@
 							<br>
 						</span> 
 					</td>
-					<td> 
+					<td class="description"> 
 						<span ng-repeat="description in feesData.description">
 							{{description.fees_desc}}
 							<br>
+						</span>
+						<span ng-show="feesData.reference_text != ''" class="reference">
+							{{feesData.reference_text}}
 						</span>
 					</td>
 					<td><strong> 
