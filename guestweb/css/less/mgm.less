@@ -1,9 +1,37 @@
-
-body{
-	background-color:black !important;
-	background-image: none !important;
+body {
+  	background: url(/assets/img/MGM/mgm-bg@2x.png) repeat top left !important;
 }
 
 .checkin-button{
 	 background-color: #8e6935;
+	 span{
+	 	color:#fff !important;
+	 	font-size:30px !important;
+	 }
 }
+.headtext{
+	font-size:44px !important;
+}
+.chekout-time{
+	color: #bbb !important;
+    font-size: 24px !important;
+}
+.cabin-number-text{
+	color: #bbb !important;
+	font-size: 16px !important;
+}
+
+
+@media (max-width: 480px) {
+	body {
+	  	background: url(/assets/img/MGM/mgm-bg.png) repeat top left !important;
+	}
+
+	.checkout-time-container{
+		span{
+			font-size:12px !important;
+		}
+	}
+
+}
+
