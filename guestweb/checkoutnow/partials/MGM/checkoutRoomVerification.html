@@ -20,8 +20,8 @@
 	<div class="container" ng-hide="isFetching || netWorkError ">
 		<!-- top section starts here-->
 		<div class="row checkin-wrapper">
-				<div class="col-md-6 headtext centeralign ">
-					<span class="blue-text">Ready to check-out?</span>
+				<div class="col-md-6 headtext centeralign room-verification-left">
+					<span class="main-heading">Ready to check-out?</span>
 					<br/>
 					<p class="checkout-time-container">
 						<span class="lightcontent chekout-time">To start, please enter your room number:</span>
@@ -30,12 +30,12 @@
 
 			<div class="verti-ruler"></div>
 			<!-- top section ends here-->
-			<div class="col-md-6 pad-lf-60 cabin-number">
+			<div class="col-md-4 pad-lf-60 cabin-number">
 				<form >
 				<div class="row cabin_number_field">
 					<div class="lightcontent chekout-time grey-text room-text" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
 					<p class="cabin-number-text">Room Number</p>
-					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox" placeholder="Enter Room number"/> 
+					<input type="password" ng-model="roomNumber" class="room-field" class = "col-xs-12 textBox" placeholder="Enter Room number"/> 
 				</div>								
 						<button class="checkin-button continue-button" ng-click="continueButtonClicked()">
 							<span class="continue-text">Continue</span>

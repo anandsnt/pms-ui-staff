@@ -1,5 +1,5 @@
 body {
-  	background: url(/assets/img/MGM/mgm-bg@2x.png) repeat top left !important;
+  	background: url(/assets/img/MGM/mgm-bg@2x.png) no-repeat center top !important;
 }
 
 .checkin-button{
@@ -16,11 +16,24 @@ body {
 	color: #bbb !important;
     font-size: 24px !important;
 }
-.cabin-number-text{
-	color: #bbb !important;
-	font-size: 16px !important;
+.row{
+	.cabin-number-text{
+		color: #bbb !important;
+		font-size: 16px !important;
+	}
 }
+.room-field{
+		height:60px;
+		width:100%;
+	}
 
+
+.col-md-6 .headtext .centeralign{
+	padding-right:50px !important;
+}
+.jumbotron .checkin-wrapper{
+	max-width:950px !important;
+}
 
 @media (max-width: 480px) {
 	body {
@@ -29,9 +42,27 @@ body {
 
 	.checkout-time-container{
 		span{
-			font-size:12px !important;
+			font-size:16px !important;
 		}
+	}
+
+	.headtext{
+		.main-heading{
+			font-size:30px !important;
+		}		
+	}
+	.room-verification-left{
+		margin-top:30px !important;
+		margin-bottom:30px !important;
 	}
 
 }
 
+
+@media screen and (min-width: 900px) {
+
+	
+	.jumbotron .checkin-wrapper{
+		padding: 20px 0 !important;
+	}
+}
