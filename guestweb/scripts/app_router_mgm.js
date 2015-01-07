@@ -27,7 +27,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/landing/landing.html',
+	 	templateUrl: '/assets/landing/MGM/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {

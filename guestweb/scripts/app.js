@@ -30,7 +30,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isRoomVerified =  false;
  	$rootScope.dateFormatPlaceholder = $attrs.dateFormatValue;
  	$rootScope.dateFormat = getDateFormat($attrs.dateFormatValue);
- 	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
+ 	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?false:false;
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isCcAttachedFromGuestWeb = false;
  	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
@@ -40,22 +40,18 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	
 
 	//navigate to different pages
-
-	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
- 		$location.path('/tripDetails');
- 	}	
- 	else if($rootScope.isCheckedin){
- 		$location.path('/checkinSuccess');
- 	}
-    else if($attrs.isCheckin ==='true'){
- 		$location.path('/checkinConfirmation');
- 	}
-  	else if($rootScope.isCheckedout)	{
-		$location.path('/checkOutStatus');	
-	}
-	else{
+ // if($rootScope.isCheckedin){
+ // 		$location.path('/checkinSuccess');
+ // 	}
+ //    else if($attrs.isCheckin ==='true'){
+ // 		$location.path('/checkinConfirmation');
+ // 	}
+ //  	else if($rootScope.isCheckedout)	{
+	// 	$location.path('/checkOutStatus');	
+	// }
+	// else{
 		$location.path('/checkoutRoomVerification');
-	};
+	// };
 
 
 }]);
