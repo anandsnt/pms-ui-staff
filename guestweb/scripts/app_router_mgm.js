@@ -46,7 +46,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/MGM/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
