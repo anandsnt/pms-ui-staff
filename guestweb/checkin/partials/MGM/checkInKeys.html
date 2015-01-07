@@ -1,5 +1,5 @@
 <!-- contentarea starts here-->
-<div class="jumbotron">
+<div class="jumbotron" id="checkin">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
 			<div class="row headerrow">
@@ -19,35 +19,20 @@
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isPosting || netWorkError">
 			<!-- top section starts here-->
-			<div class="row checkin-wrapper">
-				<div class="col-md-6 pad-rt-60">
-					<div class="chekin-heading centeralign">
-						You're checked in!
-					</div>
-					<div class="key-wrap">
-						<p class="key-for">
-							<img src="/assets/img/keyicon_white.png" class="key-for-image">
-							<span class="key-for-txt">Key Code for</span>
-							<span class="key-for-room">{{responseData.room_no}}</span>
-						</p>
-					</div>
+			<div class="row checkin-wrapper" id="get-key-wrapper">
+				<div class="chekin-heading centeralign">
+					You're checked in!
 				</div>
-				<div class="verti-ruler"></div>
-				<div class="col-md-6 pad-lf-60 qr-code-container">
-					<div class="reservation-id centeralign">
-						<span class="normal-reservation">Reservation #: {{confirmationNumber}}</span>
-					</div>
-					<div class="centeralign qr-code-image">
-						<img src="data:image/png;base64, {{image|| responseData.key_info}}"
-						width="180" height="180" alt="">
-						<div class="qr-code-info">
-							<ol>
-								<li> Scan the QR code at kiosk located in the lobby.</li>
-								<li>The kiosk will dispense your key.</li>
-							</ol>
-						</div>
-					</div>
+				<div class="reservation-id centeralign">
+					<span class="res-conf-no">RESERVATION #: {{confirmationNumber}}</span>
 				</div>
+
+				<div class="get-key">
+					<p>Please go to the</p>
+					<p>{{responseData.delivery_message}}</p>
+					<p>at the front desk for your key.</p>
+				</div>
+
 			</div>
 			<!-- checkinbtn section ends here-->
 		</div>
