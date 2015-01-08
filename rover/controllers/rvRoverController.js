@@ -238,7 +238,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "createReservation"
           }, {
             title: "MENU_ROOM_DIARY",
-            action: 'rover.reservation.diary',
+            action: 'rover.diary',
             standAlone: true,
             hidden: !$rootScope.isHourlyRateOn,
             menuIndex: 'diaryReservation'
@@ -804,7 +804,5 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             $window.location.href = "/staff";
           }, function() {
           });
-    };
-
-    
+    };    
 }]);

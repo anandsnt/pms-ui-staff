@@ -35,13 +35,16 @@ angular.module('stayCardModule', [])
             }
         });
 
-        $stateProvider.state('rover.reservation.diary', {
+        $stateProvider.state('rover.diary', {
             url: '/diary/?reservation_id&checkin_date',
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'rvDiaryCtrl',
             resolve: {
                 propertyTime: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchCurrentTime();
+                },
+                baseSearchData: function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchBaseSearchData();
                 },
                 payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData) {
                     var start_date = baseSearchData.businessDate;

@@ -21,6 +21,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 
 	BaseCtrl.call(this, $scope);
+	$scope.shouldShowWaiting = false;
 	$scope.addmode         = true;
 	$scope.savePayment     = {};
 	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
@@ -30,7 +31,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.cardsList       = [];
 	$scope.setScroller('cardsList');
 	$scope.showCCPage = false;
-	$scope.shouldShowWaiting = false;
+	
 	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 		$scope.showManualEntryDisabledPopup = false;
 		$scope.showCCPage = true;
