@@ -22,8 +22,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDrawer = function(event) {
       $scope.menuOpen = false;
     };
-
-
+	$scope.isAddToGuestCardEnabledDuringCheckin = false;
+	 $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
+	 	$scope.isAddToGuestCardEnabledDuringCheckin = value;
+	 });
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
     //set current hotel details
