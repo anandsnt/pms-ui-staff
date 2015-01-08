@@ -74,8 +74,8 @@
 		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type !=null">	
 			<span>{{billData.guest_or_company_name}}</span>   
 			<span>{{billData.credit_card_details.payment_type_description}}</span>
-			<a ng-if="billData.credit_card_details.payment_type == null" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+{{'ADD' | translate}}</a>
-			<a ng-if="billData.credit_card_details.payment_type != null" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>{{'UPDATE' | translate}}</a>
+			<a ng-show="billData.credit_card_details.payment_type == null" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+{{'ADD' | translate}}</a>
+			<a ng-show="billData.credit_card_details.payment_type != null" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>{{'UPDATE' | translate}}</a>
 			<!-- <a ng-if="!isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a> -->
 		</h3>
 		<h3 ng-show="billData.credit_card_details.payment_type == null">
