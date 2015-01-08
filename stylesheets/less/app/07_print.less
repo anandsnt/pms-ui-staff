@@ -1394,6 +1394,17 @@ table {
                                     padding: 2pt 2pt 2pt 0;
 
                                     &.align-right { text-align: right; }
+
+                                    &.description {
+                                        span { 
+                                            .show; 
+
+                                            &.reference { 
+                                                color: @grey3; 
+                                                margin-bottom: 2pt;
+                                            }
+                                        }
+                                    }
                                 }
 
                                 &:last-child {
