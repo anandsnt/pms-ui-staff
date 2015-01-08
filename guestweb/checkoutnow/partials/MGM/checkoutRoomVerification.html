@@ -7,19 +7,18 @@
 				<logo-image></logo-image>
 			</div>
 		</div>
-	<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head">Your request is being processed.</p>
-				<p class="msg-body">This may take a few seconds..... please wait!</p>
-			</div>
-		
-	<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-		<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
-		<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
-	</div>
-	<!-- contentarea starts here-->
-	<div class="container" ng-hide="isFetching || netWorkError ">
-		<!-- top section starts here-->
-		<div class="row checkin-wrapper">
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head">Your request is being processed.</p>
+			<p class="msg-body">This may take a few seconds..... please wait!</p>
+		</div>
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+		</div>
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isFetching || netWorkError ">
+			<!-- top section starts here-->
+			<div class="row checkin-wrapper">
 				<div class="col-md-6 headtext centeralign room-verification-left">
 					<span class="main-heading">Ready to check-out?</span>
 					<br/>
@@ -27,22 +26,21 @@
 						<span class="lightcontent chekout-time">To start, please enter your room number:</span>
 					</p>
 				</div>
-
-			<div class="verti-ruler"></div>
-			<!-- top section ends here-->
-			<div class="col-md-4 pad-lf-60 cabin-number">
-				<form >
-				<div class="row cabin_number_field">
-					<div class="lightcontent chekout-time grey-text room-text" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
-					<p class="cabin-number-text">Room Number</p>
-					<input type="password" ng-model="roomNumber" class="room-field" class = "col-xs-12 textBox" placeholder="Enter Room number"/> 
-				</div>								
+				<div class="verti-ruler"></div>
+				<!-- top section ends here-->
+				<div class="col-md-4 pad-lf-60 cabin-number">
+					<form >
+						<div class="row cabin_number_field">
+							<div class="lightcontent chekout-time grey-text room-text" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
+							<p class="cabin-number-text lightcontent">Room Number</p>
+							<input type="password" ng-model="roomNumber" class="room-field" class = "col-xs-12 textBox" placeholder="Enter Room number"/> 
+						</div>								
 						<button class="checkin-button continue-button" ng-click="continueButtonClicked()">
 							<span class="continue-text">Continue</span>
 						</button>				
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
 			<!-- checkinbtn section ends here-->
 		</div>
 	</div>
