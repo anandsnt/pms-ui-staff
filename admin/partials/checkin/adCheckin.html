@@ -50,20 +50,25 @@
 						</div>
 
 					</div>
+					
+					
+					
+				</fieldset>
+				<fieldset class="holder left">	
 					<div id="options" class="entry" ng-hide="hideAddOption">
 						<label>
-							{{ 'SENT_TO_QUEUE' | translate}}
+							{{ 'CHECKIN_ACTION' | translate}}
 						</label>
 						<label class="radio" ng-class="{'checked':checkinData.is_sent_to_queue== true}">
 							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_queue=='yes'}"></span>
 							<input type="radio" value="yes" ng-model="checkinData.is_sent_to_queue"  >
-							{{ 'YES_SMALL' | translate}}
+							{{ 'SENT_TO_QUEUE' | translate}}
 						</label>
 
 						<label class="radio" ng-class="{'checked':!checkinData.is_sent_to_queue}">
 							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_queue == 'no'}"></span>
 							<input type="radio" value="no" ng-model="checkinData.is_sent_to_queue" >
-							{{ 'NO_SMALL' | translate}}
+							{{ 'AUTO_CHECK_IN' | translate}}
 						</label>
 
 					</div>
@@ -83,8 +88,72 @@
 						</div>
 					</div>
 				</fieldset>
+				<fieldset class="holder right">	
+					</fieldset>
+				<fieldset class="holder left" ng-show="checkinData.is_sent_to_queue == 'no'">	
+					<div class="entry full-width" >
+						<label>
+							{{ 'START_AUTO_CHECK_IN_FROM' | translate}}
+						</label>
+							<div class="select select-col select-margin">
+								
+								<select ng-model="checkinData.auto_checkin_from_hour">
+									<option value="">HH</option>
+									<option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+								</select>
+							</div>
+							<div class="select select-col select-margin">
+								
 
+								<select ng-model="checkinData.auto_checkin_from_minute">
+									<option value="">MM</option>
+									<option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+								</select>
 
+							</div>
+							<div class="select select-col select-margin">
+
+								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.auto_checkin_from_prime_time">
+								</select>
+
+							</div>
+					</div>
+					</fieldset>
+				<fieldset class="holder right" ng-show="checkinData.is_sent_to_queue == 'no'">	
+					<div class="entry full-width" >
+						<label>
+							{{ 'START_AUTO_CHECK_IN_TO' | translate}}
+						</label>
+							<div class="select select-col select-margin">
+								
+								<select ng-model="checkinData.auto_checkin_to_hour">
+									<option value="">HH</option>
+									<option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+								</select>
+							</div>
+							<div class="select select-col select-margin">
+								
+
+								<select ng-model="checkinData.auto_checkin_to_minute">
+									<option value="">MM</option>
+									<option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+								</select>
+
+							</div>
+							<div class="select select-col select-margin">
+
+								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.auto_checkin_to_prime_time">
+								</select>
+
+							</div>
+						
+					</div>
+				</fieldset>
+				<fieldset class="holder full-width">
+					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ></ad-checkbox>
+				</fieldset>	
+					
+					
 				<fieldset class="holder full-width">
 					<div class="entry">
 						<label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
