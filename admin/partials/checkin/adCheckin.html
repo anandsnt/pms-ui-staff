@@ -88,8 +88,7 @@
 						</div>
 					</div>
 				</fieldset>
-				<fieldset class="holder right">	
-					</fieldset>
+				
 				<fieldset class="holder left" ng-show="checkinData.is_sent_to_queue == 'no'">	
 					<div class="entry full-width" >
 						<label>
@@ -150,7 +149,7 @@
 					</div>
 				</fieldset>
 				<fieldset class="holder full-width">
-					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ></ad-checkbox>
+					<ad-checkbox ng-show="checkinData.is_sent_to_queue == 'yes'" is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ></ad-checkbox>
 				</fieldset>	
 					
 					
