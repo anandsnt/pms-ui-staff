@@ -987,7 +987,7 @@ sntRover
 	var callAvailabilityAPI = function(){
 		var params = getAvailabilityCallingParams(),
 			filter = $scope.gridProps.filter;
-		
+		console.log(params);
 		if(filter.rate_type == 'Corporate' && !filter.rate) {			
 			//if Rate type select box is not open, we have to
 			openRateTypeSelectBox();
@@ -1061,9 +1061,13 @@ sntRover
 	var getAvailabilityCallingParams = function() {		
 		var filter 		= _.extend({}, this.filter),
 			time_span 	= Time({ hours: this.display.min_hours }), 
-			start_date 	= new Date(this.display.x_n),
-			getIndex    = filter.arrival_times.indexOf(filter.arrival_time),
+			start_date 	= new Date(this.display.x_n);
+			start_date.setHours(0, 0, 0);
+			
+
+		var	getIndex    = filter.arrival_times.indexOf(filter.arrival_time),
 			start_time 	= new Date((getIndex * 900000) + start_date.getTime()).toComponents().time,
+
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
@@ -1080,13 +1084,21 @@ sntRover
 			rate_type = filter.rate_type,			
 			account_id = (filter.rate_type == 'Corporate' && filter.rate && filter.rate != '' ) ? filter.rate.id : undefined, 
 			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding
+			console.log('start_date.getTime(): ' + start_date.getTime() + " (getIndex * 900000): " + (getIndex * 900000));
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
 				start = new Date(this.availability.resize.current_arrival_time);
 				end = new Date(this.availability.resize.current_departure_time);
 			}	
+			console.log(start);
+			if(start.isOnDST()){
+				var selected_hour_min = $("#arrival-time option:selected").text().split(":"),
+					hour = selected_hour_min[0],
+					min  = selected_hour_min[1];
+				start.setHours(hour, min);
+			}
+			console.log(start);
 
-		
 		var paramsToReturn = {
 			start_date: start,
 			end_date: end,
