@@ -560,6 +560,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 						guestData.stayCount = item.stay_count;
 						guestData.lastStay = {};
 						guestData.phone = item.home_phone;
+						guestData.email = item.email;
 						guestData.lastStay.date = item.last_stay.date;
 						guestData.lastStay.room = item.last_stay.room;
 						guestData.lastStay.roomType = item.last_stay.room_type;
