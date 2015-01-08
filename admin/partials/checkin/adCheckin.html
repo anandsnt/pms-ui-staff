@@ -16,7 +16,7 @@
 
 					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>	
 
-					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>	
+					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" ng-show="checkinData.is_precheckin_only"></ad-checkbox>	
 				</fieldset>
 				<fieldset class="holder right">	
 

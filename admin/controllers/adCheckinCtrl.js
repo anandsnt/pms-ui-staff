@@ -59,18 +59,18 @@ var setUpData = function(){
 
     $scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
       $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
-    })
+    });
 
     $scope.$watch('checkinData.is_precheckin_only',function(){
       $scope.hideAddOption = $scope.checkinData.is_precheckin_only ? false : true;
-    })
+    });
 
     $scope.$watch('checkinData.is_sent_to_queue',function(){
       $scope.hidePriorMinutes = ($scope.checkinData.is_sent_to_queue === 'yes') ? false : true;
-    })
+    });
     //to be confirmed 
     $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime)? "AM":$scope.checkinData.checkin_alert_primetime;
-}
+};
 
 /*
 * To fetch checkin details
