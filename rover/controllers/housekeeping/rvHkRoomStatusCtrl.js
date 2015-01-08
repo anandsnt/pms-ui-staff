@@ -693,11 +693,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var $_pullUpDownModule = function() {
 
-			// YOU SHALL NOT BOUNCE!
-			document.addEventListener('touchmove', function(e) {
-				e.stopPropagation();
-			});
-
 			// caching DOM nodes invloved 
 			var $rooms        = document.getElementById( 'rooms' ),
 				$roomsList    = $rooms.children[0];
