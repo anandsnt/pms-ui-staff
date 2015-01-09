@@ -26,31 +26,19 @@
 
 			<div class="entry full-width">
 				<label>Room Type (Choose one or many) <strong> * </strong></label>
-				<div class="select">
-					<select multiple ng-multiple ng-model="eachTaskList.room_type_ids" ng-options="item.id as item.name for item in roomTypesList" size="3" style="height:auto">
-						<option value="" class="placeholder">Choose room type</option>
-					</select>
-				</div>
+				<div faux-multi-select faux-source="roomTypesList" faux-item-name="name" ng-model="eachTaskList.room_type_ids" clicked-outside-element></div>
 			</div>
 
 			<div class="entry full-width">
 				<label>Reservation status (Choose one or many)</label>
-				<div class="select">
-					<select multiple ng-multiple ng-model="eachTaskList.reservation_statuses_ids" ng-options="item.id as item.description for item in resHkStatusList" size="3" style="height:auto">
-						<option value="" class="placeholder">Choose reservation status</option>
-					</select>
-				</div>
+				<div faux-multi-select faux-source="resHkStatusList" faux-item-name="description" ng-model="eachTaskList.reservation_statuses_ids" clicked-outside-element></div>
 			</div>
 		</fieldset>
 
 		<fieldset class="holder right float">
 			<div class="entry full-width">
 				<label>Fo status (Choose one or many)</label>
-				<div class="select">
-					<select multiple ng-multiple ng-model="eachTaskList.front_office_status_ids" ng-options="item.id as item.description for item in foStatusList" size="2" style="height:auto">
-						<option value="" class="placeholder">Choose fo status</option>
-					</select>
-				</div>
+				<div faux-multi-select faux-source="foStatusList" faux-item-name="description" ng-model="eachTaskList.front_office_status_ids" clicked-outside-element></div>
 			</div>
 
 			<div class="entry full-width">
