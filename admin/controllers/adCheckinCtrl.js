@@ -86,6 +86,10 @@ $scope.fetchCheckinDetails = function(){
     $scope.$emit('hideLoader');
     $scope.isLoading = false;
     $scope.checkinData = data;
+    $scope.checkinData.auto_checkin_from_hour = $scope.checkinData.start_auto_checkin_from.split(":")[0];
+    $scope.checkinData.auto_checkin_from_minute = $scope.checkinData.start_auto_checkin_from.split(":")[1];
+    $scope.checkinData.auto_checkin_to_hour = $scope.checkinData.start_auto_checkin_to.split(":")[0];
+    $scope.checkinData.auto_checkin_to_minute = $scope.checkinData.start_auto_checkin_to.split(":")[1];
     setUpData();
    
 };
@@ -144,9 +148,9 @@ $scope.saveCheckin = function(){
     'is_sent_none_cc_reservations_to_front_desk_only': $scope.checkinData.is_sent_none_cc_reservations_to_front_desk_only? 'true':'false',
     'checkin_complete_confirmation_screen_text': $scope.checkinData.checkin_complete_confirmation_screen_text,
     'start_auto_checkin_from' : startAutoCheckinFrom,
-    'start_auto_checkin_from_prime_time': $scope.checkinData.auto_checkin_from_prime_time,
+    'start_auto_checkin_from_prime_time': $scope.checkinData.start_auto_checkin_from_prime_time,
     'start_auto_checkin_to' : startAutoCheckinTo,
-    'start_auto_checkin_to_prime_time': $scope.checkinData.auto_checkin_to_prime_time
+    'start_auto_checkin_to_prime_time': $scope.checkinData.start_auto_checkin_to_prime_time
     
 
   };
