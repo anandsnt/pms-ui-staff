@@ -18,7 +18,7 @@
 
 					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" ng-show="checkinData.is_precheckin_only"></ad-checkbox>	
 				</fieldset>
-				<fieldset class="holder right">	
+				<fieldset class="holder right holder_margin">	
 
 					<div class="entry full-width">
 						<label>
@@ -54,7 +54,7 @@
 					
 					
 				</fieldset>
-				<fieldset class="holder left">	
+				<fieldset class="holder left holder_margin" >	
 					<div id="options" class="entry" ng-hide="hideAddOption">
 						<label>
 							{{ 'CHECKIN_ACTION' | translate}}
@@ -89,7 +89,7 @@
 					</div>
 				</fieldset>
 				
-				<fieldset class="holder left" ng-show="checkinData.is_sent_to_queue == 'no'">	
+				<fieldset class="holder left holder_margin"  ng-show="checkinData.is_sent_to_queue == 'no'">	
 					<div class="entry full-width" >
 						<label>
 							{{ 'START_AUTO_CHECK_IN_FROM' | translate}}
@@ -118,7 +118,7 @@
 							</div>
 					</div>
 					</fieldset>
-				<fieldset class="holder right" ng-show="checkinData.is_sent_to_queue == 'no'">	
+				<fieldset class="holder right holder_margin" ng-show="checkinData.is_sent_to_queue == 'no'">	
 					<div class="entry full-width" >
 						<label>
 							{{ 'START_AUTO_CHECK_IN_TO' | translate}}
@@ -149,7 +149,7 @@
 					</div>
 				</fieldset>
 				<fieldset class="holder full-width">
-					<ad-checkbox ng-show="checkinData.is_sent_to_queue == 'yes'" is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ></ad-checkbox>
+					<ad-checkbox is-checked="checkinData.is_sent_none_cc_reservations_to_front_desk_only" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width" ></ad-checkbox>
 				</fieldset>	
 					
 					
@@ -250,6 +250,9 @@
 							
 						</label>
 
+					</div>
+					<div class="entry full-width">
+						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label = "{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder = ""></ad-textarea>
 					</div>
 					<div class="entry full-width">
 

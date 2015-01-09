@@ -117,7 +117,9 @@ $scope.saveCheckin = function(){
       excluded_block_codes.push(excludedrate.id);
   });
   //to reset time incase of an invalid time selection
-  var checkinAlertTime = ($scope.checkinData.checkin_alert_time_hour !== "" && $scope.checkinData.checkin_alert_time_minute !== "" && $scope.checkinData.checkin_alert_time_hour && $scope.checkinData.checkin_alert_time_minute) ? $scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute :":";
+  var checkinAlertTime = ($scope.checkinData.checkin_alert_time_hour !== "" && $scope.checkinData.checkin_alert_time_minute !== "" && $scope.checkinData.checkin_alert_time_hour && $scope.checkinData.checkin_alert_time_minute) ? $scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute :"";
+  var startAutoCheckinFrom = ($scope.checkinData.auto_checkin_from_hour !== "" && $scope.checkinData.auto_checkin_from_minute !== "" && $scope.checkinData.auto_checkin_from_hour && $scope.checkinData.auto_checkin_from_minute) ? $scope.checkinData.auto_checkin_from_hour+":"+$scope.checkinData.auto_checkin_from_minute :"";
+  var startAutoCheckinTo = ($scope.checkinData.auto_checkin_to_hour !== "" && $scope.checkinData.auto_checkin_to_minute !== "" && $scope.checkinData.auto_checkin_to_hour && $scope.checkinData.auto_checkin_to_minute) ? $scope.checkinData.auto_checkin_to_hour+":"+$scope.checkinData.auto_checkin_to_minute :"";
   var uploadData = {
     'checkin_alert_message': $scope.checkinData.checkin_alert_message,
     'checkin_staff_alert_option':$scope.checkinData.checkin_staff_alert_option,
@@ -128,16 +130,24 @@ $scope.saveCheckin = function(){
     'prime_time':$scope.checkinData.checkin_alert_primetime,
     'checkin_alert_time':checkinAlertTime,
     'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
-
     'is_precheckin_only':$scope.checkinData.is_precheckin_only? 'true':'false',
-    'is_sent_to_queue':$scope.checkinData.is_sent_to_queue ==='yes'? 'true':'false',
+    //'is_sent_to_queue':$scope.checkinData.is_sent_to_queue ==='yes'? 'true':'false',
+    'checkin_action':$scope.checkinData.is_sent_to_queue ==='yes'? 'sent_to_queue':'auto_checkin',
     'excluded_rate_codes':excluded_rate_codes,
     'excluded_block_codes':excluded_block_codes,
     'pre_checkin_email_title':$scope.checkinData.pre_checkin_email_title,
     'pre_checkin_email_body': $scope.checkinData.pre_checkin_email_body,
     'pre_checkin_email_bottom_body': $scope.checkinData.pre_checkin_email_bottom_body,
     'prior_to_arrival':$scope.checkinData.prior_to_arrival,
-    'max_webcheckin':$scope.checkinData.max_webcheckin
+    'max_webcheckin':$scope.checkinData.max_webcheckin,
+    
+    'is_sent_none_cc_reservations_to_front_desk_only': $scope.checkinData.is_sent_none_cc_reservations_to_front_desk_only? 'true':'false',
+    'checkin_complete_confirmation_screen_text': $scope.checkinData.checkin_complete_confirmation_screen_text,
+    'start_auto_checkin_from' : startAutoCheckinFrom,
+    'start_auto_checkin_from_prime_time': $scope.checkinData.auto_checkin_from_prime_time,
+    'start_auto_checkin_to' : startAutoCheckinTo,
+    'start_auto_checkin_to_prime_time': $scope.checkinData.auto_checkin_to_prime_time
+    
 
   };
 
