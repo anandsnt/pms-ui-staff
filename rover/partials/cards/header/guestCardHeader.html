@@ -16,7 +16,7 @@
                 <input type="text" data-size="{{guestCardData.contactInfo.address.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.address.city" ng-blur="updateContactInfo()" auto-grow-field />
                 <input type="text" data-size="{{guestCardData.contactInfo.address.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.address.state" ng-blur="updateContactInfo()" auto-grow-field />
                 <input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field />
-                <input type="email" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="text" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
             </div>
         </form>
         <div class="card-actions" ng-show="viewState.isAddNewCard">
