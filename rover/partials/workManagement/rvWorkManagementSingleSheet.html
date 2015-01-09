@@ -101,6 +101,10 @@
     <!-- Single worksheet - assigned rooms -->
     <div class="assigned-rooms single-sheet">
         <h2>Assigned</h2>
+        <ul class="worksheet-summary show-on-print">
+            <li ng-bind="idToVal(singleState.workSheet.user_id, 'maid_name', employeeList)"></li>
+            <li ng-bind="idToVal(singleState.workSheet.work_type_id, 'name', workTypes)"></li>
+        </ul>
         <ul class="worksheet-summary">
             <li>{{'TIME_ALLOCATED' | translate}} <span>{{singleState.summary.timeAllocated}}</span></li>
             <li>{{'DASHBOARD_SEARCH_CHECKINGOUT' | translate}} <span>{{singleState.summary.departures}}</span></li>

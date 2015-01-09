@@ -407,6 +407,14 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			});
 		}
 
+		$scope.idToVal = function(id, key, source) {
+			var match = _.find(source, function(item) {
+				return item.id == id;
+			});
+
+			return !!match && match.hasOwnProperty(key) ? match[key] : '';
+		};
+
 		init();
 	}
 
