@@ -59,15 +59,15 @@
 						<label>
 							{{ 'CHECKIN_ACTION' | translate}}
 						</label>
-						<label class="radio" ng-class="{'checked':checkinData.is_sent_to_queue== true}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_queue=='yes'}"></span>
-							<input type="radio" value="yes" ng-model="checkinData.is_sent_to_queue"  >
+						<label class="radio" ng-class="{'checked':checkinData.checkin_action== 'sent_to_queue'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action=='sent_to_queue'}"></span>
+							<input type="radio" value="sent_to_queue" ng-model="checkinData.checkin_action"  >
 							{{ 'SENT_TO_QUEUE' | translate}}
 						</label>
 
-						<label class="radio" ng-class="{'checked':!checkinData.is_sent_to_queue}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_queue == 'no'}"></span>
-							<input type="radio" value="no" ng-model="checkinData.is_sent_to_queue" >
+						<label class="radio" ng-class="{'checked':checkinData.checkin_action == 'auto_checkin'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action == 'auto_checkin'}"></span>
+							<input type="radio" value="auto_checkin" ng-model="checkinData.checkin_action" >
 							{{ 'AUTO_CHECK_IN' | translate}}
 						</label>
 
