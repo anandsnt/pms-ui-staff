@@ -615,7 +615,8 @@ table {
                                 }
                             }
 
-                            .confirmation { margin-right: 5px; }
+                            .confirmation,
+                            .guests { margin-right: 5px; }
 
                             .status { .show; }
 
@@ -673,25 +674,29 @@ table {
                             &:first-child { min-width: 2.5cm; }
 
                             &[rowspan] { border-bottom: 1px solid @grey2; }
+
+                            &.is-note {
+                                color: @grey3;
+                                text-transform: none;
+                                font-weight: 400;                                
+
+                                strong { 
+                                    color: @textColor;
+                                    text-transform: uppercase;
+                                    font-weight: 600;
+                                }
+
+                                span { 
+                                    .show;
+                                    &.note-by-name { display: inline; } 
+                                }
+
+                                &:last-child { width: auto; }
+                            }
                         }
 
                         &.row-break {
-                            td { 
-                                border-bottom: 1px solid @grey2; 
-
-                                &[colspan] {
-                                    color: @grey3;
-                                    text-transform: none;
-                                    padding-top: 0;
-                                    font-weight: 400;
-
-                                    strong { 
-                                        color: @textColor;
-                                        text-transform: uppercase;
-                                        font-weight: 600;
-                                    }
-                                }
-                            }
+                            td { border-bottom: 1px solid @grey2; }
                         }
                     }
                 }
