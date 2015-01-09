@@ -92,7 +92,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						standAlone : true
 					}, {
 						title: "MENU_ROOM_DIARY",
-						action: "staff#/staff/staycard/diary/",
+						action: "staff#/staff/diary/",
 						standAlone: true,
 						hidden: !$rootScope.isHourlyRatesEnabled
 					}, {

@@ -384,7 +384,14 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// keept as msg so that it can be called from crtl if needed
 		this.setRoomStatusClass = function(room, checkinInspectedOnly) {
 
-			var isOOSorOOO = room.hk_status.value == 'OO' || room.hk_status.value == 'OS' || room.room_reservation_hk_status == 2 || room.room_reservation_hk_status == 3;
+			var isOOSorOOO;
+			if ( room.hasOwnProperty('service_status') ) {
+				// new code, note: new code is not dependent on 'isStandAlone'
+				isOOSorOOO = (room.service_status.value == 'OUT_OF_SERVICE' || room.service_status.value == 'OUT_OF_ORDER') ? true : false;
+			} else {
+				// old code, kept for just in case fallbacks
+				isOOSorOOO = room.hk_status.value == 'OO' || room.hk_status.value == 'OS' || room.room_reservation_hk_status == 2 || room.room_reservation_hk_status == 3;
+			};
 
 			if (checkinInspectedOnly == "true") {
 				if (room.hk_status.value == 'INSPECTED') {
@@ -609,15 +616,28 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// calculte the OO/OS title
 		// in future the internal check may become common - to check only 'room_reservation_hk_status'
 		var calculateOoOsTitle = function(room) {
-			if ($rootScope.isStandAlone) {
-				return room.room_reservation_hk_status == 2 ? 'Out of Service' :
-					room.room_reservation_hk_status == 3 ? 'Out of Order' :
-					false;
+			if ( room.hasOwnProperty('service_status') ) {
+				// new code, note: new code is not dependent on 'isStandAlone'
+				if ( room.service_status.value == 'OUT_OF_SERVICE' ) {
+					return 'Out of Service';
+				} else if ( room.service_status.value == 'OUT_OF_ORDER') {
+					return 'Out of Order';
+				} else {
+					return '';
+				};
 			} else {
-				return room.hk_status.value == 'OS' ? 'Out of Service' :
-					room.hk_status.value == 'OO' ? 'Out of Order' :
-					false;
-			}
+				// old code, kept for just in case fallbacks
+				if ($rootScope.isStandAlone) {
+					return room.room_reservation_hk_status == 2 ? 'Out of Service' :
+						room.room_reservation_hk_status == 3 ? 'Out of Order' :
+						false;
+				} else {
+					if (true) {};
+					return room.hk_status.value == 'OS' ? 'Out of Service' :
+						room.hk_status.value == 'OO' ? 'Out of Order' :
+						false;
+				}
+			};
 		};
 
 	}

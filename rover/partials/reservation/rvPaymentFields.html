@@ -1,10 +1,13 @@
 <div class="entry full-width" ng-class="{'amount': isShowFees()}"><!-- Add class "amount" when fee exsists -->
     <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
-    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!reservationData.depositEditable"/>
-    <!-- CICO-9457 : Use only when fee exsists in standalone -->
-    <span ng-show="isShowFees()" class="fee">
-    	+ {{currencySymbol}}{{feeData.calculatedFee}} fee
-    </span> 
+
+    <!-- CICO-12413 : Use only when fee exsists -->
+    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!reservationData.depositEditable" class="amount"/>
+
+    <span ng-show="isShowFees()" class="delimiter">+</span> 
+    <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(reservationData.depositAmount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
+    <span ng-show="isShowFees()" class="delimiter">fee</span>
+
     <span ng-show="isShowFees()" class="total">
     	Total:
     	<strong id="total-deposit-amount">
