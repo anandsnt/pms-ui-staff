@@ -37,7 +37,7 @@
                 <div class="entry" ng-click="openGuestCard()">
                     <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="searchData.guestCard.guestLastName" delay="1000" function-to-fire="searchGuest" />
                     <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="searchData.guestCard.guestFirstName" delay="1000" function-to-fire="searchGuest" />
-                    <input name="gc-email" id="gc-email" placeholder="E-mail" type="email" class="masked-input fixed email h1" />
+                    <input name="gc-email" id="gc-email" placeholder="E-mail" type="text" class="masked-input fixed email h1" rv-delay-textbox ng-model="searchData.guestCard.email" delay="1000" function-to-fire="searchGuest"  />
                     <input name="gc-city" id="gc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="searchData.guestCard.guestCity" delay="1000" function-to-fire="searchGuest" />
                     <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty No." type="text" class="masked-input fixed loyalty h1" rv-delay-textbox ng-model="searchData.guestCard.guestLoyaltyNumber" delay="1000" function-to-fire="searchGuest" />
                 </div>
