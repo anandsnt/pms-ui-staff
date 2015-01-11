@@ -6,7 +6,7 @@
         <div class="entry maid">
             <label for="worksheet-employee" translate>EMP</label>
             <div class="select">
-                <select ng-model="singleState.workSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList" id="worksheet-employee" name="worksheet-employee" >
+                <select ng-model="singleState.workSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList" id="worksheet-employee" name="worksheet-employee" ng-change="onEmployeeChange()">
                         <option value="">{{'SELECT_EMPLOYEE'| translate}}</option>
                 </select>
             </div>
