@@ -342,7 +342,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }];
 
 
-      if(hotelDetails.is_auto_change_bussiness_date){
+      if(!hotelDetails.is_auto_change_bussiness_date){
           var eodSubMenu = {
             title: "MENU_END_OF_DAY",
             action: "",

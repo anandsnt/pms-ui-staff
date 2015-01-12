@@ -31,7 +31,7 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
                 }
             });
 
-            if($scope.data.is_auto_change_bussiness_date){
+            if(!$scope.data.is_auto_change_bussiness_date){
                  var eodSubmenuPresent = false;
                  angular.forEach(frontDeskSubmenu, function(submenu, index) {
                     if(submenu.title === 'MENU_END_OF_DAY'){

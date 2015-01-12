@@ -187,7 +187,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				  iconClass: "icon-housekeeping"
 				}];
 				
-				if($rootScope.is_auto_change_bussiness_date){
+				if(!$rootScope.is_auto_change_bussiness_date){
 			          var eodSubMenu =  {
 						title: "MENU_END_OF_DAY",
 						action: "staff#/staff/dashboard/changeBussinessDate"
