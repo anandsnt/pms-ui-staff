@@ -89,6 +89,22 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         return hasArrow;
     };
 
+    // To get total amount of Level3 - each charge code transactions.
+    $scope.getTotalAmountOfCodeItem = function(index1, index2){
+        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
+        var total = 0;
+        if((typeof item !== 'undefined') && (item.length >0)){
+            angular.forEach( item ,function(transactions, index) {
+                if(transactions.show) {
+                    total += (transactions.debit == '' ? 0 : transactions.debit);
+                    total -= (transactions.credit == '' ? 0 : transactions.credit);
+                }
+            });
+        }
+        $scope.data.revenueData.charge_groups[index1].charge_codes[index2].total = total;
+        return total;
+    };
+
     // To get total amount of Level1 - each charge group.
     $scope.getTotalAmountOfGroupItem = function(index){
         var item = $scope.data.revenueData.charge_groups[index].charge_codes;
