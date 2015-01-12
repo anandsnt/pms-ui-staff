@@ -45,8 +45,8 @@
         <!-- Travel Agent Card Results listing -->
         <div ng-controller="travelAgentResults" class="wrapper" ng-show="travelAgentSearchIntiated && travelAgents.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
             <ul id="search-travel-agent-results" class="search-results">
-                <li ng-repeat="travelAgent in travelAgents" class="reservation">
-                    <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
+                <li ng-repeat="travelAgent in travelAgents" class="card card-result">
+                    <a ng-click="selectTravelAgent(travelAgent, $event)">
                         <div ng-show="travelAgent.logo == ''" class="guest-image icons icon-travel-agent"></div>
                         <figure ng-hide="travelAgent.logo == ''" class="guest-image">
                                 <img ng-src="{{travelAgent.logo}}"/>
@@ -54,13 +54,19 @@
                         <div class="data">
                             <div class="info">
                                 <h2 ng-bind-html=" travelAgent.account_name |highlight:searchData.travelAgentCard.travelAgentName:false"></h2>
-                                <div class="rate" ng-show="travelAgent.rate"><span class="label">Rate</span> {{travelAgent.rate.difference}}{{ travelAgent.rate.based_on.name }}{{travelAgent.rate.surplus}}</div>
+                                <div class="rate" ng-show="travelAgent.rate">
+                                    <span class="label">Rate</span> 
+                                    {{travelAgent.rate.difference}}{{ travelAgent.rate.based_on.name }}{{travelAgent.rate.surplus}}
+                                </div>
                             </div>
                             <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
-                            <span class="icons" ng-class="{'icon-location' : travelAgent.address.city != '' && travelAgent.address.city != null}"> 
-                            <span class="no-right-margin" ng-bind-html="'{{ travelAgent.address.city }}'|highlight:searchData.travelAgentCard.travelAgentCity:false"></span><span ng-show="travelAgent.address.state" class="no-right-margin">,&nbsp;</span>{{ travelAgent.address.state }}</span>
-                            <span class="icons" ng-class="{'icon-phone' : travelAgent.phone != '' && travelAgent.phone != null}">{{ travelAgent.phone }}</span>
-                            <span class="icons" ng-class="{'icon-email-grey': travelAgent.email != '' && travelAgent.email != null}">{{ travelAgent.email }}</span>
+                            <span class="icons icon-location" ng-if="{travelAgent.address.city != '' && travelAgent.address.city != null}"> 
+                                <span ng-bind-html="'{{ travelAgent.address.city }}'|highlight:searchData.travelAgentCard.travelAgentCity:false"></span>
+                                <span ng-show="travelAgent.address.state">, </span>
+                                {{ travelAgent.address.state }}
+                            </span>
+                            <span class="icons icon-phone" ng-if="{travelAgent.phone != '' && travelAgent.phone != null}">{{ travelAgent.phone }}</span>
+                            <span class="icons icon-email-grey" ng-if="{travelAgent.email != '' && travelAgent.email != null}">{{ travelAgent.email }}</span>
                         </div>
                     </a>
                 </li>

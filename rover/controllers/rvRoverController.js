@@ -22,8 +22,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDrawer = function(event) {
       $scope.menuOpen = false;
     };
-
-
+	$scope.isAddToGuestCardEnabledDuringCheckin = false;
+	 $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
+	 	$scope.isAddToGuestCardEnabledDuringCheckin = value;
+	 });
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
     //set current hotel details
@@ -249,11 +251,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             title: "MENU_CASHIER",
             action: "rover.financials.journal({ id: 2 })",
             menuIndex: "cashier"
-          }, {
-            title: "MENU_END_OF_DAY",
-            action: "",
-            actionPopup: true,
-            menuIndex: "endOfDay"
           }]
         }, {
           title: "MENU_CONVERSATIONS",
@@ -343,6 +340,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         iconClass: "icon-housekeeping",
         hidden: $rootScope.default_dashboard == 'FRONT_DESK'
       }];
+
+
+      if(!hotelDetails.is_auto_change_bussiness_date){
+          var eodSubMenu = {
+            title: "MENU_END_OF_DAY",
+            action: "",
+            actionPopup: true,
+            menuIndex: "endOfDay"
+          }
+          angular.forEach($scope.menu, function(menu, index) {
+              if(menu.title === 'MENU_FRONT_DESK'){
+                menu.submenu.push(eodSubMenu)
+              }
+          });
+       }     
 
     } else {
       // OBJECT WITH THE MENU STRUCTURE

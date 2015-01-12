@@ -485,5 +485,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         var date = $filter('date')(date, $rootScope.dateFormat);
         return date + ', ' + time;
     };
-    
+    // CICO-12472 Apply Employee or Department filter
+    $scope.$on('ApplyEmpOrDeptFilter',function(){
+        $scope.clickedSelectButton();
+    });
+
 }]);

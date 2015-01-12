@@ -619,9 +619,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if ( room.hasOwnProperty('service_status') ) {
 				// new code, note: new code is not dependent on 'isStandAlone'
 				if ( room.service_status.value == 'OUT_OF_SERVICE' ) {
-					return 'Out of Order';
-				} else if ( room.service_status.value == 'OUT_OF_ORDER') {
 					return 'Out of Service';
+				} else if ( room.service_status.value == 'OUT_OF_ORDER') {
+					return 'Out of Order';
 				} else {
 					return '';
 				};
