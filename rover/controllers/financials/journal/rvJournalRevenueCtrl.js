@@ -16,6 +16,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 			$scope.$emit('hideLoader');
             $scope.errorMessage = "";
 			refreshRevenueScroller();
+            $scope.$emit("ApplyEmpOrDeptFilter");
 		};
 		$scope.invokeApi(RVJournalSrv.fetchRevenueData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchRevenueData);
 	};
