@@ -449,6 +449,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					// second check for notes
 					// if so then create a custom entry for
 					// each note and push each to '_customItems'
+					// TODO: new accompnying gues also comes in b/w
 					if ( !!_eachItem['notes'] && !!_eachItem['notes'].length ) {
 						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
 							_eachNote        = angular.copy( _eachItem['notes'][k] );
