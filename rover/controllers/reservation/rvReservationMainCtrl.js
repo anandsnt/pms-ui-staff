@@ -148,7 +148,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     guestFirstName: "",
                     guestLastName: "",
                     guestCity: "",
-                    guestLoyaltyNumber: ""
+                    guestLoyaltyNumber: "",
+                    email: ""
                 },
                 companyCard: {
                     companyName: "",
@@ -1615,23 +1616,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         this.attachCompanyTACardRoutings = function() {
-            console.log('attachCompanyTACardRoutings');
             var fetchSuccessofDefaultRouting = function(data) {
                 $scope.$emit("hideLoader");
                 $scope.routingInfo = data;
-                console.log(data);
                 if (data.has_conflicting_routes) {
                     $scope.conflict_cards = [];
                     if (that.hasTravelAgent() && data.travel_agent.routings_count > 0) {
-                        console.log("insde hasTravelAgent");
                         $scope.conflict_cards.push($scope.reservationData.travelAgent.name)
                     }
                     if (that.hasCompanyCard() && data.company.routings_count > 0) {
-                        console.log("inside hasCompanyCard");
                         $scope.conflict_cards.push($scope.reservationData.company.name)
                     }
-                    console.log($scope.conflict_cards);
-
                     that.showConflictingRoutingPopup();
 
                     return false;
