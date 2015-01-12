@@ -37,8 +37,8 @@
             <!-- Company Card Results listing -->
             <div ng-controller="companyResults" class="wrapper" ng-show="companySearchIntiated && companies.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll" ng-iscroll-delay='500'>
                 <ul id="search-company-results" class="search-results">
-                    <li ng-repeat="company in companies" class="reservation">
-                        <a ng-click="selectCompany(company, $event)" class="card-result">
+                    <li ng-repeat="company in companies" class="card card-result">
+                        <a ng-click="selectCompany(company, $event)">
                             <div ng-show="company.logo == ''" class="guest-image icons icon-company"></div>
                             <figure ng-hide="company.logo == ''" class="guest-image">
                                 <img ng-src="{{company.logo}}"/>
@@ -46,12 +46,19 @@
                             <div class="data">
                                 <div class="info">
                                     <h2 ng-bind-html=" company.account_name |highlight:searchData.companyCard.companyName:false"></h2>
-                                     <div class="rate" ng-show="company.rate"><span class="label">Rate</span> {{company.rate.difference}}{{ company.rate.based_on.name }}{{company.rate.surplus}}</div>
+                                    <div class="rate" ng-show="company.rate">
+                                        <span class="label">Rate</span> 
+                                        {{company.rate.difference}}{{ company.rate.based_on.name }}{{company.rate.surplus}}
+                                    </div>
                                 </div>
                                 <span class="confirmation">{{ company.address.postalCode }}</span>
-                                <span class="icons" ng-class="{'icon-location': company.address.city != '' && icon-location != null}"><span class="no-right-margin" ng-bind-html="'{{ company.address.city }}'|highlight:searchData.companyCard.companyCity:false"></span><span class="no-right-margin" ng-show="company.address.state">,&nbsp;</span>{{ company.address.state }}</span>
-                                <span class="icons" ng-class="{'icon-phone': company.phone != '' && company.phone != null}">{{ company.phone }}</span>
-                                <span class="icons" ng-class="{'icon-email-grey': company.email != '' && company.email != null}">{{ company.email }}</span>
+                                <span class="icons icon-location" ng-if="{company.address.city != '' && icon-location != null}">
+                                    <span ng-bind-html="'{{ company.address.city }}'|highlight:searchData.companyCard.companyCity:false"></span>
+                                    <span ng-show="company.address.state">, </span>
+                                    {{ company.address.state }}
+                                </span>
+                                <span class="icons icon-phone" ng-if="{company.phone != '' && company.phone != null}">{{ company.phone }}</span>
+                                <span class="icons icon-email-grey" ng-if="{company.email != '' && company.email != null}">{{ company.email }}</span>
                             </div>
                         </a>
                     </li>

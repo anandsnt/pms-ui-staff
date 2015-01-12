@@ -89,7 +89,7 @@
 						<!-- Incoming billing info -->
 						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0 && !isStandAlone" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
 						
-						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton'" ng-click="noPostButtonClicked()" ng-class = "{'green':roomChargeEnabled, 'red': !roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
+						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton' && !reservationBillData.is_res_posting_control_disabled" ng-click="noPostButtonClicked()" ng-class = "{'green':roomChargeEnabled, 'red': !roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
 						
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all bill-tab-ul" role="tablist">
 							
