@@ -41,6 +41,10 @@ sntRover
 
 	BaseCtrl.call(this, $scope);
 
+	//changing the header
+  	//chnaging the heading of the page
+    $scope.heading = $filter( 'translate')('DIARY_RESERVATIONS');
+    
 	//updating the left side menu
     $scope.$emit("updateRoverLeftMenu", "diaryReservation");
 
@@ -165,8 +169,8 @@ sntRover
 				width: 						undefined,
 				height: 					undefined,
 				hours: 						48,
-				row_height: 				60,
-				row_height_margin: 			5,
+				row_height: 				24, //please set to 60 when default changeed to 12 hour mode
+				row_height_margin: 			0,
 				intervals_per_hour: 		4, 
 				ms_15:                      900000,
 				px_per_ms: 					undefined,
@@ -517,9 +521,9 @@ sntRover
 		$scope.reserveRoom = function(nextRoom, occupancy){
 
 			// clearing the data bf
-			$scope.reset_guest_details();
+			/*$scope.reset_guest_details();
 			$scope.reset_company_details();
-			$scope.reset_travel_details();
+			$scope.reset_travel_details();*/
 
 			var dataToPassConfirmScreen = {},
 			roomXfer = $scope.roomXfer,
@@ -762,7 +766,7 @@ sntRover
 	 		React.renderComponent(
 				DiaryContent(_.extend(args, $scope.gridProps)),
 				document.getElementById('component-wrapper')
-			);	
+			);				
 		};
 
 		

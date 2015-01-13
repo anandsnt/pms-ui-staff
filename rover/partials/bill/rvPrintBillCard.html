@@ -86,23 +86,25 @@
                 </td>
             </tr>
 
-            <tr>
-                <td colspan="3" translate>TOTAL_INCL_TAX</td>
-                <td>{{currencySymbol}}{{printData.total_incl_tax}}</td>
-            </tr>            
         </tfoot>
 
         <tbody>
             <tr ng-repeat="item in printData.charge_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
-                <td>{{item.description}}</td>
+                <td class="description">
+                    <span>{{item.description}}</span>
+                    <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
+                </td>
                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
                 <td class="align-right"></td>
             </tr>
 
             <tr ng-repeat="item in printData.credit_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
-                <td>{{item.description}}</td>
+                <td class="description">
+                    <span>{{item.description}}</span>
+                    <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
+                </td>
                 <td class="align-right"></td>
                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
             </tr>

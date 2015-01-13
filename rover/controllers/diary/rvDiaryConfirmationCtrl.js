@@ -117,9 +117,9 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         };
 
         $scope.routeToSummary = function() {
-            $scope.reset_guest_details();
+            /*$scope.reset_guest_details();
             $scope.reset_company_details();
-            $scope.reset_travel_details();
+            $scope.reset_travel_details();*/
             $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
             //CICO-9429                  
             if ($rootScope.isAddonOn) {
