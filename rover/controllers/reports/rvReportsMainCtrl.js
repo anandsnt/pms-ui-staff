@@ -213,6 +213,12 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['cancel_to_date']   = $filter( 'date' )( chosenReport.untilCancelDate, 'yyyy/MM/dd' );	
 			};
 
+			//// include arrival dates
+			if ( !!chosenReport.hasArrivalDateFilter ) {
+				params['arrival_from_date'] = $filter( 'date' )( chosenReport.fromArrivalDate, 'yyyy/MM/dd' );
+				params['arrival_to_date']   = $filter( 'date' )( chosenReport.untilArrivalDate, 'yyyy/MM/dd' );	
+			};
+
 			// include times
 			if ( chosenReport.hasTimeFilter ) {
 				params['from_time'] = chosenReport.fromTime || '';
