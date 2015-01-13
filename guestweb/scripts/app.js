@@ -57,6 +57,16 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 		$location.path('/checkoutRoomVerification');
 	};
 
+	//setTimeout(function() {
+		$( ".loading-container" ).hide();
+
+	//}, 500);
+/*
+	$( ".loading-container" ).slideUp( "slow", function() {
+		console.log("animation complete");
+	    // Animation complete.
+	});
+*/
 
 }]);
 
