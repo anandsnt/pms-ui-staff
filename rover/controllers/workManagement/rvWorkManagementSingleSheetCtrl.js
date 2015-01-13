@@ -277,6 +277,8 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		$scope.saveWorkSheet = function(options) {
 			var assignedRooms = [],
 				saveCount     = 0,
+				worktypeId    = (!!options && !!options.oldWorkTypeId) ? options.oldWorkTypeId : $scope.singleState.workSheet.work_type_id,
+				userId        = (!!options && !!options.oldUserId) ? options.oldUserId : $scope.singleState.workSheet.user_id,
 				worktypesSet  = {};
 
 			var afterAPIcall  = function() {
@@ -307,7 +309,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					};
 				};
 
-			if (!$scope.singleState.workSheet.work_type_id) {
+			if (!worktypeId) {
 				$scope.errorMessage = ['Please select a work type.'];
 				return false;
 			}
@@ -339,7 +341,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					if ( room.hasOwnProperty('work_type_id') ) {
 						worktypesSet[room.work_type_id.toString()].push(room);
 					} else {
-						worktypesSet[$scope.singleState.workSheet.work_type_id.toString()].push(room);
+						worktypesSet[worktypeId.toString()].push(room);
 					};
 				});
 
@@ -358,7 +360,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 							"order"       : "",
 							"assignments" : [{
 								"shift_id"      : $scope.singleState.workSheet.shift_id,
-								"assignee_id"   : $scope.singleState.workSheet.user_id,
+								"assignee_id"   : userId,
 								"room_ids"      : assignedRooms,
 								"work_sheet_id" : ""
 							}]
@@ -395,22 +397,46 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}, 10);
 		}
 
+
+
+
+
+
+		$scope.$watch('singleState.workSheet.work_type_id', function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				$scope.saveWorkSheet({
+					oldWorkTypeId  : oldVal,
+					callNextMethod : 'onWorkTypeChange'
+				});
+			};
+		});
+
 		$scope.onWorkTypeChange = function() {
 			init();
 		};
 
-		$scope.onEmployeeChange = function() {
-			// TODO: first need to save the sheet for the current employee
-			// which also means, I will have to add change as watcher and not callback
+		$scope.$watch('singleState.workSheet.user_id', function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				$scope.saveWorkSheet({
+					oldUserId      : oldVal,
+					callNextMethod : 'onEmployeeChange'
+				});
+			};
+		});
 
+		$scope.onEmployeeChange = function(options) {
 			// if the work type filter is already in 'Daily Cleaning', just call init()
 			// else change the work type to 'Daily Cleaning' and it will trigger init()
-			if ( $scope.singleState.workSheet.work_type_id == $scope.workTypes[0].id ) {
-				init();
-			} else {
-				$scope.singleState.workSheet.work_type_id = $scope.workTypes[0].id;
-			};
-		}
+			init();
+		};
+
+		$scope.refreshSheet = function() {
+			init();
+		};
+
+
+
+
 
 		$scope.onAssignmentDragStart = function() {
 			$scope.$parent.myScroll["workSheetUnassigned"].disable();
