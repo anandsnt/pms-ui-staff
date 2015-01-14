@@ -23,32 +23,7 @@ sntRover.service('RVreportsSrv', [
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-						this.cacheReportList = data;
-						this.cacheReportList.results.unshift({
-							"id": 1,
-							"title": "Booking Source & Market Report",
-							"sub_title": "By Date Range",
-							"description": "Bookings by Source & Market and Date Range / Forecast & History",
-							"filters": [{
-								"value": "DATE_RANGE",
-								"description": "Booked Date Range"
-							}, {
-								"value": "ARRIVAL_DATE_RANGE",
-								"description": "Arrival Date Range"
-							}, {
-								"value": "MARKET",
-								"description": "Market"
-							}, {
-								"value": "SOURCE",
-								"description": "Source"
-							}, {
-								"value": "INCLUDE_CANCELED",
-								"description": "Include Canceled"
-							}, {
-								"value": "INCLUDE_NO_SHOW",
-								"description": "Include No Show"
-							}]
-						});
+						this.cacheReportList = data;						
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {
 						deferred.reject(data);

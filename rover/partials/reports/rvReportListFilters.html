@@ -123,6 +123,25 @@
     </div>
 </div>
 
+<!-- Specifice markup for display options for the Source and Market reports -->
+<div class="options" ng-if="item.hasSourceMarketFilter">
+    <label for="report-options">Display</label>
+    <div class="faux-select placeholder" ng-click="selectDisplayClicked($event, item)">{{ item.displayTitle }}</div>
+    <!-- Remove class "hidden" when ".faux-select" clicked -->
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectDisplayOpen }" ng-click="fauxOptionClicked($event, item)"> 
+        <label class="checkbox inline">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showSource}"></span>
+            <input type="checkbox" ng-model="item.showSource">
+            {{ item.hasSource.description }}
+        </label>
+        <label class="checkbox inline">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showMarket}"></span>
+            <input type="checkbox" ng-model="item.showMarket">
+            {{ item.hasMarket.description }} 
+        </label>        
+    </div>
+</div>
+
 <div class="sort" ng-if="item.sortByOptions">
     <label>Sort By</label>
     <div class="select">

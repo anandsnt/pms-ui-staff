@@ -5,6 +5,8 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 	'RVreportsSrv',
 	function($scope, $rootScope, $filter, RVreportsSrv) {
 
+		$scope.setScroller('report-details-scroll');
+
 		$scope.results = [{
 			"source": [{
 				"Booking.com": 27,
@@ -21,7 +23,28 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 
 		var markets = _.keys($scope.results[0].source[0]);
 		var marketValues = _.values($scope.results[0].source[0]);
+		var marketValuesTotal = marketValues.reduce(function(a, b) {
+			return a + b
+		});
 
+		var marketValuesPercentage = [];
+		_.each(marketValues, function(marketValue) {
+			marketValuesPercentage.push(marketValue / marketValuesTotal);
+		})
+
+		$scope.marketPercentage = {
+			options: {
+				chart: {
+					type: 'bar'
+				}
+			},
+			xAxis: {
+				categories: markets
+			},
+			series: [{
+				data: marketValuesPercentage
+			}]
+		}
 
 		$scope.marketActual = {
 			options: {
@@ -37,5 +60,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 			}]
 
 		}
+
+		$scope.refreshScroller('report-details-scroll');
 	}
 ]);

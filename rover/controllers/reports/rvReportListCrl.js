@@ -14,7 +14,8 @@ sntRover.controller('RVReportListCrl', [
             dateParts     = businessDate.match(/(\d+)/g),
             fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
             untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
-            hasFauxSelect = false;
+            hasFauxSelect = false,
+            hasDisplaySelect= false;
 
         /**
         * inorder to refresh after list rendering
@@ -88,10 +89,11 @@ sntRover.controller('RVReportListCrl', [
 
                     case 'Booking Source & Market Report':
                         reportList[i]['reportIconCls'] = 'guest-status cancel';
+                        reportList[i]['hasSourceMarketFilter'] = true;                        
                     break;
 
                     default:
-                        reportList[i]['reportIconCls'] = 'icon-report';
+                        reportList[i]['reportIconCls'] = 'icon-report';                        
                         break;
                 };
 
@@ -166,6 +168,18 @@ sntRover.controller('RVReportListCrl', [
                         hasFauxSelect = true;
                     };
 
+                    // check for source and markets filter
+                    if ( item.value === 'INCLUDE_MARKET' ) {
+                        reportList[i]['hasMarket'] = item;
+                        hasDisplaySelect = true;
+                    };
+
+                    if ( item.value === 'INCLUDE_SOURCE' ) {
+                        reportList[i]['hasSource'] = item;
+                        hasDisplaySelect = true;
+                    };
+
+
                     // check for include cancelled filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_CANCELED' ) {
                         reportList[i]['hasIncludeCancelled'] = item;
@@ -187,6 +201,11 @@ sntRover.controller('RVReportListCrl', [
                 if ( hasFauxSelect ) {
                     reportList[i]['fauxSelectOpen'] = false;
                     reportList[i]['fauxTitle']      = 'Select';
+                };
+
+                if(hasDisplaySelect) {
+                    reportList[i]['selectDisplayOpen'] = false;
+                    reportList[i]['displayTitle']      = 'Select';
                 };
 
                 // sort by options
