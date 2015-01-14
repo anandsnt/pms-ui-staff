@@ -484,7 +484,10 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				if (employee.ticked) x.push(employee.id);
 			})
 			if ($(x).not(selectionHistory).length !== 0 || $(selectionHistory).not(x).length !== 0) {
-				updateView();
+				// updateView();
+				$scope.saveMultiSheet({
+					'callNextMethod': 'refreshSheet'
+				});
 			}
 			selectionHistory = [];
 			_.each($scope.employeeList, function(employee) {
