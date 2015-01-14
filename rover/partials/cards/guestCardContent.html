@@ -55,7 +55,7 @@
                                     <span>{{ guest.address.state }}</span>
                                 </span>
                                 <span class="icons icon-phone" ng-hide="guest.phone == '' || guest.phone == null">{{ guest.phone }}</span>
-                                <span class="icons icon-email-grey" ng-hide="guest.email == '' || guest.email == null">{{ guest.email }}</span>
+                                <span class="icons icon-email-grey" ng-bind-html="'{{guest.email}}' | highlight:searchData.guestCard.email:false" ng-hide="guest.email == '' || guest.email == null"></span>
                             </div>
                             <div class="last-stay" ng-if="guest.stayCount > 0">
                                 <span class="label">

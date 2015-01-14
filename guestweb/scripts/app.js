@@ -64,4 +64,3 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 
 
 
-
