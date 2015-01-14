@@ -167,6 +167,27 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasIncludeNoShow'] = item;
                         hasFauxSelect = true;
                     };
+
+                    // SPL: for User login details
+                    // check for include rover users filter and keep a ref to that item
+                    if ( item.value === 'ROVER' ) {
+                        reportList[i]['hasIncludeRoverUsers'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // SPL: for User login details
+                    // check for include zest users filter and keep a ref to that item
+                    if ( item.value === 'ZEST' ) {
+                        reportList[i]['hasIncludeZestUsers'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // SPL: for User login details
+                    // check for include zest web users filter and keep a ref to that item
+                    if ( item.value === 'ZEST_WEB' ) {
+                        reportList[i]['hasIncludeZestWebUsers'] = item;
+                        hasFauxSelect = true;
+                    };
                 });
 
                 // NEW! faux select DS and logic
