@@ -164,11 +164,9 @@ var TimelineResizeGrip = React.createClass({
 			px_per_ms 	= display.px_per_ms,
 			x_origin 	= display.x_n, // instanceof Date ? display.x_n.getTime() : display.x_n), 
 			m 			= props.meta.occupancy;
-
 		if(!this.state.resizing) {
 			if(!props.currentResizeItem && nextProps.currentResizeItem) {
 				model = nextProps.currentResizeItem;
-
 				if(nextProps.edit.passive) {
 					this.setState({
 						mode: model[props.meta.occupancy.id],
@@ -181,6 +179,10 @@ var TimelineResizeGrip = React.createClass({
 					}					
 					props.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
             		props.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
+            		props.iscroll.rooms.scrollTo(0, props.iscroll.rooms.y, 0, 1000);
+            		props.iscroll.rooms._scrollFn();
+            		props.iscroll.rooms.refresh();
+            		
             		//state.onScrollEnd(Math.abs(props.iscroll.grid.x) / px_per_ms + x_origin);
 				} else {
 					this.setState({

@@ -101,9 +101,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}, {
 						title: "MENU_CASHIER",
 						action: "staff#/staff/financials/journal/2"
-					}, {
-						title: "MENU_END_OF_DAY",
-						action: "staff#/staff/dashboard/changeBussinessDate"
 					}]
 				}, {
 					title: "MENU_CONVERSATIONS",
@@ -189,6 +186,18 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				  submenu: [],
 				  iconClass: "icon-housekeeping"
 				}];
+				
+				if(!$rootScope.is_auto_change_bussiness_date){
+			          var eodSubMenu =  {
+						title: "MENU_END_OF_DAY",
+						action: "staff#/staff/dashboard/changeBussinessDate"
+					  };
+			          angular.forEach($scope.menu, function(menu, index) {
+			              if(menu.title === 'MENU_FRONT_DESK'){
+			                menu.submenu.push(eodSubMenu)
+			              }
+			          });
+       			};  				
 
 			} else {
 					$scope.menu = [{
@@ -432,7 +441,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		    } else {
 		      $translate.use('EN');
 		    };	
-				
+		    //to hide eod submenu conditionally
+			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 				
 			//set flag if standalone PMS
 			if (data.pms_type === null)

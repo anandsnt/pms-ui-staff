@@ -75,6 +75,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.searchData.guestCard.guestLastName = "";
 				$scope.searchData.guestCard.guestCity = "";
 				$scope.searchData.guestCard.guestLoyaltyNumber = "";
+				$scope.searchData.guestCard.email = "";
+
 				$scope.guestCardData.contactInfo.user_id = contactInfoData.userId;
 				$scope.reservationData.guest.email = data.email;
 				$scope.$broadcast('guestSearchStopped');
@@ -304,11 +306,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				if (data.has_conflicting_routes) {
 					$scope.conflict_cards = [];
 					if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
-						console.log("is travel agent");
 						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
 					}
 					if (card == 'company' && data.company.routings_count > 0) {
-						console.log("is company");
 						$scope.conflict_cards.push($scope.reservationData.company.name)
 					}
 					that.showConflictingRoutingPopup();
@@ -457,6 +457,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.searchData.guestCard.guestLastName = "";
 				$scope.searchData.guestCard.guestCity = "";
 				$scope.searchData.guestCard.guestLoyaltyNumber = "";
+				$scope.searchData.guestCard.email = "";
+
 				$scope.$broadcast('guestSearchStopped');
 			}
 		};
