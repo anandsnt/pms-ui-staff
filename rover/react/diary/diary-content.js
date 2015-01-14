@@ -65,12 +65,12 @@ var DiaryContent = React.createClass({
 			rowNumber 		= Math.floor(curPos / rowHeight),
 			row_data 		= state.data[rowNumber],
 			delta 			= Number((left - row_item_data.left).toFixed(3)),
-			props = 				this.props,			
-			display = 				props.display,
-			delta_x = 				e.pageX - state.origin_x, 
-			x_origin = 				(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
-			px_per_int = 			display.px_per_int,
-			px_per_ms = 			display.px_per_ms;
+			props 			= this.props,			
+			display 		= props.display,
+			delta_x 		= e.pageX - state.origin_x, 
+			x_origin 		= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			px_per_int 		= display.px_per_int,
+			px_per_ms 		= display.px_per_ms;
 			
 
 		//console.log((left -props.display.x_0 - props.iscroll.grid.x))

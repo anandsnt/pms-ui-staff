@@ -35,7 +35,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.showPayButton = false;
 	$scope.paymentModalSwipeHappened = false;
 	$scope.isSwipeHappenedDuringCheckin = false;
-
 	$scope.do_not_cc_auth = false;
 	var isAlreadyShownPleaseSwipeForCheckingIn = false;
 
@@ -431,6 +430,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	 }
 	 	 return showGuestBalance;
 	 };
+	
 	 $scope.addNewPaymentModal = function(swipedCardData){
 	 	//Current active bill is index - adding 1 to get billnumber
 	 	var billNumber = parseInt($scope.currentActiveBill)+parseInt(1);
@@ -844,6 +844,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        		scope: $scope
 	        	});
 			} else {
+				var addToGuest = false;
+				if($scope.isAddToGuestCardEnabledDuringCheckin!== undefined){
+					addToGuest = $scope.isAddToGuestCardEnabledDuringCheckin;
+				}
 				
 				if($scope.isSwipeHappenedDuringCheckin){
 					var cardExpiry = "20"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2)+"-01";
@@ -860,7 +864,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"card_expiry": cardExpiry,	
 						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
 						"do_not_cc_auth" : true,
-					    "no_post" : !$scope.roomChargeEnabled	
+					    "no_post" : !$scope.roomChargeEnabled,
+					    "add_to_guest_card" : addToGuest
 					};
 	 		    } else {
 	 		    	var data = {
@@ -961,7 +966,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        		scope: $scope
 	        });
 		}
-		else if($scope.reservationBillData.reservation_status == "CHECKEDIN" && !$scope.saveData.isEarlyDepartureFlag){
+		else if($scope.reservationBillData.reservation_status == "CHECKEDIN" && !$scope.saveData.isEarlyDepartureFlag && !$scope.reservationBillData.is_early_departure_penalty_disabled){
 			// If reservation status in INHOUSE - show early checkout popup
 			$scope.callBackMethodCheckout = function(){
 				$scope.clickedCompleteCheckout();
@@ -1319,7 +1324,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        if ( sntapp.cordovaLoaded ) {
 	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 	        };
-	    }, 100);
+	    }, 500);
 
 		};
 		var printDataFailureCallback = function(errorData){

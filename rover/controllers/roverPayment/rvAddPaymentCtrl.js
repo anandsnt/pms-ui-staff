@@ -21,6 +21,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 
 	BaseCtrl.call(this, $scope);
+	$scope.shouldShowWaiting = false;
 	$scope.addmode         = true;
 	$scope.savePayment     = {};
 	$scope.isFromGuestCard = (typeof $scope.passData.isFromGuestCard !== "undefined" && $scope.passData.isFromGuestCard) ? true:false;
@@ -30,7 +31,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.cardsList       = [];
 	$scope.setScroller('cardsList');
 	$scope.showCCPage = false;
-	$scope.shouldShowWaiting = false;
+	
 	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 		$scope.showManualEntryDisabledPopup = false;
 		$scope.showCCPage = true;
@@ -521,7 +522,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
 		//alert(JSON.stringify(data));
 		if($scope.passData.details.isClickedCheckin != undefined && $scope.passData.details.isClickedCheckin){
+			$scope.$emit("UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG", $scope.dataToSave.addToGuestCard);
 			successSwipePayment();
+			
 		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
 		{
 			data.user_id = $scope.passData.userId;

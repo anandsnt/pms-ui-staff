@@ -31,6 +31,7 @@ sntRover.service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', function( $q, RVBa
 		var url = '/api/hotel_settings.json';
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			that.hotelDetails = data;
+			that.hotelDetails.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 			that.fetchHotelBusinessDate();
 		},function(errorMessage){
 			deferred.reject(errorMessage);

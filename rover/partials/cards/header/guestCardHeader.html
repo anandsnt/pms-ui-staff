@@ -1,53 +1,47 @@
 <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')" ng-controller="RVGuestCardCtrl">
-  <section ng-if="!searchMode">
-   <figure class="guest-image" ng-click="switchCard('guest-card')"> 
-     <img ng-src="{{guestCardData.contactInfo.avatar}}" />
-     <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
-   </figure>
-   <form name="change-name" id="change-name">
-    <div class="holder">
-      <div class="entry" ng-click="openGuestCard()">
-        <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field />
-        <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field />
-        <strong class="status">
-          {{guestCardData.selectedLoyaltyLevel}}
-        </strong>
-      </div>
-    </div>
-    <div class="holder data">
-      <input type="text" data-size="{{guestCardData.contactInfo.address.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.address.city" ng-blur="updateContactInfo()" auto-grow-field />
-      <input type="text" data-size="{{guestCardData.contactInfo.address.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.address.state" ng-blur="updateContactInfo()" auto-grow-field />
-      <input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field />
-      <input type="email" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
-    </div>
-  </form>
-  <div class="card-actions" ng-show="viewState.isAddNewCard">
-      <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('guest')" translate="">Save new card</button>
-      <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('guest')" translate="">Discard</button>
-  </div>
-  <div class="card-actions" ng-hide="viewState.isAddNewCard">
-      <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachCard('guest')" translate="" ng-hide="viewState.isAddNewCard || !isStandAlone">Detach Card</button>
-  </div>
-</section>
-<section ng-if="searchMode">
-  <figure class="guest-image" ng-click="switchCard('guest-card')">
-    <img ng-src="{{ cardHeaderImage }}" alt="" />
-    <span class="search-indicator"></span>
-  </figure>
-  <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
-    <div class="holder">
-      <div class="entry" ng-click="openGuestCard()">        
-
-        <!-- Value in this input means we've searched for "Smi" in intial search screen -->
-        <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="searchData.guestCard.guestLastName" delay="1000" function-to-fire="searchGuest" />
-
-        <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="searchData.guestCard.guestFirstName" delay="1000" function-to-fire="searchGuest" />
-
-        <!-- TODO: REMOVE inline display:block for the below 2 input elements, once the drawer open/close is captured -->
-        <input name="gc-city" id="gc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="searchData.guestCard.guestCity" delay="1000" function-to-fire="searchGuest" />
-        <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" type="text" class="masked-input fixed loyalty h1" rv-delay-textbox ng-model="searchData.guestCard.guestLoyaltyNumber" delay="1000" function-to-fire="searchGuest" />
-      </div>
-    </div>
-  </form>
-</section>
+    <section ng-if="!searchMode">
+        <figure class="guest-image" ng-click="switchCard('guest-card')"> 
+            <img ng-src="{{guestCardData.contactInfo.avatar}}" />
+            <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
+        </figure>
+        <form name="change-name" id="change-name">
+            <div class="holder">
+                <div class="entry" ng-click="openGuestCard()">
+                    <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field />
+                    <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field />
+                    <strong class="status">{{guestCardData.selectedLoyaltyLevel}}</strong>
+                </div>
+            </div>
+            <div class="holder data">
+                <input type="text" data-size="{{guestCardData.contactInfo.address.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.address.city" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="text" data-size="{{guestCardData.contactInfo.address.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.address.state" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="text" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
+            </div>
+        </form>
+        <div class="card-actions" ng-show="viewState.isAddNewCard">
+            <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('guest')" translate="">Save new card</button>
+            <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('guest')" translate="">Discard</button>
+        </div>
+        <div class="card-actions" ng-hide="viewState.isAddNewCard">
+            <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachCard('guest')" translate="" ng-hide="viewState.isAddNewCard || !isStandAlone">Detach Card</button>
+        </div>
+    </section>
+    <section ng-if="searchMode">
+        <figure class="guest-image" ng-click="switchCard('guest-card')">
+            <img ng-src="{{ cardHeaderImage }}" alt="" />
+            <span class="search-indicator"></span>
+        </figure>
+        <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
+            <div class="holder">
+                <div class="entry" ng-click="openGuestCard()">
+                    <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="searchData.guestCard.guestLastName" delay="1000" function-to-fire="searchGuest" />
+                    <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="searchData.guestCard.guestFirstName" delay="1000" function-to-fire="searchGuest" />
+                    <input name="gc-email" id="gc-email" placeholder="E-mail" type="text" class="masked-input fixed email h1" rv-delay-textbox ng-model="searchData.guestCard.email" delay="1000" function-to-fire="searchGuest"  />
+                    <input name="gc-city" id="gc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="searchData.guestCard.guestCity" delay="1000" function-to-fire="searchGuest" />
+                    <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty No." type="text" class="masked-input fixed loyalty h1" rv-delay-textbox ng-model="searchData.guestCard.guestLoyaltyNumber" delay="1000" function-to-fire="searchGuest" />
+                </div>
+            </div>
+        </form>
+    </section>
 </div>

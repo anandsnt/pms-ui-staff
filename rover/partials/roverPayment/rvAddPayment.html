@@ -6,6 +6,14 @@
 		<span class="h3 message solo">Manual Credit Card Updates are Disabled!</span>
 	</div>
 </div>
+<div role="dialog" id="modal" class="modal-show" ng-show="shouldShowWaiting" ng-cloak>
+	<div class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;" >
+		<div class="centeralign alert-box">
+			WAITING FOR PAYMENT COMPLETION 
+		</div>
+		<div class="waiting-payment">&nbsp;</div>
+	</div>
+</div>
 <div role="dialog" id="modal" class="modal-show" ng-show="!showManualEntryDisabledPopup" ng-click="clearErrorMessage()" ng-cloak>
 <form ng-show="!shouldShowWaiting" method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC','select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
     <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
@@ -90,10 +98,4 @@
 		</div>
     </div>
 </form>
-<div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;" ng-cloak>
-	<div class="centeralign alert-box">
-		WAITING FOR PAYMENT COMPLETION 
-	</div>
-	<div class="waiting-payment">&nbsp;</div>
-</div>
 </div>

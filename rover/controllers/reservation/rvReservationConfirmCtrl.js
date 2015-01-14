@@ -262,7 +262,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.reservationData = {};
 			$scope.initReservationDetails();
 			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify({}));
-			$state.go('rover.reservation.diary', {
+			$state.go('rover.diary', {
 				isfromcreatereservation: false
 			});
 		};
