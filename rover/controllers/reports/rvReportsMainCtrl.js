@@ -319,6 +319,16 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['include_no_show'] = chosenReport.chosenIncludeNoShow;
 			};
 
+			// include market
+			if (chosenReport.hasMarket) {
+				params['include_market'] = chosenReport.showMarket;
+			};
+
+			// include source
+			if (chosenReport.hasSource) {
+				params['include_source'] = chosenReport.showSource;
+			};
+
 
 			var callback = function(response) {
 				if (changeView) {
