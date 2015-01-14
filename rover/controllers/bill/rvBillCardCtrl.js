@@ -1324,7 +1324,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        if ( sntapp.cordovaLoaded ) {
 	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 	        };
-	    }, 100);
+	    }, 500);
 
 		};
 		var printDataFailureCallback = function(errorData){
