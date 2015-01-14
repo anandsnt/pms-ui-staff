@@ -71,6 +71,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 		$scope.proceedCheckin = function(){
+			
 			$scope.closeDialog();
 			$scope.$emit("PROCEED_CHECKIN");
 		};
@@ -334,7 +335,9 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		} else {
 			cardName = ($scope.cardValues.tokenDetails.isSixPayment) ? $scope.passData.details.firstName+" "+$scope.passData.details.lastName: $scope.cardValues.cardDetails.userName;
 		}
+	
 		if($scope.depositData.addToGuestCard){
+			
 				var cardCode = $scope.depositData.card_type;
 				var cardNumber = $scope.depositData.cardNumber;
 				var dataToGuestList = {
@@ -342,11 +345,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 					"mli_token": cardNumber,
 					"card_expiry": $scope.depositData.expiry_date,
 					"card_name": cardName,
-					"id": data.id,
+					"id": $scope.depositData.selectedCard,
 					"isSelected": true,
 					"is_primary":false,
 					"payment_type":"CC",
-					"payment_type_id": 1
+					"payment_type_id": 1,
+					"is_credit_card": true
 				};
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
