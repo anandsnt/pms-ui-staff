@@ -26,7 +26,7 @@
                         <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowLevel2(index1, index2)}" ng-show="level2.show && level2.filterFlag" class="revenue-title toggle">
                             <span class="code short-text" ng-show="level2.show">{{level2.code}}</span>
                             <strong class="name" ng-show="level2.show">{{level2.name}}</strong>
-                            <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.total | number: precisonTwo}}</span>
+                            <span class="value" ng-show="level2.show">{{currencySymbol}}{{getTotalAmountOfCodeItem(index1 ,index2) | number: precisonTwo}}</span>
                         </a>
 
                         <!-- Third level - transactions  -->
