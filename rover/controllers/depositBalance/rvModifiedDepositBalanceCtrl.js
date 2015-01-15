@@ -293,6 +293,15 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		}
 	};
 	
+	// CICO-12408 : To calculate Total of fees and amount to pay.
+	$scope.calculateTotalAmount = function(amount) {
+		
+		var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
+		var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
+		
+		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
+	};
+		
 	// CICO-9457 : Data for fees details - standalone only.	
 	if($scope.isStandAlone)	{
 		if(!($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type == "CC")){
