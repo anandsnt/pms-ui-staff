@@ -47,5 +47,19 @@ sntRover.service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
+
+		this.fetchActiveUsers = function() {
+			var deferred = $q.defer(),
+				url = '/api/users/active';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data){
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);

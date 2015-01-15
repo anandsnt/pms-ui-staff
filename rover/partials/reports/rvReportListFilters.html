@@ -60,13 +60,10 @@
     </div>
 </div>
 
-<div class="filter" ng-if="HIDE_THIS_FEATURE">
+<div class="filter" ng-if="item.hasUserFilter">
     <label>User</label>
-    <div class="select">
-        <select name="" id="" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in userList" iscroll-stop-propagation>
-            <option value="">User</option>
-        </select>
-    </div>
+    <input class="icons icon-search" auto-complete auto-options="autoCompleteOptions" data-card-type="" type="text" placeholder="Search by User Name" value="" autocomplete="off" ng-model="item.chosenUsers" ul-class="find-cards"/>
+    <!-- <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList" id="vv"></select> -->
 </div>
 
 <div class="options" ng-if="showFauxSelect(item)">

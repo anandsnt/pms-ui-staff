@@ -86,6 +86,9 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['showRemove']    = true;
                         break;
 
+                    case 'User Activity':
+                        reportList[i]['reportIconCls'] = 'icon-activity';
+
                     default:
                         reportList[i]['reportIconCls'] = 'icon-report';
                         break;
@@ -135,10 +138,17 @@ sntRover.controller('RVReportListCrl', [
                         }];
                     };
 
-                    // check for user filter and keep a ref to that item
-                    if ( item.value === 'USER' ) {
-                        reportList[i]['hasUserFilter'] = item;
-                    };
+                    // // check for user filter and keep a ref to that item
+                    // if ( item.value === 'USER' ) {
+                    //     // currently only show users for 'User Activity' report
+                    //     if ( reportList[i].title == 'User Activity' ) {
+                    //         reportList[i]['hasUserFilter'] = item;
+                    //     }
+                    // };
+                    // currently only show users for 'User Activity' report
+                    if ( reportList[i].title == 'User Activity' ) {
+                        reportList[i]['hasUserFilter'] = true;
+                    }
 
                     // check for include notes filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_NOTES' ) {

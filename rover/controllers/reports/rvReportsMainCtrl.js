@@ -4,7 +4,8 @@ sntRover.controller('RVReportsMainCtrl', [
 	'reportsResponse',
 	'RVreportsSrv',
 	'$filter',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter) {
+	'activeUserList',
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -27,6 +28,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.reportList = reportsResponse.results;
 		$scope.reportCount = reportsResponse.total_count;
+		$scope.activeUserList = activeUserList;
 
 		$scope.showReportDetails = false;
 
@@ -249,7 +251,14 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include user ids
 			if ( chosenReport.hasUserFilter ) {
-				params['user_ids'] = chosenReport.chosenUsers || [];
+				console.log(chosenReport.chosenUsers );
+				var match =	_.find($scope.activeUserList, function(user) {
+					return user.full_name == chosenReport.chosenUsers;
+				});
+
+				if ( !!match ) {
+					params['user_ids'] = [match.id];
+				};
 			};
 
 			// include sort bys
@@ -342,5 +351,68 @@ sntRover.controller('RVReportsMainCtrl', [
 
            	$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, callback);
 		};
+
+
+
+
+		
+
+
+		var autoCompleteSelectHandler = function(event, ui) {
+		    if (ui.item.type === 'COMPANY') {
+		        $scope.reservationData.company.id = ui.item.id;
+		        $scope.reservationData.company.name = ui.item.label;
+		        $scope.reservationData.company.corporateid = ui.item.corporateid;
+		    } else {
+		        $scope.reservationData.travelAgent.id = ui.item.id;
+		        $scope.reservationData.travelAgent.name = ui.item.label;
+		        $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
+		    };
+
+		    // DO NOT return false;
+		};
+
+
+
+
+
+
+		var activeUserAutoCompleteObj = [];
+		_.each($scope.activeUserList, function(user) {
+			activeUserAutoCompleteObj.push({
+				label: user.full_name,
+				value: user.id
+			});
+		});
+
+		function split( val ) {
+			return val.split( /,\s*/ );
+		}
+		function extractLast( term ) {
+			return split( term ).pop();
+		}
+
+		$scope.autoCompleteOptions = {
+			delay: 0,
+			position: {
+			    my: 'left bottom',
+			    at: 'left top',
+			    collision: 'flip'
+			},
+			source: function( request, response ) {
+				// delegate back to autocomplete, but extract the last term
+				response( $.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)) );
+			},
+			select: function( event, ui ) {
+				setTimeout(function() {
+					this.value = ui.item.label;
+				}.bind(this), 100);
+				return false;
+	        },
+	        focus: function( event, ui ) {
+	        	return false;
+	        }
+		};
+
 	}
 ]);
