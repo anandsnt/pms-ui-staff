@@ -1,5 +1,5 @@
 angular.module('fauxMultiSelectModule', [])
-  .directive('fauxMultiSelect', ['$windowl', function($windowl) {
+  .directive('fauxMultiSelect', ['$window', function($window) {
       return {
         restrict : 'EA',
         templateUrl : '../../assets/directives/fauxMultiSelect/fauxMultiSelect.html',
