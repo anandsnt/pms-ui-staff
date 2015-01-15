@@ -275,9 +275,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		additionalAPIs();
 
-		var initateRoomTaskTimes = function(time) {
+		var initateRoomTaskTimes = function(time, tasktimes) {
 			var initialTime = {};
 			_.each($scope.roomTypesList, function(room) {
+				var currTime = tasktimes[room.id] || time;
 				initialTime[room.id] = {
 					hours: !!time ? time.split(':')[0] : '',
 					mins: !!time ? time.split(':')[1] : ''
@@ -353,7 +354,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					mins: !!time ? time.split(':')[1] : '',
 					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
 					id: this.item.id,
-					rooms_task_completion: initateRoomTaskTimes(time)
+					rooms_task_completion: initateRoomTaskTimes(time, this.rooms_task_completion)
 				};
 			}
 		};

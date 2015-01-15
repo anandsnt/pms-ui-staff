@@ -47,7 +47,7 @@
 					<div class="select select-col col1-3">
 						<select ng-model="eachTaskList.hours" class="styled" ng-change="updateIndividualTimes()">
 							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
+							<option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
 						</select>
 					</div>
 					<div class="select select-col col1-3">
@@ -79,7 +79,7 @@
 					<div class="select select-col col1-3">
 						<select ng-model="eachTaskList.rooms_task_completion[room.id].hours" class="styled">
 							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.rooms_task_completion[room.id].hours">{{i}}</option>
+							<option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.rooms_task_completion[room.id].hours">{{i}}</option>
 						</select>
 					</div>
 					<div class="select select-col col1-3">
