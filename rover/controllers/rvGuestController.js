@@ -1,7 +1,7 @@
 sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv',
 
 	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv) {
-
+		$s = $scope;
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -241,6 +241,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				//to reset current data in contcat info for determining any change
 				$scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
 			};
+
 			// check if there is any chage in data.if so call API for updating data
 			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
 				currentGuestCardHeaderData = that.newUpdatedData;
@@ -387,7 +388,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.guestCardVisible = true;
 			$scope.guestCardHeight = resizableMaxHeight;
 			// //refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
-			// $scope.$broadcast("contactTabActive");
+			$scope.$broadcast("contactTabActive");
 			// //refreshing the scroller in guestcard's tab
 			// $scope.$broadcast('REFRESHLIKESSCROLL');
 		};
@@ -440,6 +441,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.reservationData.guest.lastName = "";
 				$scope.reservationData.guest.city = "";
 				$scope.reservationData.guest.loyaltyNumber = "";
+				$scope.reservationData.guest.email = "";
+
 
 				// update current controller scope
 				$scope.guestFirstName = "";
@@ -560,6 +563,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 						guestData.stayCount = item.stay_count;
 						guestData.lastStay = {};
 						guestData.phone = item.home_phone;
+						guestData.email = item.email;
 						guestData.lastStay.date = item.last_stay.date;
 						guestData.lastStay.room = item.last_stay.room;
 						guestData.lastStay.roomType = item.last_stay.room_type;
@@ -568,12 +572,17 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 				$scope.$broadcast('guestSearchInitiated');
 			};
-			if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || $scope.searchData.guestCard.guestCity != '' || $scope.searchData.guestCard.guestLoyaltyNumber != '') {
+			if ($scope.searchData.guestCard.guestFirstName != '' 
+				|| $scope.searchData.guestCard.guestLastName != '' 
+				|| $scope.searchData.guestCard.guestCity != '' 
+				|| $scope.searchData.guestCard.guestLoyaltyNumber != ''
+				|| $scope.searchData.guestCard.email != '') {
 				var paramDict = {
 					'first_name': $scope.searchData.guestCard.guestFirstName,
 					'last_name': $scope.searchData.guestCard.guestLastName,
 					'city': $scope.searchData.guestCard.guestCity,
-					'membership_no': $scope.searchData.guestCard.guestLoyaltyNumber
+					'membership_no': $scope.searchData.guestCard.guestLoyaltyNumber,
+					'email': $scope.searchData.guestCard.email
 				};
 				if(shouldSearch()){
 					$scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
@@ -590,20 +599,29 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		      'lastName': '',
 		      'firstName': '',
 		      'city': '',
-		      'loyaltyNumber': ''
+		      'loyaltyNumber': '',
+		      'email': ''
 		    }
 
 		var shouldSearch = function(){
-			if( previousSearchData.lastName == $scope.searchData.guestCard.guestLastName && previousSearchData.firstName == $scope.searchData.guestCard.guestFirstName &&
-				previousSearchData.city == $scope.searchData.guestCard.guestCity && previousSearchData.loyaltyNumber == $scope.searchData.guestCard.guestLoyaltyNumber ){
+			if( previousSearchData.lastName == $scope.searchData.guestCard.guestLastName 
+				&& previousSearchData.firstName == $scope.searchData.guestCard.guestFirstName 
+				&& previousSearchData.city == $scope.searchData.guestCard.guestCity 
+				&& previousSearchData.loyaltyNumber == $scope.searchData.guestCard.guestLoyaltyNumber
+				&& previousSearchData.email == $scope.searchData.guestCard.email ){
 				return false;
 			}
 			previousSearchData.lastName = $scope.searchData.guestCard.guestLastName;
 			previousSearchData.firstName = $scope.searchData.guestCard.guestFirstName;
 			previousSearchData.city = $scope.searchData.guestCard.guestCity;
 			previousSearchData.loyaltyNumber = $scope.searchData.guestCard.guestLoyaltyNumber;
-			return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 ||
-				$scope.searchData.guestCard.guestCity != '' || $scope.searchData.guestCard.guestLoyaltyNumber != '');
+			previousSearchData.email = $scope.searchData.guestCard.email;
+
+			return ($scope.searchData.guestCard.guestLastName.length >= 2 
+				|| $scope.searchData.guestCard.guestFirstName.length >= 1 
+				|| $scope.searchData.guestCard.guestCity != '' 
+				|| $scope.searchData.guestCard.guestLoyaltyNumber != ''
+				|| $scope.searchData.guestCard.email != '');
 		}
 
 		$scope.searchCompany = function() {
@@ -749,8 +767,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
 			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
-			console.log($scope.reservationData);
-			console.log($scope.viewState);
 
 			if (!$scope.isHourly) {
 				var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
@@ -834,7 +850,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.selectGuest = function(guest, $event) {
-			console.log($stateParams.reservation);
 			$event.stopPropagation();
 			if ($scope.viewState.identifier == "CREATION") {
 				$scope.reservationData.guest.id = guest.id;
@@ -894,6 +909,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// Retain Search Keys
 			$scope.guestCardData.contactInfo.first_name = $scope.searchData.guestCard.guestFirstName;
 			$scope.guestCardData.contactInfo.last_name = $scope.searchData.guestCard.guestLastName;
+			$scope.guestCardData.contactInfo.email = $scope.searchData.guestCard.email;
+
 			$scope.guestCardData.contactInfo.address = {};
 			$scope.guestCardData.contactInfo.address.city = $scope.searchData.guestCard.guestCity;
 			$scope.guestCardData.membership_no = $scope.searchData.guestCard.guestLoyaltyNumber;

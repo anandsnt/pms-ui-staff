@@ -123,7 +123,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 				$scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
 			}
         }
-	}
+	};
 
     /*function to select the attached entity
     */
@@ -184,7 +184,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 }];             
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";                
             }
-    }
+    };
 
     /*
     * function used in template to map the reservation status to the view expected format
