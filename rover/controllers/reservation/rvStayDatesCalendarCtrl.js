@@ -392,7 +392,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				}
 
 				//Event is check-in
-				if (thisDate.getTime() === checkinDate.getTime()) {
+				if (thisDate.getDate() === checkinDate.getDate()&&thisDate.getMonth() === checkinDate.getMonth()&&thisDate.getYear() === checkinDate.getYear()) {
 					calEvt.id = "check-in";
 					calEvt.className = "check-in";
 					//For inhouse reservations, we can not move the arrival date
@@ -423,7 +423,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 					calEvt.id = "availability";
 					calEvt.className = "mid-stay";
 				//Event is check-out
-				} else if (thisDate.getTime() == checkoutDate.getTime()) {
+				} else if (thisDate.getDate()==checkoutDate.getDate()&&thisDate.getMonth()==checkoutDate.getMonth()&&thisDate.getYear()==checkoutDate.getYear()) {
 					calEvt.id = "check-out";
 					calEvt.className = "check-out";
 					calEvt.startEditable = "true";
