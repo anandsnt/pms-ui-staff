@@ -966,7 +966,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        		scope: $scope
 	        });
 		}
-		else if($scope.reservationBillData.reservation_status == "CHECKEDIN" && !$scope.saveData.isEarlyDepartureFlag){
+		else if($scope.reservationBillData.reservation_status == "CHECKEDIN" && !$scope.saveData.isEarlyDepartureFlag && !$scope.reservationBillData.is_early_departure_penalty_disabled){
 			// If reservation status in INHOUSE - show early checkout popup
 			$scope.callBackMethodCheckout = function(){
 				$scope.clickedCompleteCheckout();
@@ -1324,7 +1324,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        if ( sntapp.cordovaLoaded ) {
 	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 	        };
-	    }, 100);
+	    }, 500);
 
 		};
 		var printDataFailureCallback = function(errorData){

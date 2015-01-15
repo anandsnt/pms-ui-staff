@@ -6,7 +6,7 @@
         <div class="entry maid">
             <label for="worksheet-employee" translate>EMP</label>
             <div class="select">
-                <select ng-model="singleState.workSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList" id="worksheet-employee" name="worksheet-employee" >
+                <select ng-model="singleState.workSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList" id="worksheet-employee" name="worksheet-employee">
                         <option value="">{{'SELECT_EMPLOYEE'| translate}}</option>
                 </select>
             </div>
@@ -14,7 +14,7 @@
         <div class="entry task">
             <label for="worksheet-work-type" translate>TASK</label>
             <div class="select">
-                <select ng-model="singleState.workSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChange()">
+                <select ng-model="singleState.workSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type">
                 </select>
             </div>
         </div>
@@ -26,6 +26,7 @@
             </div>
         </div>
         <div class="actions">
+            <button type="button" class="button button white with-icon only-icon" ng-click="refreshSheet()"><span class="icons icon-reset"></span></button>
             <button type="button" class="button grey" ng-click="printWorkSheet()">{{'PRINT' | translate}}</button>
             <button type="button" class="button red" ng-click="deletWorkSheet()">{{'DELETE' | translate}}</button>
         </div>
@@ -101,6 +102,10 @@
     <!-- Single worksheet - assigned rooms -->
     <div class="assigned-rooms single-sheet">
         <h2>Assigned</h2>
+        <ul class="worksheet-summary show-on-print">
+            <li ng-bind="idToVal(singleState.workSheet.user_id, 'maid_name', employeeList)"></li>
+            <li ng-bind="idToVal(singleState.workSheet.work_type_id, 'name', workTypes)"></li>
+        </ul>
         <ul class="worksheet-summary">
             <li>{{'TIME_ALLOCATED' | translate}} <span>{{singleState.summary.timeAllocated}}</span></li>
             <li>{{'DASHBOARD_SEARCH_CHECKINGOUT' | translate}} <span>{{singleState.summary.departures}}</span></li>
