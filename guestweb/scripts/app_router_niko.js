@@ -70,7 +70,8 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/checkin/partials/Nikko/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
-	 	url: '/checkinArrival',
+	 	url: '/checkinArrival',	 	
+	 	controller:'checkinArrivalDetailsController',
 	 	templateUrl: '/assets/checkin/partials/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
