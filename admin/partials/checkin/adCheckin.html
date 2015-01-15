@@ -16,9 +16,9 @@
 
 					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>	
 
-					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>	
+					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" ng-show="checkinData.is_precheckin_only"></ad-checkbox>	
 				</fieldset>
-				<fieldset class="holder right">	
+				<fieldset class="holder right holder_margin">	
 
 					<div class="entry full-width">
 						<label>
@@ -50,26 +50,31 @@
 						</div>
 
 					</div>
+					
+					
+					
+				</fieldset>
+				<fieldset class="holder left holder_margin" >	
 					<div id="options" class="entry" ng-hide="hideAddOption">
 						<label>
+							{{ 'CHECKIN_ACTION' | translate}}
+						</label>
+						<label class="radio" ng-class="{'checked':checkinData.checkin_action== 'sent_to_queue'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action=='sent_to_queue'}"></span>
+							<input type="radio" value="sent_to_queue" ng-model="checkinData.checkin_action"  >
 							{{ 'SENT_TO_QUEUE' | translate}}
 						</label>
-						<label class="radio" ng-class="{'checked':checkinData.is_sent_to_queue== true}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_queue=='yes'}"></span>
-							<input type="radio" value="yes" ng-model="checkinData.is_sent_to_queue"  >
-							{{ 'YES_SMALL' | translate}}
-						</label>
 
-						<label class="radio" ng-class="{'checked':!checkinData.is_sent_to_queue}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_queue == 'no'}"></span>
-							<input type="radio" value="no" ng-model="checkinData.is_sent_to_queue" >
-							{{ 'NO_SMALL' | translate}}
+						<label class="radio" ng-class="{'checked':checkinData.checkin_action == 'auto_checkin'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action == 'auto_checkin'}"></span>
+							<input type="radio" value="auto_checkin" ng-model="checkinData.checkin_action" >
+							{{ 'AUTO_CHECK_IN' | translate}}
 						</label>
 
 					</div>
 
 
-					<div class="entry" ng-hide="hidePriorMinutes ||hideAddOption">
+					<div class="entry" ng-hide="hideAddOption">
 						<label>
 							{{ 'MINUTES_PRIOR_TO_ETA' | translate}}
 						</label>
@@ -83,8 +88,71 @@
 						</div>
 					</div>
 				</fieldset>
+				
+				<fieldset class="holder left holder_margin"  ng-show="checkinData.is_sent_to_queue == 'no'">	
+					<div class="entry full-width" >
+						<label>
+							{{ 'START_AUTO_CHECK_IN_FROM' | translate}}
+						</label>
+							<div class="select select-col select-margin">
+								
+								<select ng-model="checkinData.auto_checkin_from_hour">
+									<option value="">HH</option>
+									<option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+								</select>
+							</div>
+							<div class="select select-col select-margin">
+								
 
+								<select ng-model="checkinData.auto_checkin_from_minute">
+									<option value="">MM</option>
+									<option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+								</select>
 
+							</div>
+							<div class="select select-col select-margin">
+
+								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.start_auto_checkin_from_prime_time">
+								</select>
+
+							</div>
+					</div>
+					</fieldset>
+				<fieldset class="holder right holder_margin" ng-show="checkinData.is_sent_to_queue == 'no'">	
+					<div class="entry full-width" >
+						<label>
+							{{ 'START_AUTO_CHECK_IN_TO' | translate}}
+						</label>
+							<div class="select select-col select-margin">
+								
+								<select ng-model="checkinData.auto_checkin_to_hour">
+									<option value="">HH</option>
+									<option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+								</select>
+							</div>
+							<div class="select select-col select-margin">
+								
+
+								<select ng-model="checkinData.auto_checkin_to_minute">
+									<option value="">MM</option>
+									<option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+								</select>
+
+							</div>
+							<div class="select select-col select-margin">
+
+								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.start_auto_checkin_to_prime_time">
+								</select>
+
+							</div>
+						
+					</div>
+				</fieldset>
+				<fieldset class="holder full-width">
+					<ad-checkbox is-checked="checkinData.is_sent_none_cc_reservations_to_front_desk_only" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width" ></ad-checkbox>
+				</fieldset>	
+					
+					
 				<fieldset class="holder full-width">
 					<div class="entry">
 						<label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
@@ -182,6 +250,9 @@
 							
 						</label>
 
+					</div>
+					<div class="entry full-width">
+						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label = "{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder = ""></ad-textarea>
 					</div>
 					<div class="entry full-width">
 
