@@ -275,6 +275,17 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		additionalAPIs();
 
+		var initateRoomTaskTimes = function(time) {
+			var initialTime = {};
+			_.each($scope.roomTypesList, function(room) {
+				initialTime[room.id] = {
+					hours: !!time ? time.split(':')[0] : '',
+					mins: !!time ? time.split(':')[1] : ''
+				};
+			})
+			return initialTime;
+		}
+
 		var resetEachTaskList = function() {
 			$scope.eachTaskList = {
 				name: '',
@@ -284,16 +295,30 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: [],
 				is_occupied: '',
 				is_vacant: '',
-				hours: '00',
-				mins: '00',
-				task_completion_hk_status_id: ''
+				hours: '',
+				mins: '',
+				task_completion_hk_status_id: '',
+				rooms_task_completion: initateRoomTaskTimes()
 			};
 		};
 		resetEachTaskList();
 
 		$scope.taskListForm = 'add';
 
+		$scope.updateIndividualTimes = function() {
+			_.each($scope.roomTypesList, function(room) {
+				if ($scope.eachTaskList.rooms_task_completion[room.id].hours == '') {
+					$scope.eachTaskList.rooms_task_completion[room.id].hours = $scope.eachTaskList.hours;	
+				}
+				if ($scope.eachTaskList.rooms_task_completion[room.id].mins == '') {
+					$scope.eachTaskList.rooms_task_completion[room.id].mins = $scope.eachTaskList.mins;
+				}
+			})
+		}
+
+
 		$scope.openTaskListForm = function(typeIndex) {
+
 			if (typeIndex == 'new') {
 				$scope.taskListForm = 'add';
 				$scope.taskListClickedElement = 'new';
@@ -318,7 +343,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					hours: !!time ? time.split(':')[0] : '',
 					mins: !!time ? time.split(':')[1] : '',
 					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
-					id: this.item.id
+					id: this.item.id,
+					rooms_task_completion: initateRoomTaskTimes(time)
 				};
 			}
 		};
