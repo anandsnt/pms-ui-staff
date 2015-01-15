@@ -41,22 +41,22 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 
 	//navigate to different pages
 
-	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
- 		$location.path('/tripDetails');
- 	}	
- 	else if($rootScope.isCheckedin){
- 		$location.path('/checkinSuccess');
- 	}
-    else if($attrs.isCheckin ==='true'){
- 		$location.path('/checkinConfirmation');
- 	}
-  	else if($rootScope.isCheckedout)	{
-		$location.path('/checkOutStatus');	
-	}
-	else{
-		$location.path('/checkoutRoomVerification');
-	};
-
+	// if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
+ // 		$location.path('/tripDetails');
+ // 	}	
+ // 	else if($rootScope.isCheckedin){
+ // 		$location.path('/checkinSuccess');
+ // 	}
+ //    else if($attrs.isCheckin ==='true'){
+ // 		$location.path('/checkinConfirmation');
+ // 	}
+ //  	else if($rootScope.isCheckedout)	{
+	// 	$location.path('/checkOutStatus');	
+	// }
+	// else{
+	// 	$location.path('/checkoutRoomVerification');
+	// };
+	$location.path('/checkinArrival');
 
 }]);
 
