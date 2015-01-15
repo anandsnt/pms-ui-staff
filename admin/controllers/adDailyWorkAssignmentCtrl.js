@@ -340,7 +340,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			} else {
 				$scope.taskListForm = 'edit';
 				$scope.taskListClickedElement = typeIndex;
-
 				var time = this.item.completion_time;
 				$scope.eachTaskList = {
 					name: this.item.name,
