@@ -139,8 +139,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		angular.forEach(value.group_items, function(grpValue, grpKey){
 			billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
 		});
-		value.billDaysWidth = billDaysWidth + parseInt(60);//60 for ADD button
-	});	
+		value.billDaysWidth = billDaysWidth + parseInt(75);//60 for ADD button and space
+	});	 
 	$scope.init = function(reservationBillData){
 		
 		/*
