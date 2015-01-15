@@ -18,7 +18,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false};
 	$scope.setScroller('registration-content', scrollOptions);
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
-  	$scope.setScroller('billDays', scrollerOptionForSummary);
+  	
   	
 	$scope.clickedButton = $stateParams.clickedButton;
 	$scope.saveData = {};
@@ -110,7 +110,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if($scope.routingArrayCount > 0)
 			width = width + 200;
 		if($scope.incomingRoutingArrayCount > 0)
-			width = width + 275
+			width = width + 275;
 		if($scope.clickedButton == 'checkinButton')
 			width = width + 230;
 		if($scope.reservationBillData.bills.length < 10)
@@ -129,6 +129,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		data.billNumber = value.bill_number;
 		data.billIndex = key;
 		$scope.reviewStatusArray.push(data);
+		billDaysWidth = 0;
+		angular.forEach(value.days, function(daysValue, daysKey){
+			billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
+		});
+		angular.forEach(value.addons, function(addonsValue, addonsKey){
+			billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
+		});
+		angular.forEach(value.group_items, function(grpValue, grpKey){
+			billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
+		});
+		value.billDaysWidth = billDaysWidth + parseInt(60);//60 for ADD button
 	});	
 	$scope.init = function(reservationBillData){
 		
@@ -1407,5 +1418,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	    		scope : $scope
 	    	});
 	};
+
+	
+	$scope.setScroller('billDays', scrollerOptionForSummary);
+	$timeout(function(){
+			$scope.refreshScroller('billDays');
+		}, 4000);
 
 }]);
