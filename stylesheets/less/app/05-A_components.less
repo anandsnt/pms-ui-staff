@@ -7069,6 +7069,29 @@
         }
     }
 
+    @media only screen and (max-width: 970px) {
+        #report-details {
+            #report-update {
+                .date-range { width: 260px; }
+
+                .date-range,
+                .time-range {
+                    span { margin: 0 5px; }
+                }
+
+                .options { 
+                    width: 120px; 
+
+                    &.long-list { width: 120px; }
+                }
+
+                .faux-select-options {
+                    min-width: 180px;
+                }
+            }
+        }
+    }
+
     @media only screen and (min-width: 1024px) {
         #report-details {
             .report-content {
@@ -7144,43 +7167,6 @@
             }                
         }
     }
-
-    /*@media only screen and (max-width: 970px) {
-        #report-update {
-            padding: 10px;
-
-            .date-range,
-            .time-range,
-            .filter,
-            .sort,
-            .options {
-                padding-right: 0;
-                margin-right: 10px;
-                &:after {
-                    background: none;
-                }
-            }
-
-            .date-range {
-                width: 250px;
-            }
-
-            .options {
-                width: 120px;
-            }
-
-            .date-range,
-            .time-range {
-                span {
-                    margin: 0 5px;
-                }
-            }
-
-            .faux-select-options {
-                min-width: 170px;
-            }
-        }
-    }*/
 
 /* Reservations             ==============================*/
     .create-reservation {
