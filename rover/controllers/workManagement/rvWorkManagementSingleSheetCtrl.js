@@ -374,6 +374,16 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					};
 				});
 			} else {
+				_.each(worktypesSet, function(set, key) {
+				$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
+							"date"        : $stateParams.date,
+							"task_id"     : parseInt(key),							
+							"assignments" : [{								
+								"assignee_id"   : userId,
+								"room_ids"      : [],								
+							}]
+						}, onSaveSuccess, onSaveFailure);
+				});
 				afterAPIcall();
 			};
 		};
