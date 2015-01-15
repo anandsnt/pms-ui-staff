@@ -168,6 +168,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.filterOpen = true;
 		};
 
+		$scope.refreshData = function() {
+			$_callRoomsApi();
+		};
+
 		$scope.filterDoneButtonPressed = function() {
 			var _hasFilterChanged   = false,
 				_hasRoomTypeChanged = false;
