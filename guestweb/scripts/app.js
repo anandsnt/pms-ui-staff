@@ -34,6 +34,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isCcAttachedFromGuestWeb = false;
  	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
+ 	//to change
+ 	$rootScope.isAutoCheckinOn = true;
  	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
