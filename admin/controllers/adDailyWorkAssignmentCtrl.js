@@ -277,16 +277,16 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		var resetEachTaskList = function() {
 			$scope.eachTaskList = {
-				name: '',
-				work_type_id: '',
-				room_type_ids: [],
-				front_office_status_ids: [],
-				reservation_statuses_ids: [],
-				is_occupied: '',
-				is_vacant: '',
-				hours: '00',
-				mins: '00',
-				task_completion_hk_status_id: ''
+				name                         : '',
+				work_type_id                 : '',
+				room_type_ids                : [],
+				front_office_status_ids      : [],
+				reservation_statuses_ids     : [],
+				is_occupied                  : '',
+				is_vacant                    : '',
+				hours                        : '00',
+				mins                         : '00',
+				task_completion_hk_status_id : ''
 			};
 		};
 		resetEachTaskList();
@@ -308,17 +308,17 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 				var time = this.item.completion_time;
 				$scope.eachTaskList = {
-					name: this.item.name,
-					work_type_id: this.item.work_type_id,
-					room_type_ids: this.item.room_type_ids,
-					front_office_status_ids: this.item.front_office_status_ids,
-					reservation_statuses_ids: this.item.reservation_statuses_ids,
-					is_occupied: this.item.is_occupied,
-					is_vacant: this.item.is_vacant,
-					hours: !!time ? time.split(':')[0] : '',
-					mins: !!time ? time.split(':')[1] : '',
-					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
-					id: this.item.id
+					name                         : this.item.name,
+					work_type_id                 : this.item.work_type_id,
+					room_type_ids                : this.item.room_type_ids,
+					front_office_status_ids      : this.item.front_office_status_ids,
+					reservation_statuses_ids     : this.item.reservation_statuses_ids,
+					is_occupied                  : this.item.is_occupied,
+					is_vacant                    : this.item.is_vacant,
+					hours                        : !!time ? time.split(':')[0] : '',
+					mins                         : !!time ? time.split(':')[1] : '',
+					task_completion_hk_status_id : this.item.task_completion_hk_status_id,
+					id                           : this.item.id
 				};
 			}
 		};
