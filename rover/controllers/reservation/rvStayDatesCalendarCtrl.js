@@ -315,6 +315,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.checkoutDateInCalender = finalCheckout;
 
 			//Reload the calendar with new arrival, departure dates
+			$scope.nights = getNumOfStayNights();
 			$scope.refreshCalendarEvents()
 		};
 
@@ -418,6 +419,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 						calEvt.durationEditable = "false"
 					}
 
+
 				//mid-stay range
 				} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 					calEvt.id = "availability";
@@ -497,6 +499,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.checkoutDateInCalender = finalCheckout;
 
 			//Reload the calendar with new arrival, departure dates
+			$scope.nights = getNumOfStayNights();
 			$scope.refreshCalendarEvents()
 		};
 
