@@ -2219,3 +2219,41 @@ body > div[ng-view] {
 .margin-top-10{
 	margin-top:10px !important;
 }
+
+/* Loading indicator CICO-10525*/
+.loading-wrapper {
+	color: #FFFFFF;
+    font-family: 'Source Sans Pro';
+    font-weight: 200;
+    line-height: 100%;
+    text-align: center; 
+    top: 50%; 
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    z-index:2;
+}
+
+.main-container {
+	position:relative;
+   	height: 100%;
+    top:0;
+    z-index:1;
+	
+}
+
+.loading-text {
+    font-size: 30px;
+}
+
+.loading-container {
+	height: 100%;
+}
+
+@media screen and (max-width: 320px) {
+	.loading-text {
+		font-size: 22px;
+	}
+}
+
+
