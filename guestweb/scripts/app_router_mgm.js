@@ -68,6 +68,10 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	url: '/checkinSuccess',
 	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
 	 	title: 'Status - Check-in'
+ 	 }).state('checkinArrival', {
+	 	url: '/checkinArrival',
+	 	templateUrl: '/assets/checkin/partials/MGM/arrivalDetails.html',
+	 	title: 'Arrival Details - Check-in'
 	 });
 
 
