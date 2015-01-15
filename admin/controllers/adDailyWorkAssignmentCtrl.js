@@ -286,6 +286,16 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			return initialTime;
 		}
 
+		var getRoomTaskTimes = function() {
+			var times = {};
+			_.each($scope.roomTypesList, function(room) {
+				if ($scope.eachTaskList.room_type_ids.indexOf(room.id) > -1) {
+					times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
+				}
+			});
+			return times;
+		}
+
 		var resetEachTaskList = function() {
 			$scope.eachTaskList = {
 				name: '',
@@ -308,7 +318,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.updateIndividualTimes = function() {
 			_.each($scope.roomTypesList, function(room) {
 				if ($scope.eachTaskList.rooms_task_completion[room.id].hours == '') {
-					$scope.eachTaskList.rooms_task_completion[room.id].hours = $scope.eachTaskList.hours;	
+					$scope.eachTaskList.rooms_task_completion[room.id].hours = $scope.eachTaskList.hours;
 				}
 				if ($scope.eachTaskList.rooms_task_completion[room.id].mins == '') {
 					$scope.eachTaskList.rooms_task_completion[room.id].mins = $scope.eachTaskList.mins;
@@ -391,7 +401,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
 				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
-				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id
+				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
+				rooms_task_completion: getRoomTaskTimes()
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postTaskListItem, params, callback);
@@ -419,7 +430,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
-				id: $scope.eachTaskList.id
+				id: $scope.eachTaskList.id,
+				rooms_task_completion: getRoomTaskTimes()
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
