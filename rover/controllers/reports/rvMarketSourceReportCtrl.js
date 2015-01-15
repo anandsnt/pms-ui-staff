@@ -5,6 +5,24 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 	'RVreportsSrv',
 	function($scope, $rootScope, $filter, RVreportsSrv) {
 
+		/**
+		 * Method to get the
+		 */
+		var getRange = function(numbers) {
+			var maxValue = Math.max.apply(null, numbers);
+			
+			var breakingPoint = 10;
+			if (maxValue > 100 && maxValue <= 200)
+				breakingPoint = 20;
+			else if (maxValue > 200 && maxValue <= 400)
+				breakingPoint = 40;
+			else if (maxValue > 400)
+				breakingPoint = 80;
+
+				
+
+		}
+
 		$scope.setScroller('report-details-scroll');
 
 		$scope.results = [{
