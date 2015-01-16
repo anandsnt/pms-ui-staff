@@ -72,6 +72,12 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADIcareServicesCtrl',
 			url : '/icare'
 		});
+
+		$stateProvider.state('admin.keyEncoders', {
+			templateUrl: '/assets/partials/keyEncoders/adKeyEncoderList.html',
+			controller: 'ADKeyEncoderCtrl',
+			url : '/encoders'
+		});
 		
         
 });
