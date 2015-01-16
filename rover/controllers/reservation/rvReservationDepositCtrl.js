@@ -19,7 +19,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.showCCPage = false;
 		$scope.newCardAdded = false;
 		$scope.shouldShowWaiting = false;
-		
+		$scope.isSwipedCardSave = false;
 		$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
 		
 		$scope.depositData = {
@@ -71,6 +71,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 		$scope.proceedCheckin = function(){
+			
 			$scope.closeDialog();
 			$scope.$emit("PROCEED_CHECKIN");
 		};
@@ -328,19 +329,28 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.errorOccured = false;
 		$scope.depositPaidSuccesFully = true;
 		$scope.isLoading =  false;
+		var cardName = "";
+		if($scope.isSwipedCardSave){
+			cardName = $scope.swipedCardHolderName;
+		} else {
+			cardName = ($scope.cardValues.tokenDetails.isSixPayment) ? $scope.passData.details.firstName+" "+$scope.passData.details.lastName: $scope.cardValues.cardDetails.userName;
+		}
+	
 		if($scope.depositData.addToGuestCard){
+			
 				var cardCode = $scope.depositData.card_type;
 				var cardNumber = $scope.depositData.cardNumber;
 				var dataToGuestList = {
 					"card_code": cardCode,
 					"mli_token": cardNumber,
 					"card_expiry": $scope.depositData.expiry_date,
-					"card_name": $scope.newPaymentInfo.cardDetails.userName,
-					"id": data.id,
+					"card_name": cardName,
+					"id": $scope.depositData.selectedCard,
 					"isSelected": true,
 					"is_primary":false,
 					"payment_type":"CC",
-					"payment_type_id": 1
+					"payment_type_id": 1,
+					"is_credit_card": true
 				};
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
@@ -467,16 +477,18 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 	$scope.$on("SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN", function(e, swipedCardDataToRender){
 		$scope.showCCPage = true;
 		$scope.addmode = true;
+		$scope.depositData.paymentType  = "CC";
+		$scope.swipedCardHolderName = swipedCardDataToRender.nameOnCard;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
 		var data 				 = swipedCardDataToSave;
-		data.reservation_id 	 = $scope.passData.reservationId;
+	//	data.reservation_id 	 = $scope.passData.reservationId;
 		data.payment_credit_type = swipedCardDataToSave.cardType;
 		data.credit_card 		 = swipedCardDataToSave.cardType;
 		data.card_expiry 		 = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
 		data.add_to_guest_card   = swipedCardDataToSave.addToGuestCard;
-		
+		$scope.isSwipedCardSave = true;
 		
 		var options = {
 	    		params: 			data,
