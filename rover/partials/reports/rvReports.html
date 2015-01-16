@@ -40,7 +40,7 @@
 						<button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span></button>
 					</div>
 				</div>
-				<div style="height:600px" ng-iscroll="report-details-scroll" ng-controller="rvMarketSourceReportCtrl" ng-include="'/assets/partials/reports/rvMarketSourceReport.html'"></div>
+				<div ng-controller="rvMarketSourceReportCtrl" ng-include="'/assets/partials/reports/rvMarketSourceReport.html'"></div>
 			</section>
 
 			<section ng-if="chosenReport.title !='Booking Source & Market Report'">
