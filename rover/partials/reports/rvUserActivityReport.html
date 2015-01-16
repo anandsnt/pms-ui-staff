@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index" class="each.trCls">
+<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
 	<td>{{ each.date | date : dateFormat }}, {{ time }}</td>
 	<td>{{ each.action_type }}</td>
 	<td>{{ each.user_name }}</td>
