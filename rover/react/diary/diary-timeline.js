@@ -1,4 +1,22 @@
 var Timeline = React.createClass({
+	__get_property_time_line_showing_point: function(){
+		var props 					= this.props,
+			display 				= props.display,
+			prop_time 				= display.property_date_time.start_date,
+			start_time				= (display.x_n  instanceof Date) ? display.x_n.getTime() : display.x_n,
+			end_time				= (display.x_p  instanceof Date) ? display.x_p.getTime() : display.x_p,
+			point_to_plot			= -1 ; //-1 do not wanted to show red line
+		
+		if(start_time <= prop_time <= end_time) {
+			//diff of prop time & start time
+			var diff_s_e 	= (end_time - start_time),
+				diff_p_s 	= (prop_time - start_time),
+				ms_int		= diff_s_e / (display.hours * display.intervals_per_hour);
+			point_to_plot 	= diff_p_s / ms_int;
+			point_to_plot++; //since zeroth point is considered as 
+		}
+		return point_to_plot;
+	},
 	render: function() {
 		var props 					= this.props,
 			state 					= this.state,
@@ -10,7 +28,8 @@ var Timeline = React.createClass({
 			px_per_int 				= display.px_per_int + 'px',
 			px_per_hr 				= display.px_per_hr + 'px',
 			start_time 				= display.x_n_time, 
-			self 					= this;
+			self 					= this,
+			current_time_plot_point = this.__get_property_time_line_showing_point();
 
 		(function() {
 			var time = 0; //start_time.hours;
@@ -26,7 +45,9 @@ var Timeline = React.createClass({
 			clone = new tzIndependentDate( today.valueOf() ),
 			tmrow = new tzIndependentDate( clone.setDate(clone.getDate() + 1) ),
 			todayShortDate,
-			tmrowShortDate;
+			tmrowShortDate,
+			spanClass,
+			interval_counter = 1;
 
 		if ( today instanceof Date ) {
 			todayShortDate = today.toComponents().date.toShortDateString();
@@ -48,10 +69,13 @@ var Timeline = React.createClass({
 					className: 'date',
 				}, (i < 23 ? todayShortDate : tmrowShortDate) ));
 			};
-
-			for(var j = 0; j < display.intervals_per_hour; j++) {
+			for(var j = 0; j < display.intervals_per_hour; j++, interval_counter++) {
+				spanClass = 'interval-' + (j+1);
+				if(interval_counter == current_time_plot_point ){
+					spanClass += ' active';
+				}
 				interval_spans.push(React.DOM.span({
-					className: 'interval-' + (j + 1),
+					className: spanClass,
 					style: {
 						width: px_per_int
 					}
