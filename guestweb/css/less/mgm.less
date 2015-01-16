@@ -40,6 +40,10 @@ body {
     
 }
 
+.upgrade-details .upgrades-btn{
+	background-color: orange !important;
+}
+
 .jumbotron .check-inout-wrapper,.checkout-status{
 	border-bottom: none !important;
     border-top: none !important;
@@ -166,10 +170,6 @@ body {
 }
 
 @media (max-width: 480px) {
-	body {
-	  	background: url(/assets/img/MGM/mgm-bg.png) repeat top left !important;
-	}
-
 	.checkout-time-container{
 		span{
 			font-size:16px !important;
@@ -197,7 +197,16 @@ body {
 
 }
 
-
+@media (max-width:320px) {
+	body {
+	  	background: url(/assets/img/MGM/mgm-bg.png) repeat top left !important;
+	}
+}
+@media (min-width: 320px) and (max-width:480px) {
+	body {
+	  	background: url(/assets/img/MGM/mgm-bg-medium.png) repeat top left !important;
+	}
+}
 @media screen and (min-width: 900px) {
 
 	.link-btn.with-bg{
