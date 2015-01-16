@@ -60,13 +60,10 @@
 	</div>
 </div>
 
-<div class="filter" ng-if="HIDE_THIS_FEATURE">
-	<label>User</label>
-	<div class="select">
-		<select name="" id="" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in userList">
-			<option value="">User</option>
-		</select>
-	</div>
+<div class="filter" ng-if="chosenReport.hasUserFilter">
+    <label>User</label>
+    <input class="icons icon-search" auto-complete auto-options="autoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(chosenReport)">
+    <select multiple class="hidden" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
 </div>
 
 <div class="options" ng-if="showFauxSelect(chosenReport)">

@@ -250,15 +250,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			// include user ids
-			if ( chosenReport.hasUserFilter ) {
-				console.log(chosenReport.chosenUsers );
-				var match =	_.find($scope.activeUserList, function(user) {
-					return user.full_name == chosenReport.chosenUsers;
-				});
-
-				if ( !!match ) {
-					params['user_ids'] = [match.id];
-				};
+			if ( chosenReport.hasUserFilter && chosenReport.chosenUsers && chosenReport.chosenUsers.length ) {
+				params['user_ids'] = chosenReport.chosenUsers;
 			};
 
 			// include sort bys
@@ -380,7 +373,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		var activeUserAutoCompleteObj = [];
 		_.each($scope.activeUserList, function(user) {
 			activeUserAutoCompleteObj.push({
-				label: user.full_name,
+				label: user.email,
 				value: user.id
 			});
 		});
@@ -392,7 +385,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			return split( term ).pop();
 		}
 
+		var thisReport;
+		$scope.returnItem = function(item) {
+			thisReport = item;
+		};
+
 		$scope.autoCompleteOptions = {
+
 			delay: 0,
 			position: {
 			    my: 'left bottom',
@@ -404,14 +403,43 @@ sntRover.controller('RVReportsMainCtrl', [
 				response( $.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)) );
 			},
 			select: function( event, ui ) {
+				var uiValue  = split( this.value );
+				uiValue.pop();
+				uiValue.push( ui.item.label );
+				uiValue.push( "" );
+
+				this.value = uiValue.join( ", " );
 				setTimeout(function() {
-					this.value = ui.item.label;
+					$scope.$apply(function() {
+						thisReport.uiChosenUsers = uiValue.join( ", " );
+					});
 				}.bind(this), 100);
 				return false;
+	        },
+	        close: function( event, ui ) {
+				var uiValues = split( this.value );
+				var modelVal = [];
+
+				_.each(activeUserAutoCompleteObj, function(user) {
+					var match = _.find(uiValues, function(email) {
+						return email == user.label;
+					});
+
+					if ( !!match ) {
+						modelVal.push( user.value );
+					};
+				});
+
+				setTimeout(function() {
+					$scope.$apply(function() {
+						thisReport.chosenUsers = modelVal;
+					});
+				}.bind(this), 100);
 	        },
 	        focus: function( event, ui ) {
 	        	return false;
 	        }
+
 		};
 
 	}

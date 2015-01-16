@@ -44,23 +44,81 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset this
 			$scope.parsedApiFor = undefined;
 
-			// is this guest reports or not
-			if ( $scope.chosenReport.title == 'Arrival' ||
-					$scope.chosenReport.title == 'Cancelation & No Show' ||
-					$scope.chosenReport.title == 'Departure' ||
-					$scope.chosenReport.title == 'In-House Guests' ) {
-				$scope.isGuestReport = true;
-			} else {
-				$scope.isGuestReport = false;
+
+
+
+			// // does this report has no totals
+			// if ( $scope.chosenReport.title == 'In-House Guests' ||
+			// 		$scope.chosenReport.title == 'Departure' ||
+			// 		$scope.chosenReport.title == 'Arrival' ||
+			// 		$scope.chosenReport.title == 'Cancelation & No Show' ||
+			// 		$scope.chosenReport.title == 'User Activity' ) {
+			// 	$scope.hasNoTotals = true;
+			// } else {
+			// 	$scope.hasNoTotals = false;
+			// };
+
+			// // does this report has no sorting
+			// if ( $scope.chosenReport.title == 'Cancelation & No Show' ) {
+			// 	$scope.hasNoSorting = true;
+			// } else {
+			// 	$scope.hasNoSorting = false;
+			// };
+
+			// // is this guest reports or not
+			// if ( $scope.chosenReport.title == 'Arrival' ||
+			// 		$scope.chosenReport.title == 'Cancelation & No Show' ||
+			// 		$scope.chosenReport.title == 'Departure' ||
+			// 		$scope.chosenReport.title == 'In-House Guests' ||
+			// 		$scope.chosenReport.title == 'User Activity' ) {
+			// 	$scope.isGuestReport = true;
+			// } else {
+			// 	$scope.isGuestReport = false;
+			// };
+
+			// // is this is a large report
+			// if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
+			// 		$scope.chosenReport.title == 'Web Check Out Conversion' ) {
+			// 	$scope.isLargeReport = true;
+			// } else {
+			// 	$scope.isLargeReport = false;
+			// };
+
+			// // is this is a log report
+			// if ( $scope.chosenReport.title == 'User Activity' ) {
+			// 	$scope.isLogReport = true;
+			// } else {
+			// 	$scope.isLogReport = false;
+			// };
+
+			switch( $scope.chosenReport.title ) {
+				case 'In-House Guests':
+				case 'Departure':
+				case 'Arrival':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					break;
+
+				case 'Cancelation & No Show':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.hasNoSorting = true;
+					break;
+
+				case 'User Activity':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.isLogReport = true;
+					break;
+
+				case 'Web Check In Conversion':
+				case 'Web Check Out Conversion':
+					$scope.isLargeReport = true;
+					break;
 			};
 
-			// is this is a large report
-			if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
-					$scope.chosenReport.title == 'Web Check Out Conversion' ) {
-				$scope.isLargeReport = true;
-			} else {
-				$scope.isLargeReport = false;
-			};
+
+
 
 			// for hard coding styles for report headers
 			// if the header count is greater than 4
@@ -189,13 +247,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 			// new more detailed reports
-			if ( $scope.chosenReport.title === 'In-House Guests' ||
-					$scope.chosenReport.title === 'Arrival' ||
-					$scope.chosenReport.title === 'Departure' ||
-					$scope.chosenReport.title === 'Cancelation & No Show' ) {
-				$scope.parsedApiFor = $scope.chosenReport.title;
-				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
-			};
+			$scope.parsedApiFor = $scope.chosenReport.title;
+			$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 		};
 
 		// we are gonna need to drop some pagination
@@ -242,27 +295,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    // keep track of the Users chosen for UI
 		    // if there is just one user
 		    if ( $scope.chosenReport.chosenUsers ) {
-		        if ( typeof $scope.chosenReport.chosenUsers === 'number' ) {
+		    	var _userNames = [];
 
-		            // first find the full name
-		            var name = _.find($scope.userList, function(user) {
-		                return user.id === $scope.chosenReport.chosenUsers;
-		            });
+		    	_.each($scope.activeUserList, function(user) {
+					var match = _.find($scope.chosenReport.chosenUsers, function(id) {
+						return id == user.id;
+					});
 
-		            $scope.userNames = name.full_name || false;
-		        } else {
-		            
-		            // if there are more than one user
-		            for (var i = 0, j = $scope.chosenReport.chosenUsers.length; i < j; i++) {
+					if ( !!match ) {
+						_userNames.push( user.full_name );
+					};
+				});
 
-		                // first find the full name
-		                var name = _.find($scope.userList, function(user) {
-		                    return user.id === $scope.chosenReport.chosenUsers[i];
-		                    });
-
-		                $scope.userNames += name.full_name + (i < j ? ', ' : '');
-		            };
-		        }
+				$scope.userNames = _userNames.join(', ');
 		    };
 		};
 
@@ -471,6 +516,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( !!_customItems.length ) {
 						_eachItem.rowspan = _customItems.length + 1;
 						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
+					};
+
+					// check for invalid login for 'User activity' report 
+					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID LOGIN' ) {
+						_eachItem.trCls = 'invalid';
 					};
 
 					// push '_eachItem' into '_retResult'

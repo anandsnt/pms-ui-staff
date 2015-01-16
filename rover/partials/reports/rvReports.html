@@ -65,9 +65,9 @@
 				</div>
 			</div>
 
-			<div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': (chosenReport.title == 'In-House Guests' || chosenReport.title == 'Departure' || chosenReport.title == 'Arrival' || chosenReport.title == 'Cancelation & No Show'), 'no-sorting': (chosenReport.title == 'Cancelation & No Show') }" ng-iscroll="report-details-scroll">
+			<div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting }" ng-iscroll="report-details-scroll">
 				<div class="wrapper">
-					<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport }">
+					<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport }">
 
 							<!-- Reports table header -->
 							<thead ng-if="!!headers.length">
@@ -159,6 +159,8 @@
 						<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
 
 						<tbody ng-if="parsedApiFor == 'Cancelation & No Show'" ng-include="'/assets/partials/reports/rvCancellationReport.html'"></tbody>
+
+						<tbody ng-if="parsedApiFor == 'User Activity'" ng-include="'/assets/partials/reports/rvUserActivityReport.html'"></tbody>
 
 					</table>
 				</div>
