@@ -43,8 +43,7 @@
 		 hour = (hour <10)?("0"+hour): hour
 		 var dataTosend = {
 		 	"arrival_time":  hour+":"+$scope.stayDetails.minute,
-		 	"comments":$scope.stayDetails.comment,
-		 	"mobile":$scope.stayDetails.mobile
+		 	"comments":$scope.stayDetails.comment
 		 }		
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
