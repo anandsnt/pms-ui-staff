@@ -34,16 +34,20 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isCcAttachedFromGuestWeb = false;
  	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
- 	$rootScope.isAutoCheckinOn = $attrs.isAutoCheckin === 'true' ? true :false;;
+ 	$rootScope.isAutoCheckinOn = (($attrs.isAutoCheckin === 'true') && ($attrs.isPreCheckedIn === 'true')) ? true :false;;
  	$rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
 
+
 	//navigate to different pages
 
-	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
+	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
  		$location.path('/tripDetails');
- 	}	
+ 	}
+ 	else if	($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && ($attrs.isAutoCheckin === 'true')){
+ 		$location.path('/checkinConfirmation');
+ 	}
  	else if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
  	}

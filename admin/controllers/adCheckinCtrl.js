@@ -136,7 +136,7 @@ $scope.saveCheckin = function(){
     'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
     'is_precheckin_only':$scope.checkinData.is_precheckin_only? 'true':'false',
     //'is_sent_to_queue':$scope.checkinData.is_sent_to_queue ==='yes'? 'true':'false',
-    'checkin_action':$scope.checkinData.is_sent_to_queue ==='yes'? 'sent_to_queue':'auto_checkin',
+    'checkin_action':$scope.checkinData.checkin_action === 'sent_to_queue'? 'sent_to_queue':'auto_checkin',
     'excluded_rate_codes':excluded_rate_codes,
     'excluded_block_codes':excluded_block_codes,
     'pre_checkin_email_title':$scope.checkinData.pre_checkin_email_title,
