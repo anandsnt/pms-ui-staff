@@ -3,12 +3,21 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 	'$rootScope',
 	'$filter',
 	'RVreportsSrv',
-	function($scope, $rootScope, $filter, RVreportsSrv) {
+	'$timeout',
+	function($scope, $rootScope, $filter, RVreportsSrv, $timeout) {
 
 		/**
 		 * Method to get the
 		 */
 		var getRange = function(numbers) {
+			if (!numbers) {
+				return {
+					maxValue: 10,
+					breakingPoint: 10,
+					upperLimit: 10,
+					ticks: 1
+				};
+			}
 			var maxValue = Math.max.apply(null, numbers);
 
 			var breakingPoint = 10;
@@ -17,7 +26,13 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 			else if (maxValue > 200 && maxValue <= 400)
 				breakingPoint = 40;
 			else if (maxValue > 400)
-				breakingPoint = 80;
+				breakingPoint = maxValue / 5;
+			else if (maxValue > 800 && maxValue <= 1000)
+				breakingPoint = 100;
+			else if (maxValue > 1000 && maxValue <= 1500)
+				breakingPoint = 200;
+			else if (maxValue > 1500)
+				breakingPoint = 300
 
 			var ticks = Math.ceil(maxValue / breakingPoint);
 
@@ -73,9 +88,9 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					status.sort.market.name = false;
 					if (status.sort.market.ascending) {
 						$scope.markets.sort(function(a, b) {
-							if ($scope.results[0].market[a] > $scope.results[0].market[b]) {
+							if ($scope.results.market[a] > $scope.results.market[b]) {
 								return -1
-							} else if ($scope.results[0].market[a] < $scope.results[0].market[b]) {
+							} else if ($scope.results.market[a] < $scope.results.market[b]) {
 								return 1
 							} else {
 								return 0
@@ -84,9 +99,9 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 						status.sort.market.ascending = false;
 					} else {
 						$scope.markets.sort(function(a, b) {
-							if ($scope.results[0].market[a] > $scope.results[0].market[b]) {
+							if ($scope.results.market[a] > $scope.results.market[b]) {
 								return 1
-							} else if ($scope.results[0].market[a] < $scope.results[0].market[b]) {
+							} else if ($scope.results.market[a] < $scope.results.market[b]) {
 								return -1
 							} else {
 								return 0
@@ -98,9 +113,9 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					status.sort.source.name = false;
 					if (status.sort.source.ascending) {
 						$scope.sources.sort(function(a, b) {
-							if ($scope.results[0].source[a] > $scope.results[0].source[b]) {
+							if ($scope.results.source[a] > $scope.results.source[b]) {
 								return -1
-							} else if ($scope.results[0].source[a] < $scope.results[0].source[b]) {
+							} else if ($scope.results.source[a] < $scope.results.source[b]) {
 								return 1
 							} else {
 								return 0
@@ -109,9 +124,9 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 						status.sort.source.ascending = false;
 					} else {
 						$scope.sources.sort(function(a, b) {
-							if ($scope.results[0].source[a] > $scope.results[0].source[b]) {
+							if ($scope.results.source[a] > $scope.results.source[b]) {
 								return 1
-							} else if ($scope.results[0].source[a] < $scope.results[0].source[b]) {
+							} else if ($scope.results.source[a] < $scope.results.source[b]) {
 								return -1
 							} else {
 								return 0
@@ -121,67 +136,86 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					}
 				}
 			}
+			// put 'Not Defined' to the end
+			if ($scope.sources.indexOf('Not Defined') > -1) {
+				$scope.sources = _.without($scope.sources, 'Not Defined');
+				$scope.sources.push('Not Defined');
+			}
+			if ($scope.markets.indexOf('Not Defined') > -1) {
+				$scope.markets = _.without($scope.markets, 'Not Defined');
+				$scope.markets.push('Not Defined');
+			}
 		}
 
 		$scope.setScroller('report-details-scroll');
 
-		$scope.results = [{
-			"source": {
-				"Source_Booking.com": 27,
-				"Source_COP Account": 5,
-				"Source_Kiosk": 12,
-				"Source_telephoneHQ": 15,
-				"Source_walk-in": 12,
-				"Source_web": 10,
-				"Source_un_assigned": 5
-			},
-			"market": {
-				"Market_Booking.com": 12,
-				"Market_COP Account": 5,
-				"Market_Kiosk": 1,
-				"Market_telephoneHQ": 4,
-				"Market_walk-in": 6,
-				"Market_web": 75,
-				"Market_un_assigned": 125
-			},
-			"total_count": 89
-		}];
+
 
 		$scope.getTimes = function(n) {
 			return new Array(n);
 		};
 
 
-
 		var init = function() {
-			$scope.sources = _.keys($scope.results[0].source);
-			var sourcesValues = _.values($scope.results[0].source);
-			$scope.sourcesValuesTotal = sourcesValues.reduce(function(a, b) {
-				return a + b
-			});
-			var sourcesValuesPercentage = [];
-			_.each(sourcesValues, function(sourceValue) {
-				sourcesValuesPercentage.push(sourceValue / $scope.sourcesValuesTotal);
-			})
+			// TODO : Delete the following dummy object once developement is complete
+			// $scope.results = {
+			// 	"source": {
+			// 		"Source_Booking.com": 27,
+			// 		"Source_COP Account": 5,
+			// 		"Source_Kiosk": 12,
+			// 		"Source_telephoneHQ": 15,
+			// 		"Source_walk-in": 12,
+			// 		"Source_web": 10,
+			// 		"Not Defined": 5
+			// 	},
+			// 	"market": {
+			// 		"Market_Booking.com": 12,
+			// 		"Market_COP Account": 5,
+			// 		"Market_Kiosk": 1,
+			// 		"Market_telephoneHQ": 4,
+			// 		"Market_walk-in": 6,
+			// 		"Market_web": 75,
+			// 		"Not Defined": 125
+			// 	},
+			// 	"total_count": 89
+			// };
+			if ($scope.results.source) {
+				$scope.sources = _.keys($scope.results.source);
+				var sourcesValues = _.values($scope.results.source);
+				$scope.sourcesValuesTotal = sourcesValues.reduce(function(a, b) {
+					return a + b
+				});
+				var sourcesValuesPercentage = [];
+				_.each(sourcesValues, function(sourceValue) {
+					sourcesValuesPercentage.push(sourceValue / $scope.sourcesValuesTotal);
+				})
+			}
 
-			$scope.markets = _.keys($scope.results[0].market);
-			var marketsValues = _.values($scope.results[0].market);
-			$scope.marketsValuesTotal = marketsValues.reduce(function(a, b) {
-				return a + b
-			});
-			var marketsValuesPercentage = [];
-			_.each(marketsValues, function(marketValue) {
-				marketsValuesPercentage.push(marketValue / $scope.marketsValuesTotal);
-			})
+			if ($scope.results.market) {
+				$scope.markets = _.keys($scope.results.market);
+				var marketsValues = _.values($scope.results.market);
+				$scope.marketsValuesTotal = marketsValues.reduce(function(a, b) {
+					return a + b
+				});
+				var marketsValuesPercentage = [];
+				_.each(marketsValues, function(marketValue) {
+					marketsValuesPercentage.push(marketValue / $scope.marketsValuesTotal);
+				})
+			}
 
 			$scope.reportStatus.graph = {
 				sourceNumber: getRange(sourcesValues),
 				marketNumber: getRange(marketsValues)
 			}
 
-			console.log($scope.reportStatus.graph);
-			$scope.refreshScroller('report-details-scroll');
+			$timeout(function() {
+				$scope.refreshScroller('report-details-scroll');
+			}, 1000);
 		}
+
+		$rootScope.$on('report.updated', function() {
+			init();
+		});
 
 		init();
 

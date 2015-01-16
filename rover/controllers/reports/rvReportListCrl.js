@@ -88,7 +88,7 @@ sntRover.controller('RVReportListCrl', [
                         break;
 
                     case 'Booking Source & Market Report':
-                        reportList[i]['reportIconCls'] = 'guest-status cancel';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-booking';
                         reportList[i]['hasSourceMarketFilter'] = true;                        
                     break;
 
