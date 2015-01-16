@@ -74,7 +74,7 @@
 					</div>
 
 
-					<div class="entry" ng-hide="hideAddOption">
+					<div class="entry" ng-show="checkinData.checkin_action == 'sent_to_queue'">
 						<label>
 							{{ 'MINUTES_PRIOR_TO_ETA' | translate}}
 						</label>
@@ -118,7 +118,7 @@
 							</div>
 					</div>
 					</fieldset>
-				<fieldset class="holder right holder_margin" ng-show="checkinData.is_sent_to_queue == 'no'">	
+				<fieldset class="holder right holder_margin" ng-show="checkinData.checkin_action == 'auto_checkin'">	
 					<div class="entry full-width" >
 						<label>
 							{{ 'START_AUTO_CHECK_IN_TO' | translate}}
