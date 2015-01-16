@@ -71,7 +71,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',	 	
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/checkin/partials/arrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/MGM/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 	 //room verification
