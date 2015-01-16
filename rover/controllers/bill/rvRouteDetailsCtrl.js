@@ -11,6 +11,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.showCreditCardDropDown = false;
    
     if($scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
+    	
         $scope.renderAddedPayment = $scope.selectedEntity.credit_card_details;
         $scope.renderAddedPayment.cardExpiry = $scope.selectedEntity.credit_card_details.card_expiry;
         $scope.renderAddedPayment.endingWith = $scope.selectedEntity.credit_card_details.card_number;
@@ -374,14 +375,25 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchDefaultAccountRouting = function(){
 
         var successCallback = function(data) {
+        	
             $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
-            $scope.renderAddedPayment = data.credit_card_details;
-	        $scope.renderAddedPayment.cardExpiry = data.credit_card_details.card_expiry;
-	        $scope.renderAddedPayment.endingWith = data.credit_card_details.card_number;
-	        $scope.renderAddedPayment.creditCardType = data.credit_card_details.card_code;
-	        $scope.isAddPayment = true;
-	        $scope.showCreditCardDropDown = false;
+            if(!isEmptyObject(data.credit_card_details)){
+	            $scope.renderAddedPayment = data.credit_card_details;
+	            $scope.saveData.payment_type = data.credit_card_details.payment_type;
+
+		        $scope.renderAddedPayment.cardExpiry = data.credit_card_details.card_expiry;
+		        $scope.renderAddedPayment.endingWith = data.credit_card_details.card_number;
+		        $scope.renderAddedPayment.creditCardType = data.credit_card_details.card_code;
+		        $scope.isAddPayment = true;
+		        if(data.credit_card_details.payment_type != 'CC'){
+		        	 $scope.showCreditCardDropDown = true;
+		        } else {
+		        	 $scope.showCreditCardDropDown = false;
+		        }
+		       
+		       
+		    }
 	       
             $scope.$parent.$emit('hideLoader');
 
@@ -621,9 +633,17 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.savePayment = function(){
             
            
-           
-            if($scope.reservationData.reservation_id != null ){
-                $scope.savePaymentToReservationOrAccount('reservation');
+          
+            if($scope.reservationData!=undefined){
+            	if($scope.reservationData.reservation_id != null){
+            		$scope.savePaymentToReservationOrAccount('reservation');
+            	} else if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
+                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
+                    	$scope.savePaymentToReservationOrAccount('account');
+	            } else {
+	                $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+	            }
+	                
             } else if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
                     $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
                     	$scope.savePaymentToReservationOrAccount('account');
