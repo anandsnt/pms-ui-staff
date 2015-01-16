@@ -17,7 +17,7 @@
 	</div>
 
 	<!-- Calendar -->
-	<div id="stay-dates-calendar" class="reservation-content stay-dates-content scrollable" ng-iscroll="stay-dates-calendar  iscroll-stop-propagation">
+	<div id="stay-dates-calendar" class="reservation-content stay-dates-content scrollable" ng-iscroll="stay-dates-calendar">
 		<div class="wrapper">
 			<two-month-calendar event-sources='eventSources' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
 
@@ -41,9 +41,9 @@
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- Legend -->
+
+		<!-- Legend -->
 	<div id="stay-dates-legend" class="stay-dates-legend">
 		<strong class="notice" translate>DRAG_AND_DROP_TEXT</strong>
 		<ul>
@@ -55,4 +55,7 @@
 			<li ><span class="no-house-availability"></span>{{'NO_HOUSE_AVAILABLE' | translate}}</li>
 		</ul>
 	</div>
+	</div>
+
+	
 </div>

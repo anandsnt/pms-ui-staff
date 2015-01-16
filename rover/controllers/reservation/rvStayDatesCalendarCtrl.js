@@ -313,9 +313,9 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			// we are re-assinging our new checkin/checkout date for calendar
 			$scope.checkinDateInCalender = finalCheckin;
 			$scope.checkoutDateInCalender = finalCheckout;
-
-			//Reload the calendar with new arrival, departure dates
 			$scope.nights = getNumOfStayNights();
+
+			//Reload the calendar with new arrival, departure dates			
 			$scope.refreshCalendarEvents()
 		};
 
@@ -419,13 +419,12 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 						calEvt.durationEditable = "false"
 					}
 
-
 				//mid-stay range
 				} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 					calEvt.id = "availability";
 					calEvt.className = "mid-stay";
 				//Event is check-out
-				} else if (thisDate.getDate()==checkoutDate.getDate()&&thisDate.getMonth()==checkoutDate.getMonth()&&thisDate.getYear()==checkoutDate.getYear()) {
+				} else if (thisDate.getDate() == checkoutDate.getDate()&&thisDate.getMonth() == checkoutDate.getMonth()&&thisDate.getYear() == checkoutDate.getYear()) {
 					calEvt.id = "check-out";
 					calEvt.className = "check-out";
 					calEvt.startEditable = "true";
@@ -433,7 +432,9 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 				/**Following are for dates prior to check-in and dates after checkout*/
 				} else if (($scope.calendarType == "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType == "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
-					calEvt.className = "type-available"; //TODO: verify class name
+					calEvt.className = "type-available"; 
+					calEvt.durationEditable = "false";
+					//TODO: verify class name
 					//room type not available but house available   
 				} else if (dateDetails["house"].availability > 0) {
 					//calEvt.className = ""; //TODO: verify class name from stjepan
@@ -497,9 +498,9 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			// we are re-assinging our new checkin/checkout date for calendar
 			$scope.checkinDateInCalender = finalCheckin;
 			$scope.checkoutDateInCalender = finalCheckout;
+			$scope.nights = getNumOfStayNights();
 
 			//Reload the calendar with new arrival, departure dates
-			$scope.nights = getNumOfStayNights();
 			$scope.refreshCalendarEvents()
 		};
 
