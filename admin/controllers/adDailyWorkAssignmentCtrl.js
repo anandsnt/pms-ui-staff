@@ -278,7 +278,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		var initateRoomTaskTimes = function(time, tasktimes) {
 			var initialTime = {};
 			_.each($scope.roomTypesList, function(room) {
-				var currTime = tasktimes[room.id] || time;
+				var currTime = tasktimes && tasktimes[room.id] || time;
 				initialTime[room.id] = {
 					hours: !!time ? time.split(':')[0] : '',
 					mins: !!time ? time.split(':')[1] : ''
