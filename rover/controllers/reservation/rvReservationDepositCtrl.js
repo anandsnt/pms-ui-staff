@@ -197,6 +197,15 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 			}
 		};
 
+		// CICO-12413 : To calculate Total of fees and amount to pay.
+		$scope.calculateTotalAmount = function(amount) {
+			
+			var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
+			var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
+			
+			$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
+		};
+
 		if($scope.isStandAlone) {
 			$scope.feeData.feesInfo = $scope.passData.fees_information;
 			$scope.setupFeeData();
