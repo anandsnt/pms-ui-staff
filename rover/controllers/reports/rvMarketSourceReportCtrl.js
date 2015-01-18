@@ -25,14 +25,14 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 				breakingPoint = 20;
 			else if (maxValue > 200 && maxValue <= 400)
 				breakingPoint = 40;
-			else if (maxValue > 400)
-				breakingPoint = maxValue / 5;
+			else if (maxValue > 400 && maxValue <= 800)
+				breakingPoint = 80;
 			else if (maxValue > 800 && maxValue <= 1000)
 				breakingPoint = 100;
 			else if (maxValue > 1000 && maxValue <= 1500)
 				breakingPoint = 200;
 			else if (maxValue > 1500)
-				breakingPoint = 300
+				breakingPoint = 300;
 
 			var ticks = Math.ceil(maxValue / breakingPoint);
 
@@ -184,7 +184,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 			$scope.reportStatus.graph = {
 				sourceNumber: getRange(sourcesValues),
 				marketNumber: getRange(marketsValues)
-			}
+			}			
 
 			$timeout(function() {
 				$scope.refreshScroller('report-details-scroll');
