@@ -110,7 +110,6 @@ var GridRowItemDrag = React.createClass({
 	 		*/
 	 		var scroll_beyond_edge = 0, width_of_res;
 	 		width_of_res = (model.departure - model.arrival) * display.px_per_ms;
-	 		
 			//towards right
 			if(e.pageX > state.origin_x) {
 				if((e.pageX + width_of_res) > window.innerWidth && (display.x_p - model.departure) > 0) {
@@ -149,14 +148,19 @@ var GridRowItemDrag = React.createClass({
 					scroll_beyond_edge = 3;
 				}
 			}
-			//towards bottom
+			//towards top
 			else if(e.pageY < state.origin_y) {
+
 				if((e.pageY - display.row_height) < viewport.offset().top) {
-					if((yScPos + display.row_height) > 0) {
+					if((yScPos + display.row_height) >= 0) {
 						yScPos = 0;
 					}
-					else{
+					else{						
 						yScPos +=  display.row_height;
+						if(e.pageY < viewport.offset().top ){
+							yScPos = 0;
+							rowNumber = 0;
+						}
 					}					
 					scroll_beyond_edge = 4;
 				}
@@ -169,8 +173,21 @@ var GridRowItemDrag = React.createClass({
 					scroller._scrollFn();
 				//}, 50)
 			}
-	 		
+	 		if(colNumber < 0) {
+	 			colNumber = 0;
+	 		}
+	 		if(colNumber / 4 > (display.hours - 1) ) {
+	 			colNumber = (display.hours - 1);
+	 		}
+	 		if(rowNumber < 0) {
+	 			rowNumber = 0;
+	 		}
+
+	 		if(rowNumber > (display.total_rows - 1) ) {
+	 			rowNumber = (display.total_rows - 1);
+	 		}	 		
 			var cLeft = colNumber * display.px_per_int, top = rowNumber * (display.row_height) + display.row_height_margin;
+
 			var cFactor = (state.element_x + delta_x);
 			var left = cFactor = cLeft;
 			//var left = ((cFactor) / display.px_per_int).toFixed() * display.px_per_int;
@@ -227,7 +244,6 @@ var GridRowItemDrag = React.createClass({
 		}*/
 
 		if(state.dragging && props.edit.active && (props.data.key != props.currentDragItem.key)){
-			console.log('hey am here');
 			return;
 		}
 		
