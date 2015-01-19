@@ -21,7 +21,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.shouldShowWaiting = false;
 		$scope.isSwipedCardSave = false;
 		$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
-		
+
 		$scope.depositData = {
 			selectedCard: -1,
 			amount: "",
@@ -64,10 +64,12 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 
 		$scope.showHideCreditCard = function(){
+
+			$scope.checkReferencetextAvailable();
+
 			if($scope.depositData.paymentType ==="CC"){
 				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions();
 			}
-
 		};
 
 		$scope.proceedCheckin = function(){
@@ -240,7 +242,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 					};
 				};
 			});
-			return $scope.isDisplayReference;
+			
 		};
 
 		/*
