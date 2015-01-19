@@ -3,6 +3,11 @@ var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
+	var that = this;
+	//load the style elements
+	loadStyleSheets('/assets/guestweb.css');
+	//$scope.$apply();
+
 	//store basic details as rootscope variables
 
 	$rootScope.reservationID = $attrs.reservationId;
@@ -68,7 +73,23 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	});
 */
 
-}]);
+
+	
+
+}
+
+
+
+]);
+
+var loadStyleSheets = function(filename){
+		//alert("hiii");
+		var fileref = document.createElement("link");
+		fileref.setAttribute("rel", "stylesheet");
+		fileref.setAttribute("type", "text/css");
+		fileref.setAttribute("href", filename);
+		$('body').append(fileref);
+	};
 
 
 
