@@ -1418,26 +1418,36 @@ body { overflow: hidden; }
         		.float;
 
         		input { 
-                    width: 40% !important;
                     .pull-left;
+
+                    &.amount {
+                    	font-size: 18px;
+                    	font-weight: 600;
+                    	color: @textColor;
+                    	width: 25% !important;
+                    }
+
+                    &.fee { width: 20% !important; }
                 }
 
-                .fee,
+                .delimiter,
                 .total {
                 	line-height: 39px;
                 	text-transform: uppercase;
-                	margin-left: 10px;
-                    .pull-left;
                 }
 
-                .fee { 
-                	font-size: 14px; 
-                	.calc-width(25, 10);
+                .delimiter { 
+                	font-size: 14px;
+                	text-align: center;
+                	width: 30px;
+                	.pull-left;
                 }
 
                 .total {
                 	text-align: right;
+                	margin-left: 10px;
                 	.calc-width(35, 10);
+                	.pull-right;
 
                 	strong {
 	                    font-size: 18px;
