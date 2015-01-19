@@ -40,12 +40,13 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
   	$scope.fetchAvailablePaymentTypes = function(){
         
             var successCallback = function(data) {
-                
-                $scope.availablePaymentTypes = data;
+                $scope.creditCardTypes = [];
+               $scope.availablePaymentTypes = data;
                 $scope.ccPaymentDetails = {};
                 for(var i in data){
                 	if(data[i].name == "CC"){
                 		$scope.ccPaymentDetails = data[i];
+                		$scope.creditCardTypes = data[i].values;
                 	}
                 }
 
