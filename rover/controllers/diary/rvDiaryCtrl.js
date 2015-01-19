@@ -19,6 +19,7 @@ sntRover
 		'RVReservationBaseSearchSrv',
 		'$timeout',
 		'RVReservationSummarySrv',
+		'baseSearchData',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -35,7 +36,8 @@ sntRover
 			 propertyTime,
 			 $vault, 
 			 $stateParams, 
-			 RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv) {
+			 RVReservationBaseSearchSrv, 
+			 $timeout, RVReservationSummarySrv, baseSearchData) {
 
 	$scope.$emit('showLoader');
 
@@ -72,6 +74,10 @@ sntRover
 			title: $rootScope.getPrevStateTitle()
 		}
 	};
+
+
+	//adjuested property date time (rounded to next 15min slot time)
+	$scope.adj_property_date_time 	= util.correctTime(baseSearchData.businessDate, propertyTime);
 
 
 	/*--------------------------------------------------*/
@@ -173,11 +179,13 @@ sntRover
 				row_height_margin: 			0,
 				intervals_per_hour: 		4, 
 				ms_15:                      900000,
+				ms_hr: 						3600000,
 				px_per_ms: 					undefined,
 				px_per_int: 				undefined,
 				px_per_hr: 					undefined,
 				currency_symbol:            $rootScope.currencySymbol,
-				min_hours: 					isVaultDataSet ? vaultData.minHours : payload.display.min_hours
+				min_hours: 					isVaultDataSet ? vaultData.minHours : payload.display.min_hours,				
+				property_date_time:  		$scope.adj_property_date_time,
 			},
 
 			availability: {
@@ -260,7 +268,7 @@ sntRover
 		    rate:                        undefined,
 	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
-		    show_all_rooms: 			'off',
+		    show_all_rooms: 			'off',		    
 		    toggleHoursDays: function() {
 	    		this.reservation_format = (this.reservation_format === 'h') ? 'd' : 'h';
 
@@ -1146,6 +1154,7 @@ sntRover
 	    		'x_origin' : $scope.gridProps.display.x_origin
 	    	};
 
+
 			
 			//Resetting as per CICO-11314
 			if ( !!_.size($_resetObj) ) {
@@ -1526,6 +1535,7 @@ sntRover
         }
     };
 
+
     var autoCompleteSelectHandler = function(event, ui) {	
     	$scope.gridProps.filter.rate = ui.item;    	
         $scope.$apply();      
@@ -1541,4 +1551,33 @@ sntRover
         source: autoCompleteSourceHandler,
         select: autoCompleteSelectHandler
     };
+
+    var timeoutforLine;
+    var currentTimeLineChanger = function(){
+    	timeoutforLine = setTimeout(function(){
+	    	//adjuested property date time (rounded to next 15min slot time)
+	    	var newTime = new tzIndependentDate($scope.adj_property_date_time.start_date);
+	    	
+	    	newTime.setMinutes(newTime.getMinutes() + 15);
+			$scope.adj_property_date_time.start_date = newTime.getTime();
+			$scope.gridProps.display.property_date_time = $scope.adj_property_date_time;
+			$scope.gridProps.display = util.deepCopy($scope.gridProps.display);
+			$scope.renderGrid();
+			currentTimeLineChanger();
+    	}, ($scope.gridProps.display.ms_hr / ($scope.gridProps.display.intervals_per_hour)))
+
+		
+	};
+	currentTimeLineChanger();
+	/**
+	* Destroy event of scope
+	*/
+	$scope.$on("$destroy", function(){
+
+		//clearing the red line timeout
+		if(timeoutforLine){
+			clearTimeout(timeoutforLine);
+		}
+	});
+	
 }]);

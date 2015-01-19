@@ -8,7 +8,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			title: $filter('translate')('STAY_CARD'),
 			callback: 'goBack',
 			scope: $scope
-		}
+		};
 
 		var that = this;
 		// CICO-9081
@@ -92,8 +92,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			};
 			setTimeout(function() {
 				$scope.refreshScroller('edit_staydate_calendar');
-			}, 0)
-		}
+			}, 0);
+		};
 		this.initialise = function() {
 			that.dataAssign();
 
@@ -167,7 +167,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			return canExtendStay;
 
-		}
+		};
 
 		$scope.errorCallbackCheckUpdateAvaibale = function(errorMessage) {
 			$scope.$emit("hideLoader");
@@ -224,7 +224,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				$scope.rightSideReservationUpdates = "ROOM_CANNOT_UNASSIGN";
 			}
 			$scope.refreshMyScroller();
-		}
+		};
 
 		//function to show restricted stay range div- only available for non-standalone PMS
 		this.showRestrictedStayRange = function() {
@@ -297,14 +297,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			//we are showing the right side with updates
 			$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
 			$scope.refreshMyScroller();
-		}
+		};
 
 		
 		//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 		$scope.roomSelectedFromList = function(roomNumber) {
 			$scope.roomSelected = roomNumber;
 			$scope.showRoomAvailable();
-		}
+		};
 
 		this.successCallbackConfirmUpdates = function(data) {
 			$scope.$emit("hideLoader");
@@ -331,7 +331,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.eventSources.length = 0;
 			$scope.eventSources.push($scope.events);
 
-		}
+		};
 
 		$scope.goBack = function() {
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
@@ -358,7 +358,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				'reservation_id': $scope.stayDetails.calendarDetails.reservation_id
 			};
 			$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackConfirmUpdates, that.failureCallbackConfirmUpdates);
-		}
+		};
 		/*
 		 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.
 		 */
@@ -524,7 +524,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 						calEvt.id = "check-out";
 						calEvt.className = "check-out split-view";
 						calEvt.startEditable = "true";
-						calEvt.durationEditable = "false"
+						calEvt.durationEditable = "false";
 					}
 
 					//mid-stay range
@@ -563,7 +563,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id
 			});
-		}
+		};
 
 		$scope.$on('$viewContentLoaded', function() {
 

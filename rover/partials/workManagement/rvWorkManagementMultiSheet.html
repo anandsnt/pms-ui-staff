@@ -15,7 +15,7 @@
         <div class="entry employees">
             <label for="worksheet-employees" translate>EMPLOYEES</label>
             <!-- MOdified angular multi select template based on https://raw.githubusercontent.com/isteven/angular-multi-select/master/angular-multi-select.js, lines 71-106 -->
-            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name"  max-labels="0" on-item-click="selectEmployee(data)" on-open="onEmployeeListOpened()" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
+            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name"  max-labels="0" on-item-click="selectEmployee(data)" on-open="saveMultiSheet()" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
         </div>
         <div class="entry task">
             <label for="worksheet-work-type" translate>WORK TYPE</label>
@@ -27,6 +27,7 @@
             </div>
         </div>
         <div class="actions">
+            <button type="button" class="button button white with-icon only-icon" ng-click="refreshSheet()"><span class="icons icon-reset"></span></button>
             <button type="button" ng-click="printWorkSheet()" class="button grey" translate>PRINT</button>
             <button type="button" ng-click="onCancel()" class="button blank" translate>CANCEL</button>
         </div>
