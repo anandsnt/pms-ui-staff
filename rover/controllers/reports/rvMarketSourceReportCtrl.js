@@ -157,28 +157,6 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 
 
 		var init = function() {
-			// TODO : Delete the following dummy object once developement is complete
-			// $scope.results = {
-			// 	"source": {
-			// 		"Source_Booking.com": 27,
-			// 		"Source_COP Account": 5,
-			// 		"Source_Kiosk": 12,
-			// 		"Source_telephoneHQ": 15,
-			// 		"Source_walk-in": 12,
-			// 		"Source_web": 10,
-			// 		"Not Defined": 5
-			// 	},
-			// 	"market": {
-			// 		"Market_Booking.com": 12,
-			// 		"Market_COP Account": 5,
-			// 		"Market_Kiosk": 1,
-			// 		"Market_telephoneHQ": 4,
-			// 		"Market_walk-in": 6,
-			// 		"Market_web": 75,
-			// 		"Not Defined": 125
-			// 	},
-			// 	"total_count": 89
-			// };
 			if ($scope.results.source) {
 				$scope.sources = _.keys($scope.results.source);
 				var sourcesValues = _.values($scope.results.source);
