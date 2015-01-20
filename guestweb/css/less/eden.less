@@ -53,7 +53,7 @@ body{
 }
 
 .checkouttime1 {
-    background: none repeat scroll 0 0 #e9e2ae;
+    background: none repeat scroll 0 0 #D4C357;
 }
 .checkouttime2 {
     background: none repeat scroll 0 0 @green;
@@ -65,22 +65,117 @@ body{
 	color: #bbb !important;
 }
 .no-thanks{
-	color:#7a7a7a !importan;
-	text-decoration:underline !important;
+	color:#7a7a7a !important;
+	a{
+		border-bottom: 1px solid #bbb !important;
+	}
 }
 .checkout-status{
 	border-top:none !important;
 	border-bottom:none !important;
 }
+
+.guest-room-description{
+	color:#000 !important;
+}
+.link-btn.with-bg{
+	padding:10px !important;
+}
+
+
+.headtext{
+	font-size:44px !important;
+}
+.chekout-time{
+	font-size:24px !important;
+}
+
+
+.container-top-padding{
+	padding-top:50px !important;
+}
+.room_container{
+	form{
+		.room-number-text{
+			font-size:16px  !important;
+		}
+	}
+}
+.shadow {
+	background: none repeat scroll 0 0 #efefef;
+   -moz-box-shadow:    inset 2px 2px 3px #d1d1d1;
+   -webkit-box-shadow: inset 2px 2px 3px #d1d1d1;
+    box-shadow:         inset 2px 2px 3px #d1d1d1;
+    border: medium none !important;
+}
+
+.room-input{
+	height:50px !important;
+}
+
+
 /* responsive starts here */
 @media (min-width: 992px) {
 	.jumbotron .check-inout-wrapper{
   		padding: 40px 0 !important;
   	}
+  	.now-later-options.cabin-number{
+  		max-width:280px !important;
+  	}
+  	.leadtext {
+    	padding: 21px 140px;
+	}
 }
 /* responsive starts here */
 @media (max-width: 992px) {
 	.padding-10{
   		padding: 0px 10px !important;
   	}
+
+}
+
+@media (max-width: 480px) {
+
+	.foot-text.second-in {
+	    padding: 0 40px !important;
+	}
+	.checkout-time-container{
+		span{
+			font-size:16px !important;
+		}
+	}
+	.chekout-time{
+		font-size:16px !important;
+	}
+
+	.headtext{
+		.main-heading{
+			font-size:30px !important;
+		}		
+		font-size:30px !important;
+	}
+	.headtext{
+		font-size:30px !important;
+	}
+	.cabin_number_field{
+		padding-top:20px;
+	}
+	.now-later-options.cabin-number{
+  		max-width:280px !important;
+  		margin:0 auto;
+  	}
+  	.container-top-padding{
+		padding-top:20px !important;
+	}
+	.thanks-msg{
+		font-size:24px;
+		padding:20% !important;
+	}
+	.latecheckout-charged {
+    	padding: 10% 0 7%;
+	}
+	.extra-head-pad{
+		padding-top:10px;
+		padding-bottom:10px;
+	}
 }
