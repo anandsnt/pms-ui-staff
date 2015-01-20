@@ -278,11 +278,18 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		var initateRoomTaskTimes = function(time, tasktimes) {
 			var initialTime = {};
 			_.each($scope.roomTypesList, function(room) {
-				var currTime = tasktimes && tasktimes[room.id] || time;
-				initialTime[room.id] = {
-					hours: !!currTime ? currTime.split(':')[0] : '',
-					mins: !!currTime ? currTime.split(':')[1] : ''
-				};
+				if (tasktimes && tasktimes[room.id] == null) {
+					initialTime[room.id] = {
+						hours: '',
+						mins: ''
+					}
+				} else {
+					var currTime = tasktimes && tasktimes[room.id] || time;
+					initialTime[room.id] = {
+						hours: !!currTime ? currTime.split(':')[0] : '',
+						mins: !!currTime ? currTime.split(':')[1] : ''
+					};
+				}
 			})
 			return initialTime;
 		}
@@ -291,7 +298,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var times = {};
 			_.each($scope.roomTypesList, function(room) {
 				if ($scope.eachTaskList.room_type_ids.indexOf(room.id) > -1) {
-					times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
+					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
+						times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
+					} else {
+						times[room.id] = '';
+					}
 				}
 			});
 			return times;
