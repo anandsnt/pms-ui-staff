@@ -290,6 +290,12 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['include_no_show'] = chosenReport.chosenIncludeNoShow;
 			};
 
+			// include show guests
+			if ( chosenReport.hasShowGuests ) {
+				var key = chosenReport.hasShowGuests.value.toLowerCase();
+				params[key] = chosenReport.chosenShowGuests;
+			};
+
 			// include market
 			if (chosenReport.hasMarket) {
 				params['include_market'] = chosenReport.showMarket;

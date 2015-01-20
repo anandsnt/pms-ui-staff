@@ -440,6 +440,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var _retResult   = [],
 				_eachItem    = {},
 				_eachNote    = {},
+				_eachGuest   = {},
+				_eachGuestNote = {},
 				_cancelRes   = {},
 				_customItems = [];
 
@@ -456,6 +458,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					_customItems = [];
 					_cancelRes   = {};
 					_eachNote    = {};
+					_eachGuest   = {};
+					_eachGuestNote = {};
 
 					// first check for cancel reason
 					// if so then create a custom entry
@@ -468,13 +472,30 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_customItems.push( _cancelRes );
 					};
 
-					// second check for notes
-					// if so then create a custom entry for
-					// each note and push each to '_customItems'
-					// TODO: new accompnying gues also comes in b/w
-					if ( !!_eachItem['notes'] && !!_eachItem['notes'].length ) {
+					// second check for notes && || accompanying guests					
+
+					// 1. we only have accompanying guests -- and no notes
+					if ( (!_eachItem['notes'] || (!!_eachItem['notes'] && !_eachItem['notes'].length)) &&
+							!!_eachItem['accompanying_names'] &&
+							!!_eachItem['accompanying_names'].length ) {
+						for (k = 0, l = _eachItem['accompanying_names'].length; k < l; k++) {
+							_eachGuest = {
+								isGuest : true,
+								name    : angular.copy( _eachItem['accompanying_names'][k] )
+							};
+							if ( k == 0 ) {
+								_eachGuest.isHeading = true;
+							};
+							_customItems.push( _eachGuest );
+						};
+					};
+
+					// 2. we only have notes -- and no accompanying guests
+					if ( (!_eachItem['accompanying_names'] || (!!_eachItem['accompanying_names'] && !_eachItem['accompanying_names'].length)) &&
+							!!_eachItem['notes'] &&
+							!!_eachItem['notes'].length ){
 						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
-							_eachNote        = angular.copy( _eachItem['notes'][k] );
+							_eachNote = angular.copy( _eachItem['notes'][k] );
 							_eachNote.isNote = true;
 							if ( k == 0 ) {
 								_eachNote.isHeading = true;
@@ -483,7 +504,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 
-					// since this tr won't have any (figuritive) childs
+					// 3. we have both -- accompanying guests and notes
+					if ( (!!_eachItem['notes'] && !!_eachItem['notes'].length) &&
+							(!!_eachItem['accompanying_names'] && !!_eachItem['accompanying_names'].length) ) {
+						l = Math.max(_eachItem['notes'].length, _eachItem['accompanying_names'].length);
+						for (k = 0; k < l; k++) {
+							
+							// object copy should (if should) happen first
+							if ( !!_eachItem['notes'][k] ) {
+								_eachGuestNote = angular.copy( _eachItem['notes'][k] );
+								_eachGuestNote.hasNoteData = true;
+							};
+
+							if ( !!_eachItem['accompanying_names'][k] ) {
+								_eachGuestNote.name = angular.copy( _eachItem['accompanying_names'][k] );
+								_eachGuestNote.hasGuestData = true;
+							};
+
+							_eachGuestNote.isGuest_n_Note = true;
+							if ( k == 0 ) {
+								_eachGuestNote.isHeading = true;
+							};
+							_customItems.push( _eachGuestNote );
+						};
+					};
+
+					// since this tr won't have any (figurative) childs
 					if ( !_customItems.length ) {
 						_eachItem.trCls = 'row-break';
 					};
@@ -505,7 +551,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					_eachItem.isReport = true;
 					_retResult.push( _eachItem );
 
-					// push each item in '_customItems' in ot '_retResult'
+					// push each item in '_customItems' in to '_retResult'
 					for (m = 0, n = _customItems.length; m < n; m++) {
 						_retResult.push( _customItems[m] );
 					};

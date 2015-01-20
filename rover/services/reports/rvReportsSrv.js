@@ -40,6 +40,12 @@ sntRover.service('RVreportsSrv', [
 
 			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
+
+					// var data = data;
+					// if ( data.results.length ) {
+					// 	data.results[0]['accompanying_names'] = ['Vijay Dev', 'Ann Susan', 'Lalitha Jose'];
+					// };
+
 					deferred.resolve(data);
 				}.bind(this), function(data) {
 					deferred.reject(data);
