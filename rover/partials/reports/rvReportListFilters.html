@@ -90,7 +90,7 @@
     </div>
 </div>
 
-<div class="options" ng-if="item.hasIncludeNotes || item.hasIncludeCancelled || item.hasIncludeVip || item.hasIncludeNoShow || item.hasShowGuest">
+<div class="options" ng-if="showFauxSelect(item)">
     <label for="report-options">Options</label>
     <div class="faux-select placeholder" ng-click="fauxSelectClicked($event, item)">{{ item.fauxTitle }}</div>
     <!-- When single checkbox selected 
@@ -120,10 +120,10 @@
             <input type="checkbox" ng-model="item.chosenIncludeNoShow" name="room-filters">
             {{ item.hasIncludeNoShow.description }}
         </label>
-        <label class="checkbox inline" ng-if="item.hasShowGuest">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenShowGuest}"></span>
-            <input type="checkbox" ng-model="item.chosenShowGuest" name="room-filters">
-            {{ item.hasShowGuest.description }}
+        <label class="checkbox inline" ng-if="item.hasShowGuests">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenShowGuests}"></span>
+            <input type="checkbox" ng-model="item.chosenShowGuests" name="room-filters">
+            {{ item.hasShowGuests.description }}
         </label>
     </div>
 </div>

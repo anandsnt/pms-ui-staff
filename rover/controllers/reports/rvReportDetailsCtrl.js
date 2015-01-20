@@ -44,22 +44,48 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset this
 			$scope.parsedApiFor = undefined;
 
-			// is this guest reports or not
-			if ( $scope.chosenReport.title == 'Arrival' ||
-					$scope.chosenReport.title == 'Cancelation & No Show' ||
-					$scope.chosenReport.title == 'Departure' ||
-					$scope.chosenReport.title == 'In-House Guests' ) {
-				$scope.isGuestReport = true;
-			} else {
-				$scope.isGuestReport = false;
-			};
+			// // is this guest reports or not
+			// if ( $scope.chosenReport.title == 'Arrival' ||
+			// 		$scope.chosenReport.title == 'Cancelation & No Show' ||
+			// 		$scope.chosenReport.title == 'Departure' ||
+			// 		$scope.chosenReport.title == 'In-House Guests' ) {
+			// 	$scope.isGuestReport = true;
+			// } else {
+			// 	$scope.isGuestReport = false;
+			// };
 
-			// is this is a large report
-			if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
-					$scope.chosenReport.title == 'Web Check Out Conversion' ) {
-				$scope.isLargeReport = true;
-			} else {
-				$scope.isLargeReport = false;
+			// // is this is a large report
+			// if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
+			// 		$scope.chosenReport.title == 'Web Check Out Conversion' ) {
+			// 	$scope.isLargeReport = true;
+			// } else {
+			// 	$scope.isLargeReport = false;
+			// };
+
+			switch( $scope.chosenReport.title ) {
+				case 'In-House Guests':
+				case 'Departure':
+				case 'Arrival':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					break;
+
+				case 'Cancelation & No Show':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.hasNoSorting = true;
+					break;
+
+				case 'User Activity':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.isLogReport = true;
+					break;
+
+				case 'Web Check In Conversion':
+				case 'Web Check Out Conversion':
+					$scope.isLargeReport = true;
+					break;
 			};
 
 			// for hard coding styles for report headers
@@ -189,13 +215,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 			// new more detailed reports
-			if ( $scope.chosenReport.title === 'In-House Guests' ||
-					$scope.chosenReport.title === 'Arrival' ||
-					$scope.chosenReport.title === 'Departure' ||
-					$scope.chosenReport.title === 'Cancelation & No Show' ) {
-				$scope.parsedApiFor = $scope.chosenReport.title;
-				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
-			};
+			$scope.parsedApiFor = $scope.chosenReport.title;
+			$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 		};
 
 		// we are gonna need to drop some pagination
@@ -427,7 +448,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			if ( $scope.parsedApiFor == 'Arrival' ||
 					$scope.parsedApiFor == 'In-House Guests' ||
 					$scope.parsedApiFor == 'Departure' ||
-					$scope.parsedApiFor == 'Cancelation & No Show' ) {
+					$scope.parsedApiFor == 'Cancelation & No Show' ||
+					$scope.parsedApiFor == 'User Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					_eachItem    = angular.copy( apiResponse[i] );
@@ -472,6 +494,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( !!_customItems.length ) {
 						_eachItem.rowspan = _customItems.length + 1;
 						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
+					};
+
+					// check for invalid login for 'User activity' report 
+					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID LOGIN' ) {
+						_eachItem.trCls = 'invalid';
 					};
 
 					// push '_eachItem' into '_retResult'
