@@ -4,7 +4,7 @@ var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
 snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
 	var that = this;
-	//load the style elements
+	//load the style elements. Done to reduce the loading time of web page.
 	loadStyleSheets('/assets/guestweb.css');
 	loadAssets('/assets/favicon.png', 'icon', 'image/png');
 	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
@@ -12,9 +12,6 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	loadAssets('/assets/apple-touch-startup-image-1024x748.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape)');
 	loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
 	loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
-
-
-	//$scope.$apply();
 
 	//store basic details as rootscope variables
 
