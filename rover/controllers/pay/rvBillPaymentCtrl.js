@@ -129,6 +129,15 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		}
 	};
 
+	// CICO-12408 : To calculate Total of fees and amount to pay.
+	$scope.calculateTotalAmount = function(amount) {
+		
+		var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
+		var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
+		
+		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
+	};
+	
 	$scope.handleCloseDialog = function(){
 		$scope.paymentModalOpened = false;
 		$scope.$emit('HANDLE_MODAL_OPENED');
