@@ -26,7 +26,8 @@ sntRover.controller('reservationActionsController', [
 
 
 		BaseCtrl.call(this, $scope);
-
+		console.log("=========****===============");
+console.log(JSON.stringify($scope.guestCardData.contactInfo.email));
 		$scope.actionsCheck = {
 			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
 		};
