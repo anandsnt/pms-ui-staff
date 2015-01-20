@@ -1,32 +1,6 @@
 sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state', 'ngDialog', '$filter', 'allUnassigned',
 	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state, ngDialog, $filter, allUnassigned) {
 		BaseCtrl.call(this, $scope);
-		$scope.singleState = {
-			workSheet: {
-				user_id: wmWorkSheet.maid_id === null ? "" : wmWorkSheet.maid_id,
-				work_type_id: wmWorkSheet.work_type_id === null ? "" : wmWorkSheet.work_type_id,
-				shift_id: !wmWorkSheet.shift_id ? "" : wmWorkSheet.shift_id,
-			},
-			unassigned: [],
-			unassignedFiltered: [],
-			assigned: [],
-			summary: {
-				timeAllocated: "00:00",
-				departures: 0,
-				stayovers: 0,
-				completed: 0
-			},
-			filters: {
-				selectedFloor: "",
-				selectedStatus: ""
-			},
-			dimensions: {
-				unassigned: $("#worksheet-unassigned-rooms").width() - 40,
-				assigned: $("#worksheet-assigned-rooms").width() - 40
-			}
-		};
-
-
 
 
 
@@ -52,83 +26,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 
 
-
-
-		$scope.dropToUnassign = function(event, dropped) {
-			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
-			$scope.unAssignRoom($scope.singleState.assigned[indexOfDropped]);
-		}
-
-		$scope.dropToAssign = function(event, dropped) {
-			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
-			$scope.assignRoom($scope.singleState.unassigned[indexOfDropped]);
-		}
-
-		var refreshView = function() {
-				$scope.refreshScroller("workSheetUnassigned");
-				$scope.refreshScroller("workSheetAssigned");
-			},
-			init = function() {
-				var onFetchSuccess = function(data) {
-						$scope.singleState.unassigned = data.unassigned;
-						var assignedRooms = [],
-							worksheets = _.where(data.work_sheets, {
-								work_sheet_id: parseInt($stateParams.id)
-							});
-
-						if (worksheets.length > 0) {
-							_.each(worksheets[0].work_assignments, function(room) {
-								assignedRooms.push(room.room);
-							});
-						}
-
-						$scope.singleState.assigned = assignedRooms;
-						$scope.filterUnassigned();
-						summarizeAssignment();
-						refreshView();
-						$scope.$emit('hideLoader');
-					},
-					onFetchFailure = function(errorMessage) {
-						$scope.errorMessage = errorMessage;
-						$scope.$emit('hideLoader');
-					}
-				$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
-					"date": $stateParams.date || $rootScope.businessDate,
-					"employee_ids": [$scope.singleState.workSheet.user_id],
-					"work_type_id": $scope.singleState.workSheet.work_type_id
-				}, onFetchSuccess, onFetchFailure);
-			},
-			summarizeAssignment = function() {
-				$scope.singleState.summary = {
-					timeAllocated: "00:00",
-					departures: 0,
-					stayovers: 0,
-					completed: 0
-				}
-				_.each($scope.singleState.assigned, function(room) {
-					if ($scope.departureClass[room.reservation_status] == "check-out") {
-						$scope.singleState.summary.departures++;
-					} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
-						$scope.singleState.summary.stayovers++;
-					}
-					if (room.hk_complete) {
-						$scope.singleState.summary.completed++;
-					}
-					// Add up the allocated time
-					var existing = $scope.singleState.summary.timeAllocated.split(":"),
-						current = room.time_allocated.split(":"),
-						sumMinutes = parseInt(existing[1]) + parseInt(current[1]),
-						sumHours = (parseInt(existing[0]) + parseInt(current[0]) + parseInt(sumMinutes / 60)).toString();
-
-					$scope.singleState.summary.timeAllocated = (sumHours.length < 2 ? "0" + sumHours : sumHours) +
-						":" +
-						((sumMinutes % 60).toString().length < 2 ? "0" + (sumMinutes % 60).toString() : (sumMinutes % 60).toString());
-				});
-			};
-
-
-		$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $filter('date')($stateParams.date, $rootScope.dateFormat));
-
+		// back button
 		var prevState = {
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
@@ -147,8 +45,160 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				}
 			}
 		}
-
 		$rootScope.setPrevState = prevState;
+
+
+
+
+
+
+		$scope.dropToUnassign = function(event, dropped) {
+			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+			$scope.unAssignRoom($scope.singleState.assigned[indexOfDropped]);
+		}
+
+		$scope.dropToAssign = function(event, dropped) {
+			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+			$scope.assignRoom($scope.singleState.unassigned[indexOfDropped]);
+		}
+
+		// keep a local ref, since we will update it
+		var wmWorkSheet = wmWorkSheet;
+
+		var refreshView = function() {
+			$scope.refreshScroller("workSheetUnassigned");
+			$scope.refreshScroller("workSheetAssigned");
+		};
+
+		var preInit = function() {
+			$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $filter('date')($stateParams.date, $rootScope.dateFormat));
+
+			$scope.singleState = {
+				workSheet: {
+					user_id: wmWorkSheet.maid_id === null ? "" : wmWorkSheet.maid_id,
+					work_type_id: wmWorkSheet.work_type_id === null ? "" : wmWorkSheet.work_type_id,
+					shift_id: !wmWorkSheet.shift_id ? "" : wmWorkSheet.shift_id,
+				},
+				unassigned: [],
+				unassignedFiltered: [],
+				assigned: [],
+				summary: {
+					timeAllocated: "00:00",
+					departures: 0,
+					stayovers: 0,
+					completed: 0
+				},
+				filters: {
+					selectedFloor: "",
+					selectedStatus: ""
+				},
+				dimensions: {
+					unassigned: $("#worksheet-unassigned-rooms").width() - 40,
+					assigned: $("#worksheet-assigned-rooms").width() - 40
+				}
+			};
+
+			$scope.filters = {
+				selectedFloor: "",
+				selectedReservationStatus: "",
+				selectedFOStatus: "",
+				vipsOnly: false,
+				showAllRooms: false,
+				checkin: {
+					after: {
+						hh: "",
+						mm: "",
+						am: "AM"
+					},
+					before: {
+						hh: "",
+						mm: "",
+						am: "AM"
+					}
+				},
+				checkout: {
+					after: {
+						hh: "",
+						mm: "",
+						am: "AM"
+					},
+					before: {
+						hh: "",
+						mm: "",
+						am: "AM"
+					}
+				}
+			};
+		};
+
+		var init = function() {
+			var onFetchSuccess = function(data) {
+
+				// bluntly update the heading as this init could have been triggered
+				// due to a change in any filters
+				// TODO: update the shift filter in that case
+				$scope.setHeading("Work Sheet No." + data.work_sheets[0].work_sheet_id + ", " + $filter('date')($stateParams.date, $rootScope.dateFormat));
+
+				$scope.singleState.unassigned = data.unassigned;
+				var assignedRooms = [],
+					worksheets = _.where(data.work_sheets, {
+						work_sheet_id: parseInt($stateParams.id)
+					});
+
+				if (worksheets.length > 0) {
+					_.each(worksheets[0].work_assignments, function(room) {
+						assignedRooms.push(room.room);
+					});
+				}
+
+				$scope.singleState.assigned = assignedRooms;
+				$scope.filterUnassigned();
+				summarizeAssignment();
+				refreshView();
+				$scope.$emit('hideLoader');
+			};
+
+			var onFetchFailure = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+				$scope.$emit('hideLoader');
+			}
+
+			$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
+				"date": $stateParams.date || $rootScope.businessDate,
+				"employee_ids": [$scope.singleState.workSheet.user_id],
+				"work_type_id": $scope.singleState.workSheet.work_type_id
+			}, onFetchSuccess, onFetchFailure);
+		};
+
+		var summarizeAssignment = function() {
+			$scope.singleState.summary = {
+				timeAllocated: "00:00",
+				departures: 0,
+				stayovers: 0,
+				completed: 0
+			}
+			_.each($scope.singleState.assigned, function(room) {
+				if ($scope.departureClass[room.reservation_status] == "check-out") {
+					$scope.singleState.summary.departures++;
+				} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
+					$scope.singleState.summary.stayovers++;
+				}
+				if (room.hk_complete) {
+					$scope.singleState.summary.completed++;
+				}
+				// Add up the allocated time
+				var existing = $scope.singleState.summary.timeAllocated.split(":"),
+					current = room.time_allocated.split(":"),
+					sumMinutes = parseInt(existing[1]) + parseInt(current[1]),
+					sumHours = (parseInt(existing[0]) + parseInt(current[0]) + parseInt(sumMinutes / 60)).toString();
+
+				$scope.singleState.summary.timeAllocated = (sumHours.length < 2 ? "0" + sumHours : sumHours) +
+					":" +
+					((sumMinutes % 60).toString().length < 2 ? "0" + (sumMinutes % 60).toString() : (sumMinutes % 60).toString());
+			});
+		};		
+
+		
 
 		$scope.setScroller("workSheetUnassigned");
 		$scope.setScroller("workSheetAssigned");
@@ -170,39 +220,6 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			summarizeAssignment();
 			refreshView();
 		}
-
-		$scope.filters = {
-			selectedFloor: "",
-			selectedReservationStatus: "",
-			selectedFOStatus: "",
-			vipsOnly: false,
-			showAllRooms: false,
-			checkin: {
-				after: {
-					hh: "",
-					mm: "",
-					am: "AM"
-				},
-				before: {
-					hh: "",
-					mm: "",
-					am: "AM"
-				}
-			},
-			checkout: {
-				after: {
-					hh: "",
-					mm: "",
-					am: "AM"
-				},
-				before: {
-					hh: "",
-					mm: "",
-					am: "AM"
-				}
-			}
-		}
-
 
 		$scope.printWorkSheet = function() {
 			$scope.saveWorkSheet({
@@ -260,6 +277,8 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		$scope.saveWorkSheet = function(options) {
 			var assignedRooms = [],
 				saveCount     = 0,
+				worktypeId    = (!!options && !!options.oldWorkTypeId) ? options.oldWorkTypeId : $scope.singleState.workSheet.work_type_id,
+				userId        = (!!options && !!options.oldUserId) ? options.oldUserId : $scope.singleState.workSheet.user_id,
 				worktypesSet  = {};
 
 			var afterAPIcall  = function() {
@@ -290,7 +309,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					};
 				};
 
-			if (!$scope.singleState.workSheet.work_type_id) {
+			if (!worktypeId) {
 				$scope.errorMessage = ['Please select a work type.'];
 				return false;
 			}
@@ -322,7 +341,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					if ( room.hasOwnProperty('work_type_id') ) {
 						worktypesSet[room.work_type_id.toString()].push(room);
 					} else {
-						worktypesSet[$scope.singleState.workSheet.work_type_id.toString()].push(room);
+						worktypesSet[worktypeId.toString()].push(room);
 					};
 				});
 
@@ -341,7 +360,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 							"order"       : "",
 							"assignments" : [{
 								"shift_id"      : $scope.singleState.workSheet.shift_id,
-								"assignee_id"   : $scope.singleState.workSheet.user_id,
+								"assignee_id"   : userId,
 								"room_ids"      : assignedRooms,
 								"work_sheet_id" : ""
 							}]
@@ -355,6 +374,16 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					};
 				});
 			} else {
+				_.each(worktypesSet, function(set, key) {
+				$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
+							"date"        : $stateParams.date,
+							"task_id"     : parseInt(key),							
+							"assignments" : [{								
+								"assignee_id"   : userId,
+								"room_ids"      : [],								
+							}]
+						}, onSaveSuccess, onSaveFailure);
+				});
 				afterAPIcall();
 			};
 		};
@@ -378,9 +407,46 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}, 10);
 		}
 
+
+
+
+
+
+		$scope.$watch('singleState.workSheet.work_type_id', function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				$scope.saveWorkSheet({
+					oldWorkTypeId  : oldVal,
+					callNextMethod : 'onWorkTypeChange'
+				});
+			};
+		});
+
 		$scope.onWorkTypeChange = function() {
 			init();
-		}
+		};
+
+		$scope.$watch('singleState.workSheet.user_id', function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				$scope.saveWorkSheet({
+					oldUserId      : oldVal,
+					callNextMethod : 'onEmployeeChange'
+				});
+			};
+		});
+
+		$scope.onEmployeeChange = function(options) {
+			// if the work type filter is already in 'Daily Cleaning', just call init()
+			// else change the work type to 'Daily Cleaning' and it will trigger init()
+			init();
+		};
+
+		$scope.refreshSheet = function() {
+			init();
+		};
+
+
+
+
 
 		$scope.onAssignmentDragStart = function() {
 			$scope.$parent.myScroll["workSheetUnassigned"].disable();
@@ -407,6 +473,15 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			});
 		}
 
+		$scope.idToVal = function(id, key, source) {
+			var match = _.find(source, function(item) {
+				return item.id == id;
+			});
+
+			return !!match && match.hasOwnProperty(key) ? match[key] : '';
+		};
+
+		preInit();
 		init();
 	}
 

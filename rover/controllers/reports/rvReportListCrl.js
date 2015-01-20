@@ -14,7 +14,8 @@ sntRover.controller('RVReportListCrl', [
             dateParts     = businessDate.match(/(\d+)/g),
             fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
             untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
-            hasFauxSelect = false;
+            hasFauxSelect = false,
+            hasDisplaySelect= false;
 
         /**
         * inorder to refresh after list rendering
@@ -86,8 +87,13 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['showRemove']    = true;
                         break;
 
+                    case 'Booking Source & Market Report':
+                        reportList[i]['reportIconCls'] = 'icon-report icon-booking';
+                        reportList[i]['hasSourceMarketFilter'] = true;                        
+                    break;
+
                     default:
-                        reportList[i]['reportIconCls'] = 'icon-report';
+                        reportList[i]['reportIconCls'] = 'icon-report';                        
                         break;
                 };
 
@@ -105,11 +111,21 @@ sntRover.controller('RVReportListCrl', [
                         if ( reportList[i]['title'] == 'Cancelation & No Show' ) {
                             reportList[i]['hasDateFilter']['description'] = 'Arrival Date Range';
                         };
+
+                        // for 'Booking Source & Market Report' report the description should be 'Booked Date'
+                        if ( reportList[i]['title'] == 'Booking Source & Market Report' ) {
+                            reportList[i]['hasDateFilter']['description'] = 'Booked Date';
+                        };
                     };
 
                     // check for cancellation date filter and keep a ref to that item
                     if ( item.value === 'CANCELATION_DATE_RANGE' ) {
                         reportList[i]['hasCancelDateFilter'] = item;
+                    };
+
+                    // check for arrival date filter and keep a ref to that item (introduced in 'Booking Source & Market Report' filters)
+                    if ( item.value === 'ARRIVAL_DATE_RANGE' ) {
+                        reportList[i]['hasArrivalDateFilter'] = item;
                     };
 
                     // check for time filter and keep a ref to that item
@@ -152,6 +168,18 @@ sntRover.controller('RVReportListCrl', [
                         hasFauxSelect = true;
                     };
 
+                    // check for source and markets filter
+                    if ( item.value === 'INCLUDE_MARKET' ) {
+                        reportList[i]['hasMarket'] = item;
+                        hasDisplaySelect = true;
+                    };
+
+                    if ( item.value === 'INCLUDE_SOURCE' ) {
+                        reportList[i]['hasSource'] = item;
+                        hasDisplaySelect = true;
+                    };
+
+
                     // check for include cancelled filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_CANCELED' ) {
                         reportList[i]['hasIncludeCancelled'] = item;
@@ -179,6 +207,11 @@ sntRover.controller('RVReportListCrl', [
                 if ( hasFauxSelect ) {
                     reportList[i]['fauxSelectOpen'] = false;
                     reportList[i]['fauxTitle']      = 'Select';
+                };
+
+                if(hasDisplaySelect) {
+                    reportList[i]['selectDisplayOpen'] = false;
+                    reportList[i]['displayTitle']      = 'Select';
                 };
 
                 // sort by options
@@ -238,8 +271,10 @@ sntRover.controller('RVReportListCrl', [
                     // set the from and untill dates
                     reportList[i].fromDate        = fromDate;
                     reportList[i].fromCancelDate  = fromDate;
+                    reportList[i].fromArrivalDate  = fromDate;
                     reportList[i].untilDate       = untilDate;
                     reportList[i].untilCancelDate = untilDate;
+                    reportList[i].untilArrivalDate = untilDate;
                 };
             };
 
