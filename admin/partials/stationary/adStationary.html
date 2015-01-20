@@ -72,6 +72,22 @@
 
 
 		</fieldset>
+		<fieldset class="holder left">
+			<div class="form-title">
+				<h3>
+					<span>{{'CANCELLATION' | translate}}</span>
+					{{'COMMUNICATIONS' | translate}}
+				</h3>
+			</div>
+			<div class="entry full-width">
+				<ad-textbox value="data.title" label = "{{'TITLE'| translate}}" placeholder = "{{'ENTER_TITLE'| translate}}" ></ad-textbox>
+			</div>
+			<div class="entry full-width">
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_text" label = "{{'CANCELLATION_TEXT'| translate}} " placeholder = "{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}" ></ad-textarea>
+			</div>
+			
+			
+		</fieldset>
 
 		<div class="actions float">
 			<button type="button" ng-click ="goBackToPreviousState()" class="button blank" translate>CANCEL
