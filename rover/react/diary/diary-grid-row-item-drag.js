@@ -57,13 +57,16 @@ var GridRowItemDrag = React.createClass({
 
 		var state 		= this.state,
 			props 		= this.props,
+			viewport 	= props.viewport.element(),
 			display 	= props.display,
 			px_per_ms 	= display.px_per_ms,
 			delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
-			delta_y 	= e.pageY - state.origin_y - state.offset_y, 
+			delta_y 	= e.pageY - state.origin_y - state.offset_y,
+			xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left, 
 			adj_height 	= display.row_height + display.row_height_margin,
 			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			fifteenMin	= 900000,
+			colNumber	= Math.floor(xCurPos / display.px_per_int),
 			model;
 
 		if(!props.edit.active && !props.edit.passive){
@@ -77,7 +80,34 @@ var GridRowItemDrag = React.createClass({
 		if(props.currentDragItem.reservation_status !== 'check-in'){
 			return;
 		}
-		
+
+		scroller = props.iscroll.grid;
+ 		xScPos 	 = scroller.x;
+ 		yScPos	 = scroller.y;
+
+ 		/* sroll_beyond_edge : Possible values
+ 		0 : None
+ 		1 : Right
+ 		2 : Left
+ 		*/
+ 		var scroll_beyond_edge = 0;
+		//towards right
+		if(e.pageX > state.origin_x) {
+			if((e.pageX + display.px_per_hr) > window.innerWidth) {
+				xScPos -=  display.px_per_hr;
+				scroll_beyond_edge = 1;
+			}
+		}
+
+		//towards left
+		else if(e.pageX < state.origin_x) {
+			if((e.pageX - display.px_per_hr) < viewport.offset().left) {
+				xScPos +=  display.px_per_hr;
+				scroll_beyond_edge = 2;
+			}
+		}
+		scroller.scrollTo(xScPos, yScPos);
+ 		scroller._scrollFn();
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
@@ -90,8 +120,22 @@ var GridRowItemDrag = React.createClass({
 			});
 		} else if(state.dragging) {	
 			model = (props.currentDragItem);
+			var cLeft = colNumber * display.px_per_int;
+			var cFactor = (state.element_x + delta_x);
+			var left = ((cFactor) / display.px_per_int).toFixed() * display.px_per_int;
+			console.log("cLeft : " + cLeft +  " colNumber : " + colNumber +  " xCurPos" + xCurPos + " element_x: " + state.element_x + " left: "+ left + " diff: " +  (cLeft - left));
 
-			var commonFactor= ((((state.element_x + delta_x) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
+			console.log(display.px_per_hr);
+			if (scroll_beyond_edge === 1){
+				left = cLeft - display.px_per_hr;
+				cFactor = left;
+			}
+			else if (scroll_beyond_edge === 2){
+				left = cLeft + display.px_per_hr - display.x_0;
+				cFactor = left;
+			}
+
+			var commonFactor= ((((cFactor) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
 				newArrival  = (commonFactor * fifteenMin);			
 			
 			var diff = newArrival - model.arrival;			
@@ -103,10 +147,11 @@ var GridRowItemDrag = React.createClass({
 				resizing: true			
 			}, function() {
 				props.__onResizeCommand(model);
-			});
+			});			
+
 			this.setState({
 				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
-				left: (((state.element_x + delta_x)) / display.px_per_int).toFixed() * display.px_per_int, 
+				left: left, 
 				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
 			});
 		}
