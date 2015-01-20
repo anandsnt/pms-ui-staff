@@ -69,6 +69,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	url: '/checkinSuccess',
 	 	templateUrl: '/assets/checkin/partials/Galleria/checkinSuccess.html',
 	 	title: 'Status - Check-in'
+	 }).state('checkinArrival', {
+	 	url: '/checkinArrival',	 	
+	 	controller:'checkinArrivalDetailsController',
+	 	templateUrl: '/assets/checkin/partials/Galleria/arrivalDetails.html',
+	 	title: 'Arrival Details - Check-in'
 	 });
 
 
