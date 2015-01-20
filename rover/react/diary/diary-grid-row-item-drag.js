@@ -64,6 +64,7 @@ var GridRowItemDrag = React.createClass({
 			adj_height 	= display.row_height + display.row_height_margin,
 			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			fifteenMin	= 900000,
+			 left            = (((state.element_x + delta_x)) / display.px_per_int).toFixed() * display.px_per_int,
 			model;
 
 		if(!props.edit.active && !props.edit.passive){
@@ -74,7 +75,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
-		if(props.currentDragItem.reservation_status !== 'check-in'){
+		if(props.currentDragItem.reservation_status !== 'check-in' && props.currentDragItem.reservation_status !== 'inhouse'){
 			return;
 		}
 		
@@ -93,7 +94,10 @@ var GridRowItemDrag = React.createClass({
 
 			var commonFactor= ((((state.element_x + delta_x) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
 				newArrival  = (commonFactor * fifteenMin);			
-			
+			if(props.currentDragItem.reservation_status === 'inhouse'){
+                   left = $(this.getDOMNode()).css("left");                  
+                   newArrival = model.arrival;
+           	}
 			var diff = newArrival - model.arrival;			
 			model.arrival = newArrival;
 			model.departure = model.departure + diff;
@@ -106,7 +110,7 @@ var GridRowItemDrag = React.createClass({
 			});
 			this.setState({
 				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
-				left: (((state.element_x + delta_x)) / display.px_per_int).toFixed() * display.px_per_int, 
+				left: left, 
 				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
 			});
 		}
