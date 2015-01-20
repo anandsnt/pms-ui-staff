@@ -899,15 +899,16 @@
 					-moz-box-sizing: content-box; 
 					box-sizing: content-box;
 					.pull-left;
-					.calc-width(50, 40); /* %, px */
+					.calc-width(50, 40);
 
 					&.connecting { height: 260px; }
 					&.not-connected { height: 320px; }
-					&.connected { height: 420px; }
+					&.connected { height: 500px; }
 					&.completed { height: 320px; }
 				}
 
 				#room-status {
+					display: table;
 					color: @white;
 
 					.message { 
@@ -918,27 +919,22 @@
 					}
 
 					h1 {
-						display: inline-block;
-  						vertical-align: middle;
   						font-size: 30px;
 						line-height: 50px;
 						font-weight: 700;
-						
+						display: table-cell;
+						vertical-align: middle;
+
 						span { 
 							font-size: 72px;
 							font-weight: 300;
-							.show; 
+							.show;
 						}
 
-						&.icon-key { padding-top: 100px; }
-					}
-
-					&:before {
-						content: "";
-						display: inline-block;
-						height: 100%;
-						vertical-align: middle;
-						margin-right: -0.25em; /* Adjusts for spacing */
+						&.icon-key { 
+							padding-top: 110px; 
+							background-position: 50% 65px;
+						}
 					}
 
 					.number {
@@ -1007,11 +1003,25 @@
 							label:not(.only-number) { text-align: left; }
 
 							.only-number {
+								font-size: 36px;
+								font-weight: 600;
+								text-align: center;
 								.checkbox;
 								padding: 0;
+								margin: 0 10px 0 0;
 								line-height: 50px;
+								.calc-width(25, 8);
 								.pull-left;
 								.no-transition;
+
+								&:last-child { margin-right: 0; }
+
+								&.checked {
+									color: @white;
+									text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+									.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+					 				.gradient (@logoGradientEnd, @logoGradientStart);
+								}
 
 								&.printed { .gradient(@greenStart, @greenEnd); }
 							}
@@ -1023,7 +1033,10 @@
 						
 						&.not-connected { 
 							.info { color: @red; }
-							.action { margin: 0; }						
+							.action { 
+								margin: 0; 
+								padding-top: 20px;
+							}				
 						}
 						
 						&.connected { 
@@ -1039,10 +1052,7 @@
 					.key-sent { height: 340px; }
 
 					.print-key {
-						&.not-connected { 
-							.info { padding: 65px 0; }
-						}
-
+						&.not-connected,
 						&.completed { 
 							.info { padding: 65px 0; }
 						}
@@ -1054,10 +1064,7 @@
 				&.late-check-out {
 					.scan-key { height: 340px; }
 					.print-key {
-						&.not-connected { 
-							.info { padding: 95px 0; }
-						}
-
+						&.not-connected,
 						&.completed { 
 							.info { padding: 95px 0; }
 						}
