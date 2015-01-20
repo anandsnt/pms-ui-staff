@@ -130,7 +130,7 @@
 		</div>
 
 		<!-- Guest details -->
-		<ul class="reservation-guests" ng-show="shouldShowGuestDetails">
+		<ul class="reservation-guests" ng-show="shouldShowGuestDetails && !isStandAlone">
 			<!-- Add new guest set as hidden -->
 			<li>
 				<a class="hidden open-modal add-new-button">+ New Guest</a>
@@ -154,6 +154,62 @@
 				<span ng-if="$parent.reservationData.rooms[0].varyingOccupancy" translate>VAR_OCCUPANCY</span>
 			</li>
 		</ul>
+
+		<ul class="guest-count" ng-show="shouldShowGuestDetails && isStandAlone">
+		    <li>
+		        <span class="guest-icon">18+</span>
+		        <span class="label">Adults</span>
+		        <input name="adults-count" id="adults-count" type="text" ng-model="reservationParentData.rooms[0].numAdults" value="{{reservationParentData.rooms[0].numAdults}}" maxlength="2" />
+		    </li>
+		    <li>
+		        <span class="guest-icon">3-18</span>
+		        <span class="label">Children</span>
+		        <input name="children-count" id="children-count" type="text" ng-model="reservationParentData.rooms[0].numChildren" value="{{reservationParentData.rooms[0].numChildren}}" maxlength="2" />
+		    </li>
+		    <li>
+		        <span class="guest-icon">0-3</span>
+		        <span class="label">Infants</span>
+		        <input name="infants-count" id="infants-count" type="text" ng-model="reservationParentData.rooms[0].numInfants" value="{{reservationParentData.rooms[0].numInfants}}" maxlength="2" />
+		    </li>   
+		    <li>
+				<span ng-if="$parent.reservationData.rooms[0].varyingOccupancy" translate>VAR_OCCUPANCY</span>
+			</li>
+		</ul>
+
+		<form ng-show="shouldShowGuestDetails && isStandAlone" method="post" name="manage-guests" id="manage-guests" class="form">
+		    <div class="entry">
+		        <figure class="guest-image">
+		            <img src="{image-primary-guest}" alt="" />
+		            <!-- If VIP add: <span class="vip">VIP</span> -->
+		        </figure>
+		        <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{First Name of primary guest}" readonly />
+		        <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{Last Name of primary guest}" readonly />
+		    </div>
+		    <label for="acc1-first-name">Accompanying guests</label>
+		    <div class="entry">
+		        <figure class="guest-image">
+		            <!-- Use male or female avatar this already is accompanying guest -->
+		            <img src="{avatar-transgender}" alt="" />
+		        </figure>
+		        <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" value="{First Name, only if this is accompanying guest}" readonly />
+		        <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" value="{Last Name, only if this is accompanying guest}" readonly />
+		    </div>
+		    <div class="entry">
+		        <figure class="guest-image">
+		            <img src="{avatar-transgender}" alt="" />
+		        </figure>
+		        <input name="acc2-first-name" id="acc2-first-name" type="text" placeholder="First Name" value="" />
+		        <input name="acc2-last-name" id="acc2-last-name" type="text" placeholder="Last Name" value="" />
+		    </div>
+		    <div class="entry">
+		        <figure class="guest-image">
+		            <img src="{avatar-transgender}" alt="" />
+		        </figure>
+		        <input name="acc3-first-name" id="acc3-first-name" type="text" placeholder="First Name" value="" />
+		        <input name="acc3-last-name" id="acc3-last-name" type="text" placeholder="Last Name" value="" />
+		    </div>
+		</form>
+
 
 	</div>
 	
