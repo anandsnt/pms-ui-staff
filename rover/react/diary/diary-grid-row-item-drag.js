@@ -62,12 +62,14 @@ var GridRowItemDrag = React.createClass({
 			px_per_ms 	= display.px_per_ms,
 			delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
 			delta_y 	= e.pageY - state.origin_y - state.offset_y,
+			yCurPos 	= e.pageY - props.iscroll.grid.y - viewport.offset().top,
 			xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left, 
 			adj_height 	= display.row_height + display.row_height_margin,
 			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			fifteenMin	= 900000,
 			colNumber	= Math.floor(xCurPos / display.px_per_int),
-			model;
+			rowNumber 	= Math.floor(yCurPos / adj_height),
+			model;		
 
 		if(!props.edit.active && !props.edit.passive){
 			return;
@@ -81,7 +83,9 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 
-
+		if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){
+			return;
+		}
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
 
@@ -131,17 +135,41 @@ var GridRowItemDrag = React.createClass({
 				}
 			}
 			
-			
-			if(scroller.maxScrollX <= xScPos &&  xScPos <= 0 &&  scroller.maxScrollY <= yScPos && yScPos <= 0){
-				scroller.scrollTo(xScPos, yScPos, 0);
+			//towards bottom
+			if(e.pageY > state.origin_y) {
+				if((e.pageY + display.row_height) > window.innerHeight) {
+					if((yScPos - display.row_height) < scroller.maxScrollY) {
+						yScPos = scroller.maxScrollY;
+					}
+					else{
+						yScPos -=  display.row_height;
+					}					
+					scroll_beyond_edge = 3;
+				}
+			}
+			//towards bottom
+			else if(e.pageY < state.origin_y) {
+				if((e.pageY - display.row_height) < viewport.offset().top) {
+					if((yScPos + display.row_height) > 0) {
+						yScPos = 0;
+					}
+					else{
+						yScPos +=  display.row_height;
+					}					
+					scroll_beyond_edge = 4;
+				}
+			}
+			if(scroller.maxScrollX <= xScPos &&  xScPos <= 0 &&  
+				scroller.maxScrollY <= yScPos && yScPos <= 0) {
 				
+				scroller.scrollTo(xScPos, yScPos, 0);				
 				setTimeout(function(){
 					scroller._scrollFn();
 				}, 50)
 			}
 	 		
 
-			var cLeft = colNumber * display.px_per_int;
+			var cLeft = colNumber * display.px_per_int, top = rowNumber * (display.row_height) + display.row_height_margin;
 			var cFactor = (state.element_x + delta_x);
 			var left = cFactor = cLeft;
 			//var left = ((cFactor) / display.px_per_int).toFixed() * display.px_per_int;
@@ -172,7 +200,8 @@ var GridRowItemDrag = React.createClass({
 			this.setState({
 				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
 				left: left, 
-				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
+				//top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
+				top: top
 			});
 		}
 	},
