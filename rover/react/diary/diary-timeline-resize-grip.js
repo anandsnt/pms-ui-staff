@@ -225,6 +225,16 @@ var TimelineResizeGrip = React.createClass({
 			if(currentResizeItem) {
 				console.log(direction + ": " + currentResizeItem[direction]);
 				console.log('x_origin: ' + x_origin)
+				if(new Date(currentResizeItem[direction]).isOnDST()){
+					var dstChangedDate = new Date(currentResizeItem[direction]);
+					var x = new Date(dstChangedDate.getFullYear(), dstChangedDate.getMonth(), dstChangedDate.getDay(), dstChangedDate.getHours(), dstChangedDate.getMinutes(), 0);
+					//dstChangedDate.setHours( + 1);
+					console.log('-----------');
+					console.log(dstChangedDate.getTime());
+
+					console.log(x.getTime());
+					left = (x.getTime() - x_origin) * px_per_ms;
+				}
 			 	time_txt = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
 			}
 
@@ -261,3 +271,4 @@ var TimelineResizeGrip = React.createClass({
 			);
 		}
 });
+
