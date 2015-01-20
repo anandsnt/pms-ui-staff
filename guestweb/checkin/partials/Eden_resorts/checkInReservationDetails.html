@@ -1,0 +1,95 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+		<!-- contentarea starts here-->
+		<div class="container">
+			<!-- top section starts here-->
+			<div class="row checkin-wrapper line-top checkin-details no-top-bottom-padding">
+				<div class="col-md-6 pad-rt-60">
+					<div class="reservation-id centeralign">
+						<span class="res-conf-no">RESERVATION #{{confirmationNumber}}</span>
+					</div>
+					<div class="chekin-heading centeralign brown-text">
+						{{roomUpgradeheading}}
+					</div>
+					<div class="date-container">
+						<div class="row">
+							<div class="col-xs-6 reservation-dates leftalign">
+								<div class="lightcontent centeralign-date">
+									ARRIVAL DATE
+								</div>
+								<div class="dateContent centeralign-date">
+									{{reservationData.arrival_date}}
+								</div>
+							</div>
+							<div class="col-xs-6  reservation-dates rightalign"><div class="lightcontent centeralign-date">
+								DEPARTURE DATE
+							</div>
+							<div class="dateContent centeralign-date">
+								{{reservationData.departure_date}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- top section ends here-->
+				<div class="date-container no-border">
+					<div class="row">
+						<div class=" reservation-dates">
+							<div class="lightcontent">
+								ROOM TYPE <span class="upgrades-label" ng-show="ShowupgradedLabel">UPGRADED!</span>
+							</div>
+						</div>
+						<div class="room_details">
+							{{reservationData.room_type}}
+						</div>
+					</div>
+					<div class="row" ng-show="!!reservationData.room_rate.length">
+						<div class=" reservation-dates">
+							<div class="lightcontent">
+								RATE
+							</div>
+						</div>
+						<div class="room_details">
+							{{reservationData.room_rate}}
+						</div>
+					</div>
+					<div class="row">
+						<div class=" reservation-dates ">
+							<div class="lightcontent">
+								AVERAGE RATE PER NIGHT
+							</div>
+						</div>
+						<div class="room_details">
+							{{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
+						</div>
+					</div>
+					<div class="row applycharge">
+						<input type="checkbox" ng-model="checked"  ng-checked="checkedApplyCharges">&nbsp
+						APPLY CHARGES TO MY CREDIT CARD ON FILE.
+					</div>
+				</div></div>
+				<div class="verti-ruler margin-top-20"></div>
+				<div class="col-md-6 pad-lf-60 checkin-width">			
+					<button class=" checkin checkin-button" ng-click="checkInButtonClicked()">
+						<span>Check-in</span>
+					</button>
+				</div>
+			</div>
+			<div class="row checkin-wrapper line-bottom no-top-bottom-padding" id="error-container">
+				<div class="col-md-6 error-callus">
+					<div class="lightcontent">
+						ERRORS? <a href="tel: {{hotelPhone}}"><u>CALL US AT  {{hotelPhone}}</u></a>
+					</div>
+				</div>
+				<div class="verti-ruler margin-bottom-20"></div>
+			</div>			
+		</div>
+		<!-- checkinbtn section ends here-->
+	</div>
+</div>

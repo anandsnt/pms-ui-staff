@@ -47,27 +47,27 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 });
 
