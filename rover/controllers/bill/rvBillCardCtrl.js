@@ -1053,7 +1053,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.status = "success";
 		$scope.popupMessage = successMessage;
 		$scope.callBackMethod = function(){
-			$state.go("rover.search");
+			//CICO-11807 issue fixed
+			if($scope.saveData.isEarlyDepartureFlag==true){
+				var stateParams = {'type': 'INHOUSE', 'from_page': 'DASHBOARD'};
+			}
+			else{
+				var stateParams = {'type': 'DUEOUT', 'from_page': 'DASHBOARD'};
+			}
+            $state.go('rover.search', stateParams);
+			//$state.go("rover.search");
 		};
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
