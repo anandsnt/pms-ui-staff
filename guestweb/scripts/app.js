@@ -44,16 +44,19 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isCcAttachedFromGuestWeb = false;
  	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
- 	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
+ 	$rootScope.isAutoCheckinOn = (($attrs.isAutoCheckin === 'true') && ($attrs.isPrecheckinOnly === 'true')) ? true :false;;
+ 	$rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
-	
 
 	//navigate to different pages
 
-	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
+	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
  		$location.path('/tripDetails');
- 	}	
+ 	}
+ 	else if	($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && ($attrs.isAutoCheckin === 'true')){
+ 		$location.path('/checkinConfirmation');
+ 	}
  	else if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
  	}
@@ -82,6 +85,7 @@ var loadStyleSheets = function(filename){
 		$('body').append(fileref);
 };
 
+
 var loadAssets = function(filename, rel, type, media){
 		var fileref = document.createElement("link");
 		fileref.setAttribute("rel", rel);
@@ -90,6 +94,9 @@ var loadAssets = function(filename, rel, type, media){
 		if(media !== '') fileref.setAttribute("media", media);
 		document.getElementsByTagName('head')[0].appendChild(fileref);
 };
+
+
+
 
 
 

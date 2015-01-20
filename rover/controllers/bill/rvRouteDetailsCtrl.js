@@ -672,7 +672,19 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$emit('displayErrorMessage',errorMessage);
             };
              var successSixSwipe = function(response){
-            	$scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+             	
+             	
+             	var data = {
+             		"token" : response.token,
+             		"is_swiped": true
+             	};
+             	if(toReservationOrAccount == "reservation"){
+					data.reservation_id = $scope.reservationData.reservation_id;
+				} else {
+					data.account_id = $scope.selectedEntity.id;
+				}
+             	$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
+            	//$scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
             };
         	if($scope.saveData.payment_type == 'CC'){
 					if($rootScope.paymentGateway == "sixpayments" && !$scope.sixIsManual){
@@ -694,7 +706,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 							successSixSwipe(response);
 						},function(error){
 							$scope.errorMessage = error;
-							$scope.shouldShowWaiting = false;
+							$scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
+							// $scope.shouldShowWaiting = false;
 						});
 						
 						
