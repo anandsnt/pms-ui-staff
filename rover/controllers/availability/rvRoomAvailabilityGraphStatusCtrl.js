@@ -68,9 +68,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 				}
 			}
 			return max;
-		}
-
-		// var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
+		}		
 
 		var formGraphData = function(){
 			$scope.graphData = [{
@@ -108,6 +106,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 				},
 				color: 'rgba(242,214,175,1)'
 			}];	
+			
 			//we are adding occupancy target between if it has setuped in rate manager
 			if($scope.data.IsOccupancyTargetSetBetween){
 				$scope.graphData.push({
