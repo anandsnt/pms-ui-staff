@@ -133,10 +133,30 @@ sntRover.controller('RVReportsMainCtrl', [
 		    };
 		};
 
+		var chosenList = [
+            'chosenIncludeNotes',
+            'chosenIncludeCancelled',
+            'chosenIncludeVip',
+            'chosenIncludeNoShow',
+            'chosenIncludeRoverUsers',
+            'chosenIncludeZestUsers',
+            'chosenIncludeZestWebUsers',
+            'chosenShowGuests'
+        ];
+
+        var hasList = [
+            'hasIncludeNotes',
+            'hasIncludeCancelled',
+            'hasIncludeVip',
+            'hasIncludeNoShow',
+            'hasIncludeRoverUsers',
+            'hasIncludeZestUsers',
+            'hasIncludeZestWebUsers',
+            'hasShowGuests'
+        ];
+
 		// common faux select method
 		$scope.fauxSelectClicked = function(e, item) {
-			var selectCount = 0;
-
 			// if clicked outside, close the open dropdowns
 			if ( !e ) {
 				_.each($scope.reportList, function(item) {
@@ -151,42 +171,42 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			e.stopPropagation();
 			item.fauxSelectOpen = item.fauxSelectOpen ? false : true;
-
-			$scope.fauxOptionClicked(e, item);
 		};
 
 		$scope.fauxOptionClicked = function(e, item) {
-			var selectCount = 0;
-
-			if ( !item ) {
-				return;
-			};
-
 			e.stopPropagation();
-			
-			if ( item.chosenIncludeNotes ) {
-				selectCount++;
-				item.fauxTitle = item.hasIncludeNotes.description;
-			};
-			if ( item.chosenIncludeCancelled ) {
-				selectCount++;
-				item.fauxTitle = item.hasIncludeCancelled.description;
-			};
-			if ( item.chosenIncludeVip ) {
-				selectCount++;
-				item.fauxTitle = item.hasIncludeVip.description;
-			};
-			if ( item.chosenIncludeNoShow ) {
-				selectCount++;
-				item.fauxTitle = item.hasIncludeNoShow.description;
+
+			var selectCount = 0,
+				maxCount    = 0,
+				eachTitle   = '';
+
+			item.fauxTitle = '';
+			for (var i = 0, j = chosenList.length; i < j; i++) {
+				if ( item.hasOwnProperty(chosenList[i]) ) {
+					maxCount++;
+					if ( item[chosenList[i]] == true ) {
+						selectCount++;
+						eachTitle = item[hasList[i]].description;
+					};
+				};
 			};
 
-			if (selectCount > 1) {
-				item.fauxTitle = selectCount + ' Selected';
-			} else if ( selectCount == 0 ) {
+			if ( selectCount == 0 ) {
 				item.fauxTitle = 'Select';
+			} else if ( selectCount == 1 ) {
+				item.fauxTitle = eachTitle;
+			} else if ( selectCount > 1 ) {
+				item.fauxTitle = selectCount + ' Selected';
 			};
 		};
+
+		$scope.showFauxSelect = function(item) {
+            if ( !item ) {
+            	return false;
+            };
+
+            return _.find(hasList, function(has) { return item.hasOwnProperty(has) }) ? true : false;
+        };
 
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
