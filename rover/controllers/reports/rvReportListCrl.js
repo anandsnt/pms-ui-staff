@@ -195,6 +195,12 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasIncludeNoShow'] = item;
                         hasFauxSelect = true;
                     };
+
+                    // check for include no show filter and keep a ref to that item
+                    if ( item.value === 'SHOW_GUESTS' ) {
+                        reportList[i]['hasShowGuests'] = item;
+                        hasFauxSelect = true;
+                    };
                 });
 
                 // NEW! faux select DS and logic

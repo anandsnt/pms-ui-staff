@@ -44,22 +44,48 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset this
 			$scope.parsedApiFor = undefined;
 
-			// is this guest reports or not
-			if ( $scope.chosenReport.title == 'Arrival' ||
-					$scope.chosenReport.title == 'Cancelation & No Show' ||
-					$scope.chosenReport.title == 'Departure' ||
-					$scope.chosenReport.title == 'In-House Guests' ) {
-				$scope.isGuestReport = true;
-			} else {
-				$scope.isGuestReport = false;
-			};
+			// // is this guest reports or not
+			// if ( $scope.chosenReport.title == 'Arrival' ||
+			// 		$scope.chosenReport.title == 'Cancelation & No Show' ||
+			// 		$scope.chosenReport.title == 'Departure' ||
+			// 		$scope.chosenReport.title == 'In-House Guests' ) {
+			// 	$scope.isGuestReport = true;
+			// } else {
+			// 	$scope.isGuestReport = false;
+			// };
 
-			// is this is a large report
-			if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
-					$scope.chosenReport.title == 'Web Check Out Conversion' ) {
-				$scope.isLargeReport = true;
-			} else {
-				$scope.isLargeReport = false;
+			// // is this is a large report
+			// if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
+			// 		$scope.chosenReport.title == 'Web Check Out Conversion' ) {
+			// 	$scope.isLargeReport = true;
+			// } else {
+			// 	$scope.isLargeReport = false;
+			// };
+
+			switch( $scope.chosenReport.title ) {
+				case 'In-House Guests':
+				case 'Departure':
+				case 'Arrival':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					break;
+
+				case 'Cancelation & No Show':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.hasNoSorting = true;
+					break;
+
+				case 'User Activity':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.isLogReport = true;
+					break;
+
+				case 'Web Check In Conversion':
+				case 'Web Check Out Conversion':
+					$scope.isLargeReport = true;
+					break;
 			};
 
 			// for hard coding styles for report headers
@@ -189,13 +215,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 			// new more detailed reports
-			if ( $scope.chosenReport.title === 'In-House Guests' ||
-					$scope.chosenReport.title === 'Arrival' ||
-					$scope.chosenReport.title === 'Departure' ||
-					$scope.chosenReport.title === 'Cancelation & No Show' ) {
-				$scope.parsedApiFor = $scope.chosenReport.title;
-				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
-			};
+			$scope.parsedApiFor = $scope.chosenReport.title;
+			$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 		};
 
 		// we are gonna need to drop some pagination
@@ -419,6 +440,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var _retResult   = [],
 				_eachItem    = {},
 				_eachNote    = {},
+				_eachGuest   = {},
+				_eachGuestNote = {},
 				_cancelRes   = {},
 				_customItems = [];
 
@@ -427,13 +450,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 			if ( $scope.parsedApiFor == 'Arrival' ||
 					$scope.parsedApiFor == 'In-House Guests' ||
 					$scope.parsedApiFor == 'Departure' ||
-					$scope.parsedApiFor == 'Cancelation & No Show' ) {
+					$scope.parsedApiFor == 'Cancelation & No Show' ||
+					$scope.parsedApiFor == 'User Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					_eachItem    = angular.copy( apiResponse[i] );
 					_customItems = [];
 					_cancelRes   = {};
 					_eachNote    = {};
+					_eachGuest   = {};
+					_eachGuestNote = {};
 
 					// first check for cancel reason
 					// if so then create a custom entry
@@ -446,12 +472,25 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_customItems.push( _cancelRes );
 					};
 
-					// second check for notes
-					// if so then create a custom entry for
-					// each note and push each to '_customItems'
-					if ( !!_eachItem['notes'] && !!_eachItem['notes'].length ) {
+					// second check for notes && || accompanying guests					
+
+					// 1. we only have accompanying guests -- and no notes
+					if ( (!_eachItem['notes'] || (!!_eachItem['notes'] && !_eachItem['notes'].length)) &&
+							!!_eachItem['accompanying_names'] &&
+							!!_eachItem['accompanying_names'].length ) {
+						_eachGuest = {
+							isGuest : true,
+							guest   : angular.copy( _eachItem['accompanying_names'] )
+						};
+						_customItems.push( _eachGuest );
+					};
+
+					// 2. we only have notes -- and no accompanying guests
+					if ( (!_eachItem['accompanying_names'] || (!!_eachItem['accompanying_names'] && !_eachItem['accompanying_names'].length)) &&
+							!!_eachItem['notes'] &&
+							!!_eachItem['notes'].length ){
 						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
-							_eachNote        = angular.copy( _eachItem['notes'][k] );
+							_eachNote = angular.copy( _eachItem['notes'][k] );
 							_eachNote.isNote = true;
 							if ( k == 0 ) {
 								_eachNote.isHeading = true;
@@ -460,7 +499,23 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 
-					// since this tr won't have any (figuritive) childs
+					// 3. we have both -- accompanying guests and notes
+					if ( (!!_eachItem['notes'] && !!_eachItem['notes'].length) &&
+							(!!_eachItem['accompanying_names'] && !!_eachItem['accompanying_names'].length) ) {
+
+						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
+							_eachGuestNote = angular.copy( _eachItem['notes'][k] );
+							if ( k == 0 ) {
+								_eachGuestNote.isHeading = true;
+								_eachGuestNote.guest = angular.copy( _eachItem['accompanying_names'] );
+								_eachGuestNote.tdRowSpan = _eachItem['notes'].length;
+							};
+							_eachGuestNote.isGuest_n_Note = true;
+							_customItems.push( _eachGuestNote );
+						};
+					};
+
+					// since this tr won't have any (figurative) childs
 					if ( !_customItems.length ) {
 						_eachItem.trCls = 'row-break';
 					};
@@ -473,11 +528,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
 					};
 
+					// check for invalid login for 'User activity' report 
+					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID LOGIN' ) {
+						_eachItem.trCls = 'invalid';
+					};
+
 					// push '_eachItem' into '_retResult'
 					_eachItem.isReport = true;
 					_retResult.push( _eachItem );
 
-					// push each item in '_customItems' in ot '_retResult'
+					// push each item in '_customItems' in to '_retResult'
 					for (m = 0, n = _customItems.length; m < n; m++) {
 						_retResult.push( _customItems[m] );
 					};
