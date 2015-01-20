@@ -81,33 +81,6 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 
-		scroller = props.iscroll.grid;
- 		xScPos 	 = scroller.x;
- 		yScPos	 = scroller.y;
-
- 		/* sroll_beyond_edge : Possible values
- 		0 : None
- 		1 : Right
- 		2 : Left
- 		*/
- 		var scroll_beyond_edge = 0;
-		//towards right
-		if(e.pageX > state.origin_x) {
-			if((e.pageX + display.px_per_hr) > window.innerWidth) {
-				xScPos -=  display.px_per_hr;
-				scroll_beyond_edge = 1;
-			}
-		}
-
-		//towards left
-		else if(e.pageX < state.origin_x) {
-			if((e.pageX - display.px_per_hr) < viewport.offset().left) {
-				xScPos +=  display.px_per_hr;
-				scroll_beyond_edge = 2;
-			}
-		}
-		scroller.scrollTo(xScPos, yScPos);
- 		scroller._scrollFn();
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
@@ -120,12 +93,59 @@ var GridRowItemDrag = React.createClass({
 			});
 		} else if(state.dragging) {	
 			model = (props.currentDragItem);
+					scroller = props.iscroll.grid;
+	 		xScPos 	 = scroller.x;
+	 		yScPos	 = scroller.y;
+
+	 		/* sroll_beyond_edge : Possible values
+	 		0 : None
+	 		1 : Right
+	 		2 : Left
+	 		*/
+	 		var scroll_beyond_edge = 0, width_of_res;
+	 		width_of_res = (model.departure - model.arrival) * display.px_per_ms;
+	 		
+			//towards right
+			if(e.pageX > state.origin_x) {
+				if((e.pageX + width_of_res) > window.innerWidth && (display.x_p - model.departure) > 0) {
+					if((xScPos - width_of_res) < scroller.maxScrollX) {
+						xScPos = scroller.maxScrollX;
+					}
+					else{
+						xScPos -=  width_of_res;
+					}					
+					scroll_beyond_edge = 1;
+				}
+			}
+
+			//towards left
+			else if(e.pageX < state.origin_x) {
+				if((e.pageX - width_of_res) < viewport.offset().left && (model.arrival - display.x_n) > 0) {
+					if((xScPos + width_of_res) < 0) {
+						xScPos = 0;
+					}
+					else{
+						xScPos +=  width_of_res;
+					}
+					scroll_beyond_edge = 2;
+				}
+			}
+			
+			
+			if(scroller.maxScrollX <= xScPos &&  xScPos <= 0 &&  scroller.maxScrollY <= yScPos && yScPos <= 0){
+				scroller.scrollTo(xScPos, yScPos, 0);
+				
+				setTimeout(function(){
+					scroller._scrollFn();
+				}, 50)
+			}
+	 		
+
 			var cLeft = colNumber * display.px_per_int;
 			var cFactor = (state.element_x + delta_x);
-			var left = ((cFactor) / display.px_per_int).toFixed() * display.px_per_int;
-			console.log("cLeft : " + cLeft +  " colNumber : " + colNumber +  " xCurPos" + xCurPos + " element_x: " + state.element_x + " left: "+ left + " diff: " +  (cLeft - left));
-
-			console.log(display.px_per_hr);
+			var left = cFactor = cLeft;
+			//var left = ((cFactor) / display.px_per_int).toFixed() * display.px_per_int;
+		
 			if (scroll_beyond_edge === 1){
 				left = cLeft - display.px_per_hr;
 				cFactor = left;
