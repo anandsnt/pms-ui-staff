@@ -221,7 +221,10 @@ var TimelineResizeGrip = React.createClass({
 				classes             = "set-times " + label_class,
 				time_txt            = '';
 
+
 			if(currentResizeItem) {
+				console.log(direction + ": " + currentResizeItem[direction]);
+				console.log('x_origin: ' + x_origin)
 			 	time_txt = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
 			}
 
