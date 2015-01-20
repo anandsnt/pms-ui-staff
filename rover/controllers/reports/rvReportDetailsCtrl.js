@@ -478,16 +478,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( (!_eachItem['notes'] || (!!_eachItem['notes'] && !_eachItem['notes'].length)) &&
 							!!_eachItem['accompanying_names'] &&
 							!!_eachItem['accompanying_names'].length ) {
-						for (k = 0, l = _eachItem['accompanying_names'].length; k < l; k++) {
-							_eachGuest = {
-								isGuest : true,
-								name    : angular.copy( _eachItem['accompanying_names'][k] )
-							};
-							if ( k == 0 ) {
-								_eachGuest.isHeading = true;
-							};
-							_customItems.push( _eachGuest );
+						_eachGuest = {
+							isGuest : true,
+							guest   : angular.copy( _eachItem['accompanying_names'] )
 						};
+						_customItems.push( _eachGuest );
 					};
 
 					// 2. we only have notes -- and no accompanying guests
@@ -507,24 +502,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 					// 3. we have both -- accompanying guests and notes
 					if ( (!!_eachItem['notes'] && !!_eachItem['notes'].length) &&
 							(!!_eachItem['accompanying_names'] && !!_eachItem['accompanying_names'].length) ) {
-						l = Math.max(_eachItem['notes'].length, _eachItem['accompanying_names'].length);
-						for (k = 0; k < l; k++) {
-							
-							// object copy should (if should) happen first
-							if ( !!_eachItem['notes'][k] ) {
-								_eachGuestNote = angular.copy( _eachItem['notes'][k] );
-								_eachGuestNote.hasNoteData = true;
-							};
 
-							if ( !!_eachItem['accompanying_names'][k] ) {
-								_eachGuestNote.name = angular.copy( _eachItem['accompanying_names'][k] );
-								_eachGuestNote.hasGuestData = true;
-							};
-
-							_eachGuestNote.isGuest_n_Note = true;
+						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
+							_eachGuestNote = angular.copy( _eachItem['notes'][k] );
 							if ( k == 0 ) {
 								_eachGuestNote.isHeading = true;
+								_eachGuestNote.guest = angular.copy( _eachItem['accompanying_names'] );
+								_eachGuestNote.tdRowSpan = _eachItem['notes'].length;
 							};
+							_eachGuestNote.isGuest_n_Note = true;
 							_customItems.push( _eachGuestNote );
 						};
 					};
