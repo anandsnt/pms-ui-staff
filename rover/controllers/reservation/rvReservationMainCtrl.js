@@ -1225,7 +1225,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     index: index
                 })
             });
-        }
+        };
 
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails) {
             var data = {};
@@ -1676,7 +1676,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         }*/
         };
 
-        $scope.saveReservation = function(navigateTo, stateParameters) {
+        $scope.saveReservation = function(navigateTo, stateParameters, index) {
             nextState = navigateTo;
             nextStateParameters = stateParameters;
             /**
@@ -1698,7 +1698,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var saveSuccess = function(data) {
                     var totalDeposit = 0;
                     //calculate sum of each reservation deposits
+                    console.log("=================");
+                    console.log(data);
+                    $scope.reservationsListArray = data;
                     angular.forEach(data.reservations, function(reservation, key) {
+                    	
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                     });
                     totalDeposit = $filter('number')(totalDeposit,2);
@@ -1790,7 +1794,26 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
 
                 var updateSuccess = function(data) {
-                    $scope.reservationData.depositAmount = data.deposit_amount;
+                	
+                	var totalDepositOnRateUpdate = 0;
+                   
+                    angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
+                    	console.log($scope.reservationData.reservationId +"=----="+ reservation.id);
+                    	console.log(key +"=--+++++--="+ index);
+                    	if(key == index){
+                    		console.log(totalDepositOnRateUpdate+">>>>>>"+data.deposit_amount);
+                    		reservation.deposit_amount = data.deposit_amount;
+                    		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
+                    	} else {
+                    		console.log(totalDepositOnRateUpdate+">>+++>>>>"+reservation.deposit_amount);
+                    		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
+                    	}
+                        
+                    });
+                    console.log("?????--"+totalDepositOnRateUpdate);
+                    console.log(JSON.stringify($scope.reservationsListArray.reservations));
+                    // $scope.reservationData.depositAmount = data.deposit_amount;
+                    $scope.reservationData.depositAmount = totalDepositOnRateUpdate;
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
                     $scope.reservationData.fees_details = data.fees_details;
@@ -1808,7 +1831,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
-                    postData.reservationId = $scope.reservationData.reservationId;
+                    if(typeof index!== undefined){
+                    	angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
+                    		if(key == index)
+                    			postData.reservationId = reservation.id;
+                    	});
+                    } else {
+                    	postData.reservationId = $scope.reservationData.reservationId;
+                    }
+                    
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
