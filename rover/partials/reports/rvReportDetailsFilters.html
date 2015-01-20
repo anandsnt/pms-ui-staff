@@ -36,6 +36,25 @@
 	</div>
 </div>
 
+<div class="date-range" ng-if="chosenReport.hasArrivalDateFilter">
+    <label>{{ chosenReport.hasArrivalDateFilter.description }}</label>
+    <div class="has-datepicker">
+        <input id="chosenReportFromCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromArrivalDate" readonly>
+        <input id="chosenReportFromCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromArrivalDate" readonly>
+        <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate')">Clear query</span>
+        </button>
+    </div>  
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input id="chosenReportToCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilArrivalDate" readonly>
+        <input id="chosenReportToCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilArrivalDate" readonly>
+        <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate')">Clear query</span>
+        </button>
+    </div>
+</div>
+
 <div class="date-range" ng-if="chosenReport.hasTimeFilter">
 	<label>{{ chosenReport.hasTimeFilter.description }}</label>
 	<div class="select">
@@ -99,6 +118,25 @@
             <input type="checkbox" ng-model="chosenReport.chosenIncludeNoShow" name="room-filters">
             {{ chosenReport.hasIncludeNoShow.description }}
         </label>
+    </div>
+</div>
+
+<!-- Specifice markup for display options for the Source and Market reports -->
+<div class="options" ng-if="chosenReport.hasSourceMarketFilter">
+    <label for="report-options">Display</label>
+    <div class="faux-select placeholder" ng-click="selectDisplayClicked($event, chosenReport)">{{ chosenReport.displayTitle }}</div>   
+    <!-- Remove class "hidden" when ".faux-select" clicked -->
+    <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.selectDisplayOpen }" ng-click="fauxOptionClicked($event, chosenReport)"> 
+        <label class="checkbox inline">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showSource}"></span>
+            <input type="checkbox" ng-model="chosenReport.showSource">
+            {{ chosenReport.hasSource.description }}
+        </label>
+        <label class="checkbox inline">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showMarket}"></span>
+            <input type="checkbox" ng-model="chosenReport.showMarket">
+            {{ chosenReport.hasMarket.description }} 
+        </label>        
     </div>
 </div>
 
