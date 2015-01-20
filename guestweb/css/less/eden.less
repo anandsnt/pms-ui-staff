@@ -1,0 +1,86 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#000;
+@green:#c5ab00;
+@lightgreen:#d6c559;
+@brown:#7e6e3b;
+@light-black:#010101;
+
+body{
+	background-color: #f7f5e9 !important; 
+	background-image: none;
+}
+
+.jumbotron .container{
+	width:100%;
+}
+.light-green-bg{
+	background:#d6c559 !important;
+}
+.green-bg{
+	background:#c5ab00 !important;
+}
+.brown-text, .loading-text{
+	color:@brown  !important;
+}
+.black-bg{
+	background:@black !important;
+}
+.white-text{
+	color:@white !important;
+}
+.black-text{
+	color:@black !important;
+}
+.jumbotron .check-inout-wrapper{
+	border:none !important;
+}
+.eden_logo_bg{
+	padding:0 !important;
+}
+.room-number-text{
+	text-align:left;
+}
+.light-black-text{
+	color: @light-black !important;
+}
+.margin-10{
+	margin-top:10px;
+}
+.green-text{
+	color:#c5ab00 !important;
+}
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #e9e2ae;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 @green;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #a68f01;
+}
+.checkout-later-back-button,.no-thanks a{
+	color: #bbb !important;
+}
+.no-thanks{
+	color:#7a7a7a !importan;
+	text-decoration:underline !important;
+}
+.checkout-status{
+	border-top:none !important;
+	border-bottom:none !important;
+}
+/* responsive starts here */
+@media (min-width: 992px) {
+	.jumbotron .check-inout-wrapper{
+  		padding: 40px 0 !important;
+  	}
+}
+/* responsive starts here */
+@media (max-width: 992px) {
+	.padding-10{
+  		padding: 0px 10px !important;
+  	}
+}
