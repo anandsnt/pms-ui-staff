@@ -6,6 +6,14 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	var that = this;
 	//load the style elements
 	loadStyleSheets('/assets/guestweb.css');
+	loadAssets('/assets/favicon.png', 'icon', 'image/png');
+	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
+	loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait)');
+	loadAssets('/assets/apple-touch-startup-image-1024x748.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape)');
+	loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
+	loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
+
+
 	//$scope.$apply();
 
 	//store basic details as rootscope variables
@@ -62,20 +70,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 		$location.path('/checkoutRoomVerification');
 	};
 
-	//setTimeout(function() {
-		$( ".loading-container" ).hide();
-
-	//}, 500);
-/*
-	$( ".loading-container" ).slideUp( "slow", function() {
-		console.log("animation complete");
-	    // Animation complete.
-	});
-*/
-
-
-	
-
+	$( ".loading-container" ).hide();
 }
 
 
@@ -83,13 +78,21 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 ]);
 
 var loadStyleSheets = function(filename){
-		//alert("hiii");
 		var fileref = document.createElement("link");
 		fileref.setAttribute("rel", "stylesheet");
 		fileref.setAttribute("type", "text/css");
 		fileref.setAttribute("href", filename);
 		$('body').append(fileref);
-	};
+};
+
+var loadAssets = function(filename, rel, type, media){
+		var fileref = document.createElement("link");
+		fileref.setAttribute("rel", rel);
+		fileref.setAttribute("href", filename);
+		if(type !== '') fileref.setAttribute("type", type);
+		if(media !== '') fileref.setAttribute("media", media);
+		document.getElementsByTagName('head')[0].appendChild(fileref);
+};
 
 
 
