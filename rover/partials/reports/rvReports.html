@@ -84,105 +84,104 @@
 					</div>
 				</div>
 
-				
 
 				<div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting }" ng-iscroll="report-details-scroll">
 					<div class="wrapper">
 						<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport }">
-
-								<!-- Reports table header -->
-								<thead ng-if="!!headers.length">
+	
+									<!-- Reports table header -->
+									<thead ng-if="!!headers.length">
+										<tr>
+											<!-- <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}" ng-class="{ 'align-right' : $first }">{{ item.value }}</th> -->
+											<!-- Fix for CICO-10246  -->
+											<th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}">{{ item.value }}</th>
+										</tr>
+										<tr class="bottom-row" ng-if="subHeaders">
+											<th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
+										</tr>
+									</thead>
+									
+									<!-- Reports sort by header -->
+									<thead ng-if="!headers.length">
+										<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+										"sorting-asc" when ASC sorting
+										"sorting-desc" when DESC sorting -->
+										<tr>
+											<th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
+												<span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
+											</th>
+										</tr>
+									</thead>
+	
+								<!-- Reports table footer -->
+								<tfoot>
+									<tr class="totals" ng-if="resultsTotalRow">
+										<td>Total</td>
+										<td ng-repeat="item in resultsTotalRow track by $index">{{ item }}</td>
+									</tr>
 									<tr>
-										<!-- <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}" ng-class="{ 'align-right' : $first }">{{ item.value }}</th> -->
-										<!-- Fix for CICO-10246  -->
-										<th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}">{{ item.value }}</th>
-									</tr>
-									<tr class="bottom-row" ng-if="subHeaders">
-										<th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
-									</tr>
-								</thead>
-								
-								<!-- Reports sort by header -->
-								<thead ng-if="!headers.length">
-									<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
-									"sorting-asc" when ASC sorting
-									"sorting-desc" when DESC sorting -->
-									<tr>
-										<th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
-											<span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
-										</th>
-									</tr>
-								</thead>
-
-							<!-- Reports table footer -->
-							<tfoot>
-								<tr class="totals" ng-if="resultsTotalRow">
-									<td>Total</td>
-									<td ng-repeat="item in resultsTotalRow track by $index">{{ item }}</td>
-								</tr>
-								<tr>
-									<td colspan="{{ leftColSpan }}">
-										<div ng-if="chosenReport.hasCancelDateFilter">
-											<label>Cancellation Dates - </label>
-											From: <span>{{ displayedReport.fromCancelDate | date:dateFormat }}</span>
-											To: <span>{{ displayedReport.untilCancelDate | date:dateFormat }}</span>
-										</div>
-										<div ng-if="chosenReport.hasDateFilter">
-											<label ng-if="chosenReport.hasCancelDateFilter">Arrival Dates - </label>
-											<label ng-if="!chosenReport.hasCancelDateFilter">Date Range - </label>
-											From: <span>{{ displayedReport.fromDate | date:dateFormat }}</span>
-											To: <span>{{ displayedReport.untilDate | date:dateFormat }}</span>
-										</div>
-										<div ng-if="chosenReport.hasTimeFilter && (chosenReport.fromTime || chosenReport.untilTime)">
-											<label>Time Range - </label>
-											<label ng-if="chosenReport.fromTime">From: </label><span>{{ chosenReport.fromTime }}</span>
-											<label ng-if="chosenReport.untilTime">To: </label><span>{{ chosenReport.untilTime }}</span>
-										</div>
-										<div ng-if="chosenReport.chosenCico">
-											Transaction type: <span>{{ transcationTypes }}</span>
-										</div>
-										<div ng-if="chosenReport.chosenUsers">
-											Users: <span>{{ userNames }}</span>
-										</div>
-										<!-- Never REMOVE this span -->
-										<span> &nbsp; </span>
-									</td>
-									<td colspan="{{ rightColSpan }}">
-										Business date: <span>{{ userInfo.business_date | date:dateFormat }}</span>
-										<br>
-										User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-										<br>
-										<ul class="pagination" ng-if="pagination.length">
-											<li class="title">
-												Pages:
-												<li ng-repeat="page in pagination" ng-class="{'active': page.active}" ng-click="fetchNextPage()">
-													{{ page.no }}
+										<td colspan="{{ leftColSpan }}">
+											<div ng-if="chosenReport.hasCancelDateFilter">
+												<label>Cancellation Dates - </label>
+												From: <span>{{ displayedReport.fromCancelDate | date:dateFormat }}</span>
+												To: <span>{{ displayedReport.untilCancelDate | date:dateFormat }}</span>
+											</div>
+											<div ng-if="chosenReport.hasDateFilter">
+												<label ng-if="chosenReport.hasCancelDateFilter">Arrival Dates - </label>
+												<label ng-if="!chosenReport.hasCancelDateFilter">Date Range - </label>
+												From: <span>{{ displayedReport.fromDate | date:dateFormat }}</span>
+												To: <span>{{ displayedReport.untilDate | date:dateFormat }}</span>
+											</div>
+											<div ng-if="chosenReport.hasTimeFilter && (chosenReport.fromTime || chosenReport.untilTime)">
+												<label>Time Range - </label>
+												<label ng-if="chosenReport.fromTime">From: </label><span>{{ chosenReport.fromTime }}</span>
+												<label ng-if="chosenReport.untilTime">To: </label><span>{{ chosenReport.untilTime }}</span>
+											</div>
+											<div ng-if="chosenReport.chosenCico">
+												Transaction type: <span>{{ transcationTypes }}</span>
+											</div>
+											<div ng-if="chosenReport.chosenUsers">
+												Users: <span>{{ userNames }}</span>
+											</div>
+											<!-- Never REMOVE this span -->
+											<span> &nbsp; </span>
+										</td>
+										<td colspan="{{ rightColSpan }}">
+											Business date: <span>{{ userInfo.business_date | date:dateFormat }}</span>
+											<br>
+											User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+											<br>
+											<ul class="pagination" ng-if="pagination.length">
+												<li class="title">
+													Pages:
+													<li ng-repeat="page in pagination" ng-class="{'active': page.active}" ng-click="fetchNextPage()">
+														{{ page.no }}
+													</li>
 												</li>
-											</li>
-										</ul>
-									</td>
-								</tr>
-							</tfoot>
-							
-							<!-- Reports table content -->
-							<tbody ng-if="!parsedApiFor">
-								<tr ng-repeat="each in results track by $index">
-									<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
-									<!-- yeah thats hard :( -->
-									<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out')}">
-										{{ item }}
-									</td>
-								</tr>
-							</tbody>
-
-							<tbody ng-if="parsedApiFor == 'In-House Guests' || parsedApiFor == 'Departure'" ng-include="'/assets/partials/reports/rvInHouseDepartureReport.html'"></tbody>
-
-							<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
-
-							<tbody ng-if="parsedApiFor == 'Cancelation & No Show'" ng-include="'/assets/partials/reports/rvCancellationReport.html'"></tbody>
-
-							<tbody ng-if="parsedApiFor == 'User Activity'" ng-include="'/assets/partials/reports/rvUserActivityReport.html'"></tbody>
-
+											</ul>
+										</td>
+									</tr>
+								</tfoot>
+								
+								<!-- Reports table content -->
+								<tbody ng-if="!parsedApiFor">
+									<tr ng-repeat="each in results track by $index">
+										<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
+										<!-- yeah thats hard :( -->
+										<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out')}">
+											{{ item }}
+										</td>
+									</tr>
+								</tbody>
+	
+								<tbody ng-if="parsedApiFor == 'In-House Guests' || parsedApiFor == 'Departure'" ng-include="'/assets/partials/reports/rvInHouseDepartureReport.html'"></tbody>
+	
+								<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
+	
+								<tbody ng-if="parsedApiFor == 'Cancelation & No Show'" ng-include="'/assets/partials/reports/rvCancellationReport.html'"></tbody>
+	
+								<tbody ng-if="parsedApiFor == 'User Activity'" ng-include="'/assets/partials/reports/rvUserActivityReport.html'"></tbody>
+	
 						</table>
 					</div>
 				</div>

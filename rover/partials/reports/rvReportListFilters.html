@@ -81,13 +81,10 @@
     </div>
 </div>
 
-<div class="filter" ng-if="HIDE_THIS_FEATURE">
+<div class="filter" ng-if="item.hasUserFilter">
     <label>User</label>
-    <div class="select">
-        <select name="" id="" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in userList" iscroll-stop-propagation>
-            <option value="">User</option>
-        </select>
-    </div>
+    <input class="icons icon-search" auto-complete auto-options="autoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
+    <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
 </div>
 
 <div class="options" ng-if="showFauxSelect(item)">
@@ -144,6 +141,21 @@
             <input type="checkbox" ng-model="item.showMarket">
             {{ item.hasMarket.description }} 
         </label>        
+        <label class="checkbox inline" ng-if="item.hasIncludeRoverUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeRoverUsers}"></span>
+            <input type="checkbox" ng-model="item.chosenIncludeRoverUsers" name="room-filters">
+            {{ item.hasIncludeRoverUsers.description }}
+        </label>
+        <label class="checkbox inline" ng-if="item.hasIncludeZestUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeZestUsers}"></span>
+            <input type="checkbox" ng-model="item.chosenIncludeZestUsers" name="room-filters">
+            {{ item.hasIncludeZestUsers.description }}
+        </label>
+        <label class="checkbox inline" ng-if="item.hasIncludeZestWebUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeZestWebUsers}"></span>
+            <input type="checkbox" ng-model="item.chosenIncludeZestWebUsers" name="room-filters">
+            {{ item.hasIncludeZestWebUsers.description }}
+        </label>
     </div>
 </div>
 
