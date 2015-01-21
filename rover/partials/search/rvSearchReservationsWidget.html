@@ -5,15 +5,12 @@
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
-	    	<input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()"
-	        ng-model="textInQueryBox" focus-me="focusSearchField"/>
+	    	<input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-model="textInQueryBox" focus-me="focusSearchField"/>
 	    </div>
 	    <div class="entry dates">
 
             <div class="entry-data has-datepicker">
                 <label for="dashboard-date-from">From</label>
-
-                
                 <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}"/>
                 <button ng-click="showCalendar('RVReservationSearchFromDatepickerCtrl')" type="button" class="ui-datepicker-trigger"></button>
             </div>
@@ -35,12 +32,12 @@
 	    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
 	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
 	</div>
-	<section id="dashboard-search" class="content scrollable" ng-class="{'no-pagination': (totalSearchResults < searchPerPage && results.length > 0), 'no-results' : results.length == 0}" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
+	<section id="dashboard-search" class="content scrollable" ng-class="{'no-pagination': ((totalSearchResults < searchPerPage && results.length > 0) || isSwiped), 'no-results' : results.length == 0}" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
 				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted>
-					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails(row.id, row.confirmation)"> 
+					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails($event,row.id, row.confirmation)"> 
 					<!--TODO: Verify add class "accompany" if it's a accompanying guest -->
 						<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
 							<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true)}">
@@ -84,7 +81,7 @@
 		                            	
 		                                <span>{{row.departure_date| date : dateFormat}}</span>
 		                                <span ng-hide="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{getTimeConverted(row.departure_time)}}</span>
-		                                <span ng-show="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{getTimeConverted(row.late_checkout_time)}}</span>
+		                                <span ng-show="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{row.late_checkout_time}}</span>
 		                            </span>
 
 	                            </time> 
@@ -92,8 +89,9 @@
 
 	                        <div class="room-info">
 								<!-- Confirm the logic of READY and NOT-READY -->
-	                        	<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
-	                        		<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" ng-bind-html="escapeNull(row.room)|highlight:textInQueryBox:false">
+	                        	<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status)" >
+	                        		<span ng-class="{'room-highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!=''}">
+	                        			{{escapeNull(row.room)}}
 	                        		</span>			
 	                        	</span>
 

@@ -101,11 +101,6 @@ select {
     .box-shadow();
     #border-radius > .rounded();
 
-    &:focus,
-    &:active {
-        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
-    }
-
     &.placeholder {
         font-style: italic;
         color: @grey3;
@@ -384,6 +379,73 @@ select[disabled],{
             z-index: 99;
             .square(40px);
             #border-radius > .rounded();
+        }
+    }
+
+/* Faux Select          ==========================*/
+    .faux-select-wrap {
+        position: relative;
+        display: block;
+        z-index: 1;
+
+        &.open {
+            z-index: 100;
+        }
+
+        .faux-select { 
+            position: relative;
+            padding: 0 15px;
+            line-height: 40px;
+            cursor: pointer;
+            background: @grey1;
+            .nowrap();
+            .box-shadow();
+            #border-radius > .rounded();
+
+            &.placeholder {
+                color: @grey3;
+                font-style: italic;
+            }
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                background: @selectArrow no-repeat 50% 50%;
+                background-size: 6px 4px;
+                pointer-events: none;
+                z-index: 999;
+                .size(100%, 25px);
+                #border-radius > .right();
+            }
+        }
+
+        .faux-select-options {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            right: 0;
+            background: @white;
+            max-height: 220px;
+            overflow: auto;
+            border: 1px solid @grey2;
+            #border-radius > .rounded();
+            .transition;
+            #fade > .in();
+
+            .radio,
+            .checkbox {
+                padding: 7px 0 7px 40px;
+                margin: 0 !important;
+                #border-radius > .rounded(0);
+                .icon-form {
+                    left: 10px;
+                    top: 7px;
+                }
+            }
+
+            &.hidden { #fade > .out(); }
         }
     }
     

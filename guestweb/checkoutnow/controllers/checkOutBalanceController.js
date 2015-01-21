@@ -40,7 +40,7 @@
 		});
 
 		$scope.gotToNextStep = function(){
-			if($rootScope.isCCOnFile || parseInt($scope.billData.balance) === 0.00){
+			if($rootScope.isCCOnFile || parseInt($scope.billData.balance) === 0.00 || $rootScope.isSixpayments){
 				$state.go('checkOutStatus');
 			}				
 			else{

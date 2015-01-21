@@ -13,7 +13,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
+		if ($stateParams.isFromCards) {
+			$rootScope.setPrevState = {
+				title: 'AR Transactions',
+				name: 'rover.companycarddetails',
+    			param: {id:$vault.get('cardId'), 
+    					type: $vault.get('type'), 
+    					query :$vault.get('query'),
+    					isBackFromStaycard : true
+    				},
+				};
+
+		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
 			};
@@ -262,6 +273,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				swipedCardData.swipeFrom = "depositBalance";
 			} else if ($scope.isCancelReservationPenaltyOpened) {
 				swipedCardData.swipeFrom = "cancelReservationPenalty";
+			} else if ($scope.isStayCardDepositScreenOpened) {
+				swipedCardData.swipeFrom = "stayCardDeposit";
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
 			} else {
@@ -467,8 +480,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty") {
+				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
 					$scope.openPaymentDialogModal(passData, paymentData);
+				} else if(swipedCardDataToRender.swipeFrom == "stayCardDeposit") {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
 				} else if (swipedCardDataToRender.swipeFrom == "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 				} else {
@@ -482,9 +497,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		};
 
-		$scope.showDiaryScreen = function() {
-			$state.go('rover.reservation.diary', {
-				reservation_id: $scope.reservationData.reservation_card.reservation_id
+		$scope.showDiaryScreen = function() {			
+			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
+			$state.go('rover.diary', {
+				reservation_id: $scope.reservationData.reservation_card.reservation_id,
+				checkin_date: $scope.reservationData.reservation_card.arrival_date,
 			});
 		};
 

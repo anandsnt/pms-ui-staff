@@ -1,4 +1,4 @@
-sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog',
+sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
 	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
@@ -7,8 +7,6 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 		$scope.$on("contactTabActive", function() {
 			refreshScroller();
 		});
-
-		$scope.routesCount = 5;
 
 		//trigger the billing information popup
 	    $scope.openBillingInformation = function(accountType){
@@ -56,6 +54,9 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 		var refreshScroller = function() {
 			$scope.refreshScroller('companyCardDetailsContactCtrl');
 		};
+		
+		
+		
 
 	}
 ]);

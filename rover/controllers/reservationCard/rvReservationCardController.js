@@ -18,6 +18,8 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			$scope.$emit('reservationCardClicked');
 		};
 
+		$scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
+
 
 		/*
 		 * to get state params from resrvation details controller

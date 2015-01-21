@@ -25,8 +25,8 @@ body {
 	#main-menu {
 		position: absolute;
 		top: 0;
-		left: -280px;
-		width: 280px;
+		left: -320px;
+		width: 320px;
 		height: 100%;
 		z-index: 9960;
 		.show;
@@ -35,6 +35,7 @@ body {
 			position: absolute;
 			top: 5px;
 			right: -40px;
+			cursor: pointer;
 			.icon-toggle;
 		}
 
@@ -50,10 +51,64 @@ body {
 
 		h5 {
 			color: @white;
-			text-transform: uppercase;
 			font-weight: 600;
 			line-height: 50px;
+			text-shadow: 1px 1px 0 rgba(0,0,0,.15);
 			border-bottom: 1px solid rgba(0,0,0,.15);
+			text-transform: uppercase;
+		}
+
+		.change-hotel {
+
+			h5 {
+				font-size: 18px;
+				padding-right: 20px;
+				text-transform: none;
+				cursor: pointer;
+				background: @doubleSelectArrow 100% 20px no-repeat;
+				.nowrap();
+
+				@media @highdpi {
+                    background-image: @doubleSelectArrow2x;
+                    background-size: 10px;
+                }
+			}
+
+			.dropdown { 
+				padding-bottom: 20px;
+				.hide; 
+
+				dt {
+                    font-size: 16px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    color: @grey3;
+                    margin: 10px 0;
+                }
+
+                dd {
+                    font-size: 18px;
+                    line-height: 24px;
+                    margin-bottom: 10px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+
+                    a {
+                        color: @textColor;
+                        font-weight: 600;
+                        .show;
+                        .nowrap();
+
+                        &:hover { color: @logoPrimary; }
+                    }
+
+                    &:last-child { 
+                    	margin-bottom: 0; 
+                    	padding-bottom: 0;
+                    	border-bottom: 0;
+                    }
+                }
+			}
 		}
 
 		li {
@@ -144,6 +199,32 @@ body {
 		&.menu-closing {
 			&.ng-animate { #menu > .close(); }			
 		}
+
+		&.menu-hotel {
+			
+			#nav { padding-top: 51px; }
+
+			.change-hotel {
+				position: absolute;
+				top: 0;
+				left: 30px;
+				padding: 0 20px;
+				background: @white;
+                z-index: 9999;
+                #fade > .in();
+                .calc-width(100, 30);
+                #border-radius > .bottom();
+                .box-shadow(1px 1px 2px rgba(0,0,0,.15));
+
+                h5 {
+					color: @textColor;
+					text-shadow: none;
+					background-position: 100% -30px;
+				}
+
+                .dropdown { .show; }
+			}
+		}
 	}
 
 	/* 600px+		 		==============================*/
@@ -154,10 +235,22 @@ body {
 			h5,
 			li { line-height: 60px; }
 
+			.change-hotel {
+				h5 { background-position: 100% 25px; }
+			}
+
 			.main {
 				li {
 					span { left: 20px;}			
 				}
+			}
+
+			&.menu-hotel {
+				#nav { padding-top: 61px; }
+
+				.change-hotel {
+	                h5 { background-position: 100% -25px; }
+	            }
 			}
 		}
 	}
@@ -165,6 +258,10 @@ body {
 	/* 768px+		 		==============================*/
 	@media only screen and (min-width: 768px) {
 		#main-menu {
+
+			.change-hotel {
+				h5 { font-size: 20px; }
+			}
 
 			.main {
 				li {
@@ -188,7 +285,7 @@ body {
 			.submenu {
 				position: absolute;
 				top: 60px;
-				left: -280px;
+				left: -20px;
 				width: 280px;
 				padding: 0 20px 0 80px;
 				background-color: @grey4;
@@ -210,27 +307,17 @@ body {
 				}
 			}
 
-			&.menu-open {
-				.submenu { 
-					&.active { #subnav > .open(); }
-				}		
-			}
-
-			&.menu-closing {
-				.submenu { 
-					&.active { #subnav > .close(); }
-				}
-			}
-
+			&.menu-open,
 			&.subnav-open {
 				.submenu { 
-					&.active { #subnav > .open(); }
+					&.active { #menu > .open(); }
 				}		
 			}
-			
+
+			&.menu-closing,
 			&.subnav-closing {
 				.submenu {
-					&.active { #subnav > .close(); }
+					&.active { #menu > .close(); }
 				}
 			}
 		}

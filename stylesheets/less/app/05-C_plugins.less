@@ -808,6 +808,8 @@
 				}
 
 				.entry {
+					position: relative;
+
 					.switch-button { 
 
 						.data-off,
@@ -851,7 +853,6 @@
 					}
 
 					.search-codes {
-						position: relative;
 						.float;
 
 						input {
@@ -861,7 +862,13 @@
 
 						.mini-select {
 							.pull-left;
-						}
+						}		
+					}
+
+					.charge-code-list {
+						position: absolute;
+						top: 40px;
+						left: -20px;
 					}
 				}
 
@@ -892,15 +899,16 @@
 					-moz-box-sizing: content-box; 
 					box-sizing: content-box;
 					.pull-left;
-					.calc-width(50, 40); /* %, px */
+					.calc-width(50, 40);
 
 					&.connecting { height: 260px; }
 					&.not-connected { height: 320px; }
-					&.connected { height: 420px; }
+					&.connected { height: 500px; }
 					&.completed { height: 320px; }
 				}
 
 				#room-status {
+					display: table;
 					color: @white;
 
 					.message { 
@@ -911,27 +919,22 @@
 					}
 
 					h1 {
-						display: inline-block;
-  						vertical-align: middle;
   						font-size: 30px;
 						line-height: 50px;
 						font-weight: 700;
-						
+						display: table-cell;
+						vertical-align: middle;
+
 						span { 
 							font-size: 72px;
 							font-weight: 300;
-							.show; 
+							.show;
 						}
 
-						&.icon-key { padding-top: 100px; }
-					}
-
-					&:before {
-						content: "";
-						display: inline-block;
-						height: 100%;
-						vertical-align: middle;
-						margin-right: -0.25em; /* Adjusts for spacing */
+						&.icon-key { 
+							padding-top: 110px; 
+							background-position: 50% 65px;
+						}
 					}
 
 					.number {
@@ -1000,11 +1003,25 @@
 							label:not(.only-number) { text-align: left; }
 
 							.only-number {
+								font-size: 36px;
+								font-weight: 600;
+								text-align: center;
 								.checkbox;
 								padding: 0;
+								margin: 0 10px 0 0;
 								line-height: 50px;
+								.calc-width(25, 8);
 								.pull-left;
 								.no-transition;
+
+								&:last-child { margin-right: 0; }
+
+								&.checked {
+									color: @white;
+									text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+									.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+					 				.gradient (@logoGradientEnd, @logoGradientStart);
+								}
 
 								&.printed { .gradient(@greenStart, @greenEnd); }
 							}
@@ -1016,7 +1033,10 @@
 						
 						&.not-connected { 
 							.info { color: @red; }
-							.action { margin: 0; }						
+							.action { 
+								margin: 0; 
+								padding-top: 20px;
+							}				
 						}
 						
 						&.connected { 
@@ -1032,10 +1052,7 @@
 					.key-sent { height: 340px; }
 
 					.print-key {
-						&.not-connected { 
-							.info { padding: 65px 0; }
-						}
-
+						&.not-connected,
 						&.completed { 
 							.info { padding: 65px 0; }
 						}
@@ -1047,10 +1064,7 @@
 				&.late-check-out {
 					.scan-key { height: 340px; }
 					.print-key {
-						&.not-connected { 
-							.info { padding: 95px 0; }
-						}
-
+						&.not-connected,
 						&.completed { 
 							.info { padding: 95px 0; }
 						}
@@ -1794,7 +1808,7 @@
 
 				.content-wrapper {
 					position: relative;
-					.float;
+					overflow: hidden;
 					.calc-height(100, 180);
 					#fade > .in;
 		        	.transition;
@@ -1907,10 +1921,10 @@
 					/* Add/Edit Route **/
 					.content-left,
 					.content-right {
-						position: relative;
+						position: absolute;
+						top: 0;
 						overflow: hidden;
 						height: 100%;
-						.pull-left;
 
 						.no-content {
 							padding: 0 20px;
@@ -1928,8 +1942,12 @@
 					}
 
 					.content-left {
+						left: 0;
 						width: 330px;
-						background: rgba(0,0,0,.05);
+						background: @rcardTexture2;
+						z-index: 9;
+						.box-shadow(~"inset 0 -1px 2px rgba(0,0,0,.15)");
+						.transition(width, .4s, cubic-bezier(.10, .10, .25, .90));
 
 						.search-form { padding: 10px; }
 
@@ -2109,7 +2127,7 @@
 
 									.icons { 
 										background-size: 90px; 
-										background-position: 4px -881px;
+										background-position: 3px -882px;
 									}
 								}
 							}
@@ -2174,34 +2192,69 @@
 							.add-new-button {
 								cursor: pointer;
 								background: transparent;
-								margin: 0 10px;
+								margin: 10px;
 								.calc-width(100, 20);
 							}
 
-							.form {
-								margin: 10px 10px 0 10px;
+							.payment-form {
+								padding: 10px 20px 0 20px;
 
-								label { margin-bottom: 0; }
+								label { 
+									font-size: 14px;
+									text-transform: uppercase; 
 
-								.actions {
-									padding: 0;
-									margin-top: 10px;
-									.box-shadow(none);
-									.size(auto, 100%);
-									
-									.button {
-										font-size: 14px;
-										line-height: 40px;
-										padding: 0 10px;
+									span { color: @grey3; } 
+
+									&.data-off,
+									&.data-on { 
+										font-size: 16px; 
+
+										.value { color: @white; }
 									}
 								}
+
+								.entry { margin-bottom: 10px; }
+
+								.new-card {
+									.entry { 
+										.pull-left; 
+
+										&.card-type,
+										&.card-number,
+										&.card-name,
+										&.card-ccv {
+											input,
+											select { width: 100%; }
+										}
+
+										&.card-action { 
+											margin-bottom: 30px; 
+
+											.button { margin-top: 26px; }
+										}
+									}
+								}
+
+								.actions {
+									padding: 10px 20px 0 20px;
+									.box-shadow(none);
+
+									.button {
+										display: inline-block;
+										padding: 0 20px;
+										clear: both;
+									}
+								}							
 							}
 						}
 					}
 
 					.content-right {
+						left: 330px;
 						width: 470px;
-						.box-shadow(0 -2px 2px rgba(0,0,0,.3));
+						z-index: 1;
+						.box-shadow(inset -1px -1px 2px rgba(0,0,0,.15));
+						#fade > .in;
 
 						.h2 { margin: 30px 0; }
 
@@ -2268,14 +2321,21 @@
 				.actions {
 					text-align: center;
 					padding: 20px;
-					.box-shadow(-2px 0 2px rgba(0,0,0,.3));
+					.box-shadow(-2px 0 2px rgba(0,0,0,.15));
 					.size(90px, 100%);
 
 					.button {
 						display: inline-block;
 						width: auto;
 					}
-				}      	
+				}  
+
+				&.add-card {
+					.content-wrapper {
+						.content-left { width: 100%; }
+						.content-right { #fade > .out(); }
+					}
+				}    	
 			}
 
 			/* New card ***/
@@ -2371,6 +2431,7 @@
 				}
 
 				.rate-grid {
+					table-layout: auto;
 					margin: 0;
 					width: 100%;
                 	border-collapse: separate;
@@ -2482,6 +2543,42 @@
 		            	}
 		            }
 	            }
+			}
+
+			/* Transaction amount received ***/
+			&.transaction-amount {
+				width: 280px;
+
+				.text {
+					.red { 
+						color: @red;
+						text-decoration: line-through;
+						clear: right;
+					}
+					
+					.green { color: @green; }
+				}
+
+				.entry {
+                    .float;
+
+                    .select {
+                        width: 30%;
+                        margin-right: 10px;
+                        .pull-left;
+                    }
+
+                    input {
+                        .calc-width(70, 10);
+                        .pull-left;
+                    }
+				}
+
+				.actions {
+					margin-top: 20px;
+					padding-top: 19px;
+					border-top: 1px solid rgba(0,0,0,.1);
+				}
 			}
 		}
 	}

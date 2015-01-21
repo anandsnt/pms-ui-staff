@@ -19,7 +19,6 @@ var sntRover = angular.module('sntRover',[
 		'FinancialsModule',
 		'cacheVaultModule', 
 		'twoMonthscalendar',
-		'acute.select', 
 		'documentTouchMovePrevent', 
 		'divTouchMoveStopPropogate', 
 		'pasvaz.bindonce', 
@@ -109,7 +108,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		};
 	};
 
-	$rootScope.diaryState = new StateStore('rover.reservation.diary', ['rover.dashboard.manager', 'rover.reservation.search']);
+	$rootScope.diaryState = new StateStore('rover.diary', ['rover.dashboard.manager', 'rover.reservation.search']);
 
 
 

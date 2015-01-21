@@ -26,7 +26,6 @@ admin
                 var dLastSelectedDate = '',
                     lastSelectedDate = '',
                     businessDate = tzIndependentDate($rootScope.businessDate);
-
                 $scope.fromDateOptions = _.extend({
                     minDate: businessDate,
                     onSelect: function() {
@@ -60,7 +59,7 @@ admin
                     lastSelectedDate = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].end_date;
                 } catch (e) {}
 
-                /* For new dateranges, fromdate should default 
+                /* For new dateranges, fromdate should default
                  * to one day past the enddate of the last daterange
                  * TODO: Only if lastDate > businessDate
                  */

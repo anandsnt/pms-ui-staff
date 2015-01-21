@@ -1,6 +1,6 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
-    $rootScope.isOWSErrorShowing = false;
+    $rootScope.isOWSErrorShowing = false;    
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -22,10 +22,25 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDrawer = function(event) {
       $scope.menuOpen = false;
     };
-
-
+	$scope.isAddToGuestCardEnabledDuringCheckin = false;
+	 $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
+	 	$scope.isAddToGuestCardEnabledDuringCheckin = value;
+	 });
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
+    //set current hotel details
+    $scope.currentHotelData = {
+      "name":"",
+      "id":""
+    };    
+    angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
+          if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id){
+             $scope.currentHotelData.name = hotel.hotel_name;
+             $scope.currentHotelData.id   = hotel.hotel_id;
+             $scope.hotelDetails.userHotelsData.hotel_list.splice(index,1);
+          };
+    });
+
 
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;
@@ -42,6 +57,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthInYear = "MMM"; //Jan
     // Use below standard date formatter in the UI.
     $rootScope.mmddyyyyFormat = "MM-dd-yyyy"; //01-22-2014
+    $rootScope.mmddyyyyBackSlashFormat = "dd/MM/yyyy"; //01-22-2014
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
@@ -68,6 +84,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+    // $rootScope.isManualCCEntryEnabled = false;
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
@@ -89,6 +106,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.$broadcast('six_token_recived', {
           'six_payment_data': responseData
         });
+        $scope.$digest();
       }
       // if (responseData.response_message == "error_on_token_creation") {
         // $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
@@ -111,22 +129,28 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB
-      var FLO_MGR = 'floor_&_maintenance_manager',
-          FLO_STF = 'floor_&_maintenance_staff',
-          FLO_MGR_ID = 10,
-          FLO_STF_ID = 11
-          isFloMgr = false,
-          isFloStf = false;
-
-      isFloMgr = _.find(roles, function(item) {
-        return item.id === FLO_MGR_ID || item.name === FLO_MGR;
-      });
+      var FLO_STF    = 'floor_&_maintenance_staff',
+          FLO_STF_ID = 11,
+          isFloStf   = false;
 
       isFloStf = _.find(roles, function(item) {
         return item.id === FLO_STF_ID || item.name === FLO_STF;
       });
 
-      return isFloMgr || isFloStf ? true : false;
+      return isFloStf ? true : false;
+    })(hotelDetails.current_user.roles);
+
+    $rootScope.isMaintenanceManager = (function(roles) {
+      // Values taken form DB
+      var FLO_MGR    = 'floor_&_maintenance_manager',
+          FLO_MGR_ID = 10,
+          isFloMgr   = false;
+
+      isFloMgr = _.find(roles, function(item) {
+        return item.id === FLO_MGR_ID || item.name === FLO_MGR;
+      });
+
+      return isFloMgr ? true : false;
     })(hotelDetails.current_user.roles);
 
     $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
@@ -177,7 +201,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       return statesForDashbaord[$rootScope.default_dashboard];
     };
 
-    if ($rootScope.isStandAlone) {
+    if ($rootScope.isStandAlone && $rootScope.default_dashboard ==="MANAGER") {
       // OBJECT WITH THE MENU STRUCTURE
       $scope.menu = [{
           title: "MENU_DASHBOARD",
@@ -214,7 +238,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "createReservation"
           }, {
             title: "MENU_ROOM_DIARY",
-            action: 'rover.reservation.diary',
+            action: 'rover.diary',
             standAlone: true,
             hidden: !$rootScope.isHourlyRateOn,
             menuIndex: 'diaryReservation'
@@ -227,11 +251,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             title: "MENU_CASHIER",
             action: "rover.financials.journal({ id: 2 })",
             menuIndex: "cashier"
-          }, {
-            title: "MENU_END_OF_DAY",
-            action: "",
-            actionPopup: true,
-            menuIndex: "endOfDay"
           }]
         }, {
           title: "MENU_CONVERSATIONS",
@@ -276,7 +295,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }, {
             title: "MENU_TASK_MANAGEMENT",
             action: "rover.workManagement.start",
-            menuIndex: "workManagement"
+            menuIndex: "workManagement",
+            hidden: $rootScope.isHourlyRateOn
+
           }, {
             title: "MENU_MAINTAENANCE",
             action: ""
@@ -319,6 +340,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         iconClass: "icon-housekeeping",
         hidden: $rootScope.default_dashboard == 'FRONT_DESK'
       }];
+
+
+      if(!hotelDetails.is_auto_change_bussiness_date){
+          var eodSubMenu = {
+            title: "MENU_END_OF_DAY",
+            action: "",
+            actionPopup: true,
+            menuIndex: "endOfDay"
+          }
+          angular.forEach($scope.menu, function(menu, index) {
+              if(menu.title === 'MENU_FRONT_DESK'){
+                menu.submenu.push(eodSubMenu)
+              }
+          });
+       }     
 
     } else {
       // OBJECT WITH THE MENU STRUCTURE
@@ -428,8 +464,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     /*
      * toggle action of drawer
      */
-    $scope.toggleDrawerMenu = function() {
+    $scope.toggleDrawerMenu = function(e) {
+      if ( !!e ) {
+        e.stopPropagation();
+      };
+
       $scope.menuOpen = !$scope.menuOpen;
+      $scope.showHotelSwitchList = false;
     };
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
@@ -766,5 +807,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         scope: $scope
       });
     };
-  }
-]);
+    
+    $scope.redirectToHotel = function(hotel_id) {
+          RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
+            $('body').addClass('no-animation');
+            $window.location.href = "/staff";
+          }, function() {
+          });
+    };    
+}]);

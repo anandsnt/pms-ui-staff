@@ -7,7 +7,8 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 												'rvDiaryMetadata',
 												'$vault',
 												'rvDiaryUtil',
-	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta, $vault, util) {
+												'$filter',
+	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta, $vault, util, $filter) {
 
 		var roomXfer = $scope.roomXfer,
 			current = (roomXfer.current),
@@ -21,56 +22,41 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		var formDateAndTimeForMe = function(obj, custom_date) {
+			var arrivalDate, departureDate;
 
-		current.arrivalTime 	= new Date(current[r.row_children][m.start_date]).toLocaleTimeString();
-		current.departureTime 	= new Date(current[r.row_children][m.end_date]).toLocaleTimeString();		
-		current.arrivalDate 	= oldArrivalDateComp.date.day + ' ' + oldArrivalDateComp.date.month + ' ' + oldArrivalDateComp.date.year;
-		current.departureDate 	= oldDepartureDateComp.date.day + ' ' + oldDepartureDateComp.date.month + ' ' + oldDepartureDateComp.date.year;
+			obj.arrivalTime 			= new Date(obj[r.row_children][m.start_date]).toLocaleTimeString();
+			obj.departureTime 			= new Date(obj[r.row_children][m.end_date]).toLocaleTimeString();		
+
+			arrivalDate 				= tzIndependentDate(custom_date.date.toDateString().replace(/-/g, '/'));
+			obj.arrivalDateToShow 		= $filter('date')(arrivalDate, $rootScope.dateFormat);
+			obj.arrivalDate 			= $filter('date')(arrivalDate, $rootScope.mmddyyyyBackSlashFormat);
+
+			departureDate 				= tzIndependentDate(custom_date.date.toDateString().replace(/-/g, '/'));
+			obj.departureDateToShow 	= $filter('date')(departureDate, $rootScope.dateFormat);
+			obj.departureDate 			= $filter('date')(departureDate, $rootScope.mmddyyyyBackSlashFormat);
+		};
+
+		
+		//forming date & time for current to display and to pass
+		formDateAndTimeForMe(current, oldArrivalDateComp);
+
+		//forming date & time for next to display and to pass
+		formDateAndTimeForMe(next, newArrivalDateComp);
 
 
-		next.arrivalTime 		= new Date(next[r.row_children][m.start_date]).toLocaleTimeString();
-		next.departureTime 		= new Date(next[r.row_children][m.end_date]).toLocaleTimeString();
-
-		next.arrivalDate 		= newArrivalDateComp.date.day + ' ' + newArrivalDateComp.date.month + ' ' + newArrivalDateComp.date.year;
-		next.departureDate 		= newDepartureDateComp.date.day + ' ' + newDepartureDateComp.date.month + ' ' + newDepartureDateComp.date.year;
 
 		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
 
+		$scope.moveWithoutRateChange = function() {
+			$scope.roomXfer.next.room.new_price = $scope.roomXfer.current.room.old_price;
+			$scope.confirm();
+		};
 
 		$scope.selectAdditional = function() {
 			ngDialog.close();
 		};
 
-		$scope.reserveRoom = function(nextRoom, occupancy){
-
-			var dataToPassConfirmScreen = {};
-			dataToPassConfirmScreen.arrival_date = nextRoom.arrivalDate;
-			dataToPassConfirmScreen.arrival_time = nextRoom.arrivalTime;
-			
-			dataToPassConfirmScreen.departure_date = nextRoom.departureDate;
-			dataToPassConfirmScreen.departure_time = nextRoom.departureTime;			
-			var rooms = {
-				room_id: next.room.id,
-				rateId:  next.room.rate_id,
-				amount: roomXfer.next.room.new_price,
-				reservation_id: next.occupancy.reservation_id,
-				confirmation_id: next.occupancy.confirmation_number,
-				numAdults: next.occupancy.numAdults, 	
-	    		numChildren : next.occupancy.numChildren,
-	    		numInfants 	: next.occupancy.numChildren,
-	    		guest_card_id: next.occupancy.guest_card_id,
-	    		company_card_id: next.occupancy.company_card_id,
-	    		travel_agent_id: next.occupancy.travel_agent_id,
-			}
-			dataToPassConfirmScreen.rooms = [];
-			dataToPassConfirmScreen.rooms.push(rooms);
-			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
-			$scope.closeDialog();
-			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
-				reservation: 'HOURLY',
-				mode:'EDIT_HOURLY'
-			})
-		};
 
 		$scope.confirm = function() {
 			$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);
@@ -79,5 +65,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		$scope.closeDialog = function() {
 			ngDialog.close();
 		};
+
+		
 	}
 ]);

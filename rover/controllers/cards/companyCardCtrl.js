@@ -25,6 +25,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			}
 			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
+				$scope.$broadcast("saveContract");
 			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
 			}
@@ -36,11 +37,19 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			} else if (tabToSwitch == 'cc-contact-info') {
 				$scope.$broadcast("contactTabActive");
 			}
-
+			else if (tabToSwitch == 'cc-ar-transactions') {
+				$scope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
+
+		$scope.$on('ARTransactionSearchFilter', function(e, data) {
+			$scope.isWithFilters = data;
+		});
+
 		/*-------AR account starts here-----------*/
 
 		$scope.showARTab = function($event) {
@@ -129,8 +138,9 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
-
-			callCompanyCardServices();
+			if(!isNew){
+				callCompanyCardServices();	
+			}				
 		});
 
 		$scope.$on("companyCardDetached", function() {
@@ -198,6 +208,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			saveContactInformation($scope.contactInformation);
 			$scope.checkOutsideClick(targetElement);
 			$rootScope.$broadcast("saveArAccount");
+			$rootScope.$broadcast("saveContract");
 		});
 
 		/**
@@ -207,6 +218,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			$scope.$emit("hideLoader");
 			$scope.reservationDetails.companyCard.id = data.id;
 			$scope.contactInformation.id = data.id;
+			$rootScope.$broadcast("IDGENERATED",{ 'id': data.id });
 			callCompanyCardServices();
 			//New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {

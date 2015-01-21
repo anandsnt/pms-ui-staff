@@ -1,10 +1,18 @@
+<!-- Diary header -->
+<div ng-include="'/assets/partials/common/header.html'"></div> 
+
 <section id="diary-content" class="content diary-content" role="main">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>    <!-- Diary header -->
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>    
     <form method="post" action="" id="diary-header" name="diary-header" class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
         <div class="entry edit" ng-show="gridProps.edit.active">
             <div class="guest">
-                <h1>{{gridProps.edit.originalItem.reservation_primary_guest_full_name}}</h1>
-            </div>
+                <h1 ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                    {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
+                </h1>
+                <h1 ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name"> 
+                    {{gridProps.edit.originalItem.account_name}}   
+                </h1>
+            </div>            
             <div class="actions">
                 <button id="edit-staycard" class="button white" ng-click="openStayCard()">StayCard</button>
                 <button id="edit-save" class="button green" ng-click="editSave()">Save</button>
@@ -74,7 +82,7 @@
                         <span  id="selected-company" class="placeholder active" ng-show="gridProps.filter.rate" >
                             {{gridProps.filter.rate.label}}
                         </span>
-                        <button type="button" id="diary-corporate-ok" class="icons icon-ok-10" ng-show="gridProps.filter.rate" ng-click="compCardOrTravelAgSelected()">
+                        <button type="button" id="diary-corporate-ok" class="icons icon-ok-10" ng-show="gridProps.filter.rate">
                             Add
                         </button>
                         <button type="button" id="diary-corporate-cancel" class="icons icon-remove-10" ng-show="gridProps.filter.rate" ng-click="discardSelectedCompCardOrTravelAg()">

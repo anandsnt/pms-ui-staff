@@ -57,6 +57,10 @@
 			background-position: 0 -1200px;
 		}
 
+		&.icon-rates {
+			background-position: 0 -1320px;
+		}
+
 		@media @highdpi {
 			background-image: @iconNoContent2x;
 			background-size: 125px, 120px;
@@ -116,9 +120,9 @@
 		&.icon-alert {
 			.square(40px);
 
-			&.late-check-out { background-position: 10px -2852px; }
+			&.late-check-out { background-position: 10px -2853px; }
 			&.queued-rooms { 
-				background-position: 5px -2780px; 
+				background-position: 5px -2778px; 
 				background-size: 80px;
 			}
 		}
@@ -163,10 +167,10 @@
 
 		/* Guest icons ***/
 		&.icon-location {  background-position: 0px -36px; }
-		&.icon-group { background-position: 0 -78px; }
-		&.icon-guest-company { background-position: 0 -760px; }
-		&.icon-guest-travelagent { background-position: 0 -820px; }
-		
+		&.icon-group { background-position: 0 -77px; }
+		&.icon-guest-company { background-position: 0 -758px; }
+		&.icon-guest-travelagent { background-position: 0 -818px; }
+
 		&.icon-phone { background-position: 3px -4234px; }
 		&.icon-email-grey { background-position: 2px -4293px; }
 		&.pre-check-in,
@@ -180,22 +184,26 @@
 		&.departed { background-image: none; }
 
 		&.icon-gc-location { background-position: 10px -269px; }
-		&.icon-gc-phone { background-position: 10px -306px; }
-		&.icon-gc-email { background-position: 10px -344px; }
+		&.icon-gc-phone { background-position: 10px -308px; }
+		&.icon-gc-email { background-position: 10px -345px; }
 
-		&.icon-queued { background-position: 45px -4170px; }
+		&.icon-queued { 
+			background-position: 10px -4170px; 
+			.hide-text;
+            .square(40px);
+		}
 
 		/* Stay Card Icons ***/
-		&.icon-company { background-position: 32px -3435px; }
-		&.icon-travel-agent { background-position: 34px -3553px; }
+		&.icon-company { background-position: 15px -3448px; }
+		&.icon-travel-agent { background-position: 15px -3566px; }
 		&.icon-upgrade { background-position: 3px -440px; }
-		&.icon-key { background-position: 3px -500px; }
+		&.icon-key { background-position: 0 -500px; }
 		&.icon-plus { background-position: 3px -1000px; }
-		&.icon-email { background-position: 3px -1055px; }
-		&.icon-print { background-position: 3px -1115px; }
-		&.icon-pencil { background-position: 3px -1178px; }
-		&.icon-wallet { background-position: 3px -1237px; }	
-		&.icon-save { background-position: 3px -3276px; }	
+		&.icon-email { background-position: 0 -1058px; }
+		&.icon-print { background-position: 0 -1120px; }
+		&.icon-pencil { background-position: 0 -1180px; }
+		&.icon-wallet { background-position: 0 -1240px; }	
+		&.icon-save { background-position: 0 -3280px; }		
 
 		&.icon-swiped {
 			.square(30px);
@@ -206,7 +214,7 @@
 		&.icon-trash { 
 			.square(20px);
 			.hide-text;
-			background-position: 2px -1657px; 
+			background-position: 0 -1660px; 
 
 			&.invert { background-position: 2px -3160px; }
 		}
@@ -247,9 +255,9 @@
 			.square(30px);
 			.hide-text;
 
-			&.check-in { background-position: 10px -542px; }
-			&.check-out { background-position: 10px -582px; }
-			&.late-check-out { background-position: 10px -2903px; }
+			&.check-in { background-position: 10px -552px; }
+			&.check-out { background-position: 10px -592px; }
+			&.late-check-out { background-position: 10px -2913px; }
 		}
 
 		&.icon-time {
@@ -368,6 +376,8 @@
 			.hide-text;
 			.square(14px);
 		}
+
+		&.icon-reset { background-position: 0 -6220px; }
 
 		/* @2x Icons ***/
 		@media @highdpi {

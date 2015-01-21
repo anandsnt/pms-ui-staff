@@ -55,7 +55,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			else{
 				 $scope.invokeApi(RVChargeItems.fetchAllItems, '', fetchAllItemsSuccessCallback);
 			}
-			$scope.setScroller('result_showing_area_post_charg');
+			$scope.setScroller('result_showing_area_post_charg', {'click':true, 'tap':true});
 			$scope.roomSearchStatus = false;
 			$scope.guestCompanySearchStatus = false;
 			/**
@@ -97,6 +97,11 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showNoMatches = false;
 				$scope.refreshApi = true;
 				
+				// CICO-11081 - Default page should be displayed when no data is entered in Search fields
+				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0){
+					$scope.showInitialSearchScreen = true;
+					$scope.$apply();
+				}
 				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0 
 																&& $scope.reservationsArray.length == 0){
 					$scope.showInitialSearchScreen = true;
@@ -141,7 +146,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, dataToSrv, $scope.searchForResultsSuccess);
 				$scope.itemsVisible = false;
-				$scope.setScroller('search-guests-for-charge-content');
+				//$scope.setScroller('search-guests-for-charge-content', {	'tap': true,'click': true,	'preventDefault': false});
 				
 			};
 			$scope.clickedCancel = function(){

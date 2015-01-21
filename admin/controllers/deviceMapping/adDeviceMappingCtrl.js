@@ -1,24 +1,61 @@
-admin.controller('ADDeviceMappingsCtrl',['$scope', '$state', 'ADDeviceSrv', '$timeout', '$location', '$anchorScroll', function($scope, $state, ADDeviceSrv, $timeout, $location, $anchorScroll){
+admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'ADDeviceSrv', '$timeout', '$location', '$anchorScroll', 
+					function(ngTableParams, $scope, $state, ADDeviceSrv, $timeout, $location, $anchorScroll){
 	
 	$scope.errorMessage = '';
-	BaseCtrl.call(this, $scope);
+	// BaseCtrl.call(this, $scope);
+	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 	$scope.mapping = {};
 	$scope.isAddMode = false;
 	$scope.addEditTitle = "";
+	$scope.isEditMode = false;
    /*
     * To fetch list of device mappings
     */
-	$scope.listDevices = function(){
-		var successCallbackFetch = function(data){
+	// $scope.listDevices = function(){
+		// var successCallbackFetch = function(data){
+			// $scope.$emit('hideLoader');
+			// $scope.data = data;
+			// $scope.currentClickedElement = -1;
+			// $scope.isAddMode = false;
+		// };
+		// $scope.invokeApi(ADDeviceSrv.fetch, {} , successCallbackFetch);	
+	// };
+	$scope.listDevices = function($defer, params){
+		var getParams = $scope.calculateGetParams(params);
+		var fetchSuccessOfItemList = function(data){
+			console.log(JSON.stringify(data));
 			$scope.$emit('hideLoader');
-			$scope.data = data;
+			//No expanded rate view
 			$scope.currentClickedElement = -1;
-			$scope.isAddMode = false;
+			$scope.totalCount = data.total_count;
+			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.data = data.work_stations;
+			$scope.currentPage = params.page();
+        	params.total(data.total_count);
+        	$scope.isAddMode = false;
+            $defer.resolve($scope.data);
 		};
-		$scope.invokeApi(ADDeviceSrv.fetch, {} , successCallbackFetch);	
+		$scope.invokeApi(ADDeviceSrv.fetch, getParams, fetchSuccessOfItemList);
 	};
+
+
+	$scope.loadTable = function(){
+		$scope.tableParams = new ngTableParams({
+		        page: 1,  // show first page
+		        count: $scope.displyCount, // count per page
+		        sorting: {
+		            name: 'asc' // initial sorting
+		        }
+		    }, {
+		        total: 0, // length of data
+		        getData: $scope.listDevices
+		    }
+		);
+	};
+
+	$scope.loadTable();
 	//To list device mappings
-	$scope.listDevices(); 
+	//$scope.listDevices(); 
    /*
     * To render edit device mapping screen
     * @param {index} index of selected device mapping
@@ -28,6 +65,7 @@ admin.controller('ADDeviceMappingsCtrl',['$scope', '$state', 'ADDeviceSrv', '$ti
 		$scope.mapping = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
+		$scope.isEditMode = true;
 		$scope.addEditTitle = "EDIT";
 	 	var successCallbackRender = function(data){	
 	 		$scope.mapping = data;
@@ -67,6 +105,7 @@ admin.controller('ADDeviceMappingsCtrl',['$scope', '$state', 'ADDeviceSrv', '$ti
     * To handle click event
     */	
 	$scope.clickCancel = function(){
+		$scope.isEditMode = false;
 		$scope.currentClickedElement = -1;
 	};	
    /*
@@ -77,7 +116,7 @@ admin.controller('ADDeviceMappingsCtrl',['$scope', '$state', 'ADDeviceSrv', '$ti
 	$scope.deleteDeviceMapping = function(index, id){
 		var successCallbackDelete = function(data){	
 	 		$scope.$emit('hideLoader');
-	 		$scope.data.work_stations.splice(index, 1);
+	 		$scope.data.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
 	 	};
 		$scope.invokeApi(ADDeviceSrv.deleteDeviceMapping, id , successCallbackDelete);
@@ -92,16 +131,17 @@ admin.controller('ADDeviceMappingsCtrl',['$scope', '$state', 'ADDeviceSrv', '$ti
 				// // To add new data to scope
 				var pushData = {
 					"id":successData.id,
-					"station_identifier": $scope.mapping.name,
-					"name":$scope.mapping.station_identifier
+					"station_identifier": $scope.mapping.station_identifier,
+					"name": $scope.mapping.name
 				};
-    			 $scope.data.work_stations.push(pushData);
+    			 $scope.data.push(pushData);
 	    	 } else {
 	    		// To update data with new value
-	    		 $scope.data.work_stations[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
-	    		 $scope.data.work_stations[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
+	    		 $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
+	    		 $scope.data[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
 	    	 }
     		$scope.currentClickedElement = -1;
+    		$scope.isEditMode = false;
     	};
 		var data = {
 			"name": $scope.mapping.name,

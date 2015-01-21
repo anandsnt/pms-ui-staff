@@ -4,31 +4,24 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	*/
 	var that = this;
 
-    this.roomsArray = {};
     this.roomTypesArray = [];
    /*
     * getter method to fetch rooms list
     * @return {object} room list
     */	
-	this.fetchRoomList = function(){
+	this.fetchRoomList = function(params){
+
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms.json';	
-		if(!isEmptyObject(that.roomsArray)){
-			deferred.resolve(that.roomsArray);
-		} else {
-			ADBaseWebSrv.getJSON(url).then(function(data) {
-				that.saveRoomsArray(data);
-				deferred.resolve(data);
-			},function(errorMessage){
-				deferred.reject(errorMessage);
-			});
-		}
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(errorMessage){
+			deferred.reject(errorMessage);
+		});
 		
 		return deferred.promise;
 	};
-	this.saveRoomsArray = function(data){
-		that.roomsArray = data;
-	};
+
    /*
     * getter method for the room details of hotel
     * @return {object} room details
@@ -58,10 +51,9 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
 			var dataToAdd = {
 				"room_number": updateData.room_number,
-                "room_type": that.getRoomTypeName(updateData.room_type_id)
+                "room_type": that.getRoomTypeName(updateData.room_type_id),
+                "room_id" : data.room_id
 			};
-			that.addToRoomsArray(dataToAdd);
-			
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
@@ -109,7 +101,6 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var url = '/admin/hotel_rooms/'+id;	
 		
 		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
-			that.updateRoomDataOnUpdate(id, "room_number", updateData.room_number);
 			that.updateRoomDataOnUpdate(id, "room_type", that.getRoomTypeName(updateData.room_type_id));
 			deferred.resolve(data);
 		},function(errorMessage){

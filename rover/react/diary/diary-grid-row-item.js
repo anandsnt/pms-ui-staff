@@ -38,6 +38,52 @@ var GridRowItem = React.createClass({
 			});
 		}
 	},	
+	__formInnerText: function(data, meta) {
+		var caption,
+			props   = this.props,
+			display = props.display;
+			
+		switch(data[meta.status]) {
+			case 'available':
+				caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
+				break;
+			case 'blocked':
+				caption = 'Web Booking In Progress';
+				break;
+			default:
+				caption = data[meta.guest];
+				//in case of guest name is blank, we have to show account name againstg taht.
+				if(!caption) {						
+					caption = data[meta.tr_ag_name] ? data[meta.tr_ag_name] : data[meta.cmp_name];
+				}
+				break
+		}
+		return caption;
+
+
+	},
+
+	__formHouseKeepingStyle: function(data, display, meta, end_time_ms){
+		
+		var style = {}, ms_fifteen_min	= 900000, end_of_reservation;
+		
+		style.width =  data[meta.maintenance] * display.px_per_int + 'px';
+		end_of_reservation = (data[meta.maintenance] * ms_fifteen_min + end_time_ms);
+		
+		//(CICO-12358) when the reservation end is touching the end of the grid, we are hiding the house keeping task or showing the partial
+		if( end_of_reservation > display.x_p){
+			// reservation crossing the grid boundary we are hiding
+			if(end_time_ms > display.x_p) {					
+				style.display = 'none';
+			}
+			else{
+				style.width = ((display.x_p - end_time_ms) * (display.px_per_ms)) + 'px';
+			}
+		}
+		return style;
+
+	},
+
 	render: function() {
 
 		var props 					= this.props,
@@ -45,7 +91,7 @@ var GridRowItem = React.createClass({
 			display 				= props.display,
 			px_per_ms               = display.px_per_ms,
 			px_per_int 				= display.px_per_int,
-			x_origin   				= display.x_n, 
+			x_origin   				= display.x_n, 			
 			data 					= props.data,
 			row_data 				= props.row_data,
 			m                		= props.meta.occupancy,
@@ -54,10 +100,15 @@ var GridRowItem = React.createClass({
 			maintenance_time_span 	= data[m.maintenance] * px_per_int, 
 			reservation_time_span 	= (end_time_ms - start_time_ms) * px_per_ms,  
 			is_temp_reservation 	= data[m.status] === 'available',
-			innerText 				= (is_temp_reservation ? display.currency_symbol + ' ' + data[m.rate] + ' | ' + data[m.room_type] : data[m.guest]),
+			innerText 				= this.__formInnerText(data, m),
 			className 				= (!is_temp_reservation ? 'occupied ' : '') + 
 																data[m.status] + (state.editing ? ' editing' : '') + 
-																(is_temp_reservation && data.selected ? ' reserved' : '');
+																(is_temp_reservation && data.selected ? ' reserved' : ''),
+			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms);
+
+			
+			
+
 
 		return GridRowItemDrag({
 			key: 				data.key,
@@ -72,6 +123,7 @@ var GridRowItem = React.createClass({
 			angular_evt:    	props.angular_evt, 
 			__onDragStart:  	props.__onDragStart,
 			__onDragStop: 		props.__onDragStop,
+			__onResizeCommand: 	props.__onResizeCommand,
 			currentDragItem:    props.currentResizeItem,
 			style: 			   { 
 				display: 'block',
@@ -86,9 +138,7 @@ var GridRowItem = React.createClass({
 		}, innerText),
 		React.DOM.span({
 			className: 'maintenance',
-			style: { 
-				width: maintenance_time_span + 'px' 
-			}
+			style: houseKeepingTaskStyle
 		}, ' '));
 	}
 });

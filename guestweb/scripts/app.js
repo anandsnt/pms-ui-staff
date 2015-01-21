@@ -33,6 +33,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isCcAttachedFromGuestWeb = false;
+ 	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
  	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
@@ -56,9 +57,18 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 		$location.path('/checkoutRoomVerification');
 	};
 
+	//setTimeout(function() {
+		$( ".loading-container" ).hide();
+
+	//}, 500);
+/*
+	$( ".loading-container" ).slideUp( "slow", function() {
+		console.log("animation complete");
+	    // Animation complete.
+	});
+*/
 
 }]);
-
 
 
 

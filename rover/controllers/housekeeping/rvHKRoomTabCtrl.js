@@ -149,7 +149,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			// eg: if original status was OO them show form only when user choose OS
 			if ( !$scope.inService ) {
 				if ( $_originalStatusId !== $scope.updateService.room_service_status_id ) {
-
+					$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
 					// show the update form
 					$scope.showForm = true;
 					$scope.showSaved = false;
@@ -170,6 +170,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			} else {
 				$scope.showForm = false;
 				$scope.showSaved = false;
+
+				$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
 
 				var _params = {
 					roomId:      $scope.roomDetails.id,
@@ -203,37 +205,41 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 
 
-		// from date options for date picker
-		$scope.fromDateOptions = {
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			minDate: tzIndependentDate($rootScope.businessDate),
-			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay" class="transparent">').insertAfter('#ui-datepicker-div');
+		var datePickerCommon = {
+			dateFormat     : $rootScope.jqDateFormat,
+			numberOfMonths : 1,
+			changeYear     : true,
+			changeMonth    : true,
+			beforeShow     : function(input, inst) {
+				$('#ui-datepicker-div').addClass('reservation hide-arrow');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+				
+				setTimeout(function() {
+					$('body').find('#ui-datepicker-overlay')
+						.on('click', function() {
+							console.log('hey clicked');
+							$('#room-out-from').blur();
+							$('#room-out-to').blur();
+						});
+				}, 100);
 			},
-			onClose: function(dateText, inst) {
-				$('#ui-datepicker-div');
-				$('#ui-datepicker-overlay').remove();
+			onClose        : function(value) {
+				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
+				$('#ui-datepicker-overlay').off('click').remove();
 			}
 		};
 
-		// to date options for date picker
-		$scope.getToDateOptions = function(item) {
-			return {
-				dateFormat: $rootScope.jqDateFormat,
-				numberOfMonths: 1,
-				changeYear: true,
-				changeMonth: true,
-				minDate: tzIndependentDate($scope.updateService.from_date)
+		$scope.fromDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect : function(value) {
+				$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
+				$scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.updateService.from_date), $rootScope.dateFormat);
 			}
-		};
+		}, datePickerCommon);
 
-		$scope.fromDateChanged = function() {
-			$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
-		};
+		$scope.untilDateOptions = angular.extend({
+			minDate  : $filter('date')($rootScope.businessDate, $rootScope.dateFormat)
+		}, datePickerCommon);
 
 
 

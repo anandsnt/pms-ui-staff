@@ -359,14 +359,16 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         startTime       = null,
                         endTime         = null,
                         time            = null,
+                        date_to_pass    = null,
                         matchedRooms    = [];
 
 
                     _.each(inactiveRooms, function(value, key) {
 
                         _.each(value, function(eachRoom){
-
-                            time = util.gridTimeComponents(new Date(key), 24);
+                            date_to_pass = new tzIndependentDate(key);
+                            date_to_pass.setHours(0, 0, 0);
+                            time = util.gridTimeComponents(date_to_pass, 24);
                             if(eachRoom.room_id == room.id) {
                                 startTime = time.toShijuBugStartDate(0);
                                 endTime   = time.toShijuBugEndDate(0);
@@ -435,7 +437,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         room = this.dataStore.get('_room.values.id')[occupancy.room_id],
                         room_type = room.room_type; 
 
-                    
+                    occupancy.arrival_date = occupancy.arrival_date.replace(/-/g, '/');
+                    occupancy.departure_date = occupancy.departure_date.replace(/-/g, '/');
                     if(!occupancy[m.start_date]) occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
                     if(!occupancy[m.end_date]) occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
                     if(!occupancy[m.maintenance]) occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
@@ -496,15 +499,20 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         selected    = args.shift(),
                         m           = meta.occupancy,
                         room        = this.dataStore.get('_room.values.id')[slot.id],
-                        room_type   = room.room_type;                        
+                        room_type   = room.room_type,
+                        slot_statues = {
+                            'WEBBOOKING': 'blocked',
+                            'AVAILABLE' : 'available'
+                        };  
                     /*
                         Configrue Available slot to mirror occupancy, execpt
                         set revervation_id for the collection so the resize
                         will work on all as a group.
                     */
+
                     if(!slot.room_id) {
                         slot.room_id                = room.id;
-                        slot.reservation_status     = 'available';
+                        slot.reservation_status     = slot_statues[slot.status];
                         slot.room_service_status    = '';
                         slot.reservation_id         = guid;
                         slot.selected               = selected;
@@ -589,13 +597,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                  }
                              });
                         } 
-
+                        var start_date = time.toStartDate();
+                        var end_date = time.x_p;
+                        end_date.setHours(0,0,0);
                         $q.all([Maintenance.read(), 
                                 RoomType.read(), 
                                 InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                                 Room.read(),                                                                 
                                 Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
-                                AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
+                                AvailabilityCount.read(dateRange(start_date, end_date))])
                                 .then(function(data_array) {
                                     _.reduce([
                                           Maintenance, 
@@ -831,10 +841,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     return deferred.promise;                    
                 };
 
-                this.properDateTimeCreation = function() {                    
+                this.properDateTimeCreation = function(start_date) {                    
                     var data       = $vault.get('searchReservationData'),
-                        start_date = new tzIndependentDate($rootScope.businessDate);
-
+                        start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
+                    
                     if(data) {
                         data = JSON.parse(data);
                         start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );

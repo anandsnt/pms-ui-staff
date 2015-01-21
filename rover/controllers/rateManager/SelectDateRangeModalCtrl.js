@@ -1,5 +1,5 @@
-sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngDialog','$filter','dateFilter','$rootScope', 
-	function(filterDefaults, $scope,  ngDialog, $filter, dateFilter, $rootScope) {
+sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngDialog','$filter','dateFilter','$rootScope', '$timeout', 
+	function(filterDefaults, $scope,  ngDialog, $filter, dateFilter, $rootScope, $timeout) {
 	'use strict';
 
 	var filterData = $scope.currentFilterData,
@@ -40,6 +40,15 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 	};
 
 	$scope.setUpData();
+	$timeout(function() {						
+		/** CICO-11228 and 11309
+		* Shoddy fix for showing the next month in the 'to date' calendar!
+		* -- Emulate a click to navigate to the next month
+		*/
+		if (!toDate) {
+			$("#toDatePicker .ui-datepicker-next").click();
+		}			
+	}, 300);
 
 	$scope.updateClicked = function() {
 		filterData.begin_date = $scope.fromDate;

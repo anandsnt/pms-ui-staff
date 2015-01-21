@@ -279,5 +279,61 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.fetchArAccountsList = function(params){
+			var deferred = $q.defer();
+			//var url = '/sample_json/cards/arAccountList.json';
+			var url = "/api/accounts/"+params.id+"/ar_transactions?paid="+params.paid+"&from_date="+params.from_date+"&to_date="+params.to_date+"&query="+params.query+"&page="+params.page_no+"&per_page="+params.per_page;
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.addCreditAmount = function(params){
+			var deferred = $q.defer();
+			var url = "api/accounts/"+params.id+"/ar_transactions";
+			rvBaseWebSrvV2.postJSON(url,params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.payForReservation = function(params){
+			var deferred = $q.defer();
+			var url = "api/accounts/"+params.id+"/ar_transactions/"+params.transaction_id+"/pay";
+			rvBaseWebSrvV2.postJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.openForReservation = function(params){
+			var deferred = $q.defer();
+			var url = "api/accounts/"+params.id+"/ar_transactions/"+params.transaction_id+"/open";
+			rvBaseWebSrvV2.postJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.payAll = function(params){
+			var deferred = $q.defer();
+			var url = "api/accounts/"+params.id+"/ar_transactions/pay_all";
+			rvBaseWebSrvV2.postJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
 	}
 ]);

@@ -5,9 +5,18 @@ var GlobalApp = function(){
     this.cardReader = null;
     this.iBeaconLinker = null;
     this.enableURLChange = true;
-    this.MLIOperator = new MLIOperation();
+    try{
+          this.MLIOperator = new MLIOperation();
+    }
+        catch(er){
+    };
+    
 
     this.DEBUG = true;
+
+    // say hello to fellow developers
+    // and with them new year!
+    console.log("\n\n  _    _      _ _          _____ _   _ _______   _____                 _                           \n | |  | |    | | |        / ____| \\ | |__   __| |  __ \\               | |                          \n | |__| | ___| | | ___   | (___ |  \\| |  | |    | |  | | _____   _____| | ___  _ __   ___ _ __ ___ \n |  __  |/ _ \\ | |/ _ \\   \\___ \\| . ` |  | |    | |  | |/ _ \\ \\ / / _ \\ |/ _ \\| '_ \\ / _ \\ '__/ __|\n | |  | |  __/ | | (_) |  ____) | |\\  |  | |    | |__| |  __/\\ V /  __/ | (_) | |_) |  __/ |  \\__ \\ \n |_|  |_|\\___|_|_|\\___/  |_____/|_| \\_|  |_|    |_____/ \\___| \\_/ \\___|_|\\___/| .__/ \\___|_|  |___/\n                                                                              | |                  \n                                                                              |_|                  \n\nMay your stories be no worries, and bugs with no hurries!\n");
 
 
     
@@ -74,5 +83,5 @@ var GlobalApp = function(){
 };
 
 sntapp = new GlobalApp();
-// sntapp.enableCardSwipeDebug();
+//sntapp.enableCardSwipeDebug();
 

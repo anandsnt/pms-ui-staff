@@ -40,43 +40,70 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.heading = listTitle;
 		};
 
-		$scope.fromDateOptions = {
-			dateFormat: $rootScope.jqDateFormat,
-			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			beforeShow: function(input, inst) {
+
+
+		/**
+        * inorder to refresh after list rendering
+        */
+        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){            
+            $scope.refreshScroller( 'report-list-scroll');
+        });
+
+		var datePickerCommon = {
+			dateFormat     : $rootScope.jqDateFormat,
+			numberOfMonths : 1,
+			changeYear     : true,
+			changeMonth    : true,
+			beforeShow     : function(input, inst) {
 				$('#ui-datepicker-div');
 				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
 			},
-			onSelect: function(value) {
-				$scope.untilDateOptions.minDate = value;
-			},
-			onClose: function(value) {
+			onClose        : function(value) {
 				$('#ui-datepicker-div');
 				$('#ui-datepicker-overlay').remove();
-			},
+				$scope.showRemoveDateBtn();
+			}
 		};
 
-		$scope.untilDateOptions = {
-			dateFormat: $rootScope.jqDateFormat,
-			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-			},
-			onSelect: function(value) {
-				$scope.fromDateOptions.maxDate = value;
-			},
-			onClose: function(value) {
-				$('#ui-datepicker-div');
-				$('#ui-datepicker-overlay').remove();
-			},
+		$scope.fromDateOptions = angular.extend({
+			maxDate  : $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect : function(value) { $scope.untilDateOptions.minDate = value; }
+		}, datePickerCommon);
+		$scope.untilDateOptions = angular.extend({
+			maxDate  : $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect : function(value) { $scope.fromDateOptions.maxDate = value; }
+		}, datePickerCommon);
+
+		$scope.fromDateOptionsNoLimit  = angular.extend({}, datePickerCommon);
+		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
+
+
+
+
+		$scope.showRemoveDateBtn = function() {
+			var cancellationReport = _.find($scope.reportList, function(item) {
+			    return item.title == 'Cancelation & No Show';
+			});
+
+			if ( !!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] && (!!cancellationReport['fromCancelDate'] || !!cancellationReport['untilCancelDate']) ) {
+			    cancellationReport['showRemove'] = true;
+			};
+
+			if ( !!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] && (!!cancellationReport['fromDate'] || !!cancellationReport['untilDate']) ) {
+			    cancellationReport['showRemove'] = true;
+			};
 		};
+
+		$scope.clearDateFromFilter = function(list, key1, key2) {
+			if ( list.hasOwnProperty(key1) && list.hasOwnProperty(key2) ) {
+				list[key1] = undefined;
+				list[key2] = undefined;
+				list['showRemove'] = false;
+			};
+		};
+
+
+
 
 		// auto correct the CICO value;
 		var getProperCICOVal = function(type) {
@@ -106,30 +133,135 @@ sntRover.controller('RVReportsMainCtrl', [
 		    };
 		};
 
+		// common faux select method
+		$scope.fauxSelectClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if ( !e ) {
+				_.each($scope.reportList, function(item) {
+					item.fauxSelectOpen = false;
+				});
+				return;
+			};
+
+			if ( !item ) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.fauxSelectOpen = item.fauxSelectOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+
+		$scope.fauxOptionClicked = function(e, item) {
+			var selectCount = 0;
+
+			if ( !item ) {
+				return;
+			};
+
+			e.stopPropagation();
+			
+			if ( item.chosenIncludeNotes ) {
+				selectCount++;
+				item.fauxTitle = item.hasIncludeNotes.description;
+			};
+			if ( item.chosenIncludeCancelled ) {
+				selectCount++;
+				item.fauxTitle = item.hasIncludeCancelled.description;
+			};
+			if ( item.chosenIncludeVip ) {
+				selectCount++;
+				item.fauxTitle = item.hasIncludeVip.description;
+			};
+			if ( item.chosenIncludeNoShow ) {
+				selectCount++;
+				item.fauxTitle = item.hasIncludeNoShow.description;
+			};
+
+			if (selectCount > 1) {
+				item.fauxTitle = selectCount + ' Selected';
+			} else if ( selectCount == 0 ) {
+				item.fauxTitle = 'Select';
+			};
+		};
+
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
 			var chosenReport = RVreportsSrv.getChoosenReport(),
-				fromDate     = chosenReport.fromDate,
-				untilDate    = chosenReport.untilDate,
 				changeView   = typeof changeView === 'boolean' ? changeView : true,
 				page         = !!loadPage ? loadPage : 1;
 				
-
-		    if ( !fromDate || !untilDate ) {
-		        return;
+		    // create basic param
+		    var params = {
+		    	id       : chosenReport.id,
+		    	page     : page,
+		    	per_page : resultPerPageOverride || $scope.resultsPerPage
 		    };
 
-		    var params = {
-		    	id:          chosenReport.id,
-		    	from_date:   $filter( 'date' )( fromDate, 'yyyy/MM/dd' ),
-		    	to_date:     $filter( 'date' )( untilDate, 'yyyy/MM/dd' ),
-		    	user_ids:    chosenReport.chosenUsers || '',
-		    	checked_in:  getProperCICOVal( 'checked_in' ),
-		    	checked_out: getProperCICOVal( 'checked_out' ),
-		    	sort_field:  chosenReport.chosenSortBy || '',
-		    	page:        page,
-		    	per_page:    resultPerPageOverride || $scope.resultsPerPage
-		    }
+		    // include dates
+			if ( !!chosenReport.hasDateFilter ) {
+				params['from_date'] = $filter( 'date' )( chosenReport.fromDate, 'yyyy/MM/dd' );
+				params['to_date']   = $filter( 'date' )( chosenReport.untilDate, 'yyyy/MM/dd' );
+			};
+
+			// include cancel dates
+			if ( !!chosenReport.hasCancelDateFilter ) {
+				params['cancel_from_date'] = $filter( 'date' )( chosenReport.fromCancelDate, 'yyyy/MM/dd' );
+				params['cancel_to_date']   = $filter( 'date' )( chosenReport.untilCancelDate, 'yyyy/MM/dd' );	
+			};
+
+			// include times
+			if ( chosenReport.hasTimeFilter ) {
+				params['from_time'] = chosenReport.fromTime || '';
+				params['to_time']   = chosenReport.untilTime || '';
+			};
+
+			// include CICO filter 
+			if ( !!chosenReport.hasCicoFilter ) {
+				params['checked_in']  = getProperCICOVal( 'checked_in' );
+				params['checked_out'] = getProperCICOVal( 'checked_out' );
+			};
+
+			// include user ids
+			if ( chosenReport.hasUserFilter ) {
+				params['user_ids'] = chosenReport.chosenUsers || [];
+			};
+
+			// include sort bys
+			if ( chosenReport.sortByOptions ) {
+				params['sort_field'] = chosenReport.chosenSortBy || '';
+
+				var chosenSortBy = _.find(chosenReport.sortByOptions, function(item) {
+					return item.value == chosenReport.chosenSortBy;
+				});
+				if ( !!chosenSortBy && typeof chosenSortBy.sortDir == 'boolean' ) {
+					params['sort_dir'] = chosenSortBy.sortDir;
+				};
+			};
+
+			// include notes
+			if ( !!chosenReport.hasIncludeNotes ) {
+				params['include_notes'] = chosenReport.chosenIncludeNotes;
+			};
+
+			// include user ids
+			if ( chosenReport.hasIncludeVip ) {
+				params['vip_only'] = chosenReport.chosenIncludeVip;
+			};
+
+			// include cancelled
+			if ( chosenReport.hasIncludeCancelled ) {
+				params['include_canceled'] = chosenReport.chosenIncludeCancelled;
+			};
+
+			// include no show
+			if ( chosenReport.hasIncludeNoShow ) {
+				params['include_no_show'] = chosenReport.chosenIncludeNoShow;
+			};
+
 
 		    var callback = function(response) {
 		    	if ( changeView ) {

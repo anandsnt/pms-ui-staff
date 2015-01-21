@@ -63,7 +63,9 @@ var GridRow = React.createClass({
 		return React.DOM.li({
 			key: 		props.key,
 			className: 	'grid-row'
-		}, 
+		},
+		hourly_divs,
+		room_inactives,
 		_.map(props.data[room_meta_children], function(occupancy) {
 			return GridRowItem({
 				key: 			occupancy.key,
@@ -79,9 +81,10 @@ var GridRow = React.createClass({
 				row_offset: 	props.row_number * (display.row_height + display.row_height_margin),
 				__onDragStart:  props.__onDragStart,
 				__onDragStop: 	props.__onDragStop,
+				__onResizeCommand: 	props.__onResizeCommand,
 				currentResizeItem: props.currentResizeItem,
 				currentResizeItemRow: props.currentResizeItemRow
 			});
-		}), hourly_divs, room_inactives); //GridRowBackground({ display: this.props.display })); //hourly_divs);
+		})); //GridRowBackground({ display: this.props.display })); //hourly_divs);
 	}	
 });

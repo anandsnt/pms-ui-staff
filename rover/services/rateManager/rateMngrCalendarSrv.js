@@ -300,12 +300,21 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		//Iterate through each calendar cell to find if 'CLOSED' restricion is available
 		for(var i in rateData){
 			var rate = rateData[i];
+			var isDate = false;
 			for(var date in rate){
-				if (date == "id" || date == "name") {
+				
+				// Ignore keys other date object
+				if (date == "id" || date == "name" || date == 'is_hourly' || date == 'isHourly') {
 					continue;	
 				} 
+
+				// Ignore keys other date object
+				// isDateKey = !isNaN(Date.parse(date));
+				// if(!isDateKey){
+				// 	continue;
+				// }
 				//We don't want to check the history dates
-				if(new Date(date).getTime() < new Date(that.businessDate).getTime()){
+				if( (new Date(date).getTime() < new Date(that.businessDate).getTime()) ){
 			   		continue;
 		   		}
 		   		

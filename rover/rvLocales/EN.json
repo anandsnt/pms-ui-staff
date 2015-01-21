@@ -188,6 +188,7 @@
 	"NEW_TA_CARD": "New Travel Agent Card",
 
     "AR_ACCOUNT":"AR Account",
+    "AR_TRANSACTIONS":"AR Transactions",
     "CREATE_ACCOUNT":"Create Account",
     "AR_NUMBER":"AR NUMBER",
     "AR_ADDRESS":"AR ADDRESS",
@@ -207,7 +208,37 @@
     "ADD_BILLLING_INFORMATION" : "Add Billing Information",
     "BILLING_INFORMATION" : "Billing information",
     "ROUTES_DEFINED" : "routes defined",
-    "ACCOUNTS_RECIEVABLE_NUMBER" : "Accounts Receivable Number"
+    "ACCOUNTS_RECIEVABLE_NUMBER" : "Accounts Receivable Number",
+    "SHOW_ALL_BILLS": "Show All Bills",
+    "SHOW_OPEN_BALANCE": "Show Open Balance",
+    "CLEAR_QUERY": "Clear query",
+    "SEARCH": "Search",
+    "SEARCH_BY_NAME_ROOM_PLACEHOLDER": "Search by Name, Room No. or Confirmation No.",
+    "FROM": "From",
+    "TO": "To",
+    "OPEN_GUEST_BILLS": "Open guest bills",
+    "PAY_ALL": "Pay All",
+    "AMOUNT_RECIEVED": "Amount received",
+    "AMOUNT_OWED": "Amount owed",
+    "PAST_PAYMENTS": "Past Payments",
+    "VIP": "VIP",
+    "CHECK-IN": "check-in",
+    "CHECK_OUT": "check-out",
+    "OPEN": "Open",
+    "PAID": "Paid",
+    "NO_TRANSACTIONS": "No Transactions",
+    "OUTSTANDING_GUEST_BILLS_PAID": "Outstanding Guest Bills paid",
+    "NEXT": "Next",
+    "PREVIOUS": "Previous",
+    "OF": "of",
+    "ITEMS": "items",
+    "SHOWING": "Showing",
+    "ADD_AMOUNT": "Add Amount",
+    "AVAILABLE_AMOUNT": "Available amount",
+    "AMOUNT": "Amount",
+    "SAVE": "Save",
+    "CANCEL": "Cancel"
+
 
 
 	
@@ -231,7 +262,7 @@
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",
     "QUEUED_ROOMS_TITLE": "Queued Reservations"
-,
+,"DIARY_RESERVATIONS": "Reservations",
     "BUSSINESS_DATE_NOT_ENDED_MSG": "Business Day has not yet ended. Are you sure you want to initiate End of Day?.",
     "ENTER_PASSWORD": "Enter your Password",
     "PASSWORD": "Password",
@@ -250,7 +281,7 @@
 	"HK_VACANT_CLEAN": "Vacant (Clean)",
 	"HK_OOOS": "Out Of Order / Service",
 
-	"OWS_ERROR_MSG": "The PMS Interface is not responding. StayNTouch Apps have been disabled until a connection has been re-established. Please continue to re-try or contact your PMS vendor.",
+	"OWS_ERROR_MSG": "Rover is having trouble to respond. Please re-try if the issue persists please contact our support team at support@stayntouch.com.",
 	
 	"ROOM_STATUS": "Room Status",
 	"ENTER_ROOM_NUMBER": "Enter Room Number",
@@ -294,8 +325,8 @@
 	"HK_FROM": "From",
 	"HK_TO": "To",
 
-	"PULL_REFRESH": "Pull down to refesh...",
-	"RELEASE_REFRESH": "Release to refesh...",
+	"PULL_REFRESH": "Pull down to refresh...",
+	"RELEASE_REFRESH": "Release to refresh...",
 	"PULL_LOAD_NEXT": "Pull up to load next page...",
 	"RELEASE_LOAD_NEXT": "Release to load next page...",
 	"PULL_LOAD_PREV": "Pull down to load previous page...",
@@ -564,7 +595,8 @@
     "APPLY_TO_RESERVATION": "Apply to reservation",
     "DONT_APPLY": "Don't apply",
     "APPLY_CUSTOMRATE" : "Apply Custom Rate",
-    "MODIFY_CUSTOMRATE" : "Modify Custom Rate"
+    "MODIFY_CUSTOMRATE" : "Modify Custom Rate",
+    "DIARY": "Diary"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",

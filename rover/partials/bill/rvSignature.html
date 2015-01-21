@@ -7,7 +7,7 @@
 		</div>
 	</div>
 	<div class="entry">
-		<label id="terms-and-conditions" for="terms" class="checkbox inline" >
+		<label id="terms-and-conditions" for="terms" class="checkbox inline" ng-hide="reservationBillData.is_disabled_terms_conditions_checkin">
 			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.termsAndConditions}"></span>
 			<input type="checkbox" class = "termsandconditions-checkbox" ng-model="saveData.termsAndConditions">
 			<div class = "agree-terms-and-conditions" ng-click = "termsAndConditionsClicked()">{{ 'T_AND_C_TEXT' | translate }}</div> </label>

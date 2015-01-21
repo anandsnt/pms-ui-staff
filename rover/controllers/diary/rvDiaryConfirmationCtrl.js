@@ -5,7 +5,8 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
     'ngDialog',
     'rvDiarySrv',
     'rvDiaryUtil',
-    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv, util) {
+    '$filter',
+    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv, util, $filter) {
         BaseCtrl.call(this, $scope);
 
         $scope.title = ($scope.selectedReservations.length > 1 ? 'these rooms' : 'this room');
@@ -20,18 +21,28 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                             departure.toComponents());
                     },
                     dFormat = function(arrival, departure) {
+                        var arrival_date   = tzIndependentDate(arrival.date.toDateString().replace(/-/g, '/')),
+                            arrival_date   =  $filter('date')(arrival_date, $rootScope.fullDateFullMonthYear),
+
+                            departure_date = tzIndependentDate(departure.date.toDateString().replace(/-/g, '/')),
+                            departure_date =  $filter('date')(departure_date, $rootScope.fullDateFullMonthYear);
+
+                            
                         return {
                             arrival_time: arrival.time.toString(true),
-                            arrival_date: arrival.date.day + ' ' + arrival.date.monthName + ' ' + arrival.date.year,
+                            //arrival_date: arrival.date.day + ' ' + arrival.date.monthName + ' ' + arrival.date.year,
+                            arrival_date: arrival_date,
                             departure_time: departure.time.toString(true),
-                            departure_date: departure.date.day + ' ' + departure.date.monthName + ' ' + departure.date.year
+                            departure_date: departure_date,
+                            //departure_date: departure.date.day + ' ' + departure.date.monthName + ' ' + departure.date.year
                         };
                     },
+
                     vFormat = function(arrival, departure) {
                         return {
-                            arrival_date: arrival.date.year + '-' + (arrival.date.month + 1) + '-' + arrival.date.day,
+                            arrival_date: arrival.date.year + '/' + (arrival.date.month + 1) + '/' + arrival.date.day,
                             arrival_time: arrival.time.toReservationFormat(false),
-                            departure_date: departure.date.year + '-' + (departure.date.month + 1) + '-' + departure.date.day,
+                            departure_date: departure.date.year + '/' + (departure.date.month + 1) + '/' + departure.date.day,
                             departure_time: departure.time.toReservationFormat(false)
                         };
                     },
@@ -106,8 +117,9 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         };
 
         $scope.routeToSummary = function() {
-            console.log('vault data');
-            console.log( $scope.vaultSelections);
+            /*$scope.reset_guest_details();
+            $scope.reset_company_details();
+            $scope.reset_travel_details();*/
             $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
             //CICO-9429                  
             if ($rootScope.isAddonOn) {

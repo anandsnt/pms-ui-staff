@@ -156,7 +156,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         // open the form to add a new rule
         $scope.openAddNewRule = function() {
             $scope.rulesTitle = 'New';
-
+            $scope.updateRule = false;
             // identify the restriction
             if ( this.item.description === 'Cancellation Penalties' ) {
                 $scope.showCancelForm = true;
@@ -165,6 +165,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.rulesSubtitle = 'Cancellation Penalty';
 
                 $scope.singleRule = {};
+                $scope.singleRule.advance_primetime = "AM";
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
             }
 
@@ -188,7 +189,8 @@ admin.controller('ADRulesRestrictionCtrl', [
                 
                 // clear any previous data
                 $scope.singleRule = data;
-                
+
+                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
                 /*var amtString = $scope.singleRule.amount + '',
                     num       = amtString.split('.')[0],
                     dec       = amtString.split('.')[1] * 1;
@@ -203,31 +205,33 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
 
                     // need to split HH:MM into individual keys
-                    var hhmm, hh, mm;
+                    var hhmm, hh, mm, ampm;
                     if ( $scope.singleRule.advance_time ) {
                         var hhmm = dateFilter( $scope.singleRule.advance_time, 'hh:mm a' );
 
                         hh = hhmm.split(':')[0];
-                        mm = hhmm.split(':')[1];
-
+                        mm = hhmm.split(':')[1].split(' ')[0];  
+                        ampm = hhmm.split(':')[1].split(' ')[1];
                         // convert string to number
                         hh *= 1;
-                        if ( hh > 12 ) {
-                            $scope.singleRule.advance_primetime = 'PM';
-                            hh -= 12;
-                        } else {
-                            $scope.singleRule.advance_primetime = 'AM';
-                        }
+                        
+                        // if ( hh > 12 ) {
+                        //     $scope.singleRule.advance_primetime = 'PM';
+                        //     hh -= 12;
+                        // } else {
+                        //     $scope.singleRule.advance_primetime = 'AM';
+                        // }
 
-                        // padding 0 and converting back to string
-                        if ( hh < 9 ) {
-                            hh = '0' + hh;
-                        } else {
-                            hh += '';
-                        }
+                        // // padding 0 and converting back to string
+                        // if ( hh < 9 ) {
+                        //     hh = '0' + hh;
+                        // } else {
+                        //     hh += '';
+                        // }
 
                         $scope.singleRule.advance_hour = hh;
                         $scope.singleRule.advance_min = mm;
+                        $scope.singleRule.advance_primetime = ampm;
                     };
 
 
@@ -277,17 +281,9 @@ admin.controller('ADRulesRestrictionCtrl', [
             // need to combine individuals HH:MM:ap to single hours entry
             // and remove the individuals before posting
             if ( $scope.singleRule.advance_hour || $scope.singleRule.advance_min ) {
-                var hh, mm;
-
-                if ($scope.singleRule.advance_primetime === 'PM') {
-                    hh = $scope.singleRule.advance_hour ? ($scope.singleRule.advance_hour < 12 ? ($scope.singleRule.advance_hour * 1) + 12 : $scope.singleRule.advance_hour) : '00';
-                } else {
-                    hh = $scope.singleRule.advance_hour || '00';
-                }
-
-                mm = $scope.singleRule.advance_min ? $scope.singleRule.advance_min : '00';
-
-                $scope.singleRule.advance_time = hh + ':' + mm;
+                $scope.singleRule.advance_time = getTimeFormated($scope.singleRule.advance_hour,
+                                                                $scope.singleRule.advance_min,
+                                                                $scope.singleRule.advance_primetime);
 
                 // remove these before sending
                 var withoutEach = _.omit($scope.singleRule, 'advance_hour');

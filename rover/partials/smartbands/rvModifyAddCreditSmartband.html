@@ -4,9 +4,9 @@
 	<div id='smartband-id'>{{bandData.account_number}}</div>
 	<br clear='all'>
 	<div id='area-of-details' ng-class="{'showDisabled':!bandData.is_fixed }">
-		<rv-textbox value="bandData.first_name" ng-model="bandData.first_name" label="{{'FIRST_NAME' | translate}}" placeholder = "{{ 'ENTER_FIRST_NAME' | translate}}" ></rv-textbox>
+		<rv-textbox value="bandData.first_name" ng-model="bandData.first_name" label="{{'FIRST_NAME' | translate}}" placeholder = "{{ 'ENTER_FIRST_NAME' | translate}}" styleclass="margin-right-and-width" ></rv-textbox>
 
-		<rv-textbox value="bandData.last_name" ng-model="bandData.last_name" label="{{'LAST_NAME' | translate}}" placeholder = "{{ 'ENTER_LAST_NAME' | translate}}" ></rv-textbox>
+		<rv-textbox value="bandData.last_name" ng-model="bandData.last_name" label="{{'LAST_NAME' | translate}}" placeholder = "{{ 'ENTER_LAST_NAME' | translate}}" styleclass="margin-right-and-width" ></rv-textbox>
 
 		<div class='entry' id='float-right' ng-show="bandData.is_fixed">
 			<div>
@@ -22,8 +22,8 @@
 				<input id='credit-to-add' name='credit-to-add' type='text' ng-model="bandData.additionalCredit">
 			</div>
 		</div>
-		<div class='entry margin only-switch full-width' id='payment-type-div' ng-show="!bandData.is_fixed">
-			<div class='payment-type-parent'>
+		<div class='entry only-switch full-width' id='payment-type-div' ng-show="!bandData.is_fixed">
+			<div class='payment-type-parent margin-right'>
 				<label for='payment-type' translate>PAYMENT_TYPE</label>
 				<div class='on switch-button'>
 					<input id='payment-type' name='payment-type' type='checkbox' value='1'>

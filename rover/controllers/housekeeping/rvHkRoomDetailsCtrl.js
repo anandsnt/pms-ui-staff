@@ -18,8 +18,6 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 			param: {}
 		}
 
-		console.log( RVHkRoomStatusSrv.currentFilters );
-
 		$scope.setTitle($filter('translate')('ROOM_DETAILS'));
 		$scope.heading = $filter('translate')('ROOM_DETAILS');
 		$scope.$emit("updateRoverLeftMenu", "roomStatus");
@@ -87,7 +85,7 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		 * When opening the room details screen, default to WORK view for logged in employee $rootScope.isStandAlone && !!roomDetailsData.work_sheet_id
 		 */
 
-		if (!$rootScope.isStandAlone || ($rootScope.isStandAlone && $rootScope.isMaintenanceStaff) || ($rootScope.isStandAlone && !!roomDetailsData.work_sheet_id)) {
+		if (!$rootScope.isStandAlone || ($rootScope.isStandAlone && ($rootScope.isMaintenanceStaff || $rootScope.isMaintenanceManager)) || ($rootScope.isStandAlone && !!roomDetailsData.work_sheet_id)) {
 			$scope.openTab = 'Work';
 		} else {
 			$scope.openTab = 'Guest';

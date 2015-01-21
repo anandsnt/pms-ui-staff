@@ -14,11 +14,11 @@
 		<ul class="details">
 			<li class="arrival">
                 <span>{{roomXfer.current.arrivalTime}}</span>
-                {{roomXfer.current.arrivalDate}}
+                {{roomXfer.current.arrivalDateToShow}}
             </li>
             <li class="departure">
                 <span>{{roomXfer.current.departureTime}}</span>
-                {{roomXfer.current.departureDate}}
+                {{roomXfer.current.departureDateToShow}}
             </li>
             <li class="type">{{roomXfer.current.room.room_type_name}}</li>
             <li class="room">{{roomXfer.current.room.number}}</li>
@@ -30,11 +30,11 @@
 		<ul class="details">
 			<li class="arrival">
                 <span>{{roomXfer.next.arrivalTime}}</span>
-                {{roomXfer.next.arrivalDate}}
+                {{roomXfer.next.arrivalDateToShow}}
             </li>
             <li class="departure">
                 <span>{{roomXfer.next.departureTime}}</span>
-                {{roomXfer.next.departureDate}}
+                {{roomXfer.next.departureDateToShow}}
             </li>
             <li class="type">{{roomXfer.next.room.room_type_name}}</li>
             <li class="room">{{roomXfer.next.room.number}}</li>
@@ -43,7 +43,7 @@
 	</div>
 
     <div class="actions">
-        <button type="button" class="button brand-colors">Move without Rate Change</button>
+        <button type="button" class="button brand-colors" ng-click="moveWithoutRateChange()">Move without Rate Change</button>
         <button type="button" class="button green" ng-click="confirm()">Apply Payment</button>
         <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button> 
     </div>

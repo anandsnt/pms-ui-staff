@@ -235,7 +235,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
 
 		if ($stateParams.id != "add") {
-			if (typeof $scope.currentCard != "undefined") {
+			if (!!$scope.currentCard) {
 				$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
 					"account_id": $scope.currentCard
 				}, fetchContractsListSuccessCallback, fetchFailureCallback);
@@ -449,7 +449,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 				if ($stateParams.id == "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
-					var account_id = currentCard;
+					var account_id = $scope.currentCard;
 				}
 				if ($scope.contractList.contractSelected) {
 					if (typeof account_id != "undefined") {

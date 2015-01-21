@@ -3,35 +3,31 @@
 		<figure ng-if="escapeNull(contactInformation.account_details.company_logo)!=''" class="guest-image" ng-click="switchCard('travel-agent-card')">
 			<img ng-src="{{contactInformation.account_details.company_logo}}" alt="" />
 		</figure>
-		<!-- When there's no logo use this instead of <figure>  -->
-		<div class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)==''" translate ng-click="switchCard('travel-agent-card')">
-		</div>            
+		<div class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)==''" translate ng-click="switchCard('travel-agent-card')"></div>
 		<form method="post" name="change-company-name" id="change-company-name">
 			<div class="holder">
 				<div class="entry">
 					<input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field />
-
-<!-- 					<input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_last_name}}" ng-model="contactInformation.account_details.account_last_name" type="text" class="masked-input h1" auto-grow-field/> -->
 				</div>
 			</div>
 			<div class="holder data">
-				<input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location"  data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
-
-				<input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" auto-grow-field/>
-
-				<input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
-
-				<input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
+				<input name="cc-city" id="cc-city" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location" data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
+				<input name="cc-state" id="cc-state" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" auto-grow-field/>
+				<input name="cc-phone" id="cc-phone" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
+				<input name="cc-email" id="cc-email" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
 			</div>
 		</form>
 		<div class="card-actions" ng-show="viewState.isAddNewCard">
             <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('travel_agent')" translate="">Save new card</button>
             <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('travel_agent')" translate="">Discard</button>
         </div>
+        <div class="card-actions" ng-hide="viewState.isAddNewCard">
+            <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachCard('travel_agent')" translate="">Detach Card</button>
+        </div>
 	</section>
 	<section ng-if="searchMode">
 		<div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">
-			Add<span>Travel Agent</span>
+			<span class="search-indicator"></span>
 		</div>
 		<form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
 			<div class="holder">

@@ -31,18 +31,16 @@ var TimelineResizeGrip = React.createClass({
 			px_per_ms = 			display.px_per_ms,
 			model = 				state.currentResizeItem, 
 			direction = 			props.itemProp,
+			newValue = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000,
 			opposite =      		((direction === 'departure') ? 'arrival' : 'departure'),
-			isResizable=			this.__whetherResizable(),
+			isResizable=			this.__whetherResizable( opposite, newValue),
 			last_left;
 
 		e.stopPropagation();
 		e.preventDefault();
 		
 		if(!isResizable){
-			props.iscroll.timeline.enable();
-			document.removeEventListener('mouseup', this.__onMouseUp);
-			document.removeEventListener('mousemove', this.__onMouseMove);			
-			return false;
+			newValue = model[direction];		
 		}
 
 		if(!state.resizing &&
@@ -61,7 +59,7 @@ var TimelineResizeGrip = React.createClass({
 			last_left = model[direction];
 
 			//if(Math.abs(model[direction]-model[opposite]) >= props.display.min_hours * 3600000) {
-			model[direction] = ((((state.element_x + delta_x) / px_per_ms) + x_origin) / 900000).toFixed() * 900000; 
+			model[direction] = newValue; 
 			
 			//if(Math.abs(model[direction]-model[opposite]) < props.display.min_hours * 3600000) {
 			//	model[direction] = last_left;
@@ -112,15 +110,19 @@ var TimelineResizeGrip = React.createClass({
 		e.stopPropagation();
 		e.preventDefault();
 	},
-	__whetherResizable: function(){
+	__whetherResizable: function(opposite, value){
 		var props = 				this.props,
 			state =					this.state,
 			original_item = 		state.currentResizeItem,
 			direction = 			props.itemProp.toUpperCase(),
-			reservation_status = 	original_item.reservation_status.toUpperCase();
-		console.log('reservation_status');
-		console.log(reservation_status);
-		if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
+			fifteenMin =			900000,
+			reservation_status = 	original_item.reservation_status.toUpperCase(),
+			difference	= (opposite == 'departure' ? (original_item[opposite] - value) :(value - original_item[opposite]) );
+		
+		if((difference) < (fifteenMin)) {			
+			return false;
+		}				 	
+		else if ((reservation_status === "RESERVED" || reservation_status === "CHECK-IN" ||
 			reservation_status === "AVAILABLE" )) {
 			return true;
 		}
@@ -129,7 +131,7 @@ var TimelineResizeGrip = React.createClass({
 		}
 		else if((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "ARRIVAL"){
 			return false;
-		}
+		}		
 		return false;
 	},	
 	getDefaultProps: function() {
@@ -162,11 +164,9 @@ var TimelineResizeGrip = React.createClass({
 			px_per_ms 	= display.px_per_ms,
 			x_origin 	= display.x_n, // instanceof Date ? display.x_n.getTime() : display.x_n), 
 			m 			= props.meta.occupancy;
-
 		if(!this.state.resizing) {
 			if(!props.currentResizeItem && nextProps.currentResizeItem) {
 				model = nextProps.currentResizeItem;
-
 				if(nextProps.edit.passive) {
 					this.setState({
 						mode: model[props.meta.occupancy.id],
@@ -179,8 +179,11 @@ var TimelineResizeGrip = React.createClass({
 					}					
 					props.iscroll.grid.scrollTo(-scrollToPos, 0, 0, 1000);
             		props.iscroll.timeline.scrollTo(-scrollToPos, 0, 0, 1000);
+            		props.iscroll.rooms.scrollTo(0, props.iscroll.rooms.y, 0, 1000);
+            		props.iscroll.rooms._scrollFn();
+            		props.iscroll.rooms.refresh();
+            		
             		//state.onScrollEnd(Math.abs(props.iscroll.grid.x) / px_per_ms + x_origin);
-
 				} else {
 					this.setState({
 						mode: 					undefined,
@@ -194,32 +197,64 @@ var TimelineResizeGrip = React.createClass({
 					currentResizeItem: 		undefined,
 					currentResizeItemRow: 	undefined
 				});
-			}						
+			}
+			else if(this.props.currentResizeItem && nextProps.currentResizeItem){
+				this.setState({
+					mode: 					undefined,
+					currentResizeItem: 		nextProps.currentResizeItem,
+					currentResizeItemRow: 	nextProps.currentResizeItemRow
+				});
+			}
 		} 
 	},
 	render: function() {
-		var self = this,
-			props 				= this.props,
-			direction 			= props.itemProp,
-			currentResizeItem 	= this.state.currentResizeItem,
-			x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
-			px_per_ms 			= props.display.px_per_ms,
-			label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
-			left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
-			grip_text = '';
+			var self = this,
+				props 				= this.props,
+				direction 			= props.itemProp,
+				currentResizeItem 	= this.state.currentResizeItem,
+				x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
+				px_per_ms 			= props.display.px_per_ms,
+				label       		= (direction === 'arrival' ? 'ARRIVE' : 'DEPART'),
+				label_class         = (direction === 'arrival' ? 'arrival' : 'departure'),
+				left 				= (currentResizeItem ? (currentResizeItem[direction] - x_origin) * px_per_ms : 0),
+				count_txt           = props.meta.availability_count.total > 0 ? props.meta.availability_count.total : false,
+				classes             = "set-times " + label_class,
+				time_txt            = '';
 
-		if(currentResizeItem) {
-		 	grip_text = label + ' ' + (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+			if(currentResizeItem) {
+			 	time_txt = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+			}
+
+			if(this.props.edit.active) {
+				classes += " editing";
+			}
+
+			return React.DOM.div({
+					className: classes,
+					style: {
+						left: left + 'px'
+					}
+				},
+				React.DOM.span({
+					className: 'title'
+				},
+					React.DOM.label({}, label),
+					React.DOM.span({
+						className: 'time'
+					}, time_txt)
+				),
+				// React.DOM.span({
+				// 	className: 'count',
+				// 	style: {
+				// 		display: direction === 'arrival' ? (this.props.edit.active || !count_txt ? 'none' : 'inline') : 'none'
+				// 	}
+				// }, count_txt),
+				React.DOM.span({
+					className: 'line',
+					style: {
+						display: this.props.edit.active ? 'inline' : 'none'
+					}
+				})
+			);
 		}
-		var classes = "set-times";
-		if(this.props.edit.active) {
-			classes += " editing";
-		}
-		return this.transferPropsTo(React.DOM.a({
-			className: classes,
-			style: {
-				left: left + 'px'		
-			},			
-		}, grip_text));
-	}
 });

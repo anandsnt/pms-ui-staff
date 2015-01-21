@@ -1,10 +1,13 @@
-sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout',
-	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout) {
+sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope',
+	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope) {
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id == "add") ? true : false;
+
+
 		$scope.isDiscard = false;
 		$scope.isPromptOpened = false;
+		$scope.isLogoPrint = true;
 		//setting the heading of the screen
 		if ($stateParams.type == "COMPANY") {
 			if ($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_COMPANY_CARD');
@@ -17,32 +20,18 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
-		// Handle back button Click on card details page.
-		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
-		$scope.headerBackButtonClicked = function(){
-	        $state.go(
-	        	"rover.companycardsearch",
-	        	{ "textInQueryBox": $stateParams.query }
-	        );
-	   	};
-		$scope.isContactInformationSaved = false;
-		//inheriting some useful things
-		BaseCtrl.call(this, $scope);
-
-		//scope variable for tab navigation, based on which the tab will appear
-		$scope.currentSelectedTab = 'cc-contact-info'; //initially contact information is active
-
-		if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
-			$scope.account_type = $stateParams.type;
-		}
 
 		/**
 		 * function to switch to new tab, will set $scope.currentSelectedTab to param variable
 		 * @param{string} is the value of that tab
 		 */
 		$scope.switchTabTo = function($event, tabToSwitch) {
-			$event.stopPropagation();
-			$event.stopImmediatePropagation();
+			
+			if ($event !== undefined && $event !== "") {
+				$event.stopPropagation();
+				$event.stopImmediatePropagation();
+			}
+
 			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 
 				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
@@ -71,8 +60,47 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			if (tabToSwitch == 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
 			}
+			
 			$scope.currentSelectedTab = tabToSwitch;
 		};
+
+		$scope.$on('ARTransactionSearchFilter', function(e, data) {
+			$scope.isWithFilters = data;
+		});
+
+		
+		$rootScope.$broadcast("viewFromCardsOutside");
+		// Handle back button Click on card details page.
+		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
+		$scope.headerBackButtonClicked = function() {
+			
+			// Save details if made changes.
+			if($scope.currentSelectedTab == 'cc-contact-info'){
+				saveContactInformation($scope.contactInformation);
+			}
+			else if($scope.currentSelectedTab == 'cc-contracts') {
+				$scope.$broadcast("saveContract");
+			}
+			else if($scope.currentSelectedTab == 'cc-ar-accounts') {
+				$scope.$broadcast("saveArAccount");
+			}
+
+			$state.go(
+				"rover.companycardsearch", {
+					"textInQueryBox": $stateParams.query
+				}
+			);
+		};
+		$scope.isContactInformationSaved = false;
+		//inheriting some useful things
+		BaseCtrl.call(this, $scope);
+
+		//scope variable for tab navigation, based on which the tab will appear
+		$scope.currentSelectedTab = 'cc-contact-info'; //initially contact information is active
+
+		if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
+			$scope.account_type = $stateParams.type;
+		}
 
 
 
@@ -107,6 +135,52 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.switchTabTo($event, 'cc-ar-accounts');
 		};
 
+		/**
+		 * function to switch to new tab, will set $scope.currentSelectedTab to param variable
+		 * @param{string} is the value of that tab
+		 */
+		$scope.switchTabTo = function($event, tabToSwitch) {
+			
+			if ($event !== undefined && $event !== "") {
+				$event.stopPropagation();
+				$event.stopImmediatePropagation();
+			}
+
+			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
+
+				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
+					$scope.errorMessage = ["Please save " + $scope.cardTypeText + " card first"];
+					if ($stateParams.type == "COMPANY") {
+						$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
+					} else {
+						$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('TA_SAVE_PROMPT')]);
+					}
+					return;
+				} else {
+					saveContactInformation($scope.contactInformation);
+					$scope.$broadcast("ContactTabActivated");
+				}
+
+			}
+			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
+				$scope.$broadcast("saveContract");
+			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
+				$scope.$broadcast("saveArAccount");
+			}
+			if (tabToSwitch == 'cc-ar-accounts') {
+				$scope.$broadcast("arAccountTabActive");
+				$scope.$broadcast("refreshAccountsScroll");
+			}
+			if (tabToSwitch == 'cc-contracts') {
+				$scope.$broadcast("refreshContractsScroll");
+			}
+			if (tabToSwitch == 'cc-ar-transactions') {
+				$rootScope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
+			$scope.currentSelectedTab = tabToSwitch;
+		};
+
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
@@ -114,6 +188,15 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.showArAccountButtonClick($event);
 		};
 
+		//CICO-11664 
+		//To default the AR transactions tab while navigating back from staycard
+		if ($stateParams.isBackFromStaycard) {
+			$scope.isArTabAvailable = true;
+			$scope.currentSelectedTab = 'cc-ar-transactions';
+			$scope.$broadcast('setgenerateNewAutoAr', true);
+			$scope.switchTabTo('', 'cc-ar-transactions');
+			//$scope.$apply();
+		};
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
@@ -220,9 +303,9 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		//we assumes that id will be equal to "add" in case for add, other for edit
 		if (typeof id !== "undefined" && id === "add") {
 			$scope.contactInformation = {};
-			if (typeof $stateParams.firstname !== "undefined" && $stateParams.firstname !== "") {
+			if (typeof $stateParams.query !== "undefined" && $stateParams.query !== "") {
 				$scope.contactInformation.account_details = {};
-				$scope.contactInformation.account_details.account_name = $stateParams.firstname;
+				$scope.contactInformation.account_details.account_name = $stateParams.query;
 			}
 
 			//setting as null dictionary, will help us in saving..
@@ -273,6 +356,9 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.isAddNewCard = false;
 			$scope.errorMessage = "";
 			$scope.$broadcast("clearCardContactErrorMessage");
+			$scope.$broadcast("IDGENERATED", {
+				'id': data.id
+			});
 		};
 
 		/**
@@ -301,8 +387,10 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 						//in add case's first api call, presentContactInfo will be empty object					
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
-								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
-									delete dataToSend[key][subDictKey];
+								if(typeof presentContactInfo[key] != 'undefined'){
+									if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
+										delete dataToSend[key][subDictKey];
+									}
 								}
 							}
 						}
@@ -339,16 +427,38 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		 * a reciever function to do operation on outside click, which is generated by outside click directive
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event) {
+			
 			event.preventDefault();
+
 			if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
 				// On addMode and contact info not yet saved 
 				// If the prompt is not already opened - show the popup for save/disacrd
 				if (!$scope.isPromptOpened) $scope.saveNewCardPrompt();
-			} else if ($scope.isDiscard) {
-				// On discarded - prevent save call
-			} else {
-				saveContactInformation($scope.contactInformation);
 			}
+			else if ($scope.isDiscard) {
+				// On discarded - prevent save call
+			}
+			else if ($stateParams.isBackFromStaycard){
+				// Back navigation from stay card.Do nothing here.
+				//CICO-11664 to handle the back navigation from staycard.
+				console.log("Back navigation from stay card.");
+			}
+			else if ($scope.isContactInformationSaved){
+				console.log("Card already saved");
+			}
+			else{
+
+				if($scope.currentSelectedTab == 'cc-contact-info'){
+					saveContactInformation($scope.contactInformation);
+				}
+				else if($scope.currentSelectedTab == 'cc-contracts') {
+					$scope.$broadcast("saveContract");
+				}
+				else if($scope.currentSelectedTab == 'cc-ar-accounts') {
+					$scope.$broadcast("saveArAccount");
+				}
+			}
+			
 		});
 		// To handle click on save new card button on screen.
 		$scope.clikedSaveNewCard = function() {
@@ -357,6 +467,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		};
 		// To handle click on save new card button on popup.
 		$scope.clikedSaveNewCardViaPopup = function() {
+			saveContactInformation($scope.contactInformation);
 			$scope.isContactInformationSaved = true;
 			ngDialog.close();
 		};
@@ -364,7 +475,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		$scope.clikedDiscardCard = function() {
 			$scope.isDiscard = true;
 			$state.go('rover.companycardsearch', {
-				'textInQueryBox': $stateParams.firstname
+				'textInQueryBox': $stateParams.query
 			});
 			$scope.isAddNewCard = false;
 			ngDialog.close();

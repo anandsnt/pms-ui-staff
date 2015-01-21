@@ -18,6 +18,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			}
 			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
+				$scope.$broadcast("saveContract");
 			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
 			}
@@ -29,11 +30,18 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			} else if (tabToSwitch == 'cc-contact-info') {
 				$scope.$broadcast("contactTabActive");
 			}
-
+			else if (tabToSwitch == 'cc-ar-transactions') {
+				$scope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
+
+		$scope.$on('ARTransactionSearchFilter', function(e, data) {
+			$scope.isWithFilters = data;
+		});
 
 		var presentContactInfo = {};
 		/*-------AR account starts here-----------*/
@@ -124,8 +132,10 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
-			}, 1000);
-			callCompanyCardServices();
+			}, 1000);			
+			if(!isNew){
+				callCompanyCardServices();	
+			}
 		});
 
 
@@ -186,8 +196,8 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			saveContactInformation($scope.contactInformation);
 			$scope.checkOutsideClick(targetElement);
 			$rootScope.$broadcast("saveArAccount");
+			$rootScope.$broadcast("saveContract");
 		});
-
 
 		/**
 		 * success callback of save contact data
@@ -196,6 +206,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$emit("hideLoader");
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
+			$rootScope.$broadcast("IDGENERATED",{ 'id': data.id });
 			callCompanyCardServices();
 			//New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
