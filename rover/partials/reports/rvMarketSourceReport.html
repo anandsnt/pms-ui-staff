@@ -33,7 +33,7 @@
 						<!-- ... repeat for all sources -->
 						<li class="legend">
 							<span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.sourceNumber.ticks}}%;" 
-							ng-hide="$last || $index == sources.length - 2">
+							ng-hide="$last">
 							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span> 
 							<!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
 							<span class="mark last" style="width:{{100/ reportStatus.graph.sourceNumber.ticks}}%;">
@@ -115,7 +115,7 @@
 						<!-- ... repeat for all sources -->
 						<li class="legend">
 							<span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.marketNumber.ticks}}%;" 
-							ng-hide="$last || $index == markets.length - 2">
+							ng-hide="$last">
 							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span> 
 							<!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
 							<span class="mark last" style="width:{{100/ reportStatus.graph.marketNumber.ticks}}%;">
