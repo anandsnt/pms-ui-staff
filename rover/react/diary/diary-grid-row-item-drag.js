@@ -32,7 +32,7 @@ var GridRowItemDrag = React.createClass({
 
 			
 			this.setState({
-				//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+				left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
 				top: page_offset.top - el.offset().top - el[0].scrollTop,
 				mouse_down: true,
 				selected: true,
@@ -101,14 +101,13 @@ var GridRowItemDrag = React.createClass({
 				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height				
 			};
 			if(props.currentDragItem.reservation_status == 'inhouse'){
+				state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int; 
 			}
 			else {
-				console.log('yes am here');
                 state_to_set.left = left; 
                 model.arrival = newArrival;
                 model.departure = model.departure + diff;
            	}           	
-			console.log(state_to_set);
 
 			this.setState({
 				currentResizeItem: 	model,
