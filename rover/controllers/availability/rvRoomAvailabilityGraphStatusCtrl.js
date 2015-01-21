@@ -68,29 +68,35 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 				}
 			}
 			return max;
-		}
+		}		
+
+		// var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
 
 		var formGraphData = function(){
 			$scope.graphData = [{
 				name: 'Bookable Rooms',
 				data: $scope.data.bookableRooms,
 				yAxis: 0,
-				checked: false
+				checked: false,
+				color: colors[0]
 			}, {
 				name: 'Out of Order Rooms',
 				data: $scope.data.outOfOrderRooms,
 				yAxis: 0,
-				checked: false
+				checked: false,
+				color: colors[1]
 			}, {
 				name: 'Total Reserved',
 				data: $scope.data.reservedRooms,
 				yAxis: 0,
-				checked: true
+				checked: true,
+				color: colors[2]
 			}, {
 				name: 'Available Rooms',
 				data: $scope.data.availableRooms,
 				yAxis: 0,
-				checked: false
+				checked: false,
+				color: colors[3]
 			}, {
 				name: 'Occupancy Actual',
 				data: $scope.data.occupanciesActual,
@@ -99,8 +105,10 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 				marker: {
 					symbol: 'circle',
 					radius: 5
-				}
+				},
+				color: colors[4]
 			}];	
+
 			//we are adding occupancy target between if it has setuped in rate manager
 			if($scope.data.IsOccupancyTargetSetBetween){
 				$scope.graphData.push({
