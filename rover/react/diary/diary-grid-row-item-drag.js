@@ -96,7 +96,7 @@ var GridRowItemDrag = React.createClass({
 				props.__onDragStart(props.row_data, model);
 			});
 		} else if(state.dragging) {	
-			model = (props.currentDragItem);
+			model = (props.currentDragItem),
 					scroller = props.iscroll.grid;
 	 		xScPos 	 = scroller.x;
 	 		yScPos	 = scroller.y;
@@ -168,7 +168,6 @@ var GridRowItemDrag = React.createClass({
 				}, 50)
 			}
 	 		
-
 			var cLeft = colNumber * display.px_per_int, top = rowNumber * (display.row_height) + display.row_height_margin;
 			var cFactor = (state.element_x + delta_x);
 			var left = cFactor = cLeft;
