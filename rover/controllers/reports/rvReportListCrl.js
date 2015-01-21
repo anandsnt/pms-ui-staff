@@ -92,8 +92,6 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['canRemoveDate'] = true;
                         reportList[i]['showRemove']    = true;
                         reportList[i]['hasSourceMarketFilter'] = true; 
-                        reportList[i]['canRemoveArrivalDate'] = true;
-                        reportList[i]['showRemoveArrivalDate'] = true;                       
                                                
                     break;
 
