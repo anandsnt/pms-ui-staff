@@ -208,6 +208,7 @@ sntRover.controller('RVReportListCrl', [
                     // check for include no show filter and keep a ref to that item
                     if ( item.value === 'SHOW_GUESTS' ) {
                         reportList[i]['hasShowGuests'] = item;
+                   	}
                     // SPL: for User login details
                     // check for include rover users filter and keep a ref to that item
                     if ( item.value === 'ROVER' ) {
