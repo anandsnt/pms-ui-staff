@@ -175,6 +175,29 @@ sntRover.controller('RVReportsMainCtrl', [
 			//$scope.fauxOptionClicked(e, item);
 		};
 
+		// specific for Source and Markets reports
+		$scope.selectDisplayClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				_.each($scope.reportList, function(item) {
+					item.fauxSelectOpen = false;
+					item.selectDisplayOpen = false;
+				});
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+
 		$scope.fauxOptionClicked = function(e, item) {
 			e.stopPropagation();
 
