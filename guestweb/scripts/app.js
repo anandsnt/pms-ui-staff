@@ -5,7 +5,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 
 	var that = this;
 	//load the style elements. Done to reduce the loading time of web page.
-	loadStyleSheets('/assets/guestweb.css');
+
+	loadStyleSheets('/assets/' + $('body').attr('data-theme') +'.css');
 	loadAssets('/assets/favicon.png', 'icon', 'image/png');
 	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
 	loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait)');
