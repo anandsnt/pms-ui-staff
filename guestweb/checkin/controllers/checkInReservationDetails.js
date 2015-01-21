@@ -40,7 +40,12 @@
 				$state.go('checkinUpgrade');
 			}
 			else{
-				$state.go('checkinKeys');
+				  if($rootScope.isAutoCheckinOn){
+				    $state.go('checkinArrival');
+				  }
+				  else{
+				    $state.go('checkinKeys');
+				  }
 			}
 		}
 		else{

@@ -98,11 +98,13 @@
 	            </div>
 				<div class="entry full-width deposit-amount" ng-show="shouldShowMakePaymentScreen && !depositPaidSuccesFully" ng-class="{'amount': isShowFees()}"><!-- Add class "amount" when fee exsists -->
 				    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
-				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" value="{{depositBalanceMakePaymentData.amount}}" type="text" />
-				    <!-- CICO-9457 : Use only when fee exsists in standalone -->
-				    <span ng-show="isShowFees()" class="fee">
-				    	+ {{currencySymbol}}{{feeData.calculatedFee}} fee
-				    </span> 
+
+				    <!-- CICO-12408 : Use only when fee exsists -->
+				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount"/>
+				    <span ng-show="isShowFees()" class="delimiter">+</span> 
+				    <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
+				    <span ng-show="isShowFees()" class="delimiter">fee</span>
+
 				    <span ng-show="isShowFees()" class="total">
 				    	Total:
 				    	<strong id="total-deposit-amount">

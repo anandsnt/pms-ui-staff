@@ -135,6 +135,26 @@
                 }
             }
         }
+
+        &#report-update {
+			.ui-resizable-handle {
+				&.ui-resizable-s { 
+					top: auto;
+					bottom: -20px;
+                	font-size: 11px;
+                	line-height: 20px;
+                	text-align: center;
+                	text-transform: uppercase;
+                	font-weight: 600;
+                	background-image: @icons, @rcardTexture1;
+
+                	@media @highdpi {
+						background-image: @icons2x, @rcardTexture1;
+						background-size: 120px, 40px;
+					}
+				}
+			}
+		}
 	}
 
 /* jQuery UI datepicker		==============================*/

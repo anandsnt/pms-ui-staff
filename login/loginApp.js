@@ -43,7 +43,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 
 	 	localStorage.email = $scope.data.email;
 	 	if(data.token!=''){
-	 		$state.go('resetpassword', {token: data.token});
+	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 	 	} else {
 	 		 $scope.$emit("signingIn");
 	 		 
@@ -78,7 +78,13 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams){
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
-	 $scope.errorMessage = "";
+	
+	 if($stateParams.notifications.count != ""){
+	 	$scope.errorMessage = [$stateParams.notifications];
+	 } else {
+	 	$scope.errorMessage = "";
+	 }
+	 
 	 /*
 	  * Redirect to specific url on success
 	  * @param {object} status and redirect url
