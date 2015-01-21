@@ -95,7 +95,7 @@ sntRover.controller('RVReportListCrl', [
                         break;
 
                     case 'User Activity':
-                        reportList[i]['reportIconCls'] = 'icon-activity';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-activity';
 						break;
 
                     default:

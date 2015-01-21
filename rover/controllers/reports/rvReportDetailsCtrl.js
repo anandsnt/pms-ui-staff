@@ -12,8 +12,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
 
 		var refreshScroll = function() {
-			$scope.refreshScroller( 'report-details-scroll' );
-			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			if ( !!$scope.$parent.myScroll['report-details-scroll'] ) {
+				$scope.refreshScroller( 'report-details-scroll' );
+				$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			};
 		};
 
 

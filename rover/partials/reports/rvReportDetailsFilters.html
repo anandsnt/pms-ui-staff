@@ -120,6 +120,21 @@
             <input type="checkbox" ng-model="chosenReport.chosenShowGuests" name="room-filters">
             {{ chosenReport.hasShowGuests.description }}
         </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeRoverUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeRoverUsers}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeRoverUsers" name="room-filters">
+            {{ chosenReport.hasIncludeRoverUsers.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestUsers}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeZestUsers" name="room-filters">
+            {{ chosenReport.hasIncludeZestUsers.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestWebUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestWebUsers}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeZestWebUsers" name="room-filters">
+            {{ chosenReport.hasIncludeZestWebUsers.description }}
+        </label>
     </div>
 </div>
 
@@ -138,21 +153,6 @@
             <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showMarket}"></span>
             <input type="checkbox" ng-model="chosenReport.showMarket">
             {{ chosenReport.hasMarket.description }} 
-        </label>        
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeRoverUsers">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeRoverUsers}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeRoverUsers" name="room-filters">
-            {{ chosenReport.hasIncludeRoverUsers.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestUsers">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestUsers}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeZestUsers" name="room-filters">
-            {{ chosenReport.hasIncludeZestUsers.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestWebUsers">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestWebUsers}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeZestWebUsers" name="room-filters">
-            {{ chosenReport.hasIncludeZestWebUsers.description }}
         </label>
     </div>
 </div>
