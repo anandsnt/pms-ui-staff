@@ -89,13 +89,15 @@ sntRover.controller('RVReportListCrl', [
 
                     case 'Booking Source & Market Report':
                         reportList[i]['reportIconCls'] = 'icon-report icon-booking';
-                        reportList[i]['hasSourceMarketFilter'] = true;                        
-                    	break;
+                        reportList[i]['hasSourceMarketFilter'] = true;
+                        break;
+
                     case 'User Activity':
                         reportList[i]['reportIconCls'] = 'icon-activity';
 						break;
+
                     default:
-                        reportList[i]['reportIconCls'] = 'icon-report';                        
+                        reportList[i]['reportIconCls'] = 'icon-report';
                         break;
                 };
 

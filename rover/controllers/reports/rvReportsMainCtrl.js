@@ -97,13 +97,34 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (!!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] && (!!cancellationReport['fromDate'] || !!cancellationReport['untilDate'])) {
 				cancellationReport['showRemove'] = true;
 			};
+
+			var sourceReport = _.find($scope.reportList, function(item) {
+				return item.title == 'Booking Source & Market Report';
+			});
+
+			if (sourceReport) {
+				// CICO-10200
+				// If source markets report and a date is selected, have to enable the delete button to remove the date in case both days are selected i.e. the date range has both upper and
+				// lower limits
+				if (!!sourceReport['fromArrivalDate'] && !!sourceReport['untilArrivalDate']) {
+					sourceReport['showRemoveArrivalDate'] = true;
+
+				}
+
+				if (!!sourceReport['fromDate'] && !!sourceReport['untilDate']) {
+					sourceReport['showRemove'] = true;
+				};
+
+				$scope.$apply();
+			}
 		};
 
 		$scope.clearDateFromFilter = function(list, key1, key2) {
 			if (list.hasOwnProperty(key1) && list.hasOwnProperty(key2)) {
 				list[key1] = undefined;
 				list[key2] = undefined;
-				list['showRemove'] = false;
+				var flag = property || 'showRemove';
+				list[flag] = false;
 			};
 		};
 
@@ -177,6 +198,36 @@ sntRover.controller('RVReportsMainCtrl', [
 			//$scope.fauxOptionClicked(e, item);
 		};
 
+		// specific for Source and Markets reports
+		$scope.selectDisplayClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				_.each($scope.reportList, function(item) {
+					item.fauxSelectOpen = false;
+					item.selectDisplayOpen = false;
+				});
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+
+			$scope.fauxOptionClicked(e, item);
+
+		};
+
 		$scope.fauxOptionClicked = function(e, item) {
 			e.stopPropagation();
 
@@ -202,6 +253,24 @@ sntRover.controller('RVReportsMainCtrl', [
 			} else if ( selectCount > 1 ) {
 				item.fauxTitle = selectCount + ' Selected';
 			};
+
+			if (item.hasSourceMarketFilter) {
+				var selectCount = 0;
+				if (item.showMarket) {
+					selectCount++;
+					item.displayTitle = item.hasMarket.description;
+				};
+				if (item.showSource) {
+					selectCount++;
+					item.displayTitle = item.hasSource.description;
+				};
+
+				if (selectCount > 1) {
+					item.displayTitle = selectCount + ' Selected';
+				} else if (selectCount == 0) {
+					item.displayTitle = 'Select';
+				};
+			}
 		};
 
 		$scope.showFauxSelect = function(item) {
@@ -368,22 +437,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, callback);
-		};
-
-
-
-		var autoCompleteSelectHandler = function(event, ui) {
-		    if (ui.item.type === 'COMPANY') {
-		        $scope.reservationData.company.id = ui.item.id;
-		        $scope.reservationData.company.name = ui.item.label;
-		        $scope.reservationData.company.corporateid = ui.item.corporateid;
-		    } else {
-		        $scope.reservationData.travelAgent.id = ui.item.id;
-		        $scope.reservationData.travelAgent.name = ui.item.label;
-		        $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
-		    };
-
-		    // DO NOT return false;
 		};
 
 
