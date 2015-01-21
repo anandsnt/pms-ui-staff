@@ -107,8 +107,12 @@ var GridRowItem = React.createClass({
 			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms);
 
 			
-			
-
+		var start_date = new Date(start_time_ms);
+		if(start_date.isOnDST()){
+			console.log('yes in DST')
+			start_date.setMinutes(start_date.getMinutes() + start_date.getDSTDifference());
+			start_time_ms = start_date.getTime();
+		}
 
 		return GridRowItemDrag({
 			key: 				data.key,
