@@ -79,13 +79,10 @@
 	</div>
 </div>
 
-<div class="filter" ng-if="HIDE_THIS_FEATURE">
-	<label>User</label>
-	<div class="select">
-		<select name="" id="" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in userList">
-			<option value="">User</option>
-		</select>
-	</div>
+<div class="filter" ng-if="chosenReport.hasUserFilter">
+    <label>User</label>
+    <input class="icons icon-search" auto-complete auto-options="autoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(chosenReport)">
+    <select multiple class="hidden" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
 </div>
 
 <div class="options" ng-if="showFauxSelect(chosenReport)">
@@ -142,6 +139,21 @@
             <input type="checkbox" ng-model="chosenReport.showMarket">
             {{ chosenReport.hasMarket.description }} 
         </label>        
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeRoverUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeRoverUsers}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeRoverUsers" name="room-filters">
+            {{ chosenReport.hasIncludeRoverUsers.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestUsers}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeZestUsers" name="room-filters">
+            {{ chosenReport.hasIncludeZestUsers.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestWebUsers">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestWebUsers}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeZestWebUsers" name="room-filters">
+            {{ chosenReport.hasIncludeZestWebUsers.description }}
+        </label>
     </div>
 </div>
 
