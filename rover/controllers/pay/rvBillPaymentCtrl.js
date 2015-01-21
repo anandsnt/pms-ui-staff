@@ -177,7 +177,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	$scope.showHideCreditCard = function(){
-		console.log("showHideCreditCard");
+		
 		if($scope.saveData.paymentType == "CC"){
 			if($scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
