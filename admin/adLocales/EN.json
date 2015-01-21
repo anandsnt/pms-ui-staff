@@ -487,7 +487,13 @@
 	"CUSTOM_TEXT_PLACEHOLDER":"Add custom text, hotel name / address etc",
 	"CONFIRMATION_COMMUNICATION":"Confirmation Communications",
 	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL",
-	"LOCATION_IMAGE":"LOCATION IMAGE"
+	"LOCATION_IMAGE":"LOCATION IMAGE",
+	"CANCELLATION" : "Cancellation",
+	"COMMUNICATIONS" : "Communications",
+	"TITLE": "Title",
+	"ENTER_TITLE": "Enter Title",
+	"CANCELLATION_TEXT" : "Cancellation text",
+	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text"
 ,
 
 

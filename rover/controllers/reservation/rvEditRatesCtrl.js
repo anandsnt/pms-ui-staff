@@ -24,14 +24,14 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', '$stateParams', 
 					"isrefresh": false
 				});
 			} else {
-				$scope.saveReservation();
+				$scope.saveReservation('', '', index);
 			}
 			$scope.closeDialog();
-		}
+		};
 
 		$scope.pastDay = function(date) {
 			return tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date);
-		}
+		};
 
 	}
 ]);
