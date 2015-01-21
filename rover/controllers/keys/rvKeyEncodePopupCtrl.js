@@ -6,9 +6,56 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
-			
+
+	$s = $scope;
+
+	var getKeySystemVendor = function(){
+
+		var vendorFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			return data;
+		};
+
+	    $scope.invokeApi(RVKeyPopupSrv.fetchVendorType, {}, vendorFetchSuccess);
+	};
+
+	var fetchEncoderTypes = function(){
+
+		var encoderFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.encoderTypes = data;
+			$scope.encoderSelected = "";
+			console.log($scope.encoderTypes);
+			console.log("before");
+		};
+
+	    $scope.invokeApi(RVKeyPopupSrv.fetchActiveEncoders, {}, encoderFetchSuccess);
+
+	};
+
+	$scope.isPrintKeyEnabled = function(){
+		if ($scope.numberOfKeysSelected == 0){
+			return false;
+		}
+		if ($scope.numberOfKeysSelected > 0){
+			if($scope.keySystemVendor == 'SAFLOCK_MSR' && $scope.encoderSelected == ""){
+				return false
+			}
+			return true
+		}
+	};
+				
 	$scope.init = function(){
+		/*$scope.keySystemVendor = getKeySystemVendor();
+		*/
+
+		$scope.keySystemVendor = 'SAFLOCK_MSR'; 
+		if($scope.keySystemVendor == 'SAFLOCK_MSR'){
+			fetchEncoderTypes();
+		}
+
 		var reservationStatus = "";
+
 		$scope.data = {};
 		//If the keypopup inviked from check-in flow - registration card)
 		if($scope.fromView == "checkin"){

@@ -6,7 +6,6 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 
-
 	$scope.fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
@@ -75,16 +74,23 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 		console.log(JSON.stringify($scope.data));
 		var successCallbackSave = function(data) {
 			$scope.$emit('hideLoader');
-			/*if ($scope.isAddMode) {
+			if ($scope.isAddMode) {
+				console.log(data);
 				// To add new data to scope
 				$scope.data.push(data);
 				var l = $scope.data.length;
-				$scope.data[(l - 1)].name = $scope.rateTypeData.name;
-				$scope.data[(l - 1)].rate_count = 0;
+				$scope.data[(l - 1)].description = $scope.encoderData.description;
+				$scope.data[(l - 1)].location = $scope.encoderData.location;
+				$scope.data[(l - 1)].encoder_id = $scope.encoderData.encoder_id;
+				$scope.data[(l - 1)].enabled = $scope.encoderData.enabled;
 			} else {				
 				//To update data with new value
-				$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
-			}*/
+				$scope.data[parseInt($scope.currentClickedElement)].description = $scope.encoderData.description;
+				$scope.data[parseInt($scope.currentClickedElement)].location = $scope.encoderData.location;
+				$scope.data[parseInt($scope.currentClickedElement)].encoder_id = $scope.encoderData.encoder_id;
+				$scope.data[parseInt($scope.currentClickedElement)].enabled = $scope.encoderData.enabled;
+				
+			}
 			$scope.currentClickedElement = -1;
 		};
 		if ($scope.isAddMode) {
@@ -105,6 +111,21 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 		if ($scope.currentClickedElement == index) {
 			return "/assets/partials/keyEncoders/adEncoderEdit.html";
 		}
+	};
+
+	$scope.statusToggle = function(index) {
+		$scope.data[index].activated
+		var data = {
+			'id' : $scope.data[index].id,
+			'status' : !$scope.data[index].enabled
+		};
+
+		var postSuccess = function() {
+			$scope.data[index].enabled = !$scope.data[index].enabled;
+			$scope.$emit('hideLoader');
+		};
+
+		$scope.invokeApi(ADKeyEncoderSrv.updateEncoderStatus, data, postSuccess);
 	};
 
 
