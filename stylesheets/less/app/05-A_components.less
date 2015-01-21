@@ -2878,7 +2878,7 @@
                 &.hidden,
                 &.ng-hide {
                     display: block !important;
-                    height: 0px;
+                    height: 0px !important;
                     padding: 0;
                     margin: 0;
                     .transition(height, .3s,cubic-bezier(.10, .10, .25, .90));
@@ -2887,7 +2887,7 @@
 
             /* Reservation guest info ***/
             .reservation-guests {
-                .size(310px, 100%);
+                .size(70px, 100%);
 
                 .guest-count {
                     width: 100%;
@@ -2968,6 +2968,8 @@
                         }
                     }
                 }
+
+                &.editable { height: 310px; }
             }
 
             /* Arrival / Departure times ***/
