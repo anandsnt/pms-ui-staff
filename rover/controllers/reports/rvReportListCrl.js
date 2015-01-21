@@ -91,7 +91,10 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['reportIconCls'] = 'icon-report icon-booking';
                         reportList[i]['canRemoveDate'] = true;
                         reportList[i]['showRemove']    = true;
-                        reportList[i]['hasSourceMarketFilter'] = true;                        
+                        reportList[i]['hasSourceMarketFilter'] = true; 
+                        reportList[i]['canRemoveArrivalDate'] = true;
+                        reportList[i]['showRemoveArrivalDate'] = true;                       
+                                               
                     break;
 
                     default:

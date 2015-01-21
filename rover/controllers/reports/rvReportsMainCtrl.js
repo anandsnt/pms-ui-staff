@@ -100,24 +100,34 @@ sntRover.controller('RVReportsMainCtrl', [
 				return item.title == 'Booking Source & Market Report';
 			});
 
-			if (!!sourceReport['fromDate'] && !!sourceReport['untilDate'] && (!!sourceReport['fromArrivalDate'] || !!sourceReport['untilArrivalDate'])) {
-				sourceReport['showRemove'] = true;
-			};
+			if (sourceReport) {
+				// CICO-10200
+				// If source markets report and a date is selected, have to enable the delete button to remove the date in case both days are selected i.e. the date range has both upper and
+				// lower limits
+				if (!!sourceReport['fromArrivalDate'] && !!sourceReport['untilArrivalDate']) {
+					sourceReport['showRemoveArrivalDate'] = true;
 
-			if (!!sourceReport['fromArrivalDate'] && !!sourceReport['untilArrivalDate'] && (!!sourceReport['fromDate'] || !!sourceReport['untilDate'])) {
-				sourceReport['showRemove'] = true;
-			};
+				}
+
+				if (!!sourceReport['fromDate'] && !!sourceReport['untilDate']) {
+					sourceReport['showRemove'] = true;
+				};
+
+				$scope.$apply();
+			}
+
+
+
 		};
 
-		$scope.clearDateFromFilter = function(list, key1, key2) {
+		$scope.clearDateFromFilter = function(list, key1, key2, property) {
 			if (list.hasOwnProperty(key1) && list.hasOwnProperty(key2)) {
 				list[key1] = undefined;
 				list[key2] = undefined;
-				list['showRemove'] = false;
+				var flag = property || 'showRemove';
+				list[flag] = false;
 			};
 		};
-
-
 
 		// auto correct the CICO value;
 		var getProperCICOVal = function(type) {
@@ -245,6 +255,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			if (item.hasSourceMarketFilter) {
+				var selectCount = 0;
 				if (item.showMarket) {
 					selectCount++;
 					item.displayTitle = item.hasMarket.description;
@@ -298,8 +309,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['cancel_to_date'] = $filter('date')(chosenReport.untilCancelDate, 'yyyy/MM/dd');
 			};
 
-			//// include arrival dates
-			if (!!chosenReport.hasArrivalDateFilter) {
+			//// include arrival dates -- IFF both the limits of date range have been selected
+			if (!!chosenReport.hasArrivalDateFilter && !!chosenReport.fromArrivalDate && !! chosenReport.untilArrivalDate) {
 				params['arrival_from_date'] = $filter('date')(chosenReport.fromArrivalDate, 'yyyy/MM/dd');
 				params['arrival_to_date'] = $filter('date')(chosenReport.untilArrivalDate, 'yyyy/MM/dd');
 			};
