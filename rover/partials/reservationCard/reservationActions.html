@@ -71,6 +71,6 @@
 			CANCEL_RESERVATION
 		</a>
 		
-		<a class="button white blue-text bottom-button" ng-show="true"> RESEND_CONFIRMATION</a>
+		<a class="button white blue-text bottom-button" ng-show="showResendConfirmation(reservationData.reservation_card.reservation_status)" ng-click="sendConfirmationEmail()"> RESEND_CONFIRMATION</a>
 	
 	</div>
