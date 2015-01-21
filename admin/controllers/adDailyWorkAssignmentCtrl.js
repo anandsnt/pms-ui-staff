@@ -236,6 +236,40 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		// fetch task list
 		var fetchTaskList = function() {
 			var callback = function(data) {
@@ -310,17 +344,17 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		var resetEachTaskList = function() {
 			$scope.eachTaskList = {
-				name: '',
-				work_type_id: '',
-				room_type_ids: [],
-				front_office_status_ids: [],
-				reservation_statuses_ids: [],
-				is_occupied: '',
-				is_vacant: '',
-				hours: '',
-				mins: '',
-				task_completion_hk_status_id: '',
-				rooms_task_completion: initateRoomTaskTimes()
+				name                         : '',
+				work_type_id                 : '',
+				room_type_ids                : [],
+				front_office_status_ids      : [],
+				reservation_statuses_ids     : [],
+				is_occupied                  : '',
+				is_vacant                    : '',
+				hours                        : '',
+				mins                         : '',
+				task_completion_hk_status_id : '',
+				rooms_task_completion        : initateRoomTaskTimes()
 			};
 		};
 		resetEachTaskList();
@@ -336,11 +370,36 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					$scope.eachTaskList.rooms_task_completion[room.id].mins = $scope.eachTaskList.mins;
 				}
 			})
-		}
+		};
 
+		var applyIds = function(source, entry) {
+			var model = [];
+			var match;
+			_.each(source, function(item, index) {
+				model[index] = false;
+
+				match = _.find(entry, function(id) {
+					return id == item.id;
+				});
+
+				if ( !!match ) {
+					model[index] = true;
+				};
+			});
+			return angular.copy( model );
+		};
+
+		var traceBackIds = function(source, model) {
+			var idAry = [];
+			_.each(source, function(item, index) {
+				if ( model[index] ) {
+					idAry.push(item.id);
+				};
+			});
+			return idAry;
+		};
 
 		$scope.openTaskListForm = function(typeIndex) {
-
 			if (typeIndex == 'new') {
 				$scope.taskListForm = 'add';
 				$scope.taskListClickedElement = 'new';
@@ -354,18 +413,18 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.taskListClickedElement = typeIndex;
 				var time = this.item.completion_time;
 				$scope.eachTaskList = {
-					name: this.item.name,
-					work_type_id: this.item.work_type_id,
-					room_type_ids: this.item.room_type_ids,
-					front_office_status_ids: this.item.front_office_status_ids,
-					reservation_statuses_ids: this.item.reservation_statuses_ids,
-					is_occupied: this.item.is_occupied,
-					is_vacant: this.item.is_vacant,
-					hours: !!time ? time.split(':')[0] : '',
-					mins: !!time ? time.split(':')[1] : '',
-					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
-					id: this.item.id,
-					rooms_task_completion: initateRoomTaskTimes(time, this.item.room_types_completion_time)
+					name                         : this.item.name,
+					work_type_id                 : this.item.work_type_id,
+					room_type_ids                : applyIds( $scope.roomTypesList, this.item.room_type_ids ),
+					front_office_status_ids      : applyIds( $scope.foStatusList, this.item.front_office_status_ids ),
+					reservation_statuses_ids     : applyIds( $scope.resHkStatusList, this.item.reservation_statuses_ids ),
+					is_occupied                  : this.item.is_occupied,
+					is_vacant                    : this.item.is_vacant,
+					hours                        : !!time ? time.split(':')[0] : '',
+					mins                         : !!time ? time.split(':')[1] : '',
+					task_completion_hk_status_id : this.item.task_completion_hk_status_id,
+					id                           : this.item.id,
+					rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time)
 				};
 			}
 		};
@@ -400,20 +459,17 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				fetchTaskList();
 			};
 
-			var isOccupied = _.find($scope.eachTaskList.reservation_statuses_ids, function(item) {
-				return item == 3 || item == 4;
-			});
 			var params = {
-				name: $scope.eachTaskList.name,
-				work_type_id: $scope.eachTaskList.work_type_id,
-				room_type_ids: $scope.eachTaskList.room_type_ids,
-				front_office_status_ids: $scope.eachTaskList.front_office_status_ids,
-				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
-				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
-				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
-				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
-				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
-				rooms_task_completion: getRoomTaskTimes()
+				name                         : $scope.eachTaskList.name,
+				work_type_id                 : $scope.eachTaskList.work_type_id,
+				room_type_ids                : traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
+				front_office_status_ids      : traceBackIds( $scope.foStatusList, $scope.eachTaskList.front_office_status_ids ),
+				reservation_statuses_ids     : traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
+				is_occupied                  : $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
+				is_vacant                    : $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
+				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
+				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
+				rooms_task_completion        : getRoomTaskTimes()
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postTaskListItem, params, callback);
@@ -428,21 +484,18 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				fetchTaskList();
 			};
 
-			var isOccupied = _.find($scope.eachTaskList.reservation_statuses_ids, function(item) {
-				return item == 3 || item == 4;
-			});
 			var params = {
-				name: $scope.eachTaskList.name,
-				work_type_id: $scope.eachTaskList.work_type_id,
-				room_type_ids: $scope.eachTaskList.room_type_ids,
-				front_office_status_ids: $scope.eachTaskList.front_office_status_ids,
-				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
-				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
-				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
-				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
-				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
-				id: $scope.eachTaskList.id,
-				rooms_task_completion: getRoomTaskTimes()
+				name                         : $scope.eachTaskList.name,
+				work_type_id                 : $scope.eachTaskList.work_type_id,
+				room_type_ids                : traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
+				front_office_status_ids      : traceBackIds( $scope.foStatusList, $scope.eachTaskList.front_office_status_ids ),
+				reservation_statuses_ids     : traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
+				is_occupied                  : $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
+				is_vacant                    : $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
+				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
+				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
+				id                           : $scope.eachTaskList.id,
+				rooms_task_completion        : getRoomTaskTimes()
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
