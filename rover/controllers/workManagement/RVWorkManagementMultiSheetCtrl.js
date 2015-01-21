@@ -105,83 +105,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 									$scope.multiSheetState.assignments[worksheet.employee_id]['rooms'].push( assignments.room )
 								};
 							});
-
-
-
-
-							// if (!$scope.multiSheetState.assignments[worksheet.employee_id] || reset) {
-							// 	console.log('in this if');
-							// 	$scope.multiSheetState.assignments[worksheet.employee_id] = {};
-							// 	$scope.multiSheetState.assignments[worksheet.employee_id].rooms = [];
-							// 	$scope.multiSheetState.assignments[worksheet.employee_id].summary = {
-							// 		shift: {
-							// 			completed: "00:00",
-							// 			total: worksheet.shift
-							// 		},
-							// 		stayovers: {
-							// 			total: 0,
-							// 			completed: 0
-							// 		},
-							// 		departures: {
-							// 			total: 0,
-							// 			completed: 0
-							// 		}
-							// 	};
-							// 	$scope.multiSheetState.assignments[worksheet.employee_id].worksheetId = worksheet.work_sheet_id;
-							// 	var assignmentDetails = $scope.multiSheetState.assignments[worksheet.employee_id];
-							// 	_.each(worksheet.work_assignments, function(workAssignment) {
-							// 		if (workAssignment.room) {
-							// 			if ($scope.departureClass[workAssignment.room.reservation_status] === "check-out") {
-							// 				assignmentDetails.summary.departures.total++;
-							// 				if (workAssignment.room.hk_complete) {
-							// 					assignmentDetails.summary.departures.completed++;
-							// 				}
-							// 			} else if ($scope.departureClass[workAssignment.room.reservation_status] == "inhouse") {
-							// 				assignmentDetails.summary.stayovers.total++;
-							// 				if (workAssignment.room.hk_complete) {
-							// 					assignmentDetails.summary.stayovers.completed++;
-							// 				}
-							// 			}
-							// 			assignmentDetails.summary.shift.completed = $scope.addDuration(assignmentDetails.summary.shift.completed, workAssignment.room.time_allocated);
-							// 			assignmentDetails.rooms.push(workAssignment.room);
-							// 		}
-							// 	});
-							// } else {
-							// 	console.log( worksheet );
-							// }
 						});
-
 
 						_.each($scope.multiSheetState.selectedEmployees, function(employee) {
 							updateSummary( employee.id );
 						});
 						
-						// if ( !reset ) {
-						// 	_.each($scope.multiSheetState.selectedEmployees, function(employee) {
-						// 		var employee = employee.id;
-						// 		if (!$scope.multiSheetState.assignments[employee] || reset) {
-						// 			$scope.multiSheetState.assignments[employee] = {};
-						// 			$scope.multiSheetState.assignments[employee].rooms = [];
-						// 			$scope.multiSheetState.assignments[employee].summary = {
-						// 				shift: {
-						// 					completed: "00:00",
-						// 					total: "00:00"
-						// 				},
-						// 				stayovers: {
-						// 					total: 0,
-						// 					completed: 0
-						// 				},
-						// 				departures: {
-						// 					total: 0,
-						// 					completed: 0
-						// 				}
-						// 			}
-						// 		} else {
-						// 			updateSummary(employee);
-						// 		};
-						// 	});
-						// };
-
 						refreshView();
 						$scope.$emit('hideLoader');
 					},

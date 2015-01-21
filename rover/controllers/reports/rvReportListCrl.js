@@ -90,8 +90,10 @@ sntRover.controller('RVReportListCrl', [
                     case 'Booking Source & Market Report':
                         reportList[i]['reportIconCls'] = 'icon-report icon-booking';
                         reportList[i]['hasSourceMarketFilter'] = true;                        
-                    break;
-
+                    	break;
+                    case 'User Activity':
+                        reportList[i]['reportIconCls'] = 'icon-activity';
+						break;
                     default:
                         reportList[i]['reportIconCls'] = 'icon-report';                        
                         break;
@@ -151,10 +153,17 @@ sntRover.controller('RVReportListCrl', [
                         }];
                     };
 
-                    // check for user filter and keep a ref to that item
-                    if ( item.value === 'USER' ) {
-                        reportList[i]['hasUserFilter'] = item;
-                    };
+                    // // check for user filter and keep a ref to that item
+                    // if ( item.value === 'USER' ) {
+                    //     // currently only show users for 'User Activity' report
+                    //     if ( reportList[i].title == 'User Activity' ) {
+                    //         reportList[i]['hasUserFilter'] = item;
+                    //     }
+                    // };
+                    // currently only show users for 'User Activity' report
+                    if ( reportList[i].title == 'User Activity' ) {
+                        reportList[i]['hasUserFilter'] = true;
+                    }
 
                     // check for include notes filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_NOTES' ) {
@@ -199,6 +208,24 @@ sntRover.controller('RVReportListCrl', [
                     // check for include no show filter and keep a ref to that item
                     if ( item.value === 'SHOW_GUESTS' ) {
                         reportList[i]['hasShowGuests'] = item;
+                    // SPL: for User login details
+                    // check for include rover users filter and keep a ref to that item
+                    if ( item.value === 'ROVER' ) {
+                        reportList[i]['hasIncludeRoverUsers'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // SPL: for User login details
+                    // check for include zest users filter and keep a ref to that item
+                    if ( item.value === 'ZEST' ) {
+                        reportList[i]['hasIncludeZestUsers'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // SPL: for User login details
+                    // check for include zest web users filter and keep a ref to that item
+                    if ( item.value === 'ZEST_WEB' ) {
+                        reportList[i]['hasIncludeZestWebUsers'] = item;
                         hasFauxSelect = true;
                     };
                 });
