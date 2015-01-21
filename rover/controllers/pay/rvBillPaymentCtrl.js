@@ -152,6 +152,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		refreshCardsList();
 	};
 
+	
+
+	$scope.changeOnsiteCallIn = function(){
+		 $scope.isManual ? $scope.showGuestCreditCardList() : "";
+		 refreshCardsList();
+	};
+
 	var checkReferencetextAvailable = function(){
 		angular.forEach($scope.renderData, function(value, key) {
 			if(value.name == $scope.saveData.paymentType){
@@ -169,13 +176,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	};
 
-	$scope.changeOnsiteCallIn = function(){
-		 $scope.isManual ? $scope.showGuestCreditCardList() : "";
-		 refreshCardsList();
-	};
-
 	$scope.showHideCreditCard = function(){
-		
+		console.log("showHideCreditCard");
 		if($scope.saveData.paymentType == "CC"){
 			if($scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
@@ -200,7 +202,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if(item.name === 'CC'){
 				$scope.creditCardTypes = item.values;
 			};					
-		});		
+		});
+		$scope.showHideCreditCard();		
 	};
 
 	
@@ -268,6 +271,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		}
 
 		setupbasicBillData();
+
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
