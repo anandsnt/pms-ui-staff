@@ -2,7 +2,7 @@
 
 <div class="jumbotron">
 	<div class="container backgroundbg" >
-		<div class="container-fluid">
+		<div class="black-bg">
 			<div class="row headerrow">
 				<logo-image></logo-image>
 			</div>
@@ -13,7 +13,7 @@
 			<div class="row checkin-wrapper line-top checkin-details no-top-bottom-padding">
 				<div class="col-md-6 pad-rt-60">
 					<div class="reservation-id centeralign">
-						<span class="res-conf-no">RESERVATION #{{confirmationNumber}}</span>
+						<span class="res-conf-no black-text">RESERVATION #{{confirmationNumber}}</span>
 					</div>
 					<div class="chekin-heading centeralign brown-text">
 						{{roomUpgradeheading}}
@@ -21,17 +21,17 @@
 					<div class="date-container">
 						<div class="row">
 							<div class="col-xs-6 reservation-dates leftalign">
-								<div class="lightcontent centeralign-date">
+								<div class="lightcontent centeralign-date black-text">
 									ARRIVAL DATE
 								</div>
-								<div class="dateContent centeralign-date">
+								<div class="dateContent centeralign-date brown-text">
 									{{reservationData.arrival_date}}
 								</div>
 							</div>
-							<div class="col-xs-6  reservation-dates rightalign"><div class="lightcontent centeralign-date">
+							<div class="col-xs-6  reservation-dates rightalign"><div class="lightcontent centeralign-date black-text">
 								DEPARTURE DATE
 							</div>
-							<div class="dateContent centeralign-date">
+							<div class="dateContent centeralign-date brown-text">
 								{{reservationData.departure_date}}
 							</div>
 						</div>
@@ -41,50 +41,51 @@
 				<div class="date-container no-border">
 					<div class="row">
 						<div class=" reservation-dates">
-							<div class="lightcontent">
+							<div class="lightcontent black-text">
 								ROOM TYPE <span class="upgrades-label" ng-show="ShowupgradedLabel">UPGRADED!</span>
 							</div>
 						</div>
-						<div class="room_details">
+						<div class="room_details brown-text">
 							{{reservationData.room_type}}
 						</div>
 					</div>
 					<div class="row" ng-show="!!reservationData.room_rate.length">
 						<div class=" reservation-dates">
-							<div class="lightcontent">
+							<div class="lightcontent black-text">
 								RATE
 							</div>
 						</div>
-						<div class="room_details">
+						<div class="room_details brown-text">
 							{{reservationData.room_rate}}
 						</div>
 					</div>
 					<div class="row">
 						<div class=" reservation-dates ">
-							<div class="lightcontent">
+							<div class="lightcontent black-text">
 								AVERAGE RATE PER NIGHT
 							</div>
 						</div>
-						<div class="room_details">
+						<div class="room_details brown-text">
 							{{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
 						</div>
 					</div>
 					<div class="row applycharge">
-						<input type="checkbox" ng-model="checked"  ng-checked="checkedApplyCharges">&nbsp
-						APPLY CHARGES TO MY CREDIT CARD ON FILE.
+						<input type="checkbox" ng-model="checked" ng-checked="checkedApplyCharges">&nbsp;
+						<span class="black-text">APPLY CHARGES TO MY CREDIT CARD ON FILE.</span>
 					</div>
 				</div></div>
 				<div class="verti-ruler margin-top-20"></div>
-				<div class="col-md-6 pad-lf-60 checkin-width">			
-					<button class=" checkin checkin-button" ng-click="checkInButtonClicked()">
-						<span>Check-in</span>
+				<div class="col-md-6 pad-lf-60 checkin-width checkin-button-padding">			
+					<button class=" checkin checkin-button green-bg" ng-click="checkInButtonClicked()">
+						<span class="white-text">Check-in</span>
+						<img src="/assets/img/Galleria/checkin-white-icon-original.png" width="60" height="60" alt=""/>
 					</button>
 				</div>
 			</div>
 			<div class="row checkin-wrapper line-bottom no-top-bottom-padding" id="error-container">
 				<div class="col-md-6 error-callus">
-					<div class="lightcontent">
-						ERRORS? <a href="tel: {{hotelPhone}}"><u>CALL US AT  {{hotelPhone}}</u></a>
+					<div class="black-text">
+						ERRORS? <a href="tel: {{hotelPhone}}"><u class="green-text">CALL US AT  {{hotelPhone}}</u></a>
 					</div>
 				</div>
 				<div class="verti-ruler margin-bottom-20"></div>

@@ -1,49 +1,45 @@
 <!-- contentarea starts here-->
+
 <div class="jumbotron">
 	<div class="container backgroundbg" >
-		<div class="container-fluid">
+		<div class="black-bg">
 			<div class="row headerrow">
 				<logo-image></logo-image>
 			</div>
 		</div>
 		<!--- show posting message   -->
 		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-			<p class="msg-head">Your request is being processed.</p>
-			<p class="msg-body">This may take a few seconds..... please wait!</p>
+			<p class="msg-head brown-text">Your request is being processed.</p>
+			<p class="msg-body brown-text">This may take a few seconds..... please wait!</p>
 		</div>
 		<!-- show error message -->
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+			<p class="msg-head mbrown-text">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
+			<p class="msg-body brown-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="brown-text">{{hotelPhone}}.</a></p>
 		</div>	
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isPosting || netWorkError">
 			<!-- top section starts here-->
-			<div class="row checkin-wrapper">
-				<div class="col-md-6 pad-rt-60">
-					<div class="chekin-heading centeralign">
+			<div class="row checkin-wrapper checkin-key-padding">
+				<div class="col-md-12 pad-rt-60">
+					<div class="chekin-heading centeralign brown-text">
 						You're checked in!
+					</div>
+					<div class="reservation-id centeralign">
+						<span class="normal-reservation black-text">Reservation #: {{confirmationNumber}}</span>
 					</div>
 					<div class="key-wrap">
 						<p class="key-for">
-							<img src="/assets/img/keyicon_white.png" class="key-for-image">
-							<span class="key-for-txt">Key Code for</span>
-							<span class="key-for-room">{{responseData.room_no}}</span>
+							<span class="checkin-room-number">Room {{responseData.room_no}}</span>
 						</p>
-					</div>
-				</div>
-				<div class="verti-ruler"></div>
-				<div class="col-md-6 pad-lf-60 qr-code-container">
-					<div class="reservation-id centeralign">
-						<span class="normal-reservation">Reservation #: {{confirmationNumber}}</span>
 					</div>
 					<div class="centeralign qr-code-image">
 						<img src="data:image/png;base64, {{image|| responseData.key_info}}"
 						width="180" height="180" alt="">
 						<div class="qr-code-info">
 							<ol>
-								<li> Scan the QR code at kiosk located in the lobby.</li>
-								<li>The kiosk will dispense your key.</li>
+								<li class="black-text"> Scan the QR code at kiosk located in the lobby.</li>
+								<li class="black-text">The kiosk will dispense your key.</li>
 							</ol>
 						</div>
 					</div>

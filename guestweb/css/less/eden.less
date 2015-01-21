@@ -6,8 +6,9 @@
 @lightgreen:#d6c559;
 @brown:#7e6e3b;
 @light-black:#010101;
+@gold:#A99A6F;
 
-body{
+body,.qr-code-image{
 	background-color: #f7f5e9 !important; 
 	background-image: none;
 }
@@ -15,11 +16,17 @@ body{
 .jumbotron .container{
 	width:100%;
 }
+.gold-bg{
+	background:@gold !important;
+}
 .light-green-bg{
 	background:#d6c559 !important;
 }
 .green-bg{
 	background:#c5ab00 !important;
+}
+.green-text{
+	color:#c5ab00 !important;
 }
 .brown-text, .loading-text{
 	color:@brown  !important;
@@ -134,16 +141,55 @@ body{
   	.leadtext {
     	padding: 21px 140px;
 	}
+	.checkin-button-padding{
+		padding-top:20%;
+	}
+	.checkin-key-padding{
+		padding-top:10px !important;
+	}
+	.qr-code-image{
+		margin: 0 auto;
+    	width: 60%;
+	}
+	.chekin-heading{
+		font-size:44px !important;
+	}
+	.chekin-heading{
+		font-size:44px !important;
+	}
+	.qr-code-info{
+		ol{
+			max-width:350px !important;
+		}
+	}
+
 }
-/* responsive starts here */
+
 @media (max-width: 992px) {
 	.padding-10{
   		padding: 0px 10px !important;
+  	}
+  	.jumbotron .checkin-wrapper{
+  		padding: 25px 0 !important;
   	}
 
 }
 
 @media (max-width: 480px) {
+
+	.chekin-heading{
+		font-size:24px !important;
+	}
+	.qr-code-info{
+		ol{
+			padding-left:0px !important;
+			max-width:350px !important;
+			li{
+				font-size:14px !important;
+			}
+		} 
+		
+	}
 
 	.foot-text.second-in {
 	    padding: 0 40px !important;
@@ -250,5 +296,25 @@ body{
 .pickadate-cell{
 	.pickadate-active{
 		color:#fff !important;
+	}
+}
+
+.upgrade-details .upgrades-btn{
+	background:@green !important;
+}
+
+.checkin-room-number{
+	background:#000 !important;
+	border-radius: 15px;
+    font-size: 24px;
+    padding: 2px 29px;
+    font-weight: 300;
+}
+.qr-code-info {
+	margin:0 auto !important;
+	text-align:center !important;
+	ol{
+		text-align:left !important;
+		margin:0 auto !important;
 	}
 }

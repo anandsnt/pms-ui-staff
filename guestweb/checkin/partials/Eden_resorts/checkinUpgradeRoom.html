@@ -1,30 +1,30 @@
 <!-- contentarea starts here-->
 <div class="jumbotron">
 	<div class="container backgroundbg" >
-		<div class="container-fluid">
+		<div class="black-bg">
 			<div class="row headerrow">
 				<logo-image></logo-image>
 			</div>
 		</div>
 		<!--	 show posting message -->
 		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-			<p class="msg-head">Your request is being processed.</p>
-			<p class="msg-body">This may take a few seconds..... please wait!</p>
+			<p class="msg-head brown-text">Your request is being processed.</p>
+			<p class="msg-bodyn brown-text">This may take a few seconds..... please wait!</p>
 		</div>
 		<!--	show error message -->
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+			<p class="msg-head brown-text">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
+			<p class="msg-body brown-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="brown-text">{{hotelPhone}}.</a></p>
 		</div>
 		<!-- contentarea starts here-->
 		<div class="container line-top  line-bottom" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 			<div class="row checkin-wrapper">
 				<div class="col-md-6 pad-rt-60">
-					<div class="chekin-heading centeralign">
+					<div class="chekin-heading centeralign brown-text">
 						Upgrade your room?
 					</div>
-					<p class="simpleSubText">
+					<p class="simpleSubText black-text">
 						Browse upgrades or continue below:
 					</p>
 				</div>
@@ -70,7 +70,7 @@
 							</div>
 						</slide>
 					</carousel>
-					<div class="proceed-to-checkin" ng-click="noThanksClicked()">
+					<div class="proceed-to-checkin gold-bg" ng-click="noThanksClicked()">
 						NO,THANKS. PROCEED TO <strong>CHECK-IN</strong>
 						<img src="/assets/img/white_arrow.png">
 					</div>
