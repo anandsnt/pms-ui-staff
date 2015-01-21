@@ -64,13 +64,15 @@
 		<a class="button white blue-text" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>
 
 		<!-- show cancel / reinstate reservation -->
-		<!-- Feature Only available for STANDALONE pms -->
-		<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
-		<!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
-		<a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom" ng-click="toggleCancellation()" translate>
-			CANCEL_RESERVATION
-		</a>
+		<div class="bottom-buttons">
+			<!-- Feature Only available for STANDALONE pms -->
+			<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
+			<!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
+			<a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text" ng-click="toggleCancellation()" translate>
+				CANCEL_RESERVATION
+			</a>
 		
-		<a class="button white blue-text bottom-button" ng-show="showResendConfirmation(reservationData.reservation_card.reservation_status)" ng-click="sendConfirmationEmail()"> RESEND_CONFIRMATION</a>
+			<a class="button white blue-text" ng-show="showResendConfirmation(reservationData.reservation_card.reservation_status)" ng-click="sendConfirmationEmail()"> RESEND_CONFIRMATION</a>
+		</div>
 	
 	</div>
