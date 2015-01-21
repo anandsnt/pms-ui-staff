@@ -12,22 +12,18 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', '$stateParams', 
 			$scope.reservationData.rooms[index] = room;
 
 			if ($scope.reservationData.isHourly && !$stateParams.id) {
-				console.log("first");
 				$scope.computeHourlyTotalandTaxes();
 			} else {
-				console.log("second");
 				$scope.computeTotalStayCost();
 			}
 
 			if ($stateParams.id) { // IN STAY CARD .. Reload staycard
-				console.log("third");
 				$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
 					"isrefresh": false
 				});
 			} else {
-				console.log("four")
 				$scope.saveReservation('', '', index);
 			}
 			$scope.closeDialog();

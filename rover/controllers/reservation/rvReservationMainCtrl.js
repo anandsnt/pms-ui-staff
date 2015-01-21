@@ -463,7 +463,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 });
                 if (taxDetails.length == 0) {
                     //Error condition! Tax code in results but not in meta data
-                    console.log("Error on tax meta data");
                 } else {
                     var taxData = taxDetails[0];
                     // Need not consider perstay here
@@ -1266,7 +1265,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             if (!skipPaymentData) {
                 data.payment_type = {};
                 if ($scope.reservationData.paymentType.type.value !== null) {
-                    //console.log("===================="+$scope.reservationData.paymentType.type.value);
                     angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
                         if ($scope.reservationData.paymentType.type.value == item.value) {
                             data.payment_type.type_id = ($scope.reservationData.paymentType.type.value === "CC") ? $scope.reservationData.selectedPaymentId : item.id;
