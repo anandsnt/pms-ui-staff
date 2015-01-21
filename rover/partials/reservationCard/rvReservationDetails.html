@@ -131,61 +131,62 @@
 		</div>
 
 		<!-- Guest details -->
-		<div class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
+		<div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
+			
 			<ul class="guest-count">
 			    <li>
 			        <span class="guest-icon">18+</span>
 			        <span class="label">Adults</span>
-			        <input name="adults-count" id="adults-count" type="text" ng-model="reservationParentData.rooms[0].numAdults" value="{{reservationParentData.rooms[0].numAdults}}" maxlength="2" />
+			        <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
 			    </li>
 			    <li>
 			        <span class="guest-icon">3-18</span>
 			        <span class="label">Children</span>
-			        <input name="children-count" id="children-count" type="text" ng-model="reservationParentData.rooms[0].numChildren" value="{{reservationParentData.rooms[0].numChildren}}" maxlength="2" />
+			        <input name="children-count" id="children-count" type="text" ng-model="guestData.children_count" value="{{guestData.children_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
 			    </li>
 			    <li>
 			        <span class="guest-icon">0-3</span>
 			        <span class="label">Infants</span>
-			        <input name="infants-count" id="infants-count" type="text" ng-model="reservationParentData.rooms[0].numInfants" value="{{reservationParentData.rooms[0].numInfants}}" maxlength="2" />
+			        <input name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" value="{{guestData.infants_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
 			    </li>
-			    <!--
+			    
 			    <li>
-					<span ng-if="$parent.reservationData.rooms[0].varyingOccupancy" translate>VAR_OCCUPANCY</span>
+					<span ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
 				</li>
-				-->
+				
 			</ul>
 
 			<form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
 			    <div class="entry">
 			        <figure class="guest-image">
-			            <img src="{image-primary-guest}" alt="" />
-			            <!-- If VIP add: <span class="vip">VIP</span> -->
+			            <img src="{{guestData.primary_guest_details.image}}" alt="" />
+			            <span ng-show="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
 			        </figure>
-			        <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{First Name of primary guest}" readonly />
-			        <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{Last Name of primary guest}" readonly />
+			        <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{guestData.primary_guest_details.first_name}}" readonly />
+			        <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{guestData.primary_guest_details.last_name}}" readonly />
 			    </div>
 			    <label for="acc1-first-name">Accompanying guests</label>
+			    
 			    <div class="entry">
 			        <figure class="guest-image">
-			            <!-- Use male or female avatar this already is accompanying guest -->
-			            <img src="{avatar-transgender}" alt="" />
+			            <img src="guestData.accompanying_guests_details[0].image" alt="" />
 			        </figure>
-			        <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" value="{First Name, only if this is accompanying guest}" />
-			        <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" value="{Last Name, only if this is accompanying guest}" />
+			        <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guestData.accompanying_guests_details[0].first_name" value="{{guestData.accompanying_guests_details[0].first_name}}" />
+			        <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guestData.accompanying_guests_details[0].last_name" value="{{guestData.accompanying_guests_details[0].last_name}}" />
 			    </div>
 			    <div class="entry">
 			        <figure class="guest-image">
-			            <img src="{avatar-transgender}" alt="" />
+			            <img src="guestData.accompanying_guests_details[1].image" alt="" />
 			        </figure>
-			        <input name="acc2-first-name" id="acc2-first-name" type="text" placeholder="First Name" value="" />
-			        <input name="acc2-last-name" id="acc2-last-name" type="text" placeholder="Last Name" value="" />
+			        <input name="acc2-first-name" id="acc2-first-name" type="text" placeholder="First Name" ng-model="guestData.accompanying_guests_details[1].first_name" value="{{guestData.accompanying_guests_details[1].first_name}}" />
+			        <input name="acc2-last-name" id="acc2-last-name" type="text" placeholder="Last Name" ng-model="guestData.accompanying_guests_details[1].last_name" value="{{guestData.accompanying_guests_details[1].last_name}}" />
 			    </div>
 			    <div class="entry">
 			        <figure class="guest-image">
-			            <img src="{avatar-transgender}" alt="" />
+			            <img src="guestData.accompanying_guests_details[2].image" alt="" />
 			        </figure>
-			        <input name="acc3-first-name" id="acc3-first-name" type="text" placeholder="First Name" value="" />
-			        <input name="acc3-last-name" id="acc3-last-name" type="text" placeholder="Last Name" value="" />
+			        <input name="acc3-first-name" id="acc3-first-name" type="text" placeholder="First Name" ng-model="guestData.accompanying_guests_details[2].first_name" value="{{guestData.accompanying_guests_details[2].first_name}}" />
+			        <input name="acc3-last-name" id="acc3-last-name" type="text" placeholder="Last Name" ng-model="guestData.accompanying_guests_details[2].last_name" value="{{guestData.accompanying_guests_details[2].last_name}}" />
 			    </div>
 			</form>
 		</div>
