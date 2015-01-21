@@ -95,6 +95,18 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (!!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] && (!!cancellationReport['fromDate'] || !!cancellationReport['untilDate'])) {
 				cancellationReport['showRemove'] = true;
 			};
+
+			var sourceReport = _.find($scope.reportList, function(item) {
+				return item.title == 'Booking Source & Market Report';
+			});
+
+			if (!!sourceReport['fromDate'] && !!sourceReport['untilDate'] && (!!sourceReport['fromArrivalDate'] || !!sourceReport['untilArrivalDate'])) {
+				sourceReport['showRemove'] = true;
+			};
+
+			if (!!sourceReport['fromArrivalDate'] && !!sourceReport['untilArrivalDate'] && (!!sourceReport['fromDate'] || !!sourceReport['untilDate'])) {
+				sourceReport['showRemove'] = true;
+			};
 		};
 
 		$scope.clearDateFromFilter = function(list, key1, key2) {
@@ -136,36 +148,37 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		var chosenList = [
-            'chosenIncludeNotes',
-            'chosenIncludeCancelled',
-            'chosenIncludeVip',
-            'chosenIncludeNoShow',
-            'chosenIncludeRoverUsers',
-            'chosenIncludeZestUsers',
-            'chosenIncludeZestWebUsers'
-        ];
+			'chosenIncludeNotes',
+			'chosenIncludeCancelled',
+			'chosenIncludeVip',
+			'chosenIncludeNoShow',
+			'chosenIncludeRoverUsers',
+			'chosenIncludeZestUsers',
+			'chosenIncludeZestWebUsers'
+		];
 
-        var hasList = [
-            'hasIncludeNotes',
-            'hasIncludeCancelled',
-            'hasIncludeVip',
-            'hasIncludeNoShow',
-            'hasIncludeRoverUsers',
-            'hasIncludeZestUsers',
-            'hasIncludeZestWebUsers'
-        ];
+		var hasList = [
+			'hasIncludeNotes',
+			'hasIncludeCancelled',
+			'hasIncludeVip',
+			'hasIncludeNoShow',
+			'hasIncludeRoverUsers',
+			'hasIncludeZestUsers',
+			'hasIncludeZestWebUsers'
+		];
 
 		// common faux select method
 		$scope.fauxSelectClicked = function(e, item) {
 			// if clicked outside, close the open dropdowns
-			if ( !e ) {
+			if (!e) {
 				_.each($scope.reportList, function(item) {
 					item.fauxSelectOpen = false;
+					item.selectDisplayOpen = false;
 				});
 				return;
 			};
 
-			if ( !item ) {
+			if (!item) {
 				return;
 			};
 
@@ -195,44 +208,71 @@ sntRover.controller('RVReportsMainCtrl', [
 			e.stopPropagation();
 			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
 
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+
 			$scope.fauxOptionClicked(e, item);
+
 		};
 
 		$scope.fauxOptionClicked = function(e, item) {
 			e.stopPropagation();
 
 			var selectCount = 0,
-				maxCount    = 0,
-				eachTitle   = '';
+				maxCount = 0,
+				eachTitle = '';
 
 			item.fauxTitle = '';
 			for (var i = 0, j = chosenList.length; i < j; i++) {
-				if ( item.hasOwnProperty(chosenList[i]) ) {
+				if (item.hasOwnProperty(chosenList[i])) {
 					maxCount++;
-					if ( item[chosenList[i]] == true ) {
+					if (item[chosenList[i]] == true) {
 						selectCount++;
 						eachTitle = item[hasList[i]].description;
 					};
 				};
 			};
 
-			if ( selectCount == 0 ) {
+			if (selectCount == 0) {
 				item.fauxTitle = 'Select';
-			} else if ( selectCount == 1 ) {
+			} else if (selectCount == 1) {
 				item.fauxTitle = eachTitle;
-			} else if ( selectCount > 1 ) {
+			} else if (selectCount > 1) {
 				item.fauxTitle = selectCount + ' Selected';
 			};
+
+			if (item.hasSourceMarketFilter) {
+				if (item.showMarket) {
+					selectCount++;
+					item.displayTitle = item.hasMarket.description;
+				};
+				if (item.showSource) {
+					selectCount++;
+					item.displayTitle = item.hasSource.description;
+				};
+
+				if (selectCount > 1) {
+					item.displayTitle = selectCount + ' Selected';
+				} else if (selectCount == 0) {
+					item.displayTitle = 'Select';
+				};
+			}
+
 		};
 
 		$scope.showFauxSelect = function(item) {
-            if ( !item ) {
-            	return false;
-            };
+			if (!item) {
+				return false;
+			};
 
-            return _.find(hasList, function(has) { return item.hasOwnProperty(has) }) ? true : false;
-        };
-		
+			return _.find(hasList, function(has) {
+				return item.hasOwnProperty(has)
+			}) ? true : false;
+		};
+
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
 			var chosenReport = RVreportsSrv.getChoosenReport(),
@@ -314,7 +354,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			// include show guests
-			if ( chosenReport.hasShowGuests ) {
+			if (chosenReport.hasShowGuests) {
 				var key = chosenReport.hasShowGuests.value.toLowerCase();
 				params[key] = chosenReport.chosenShowGuests;
 			};
