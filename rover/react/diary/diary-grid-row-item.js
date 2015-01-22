@@ -56,6 +56,17 @@ var GridRowItem = React.createClass({
 				if(!caption) {						
 					caption = data[meta.tr_ag_name] ? data[meta.tr_ag_name] : data[meta.cmp_name];
 				}
+				
+				//if there is any accomoanying guests
+				if(!_.isEmpty(data[meta.accompanying_guests])) {
+					caption = caption + "  |  ";
+					_.each(data[meta.accompanying_guests], function(element, index, list){							
+						caption += (element.guest_name);
+						if(index !== (list.length - 1)){
+							caption += ", ";
+						}
+					});
+				}
 				break
 		}
 		return caption;
