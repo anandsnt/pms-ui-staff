@@ -100,7 +100,7 @@ $scope.setUpUpsellWindowDataToSave = function () {
         var upsellWindow;
          angular.forEach($scope.upsellWindows,function(item, index) {
              upsellWindow = {};
-             upsellWindow.start_time = item.hours + "." + item.minutes + " " + item.meridiem;
+             upsellWindow.start_time = item.hours + ":" + item.minutes + " " + item.meridiem;
              upsellWindow.charge = item.charge;
              upsellWindow.addon_id = item.addon_id;
 
