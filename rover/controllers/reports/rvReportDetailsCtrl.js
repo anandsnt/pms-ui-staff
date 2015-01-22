@@ -506,8 +506,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 							_uiTime = _eachItem['date'].split(', ')[1];
 							_eachItem['uiDate'] = _uiDate;
 							_eachItem['uiTime'] = _uiTime;
-							console.log( $filter('date')(_uiDate, $rootScope.dateFormat) );
-							console.log( $filter('date')('18-01-2015', $rootScope.dateFormat) );
 						};
 					};
 
