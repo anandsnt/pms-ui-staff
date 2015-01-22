@@ -2866,8 +2866,7 @@
 
             .reservation-guests,
             .reservation-times { 
-                padding: 20px;
-                margin-bottom: 10px;
+                padding: 10px;
                 overflow: hidden;
                 background: @grey1;
                 z-index: 90;
@@ -2887,18 +2886,17 @@
 
             /* Reservation guest info ***/
             .reservation-guests {
-                .size(70px, 100%);
+                .size(60px, 100%);
+
+                .notice { margin-bottom: 10px; }
 
                 .guest-count {
                     width: 100%;
                     .float;
 
                     li {
-                        line-height: 30px;
-                        vertical-align: middle;
+                        line-height: 40px;
                         margin: 0;
-                        padding-bottom: 10px;
-                        border-bottom: 1px solid rgba(0,0,0,.1);
                         .show;
                         .pull-left;
 
@@ -2914,15 +2912,18 @@
                                 font-weight: 600;
                                 color: @white;
                                 background: @grey2;
-                                margin-right: 10px;
+                                margin: 5px 10px 0 0;
                                 .square(30px);
                             }
                         }
 
                         input {
-                            margin-top: -5px;
                             width: 40px;
-                            text-align: center;                        
+                            text-align: center;      
+                            .pull-left;      
+
+                            &[disabled],
+                            &[readonly] { color: @textColor; }                       
                         }
 
                         &:first-child { 
@@ -2930,9 +2931,7 @@
                             .calc-width(100, 340); 
                         }
 
-                        &:nth-child(2) {
-                            width: 150px;
-                        }
+                        &:nth-child(2) { width: 150px; }
 
                         &:last-child { 
                             padding-left: 40px; 
@@ -2944,6 +2943,7 @@
                 .form {
                     margin-top: 10px;
                     .calc-width(100, 340);
+                    .float;
 
                     label {
                         font-size: 14px;
@@ -2951,8 +2951,7 @@
                     }
 
                     .entry {
-                        .float;
-                        
+                       
                         .guest-image {
                             margin-right: 10px;
                             .pull-left;
@@ -2969,7 +2968,16 @@
                     }
                 }
 
-                &.editable { height: 310px; }
+                &.editable { 
+                    height: 350px; 
+
+                    .guest-count {
+                        li {
+                            padding-bottom: 10px;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
+                        }
+                    }
+                }
             }
 
             /* Arrival / Departure times ***/
