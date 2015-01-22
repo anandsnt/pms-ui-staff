@@ -1,0 +1,30 @@
+<div style="display: block;border-bottom:none" id="add-new" class="edit-data">
+	<div class="data-holder">
+		<!-- Edit Brands -->
+		<form name="edit-brand" method="post" id="edit-brand-details" data-brand-id="2" class="form inline-form float">
+			<div class="form-title">
+				<h3><span ng-show="isEditmode"> Edit </span> {{formTitle}} </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			<fieldset class="holder left float">
+				<div class="entry full-width">
+					<label for="hotel-chain"> Hotel Chain <strong>*</strong> </label>
+					<div class="select">
+						<!-- <select name="hotel-chain" id="hotel-chain" class="placeholder" ng-model="brandDetails.hotel_chain_id">
+							<option value=''>Hotel Chain</option>
+							<option value="{{chain.value}}" ng-repeat="chain in brandDetails.chains" ng-selected="brandDetails.hotel_chain_id == chain.value"> {{chain.name}} </option>
+						</select> -->
+					</div>
+				</div>
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="cancelClicked()">
+					Cancel
+				</button>
+				<button type="button" id="update" class="button green edit-data-inline" ng-click="saveClicked()">
+					Save changes
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
