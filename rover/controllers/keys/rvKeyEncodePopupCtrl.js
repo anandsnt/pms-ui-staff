@@ -24,9 +24,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		var encoderFetchSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.encoderTypes = data;
-			$scope.encoderSelected = "";
-			console.log($scope.encoderTypes);
-			console.log("before");
+			console.log($scope.encoderSelected);
+			console.log("after");
 		};
 
 	    $scope.invokeApi(RVKeyPopupSrv.fetchActiveEncoders, {}, encoderFetchSuccess);
@@ -44,16 +43,30 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			return true
 		}
 	};
+
+	$scope.selectedEncoder = function(){
+		console.log("selectedEncoder");
+		sessionStorage.encoderSelected = $scope.encoderSelected;
+	}
 				
 	$scope.init = function(){
 		/*$scope.keySystemVendor = getKeySystemVendor();
 		*/
+		$scope.encoderSelected = "";
 
 		$scope.keySystemVendor = 'SAFLOCK_MSR'; 
+		if (sessionStorage.encoderSelected && sessionStorage.encoderSelected !== '') {
+			console.log("inside");
+			$scope.encoderSelected = parseInt(sessionStorage.encoderSelected);
+		}
+		console.log("here");
+		console.log($scope.encoderSelected);
 		if($scope.keySystemVendor == 'SAFLOCK_MSR'){
 			fetchEncoderTypes();
 		}
 
+
+		
 		var reservationStatus = "";
 
 		$scope.data = {};
@@ -271,6 +284,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 
 	    }
 	    that.UID = postParams.uid;
+	    if($scope.keySystemVendor == 'SAFLOCK_MSR') {
+		    postParams.key_encoder_id = $scope.encoderSelected;
+	    }
 	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
 
 	};	

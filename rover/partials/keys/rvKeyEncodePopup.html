@@ -43,7 +43,7 @@
 						<div class="entry full-width" ng-show = "keySystemVendor == 'SAFLOCK_MSR'">
 			                <label for="encoder-type">Key Encoder</label>
 			                <div class="select">
-			                	<select id="encoder-type" name="encoder-type" class="placeholder" ng-model="encoderSelected">
+			                	<select id="encoder-type" name="encoder-type" class="placeholder" ng-model="encoderSelected" ng-change="selectedEncoder()">
 			                		<option value="" class="placeholder">Select</option>
 			                		<option value="{{item.id}}" class="placeholder" ng-repeat="item in encoderTypes">{{item.description}}</option>
 			                	</select>
