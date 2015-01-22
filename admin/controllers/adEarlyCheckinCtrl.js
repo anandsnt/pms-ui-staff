@@ -15,7 +15,6 @@ $scope.fetchUpsellDetails = function(){
        
        $scope.upsellData = data;
        $scope.isRatesSelected();
-       // $scope.currency_code = getCurrencySign($scope.upsellData.currency_code);
        $scope.fetchChargeCodes();
        $scope.setUpUpsellWindowData();
    };

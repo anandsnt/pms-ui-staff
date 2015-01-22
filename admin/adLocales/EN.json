@@ -164,6 +164,7 @@
 "SELECT_RATE" : "Select Rate",
 "ADD_RATE": "Add Rate",
 "RATES": "Rates",
+"NUMBER_OF_EARLY_CHECKINS_PER_DAY" : "Number Of Early Checkin Upsells Per Day",
 "NUMBER_OF_EARLY_CHECKIN_UPSELLS_PER_DAY": "Number Of Early Checkin Upsells Per Day",
 
 
