@@ -1964,5 +1964,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             }
         };
 
+        $scope.$on("GETVARYINGOCCUPANCY", function(e) {
+            $scope.reservationData.rooms[0].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(0);
+            $scope.$broadcast("VARYINGOCCUPANCY", $scope.reservationData.rooms[0].varyingOccupancy);
+        });
+
     }
 ]);

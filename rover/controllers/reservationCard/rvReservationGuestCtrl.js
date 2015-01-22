@@ -11,6 +11,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			var successCallback = function(data){
 				$scope.$emit('hideLoader');
 				$scope.guestData = data;
+				$scope.$emit("GETVARYINGOCCUPANCY");
 				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 				$scope.errorMessage = '';
 			};
@@ -24,6 +25,10 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			$scope.invokeApi(RVReservationGuestSrv.fetchGuestTabDetails, data, successCallback , errorCallback);
 		};
+
+		$scope.$on("VARYINGOCCUPANCY", function(e,data) {
+			$scope.guestData.varying_occupancy = data;
+		});
 
 		/* To save guest details */
 		$scope.saveGuestDetails = function(){
@@ -39,6 +44,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				var successCallback = function(data){
 					$scope.$emit('hideLoader');
 					$scope.errorMessage = '';
+					$scope.$emit("GETVARYINGOCCUPANCY");
 				};
 
 				var errorCallback = function(errorMessage){
@@ -50,7 +56,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				angular.forEach(data.accompanying_guests_details, function(item, index) {
 					delete item.image;
 					if((item.first_name == "" || item.first_name == null) && (item.last_name == "" || item.last_name == null)){
-						console.log("inside");
 						data.accompanying_guests_details.splice(index,1);
 					}
 				});
