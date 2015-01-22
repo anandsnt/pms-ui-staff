@@ -1788,15 +1788,26 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 	
                 	var totalDepositOnRateUpdate = 0;
                    
-                    angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                    	if(key == index){
-                    		reservation.deposit_amount = data.deposit_amount;
-                    		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
-                    	} else {
-                    		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
-                    	}
-                        
-                    });
+                    /**
+                     * CICO-10195 : While extending a hourly reservation from  
+                     * diary the reservationListArray would be undefined
+                     * Hence.. at this point as it is enough to just update 
+                     * reservation.deposit_amount
+                     * totalDepositOnRateUpdate for just the single reservation.
+                     */
+                    
+                    if($scope.reservationsListArray){
+                        angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
+                        	if(key == index){
+                        		reservation.deposit_amount = data.deposit_amount;
+                        		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
+                        	} else {
+                        		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
+                        	}                            
+                        });
+                    }else{
+                        totalDepositOnRateUpdate = parseFloat(reservation.deposit_amount);
+                    }
                     // $scope.reservationData.depositAmount = data.deposit_amount;
                     $scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate,2);;
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
@@ -1816,7 +1827,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
-                    if(typeof index!== undefined){
+                    if(typeof index!== 'undefined'){
                     	angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
                     		if(key == index){
                     			postData.reservationId = reservation.id;
