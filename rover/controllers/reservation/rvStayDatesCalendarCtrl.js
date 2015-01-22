@@ -401,15 +401,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 						calEvt.startEditable = "true";
 					}
 					calEvt.durationEditable = "false";
-
 					//If check-in date and check-out dates are the same, show split view.
-					if (checkinDate.getTime() == checkoutDate.getTime()) {
+					if (checkinDate.getDate() == checkoutDate.getDate()&&checkinDate.getMonth() == checkoutDate.getMonth()&&checkinDate.getYear() == checkoutDate.getYear()) {
 						calEvt.className = "check-in split-view";
 						events.push(calEvt);
 						//checkout-event
 						calEvt = {};
-						calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
-
+						calEvt.title =getRateForTheDay(dateDetails[availabilityKey]).value;
 						calEvt.start = thisDate;
 						calEvt.end = thisDate;
 						calEvt.day = thisDate.getDate().toString();
@@ -422,14 +420,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				//mid-stay range
 				} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 					calEvt.id = "availability";
-					calEvt.className = "mid-stay";
+					calEvt.className = "mid-stay";					
 				//Event is check-out
 				} else if (thisDate.getDate() == checkoutDate.getDate()&&thisDate.getMonth() == checkoutDate.getMonth()&&thisDate.getYear() == checkoutDate.getYear()) {
 					calEvt.id = "check-out";
 					calEvt.className = "check-out";
 					calEvt.startEditable = "true";
 					calEvt.durationEditable = "false";
-
 				/**Following are for dates prior to check-in and dates after checkout*/
 				} else if (($scope.calendarType == "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType == "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
 					calEvt.className = "type-available"; 
