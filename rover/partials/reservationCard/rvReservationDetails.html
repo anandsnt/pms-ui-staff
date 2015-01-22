@@ -129,11 +129,12 @@
 			    </div>
 			</div>  
 		</div>
-
+		
 		<!-- Guest details -->
 		<div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<ul class="guest-count">
+
 			    <li>
 			        <span class="guest-icon">18+</span>
 			        <span class="label">Adults</span>
@@ -151,7 +152,7 @@
 			    </li>
 			    
 			    <li>
-					<span ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
+					<span ng-show="isStandAlone && $parent.$parent.reservationData.rooms[0].varyingOccupancy" translate>VAR_OCCUPANCY</span>
 				</li>
 				
 			</ul>
