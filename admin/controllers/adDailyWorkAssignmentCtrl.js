@@ -124,6 +124,31 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		// fetch maid work shift
 		var fetchWorkShift = function() {
 			var callback = function(data) {
@@ -330,8 +355,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		var getRoomTaskTimes = function() {
 			var times = {};
-			_.each($scope.roomTypesList, function(room) {
-				if ($scope.eachTaskList.room_type_ids.indexOf(room.id) > -1) {
+			_.each($scope.roomTypesList, function(room, index) {
+				if ( !!$scope.eachTaskList.room_type_ids[index] ) {
 					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
 						times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
 					} else {
@@ -499,6 +524,28 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
+		};
+
+		$scope.anySelected = function(bool) {
+			return function(item) {
+				return item === bool;
+			};
+		};
+
+		$scope.checkCopyBtnShow = function(id) {
+			var room = $scope.eachTaskList.rooms_task_completion[id];
+			return !!room.hours && !!room.mins ? true : false;
+		};
+
+		$scope.copyNpaste = function(id) {
+			var room  = $scope.eachTaskList.rooms_task_completion[id];
+			var hours = angular.copy( room.hours );
+			var mins  = angular.copy( room.mins );
+
+			_.each($scope.eachTaskList.rooms_task_completion, function(room) {
+				room.hours = hours;
+				room.mins = mins;
+			});
 		};
 	}
 ]);
