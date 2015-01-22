@@ -238,7 +238,7 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter
-  			});			
+  			});	
   		}
 
   		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {  
@@ -295,7 +295,8 @@ var DiaryContent = React.createClass({
 		display.px_per_hr 			= viewport.width / viewport.hours;
 		display.px_per_int  		= display.px_per_hr / display.intervals_per_hour;
 		display.px_per_ms 			= display.px_per_int / 900000;
-		display.x_0 				= viewport.row_header_right;                 
+		display.x_0 				= viewport.row_header_right;     
+		display.total_rows			= scope.gridProps.data.length;            
 		//display.x_origin 			= filter.arrival_date.getTime();
         display.x_origin_start_time = filter.arrival_time;
         display.scrollTo            = (display.x_origin - display.x_n) * display.px_per_ms;
