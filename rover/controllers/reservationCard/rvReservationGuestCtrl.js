@@ -2,60 +2,68 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout) {
 
 		BaseCtrl.call(this, $scope);	
-		//$scope.guestData = {};
-
-		$scope.guestData = {
-		    "adult_count": 10,
-		    "children_count": 2,
-		    "infants_count": 5,
-		    "varying_occupancy": true,
-		    "primary_guest_details": {
-		        "first_name": "p1",
-		        "last_name": "p2",
-		        "is_vip": true,
-		        "image": ""
-		    },
-		    "accompanying_guests_details": [
-		        {
-		            "first_name": "a1",
-		            "last_name": "a2",
-		            "image": "",
-		            "id": 1
-		        },
-		        {
-		            "first_name": "b1",
-		            "last_name": "b2",
-		            "image": "",
-		            "id": 2
-		        },
-		        {
-		            "first_name": "c1",
-		            "last_name": "c2",
-		            "image": "",
-		            "id": 3
-		        }
-		    ]
-		};
+		$scope.guestData = {};
+		var presentGuestInfo = {};
+		$scope.errorMessage = '';
 
 		$scope.init = function(){
+
 			var successCallback = function(data){
 				$scope.$emit('hideLoader');
 				$scope.guestData = data;
+				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
+				$scope.errorMessage = '';
 			};
-			//var data = {"reservation_id": $scope.reservationData.reservation_card.reservation_id };
-			//console.log(data);
-			//$scope.invokeApi(RVReservationGuestSrv.fetchGuestTabDetails, data, successCallback);
+
+			var errorCallback = function(errorMessage){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+			};
+
+			var data = {"reservation_id": $scope.reservationData.reservation_card.reservation_id };
+
+			$scope.invokeApi(RVReservationGuestSrv.fetchGuestTabDetails, data, successCallback , errorCallback);
 		};
+
+		/* To save guest details */
+		$scope.saveGuestDetails = function(){
+
+			var data = JSON.parse(JSON.stringify($scope.guestData));
+			var dataUpdated = false;
+			if (!angular.equals(data, presentGuestInfo)) {
+				dataUpdated = true;
+			}
+
+			if(dataUpdated){
+				
+				var successCallback = function(data){
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = '';
+				};
+
+				var errorCallback = function(errorMessage){
+					$scope.$emit('hideLoader');
+					$scope.$emit("OPENGUESTTAB");
+					$scope.errorMessage = errorMessage;
+				};
+
+				angular.forEach(data.accompanying_guests_details, function(item, index) {
+					delete item.image;
+					if((item.first_name == "" || item.first_name == null) && (item.last_name == "" || item.last_name == null)){
+						console.log("inside");
+						data.accompanying_guests_details.splice(index,1);
+					}
+				});
+
+				var dataToSend = dclone(data,["primary_guest_details"]);
+				dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+				$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback , errorCallback);
+			}
+		};
+
+		$scope.$on("UPDATEGUESTDEATAILS", function(e) {
+			$scope.saveGuestDetails();
+		});
 
 		$scope.init();
-
-		$scope.saveGuestDetails = function(){
-			var successCallback = function(data){
-				$scope.$emit('hideLoader');
-				
-			};
-			//$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, data, successCallback);
-		};
-
-
 }]);

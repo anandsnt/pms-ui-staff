@@ -132,7 +132,7 @@
 
 		<!-- Guest details -->
 		<div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
-			
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<ul class="guest-count">
 			    <li>
 			        <span class="guest-icon">18+</span>
