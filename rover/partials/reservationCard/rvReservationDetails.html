@@ -163,27 +163,14 @@
 			    </div>
 			    <label for="acc1-first-name">Accompanying guests</label>
 			    
-			    <div class="entry">
+			    <div class="entry" ng-repeat="guest in guestData.accompanying_guests_details">
 			        <figure class="guest-image">
-			            <img src="guestData.accompanying_guests_details[0].image" alt="" />
+			            <img src="{{guest.image}}" alt="" />
 			        </figure>
-			        <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guestData.accompanying_guests_details[0].first_name" value="{{guestData.accompanying_guests_details[0].first_name}}" />
-			        <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guestData.accompanying_guests_details[0].last_name" value="{{guestData.accompanying_guests_details[0].last_name}}" />
+			        <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guest.first_name" value="{{guest.first_name}}" />
+			        <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" />
 			    </div>
-			    <div class="entry">
-			        <figure class="guest-image">
-			            <img src="guestData.accompanying_guests_details[1].image" alt="" />
-			        </figure>
-			        <input name="acc2-first-name" id="acc2-first-name" type="text" placeholder="First Name" ng-model="guestData.accompanying_guests_details[1].first_name" value="{{guestData.accompanying_guests_details[1].first_name}}" />
-			        <input name="acc2-last-name" id="acc2-last-name" type="text" placeholder="Last Name" ng-model="guestData.accompanying_guests_details[1].last_name" value="{{guestData.accompanying_guests_details[1].last_name}}" />
-			    </div>
-			    <div class="entry">
-			        <figure class="guest-image">
-			            <img src="guestData.accompanying_guests_details[2].image" alt="" />
-			        </figure>
-			        <input name="acc3-first-name" id="acc3-first-name" type="text" placeholder="First Name" ng-model="guestData.accompanying_guests_details[2].first_name" value="{{guestData.accompanying_guests_details[2].first_name}}" />
-			        <input name="acc3-last-name" id="acc3-last-name" type="text" placeholder="Last Name" ng-model="guestData.accompanying_guests_details[2].last_name" value="{{guestData.accompanying_guests_details[2].last_name}}" />
-			    </div>
+			    
 			</form>
 		</div>
 	</div>
