@@ -80,9 +80,9 @@ $scope.setUpUpsellWindowData = function () {
         var upsellWindow;
          angular.forEach($scope.upsellData.early_checkin_levels,function(item, index) {
          upsellWindow = {};
-         upsellWindow.hours = item.start_time.substring(0, 2);
-         upsellWindow.minutes = item.start_time.substring(3, 5);
-         upsellWindow.meridiem = item.start_time.substring(6);
+         upsellWindow.hours = item.start_time == ""? "" : item.start_time.substring(0, 2);
+         upsellWindow.minutes = item.start_time == ""? "" : item.start_time.substring(3, 5);
+         upsellWindow.meridiem = item.start_time == ""? "AM" : item.start_time.substring(6);
          upsellWindow.addon_id = item.addon_id;    
          upsellWindow.charge = item.charge;
          $scope.upsellWindows.push(upsellWindow);
@@ -90,9 +90,9 @@ $scope.setUpUpsellWindowData = function () {
 }
 
 $scope.setEarlyCheckinTimeForRates = function(){
-       $scope.upsell_rate.hours = $scope.upsellData.early_checkin_time.substring(0, 2);
-       $scope.upsell_rate.minutes = $scope.upsellData.early_checkin_time.substring(3, 5);
-       $scope.upsell_rate.meridiem = $scope.upsellData.early_checkin_time.substring(6);
+       $scope.upsell_rate.hours = $scope.upsellData.early_checkin_time == ""? "" : $scope.upsellData.early_checkin_time.substring(0, 2);
+       $scope.upsell_rate.minutes = $scope.upsellData.early_checkin_time == ""? "" : $scope.upsellData.early_checkin_time.substring(3, 5);
+       $scope.upsell_rate.meridiem = $scope.upsellData.early_checkin_time == ""? "AM" : $scope.upsellData.early_checkin_time.substring(6);
 }
 
 $scope.setUpUpsellWindowDataToSave = function () {
@@ -108,8 +108,34 @@ $scope.setUpUpsellWindowDataToSave = function () {
         });
 }
 
+$scope.validateUpsellWindowTime = function(){
+  var time_window1 = new Date;
+  var time_window2 = new Date;
+  var time_window3 = new Date;
+
+  var hrs1 = ($scope.upsellWindows[0].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[0].hours) % 12) : (parseInt($scope.upsellWindows[0].hours) == 12)? 0 : parseInt($scope.upsellWindows[0].hours);  
+  var hrs2 = ($scope.upsellWindows[1].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[1].hours) % 12) : (parseInt($scope.upsellWindows[1].hours) == 12)? 0 : parseInt($scope.upsellWindows[1].hours);
+  var hrs3 = ($scope.upsellWindows[2].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[2].hours) % 12) : (parseInt($scope.upsellWindows[2].hours) == 12)? 0 : parseInt($scope.upsellWindows[2].hours);
+  
+  time_window1.setHours(hrs1);
+  time_window2.setHours(hrs2);
+  time_window3.setHours(hrs3);
+
+  time_window1.setMinutes(parseInt($scope.upsellWindows[0].minutes));
+  time_window2.setMinutes(parseInt($scope.upsellWindows[1].minutes));
+  time_window3.setMinutes(parseInt($scope.upsellWindows[2].minutes));
+
+  if(time_window2 >= time_window3)
+    return false;
+  else if(time_window1 >= time_window2)
+    return false;
+  else
+    return true;
+
+}
+
 $scope.fetchUpsellDetails();
-$scope.hours = ["HH","01","02","03","04","05","06","07","08","09","10","11","12"];
+$scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
 $scope.minutes = ["00","15","30","45"];
 /**
 * To handle switch actions
@@ -123,7 +149,12 @@ $scope.switchClicked = function(){
 * To handle save button action
 *
 */ 
-$scope.saveClick = function(){   	
+$scope.saveClick = function(){
+
+    if(!$scope.validateUpsellWindowTime()){      
+        $scope.errorMessage = "The time for the upsell windows need to be in ascending order";
+        return;
+    } 	
     $scope.setUpUpsellWindowDataToSave();
     $scope.upsellData.early_checkin_time = $scope.upsell_rate.hours + "." + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem;
    	var upsellEarlyCheckinSaveSuccessCallback = function(data) {
@@ -136,7 +167,7 @@ $scope.saveClick = function(){
       $scope.errorMessage = errorMessage;       	
    	};
    	$scope.invokeApi(adUpsellEarlyCheckinService.update,$scope.upsellData,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
-
+     
 };
 
 $scope.clickAddRoomType = function(){
