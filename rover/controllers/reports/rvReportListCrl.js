@@ -285,8 +285,13 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].sortByOptions[1] = nameSortBy;
                 };
 
-                // for User Activity report the colspans should be adjusted
+                // for User Activity report
+                // the colspans should be adjusted
+                // the sort descriptions should be update to design
+                //    THIS MUST NOT BE CHANGED IN BACKEND
                 if ( reportList[i].title == 'User Activity' ) {
+                    reportList[i].sortByOptions[0]['description'] = 'Date & Time';
+
                     reportList[i].sortByOptions[0]['colspan'] = 2;
                     reportList[i].sortByOptions[1]['colspan'] = 2;
                 };
