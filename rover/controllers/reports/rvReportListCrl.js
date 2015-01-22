@@ -285,6 +285,18 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].sortByOptions[1] = nameSortBy;
                 };
 
+                // for User Activity report the colspans should be adjusted
+                if ( reportList[i].title == 'User Activity' ) {
+                    var dateTimeSortBy = angular.copy( reportList[i].sortByOptions[0] ),
+                        usernameSortBy = angular.copy( reportList[i].sortByOptions[1] );
+
+                    dateTimeSortBy['colspan'] = 2;
+                    usernameSortBy['colspan'] = 2;
+
+                    reportList[i].sortByOptions[0] = dateTimeSortBy;
+                    reportList[i].sortByOptions[1] = usernameSortBy;
+                };
+
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ( $rootScope.currentHotelData == 'Yotel London Heathrow' ) {
                     var sortDate = _.find(reportList[i].sortByOptions, function(item) {
