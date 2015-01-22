@@ -7,54 +7,53 @@ sntRover.service('RVHkRoomDetailsSrv', [
 
 		this.roomDetails = {};
 
-		this.fetch = function(id, businessDate){
+		this.fetch = function(id, businessDate) {
 			var deferred = $q.defer();
 			var url = '/house/room/' + id + '.json';
 
 			$http.get(url).success(function(response, status) {
-				if(response.status == "success"){
+				if (response.status == "success") {
 					this.roomDetails = response.data.room_details;
-			    	deferred.resolve(this.roomDetails);
-			    }else{
-			    	deferred.reject(response);
-			    }
+					deferred.resolve(this.roomDetails);
+				} else {
+					deferred.reject(response);
+				}
 
 			}.bind(this)).error(function(response, status) {
-				if(status == 401){ // 401- Unauthorized
+				if (status == 401) { // 401- Unauthorized
 					// so lets redirect to login page
-					$window.location.href = '/house/logout' ;
-				}else{
+					$window.location.href = '/house/logout';
+				} else {
 					deferred.reject(response);
 				}
 			});
 			return deferred.promise;
 		};
 
-		this.updateHKStatus = function(data){
+		this.updateHKStatus = function(data) {
 			var deferred = $q.defer();
 			var url = '/house/change_house_keeping_status.json';
 
 			$http({
-	            url: url,
-	            method: "POST",
-	            data: data,
-	        }).success(function (response, status) {
-				if(response.status == "success"){
-	        		deferred.resolve(response.data);
-	        	}else{
-	        		deferred.reject(response);
-	        	}
-	        }).error(function (response, status) {
-			    if(status == 401){ // 401- Unauthorized
-	    			// so lets redirect to login page
-					$window.location.href = '/house/logout' ;
-	    		}else{
-	    			deferred.reject(response);
-	    		}
-	        });
+				url: url,
+				method: "POST",
+				data: data,
+			}).success(function(response, status) {
+				if (response.status == "success") {
+					deferred.resolve(response.data);
+				} else {
+					deferred.reject(response);
+				}
+			}).error(function(response, status) {
+				if (status == 401) { // 401- Unauthorized
+					// so lets redirect to login page
+					$window.location.href = '/house/logout';
+				} else {
+					deferred.reject(response);
+				}
+			});
 			return deferred.promise;
 		};
-
 
 
 
@@ -66,14 +65,14 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer(),
 				url = 'api/room_services/status_list';
 
-			if ( allServiceStatus.length ) {
+			if (allServiceStatus.length) {
 				deferred.resolve(allServiceStatus);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						allServiceStatus = data.results;
 						deferred.resolve(allServiceStatus);
-					}.bind(this), function(data){
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			};
@@ -87,14 +86,14 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer(),
 				url = 'api/maintenance_reasons';
 
-			if ( maintenanceReasons.length ) {
+			if (maintenanceReasons.length) {
 				deferred.resolve(maintenanceReasons);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						maintenanceReasons = data.maintenance_reasons;
 						deferred.resolve(maintenanceReasons);
-					}.bind(this), function(data){
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			};
@@ -110,10 +109,10 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
-			
+
 			return deferred.promise;
 		};
 
@@ -125,7 +124,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
@@ -140,7 +139,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.putJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
@@ -152,13 +151,13 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer(),
 				url = 'api/room_services/' + params.roomId,
 				options = {
-					"room_service_status_id" : params.inServiceID
+					"room_service_status_id": params.inServiceID
 				}
 
 			rvBaseWebSrvV2.putJSON(url, options)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
@@ -171,14 +170,14 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer(),
 				url = 'api/work_types';
 
-			if ( workTypesList.length ) {
+			if (workTypesList.length) {
 				deferred.resolve(workTypesList);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						workTypesList = data.results;
 						deferred.resolve(workTypesList);
-					}.bind(this), function(data){
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			};
@@ -195,11 +194,44 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
 			return deferred.promise;
 		};
+
+
+		//CICO-12520 Room service status
+		this.fetchRoomStatus = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/work_types';
+			rvBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve({
+						service_status: {
+							'2015-01-15': {
+								id: 1,
+								value: 'IN_SERVICE'
+							},
+							'2015-01-16': {
+								id: 3,
+								value: 'OUT_OF_ORDER'
+							},
+							'2015-01-17': {
+								id: 3,
+								value: 'OUT_OF_SERVICE'
+							},
+							'2015-01-18': {
+								id: 1,
+								value: 'IN_SERVICE'
+							}
+						}
+					});
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
 	}
 ]);
