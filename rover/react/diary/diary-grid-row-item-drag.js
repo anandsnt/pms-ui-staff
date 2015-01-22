@@ -18,7 +18,7 @@ var GridRowItemDrag = React.createClass({
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
 	},
 	__onMouseDown: function(e) {
-		var page_offset, el, props = this.props, state = this.state;
+		var page_offset, el, props = this.props, state = this.state, display = props.display;
 		
 		e.stopPropagation();
 		e.preventDefault();			
@@ -29,10 +29,12 @@ var GridRowItemDrag = React.createClass({
 			page_offset = this.getDOMNode().getBoundingClientRect();
 			
 			el = props.viewport.element();
-
+			var left = (((page_offset.left-props.display.x_0 - props.iscroll.grid.x)) / display.px_per_int).toFixed() * display.px_per_int;
+			console.log('mouse down: ' + (page_offset.left  - el.offset().left - el.parent()[0].scrollLeft) + ", left: " + left);
 			
 			this.setState({
-				left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+				//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+				left: left,
 				top: page_offset.top - el.offset().top - el[0].scrollTop,
 				mouse_down: true,
 				selected: true,
@@ -163,9 +165,9 @@ var GridRowItemDrag = React.createClass({
 				scroller.maxScrollY <= yScPos && yScPos <= 0) {
 				
 				scroller.scrollTo(xScPos, yScPos, 0);				
-				setTimeout(function(){
+				//setTimeout(function(){
 					scroller._scrollFn();
-				}, 50)
+				//}, 50)
 			}
 	 		
 			var cLeft = colNumber * display.px_per_int, top = rowNumber * (display.row_height) + display.row_height_margin;
@@ -195,7 +197,7 @@ var GridRowItemDrag = React.createClass({
 			}, function() {
 				props.__onResizeCommand(model);
 			});			
-
+			console.log('mouse move: ' + left);
 			this.setState({
 				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
 				left: left, 
@@ -205,6 +207,7 @@ var GridRowItemDrag = React.createClass({
 		}
 	},
 	__onMouseUp: function(e) {
+		
 		var state = this.state, 
 			props = this.props,
 			item = this.state.currentDragItem,
@@ -224,10 +227,12 @@ var GridRowItemDrag = React.createClass({
 		}*/
 
 		if(state.dragging && props.edit.active && (props.data.key != props.currentDragItem.key)){
+			console.log('hey am here');
 			return;
 		}
 		
 		if(state.dragging) {
+			console.log('mouse up: ' + state.left);
 			this.setState({
 				dragging: false,
 				currentDragItem: undefined,
