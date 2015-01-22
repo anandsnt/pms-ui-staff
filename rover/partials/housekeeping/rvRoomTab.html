@@ -1,7 +1,7 @@
 <div ng-controller="RVHKRoomTabCtrl">
 
-  <div class="room-actions">      
-    <div class="entry-data has-datepicker">      
+  <div class="room-actions has-date">      
+    <div class="has-datepicker">      
       <input name="room-service-date" id="room-service-date" class="datepicker" readonly="" type="text" placeholder="{{updateService.selected_date | date : dateFormat }}" value="{{updateService.selected_date | date : dateFormat}}"/>
       <button ng-click="showCalendar('rvHkServiceStatusDateSelectorCtrl')" type="button" class="ui-datepicker-trigger"></button>
     </div>
