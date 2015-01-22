@@ -17,6 +17,7 @@ $scope.fetchUpsellDetails = function(){
        $scope.isRatesSelected();
        $scope.fetchChargeCodes();
        $scope.setUpUpsellWindowData();
+       $scope.setEarlyCheckinTimeForRates();
    };
    $scope.invokeApi(adUpsellEarlyCheckinService.fetch, {},fetchUpsellDetailsSuccessCallback);
 };
@@ -88,6 +89,12 @@ $scope.setUpUpsellWindowData = function () {
   });
 }
 
+$scope.setEarlyCheckinTimeForRates = function(){
+       $scope.upsell_rate.hours = $scope.upsellData.early_checkin_time.substring(0, 2);
+       $scope.upsell_rate.minutes = $scope.upsellData.early_checkin_time.substring(3, 5);
+       $scope.upsell_rate.meridiem = $scope.upsellData.early_checkin_time.substring(6);
+}
+
 $scope.setUpUpsellWindowDataToSave = function () {
         $scope.upsellData.early_checkin_levels = [];
         var upsellWindow;
@@ -118,6 +125,7 @@ $scope.switchClicked = function(){
 */ 
 $scope.saveClick = function(){   	
     $scope.setUpUpsellWindowDataToSave();
+    $scope.upsellData.early_checkin_time = $scope.upsell_rate.hours + "." + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem;
    	var upsellEarlyCheckinSaveSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
        	
