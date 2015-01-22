@@ -28,6 +28,7 @@ sntRover
 			status: 'reservation_status',
 			room_status: 'room_service_status',
 			guest: 'reservation_primary_guest_full_name',
+			accompanying_guests: 'accompanying_guests',
 			start_date: 'arrival',
 			end_date: 'departure',	
 			maintenance: 'maintenance',
