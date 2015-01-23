@@ -41,6 +41,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 			$scope.hotelConfig   = data;
 			$scope.formTitle = data.hotel_name;//To show hotel name in title
 			$scope.isEditmode = true;
+			$scope.hotelConfig.theme = $scope.hotelConfig.existing_email_template_theme;
 			
 			for(var i = 0; i < $scope.hotelConfig.email_templates.length; i++){
 				$scope.hotelConfig.email_templates[i].selected = false;

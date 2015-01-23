@@ -20,7 +20,7 @@ admin.service('ADHotelConfigurationSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
     * @param {array} data of the new mapping
     * @return {object} status and new id of new mapping
     */
-   this.editHotelConfiguration = function(params){
+   this.updateHotelConfiguration = function(params){
    		var deferred = $q.defer();
 		var url = '/api/email_templates/assign_to_hotel.json';
 
