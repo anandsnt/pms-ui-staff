@@ -1788,8 +1788,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var updateSuccess = function(data) {
                 	
                 	var totalDepositOnRateUpdate = 0;
+<<<<<<< HEAD
 
 
+=======
+                   
+>>>>>>> hotfix_1_6_5
                     /**
                      * CICO-10195 : While extending a hourly reservation from  
                      * diary the reservationListArray would be undefined
@@ -1798,6 +1802,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                      * totalDepositOnRateUpdate for just the single reservation.
                      */
                     
+<<<<<<< HEAD
                     if($scope.reservationsListArray){                                       
                         angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
                             if(key == index){
@@ -1806,11 +1811,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             } else {
                                 totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
                             }                            
+=======
+                    if($scope.reservationsListArray){
+                        angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
+                        	if(key == index){
+                        		reservation.deposit_amount = data.deposit_amount;
+                        		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
+                        	} else {
+                        		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
+                        	}                            
+>>>>>>> hotfix_1_6_5
                         });
                     }else{
                         totalDepositOnRateUpdate = parseFloat(data.deposit_amount);
                     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> hotfix_1_6_5
                     // $scope.reservationData.depositAmount = data.deposit_amount;
                     $scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate,2);;
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
