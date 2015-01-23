@@ -1,0 +1,37 @@
+
+ 
+ 
+    "HOTEL_ANNOUNCEMENTS": "Hotel Announcements",
+    "ZEST_WELCOME_MESSAGE_TITLE": "Zest Welcome Message",
+    "ZEST_CHECKOUT_MESSAGE_TITLE": "Zest Checkout Message",
+    "KEY_DELIVERY_EMAIL_MESSAGE_TITLE": "Key Delivery Email Message",
+    
+    "GUEST_CHECKIN_SETUP": "Guest Checkin Setup",
+    "SEND_CHECKIN_EMAIL": "Send Checkin Email",
+    "SEND_CHECKIN_ALERT": "Send Check In Alert",
+    "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
+    "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
+    "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "CHECKIN_ALERT": "Check in Alert",
+    "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
+    "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
+    
+    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
+    "PRE_CHECK_IN_ONLY":"PRE-CHECK IN ONLY",
+    "SENT_TO_QUEUE":"SENT TO QUEUE",
+    "YES_SMALL":"Yes",
+    "NO_SMALL":"No",
+    "MINUTES_PRIOR_TO_ETA":"XX MINUTES PRIOR TO ARRIVAL TIME (ETA)",
+    "RATE_CODES_TO_EXCLUDE_FROM_CHECKIN":"RATE CODES TO EXCLUDE FROM CHECKIN",
+    "BLOCK_CODES_EXCLUDE_FROM_CHECKIN":"BLOCK CODES TO EXCLUDE FROM CHECKIN",
+    "EXCLUDE_BLOCK_CODES":"Exclude block codes",
+    "EXCLUDE_RATE_CODES":"Exclude rate codes",
+    "EXCLUDED_RATE_CODES":"EXCLUDED RATE CODES",
+    "EXCLUDED_BLOCK_CODES":"EXCLUDED BLOCK CODES",
+    "SELECT_RATE_CODE":"Select Rate Code",
+    "SELECT_BLOCK_CODE":"Select Block Code",
+    "MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY":"Maximum number of web checkin's per day",
+    "PRE_CHECK_IN_EMAIL_TITLE":"PRE CHECK IN - EMAIL TITLE ",
+    "PRE_CHECK_IN_TOP_BODY":"PRE CHECK IN - TOP BODY",
+    "PRE_CHECK_IN_BOTTOM_BODY":"PRE CHECK IN - BOTTOM BODY",
+    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields"
