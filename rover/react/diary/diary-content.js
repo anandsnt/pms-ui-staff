@@ -59,27 +59,21 @@ var DiaryContent = React.createClass({
 	},
 	__onDragStop: function(e, left, top, row_item_data) {
 		var state 			= this.state,
-			rowHeight 		= state.display.row_height + state.display.row_height_margin,
+			props 			= this.props,			
+			display 		= props.display,
+			rowHeight 		= display.row_height + display.row_height_margin,
 			viewport 		= state.viewport.element(),
 			curPos 			= e.pageY - state.iscroll.grid.y - viewport.offset().top,// e.pageY - viewport.offset().top - state.iscroll.grid.y    viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
 			rowNumber 		= Math.floor(curPos / rowHeight),
+			rowNumber       = (rowNumber < 0) ? 0 : rowNumber,
+			rowNumber       = (rowNumber > (display.total_rows - 1)) ? (display.total_rows - 1) : rowNumber,
 			row_data 		= state.data[rowNumber],
 			delta 			= Number((left - row_item_data.left).toFixed(3)),
-			props 			= this.props,			
-			display 		= props.display,
 			delta_x 		= e.pageX - state.origin_x, 
 			x_origin 		= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			px_per_int 		= display.px_per_int,
 			px_per_ms 		= display.px_per_ms;
 			
-
-		//console.log((left -props.display.x_0 - props.iscroll.grid.x))
-		
-		/*row_item_data.left = left;*/
-		var right = row_item_data.departure + delta;
-		
-		//row_item_data.arrival = left / state.display.px_per_ms + state.display.x_n; //.x_origin;
-		//row_item_data.departure = right / state.display.px_per_ms + state.display.x_n; //.x_origin;
 		
 		this.setState({
 			currentResizeItem: row_item_data,
