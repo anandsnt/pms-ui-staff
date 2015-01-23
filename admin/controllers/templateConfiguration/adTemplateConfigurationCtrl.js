@@ -33,18 +33,48 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		$scope.isAddmode = false;
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = index;
+		$scope.clickedHotel = hotelId;
 		// $scope.editId = id;
 		var postData = { 'hotel_id' : hotelId };
 		var editHotelConfigurationSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.brandDetails   = data;
-			$scope.formTitle = $scope.brandDetails.name;//To show brand name in title
+			$scope.hotelConfig   = data;
+			$scope.formTitle = data.hotel_name;//To show hotel name in title
 			$scope.isEditmode = true;
+			
+			for(var i = 0; i < $scope.hotelConfig.email_templates.length; i++){
+				$scope.hotelConfig.email_templates[i].selected = false;
+				if($scope.hotelConfig.existing_email_templates.indexOf($scope.hotelConfig.email_templates[i].id) != -1) {
+					$scope.hotelConfig.email_templates[i].selected = true;
+				}
+			}
+			
 		};		
 		$scope.invokeApi(ADHotelConfigurationSrv.editHotelConfiguration,postData,editHotelConfigurationSuccessCallback);
+	};
+	
+	$scope.updateTemplateConfiguration = function(){
+		var updateHotelConfigurationSuccessCallback = function(){
+			$scope.currentClickedElement = -1;
+ 			$scope.isAddmode = false;
+ 			$scope.isEditmode = false;
+		};
+		var assignedEmailTemplates = [];
+		angular.forEach($scope.hotelConfig.email_templates, function(templates, index) {
+			if (templates.selected) {
+				assignedEmailTemplates.push(templates.id);
+			}
+		});
+		var assignedTheme = $scope.hotelConfig.theme;
+		
+		var postData = {
+			"hotel_id": $scope.clickedHotel,
+			"hotel_theme" : assignedTheme,
+			"templates": assignedEmailTemplates
+		};
 		
 		
-		
+		$scope.invokeApi(ADHotelConfigurationSrv.updateHotelConfiguration,postData,updateHotelConfigurationSuccessCallback);
 	};
    
 }]);

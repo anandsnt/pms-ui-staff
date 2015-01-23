@@ -15,7 +15,7 @@
 						<td ng-click="editHotelConfiguration($index,hotel.id)" ng-hide="currentClickedElement == $index && isEditmode" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline"> {{hotel.hotel_name}}</a>
 						</td>					
-						<td ng-include="getTemplateUrl($index,hotel.id)" ng-show="currentClickedElement == $index && isEditmode"></td>
+						<td ng-include="getTemplateUrl($index,hotel.id)" ng-if="currentClickedElement == $index && isEditmode"></td>
 					</tr>
 				</tbody>
 			</table>
