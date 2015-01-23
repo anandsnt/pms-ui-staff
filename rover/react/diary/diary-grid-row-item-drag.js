@@ -92,11 +92,7 @@ var GridRowItemDrag = React.createClass({
 		if(props.currentDragItem.reservation_status !== 'check-in'  && 
 			props.currentDragItem.reservation_status !== 'inhouse'){
 			return;
-		}
-
-		if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){
-			return;
-		}
+		}		
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
@@ -110,6 +106,10 @@ var GridRowItemDrag = React.createClass({
 		} else if(state.dragging) {	
 			model = (props.currentDragItem),
 					scroller = props.iscroll.grid;
+			if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){				
+				return;
+			}					
+
 	 		xScPos 	 = scroller.x;
 	 		yScPos	 = scroller.y;
 
@@ -127,7 +127,7 @@ var GridRowItemDrag = React.createClass({
 			//towards right
 			if(e.pageX > state.origin_x) {
 				draggingTopOrBottom = false
-				if((e.pageX + width_of_res) > window.innerWidth && (display.x_p - model.departure) > 0) {
+				if((e.pageX + width_of_res) > window.innerWidth) {
 					if((xScPos - width_of_res) < scroller.maxScrollX) {
 						xScPos = scroller.maxScrollX;
 					}
@@ -141,8 +141,8 @@ var GridRowItemDrag = React.createClass({
 			//towards left
 			else if(e.pageX < state.origin_x) {
 				draggingTopOrBottom = false
-				if((e.pageX - width_of_res) < viewport.offset().left && (model.arrival - display.x_n) > 0) {
-					if((xScPos + width_of_res) < 0) {
+				if((e.pageX - width_of_res) < viewport.offset().left) {
+					if((xScPos + width_of_res) > 0) {
 						xScPos = 0;
 					}
 					else{
@@ -285,7 +285,6 @@ var GridRowItemDrag = React.createClass({
 		}
 		
 		if(state.dragging) {
-			console.log('mouse up: ' + state.left);
 			this.setState({
 				dragging: false,
 				currentDragItem: undefined,
