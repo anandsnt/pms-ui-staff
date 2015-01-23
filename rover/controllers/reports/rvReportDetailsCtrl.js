@@ -207,6 +207,37 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 		};
 
+
+		$scope.parsedApiTemplate = function() {
+			var template = '';
+
+			switch ($scope.parsedApiFor) {
+				case 'In-House Guests':
+				case 'Departure':
+					template = '/assets/partials/reports/rvInHouseDepartureReport.html';
+					break;
+
+				case 'Arrival':
+					template = '/assets/partials/reports/rvArrivalReport.html';
+					break;
+
+				case 'Cancelation & No Show':
+					template = '/assets/partials/reports/rvCancellationReport.html';
+					break;
+
+				case 'User Activity':
+					template = '/assets/partials/reports/rvUserActivityReport.html';
+					break;
+
+				default:
+					template = '/assets/partials/reports/rvCommonReport.html';
+					break;
+			};
+
+			return template;
+		};
+
+
 		// we are gonna need to drop some pagination
 		// this is done only once when the report details is loaded
 		// and when user updated the filters
@@ -546,7 +577,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			return _retResult;
 		};
-
 
 
     }
