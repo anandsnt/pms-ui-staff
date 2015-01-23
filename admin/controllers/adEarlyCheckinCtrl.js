@@ -325,52 +325,6 @@ $scope.startWatching = function(){
         }       
    });    
 };
-$scope.startWatchingCheckoutcharge0 = function(){
 
-/**
-* To watch charges
-*
-*/ 
-$scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldValue){
-    $scope.setUpLateCheckoutArray();
-    if($scope.upsellData.extended_checkout_charge_0.charge.length ===0 || $scope.upsellData.extended_checkout_charge_0.time === "HH"){
-       if($scope.upsellData.extended_checkout_charge_2){
-          $scope.upsellData.extended_checkout_charge_2.charge = "";
-          $scope.upsellData.extended_checkout_charge_2.time = "HH";
-          $scope.chekoutchargesArray.splice(2,1);
-      }
-      if($scope.upsellData.extended_checkout_charge_1){
-          $scope.upsellData.extended_checkout_charge_1.charge = "";
-          $scope.upsellData.extended_checkout_charge_1.time = "HH";
-          $scope.chekoutchargesArray.splice(1,1);
-      }       
-      $scope.disableThirdOption = true;
-      $scope.disableSecondOption = true;    
-  }
-  else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time != "HH")
-    $scope.disableSecondOption = false;
-}, true);  
-};
-$scope.startWatchingCheckoutcharge1 = function(){
-
-/**
-* To watch charges
-*
-*/ 
-$scope.setUpLateCheckoutArray();
-$scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldValue){
-    if($scope.upsellData.extended_checkout_charge_1.charge.length ===0 || $scope.upsellData.extended_checkout_charge_1.time === "HH"){    
-       if($scope.upsellData.extended_checkout_charge_2){
-          $scope.upsellData.extended_checkout_charge_2.charge = "";
-          $scope.upsellData.extended_checkout_charge_2.time = "HH";
-          $scope.chekoutchargesArray.splice(2,1);
-      }
-      $scope.disableThirdOption = true;       
-  }
-  else if($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time != "HH")
-    $scope.disableThirdOption = false;       
-}, true);
-
-};
 
 }]);
