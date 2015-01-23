@@ -11,6 +11,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 
 		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		$scope.encoderSelected = "";
+		if($scope.fromView == "checkin"){
+			$scope.keySystemVendor = $scope.reservationBillData.hotel_selected_key_system;
+		}else{
+			$scope.keySystemVendor = $scope.reservationData.reservation_card.hotel_selected_key_system;
+		}
+
 		$scope.keySystemVendor = $scope.reservationData.reservation_card.hotel_selected_key_system;
 		if (sessionStorage.encoderSelected && sessionStorage.encoderSelected !== '') {
 			$scope.encoderSelected = parseInt(sessionStorage.encoderSelected);
