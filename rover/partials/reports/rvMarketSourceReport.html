@@ -1,4 +1,12 @@
-<div id="report-content" class="report-content with-graphs scrollable" ng-iscroll="report-details-scroll" > 
+<!-- Report content -->
+<div ng-show="!sources.length && !markets.length" class="report-content no-content"> 
+	<div class="info">
+		<span class="icon-no-content icon-reports"></span>
+		<strong class="h1">No reports found</strong>
+		<span class="h2">Try changing search criteria or modify dates</span>
+	</div>
+</div>
+<div ng-show="sources.length || markets.length" id="report-content" class="report-content with-graphs scrollable" ng-iscroll="report-details-scroll" > 
 	<div class="wrapper">
 		<!-- Sources -->
 		<div class="report-block" ng-show="chosenReport.showSource && sources.length > 0">
@@ -33,7 +41,7 @@
 						<!-- ... repeat for all sources -->
 						<li class="legend">
 							<span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.sourceNumber.ticks}}%;" 
-							ng-hide="$last || $index == sources.length - 2">
+							ng-hide="$last">
 							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span> 
 							<!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
 							<span class="mark last" style="width:{{100/ reportStatus.graph.sourceNumber.ticks}}%;">
@@ -115,7 +123,7 @@
 						<!-- ... repeat for all sources -->
 						<li class="legend">
 							<span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.marketNumber.ticks}}%;" 
-							ng-hide="$last || $index == markets.length - 2">
+							ng-hide="$last">
 							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span> 
 							<!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
 							<span class="mark last" style="width:{{100/ reportStatus.graph.marketNumber.ticks}}%;">

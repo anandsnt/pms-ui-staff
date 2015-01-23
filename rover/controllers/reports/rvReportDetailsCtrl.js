@@ -12,8 +12,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
 
 		var refreshScroll = function() {
-			$scope.refreshScroller( 'report-details-scroll' );
-			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			if ( !!$scope.$parent.myScroll['report-details-scroll'] ) {
+				$scope.refreshScroller( 'report-details-scroll' );
+				$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			};
 		};
 
 
@@ -44,23 +46,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset this
 			$scope.parsedApiFor = undefined;
 
-			// // is this guest reports or not
-			// if ( $scope.chosenReport.title == 'Arrival' ||
-			// 		$scope.chosenReport.title == 'Cancelation & No Show' ||
-			// 		$scope.chosenReport.title == 'Departure' ||
-			// 		$scope.chosenReport.title == 'In-House Guests' ) {
-			// 	$scope.isGuestReport = true;
-			// } else {
-			// 	$scope.isGuestReport = false;
-			// };
-
-			// // is this is a large report
-			// if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
-			// 		$scope.chosenReport.title == 'Web Check Out Conversion' ) {
-			// 	$scope.isLargeReport = true;
-			// } else {
-			// 	$scope.isLargeReport = false;
-			// };
 
 			switch( $scope.chosenReport.title ) {
 				case 'In-House Guests':
@@ -87,6 +72,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isLargeReport = true;
 					break;
 			};
+
+
+
 
 			// for hard coding styles for report headers
 			// if the header count is greater than 4
@@ -263,27 +251,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    // keep track of the Users chosen for UI
 		    // if there is just one user
 		    if ( $scope.chosenReport.chosenUsers ) {
-		        if ( typeof $scope.chosenReport.chosenUsers === 'number' ) {
+		    	var _userNames = [];
 
-		            // first find the full name
-		            var name = _.find($scope.userList, function(user) {
-		                return user.id === $scope.chosenReport.chosenUsers;
-		            });
+		    	_.each($scope.activeUserList, function(user) {
+					var match = _.find($scope.chosenReport.chosenUsers, function(id) {
+						return id == user.id;
+					});
 
-		            $scope.userNames = name.full_name || false;
-		        } else {
-		            
-		            // if there are more than one user
-		            for (var i = 0, j = $scope.chosenReport.chosenUsers.length; i < j; i++) {
+					if ( !!match ) {
+						_userNames.push( user.full_name );
+					};
+				});
 
-		                // first find the full name
-		                var name = _.find($scope.userList, function(user) {
-		                    return user.id === $scope.chosenReport.chosenUsers[i];
-		                    });
-
-		                $scope.userNames += name.full_name + (i < j ? ', ' : '');
-		            };
-		        }
+				$scope.userNames = _userNames.join(', ');
 		    };
 		};
 
@@ -443,7 +423,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				_eachGuest   = {},
 				_eachGuestNote = {},
 				_cancelRes   = {},
-				_customItems = [];
+				_customItems = [],
+				_uiDate      = '',
+				_uiTime      = '';
 
 			var i = j = k = l = m = n = 0;
 
@@ -460,6 +442,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					_eachNote    = {};
 					_eachGuest   = {};
 					_eachGuestNote = {};
+					_uiDate        = '';
+					_uiTime        = '';
 
 					// first check for cancel reason
 					// if so then create a custom entry
@@ -515,6 +499,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 
+					// additional date time split for 'User Activity' report
+					if ( $scope.parsedApiFor == 'User Activity' ) {
+						if ( !!_eachItem['date'] ) {
+							_uiDate = _eachItem['date'].split(', ')[0];
+							_uiTime = _eachItem['date'].split(', ')[1];
+							_eachItem['uiDate'] = _uiDate;
+							_eachItem['uiTime'] = _uiTime;
+						};
+					};
+
 					// since this tr won't have any (figurative) childs
 					if ( !_customItems.length ) {
 						_eachItem.trCls = 'row-break';
@@ -542,13 +536,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_retResult.push( _customItems[m] );
 					};
 				};
+
+				// dont remove yet
+				console.log( 'API reponse changed as follows: ');
+				console.log( _retResult );
 			} else {
 				_retResult = apiResponse;
 			};
-
-			// dont remove
-			console.log( 'API reponse changed as follows: ');
-			console.log( _retResult );
 
 			return _retResult;
 		};

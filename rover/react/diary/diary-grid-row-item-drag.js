@@ -79,7 +79,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
-		if(props.currentDragItem.reservation_status !== 'check-in'){
+		if(props.currentDragItem.reservation_status !== 'check-in' && props.currentDragItem.reservation_status !== 'inhouse'){
 			return;
 		}
 
@@ -185,23 +185,28 @@ var GridRowItemDrag = React.createClass({
 			var commonFactor= ((((cFactor) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
 				newArrival  = (commonFactor * fifteenMin);			
 			
-			var diff = newArrival - model.arrival;			
-			model.arrival = newArrival;
-			model.departure = model.departure + diff;
+			var diff = newArrival - model.arrival;						
+			
+			var state_to_set = {
+				top: top							
+			};
+			if(props.currentDragItem.reservation_status == 'inhouse'){
+				state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int; 
+				//state_to_set.top = ((state.element_y + delta_y) / adj_height).toFixed() * adj_height;
+			}
+			else {
+                state_to_set.left = left; 
+                model.arrival = newArrival;
+                model.departure = model.departure + diff;
+           	}           	
 
 			this.setState({
 				currentResizeItem: 	model,
 				resizing: true			
 			}, function() {
 				props.__onResizeCommand(model);
-			});			
-
-			this.setState({
-				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
-				left: left, 
-				//top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
-				top: top
 			});
+			this.setState(state_to_set);
 		}
 	},
 	__onMouseUp: function(e) {

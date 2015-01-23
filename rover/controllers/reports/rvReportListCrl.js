@@ -89,11 +89,17 @@ sntRover.controller('RVReportListCrl', [
 
                     case 'Booking Source & Market Report':
                         reportList[i]['reportIconCls'] = 'icon-report icon-booking';
-                        reportList[i]['hasSourceMarketFilter'] = true;                        
-                    break;
+                        reportList[i]['canRemoveDate'] = true;
+                        reportList[i]['showRemove']    = true;
+                        reportList[i]['hasSourceMarketFilter'] = true;
+                        break;
+
+                    case 'User Activity':
+                        reportList[i]['reportIconCls'] = 'icon-report icon-activity';
+						break;
 
                     default:
-                        reportList[i]['reportIconCls'] = 'icon-report';                        
+                        reportList[i]['reportIconCls'] = 'icon-report';
                         break;
                 };
 
@@ -151,10 +157,17 @@ sntRover.controller('RVReportListCrl', [
                         }];
                     };
 
-                    // check for user filter and keep a ref to that item
-                    if ( item.value === 'USER' ) {
-                        reportList[i]['hasUserFilter'] = item;
-                    };
+                    // // check for user filter and keep a ref to that item
+                    // if ( item.value === 'USER' ) {
+                    //     // currently only show users for 'User Activity' report
+                    //     if ( reportList[i].title == 'User Activity' ) {
+                    //         reportList[i]['hasUserFilter'] = item;
+                    //     }
+                    // };
+                    // currently only show users for 'User Activity' report
+                    if ( reportList[i].title == 'User Activity' ) {
+                        reportList[i]['hasUserFilter'] = true;
+                    }
 
                     // check for include notes filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_NOTES' ) {
@@ -199,6 +212,25 @@ sntRover.controller('RVReportListCrl', [
                     // check for include no show filter and keep a ref to that item
                     if ( item.value === 'SHOW_GUESTS' ) {
                         reportList[i]['hasShowGuests'] = item;
+                   	}
+                    // SPL: for User login details
+                    // check for include rover users filter and keep a ref to that item
+                    if ( item.value === 'ROVER' ) {
+                        reportList[i]['hasIncludeRoverUsers'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // SPL: for User login details
+                    // check for include zest users filter and keep a ref to that item
+                    if ( item.value === 'ZEST' ) {
+                        reportList[i]['hasIncludeZestUsers'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // SPL: for User login details
+                    // check for include zest web users filter and keep a ref to that item
+                    if ( item.value === 'ZEST_WEB' ) {
+                        reportList[i]['hasIncludeZestWebUsers'] = item;
                         hasFauxSelect = true;
                     };
                 });
@@ -251,6 +283,17 @@ sntRover.controller('RVReportListCrl', [
 
                     reportList[i].sortByOptions[0] = roomSortBy;
                     reportList[i].sortByOptions[1] = nameSortBy;
+                };
+
+                // for User Activity report
+                // the colspans should be adjusted
+                // the sort descriptions should be update to design
+                //    THIS MUST NOT BE CHANGED IN BACKEND
+                if ( reportList[i].title == 'User Activity' ) {
+                    reportList[i].sortByOptions[0]['description'] = 'Date & Time';
+
+                    reportList[i].sortByOptions[0]['colspan'] = 2;
+                    reportList[i].sortByOptions[1]['colspan'] = 2;
                 };
 
                 // CICO-8010: for Yotel make "date" default sort by filter

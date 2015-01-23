@@ -9,6 +9,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.paymentDetails = null;
     $scope.swipedCardDataToSave = {};
     $scope.showCreditCardDropDown = false;
+    $scope.isShownExistingCCPayment = false;
    
     if($scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
     	
@@ -18,6 +19,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.renderAddedPayment.creditCardType = $scope.selectedEntity.credit_card_details.card_code;
         $scope.isAddPayment = true;
         $scope.showCreditCardDropDown = false;
+        
+        $scope.isShownExistingCCPayment = true;
         setTimeout(function(){
         	 $scope.$broadcast('UPDATE_FLAG');
         }, 1000);
@@ -127,6 +130,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		$scope.renderAddedPayment.cardExpiry = "";
 		$scope.renderAddedPayment.endingWith = "";
 		$scope.renderAddedPayment.payment_type = "";
+		$scope.isShownExistingCCPayment = false;
         $scope.$broadcast('showaddpayment');
 	};
 	$scope.$on("SHOW_SWIPED_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
@@ -235,7 +239,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.addChargeCode();
         $scope.chargeCodeSearchText = '';
         $scope.showChargeCodes = false;
-    }
+    };
     /**
     * function to fetch available charge code from the server
     */
@@ -390,6 +394,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		        	 $scope.showCreditCardDropDown = true;
 		        } else {
 		        	 $scope.showCreditCardDropDown = false;
+		        	 $scope.isShownExistingCCPayment = true;
 		        }
 		       
 		       
@@ -572,7 +577,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
            if($scope.selectedEntity.to_bill == 'new'){
                 $scope.createNewBill();
             }
-            else if( $scope.saveData.payment_type != null && $scope.saveData.payment_type != "" ){
+            else if( $scope.saveData.payment_type != null && $scope.saveData.payment_type != "" && !$scope.isShownExistingCCPayment){
                 $scope.savePayment();
             }
             // else if($scope.paymentDetails != null){
