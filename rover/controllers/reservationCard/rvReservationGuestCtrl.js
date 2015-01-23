@@ -54,15 +54,21 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					$scope.errorMessage = errorMessage;
 				};
 
+				var dataToSend = dclone(data,["primary_guest_details","accompanying_guests_details"]);
+				dataToSend.accompanying_guests_details = [];
+				dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+
 				angular.forEach(data.accompanying_guests_details, function(item, index) {
 					delete item.image;
 					if((item.first_name == "" || item.first_name == null) && (item.last_name == "" || item.last_name == null)){
-						data.accompanying_guests_details.splice(index,1);
+						// do nothing
+					}
+					else{
+						// Only valid data is going to send.
+						dataToSend.accompanying_guests_details.push(item);
 					}
 				});
-
-				var dataToSend = dclone(data,["primary_guest_details"]);
-				dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+				
 				$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback , errorCallback);
 			}
 		};
