@@ -45,6 +45,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					$scope.$emit('hideLoader');
 					$scope.errorMessage = '';
 					$scope.$emit("GETVARYINGOCCUPANCY");
+					presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 				};
 
 				var errorCallback = function(errorMessage){
