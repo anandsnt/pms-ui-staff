@@ -14,10 +14,11 @@ $scope.fetchUpsellDetails = function(){
     var fetchUpsellDetailsSuccessCallback = function(data) {
        
        $scope.upsellData = data;
-       $scope.isRatesSelected();
+       $scope.setRateFlag();
        $scope.fetchChargeCodes();
        $scope.setUpUpsellWindowData();
        $scope.setEarlyCheckinTimeForRates();
+       $scope.startWatching();
    };
    $scope.invokeApi(adUpsellEarlyCheckinService.fetch, {},fetchUpsellDetailsSuccessCallback);
 };
@@ -78,6 +79,8 @@ $scope.getRatesWithNameValues = function(rates){
 $scope.setUpUpsellWindowData = function () {
         $scope.upsellWindows = [];
         var upsellWindow;
+        $scope.setUpDefaultUpsellLevels();
+        
          angular.forEach($scope.upsellData.early_checkin_levels,function(item, index) {
          upsellWindow = {};
          upsellWindow.hours = item.start_time == ""? "" : item.start_time.substring(0, 2);
@@ -87,6 +90,50 @@ $scope.setUpUpsellWindowData = function () {
          upsellWindow.charge = item.charge;
          $scope.upsellWindows.push(upsellWindow);
   });
+}
+
+$scope.isAddonAvailable = function(index){
+       if($scope.addons[index].id == $scope.upsellWindows[0].addon_id){
+             return false;
+       }else if($scope.addons[index].id == $scope.upsellWindows[1].addon_id){
+             return false;
+       }else if($scope.addons[index].id == $scope.upsellWindows[2].addon_id){
+             return false;
+       }else{
+        return true;
+       }
+}
+
+$scope.isRateAvailable = function(index){
+       for(var i = 0; i < $scope.upsellData.early_checkin_rates.length; i++){
+         if($scope.upsellData.early_checkin_rates[i].id == $scope.rates[index].id)
+           return false;
+          
+        } 
+       return true;
+}
+
+$scope.setUpDefaultUpsellLevels = function () {
+         var upsellCountArray ;
+         if($scope.upsellData.early_checkin_levels.length >= 3){
+           return;
+         }else if($scope.upsellData.early_checkin_levels.length == 0){
+           upsellCountArray = [1, 2, 3];
+         }else if($scope.upsellData.early_checkin_levels.length == 1){
+           upsellCountArray = [1, 2];
+         }else if($scope.upsellData.early_checkin_levels.length == 2){
+           upsellCountArray = [1];
+         }
+         var defaultWindow;
+          angular.forEach(upsellCountArray,function(item, index) {
+          defaultWindow = {};
+          defaultWindow.start_time = "";
+          defaultWindow.addon_id = "";
+          defaultWindow.charge = "";
+
+          $scope.upsellData.early_checkin_levels.push(defaultWindow);
+         
+        }); 
 }
 
 $scope.setEarlyCheckinTimeForRates = function(){
@@ -99,12 +146,14 @@ $scope.setUpUpsellWindowDataToSave = function () {
         $scope.upsellData.early_checkin_levels = [];
         var upsellWindow;
          angular.forEach($scope.upsellWindows,function(item, index) {
-             upsellWindow = {};
-             upsellWindow.start_time = item.hours + ":" + item.minutes + " " + item.meridiem;
-             upsellWindow.charge = item.charge;
-             upsellWindow.addon_id = item.addon_id;
+             if(item.hours != "" && item.hours != null){
+                 upsellWindow = {};
+                 upsellWindow.start_time = item.hours + ":" + item.minutes + " " + item.meridiem;
+                 upsellWindow.charge = item.charge;
+                 upsellWindow.addon_id = item.addon_id;
 
-             $scope.upsellData.early_checkin_levels.push(upsellWindow);
+                 $scope.upsellData.early_checkin_levels.push(upsellWindow);
+             }             
         });
 }
 
@@ -125,10 +174,16 @@ $scope.validateUpsellWindowTime = function(){
   time_window2.setMinutes(parseInt($scope.upsellWindows[1].minutes));
   time_window3.setMinutes(parseInt($scope.upsellWindows[2].minutes));
 
-  if(time_window2 >= time_window3)
-    return false;
-  else if(time_window1 >= time_window2)
-    return false;
+  if(time_window1 >= time_window2){
+    
+          $scope.errorMessage = ["The time for upsell window-1 should be less than time for upsell window-2"];
+          return false;
+  }
+  else if(time_window2 >= time_window3){
+    
+          $scope.errorMessage = $scope.errorMessage = ["The time for upsell window-2 should be less than time for upsell window-3"];
+          return false;
+  }
   else
     return true;
 
@@ -152,9 +207,10 @@ $scope.switchClicked = function(){
 $scope.saveClick = function(){
 
     if(!$scope.validateUpsellWindowTime()){      
-        $scope.errorMessage = "The time for the upsell windows need to be in ascending order";
+        
         return;
     } 	
+    // $scope.validateUpsellWindowTime();
     $scope.setUpUpsellWindowDataToSave();
     $scope.upsellData.early_checkin_time = $scope.upsell_rate.hours + "." + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem;
    	var upsellEarlyCheckinSaveSuccessCallback = function(data) {
@@ -173,7 +229,7 @@ $scope.saveClick = function(){
 $scope.clickAddRoomType = function(){
 	//While addig a room type, making its max_late_checkouts defaults to 0.
   
-  if($scope.getSelectesRateIndexForID($scope.upsell_rate.selected_rate_id) != -1)
+  if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) != -1)
     return;
   var rate_item;
 	angular.forEach($scope.rates,function(item, index) {
@@ -184,20 +240,20 @@ $scope.clickAddRoomType = function(){
 			$scope.upsellData.early_checkin_rates.push(rate_item); 
       }
     });
-  $scope.isRateSelected();
+  $scope.setRateFlag();
 };
 /**
  * Method to check if max_late_checkouts of all elements are blank or not.
  * Configured room type will have valid max_late_checkouts value.
  */
-$scope.isRatesSelected = function(){
+$scope.setRateFlag = function(){
 	$scope.isRateSelected = false;
 	if($scope.upsellData.early_checkin_rates.length > 0){
     $scope.isRateSelected = true;
   }
 };
 
-$scope.getSelectesRateIndexForID = function(rateID){
+$scope.getSelectedRateIndexForID = function(rateID){
   var rateIndex = -1;
   angular.forEach($scope.upsellData.early_checkin_rates,function(item, index) {
     if(item.id == rateID){
@@ -212,10 +268,109 @@ $scope.getSelectesRateIndexForID = function(rateID){
 $scope.deleteRate = function(value,name){
 	
 	
-	var indexForRate = $scope.getSelectesRateIndexForID(value);
+	var indexForRate = $scope.getSelectedRateIndexForID(value);
   if(indexForRate != -1)
      $scope.upsellData.early_checkin_rates.splice(indexForRate, 1);
-   $scope.isRateSelected();
+   $scope.setRateFlag();
+};
+
+$scope.isChargeRequiredForWindow = function(windowIndex){
+   if(windowIndex == 0){
+      return $scope.upsellWindows[0].hours != ""? 'yes' : 'no';
+   }else if(windowIndex == 1){
+      return $scope.upsellWindows[1].hours != ""? 'yes' : 'no';
+   }else if(windowIndex == 2){
+      return $scope.upsellWindows[2].hours != ""? 'yes' : 'no';
+   }
+}
+
+/**
+* To watch Upsell data
+*
+*/ 
+$scope.startWatching = function(){
+    $scope.$watch(function(){
+      return ($scope.upsellWindows[0].hours == "" ||$scope.upsellWindows[0].hours == null )? "": $scope.upsellWindows[0].hours;
+    }, function(newValue, oldValue){
+        if($scope.upsellWindows[0].hours == "" || $scope.upsellWindows[0].hours == null){
+            $scope.upsellWindows[0].charge = "";
+            $scope.upsellWindows[0].minutes = "";
+            $scope.upsellWindows[0].addon_id = "";
+        }else{
+            $scope.upsellWindows[0].minutes = "00";
+        }         
+   });
+
+    $scope.$watch(function(){
+      return ($scope.upsellWindows[1].hours == "" ||$scope.upsellWindows[1].hours == null )? "": $scope.upsellWindows[1].hours;
+    }, function(newValue, oldValue){
+        if($scope.upsellWindows[1].hours == "" || $scope.upsellWindows[1].hours == null){
+            $scope.upsellWindows[1].charge = "";
+            $scope.upsellWindows[1].minutes = "";
+            $scope.upsellWindows[1].addon_id = "";
+        }else{
+            $scope.upsellWindows[1].minutes = "00";
+        }        
+   });
+
+    $scope.$watch(function(){
+      return ($scope.upsellWindows[2].hours == "" ||$scope.upsellWindows[2].hours == null )? "": $scope.upsellWindows[2].hours;
+    }, function(newValue, oldValue){
+        if($scope.upsellWindows[2].hours == "" || $scope.upsellWindows[2].hours == null){
+            $scope.upsellWindows[2].charge = "";
+            $scope.upsellWindows[2].minutes = "";
+            $scope.upsellWindows[2].addon_id = "";
+        }else{
+            $scope.upsellWindows[2].minutes = "00";
+        }       
+   });    
+};
+$scope.startWatchingCheckoutcharge0 = function(){
+
+/**
+* To watch charges
+*
+*/ 
+$scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldValue){
+    $scope.setUpLateCheckoutArray();
+    if($scope.upsellData.extended_checkout_charge_0.charge.length ===0 || $scope.upsellData.extended_checkout_charge_0.time === "HH"){
+       if($scope.upsellData.extended_checkout_charge_2){
+          $scope.upsellData.extended_checkout_charge_2.charge = "";
+          $scope.upsellData.extended_checkout_charge_2.time = "HH";
+          $scope.chekoutchargesArray.splice(2,1);
+      }
+      if($scope.upsellData.extended_checkout_charge_1){
+          $scope.upsellData.extended_checkout_charge_1.charge = "";
+          $scope.upsellData.extended_checkout_charge_1.time = "HH";
+          $scope.chekoutchargesArray.splice(1,1);
+      }       
+      $scope.disableThirdOption = true;
+      $scope.disableSecondOption = true;    
+  }
+  else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time != "HH")
+    $scope.disableSecondOption = false;
+}, true);  
+};
+$scope.startWatchingCheckoutcharge1 = function(){
+
+/**
+* To watch charges
+*
+*/ 
+$scope.setUpLateCheckoutArray();
+$scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldValue){
+    if($scope.upsellData.extended_checkout_charge_1.charge.length ===0 || $scope.upsellData.extended_checkout_charge_1.time === "HH"){    
+       if($scope.upsellData.extended_checkout_charge_2){
+          $scope.upsellData.extended_checkout_charge_2.charge = "";
+          $scope.upsellData.extended_checkout_charge_2.time = "HH";
+          $scope.chekoutchargesArray.splice(2,1);
+      }
+      $scope.disableThirdOption = true;       
+  }
+  else if($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time != "HH")
+    $scope.disableThirdOption = false;       
+}, true);
+
 };
 
 }]);

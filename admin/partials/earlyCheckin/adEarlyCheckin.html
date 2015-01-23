@@ -1,4 +1,4 @@
-<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+<section id="replacing-div-first" class="content current" ng-click="">
 	<div data-view="EarlyCheckinView">
 		<section>
 			<header class="content-title float">
@@ -26,7 +26,7 @@
 					</fieldset>
 					<fieldset class="holder right">	
 						<!-- charge code -->
-						<ad-dropdown label="{{'CHARGE_CODE' | translate}}" label-in-drop-down="{{'CHARGE_CODE' | translate}}" list="charge_codes" selected-Id='upsellData.early_checkin_charge_code' required='yes' selbox-class='placeholder'></ad-dropdown>
+						<ad-dropdown label="{{'CHARGE_CODE' | translate}}" label-in-drop-down="{{'CHARGE_CODE' | translate}}" list="charge_codes" selected-Id='upsellData.early_checkin_charge_code' selbox-class='placeholder'></ad-dropdown>
 					</fieldset>					
 						
 
@@ -63,9 +63,9 @@
 
 						</div>
 
-						<ad-textbox value="upsellWindows[0].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" styleclass="early_checkin_upsell" ></ad-textbox>
+						<ad-textbox value="upsellWindows[0].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" styleclass="early_checkin_upsell"></ad-textbox>
 
-						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[0].addon_id' required='yes' selbox-class='placeholder' div-class="early_checkin_upsell"></ad-dropdown>
+						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[0].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
 
 						<div class="entry early_checkin_upsell">
 							<label translate> EARLY_CHECKIN_START_TIME </label>
@@ -96,7 +96,7 @@
 						</div>
 						<ad-textbox value="upsellWindows[1].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" disabled="disableSecondOption" styleclass="early_checkin_upsell"></ad-textbox>
 
-						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[1].addon_id' required='yes' selbox-class='placeholder' div-class="early_checkin_upsell"></ad-dropdown>
+						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[1].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
 
 						<div class="entry early_checkin_upsell">
 							<label translate> EARLY_CHECKIN_START_TIME </label>
@@ -125,7 +125,7 @@
 
 						<ad-textbox value="upsellWindows[2].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" disabled="disableThirdOption" styleclass="early_checkin_upsell" ></ad-textbox>
 
-						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[2].addon_id' required='yes' selbox-class='placeholder' div-class="early_checkin_upsell"></ad-dropdown>
+						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[2].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
 
 						<ad-textbox value="upsellData.number_of_early_checkins_per_day"   label = "{{'NUMBER_OF_EARLY_CHECKINS_PER_DAY' | translate}}" placeholder = "{{'TYPE_NUMBER' | translate}}" ></ad-textbox>
 
@@ -161,10 +161,10 @@
 
 					<fieldset class='holder column full-width'>
 						
-						<ad-dropdown label-in-drop-down="{{'SELECT_RATE' | translate}}" list="rates" selected-id='upsell_rate.selected_rate_id' selbox-class="placeholder"></ad-dropdown>
+						<ad-dropdown label-in-drop-down="{{'SELECT_RATE' | translate}}" list="rates" selected-id='upsell_rate.selected_rate_id' selbox-class="placeholder" options = "{'showOptionsIf': isRateAvailable}"></ad-dropdown>
 		
 						<div class='entry'>
-							<div class='add-room-type'>
+							<div class='early_checkin_add_rates'>
 								<button class='button green' id='add-room-type' ng-click="clickAddRoomType()" translate>
 									ADD_RATE
 								</button>

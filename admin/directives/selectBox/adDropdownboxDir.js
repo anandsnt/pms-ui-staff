@@ -15,8 +15,20 @@ admin.directive('adDropdown', function($timeout) {
             list:'=list',
             name:'@name',
             selectedId:'=selectedId',
-            labelClass:'@labelClass'
+            labelClass:'@labelClass',
+            options: '='
 	    },
+        link: function ($scope, $element, $attr)
+        {
+            if(typeof $scope.options != 'undefined'){
+                if($scope.options.hasOwnProperty('showOptionsIf'))
+                    $scope.showOptionsIf = $scope.options.showOptionsIf;
+            }else{
+                $scope.showOptionsIf = function(index){
+                     return true;
+                };
+            }
+        },
     	templateUrl: '../../assets/directives/selectBox/adDropdownbox.html' 
     };
 
