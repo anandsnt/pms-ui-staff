@@ -25,20 +25,38 @@
 			</div>
 
 			<div class="entry full-width">
-				<label>Room Type (Choose one or many) <strong> * </strong></label>
-				<div faux-multi-select faux-source="roomTypesList" faux-item-name="name" ng-model="eachTaskList.room_type_ids"></div>
+			    <label for="item-type">Room Type <strong>*</strong></label>
+			    <div class="boxes">
+			        <label class="checkbox inline" ng-repeat="item in roomTypesList">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.room_type_ids[$index]}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.room_type_ids[$index]">
+			            {{ item.name }}
+			        </label>
+			    </div>
 			</div>
 
 			<div class="entry full-width">
-				<label>Reservation status (Choose one or many)</label>
-				<div faux-multi-select faux-source="resHkStatusList" faux-item-name="description" ng-model="eachTaskList.reservation_statuses_ids"></div>
+			    <label for="item-type">Reservation status <strong>*</strong></label>
+			    <div class="boxes">
+			        <label class="checkbox inline" ng-repeat="item in resHkStatusList">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.reservation_statuses_ids[$index]}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.reservation_statuses_ids[$index]">
+			            {{ item.description }}
+			        </label>
+			    </div>
 			</div>
 		</fieldset>
 
-		<fieldset class="holder right float">
+		<fieldset class="holder right float">			
 			<div class="entry full-width">
-				<label>Fo status (Choose one or many)</label>
-				<div faux-multi-select faux-source="foStatusList" faux-item-name="description" ng-model="eachTaskList.front_office_status_ids"></div>
+			    <label for="item-type">Fo status <strong>*</strong></label>
+			    <div class="boxes">
+			        <label class="checkbox inline" ng-repeat="item in foStatusList">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.front_office_status_ids[$index]}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.front_office_status_ids[$index]">
+			            {{ item.description }}
+			        </label>
+			    </div>
 			</div>
 
 			<div class="entry full-width">
@@ -69,26 +87,33 @@
 			</div>
 		</fieldset>
 
-		<fieldset class="entry full-width">
-			<label>
-				Task completion Time (Individual rooms)
-			</label>
-			<div ng-repeat="room in roomTypesList" ng-show="eachTaskList.room_type_ids.indexOf(room.id) > -1">				
-				<span>{{room.name}}</span>
-				<div class="float">					
-					<div class="select select-col col1-3">
-						<select ng-model="eachTaskList.rooms_task_completion[room.id].hours" class="styled">
-							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.rooms_task_completion[room.id].hours">{{i}}</option>
-						</select>
+		<fieldset style="clear:both; width:80%;" ng-if="(eachTaskList.room_type_ids | filter:anySelected(true)).length">
+			<div class="entry full-width">
+				<label>Task completion Time (Individual rooms)</label>
+				<div class="boxes">
+					<div ng-repeat="room in roomTypesList" ng-show="eachTaskList.room_type_ids[$index]">				
+						<div class="float">
+							<div class="select select-col col1-4 no-bg">
+								<span>{{room.name}}</span>
+							</div>			
+							<div class="select select-col col1-4">
+								<select ng-model="eachTaskList.rooms_task_completion[room.id].hours" class="styled">
+									<option value="" data-text="Not set" class="placeholder">HH</option>
+									<option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.rooms_task_completion[room.id].hours">{{i}}</option>
+								</select>
+							</div>
+							<div class="select select-col col1-4">
+								<select ng-model="eachTaskList.rooms_task_completion[room.id].mins">
+									<option value="" data-text="Not set" class="placeholder">MM</option>
+									<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.rooms_task_completion[room.id].mins">{{i}}</option>
+								</select>
+							</div>
+							<div class="select select-col col1-4 no-bg" ng-show="checkCopyBtnShow(room.id)">
+								<button type="button" class="button green edit-data-inline" ng-click="copyNpaste(room.id)">Copy paste</button>
+							</div>
+						</div>	
 					</div>
-					<div class="select select-col col1-3">
-						<select ng-model="eachTaskList.rooms_task_completion[room.id].mins">
-							<option value="" data-text="Not set" class="placeholder">MM</option>
-							<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.rooms_task_completion[room.id].mins">{{i}}</option>
-						</select>
-					</div>
-				</div>	
+				</div>
 			</div>
 		</fieldset>
 

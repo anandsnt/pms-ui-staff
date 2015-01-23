@@ -423,7 +423,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				_eachGuest   = {},
 				_eachGuestNote = {},
 				_cancelRes   = {},
-				_customItems = [];
+				_customItems = [],
+				_uiDate      = '',
+				_uiTime      = '';
 
 			var i = j = k = l = m = n = 0;
 
@@ -440,6 +442,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					_eachNote    = {};
 					_eachGuest   = {};
 					_eachGuestNote = {};
+					_uiDate        = '';
+					_uiTime        = '';
 
 					// first check for cancel reason
 					// if so then create a custom entry
@@ -495,6 +499,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 
+					// additional date time split for 'User Activity' report
+					if ( $scope.parsedApiFor == 'User Activity' ) {
+						if ( !!_eachItem['date'] ) {
+							_uiDate = _eachItem['date'].split(', ')[0];
+							_uiTime = _eachItem['date'].split(', ')[1];
+							_eachItem['uiDate'] = _uiDate;
+							_eachItem['uiTime'] = _uiTime;
+						};
+					};
+
 					// since this tr won't have any (figurative) childs
 					if ( !_customItems.length ) {
 						_eachItem.trCls = 'row-break';
@@ -522,13 +536,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_retResult.push( _customItems[m] );
 					};
 				};
+
+				// dont remove yet
+				console.log( 'API reponse changed as follows: ');
+				console.log( _retResult );
 			} else {
 				_retResult = apiResponse;
 			};
-
-			// dont remove
-			console.log( 'API reponse changed as follows: ');
-			console.log( _retResult );
 
 			return _retResult;
 		};
