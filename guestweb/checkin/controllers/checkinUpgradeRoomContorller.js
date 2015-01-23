@@ -60,7 +60,12 @@
   }
 
   $scope.noThanksClicked = function(){
-    $state.go('checkinKeys');
+    if($rootScope.isAutoCheckinOn){
+      $state.go('checkinArrival');
+    }
+    else{
+       $state.go('checkinKeys');
+    }
   };
 
 }

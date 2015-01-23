@@ -11,12 +11,16 @@
 	<form method="post" id="forget_pswd" ng-submit="submit()" class="form forget_pswd" accept-charset="UTF-8" novalidate>
 		
 		<div class="entry float">
-			<label for="password">Password</label>
-			<input type="password" ng-model="data.password" placeholder="Enter your password" name="password" id="password" class="r5 password">
+			<label for="password">Current Password</label>
+			<input type="password" ng-model="data.current_password" placeholder="Enter your current password" class="r5 password">
 		</div>
 		<div class="entry float">
-			<label for="password">Confirm Password</label>
-			<input type="password" ng-model="data.password_confirmation"  placeholder="Enter your password" name="password_confirmation" id="password" class="r5 password">
+			<label for="password">New Password</label>
+			<input type="password" ng-model="data.password" placeholder="Enter new password" name="password" id="password" class="r5 password">
+		</div>
+		<div class="entry float">
+			<label for="password">Confirm New Password</label>
+			<input type="password" ng-model="data.password_confirmation"  placeholder="Re-enter new password" name="password_confirmation" id="password" class="r5 password">
 		</div>
 		<div class="entry float">
 			<button value="login" type="submit" name="commit" class="button r5 green">

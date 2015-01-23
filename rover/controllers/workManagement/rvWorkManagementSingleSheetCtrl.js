@@ -140,18 +140,28 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				$scope.setHeading("Work Sheet No." + data.work_sheets[0].work_sheet_id + ", " + $filter('date')($stateParams.date, $rootScope.dateFormat));
 
 				$scope.singleState.unassigned = data.unassigned;
-				var assignedRooms = [],
-					worksheets = _.where(data.work_sheets, {
-						work_sheet_id: parseInt($stateParams.id)
-					});
+				
+				// var assignedRooms = [],
+				// 	worksheets = _.where(data.work_sheets, {
+				// 		work_sheet_id: parseInt($stateParams.id)
+				// 	});
 
-				if (worksheets.length > 0) {
-					_.each(worksheets[0].work_assignments, function(room) {
-						assignedRooms.push(room.room);
-					});
-				}
+				// if (worksheets.length > 0) {
+				// 	_.each(worksheets[0].work_assignments, function(room) {
+				// 		assignedRooms.push(room.room);
+				// 	});
+				// }
 
+				// we are gonna just gonna assign
+				// the assigned rooms avail here
+				// "data.work_sheets[0].work_assignments"
+				// no more checking for worksheet id
+				var assignedRooms = [];
+				_.each(data.work_sheets[0].work_assignments, function(room) {
+					assignedRooms.push(room.room);
+				});
 				$scope.singleState.assigned = assignedRooms;
+
 				$scope.filterUnassigned();
 				summarizeAssignment();
 				refreshView();
@@ -374,6 +384,16 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					};
 				});
 			} else {
+				_.each(worktypesSet, function(set, key) {
+				$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
+							"date"        : $stateParams.date,
+							"task_id"     : parseInt(key),							
+							"assignments" : [{								
+								"assignee_id"   : userId,
+								"room_ids"      : [],								
+							}]
+						}, onSaveSuccess, onSaveFailure);
+				});
 				afterAPIcall();
 			};
 		};

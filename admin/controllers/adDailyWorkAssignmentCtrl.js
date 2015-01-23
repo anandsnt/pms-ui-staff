@@ -275,6 +275,39 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		additionalAPIs();
 
+		var initateRoomTaskTimes = function(time, tasktimes) {
+			var initialTime = {};
+			_.each($scope.roomTypesList, function(room) {
+				if (tasktimes && tasktimes[room.id] == null) {
+					initialTime[room.id] = {
+						hours: '',
+						mins: ''
+					}
+				} else {
+					var currTime = tasktimes && tasktimes[room.id] || time;
+					initialTime[room.id] = {
+						hours: !!currTime ? currTime.split(':')[0] : '',
+						mins: !!currTime ? currTime.split(':')[1] : ''
+					};
+				}
+			})
+			return initialTime;
+		}
+
+		var getRoomTaskTimes = function() {
+			var times = {};
+			_.each($scope.roomTypesList, function(room) {
+				if ($scope.eachTaskList.room_type_ids.indexOf(room.id) > -1) {
+					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
+						times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
+					} else {
+						times[room.id] = '';
+					}
+				}
+			});
+			return times;
+		}
+
 		var resetEachTaskList = function() {
 			$scope.eachTaskList = {
 				name: '',
@@ -284,16 +317,30 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: [],
 				is_occupied: '',
 				is_vacant: '',
-				hours: '00',
-				mins: '00',
-				task_completion_hk_status_id: ''
+				hours: '',
+				mins: '',
+				task_completion_hk_status_id: '',
+				rooms_task_completion: initateRoomTaskTimes()
 			};
 		};
 		resetEachTaskList();
 
 		$scope.taskListForm = 'add';
 
+		$scope.updateIndividualTimes = function() {
+			_.each($scope.roomTypesList, function(room) {
+				if ($scope.eachTaskList.rooms_task_completion[room.id].hours == '') {
+					$scope.eachTaskList.rooms_task_completion[room.id].hours = $scope.eachTaskList.hours;
+				}
+				if ($scope.eachTaskList.rooms_task_completion[room.id].mins == '') {
+					$scope.eachTaskList.rooms_task_completion[room.id].mins = $scope.eachTaskList.mins;
+				}
+			})
+		}
+
+
 		$scope.openTaskListForm = function(typeIndex) {
+
 			if (typeIndex == 'new') {
 				$scope.taskListForm = 'add';
 				$scope.taskListClickedElement = 'new';
@@ -305,7 +352,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			} else {
 				$scope.taskListForm = 'edit';
 				$scope.taskListClickedElement = typeIndex;
-
 				var time = this.item.completion_time;
 				$scope.eachTaskList = {
 					name: this.item.name,
@@ -318,7 +364,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					hours: !!time ? time.split(':')[0] : '',
 					mins: !!time ? time.split(':')[1] : '',
 					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
-					id: this.item.id
+					id: this.item.id,
+					rooms_task_completion: initateRoomTaskTimes(time, this.item.room_types_completion_time)
 				};
 			}
 		};
@@ -365,7 +412,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
 				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
-				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id
+				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
+				rooms_task_completion: getRoomTaskTimes()
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postTaskListItem, params, callback);
@@ -393,7 +441,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
-				id: $scope.eachTaskList.id
+				id: $scope.eachTaskList.id,
+				rooms_task_completion: getRoomTaskTimes()
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);

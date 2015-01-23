@@ -271,8 +271,12 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 
-			$scope.refreshScroller('stay-dates-calendar');
-		}
+			setTimeout(function(){
+				$scope.refreshScroller('stay-dates-calendar');
+			}, 1500);
+				
+				
+		};
 
 		//Drag and drop handler for drag and drop to an external calendar
 		dateDroppedToExternalCalendar = function(event, jsEvent, ui) {

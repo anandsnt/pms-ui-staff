@@ -48,13 +48,14 @@
             <div class="notice deposit" ng-hide="showCCPage || depositInProcess || depositPaidSuccesFully">
                 <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
                 <div class="entry full-width" ng-class="{'amount': isShowFees()}">
-                    <label for="amount">Amount to pay (<span>$</span>)</label>
-                    <!--     <input name="amount" id="amount" value="{value}" type="text" /> -->
-                    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!isDepositEditable" />
-                    <!-- Use only when fee exsists -->
-                    <span ng-show="isShowFees()" class="fee">
-                        + {{currencySymbol}}{{feeData.calculatedFee}} fee
-                    </span> 
+                    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
+                    
+                    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!isDepositEditable"  class="amount"/>
+
+                    <span ng-show="isShowFees()" class="delimiter">+</span> 
+                    <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(reservationData.depositAmount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
+                    <span ng-show="isShowFees()" class="delimiter">fee</span>
+
                     <span ng-show="isShowFees()" class="total">
                         Total:
                         <strong id="total-deposit-amount">
@@ -63,7 +64,7 @@
                     </span>
                 </div>
                 <!-- Reference field - use only when it exsits -->
-                <div class="entry full-width reference" ng-show="checkReferencetextAvailable()">
+                <div class="entry full-width reference" ng-show="isDisplayReference">
                     <label for="reference">Reference</label>
                     <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
                 </div>
