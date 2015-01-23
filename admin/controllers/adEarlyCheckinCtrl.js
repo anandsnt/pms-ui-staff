@@ -86,7 +86,7 @@ $scope.setUpUpsellWindowData = function () {
          upsellWindow.hours = item.start_time == ""? "" : item.start_time.substring(0, 2);
          upsellWindow.minutes = item.start_time == ""? "" : item.start_time.substring(3, 5);
          upsellWindow.meridiem = item.start_time == ""? "AM" : item.start_time.substring(6);
-         upsellWindow.addon_id = item.addon_id;    
+         upsellWindow.addon_id = item.addon_id == null? "" : item.addon_id;    
          upsellWindow.charge = item.charge;
          $scope.upsellWindows.push(upsellWindow);
   });
@@ -176,12 +176,12 @@ $scope.validateUpsellWindowTime = function(){
 
   if(time_window1 >= time_window2){
     
-          $scope.errorMessage = ["The time for upsell window-1 should be less than time for upsell window-2"];
+          $scope.fetchedFailed(["The time for upsell window-1 should be less than time for upsell window-2"]);
           return false;
   }
   else if(time_window2 >= time_window3){
     
-          $scope.errorMessage = $scope.errorMessage = ["The time for upsell window-2 should be less than time for upsell window-3"];
+          $scope.fetchedFailed(["The time for upsell window-2 should be less than time for upsell window-3"]);
           return false;
   }
   else
@@ -220,7 +220,7 @@ $scope.saveClick = function(){
     // had to ovveride default error handler for custom actions.
    	var upsellEarlyCheckinSaveFailureCallback =  function(errorMessage) {
       $scope.$emit('hideLoader');
-      $scope.errorMessage = errorMessage;       	
+      $scope.fetchedFailed(errorMessage);       	
    	};
    	$scope.invokeApi(adUpsellEarlyCheckinService.update,$scope.upsellData,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
      
