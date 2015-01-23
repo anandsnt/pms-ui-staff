@@ -19,7 +19,7 @@ var GridRowItemDrag = React.createClass({
 	},
 	__onMouseDown: function(e) {
 		var page_offset, el, props = this.props, state = this.state, display = props.display;
-		
+
 		e.stopPropagation();
 		e.preventDefault();			
 		if(e.button === 0) {
@@ -29,9 +29,16 @@ var GridRowItemDrag = React.createClass({
 			page_offset = this.getDOMNode().getBoundingClientRect();
 			
 			el = props.viewport.element();
-			var left = (((page_offset.left-props.display.x_0 - props.iscroll.grid.x)) / display.px_per_int).toFixed() * display.px_per_int;
-			console.log('mouse down: ' + (page_offset.left  - el.offset().left - el.parent()[0].scrollLeft) + ", left: " + left);
+			var left = (((page_offset.left-props.display.x_0 - props.iscroll.grid.x)) / display.px_per_int).toFixed() * display.px_per_int,
+				viewport 	= props.viewport.element(),
+				xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left;
 			
+
+			this.__x_diff_left_pagex = left - xCurPos;
+			this.__lastXDiff = 0;						
+			this.__lastYDiff = 0;
+			var	starting_ColNumber	= Math.floor((xCurPos + this.__x_diff_left_pagex) / display.px_per_int);
+
 			this.setState({
 				//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
 				left: left,
@@ -44,7 +51,8 @@ var GridRowItemDrag = React.createClass({
 				offset_x: el.offset().left + props.iscroll.grid.x,
 				offset_y: el.offset().top + props.iscroll.grid.y,
 				element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
-				element_y: page_offset.top
+				element_y: page_offset.top,
+				starting_ColNumber: starting_ColNumber,
 			},
 			function() {
 				props.iscroll.grid.disable();
@@ -56,7 +64,6 @@ var GridRowItemDrag = React.createClass({
 	__onMouseMove: function(e) {
 		e.stopPropagation();
 		e.preventDefault();
-
 		var state 		= this.state,
 			props 		= this.props,
 			viewport 	= props.viewport.element(),
@@ -69,9 +76,10 @@ var GridRowItemDrag = React.createClass({
 			adj_height 	= display.row_height + display.row_height_margin,
 			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			fifteenMin	= 900000,
-			colNumber	= Math.floor(xCurPos / display.px_per_int),
+			colNumber	= Math.floor((xCurPos + this.__x_diff_left_pagex) / display.px_per_int),
 			rowNumber 	= Math.floor(yCurPos / adj_height),
 			model;		
+
 
 		if(!props.edit.active && !props.edit.passive){
 			return;
@@ -81,13 +89,15 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
-		if(props.currentDragItem.reservation_status !== 'check-in'){
+		if(props.currentDragItem.reservation_status !== 'check-in'  && 
+			props.currentDragItem.reservation_status !== 'inhouse'){
 			return;
 		}
 
 		if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){
 			return;
 		}
+
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
 
@@ -107,11 +117,16 @@ var GridRowItemDrag = React.createClass({
 	 		0 : None
 	 		1 : Right
 	 		2 : Left
+	 		3 : Bottom
+	 		4 : Top
 	 		*/
-	 		var scroll_beyond_edge = 0, width_of_res;
-	 		width_of_res = (model.departure - model.arrival) * display.px_per_ms;
+	 		var scroll_beyond_edge  = 0, 
+	 			width_of_res        = (model.departure - model.arrival) * display.px_per_ms,
+	 			draggingTopOrBottom = false;
+			
 			//towards right
 			if(e.pageX > state.origin_x) {
+				draggingTopOrBottom = false
 				if((e.pageX + width_of_res) > window.innerWidth && (display.x_p - model.departure) > 0) {
 					if((xScPos - width_of_res) < scroller.maxScrollX) {
 						xScPos = scroller.maxScrollX;
@@ -125,6 +140,7 @@ var GridRowItemDrag = React.createClass({
 
 			//towards left
 			else if(e.pageX < state.origin_x) {
+				draggingTopOrBottom = false
 				if((e.pageX - width_of_res) < viewport.offset().left && (model.arrival - display.x_n) > 0) {
 					if((xScPos + width_of_res) < 0) {
 						xScPos = 0;
@@ -138,6 +154,7 @@ var GridRowItemDrag = React.createClass({
 			
 			//towards bottom
 			if(e.pageY > state.origin_y) {
+				draggingTopOrBottom = true;
 				if((e.pageY + display.row_height) > window.innerHeight) {
 					if((yScPos - display.row_height) < scroller.maxScrollY) {
 						yScPos = scroller.maxScrollY;
@@ -150,7 +167,7 @@ var GridRowItemDrag = React.createClass({
 			}
 			//towards top
 			else if(e.pageY < state.origin_y) {
-
+				draggingTopOrBottom = true;
 				if((e.pageY - display.row_height) < viewport.offset().top) {
 					if((yScPos + display.row_height) >= 0) {
 						yScPos = 0;
@@ -165,6 +182,21 @@ var GridRowItemDrag = React.createClass({
 					scroll_beyond_edge = 4;
 				}
 			}
+
+			this.__lastXDiff = Math.abs(e.pageX - this.__lastXDiff);						
+			this.__lastYDiff = Math.abs(e.pageY - this.__lastYDiff);
+			
+			//on dragging down or top continueslly there may be some fluctations in the mouse pointer
+			// which will lead to 'Shaky' UI. To remove that
+			if (this.__lastXDiff < this.__lastYDiff &&
+				draggingTopOrBottom &&				
+				(Math.abs(state.starting_ColNumber - colNumber) <= 4)){				
+				colNumber = state.starting_ColNumber;
+			}
+
+			this.__lastXDiff = e.pageX;
+			this.__lastYDiff = e.pageY;
+
 			if(scroller.maxScrollX <= xScPos &&  xScPos <= 0 &&  
 				scroller.maxScrollY <= yScPos && yScPos <= 0) {
 				
@@ -185,12 +217,13 @@ var GridRowItemDrag = React.createClass({
 
 	 		if(rowNumber > (display.total_rows - 1) ) {
 	 			rowNumber = (display.total_rows - 1);
-	 		}	 		
-			var cLeft = colNumber * display.px_per_int, top = rowNumber * (display.row_height) + display.row_height_margin;
+	 		}	 	 		
 
-			var cFactor = (state.element_x + delta_x);
-			var left = cFactor = cLeft;
-			//var left = ((cFactor) / display.px_per_int).toFixed() * display.px_per_int;
+			var cLeft = colNumber * display.px_per_int, 
+				left, cFactor,
+				top = rowNumber * (display.row_height) + display.row_height_margin;
+			
+			left = cFactor = cLeft;			
 		
 			if (scroll_beyond_edge === 1){
 				left = cLeft - display.px_per_hr;
@@ -204,9 +237,19 @@ var GridRowItemDrag = React.createClass({
 			var commonFactor= ((((cFactor) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
 				newArrival  = (commonFactor * fifteenMin);			
 			
-			var diff = newArrival - model.arrival;			
-			model.arrival = newArrival;
-			model.departure = model.departure + diff;
+			var diff = newArrival - model.arrival;		
+
+			var state_to_set = {			
+                top: top                                                        			
+            };			
+            if(props.currentDragItem.reservation_status == 'inhouse'){			
+                state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int;                
+            }			
+            else {			
+	            state_to_set.left = left;			
+	            model.arrival = newArrival;
+	            model.departure = model.departure + diff;
+            }                  
 
 			this.setState({
 				currentResizeItem: 	model,
@@ -214,13 +257,7 @@ var GridRowItemDrag = React.createClass({
 			}, function() {
 				props.__onResizeCommand(model);
 			});			
-			console.log('mouse move: ' + left);
-			this.setState({
-				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
-				left: left, 
-				//top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
-				top: top
-			});
+			this.setState(state_to_set);
 		}
 	},
 	__onMouseUp: function(e) {
