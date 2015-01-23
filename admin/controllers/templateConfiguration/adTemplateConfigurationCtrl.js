@@ -56,6 +56,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 	
 	$scope.updateTemplateConfiguration = function(){
 		var updateHotelConfigurationSuccessCallback = function(){
+			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
  			$scope.isAddmode = false;
  			$scope.isEditmode = false;

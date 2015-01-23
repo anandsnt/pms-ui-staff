@@ -8,10 +8,10 @@
 			</div>
 			<fieldset class="holder left float full-width">
 				<div class="entry full-width">
-					<label for="hotel-chain"> Hotel Chain <strong>*</strong> </label>
+					<label for="hotel-chain"> Hotel Theme  </label>
 					<div class="select">
 						<select name="hotel-chain" id="hotel-chain" class="placeholder" ng-model="hotelConfig.theme">
-							<option value=''>Hotel Chain</option>
+							<option value=''>Hotel Theme</option>
 							<option value="{{theme.id}}" ng-repeat="theme in hotelConfig.themes" ng-selected="theme.id == hotelConfig.existing_email_template_theme"> {{theme.name}} </option>
 						</select>
 					</div>
