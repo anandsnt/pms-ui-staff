@@ -6,15 +6,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 	'$filter',
 	'RVHkRoomDetailsSrv',
 	'ngDialog',
-	function(
-		$scope,
-		$rootScope,
-		$state,
-		$stateParams,
-		$filter,
-		RVHkRoomDetailsSrv,
-		ngDialog
-	) {
+	function($scope, $rootScope, $state, $stateParams, $filter, RVHkRoomDetailsSrv, ngDialog) {
+
 		BaseCtrl.call(this, $scope);
 
 		// scroll
@@ -23,11 +16,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			preventDefault: false
 		});
 
-
-
 		/* ***** ***** ***** ***** ***** */
-
-
 
 		// keep ref to room details in local scope
 		$scope.roomDetails = $scope.$parent.roomDetails;
@@ -71,15 +60,18 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		//CICO-12520
 		/**
-		 * This object would contain the service status of the room in the view 
+		 * This object would contain the service status of the room in the view
 		 * @type {Object}
 		 */
-		$scope.service_status = {}
 
+		$scope.serviceStatus = {};
 
 
 		/* ***** ***** ***** ***** ***** */
 
+		$scope.setClass = function(day) {
+			return [true, ($scope.serviceStatus[$filter('date')(tzIndependentDate(day), 'yyyy-MM-dd')] && $scope.serviceStatus[$filter('date')(tzIndependentDate(day), 'yyyy-MM-dd')].id > 1 ? 'room-out' : '')];
+		}
 
 
 		// fetch callback of saved oo/os details
@@ -114,7 +106,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			var item = _.find($scope.allServiceStatus, function(item) {
 				return item.id == $_originalStatusId;
 			});
-			$scope.ooOsTitle = item.description;
+
+			// $scope.ooOsTitle = item.description;
 
 			// check and update if room in service
 			$scope.inService = $scope.updateService.room_service_status_id != $_inServiceId ? false : true;
@@ -122,7 +115,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			// if not in service, go fetch the oo/os saved details
 			if (!$scope.inService) {
 				$scope.invokeApi(RVHkRoomDetailsSrv.getRoomServiceStatus, {
-					roomId: $scope.roomDetails.id
+					room_id: $scope.roomDetails.id,
+					from_date: $scope.updateService.selected_date,
+					to_date: $scope.updateService.selected_date
 				}, $_fetchSavedStausCallback);
 			} else {
 				$scope.refreshScroller('room-tab-scroll');
@@ -171,7 +166,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 					// fetch and show the saved details
 					$scope.showForm = false;
 					$scope.invokeApi(RVHkRoomDetailsSrv.getRoomServiceStatus, {
-						roomId: $scope.roomDetails.id
+						room_id: $scope.roomDetails.id,
+						from_date: $scope.updateService.selected_date,
+						to_date: $scope.updateService.selected_date
 					}, $_fetchSavedStausCallback);
 				}
 			} else {
@@ -181,8 +178,10 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
 
 				var _params = {
-					roomId: $scope.roomDetails.id,
-					inServiceID: 1
+					room_id: $scope.roomDetails.id,
+					inServiceID: 1,
+					from_date: $scope.updateService.selected_date,
+					to_date: $scope.updateService.selected_date
 				};
 
 				var _callback = function() {
@@ -239,15 +238,17 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
 				$scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.updateService.from_date), $rootScope.dateFormat);
 			},
-			beforeShowDay: function() {
-				return [true, 'newClass', 'Sam Rocks'];
+			beforeShowDay: $scope.setClass,
+			onChangeMonthYear: function(year, month, instance) {
+				$scope.updateCalendar(year, month);
 			}
 		}, datePickerCommon);
 
 		$scope.untilDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			beforeShowDay: function() {
-				return [true, 'newClass', 'Sam Rocks'];
+			beforeShowDay: $scope.setClass,
+			onChangeMonthYear: function(year, month, instance) {
+				$scope.updateCalendar(year, month);
 			}
 		}, datePickerCommon);
 
@@ -317,10 +318,16 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		};
 
 		$scope.showCalendar = function(controller) {
-			var params = {};
+			var params = {
+				year: tzIndependentDate($scope.updateService.selected_date).getFullYear(),
+				month: tzIndependentDate($scope.updateService.selected_date).getMonth(),
+				room_id: $scope.roomDetails.id
+			};
 
 			function onFetchSuccess(data) {
-				console.log(data);
+
+				$scope.serviceStatus = data.service_status;
+
 				ngDialog.open({
 					template: '/assets/partials/housekeeping/rvHkServiceStatusDateSelector.html',
 					controller: controller,
@@ -328,6 +335,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 					closeByDocument: true,
 					scope: $scope
 				});
+
 				$scope.$emit('hideLoader');
 			}
 
@@ -336,11 +344,49 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			}
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.fetchRoomStatus, params, onFetchSuccess, onFetchFailure);
-
 		}
+
+		$scope.updateCalendar = function(year, month) {
+			function onFetchSuccess(data) {
+				angular.extend($scope.serviceStatus, data.service_status);
+				$('.ngmodal-uidate-wrap').datepicker('refresh');
+				$scope.$emit('hideLoader');
+			}
+
+			function onFetchFailure() {
+				$scope.$emit('hideLoader');
+			}
+
+			$scope.invokeApi(RVHkRoomDetailsSrv.fetchRoomStatus, {
+				year: year || tzIndependentDate($scope.updateService.selected_date).getFullYear(),
+				month: month || tzIndependentDate($scope.updateService.selected_date).getMonth(),
+				room_id: $scope.roomDetails.id
+			}, onFetchSuccess, onFetchFailure);
+		}
+
+		$scope.$watch("updateService.selected_date", function() {
+			if ($scope.updateService.room_service_status_id > 1) {
+				$scope.showSaved = false;
+				$scope.showForm = true;
+			} else {
+				$scope.showForm = false;
+				showSaved = false;
+			}
+		})
+
 
 		$scope.onViewDateChanged = function() {
-			console.log('DatePicked');
+			$scope.updateService.room_service_status_id = $scope.serviceStatus[$scope.updateService.selected_date].id;
+			// The $_originalStatusId flag is used to make sure that the same change is not sent back to the server -- to many flags whew...
+			$_originalStatusId = $scope.updateService.room_service_status_id;
+
+			$scope.updateService.from_date = $scope.updateService.selected_date;
+			$scope.updateService.to_date = $scope.updateService.selected_date;
+			var item = _.find($scope.allServiceStatus, function(item) {
+				return item.id == $scope.updateService.room_service_status_id;
+			});
+			$scope.ooOsTitle = item.description;
 		}
+
 	}
 ]);

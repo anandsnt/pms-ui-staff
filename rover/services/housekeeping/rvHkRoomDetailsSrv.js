@@ -3,7 +3,8 @@ sntRover.service('RVHkRoomDetailsSrv', [
 	'$q',
 	'rvBaseWebSrvV2',
 	'$window',
-	function($http, $q, rvBaseWebSrvV2, $window) {
+	'$filter',
+	function($http, $q, rvBaseWebSrvV2, $window, $filter) {
 
 		this.roomDetails = {};
 
@@ -104,9 +105,9 @@ sntRover.service('RVHkRoomDetailsSrv', [
 		// fetch oo/os details from server
 		this.getRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/room_services/' + params.roomId;
+				url = 'api/room_services/' + params.room_id;
 
-			rvBaseWebSrvV2.getJSON(url)
+			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
@@ -149,9 +150,11 @@ sntRover.service('RVHkRoomDetailsSrv', [
 		// save the room back to in sevice
 		this.putRoomInService = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/room_services/' + params.roomId,
+				url = 'api/room_services/' + params.room_id,
 				options = {
-					"room_service_status_id": params.inServiceID
+					"room_service_status_id": params.inServiceID,
+					"from_date": params.from_date,
+					"to_date": params.to_date
 				}
 
 			rvBaseWebSrvV2.putJSON(url, options)
@@ -201,32 +204,19 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
-
 		//CICO-12520 Room service status
 		this.fetchRoomStatus = function(params) {
+			var queryString = {
+				from_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month - 1, 1)), 'yyyy-MM-dd'),
+				to_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month + 1, 1)), 'yyyy-MM-dd'),
+				room_id: params.room_id
+			}
 			var deferred = $q.defer(),
-				url = 'api/work_types';
-			rvBaseWebSrvV2.getJSON(url, params)
+				url = 'http://localhost:3000/api/room_services/service_info.json?';
+			rvBaseWebSrvV2.getJSON(url, queryString)
 				.then(function(data) {
 					deferred.resolve({
-						service_status: {
-							'2015-01-15': {
-								id: 1,
-								value: 'IN_SERVICE'
-							},
-							'2015-01-16': {
-								id: 3,
-								value: 'OUT_OF_ORDER'
-							},
-							'2015-01-17': {
-								id: 3,
-								value: 'OUT_OF_SERVICE'
-							},
-							'2015-01-18': {
-								id: 1,
-								value: 'IN_SERVICE'
-							}
-						}
+						service_status: data.service_status
 					});
 				}.bind(this), function(data) {
 					deferred.reject(data);
