@@ -140,13 +140,16 @@ var GridRowItemDrag = React.createClass({
 
 			//towards left
 			else if(e.pageX < state.origin_x) {
-				draggingTopOrBottom = false
-				if((e.pageX - width_of_res) < viewport.offset().left) {
-					if((xScPos + width_of_res) > 0) {
+				draggingTopOrBottom = false;
+				var page_offset = this.getDOMNode().getBoundingClientRect();
+				var diffX_left = e.pageX - page_offset.left;
+				//console.log('diffX_left+ display.px_per_hr: ' + diffX_left + display.px_per_hr + " viewport.offset().left: "+ viewport.offset().left);
+				if((diffX_left + display.px_per_hr) < viewport.offset().left) {
+					if((xScPos + display.px_per_hr) > 0) {
 						xScPos = 0;
 					}
 					else{
-						xScPos +=  width_of_res;
+						xScPos +=  display.px_per_hr;
 					}
 					scroll_beyond_edge = 2;
 				}
