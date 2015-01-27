@@ -880,9 +880,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					    "no_post" : ($scope.roomChargeEnabled == "") ? "": !$scope.roomChargeEnabled	
 					};
 	 		    }
-console.log("---------------");
-	 		    console.log(data)
-				//$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
+
+				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
 			
 			}
 		}
