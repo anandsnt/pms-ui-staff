@@ -144,11 +144,11 @@ var GridRowItemDrag = React.createClass({
 				var diffX_left = e.pageX - page_offset.left;
 				//console.log('diffX_left+ display.px_per_hr: ' + diffX_left + display.px_per_hr + " viewport.offset().left: "+ viewport.offset().left);
 				if((diffX_left + display.px_per_hr) < viewport.offset().left) {
-					if((xScPos + display.px_per_hr) > 0) {
+					if((xScPos + width_of_res) > 0) {
 						xScPos = 0;
 					}
 					else{
-						xScPos +=  display.px_per_hr;
+						xScPos +=  width_of_res;
 					}
 					scroll_beyond_edge = 2;
 				}
@@ -193,6 +193,7 @@ var GridRowItemDrag = React.createClass({
 			if (this.__lastXDiff < this.__lastYDiff &&
 				draggingTopOrBottom &&				
 				(Math.abs(state.starting_ColNumber - colNumber) <= 4)){				
+				
 				colNumber = state.starting_ColNumber;
 			}
 
