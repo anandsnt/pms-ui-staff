@@ -80,7 +80,6 @@ var GridRowItemDrag = React.createClass({
 			rowNumber 	= Math.floor(yCurPos / adj_height),
 			model;		
 
-
 		if(!props.edit.active && !props.edit.passive){
 			return;
 		}

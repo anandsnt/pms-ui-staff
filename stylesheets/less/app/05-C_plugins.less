@@ -1660,10 +1660,9 @@
 			}
 
 			&.diary-move {
-				width: 840px;
+				width: 880px;
 
 				.message {
-
 					.red,
 					.green {
 						font-size: 36px;
@@ -1733,7 +1732,7 @@
 							&.room { width: 120px; }
 
 							&.price { 
-								width: 80px;
+								width: 120px;
 								border-right: 0; 
 
 								&.red { color: darken(@red, 15); }
@@ -1750,13 +1749,15 @@
 
 				.actions {
 					.button {
+						padding: 0;
 						margin-bottom: 10px;
 						.pull-left;
 						.calc-width(50, 10);
 
 						&.green { margin-left: 20px; }
 
-						&.blank {
+						&.blank,
+						&.clear {
 							margin: 0 auto;
 							float: none;
 							clear: both;
@@ -1764,6 +1765,8 @@
 						}
 					}
 				}
+
+				&.room-move { width: 580px; }
 			}
 
 			/* Billing information ***/
