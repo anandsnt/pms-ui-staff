@@ -77,7 +77,7 @@ sntRover
 
 
 	//adjuested property date time (rounded to next 15min slot time)
-	$scope.adj_property_date_time 	= util.correctTime(baseSearchData.businessDate, propertyTime);
+	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
 
 
 	/*--------------------------------------------------*/
