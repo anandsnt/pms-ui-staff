@@ -72,7 +72,9 @@
 						</label>
 
 					</div>
-
+					<div class="entry full-width">
+						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label = "{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder = ""></ad-textarea>
+					</div>
 
 					<div class="entry" ng-show="checkinData.checkin_action == 'sent_to_queue'">
 						<label>
@@ -251,9 +253,7 @@
 						</label>
 
 					</div>
-					<div class="entry full-width">
-						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label = "{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder = ""></ad-textarea>
-					</div>
+					
 					<div class="entry full-width">
 
 						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.emails" label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder = ""></ad-textarea>
