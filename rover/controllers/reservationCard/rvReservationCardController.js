@@ -51,6 +51,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					'guestId': data.guest_id,
 					'vip': $scope.data.vip
 				};
+				
 				$scope.$emit('guestCardUpdateData', contactInfoData);
 				$scope.$emit('hideLoader');
 				

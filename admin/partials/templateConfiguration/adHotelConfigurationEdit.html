@@ -1,0 +1,35 @@
+<div style="display: block;border-bottom:none" id="add-new" class="edit-data">
+	<div class="data-holder">
+		<!-- Edit Brands -->
+		<form name="edit-brand" method="post" id="edit-brand-details" data-brand-id="2" class="form inline-form float">
+			<div class="form-title">
+				<h3><span ng-show="isEditmode"> Edit </span> {{formTitle}} </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			<fieldset class="holder left float full-width">
+				<div class="entry full-width">
+					<label for="hotel-chain"> Hotel Theme  </label>
+					<div class="select">
+						<select name="hotel-chain" id="hotel-chain" class="placeholder" ng-model="hotelConfig.theme">
+							<option value=''>Hotel Theme</option>
+							<option value="{{theme.id}}" ng-repeat="theme in hotelConfig.themes" ng-selected="theme.id == hotelConfig.existing_email_template_theme"> {{theme.name}} </option>
+						</select>
+					</div>
+				</div>
+				<div class="entry full-width">
+					<div id="room-features" class="col2">
+						<ad-checkbox ng-repeat="template in hotelConfig.email_templates" ng-model="template.selected" is-checked="template.selected" label="{{template.title}}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
+					</div>
+				</div>
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="cancelClicked()">
+					Cancel
+				</button>
+				<button type="button" id="update" class="button green edit-data-inline" ng-click="updateTemplateConfiguration()">
+					Save changes
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

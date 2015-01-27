@@ -14,7 +14,8 @@ sntRover.controller('RVReportListCrl', [
             dateParts     = businessDate.match(/(\d+)/g),
             fromDate      = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
             untilDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
-            hasFauxSelect = false;
+            hasFauxSelect = false,
+            hasDisplaySelect= false;
 
         /**
         * inorder to refresh after list rendering
@@ -86,6 +87,17 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['showRemove']    = true;
                         break;
 
+                    case 'Booking Source & Market Report':
+                        reportList[i]['reportIconCls'] = 'icon-report icon-booking';
+                        reportList[i]['canRemoveDate'] = true;
+                        reportList[i]['showRemove']    = true;
+                        reportList[i]['hasSourceMarketFilter'] = true;
+                        break;
+
+                    case 'User Activity':
+                        reportList[i]['reportIconCls'] = 'icon-report icon-activity';
+						break;
+
                     default:
                         reportList[i]['reportIconCls'] = 'icon-report';
                         break;
@@ -105,11 +117,21 @@ sntRover.controller('RVReportListCrl', [
                         if ( reportList[i]['title'] == 'Cancelation & No Show' ) {
                             reportList[i]['hasDateFilter']['description'] = 'Arrival Date Range';
                         };
+
+                        // for 'Booking Source & Market Report' report the description should be 'Booked Date'
+                        if ( reportList[i]['title'] == 'Booking Source & Market Report' ) {
+                            reportList[i]['hasDateFilter']['description'] = 'Booked Date';
+                        };
                     };
 
                     // check for cancellation date filter and keep a ref to that item
                     if ( item.value === 'CANCELATION_DATE_RANGE' ) {
                         reportList[i]['hasCancelDateFilter'] = item;
+                    };
+
+                    // check for arrival date filter and keep a ref to that item (introduced in 'Booking Source & Market Report' filters)
+                    if ( item.value === 'ARRIVAL_DATE_RANGE' ) {
+                        reportList[i]['hasArrivalDateFilter'] = item;
                     };
 
                     // check for time filter and keep a ref to that item
@@ -135,10 +157,17 @@ sntRover.controller('RVReportListCrl', [
                         }];
                     };
 
-                    // check for user filter and keep a ref to that item
-                    if ( item.value === 'USER' ) {
-                        reportList[i]['hasUserFilter'] = item;
-                    };
+                    // // check for user filter and keep a ref to that item
+                    // if ( item.value === 'USER' ) {
+                    //     // currently only show users for 'User Activity' report
+                    //     if ( reportList[i].title == 'User Activity' ) {
+                    //         reportList[i]['hasUserFilter'] = item;
+                    //     }
+                    // };
+                    // currently only show users for 'User Activity' report
+                    if ( reportList[i].title == 'User Activity' ) {
+                        reportList[i]['hasUserFilter'] = true;
+                    }
 
                     // check for include notes filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_NOTES' ) {
@@ -151,6 +180,18 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasIncludeVip'] = item;
                         hasFauxSelect = true;
                     };
+
+                    // check for source and markets filter
+                    if ( item.value === 'INCLUDE_MARKET' ) {
+                        reportList[i]['hasMarket'] = item;
+                        hasDisplaySelect = true;
+                    };
+
+                    if ( item.value === 'INCLUDE_SOURCE' ) {
+                        reportList[i]['hasSource'] = item;
+                        hasDisplaySelect = true;
+                    };
+
 
                     // check for include cancelled filter and keep a ref to that item
                     if ( item.value === 'INCLUDE_CANCELED' ) {
@@ -167,12 +208,42 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasIncludeNoShow'] = item;
                         hasFauxSelect = true;
                     };
+
+                    // check for include no show filter and keep a ref to that item
+                    if ( item.value === 'SHOW_GUESTS' ) {
+                        reportList[i]['hasShowGuests'] = item;
+                   	}
+                    // SPL: for User login details
+                    // check for include rover users filter and keep a ref to that item
+                    if ( item.value === 'ROVER' ) {
+                        reportList[i]['hasIncludeRoverUsers'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // SPL: for User login details
+                    // check for include zest users filter and keep a ref to that item
+                    if ( item.value === 'ZEST' ) {
+                        reportList[i]['hasIncludeZestUsers'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // SPL: for User login details
+                    // check for include zest web users filter and keep a ref to that item
+                    if ( item.value === 'ZEST_WEB' ) {
+                        reportList[i]['hasIncludeZestWebUsers'] = item;
+                        hasFauxSelect = true;
+                    };
                 });
 
                 // NEW! faux select DS and logic
                 if ( hasFauxSelect ) {
                     reportList[i]['fauxSelectOpen'] = false;
                     reportList[i]['fauxTitle']      = 'Select';
+                };
+
+                if(hasDisplaySelect) {
+                    reportList[i]['selectDisplayOpen'] = false;
+                    reportList[i]['displayTitle']      = 'Select';
                 };
 
                 // sort by options
@@ -214,6 +285,17 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].sortByOptions[1] = nameSortBy;
                 };
 
+                // for User Activity report
+                // the colspans should be adjusted
+                // the sort descriptions should be update to design
+                //    THIS MUST NOT BE CHANGED IN BACKEND
+                if ( reportList[i].title == 'User Activity' ) {
+                    reportList[i].sortByOptions[0]['description'] = 'Date & Time';
+
+                    reportList[i].sortByOptions[0]['colspan'] = 2;
+                    reportList[i].sortByOptions[1]['colspan'] = 2;
+                };
+
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ( $rootScope.currentHotelData == 'Yotel London Heathrow' ) {
                     var sortDate = _.find(reportList[i].sortByOptions, function(item) {
@@ -232,8 +314,10 @@ sntRover.controller('RVReportListCrl', [
                     // set the from and untill dates
                     reportList[i].fromDate        = fromDate;
                     reportList[i].fromCancelDate  = fromDate;
+                    reportList[i].fromArrivalDate  = fromDate;
                     reportList[i].untilDate       = untilDate;
                     reportList[i].untilCancelDate = untilDate;
+                    reportList[i].untilArrivalDate = untilDate;
                 };
             };
 

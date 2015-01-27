@@ -18,8 +18,8 @@ var GridRowItemDrag = React.createClass({
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
 	},
 	__onMouseDown: function(e) {
-		var page_offset, el, props = this.props, state = this.state;
-		
+		var page_offset, el, props = this.props, state = this.state, display = props.display;
+
 		e.stopPropagation();
 		e.preventDefault();			
 		if(e.button === 0) {
@@ -29,10 +29,19 @@ var GridRowItemDrag = React.createClass({
 			page_offset = this.getDOMNode().getBoundingClientRect();
 			
 			el = props.viewport.element();
-
+			var left = (((page_offset.left-props.display.x_0 - props.iscroll.grid.x)) / display.px_per_int).toFixed() * display.px_per_int,
+				viewport 	= props.viewport.element(),
+				xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left;
 			
+
+			this.__x_diff_left_pagex = left - xCurPos;
+			this.__lastXDiff = 0;						
+			this.__lastYDiff = 0;
+			var	starting_ColNumber	= Math.floor((xCurPos + this.__x_diff_left_pagex) / display.px_per_int);
+
 			this.setState({
-				left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+				//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+				left: left,
 				top: page_offset.top - el.offset().top - el[0].scrollTop,
 				mouse_down: true,
 				selected: true,
@@ -42,7 +51,8 @@ var GridRowItemDrag = React.createClass({
 				offset_x: el.offset().left + props.iscroll.grid.x,
 				offset_y: el.offset().top + props.iscroll.grid.y,
 				element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
-				element_y: page_offset.top
+				element_y: page_offset.top,
+				starting_ColNumber: starting_ColNumber,
 			},
 			function() {
 				props.iscroll.grid.disable();
@@ -54,17 +64,22 @@ var GridRowItemDrag = React.createClass({
 	__onMouseMove: function(e) {
 		e.stopPropagation();
 		e.preventDefault();
-
 		var state 		= this.state,
 			props 		= this.props,
+			viewport 	= props.viewport.element(),
 			display 	= props.display,
 			px_per_ms 	= display.px_per_ms,
 			delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
-			delta_y 	= e.pageY - state.origin_y - state.offset_y, 
+			delta_y 	= e.pageY - state.origin_y - state.offset_y,
+			yCurPos 	= e.pageY - props.iscroll.grid.y - viewport.offset().top,
+			xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left, 
 			adj_height 	= display.row_height + display.row_height_margin,
 			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			fifteenMin	= 900000,
-			model;
+			colNumber	= Math.floor((xCurPos + this.__x_diff_left_pagex) / display.px_per_int),
+			rowNumber 	= Math.floor(yCurPos / adj_height),
+			model;		
+
 
 		if(!props.edit.active && !props.edit.passive){
 			return;
@@ -74,10 +89,10 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
-		if(props.currentDragItem.reservation_status !== 'check-in'){
+		if(props.currentDragItem.reservation_status !== 'check-in'  && 
+			props.currentDragItem.reservation_status !== 'inhouse'){
 			return;
-		}
-		
+		}		
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem); 
@@ -89,29 +104,165 @@ var GridRowItemDrag = React.createClass({
 				props.__onDragStart(props.row_data, model);
 			});
 		} else if(state.dragging) {	
-			model = (props.currentDragItem);
+			model = (props.currentDragItem),
+					scroller = props.iscroll.grid;
+			if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){				
+				return;
+			}					
 
-			var commonFactor= ((((state.element_x + delta_x) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
-				newArrival  = (commonFactor * fifteenMin);			
+	 		xScPos 	 = scroller.x;
+	 		yScPos	 = scroller.y;
+
+	 		/* sroll_beyond_edge : Possible values
+	 		0 : None
+	 		1 : Right
+	 		2 : Left
+	 		3 : Bottom
+	 		4 : Top
+	 		*/
+	 		var scroll_beyond_edge  = 0, 
+	 			width_of_res        = (model.departure - model.arrival) * display.px_per_ms,
+	 			draggingTopOrBottom = false;
 			
-			var diff = newArrival - model.arrival;			
-			model.arrival = newArrival;
-			model.departure = model.departure + diff;
+			//towards right
+			if(e.pageX > state.origin_x) {
+				draggingTopOrBottom = false
+				if((e.pageX + width_of_res) > window.innerWidth) {
+					if((xScPos - width_of_res) < scroller.maxScrollX) {
+						xScPos = scroller.maxScrollX;
+					}
+					else{
+						xScPos -=  width_of_res;
+					}					
+					scroll_beyond_edge = 1;
+				}
+			}
+
+			//towards left
+			else if(e.pageX < state.origin_x) {
+				draggingTopOrBottom = false
+				if((e.pageX - width_of_res) < viewport.offset().left) {
+					if((xScPos + width_of_res) > 0) {
+						xScPos = 0;
+					}
+					else{
+						xScPos +=  width_of_res;
+					}
+					scroll_beyond_edge = 2;
+				}
+			}
+			
+			//towards bottom
+			if(e.pageY > state.origin_y) {
+				draggingTopOrBottom = true;
+				if((e.pageY + display.row_height) > window.innerHeight) {
+					if((yScPos - display.row_height) < scroller.maxScrollY) {
+						yScPos = scroller.maxScrollY;
+					}
+					else{
+						yScPos -=  display.row_height;
+					}					
+					scroll_beyond_edge = 3;
+				}
+			}
+			//towards top
+			else if(e.pageY < state.origin_y) {
+				draggingTopOrBottom = true;
+				if((e.pageY - display.row_height) < viewport.offset().top) {
+					if((yScPos + display.row_height) >= 0) {
+						yScPos = 0;
+					}
+					else{						
+						yScPos +=  display.row_height;
+						if(e.pageY < viewport.offset().top ){
+							yScPos = 0;
+							rowNumber = 0;
+						}
+					}					
+					scroll_beyond_edge = 4;
+				}
+			}
+
+			this.__lastXDiff = Math.abs(e.pageX - this.__lastXDiff);						
+			this.__lastYDiff = Math.abs(e.pageY - this.__lastYDiff);
+			
+			//on dragging down or top continueslly there may be some fluctations in the mouse pointer
+			// which will lead to 'Shaky' UI. To remove that
+			if (this.__lastXDiff < this.__lastYDiff &&
+				draggingTopOrBottom &&				
+				(Math.abs(state.starting_ColNumber - colNumber) <= 4)){				
+				colNumber = state.starting_ColNumber;
+			}
+
+			this.__lastXDiff = e.pageX;
+			this.__lastYDiff = e.pageY;
+
+			if(scroller.maxScrollX <= xScPos &&  xScPos <= 0 &&  
+				scroller.maxScrollY <= yScPos && yScPos <= 0) {
+				
+				scroller.scrollTo(xScPos, yScPos, 0);				
+				//setTimeout(function(){
+					scroller._scrollFn();
+				//}, 50)
+			}
+	 		if(colNumber < 0) {
+	 			colNumber = 0;
+	 		}
+	 		if(colNumber / 4 > (display.hours - 1) ) {
+	 			colNumber = (display.hours - 1);
+	 		}
+	 		if(rowNumber < 0) {
+	 			rowNumber = 0;
+	 		}
+
+	 		if(rowNumber > (display.total_rows - 1) ) {
+	 			rowNumber = (display.total_rows - 1);
+	 		}	 	 		
+
+			var cLeft = colNumber * display.px_per_int, 
+				left, cFactor,
+				top = rowNumber * (display.row_height) + display.row_height_margin;
+			
+			left = cFactor = cLeft;			
+		
+			if (scroll_beyond_edge === 1){
+				left = cLeft - display.px_per_hr;
+				cFactor = left;
+			}
+			else if (scroll_beyond_edge === 2){
+				left = cLeft + display.px_per_hr - display.x_0;
+				cFactor = left;
+			}
+
+			var commonFactor= ((((cFactor) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
+				newArrival  = (commonFactor * fifteenMin);			
+
+			var diff = newArrival - model.arrival;		
+
+			var state_to_set = {			
+                top: top                                                        			
+            };			
+            if(props.currentDragItem.reservation_status == 'inhouse'){			
+                state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int;                
+            }			
+            else {			
+	            state_to_set.left = left;			
+	            model.arrival = newArrival;
+	            model.departure = model.departure + diff;
+            }               
 
 			this.setState({
 				currentResizeItem: 	model,
 				resizing: true			
 			}, function() {
 				props.__onResizeCommand(model);
-			});
-			this.setState({
-				//left: ((state.element_x + delta_x - state.offset_x) / display.px_per_int).toFixed() * display.px_per_int, 
-				left: (((state.element_x + delta_x)) / display.px_per_int).toFixed() * display.px_per_int, 
-				top: ((state.element_y + delta_y) / adj_height).toFixed() * adj_height
-			});
+			});	
+					
+			this.setState(state_to_set);
 		}
 	},
 	__onMouseUp: function(e) {
+		
 		var state = this.state, 
 			props = this.props,
 			item = this.state.currentDragItem,

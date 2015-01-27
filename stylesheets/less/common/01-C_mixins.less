@@ -367,6 +367,13 @@
 		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
 	}
 
+	.extend-height(@percentage, @pixels) {
+		height: -webkit-calc(~"@{percentage}% + @{pixels}px");
+		height: -moz-calc(~"@{percentage}% + @{pixels}px");
+		height: calc(~"@{percentage}% + @{pixels}px");
+		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+	}
+
 	#calc-position {
 		.left(@percentage, @pixels) {
 			left: -webkit-calc(~"@{percentage}% - @{pixels}px");

@@ -153,7 +153,19 @@
 "ADD_ICON_LABEL" : "Add icon",
 "ADD_IMAGE_LABEL" : "Add image"
 
-,
+,"EARLY_CHECKIN_UPSELL": "Early Checkin Upsell",
+"EARLY_CHECKIN" : "Early Checkin",
+"EARLY_CHECKIN_GENERAL": "GENERAL",
+"EARLY_CHECKIN_UPSELL_WINDOWS": "Early Checkin Upsell Windows",
+"EARLY_CHECKIN_START_TIME" : "Start Time",
+"EARLY_CHECKIN_CHARGE" : "Charge",
+"EARLY_CHECKIN_ADDON" : "Add On",
+"EARLY_CHECKIN_BY_RATE" : "Allow Early Checkin By Rate",
+"SELECT_RATE" : "Select Rate",
+"ADD_RATE": "Add Rate",
+"RATES": "Rates",
+"NUMBER_OF_EARLY_CHECKINS_PER_DAY" : "Number Of Early Checkin Upsells Per Day",
+"NUMBER_OF_EARLY_CHECKIN_UPSELLS_PER_DAY": "Number Of Early Checkin Upsells Per Day",
 
 
 "CHARGE_CODE":"Charge Code",
@@ -487,8 +499,19 @@
 	"CUSTOM_TEXT_PLACEHOLDER":"Add custom text, hotel name / address etc",
 	"CONFIRMATION_COMMUNICATION":"Confirmation Communications",
 	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL",
-	"LOCATION_IMAGE":"LOCATION IMAGE"
+	"LOCATION_IMAGE":"LOCATION IMAGE",
+	"CANCELLATION" : "Cancellation",
+	"COMMUNICATIONS" : "Communications",
+	"TITLE": "Title",
+	"ENTER_TITLE": "Enter Title",
+	"CANCELLATION_TEXT" : "Cancellation text",
+	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text"
 ,
+
+
+"TEMPLATE_CONFIGURATION":"Template Configuration",
+"SEND_CHECKOUT_EMAIL":"Send Checkout Email",
+"SEND_CHECKOUT_NOTIFICATON_EMAIL":"Sent check out notification email to all DUE OUT guests at",
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
