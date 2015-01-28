@@ -90,8 +90,8 @@ sntRover
 	    	showOn: 'button',
 	    	dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
-	    	minDate: minDate,
-	    	yearRange: '-0:'
+	    	//minDate: minDate,
+	    	//yearRange: '-0:'
 	    };
 
 	    _.extend($scope, payload);

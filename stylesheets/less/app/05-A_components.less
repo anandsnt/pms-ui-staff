@@ -12191,6 +12191,13 @@
                                 }
                             }
 
+                            &.no-show {
+                                color: rgba(255,255,255,.6);
+                                background: @grey3;
+
+                                &:after { .hide; }
+                            }
+
                             &.editing { 
                                 .gradient(@purpleStart, @purpleEnd); 
 
@@ -12199,6 +12206,8 @@
                                     #fade > .in();
                                     .icons > .icon-diary-edit-reservation();
                                 }
+
+                                &.no-show { color: @white; }
                             }
                         }
 
