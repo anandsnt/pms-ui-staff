@@ -94,7 +94,7 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasSourceMarketFilter'] = true;
                         break;
 
-                    case 'User Activity':
+                    case 'Login and out Activity':
                         reportList[i]['reportIconCls'] = 'icon-report icon-activity';
 						break;
 
@@ -159,13 +159,13 @@ sntRover.controller('RVReportListCrl', [
 
                     // // check for user filter and keep a ref to that item
                     // if ( item.value === 'USER' ) {
-                    //     // currently only show users for 'User Activity' report
-                    //     if ( reportList[i].title == 'User Activity' ) {
+                    //     // currently only show users for 'Login and out Activity' report
+                    //     if ( reportList[i].title == 'Login and out Activity' ) {
                     //         reportList[i]['hasUserFilter'] = item;
                     //     }
                     // };
-                    // currently only show users for 'User Activity' report
-                    if ( reportList[i].title == 'User Activity' ) {
+                    // currently only show users for 'Login and out Activity' report
+                    if ( reportList[i].title == 'Login and out Activity' ) {
                         reportList[i]['hasUserFilter'] = true;
                     }
 
@@ -285,11 +285,11 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].sortByOptions[1] = nameSortBy;
                 };
 
-                // for User Activity report
+                // for Login and out Activity report
                 // the colspans should be adjusted
                 // the sort descriptions should be update to design
                 //    THIS MUST NOT BE CHANGED IN BACKEND
-                if ( reportList[i].title == 'User Activity' ) {
+                if ( reportList[i].title == 'Login and out Activity' ) {
                     reportList[i].sortByOptions[0]['description'] = 'Date & Time';
 
                     reportList[i].sortByOptions[0]['colspan'] = 2;

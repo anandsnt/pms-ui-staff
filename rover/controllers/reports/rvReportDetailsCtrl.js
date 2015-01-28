@@ -61,7 +61,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasNoSorting = true;
 					break;
 
-				case 'User Activity':
+				case 'Login and out Activity':
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.isLogReport = true;
@@ -82,9 +82,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 5;
 					break;
 
-				case 'User Activity':
-					$scope.leftColSpan = 3;
-					$scope.rightColSpan = 2;
+				case 'Login and out Activity':
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
 					break;
 
 				case 'Web Check In Conversion':
@@ -242,7 +242,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvCancellationReport.html';
 					break;
 
-				case 'User Activity':
+				case 'Login and out Activity':
 					template = '/assets/partials/reports/rvUserActivityReport.html';
 					break;
 
@@ -481,7 +481,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.parsedApiFor == 'In-House Guests' ||
 					$scope.parsedApiFor == 'Departure' ||
 					$scope.parsedApiFor == 'Cancelation & No Show' ||
-					$scope.parsedApiFor == 'User Activity' ) {
+					$scope.parsedApiFor == 'Login and out Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					_eachItem    = angular.copy( apiResponse[i] );
@@ -547,8 +547,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 
-					// additional date time split for 'User Activity' report
-					if ( $scope.parsedApiFor == 'User Activity' ) {
+					// additional date time split for 'Login and out Activity' report
+					if ( $scope.parsedApiFor == 'Login and out Activity' ) {
 						if ( !!_eachItem['date'] ) {
 							_uiDate = _eachItem['date'].split(', ')[0];
 							_uiTime = _eachItem['date'].split(', ')[1];
@@ -570,14 +570,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
 					};
 
-					// check for invalid login for 'User activity' report 
+					// check for invalid login for 'Login and out Activity' report 
 					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID_LOGIN' ) {
 						_eachItem['action_type'] = 'INVALID LOGIN';
 						_eachItem.trCls = 'row-break invalid';
 					};
 
-					// check for no user name for 'User activity' report 
-					if ( !_eachItem['user_name'] ) {
+					// check for no user name for 'Login and out Activity' report 
+					if ( _eachItem.hasOwnProperty('user_name') && !_eachItem['user_name'] ) {
 						_eachItem['user_name'] = 'NA';
 					};
 
