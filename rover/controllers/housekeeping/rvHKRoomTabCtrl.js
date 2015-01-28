@@ -338,7 +338,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				ngDialog.open({
 					template: '/assets/partials/housekeeping/rvHkServiceStatusDateSelector.html',
 					controller: controller,
-					className: 'ngdialog-theme-default single-date-picker',					
+					className: 'ngdialog-theme-default single-date-picker',
 					scope: $scope
 				});
 
@@ -378,6 +378,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.showForm = false;
 				$scope.showSaved = false;
 			}
+			$scope.refreshScroller('room-tab-scroll');
 		})
 
 
@@ -392,6 +393,11 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				return item.id == $scope.updateService.room_service_status_id;
 			});
 			$scope.ooOsTitle = item.description;
+
+			if ($scope.updateService.room_service_status_id > 1) {
+				$scope.updateService.reason_id = $scope.serviceStatus[$scope.updateService.selected_date].reason_id;
+				$scope.updateService.comment = $scope.serviceStatus[$scope.updateService.selected_date].comments;
+			}
 		}
 
 	}
