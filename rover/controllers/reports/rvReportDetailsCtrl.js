@@ -47,7 +47,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.parsedApiFor = undefined;
 
 
-			switch( $scope.chosenReport.title ) {
+			switch ( $scope.chosenReport.title ) {
 				case 'In-House Guests':
 				case 'Departure':
 				case 'Arrival':
@@ -70,6 +70,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'Web Check In Conversion':
 				case 'Web Check Out Conversion':
 					$scope.isLargeReport = true;
+					break;
+			};
+
+
+			// hack to set the colspan for reports details tfoot
+			switch ( $scope.chosenReport.title ) {
+				case 'Check In / Check Out':
+				case 'Upsell':
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
+					break;
+
+				case 'User Activity':
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 2;
+					break;
+
+				case 'Web Check In Conversion':
+				case 'Web Check Out Conversion':
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
+					break;
+
+				default:
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 2;
 					break;
 			};
 
@@ -172,15 +198,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        };
 			    };
 			};
-
-
-			// hack to set the colspan for reports details tfoot - 'Check In / Check Out' or 'Upsell'
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 4 : 2;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
-
-			// hack to set the colspan for reports details tfoot - 'Web Check Out Conversion''
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.leftColSpan;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.rightColSpan;
 
 			// scroller refresh and reset position
 			refreshScroll();
@@ -554,8 +571,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 
 					// check for invalid login for 'User activity' report 
-					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID LOGIN' ) {
-						_eachItem.trCls = 'invalid';
+					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID_LOGIN' ) {
+						_eachItem['action_type'] = 'INVALID LOGIN';
+						_eachItem.trCls = 'row-break invalid';
+					};
+
+					// check for no user name for 'User activity' report 
+					if ( !_eachItem['user_name'] ) {
+						_eachItem['user_name'] = 'NA';
 					};
 
 					// push '_eachItem' into '_retResult'
