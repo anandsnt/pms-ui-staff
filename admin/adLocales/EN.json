@@ -275,7 +275,11 @@
 	"WORKSTATION": "Work Station",
 	"STATION_NAME": "Work Station Name",
 	"STATION_ID": "Work Station Id",
-	"WORKSTATIONS":"Work Stations"
+	"WORKSTATIONS":"Work Stations",
+	"LOCATION_LABEL": "Location",
+	"ECODER_ID_LABEL": "Encoder ID",
+	"ENCODER_ID_PLACEHOLDER": "Enter encoder id"
+
 ,
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)",
