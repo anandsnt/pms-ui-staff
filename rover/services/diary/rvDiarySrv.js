@@ -661,23 +661,43 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     return q.promise;
                 };
+                
+                //variables using for reservation transfer from one date to another
+                this.isReservationMovingFromOneDateToAnother = false;
+                this.movingReservationData = {
+                    reservation: undefined,
+                    room: undefined,
+                };
 
                 this.callOccupancyAndAvailabilityCount = function(start_date, end_date) {
                     var _data_Store     = this.data_Store,
                     time            = util.gridTimeComponents(start_date, 48);
                     q = $q.defer();
+                    var __this = this;
                     $q.all([
                             InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                             Room.read(),                            
                             Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
+                                console.log((data_array[2].reservations.length));
+                                if(__this.isReservationMovingFromOneDateToAnother) {
+                                    console.log('yes entered');
+                                    __this.movingReservationData.reservation.arrival_date  = tzIndependentDate(time.x_n).toComponents().date.toDateString();
+                                    __this.movingReservationData.reservation.departure_date  == tzIndependentDate(time.x_n + 900000).toComponents().date.toDateString();
+                                    __this.movingReservationData.reservation.arrival = time.x_n;
+                                    __this.movingReservationData.reservation.arrival = time.x_n + 900000;
+                                    console.log(__this.movingReservationData.reservation);
+                                    data_array[2].reservations.push(__this.movingReservationData.reservation)                                    
+                           
+                                }
+                                console.log(JSON.stringify(data_array[2].reservations.length));
                                 _.reduce([
                                       InActiveRoomSlots,
                                       Room,
                                       Occupancy, 
                                       AvailabilityCount], 
-                            function(memo, obj, idx) {  
+                            function(memo, obj, idx) { 
                                 obj.resolve(data_array[idx]);
                         }, data_array);
 
@@ -952,5 +972,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         return t_a + t_b + ms;
                     }
                 };
+
             }]);
                 //------------------------------------------------------------------

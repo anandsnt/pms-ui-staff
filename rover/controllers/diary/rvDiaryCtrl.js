@@ -77,7 +77,32 @@ sntRover
 	/*--------------------------------------------------*/
 	/*BEGIN CONFIGURATION 
 	/*--------------------------------------------------*/
-	/*DATE UI CONFIG*/
+	
+		/**
+		* function to execute on date selection
+		* if it is on edit mode will change the reservation to another date after calling the API
+		* other wise just switches the date
+		*/
+		var onDateSelectionFromDatepicker = function(date_string, date_obj) {
+			console.log($scope.gridProps.edit);
+			var isOnEditMode = $scope.gridProps.edit.active;
+
+			if (!isOnEditMode) {
+				return true;
+			}
+			else if (isOnEditMode) {
+				var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem);
+				var choosedRoom = util.copyRoom ($scope.gridProps.currentResizeItemRow);
+				
+				// setting the service variables for reservation transfrer
+				rvDiarySrv.isReservationMovingFromOneDateToAnother = true;
+				rvDiarySrv.movingReservationData.reservation = choosedReservation;
+				rvDiarySrv.movingReservationData.room = choosedRoom;
+
+			}
+		};
+
+		/*DATE UI CONFIG*/
 		var minDate = new tzIndependentDate($rootScope.businessDate);
 		minDate.setDate(minDate.getDate() - 1);
 		$scope.dateOptions = {
@@ -85,7 +110,8 @@ sntRover
 	    	dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
 	    	minDate: minDate,
-	    	yearRange: '-0:'
+	    	yearRange: '-0:',
+	    	onSelect: onDateSelectionFromDatepicker
 	    };
 
 	    _.extend($scope, payload);
