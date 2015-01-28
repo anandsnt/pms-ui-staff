@@ -206,7 +206,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		/* ***** ***** ***** ***** ***** */
 
-
+		$scope.closeDialog = function() {
+			ngDialog.close();
+		}
 
 		var datePickerCommon = {
 			dateFormat: $rootScope.jqDateFormat,
@@ -232,12 +234,16 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			}
 		};
 
+		var adjustDates = function() {
+			if (tzIndependentDate($scope.updateService.from_date) > tzIndependentDate($scope.updateService.to_date)) {
+				$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
+			}
+			$scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.updateService.from_date), $rootScope.dateFormat);
+		}
+
 		$scope.fromDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			onSelect: function(value) {
-				$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
-				$scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.updateService.from_date), $rootScope.dateFormat);
-			},
+			onSelect: adjustDates,
 			beforeShowDay: $scope.setClass,
 			onChangeMonthYear: function(year, month, instance) {
 				$scope.updateCalendar(year, month);
@@ -246,6 +252,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		$scope.untilDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: adjustDates,
 			beforeShowDay: $scope.setClass,
 			onChangeMonthYear: function(year, month, instance) {
 				$scope.updateCalendar(year, month);
@@ -331,8 +338,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				ngDialog.open({
 					template: '/assets/partials/housekeeping/rvHkServiceStatusDateSelector.html',
 					controller: controller,
-					className: 'ngdialog-theme-default single-date-picker',
-					closeByDocument: true,
+					className: 'ngdialog-theme-default single-date-picker',					
 					scope: $scope
 				});
 
@@ -370,7 +376,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.showForm = true;
 			} else {
 				$scope.showForm = false;
-				showSaved = false;
+				$scope.showSaved = false;
 			}
 		})
 

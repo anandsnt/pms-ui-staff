@@ -4,8 +4,7 @@ sntRover.controller('rvHkServiceStatusDateSelectorCtrl', ['$scope', '$rootScope'
 		$scope.setUpData = function() {
 			$scope.dateOptions = {
 				changeYear: true,
-				changeMonth: true,				
-				yearRange: "-100:+0",
+				changeMonth: true,
 				onSelect: function(dateText, inst) {
 					$scope.onViewDateChanged();
 					if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")])
@@ -14,11 +13,6 @@ sntRover.controller('rvHkServiceStatusDateSelectorCtrl', ['$scope', '$rootScope'
 				},
 				beforeShowDay: $scope.setClass,
 				onChangeMonthYear: function(year, month, instance) {
-					console.log({
-						year: year,
-						month: month,
-						instance: instance
-					});
 					$scope.updateCalendar(year, month);
 				}
 			}
