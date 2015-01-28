@@ -2866,8 +2866,7 @@
 
             .reservation-guests,
             .reservation-times { 
-                padding: 20px;
-                margin-bottom: 10px;
+                padding: 10px;
                 overflow: hidden;
                 background: @grey1;
                 z-index: 90;
@@ -2878,7 +2877,7 @@
                 &.hidden,
                 &.ng-hide {
                     display: block !important;
-                    height: 0px;
+                    height: 0px !important;
                     padding: 0;
                     margin: 0;
                     .transition(height, .3s,cubic-bezier(.10, .10, .25, .90));
@@ -2887,35 +2886,101 @@
 
             /* Reservation guest info ***/
             .reservation-guests {
-                .size(70px, 100%);
+                .size(60px, 100%);
 
-                li {
-                    line-height: 30px;
-                    vertical-align: middle;
-                    margin: 0 40px 0 0;
-                    padding: 0;
-                    .show;
-                    .pull-right;
+                .notice { margin-bottom: 10px; }
 
-                    span {
+                .guest-count {
+                    width: 100%;
+                    .float;
+
+                    li {
+                        line-height: 40px;
+                        margin: 0;
+                        .show;
                         .pull-left;
 
-                        &.guest-icon {
-                            font-size: 12px;
-                            line-height: 30px;
-                            text-transform: uppercase;
-                            text-align: center;
-                            font-weight: 600;
-                            color: @white;
-                            background: @grey2;
-                            margin-right: 10px;
-                            .square(30px);
+                        span {
+                            width: 60px;
+                            .pull-left;
+
+                            &.guest-icon {
+                                font-size: 12px;
+                                line-height: 30px;
+                                text-transform: uppercase;
+                                text-align: center;
+                                font-weight: 600;
+                                color: @white;
+                                background: @grey2;
+                                margin: 5px 10px 0 0;
+                                .square(30px);
+                            }
+                        }
+
+                        input {
+                            width: 40px;
+                            text-align: center;      
+                            .pull-left;      
+
+                            &[disabled],
+                            &[readonly] { color: @textColor; }                       
+                        }
+
+                        &:first-child { 
+                            padding-right: 40px;
+                            .calc-width(100, 340); 
+                        }
+
+                        &:nth-child(2) { width: 150px; }
+
+                        &:last-child { 
+                            padding-left: 40px; 
+                            width: 190px;
                         }
                     }
+                }
 
-                    .add-new-button { line-height: 38px; }
+                .form {
+                    margin-top: 10px;
+                    max-width: 400px;
+                    .calc-width(100, 340);
+                    .float;
 
-                    &:first-child { margin: -5px 0 0 0; }
+                    label {
+                         display: inline-block;
+                        font-size: 14px;
+                        line-height: 20px;
+                        text-transform: uppercase;
+                        margin: 10px 0 0 0;
+                    }
+
+                    .entry {
+                       
+                        .guest-image {
+                            margin-right: 10px;
+                            .pull-left;
+                            .square(40px); 
+                        }
+
+                        input {
+                            margin-right: 10px;
+                            .calc-width(50, 30);
+                            .pull-left;
+
+                            &:nth-of-type(2) { margin-right: 0; }
+                        }
+                    }
+                }
+
+                &.editable { 
+                    height: 350px; 
+
+                    .guest-count {
+                        li {
+                            padding-bottom: 10px;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
+                        }
+                    }
                 }
             }
 
@@ -2971,7 +3036,7 @@
         .reservation-actions {
             position: relative;
             right: 20px;
-            top: 20px; 
+            top: 70px; 
             bottom: 20px;
             .show;
             .calc-height(100, 90); /* %, px */
@@ -3045,19 +3110,30 @@
                 &.red { font-size: 18px; }
             }
 
-            .bottom-buttons {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-            }
+
+                &.red.cancel { font-size: 16px; }
+
+                &#cancel-reservation {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    margin-bottom: 0;
+                    width: 100%;
+                }
+
+                .bottom-buttons {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                }
         }
 
         /* Reservation card content ***/
         .reservation-content {
             position: relative;
             left: 20px;
-            top: 20px;
+            top: 70px;
             bottom: 20px;
             overflow: hidden;
             .calc-height(100, 90);
@@ -9361,8 +9437,16 @@
                     .show;
                 }
 
-                &.dual-select {
-                    .select {
+                .has-datepicker {
+                    position: relative;
+
+                    input { width: 100%; }
+                }
+
+                &.dual-select,
+                &.has-date {
+                    .select,
+                    .has-datepicker {
                         display: inline-block;
                         .calc-width(50, 10);
 
@@ -9486,7 +9570,6 @@
                         input,
                         select {
                             font-size: 18px;
-                            line-height: 50px;
                             min-height: 50px;
                             .size(50px, 100%);
                         }
@@ -9563,7 +9646,7 @@
                     padding: 0;
                     .calc-height(100, 80);
 
-                    .wrapper { padding: 0 20px 80px 20px; }
+                    .wrapper { padding: 0 20px 20px 20px; }
 
                     .iScrollVerticalScrollbar { 
                         top: 10px;
@@ -9639,6 +9722,9 @@
                 .room-actions { 
                     padding: 20px 10px;
                     height: 80px; 
+
+                    &.dual-select,
+                    &.has-date { padding: 20px 80px; }
                 }
 
                 .room-content {
@@ -9680,10 +9766,6 @@
             }
         }
     }
-
-
-
-
 
     /* 768px+               ==============================*/
     @media only screen and (min-width: 768px) {
@@ -9782,12 +9864,10 @@
                 .calc-height(100, 90);
 
                 .room-actions {
-
                     .select { width: 200px; }
 
-                    &.dual-select {
-                        .select { width: 190px; }
-                    }
+                    &.dual-select,
+                    &.has-date { padding: 20px 25%; }
                 }
 
                 .room-content {
@@ -12111,6 +12191,13 @@
                                 }
                             }
 
+                            &.no-show {
+                                color: rgba(255,255,255,.6);
+                                background: @grey3;
+
+                                &:after { .hide; }
+                            }
+
                             &.editing { 
                                 .gradient(@purpleStart, @purpleEnd); 
 
@@ -12119,6 +12206,8 @@
                                     #fade > .in();
                                     .icons > .icon-diary-edit-reservation();
                                 }
+
+                                &.no-show { color: @white; }
                             }
                         }
 

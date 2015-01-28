@@ -1789,7 +1789,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 	
                 	var totalDepositOnRateUpdate = 0;
 
-
                     /**
                      * CICO-10195 : While extending a hourly reservation from  
                      * diary the reservationListArray would be undefined
@@ -1798,14 +1797,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                      * totalDepositOnRateUpdate for just the single reservation.
                      */
                     
-                    if($scope.reservationsListArray){                                       
+                    if($scope.reservationsListArray){
                         angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                            if(key == index){
-                                reservation.deposit_amount = data.deposit_amount;
-                                totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
-                            } else {
-                                totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
-                            }                            
+                        	if(key == index){
+                        		reservation.deposit_amount = data.deposit_amount;
+                        		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
+                        	} else {
+                        		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
+                        	}                            
                         });
                     }else{
                         totalDepositOnRateUpdate = parseFloat(data.deposit_amount);
@@ -1976,6 +1975,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.checkOccupancyLimit(null, true);
             }
         };
+
+        $scope.$on("GETVARYINGOCCUPANCY", function(e) {
+            $scope.reservationData.rooms[0].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(0);
+            $scope.$broadcast("VARYINGOCCUPANCY", $scope.reservationData.rooms[0].varyingOccupancy);
+        });
 
     }
 ]);

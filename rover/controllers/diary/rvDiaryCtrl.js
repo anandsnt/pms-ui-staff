@@ -77,7 +77,7 @@ sntRover
 
 
 	//adjuested property date time (rounded to next 15min slot time)
-	$scope.adj_property_date_time 	= util.correctTime(baseSearchData.businessDate, propertyTime);
+	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
 
 
 	/*--------------------------------------------------*/
@@ -90,8 +90,8 @@ sntRover
 	    	showOn: 'button',
 	    	dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
-	    	minDate: minDate,
-	    	yearRange: '-0:'
+	    	//minDate: minDate,
+	    	//yearRange: '-0:'
 	    };
 
 	    _.extend($scope, payload);
@@ -1148,18 +1148,15 @@ sntRover
     		$scope.gridProps.stats = data.availability_count;
 
 			$scope.gridProps.display.x_0 = $scope.gridProps.viewport.row_header_right;	
-
-			$scope.gridProps.edit.reset_scroll = {
-	    		'x_n'      : $scope.gridProps.display.x_n,
-	    		'x_origin' : $scope.gridProps.display.x_origin
-	    	};
-
-
 			
 			//Resetting as per CICO-11314
 			if ( !!_.size($_resetObj) ) {
 				$_resetObj.callback();
 			} else {
+				$scope.gridProps.edit.reset_scroll = {
+	    			'x_n'      : $scope.gridProps.display.x_n,
+	    			'x_origin' : $scope.gridProps.display.x_origin
+	    		};
 				$scope.gridProps.filter.rate_type = rate_type ? rate_type : "Standard";
 				$scope.gridProps.filter.arrival_time = arrival_time ? arrival_time: "00:00";
 				$scope.gridProps.filter.room_type = room_type ? room_type : "";
@@ -1194,29 +1191,30 @@ sntRover
 
     $scope.resetEverything = function() {
     	var _sucessCallback = function(propertyTime) {
-	    	var today = new tzIndependentDate( $rootScope.businessDate );
-			today.setHours(0, 0, 0);
+	    	var propertyDate = new tzIndependentDate( propertyTime.hotel_time.date );
+			propertyDate.setHours(0, 0, 0);
 
-	    	$_resetObj = util.correctTime(today.toComponents().date.toDateString().replace(/-/g, '/'), propertyTime);
+	    	$_resetObj = util.correctTime(propertyDate.toComponents().date.toDateString().replace(/-/g, '/'), propertyTime);
 			$_resetObj.callback = function() {
-				$scope.gridProps.filter.arrival_time = '';
+				$scope.gridProps.filter.arrival_time = $_resetObj.arrival_time;
 				$scope.gridProps.filter.rate_type = 'Standard';
 				$scope.gridProps.filter.room_type = '';
 				number_of_items_resetted = 0;
-				$scope.renderGrid();
 				$scope.$emit('hideLoader');	
-
+				var display_offset = new tzIndependentDate($_resetObj.start_date);
+				
+				$scope.gridProps.edit.reset_scroll = {
+		    		'x_n'      : propertyDate,
+		    		'x_origin' : display_offset.getTime()
+	    		};
+	    		$scope.renderGrid();
 				$timeout(function() {
 					$_resetObj = {};
-				}, 100);
+				}, 300);
 			};
 
-			$scope.gridProps.filter.arrival_date = today;
+			$scope.gridProps.filter.arrival_date = propertyDate;
 			$scope.gridProps.display.min_hours = 4;
-	    	$scope.gridProps.edit.reset_scroll = {
-	    		'x_n'      : today,
-	    		'x_origin' : $_resetObj.start_date
-	    	};
     	};
 
 

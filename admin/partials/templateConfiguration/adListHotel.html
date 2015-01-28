@@ -1,0 +1,24 @@
+<section class="content current" ng-click="clearErrorMessage()">
+	<div data-view="HotelBrandsView">
+		<header class="content-title float">
+			<h2> {{'TEMPLATE_CONFIGURATION' | translate}} </h2>
+			<!-- <span class="count">({{data.length}})</span> -->
+			
+		</header>
+		<section class="content-scroll">
+			
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()"></div>
+			<table class="grid">
+				<tbody>
+					<tr ng-repeat="hotel in data" > 
+						<td ng-click="editHotelConfiguration($index,hotel.id)" ng-hide="currentClickedElement == $index && isEditmode" >
+							<a data-item="3" data-colspan="2" class="edit-data-inline"> {{hotel.hotel_name}}</a>
+						</td>					
+						<td ng-include="getTemplateUrl($index,hotel.id)" ng-if="currentClickedElement == $index && isEditmode"></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</div>
+</section>

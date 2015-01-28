@@ -73,5 +73,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/icare'
 		});
 		
+		$stateProvider.state('admin.templateconfiguration', {
+			templateUrl: '/assets/partials/templateConfiguration/adListHotel.html',
+			controller: 'ADTemplateConfigurationCtrl',
+			url : '/templateconfiguration'
+		});
+		
         
 });
