@@ -212,7 +212,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 				room_id: params.room_id
 			}
 			var deferred = $q.defer(),
-				url = 'http://localhost:3000/api/room_services/service_info.json?';
+				url = '/api/room_services/service_info.json?';
 			rvBaseWebSrvV2.getJSON(url, queryString)
 				.then(function(data) {
 					deferred.resolve({
