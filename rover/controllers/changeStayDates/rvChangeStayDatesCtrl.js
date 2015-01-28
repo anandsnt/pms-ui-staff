@@ -10,6 +10,13 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			scope: $scope
 		};
 
+		// pass in something to the next state which ever it may be
+		$rootScope.setNextState = {
+			data: {
+				'isFromChangeStayDates': true
+			}
+		};
+
 		var that = this;
 		// CICO-9081
 		var translatedHeading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
