@@ -1185,10 +1185,10 @@ sntRover
 
     $scope.resetEverything = function() {
     	var _sucessCallback = function(propertyTime) {
-	    	var today = new tzIndependentDate( $rootScope.businessDate );
-			today.setHours(0, 0, 0);
+	    	var propertyDate = new tzIndependentDate( propertyTime.hotel_time.date );
+			propertyDate.setHours(0, 0, 0);
 
-	    	$_resetObj = util.correctTime(today.toComponents().date.toDateString().replace(/-/g, '/'), propertyTime);
+	    	$_resetObj = util.correctTime(propertyDate.toComponents().date.toDateString().replace(/-/g, '/'), propertyTime);
 			$_resetObj.callback = function() {
 				$scope.gridProps.filter.arrival_time = '';
 				$scope.gridProps.filter.rate_type = 'Standard';
@@ -1202,10 +1202,10 @@ sntRover
 				}, 100);
 			};
 
-			$scope.gridProps.filter.arrival_date = today;
+			$scope.gridProps.filter.arrival_date = propertyDate;
 			$scope.gridProps.display.min_hours = 4;
 	    	$scope.gridProps.edit.reset_scroll = {
-	    		'x_n'      : today,
+	    		'x_n'      : propertyDate,
 	    		'x_origin' : $_resetObj.start_date
 	    	};
     	};
