@@ -54,7 +54,7 @@
 					
 					
 				</fieldset>
-				<fieldset class="holder left holder_margin" >	
+				<fieldset class="holder left holder_margin" ng-show="checkinData.is_precheckin_only">	
 					<div id="options" class="entry" ng-hide="hideAddOption">
 						<label>
 							{{ 'CHECKIN_ACTION' | translate}}
@@ -71,12 +71,18 @@
 							{{ 'AUTO_CHECK_IN' | translate}}
 						</label>
 
+						<label class="radio" ng-class="{'checked':checkinData.checkin_action == 'none'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action == 'none'}"></span>
+							<input type="radio" value="none" ng-model="checkinData.checkin_action" >
+							{{ 'NONE' | translate}}
+						</label>
+
 					</div>
 					<div class="entry full-width">
 						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label = "{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder = ""></ad-textarea>
 					</div>
 
-					<div class="entry" ng-show="checkinData.checkin_action == 'sent_to_queue'">
+					<div class="entry" ng-show="checkinData.checkin_action == 'sent_to_queue' || checkinData.checkin_action == 'auto_checkin'">
 						<label>
 							{{ 'MINUTES_PRIOR_TO_ETA' | translate}}
 						</label>
@@ -91,7 +97,7 @@
 					</div>
 				</fieldset>
 				
-				<fieldset class="holder left holder_margin"  ng-show="checkinData.checkin_action == 'auto_checkin'">	
+				<fieldset class="holder left holder_margin"  ng-show="checkinData.checkin_action == 'auto_checkin' && checkinData.is_precheckin_only">	
 					<div class="entry full-width" >
 						<label>
 							{{ 'START_AUTO_CHECK_IN_FROM' | translate}}
@@ -120,7 +126,7 @@
 							</div>
 					</div>
 					</fieldset>
-				<fieldset class="holder right holder_margin" ng-show="checkinData.checkin_action == 'auto_checkin'">	
+				<fieldset class="holder right holder_margin" ng-show="checkinData.checkin_action == 'auto_checkin' && checkinData.is_precheckin_only">	
 					<div class="entry full-width" >
 						<label>
 							{{ 'STOP_AUTO_CHECK_IN_AT' | translate}}
@@ -150,9 +156,26 @@
 						
 					</div>
 				</fieldset>
-				<fieldset class="holder full-width">
+				<fieldset class="holder full-width" ng-show="checkinData.is_precheckin_only">
 					<ad-checkbox is-checked="checkinData.is_sent_none_cc_reservations_to_front_desk_only" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width margin-top-15" ></ad-checkbox>
 				</fieldset>	
+
+				<fieldset class="holder left" ng-hide="!checkinData.is_precheckin_only">
+
+					<ad-textbox value="checkinData.max_webcheckin" label = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}"  styleclass="full-width" maxlength="4"></ad-textbox>
+
+					<div class="form-title">
+						<h3 class="ng-binding"><span class="ng-scope" translate="">PRE_CHECK_IN_EMAIL_FIELDS</span> </h3>
+					</div>
+
+					<ad-textbox value="checkinData.pre_checkin_email_title" label = "{{'PRE_CHECK_IN_EMAIL_TITLE' | translate}}" placeholder = ""  styleclass="full-width" ></ad-textbox>
+
+					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_body" label = "{{ 'PRE_CHECK_IN_TOP_BODY' | translate}}" placeholder = ""></ad-textarea>
+
+					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_bottom_body" label = "{{ 'PRE_CHECK_IN_BOTTOM_BODY' | translate}}" placeholder = ""></ad-textarea>
+
+					
+				</fieldset>
 					
 					
 				<fieldset class="holder full-width">
@@ -261,23 +284,6 @@
 					</div>
 					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = "" ng-show="hideAddOption"></ad-textarea>
 
-				</fieldset>
-
-				<fieldset class="holder right" ng-hide="!checkinData.is_precheckin_only">
-
-					<ad-textbox value="checkinData.max_webcheckin" label = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}"  styleclass="full-width" maxlength="4"></ad-textbox>
-
-					<div class="form-title">
-						<h3 class="ng-binding"><span class="ng-scope" translate="">PRE_CHECK_IN_EMAIL_FIELDS</span> </h3>
-					</div>
-
-					<ad-textbox value="checkinData.pre_checkin_email_title" label = "{{'PRE_CHECK_IN_EMAIL_TITLE' | translate}}" placeholder = ""  styleclass="full-width" ></ad-textbox>
-
-					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_body" label = "{{ 'PRE_CHECK_IN_TOP_BODY' | translate}}" placeholder = ""></ad-textarea>
-
-					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_bottom_body" label = "{{ 'PRE_CHECK_IN_BOTTOM_BODY' | translate}}" placeholder = ""></ad-textarea>
-
-					
 				</fieldset>
 
 				<div class="actions float">
