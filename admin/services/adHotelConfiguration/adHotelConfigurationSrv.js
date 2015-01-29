@@ -8,7 +8,7 @@ admin.service('ADHotelConfigurationSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		var deferred = $q.defer();
 		var url = '/api/email_templates/list.json';
 
-		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
