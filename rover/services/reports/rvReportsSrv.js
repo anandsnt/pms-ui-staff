@@ -23,7 +23,23 @@ sntRover.service('RVreportsSrv', [
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-						this.cacheReportList = data;						
+						data.results.unshift({
+							"id": 8,
+							"title": "Occupancy & Revenue Summary",
+							"sub_title": "By Date Range",
+							"description": "Occupancy & Revenue Statistics by Day / Date Range by Market",
+							"filters": [{
+								"value": "DATE_RANGE",
+								"description": "Date Range"
+							}, {
+								"value": "INCLUDE_VARIANCE",
+								"description": "Include Variance"
+							}, {
+								"value": "INCLUDE_LASTYEAR",
+								"description": "Include Last Year"
+							}]
+						})
+						this.cacheReportList = data;
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {
 						deferred.reject(data);
@@ -55,11 +71,27 @@ sntRover.service('RVreportsSrv', [
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
 			return deferred.promise;
 		};
+
+		this.fetchDemographicMarketSegments = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/market_segments?is_active=true';
+			// CICO-10202 Assuming that it is enough to show only the active market segments. if this is wrong and we need to show all the market segments.. uncomment the following line.
+			// url = '/api/market_segments';
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.markets);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
 	}
 ]);

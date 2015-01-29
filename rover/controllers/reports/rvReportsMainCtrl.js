@@ -83,6 +83,10 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 
+		// CICO-10202
+		$scope.reportsState = {
+			markets: []
+		};
 
 
 		$scope.showRemoveDateBtn = function() {
@@ -173,17 +177,25 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeNoShow',
 			'hasIncludeRoverUsers',
 			'hasIncludeZestUsers',
-			'hasIncludeZestWebUsers'
+			'hasIncludeZestWebUsers',
+			'hasVariance',
+			'hasLastYear'
 		];
+
+		var closeAllMultiSelects = function() {
+			_.each($scope.reportList, function(item) {
+				item.fauxSelectOpen = false;
+				item.selectDisplayOpen = false;
+				item.selectMarketsOpen = false;
+			});
+
+		}
 
 		// common faux select method
 		$scope.fauxSelectClicked = function(e, item) {
 			// if clicked outside, close the open dropdowns
 			if (!e) {
-				_.each($scope.reportList, function(item) {
-					item.fauxSelectOpen = false;
-					item.selectDisplayOpen = false;
-				});
+				closeAllMultiSelects();
 				return;
 			};
 
@@ -203,10 +215,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// if clicked outside, close the open dropdowns
 			if (!e) {
-				_.each($scope.reportList, function(item) {
-					item.fauxSelectOpen = false;
-					item.selectDisplayOpen = false;
-				});
+				closeAllMultiSelects();
 				return;
 			};
 
@@ -225,6 +234,32 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.fauxOptionClicked(e, item);
 
+		};
+
+		//specific for markets
+		$scope.selectMarketsClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+
+			$scope.fauxOptionClicked(e, item);
 		};
 
 		$scope.fauxOptionClicked = function(e, item) {
@@ -294,9 +329,9 @@ sntRover.controller('RVReportsMainCtrl', [
 				page: page,
 				per_page: resultPerPageOverride || $scope.resultsPerPage
 			};
-			
+
 			var key = '';
-			
+
 			// include dates
 			if (!!chosenReport.hasDateFilter) {
 				params['from_date'] = $filter('date')(chosenReport.fromDate, 'yyyy/MM/dd');
@@ -310,7 +345,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			//// include arrival dates -- IFF both the limits of date range have been selected
-			if (!!chosenReport.hasArrivalDateFilter && !!chosenReport.fromArrivalDate && !! chosenReport.untilArrivalDate) {
+			if (!!chosenReport.hasArrivalDateFilter && !!chosenReport.fromArrivalDate && !!chosenReport.untilArrivalDate) {
 				params['arrival_from_date'] = $filter('date')(chosenReport.fromArrivalDate, 'yyyy/MM/dd');
 				params['arrival_to_date'] = $filter('date')(chosenReport.untilArrivalDate, 'yyyy/MM/dd');
 			};
@@ -329,13 +364,13 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include user ids
 
-			if ( chosenReport.hasUserFilter && chosenReport.chosenUsers && chosenReport.chosenUsers.length ) {
+			if (chosenReport.hasUserFilter && chosenReport.chosenUsers && chosenReport.chosenUsers.length) {
 				params['user_ids'] = chosenReport.chosenUsers;
 			};
 
 			// include sort bys
-			if ( chosenReport.sortByOptions ) {
-				if ( !!chosenReport.chosenSortBy ) {
+			if (chosenReport.sortByOptions) {
+				if (!!chosenReport.chosenSortBy) {
 					params['sort_field'] = chosenReport.chosenSortBy;
 				};
 
@@ -343,49 +378,49 @@ sntRover.controller('RVReportsMainCtrl', [
 					return item.value == chosenReport.chosenSortBy;
 				});
 
-				if ( !!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean' ) {
+				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean') {
 					params['sort_dir'] = _chosenSortBy.sortDir;
 				};
 			};
 
 			// include notes
-			if ( !!chosenReport.hasIncludeNotes ) {
+			if (!!chosenReport.hasIncludeNotes) {
 				key = chosenReport.hasIncludeNotes.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeNotes;
 			};
 
 			// include user ids
-			if ( chosenReport.hasIncludeVip ) {
+			if (chosenReport.hasIncludeVip) {
 				key = chosenReport.hasIncludeVip.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeVip;
 			};
 
 			// include cancelled
-			if ( chosenReport.hasIncludeCancelled ) {
+			if (chosenReport.hasIncludeCancelled) {
 				key = chosenReport.hasIncludeCancelled.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeCancelled;
 			};
 
 			// include no show
-			if ( chosenReport.hasIncludeNoShow ) {
+			if (chosenReport.hasIncludeNoShow) {
 				key = chosenReport.hasIncludeNoShow.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeNoShow;
 			};
 
 			// include rover users
-			if ( chosenReport.hasIncludeRoverUsers ) {
+			if (chosenReport.hasIncludeRoverUsers) {
 				key = chosenReport.hasIncludeRoverUsers.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeRoverUsers;
 			};
 
 			// include zest users
-			if ( chosenReport.hasIncludeZestUsers ) {
+			if (chosenReport.hasIncludeZestUsers) {
 				key = chosenReport.hasIncludeZestUsers.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeZestUsers;
 			};
 
 			// include zest web users
-			if ( chosenReport.hasIncludeZestWebUsers ) {
+			if (chosenReport.hasIncludeZestWebUsers) {
 				key = chosenReport.hasIncludeZestWebUsers.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeZestWebUsers;
 			};
@@ -442,9 +477,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
-
-
-
 		var activeUserAutoCompleteObj = [];
 		_.each($scope.activeUserList, function(user) {
 			activeUserAutoCompleteObj.push({
@@ -453,11 +485,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			});
 		});
 
-		function split( val ) {
-			return val.split( /,\s*/ );
+		function split(val) {
+			return val.split(/,\s*/);
 		}
-		function extractLast( term ) {
-			return split( term ).pop();
+
+		function extractLast(term) {
+			return split(term).pop();
 		}
 
 		var thisReport;
@@ -469,30 +502,30 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			delay: 0,
 			position: {
-			    my: 'left bottom',
-			    at: 'left top',
-			    collision: 'flip'
+				my: 'left bottom',
+				at: 'left top',
+				collision: 'flip'
 			},
-			source: function( request, response ) {
+			source: function(request, response) {
 				// delegate back to autocomplete, but extract the last term
-				response( $.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)) );
+				response($.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)));
 			},
-			select: function( event, ui ) {
-				var uiValue  = split( this.value );
+			select: function(event, ui) {
+				var uiValue = split(this.value);
 				uiValue.pop();
-				uiValue.push( ui.item.label );
-				uiValue.push( "" );
+				uiValue.push(ui.item.label);
+				uiValue.push("");
 
-				this.value = uiValue.join( ", " );
+				this.value = uiValue.join(", ");
 				setTimeout(function() {
 					$scope.$apply(function() {
-						thisReport.uiChosenUsers = uiValue.join( ", " );
+						thisReport.uiChosenUsers = uiValue.join(", ");
 					});
 				}.bind(this), 100);
 				return false;
-	        },
-	        close: function( event, ui ) {
-				var uiValues = split( this.value );
+			},
+			close: function(event, ui) {
+				var uiValues = split(this.value);
 				var modelVal = [];
 
 				_.each(activeUserAutoCompleteObj, function(user) {
@@ -500,8 +533,8 @@ sntRover.controller('RVReportsMainCtrl', [
 						return email == user.label;
 					});
 
-					if ( !!match ) {
-						modelVal.push( user.value );
+					if (!!match) {
+						modelVal.push(user.value);
 					};
 				});
 
@@ -510,10 +543,10 @@ sntRover.controller('RVReportsMainCtrl', [
 						thisReport.chosenUsers = modelVal;
 					});
 				}.bind(this), 100);
-	        },
-	        focus: function( event, ui ) {
-	        	return false;
-	        }
+			},
+			focus: function(event, ui) {
+				return false;
+			}
 
 		};
 
