@@ -341,25 +341,41 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.assignRoom.work_type_id = $scope.topFilter.byWorkType;
 			$scope.activeWorksheetEmp = [];
 
-			var _onSuccess = function(response) {
-					$scope.$emit('hideLoader');
+			var _onError = function() {
+				$scope.$emit('hideLoader');
+			};
 
-					$_activeWorksheetData = response.data;
-					$scope.activeWorksheetEmp = $_findEmpAry();
-					ngDialog.open({
-					    template: '/assets/partials/housekeeping/rvAssignRoomPopup.html',
-					    className: 'ngdialog-theme-default',
-					    closeByDocument: true,
-					    scope: $scope,
-					    data: []
-					});
-					
-				},
-				_onError = function() {
+			var _onActiveWorksheetEmpSuccess = function(response) {
+				$scope.$emit('hideLoader');
+
+				$_activeWorksheetData = response.data;
+				$scope.activeWorksheetEmp = $_findEmpAry();
+				ngDialog.open({
+				    template: '/assets/partials/housekeeping/rvAssignRoomPopup.html',
+				    className: 'ngdialog-theme-default',
+				    closeByDocument: true,
+				    scope: $scope,
+				    data: []
+				});
+				
+			};
+
+			var _onCheckRoomSucess = function(response) {
+				var staff = response.data.rooms[0].assignee_maid;
+
+				if ( !!staff && !staff.id ) {
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchActiveWorksheetEmp, {}, _onActiveWorksheetEmpSuccess, _onError);
+				} else {
 					$scope.$emit('hideLoader');
+					$_tobeAssignedRoom.assignee_maid = angular.copy( staff );
+					$_tobeAssignedRoom.assigned_staff = RVHkRoomStatusSrv.calculateAssignedStaff( $_tobeAssignedRoom );
 				};
+			};
 
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchActiveWorksheetEmp, {}, _onSuccess, _onError);
+			$scope.invokeApi(RVHkRoomStatusSrv.checkRoomAssigned, {
+				'query': $_tobeAssignedRoom.room_no,
+				'date' : $rootScope.businessDate
+			}, _onCheckRoomSucess, _onError);
 		};
 
 		$scope.assignRoomWorkTypeChanged = function() {
