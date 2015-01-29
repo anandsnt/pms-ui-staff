@@ -82,25 +82,35 @@ sntRover
 		* function to execute on date selection
 		* if it is on edit mode will change the reservation to another date after calling the API
 		* other wise just switches the date
+		* https://stayntouch.atlassian.net/browse/CICO-12418
 		*/
 		var onDateSelectionFromDatepicker = function(date_string, date_obj) {
-			console.log($scope.gridProps.edit);
 			var isOnEditMode = $scope.gridProps.edit.active;
 
 			if (!isOnEditMode) {
 				return true;
 			}
 			else if (isOnEditMode) {
-				var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem);
-				var choosedRoom = util.copyRoom ($scope.gridProps.currentResizeItemRow);
-				
-				// setting the service variables for reservation transfrer
-				rvDiarySrv.isReservationMovingFromOneDateToAnother = true;
-				rvDiarySrv.movingReservationData.reservation = choosedReservation;
-				rvDiarySrv.movingReservationData.room = choosedRoom;
-
+				var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem),
+					originalReservation = util.copyReservation ($scope.gridProps.edit.originalItem),
+					originalRoom = util.copyReservation ($scope.gridProps.edit.originalRowItem);
+								
+				storeDataForReservationMoveFromOneDateToAnother (choosedReservation, originalReservation, originalRoom)			
 			}
 		};
+
+		/**
+		* while reservation is moving from one date to another we have to store in some services
+		* this method is for that
+		*/
+		var storeDataForReservationMoveFromOneDateToAnother  = function (reservation, originalReservation, originalRoom) {
+			// setting the service variables for reservation transfrer
+			rvDiarySrv.isReservationMovingFromOneDateToAnother = true;
+			rvDiarySrv.movingReservationData.reservation = reservation;
+			rvDiarySrv.movingReservationData.originalRoom = originalRoom;
+			rvDiarySrv.movingReservationData.originalReservation = originalReservation;
+		};
+
 
 		/*DATE UI CONFIG*/
 		var minDate = new tzIndependentDate($rootScope.businessDate);
@@ -135,7 +145,6 @@ sntRover
 
        
 
-	    var number_of_items_resetted = 0;
 
 		$scope.gridProps = {
 			/* Meta data object - allows us to use a single point of reference for various object properties.
@@ -500,7 +509,7 @@ sntRover
 
 	    	//row_item_data[meta.occupancy.start_date] = row_item_data.left / px_per_ms + x_origin;
 	    	//row_item_data[meta.occupancy.end_date] 	 = row_item_data.right / px_per_ms + x_origin; 
-
+	    	
 	    	$scope.roomXfer = {
 	    		current: {
 		    		room:  originalRow,
@@ -511,11 +520,23 @@ sntRover
 		    		occupancy: row_item_data,
 	    		}
 	    	};
+
+	    	//https://stayntouch.atlassian.net/browse/CICO-12418
+			if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
+				var resData = rvDiarySrv.movingReservationData;
+				$scope.roomXfer.current.room = originalRow = resData.originalRoom;
+				$scope.roomXfer.current.occupancy = originalOccupancy = resData.originalReservation;
+			}
+	    	
+
+			console.log($scope.roomXfer);
 	    	$scope.price = $scope.roomXfer.next.room.new_price ? ($scope.roomXfer.next.room.new_price - $scope.roomXfer.current.room.old_price) : 0;
 	    	if($scope.price != 0) {
 				openEditConfirmationPopup();
 			}
 			else{
+
+
 				// please refer this (CICO-11782)
 				// https://stayntouch.atlassian.net/secure/attachment/19602/From%20Edit%20Mode%20To.pdf
 				if(originalRow.room_type_id === row_data.room_type_id) {
@@ -581,6 +602,8 @@ sntRover
 			};
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
+			console.log('dataToPassConfirmScreen');
+			console.log(dataToPassConfirmScreen);
 			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
 			$scope.closeDialog();
 			$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
@@ -609,7 +632,7 @@ sntRover
 			    	//availability = true;
 					
 						if(prevRoom.id !== nextRoom.id){
-				    		util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
+				    		util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);														
 							$scope.renderGrid();
 						}
 						$scope.gridProps.currentResizeItemRow = util.copyRoom(nextRoom);
@@ -705,11 +728,13 @@ sntRover
 	    	this.availability.resize.last_departure_time = this.currentResizeItem[meta.occupancy.end_date];
 	    	if(this.availability.drag.lastRoom && (this.availability.drag.lastRoom.id !== this.currentResizeItemRow.id)){
 		    	var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), this.availability.drag.lastRoom.id);
+		    	console.log($scope.gridProps.currentResizeItem.room_id);
 				if(roomIndex != -1) {
 					var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), this.currentResizeItem.reservation_id);
 					if(occupancyIndex != -1){
 						$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
 					}
+					$scope.gridProps.currentResizeItem.room_id = this.currentResizeItemRow.id;
 				}
 			}
 	    	this.availability.drag.lastRoom = util.copyRoom(this.currentResizeItemRow);
@@ -1180,10 +1205,21 @@ sntRover
 				$scope.gridProps.filter.rate_type = rate_type ? rate_type : "Standard";
 				$scope.gridProps.filter.arrival_time = arrival_time ? arrival_time: "00:00";
 				$scope.gridProps.filter.room_type = room_type ? room_type : "";
-				number_of_items_resetted = 0;
 				$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();	
+
+				//reservation trnsfr from one date to another started
+				if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
+					var resData = rvDiarySrv.movingReservationData;
+					var reservation_id = resData.reservation.reservation_id;					
+					switchToEditMode (reservation_id);
+					$scope.gridProps.edit.originalItem = resData.originalReservation;
+					$scope.gridProps.edit.originalRowItem = resData.originalRoom;
+					/*$scope.gridProps.currentResizeItem = resData.originalReservation;
+					$scope.gridProps.currentResizeItemRow = resData.originalRoom;*/
+				}
+
 				$scope.$emit('hideLoader');	
 			}
 		});		
@@ -1219,7 +1255,6 @@ sntRover
 				$scope.gridProps.filter.arrival_time = '';
 				$scope.gridProps.filter.rate_type = 'Standard';
 				$scope.gridProps.filter.room_type = '';
-				number_of_items_resetted = 0;
 				$scope.renderGrid();
 				$scope.$emit('hideLoader');	
 
@@ -1381,13 +1416,11 @@ sntRover
 		return [range_validated, conflicting_reservation];
 	}
 
-	var switchToEditModeIfPassed = function(){
+	var switchToEditMode = function(reservation_id){
 		// we are checking for whether we need to find the reservation against ID passed from someother state
 		// and change the diary to edit mode
-		if($stateParams && 'reservation_id' in $stateParams && 
-			$stateParams.reservation_id !== '') {
-			var reservation_id 		= $stateParams.reservation_id,		
-				rooms 				= payload['room'],
+		if(reservation_id) {
+			var rooms 				= $scope.gridProps.data,
 				row_data 			= null, 
 				row_item_data 		= null, 
 				occpancies 			= null, 
@@ -1408,10 +1441,8 @@ sntRover
 				})				
 							
 			});						   	
-			if(row_data){
-	   			$scope.$apply(function(){	   			
-	   				$scope.onSelect(row_data, row_item_data, false, 'edit');
-	   			});
+			if(row_data){				
+				$scope.onSelect(row_data, row_item_data, false, 'edit');			 		
 			}
 			
 		}						
@@ -1459,7 +1490,14 @@ sntRover
 		setTimeout(correctRoomType, 100);
 
 		setTimeout(function(){
-			switchToEditModeIfPassed();
+			if ($stateParams && 'reservation_id' in $stateParams && 
+			$stateParams.reservation_id !== '') {
+				var reservation_id 		= $stateParams.reservation_id;
+				$scope.$apply(function(){
+					switchToEditMode(reservation_id);
+				});
+				
+			}		
 		}, 1000);
 	};	
 

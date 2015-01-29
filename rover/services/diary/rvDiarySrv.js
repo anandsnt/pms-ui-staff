@@ -666,32 +666,47 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.isReservationMovingFromOneDateToAnother = false;
                 this.movingReservationData = {
                     reservation: undefined,
-                    room: undefined,
+                    originalRoom: undefined,
+                    originalReservation: undefined,                   
                 };
 
                 this.callOccupancyAndAvailabilityCount = function(start_date, end_date) {
-                    var _data_Store     = this.data_Store,
-                    time            = util.gridTimeComponents(start_date, 48);
-                    q = $q.defer();
-                    var __this = this;
+                    var _data_Store = this.data_Store,
+                        time        = util.gridTimeComponents(start_date, 48),
+                        q           = $q.defer(),
+                        __this = this;
                     $q.all([
                             InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                             Room.read(),                            
                             Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
-                                console.log((data_array[2].reservations.length));
+
+                                //if there is any reservation transfter initiated from one day to another
                                 if(__this.isReservationMovingFromOneDateToAnother) {
-                                    console.log('yes entered');
-                                    __this.movingReservationData.reservation.arrival_date  = tzIndependentDate(time.x_n).toComponents().date.toDateString();
-                                    __this.movingReservationData.reservation.departure_date  == tzIndependentDate(time.x_n + 900000).toComponents().date.toDateString();
-                                    __this.movingReservationData.reservation.arrival = time.x_n;
-                                    __this.movingReservationData.reservation.arrival = time.x_n + 900000;
-                                    console.log(__this.movingReservationData.reservation);
-                                    data_array[2].reservations.push(__this.movingReservationData.reservation)                                    
+                                    var reservation = __this.movingReservationData.reservation,
+                                        arrival_date,
+                                        res_arrival  = tzIndependentDate (reservation.arrival),
+                                        res_depature = tzIndependentDate (reservation.departure),
+                                        diff = res_depature.getTime() - res_arrival.getTime(),
+                                        departure_date;
+
+                                    arrival_date = tzIndependentDate (time.x_n);
+                                    arrival_date.setHours (res_arrival.getHours(), res_arrival.getMinutes(), 0)
+                                    
+                                    departure_date = tzIndependentDate (arrival_date.getTime() + diff);
+
+                                    reservation.arrival_date  = arrival_date.toComponents().date.toDateString();
+                                    reservation.arrival_time  = arrival_date.toComponents().time.toHourAndMinute();
+                                    reservation.arrival        = arrival_date.getTime();
+                                    
+                                    reservation.departure_date = departure_date.toComponents().date.toDateString();
+                                    reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute();
+                                    reservation.departure        = departure_date.getTime();
+
+                                    data_array[2].reservations.push(reservation)                                    
                            
                                 }
-                                console.log(JSON.stringify(data_array[2].reservations.length));
                                 _.reduce([
                                       InActiveRoomSlots,
                                       Room,
