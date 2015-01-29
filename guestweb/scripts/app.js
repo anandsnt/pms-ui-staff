@@ -59,7 +59,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  		$location.path('/checkinConfirmation');
  	}
  	else if($rootScope.isCheckedin){
- 		$location.path('/checkinSuccess');
+ 		// $location.path('/checkinSuccess');
+ 		$location.path('/resetPassword');
  	}
     else if($attrs.isCheckin ==='true'){
  		$location.path('/checkinConfirmation');

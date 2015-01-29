@@ -98,4 +98,20 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Pre Check-in'
 	});
 
+	// zest web states
+
+    $stateProvider.state('resetPassword', {
+    	url: '/resetPassword',
+	 	templateUrl: '/assets/zest/partials/yotel/resetPassword.html',
+	 	controller : 'resetPasswordController',
+	 	title: 'Reset Password'
+	});
+
+	$stateProvider.state('emailVerification', {
+    	url: '/emailVerification',
+	 	templateUrl: '/assets/zest/partials/yotel/emailVerificationStatus.html',
+	 	controller : 'emailVerificationStatusController',
+	 	title: 'Email Verification'
+	});
+
 }]);
