@@ -1213,9 +1213,13 @@ sntRover
 				if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 					var resData = rvDiarySrv.movingReservationData;
 					var reservation_id = resData.reservation.reservation_id;					
-					switchToEditMode (reservation_id);
+					switchToEditMode (reservation_id);					
 					$scope.gridProps.edit.originalItem = resData.originalReservation;
 					$scope.gridProps.edit.originalRowItem = resData.originalRoom;
+
+
+
+					resizeEndForExistingReservation ($scope.gridProps.currentResizeItemRow, $scope.gridProps.currentResizeItem);
 					/*$scope.gridProps.currentResizeItem = resData.originalReservation;
 					$scope.gridProps.currentResizeItemRow = resData.originalRoom;*/
 				}
