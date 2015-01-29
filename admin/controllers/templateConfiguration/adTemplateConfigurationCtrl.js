@@ -78,6 +78,21 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		
 		$scope.invokeApi(ADHotelConfigurationSrv.updateHotelConfiguration,postData,updateHotelConfigurationSuccessCallback);
 	};
+	/*
+	 * to get the templates associated with the selected theme
+	 * 
+	 */
+	$scope.displayThemeTemplates = function(){
+		
+		var data = {
+			"email_template_theme_id": $scope.hotelConfig.theme
+		};
+		var displayThemeCallback = function(data){
+			$scope.$emit('hideLoader');
+			$scope.hotelConfig.email_templates = data.email_templates;
+		};
+		$scope.invokeApi(ADHotelConfigurationSrv.getTemplateThemes ,data, displayThemeCallback);
+	};
    
 }]);
 

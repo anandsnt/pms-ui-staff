@@ -3110,12 +3110,23 @@
                 &.red { font-size: 18px; }
             }
 
-            .bottom-buttons {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-            }
+
+                &.red.cancel { font-size: 16px; }
+
+                &#cancel-reservation {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    margin-bottom: 0;
+                    width: 100%;
+                }
+
+                .bottom-buttons {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                }
         }
 
         /* Reservation card content ***/
@@ -9430,8 +9441,16 @@
                     .show;
                 }
 
-                &.dual-select {
-                    .select {
+                .has-datepicker {
+                    position: relative;
+
+                    input { width: 100%; }
+                }
+
+                &.dual-select,
+                &.has-date {
+                    .select,
+                    .has-datepicker {
                         display: inline-block;
                         .calc-width(50, 10);
 
@@ -9555,7 +9574,6 @@
                         input,
                         select {
                             font-size: 18px;
-                            line-height: 50px;
                             min-height: 50px;
                             .size(50px, 100%);
                         }
@@ -9632,7 +9650,7 @@
                     padding: 0;
                     .calc-height(100, 80);
 
-                    .wrapper { padding: 0 20px 80px 20px; }
+                    .wrapper { padding: 0 20px 20px 20px; }
 
                     .iScrollVerticalScrollbar { 
                         top: 10px;
@@ -9708,6 +9726,9 @@
                 .room-actions { 
                     padding: 20px 10px;
                     height: 80px; 
+
+                    &.dual-select,
+                    &.has-date { padding: 20px 80px; }
                 }
 
                 .room-content {
@@ -9749,10 +9770,6 @@
             }
         }
     }
-
-
-
-
 
     /* 768px+               ==============================*/
     @media only screen and (min-width: 768px) {
@@ -9851,12 +9868,10 @@
                 .calc-height(100, 90);
 
                 .room-actions {
-
                     .select { width: 200px; }
 
-                    &.dual-select {
-                        .select { width: 190px; }
-                    }
+                    &.dual-select,
+                    &.has-date { padding: 20px 25%; }
                 }
 
                 .room-content {
@@ -12180,6 +12195,13 @@
                                 }
                             }
 
+                            &.no-show {
+                                color: rgba(255,255,255,.6);
+                                background: @grey3;
+
+                                &:after { .hide; }
+                            }
+
                             &.editing { 
                                 .gradient(@purpleStart, @purpleEnd); 
 
@@ -12188,6 +12210,8 @@
                                     #fade > .in();
                                     .icons > .icon-diary-edit-reservation();
                                 }
+
+                                &.no-show { color: @white; }
                             }
                         }
 
