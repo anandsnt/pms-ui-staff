@@ -877,7 +877,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"signature" : signatureData,
 						"reservation_id" : $scope.reservationBillData.reservation_id,
 						"do_not_cc_auth" : $scope.do_not_cc_auth,
-					    "no_post" : ($scope.roomChargeEnabled == "") ? "": !$scope.roomChargeEnabled	
+					    "no_post" : ($scope.roomChargeEnabled === "") ? "": !$scope.roomChargeEnabled	
 					};
 	 		    }
 
