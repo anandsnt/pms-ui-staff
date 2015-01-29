@@ -149,7 +149,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			// eg: if original status was OO them show form only when user choose OS
 			if (!$scope.inService) {
 				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
-					$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
+					if (tzIndependentDate($rootScope.businessDate).toString() == tzIndependentDate($scope.updateService.selected_date).toString())
+						$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
 					// show the update form
 					$scope.showForm = true;
 					$scope.showSaved = false;
@@ -174,8 +175,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			} else {
 				$scope.showForm = false;
 				$scope.showSaved = false;
-
-				$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
+				if (tzIndependentDate($rootScope.businessDate).toString() == tzIndependentDate($scope.updateService.selected_date).toString())
+					$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
 
 				var _params = {
 					room_id: $scope.roomDetails.id,
