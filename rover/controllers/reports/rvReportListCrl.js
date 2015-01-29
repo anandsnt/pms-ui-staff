@@ -96,6 +96,7 @@ sntRover.controller('RVReportListCrl', [
 
                     case 'Login and out Activity':
                         reportList[i]['reportIconCls'] = 'icon-report icon-activity';
+                        reportList[i]['hasDateLimit']  = false;
 						break;
 
                     default:
