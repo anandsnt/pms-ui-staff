@@ -98,7 +98,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Pre Check-in'
 	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/preCheckin/partials/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/GALLERIA/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
