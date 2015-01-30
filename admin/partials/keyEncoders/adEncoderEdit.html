@@ -1,0 +1,42 @@
+<div style="display: block;" id="add-new" class="edit-data">
+	<div class="data-holder">
+		<!-- Edit Brands -->
+		<form class="form inline-form float">
+			<div class="form-title">
+				<h3><span translate>EDIT </span> {{'ENCODER' | translate}}</h3>
+				<em class="status"> {{ 'MANDATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }} </em>
+			</div>
+			<fieldset class="holder left float">
+				<ad-textbox inputtype="text" value="encoderData.description"
+				label = " {{'DESCRIPTION_LABEL' | translate}}" required = "yes" placeholder = "{{'ENTER_DESCRIPTION' | translate}}"
+				styleclass = "full-width"></ad-textbox>
+				<ad-textbox inputtype="text" value="encoderData.encoder_id"
+				label = " {{'ECODER_ID_LABEL' | translate}}" required = "yes" placeholder = "{{'ENCODER_ID_PLACEHOLDER' | translate}}"
+				styleclass = "full-width"></ad-textbox>
+			</fieldset>
+
+			<fieldset class="holder right">
+				<ad-textbox inputtype="text" value="encoderData.location"
+				label = " {{'LOCATION_LABEL' | translate}}" required = "yes" placeholder = "{{'ENTER_LOCATION' | translate}}"
+				styleclass = "full-width"></ad-textbox>
+				<div class="entry">
+					<label translate>STATUS_LABEL</label>
+					<div id="encoder-status" class="switch-button single" ng-class="{ on : encoderData.enabled == true }">
+						<input type="checkbox" ng-click="encoderData.enabled = !encoderData.enabled">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+			</fieldset>
+
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank edit-data-inline"  ng-click="clickCancel()" translate>
+					CANCEL
+				</button>
+				<button type="button" id="save" class="button green edit-data-inline" ng-click="saveEncoder()" translate>
+					SAVE_CHANGES
+				</button>
+			</div>
+
+		</form>
+	</div>
+</div>

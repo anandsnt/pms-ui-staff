@@ -59,30 +59,10 @@
 			}
 
 			&.radio-check {
+				.float;
+				
 				.checkbox,
-				.radio { .pull-left; }
-
-				&.cols-4 {
-					.only-number {
-						font-size: 36px;
-						line-height: 50px;
-						font-weight: 600;
-						text-align: center;
-						margin-right: 10px;
-						padding: 0;
-						.calc-width(25, 10); /* %, px */
-						
-						&.checked {
-							color: @white;
-							text-shadow: 1px 1px 0 rgba(0,0,0,.15);
-							.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
-			 				.gradient (@logoGradientEnd, @logoGradientStart);
-						}
-
-						&:nth-child(3) { margin-right: 20px; }
-						&:nth-child(5) { margin-right: 0; }
-					}
-				}			
+				.radio { .pull-left; }		
 			}
 
 			&.with-switch {

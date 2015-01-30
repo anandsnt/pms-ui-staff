@@ -48,7 +48,7 @@
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
 					//$scope.isLoading = false;	
-					$state.go('checkinKeys');
+					$state.go('preCheckinStatus');
 				},function(){
 					$scope.netWorkError = true;
 					$scope.isLoading = false;

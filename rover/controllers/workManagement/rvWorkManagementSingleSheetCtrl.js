@@ -180,6 +180,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}, onFetchSuccess, onFetchFailure);
 		};
 
+		// keep a refrence on $scope
+		$scope.init = init;
+
 		var summarizeAssignment = function() {
 			$scope.singleState.summary = {
 				timeAllocated: "00:00",
@@ -451,7 +454,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		};
 
 		$scope.refreshSheet = function() {
-			init();
+			$scope.saveWorkSheet({
+				callNextMethod: 'init'
+			});
 		};
 
 

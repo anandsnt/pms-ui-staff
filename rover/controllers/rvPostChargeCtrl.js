@@ -565,6 +565,10 @@ sntRover.controller('RVPostChargeController',
 				$scope.filterbyChargeGroup();
 			});
 			
+			$scope.convertToJSONString = function (string) {				
+				return JSON.stringify (string);
+			};
+
 			$scope.$on('POSTCHARGE', function(event, data) {
 			   $scope.postCharges();
 			   $scope.isOutsidePostCharge = true;
