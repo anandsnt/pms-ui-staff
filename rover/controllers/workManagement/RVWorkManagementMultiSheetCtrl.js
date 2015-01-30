@@ -213,6 +213,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				refreshView();
 			};
 
+		// keeping a reference in $scope
+		$scope.updateView = updateView;
+
 		/**
 		 * Object holding all scope variables
 		 * @type {Object}
@@ -466,7 +469,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.refreshSheet = function() {
-			updateView();
+			// updateView();
+
+			$scope.saveMultiSheet({
+				callNextMethod: 'updateView'
+			});
 		};
 
 
