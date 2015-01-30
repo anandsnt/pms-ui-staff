@@ -135,6 +135,14 @@
             <input type="checkbox" ng-model="chosenReport.chosenIncludeZestWebUsers" name="room-filters">
             {{ chosenReport.hasIncludeZestWebUsers.description }}
         </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasVariance">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenVariance}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenVariance" name="room-filters"> {{ chosenReport.hasVariance.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasLastYear">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenLastYear}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenLastYear" name="room-filters"> {{ chosenReport.hasLastYear.description }}
+        </label>
     </div>
 </div>
 
@@ -164,6 +172,18 @@
 			<option value="">Sort By</option>
 		</select>
 	</div>
+</div>
+
+<!-- CICO-10202 Report & Summary Markets filter -->
+<div class="options long-list" ng-if="chosenReport.hasVariance">
+    <label for="report-options">Market(s)</label>
+    <div class="faux-select placeholder" ng-click="selectMarketsClicked($event, chosenReport)">{{ chosenReport.displayTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.selectMarketsOpen }" ng-click="fauxOptionClicked($event, chosenReport)">
+        <label class="checkbox inline" ng-repeat="market in reportsState.markets">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeNotes}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeNotes" name="room-filters"> {{ market.name }}
+        </label>
+    </div>
 </div>
 
 <a class="button green" ng-click="fetchUpdatedReport()">Update</a>
