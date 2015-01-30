@@ -97,5 +97,10 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     	url: '/tripDetails',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Pre Check-in'
-	});
+	}).state('preCheckinStatus', {
+		url: '/preCheckinStatus',
+		templateUrl: '/assets/preCheckin/partials/NIKKO/preCheckinStatus.html',
+		controller : 'preCheckinStatusController',
+		title: 'Status - Pre Check-In'
+	 });
 }]);
