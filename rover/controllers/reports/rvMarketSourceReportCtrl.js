@@ -184,7 +184,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 			$scope.reportStatus.graph = {
 				sourceNumber: getRange(sourcesValues),
 				marketNumber: getRange(marketsValues)
-			}			
+			}
 
 			$timeout(function() {
 				$scope.refreshScroller('report-details-scroll');
