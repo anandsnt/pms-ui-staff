@@ -937,6 +937,41 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         start_date.setHours(hh, mm);
                     };
                 };
+                
+                /**
+                *   check reservation availability for another date, 
+                *   used to check the availability while transfering from
+                *   one date to another (usually more than 2days)
+                */
+                this.checkAvailabilityForReservationToA_Date = function (data) {
+                    var params = {
+                        room_id:            data.room_id,
+                        reservation_id:     data.reservation_id,
+                        begin_date:         data.begin_date,
+                        begin_time:         data.begin_time,
+                        end_date:           data.end_date,
+                        end_time:           data.end_time,
+                        rate_type:          data.rate_type,
+                    }
+
+                    if(data.rate_type == 'Corporate') {
+                        if(data.account_id){                            
+                            _.extend(params, { account_id: data.account_id });
+                        }
+                    }
+                    
+                    //Webservice calling section
+                    var deferred = $q.defer();
+                    //var url = '/api/hourly_availability/room';
+                    var url = '/ui/show?format=json&json_input=diary/reservationMoveAllowedToADate.json';
+                    rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
+                        deferred.resolve(resultFromAPI);                       
+                    },function(error){
+                        deferred.reject(error);
+                    }); 
+                    return deferred.promise;                     
+
+                };
 
                 /*Process data points set during create reservation that redirects here*/
                 this.ArrivalFromCreateReservation = function() {

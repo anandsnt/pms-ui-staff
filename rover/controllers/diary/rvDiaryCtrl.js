@@ -84,7 +84,7 @@ sntRover
 		* other wise just switches the date
 		* https://stayntouch.atlassian.net/browse/CICO-12418
 		*/
-		var onDateSelectionFromDatepicker = function(date_string, date_obj) {
+		var onDateSelectionFromDatepicker = function(date_string, date_picker_obj) {
 			var isOnEditMode = $scope.gridProps.edit.active;
 
 			if (!isOnEditMode) {
@@ -109,6 +109,18 @@ sntRover
 			rvDiarySrv.movingReservationData.reservation = reservation;
 			rvDiarySrv.movingReservationData.originalRoom = originalRoom;
 			rvDiarySrv.movingReservationData.originalReservation = originalReservation;
+		};
+
+		/**
+		* while reservation is moving from one date to another we have to store in some services
+		* this method is to reset the data that set during trnasfer
+		*/
+		var resetTheDataForReservationMoveFromOneDateToAnother  = function () {
+			// setting the service variables for reservation transfrer
+			rvDiarySrv.isReservationMovingFromOneDateToAnother = false;
+			rvDiarySrv.movingReservationData.reservation = undefined;
+			rvDiarySrv.movingReservationData.originalRoom = undefined;
+			rvDiarySrv.movingReservationData.originalReservation = undefined;
 		};
 
 
@@ -531,8 +543,7 @@ sntRover
 				$scope.roomXfer.current.occupancy = originalOccupancy = resData.originalReservation;
 			}
 	    	
-
-			console.log($scope.roomXfer);
+		
 	    	$scope.price = $scope.roomXfer.next.room.new_price ? ($scope.roomXfer.next.room.new_price - $scope.roomXfer.current.room.old_price) : 0;
 	    	if($scope.price != 0) {
 				openEditConfirmationPopup();
@@ -953,6 +964,20 @@ sntRover
 	    	data = $scope.gridProps.data;
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);	    	
 
+	    	//whether it is in another date with reservation transfer
+			if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
+				//finding the reservation date to move back
+				var reservation = rvDiarySrv.movingReservationData.originalReservation;
+				var goBackDate = new tzIndependentDate (reservation.arrival);
+				goBackDate.setHours (0, 0, 0);
+
+				//we are loading the diary with reservation date
+				$scope.gridProps.filter.arrival_date = goBackDate;
+				
+				//resetting the reservation data, that set during transfrer
+				resetTheDataForReservationMoveFromOneDateToAnother ();
+			}
+
 	    	//reseting to min date
     		$scope.dateOptions.minDate = null;
 
@@ -973,6 +998,9 @@ sntRover
 			//$scope.gridProps.edit.originalItem = undefined;
 			$scope.gridProps.edit.currentResizeItem = undefined;    //Planned to transfer the non-namespaced currentResizeItem/Row to here
 			$scope.gridProps.edit.currentResizeItemRow = undefined; //Planned to transfer the non-namespaced currentResizeItem/Row to here
+
+			//resetting the reservation data, that set during transfrer
+			//resetTheDataForReservationMoveFromOneDateToAnother ();
 	    };
 
 	/*
@@ -1236,6 +1264,15 @@ sntRover
 		});		
 	};
 
+	/**
+	* if a date is chosen in edit mode (active)
+	* we have to call the API and decide whether the move is allowed or not
+	*/
+	var selectDateInEditMode = function (oldValue) {
+		$scope.gridProps.filter.arrival_date = oldValue;
+		return false;
+	}
+
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
 			filter = props.filter,
@@ -1249,9 +1286,9 @@ sntRover
 
             $scope.gridProps.display = util.deepCopy(time_set.display);
 
-			if($scope.gridProps.edit.active || $scope.gridProps.edit.passive) {
-				//$scope.Availability();
-			}
+			// if($scope.gridProps.edit.active) {
+			// 	return selectDateInEditMode (oldValue);
+			// }
 	    	
 			callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
 		}
@@ -1338,9 +1375,7 @@ sntRover
 			rate_type = filter.rate_type;
 
         $scope.gridProps.display = util.deepCopy(time_set.display);
-
-		
-	    	
+        //rerendering diary with new data	
 		callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate(), rate_type, arrival_time, room_type);			
 	}.bind($scope.gridProps);
 
