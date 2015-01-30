@@ -9,10 +9,10 @@
                         <span ng-class="item.reportIconCls"></span>
                         <div class="data">
                             <h2>
-								{{ item.title }}
-								<span ng-if="item.sub_title">{{ item.sub_title }}</span>
-							</h2>
-                            <em>{{ item.description }}</em>
+                            	{{ item.title }}
+			<span ng-if="item.sub_title">{{ item.sub_title }}</span>
+		     </h2>
+                             <em>{{ item.description }}</em>
                         </div>
                     </a>
                     <div class="configure-report" ng-show="item.show_filter" ng-include="'/assets/partials/reports/rvReportListFilters.html'"></div>
