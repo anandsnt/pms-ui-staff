@@ -12,6 +12,9 @@ angular.module('reportsModule', [])
                 } else {
                     return {};
                 }
+            },
+            activeUserList: function(RVreportsSrv) {
+                return RVreportsSrv.fetchActiveUsers();
             }
         }
     });

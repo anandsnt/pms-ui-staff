@@ -26,7 +26,7 @@ sntRover.controller('reservationActionsController', [
 
 
 		BaseCtrl.call(this, $scope);
-
+		
 		$scope.actionsCheck = {
 			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
 		};
@@ -607,5 +607,31 @@ sntRover.controller('reservationActionsController', [
 			}
 			return showDepositBalanceButtonWithSR;
 		};
+		
+
+		$scope.showResendConfirmation = function(reservationStatus){
+				var showResendConfirmationFlag = false;
+				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+					if($scope.guestCardData.contactInfo.email !=null && $scope.guestCardData.contactInfo.email !=""){
+						showResendConfirmationFlag = true;
+					}
+				}
+				return showResendConfirmationFlag;
+			
+		};
+		$scope.sendConfirmationEmail = function(){
+			var postData = {
+				"type":"confirmation",
+				"emails": [$scope.guestCardData.contactInfo.email]
+			};
+			var reservationId = $scope.reservationData.reservation_card.reservation_id;
+			
+			var data = {
+				"postData": postData,
+				"reservationId": reservationId
+			};
+			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data);
+		};
+		
 	}
 ]);

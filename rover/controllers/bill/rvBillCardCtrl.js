@@ -176,15 +176,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.setNoPostStatus = function(){
 		if($scope.reservationBillData.reservation_status != "CHECKING_IN"){
 			$scope.roomChargeEnabled = false;
-		}else if($scope.reservationBillData.no_post == "true"){
+		} else if($scope.reservationBillData.no_post == "true"){
 			$scope.roomChargeEnabled = false;
-		}else if($scope.reservationBillData.no_post == "false"){
+		} else if($scope.reservationBillData.no_post == "false"){
 			$scope.roomChargeEnabled = true;
-		}else if($scope.reservationBillData.no_post == "" && $scope.reservationBillData.bills[0].credit_card_details.payment_type == "CC"){
-			$scope.roomChargeEnabled = true;
-		}else{
-			$scope.roomChargeEnabled = false;
+		} else if($scope.reservationBillData.no_post == ""){
+			$scope.roomChargeEnabled = "";
 		}
+
+		// else if($scope.reservationBillData.no_post == "" && $scope.reservationBillData.bills[0].credit_card_details.payment_type == "CC"){
+		// 	$scope.roomChargeEnabled = true;
+		// }else{
+		// 	$scope.roomChargeEnabled = false;
+		// }
 	};
 
 	$scope.getNoPostButtonTiltle = function(){
@@ -858,7 +862,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"card_expiry": cardExpiry,	
 						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
 						"do_not_cc_auth" : true,
-					    "no_post" : !$scope.roomChargeEnabled,
+					    "no_post" : ($scope.roomChargeEnabled == "") ? "": !$scope.roomChargeEnabled,
 					    "add_to_guest_card" : addToGuest
 					};
 	 		    } else {
@@ -867,9 +871,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"signature" : signatureData,
 						"reservation_id" : $scope.reservationBillData.reservation_id,
 						"do_not_cc_auth" : $scope.do_not_cc_auth,
-					    "no_post" : !$scope.roomChargeEnabled	
+					    "no_post" : ($scope.roomChargeEnabled === "") ? "": !$scope.roomChargeEnabled	
 					};
 	 		    }
+
 				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
 			
 			}

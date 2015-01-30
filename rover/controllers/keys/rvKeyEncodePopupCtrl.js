@@ -6,9 +6,29 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
-			
+
+	$s = $scope;
+
 	$scope.init = function(){
+
+		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
+		$scope.encoderSelected = "";
+
+		if($scope.fromView == "checkin"){
+			$scope.keySystemVendor = $scope.reservationBillData.hotel_selected_key_system;
+		}else{
+			$scope.keySystemVendor = $scope.reservationData.reservation_card.hotel_selected_key_system;
+		}
+
+		if (sessionStorage.encoderSelected && sessionStorage.encoderSelected !== '') {
+			$scope.encoderSelected = parseInt(sessionStorage.encoderSelected);
+		}
+		if($scope.keySystemVendor == 'SAFLOK_MSR'){
+			fetchEncoderTypes();
+		}
+
 		var reservationStatus = "";
+
 		$scope.data = {};
 		//If the keypopup inviked from check-in flow - registration card)
 		if($scope.fromView == "checkin"){
@@ -78,6 +98,32 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.showDeviceConnectingMessge();
 
 	};
+	//Fetch encoder types for SAFLOK_MSR
+	var fetchEncoderTypes = function(){
+
+		var encoderFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.encoderTypes = data;
+		};
+
+	    $scope.invokeApi(RVKeyPopupSrv.fetchActiveEncoders, {}, encoderFetchSuccess);
+	};
+
+	$scope.isPrintKeyEnabled = function(){
+		if ($scope.numberOfKeysSelected == 0){
+			return false;
+		}
+		if ($scope.numberOfKeysSelected > 0){
+			if($scope.keySystemVendor == 'SAFLOK_MSR' && $scope.encoderSelected == ""){
+				return false
+			}
+			return true
+		}
+	};
+
+	$scope.selectedEncoder = function(){
+		sessionStorage.encoderSelected = $scope.encoderSelected;
+	}
 	/*
 	* If the device is not connected, try the connection again after 1 sec.
 	* repeat the connection check for 10 seconds. 
@@ -224,6 +270,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 
 	    }
 	    that.UID = postParams.uid;
+	    if($scope.keySystemVendor == 'SAFLOK_MSR') {
+		    postParams.key_encoder_id = $scope.encoderSelected;
+	    }
 	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
 
 	};	
@@ -481,7 +530,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.deviceNotConnected = false;
 		$scope.pressedCancelStatus = true;
 		//TODO:verfiy if required
-		$scope.$apply();
+		//$scope.$apply();
 	};
 	
 	/*
