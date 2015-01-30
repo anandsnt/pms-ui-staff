@@ -59,8 +59,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  		$location.path('/checkinConfirmation');
  	}
  	else if($rootScope.isCheckedin){
- 		// $location.path('/checkinSuccess');
- 		$location.path('/resetPassword');
+ 		$location.path('/checkinSuccess');
  	}
     else if($attrs.isCheckin ==='true'){
  		$location.path('/checkinConfirmation');
@@ -69,7 +68,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 		$location.path('/checkOutStatus');	
 	}
 	else{
-		$location.path('/checkoutRoomVerification');
+		// $location.path('/checkoutRoomVerification');
+		$location.path('/emailVerification');
 	};
 
 	$( ".loading-container" ).hide();
