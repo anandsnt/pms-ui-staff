@@ -684,8 +684,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                                 //if there is any reservation transfter initiated from one day to another
                                 if(__this.isReservationMovingFromOneDateToAnother) {
-                                    var reservation = __this.movingReservationData.reservation,
-                                        arrival_date,
+                                    var reservation = __this.movingReservationData.reservation;
+                                    var arrival_date,
                                         res_arrival  = tzIndependentDate (reservation.arrival),
                                         res_depature = tzIndependentDate (reservation.departure),
                                         diff = res_depature.getTime() - res_arrival.getTime(),
@@ -704,7 +704,14 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute();
                                     reservation.departure        = departure_date.getTime();
 
-                                    data_array[2].reservations.push(reservation)                                    
+                                    //2 is the index of array who is having reservations
+                                    var isReservationAlreadyInList = _.findWhere (data_array[2].reservations, 
+                                                                    {reservation_id: reservation.reservation_id});
+
+                                    if(!isReservationAlreadyInList) {
+                                        //2 is the index of array who is having reservations
+                                        data_array[2].reservations.push(reservation)                                    
+                                    }
                            
                                 }
                                 _.reduce([

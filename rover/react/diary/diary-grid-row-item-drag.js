@@ -21,39 +21,43 @@ var GridRowItemDrag = React.createClass({
 		var page_offset, el, props = this.props, state = this.state;
 		
 		e.stopPropagation();
-		e.preventDefault();			
-		if(e.button === 0) {
-			document.addEventListener('mouseup', this.__onMouseUp);
-			document.addEventListener('mousemove', this.__dbMouseMove);
+		e.preventDefault();	
 
-			page_offset = this.getDOMNode().getBoundingClientRect();
-			
-			el = props.viewport.element();
+		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 
+		document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
+		document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
+
+		page_offset = this.getDOMNode().getBoundingClientRect();
+		
+		el = props.viewport.element();
+
+		
+		this.setState({
+			left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+			top: page_offset.top - el.offset().top - el[0].scrollTop,
+			mouse_down: true,
+			selected: true,
+			element: el.parent(),
+			origin_x: e.pageX,
+			origin_y: e.pageY,
+			offset_x: el.offset().left + props.iscroll.grid.x,
+			offset_y: el.offset().top + props.iscroll.grid.y,
+			element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
+			element_y: page_offset.top
+		},
+		function() {
+			props.iscroll.grid.disable();
+			props.iscroll.timeline.disable();
 			
-			this.setState({
-				left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
-				top: page_offset.top - el.offset().top - el[0].scrollTop,
-				mouse_down: true,
-				selected: true,
-				element: el.parent(),
-				origin_x: e.pageX,
-				origin_y: e.pageY,
-				offset_x: el.offset().left + props.iscroll.grid.x,
-				offset_y: el.offset().top + props.iscroll.grid.y,
-				element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
-				element_y: page_offset.top
-			},
-			function() {
-				props.iscroll.grid.disable();
-				props.iscroll.timeline.disable();
-				
-			});
-		}
+		});
+		
 	},
 	__onMouseMove: function(e) {
 		e.stopPropagation();
 		e.preventDefault();
+		
+		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 
 		var state 		= this.state,
 			props 		= this.props,
@@ -112,6 +116,11 @@ var GridRowItemDrag = React.createClass({
 		}
 	},
 	__onMouseUp: function(e) {
+
+		e.stopPropagation();
+		e.preventDefault();
+		
+		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 		var state = this.state, 
 			props = this.props,
 			item = this.state.currentDragItem,
@@ -120,12 +129,11 @@ var GridRowItemDrag = React.createClass({
 			x_origin = 				(display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			px_per_int = 			display.px_per_int,
 			px_per_ms = 			display.px_per_ms;
-		document.removeEventListener('mouseup', this.__onMouseUp);
-		document.removeEventListener('mousemove', this.__dbMouseMove);
+
+		document.removeEventListener (this.mouseLeavingEvent, this.__onMouseUp);
+		document.removeEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 		var page_offset = this.getDOMNode().getBoundingClientRect();
-		
-		e.stopPropagation();
-		e.preventDefault();
+
 		/*if(!props.edit.active && !props.edit.passive){
 			return;
 		}*/
@@ -167,7 +175,7 @@ var GridRowItemDrag = React.createClass({
 
 				item.arrival = arrival;
 				var diff = item.arrival - prevArrival;
-				item.departure = item.departure + diff;				
+				item.departure = item.departure + diff;							
 				props.__onDragStop(e, state.left, state.top, item);				
 				
 			});
@@ -208,7 +216,12 @@ var GridRowItemDrag = React.createClass({
 		}
 	},
 	componentDidMount: function() {
-		this.getDOMNode().addEventListener('mousedown', this.__onMouseDown);
+		this.isTouchEnabled 	= 'ontouchstart' in window;
+		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart': 'mousedown';
+		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
+		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
+		
+		this.getDOMNode().addEventListener(this.mouseStartingEvent, this.__onMouseDown);
 	},
 	getInitialState: function() {
 		return {

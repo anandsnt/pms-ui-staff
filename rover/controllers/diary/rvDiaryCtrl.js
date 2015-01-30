@@ -117,7 +117,7 @@ sntRover
 		minDate.setDate(minDate.getDate() - 1);
 		$scope.dateOptions = {
 	    	showOn: 'button',
-	    	dateFormat: $rootScope.dateFormat,
+	    	//dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
 	    	minDate: minDate,
 	    	yearRange: '-0:',
@@ -409,7 +409,10 @@ sntRover
 				    		if(!row_item_data.reservation_primary_guest_full_name) {
 				    			$scope.gridProps.edit.originalItem.account_name = row_item_data.company_card_name ? row_item_data.company_card_name : row_item_data.travel_agent_name;				    			
 				    		}
-				    		
+				    		//restricing from choosing the date less than busines date
+				    		var minDate = new tzIndependentDate($rootScope.businessDate);
+							$scope.dateOptions.minDate = minDate;
+
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
 	    					$scope.gridProps.availability.resize.last_departure_time = null;				    		
 				    		$scope.renderGrid();
@@ -546,7 +549,9 @@ sntRover
 						$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);		
 					}
 					else{
-
+						//reseting to min date
+						$scope.dateOptions.minDate = null;
+						
 						if(originalRow.id !== row_data.id) {
 							saveReservation(row_item_data, row_data);
 						}
@@ -948,6 +953,8 @@ sntRover
 	    	data = $scope.gridProps.data;
 	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);	    	
 
+	    	//reseting to min date
+    		$scope.dateOptions.minDate = null;
 
 	    	$scope.errorMessage = '';
 	    	$scope.resetEdit();
@@ -1234,7 +1241,10 @@ sntRover
 			filter = props.filter,
 			arrival_ms = filter.arrival_date.getTime(),
 			time_set;
-		if(newValue !== oldValue) {	
+
+		if(newValue.getFullYear() !== oldValue.getFullYear() || 
+			newValue.getMonth() !== oldValue.getMonth() ||
+			newValue.getDay() !== oldValue.getDay()) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
 
             $scope.gridProps.display = util.deepCopy(time_set.display);
