@@ -88,30 +88,29 @@
 				<div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting }" ng-iscroll="report-details-scroll">
 					<div class="wrapper">
 						<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport }">
-	
-									<!-- Reports table header -->
-									<thead ng-if="!!headers.length">
-										<tr>
-											<!-- <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}" ng-class="{ 'align-right' : $first }">{{ item.value }}</th> -->
-											<!-- Fix for CICO-10246  -->
-											<th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}">{{ item.value }}</th>
-										</tr>
-										<tr class="bottom-row" ng-if="subHeaders">
-											<th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
-										</tr>
-									</thead>
-									
-									<!-- Reports sort by header -->
-									<thead ng-if="!headers.length">
-										<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
-										"sorting-asc" when ASC sorting
-										"sorting-desc" when DESC sorting -->
-										<tr>
-											<th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
-												<span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
-											</th>
-										</tr>
-									</thead>
+								<!-- Reports table header -->
+								<thead ng-if="!!headers.length">
+									<tr>
+										<!-- <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}" ng-class="{ 'align-right' : $first }">{{ item.value }}</th> -->
+										<!-- Fix for CICO-10246  -->
+										<th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}">{{ item.value }}</th>
+									</tr>
+									<tr class="bottom-row" ng-if="subHeaders">
+										<th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
+									</tr>
+								</thead>
+								
+								<!-- Reports sort by header -->
+								<thead ng-if="!headers.length">
+									<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+									"sorting-asc" when ASC sorting
+									"sorting-desc" when DESC sorting -->
+									<tr>
+										<th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
+											<span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
+										</th>
+									</tr>
+								</thead>
 	
 								<!-- Reports table footer -->
 								<tfoot>
@@ -164,24 +163,7 @@
 								</tfoot>
 								
 								<!-- Reports table content -->
-								<tbody ng-if="!parsedApiFor">
-									<tr ng-repeat="each in results track by $index">
-										<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
-										<!-- yeah thats hard :( -->
-										<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out')}">
-											{{ item }}
-										</td>
-									</tr>
-								</tbody>
-	
-								<tbody ng-if="parsedApiFor == 'In-House Guests' || parsedApiFor == 'Departure'" ng-include="'/assets/partials/reports/rvInHouseDepartureReport.html'"></tbody>
-	
-								<tbody ng-if="parsedApiFor == 'Arrival'" ng-include="'/assets/partials/reports/rvArrivalReport.html'"></tbody>
-	
-								<tbody ng-if="parsedApiFor == 'Cancelation & No Show'" ng-include="'/assets/partials/reports/rvCancellationReport.html'"></tbody>
-	
-								<tbody ng-if="parsedApiFor == 'User Activity'" ng-include="'/assets/partials/reports/rvUserActivityReport.html'"></tbody>
-	
+								<tbody ng-include="parsedApiTemplate()"></tbody>
 						</table>
 					</div>
 				</div>

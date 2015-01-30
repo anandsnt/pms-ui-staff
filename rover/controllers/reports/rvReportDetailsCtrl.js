@@ -47,7 +47,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.parsedApiFor = undefined;
 
 
-			switch( $scope.chosenReport.title ) {
+			switch ( $scope.chosenReport.title ) {
 				case 'In-House Guests':
 				case 'Departure':
 				case 'Arrival':
@@ -61,7 +61,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasNoSorting = true;
 					break;
 
-				case 'User Activity':
+				case 'Login and out Activity':
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.isLogReport = true;
@@ -70,6 +70,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'Web Check In Conversion':
 				case 'Web Check Out Conversion':
 					$scope.isLargeReport = true;
+					break;
+			};
+
+
+			// hack to set the colspan for reports details tfoot
+			switch ( $scope.chosenReport.title ) {
+				case 'Check In / Check Out':
+				case 'Upsell':
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
+					break;
+
+				case 'Login and out Activity':
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
+					break;
+
+				case 'Web Check In Conversion':
+				case 'Web Check Out Conversion':
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
+					break;
+
+				default:
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 2;
 					break;
 			};
 
@@ -173,15 +199,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			    };
 			};
 
-
-			// hack to set the colspan for reports details tfoot - 'Check In / Check Out' or 'Upsell'
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 4 : 2;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
-
-			// hack to set the colspan for reports details tfoot - 'Web Check Out Conversion''
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.leftColSpan;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.rightColSpan;
-
 			// scroller refresh and reset position
 			refreshScroll();
 
@@ -206,6 +223,37 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.parsedApiFor = $scope.chosenReport.title;
 			$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 		};
+
+
+		$scope.parsedApiTemplate = function() {
+			var template = '';
+
+			switch ($scope.parsedApiFor) {
+				case 'In-House Guests':
+				case 'Departure':
+					template = '/assets/partials/reports/rvInHouseDepartureReport.html';
+					break;
+
+				case 'Arrival':
+					template = '/assets/partials/reports/rvArrivalReport.html';
+					break;
+
+				case 'Cancelation & No Show':
+					template = '/assets/partials/reports/rvCancellationReport.html';
+					break;
+
+				case 'Login and out Activity':
+					template = '/assets/partials/reports/rvUserActivityReport.html';
+					break;
+
+				default:
+					template = '/assets/partials/reports/rvCommonReport.html';
+					break;
+			};
+
+			return template;
+		};
+
 
 		// we are gonna need to drop some pagination
 		// this is done only once when the report details is loaded
@@ -423,7 +471,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				_eachGuest   = {},
 				_eachGuestNote = {},
 				_cancelRes   = {},
-				_customItems = [];
+				_customItems = [],
+				_uiDate      = '',
+				_uiTime      = '';
 
 			var i = j = k = l = m = n = 0;
 
@@ -431,7 +481,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.parsedApiFor == 'In-House Guests' ||
 					$scope.parsedApiFor == 'Departure' ||
 					$scope.parsedApiFor == 'Cancelation & No Show' ||
-					$scope.parsedApiFor == 'User Activity' ) {
+					$scope.parsedApiFor == 'Login and out Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					_eachItem    = angular.copy( apiResponse[i] );
@@ -440,6 +490,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					_eachNote    = {};
 					_eachGuest   = {};
 					_eachGuestNote = {};
+					_uiDate        = '';
+					_uiTime        = '';
 
 					// first check for cancel reason
 					// if so then create a custom entry
@@ -495,6 +547,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 
+					// additional date time split for 'Login and out Activity' report
+					if ( $scope.parsedApiFor == 'Login and out Activity' ) {
+						if ( !!_eachItem['date'] ) {
+							_uiDate = _eachItem['date'].split(', ')[0];
+							_uiTime = _eachItem['date'].split(', ')[1];
+							_eachItem['uiDate'] = _uiDate;
+							_eachItem['uiTime'] = _uiTime;
+						};
+					};
+
 					// since this tr won't have any (figurative) childs
 					if ( !_customItems.length ) {
 						_eachItem.trCls = 'row-break';
@@ -508,9 +570,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
 					};
 
-					// check for invalid login for 'User activity' report 
-					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID LOGIN' ) {
-						_eachItem.trCls = 'invalid';
+					// check for invalid login for 'Login and out Activity' report 
+					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID_LOGIN' ) {
+						_eachItem['action_type'] = 'INVALID LOGIN';
+						_eachItem.trCls = 'row-break invalid';
+					};
+
+					// check for no user name for 'Login and out Activity' report 
+					if ( _eachItem.hasOwnProperty('user_name') && !_eachItem['user_name'] ) {
+						_eachItem['user_name'] = 'NA';
 					};
 
 					// push '_eachItem' into '_retResult'
@@ -522,17 +590,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_retResult.push( _customItems[m] );
 					};
 				};
+
+				// dont remove yet
+				console.log( 'API reponse changed as follows: ');
+				console.log( _retResult );
 			} else {
 				_retResult = apiResponse;
 			};
 
-			// dont remove
-			console.log( 'API reponse changed as follows: ');
-			console.log( _retResult );
-
 			return _retResult;
 		};
-
 
 
     }

@@ -1,0 +1,23 @@
+
+
+	"STATIONARY":"Stationary",
+	"CUSTOMIZE":"Customize",
+	"GUEST_BILL_TITLE": "Guest Bill",
+	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
+	"HOTEL_LOGO":"Hotel Logo",
+	"SELECT_LOGO_TYPE": "Select Hotel Logo Type",
+	"SELECT_GUEST_BILL":"Select Guest Bill",
+	"SHOW_HOTEL_ADDRESS":"Show Hotel Address",
+	"CUSTOM_TEXT":"Custom Text",
+	"HEADER":"Header",
+	"FOOTER":"Footer",
+	"CUSTOM_TEXT_PLACEHOLDER":"Add custom text, hotel name / address etc",
+	"CONFIRMATION_COMMUNICATION":"Confirmation Communications",
+	"GETTING_TO_THE_HOTEL":"GETTING TO THE HOTEL",
+	"LOCATION_IMAGE":"LOCATION IMAGE",
+	"CANCELLATION" : "Cancellation",
+	"COMMUNICATIONS" : "Communications",
+	"TITLE": "Title",
+	"ENTER_TITLE": "Enter Title",
+	"CANCELLATION_TEXT" : "Cancellation text",
+	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text"
