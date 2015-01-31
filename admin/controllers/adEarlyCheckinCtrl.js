@@ -137,9 +137,9 @@ $scope.setUpDefaultUpsellLevels = function () {
 }
 
 $scope.setEarlyCheckinTimeForRates = function(){
-       $scope.upsell_rate.hours = $scope.upsellData.early_checkin_time == ""? "" : $scope.upsellData.early_checkin_time.substring(0, 2);
-       $scope.upsell_rate.minutes = $scope.upsellData.early_checkin_time == ""? "" : $scope.upsellData.early_checkin_time.substring(3, 5);
-       $scope.upsell_rate.meridiem = $scope.upsellData.early_checkin_time == ""? "AM" : $scope.upsellData.early_checkin_time.substring(6);
+       $scope.upsell_rate.hours = ($scope.upsellData.early_checkin_time == "" || $scope.upsellData.early_checkin_time == null)? "" : $scope.upsellData.early_checkin_time.substring(0, 2);
+       $scope.upsell_rate.minutes = ($scope.upsellData.early_checkin_time == "" || $scope.upsellData.early_checkin_time == null)? "" : $scope.upsellData.early_checkin_time.substring(3, 5);
+       $scope.upsell_rate.meridiem = ($scope.upsellData.early_checkin_time == "" || $scope.upsellData.early_checkin_time == null)? "AM" : $scope.upsellData.early_checkin_time.substring(6);
 }
 
 $scope.setUpUpsellWindowDataToSave = function () {
@@ -212,7 +212,7 @@ $scope.saveClick = function(){
     } 	
     // $scope.validateUpsellWindowTime();
     $scope.setUpUpsellWindowDataToSave();
-    $scope.upsellData.early_checkin_time = $scope.upsell_rate.hours + "." + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem;
+    $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours != null && $scope.upsell_rate.hours != "")?$scope.upsell_rate.hours + "." + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
    	var upsellEarlyCheckinSaveSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
        	
@@ -296,7 +296,7 @@ $scope.startWatching = function(){
             $scope.upsellWindows[0].charge = "";
             $scope.upsellWindows[0].minutes = "";
             $scope.upsellWindows[0].addon_id = "";
-        }else if($scope.upsellWindows[0].minutes == ""){
+        }else if($scope.upsellWindows[0].minutes == "" || $scope.upsellWindows[0].minutes == null){
             $scope.upsellWindows[0].minutes = "00";
         }         
    });
@@ -308,7 +308,7 @@ $scope.startWatching = function(){
             $scope.upsellWindows[1].charge = "";
             $scope.upsellWindows[1].minutes = "";
             $scope.upsellWindows[1].addon_id = "";
-        }else if($scope.upsellWindows[1].minutes == ""){
+        }else if($scope.upsellWindows[1].minutes == "" || $scope.upsellWindows[1].minutes == null){
             $scope.upsellWindows[1].minutes = "00";
         }        
    });
@@ -320,10 +320,20 @@ $scope.startWatching = function(){
             $scope.upsellWindows[2].charge = "";
             $scope.upsellWindows[2].minutes = "";
             $scope.upsellWindows[2].addon_id = "";
-        }else if($scope.upsellWindows[2].minutes == ""){
+        }else if($scope.upsellWindows[2].minutes == "" || $scope.upsellWindows[2].minutes == null){
             $scope.upsellWindows[2].minutes = "00";
         }       
    });    
+
+    $scope.$watch(function(){
+      return ($scope.upsell_rate.hours == "" ||$scope.upsell_rate.hours == null )? "": $scope.upsell_rate.hours;
+    }, function(newValue, oldValue){
+        if($scope.upsell_rate.hours == "" || $scope.upsell_rate.hours == null){
+            $scope.upsell_rate.minutes = "";
+        }else if($scope.upsell_rate.minutes == "" || $scope.upsell_rate.minutes == null){
+            $scope.upsell_rate.minutes = "00";
+        }       
+   }); 
 };
 
 
