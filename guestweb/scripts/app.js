@@ -69,7 +69,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	}
 	else{
 		// $location.path('/checkoutRoomVerification');
-		$location.path('/emailVerification');
+		$location.path('/resetPassword');
 	};
 
 	$( ".loading-container" ).hide();
