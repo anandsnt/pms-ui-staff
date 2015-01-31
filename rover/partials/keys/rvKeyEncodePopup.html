@@ -40,7 +40,16 @@
 				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
 					<em class="status icon-key" ng-class="{'success': status=='success', 'pending': status=='pending', 'error': status=='error'}">{{statusMessage}}</em>
 					<div id="print-keys">
-						<div class="entry radio-check cols-4 float">
+						<div class="entry full-width" ng-show = "keySystemVendor == 'SAFLOK_MSR'">
+			                <label for="encoder-type">Key Encoder</label>
+			                <div class="select">
+			                	<select id="encoder-type" name="encoder-type" class="placeholder" ng-model="encoderSelected" ng-change="selectedEncoder()">
+			                		<option value="" class="placeholder">Select</option>
+			                		<option value="{{item.id}}" class="placeholder" ng-repeat="item in encoderTypes" ng-selected = "encoderSelected == item.id">{{item.description}}</option>
+			                	</select>
+			                </div>
+			            </div>
+						<div class="entry radio-check">
 							<label for="keys"> {{ 'HOW_MANY_KEYS' | translate }} </label>
 
 							<label ng-repeat="i in [1,2,3,4]"  ng-class="{'checked':numberOfKeysSelected>=($index+1), 'printed' :printedKeysCount>=($index+1)}" class="only-number" >
@@ -52,7 +61,7 @@
 					
 						</div>		
 						<div class="actions float">
-							<button type="button" id="create-key" class="button " ng-class="{'grey':numberOfKeysSelected==0 , 'green': numberOfKeysSelected>=1}" ng-disabled="numberOfKeysSelected==0" ng-click="clickedPrintKey()">{{buttonText}}</button>
+							<button type="button" id="create-key" class="button " ng-class="{'grey':!isPrintKeyEnabled() , 'green': isPrintKeyEnabled()}" ng-disabled="!isPrintKeyEnabled()" ng-click="clickedPrintKey()">{{buttonText}}</button>
 							<button type="button" ng-hide="fromView=='checkin'" id="cancel" class="button blank" ng-click="closeDialog()" translate>CANCEL</button>
 							<button type="button" ng-show="fromView=='checkin'" id="cancel" class="button blank" ng-click="pressedCancel()" translate>CANCEL</button>
 						</div>

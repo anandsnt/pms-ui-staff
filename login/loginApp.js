@@ -41,6 +41,13 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  */
 	 $scope.successCallback = function(data){
 
+	 	//Clear all session storage contents. We are starting a new session.
+	 	var i = sessionStorage.length;
+	 	while(i--) {
+	 	  	var key = sessionStorage.key(i);
+	 	  	sessionStorage.removeItem(key);
+	 	}
+
 	 	localStorage.email = $scope.data.email;
 	 	if(data.token!=''){
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
