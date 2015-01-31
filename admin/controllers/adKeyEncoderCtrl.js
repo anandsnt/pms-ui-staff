@@ -71,11 +71,10 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	};
 
 	$scope.saveEncoder = function() {
-		console.log(JSON.stringify($scope.data));
+
 		var successCallbackSave = function(data) {
 			$scope.$emit('hideLoader');
 			if ($scope.isAddMode) {
-				console.log(data);
 				// To add new data to scope
 				$scope.data.push(data);
 				var l = $scope.data.length;
@@ -83,6 +82,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 				$scope.data[(l - 1)].location = $scope.encoderData.location;
 				$scope.data[(l - 1)].encoder_id = $scope.encoderData.encoder_id;
 				$scope.data[(l - 1)].enabled = $scope.encoderData.enabled;
+				$scope.reloadTable();
 			} else {				
 				//To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].description = $scope.encoderData.description;
