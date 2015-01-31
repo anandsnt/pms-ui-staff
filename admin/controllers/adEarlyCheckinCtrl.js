@@ -296,7 +296,7 @@ $scope.startWatching = function(){
             $scope.upsellWindows[0].charge = "";
             $scope.upsellWindows[0].minutes = "";
             $scope.upsellWindows[0].addon_id = "";
-        }else{
+        }else if($scope.upsellWindows[0].minutes == ""){
             $scope.upsellWindows[0].minutes = "00";
         }         
    });
@@ -308,7 +308,7 @@ $scope.startWatching = function(){
             $scope.upsellWindows[1].charge = "";
             $scope.upsellWindows[1].minutes = "";
             $scope.upsellWindows[1].addon_id = "";
-        }else{
+        }else if($scope.upsellWindows[1].minutes == ""){
             $scope.upsellWindows[1].minutes = "00";
         }        
    });
@@ -320,7 +320,7 @@ $scope.startWatching = function(){
             $scope.upsellWindows[2].charge = "";
             $scope.upsellWindows[2].minutes = "";
             $scope.upsellWindows[2].addon_id = "";
-        }else{
+        }else if($scope.upsellWindows[2].minutes == ""){
             $scope.upsellWindows[2].minutes = "00";
         }       
    });    
