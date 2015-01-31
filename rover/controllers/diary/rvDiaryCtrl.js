@@ -111,12 +111,13 @@ sntRover
 		* while reservation is moving from one date to another we have to store in some services
 		* this method is for that
 		*/
-		var storeDataForReservationMoveFromOneDateToAnother  = function (reservation, originalReservation, originalRoom) {
+		var storeDataForReservationMoveFromOneDateToAnother  = function (cur_reservation, orig_reservation, room_to, room_orig) {
 			// setting the service variables for reservation transfrer
 			rvDiarySrv.isReservationMovingFromOneDateToAnother = true;
-			rvDiarySrv.movingReservationData.reservation = reservation;
-			rvDiarySrv.movingReservationData.originalRoom = originalRoom;
-			rvDiarySrv.movingReservationData.originalReservation = originalReservation;
+			rvDiarySrv.movingReservationData.reservation = cur_reservation;
+			rvDiarySrv.movingReservationData.room_to = room_to;
+			rvDiarySrv.movingReservationData.originalRoom = room_orig;
+			rvDiarySrv.movingReservationData.originalReservation = orig_reservation;
 		};
 
 		/**
@@ -127,6 +128,7 @@ sntRover
 			// setting the service variables for reservation transfrer
 			rvDiarySrv.isReservationMovingFromOneDateToAnother = false;
 			rvDiarySrv.movingReservationData.reservation = undefined;
+			rvDiarySrv.movingReservationData.room_to = undefined;
 			rvDiarySrv.movingReservationData.originalRoom = undefined;
 			rvDiarySrv.movingReservationData.originalReservation = undefined;
 		};
@@ -550,7 +552,7 @@ sntRover
 			if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 				var resData = rvDiarySrv.movingReservationData;
 				$scope.roomXfer.current.room = originalRow = resData.originalRoom;
-				$scope.roomXfer.current.occupancy = originalOccupancy = resData.originalReservation;
+				$scope.roomXfer.current.occupancy = originalOccupancy = resData.originalReservation;				
 			}
 	    	
 		
@@ -1247,9 +1249,7 @@ sntRover
 				$_resetObj.callback();
 			} else {				
 				$scope.clearAvailability();
-				$scope.resetEdit();
-				$scope.renderGrid();	
-
+				$scope.resetEdit();					
 				//reservation trnsfr from one date to another started
 				if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 					var resData = rvDiarySrv.movingReservationData;
@@ -1269,7 +1269,7 @@ sntRover
 					$scope.gridProps.filter.arrival_time = arrival_time ? arrival_time: "00:00";
 					$scope.gridProps.filter.room_type = room_type ? room_type : "";
 				}
-
+				$scope.renderGrid();
 				$scope.$emit('hideLoader');	
 			}
 		});		
@@ -1329,7 +1329,7 @@ sntRover
 		rate_type 	= getRateType (reservation),
 		account_id  = getAccountID (reservation),
 
-		room_id 	= $scope.gridProps.currentResizeItemRow.id,
+		room_id 	= $scope.gridProps.edit.originalRowItem.id,
 		reservation_id = reservation.reservation_id;		
 
 		//forming the returning params
@@ -1372,11 +1372,13 @@ sntRover
 		switch (response_code) {
 			case "ROOM_AVAILABLE":
 				//stroing the data in service
-				var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem),
-					originalReservation = util.copyReservation ($scope.gridProps.edit.originalItem),
-					originalRoom = util.copyReservation ($scope.gridProps.edit.originalRowItem),
-					props = $scope.gridProps,
-					filter = props.filter,
+				var props = $scope.gridProps,
+					filter = props.filter,					
+					choosedReservation = util.copyReservation (props.currentResizeItem),
+					originalReservation = util.copyReservation (props.edit.originalItem),
+					originalRoom = util.copyRoom (props.edit.originalRowItem),
+					room_to = util.copyRoom (_.findWhere(props.data, {id: response.room_id})),
+					
 					hour = filter.arrival_time.split(":")[0],
 					minutes = filter.arrival_time.split(":")[1];
 					
@@ -1392,10 +1394,15 @@ sntRover
 					diff = 	res_dep_time.getTime() - res_arrival_time.getTime(),
 					end_time 	= new tzIndependentDate (start_time.getTime() + diff);				
 
+				// changing the arrival/dep as choosed in filter area
 				choosedReservation.arrival = start_time.getTime();
 				choosedReservation.departure = end_time.getTime();
 
-				storeDataForReservationMoveFromOneDateToAnother (choosedReservation, originalReservation, originalRoom);
+				//changing room the id to the id from API
+				choosedReservation.room_id = room_to.id;
+
+				storeDataForReservationMoveFromOneDateToAnother (choosedReservation, originalReservation, room_to, originalRoom);
+				
 				successParams.chosenDate.setHours (0, 0, 0);
 				$scope.gridProps.filter.arrival_date = successParams.chosenDate;
 				//$scope.$apply();
