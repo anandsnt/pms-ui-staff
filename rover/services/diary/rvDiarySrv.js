@@ -690,18 +690,18 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                         res_depature = tzIndependentDate (reservation.departure),
                                         diff = res_depature.getTime() - res_arrival.getTime(),
                                         departure_date;
-
+                                    
                                     arrival_date = tzIndependentDate (time.x_n);
                                     arrival_date.setHours (res_arrival.getHours(), res_arrival.getMinutes(), 0)
                                     
                                     departure_date = tzIndependentDate (arrival_date.getTime() + diff);
 
                                     reservation.arrival_date  = arrival_date.toComponents().date.toDateString();
-                                    reservation.arrival_time  = arrival_date.toComponents().time.toHourAndMinute();
+                                    reservation.arrival_time  = arrival_date.toComponents().time.toHourAndMinute(":", 24);
                                     reservation.arrival        = arrival_date.getTime();
                                     
                                     reservation.departure_date = departure_date.toComponents().date.toDateString();
-                                    reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute();
+                                    reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute(":", 24);
                                     reservation.departure        = departure_date.getTime();
 
                                     //2 is the index of array who is having reservations
@@ -942,6 +942,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 *   check reservation availability for another date, 
                 *   used to check the availability while transfering from
                 *   one date to another (usually more than 2days)
+                *   @param {object} with necessary params
+                *   @return {promise}
                 */
                 this.checkAvailabilityForReservationToA_Date = function (data) {
                     var params = {
