@@ -1446,6 +1446,11 @@ sntRover
 	* @param {date} date to which reservation is trying to move
 	*/
 	var dateSelectedInEditMode = function (reservation, newValue) {
+		if (this.filter.arrival_time === '') {
+			$scope.message = ['Please choose arrival time and retry'];
+			openMessageShowingPopup();
+			return;
+		}
 		var params = getReservationTransferParams (reservation, newValue)
 		var options = {
     		params: 			params,
