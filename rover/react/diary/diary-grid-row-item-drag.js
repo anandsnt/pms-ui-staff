@@ -17,6 +17,9 @@ var GridRowItemDrag = React.createClass({
 	componentWillMount: function() {
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
 	},
+	componentWillUnmount: function() {  		
+  		this.getDOMNode().removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
+  	},
 	__onMouseDown: function(e) {
 		var page_offset, el, props = this.props, state = this.state;
 		
@@ -187,7 +190,6 @@ var GridRowItemDrag = React.createClass({
 			}, function() {
 				//var data = (props.edit.passive && props.data[props.meta.id] === props.data[props.meta.id]? props.currentDragItem : props.data);
 				var data = (_.has(state, 'selected') ? props.data : props.currentDragItem);
-
 				props.iscroll.grid.enable();			
 				props.iscroll.timeline.enable();
 				props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
@@ -220,7 +222,6 @@ var GridRowItemDrag = React.createClass({
 		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart': 'mousedown';
 		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
 		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
-		
 		this.getDOMNode().addEventListener(this.mouseStartingEvent, this.__onMouseDown);
 	},
 	getInitialState: function() {

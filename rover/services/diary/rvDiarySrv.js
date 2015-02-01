@@ -686,15 +686,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 if(__this.isReservationMovingFromOneDateToAnother) {
                                     var reservation = __this.movingReservationData.reservation;
                                     var arrival_date,
-                                        res_arrival  = tzIndependentDate (reservation.arrival),
-                                        res_depature = tzIndependentDate (reservation.departure),
+                                        res_arrival  = new Date (reservation.arrival),
+                                        res_depature = new Date (reservation.departure),
                                         diff = res_depature.getTime() - res_arrival.getTime(),
                                         departure_date;
                                     
-                                    arrival_date = tzIndependentDate (time.x_n);
+                                    arrival_date = new Date (time.x_n);                                    
                                     arrival_date.setHours (res_arrival.getHours(), res_arrival.getMinutes(), 0)
                                     
-                                    departure_date = tzIndependentDate (arrival_date.getTime() + diff);
+                                    departure_date = new Date (arrival_date.getTime() + diff);
 
                                     reservation.arrival_date  = arrival_date.toComponents().date.toDateString();
                                     reservation.arrival_time  = arrival_date.toComponents().time.toHourAndMinute(":", 24);
@@ -964,8 +964,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     
                     //Webservice calling section
                     var deferred = $q.defer();
-                    //var url = '/api/hourly_availability/room';
-                    var url = '/ui/show?format=json&json_input=diary/reservationMoveAllowedToADate.json';
+                    var url = '/api/hourly_availability/room_move';
+                    //var url = '/ui/show?format=json&json_input=diary/reservationMoveAllowedToADate.json';
                     rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
                         deferred.resolve(resultFromAPI);                       
                     },function(error){
