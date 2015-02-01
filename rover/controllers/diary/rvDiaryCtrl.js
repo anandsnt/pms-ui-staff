@@ -1249,7 +1249,8 @@ sntRover
 				$_resetObj.callback();
 			} else {				
 				$scope.clearAvailability();
-				$scope.resetEdit();					
+				$scope.resetEdit();	
+				$scope.renderGrid();				
 				//reservation trnsfr from one date to another started
 				if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 					var resData = rvDiarySrv.movingReservationData;
@@ -1269,7 +1270,7 @@ sntRover
 					$scope.gridProps.filter.arrival_time = arrival_time ? arrival_time: "00:00";
 					$scope.gridProps.filter.room_type = room_type ? room_type : "";
 				}
-				$scope.renderGrid();
+				
 				$scope.$emit('hideLoader');	
 			}
 		});		
