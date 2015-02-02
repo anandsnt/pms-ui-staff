@@ -135,6 +135,26 @@
                 }
             }
         }
+
+        &#report-update {
+			.ui-resizable-handle {
+				&.ui-resizable-s { 
+					top: auto;
+					bottom: -20px;
+                	font-size: 11px;
+                	line-height: 20px;
+                	text-align: center;
+                	text-transform: uppercase;
+                	font-weight: 600;
+                	background-image: @icons, @rcardTexture1;
+
+                	@media @highdpi {
+						background-image: @icons2x, @rcardTexture1;
+						background-size: 120px, 40px;
+					}
+				}
+			}
+		}
 	}
 
 /* jQuery UI datepicker		==============================*/
@@ -899,15 +919,16 @@
 					-moz-box-sizing: content-box; 
 					box-sizing: content-box;
 					.pull-left;
-					.calc-width(50, 40); /* %, px */
+					.calc-width(50, 40);
 
 					&.connecting { height: 260px; }
 					&.not-connected { height: 320px; }
-					&.connected { height: 420px; }
+					&.connected { height: 500px; }
 					&.completed { height: 320px; }
 				}
 
 				#room-status {
+					display: table;
 					color: @white;
 
 					.message { 
@@ -918,27 +939,22 @@
 					}
 
 					h1 {
-						display: inline-block;
-  						vertical-align: middle;
   						font-size: 30px;
 						line-height: 50px;
 						font-weight: 700;
-						
+						display: table-cell;
+						vertical-align: middle;
+
 						span { 
 							font-size: 72px;
 							font-weight: 300;
-							.show; 
+							.show;
 						}
 
-						&.icon-key { padding-top: 100px; }
-					}
-
-					&:before {
-						content: "";
-						display: inline-block;
-						height: 100%;
-						vertical-align: middle;
-						margin-right: -0.25em; /* Adjusts for spacing */
+						&.icon-key { 
+							padding-top: 110px; 
+							background-position: 50% 65px;
+						}
 					}
 
 					.number {
@@ -1007,11 +1023,25 @@
 							label:not(.only-number) { text-align: left; }
 
 							.only-number {
+								font-size: 36px;
+								font-weight: 600;
+								text-align: center;
 								.checkbox;
 								padding: 0;
+								margin: 0 10px 0 0;
 								line-height: 50px;
+								.calc-width(25, 8);
 								.pull-left;
 								.no-transition;
+
+								&:last-child { margin-right: 0; }
+
+								&.checked {
+									color: @white;
+									text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+									.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+					 				.gradient (@logoGradientEnd, @logoGradientStart);
+								}
 
 								&.printed { .gradient(@greenStart, @greenEnd); }
 							}
@@ -1023,7 +1053,10 @@
 						
 						&.not-connected { 
 							.info { color: @red; }
-							.action { margin: 0; }						
+							.action { 
+								margin: 0; 
+								padding-top: 20px;
+							}				
 						}
 						
 						&.connected { 
@@ -1039,10 +1072,7 @@
 					.key-sent { height: 340px; }
 
 					.print-key {
-						&.not-connected { 
-							.info { padding: 65px 0; }
-						}
-
+						&.not-connected,
 						&.completed { 
 							.info { padding: 65px 0; }
 						}
@@ -1054,10 +1084,7 @@
 				&.late-check-out {
 					.scan-key { height: 340px; }
 					.print-key {
-						&.not-connected { 
-							.info { padding: 95px 0; }
-						}
-
+						&.not-connected,
 						&.completed { 
 							.info { padding: 95px 0; }
 						}
@@ -1660,10 +1687,9 @@
 			}
 
 			&.diary-move {
-				width: 840px;
+				width: 880px;
 
 				.message {
-
 					.red,
 					.green {
 						font-size: 36px;
@@ -1733,7 +1759,7 @@
 							&.room { width: 120px; }
 
 							&.price { 
-								width: 80px;
+								width: 120px;
 								border-right: 0; 
 
 								&.red { color: darken(@red, 15); }
@@ -1750,13 +1776,15 @@
 
 				.actions {
 					.button {
+						padding: 0;
 						margin-bottom: 10px;
 						.pull-left;
 						.calc-width(50, 10);
 
 						&.green { margin-left: 20px; }
 
-						&.blank {
+						&.blank,
+						&.clear {
 							margin: 0 auto;
 							float: none;
 							clear: both;
@@ -1764,6 +1792,8 @@
 						}
 					}
 				}
+
+				&.room-move { width: 580px; }
 			}
 
 			/* Billing information ***/
@@ -3055,197 +3085,6 @@
 		}
 		
 		/* Deposits / Balance ***/
-    &.deposit-balance {
-      padding: 0 !important;
-      .size(640px, 920px);
-      .float;
-
-      .content-left,
-      .content-right {
-        position: relative;
-        overflow: hidden;
-        height: 100%;
-        .pull-left;
-      }
-
-      .content-left { 
-        width: 50%;
-        padding: 20px;
-        background: rgba(0,0,0,.05);
-
-        .expenses { 
-          position: relative;
-          padding-top: 20px;
-          .calc-height(100, 80);
-
-          li {
-            color: @grey3;
-                        line-height: 30px;
-                        vertical-align: middle;
-                        padding-bottom: 5px;
-                        margin-bottom: 5px;
-                        text-transform: uppercase;
-                        width: 100%;
-                        border-bottom: 1px solid rgba(0,0,0,.1);
-
-                        span {
-                            font-size: 24px;
-                            font-weight: 300;
-                            line-height: 30px;
-                            color: @textColor;
-                            .show;
-                            .pull-right;
-                        }
-
-                        &.total {
-                          color: @textColor;
-                          span { font-weight: 600; }
-
-                          &.final { 
-                            font-weight: 600; 
-                            margin-bottom: 0;
-                            padding-bottom: 0;
-                            border-bottom: 0;
-                          }
-                        }
-
-                        &.deposit,
-                        &.balance {
-                          position: absolute;
-                          left: 0;
-                          
-                          span { 
-                            font-size: 30px; 
-
-                            &.green { color: @green; }
-                              &.red { color: @red; }
-                          }
-
-                          &.deposit { bottom: 30px; }
-
-                          &.balance {
-                            bottom: 0;
-                              padding-bottom: 0;
-                              margin-bottom: 0;
-                              border-bottom: 0;
-                          }
-                        }
-                    }
-        }
-      }
-
-      .content-right {
-        position: relative;
-        width: 50%; 
-        padding: 20px;
-        .box-shadow(0 -2px 2px rgba(0,0,0,.3));
-
-        .amount {
-          float: none;
-          clear: both;
-          margin: 40px auto 0;
-          width: 200px;
-
-          &.full-width {
-            width: 100%;
-            text-align: center;
-            margin: 0 0 20px 0;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(0,0,0,.1);
-
-            input { width: 200px; }
-          }
-        }
-
-        .select-card,
-              .new-card {
-                height: 280px;
-                #fade > .in;
-                .transition;
-
-                &.hidden { #fade > .out; }
-              }
-
-              .select-card {
-                .cards-list {
-            position: relative;
-            
-            .wrapper { padding: 0 10px 0 0; }
-            .iScrollVerticalScrollbar { 
-              top: 0;
-              bottom: 0;
-              right: 0;
-            }
-
-            .active-item {
-              position: relative;
-              line-height: 50px;
-              padding: 0 10px;
-              .clickable;
-
-              > span {
-                margin-right: 10px;
-
-                &.number { width: 150px; }
-                &.date { width: 100px; }
-                &.name { width: 220px; margin-right: 0; }
-
-                &.primary {
-                  position: absolute;
-                  top: 0;
-                  right: 10px;
-                  margin-right: 0;
-                }
-              }
-
-              .card-logo { margin-right: 10px; }
-            }
-          }
-              }
-
-              .new-card {
-                .holder {
-            .entry {
-              width: 40%;
-
-              input {
-                &:nth-of-type(2) { margin-left: 10px; }
-              }
-
-              &.margin {
-                margin-right: 40px;
-                .calc-width(60, 40);
-              }
-
-              &.full-width { 
-                margin: 0; 
-
-                .checkbox { margin-bottom: 0; }
-              }
-            }
-          } 
-
-          &.only-new { height: 335px; }
-              }
-
-              .actions {
-          margin-top: 20px;
-          text-align: center;
-          .float;
-
-          .button {
-            display: inline-block !important;
-            width: auto !important;
-            padding: 0 40px;
-
-            &.blank { 
-              padding: 0 20px 0 0; 
-              text-align: right; 
-            }
-          }
-        }
-      }
-    }
 
 
 /* 6. IE

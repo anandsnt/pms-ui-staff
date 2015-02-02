@@ -529,8 +529,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         });
 
         $scope.checkNightly = function(selectedSet, hour) {
-            if (!!selectedSet.dawn.hh && !!selectedSet.dawn.hh && !!selectedSet.dusk.hh && !!selectedSet.dusk.hh) {
-
+             if (!selectedSet.dawn.hh || !selectedSet.dusk.hh || (selectedSet.dusk.hh == selectedSet.dawn.hh && selectedSet.dusk.mm == selectedSet.dawn.mm && selectedSet.dawn.am == selectedSet.dusk.am)){
+                return false;
+            } else if (!!selectedSet.dawn.hh && !!selectedSet.dawn.hh && !!selectedSet.dusk.hh && !!selectedSet.dusk.hh) {
+                
                 var dawn = selectedSet.dawn.am == 'AM' ? parseInt(selectedSet.dawn.hh) : (parseInt(selectedSet.dawn.hh) + 12) % 24;
                 var dusk = selectedSet.dusk.am == 'AM' ? parseInt(selectedSet.dusk.hh) : (parseInt(selectedSet.dusk.hh) + 12) % 24;
 
@@ -570,10 +572,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     });
                 });
                 return (nightHours.indexOf(parseInt(hour)) > -1);
-            } else {
+            }
+            else {
                 return false;
             }
-
         }
 
         $scope.collapse = function(index) {

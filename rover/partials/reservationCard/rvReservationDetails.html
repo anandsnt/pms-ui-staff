@@ -1,4 +1,5 @@
 <div ng-show="reservationDisplayStatus" role="tabpanel" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true" ng-click="clearErrorMessage()">
+	
 	<!-- Reservation header -->
 	<div class="reservation-header">
 		<div class="data">
@@ -52,7 +53,7 @@
 			<!-- Show only a label for displaying nights -->
 		</div>
 
-		 <!-- Arrival / Departure -->
+		<!-- Arrival / Departure -->
 		<div class="reservation-times" ng-class="{'late-check-out': reservationData.reservation_card.is_opted_late_checkout}" ng-show="shouldShowTimeDetails"> <!-- Add class 'late-check-out' if it's a late check out reservation -->
 			<!-- Arrival time -->
 			<div class="check-data icons icon-time time-in" ng-class="{'locked':reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT'}"> <!-- Add class 'locked' if time is not editable -->
@@ -128,39 +129,55 @@
 			    </div>
 			</div>  
 		</div>
-
+		
 		<!-- Guest details -->
-		<ul class="reservation-guests" ng-show="shouldShowGuestDetails">
-			<!-- Add new guest set as hidden -->
-			<li>
-				<a class="hidden open-modal add-new-button">+ New Guest</a>
-			</li>
-			<li>
-				<span class="guest-icon">0-3</span>
-				<span class="label">Infants</span>
-				{{reservationParentData.rooms[0].numInfants}} 
-			</li>
-			<li>
-				<span class="guest-icon">3-18</span>
-				<span class="label">Children</span>
-				{{reservationParentData.rooms[0].numChildren}} 
-			</li>
-			<li>
-				<span class="guest-icon">18+</span>
-				<span class="label">Adults</span>
-				{{reservationParentData.rooms[0].numAdults}} 
-			</li>
-			<li>
-				<span ng-if="$parent.reservationData.rooms[0].varyingOccupancy" translate>VAR_OCCUPANCY</span>
-			</li>
-		</ul>
+		<div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<span class="notice" ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
+			<ul class="guest-count">
+			    <li>
+			        <span class="guest-icon">18+</span>
+			        <span class="label">Adults</span>
+			        <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
+			    </li>
+			    <li>
+			        <span class="guest-icon">3-18</span>
+			        <span class="label">Children</span>
+			        <input name="children-count" id="children-count" type="text" ng-model="guestData.children_count" value="{{guestData.children_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
+			    </li>
+			    <li>
+			        <span class="guest-icon">0-3</span>
+			        <span class="label">Infants</span>
+			        <input name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" value="{{guestData.infants_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
+			    </li>
+			</ul>
 
+			<form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
+			    <div class="entry">
+			        <figure class="guest-image">
+			            <img src="{{guestData.primary_guest_details.image}}" alt="" />
+			            <span ng-show="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
+			        </figure>
+			        <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{guestData.primary_guest_details.first_name}}" readonly />
+			        <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{guestData.primary_guest_details.last_name}}" readonly />
+			    </div>
+			    <label for="acc1-first-name">Accompanying guests</label>
+			    
+			    <div class="entry" ng-repeat="guest in guestData.accompanying_guests_details">
+			        <figure class="guest-image">
+			            <img src="{{guest.image}}" alt="" />
+			        </figure>
+			        <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guest.first_name" value="{{guest.first_name}}" />
+			        <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" />
+			    </div>
+			    
+			</form>
+		</div>
 	</div>
 	
 
-	<div class="reservation-content scrollable check-in"  >
-		<div id="resultDetails" ng-iscroll='resultDetails' ng-iscroll-delay='50' style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
-		<div class="wrapper" >
+	<div class="reservation-content scrollable" ng-iscroll='resultDetails' ng-iscroll-delay='50'>
+		<div class="wrapper">
 			
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
@@ -188,12 +205,11 @@
 
 			<!-- Notes -->
 			<div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'"  ng-controller="rvReservationCardNotesController"></div>
-
-		</div>
 		</div>
 	</div>
+
 	<!-- Reservation actions pane -->
-	<div ng-include="'/assets/partials/reservationCard/reservationActions.html'"></div>
+	<span ng-include="'/assets/partials/reservationCard/reservationActions.html'"></span>
 </div>
 
 <div ng-include="'/assets/partials/reservationCard/reservationNoUpcoming.html'"></div>

@@ -9,62 +9,78 @@
 	.icon-no-content {
 		background-image: @iconNoContent;
 		background-repeat: no-repeat;
+		background-size: 60px;
 		margin: 0 auto;
-		.size(120px, 125px);
+		.square(60px);
 		.show;
 
-		&.icon-search { 
-			background-position: 0 0; 
+		&.icon-search { background-position: 0 0; }
+		&.icon-room { background-position: 0 -60px; }
+		&.icon-upgrades { background-position: 0 -120px; }
+		&.icon-social-lobby { background-position: 0 -170px; }
+		&.icon-messages { background-position: 0 -230px; }
+		&.icon-reviews { background-position: 0 -290px; }
+		&.icon-card { background-position: 0 -340px; }
+		&.icon-reports { background-position: 0 -400px; }
+		&.icon-cards { background-position: 0 -460px; }
+		&.icon-ok { background-position: 0 -520px; }
+		&.icon-housekeeping { background-position: 0 -575px; }
+		&.icon-rates { background-position: 0 -630px; }
+
+		@media only screen and (min-width: 600px) { 
+			background-size: 125px;
+			.size(120px, 125px); 
+
+			&.icon-search { 
+				background-position: 0 0; 
+			}
+
+			&.icon-room {
+				background-position: 0 -120px; 
+			}
+
+			&.icon-upgrades {
+				background-position: 0 -240px;
+			}
+
+			&.icon-social-lobby {
+				background-position: 0 -360px;
+			}
+
+			&.icon-messages {
+				background-position: 0 -480px;
+			}
+
+			&.icon-reviews {
+				background-position: 0 -600px;
+			}
+
+			&.icon-card {
+				background-position: 0 -720px;
+			}
+
+			&.icon-reports {
+				background-position: 0 -840px;
+			}
+
+			&.icon-cards {
+				background-position: 0 -960px;
+			}
+
+			&.icon-ok {
+				background-position: 0 -1080px;
+			}
+
+			&.icon-housekeeping {
+				background-position: 0 -1200px;
+			}
+
+			&.icon-rates {
+				background-position: 0 -1320px;
+			}
 		}
 
-		&.icon-room {
-			background-position: 0 -120px; 
-		}
-
-		&.icon-upgrades {
-			background-position: 0 -240px;
-		}
-
-		&.icon-social-lobby {
-			background-position: 0 -360px;
-		}
-
-		&.icon-messages {
-			background-position: 0 -480px;
-		}
-
-		&.icon-reviews {
-			background-position: 0 -600px;
-		}
-
-		&.icon-card {
-			background-position: 0 -720px;
-		}
-
-		&.icon-reports {
-			background-position: 0 -840px;
-		}
-
-		&.icon-cards {
-			background-position: 0 -960px;
-		}
-
-		&.icon-ok {
-			background-position: 0 -1080px;
-		}
-
-		&.icon-housekeeping {
-			background-position: 0 -1200px;
-		}
-
-		&.icon-rates {
-			background-position: 0 -1320px;
-		}
-
-		@media @highdpi {
-			background-image: @iconNoContent2x;
-			background-size: 125px, 120px;
-		}
+		@media @highdpi { background-image: @iconNoContent2x; }
 	}
 
 /* Key icons			==================================*/
@@ -445,9 +461,11 @@
 
 		&.icon-check-in-check-out { background-position: 0 5px;}
 		&.icon-upsell { background-position: 0 -25px;}
-		&.icon-late-check-out { background-position: 0 -55px;}
-		&.icon-check-out { background-position: 0 -85px;}
-		&.icon-check-in { background-position: 0 -115px;}
+		&.icon-check-out { background-position: 0 -55px;}
+		&.icon-check-in { background-position: 0 -85px;}
+		&.icon-booking { background-position: 0 -120px;}
+		&.icon-occupancy { background-position: 0 -150px;}
+		&.icon-activity { background-position: 0 -180px;}
 
 		@media @highdpi {
 			background-image: @iconReports2x;

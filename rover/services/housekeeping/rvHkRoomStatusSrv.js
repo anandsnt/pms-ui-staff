@@ -315,6 +315,22 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
+		// check if this room (number) has been assigned for todays business date
+		// http://localhost:3000/house/search.json?query=206&date=2014-12-11
+		this.checkRoomAssigned = function(params) {
+			var url = "/house/search.json";
+			var deferred = $q.defer();
+
+			BaseWebSrvV2.getJSON(url, params)
+				.then(function(response) {
+					deferred.resolve(response);
+				}, function(response) {
+					deferred.reject(response);
+				});
+
+			return deferred.promise;
+		};
+
 		// fetch list of all employees with a worksheet for each work type
 		this.fetchActiveWorksheetEmp = function() {
 			var url = "/api/work_sheets/active";
@@ -612,6 +628,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 				}
 			}
 		};
+		// exposing the method to service
+		this.calculateAssignedStaff = calculateAssignedStaff;
 
 		// calculte the OO/OS title
 		// in future the internal check may become common - to check only 'room_reservation_hk_status'

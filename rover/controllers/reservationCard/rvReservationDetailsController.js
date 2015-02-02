@@ -141,7 +141,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
 			}
+			
+			// CICO-12454: Upon close the guest tab - save api call for guest details for standalone
+			if(!$scope.shouldShowGuestDetails && $scope.isStandAlone){
+				$scope.$broadcast("UPDATEGUESTDEATAILS");
+			}
 		};
+
+		$scope.$on("OPENGUESTTAB", function(e) {
+			$scope.toggleGuests();
+		});
 
 		$scope.shouldShowTimeDetails = false;
 		$scope.toggleTime = function() {
@@ -273,6 +282,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				swipedCardData.swipeFrom = "depositBalance";
 			} else if ($scope.isCancelReservationPenaltyOpened) {
 				swipedCardData.swipeFrom = "cancelReservationPenalty";
+			} else if ($scope.isStayCardDepositScreenOpened) {
+				swipedCardData.swipeFrom = "stayCardDeposit";
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
 			} else {
@@ -478,8 +489,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty") {
+				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
 					$scope.openPaymentDialogModal(passData, paymentData);
+				} else if(swipedCardDataToRender.swipeFrom == "stayCardDeposit") {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
 				} else if (swipedCardDataToRender.swipeFrom == "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 				} else {

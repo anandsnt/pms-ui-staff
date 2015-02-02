@@ -16,4 +16,5 @@
 //= require_tree ../guestweb/checkoutnow
 //= require_tree ../guestweb/checkin
 //= require_tree ../guestweb/ccAndRoom/Yotel
+//= require_tree ../guestweb/preCheckin
 

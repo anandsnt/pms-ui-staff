@@ -2,7 +2,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter) {
 
 		// smart switch btw edit reservation flow and create reservation flow
-		if ($scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId) {
+		if ( !!$state.params && $state.params.isFromChangeStayDates ) {
+			$rootScope.setPrevState = {
+				title: 'Stay Dates',
+				name: 'rover.reservation.staycard.changestaydates'
+			}
+		} else if( $scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId ) {
 			$rootScope.setPrevState = {
 				title: $filter('translate')('STAY_CARD'),
 				name: 'rover.reservation.staycard.reservationcard.reservationdetails',

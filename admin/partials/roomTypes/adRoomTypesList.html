@@ -5,13 +5,13 @@
 			<h2> {{ 'ROOM_TYPES' | translate }} </h2>
 			<span class="count"> ({{data.room_types.length}}) </span>
 			<a id="import-rooms" class="action import" ng-click="importFromPms($event)" ng-show="data.is_import_available">{{ 'IMPORT_FROM_PMS' | translate }}</a>
-			<a id="add-rooms" class="action add" ng-click="addNewRoomType()" ng-hide="data.is_import_available">{{ 'ADD_NEW' | translate }}</a>
+			<a id="add-rooms" class="action add" ng-click="addNewRoomType()" >{{ 'ADD_NEW' | translate }}</a>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 			<div id="new-form-holder"></div>
-			<span id="new-form-holder" class="grid" ng-show="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
+			<span id="new-form-holder" class="grid" ng-if="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
 			<table id="brands" class="grid " ng-table="tableParams" template-pagination="nil">
 				<thead>
 					<tr>
