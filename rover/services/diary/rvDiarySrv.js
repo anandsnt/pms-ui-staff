@@ -681,7 +681,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
-
                                 //if there is any reservation transfter initiated from one day to another
                                 if(__this.isReservationMovingFromOneDateToAnother) {
                                     var reservation = __this.movingReservationData.reservation;
@@ -703,7 +702,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     reservation.departure_date = departure_date.toComponents().date.toDateString();
                                     reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute(":", 24);
                                     reservation.departure        = departure_date.getTime();
-
                                     //2 is the index of array who is having reservations
                                     var isReservationAlreadyInList = _.findWhere (data_array[2].reservations, 
                                                                     {reservation_id: reservation.reservation_id});

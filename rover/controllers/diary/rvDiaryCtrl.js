@@ -87,7 +87,9 @@ sntRover
 			
 			if (!isOnEditMode) {
 				$scope.gridProps.filter.arrival_date = going_date;
-				$scope.$apply();
+				if(!$scope.$$phase) {
+					$scope.$apply();
+				}				
 				return true;
 			}
 			
@@ -1127,10 +1129,8 @@ sntRover
 		
 		start 		= new Date(this.currentResizeItem.arrival).toComponents().date.toDateString(),
 		end 		= new Date(this.currentResizeItem.departure).toComponents().date.toDateString(),
-		
-		rate_type 	= ( this.currentResizeItem.travel_agent_id == null || this.currentResizeItem.travel_agent_id == '') && 
-					( this.currentResizeItem.company_card_id == null || this.currentResizeItem.company_card_id == '') ? 'Standard': 'Corporate',
-		account_id  = rate_type == 'Corporate' ? (this.currentResizeItem.travel_agent_id ? this.currentResizeItem.travel_agent_id : this.currentResizeItem.company_card_id) : undefined,
+		rate_type 	= getRateType (this.currentResizeItem),
+		account_id  = getAccountID (this.currentResizeItem),		
 
 		room_id 	= this.currentResizeItemRow.id,
 		reservation_id = this.currentResizeItem.reservation_id,
@@ -1232,7 +1232,6 @@ sntRover
 		$scope.errorMessage = '';
 		rvDiarySrv.callOccupancyAndAvailabilityCount(start_date, end_date)
 		.then(function(data){
-
 			$scope.gridProps.data = data.room;
 
     		$scope.gridProps.stats = data.availability_count;
@@ -1254,8 +1253,9 @@ sntRover
 				$scope.renderGrid();				
 				//reservation trnsfr from one date to another started
 				if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
+					
 					var resData = rvDiarySrv.movingReservationData;
-					var reservation_id = resData.reservation.reservation_id;					
+					var reservation_id = resData.reservation.reservation_id;				
 					switchToEditMode (reservation_id);					
 					$scope.gridProps.edit.originalItem = resData.originalReservation;
 					$scope.gridProps.edit.originalRowItem = resData.originalRoom;
@@ -1370,22 +1370,28 @@ sntRover
 	*/
 	var successCallBackOfDateSelectedInEditMode = function (response, successParams) {
 		response = response.availability;
-		var response_code = response.response_code;
+		var response_code = response.response_code,
+			old_props = successParams.oldGridProps;
 
 		switch (response_code) {
 			case "ROOM_ROOM_TYPE_AVAILABLE":
-				doOperationIfValidMove (response, successParams);
+				doOperationIfValidMove (old_props, response, successParams);
 				break;
 			case "ROOM_DIFF_ROOM_TYPE_AVAILABLE":
 				$scope.message = [response.response_message];
-				//defining the callback for Ok button on msg box
-				$scope.callBackAfterClosingMessagePopUp = function () {
-					doOperationIfValidMove (response, successParams);
-					$scope.callBackAfterClosingMessagePopUp = undefined;
-				};
 				openMessageShowingPopup();
-
-				break;				
+				doOperationIfValidMove (old_props, response, successParams);
+				break;	
+			case "ROOM_ROOM_TYPE_DIFF_AVAILABLE":
+				$scope.message = [response.response_message];
+				openMessageShowingPopup();
+				doOperationIfValidMove (old_props, response, successParams);
+				break;	
+			case "NOT_AVAILABLE":
+				$scope.message = [response.response_message];
+				openMessageShowingPopup();
+				break;					
+						
 			default:
 				break;
 		};
@@ -1396,9 +1402,9 @@ sntRover
 	* @param {object} API response
 	* @param {object} success params
 	*/
-	var doOperationIfValidMove = function (api_response, successParams) {
+	var doOperationIfValidMove = function (old_props, api_response, successParams) {
 		//stroing the data in service
-		var props = $scope.gridProps,
+		var props = old_props,
 			filter = props.filter,					
 			choosedReservation = util.copyReservation (props.currentResizeItem),
 			originalReservation = util.copyReservation (props.edit.originalItem),
@@ -1409,8 +1415,9 @@ sntRover
 			
 		//changing the arrival & departure time of chosen reservation
 		var start_time 	= new Date (choosedReservation.arrival);
-		start_time.setHours (hour, minutes)
-		
+		start_time.setHours (hour, minutes);
+
+
 		// finding the difference of actual arrival & departure, 
 		// will use this to calculate departure
 		// from newly formed arrival time
@@ -1425,7 +1432,6 @@ sntRover
 
 		//changing room the id to the id from API
 		choosedReservation.room_id = room_to.id;
-
 		storeDataForReservationMoveFromOneDateToAnother (choosedReservation, originalReservation, room_to, originalRoom);
 		
 		// we always wanted to keep the hours & minute as zero as 
@@ -1433,7 +1439,7 @@ sntRover
 		successParams.chosenDate.setHours (0, 0, 0);
 		// so we can change the arrival date inorder to show diary against new date
 		$scope.gridProps.filter.arrival_date = successParams.chosenDate;				
-		if(!$scope.$$phase) {
+		if(!$scope.$$phase) {	
 			$scope.$apply();
 		}
 	};
@@ -1457,7 +1463,8 @@ sntRover
     		successCallBack: 	successCallBackOfDateSelectedInEditMode,	 
     		failureCallBack: 	failureCallBackOfSelectDateInEditMode,
     		successCallBackParameters:{
-				chosenDate : newValue,				
+				chosenDate : newValue,
+				oldGridProps: util.deepCopy ($scope.gridProps),	
 	    	}      		
 	    }
 	    $scope.callAPI(rvDiarySrv.checkAvailabilityForReservationToA_Date, options);
@@ -1471,13 +1478,11 @@ sntRover
 		var props = $scope.gridProps,
 			filter = props.filter,
 			arrival_ms = filter.arrival_date.getTime(),
-			time_set;
-
+			time_set;		
 		if(newValue.getFullYear() !== oldValue.getFullYear() || 
 			newValue.getMonth() !== oldValue.getMonth() ||
 			newValue.getDay() !== oldValue.getDay()) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
-
             $scope.gridProps.display = util.deepCopy(time_set.display);
 	    	
 			callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
