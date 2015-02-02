@@ -3,19 +3,19 @@
 
     <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
     <div class="statistics-headings">
-        <div class="scrollable">
+        <div class="scrollable" ng-iscroll="leftPanelScroll" style="height:300px">
             <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
             <ul class="wrapper">
-                <li class="main-heading">{Hotel Name}</li>
+                <li class="main-heading">{{tabularData.hotelName}}</li>
                 <!-- Add class "double-row" if showing variance or last year -->
                 <li>Available Rooms</li>
                 <li>Occupied Rooms</li>
                 <li>Complimentary Rooms</li>
                 <li>Occupied Rooms (Excl. Comp.)</li>
 
-                <li><em>{Market Code Title}</em>
+                <li ng-repeat="market in tabularData.markets"><em>{{market.name}}</em>
                 </li>
-                .. repeat for all market codes
+                <!-- .. repeat for all market codes -->
 
                 <li><strong>Total Occ.</strong>
                 </li>
@@ -28,14 +28,14 @@
                 <li>ADR (Incl. Comp.)</li>
                 <li>ADR (Excl. Comp.)</li>
 
-                <li><em>{Market Title}</em>
+                <li ng-repeat="market in tabularData.markets"><em>{{market.name}}</em>
                 </li>
-                .. repeat for all markets
+                <!-- .. repeat for all markets -->
 
 
-                <li><em>{Charge Group Title}</em>
+                <li ng-repeat="chargeCode in tabularData.chargeCodes"><em>{{chargeCode.name}}</em>
                 </li>
-                ... repeat for all charge group titles
+                <!-- ... repeat for all charge group titles -->
 
                 <li><strong>Total Revenue</strong>
                 </li>
