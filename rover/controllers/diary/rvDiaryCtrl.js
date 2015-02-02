@@ -1479,6 +1479,7 @@ sntRover
 			filter = props.filter,
 			arrival_ms = filter.arrival_date.getTime(),
 			time_set;		
+		$scope.$emit('hideLoader');
 		if(newValue.getFullYear() !== oldValue.getFullYear() || 
 			newValue.getMonth() !== oldValue.getMonth() ||
 			newValue.getDay() !== oldValue.getDay()) {	
@@ -1498,7 +1499,6 @@ sntRover
     	var _sucessCallback = function(propertyTime) {
 	    	var today = new tzIndependentDate( $rootScope.businessDate );
 			today.setHours(0, 0, 0);
-
 	    	$_resetObj = util.correctTime(today.toComponents().date.toDateString().replace(/-/g, '/'), propertyTime);
 			$_resetObj.callback = function() {
 				$scope.gridProps.filter.arrival_time = '';
@@ -1518,6 +1518,9 @@ sntRover
 	    		'x_n'      : today,
 	    		'x_origin' : $_resetObj.start_date
 	    	};
+			if(!$scope.$$phase) {	
+				$scope.$apply();
+			}	    	
     	};
 
 
