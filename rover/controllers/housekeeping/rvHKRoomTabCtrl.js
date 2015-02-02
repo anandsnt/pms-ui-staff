@@ -260,6 +260,21 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			}
 		}, datePickerCommon);
 
+		$scope.selectDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				$scope.onViewDateChanged();
+				if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")])
+					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;
+				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
+				$('#ui-datepicker-overlay').off('click').remove();
+			},
+			beforeShowDay: $scope.setClass,
+			onChangeMonthYear: function(year, month, instance) {
+				$scope.updateCalendar(year, month);
+			}
+		}, datePickerCommon);
+
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -267,7 +282,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 
 		$scope.update = function() {
-			var _error = function() {
+			var _error = function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 				if ($scope.$parent.myScroll['room-tab-scroll'] && $scope.$parent.myScroll['room-tab-scroll'].scrollTo)
@@ -339,7 +354,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				ngDialog.open({
 					template: '/assets/partials/housekeeping/rvHkServiceStatusDateSelector.html',
 					controller: controller,
-					className: 'ngdialog-theme-default single-date-picker',
+					className: 'ngdialog-theme-default single-date-picker service-status-date',
 					scope: $scope
 				});
 
@@ -384,6 +399,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 
 		$scope.onViewDateChanged = function() {
+			// $scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd')
 			$scope.updateService.room_service_status_id = $scope.serviceStatus[$scope.updateService.selected_date].id;
 			// The $_originalStatusId flag is used to make sure that the same change is not sent back to the server -- to many flags whew...
 			$_originalStatusId = $scope.updateService.room_service_status_id;
