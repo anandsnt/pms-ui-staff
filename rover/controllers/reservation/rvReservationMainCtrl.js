@@ -1755,7 +1755,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     };
 
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
-                    $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
+                    $scope.reservation.reservation_card.departure_date = $scope.reservationData.departureDate;
 
 
 
