@@ -49,15 +49,15 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
 
     //Params for zest mobile and desktop screens
-    if($attrs.hasOwnProperty('is_password_reset')){
-    	$rootScope.is_password_reset = $attrs.is_password_reset;
-    	$rootScope.user_token = $attrs.token;
+    if($attrs.hasOwnProperty('isPasswordReset')){
+    	$rootScope.isPasswordResetView = $attrs.isPasswordReset;
+    	$rootScope.accessToken = $attrs.token;
     	$rootScope.user_id = $attrs.id;
     	$rootScope.user_name = $attrs.email;
     }
     
 
- 	if($attrs.accessToken != "undefined")
+ 	if(typeof $attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
 
 	//navigate to different pages
@@ -77,12 +77,11 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
   	else if($rootScope.isCheckedout)	{
 		$location.path('/checkOutStatus');	
 	}
-	else if($rootScope.hasOwnProperty('is_password_reset')){		
-		var path = $rootScope.is_password_reset? '/resetPassword' : '/emailVerification';
-		$location.path(path);
+	else if($rootScope.hasOwnProperty('isPasswordResetView')){		
+		var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
+		$location.path(path);		
 	}else{
-         $location.path('/emailVerification');
-		// $location.path('/checkoutRoomVerification');
+         $location.path('/checkoutRoomVerification');
 	};
 
 	$( ".loading-container" ).hide();
