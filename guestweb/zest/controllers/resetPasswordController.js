@@ -3,7 +3,10 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
 
 	$scope.pageValid = true;
 	$scope.showBackButtonImage = false;
-
+    $scope.data = {};
+    $scope.data.newPassword = "";
+    $scope.data.confirmPassword = "";
+    $scope.isPasswordReset = false;
 	
 
 
