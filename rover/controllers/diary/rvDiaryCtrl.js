@@ -431,6 +431,12 @@ sntRover
 	    						'x_n'      : x_n.getTime(),
 	    						'x_origin' : x_origin
 	    					};
+
+	    					//setting arrival_time as selected one reservation
+	    					var new_arrival_time = new Date (row_item_data.arrival);
+	    					new_arrival_time = new_arrival_time.toComponents().time.toHourAndMinute(":", 24);
+	    					$scope.gridProps.filter.arrival_time = new_arrival_time;
+	    					
 	    					//if guest name is not found, we have to show account name
 				    		if(!row_item_data.reservation_primary_guest_full_name) {
 				    			$scope.gridProps.edit.originalItem.account_name = row_item_data.company_card_name ? row_item_data.company_card_name : row_item_data.travel_agent_name;				    			
@@ -441,6 +447,8 @@ sntRover
 
 				    		$scope.gridProps.availability.resize.last_arrival_time = null;
 	    					$scope.gridProps.availability.resize.last_departure_time = null;				    		
+
+
 				    		$scope.renderGrid();
 				    		if(!$scope.$$phase) {
 				    			$scope.$apply();
