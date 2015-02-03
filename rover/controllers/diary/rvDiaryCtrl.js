@@ -1394,9 +1394,11 @@ sntRover
 			case "OOO":
 				$scope.message = [response.response_message];
 				openMessageShowingPopup();
+				doOperationIfValidMove (old_props, response, successParams);
 			case "BLOCKED":
 				$scope.message = [response.response_message];
-				openMessageShowingPopup();			
+				openMessageShowingPopup();	
+				doOperationIfValidMove (old_props, response, successParams);		
 			default:
 				break;
 		};
