@@ -1391,7 +1391,12 @@ sntRover
 				$scope.message = [response.response_message];
 				openMessageShowingPopup();
 				break;					
-						
+			case "OOO":
+				$scope.message = [response.response_message];
+				openMessageShowingPopup();
+			case "BLOCKED":
+				$scope.message = [response.response_message];
+				openMessageShowingPopup();			
 			default:
 				break;
 		};
