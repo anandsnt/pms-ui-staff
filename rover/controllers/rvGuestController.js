@@ -43,7 +43,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					if (searchData.travelAgent.id != null) {
 						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
 							if ($stateParams.reservation && $stateParams.reservation != 'HOURLY' && $stateParams.mode && $stateParams.mode != 'OTHER') {
-								$scope.switchCard('travel-agent-card');
+<!-- ngInclude: '/assets/partials/cards/header/guestCardHeader.html' -->								$scope.switchCard('travel-agent-card');
 							}
 						}
 						$scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
@@ -234,6 +234,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var that = this;
 			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
+				console.log(" Success");
+				console.log(data);
 				$scope.$emit('hideLoader');
 				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
@@ -249,6 +251,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
+				console.log(data);
 				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
 			}
 		};
