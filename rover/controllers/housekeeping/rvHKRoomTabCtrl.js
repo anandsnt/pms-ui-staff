@@ -181,8 +181,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				var _params = {
 					room_id: $scope.roomDetails.id,
 					inServiceID: 1,
-					from_date: $scope.updateService.selected_date,
-					to_date: $scope.updateService.selected_date
+					from_date: $scope.updateService.from_date,
+					to_date: $scope.updateService.to_date
 				};
 
 				var _callback = function() {
@@ -192,6 +192,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 					// change the original status
 					$_originalStatusId = $scope.updateService.room_service_status_id;
 					$_updateRoomDetails('room_reservation_hk_status', 1);
+					$scope.updateCalendar();
 				};
 
 				// only "put" in service if original status was not inService
