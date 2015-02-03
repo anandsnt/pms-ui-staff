@@ -9,18 +9,18 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Nikko/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Nikko/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/Nikko/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -81,7 +81,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Nikko/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });

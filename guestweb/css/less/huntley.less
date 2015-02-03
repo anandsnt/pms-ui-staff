@@ -23,8 +23,11 @@ body {
 	}
 }
 
-.blue-bg,.link-btn.with-bg{
+.blue-bg,.link-btn.with-bg,.now-later-options .accept-charges-button{
 	background:@blue-bg !important;	
+}
+.viewbill-toggle a,.viewbill-toggle a:hover,.viewbill-toggle a:focus{
+	color:#6AD3F1 !important;	
 }
 .link-btn.with-bg{
 	padding-top:10px;
@@ -85,6 +88,9 @@ border-bottom:1px solid;
 .checkoutlater,.checkin{
 	color:@white;
 }
+.final-msg-container{
+	padding-bottom:10%;
+}
 
 @media screen and (max-width: 900px) {
  	.pre-checkin-container-padding{
@@ -95,6 +101,9 @@ border-bottom:1px solid;
 	}
 	.lightcontent, .checkout-status{
 		font-size:26px !important;
+	}
+	.desktop-only{
+		display:none;
 	}
 }
 
@@ -107,6 +116,9 @@ border-bottom:1px solid;
 	}
 	.headtext {
     	font-size: 44px !important;
+	}
+	.mobile-only{
+		display:none;
 	}
 }
 
@@ -126,6 +138,27 @@ border-bottom:1px solid;
 		margin:0 auto;
 		width: 70% !important;
 	}
+	.final-msg{
+		font-size:30px !important;
+		padding:0  10% !important;
+	}
+
+	.social-links{
+		width:80%;
+		margin:0 auto;
+		td{
+			width:20%;
+		}
+		.social-link-second-row{
+			text-align:right;
+		}
+		.social-heading{
+			text-align:center;
+			padding:15px 0 10px;
+			font-size:20px;
+		}
+
+	}
 }
 
 @media screen and (min-width:480px){
@@ -133,6 +166,31 @@ border-bottom:1px solid;
 		p{
 			font-size:16px !important;
 		}
+	}
+	.social-links{
+	    width:24%;
+		margin:0 auto;
+		tr:nth-child(2){
+			td{
+				width:10%;
+			}
+		}
+		td{
+			width:30%;
+		}
+		.social-link-second-row{
+			text-align:right;
+		}
+
+		.social-heading{
+			text-align:center;
+			padding:15px 0 10px;
+			font-size:20px;
+		}
+
+	}
+	.final-msg-container{
+		padding-bottom:3%;
 	}
 }
 
