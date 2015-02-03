@@ -1,0 +1,139 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#000;
+@blue-bg:#6AD3F1;
+
+body {
+	background: none !important;
+}
+
+.room-number-message{
+	.lightcontent{
+		font-size:15px !important;	
+	}
+}
+
+
+.cabin_number_field{
+	width:60% !important;	
+	text-align: left !important;
+	p{
+		margin-bottom: 0;
+	}
+}
+
+.blue-bg,.link-btn.with-bg{
+	background:@blue-bg !important;	
+}
+.link-btn.with-bg{
+	padding-top:10px;
+	padding-bottom:10px;
+	width:50% !important;	
+}
+
+.shadow {
+	background: none repeat scroll 0 0 #efefef;
+   -moz-box-shadow:    inset 2px 2px 3px #d1d1d1;
+   -webkit-box-shadow: inset 2px 2px 3px #d1d1d1;
+    box-shadow:         inset 2px 2px 3px #d1d1d1;
+    border: medium none !important;
+}
+
+.room-input{
+	height:50px !important;
+}
+
+
+.room-verification-continue{
+	min-width:60% !important;	
+}
+
+.checkouttime1 {
+	background: #83e1fb;
+
+}
+
+.checkouttime2 {
+	background: #69d2f0;
+
+}
+
+.checkouttime3 {
+	background:#47c3e7;
+}
+.lightcontent, .checkout-status,.checkout-later-back-button,.leadtext,.headtext,.foot-text,.no-thanks-text{
+	color:@black !important;
+}
+a:hover,a:focus{
+	color:lightgrey !important;
+}
+.no-thanks-text{
+border-bottom:1px solid;
+}
+
+.lightcontent.chekout-time{
+	padding-top:10%;
+	padding-bottom:10%;
+}
+.checkoutnow{
+	background:#69D2F0;
+}
+.checkoutlater{
+	background:#83E1FB;
+}
+.checkoutlater,.checkin{
+	color:@white;
+}
+
+@media screen and (max-width: 900px) {
+ 	.pre-checkin-container-padding{
+ 		padding:0% 5% !important;
+ 	}
+ 	.headtext {
+    	font-size: 30px !important;
+	}
+	.lightcontent, .checkout-status{
+		font-size:26px !important;
+	}
+}
+
+
+
+
+@media screen and (min-width: 900px) {
+	.lightcontent.chekout-time{
+		padding-top:5%;
+	}
+	.headtext {
+    	font-size: 44px !important;
+	}
+}
+
+@media screen and (max-width:480px){
+	.cabin_number_field,.room-verification-continue{
+		width:80% !important;	
+	}
+	.cabin_number_field{
+		p{
+			font-size:12px !important;
+		}
+	}
+	.lightcontent, .checkout-status{
+		font-size:16px !important;
+	}
+	.link-btn.with-bg{
+		margin:0 auto;
+		width: 70% !important;
+	}
+}
+
+@media screen and (min-width:480px){
+	.cabin_number_field{
+		p{
+			font-size:16px !important;
+		}
+	}
+}
+
+	
