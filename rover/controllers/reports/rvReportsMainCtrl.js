@@ -165,6 +165,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenIncludeCancelled',
 			'chosenIncludeVip',
 			'chosenIncludeNoShow',
+			'chosenShowGuests',
 			'chosenIncludeRoverUsers',
 			'chosenIncludeZestUsers',
 			'chosenIncludeZestWebUsers'
@@ -175,6 +176,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeCancelled',
 			'hasIncludeVip',
 			'hasIncludeNoShow',
+			'hasShowGuests',
 			'hasIncludeRoverUsers',
 			'hasIncludeZestUsers',
 			'hasIncludeZestWebUsers',
@@ -363,7 +365,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			// include user ids
-
 			if (chosenReport.hasUserFilter && chosenReport.chosenUsers && chosenReport.chosenUsers.length) {
 				params['user_ids'] = chosenReport.chosenUsers;
 			};
@@ -384,61 +385,65 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			// include notes
-			if (!!chosenReport.hasIncludeNotes) {
+			if (chosenReport.hasOwnProperty('hasIncludeNotes')) {
 				key = chosenReport.hasIncludeNotes.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeNotes;
+				params[key] = chosenReport.chosenIncludeNotes ? true : false;
 			};
 
 			// include user ids
-			if (chosenReport.hasIncludeVip) {
+			if (chosenReport.hasOwnProperty('hasIncludeVip')) {
 				key = chosenReport.hasIncludeVip.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeVip;
+				params[key] = chosenReport.chosenIncludeVip ? true : false;
 			};
 
 			// include cancelled
-			if (chosenReport.hasIncludeCancelled) {
+			if (chosenReport.hasOwnProperty('hasIncludeCancelled')) {
+
 				key = chosenReport.hasIncludeCancelled.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeCancelled;
+				params[key] = chosenReport.chosenIncludeCancelled ? true : false;
 			};
 
 			// include no show
-			if (chosenReport.hasIncludeNoShow) {
+			if (chosenReport.hasOwnProperty('hasIncludeNoShow')) {
 				key = chosenReport.hasIncludeNoShow.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeNoShow;
+				params[key] = chosenReport.chosenIncludeNoShow ? true : false;
 			};
 
 			// include rover users
-			if (chosenReport.hasIncludeRoverUsers) {
+			if (chosenReport.hasOwnProperty('hasIncludeRoverUsers')) {
 				key = chosenReport.hasIncludeRoverUsers.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeRoverUsers;
+				params[key] = chosenReport.chosenIncludeRoverUsers ? true : false;
 			};
 
 			// include zest users
-			if (chosenReport.hasIncludeZestUsers) {
+			if (chosenReport.hasOwnProperty('hasIncludeZestUsers')) {
 				key = chosenReport.hasIncludeZestUsers.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeZestUsers;
+				params[key] = chosenReport.chosenIncludeZestUsers ? true : false;
 			};
 
 			// include zest web users
-			if (chosenReport.hasIncludeZestWebUsers) {
+			if (chosenReport.hasOwnProperty('hasIncludeZestWebUsers')) {
+
 				key = chosenReport.hasIncludeZestWebUsers.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeZestWebUsers;
+				params[key] = chosenReport.chosenIncludeZestWebUsers ? true : false;
 			};
 
 			// include show guests
-			if (chosenReport.hasShowGuests) {
-				var key = chosenReport.hasShowGuests.value.toLowerCase();
-				params[key] = chosenReport.chosenShowGuests;
+			if (chosenReport.hasOwnProperty('hasShowGuests')) {
+				key = chosenReport.hasShowGuests.value.toLowerCase();
+				params[key] = chosenReport.chosenShowGuests ? true : false;
 			};
 
 			// include market
-			if (chosenReport.hasMarket) {
-				params['include_market'] = chosenReport.showMarket;
+			if (chosenReport.hasOwnProperty('hasMarket')) {
+				key = chosenReport.hasMarket.value.toLowerCase();
+				params[key] = chosenReport.showMarket ? true : false;
 			};
 
 			// include source
-			if (chosenReport.hasSource) {
-				params['include_source'] = chosenReport.showSource;
+			if (chosenReport.hasOwnProperty('hasSource')) {
+				key = chosenReport.hasSource.value.toLowerCase();
+				params[key] = chosenReport.showSource ? true : false;
 			};
 
 

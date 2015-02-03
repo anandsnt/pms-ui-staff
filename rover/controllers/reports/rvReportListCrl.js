@@ -18,7 +18,7 @@ sntRover.controller('RVReportListCrl', [
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
             hasFauxSelect = false,
             hasDisplaySelect = false;
-            hasMarketSelect = false;
+        hasMarketSelect = false;
 
         /**
          * inorder to refresh after list rendering
@@ -108,8 +108,9 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasSourceMarketFilter'] = true;
                         break;
 
-                    case 'User Activity':
+                    case 'Login and out Activity':
                         reportList[i]['reportIconCls'] = 'icon-report icon-activity';
+                        reportList[i]['hasDateLimit'] = false;
                         break;
 
                     case 'Occupancy & Revenue Summary':
@@ -117,7 +118,7 @@ sntRover.controller('RVReportListCrl', [
                         // CICO-10202 start populating the markets list
                         populateMarketsList();
                         break;
-
+                        
                     default:
                         reportList[i]['reportIconCls'] = 'icon-report';
                         break;
@@ -179,13 +180,14 @@ sntRover.controller('RVReportListCrl', [
 
                     // // check for user filter and keep a ref to that item
                     // if ( item.value === 'USER' ) {
-                    //     // currently only show users for 'User Activity' report
-                    //     if ( reportList[i].title == 'User Activity' ) {
+                    //     // currently only show users for 'Login and out Activity' report
+                    //     if ( reportList[i].title == 'Login and out Activity' ) {
                     //         reportList[i]['hasUserFilter'] = item;
                     //     }
                     // };
-                    // currently only show users for 'User Activity' report
-                    if (reportList[i].title == 'User Activity') {
+
+                    // currently only show users for 'Login and out Activity' report
+                    if (reportList[i].title == 'Login and out Activity') {
                         reportList[i]['hasUserFilter'] = true;
                     }
 
@@ -280,7 +282,7 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i]['displayTitle'] = 'Select';
                 };
 
-                if(hasMarketSelect){
+                if (hasMarketSelect) {
                     reportList[i]['selectMarketsOpen'] = false;
                     reportList[i]['displayTitle'] = 'Select';
                 }
@@ -324,11 +326,11 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].sortByOptions[1] = nameSortBy;
                 };
 
-                // for User Activity report
+                // for Login and out Activity report
                 // the colspans should be adjusted
                 // the sort descriptions should be update to design
                 //    THIS MUST NOT BE CHANGED IN BACKEND
-                if (reportList[i].title == 'User Activity') {
+                if (reportList[i].title == 'Login and out Activity') {
                     reportList[i].sortByOptions[0]['description'] = 'Date & Time';
 
                     reportList[i].sortByOptions[0]['colspan'] = 2;

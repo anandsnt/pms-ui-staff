@@ -47,7 +47,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.parsedApiFor = undefined;
 
 
-			switch( $scope.chosenReport.title ) {
+			switch ( $scope.chosenReport.title ) {
 				case 'In-House Guests':
 				case 'Departure':
 				case 'Arrival':
@@ -61,7 +61,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasNoSorting = true;
 					break;
 
-				case 'User Activity':
+				case 'Login and out Activity':
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.isLogReport = true;
@@ -70,6 +70,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'Web Check In Conversion':
 				case 'Web Check Out Conversion':
 					$scope.isLargeReport = true;
+					break;
+			};
+
+
+			// hack to set the colspan for reports details tfoot
+			switch ( $scope.chosenReport.title ) {
+				case 'Check In / Check Out':
+				case 'Upsell':
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
+					break;
+
+				case 'Login and out Activity':
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
+					break;
+
+				case 'Web Check In Conversion':
+				case 'Web Check Out Conversion':
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
+					break;
+
+				default:
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 2;
 					break;
 			};
 
@@ -173,15 +199,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			    };
 			};
 
-
-			// hack to set the colspan for reports details tfoot - 'Check In / Check Out' or 'Upsell'
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 4 : 2;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
-
-			// hack to set the colspan for reports details tfoot - 'Web Check Out Conversion''
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.leftColSpan;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.rightColSpan;
-
 			// scroller refresh and reset position
 			refreshScroll();
 
@@ -225,7 +242,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvCancellationReport.html';
 					break;
 
-				case 'User Activity':
+				case 'Login and out Activity':
 					template = '/assets/partials/reports/rvUserActivityReport.html';
 					break;
 
@@ -464,7 +481,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.parsedApiFor == 'In-House Guests' ||
 					$scope.parsedApiFor == 'Departure' ||
 					$scope.parsedApiFor == 'Cancelation & No Show' ||
-					$scope.parsedApiFor == 'User Activity' ) {
+					$scope.parsedApiFor == 'Login and out Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					_eachItem    = angular.copy( apiResponse[i] );
@@ -530,8 +547,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 
-					// additional date time split for 'User Activity' report
-					if ( $scope.parsedApiFor == 'User Activity' ) {
+					// additional date time split for 'Login and out Activity' report
+					if ( $scope.parsedApiFor == 'Login and out Activity' ) {
 						if ( !!_eachItem['date'] ) {
 							_uiDate = _eachItem['date'].split(', ')[0];
 							_uiTime = _eachItem['date'].split(', ')[1];
@@ -553,9 +570,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
 					};
 
-					// check for invalid login for 'User activity' report 
-					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID LOGIN' ) {
-						_eachItem.trCls = 'invalid';
+					// check for invalid login for 'Login and out Activity' report 
+					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID_LOGIN' ) {
+						_eachItem['action_type'] = 'INVALID LOGIN';
+						_eachItem.trCls = 'row-break invalid';
+					};
+
+					// check for no user name for 'Login and out Activity' report 
+					if ( _eachItem.hasOwnProperty('user_name') && !_eachItem['user_name'] ) {
+						_eachItem['user_name'] = 'NA';
 					};
 
 					// push '_eachItem' into '_retResult'

@@ -8,7 +8,7 @@ admin.service('ADHotelConfigurationSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		var deferred = $q.defer();
 		var url = '/api/email_templates/list.json';
 
-		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -31,5 +31,15 @@ admin.service('ADHotelConfigurationSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		});	
 		return deferred.promise;
    };
-	
+	this.getTemplateThemes = function(data){
+		var deferred = $q.defer();
+		var url = '/api/email_templates/email_templates.json';
+
+		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 }]);
