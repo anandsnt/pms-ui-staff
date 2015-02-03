@@ -1379,13 +1379,21 @@ sntRover
 				break;
 			case "ROOM_DIFF_ROOM_TYPE_AVAILABLE":
 				$scope.message = [response.response_message];
+				//defining callback for Ok button in msg box
+				$scope.callBackAfterClosingMessagePopUp = function() {
+					doOperationIfValidMove (old_props, response, successParams);
+					$scope.callBackAfterClosingMessagePopUp = undefined;
+				};				
 				openMessageShowingPopup();
-				doOperationIfValidMove (old_props, response, successParams);
 				break;	
 			case "ROOM_ROOM_TYPE_DIFF_AVAILABLE":
 				$scope.message = [response.response_message];
+				//defining callback for Ok button in msg box
+				$scope.callBackAfterClosingMessagePopUp = function() {
+					doOperationIfValidMove (old_props, response, successParams);
+					$scope.callBackAfterClosingMessagePopUp = undefined;
+				};
 				openMessageShowingPopup();
-				doOperationIfValidMove (old_props, response, successParams);
 				break;	
 			case "NOT_AVAILABLE":
 				$scope.message = [response.response_message];
@@ -1393,12 +1401,22 @@ sntRover
 				break;					
 			case "OOO":
 				$scope.message = [response.response_message];
+				//defining callback for Ok button in msg box
+				$scope.callBackAfterClosingMessagePopUp = function() {
+					doOperationIfValidMove (old_props, response, successParams);
+					$scope.callBackAfterClosingMessagePopUp = undefined;
+				};
 				openMessageShowingPopup();
-				doOperationIfValidMove (old_props, response, successParams);
+				break;
 			case "BLOCKED":
 				$scope.message = [response.response_message];
+				//defining callback for Ok button in msg box
+				$scope.callBackAfterClosingMessagePopUp = function() {
+					doOperationIfValidMove (old_props, response, successParams);
+					$scope.callBackAfterClosingMessagePopUp = undefined;
+				};				
 				openMessageShowingPopup();	
-				doOperationIfValidMove (old_props, response, successParams);		
+				break;		
 			default:
 				break;
 		};
@@ -1444,6 +1462,7 @@ sntRover
 		// we always wanted to keep the hours & minute as zero as 
 		// display started like that
 		successParams.chosenDate.setHours (0, 0, 0);
+		
 		// so we can change the arrival date inorder to show diary against new date
 		$scope.gridProps.filter.arrival_date = successParams.chosenDate;				
 		if(!$scope.$$phase) {	
