@@ -136,6 +136,9 @@ sntRover
 		};
 
 
+		//first we are resetting the reservation data if ther was already there
+		resetTheDataForReservationMoveFromOneDateToAnother();
+		
 		/*DATE UI CONFIG*/
 		var minDate = new tzIndependentDate($rootScope.businessDate);
 		minDate.setDate(minDate.getDate() - 1);
@@ -1001,7 +1004,9 @@ sntRover
 
 				//we are loading the diary with reservation date
 				$scope.gridProps.filter.arrival_date = goBackDate;
-				
+				//changing the display date in calendar also				
+				changeCalendarDate (goBackDate);
+
 				//resetting the reservation data, that set during transfrer
 				resetTheDataForReservationMoveFromOneDateToAnother ();
 			}
@@ -1375,6 +1380,17 @@ sntRover
 		console.log('yes I failed');
 	};
 
+	/**
+	* function to change the date of the calendar
+	* it is only for displaying purpose
+	* it is not actual date model
+	* actual data model is $scope.gridProps.filter.arrival_date
+	* we are keeping both inorder to perform some operation on select and if it  is okey
+	* after selection we will assign duplicate model to original model
+	*/
+	var changeCalendarDate = function (date) {
+		$scope.duplicte_arrival_date = date;		
+	};
 
 	/**
 	* success callback of API in edit mode date change
@@ -1412,6 +1428,9 @@ sntRover
 			case "NOT_AVAILABLE":
 				$scope.message = [response.response_message];
 				openMessageShowingPopup();
+
+				//changing the display date in calendar also	
+				changeCalendarDate (old_props.filter.arrival_date);
 				break;					
 			case "OOO":
 				$scope.message = [response.response_message];
@@ -1899,4 +1918,11 @@ sntRover
         source: autoCompleteSourceHandler,
         select: autoCompleteSelectHandler
     };
+
+    /**
+    * when destroying the diary state, we have to wipe out some events, data..
+    */
+    $scope.$on("$destroy", function(event){
+    	
+    });
 }]);
