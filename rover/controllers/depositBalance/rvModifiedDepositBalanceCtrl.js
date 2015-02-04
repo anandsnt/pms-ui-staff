@@ -152,7 +152,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		};
 	};
 	$scope.changeOnsiteCallIn = function(){
-		alert("reached")
 		$scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false:true;
 		$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 		$scope.addmode = ($scope.cardsList.length>0) ? false :true;
