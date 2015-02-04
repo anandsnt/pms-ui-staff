@@ -610,10 +610,12 @@ sntRover.controller('reservationActionsController', [
 		
 		$scope.showResendConfirmation = function(reservationStatus){
 			var showResendConfirmationFlag = false;
-			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
-			if($scope.guestCardData.contactInfo.email !=null && $scope.guestCardData.contactInfo.email !=""){
-			showResendConfirmationFlag = true;
-			}
+			if($rootScope.isStandAlone){
+				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+					if($scope.guestCardData.contactInfo.email !=null && $scope.guestCardData.contactInfo.email !=""){
+					showResendConfirmationFlag = true;
+					}
+				}
 			}
 			return showResendConfirmationFlag;
 		};
