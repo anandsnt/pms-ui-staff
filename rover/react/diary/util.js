@@ -152,6 +152,19 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 			return ret.hh + ':' + ret.mm + ' ' + ret.amPM;
 		}
 	};
+	
+	Time.prototype.toHourAndMinute = function(seperator, format) {
+		var ret;
+		if (typeof format === 'undefined') format = 12;
+		if (typeof seperator === 'undefined') seperator = ":";
+
+		ret = {
+			hh: this.padZeroes(this.hours % format),
+			mm: this.padZeroes(this.minutes),
+		};
+		return ret.hh + seperator + ret.mm;
+	};
+
 	Time.prototype.constructor = Time;
 
 	String.prototype.toTimeComponent = function(time) {
