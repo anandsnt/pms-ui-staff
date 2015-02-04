@@ -12,7 +12,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.renderData.billNumberSelected = '';
 		$scope.renderData.defaultPaymentAmount = '';
 		$scope.defaultRefundAmount = 0;
-		console.log("######"+$scope.defaultRefundAmount)
 		//We are passing $scope from bill to this modal
 		$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
@@ -63,7 +62,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			isShowFees = false;
 		}
 		else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
-			isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.saveData.paymentType !=='CC') && $scope.saveData.paymentType !=="") ? true :false;
+			if($scope.renderData.defaultPaymentAmount >= 0){
+				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.saveData.paymentType !=='CC') && $scope.saveData.paymentType !=="") ? true :false;
+			}
+			
 		}
 		return isShowFees;
 	};
@@ -99,6 +101,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
 					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
 				}
+			}
+			if($scope.renderData.defaultPaymentAmount < 0){
+				$scope.refundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+				$scope.shouldShowMakePaymentButton = false;
+			} else {
+				$scope.shouldShowMakePaymentButton = true;
 			}
 		}
 	};
@@ -320,11 +328,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.feeData.feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
 			$scope.setupFeeData();
 		}
-		//etTimeout(function(){
-			console.log("-------***********---="+$scope.defaultRefundAmount)
-			$scope.$apply();
-		//},1000)
-		
+		$scope.$apply();
+	
 	};
 	
 
@@ -568,7 +573,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	});
 
 	$scope.$on("TOKEN_CREATED", function(e,data){
-		console.log(data);
+
 		$scope.newPaymentInfo = data;
 		$scope.showCCPage = false;
 		setTimeout(function(){
