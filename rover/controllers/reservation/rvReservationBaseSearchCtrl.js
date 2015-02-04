@@ -24,13 +24,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
          *
          */
 
-        $scope.setDepartureHours = function(force) {
+        $scope.setDepartureHours = _.throttle($_setDepartureHours, 500, { leading: false });
 
+        function $_setDepartureHours () {
             // must not allow user to set hours less than 3
             var correctHours = function(value) {
                 $scope.reservationData.resHours = value;
             };
-            if ( (force || $scope.reservationData.resHours) && $scope.reservationData.resHours < 3 ) {
+            if ( $scope.reservationData.resHours && $scope.reservationData.resHours < 3 ) {
                 $timeout(correctHours.bind(null, 3), 100);
             };
 
