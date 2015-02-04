@@ -181,8 +181,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				var _params = {
 					room_id: $scope.roomDetails.id,
 					inServiceID: 1,
-					from_date: $scope.updateService.selected_date,
-					to_date: $scope.updateService.selected_date
+					from_date: $scope.updateService.from_date,
+					to_date: $scope.updateService.to_date
 				};
 
 				var _callback = function() {
@@ -192,6 +192,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 					// change the original status
 					$_originalStatusId = $scope.updateService.room_service_status_id;
 					$_updateRoomDetails('room_reservation_hk_status', 1);
+					$scope.updateCalendar();
 				};
 
 				// only "put" in service if original status was not inService
@@ -266,8 +267,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.onViewDateChanged();
 				if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")])
 					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;
-				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
-				$('#ui-datepicker-overlay').off('click').remove();
+				ngDialog.close();
+				$(".room-actions").click();
+
 			},
 			beforeShowDay: $scope.setClass,
 			onChangeMonthYear: function(year, month, instance) {
@@ -313,6 +315,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 					from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
 					to_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
 				};
+				$scope.updateCalendar();
 			};
 
 			// update the dates to backend system format
@@ -399,7 +402,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 
 		$scope.onViewDateChanged = function() {
-			// $scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd')
+			$scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd')
 			$scope.updateService.room_service_status_id = $scope.serviceStatus[$scope.updateService.selected_date].id;
 			// The $_originalStatusId flag is used to make sure that the same change is not sent back to the server -- to many flags whew...
 			$_originalStatusId = $scope.updateService.room_service_status_id;
@@ -414,6 +417,37 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			if ($scope.updateService.room_service_status_id > 1) {
 				$scope.updateService.reason_id = $scope.serviceStatus[$scope.updateService.selected_date].reason_id;
 				$scope.updateService.comment = $scope.serviceStatus[$scope.updateService.selected_date].comments;
+				/**
+				 * https://stayntouch.atlassian.net/browse/CICO-12520?focusedCommentId=39411&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39411
+				 *When putting the room OOO or OOS for a date range, say 12 - 15 and going back to edit, each day shows separately,
+				 *i.e. 12-12, 13 - 13, 14-14, 15 - 15. It should be possible to show the same date range for each selected date?
+				 *
+				 * TODO : If the neigbouring dates have the same status id reason and comment put them in the date range
+				 */
+				var oneDay = 86400000; // number of milliseconds in a day
+				while ($scope.serviceStatus[$filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd')]) {
+					var prevDate = $filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd');
+					var prevDateStatus = $scope.serviceStatus[prevDate];
+					if (prevDateStatus.id == $scope.updateService.room_service_status_id &&
+						prevDateStatus.reason_id == $scope.updateService.reason_id &&
+						prevDateStatus.comments == $scope.updateService.comment) {
+						$scope.updateService.from_date = prevDate;
+					} else {
+						break;
+					}
+				}
+
+				while ($scope.serviceStatus[$filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd')]) {
+					var nextDate = $filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd');
+					var nextDateStatus = $scope.serviceStatus[nextDate];
+					if (nextDateStatus.id == $scope.updateService.room_service_status_id &&
+						nextDateStatus.reason_id == $scope.updateService.reason_id &&
+						nextDateStatus.comments == $scope.updateService.comment) {
+						$scope.updateService.to_date = nextDate;
+					} else {
+						break;
+					}
+				}
 			}
 		}
 
