@@ -1,0 +1,275 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#000;
+@blue-bg:#6AD3F1;
+@grey:#B8B8B8;
+
+body {
+	background: none !important;
+}
+.container {
+    width: 100% !important;
+}
+
+.room-number-message{
+	.lightcontent{
+		font-size:15px !important;	
+	}
+}
+.black-bg{
+	background: @black !important;
+}
+
+.cabin_number_field{
+	width:60% !important;	
+	text-align: left !important;
+	p{
+		margin-bottom: 0;
+	}
+}
+
+.blue-bg,.link-btn.with-bg,.now-later-options .accept-charges-button,.checkin-button,.proceed-to-checkin{
+	background:@blue-bg !important;	
+}
+.viewbill-toggle a,.viewbill-toggle a:hover,.viewbill-toggle a:focus{
+	color:#6AD3F1 !important;	
+}
+.link-btn.with-bg{
+	padding-top:10px;
+	padding-bottom:10px;
+	width:50% !important;	
+}
+
+.shadow {
+	background: none repeat scroll 0 0 #efefef;
+   -moz-box-shadow:    inset 2px 2px 3px #d1d1d1;
+   -webkit-box-shadow: inset 2px 2px 3px #d1d1d1;
+    box-shadow:         inset 2px 2px 3px #d1d1d1;
+    border: medium none !important;
+}
+
+.room-input{
+	height:50px !important;
+}
+
+
+.room-verification-continue{
+	min-width:60% !important;	
+}
+
+.checkouttime1 {
+	background: #83e1fb;
+
+}
+
+.checkouttime2 {
+	background: #69d2f0;
+
+}
+
+.checkouttime3 {
+	background:#47c3e7;
+}
+
+.res-conf-no,.grey-text{
+	color:@grey !important;
+}
+.hotel-phone,.light-blue-text{
+	color:#80D8F1 !important;
+	border-bottom:1px solid ##80D8F1 !important;
+}
+.under-line{
+	text-decoration: underline !important;
+}
+.upgrades-label{
+	color:#D58878 !important;
+}
+.checkin-button{
+	color:@white !important;
+}
+.lightcontent, .checkout-status,.checkout-later-back-button,.leadtext,.headtext,.foot-text,.no-thanks-text,.subTitletext,.labelText,.chekin-heading,.row .reservation-dates,.room_details,.simpleSubText,.msg-body a{
+	color:@black !important;
+}
+a:hover,a:focus{
+	color:lightgrey !important;
+}
+.no-thanks-text{
+border-bottom:1px solid;
+}
+
+.lightcontent.chekout-time{
+	padding-top:10%;
+	padding-bottom:10%;
+}
+.checkoutnow{
+	background:#69D2F0;
+}
+.checkoutlater{
+	background:#83E1FB;
+}
+.checkoutlater,.checkin{
+	color:@white;
+}
+.final-msg-container{
+	padding-bottom:10%;
+}
+.link-btn.with-bg{
+	width:100% !important;
+}
+.pickadate-cell li{
+	 border: 1px solid #fff;
+}
+.date-picker-header{
+  background-color: #C7503A;
+}
+
+.date-picker-ok, .date-picker-back{
+	color:#fff !important;
+}
+.date-picker-wrap{
+  background-color: @white !important;
+  background-image: linear-gradient(to bottom, @white, @white);
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #959595 !important;
+}
+.link-btn.with-bg.nextbtn{
+	background: #513d4f;
+	color:@white;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+.departure-date{
+   p:first-child{
+       color:#fff;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#e5e5e5 !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:#6AD3F1 !important;
+    color:@white !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#18171c !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
+
+.verti-ruler{
+	background: none repeat scroll 0 0 #E4E4E4;
+}
+.get-key{
+	text-align:center;
+}
+.social-heading{
+	font-weight:300;
+	font-family: 'Source Sans Pro';
+}
+@media screen and (max-width: 900px) {
+ 	.pre-checkin-container-padding{
+ 		padding:0% 5% !important;
+ 	}
+ 	.headtext {
+    	font-size: 30px !important;
+	}
+	.lightcontent, .checkout-status{
+		font-size:26px !important;
+	}
+	.desktop-only{
+		display:none;
+	}
+}
+
+
+
+
+@media screen and (min-width: 900px) {
+	.lightcontent.chekout-time{
+		padding-top:5%;
+	}
+	.headtext {
+    	font-size: 44px !important;
+	}
+	.mobile-only{
+		display:none;
+	}
+	.upgrades-label {
+    	font-size: 18px !important;
+    }
+}
+
+@media screen and (max-width:480px){
+	.cabin_number_field,.room-verification-continue{
+		width:80% !important;	
+	}
+	.cabin_number_field{
+		p{
+			font-size:12px !important;
+		}
+	}
+	.lightcontent, .checkout-status{
+		font-size:16px !important;
+	}
+	.link-btn.with-bg{
+		margin:0 auto;
+		width: 70% !important;
+	}
+	.final-msg{
+		font-size:30px !important;
+		padding:0  25% !important;
+	}
+	.link-btn.with-bg{
+		width:100% !important;
+	}
+
+	.social-links{
+		width:80%;
+		margin:0 auto;
+		.social-heading{
+			text-align:center;
+			padding:15px 0 10px;
+			font-size:20px;
+		}
+	}
+}
+
+@media screen and (min-width:480px){
+	.cabin_number_field{
+		p{
+			font-size:16px !important;
+		}
+	}
+	.social-links{
+	    width:24%;
+		margin:0 auto;
+	
+		.social-link-second-row{
+			text-align:right;
+		}
+
+		.social-heading{
+			text-align:center;
+			padding:15px 0 10px;
+			font-size:20px;
+		}
+
+	}
+	.final-msg-container{
+		padding-bottom:3%;
+	}
+}
+
+	
