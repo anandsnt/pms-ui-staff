@@ -53,7 +53,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
     	$rootScope.isPasswordResetView = $attrs.isPasswordReset;
     	$rootScope.accessToken = $attrs.token;
     	$rootScope.user_id = $attrs.id;
-    	$rootScope.user_name = $attrs.email;
+    	$rootScope.user_name = $attrs.login;
     }
     
 

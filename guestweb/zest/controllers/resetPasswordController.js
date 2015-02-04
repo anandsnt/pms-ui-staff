@@ -4,26 +4,31 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
 	$scope.pageValid = true;
 	$scope.showBackButtonImage = false;
     $scope.data = {};
-    $scope.data.newPassword = "";
-    $scope.data.confirmPassword = "";
+    $scope.data.password = "";
+    $scope.data.confirm_password = "";
     $scope.isPasswordReset = false;
 	
     $scope.resetPasswordClicked = function()	{
-		
-		    resetPasswordService.resetPassword(data).then(function(response) {
+		    if($scope.data.password.localeCompare($scope.data.confirm_password) == 0){
+		    	$scope.data.perishable_token = $scope.accessToken;
+		    	resetPasswordService.resetPassword($scope.data).then(function(response) {
 		    
 
-		    if(response.status === 'failure') {
-		      // $modal.open($scope.opts); // error modal popup
-	        }
-	        else{		    
+		        if(response.status === 'failure') {
+		        // $modal.open($scope.opts); // error modal popup
+	           }
+	           else{		    
 	           
-		      $scope.isPasswordReset = false;
-	        } 
-        },function(){
-	       $rootScope.netWorkError = true;
-	       $scope.isPosting = false;
-        });	 	
-	};
+		           $scope.isPasswordReset = true;
+	           } 
+               },function(){
+               	   $scope.isPasswordReset = false;
+	               $rootScope.netWorkError = true;
+	               $scope.isPosting = false;
+               });	 
+		    }else{
 
+		    }
+		    	
+	};
 }]);
