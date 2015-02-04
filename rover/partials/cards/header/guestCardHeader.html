@@ -11,17 +11,19 @@
                     <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field />
                     <strong class="status">{{guestCardData.selectedLoyaltyLevel}}</strong>
                 </div>
-                <div class="switch-button on">
-                <input name="vip" id="vip" type="checkbox" checked  ng-model="guestCardData.contactInfo.vip" ng-click="updateContactInfo()"   />
-                <label class="data-on" ng-show="guestCardData.contactInfo.vip" >
-                    <span class="switch-icon vip" >VIP</span>
-                    <span class="value">Off</span>
-                </label>
-                <label class="data-on" ng-show="!guestCardData.contactInfo.vip" >
-                    <span class="value">On</span>
-                    <span class="switch-icon vip">VIP</span>
-                </label>
-            </div>
+                
+                <div ng-show="isStandAlone" class="switch-button" ng-class="{ 'on': !guestCardData.contactInfo.vip}">
+                    <input name="vip" id="vip" type="checkbox" ng-model="guestCardData.contactInfo.vip" ng-click="vipToggleClicked()"/>
+                    <label class="data-off">
+                        <span class="switch-icon vip" >VIP</span>
+                        <span class="value">Off</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="value">On</span>
+                        <span class="switch-icon vip">VIP</span>
+                    </label>
+                </div>
+                
             </div>
             <div class="holder data">
                 <input type="text" data-size="{{guestCardData.contactInfo.address.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.address.city" ng-blur="updateContactInfo()" auto-grow-field />

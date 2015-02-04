@@ -234,8 +234,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var that = this;
 			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
-				console.log(" Success");
-				console.log(data);
 				$scope.$emit('hideLoader');
 				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
@@ -251,7 +249,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
-				console.log(data);
 				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
 			}
 		};
@@ -978,6 +975,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.init();
+
+		// CICO-6049 Toggle VIP button
+		$scope.vipToggleClicked = function(){
+			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
+			$scope.updateContactInfo();
+		};
 
 	}
 ]);
