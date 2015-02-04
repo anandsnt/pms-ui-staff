@@ -3,9 +3,13 @@
 @white:#fff;
 @black:#000;
 @blue-bg:#6AD3F1;
+@grey:#B8B8B8;
 
 body {
 	background: none !important;
+}
+.container {
+    width: 100% !important;
 }
 
 .room-number-message{
@@ -13,7 +17,9 @@ body {
 		font-size:15px !important;	
 	}
 }
-
+.black-bg{
+	background: @black !important;
+}
 
 .cabin_number_field{
 	width:60% !important;	
@@ -23,7 +29,7 @@ body {
 	}
 }
 
-.blue-bg,.link-btn.with-bg,.now-later-options .accept-charges-button{
+.blue-bg,.link-btn.with-bg,.now-later-options .accept-charges-button,.checkin-button,.proceed-to-checkin{
 	background:@blue-bg !important;	
 }
 .viewbill-toggle a,.viewbill-toggle a:hover,.viewbill-toggle a:focus{
@@ -65,7 +71,24 @@ body {
 .checkouttime3 {
 	background:#47c3e7;
 }
-.lightcontent, .checkout-status,.checkout-later-back-button,.leadtext,.headtext,.foot-text,.no-thanks-text{
+
+.res-conf-no,.grey-text{
+	color:@grey !important;
+}
+.hotel-phone,.light-blue-text{
+	color:#80D8F1 !important;
+	border-bottom:1px solid ##80D8F1 !important;
+}
+.under-line{
+	text-decoration: underline !important;
+}
+.upgrades-label{
+	color:#D58878 !important;
+}
+.checkin-button{
+	color:@white !important;
+}
+.lightcontent, .checkout-status,.checkout-later-back-button,.leadtext,.headtext,.foot-text,.no-thanks-text,.subTitletext,.labelText,.chekin-heading,.row .reservation-dates,.room_details,.simpleSubText,.msg-body a{
 	color:@black !important;
 }
 a:hover,a:focus{
@@ -91,7 +114,66 @@ border-bottom:1px solid;
 .final-msg-container{
 	padding-bottom:10%;
 }
+.link-btn.with-bg{
+	width:100% !important;
+}
+.pickadate-cell li{
+	 border: 1px solid #fff;
+}
+.date-picker-header{
+  background-color: #C7503A;
+}
 
+.date-picker-ok, .date-picker-back{
+	color:#fff !important;
+}
+.date-picker-wrap{
+  background-color: @white !important;
+  background-image: linear-gradient(to bottom, @white, @white);
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #959595 !important;
+}
+.link-btn.with-bg.nextbtn{
+	background: #513d4f;
+	color:@white;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+.departure-date{
+   p:first-child{
+       color:#fff;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#e5e5e5 !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:#6AD3F1 !important;
+    color:@white !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#18171c !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
+
+.verti-ruler{
+	background: none repeat scroll 0 0 #E4E4E4;
+}
+.get-key{
+	text-align:center;
+}
 @media screen and (max-width: 900px) {
  	.pre-checkin-container-padding{
  		padding:0% 5% !important;
@@ -120,6 +202,9 @@ border-bottom:1px solid;
 	.mobile-only{
 		display:none;
 	}
+	.upgrades-label {
+    	font-size: 18px !important;
+    }
 }
 
 @media screen and (max-width:480px){
@@ -141,6 +226,9 @@ border-bottom:1px solid;
 	.final-msg{
 		font-size:30px !important;
 		padding:0  10% !important;
+	}
+	.link-btn.with-bg{
+		width:100% !important;
 	}
 
 	.social-links{

@@ -47,27 +47,27 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 });
 
