@@ -3,7 +3,7 @@
 
     <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
     <div class="statistics-headings">
-        <div class="scrollable" ng-iscroll="leftPanelScroll" style="height:300px">
+        <div class="scrollable" ng-iscroll="leftPanelScroll">
             <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
             <ul class="wrapper">
                 <li class="main-heading">{{tabularData.hotelName}}</li>
@@ -44,15 +44,16 @@
     </div>
 
     <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
-    <div class="statistics-content scrollable">
+    <div class="statistics-content scrollable" ng-iscroll="rightPanelScroll">
         <!-- Attach iscroll here, should scroll vertically and horizontally. While scrolling vertically it should update iscoll on the left side as well -->
-        <div class="wrapper" style="width:{see bottom comment for widht calculation}px;">
+        <!-- <div class="wrapper" style="width:{see bottom comment for widht calculation}px;"> -->
+        <div class="wrapper" style="width:1200px;">
             <table class="statistics-reports">
                 <thead>
                     <tr>
-                        <th>{Date}</th>
+                        <th ng-repeat="(date, values) in tabularData.table">{{date}}</th>
                         <!-- If showing variance OR last year, add colspan="2". If showing variance AND last year, add colspan="3" -->
-                        ... repeat for all dates in the date range
+                        <!-- ... repeat for all dates in the date range -->
                     </tr>
                     <!-- If showing variance AND/OR last year, add second row:
                         <tr class="bottom-row">
@@ -62,16 +63,17 @@
                         </tr>-->
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="numbers in tabularData.displayValues track by $index">
                         <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
-                        <td>{Occupancy / Revenue}</td>
+                        <td ng-repeat="number in numbers track by $index">{{number}}</td>
+                        <!-- <td>{Occupancy / Revenue}</td> -->
                         <!-- If showing lat year, add this:
                             <td class="last-year">{Last Year values}</td> // Add class "day-end" if not showing variance-->
                         <!-- If showing variance, add this:
                             <td class="day-end">{Variance values}</td> // Add class "negative" if negative value -->
-                        ... repeat for all dates in the date range
+                        <!-- ... repeat for all dates in the date range -->
                     </tr>
-                    ... repeat for all list items on the left side
+                    <!-- ... repeat for all list items on the left side -->
                 </tbody>
             </table>
         </div>
