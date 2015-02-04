@@ -178,8 +178,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				var _params = {
 					room_id: $scope.roomDetails.id,
 					inServiceID: 1,
-					from_date: $scope.updateService.from_date,
-					to_date: $scope.updateService.to_date
+					from_date: $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd'),
+					to_date: $filter('date')(tzIndependentDate($scope.updateService.to_date), 'yyyy-MM-dd')
 				};
 
 				var _callback = function() {
