@@ -79,11 +79,15 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/encoders'
 		});
 		
-		$stateProvider.state('admin.templateconfiguration', {
-			templateUrl: '/assets/partials/templateConfiguration/adListHotel.html',
-			controller: 'ADTemplateConfigurationCtrl',
-			url : '/templateconfiguration'
-		});
+		// $stateProvider.state('admin.templateconfiguration', {
+		// 	templateUrl: '/assets/partials/templateConfiguration/adListHotel.html',
+		// 	controller: 'ADTemplateConfigurationCtrl',
+		// 	url : '/templateconfiguration'
+		// });
 		
-        
+        $stateProvider.state('admin.templateconfiguration', {
+			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
+			controller: 'adAnalyticSetupCtrl',
+			url : '/analyticSetup'
+		});
 });
