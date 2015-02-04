@@ -2,7 +2,7 @@
     <section ng-if="!searchMode">
         <figure class="guest-image" ng-click="switchCard('guest-card')"> 
             <img ng-src="{{guestCardData.contactInfo.avatar}}" />
-            <span class="vip" ng-show="guestCardData.contactInfo.is_vip">VIP</span>
+            <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
         </figure>
         <form name="change-name" id="change-name">
             <div class="holder">
@@ -12,12 +12,12 @@
                     <strong class="status">{{guestCardData.selectedLoyaltyLevel}}</strong>
                 </div>
                 <div class="switch-button on">
-                <input name="vip" id="vip" type="checkbox" checked  ng-model="guestCardData.contactInfo.is_vip" ng-click="updateContactInfo()"   />
-                <label class="data-on" ng-show="guestCardData.contactInfo.is_vip" >
+                <input name="vip" id="vip" type="checkbox" checked  ng-model="guestCardData.contactInfo.vip" ng-click="updateContactInfo()"   />
+                <label class="data-on" ng-show="guestCardData.contactInfo.vip" >
                     <span class="switch-icon vip" >VIP</span>
                     <span class="value">Off</span>
                 </label>
-                <label class="data-on" ng-show="!guestCardData.contactInfo.is_vip" >
+                <label class="data-on" ng-show="!guestCardData.contactInfo.vip" >
                     <span class="value">On</span>
                     <span class="switch-icon vip">VIP</span>
                 </label>
