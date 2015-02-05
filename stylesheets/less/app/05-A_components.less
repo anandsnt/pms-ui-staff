@@ -7020,12 +7020,16 @@
                     }
                 }
 
+                &.with-pagination { .calc-height(100, 230); }
+
                 &.no-totals,
                 &.no-content {
                    .calc-height(100, 50); 
 
                    > .wrapper { padding: 20px; }
                    > .iScrollVerticalScrollbar { top: 20px; }
+
+                   &.with-pagination { .calc-height(100, 100); }
                 }
 
                 &.with-graphs {
