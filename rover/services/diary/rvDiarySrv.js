@@ -662,23 +662,63 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     return q.promise;
                 };
+                
+                //variables using for reservation transfer from one date to another
+                this.isReservationMovingFromOneDateToAnother = false;
+                this.movingReservationData = {
+                    reservation: undefined,
+                    originalRoom: undefined,
+                    originalReservation: undefined,                   
+                };
 
                 this.callOccupancyAndAvailabilityCount = function(start_date, end_date) {
-                    var _data_Store     = this.data_Store,
-                    time            = util.gridTimeComponents(start_date, 48);
-                    q = $q.defer();
+                    var _data_Store = this.data_Store,
+                        time        = util.gridTimeComponents(start_date, 48),
+                        q           = $q.defer(),
+                        __this = this;
                     $q.all([
                             InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                             Room.read(),                            
                             Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
+                                //if there is any reservation transfter initiated from one day to another
+                                if(__this.isReservationMovingFromOneDateToAnother) {
+                                    var reservation = __this.movingReservationData.reservation;
+                                    var arrival_date,
+                                        res_arrival  = new Date (reservation.arrival),
+                                        res_depature = new Date (reservation.departure),
+                                        diff = res_depature.getTime() - res_arrival.getTime(),
+                                        departure_date;
+                                    
+                                    arrival_date = new Date (time.x_n);                                    
+                                    arrival_date.setHours (res_arrival.getHours(), res_arrival.getMinutes(), 0)
+                                    
+                                    departure_date = new Date (arrival_date.getTime() + diff);
+
+                                    reservation.arrival_date  = arrival_date.toComponents().date.toDateString();
+                                    reservation.arrival_time  = arrival_date.toComponents().time.toHourAndMinute(":", 24);
+                                    reservation.arrival        = arrival_date.getTime();
+                                    
+                                    reservation.departure_date = departure_date.toComponents().date.toDateString();
+                                    reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute(":", 24);
+                                    reservation.departure        = departure_date.getTime();
+                                    //2 is the index of array who is having reservations
+                                    var isReservationAlreadyInList = _.findWhere (data_array[2].reservations, 
+                                                                    {reservation_id: reservation.reservation_id});
+
+                                    if(!isReservationAlreadyInList) {
+                                        //2 is the index of array who is having reservations
+                                        data_array[2].reservations.push(reservation)                                    
+                                    }
+                           
+                                }
                                 _.reduce([
                                       InActiveRoomSlots,
                                       Room,
                                       Occupancy, 
                                       AvailabilityCount], 
-                            function(memo, obj, idx) {  
+                            function(memo, obj, idx) { 
                                 obj.resolve(data_array[idx]);
                         }, data_array);
 
@@ -896,6 +936,43 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         start_date.setHours(hh, mm);
                     };
                 };
+                
+                /**
+                *   check reservation availability for another date, 
+                *   used to check the availability while transfering from
+                *   one date to another (usually more than 2days)
+                *   @param {object} with necessary params
+                *   @return {promise}
+                */
+                this.checkAvailabilityForReservationToA_Date = function (data) {
+                    var params = {
+                        room_id:            data.room_id,
+                        reservation_id:     data.reservation_id,
+                        begin_date:         data.begin_date,
+                        begin_time:         data.begin_time,
+                        end_date:           data.end_date,
+                        end_time:           data.end_time,
+                        rate_type:          data.rate_type,
+                    }
+
+                    if(data.rate_type == 'Corporate') {
+                        if(data.account_id){                            
+                            _.extend(params, { account_id: data.account_id });
+                        }
+                    }
+                    
+                    //Webservice calling section
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_availability/room_move';
+                    //var url = '/ui/show?format=json&json_input=diary/reservationMoveAllowedToADate.json';
+                    rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
+                        deferred.resolve(resultFromAPI);                       
+                    },function(error){
+                        deferred.reject(error);
+                    }); 
+                    return deferred.promise;                     
+
+                };
 
                 /*Process data points set during create reservation that redirects here*/
                 this.ArrivalFromCreateReservation = function() {
@@ -953,5 +1030,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         return t_a + t_b + ms;
                     }
                 };
+
             }]);
                 //------------------------------------------------------------------
