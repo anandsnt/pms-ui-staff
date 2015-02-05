@@ -17,21 +17,37 @@
 	$scope.reservationData = checkinDetailsService.getResponseData();
 	$rootScope.confirmationNumber = $scope.reservationData.confirm_no;	
 
-	//setup options for modal
-	$scope.opts = {
+	//setup options for terms and conditions modal
+	$scope.termsPopup = {
 		backdrop: true,
 		backdropClick: true,
-		templateUrl: '/assets/checkin/partials/acceptChargesError.html',
-		controller: ModalInstanceCtrl
+		templateUrl: '/assets/checkin/partials/termsAndContions.html',
+		controller: TermsCtrl,
+		resolve: {
+	        termsText:function(){
+	          return $scope.reservationData.terms_and_conditions;
+	        }
+      }
 	};
 
 	// check if checkbox is checked and  enable/disable checkin button 
-	$scope.$watch('checked',function(){
-		if($scope.checked)
-			$rootScope.checkedApplyCharges = true;
-		else
-			$rootScope.checkedApplyCharges = false;				
-	});
+	// $scope.$watch('checked',function(){
+	// 	if($scope.checked)
+	// 		$rootScope.checkedApplyCharges = true;
+	// 	else
+	// 		$rootScope.checkedApplyCharges = false;				
+	// });
+    
+    $scope.termsClicked = function(){
+    	$modal.open($scope.termsPopup);
+    }
+    //setup options for modal
+	$scope.opts = {
+		backdrop: true,
+		backdropClick: true,
+		templateUrl: '/assets/checkin/partials/errorModal.html',
+		controller: ModalInstanceCtrl
+	};
 
 	$scope.checkInButtonClicked = function(){
 		if($scope.checked){
@@ -64,4 +80,25 @@ checkInReservationDetails
 
 snt.controller('checkInReservationDetails', dependencies);
 })();
+
+// controller for the modal
+
+var TermsCtrl = function ($scope, $modalInstance,$rootScope,termsText) {
+	$scope.termsText = termsText;
+	$scope.closeDialog = function () {
+		$modalInstance.dismiss('cancel');
+	};
+
+	$scope.agreeClicked = function(){
+		$rootScope.checkedApplyCharges = true;
+		$scope.closeDialog();
+		console.log("fgrvhjfkvgb4rjk")
+	};
+
+	$scope.cancel = function(){
+		$rootScope.checkedApplyCharges = false;
+		$scope.closeDialog();
+		console.log("fgrvhjfdwdgwdgkvgb4rjk")
+	};
+};
 
