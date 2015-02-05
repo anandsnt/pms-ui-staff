@@ -12,6 +12,7 @@
                 </select>
             </div>
         </strong>
+        <span class="text">Or enter negative amount to make a refund</span>
         <!-- Title when bill# is defined: <strong class="h2 message">Pay Bill #{bill num}</strong> -->
 
         <div class="payment-form">
@@ -113,7 +114,8 @@
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
-                <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" translate>MAKE PAYMENT</button>
+                <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="shouldShowMakePaymentButton" translate>MAKE PAYMENT</button>
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton" translate>REFUND {{currencySymbol}}{{defaultRefundAmount}}</button>
             </div>
              <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CLOSE</button>
