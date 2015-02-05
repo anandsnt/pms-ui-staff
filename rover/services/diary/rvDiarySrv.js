@@ -445,7 +445,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     occupancy[m.room_type]      = angular.lowercase(room_type.name); 
                     occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
-
                     if(occupancy[m.status]          === 'reserved') {
                         occupancy[m.status]         = 'check-in';
                     } else if(occupancy[m.status]   === 'checkedin') {
@@ -454,10 +453,12 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         occupancy[m.status]         = 'check-out';
                     } else if(occupancy[m.status]   === 'checking_out') {
                         occupancy[m.status]         = 'departed';
-                    } else if(occupancy[m.status]    ===  'checking_in') {
+                    } else if(occupancy[m.status]   ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
-
+                    else if(occupancy[m.status]     ===  'noshow') {                        
+                        occupancy[m.status]         = 'no-show';
+                    }
                     room = _.findWhere(Room.store.data, { id: occupancy.room_id });
 
                     //if(room) {
