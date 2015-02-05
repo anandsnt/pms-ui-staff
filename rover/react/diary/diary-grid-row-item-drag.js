@@ -26,44 +26,44 @@ var GridRowItemDrag = React.createClass({
 		e.stopPropagation();
 		e.preventDefault();	
 
-			e = this.isTouchEnabled ? e.changedTouches[0] : e;
+		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 
-			document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
-			document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
-			page_offset = this.getDOMNode().getBoundingClientRect();
+		document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
+		document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
+		page_offset = this.getDOMNode().getBoundingClientRect();
+		
+		el = props.viewport.element();
+		var left = (((page_offset.left-props.display.x_0 - props.iscroll.grid.x)) / display.px_per_int).toFixed() * display.px_per_int,
+			viewport 	= props.viewport.element(),
+			xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left;
+		
+
+		this.__x_diff_left_pagex = left - xCurPos;
+		this.__lastXDiff = 0;						
+		this.__lastYDiff = 0;
+		var	starting_ColNumber	= Math.floor((xCurPos + this.__x_diff_left_pagex) / display.px_per_int);
+
+		this.setState({
+			//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+			left: left,
+			top: page_offset.top - el.offset().top - el[0].scrollTop,
+			mouse_down: true,
+			selected: true,
+			element: el.parent(),
+			origin_x: e.pageX,
+			origin_y: e.pageY,
+			offset_x: el.offset().left + props.iscroll.grid.x,
+			offset_y: el.offset().top + props.iscroll.grid.y,
+			element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
+			element_y: page_offset.top,
+			starting_ColNumber: starting_ColNumber,
+		},
+		function() {
+			props.iscroll.grid.disable();
+			props.iscroll.timeline.disable();
 			
-			el = props.viewport.element();
-			var left = (((page_offset.left-props.display.x_0 - props.iscroll.grid.x)) / display.px_per_int).toFixed() * display.px_per_int,
-				viewport 	= props.viewport.element(),
-				xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left;
-			
-
-			this.__x_diff_left_pagex = left - xCurPos;
-			this.__lastXDiff = 0;						
-			this.__lastYDiff = 0;
-			var	starting_ColNumber	= Math.floor((xCurPos + this.__x_diff_left_pagex) / display.px_per_int);
-
-			this.setState({
-				//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
-				left: left,
-				top: page_offset.top - el.offset().top - el[0].scrollTop,
-				mouse_down: true,
-				selected: true,
-				element: el.parent(),
-				origin_x: e.pageX,
-				origin_y: e.pageY,
-				offset_x: el.offset().left + props.iscroll.grid.x,
-				offset_y: el.offset().top + props.iscroll.grid.y,
-				element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
-				element_y: page_offset.top,
-				starting_ColNumber: starting_ColNumber,
-			},
-			function() {
-				props.iscroll.grid.disable();
-				props.iscroll.timeline.disable();
-				
-			});
-		}
+		});
+		
 	},
 	__onMouseMove: function(e) {
 		e.stopPropagation();
