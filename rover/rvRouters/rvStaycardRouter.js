@@ -46,8 +46,8 @@ angular.module('stayCardModule', [])
                 baseSearchData: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchBaseSearchData();
                 },
-                payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData) {
-                    var start_date = baseSearchData.businessDate;
+                payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime) {
+                    var start_date = propertyTime.hotel_time.date;
                     if($stateParams.checkin_date){
                         start_date = $stateParams.checkin_date;
                     }
