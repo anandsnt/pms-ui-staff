@@ -368,6 +368,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.chosenReport.chosenSortBy = sortBy.value;
 
+			// reset the page
+			$_page = 1;
+
 			// should-we-change-view, specify-page, per-page-value
 			$scope.genReport( false, 1 );
 		};
