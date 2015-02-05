@@ -892,7 +892,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				'userId': "",
 				'avatar': "",
 				'guestId': "",
-				'is_vip': "" //TODO: check with API or the product team
+				'vip': false
 			};
 			// // $scope.$emit('guestCardUpdateData', contactInfoData);
 			$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
