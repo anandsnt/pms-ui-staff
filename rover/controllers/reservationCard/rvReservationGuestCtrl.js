@@ -77,5 +77,17 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			$scope.saveGuestDetails();
 		});
 
+		/**
+		 * CICO-12672 Occupancy change from the staycard -- 
+		 */
+		$scope.onStayCardOccupancyChange = function(){
+			console.log({
+				adults: guestData.adult_count,
+				children: guestData.children_count,
+				infants: guestData.infants_count,
+
+			})
+		}
+
 		$scope.init();
 }]);
