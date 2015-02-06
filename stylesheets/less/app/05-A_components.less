@@ -1489,25 +1489,31 @@
                                 .switch-button { 
                                     width: 80px; 
                                     text-shadow: none;
-                                    background: rgba(0,0,0,.1);
-                                    .box-shadow(none);
+                                    background: rgba(0,0,0,.5);
+                                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.75));
                                     .show;
 
                                     .value {
-                                        color: @white;
                                         font-weight: 700;
-                                        .calc-width(100, 30);
+                                        .calc-width(100, 25);
                                     }
 
                                     .switch-icon {
-                                        .vip;
-                                        background: @grey2;
+                                        font-size: 10px;
+                                        text-shadow: none;
+                                        font-weight: 600;
+                                        color: rgba(0,0,0,.5);
+                                        .square(20px);
                                     }
 
-                                    &.on {
-                                        .switch-icon { 
-                                            background: @yellow;
-                                        }
+                                    .data-off {
+                                        .value { color: rgba(255,255,255,.4); }
+                                        .switch-icon { background: rgba(255,255,255,.7); }
+                                    }
+
+                                    .data-on {
+                                        .value { color: @white; }
+                                        .switch-icon { background: @yellow; }
                                     }
                                 }
 
@@ -7020,12 +7026,16 @@
                     }
                 }
 
+                &.with-pagination { .calc-height(100, 230); }
+
                 &.no-totals,
                 &.no-content {
                    .calc-height(100, 50); 
 
                    > .wrapper { padding: 20px; }
                    > .iScrollVerticalScrollbar { top: 20px; }
+
+                   &.with-pagination { .calc-height(100, 100); }
                 }
 
                 &.with-graphs {
@@ -9444,7 +9454,12 @@
                 .has-datepicker {
                     position: relative;
 
-                    input { width: 100%; }
+                    input { 
+                        width: 100%; 
+                        background: #fcfcfc url(/assets/calendar.png) no-repeat 90% 11px;
+                        background-size: 20px;                        
+                    }
+
                 }
 
                 &.dual-select,

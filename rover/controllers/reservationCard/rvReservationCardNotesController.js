@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter',
-    function($scope, $filter) {
+sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$rootScope',
+    function($scope, $filter, $rootScope) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -19,9 +19,12 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter',
 
         $scope.saveReservationNote = function() {
             if (!$scope.$parent.isNewsPaperPreferenceAvailable()) {
-                $scope.reservationnote = "";
-                $scope.$parent.showFeatureNotAvailableMessage();
-                return;
+                if (!$rootScope.isStandAlone){
+                    $scope.reservationnote = "";
+                    $scope.$parent.showFeatureNotAvailableMessage();
+                    return;
+                }
+                
             }
             var successCallBackReservationNote = function(data) {
 
