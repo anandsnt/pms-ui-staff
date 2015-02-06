@@ -5,7 +5,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.guestData = {};
 		var presentGuestInfo = {};
 		var initialGuestInfo = {};
-
 		$scope.errorMessage = '';
 
 		/**
@@ -88,34 +87,36 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);*/
 
-			// Note: when editing number of guests for an INHOUSE reservation, the new number of guests should only apply from this day onwards, any previous days need to retain the previous guest count.
 
 			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
-				var adults = parseInt($scope.guestData.adult_count || 0),
-					children = parseInt($scope.guestData.children_count || 0),
-					rateToday = item.rate_config;
-				$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].guests = {
-					adults: adults,
-					children: children,
-					infants: parseInt($scope.guestData.infants_count || 0)
-				}
-				if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
-					if (override) {
-						var actual_amount = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount;
-						if (parseFloat(actual_amount) > 0.00) {
-							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = actual_amount;
-						}
-						$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = 0;
-					} else {
-						var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
-						var extraAdults = adults >= 2 ? adults - 2 : 0;
-						var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
-
-						$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = roomAmount;
-						$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = roomAmount;
+				// Note: when editing number of guests for an INHOUSE reservation, the new number of guests should only apply from this day onwards, any previous days need to retain the previous guest count.	
+				if (new tzIndependentDate(item.date) >= new tzIndependentDate($rootScope.businessDate)) {
+					var adults = parseInt($scope.guestData.adult_count || 0),
+						children = parseInt($scope.guestData.children_count || 0),
+						rateToday = item.rate_config;
+					$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].guests = {
+						adults: adults,
+						children: children,
+						infants: parseInt($scope.guestData.infants_count || 0)
 					}
+					if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
+						if (override) {
+							var actual_amount = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount;
+							if (parseFloat(actual_amount) > 0.00) {
+								$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = actual_amount;
+							}
+							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = 0;
+						} else {
+							var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
+							var extraAdults = adults >= 2 ? adults - 2 : 0;
+							var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+
+							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = roomAmount;
+							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = roomAmount;
+						}
 
 
+					}
 				}
 			})
 
