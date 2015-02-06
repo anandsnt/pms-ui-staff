@@ -46,7 +46,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset this
 			$scope.parsedApiFor = undefined;
 
-
 			switch ( $scope.chosenReport.title ) {
 				case 'In-House Guests':
 				case 'Departure':
@@ -98,6 +97,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 2;
 					break;
 			};
+
+			// when should pagination
+			if ( $scope.chosenReport.title != 'Booking Source & Market Report' ) {
+				$scope.hasPagination = true;
+			} else {
+				$scope.hasPagination = false;
+			}
+
 
 
 
@@ -255,33 +262,34 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 
+
+		var $_perPage = 25;
+		var $_page = 1;
+
 		// we are gonna need to drop some pagination
 		// this is done only once when the report details is loaded
 		// and when user updated the filters
 		var calPagination = function(response, pageNum) {
-		    var results =        $scope.$parent.results,
-		    	totalCount =     $scope.$parent.totalCount,
-		    	resultsPerPage = $scope.$parent.resultsPerPage,
-		    	pageNum =        typeof pageNum == "undefined" ? 1 : pageNum;
+			if ( ! $scope.hasPagination ) {
+				return;
+			};
 
-		    $scope.pagination = [];
+			// clear old results and update total counts
+			$scope.netTotalCount = $scope.$parent.totalCount;
+			$scope.uiTotalCount  = !!$scope.$parent.results ? $scope.$parent.results.length : 0;
 
-		    if (results.length < totalCount) {
-		        var pages = Math.floor( totalCount / resultsPerPage );
-		        var extra = totalCount % results.length;
-
-		        if (extra > 0) {
-		            pages++;
-		        };
-
-		        for (var i = 1; i <= pages; i++) {
-		            $scope.pagination.push({
-		                no: i,
-		                active: i === pageNum ? true : false
-		            })
-		        };
-		    };
-		};
+			if ( $_page === 1 ) {
+				$scope.resultFrom = 1;
+				$scope.resultUpto = $scope.netTotalCount < $_perPage ? $scope.netTotalCount : $_perPage;
+				$scope.disablePrevBtn = true;
+				$scope.disableNextBtn = $scope.netTotalCount > $_perPage ? false : true;
+			} else {
+				$scope.resultFrom = $_perPage * ($_page - 1) + 1;
+				$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.netTotalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.netTotalCount;
+				$scope.disablePrevBtn = false;
+				$scope.disableNextBtn = $scope.resultUpto === $scope.netTotalCount ? true : false;
+			}
+ 		};
 
 		// hacks to track back the chosenCico & chosenUsers names
 		// from their avaliable values
@@ -317,25 +325,28 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		// fetch next page on pagination change
 		$scope.fetchNextPage = function(returnToPage) {
+			// returning to the previous page before print
 			if ( !!returnToPage ) {
-				// should-we-change-view, specify-page, per-page-value
-				$scope.genReport( false, returnToPage );
+				$_page = returnToPage;
+				$scope.genReport( false, $_page );
 			} else {
-				// user clicked on current page
-				if (this.page.active) {
-				    return;
-				};
+				if ( $scope.disableNextBtn ) {
+					return;
+				}
 
-				// change the current active number
-				var currPage = _.find($scope.pagination, function(page) {
-				    return page.active === true
-				});
-				currPage.active = false;
-				this.page.active = true;
+				$_page++;
+				$scope.genReport( false, $_page );
+			};
+		};
 
-				// should-we-change-view, specify-page, per-page-value
-				$scope.genReport( false, this.page.no );
+		// fetch prev page on pagination change
+		$scope.fetchPrevPage = function() {
+			if ( $scope.disablePrevBtn ) {
+				return;
 			}
+
+			$_page--;
+			$scope.genReport( false, $_page );
 		};
 
 		// refetch the report while sorting with..
@@ -357,6 +368,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.chosenReport.chosenSortBy = sortBy.value;
 
+			// reset the page
+			$_page = 1;
+
 			// should-we-change-view, specify-page, per-page-value
 			$scope.genReport( false, 1 );
 		};
@@ -364,6 +378,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// refetch the reports with new filter values
 		// Note: not resetting page to page #1
 		$scope.fetchUpdatedReport = function() {
+			// reset the page
+			$_page = 1;
+
 			// should-we-change-view, specify-page, per-page-value
 		    $scope.genReport( false );
 		};
@@ -373,17 +390,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// since we are loading the entire report and show its print preview
 			// we need to keep a back up of the original report with its pageNo
-		    $scope.returnToPage = 1;
-
-		    // now since we are gonna update the filter
-		    // we are gonna start from page one
-		    var currPage = _.find($scope.pagination, function(page) {
-		        return page.active === true
-		    });
-
-		    if( currPage ){
-		       $scope.returnToPage = currPage.no;
-		    }
+		    $scope.returnToPage = $_page;
 
 		    // should-we-change-view, specify-page, per-page-value
 		    $scope.genReport( false, 1, 1000 );
@@ -444,6 +451,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportPageChanged = $rootScope.$on('report.page.changed', function() {
 			afterFetch();
+			calPagination();
 			refreshScroll();
 		});
 
