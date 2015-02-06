@@ -34,7 +34,7 @@
 	                    ng-click="sortByCode()" rowspan="2">
 	                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Code</span></div>
 	                </th>
-	                <th><span>Delete</span>
+	                <th ng-hide="currentClickedElement == $index"><span>Delete</span>
 	                </th>
 					</tr>
 				</thead>
@@ -46,11 +46,11 @@
 						<td header-class=" width-30" class="text-left" ng-hide="currentClickedElement == $index" >
 							{{room_types.code}}
 						</td>
-						</td>
 						<td>
-							<a class="icons icon-delete large-icon" ng-click="deleteRoomTypes($index, room_types.id)"></a>					
-						</td>
-						<td colspan="2" ng-include="getTemplateUrl($index,room_types.id)" ng-show="currentClickedElement == $index"></td>
+							<a class="icons icon-delete large-icon" ng-click="deleteRoomTypes($index, room_types.id)" ng-hide="currentClickedElement == $index"></a>					
+						</td>						
+						</td>						
+						<td colspan="2" ng-include="getTemplateUrl($index, room_types.id)" ng-show="currentClickedElement == $index"></td>
 					</tr>
 				</tbody>
 			</table>

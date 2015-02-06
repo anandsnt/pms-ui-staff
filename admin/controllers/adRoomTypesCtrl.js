@@ -188,23 +188,21 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		if($scope.currentClickedElement == -1)
 		$scope.tableParams.sorting({'code' : $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
 	};
-
-
-	$scope.deleteRoomTypes = function(index, room_id){
-		console.log("deleteRoomTypes");
-		console.log(room_id);
-		console.log(index);
+	$scope.deleteRoomTypes = function(index, roomtype_id){
 		//var successCallBack = function(){
 			$scope.$emit('hideLoader');
-			$scope.data.room_types.splice(index, 1);
+			var actualIndex = $scope.data.room_types.map(function(x){return x.id }).indexOf(roomtype_id);
+      		$scope.data.room_types.splice(actualIndex, 1);
 			$scope.tableParams.page(1);
-        	$scope.tableParams.reload();			
+        	$scope.tableParams.reload();        	
 		//}
+		var errorCallback = function(data){
+	 		$scope.$emit('hideLoader');
+	 		$scope.successMessage ="";
+	 		$scope.errorMessage = data;	
+	 	}		
 	//TODO API CALL	
-	//	$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);
-
+	//	$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack, errorCallback);
 	}
-
-
 }]);
 

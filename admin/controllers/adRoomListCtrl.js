@@ -18,11 +18,9 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 			$scope.totalCount = parseInt(data.number_of_rooms_configured);
 			$scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
 			$scope.total_number_of_rooms = data.total_number_of_rooms;
-
 			$scope.is_add_available = data.is_add_available;
 			$scope.data = data.rooms;
 			//$scope.data = data.rooms;
-
 			$scope.currentPage = params.page();
         	params.total($scope.totalCount);
             $defer.resolve($scope.data);
@@ -46,21 +44,21 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 		);
 	}
 	$scope.deleteRoom = function(index, room_id){
-		console.log("deleteRoom");
-		console.log(room_id);
-		console.log(index);
+		//TODO-
 		//var successCallBack = function(){
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
-			console.log($scope.data);
 			$scope.tableParams.page(1);
         	$scope.tableParams.reload();
 		//}
+
+	var errorCallback = function(data){
+	 		$scope.$emit('hideLoader');
+	 		$scope.successMessage ="";
+	 		$scope.errorMessage = data;	
+	 	}
 	//TODO API CALL	
-	//	$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);
-
+	//	$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack, errorCallback);
 	}
-
 	$scope.loadTable();
-
 }]);
