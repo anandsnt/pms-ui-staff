@@ -43,7 +43,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					if (searchData.travelAgent.id != null) {
 						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
 							if ($stateParams.reservation && $stateParams.reservation != 'HOURLY' && $stateParams.mode && $stateParams.mode != 'OTHER') {
-<!-- ngInclude: '/assets/partials/cards/header/guestCardHeader.html' -->								$scope.switchCard('travel-agent-card');
+								$scope.switchCard('travel-agent-card');
 							}
 						}
 						$scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
