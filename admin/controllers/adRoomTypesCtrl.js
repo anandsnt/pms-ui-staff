@@ -190,5 +190,21 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	};
 
 
+	$scope.deleteRoomTypes = function(index, room_id){
+		console.log("deleteRoomTypes");
+		console.log(room_id);
+		console.log(index);
+		//var successCallBack = function(){
+			$scope.$emit('hideLoader');
+			$scope.data.room_types.splice(index, 1);
+			$scope.tableParams.page(1);
+        	$scope.tableParams.reload();			
+		//}
+	//TODO API CALL	
+	//	$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);
+
+	}
+
+
 }]);
 

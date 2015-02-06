@@ -45,39 +45,22 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 		    }
 		);
 	}
+	$scope.deleteRoom = function(index, room_id){
+		console.log("deleteRoom");
+		console.log(room_id);
+		console.log(index);
+		//var successCallBack = function(){
+			$scope.$emit('hideLoader');
+			$scope.data.splice(index, 1);
+			console.log($scope.data);
+			$scope.tableParams.page(1);
+        	$scope.tableParams.reload();
+		//}
+	//TODO API CALL	
+	//	$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);
+
+	}
 
 	$scope.loadTable();
-	
-
-
-	/*var fetchSuccessOfRoomList = function(data){
-		$scope.data = data;
-		//applying sorting functionality in room list
-		$scope.roomList = new ngTableParams({
-		        page: 1,            // show first page
-		        count: $scope.data.rooms.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: {
-		            name: 'asc'     // initial sorting
-		        }
-		    }, {
-		        total: $scope.data.rooms.length, // length of data
-		        getData: function($defer, params) {
-		            // use build-in angular filter
-		            var orderedData = params.sorting() ?
-		                                $filter('orderBy')($scope.data.rooms, params.orderBy()) :
-		                                $scope.data.rooms;
-		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		        }
-		    });		
-		$scope.$emit('hideLoader');
-	};
-	
-	var fetchFailedOfRoomList = function(errorMessage){
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage ;
-	};
-	
-	$scope.invokeApi(ADRoomSrv.fetchRoomList, {}, fetchSuccessOfRoomList, fetchFailedOfRoomList);	*/
-
 
 }]);

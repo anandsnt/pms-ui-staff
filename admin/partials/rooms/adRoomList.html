@@ -37,7 +37,7 @@
 						<td data-title="'Room Type'" sortable="'room_type'">
 							{{room.room_type}}
 						</td>
-						<td data-title="'Delete'" data-title-text="Delete" ng-click="">
+						<td data-title="'Delete'" data-title-text="Delete" ng-click="deleteRoom($index, room.room_id)">
 							<a class="icons icon-delete large-icon" ></a>				
 						</td>
 					</tr>
