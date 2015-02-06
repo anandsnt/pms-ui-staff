@@ -1,0 +1,261 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	<header class="content-title">
+	    <h2>New Campaign</h2>
+	    <a href="{link}" class="action back">Back</a>
+	</header>
+
+	<form method="post" action="" id="new-campaign" name="new-campaign" class="form campaign-details">
+	    
+	    <fieldset class="holder left">
+
+	        <!-- Campaign details -->
+	        <div class="form-title">
+	            <h3><span>Campaign</span> details</h3>
+	            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+	        </div>
+	        <div class="entry short">
+	            <label for="campaign-id">ID</label>
+	            <input type="text" id="campaign-id" value="campaignData.id" ng-model="campaignData.id" readonly />
+	        </div>
+	        <div class="entry long">
+	            <label for="campaign-name">Campaign name <strong>*</strong></label>
+	            <input type="text" id="campaign-name" placeholder="Enter Campaign name" ng-model="campaignData.name" value="" required />
+	        </div>        
+	        <div class="entry full-width">
+	            <label for="campaign-audience">Audience <strong>*</strong></label>
+	            <div class="boxes">
+	                <label class="radio">
+	                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='DUE_IN_GUESTS'}"></span>
+	                    <input name="audience" id="audience-duein" value="DUE_IN_GUESTS" type="radio" ng-model="campaignData.audience_type"/>
+	                    Due In Guests
+	                </label>
+	                <label class="radio">
+	                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='IN_HOUSE_GUESTS'}"></span>
+	                    <input name="audience" id="audience-inhouse" value="IN_HOUSE_GUESTS" type="radio" ng-model="campaignData.audience_type"/>
+	                    In House Guests
+	                </label>
+	                <label class="radio">
+	                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='EVERYONE'}"></span>
+	                    <input name="audience" id="audience-everyone" value="EVERYONE" type="radio" ng-model="campaignData.audience_type"/>
+	                    Everyone
+	                </label>
+	                <label class="radio">
+	                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='SPECIFIC_USERS'}"></span>
+	                    <input name="audience" id="audience-users" type="radio" value="SPECIFIC_USERS" ng-model="campaignData.audience_type"/>
+	                    Specific User(s)
+	                </label>
+	                <input id="audience-specific-user" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.guest_name"/> <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
+	            </div>
+	        </div>
+
+	        <!-- Message -->
+	        <div class="form-title">
+	            <h3><span>Message</span> (in App)</h3>
+	            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+	        </div>
+	        <div class="entry full-width">
+	            <label for="message-subject">Message Subject<strong>*</strong></label>
+	            <input type="text" id="message-subject" maxlength="{{campaignData.messageSubjectMaxLength}}" placeholder="Subject or Message" value="campaignData.subject" required ng-model="campaignData.subject" />
+	            <p class="counter"><span ng-class="{'done': campaignData.subject.length == campaignData.messageSubjectMaxLength}">{{campaignData.messageSubjectMaxLength - campaignData.subject.length}}</span> Characters Remaining</p>
+	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
+	        </div>
+	        <div class="entry full-width">
+	            <label for="message-header">Message Header Image <span>(JPEG or PNG, {XxY}px in size)</span></label>
+	            <div class="file-upload with-preview">
+	                <input type="file" id="message-header" />
+	                <button type="button" class="button brand-colors">Add image</button>
+	            </div>
+	            <span class="file-preview"><em>Preview not available</em></span>
+	        </div>   
+	        <div class="entry full-width">
+	            <label for="message-body">Message body<strong>*</strong></label>
+	            <textarea id="message-body" rows="4" maxlength="{{campaignData.messageBodyMaxLength}}" placeholder="Text" ng-model="campaignData.body"></textarea>
+	            <p class="counter" ng-class = "{'done': campaignData.messageBodyMaxLength == campaignData.body.length}"><span>{{campaignData.messageBodyMaxLength - campaignData.body.length}}</span> Characters Remaining</p>
+	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
+	        </div>
+	        <div class="entry">
+	            <label for="call-label">Call To Action Label</label>
+	            <input type="text" id="call-label" placeholder="Text displayed on button" ng-model="campaignData.call_to_action_label" value="campaignData.call_to_action_label" />
+	        </div>
+	        <div class="entry full-width">
+	            <label for="call-target">Call To Action Target</label>
+	            <input type="text" id="call-target" placeholder="Button link" ng-model="campaignData.call_to_action_target" value="campaignData.call_to_action_target"/>
+	        </div>
+	    </fieldset>
+
+	    <fieldset class="holder right">
+	        
+	        <!-- Delivery -->
+	        <div class="form-title">
+	            <h3><span>Delivery</span> details</h3>
+	            <em class="status">Time Zone: <strong class="zone">{{hotelTimeZoneFull}} ({{hotelTimeZoneAbbr}})</strong></em>
+	        </div>
+	        <div class="large-block" ng-click="campaignData.is_recurring = false">
+	            <label class="radio large">
+	                <span class="icon-form icon-radio" ng-class = "{'checked': !campaignData.is_recurring}"></span>
+	                <input name="delivery" id="delivery-onetime" value="immediately" type="radio" />
+	                One Time
+	            </label>
+	            <!-- Lines 97-148 are For future use, not for CICO-11909 
+	            <label class="radio small"> // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option.
+	                <span class="icon-form icon-radio checked"></span>
+	                <input name="delivery-once" id="delivery-immediately" value="immediately" type="radio" checked />
+	                Immediately
+	            </label>
+	            <label class="radio small"> // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option.
+	                <span class="icon-form icon-radio"></span>
+	                <input name="delivery-once" id="delivery-scheduled" value="scheduled" type="radio" />
+	                Scheduled
+	            </label> 
+	            <div id="delivery-scheduled-options" class="inner-block hidden"> // Remove class "hidden" when Scheduled delivery is selected. Add back if Immediate delivery is selected
+	                <div class="entry has-datepicker">
+	                    <label for="delivery-date">Delivery Date</span></label>
+	                    <input id="delivery-date" placeholder="Set Delivery Date" class="datepicker" type="text" readonly />
+	                </div>
+	                <div class="entry">
+	                    <label for="delivery-hour">Delivery Time</label>
+	                    <div class="select select-col col1-3">
+	                        <select id="delivery-hour" class="placeholder">
+	                            <option value="" selected>HH</option>
+	                            <option value="01">01</option>
+	                            <option value="02">02</option>
+	                            <option value="03">03</option>
+	                            <option value="04">04</option>
+	                            <option value="05">05</option>
+	                            <option value="06">06</option>
+	                            <option value="07">07</option>
+	                            <option value="08">08</option>
+	                            <option value="09">09</option>
+	                            <option value="10">10</option>
+	                            <option value="11">11</option>
+	                            <option value="12">12</option>
+	                        </select>
+	                    </div>
+	                    <div class="select select-col col1-3">
+	                        <select id="delivery-minute" class="placeholder">
+	                            <option value="" selected>MM</option>
+	                            <option value="00">00</option>
+	                            <option value="15">15</option>
+	                            <option value="30">30</option>
+	                            <option value="45">45</option>
+	                        </select>
+	                    </div>
+	                    <div class="select select-col col1-3">
+	                        <select id="delivery-daytime">
+	                            <option value="AM" selected>AM</option>
+	                            <option value="PM">PM</option>
+	                        </select>
+	                    </div>
+	                </div>
+	            </div> -->
+	        </div>
+	        <div class="large-block">
+	            <label class="radio large" ng-click="campaignData.is_recurring = true" >
+	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.is_recurring}"></span>
+	                <input name="delivery" id="delivery-recurring" value="recurring" type="radio"/>
+	                Recurring
+	            </label>
+	            <div class="inner-block" ng-show="campaignData.is_recurring"> <!-- Remove class "hidden" when Recurring is selected. Add it back if "One Time" is selected as an option -->
+	                <div class="entry recurring first">
+	                    <label class="label" for="recurring-dayofweek">Send</label>
+	                    <span class="delimiter">Every</span>
+	                    <div class="select day">
+	                        <select id="recurring-dayofweek" class="placeholder" ng-model="campaignData.day_of_Week">
+	                            <option value="">Day of Week</option>
+	                            <option value="MONDAY" ng-selected="campaignData.day_of_Week == 'MONDAY'">Monday</option>
+	                            <option value="TUESDAY" ng-selected="campaignData.day_of_Week == 'TUESDAY'">Tuesday</option>
+	                            <option value="WEDNESDAY" ng-selected="campaignData.day_of_Week == 'WEDNESDAY'">Wednesday</option>
+	                            <option value="THURSDAY" ng-selected="campaignData.day_of_Week == 'THURSDAY'">Thursday</option>
+	                            <option value="FRIDAY" ng-selected="campaignData.day_of_Week == 'FRIDAY'">Friday</option>
+	                            <option value="SATURDAY" ng-selected="campaignData.day_of_Week == 'SATURDAY'">Saturday</option>
+	                            <option value="SUNDAY" ng-selected="campaignData.day_of_Week == 'SUNDAY'">Sunday</option>
+	                        </select>
+	                    </div>
+	                    <span class="delimiter">at</span>
+	                    <div class="select">
+	                    	<select ng-model="campaignData.delivery_hour" id="delivery-hour" class="placeholder">
+								<option value="" data-text="Not set" class="placeholder">HH</option>
+								<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==campaignData.delivery_hour" >{{i}}</option>
+							</select>
+	                        <!-- <select id="delivery-hour" class="placeholder">
+	                            <option value="" selected>HH</option>
+	                            <option value="01">01</option>
+	                            <option value="02">02</option>
+	                            <option value="03">03</option>
+	                            <option value="04">04</option>
+	                            <option value="05">05</option>
+	                            <option value="06">06</option>
+	                            <option value="07">07</option>
+	                            <option value="08">08</option>
+	                            <option value="09">09</option>
+	                            <option value="10">10</option>
+	                            <option value="11">11</option>
+	                            <option value="12">12</option>
+	                        </select> -->
+	                    </div>
+	                    <div class="select">
+	                    	<select ng-model="campaignData.delivery_min" id="delivery-minute" class="placeholder">
+								<option value="" data-text="Not set" class="placeholder">MM</option>
+								<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i == campaignData.delivery_min" >{{i}}</option>
+							</select>
+	                        <!-- <select id="delivery-minute" class="placeholder">
+	                            <option value="" selected>MM</option>
+	                            <option value="00">00</option>
+	                            <option value="15">15</option>
+	                            <option value="30">30</option>
+	                            <option value="45">45</option>
+	                        </select> -->
+	                    </div>
+	                    <div class="select" ng-model="campaignData.delivery_primetime" >
+	                        <select id="delivery-daytime">
+	                            <option value="AM" ng-selected="campaignData.delivery_primetime == 'AM'">AM</option>
+	                            <option value="PM" ng-selected="campaignData.delivery_primetime == 'PM'">PM</option>
+	                        </select>
+	                    </div>
+	                </div>
+	                <div class="entry recurring">
+	                    <label class="label" for="recurring-enddate">End</span></label>
+	                    <label class="radio clear">
+	                        <span class="icon-form icon-radio" ng-class="{'checked' : campaignData.recurring_end_type == 'NEVER'}"></span>
+	                        <input name="recurring-tempo" id="recurring-tempo-never" type="radio" ng-model="campaignData.recurring_end_type" value = "NEVER"/>
+	                        Never
+	                    </label>
+	                    <label class="radio">
+	                        <span class="icon-form icon-radio" ng-class="{'checked' : campaignData.recurring_end_type == 'END_OF_DAY'}"></span>
+	                        <input name="recurring-tempo" id="recurring-tempo-date" ng-model="campaignData.recurring_end_type" value = "END_OF_DAY" type="radio"/>
+	                        At End Of Day
+	                    </label>
+	                    <div id="recurring-datepicker" class="has-datepicker hidden" ng-show = "campaignData.recurring_end_type == 'END_OF_DAY'"> <!-- Remove class "hidden" when "At End Of Day" is selected. Add when "Never" is selected. -->
+	                        <input id="delivery-date" placeholder="Set Delivery Date" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date == ''"/>
+	                        <input id="delivery-date" placeholder="{{campaignData.recurrence_end_date | date : dateFormat }}" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date !== ''"/>
+	                    </div>
+	                </div>
+	            </div>
+	        </div> 
+
+	        <!-- Notifications -->
+	        <div class="form-title">
+	            <h3><span>Notifications</span> (outside App)</h3>
+	            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+	        </div>
+	        <div class="entry full-width">
+	            <label for="notification-ios8">Notification - Banner or Alert <span>(iOS 8+)</span><strong>*</strong></label>
+	            <textarea id="notification-ios8" rows="1" maxlength="{{campaignData.alert_max_length}}" placeholder="Text" ng-model="campaignData.alert_ios8"></textarea>
+	            <p class="counter"><span ng-class= "{'done': campaignData.alert_max_length == campaignData.alert_ios8.length}">{{campaignData.alert_max_length - campaignData.alert_ios8.length}}</span> Characters Remaining</p>
+	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
+	        </div>
+	        <div class="entry full-width">
+	            <label for="notification-ios7">Notification - Banner or Alert <span>(iOS 7)</span><strong>*</strong></label>
+	            <textarea id="notification-ios7" rows="1" maxlength="{{campaignData.alert_max_length}}" placeholder="Text" ng-model="campaignData.alert_ios7"></textarea>
+	            <p class="counter"><span ng-class= "{'done': campaignData.alert_max_length == campaignData.alert_ios7.length}">{{campaignData.alert_max_length - campaignData.alert_ios7.length}}</span> Characters Remaining</p>
+	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
+	        </div>          
+	    </fieldset>
+	    
+	    <div class="actions">
+	        <button type="button" class="button blank">Cancel</button>
+	        <button type="button" class="button blue" ng-click="saveAsDraft()">Save as Draft</button> 
+	        <button type="button" class="button green" ng-click="startCampaign()">Start Campaign</button>
+	    </div>
+	</form>
+</section>

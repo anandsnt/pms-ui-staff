@@ -1,0 +1,77 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	<div>
+		<header class="content-title">
+		    <h2>Campaigns</h2>
+		    <a ui-sref="admin.addCampaign" class="action add">Campaign</a>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/keyEncoders/adEncoderAdd.html'"></div>
+
+			<div id="new-form-holder"></div>
+
+			<!--ng-table component -->
+			<table class="grid datatable campaign-grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
+				<tbody>
+					<tr ng-repeat="campaign in $data"> 
+						<td data-title="'ID'" header-class="id" ng-hide="currentClickedElement == $index">
+							<span> {{campaign.id}}</span>
+						</td>
+					
+						<td data-title="'Name'"  sortable="'based_on'" header-class="name width-25" ng-hide="currentClickedElement == $index">
+							<a class="edit-data" ng-click="editEncoder(campaign.id, $index)" >
+								<span>
+									{{campaign.name}}
+								</span>
+							</a>
+						</td>
+						<td data-title="'Audience'" sortable="'rate_type'" header-class="width-25" ng-hide="currentClickedElement == $index">
+							<span>
+								{{campaign.audience}}
+							</span>
+						</td>
+						<td data-title="'Delivery'" sortable="'rate_type'" header-class="width-25" ng-hide="currentClickedElement == $index">
+							<span>
+								{{campaign.delivery}}
+							</span>
+						</td>
+						<td data-title="'Status'" sortable="'rate_type'" header-class="width-25" ng-hide="currentClickedElement == $index" class="status" ng-class="{'draft': campaign.status== 'DRAFT', 'active': campaign.status== 'ACTIVE', 'completed': campaign.status== 'COMPLETED'}">
+							{{campaign.status}}
+						</td>
+
+						
+						
+						<td colspan="5" header-class="width-0" ng-include="getTemplateUrl($index, campaign.id)" ></td>
+					</tr> 
+				</tbody>
+			</table>
+		</section>
+		<!--end -->
+
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
+	</div>
+</section>
+
+<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
