@@ -1,0 +1,35 @@
+<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()" ng-cloak>
+    <form class="modal-content form room-enhancements enhancements-added" >
+
+
+<!-- <div class="modal-content room-enhancements enhancements-added"> -->
+    <span class="h2 message">Room {{packageData.room_no}} Enhancements</span>
+    <ul>
+        <li ng-repeat="existingPackages in packageData.existing_packages">
+            <span class="item">{{existingPackages.package_name}}</span>
+            <span class="count"> ({{existingPackages.count}})</span>
+            <span class="base">at ${{existingPackages.price_per_piece}} / ADULT PER STAY</span>
+            <span class="price">${{existingPackages.totalAmount}}</span>
+            <button type="button" class="icons icon-trash">Remove</button>
+        </li>
+       
+    </ul>
+    <div class="actions">
+        <!-- On Stay Card -->
+        <button type="button" class="button orange">Add More to This Room</button>
+        <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
+
+        <!-- On Addons screen 
+        <button type="button" class="button blank">Close</button>
+        -->
+
+        <!-- On Create Res. Enhance Stay screen:
+        <button type="button" class="button white">Add More to This Room</button>
+        <button type="button" class="button green">Go To Payment</button>-->
+    </div>
+<!-- </div> -->
+
+
+
+    </form>
+</div>

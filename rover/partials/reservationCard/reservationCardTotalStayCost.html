@@ -1,5 +1,5 @@
-<div class="block-item item-rate">
-	<h3 class="block-title"> ADR</h3>
+<div class="block-item item-rate " ng-class="{'has-button':reservationData.reservation_card.is_package_exist}">
+	<h3 class="block-title"> ADR &amp; Add-Ons</h3>
 	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="showEditReservationPrompt()"> 
 		<span class="number" ng-show="reservationData.reservation_card.is_rates_suppressed">
 			{{reservationData.reservation_card.text_rates_suppressed}}
@@ -20,6 +20,14 @@
 
 	
 	</a>
+
+    <div class="actions">
+        <a ng-click="handleAddonsOnReservation(reservationData.reservation_card.is_package_exist)" class="button with-icon brand-colors">
+            <span class="count" ng-show="reservationData.reservation_card.is_package_exist">{{reservationData.reservation_card.package_count}}</span>
+            <span class="icons icon-addons"></span>
+            Add-Ons
+        </a>
+    </div> 
 	<!-- If reservation is not editable 
     <div class="no-view">
         <span class="number">${Daily Rate} / <strong>${Total Fees}</strong></span>

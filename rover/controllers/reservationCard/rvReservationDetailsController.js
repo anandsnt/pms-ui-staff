@@ -514,6 +514,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
+		$scope.handleAddonsOnReservation = function(isPackageExist){
+			//if(isPackageExist){
+				ngDialog.open({
+					template: '/assets/partials/packages/showPackages.html',
+					controller: 'RVReservationPackageController',
+					scope: $scope
+				});
+			//}
+		};
+
 	}
 
 ]);
