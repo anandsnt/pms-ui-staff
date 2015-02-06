@@ -1617,6 +1617,8 @@ sntRover
 			//changing the display date in calendar also	
 			changeCalendarDate ($scope.gridProps.filter.arrival_date);
 			$scope.gridProps.display.min_hours = 4;
+			//resetting the reservation data, that set during transfrer
+			resetTheDataForReservationMoveFromOneDateToAnother ();
 			if(!$scope.$$phase) {	
 				$scope.$apply();
 			}	    	
