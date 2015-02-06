@@ -28,7 +28,7 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
 		    
                 $scope.isPosting = false;
 		        if(response.status === 'failure') {
-		           $scope.errorMessage = response.errors[0][0];
+		           $scope.errorMessage = response.errors[0];
 		           $modal.open($scope.opts); // error modal popup
 	           }
 	           else{		    
