@@ -1542,26 +1542,42 @@
 			&.room-enhancements {
 				width: 420px;
 
-				.enhancements-added {
+				ul {
 					margin: 40px 0;
 
 					li {
+						position: relative;
 						font-weight: 600;
 						text-transform: uppercase;
-						padding-bottom: 10px;
+						padding: 0 100px 10px 0;
 						margin-bottom: 10px;
 						border-bottom: 1px solid rgba(0,0,0,.1);
-						.float;
 
-						.count {
+						span {
 							color: @grey3;
 							font-weight: 400;
-							margin-left: 5px;
+
+							&.base {
+								font-size: 13px;
+								line-height: 1em;
+								.show;
+							}
+
+							&.price,
+							&.value { color: @textColor; }
+
+							&.price {
+								position: absolute;
+								top: 0;
+								right: 40px;
+							}
 						}
 
 						.icon-trash {
+							position: absolute;
+							top: 0;
+							right: 0;
 							cursor: pointer;
-							.pull-right;
 						}
 
 						&:last-child { 
