@@ -48,6 +48,13 @@
 
             <section ng-if="chosenReport.title !='Booking Source & Market Report'">
                 <div ng-show="results.length" class="report-header">
+                    <div>
+                        <div ng-repeat="item in summaryCounts">
+                            <span>{{ item.label }}</span>
+                            <span>{{ item.currency }}{{ item.value }}</span>
+                        </div>
+                    </div>
+
                     <div class="actions">
                         <div class="select" ng-if="HIDE_THIS_FEATURE">
                             <select name="" id="">
