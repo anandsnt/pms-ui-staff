@@ -237,8 +237,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			switch ($scope.parsedApiFor) {
 				case 'In-House Guests':
+					template = '/assets/partials/reports/rvInHouseReport.html';
+					break;
+
 				case 'Departure':
-					template = '/assets/partials/reports/rvInHouseDepartureReport.html';
+					template = '/assets/partials/reports/rvDepartureReport.html';
 					break;
 
 				case 'Arrival':
