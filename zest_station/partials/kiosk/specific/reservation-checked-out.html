@@ -66,7 +66,8 @@
 <section id="main" role="main" class="centered" ng-show="mode === 'final-mode'">
     <div id="content">
         <h1>{{'SEE_YOU' |translate}}</h1>
-        <h3 ng-show="emailOpted && !emailSkipped">{{'EMAIL_BILL_SENT_MSG' |translate}}</h3>
+        <h3 ng-show="emailOpted && !emailSkipped && !emailError">{{'EMAIL_BILL_SENT_MSG' |translate}}</h3>
+        <h3 ng-show="emailOpted && !emailSkipped && emailError">{{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</h3>
         <h3 ng-show="printOpted">{{'BILL_PRINTED_BELOW' |translate}}</h3>
         <button type="button" class="button" click-touch='clickedOnCloseButton()'>{{'DONE_BTN' |translate}}</button>
     </div>

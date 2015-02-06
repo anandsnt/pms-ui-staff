@@ -789,7 +789,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
 		// READ MORE: rvReportsMainCtrl:L#:61-75
 		var prePrintDone = $rootScope.$on( reportMsgs['REPORT_PRE_PRINT_DONE'], $_fetchFullReport );
-		$scope.$on( 'destroy', prePrintDone );
+		$scope.$on( '$destroy', prePrintDone );
 
 		function $_fetchFullReport () {
 
@@ -1001,11 +1001,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 	    };
 
 		// removing event listners when scope is destroyed
-		$scope.$on( 'destroy', reportSubmited );
-		$scope.$on( 'destroy', reportUpdated );
-		$scope.$on( 'destroy', reportPageChanged );
-		$scope.$on( 'destroy', reportPrinting );
-		$scope.$on( 'destroy', reportAPIfailed );
+		$scope.$on( '$destroy', reportSubmited );
+		$scope.$on( '$destroy', reportUpdated );
+		$scope.$on( '$destroy', reportPageChanged );
+		$scope.$on( '$destroy', reportPrinting );
+		$scope.$on( '$destroy', reportAPIfailed );
     }
 
 ]);

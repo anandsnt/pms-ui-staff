@@ -20,6 +20,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
         // HOUSE AVAILABILITY IS SET EVERY TIME CALL IS MADE FOR RESTRICTIONS FROM THE CALLING METHOD IN THE RVSELECTROOMANDRATECTRL
         self.houseAvailability;
         self.promotionValidity;
+        self.isGroupReservation;
 
         self.getRestrictions = function(params) {
             var deferred = $q.defer();
@@ -41,7 +42,8 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
 
                     _.each(data.results, function(result) {
                         //---------------------------------------------Add HOUSE_FULL to the restrictions array
-                        if (self.houseAvailability) {
+                        //CICO-24923 Not needed in case of group bookings
+                        if (self.houseAvailability && !self.isGroupReservation) {
                             if (self.houseAvailability[result.date] < 1) {
                                 result.restrictions.push({
                                     type_id: 99,

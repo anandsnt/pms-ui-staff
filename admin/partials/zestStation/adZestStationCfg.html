@@ -9,22 +9,6 @@
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
         <form class="form float" >
 
-             <!-- Guest delivery options -->
-           <fieldset class="holder left">    
-                <div class="form-title full-width">
-                     <h3><span translate>GUEST_BILL_DELIVERY </span> </h3>
-                </div>
-                <ad-checkbox is-checked="zestSettings.guest_bill.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
-                <ad-checkbox is-checked="zestSettings.guest_bill.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
-            </fieldset>
-               <!-- Guest delivery options -->
-           <fieldset class="holder right">    
-                <div class="form-title full-width">
-                     <h3><span translate>REG_CARD_DELIVERY</span> </h3>
-                </div>
-                <ad-checkbox is-checked="zestSettings.registration_card.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
-                <ad-checkbox is-checked="zestSettings.registration_card.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
-            </fieldset>
 
             <!-- Home screen options -->
             <fieldset class="holder left">
@@ -35,58 +19,7 @@
                 <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  
                 <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
             </fieldset>
-            <fieldset class="holder right">    
-                <div class="form-title full-width">
-                     <h3><span translate>ON_SCREEN_ROOM_NUMBER </span> </h3>
-                </div>
-                 <ad-toggle-button is-checked="zestSettings.show_room_number" label="{{'ON_SCREEN_ROOM_NUMBER'| translate}}" div-class="full-width"></ad-toggle-button>
-            </fieldset>
-            <fieldset class="holder left">    
-                <div class="form-title full-width">
-                     <h3><span translate>ENFORCE_DEPOSIT </span> </h3>
-                </div>
-                 <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
-            </fieldset>
-
-            <!-- color selection -->
-            <fieldset class="holder left max-width">
-                <div class="form-title full-width">
-                    <h3><span translate>COLOR_SEC_LABEL</span> </h3>
-                </div>
-                    <div class="zest-settings-left" id="text"><!-- text color-->
-                        <ad-textbox value="zestSettings.colors.text" label="{{'TEXT_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
-                    </div>
-                    <div class="zest-settings-right" id="background"><!-- background color-->
-                        <ad-textbox value="zestSettings.colors.background" label="{{'BG_COLOR'| translate}}" styleclass="full-width" n></ad-textbox>
-                    </div>
-                    <div class="zest-settings-left" id="button"><!-- button color-->
-                        <ad-textbox value="zestSettings.colors.button" label="{{'BUTTON_COLOR'| translate}}" styleclass="full-width" ></ad-textbox>
-                    </div>
-                    <div class="zest-settings-right" id="transparent"><!-- transparent color -->
-                        <ad-textbox value="zestSettings.colors.transparent"  label="{{'TRANS_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
-                    </div>
-                    <div class="zest-settings-left" id="input_field_background"><!-- input_field_background -->
-                        <ad-textbox value="zestSettings.colors.input_field_background" label="{{'IN_FIELD_BG'| translate}}" styleclass="full-width"></ad-textbox>
-                    </div>
-                    <div class="zest-settings-right" id="header_icons"><!-- header_icons -->
-                        <ad-textbox value="zestSettings.colors.header_icons" label="{{'HEADER_ICONS_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
-                    </div>
-                    <div class="zest-settings-left" id="header_icons_pressed"><!-- header_icons_pressed -->
-                        <ad-textbox value="zestSettings.colors.header_icons_pressed" label="{{'HEADER_ICONS_COLOR_PRESSED'| translate}}" styleclass="full-width"></ad-textbox>
-                    </div>
-           </fieldset>
-           <fieldset class="holder left max-width">
-                <div class="form-title">
-                    <h3><span translate>REG_CARD</span> </h3>
-                </div>
-                <div class="entry">
-                    <label translate>
-                    REG_CARD_TEXT
-                    </label>
-                    <textarea class="full-width terms_height" type="" ng-model="zestSettings.reg_card_text"></textarea>
-                </div>
-           </fieldset>
-
+            
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

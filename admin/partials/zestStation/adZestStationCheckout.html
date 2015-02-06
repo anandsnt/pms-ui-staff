@@ -1,0 +1,31 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 translate>ZESTSTATION_TITLE_CHECKOUT</h2>
+        <a ng-click ="goBackToPreviousState()" class="action back" translate>ZESTSTATION_BACK</a>
+
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+        <form class="form float" >
+
+             <!-- Guest delivery options -->
+           <fieldset class="holder left">    
+                <div class="form-title full-width">
+                     <h3><span translate>GUEST_BILL_DELIVERY </span> </h3>
+                </div>
+                <ad-checkbox is-checked="zestSettings.guest_bill.email" label="{{ 'EMAIL_UPDATE_ZS' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.guest_bill.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
+            </fieldset>               
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+
+        </form>
+    </section>
+</div>

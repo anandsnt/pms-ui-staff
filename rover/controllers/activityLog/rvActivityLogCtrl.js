@@ -338,6 +338,7 @@ sntRover.controller('RVActivityLogCtrl',[
     };
     $scope.userEmail='';
 	$scope.init = function(){
+        var reservationDetails = $scope.$parent.reservation.reservation_card;
         //setting the header caption
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));
 
@@ -350,8 +351,20 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.isUpdateReportFilter = false;
         $scope.reportUpdateVisible = false;
         $scope.reportUpdateWidth = resizableMinWidth;
-        $scope.fromDate ='';
-        $scope.toDate ='';
+        
+        //CICO-24929
+        //for future reservation
+        if(tzIndependentDate (reservationDetails.arrival_date) > tzIndependentDate($rootScope.businessDate)) {
+            $scope.fromDate = $rootScope.businessDate;
+        }
+        //for inhouse/noshow/checkingin/checkedout
+        else {
+            $scope.fromDate = reservationDetails.arrival_date;
+        }
+
+        //CICO-24929
+        $scope.toDate = $rootScope.businessDate;
+
         $scope.user_id = 0;
 
         //Paginaton

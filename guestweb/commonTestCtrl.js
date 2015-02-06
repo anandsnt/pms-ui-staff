@@ -1280,10 +1280,10 @@ update the guest details here.
         'postal_code':'',
         'state':'',
         'city':'',
-        'street1':'',
+        'street':'',
         'street2':'',
         'birthday':'',
-        'country_id':''
+        'country':''
       };
 
 

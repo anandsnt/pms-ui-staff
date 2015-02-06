@@ -15,16 +15,16 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		var deferred = $q.defer();
 		var url =  '/api/rover_header_info.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {
-                
+
 		userDetails = data;
-                
+
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});
 		return deferred.promise;
 	};
-    
+
  	this.fetchDashboardStatisticData = function(){
 	    var deferred = $q.defer();
 

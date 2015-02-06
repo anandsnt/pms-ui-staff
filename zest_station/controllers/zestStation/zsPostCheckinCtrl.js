@@ -79,7 +79,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.from = 'deliver-registration';
                 
             } else if (current === 'zest_station.edit_registration_email'){
-                    $state.go('zest_station.delivery_options');
+                    $scope.selectEmailDelivery();
+                    //$state.go('zest_station.delivery_options');
+                    
             }
             
            
@@ -143,6 +145,17 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.editEmailAddress();
             } else {
                 $scope.at = 'email-delivery';
+                $scope.headingText = "SEND_REGISTRATION_TO";
+                if ($scope.zestStationData.printEnabled){
+                    showNavButtons();
+                } else {
+                    hideNavButtons();
+                }
+                
+                 if ((!$state.input.lastEmailValue || $state.input.lastEmailValue === '') && $state.input.email !== ''){
+                    $state.input.lastEmailValue = $state.input.email;
+                }
+                $scope.subHeadingText = $state.input.lastEmailValue;
             }
         };
         
@@ -168,6 +181,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.setupEmailEdit = function(){
             $scope.at = 'email-delivery';
             $scope.headingText = "SEND_REGISTRATION_TO";
+            if ((!$state.input.lastEmailValue || $state.input.lastEmailValue === '') && $state.input.email !== ''){
+                $state.input.lastEmailValue = $state.input.email;
+            }
             $scope.subHeadingText = $state.input.lastEmailValue;
             $scope.input.inputTextValue = $state.input.lastEmailValue;
         };
@@ -278,6 +294,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 if (isValidEmail){
                     $scope.updateGuestEmail();
                     $state.skipCheckinEmail = false;
+                    
+                    
                 } else {
                     $state.go('zest_station.invalid_email_retry');
                 }

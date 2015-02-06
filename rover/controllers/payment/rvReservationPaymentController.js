@@ -4,7 +4,7 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope', funct
 	$scope.getHasButtonClass = function(){
 
 		var status = $scope.reservationData.reservation_card.reservation_status,
-		    isCC = $scope.reservationData.reservation_card.payment_method_used === 'CC',
+		    isCC = $scope.reservationData.reservation_card.has_any_credit_card_attached_bill,
 		    hasButtonClass = "has-button";
 		if(status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED'){
 			hasButtonClass = "";
@@ -28,7 +28,7 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope', funct
 
 	// To hide/show CCAuthButton
 	$scope.showCCAuthButton = function(){
-		if($scope.reservationData.reservation_card.payment_method_used === 'CC' && $scope.isStandAlone && !$scope.reservationData.reservation_card.is_hourly_reservation){
+		if($scope.reservationData.reservation_card.has_any_credit_card_attached_bill && $scope.isStandAlone && !$scope.reservationData.reservation_card.is_hourly_reservation){
 			return true;
 		}
 		else{

@@ -1,5 +1,13 @@
 sntGuestWeb.controller('BaseController', ['$scope', '$state', function($scope, $state) {
 
+
+	$scope.errorOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/partials/gwCommonPopup.html',
+      controller: 'ModalInstanceCtrl'
+    };
+
 	$scope.$on('showLoader', function() {
 		$scope.loading = true;
 	});

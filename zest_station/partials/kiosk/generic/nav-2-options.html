@@ -3,7 +3,7 @@
 <section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "swipe-pay-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email" || at === "deposit-agree"' click-touch='resetTime()'>
     <div id="content">
         <h1>{{headingText |translate}}</h1>
-        <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText |translate}}{{depositAmountValue}}</h2>
+        <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText |translate}} {{depositAmountValue}}</h2>
         
         <h2 ng-hide='at !== "deposit-agree"'>{{subsubheadingText |translate}}</h2>
         <nav id="options" role="nav">
@@ -63,8 +63,6 @@
                 <li class="break" ng-show='at === "swipe-pay-error"'>
                     <span translate>OR_TEXT</span>
                 </li>
-                
-                
                 
                 <!-- retry-key -->
                 <li ng-show='at === "key-error"'> 

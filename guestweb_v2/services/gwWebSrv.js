@@ -1,10 +1,10 @@
-	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv',
-		function($q, $http, GwScreenMappingSrv) {
+	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv','$rootScope',
+		function($q, $http, GwScreenMappingSrv,$rootScope) {
 
 
 			this.screenList = [];
 			this.cMSdata = [];
-			this.reservationAndhotelData = {};
+			this.zestwebData = {};
 			var that = this;
 
 
@@ -16,27 +16,27 @@
 				 */
 
 				var fetchScreenFromCMSSetup = function(language) {
-					var language = (language !== null && typeof language !== "undefined")? language : 'EN';//if no language is selected
-					var url = '/sample_json/zestweb_v2/screen_list_' + language + '.json';
-					$http.get(url).success(function(response) {
-							that.reservationAndhotelData.screenDataFromCMS = response;
-							deferred.resolve(that.reservationAndhotelData);
-						}.bind(this))
-						.error(function() {
-							deferred.reject();
-						});
-				}
-				/*
-				 * To fetch reservation and hotel data
-				 * @return {object} CMS details
-				 */
+						var language = (language !== null && typeof language !== "undefined") ? language : 'EN'; //if no language is selected
+						var url = '/sample_json/zestweb_v2/screen_list_' + language + '.json';
+						$http.get(url).success(function(response) {
+								that.cMSdata = response;
+								deferred.resolve(that.zestwebData);
+							}.bind(this))
+							.error(function() {
+								deferred.reject();
+							});
+					}
+					/*
+					 * To fetch reservation and hotel data
+					 * @return {object} CMS details
+					 */
 				$http.get(url).success(function(response) {
 						if (response.status === "success") {
-							that.reservationAndhotelData.generalDetails = response.data;
-							if(!!response.data.zest_web){
+							that.zestwebData = response.data;
+							if (!!response.data.zest_web) {
 								fetchScreenFromCMSSetup(response.data.zest_web.language);
-							}else{
-								deferred.resolve(that.reservationAndhotelData);
+							} else {
+								deferred.resolve(that.zestwebData);
 							}
 						} else {
 							// when some thing is broken , need to redirect to error page with default theme
@@ -81,86 +81,98 @@
 				that.screenList = list;
 			};
 
-			this.setCMSdata = function(data) {
-				that.cMSdata = data;
-			};
-
 			this.extractScreenDetails = function(screen_identifier) {
 				return extractScreenDetails(screen_identifier, that.screenList, that.cMSdata);
 			};
-			this.setReservationAndHotelData = function(reservationAndhotelData) {
+
+			this.setReservationDataForExternalCheckout = function(response) {
+
+				that.zestwebData.reservationID = response.reservation_id;
+				that.zestwebData.userName = response.user_name;
+				that.zestwebData.checkoutDate = response.checkout_date;
+				that.zestwebData.checkoutTime = response.checkout_time;
+				that.zestwebData.userCity = response.user_city;
+				that.zestwebData.userState = response.user_state;
+				that.zestwebData.roomNo = response.room_no;
+				that.zestwebData.isLateCheckoutAvailable = response.is_late_checkout_available;
+				that.zestwebData.emailAddress = response.email_address;
+				that.zestwebData.isCCOnFile = response.is_cc_attached;
+				that.zestwebData.accessToken = $rootScope.accessToken = response.guest_web_token;
+
+			};
+			this.setzestwebData = function(zestwebData) {
 
 				//store basic details as rootscope variables
-				if (typeof reservationAndhotelData.access_token !== "undefined") {
-					that.reservationAndhotelData.accessToken = reservationAndhotelData.access_token;
+				if (typeof zestwebData.access_token !== "undefined") {
+					that.zestwebData.accessToken = $rootScope.accessToken = zestwebData.access_token;
 				}
-				that.reservationAndhotelData.hotelName = reservationAndhotelData.hotel_name;
-				that.reservationAndhotelData.currencySymbol = reservationAndhotelData.currency_symbol;
-				that.reservationAndhotelData.hotelPhone = reservationAndhotelData.hotel_phone;
-				that.reservationAndhotelData.businessDate = reservationAndhotelData.business_date;
-				that.reservationAndhotelData.mliMerchatId = reservationAndhotelData.mli_merchat_id;
-				that.reservationAndhotelData.roomVerificationInstruction = reservationAndhotelData.room_verification_instruction;
-				that.reservationAndhotelData.isSixpayments = (reservationAndhotelData.payment_gateway === "sixpayments") ? true : false;
-				that.reservationAndhotelData.reservationID = reservationAndhotelData.reservation_id;
-				that.reservationAndhotelData.userName = reservationAndhotelData.user_name;
-				that.reservationAndhotelData.checkoutDate = reservationAndhotelData.checkout_date;
-				that.reservationAndhotelData.checkoutTime = reservationAndhotelData.checkout_time;
-				that.reservationAndhotelData.userCity = reservationAndhotelData.city;
-				that.reservationAndhotelData.userState = reservationAndhotelData.state;
-				that.reservationAndhotelData.roomNo = reservationAndhotelData.room_no;
-				that.reservationAndhotelData.isLateCheckoutAvailable = (reservationAndhotelData.is_late_checkout_available === "true") ? true : false;
-				that.reservationAndhotelData.emailAddress = reservationAndhotelData.primary_guest_email;
-				that.reservationAndhotelData.isCheckedout = (reservationAndhotelData.is_checkedout === 'true') ? true : false;
-				that.reservationAndhotelData.isCheckin = (reservationAndhotelData.is_checkin === 'true') ? true : false;
-				that.reservationAndhotelData.reservationStatusCheckedIn = (reservationAndhotelData.reservation_status === 'CHECKIN') ? true : false;
-				that.reservationAndhotelData.isActiveToken = (reservationAndhotelData.is_active_token === "true") ? true : false;
-				that.reservationAndhotelData.isCheckedin = (that.reservationAndhotelData.reservationStatusCheckedIn && !that.reservationAndhotelData.isActiveToken);
-				that.reservationAndhotelData.isCCOnFile = (reservationAndhotelData.is_cc_attached === "true") ? true : false;
-				that.reservationAndhotelData.isPreCheckedIn = (reservationAndhotelData.is_pre_checked_in === 'true') ? true : false;
-				that.reservationAndhotelData.isRoomVerified = false;
-				that.reservationAndhotelData.isPrecheckinOnly = (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED') ? true : false;
-				that.reservationAndhotelData.isCcAttachedFromGuestWeb = false;
-				that.reservationAndhotelData.isAutoCheckinOn = ((reservationAndhotelData.is_auto_checkin === 'true') && (reservationAndhotelData.is_precheckin_only === 'true')) ? true : false;;
-				that.reservationAndhotelData.isExternalVerification = (reservationAndhotelData.is_external_verification === "true") ? true : false;
-				that.reservationAndhotelData.hotelIdentifier = reservationAndhotelData.hotel_identifier;
-				that.reservationAndhotelData.guestAddressOn = reservationAndhotelData.guest_address_on === 'true' ? true : false;
-				that.reservationAndhotelData.isGuestAddressVerified = false;
+				that.zestwebData.hotelName = zestwebData.hotel_name;
+				that.zestwebData.currencySymbol = zestwebData.currency_symbol;
+				that.zestwebData.hotelPhone = zestwebData.hotel_phone;
+				that.zestwebData.businessDate = zestwebData.business_date;
+				that.zestwebData.mliMerchatId = zestwebData.mli_merchat_id;
+				that.zestwebData.roomVerificationInstruction = zestwebData.room_verification_instruction;
+				that.zestwebData.isSixpayments = (zestwebData.payment_gateway === "sixpayments") ? true : false;
+				that.zestwebData.reservationID = zestwebData.reservation_id;
+				that.zestwebData.userName = zestwebData.user_name;
+				that.zestwebData.checkoutDate = zestwebData.checkout_date;
+				that.zestwebData.checkoutTime = zestwebData.checkout_time;
+				that.zestwebData.userCity = zestwebData.city;
+				that.zestwebData.userState = zestwebData.state;
+				that.zestwebData.roomNo = zestwebData.room_no;
+				that.zestwebData.isLateCheckoutAvailable = (zestwebData.is_late_checkout_available === "true") ? true : false;
+				that.zestwebData.emailAddress = zestwebData.primary_guest_email;
+				that.zestwebData.isCheckedout = (zestwebData.is_checkedout === 'true') ? true : false;
+				that.zestwebData.isCheckin = (zestwebData.is_checkin === 'true') ? true : false;
+				that.zestwebData.reservationStatusCheckedIn = (zestwebData.reservation_status === 'CHECKIN') ? true : false;
+				that.zestwebData.isActiveToken = (zestwebData.is_active_token === "true") ? true : false;
+				that.zestwebData.isCheckedin = (that.zestwebData.reservationStatusCheckedIn && !that.zestwebData.isActiveToken);
+				that.zestwebData.isCCOnFile = (zestwebData.is_cc_attached === "true") ? true : false;
+				that.zestwebData.isPreCheckedIn = (zestwebData.is_pre_checked_in === 'true') ? true : false;
+				that.zestwebData.isRoomVerified = false;
+				that.zestwebData.isPrecheckinOnly = (zestwebData.is_precheckin_only === 'true' && zestwebData.reservation_status === 'RESERVED') ? true : false;
+				that.zestwebData.isCcAttachedFromGuestWeb = false;
+				that.zestwebData.isAutoCheckinOn = ((zestwebData.is_auto_checkin === 'true') && (zestwebData.is_precheckin_only === 'true')) ? true : false;;
+				that.zestwebData.isExternalVerification = (zestwebData.is_external_verification === "true") ? true : false;
+				that.zestwebData.hotelIdentifier = zestwebData.hotel_identifier;
+				that.zestwebData.guestAddressOn = zestwebData.guest_address_on === 'true' ? true : false;
+				that.zestwebData.isGuestAddressVerified = false;
 
-				that.reservationAndhotelData.guestBirthdateOn = (reservationAndhotelData.birthdate_on === 'true') ? true : false;
-				that.reservationAndhotelData.guestBirthdateMandatory = (reservationAndhotelData.birthdate_mandatory === 'true') ? true : false;
-				that.reservationAndhotelData.guestPromptAddressOn = (reservationAndhotelData.prompt_for_address_on === 'true') ? true : false;
-				that.reservationAndhotelData.minimumAge = parseInt(reservationAndhotelData.minimum_age);
-				that.reservationAndhotelData.primaryGuestId = reservationAndhotelData.primary_guest_id;
+				that.zestwebData.guestBirthdateOn = (zestwebData.birthdate_on === 'true') ? true : false;
+				that.zestwebData.guestBirthdateMandatory = (zestwebData.birthdate_mandatory === 'true') ? true : false;
+				that.zestwebData.guestPromptAddressOn = (zestwebData.prompt_for_address_on === 'true') ? true : false;
+				that.zestwebData.minimumAge = parseInt(zestwebData.minimum_age);
+				that.zestwebData.primaryGuestId = zestwebData.primary_guest_id;
 
 
-				that.reservationAndhotelData.isGuestEmailURl = (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin === "true") ? true : false;
-				that.reservationAndhotelData.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_serviceMsg;
-				that.reservationAndhotelData.termsAndConditions = reservationAndhotelData.terms_and_conditions;
-				that.reservationAndhotelData.isBirthdayVerified = false;
+				that.zestwebData.isGuestEmailURl = (zestwebData.checkin_url_verification === "true" && zestwebData.is_zest_checkin === "true") ? true : false;
+				that.zestwebData.zestEmailCheckinNoServiceMsg = zestwebData.zest_checkin_no_serviceMsg;
+				that.zestwebData.termsAndConditions = zestwebData.terms_and_conditions;
+				that.zestwebData.isBirthdayVerified = false;
 
-				that.reservationAndhotelData.application = reservationAndhotelData.application;
-				that.reservationAndhotelData.urlSuffix = reservationAndhotelData.url_suffix;
-				that.reservationAndhotelData.collectCCOnCheckin = (reservationAndhotelData.checkin_collect_cc === "true") ? true : false;
-				that.reservationAndhotelData.isMLI = (reservationAndhotelData.payment_gateway = "MLI") ? true : false;
+				that.zestwebData.application = zestwebData.application;
+				that.zestwebData.urlSuffix = zestwebData.url_suffix;
+				that.zestwebData.collectCCOnCheckin = (zestwebData.checkin_collect_cc === "true") ? true : false;
+				that.zestwebData.isMLI = (zestwebData.payment_gateway = "MLI") ? true : false;
 
 				//room key delivery options
-				that.reservationAndhotelData.preckinCompleted = false;
-				that.reservationAndhotelData.userEmail = reservationAndhotelData.primary_guest_email;
-				that.reservationAndhotelData.keyDeliveryByEmail = true;
-				//that.reservationAndhotelData.keyDeliveryByText  = true;
+				that.zestwebData.preckinCompleted = false;
+				that.zestwebData.userEmail = zestwebData.primary_guest_email;
+				that.zestwebData.keyDeliveryByEmail = true;
+				//that.zestwebData.keyDeliveryByText  = true;
 
-				that.reservationAndhotelData.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options === "true") ? true : false;
+				that.zestwebData.offerRoomDeliveryOptions = (zestwebData.offer_room_delivery_options === "true") ? true : false;
 
 				//Params for zest mobile and desktop screens
-				if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
-					that.reservationAndhotelData.isPasswordResetView = reservationAndhotelData.is_password_reset = "true";
-					that.reservationAndhotelData.isTokenExpired = reservationAndhotelData.is_token_expired === "true" ? true : false;
-					that.reservationAndhotelData.accessToken = reservationAndhotelData.token;
-					that.reservationAndhotelData.user_id = reservationAndhotelData.id;
-					that.reservationAndhotelData.user_name = reservationAndhotelData.login;
+				if (zestwebData.hasOwnProperty('is_password_reset')) {
+					that.zestwebData.isPasswordResetView = zestwebData.is_password_reset = "true";
+					that.zestwebData.isTokenExpired = zestwebData.is_token_expired === "true" ? true : false;
+					that.zestwebData.accessToken = $rootScope.accessToken = zestwebData.token;
+					that.zestwebData.user_id = zestwebData.id;
+					that.zestwebData.user_name = zestwebData.login;
 				} else {
-					that.reservationAndhotelData.dateFormatPlaceholder = !!reservationAndhotelData.date_format ? reservationAndhotelData.date_format.value : "";
-					that.reservationAndhotelData.dateFormat = !!reservationAndhotelData.date_format ? getDateFormat(reservationAndhotelData.date_format.value) : "";
+					that.zestwebData.dateFormatPlaceholder = !!zestwebData.date_format ? zestwebData.date_format.value : "";
+					that.zestwebData.dateFormat = !!zestwebData.date_format ? getDateFormat(zestwebData.date_format.value) : "";
 				}
 
 			};

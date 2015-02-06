@@ -24,35 +24,16 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.zestStationData.workstations = [];
         }
 	$scope.getWorkStationList = function($defer, params){
-	/*	
-            var getParams = $scope.calculateGetParams(params);
-		var fetchSuccessOfItemList = function(data){
-			$scope.$emit('hideLoader');
-			//No expanded rate view
-			$scope.currentClickedElement = -1;
-			$scope.totalCount = data.total_count;
-			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
-			$scope.data = data.work_stations;
-			$scope.currentPage = params.page();
-        	params.total(data.total_count);
-        	$scope.isAddMode = false;
-            $defer.resolve($scope.data);
-		};
-		$scope.invokeApi(ADDeviceSrv.fetch, getParams, fetchSuccessOfItemList);
-                
-                */
-                var onSuccess = function(response){
-                    if (response){
-                        $scope.zestStationData.workstations = response.work_stations;
-                    }
-                };
-                var onFail = function(response){
-                    console.warn('fetching workstation list failed:',response);
-                    $scope.zestStationData.workstations = [];
-                };
-            //?page=1&per_page=10&query=&sort_dir=true&sort_field=name
+            var onSuccess = function(response){
+                if (response){
+                    $scope.zestStationData.workstations = response.work_stations;
+                }
+            };
+            var onFail = function(response){
+                console.warn('fetching workstation list failed:',response);
+                $scope.zestStationData.workstations = [];
+            };
             var options = {
-                
                 params:                 {
                     page: 1,
                     per_page: 100,
@@ -81,36 +62,31 @@ sntZestStation.controller('zsAdminCtrl', [
 	};
 	initialize();
 
-	/**
-	 * when the back button clicked
-	 * @param  {[type]} event
-	 * @return {[type]} 
-	 */
+	 //* when the back button clicked
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 		initialize();
 	});
 
-	/**
-	 * when we clicked on exit button
-	 */
+	//* when we clicked on exit button
 	$scope.navToPrev = function(){
             $state.go ('zest_station.home');
                 
 	};
 
-    $scope.toggleOOS = function(){
-        if ($state.isOOS){
-            $rootScope.$emit(zsEventConstants.OOS_OFF);
-        } else {
-            $rootScope.$emit(zsEventConstants.OOS_OFF);
-        }
-    };
+        $scope.toggleOOS = function(){
+            if ($state.isOOS){
+                $rootScope.$emit(zsEventConstants.OOS_OFF);
+            } else {
+                $rootScope.$emit(zsEventConstants.OOS_OFF);
+            }
+        };
 
 	$scope.loginAdmin = function(){
             $scope.mode   = "admin-name-mode";
             $scope.headingText = 'Admin Username';
             $scope.passwordField = false;
             showNavButtons();
+            
 	};
         
         $scope.goToAdminPrompt = function(){
@@ -119,12 +95,12 @@ sntZestStation.controller('zsAdminCtrl', [
         $scope.adminLoginError = false;
 	$scope.goToNext  = function(){
 		if($scope.mode === "admin-name-mode"){
-                        $scope.adminLoginError = false;
-			$scope.userName = angular.copy($scope.input.inputTextValue);
-			$scope.input.inputTextValue = "";
-			$scope.mode   = "admin-password-mode";
-			$scope.headingText = 'Admin Password';
-                        $scope.passwordField = true;
+                    $scope.adminLoginError = false;
+                    $scope.userName = angular.copy($scope.input.inputTextValue);
+                    $scope.input.inputTextValue = "";
+                    $scope.mode   = "admin-password-mode";
+                    $scope.headingText = 'Admin Password';
+                    $scope.passwordField = true;
 		}
 		else{
                         $scope.adminLoginError = false;

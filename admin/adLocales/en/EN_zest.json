@@ -89,7 +89,8 @@
 "CHECKOUT_TIME_3_BG":"Checkout time 3 Background",
 "CALENDAR_BG":"Calendar main Background",
 "CALENDAR_HEADER_BG":"Calendar header Background",
-"CALENDAR_CELL_BG":"Calendar cell Background"
+"CALENDAR_CELL_BG":"Calendar cell Background",
+"ALLOW_CHECKIN_NOW":"Allow guest to check in immediately"
 
 
 

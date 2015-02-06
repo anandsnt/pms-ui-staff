@@ -30,6 +30,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                     $scope.pickupNavBack();
                 } else {
                     if ($scope.headingText === 'NEXT_ROOM_NUMBER'){
+                        $scope.inputType = 'text';
                         $scope.input.inputTextValue = "";
                         $scope.mode = "search-mode";
                         $scope.headingText = "TYPE_LAST";
@@ -51,6 +52,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 $scope.at = 'input-last';
                 $scope.mode = "pickup-mode";
                 $scope.headingText = "TYPE_LAST";
+                $scope.inputType = 'text';
             }
         };
 
@@ -74,7 +76,6 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             return;
         }
         $scope.totalPages   = Math.ceil (data.total_count/$scope.PER_PAGE_RESULTS);
-                
             if ($scope.reservations.length === 0){
                 // $scope.showRoomEnter = $scope.isInCheckoutMode() ?  true : false;
                 $scope.mode = 'no-match';
@@ -203,7 +204,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.mode = "no-match";
         $scope.showRoomEnter = true;
     };
-
+    
     $scope.changedTheSelectedTower = function(){
         $scope.input.inputTextValue = $scope.tower.selected;
     };
@@ -258,7 +259,6 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         } else if ($scope.mode === "search-final-mode" && $scope.reEnteredRoomInfo){
             //reEnterRoom
             $scope.reEnteredRoomInfo = false;
-            $scope.reservationParams.last_name = $state.input.last;
             
             $scope.saveEnteredRoom();
             $scope.getReservations();
@@ -274,13 +274,14 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
     $scope.saveEnteredLast = function(){
         $scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
-        $state.input.last = $scope.reservationParams.last_name;
+        $state.input.last                  = angular.copy($scope.input.inputTextValue);
     };
     
     $scope.saveEnteredRoom = function(){
         $scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
-        $state.input.room = $scope.reservationParams.room_no;  
+        $state.input.room                = angular.copy($scope.input.inputTextValue);
     };
+    
     $scope.setEnterRoom = function(){
         if ($state.last_at === 'review_bill'){
             $scope.reservationParams.last_name = $state.input.last;
@@ -289,22 +290,13 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.mode = "search-final-mode";
         $scope.input.inputTextValue = "";
         $scope.headingText = "NEXT_ROOM_NUMBER";
+        $scope.inputType = 'text';
         $scope.setFontainebleauTowers();
-    };
-    $scope.setReEnterRoom = function(){
-        $scope.headingText = "NEXT_ROOM_NUMBER";
-        $scope.reservationParams.last_name = $state.input.last;
-        $scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
-    };
-    $scope.setReEnterLast = function(){
-        $scope.headingText = "TYPE_LAST";
-        $scope.reservationParams.room_no = $state.input.room;
-        $scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
     };
     $scope.getReservationParams = function(){
         var params = {
             "last_name":$scope.reservationParams.last_name,
-            "room_no":$scope.reservationParams.room_no.replace(/\-/g, '')
+            "room_no":$scope.reservationParams.room_no+''.replace(/\-/g, '')//adding '' to for non-str values
         };
         return params;
     };
@@ -315,16 +307,16 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
 
     $scope.onNextReEnterLast = function(){
-        $scope.pickupValues.last = $scope.input.inputTextValue;
-        $state.input.last = $scope.input.inputTextValue;
+        $scope.pickupValues.last = angular.copy($scope.input.inputTextValue);
+        $state.input.last = angular.copy($scope.input.inputTextValue);
         $scope.pickupValues.room = $state.input.room;
 
         var options = $scope.getPickupKeyOptions();
         $scope.fetchReservations(options);
     };
     $scope.onNextReEnterRoom = function(){
-        $scope.pickupValues.room = $scope.input.inputTextValue;
-        $state.input.room = $scope.input.inputTextValue;
+        $scope.pickupValues.room = angular.copy($scope.input.inputTextValue);
+        $state.input.room = angular.copy($scope.input.inputTextValue);
         $scope.pickupValues.last = $state.input.last;
 
         var options = $scope.getPickupKeyOptions();
@@ -355,76 +347,79 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         }
     };
           
-        $scope.initErrorScreen = function(){
-                $scope.at = 'error';
-                $scope.headingText = 'BROKE_HEADER.';
-                $scope.subHeadingText = 'BROKE_HEADER_SUB';
-                $scope.modalBtn1 = 'DONE_BTN';
-                $scope.$emit('hideLoader');
-                $state.go('zest_station.error');
+    $scope.initErrorScreen = function(){
+            $scope.at = 'error';
+            $scope.headingText = 'BROKE_HEADER';
+            $scope.subHeadingText = 'BROKE_HEADER_SUB';
+            $scope.modalBtn1 = 'DONE_BTN';
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.error');
+    };
+    $scope.getPickupKeyOptions = function(){
+        var pickupSuccess = function(response){
+            $state.selectedReservation = response;
+            $state.go('zest_station.pickup_keys');
         };
-        $scope.getPickupKeyOptions = function(){
-            var pickupSuccess = function(response){
-                $state.selectedReservation = response;
-                $state.go('zest_station.pickup_keys');
-            };
-            var pickupFail = function(response){
-                console.log(response);
-                if (response){
-                    if (response[0] === 'Could not find the Reservation'){
-                        $scope.pickupKeyNoMatch();
-                        return;
-                    }
+        var pickupFail = function(response){
+            console.log(response);
+            if (response){
+                if (response[0] === 'Could not find the Reservation'){
+                    $scope.pickupKeyNoMatch();
+                    return;
                 }
-                    $scope.initErrorScreen();
-            };
-            var options = {
-                params:             {"last_name":$scope.pickupValues.last,"room_no":$scope.pickupValues.room},
-                successCallBack:    pickupSuccess,
-                failureCallBack:    pickupFail
-            };
-            return options;
+            }
+                $scope.initErrorScreen();
         };
-        $scope.pickupKeyNoMatch = function(){
-            $scope.mode = 'no-match';
-            $scope.at = 'no-match';
-            $scope.lastAt = 'pick-up-room';
-            $state.lastAt = 'pick-up-room';
-            $state.go('zest_station.find_reservation_no_match');
+        var options = {
+            params:             {"last_name":$scope.pickupValues.last,"room_no":$scope.pickupValues.room},
+            successCallBack:    pickupSuccess,
+            failureCallBack:    pickupFail
         };
-        $scope.pickupValues = {
-          'last':'',
-          'room':''
-        };
-        $scope.goToNextForPickup = function(){
-            $scope.pickupValues.last = $scope.input.inputTextValue;
-            $state.input.last = $scope.input.inputTextValue;
-            $scope.at = 'input-room';
-            $state.at = 'input-room';
-            $scope.input.inputTextValue = "";
-            $scope.headingText = "NEXT_ROOM_NUMBER";
-        };
+        return options;
+    };
+    $scope.pickupKeyNoMatch = function(){
+        $scope.mode = 'no-match';
+        $scope.at = 'no-match';
+        $scope.lastAt = 'pick-up-room';
+        $state.lastAt = 'pick-up-room';
+        $state.go('zest_station.find_reservation_no_match');
+    };
+    $scope.pickupValues = {
+      'last':'',
+      'room':''
+    };
+    
+    $scope.reEnteredNameInfo = false;
+    $scope.reEnteredRoomInfo = false;
+    $scope.goToNextForPickup = function(){
+        $scope.pickupValues.last = $scope.input.inputTextValue;
+        $state.input.last = $scope.input.inputTextValue;
+        $scope.at = 'input-room';
+        $state.at = 'input-room';
+        $scope.input.inputTextValue = "";
+        $scope.headingText = "NEXT_ROOM_NUMBER";
+        $scope.inputType = 'number';
+    };
         
-        $scope.reEnteredNameInfo = false;
-        $scope.reEnteredRoomInfo = false;
-        
-    $scope.reEnterLastName = function(){
+    $scope.reEnterLastName = function(name){
+        $scope.inputType = 'text';
         $scope.reEnteredNameInfo = true;
         $scope.reEnteredRoomInfo = false;
         $scope.headingText = "TYPE_LAST";
         $state.last = 'input-last';
         $scope.mode = "search-mode";
-        $scope.input.inputTextValue = $scope.reservationParams.last_name;
+        $scope.input.inputTextValue = name;
     };
     
-    $scope.reEnterRoomNumber = function(){
+    $scope.reEnterRoomNumber = function(room){
+        $scope.inputType = 'text';
         $scope.reEnteredRoomInfo = true;
         $scope.reEnteredNameInfo = false;
         $scope.headingText = "NEXT_ROOM_NUMBER";
         $state.last = 'input-room';
         $scope.mode = "search-final-mode";
-        $scope.input.inputTextValue = $scope.reservationParams.room_no;
-        $state.input.room = $scope.reservationParams.room_no;
+        $scope.input.inputTextValue = room;
+        
     };
 
     $scope.talkToStaff = function(){
@@ -480,51 +475,67 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
 
 
-        $scope.selectReservation = function(r){
-            //pass reservation as a state param
-            $state.selectedReservation = r;
-            if($scope.isInCheckoutMode()){
-                // $state.go('zest_station.review_bill',{"res_id":r.id});
-            }
-            else{
-                $state.go('zest_station.reservation_details');
-            }
-            
-        };
+    $scope.selectReservation = function(r){
+        //pass reservation as a state param
+        $state.selectedReservation = r;
+        if($scope.isInCheckoutMode()){
+            // $state.go('zest_station.review_bill',{"res_id":r.id});
+        }
+        else{
+            $state.go('zest_station.reservation_details');
+        }
 
-        
-        $scope.init = function(){
-            if ($state.search){
-                $scope.searchReservations();
-                $state.search = false;
-            }
-            if ($scope.isInCheckoutMode()){
-                if ($state.lastAt === 'review_bill'){
-                   $scope.mode = "search-final-mode";
-                   $scope.reEnteredRoomInfo = true;
-                   $scope.input.inputTextValue = "";
-                   $scope.headingText = "NEXT_ROOM_NUMBER";
-                   $scope.setFontainebleauTowers();
-                } else {
-                   $scope.mode = "search-mode";
-                   $scope.headingText = "TYPE_LAST";
-                }
-            }
-            if ($scope.isInPickupKeyMode()){
-                $scope.at = 'input-last';
-                $scope.mode = "pickup-mode";
+    };
+
+    $scope.initPuk = function(){
+            $scope.at = 'input-last';
+            $scope.mode = "pickup-mode";
+            $scope.headingText = "TYPE_LAST";
+            if ($state.lastAt === 're-enter-last'){
+                $scope.inputType = 'text';
                 $scope.headingText = "TYPE_LAST";
-                if ($state.lastAt === 're-enter-last'){
-                    $scope.headingText = "TYPE_LAST";
-                    $scope.input.inputTextValue = $state.input.last;
-                    $scope.at = 're-input-last';
-                } else if ($state.lastAt === 're-enter-room'){
-                    $scope.headingText = "NEXT_ROOM_NUMBER";
-                    $scope.input.inputTextValue = $state.input.room;
-                    $scope.at = 're-input-room';
-                }
+                $scope.input.inputTextValue = $state.input.last;
+                $scope.at = 're-input-last';
+            } else if ($state.lastAt === 're-enter-room'){
+                $scope.inputType = 'number';
+                $scope.headingText = "NEXT_ROOM_NUMBER";
+                $scope.input.inputTextValue = $state.input.room;
+                $scope.at = 're-input-room';
             }
-        };
+
+    };
+    $scope.initCheckout = function(){
+        if ($state.lastAt === 'review_bill'){
+               $scope.mode = "search-final-mode";
+               $scope.reEnteredRoomInfo = true;
+               $scope.input.inputTextValue = "";
+               $scope.inputType = 'text';
+               $scope.headingText = "NEXT_ROOM_NUMBER";
+               $scope.setFontainebleauTowers();
+            } else {
+               $scope.mode = "search-mode";
+               $scope.headingText = "TYPE_LAST";
+               $scope.inputType = 'text';
+            }
+    };
+
+    $scope.init = function(){
+        $scope.inputType = 'text';
+
+        if ($state.search){
+            $scope.searchReservations();
+            $state.search = false;
+        }
+
+        if ($scope.isInCheckoutMode()){
+            $scope.initCheckout();
+        }
+
+
+        if ($scope.isInPickupKeyMode()){
+            $scope.initPuk();
+        }
+    };
     /**
      * [initializeMe description]
      * @return {[type]} [description]

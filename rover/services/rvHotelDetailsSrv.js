@@ -55,7 +55,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', 
 
 			deferred.resolve(that.hotelDetails);
 		},
-		function(error){
+		function(errorMessage){
 			deferred.reject(errorMessage);
 		})
 		return deferred.promise;

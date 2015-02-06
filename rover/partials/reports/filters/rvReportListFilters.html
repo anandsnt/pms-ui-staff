@@ -518,6 +518,21 @@
     </div>
 </div>
 
+<div class="options long-list" ng-if="item.hasShow.data.length" ng-click="catchFauxSelectClick($event, 'hasShow')">
+    <label for="report-options">Show</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasShow)">{{ item.hasShow.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasShow.show }">
+        <label class="checkbox inline" ng-show="item.hasShow.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasShow.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasShow.selectAll" ng-change="fauxSelectChange(item, item.hasShow, true)" name="room-filters"> Both
+        </label>
+        <label class="checkbox inline" ng-repeat="show in item.hasShow.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : show.selected }"></span>
+            <input type="checkbox" ng-model="show.selected" ng-change="fauxSelectChange(item, item.hasShow)" name="room-filters"> {{ show.description }}
+        </label>
+    </div>
+</div>
+
 <a class="button green" ng-click="setnGenReport(item)" ng-show="item.display_show_button">Show</a>
 
 <button ng-click="exportCSV(item)" class="button with-icon only-icon purple" button="button" ng-if="item.display_export_button && !hideExportOption">

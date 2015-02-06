@@ -5,16 +5,16 @@
 	</header>
 	<section class="content-scroll">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
-	<form class="form float" >		
+	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+	<form class="form float" >
 		<fieldset class="holder left">
 			<div class="form-title">
 				<h3><span>Hotel</span> Name and Location </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
-		
+
 	    	<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" ></ad-textbox>
-			
+
 			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel name" required = "yes" readonly="{{readOnly}}"></ad-textbox>
 
 			<ad-textbox label="Street" value="data.street" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street"></ad-textbox>
@@ -78,7 +78,7 @@
 				</label>
 				<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
 			</div>
-			
+
 			<div class="entry full-width">
                              <div class="entry inline-flex" >
                         <div><label class="switch-label">SMS Check-In Service<!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
@@ -89,13 +89,13 @@
                         </div>
 			</div>
 		</fieldset>
-		
+
 		<fieldset class="holder right">
 			<div class="form-title">
 				<h3><span>Hotel</span> Details </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
-			
+
 			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{readOnly}}"></ad-textbox>
 
 			<div class="entry is-pms-tokenized" ng-if="isAdminSnt">
@@ -127,7 +127,7 @@
 							<option ng-selected="data.check_in_time.primetime == 'AM'" value="AM">AM</option>
 							<option ng-selected="data.check_in_time.primetime == 'PM'" value="PM">PM</option>
 						</select>
-						
+
 					</div>
 
 				</div>
@@ -186,7 +186,7 @@
 					</select>
 				</div>
 			</div>
-			
+
 			<div class="entry">
 				<label for="hotel-time-zone"> Hotel Date Format <strong>*</strong> </label>
 				<div class="select">
@@ -196,7 +196,7 @@
 					</select>
 				</div>
 			</div>
-			
+
 			<div class="entry hotel-pms-type" ng-if="isAdminSnt">
 				<label for="hotel-pms-type"> PMS Type</label>
 				<div class="select">
@@ -245,7 +245,7 @@
 				<button ng-click="setPmsStartDate()" class="ui-datepicker-trigger" type="button">
                          ...
                 </button>
-			</div>		
+			</div>
 			<div class="entry full-width" ng-if="isAdminSnt">
 				<label for="hotel-pms-type"> Language </label>
 				<div class="select">
@@ -257,7 +257,7 @@
 					</select>
 				</div>
 			</div>
-			
+
 			<div class="entry full-width">
 				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS <strong>*</strong></label>
 				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
@@ -300,7 +300,7 @@
 					<span class="switch-icon"></span>
 				</div>
 			</div>
-			
+
 			<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="room_status_update_per_room_type">ROOM STATUS UPDATE PER ROOM TYPE</label>
 				<div class="switch-button single" ng-class="{ on : data.is_room_status_import_per_room_type_on == 'true' }" ng-click="roomStatusUpdatePerRoomType()">
@@ -350,9 +350,9 @@
 				</div>
 				<span class="file-preview"> <img src="{{data.hotel_template_logo}}" alt="" height="112" width="auto"> </span>
 			</div>
-			
+
 		</fieldset>
-		
+
 		<fieldset class="holder left">
 			<div class="form-title">
 				<h3><span>Hotel</span> Main Contact </h3>
@@ -431,7 +431,7 @@
 				<label class="radio" ng-class="{checked:data.payment_gateway == 'MLI'}">
 					<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'MLI'}"></span>
 					<input type="radio" ng-model="data.payment_gateway" value="MLI" class="change-data">
-					Merchant Link 
+					Merchant Link
 				</label>
 				<label class="radio" ng-class="{checked:data.payment_gateway == 'sixpayments'}">
 					<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'sixpayments'}"></span>
@@ -443,11 +443,6 @@
 						<input type="radio" ng-model="data.payment_gateway" value="SAFERPAY" class="change-data">
 						Saferpay
 				</label>
-				<label class="radio" ng-class="{checked:data.payment_gateway == 'MLI_TRANSACTION_LINK'}">
-						<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'MLI_TRANSACTION_LINK'}"></span>
-						<input type="radio" ng-model="data.payment_gateway" value="MLI_TRANSACTION_LINK" class="change-data">
-						MLI Transaction Link
-				</label>				
 			</div>
 			<div class="entry full-width"></div>
 			<div class="entry" ng-if="data.payment_gateway === 'SAFERPAY'" >
@@ -473,7 +468,7 @@
 					Saferpay settlement URL
 				</label>
 				<input type="text" ng-model="data.saferpay_settlement_url" readonly="readonly">
-			</div>	
+			</div>
 			<div class="entry" ng-if="data.payment_gateway === 'MLI'">
 				<label for="mli-payment-gateway-url">
 					MerchantLink payment gateway url
@@ -507,6 +502,25 @@
 					MerchantLink site code
 				</label>
 				<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI api key">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled && data.hotel_pms_type == ''" >
+				<label>
+					Merchant Access Code
+				</label>
+				<input type="text" ng-model="data.merchant_access_code" placeholder="Enter merchant access code">
+			</div>
+			<div class="entry" ng-if="data.payment_gateway === 'MLI' && data.hotel_pms_type == ''">
+				<label for="mli-emv-enabled">
+					Enable EMV (TransactionLink)
+				</label>
+				<div class="switch-button single" ng-class="{ on : data.is_emv_enabled == true}" ng-click="data.is_emv_enabled = !data.is_emv_enabled">
+					<input type="checkbox" value="{{data.is_emv_enabled}}">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+			<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled && data.hotel_pms_type == ''">
+				<label for="mli-transaction-access-url"> MLI Transaction Access URL </label>
+				<input type="text" ng-model="data.merchantlink_txn_access_url" value="{{data.merchantlink_txn_access_url}}" placeholder="Enter MLI transaction access url" name="merchantlink_txn_access_url" id="mli-transaction-access-url">
 			</div>
 
 			<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'">
@@ -566,18 +580,6 @@
 					HTTPS
 				</label>
 			</div>
-			<div class="entry" ng-if="data.payment_gateway === 'MLI_TRANSACTION_LINK'" >
-				<label>
-					Merchant Access Code
-				</label>
-				<input type="text" ng-model="data.merchant_access_code" placeholder="Enter merchant access code">
-			</div>
-			<div class="entry" ng-if="data.payment_gateway === 'MLI_TRANSACTION_LINK'" >
-				<label>
-					MLI Transaction Company Code
-				</label>
-				<input type="text" ng-model="data.merchantlink_txn_company_code" placeholder="Enter MLI company code">
-			</div>
 			<div class="entry full-width">
 				<label>Allow CC processors per payment methods</label>
 				<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
@@ -586,8 +588,8 @@
 				</div>
 			</div>
 
-			
-			
+
+
 		</fieldset>
 		<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI'" >
 			<div class="form-title">
@@ -617,7 +619,7 @@
                                         <input type="text" id="cert_string" hidden>
 				</div>
 			</div>
-			
+
 			<div class="entry full-width">
 				<label for="mli-access-url"> MerchantLink Access URL </label>
 				<input type="text" ng-model="data.mli_access_url" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
@@ -629,37 +631,6 @@
 
 		</fieldset>
 
-		<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI_TRANSACTION_LINK'" >
-			<div class="form-title">
-				<h3><span>Hotel</span> MLI Transaction Settings </h3>
-				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-			</div>
-			<div class="entry">
-				<label for="mli-hotel-code"> MLI Transaction Site Code</label>
-				<input type="text" ng-model="data.merchantlink_txn_site_code" value="{{data.merchantlink_txn_site_code}}" placeholder="Enter MLI transaction site code" name="merchantlink_txn_site_code" id="merchantlink_txn_site_code">
-			</div>
-
-			<div class="entry">
-				<label for="mli-chain-code"> MLI Transaction Access URL </label>
-				<input type="text" ng-model="data.merchantlink_txn_access_url" value="{{data.merchantlink_txn_access_url}}" placeholder="Enter MLI transaction access url" name="merchantlink_txn_access_url" id="merchantlink_txn_access_url">
-			</div>
-
-			<div class="entry full-width">
-				<label for="certificate">
-					 MLI Transaction Certificate
-				</label>
-				<div class="file-upload">
-					<span class="input">{{mli_transaction_certificate_file_name}}</span>
-					<input type="file" ng-model="mli_transaction.certificate" accept="*" app-filereader emit-data="cert_string" />
-					<button type="button" class="button brand-colors">
-						Attach Certificate
-					</button>
-                                        <input type="text" id="cert_string" hidden>
-				</div>
-			</div>
-
-		</fieldset>
-		
 		<fieldset class="holder right" ng-if="isAdminSnt">
 			<div class="form-title">
 				<h3><span>Hotel</span> CC Desktop Swipe </h3>
@@ -687,7 +658,7 @@
 			</div>
 
 			<div class="entry full-width">
-				
+
 				<label class="radio" ng-class="{checked:data.zest_payment_gateway == 'none'}">
 					<span class="icon-form icon-radio " ng-class="{checked:data.zest_payment_gateway == 'NONE'}"></span>
 					<input type="radio" ng-model="data.zest_payment_gateway" value="NONE" class="change-data">
@@ -697,7 +668,7 @@
 						<span class="icon-form icon-radio " ng-class="{checked:data.zest_payment_gateway == 'SAFERPAY'}"></span>
 						<input type="radio" ng-model="data.zest_payment_gateway" value="SAFERPAY" class="change-data">
 						Saferpay
-				</label>				
+				</label>
 			</div>
 			<div class="entry full-width" ng-if="data.zest_payment_gateway === 'SAFERPAY' && data.payment_gateway != 'SAFERPAY'">
 			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
@@ -726,10 +697,10 @@
 			</div>
 			</div>
 
-			
-			
 
-		</fieldset>		
+
+
+		</fieldset>
 
 		<div class="actions float">
 			<button type="button" ng-click ="back()" class="button blank">

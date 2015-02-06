@@ -12,7 +12,6 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
   '$state',
   '$window',
   '$stateParams',
-  'rvGroupRoomingListSrv',
   function(
     $scope,
     $rootScope,
@@ -26,8 +25,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     rvAllotmentConfigurationSrv,
     $state,
     $window,
-    $stateParams,
-    rvGroupRoomingListSrv) {
+    $stateParams) {
 
     BaseCtrl.call(this, $scope);
 
@@ -1648,7 +1646,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       $scope.onClickReservation = function(reservation) {
         selectedReservation = reservation;
-        $scope.callAPI(rvGroupRoomingListSrv.getFreeAvailableRooms, {
+        $scope.callAPI(rvAllotmentReservationsListSrv.getFreeAvailableRooms, {
           params: {
             reserevation_id: reservation.id,
             num_of_rooms_to_fetch: 5,

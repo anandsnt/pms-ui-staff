@@ -352,6 +352,15 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
         };
 
+        // CICO-24645 -  Show Tax Incl / Excl indicator on changing Charge code.
+        $scope.onChangeChargeCode = function(){
+            
+            var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj){
+                                    return obj.id === $scope.rateData.charge_code_id;
+                                });
+            $scope.rateData.tax_inclusive_or_exclusive = selectedObj.tax_inclusive_or_exclusive;
+        };
+
         $scope.init();
     }
 ]);

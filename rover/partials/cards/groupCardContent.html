@@ -25,6 +25,9 @@
     <div id="{{fetchGroupAllotmentCardId('CONTENT')}}" class="card-search card-content" ng-class="UICardContentCls('group-card')" ng-if="searchMode">
         <div id="search-group-content" class="search-cards scrollable">
             <!-- Company Card Results listing -->
+            <div class="entry full-width">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            </div>
             <div ng-controller="groupResults" class="wrapper" ng-show="searchingGroups && searchedGroups.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="groupResultsScroll" ng-iscroll-delay='500'>
                 <ul id="search-group-results" class="search-results">
                     <li class="group with-image" ng-repeat="result in searchedGroups" ngrepeatend ngrepeatstarted>
@@ -78,11 +81,11 @@
                     <span class="icon-no-content icon-cards"></span>
                     <strong class="h1">No Matches</strong>
                     <span class="h2">
-                        Check that you didn't mispell the 
+                        Check that you didn't mispell the
                         <strong>
                             Group or Allotment Name
-                        </strong> 
-                        or 
+                        </strong>
+                        or
                         <strong>
                             Code
                         </strong>

@@ -12,8 +12,22 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		data: {
 			pageTitle: 'External Checkout verification'
 		}
+	}).state('checkoutRoomVerification', {
+	 	url: '/checkoutRoomVerification',
+	 	templateUrl: '/assets/partials/checkout/gwRoomVerification.html',
+	 	controller : 'GwRoomVerificationController',
+	 	data: {
+			pageTitle: 'Room verification'
+		}
+	 }).state('ccAddition', {
+	 	url: '/ccAddition/:fee/:message/:isFromCheckoutNow',
+	 	templateUrl: '/assets/partials/checkout/gwCcEntry.html',
+	 	controller : 'GwCCAdditionController',
+	 	data: {
+			pageTitle: 'CC Addition'
+		}
+	 });
 
-	});
 
 	$stateProvider.state('checkOutOptions', {
 		url: '/checkOutOptions',
@@ -51,7 +65,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 			pageTitle: 'Check-out Later'
 		}
 	}).state('checkOutLaterFinal', {
-		url: '/checkOutLaterFinal/:id',
+		url: '/checkOutLaterFinal/:time/:ap/:amount',
 		templateUrl: '/assets/partials/checkout/gwLateCheckoutfinal.html',
 		controller: 'gwLateCheckoutFinalController',
 		data: {

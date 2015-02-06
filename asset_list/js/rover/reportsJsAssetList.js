@@ -5,13 +5,7 @@ module.exports = {
 		reportReactViewRoot = roverRoot + 'react/reports/',
 		diaryViewRoot = roverRoot + 'react/diary/',
 		reportJsAssets 	= {
-			minifiedFiles: [
-				jsLibRoot + "react/react.min.js",
-				jsLibRoot + "react/JSXTransformer.min.js",
-				jsLibRoot + "react/react-with-addons.min.js",
-				jsLibRoot + "react/react-dom.min.js",
-				roverRoot + "directives/ngReact/ngReact.js"
-			],
+			minifiedFiles: [],
 			nonMinifiedFiles: [
 				diaryViewRoot + "util.js",
 				roverRoot + "services/reports/**/*.js",

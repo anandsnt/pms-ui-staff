@@ -1,0 +1,172 @@
+/* StayNTouch | Yotel Kiosk styles */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#53246d;
+	
+	@textColor: 			@white;
+	@backgroundColor: 		@brandColor;
+
+	@actionColor:			@brandColor;
+	@actionBackground: 		@white;
+
+	@inputBackground: 		rgba(0,0,0,.3);
+	@transparentColor: 		rgba(255,255,255,.5);
+
+	@grey1:					#dededc;
+	@grey2: 				#a1a1a1;
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	@font-face {
+		font-family:'vag';
+			src: url('../../type/VAGRoundedStd-Light_gdi.eot');
+			src: url('../../type/VAGRoundedStd-Light_gdi.eot?#iefix') format('embedded-opentype'),
+				url('../../type/VAGRoundedStd-Light_gdi.woff') format('woff'),
+				url('../../type/VAGRoundedStd-Light_gdi.ttf') format('truetype'),
+				url('../../type/VAGRoundedStd-Light_gdi.svg#VAGRoundedStd-Light') format('svg');
+			font-weight: 300;
+			font-style: normal;
+			font-stretch: normal;
+			unicode-range: U+0020-25CA;
+		}
+	@fontFamily: 'vag', sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+	@background: 			@white;
+	@backgroundSize: 		640px;
+
+	@headerIconsColor: 		@brandColor;
+	@headerIconsActive:		lighten(@brandColor, 20);
+
+	.icons { 
+		fill: @actionColor; 
+
+		&.icon-create-key {
+			fill: @white;
+			stroke: @white;
+		}
+	}
+
+/* 3. LAYOUT
+==========================================================*/
+
+	#yotel {
+
+		.button:not(.blank) {
+			.box-shadow(inset 0 0 0 6px @grey1);
+		}
+
+		#header {
+			#flexbox > .parent('', '', flex-end, '');
+
+			.button {
+				color: @grey2;
+				line-height: 1;
+				.square(auto);
+			}
+		}
+
+		#screen-icon {
+			position: absolute;
+			top: 90px;
+			left: 50%;
+			text-align: center;
+			margin-left: -25px;
+			padding-top: 15px;
+			background: @white;
+			z-index: 30;
+			.square(50px);
+			.show();
+
+			.icons {
+				position: relative;
+				z-index: 30;
+			}
+
+			&:after {
+				content: '';
+				position: absolute;
+				bottom: -25px;
+				left: -25px;
+				width: 0; height: 0;
+				border-top: 25px solid @white;
+  				border-left: 50px solid transparent;
+  				border-right: 50px solid transparent;
+  				z-index: 10;
+			}
+		}
+
+		#main {
+			top: 140px;
+			left: 20px;
+			background: @backgroundColor url("../../cssimg/kiosk/yotel-background.png") no-repeat;
+			background-size: cover;
+			#rounded > .round();
+			#calc > #height > .remove(100%, 160px);
+			#calc > #width > .remove(100%, 40px);
+
+			&.centered {
+				top: 140px;
+				#calc > #height > .remove(100%, 160px);
+			}
+		}
+
+		#options { 
+			li {
+				.option {
+					background: transparent;
+					.box-shadow(none);
+					#rounded > .round(0px);
+
+					.icons { 
+						margin: 0;
+						.square(100%); 
+					}
+				}
+			}
+
+
+	        &.large-icons {
+	            li {
+	                .option {
+	                    #rounded > .round(0px);
+
+	                    .icons { 
+	                        margin: 0;
+	                        .square(100%);
+	                    }
+	                }
+	            }
+	        }
+	    }
+
+		#textual {
+			&.review-bill {
+				#rate {
+					li {
+						&.total { color: @brandColor; }
+					}
+				}
+			}
+		}
+
+		#selection {
+			&.editable {
+				.button {
+					color: @white;
+	                background: @brandColor;
+	            }
+			}
+		}
+
+		.popup {
+	        .popup-content {
+	            .button {
+	            	color: @white;
+	                background: @brandColor;
+	            }
+	        }
+	    }
+	}

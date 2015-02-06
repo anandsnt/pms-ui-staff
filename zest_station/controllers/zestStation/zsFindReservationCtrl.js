@@ -205,11 +205,15 @@ sntZestStation.controller('zsFindReservationCtrl', [
         
         $scope.searchWithEmail = function(){
             $state.search = true; 
+            $scope.inputType = 'text';
             $state.lastAt = 'find-by-email';
             if (!$state.input){
                 $state.input = {};
             }
             $state.input.email = $scope.input.inputTextValue;
+            if ($state.input.email === ''){
+                return;
+            }
             $state.go('zest_station.reservation_search');
         };
         $scope.searchWithDate = function(){
@@ -223,12 +227,16 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $state.go('zest_station.reservation_search');
         };
         $scope.searchWithConfirmation = function(){
+            $scope.inputType = 'text';
             $state.search = true; 
             $state.lastAt = 'find-by-confirmation';
             if (!$state.input){
                 $state.input = {};
             }
             $state.input.confirmation = $scope.input.inputTextValue;
+            if ($state.input.confirmation === ''){
+                return;
+            }
             $state.go('zest_station.reservation_search');
         };
         $scope.goToFindReservation = function(){
@@ -267,6 +275,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         
         $scope.goToNext = function(){
+            if ($scope.input.inputTextValue === ''){
+                return;
+            }
             $state.lastInput = $scope.input.inputTextValue; 
             if ($state.lastAt !== 'no-match'){
                 $state.lastAt = $scope.at;
@@ -324,6 +335,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.clearInputText();
             $scope.hideNavBtns = false;
             
+            $scope.inputType = 'text';
+            
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.email;
             }
@@ -336,6 +349,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.clearInputText();
             $scope.hideNavBtns = false;
             
+            $scope.inputType = 'text';
+            
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.confirmation;
             }
@@ -347,6 +362,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.inputTextPlaceholder = '';
             $scope.clearInputText();
             $scope.hideNavBtns = false;
+            
+            $scope.inputType = 'text';
+            
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.last;
             }

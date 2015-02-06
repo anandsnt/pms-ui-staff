@@ -227,7 +227,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	init();
 
 	$scope.isScreenSwitchDisabled = function(){
-          var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT'];
+          var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT', 'PRE_CHECKIN','ROOM_READY'];
 
           if(delivery_types.indexOf($scope.campaignData.audience_type) > -1
           	&& delivery_types.indexOf($scope.campaignData.delivery_details) > -1 &&

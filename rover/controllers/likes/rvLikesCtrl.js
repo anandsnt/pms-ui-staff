@@ -57,7 +57,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 							each.isChecked = '';
 						};
 					};
-				} else {
+				}
 					for ( k = 0, l = values.length; k < l; k++ ) {
 						values[k]['isChecked'] = false;
 
@@ -65,7 +65,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 							values[k]['isChecked'] = true;
 						};
 					};
-				};
+
 			};
 			// angular.forEach($scope.guestLikesData.preferences, function(eachPref) {
 			// 	$scope.calculatedHeight += 34;

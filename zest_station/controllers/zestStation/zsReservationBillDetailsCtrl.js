@@ -34,7 +34,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
                 $headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
                 $textualHeight = parseFloat($contentHeight-$headingsHeight);        
-                $('#textual').css('max-height', $textualHeight + 'px');
+                //$('#textual').css('height', $textualHeight + 'px');
+                $('#textual').css('height', '45%');
+                $('#textual').css('max-height', '100%');
         }
     };
 
@@ -91,19 +93,15 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             console.warn("reservation has balance due");
             $state.go('zest_station.speak_to_staff');
         } else {
-            console.log('else');
             var guest_bill = $scope.zestStationData.guest_bill;
             
             if (!guest_bill.email && !guest_bill.print){//just_checkout
-                console.log('just_checkout')
                 $state.go('zest_station.reservation_checked_out');
                 
             } else if (guest_bill.email && !guest_bill.print){//email_only
-                console.log('email_only')
                 $state.go('zest_station.bill_delivery_options');
                 
             } else if ( guest_bill.print ){//go to print nav
-                console.log('print nav');
                 $state.at = 'print-nav';
                 $state.from = 'print-nav';
                 $state.go('zest_station.reservation_checked_out');

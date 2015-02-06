@@ -47,23 +47,43 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         }
       }
     });
-
-    var sendBill = function() {
-      var sendBillSuccess = function() {
-        if ($state.printOpted) {
-          $scope.printOpted = true;
-        } else {
-          $scope.printOpted = false;
+    $scope.$watch('emailError',function(to, from){
+        if (typeof to === typeof undefined){
+            if ($state.emailError){
+                $scope.emailError = true;
+            } else {
+                $scope.emailError = false;
+            }
         }
-        $scope.toCheckoutFinal();
-      }
+    });
+    var sendBill = function() {
+        
+        var sendBillSuccess = function(response) {
+            $scope.emailOpted = $scope.zestStationData.guest_bill.email;
+            $state.emailError = false;
+          if ($state.printOpted) {
+            $scope.printOpted = true;
+          } else {
+            $scope.printOpted = false;
+          }
+          $scope.toCheckoutFinal();
+        };
+        var sendBillFailure = function(response) {
+            $state.emailError = true;
+            $scope.emailOpted = $scope.zestStationData.guest_bill.email;
+            $scope.toCheckoutFinal();
+        };
+      
+      
+      
       var params = {
         reservation_id: $scope.zestStationData.reservationData.reservation_id,
         bill_number: "1"
-      }
+      };
       var options = {
         params: params,
-        successCallBack: sendBillSuccess
+        successCallBack: sendBillSuccess,
+        failureCallBack: sendBillFailure
       };
       $scope.callAPI(zsCheckoutSrv.sendBill, options);
     };
@@ -380,8 +400,14 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         else if ($scope.zestStationData.guest_bill.print && $scope.current === 'zest_station.reservation_checked_out') {
           $scope.mode = "print-mode";
           $scope.email = $stateParams.email;
+          if ($state.emailError){
+                $scope.emailError = true;
+          } else {
+                $scope.emailError = false;
+          }
         } else {
-          checkOutGuest();
+            $scope.emailError = false;
+            checkOutGuest();
         }
 
         $scope.printOpted = false;

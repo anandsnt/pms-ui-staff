@@ -3,8 +3,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 	this.fetch = function(){
 		var deferred = $q.defer();
 		var url = '/admin/settings/menu_items.json';
-
-
+		//var url = "ui/show?json_input=zestweb_v2/menuItem.json&format=json";
 		var fetchSuccess = function(data){
 			deferred.resolve(data);
 		};

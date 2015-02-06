@@ -123,4 +123,16 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             }
 		});
 
+		$stateProvider.state('admin.serviceProviders', {
+			templateUrl: '/assets/partials/serviceProviders/adServiceProviderList.html',
+			controller: 'ADServiceProviderListCtrl',
+			url : '/serviceProviders'
+		});
+
+		$stateProvider.state('admin.sntserviceproviderdetails', {
+			templateUrl: '/assets/partials/serviceProviders/adServiceProviderDetails.html',
+			controller: 'ADServiceProviderDetailsCtrl',
+			url : '/serviceproviderdetails/:action/:id'
+		});
+
 });

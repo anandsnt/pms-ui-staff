@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv','$state',
-    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, $state) {
+sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'rvUtilSrv',
+    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, rvUtilSrv) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -204,12 +204,14 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 }
             }
             if (dateStr){
-                return aDayString+$scope.flipDateFormat(dateStr)+'  '+timeStr;
+                return aDayString +
+                    $filter('date')(new tzIndependentDate(dateStr), $rootScope.dateFormat) +
+                    '  ' +
+                    timeStr;
             } else {
                 return timeStr;
             }
         };
-
 
         $scope.setActionsHeaderInfo = function(){
             var arDate = $scope.reservationData.reservation_card.arrival_date,
@@ -235,16 +237,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.actions.departureDateString = departureDayString;
         };
 
-        $scope.flipDateFormat = function(str){
-            //take 2015-04-10  |   yr / mo / day and >>> month, day, yr (04-10-2015)
-          if (str){
-              var spl = str.split('-');
-              var year = spl[0], month = spl[1], day = spl[2];
-              return month+'-'+day+'-'+year;
-          }
-
-
-        };
         
         $scope.getActionsCountStatus = function(data){
                 $scope.actions.pendingCount = data.data.pending_action_count;
@@ -341,9 +333,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.newAction.notes = '';
             $scope.newAction.department = {'value': ''};
             $scope.newAction.time_due = '';
-            var nd = new Date();
-            var fmObj = $scope.getDateObj(getFormattedDate(nd.valueOf())+'', '-');
-            $scope.actionsSelectedDate = fmObj.year+'-'+fmObj.month+'-'+fmObj.day;
+            $scope.actionsSelectedDate = $rootScope.businessDate;
             $scope.newAction.hasDate = false;
             $scope.setFreshDate();
 
@@ -393,7 +383,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
             if ($scope.newAction.date_due){
                 var splitChar = $scope.newAction.date_due[2];
-                var dateObj = new Date($scope.getBasicDateInMilli($scope.newAction.date_due, splitChar));
+                var dateObj = $scope.newAction.dueDateObj;
                 var coreTime, hours, mins;
                      coreTime = $scope.newAction.time_due.core_time;
                         hours = parseInt(coreTime[0]+''+coreTime[1]);
@@ -430,10 +420,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
 
         $scope.setFreshDate = function(){
-            var nd = new Date();
-            var fmObj = $scope.getDateObj(getFormattedDate(nd.valueOf())+'', '-');
+
             $scope.newAction.hasDate = true;
-            $scope.newAction.date_due = fmObj.month+'-'+fmObj.day+'-'+fmObj.year;
+            $scope.newAction.dueDateObj = new tzIndependentDate($rootScope.businessDate);
+            $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due){
                 $scope.newAction.time_due = $scope.timeFieldValue[0];
             }
@@ -443,12 +433,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
              firstDay: 1,
              changeYear: true,
              changeMonth: true,
+             dateFormat: $rootScope.jqDateFormat,
              minDate: tzIndependentDate($rootScope.businessDate),
              yearRange: "0:+10",
              onSelect: function(date, dateObj) {
+                 var selectedDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(dateObj));
                  if ($scope.dateSelection !== null){
                      if ($scope.dateSelection === 'select'){
-                         $scope.selectedAction.due_at_date = $scope.reformatDateOption(date, '/', '-');
+                         $scope.selectedAction.due_at_date = $filter('date')(selectedDate, $rootScope.dateFormat);
+
+                         $scope.selectedAction.dueDateObj = selectedDate;
 
                          $scope.selectedAction.hasDate = true;
                          if ($scope.usingCalendar){
@@ -458,7 +452,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                      } else {
                          $scope.newAction.hasDate = true;
-                         $scope.newAction.date_due = $scope.reformatDateOption(date, '/', '-');
+                         $scope.newAction.date_due = $filter('date')(selectedDate, $rootScope.dateFormat);
+                         $scope.newAction.dueDateObj = selectedDate;
+
                          if (!$scope.newAction.time_due){
                              $scope.newAction.time_due = $scope.timeFieldValue[0];
                          }
@@ -468,9 +464,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                  }
             }
         };
+
         $scope.onTimeChange = function(){
             $scope.updateAction();
         };
+
         $scope.updateAction = function(){
             var onSuccess = function(){
                 $scope.$parent.$emit('hideLoader');
@@ -501,7 +499,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                 //have to convert the date format string to read properly
                 var splitChar = $scope.selectedAction.due_at_date[2];
-                var dateObj = new Date($scope.getBasicDateInMilli($scope.selectedAction.due_at_date, splitChar));
+                var dateObj = $scope.selectedAction.dueDateObj || new tzIndependentDate($scope.selectedAction.due_at_str);
 
                 dateObj.setHours(parseInt(hours));
                 //verify this is the correct hours to set using core_time
@@ -517,6 +515,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
 
         };
+
         $scope.getBasicDateInMilli = function(d, charToSplit){
             //expecting date string ie: 02/15/2015
             if (typeof charToSplit !== typeof 'string'){
@@ -546,8 +545,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.showSelectCalendar = function(){
             //to ensure same day due to utc hour, set utc hour to 0100
             //if newAction = set start date to today, otherwise set it to the selectedAction due date
-            var fmObj = $scope.getDateObj($scope.selectedAction.due_at_date, '-');
-            $scope.actionsSelectedDate = fmObj.year+'-'+fmObj.month+'-'+fmObj.day;
+            var fmObj = tzIndependentDate($scope.selectedAction.due_at_str);
+            $scope.actionsSelectedDate = $filter('date')(fmObj,"yyyy-MM-dd");
             $scope.usingCalendar = true;
             $scope.dateSelection = 'select';
             $scope.selectCalendarShow = true;
@@ -1000,7 +999,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             if (month < 10) {
              month = '0' + month;
             }
-            return month+'-'+day+'-'+year;
+            return $filter('date')(new tzIndependentDate(year + '-' + month + '-' + day), $rootScope.dateFormat);
         };
         var getStrParsedFormattedDate = function(d){
             if (d){
@@ -1011,7 +1010,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 month = formatDate[1];
                 day = formatDate[2];
 
-                return month+'-'+day+'-'+year;
+                return $filter('date')(new tzIndependentDate(year + '-' + month + '-' + day), $rootScope.dateFormat);
             }
 
         };

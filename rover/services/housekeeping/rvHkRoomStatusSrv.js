@@ -674,10 +674,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				assignedStaff.class = 'assigned';
 
 				if (_.unique(_.pluck(_.pluck(room.room_tasks, 'assignee_maid'), 'id')).length > 1) {
-					console.log("multiple")
 					assignedStaff.name = 'Multiple Assignees';
 				} else {
-					console.log("single")
 					assignedStaff.name = room.room_tasks[0].assignee_maid.name
 				}
 			}

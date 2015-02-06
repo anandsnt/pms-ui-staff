@@ -39,7 +39,7 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" class="button option" touch-press='reEnterLastName()'>
+                    <button type="button" class="button option" touch-press='reEnterLastName(reservationParams.last_name)'>
                         <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
                     </button>
                     {{'RES_SRCH_RE_ENTER_LAST' |translate}}
@@ -49,7 +49,7 @@
                     <span>Or</span>
                 </li>
                 <li ng-show="showRoomEnter">
-                    <button type="button" class="button option" touch-press='reEnterRoomNumber()'>
+                    <button type="button" class="button option" touch-press='reEnterRoomNumber(reservationParams.room_no)'>
                         <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
                     </button>
                     {{'RES_SRCH_RE_ENTER_ROOM' |translate}}

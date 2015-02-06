@@ -320,7 +320,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				return;
 			}
 
-			if ($scope.isInAddMode() || (targetElement.id === 'summary') ||
+			if (!$scope.updateGroupSummary || //This is used in the res-cards and this method is not available there
+                $scope.isInAddMode() || (targetElement.id === 'summary') ||
 				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.groupSummaryData.isDemographicsPopupOpen ||

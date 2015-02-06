@@ -2,6 +2,7 @@
 <form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions" ng-click="clearErrorMessage()">
 
     <div class="tab-header">
+
         <div class="search-form has-dates" ng-class="{'open':filterData.filterActive}">
             <div class="entry filter">
                 <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}">
@@ -93,11 +94,12 @@
             </li>
         </ul>
     </div>
-
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- If there are open bills: -->
     <div class="tab-details scrollable" ng-class="{ 'with-pagination': ( arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0 )}" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list">
+
         <div class="wrapper">
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            
             <ul class="search-results">
                 <li class="reservation transaction" ng-click="goToReservationDetails($index, $event)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
 

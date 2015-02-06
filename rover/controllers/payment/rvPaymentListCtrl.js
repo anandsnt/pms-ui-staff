@@ -43,7 +43,8 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 		};
-		var paymentMapSuccess = function(){
+		var paymentMapSuccess = function(data){
+			
 			$scope.$emit('hideLoader');
 			ngDialog.close();
 
@@ -60,7 +61,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 					$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.dataToPaymentList.bills[billIndex].credit_card_details );
 				}
 			} else {
-				$scope.dataToPaymentList.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
+				$scope.dataToPaymentList.reservation_card.payment_details.card_type_image =  'images/' + cardCode.toLowerCase()+".png";
 				$scope.dataToPaymentList.reservation_card.payment_details.card_number = cardNumberEndingWith;
 				$scope.dataToPaymentList.reservation_card.payment_details.card_expiry = expiryDate;
 				$scope.dataToPaymentList.reservation_card.payment_method_used = "CC";
@@ -68,6 +69,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 
 				$scope.dataToPaymentList.reservation_card.payment_details.is_swiped = isSwiped ;
 				$scope.dataToPaymentList.reservation_card.payment_details.auth_color_code = colorCode;
+				$scope.dataToPaymentList.reservation_card.payment_details.id = data.id;
 			}
 		};
 		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);

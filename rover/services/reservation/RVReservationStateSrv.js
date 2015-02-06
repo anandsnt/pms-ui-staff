@@ -126,12 +126,19 @@ angular.module('sntRover').service('RVReservationStateService', [
 			return multiplier;
 		};
 
-		self.getApplicableAddonsCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights) {
+		self.getApplicableAddonsCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
 			var getTotalPostedAddons = function(postType, baseCount) {
 				if (postingRythm === 0) {
 					return baseCount;
-				} else {
-					return baseCount * parseInt((numNights / postingRythm), 10);
+				} else if (postingRythm === 1) {
+                    return baseCount * numNights;
+                } else {
+					if(typeof chargeFullWeeksOnly !== "undefined" && !!chargeFullWeeksOnly) {
+						return baseCount * parseInt((numNights / postingRythm), 10);
+					} else {
+						return baseCount * (parseInt((numNights / postingRythm), 10) + 1);
+					}
+
 				}
 			};
 
@@ -393,7 +400,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 			};
 
 
-			//ADDON 
+			//ADDON
 
 			if (associatedAddons && associatedAddons.length > 0) {
 				_.each(associatedAddons, function(addon) {
@@ -606,7 +613,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 						rate_id: rate_id,
 						rate: rateOnRoom,
 						rateAdjusted: rateOnRoomAddonAdjusted,
-						inclusiveAddonsExist: !!inclusiveAddonsAmount && !addonRate, //Can we change the 0.00 amount to INCL where add on is inclusive						
+						inclusiveAddonsExist: !!inclusiveAddonsAmount && !addonRate, //Can we change the 0.00 amount to INCL where add on is inclusive
 						taxes: taxes,
 						addonAmount: addonRate,
 						associatedAddons: addonsApplied,

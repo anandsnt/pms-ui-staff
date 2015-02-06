@@ -1,5 +1,5 @@
 
-<div id="dashboard-rate-of-day" class="dashboard-block data rate-of-day" ng-show="isStandAlone">
+<div id="dashboard-rate-of-day" class="dashboard-block data rate-of-day" ng-if="isStandAlone && !!statisticsData.rate_of_day">
     <h3>Rate of the Day</h3>
     <ul>
         <li>
@@ -8,11 +8,11 @@
             <span class="rate" ng-if="escapeNull(statisticsData.rate_of_day.today.name)==''">&#160;</span>
         	<span class="value" ng-if="escapeNull(statisticsData.rate_of_day.today.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.today.amount | number : 2}}
-            </span>  
+            </span>
             <span class="value" ng-hide="!!statisticsData.rate_of_day.today.amount">
                 CLOSED
-            </span>              
-                   
+            </span>
+
         </li>
         <li>
         	{{tomorrow|date:monthAndDate}}
@@ -20,10 +20,10 @@
             <span class="rate" ng-if="escapeNull(statisticsData.rate_of_day.tomorrow.name)==''">&#160;</span>
             <span class="value" ng-if="escapeNull(statisticsData.rate_of_day.tomorrow.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.tomorrow.amount | number : 2}}
-            </span> 
+            </span>
             <span class="value" ng-hide="!!statisticsData.rate_of_day.tomorrow.amount">
                 CLOSED
-            </span>                        
+            </span>
         </li>
         <li>
         	{{dayAfterTomorrow|date:monthAndDate}}
@@ -31,10 +31,10 @@
             <span class="rate" ng-if="escapeNull(statisticsData.rate_of_day.day_after_tomorrow.name)==''">&#160;</span>
             <span class="value" ng-if="escapeNull(statisticsData.rate_of_day.day_after_tomorrow.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.day_after_tomorrow.amount | number : 2}}
-            </span> 
+            </span>
             <span class="value" ng-hide="!!statisticsData.rate_of_day.day_after_tomorrow.amount">
                 CLOSED
-            </span>                        
-        </li>      
+            </span>
+        </li>
     </ul>
 </div>

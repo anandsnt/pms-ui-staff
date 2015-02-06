@@ -35,6 +35,7 @@
     "ROOM_TYPE__CODE_PLACE_HOLDER":"Enter Room Type Code",
     "MAX_OCCUPANCY_PLACE_HOLDER":"Enter Max Occupancy",
     "SNT_DESCRIPTION_PLACE_HOLDER":"Enter StayNTouch Description",
+    "ROOM_NUMBERS" : "Room Numbers",
 	
     "USER_ROLES":"User roles",
     "ROLE_DASHBOARD": "Role Dashboard",

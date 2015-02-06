@@ -1,6 +1,10 @@
 
 
-"ZESTSTATION_TITLE": "Zest Station Settings",
+"ZESTSTATION_TITLE" : "Zest Station Settings",
+"ZESTSTATION_TITLE_CHECKIN":"Zest Station Check In",
+"ZESTSTATION_TITLE_CHECKOUT":"Zest Station Check Out",
+"ZESTSTATION_COLORS_AND_GRAPHICS":"Colors And Graphics",
+"ZESTSTATION_PICKUPKEYS" : "Pick Up Keys",
 "ZESTSTATION_BACK": "Back to Zest",
 "COLOR_SEC_LABEL": "Color details",
         
@@ -13,7 +17,7 @@
 "HEADER_ICONS_COLOR_PRESSED": "Header Icons Color (Pressed)",
 
 "GUEST_BILL_DELIVERY":"Guest bill delivery options",
-"EMAIL":"Email",
+"EMAIL_UPDATE_ZS":"Update Email",
 "PRINT":"Print",
 "HOME_SCREEN_OPTIONS":"Home screen options",
 "PICKUP_KEYS":"Pickup Keys",

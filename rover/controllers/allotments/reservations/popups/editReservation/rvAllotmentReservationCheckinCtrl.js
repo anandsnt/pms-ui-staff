@@ -2,12 +2,12 @@ sntRover.controller('rvAllotmentReservationCheckinCtrl', [
     '$rootScope',
     '$scope',
     '$timeout',
-    'rvGroupRoomingListSrv',
+    'rvAllotmentReservationsListSrv',
     '$state',
     function($rootScope,
             $scope,
             $timeout,
-            rvGroupRoomingListSrv,
+            rvAllotmentReservationsListSrv,
             $state) {
 
       var completeCheckinSuccessCallback = function(data) {
@@ -37,6 +37,6 @@ sntRover.controller('rvAllotmentReservationCheckinCtrl', [
           successCallBack: completeCheckinSuccessCallback,
           failureCallBack: completeCheckinFailureCallback
         };
-        $scope.callAPI(rvGroupRoomingListSrv.performMassCheckin, options);
+        $scope.callAPI(rvAllotmentReservationsListSrv.performMassCheckin, options);
       };
     }]);

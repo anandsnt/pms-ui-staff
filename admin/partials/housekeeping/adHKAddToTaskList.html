@@ -148,17 +148,11 @@
 			<div class="entry">
 				<label>Task completion time</label>
 				<div class="entry full-width">
-					<div class="select select-col col1-3">
-						<select ng-model="eachTaskList.hours" class="styled" ng-change="updateIndividualTimes()">
-							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
-						</select>
+					<div class="select no-bg select-col col1-3">
+						<input ng-model="eachTaskList.hours" limit-input-range="{from: 0, to: 12, callback: 'updateIndividualTimes'}"></input>
 					</div>
-					<div class="select select-col col1-3">
-						<select ng-model="eachTaskList.mins" ng-change="updateIndividualTimes()">
-							<option value="" data-text="Not set" class="placeholder">MM</option>
-							<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
-						</select>
+					<div class="select no-bg select-col col1-3">
+						<input ng-model="eachTaskList.mins" limit-input-range="{from: 0, to: 59, callback: 'updateIndividualTimes'}"></input>
 					</div>
 				</div>
 			</div>
@@ -179,17 +173,11 @@
 							<div class="select select-col col1-2 no-bg">
 								<span>{{room.name}}</span>
 							</div>
-							<div class="select select-col col1-5">
-								<select ng-model="eachTaskList.rooms_task_completion[room.id].hours" class="styled">
-									<option value="" data-text="Not set" class="placeholder">HH</option>
-									<option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.rooms_task_completion[room.id].hours">{{i}}</option>
-								</select>
+							<div class="select no-bg select-col col1-5">
+								<input ng-model="eachTaskList.rooms_task_completion[room.id].hours" limit-input-range="{from: 0, to: 12}"></input>
 							</div>
-							<div class="select select-col col1-5">
-								<select ng-model="eachTaskList.rooms_task_completion[room.id].mins">
-									<option value="" data-text="Not set" class="placeholder">MM</option>
-									<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.rooms_task_completion[room.id].mins">{{i}}</option>
-								</select>
+							<div class="select no-bg select-col col1-5">
+								<input ng-model="eachTaskList.rooms_task_completion[room.id].mins" limit-input-range="{from: 0, to: 59}"></input>
 							</div>
 							<div ng-show="checkCopyBtnShow(room.id)">
 								<button type="button" class="button blue with-icon only-icon" ng-click="copyNpaste(room.id)">

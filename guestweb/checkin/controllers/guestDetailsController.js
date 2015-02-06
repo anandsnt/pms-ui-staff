@@ -31,10 +31,10 @@
 								'postal_code':'',
 								'state':'',
 								'city':'',
-								'street1':'',
+								'street':'',
 								'street2':'',
 								'birthday':'',
-								'country_id':''
+								'country':''
 							  };
 
 		
@@ -95,7 +95,6 @@
             else{
             	delete data["birthday"];
             };
-            
 			return data;
 		};
 		
@@ -115,7 +114,7 @@
 		//post guest details
 		$scope.postGuestDetails = function(){
 
-			if($scope.guestDetails.country_id  && $scope.guestDetails.street1 && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ){
+			if($scope.guestDetails.country  && $scope.guestDetails.street && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ){
 				$scope.isLoading 		= true;
 				var dataToSave 			= getDataToSave();
 				guestDetailsService.postGuestDetails(dataToSave).then(function(response) {

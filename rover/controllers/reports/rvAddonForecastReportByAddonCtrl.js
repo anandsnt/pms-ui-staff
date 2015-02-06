@@ -274,6 +274,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			/* LOOP ENDS */
  			$scope.modifiedResults = angular.copy( results );
 
+ 			$scope.hasResults = !!( _.find($scope.modifiedResults, function(data) { return data.hasData; }) );
+
  			// refresh scroll
  			$timeout( refreshScroll.bind(null, 'scrollUp'), 300 );
  		};
@@ -288,10 +290,10 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], init );
 		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], init );
 
-		$scope.$on( 'destroy', reportSubmited );
-		$scope.$on( 'destroy', reportUpdated );
-		$scope.$on( 'destroy', reportPrinting );
-		$scope.$on( 'destroy', reportPageChanged );
+		$scope.$on( '$destroy', reportSubmited );
+		$scope.$on( '$destroy', reportUpdated );
+		$scope.$on( '$destroy', reportPrinting );
+		$scope.$on( '$destroy', reportPageChanged );
 
 
 

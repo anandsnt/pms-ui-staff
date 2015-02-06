@@ -132,7 +132,9 @@
 "COLLECT_ADDRESS_IN_ONE_SCREEN":"Control Zest Web templates that collect address and birth date on a single screen",
 "COLLECT_BIRTHDAY_SEPERATELY":"Control Zest Web templates that collect birth date separately from address",
 "COLLECT_BIRTHDAY_INSTRUCTION":"Set to zero if there is no minimum age required",
-"COLLECT_ADDRESS_SEPERATELY":"Control Zest Web templates that collect birth date separately from address"
+"COLLECT_ADDRESS_SEPERATELY":"Control Zest Web templates that collect birth date separately from address",
+"CHECKIN_NOW_MAIN_HEADING":"Check In Now or Later Call to Action",
+"CHECKIN_NOW_SUB_HEADING":"Control the calls to action when guest has the option to check in now or check in later by providing an arrival time."
 
 
 

@@ -237,11 +237,11 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}, 400);
 		});
 
-		$scope.$on( 'destroy', reportSubmited );
-		$scope.$on( 'destroy', reportUpdated );
-		$scope.$on( 'destroy', reportPrinting );
-		$scope.$on( 'destroy', reportPageChanged );
-		$scope.$on( 'destroy', reportFilterChanged );
+		$scope.$on( '$destroy', reportSubmited );
+		$scope.$on( '$destroy', reportUpdated );
+		$scope.$on( '$destroy', reportPrinting );
+		$scope.$on( '$destroy', reportPageChanged );
+		$scope.$on( '$destroy', reportFilterChanged );
 
 
 

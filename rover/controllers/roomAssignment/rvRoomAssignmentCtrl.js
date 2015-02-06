@@ -259,9 +259,10 @@ sntRover.controller('RVroomAssignmentController',[
 	 * to open the room aleady chhosed popup
 	 * @return undefined
 	 */
-	var openWantedToBorrowPopup = function(error) {
+	var openWantedToBorrowPopup = function(dataToBorrowRoom) {
 		$scope.passingParams = {
-			"errorMessage": error.errorMessage[0]
+			"errorMessage": dataToBorrowRoom.errorMessage,
+			"upsell_amount" : dataToBorrowRoom.upsell_amount
 		};
 		ngDialog.open(
 		{
@@ -431,21 +432,6 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.roomAssgnment.inProgress = false;
 	};
 
-	/**
-	 * to open the room aleady chhosed popup
-	 * @return undefined
-	 */
-	var openWantedToBorrowPopup = function(error) {
-		$scope.passingParams = {
-			"errorMessage": error.errorMessage[0]
-		}
-		ngDialog.open(
-		{
-			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
-			controller 	: 'rvBorrowRoomTypeCtrl',
-			scope 		: $scope
-        });
-	};
 
 	/**
 	 * [errorCallbackAssignRoom description]

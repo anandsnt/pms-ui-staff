@@ -5,7 +5,7 @@
 			<ul role="menu">
 				<li ng-if="zestStationData.home_screen.pickup_keys">
 					<button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
-						<div ng-include="'/assets/zest_station/css/icons/key.svg'"></div>
+						<div ng-include="icons.url.key"></div>
 					</button>
                                     {{'PICKUP_KEY' |translate}}
                                 <span>
@@ -14,7 +14,7 @@
 				</li>
 				<li ng-if="zestStationData.home_screen.check_in">
 					<button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
-						<div ng-include="'/assets/zest_station/css/icons/checkin.svg'"></div>
+						<div ng-include="icons.url.checkin"></div>
 					</button>
                                     
                                 {{'CHECK_IN' |translate}}
@@ -22,7 +22,7 @@
 				</li>
 				<li ng-if="zestStationData.home_screen.check_out">
 					<button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
-						<div ng-include="'/assets/zest_station/css/icons/checkout.svg'"></div>
+						<div ng-include="icons.url.checkout"></div>
 					</button>
                                 {{'CHECK_OUT' |translate}}
 					

@@ -32,7 +32,7 @@
                             </div>
                             <div>
                                 <p class="left-align">Room {{ roomNo }}</p>
-                                <p class="left-align">{{ userName }}<span ng-show="userCity.length > 0 || userState.length > 0"> | </span> {{ userCity }}<span ng-show="userCity.length > 0 && userState.length > 0">,</span> {{ userState }}</p>
+                                <p class="left-align">{{ userDetails.user_name }}<span ng-show="userDetails.user_city.length > 0 || userDetails.user_state.length > 0"> | </span> {{ userDetails.user_city }}<span ng-show="userDetails.user_city.length > 0 && userDetails.user_state.length > 0">,</span> {{ userDetails.user_state }}</p>
                             </div>
                             <!-- bill list -->
                             <table class="table">

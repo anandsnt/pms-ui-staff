@@ -3,8 +3,8 @@
 	The landing page when the guestweb is accessed without the link from the email.
 	This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> zest -> Checkout
 */
-sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$timeout', '$filter',
-	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $timeout, $filter) {
+sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$timeout', '$filter','$modal',
+	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $timeout, $filter,$modal) {
 		//TODO : remove unwanted injections like $timeout
 		$controller('BaseController', {
 			$scope: $scope
@@ -34,7 +34,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 			$scope.calendarView = false;
 		};
 		$scope.dateChoosen = function() {
-			$scope.stayDetails.arrival_date = ($filter('date')($scope.date, GwWebSrv.reservationAndhotelData.dateFormat));
+			$scope.stayDetails.arrival_date = ($filter('date')($scope.date, GwWebSrv.zestwebData.dateFormat));
 			dateToSend = dclone($scope.date, []);
 			dateToSend = $filter('date')(dateToSend, 'yyyy-MM-dd');
 			$scope.closeCalender();
@@ -48,23 +48,28 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 		// On submitting we will be checking if the details eneterd matches any reservations
 		// If matches will return the reservation details and we save it for future usage
 		$scope.submit = function() {
-			// $scope.stayDetails.hotel_identifier = GwWebSrv.reservationAndhotelData.hotelIdentifier;
-			// $scope.stayDetails.arrival_date     = dateToSend;
-			// var onSuccess = function(data) {
-			// 	$state.go('checkOutOptions');
-			// };
-			// var options = {
-			// 	params: $scope.stayDetails,
-			// 	successCallBack: onSuccess
-			// };
-			// $scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
-
-			$scope.$emit('showLoader');
-			$timeout(function() {
-				$scope.$emit('hideLoader');
-				$state.go('checkOutOptions');
-			}, 1500);
-
+			$scope.stayDetails.hotel_identifier = GwWebSrv.zestwebData.hotelIdentifier;
+			$scope.stayDetails.arrival_date = dateToSend;
+			var onSuccess = function(data) {
+				GwWebSrv.setReservationDataForExternalCheckout(data);
+				// check and navigate base upon checkout later option is available
+				GwWebSrv.zestwebData.isLateCheckoutAvailable ? $state.go('checkOutOptions') : $state.go('checkOutConfirmation');
+			};
+			var onFail = function(data) {
+				var popupOptions = angular.copy($scope.errorOpts);
+				popupOptions.resolve = {
+					message: function() {
+						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>."
+					}
+				};
+				$modal.open(popupOptions);
+			};
+			var options = {
+				params: $scope.stayDetails,
+				successCallBack: onSuccess,
+				failureCallBack: onFail
+			};
+			$scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
 		};
 
 	}
