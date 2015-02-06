@@ -384,19 +384,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/deviceMappingsList'
 		});
 
-		// $stateProvider.state('admin.stationary', {
-		// 	templateUrl: '/assets/partials/stationary/adStationary.html',
-		// 	controller: 'ADStationaryCtrl',
-		// 	url : '/stationary'
-		// });
+		$stateProvider.state('admin.stationary', {
+			templateUrl: '/assets/partials/stationary/adStationary.html',
+			controller: 'ADStationaryCtrl',
+			url : '/stationary'
+		});
 
-		// $stateProvider.state('admin.analyticSetup', {
-		// 	templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
-		// 	controller: 'adAnalyticSetupCtrl',
-		// 	url : '/analyticSetup'
-		// });
-
-        $stateProvider.state('admin.stationary', {
+		$stateProvider.state('admin.analyticsSetup', {
 			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
 			controller: 'adAnalyticSetupCtrl',
 			url : '/analyticSetup'

@@ -10,11 +10,11 @@
 	    <fieldset class="holder left" ng-show="!isHotelAdmin">
 			
 		
-	    	<ad-textbox value="{{data.product_cross_customer.tracker_guest_web}}" name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}" styleclass="full-width" ></ad-textbox>
+	    	<ad-textbox value="{{data.product_cross_customer.tracker_guest_web}}" ng-model = "data.product_cross_customer.tracker_guest_web" name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}" styleclass="full-width" ></ad-textbox>
 			
-			<ad-textbox value="{{data.product_cross_customer.tracker_zest_ios}}" name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+			<ad-textbox value="{{data.product_cross_customer.tracker_zest_ios}}" ng-model = "data.product_cross_customer.tracker_zest_ios" name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
 
-			<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="{{data.product_cross_customer.tracker_zest_android}}"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>		
+			<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="{{data.product_cross_customer.tracker_zest_android}}" ng-model = "data.product_cross_customer.tracker_zest_android"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>		
 			
 		</fieldset>	
 		<fieldset class="holder left" ng-show="isHotelAdmin">
@@ -22,11 +22,11 @@
 						<h3><span translate>SNT_TRACKERS_TITLE</span> </h3>
 					</div>
 		
-	    	<ad-textbox value="{{data.product_customer.tracker_guest_web}}" name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
+	    	<ad-textbox value="{{data.product_customer.tracker_guest_web}}" ng-model = "data.product_customer.tracker_guest_web" name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
 			
-			<ad-textbox value="{{data.product_customer.tracker_zest_ios}}" name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+			<ad-textbox value="{{data.product_customer.tracker_zest_ios}}" ng-model = "data.product_customer.tracker_zest_ios" name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
 
-			<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="{{data.product_customer.tracker_zest_android}}"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>		
+			<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="{{data.product_customer.tracker_zest_android}}" ng-model = "data.product_customer.tracker_zest_android"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>		
 			
 		</fieldset>
 		
@@ -37,11 +37,11 @@
 
 		    <ad-dropdown label-in-drop-down="{{'SELECT_SERVICE' | translate}}" list="data.available_trackers" selected-id='data.product_customer_proprietary.selected_tracker' selbox-class="placeholder" div-class="full-width" label="{{'ANALYTIC_SERVICE_LABEL' | translate}}"></ad-dropdown>
 			
-			<ad-textbox value="{{data.product_customer_proprietary.tracker_guest_web}}" name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
+			<ad-textbox value="{{data.product_customer_proprietary.tracker_guest_web}}" ng-model = "data.product_customer_proprietary.tracker_guest_web" name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
 			
-			<ad-textbox value="{{data.product_customer_proprietary.tracker_zest_ios}}" name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
+			<ad-textbox value="{{data.product_customer_proprietary.tracker_zest_ios}}" ng-model = "data.product_customer_proprietary.tracker_zest_ios" name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
 
-			<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="{{data.product_customer_proprietary.tracker_zest_android}}"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>			
+			<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="{{data.product_customer_proprietary.tracker_zest_android}}" ng-model="data.product_customer_proprietary.tracker_zest_android"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>			
 			
 		</fieldset>		
 
