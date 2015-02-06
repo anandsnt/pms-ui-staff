@@ -59,13 +59,15 @@
 	            <p class="counter"><span ng-class="{'done': campaignData.subject.length == campaignData.messageSubjectMaxLength}">{{campaignData.messageSubjectMaxLength - campaignData.subject.length}}</span> Characters Remaining</p>
 	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 	        </div>
+	        
 	        <div class="entry full-width">
 	            <label for="message-header">Message Header Image <span>(JPEG or PNG, {XxY}px in size)</span></label>
 	            <div class="file-upload with-preview">
-	                <input type="file" id="message-header" />
+	            	<span class="input">{{campaignData.header_file}}</span>
+	                <input type="file" id="message-header" ng-model="campaignData.header_image" accept="image/*" app-filereader />
 	                <button type="button" class="button brand-colors">Add image</button>
 	            </div>
-	            <span class="file-preview"><em>Preview not available</em></span>
+	            <span class="file-preview"><img ng-src="{{campaignData.header_image}}" alt="" height="112" width="auto"> <em>Preview not available</em></span>
 	        </div>   
 	        <div class="entry full-width">
 	            <label for="message-body">Message body<strong>*</strong></label>
@@ -88,14 +90,15 @@
 	        <!-- Delivery -->
 	        <div class="form-title">
 	            <h3><span>Delivery</span> details</h3>
-	            <em class="status">Time Zone: <strong class="zone">{{hotelTimeZoneFull}} ({{hotelTimeZoneAbbr}})</strong></em>
+	            <em class="status">Time Zone: <strong class="zone">{{campaignData.is_recurring}} ({{hotelTimeZoneAbbr}})</strong></em>
 	        </div>
-	        <div class="large-block" ng-click="campaignData.is_recurring = false">
+	        <div class="large-block">
 	            <label class="radio large">
-	                <span class="icon-form icon-radio" ng-class = "{'checked': !campaignData.is_recurring}"></span>
-	                <input name="delivery" id="delivery-onetime" value="immediately" type="radio" />
+	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.is_recurring == 'false'}"></span>
+	                <input name="delivery" id="delivery-onetime" value="false" type="radio" ng-model="campaignData.is_recurring" />
 	                One Time
 	            </label>
+	            
 	            <!-- Lines 97-148 are For future use, not for CICO-11909 
 	            <label class="radio small"> // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option.
 	                <span class="icon-form icon-radio checked"></span>
@@ -150,12 +153,12 @@
 	            </div> -->
 	        </div>
 	        <div class="large-block">
-	            <label class="radio large" ng-click="campaignData.is_recurring = true" >
-	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.is_recurring}"></span>
-	                <input name="delivery" id="delivery-recurring" value="recurring" type="radio"/>
+	            <label class="radio large">
+	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.is_recurring == 'true'}"></span>
+	                <input name="delivery" id="delivery-recurring" value="true" type="radio" ng-model="campaignData.is_recurring"/>
 	                Recurring
 	            </label>
-	            <div class="inner-block" ng-show="campaignData.is_recurring"> <!-- Remove class "hidden" when Recurring is selected. Add it back if "One Time" is selected as an option -->
+	            <div class="inner-block" ng-show="campaignData.is_recurring == 'true'"> <!-- Remove class "hidden" when Recurring is selected. Add it back if "One Time" is selected as an option -->
 	                <div class="entry recurring first">
 	                    <label class="label" for="recurring-dayofweek">Send</label>
 	                    <span class="delimiter">Every</span>
@@ -206,8 +209,8 @@
 	                            <option value="45">45</option>
 	                        </select> -->
 	                    </div>
-	                    <div class="select" ng-model="campaignData.delivery_primetime" >
-	                        <select id="delivery-daytime">
+	                    <div class="select" >
+	                        <select id="delivery-daytime" ng-model="campaignData.delivery_primetime" >
 	                            <option value="AM" ng-selected="campaignData.delivery_primetime == 'AM'">AM</option>
 	                            <option value="PM" ng-selected="campaignData.delivery_primetime == 'PM'">PM</option>
 	                        </select>
@@ -225,7 +228,7 @@
 	                        <input name="recurring-tempo" id="recurring-tempo-date" ng-model="campaignData.recurring_end_type" value = "END_OF_DAY" type="radio"/>
 	                        At End Of Day
 	                    </label>
-	                    <div id="recurring-datepicker" class="has-datepicker hidden" ng-show = "campaignData.recurring_end_type == 'END_OF_DAY'"> <!-- Remove class "hidden" when "At End Of Day" is selected. Add when "Never" is selected. -->
+	                    <div id="recurring-datepicker" class="has-datepicker" ng-show = "campaignData.recurring_end_type == 'END_OF_DAY'"> <!-- Remove class "hidden" when "At End Of Day" is selected. Add when "Never" is selected. -->
 	                        <input id="delivery-date" placeholder="Set Delivery Date" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date == ''"/>
 	                        <input id="delivery-date" placeholder="{{campaignData.recurrence_end_date | date : dateFormat }}" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date !== ''"/>
 	                    </div>
