@@ -8,7 +8,7 @@
 			<span class="count">
 				( {{totalCount}} )
 				<span class="status">
-					{{totalCount}} {{ 'OF' | translate }} {{total_number_of_rooms}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
+					{{totalCount}} {{ 'OF' | translate }} {{	}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
 				</span>
 		    </span>
 			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="is_add_available === 'yes'">{{ 'ADD_NEW' | translate }}</a>
@@ -37,9 +37,9 @@
 						<td data-title="'Room Type'" sortable="'room_type'">
 							{{room.room_type}}
 						</td>
-						<td class="delete" data-title="'Delete'" data-title-text="Delete">
-						<a class="icons icon-delete large-icon" ng-click=""></a>					
-					</td>
+						<td data-title="'Delete'" data-title-text="Delete" ng-click="">
+							<a class="icons icon-delete large-icon" ></a>				
+						</td>
 					</tr>
 				</tbody>
 			</table>
