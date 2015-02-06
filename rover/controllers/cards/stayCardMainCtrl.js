@@ -58,7 +58,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'userId': $scope.reservationDetails.guestCard.id,
 					'avatar': $scope.guestCardData.cardHeaderImage,
 					'guestId': null,
-					'vip': false //TODO: check with API or the product team
+					'vip': data.vip
 				};
 				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
 				$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
