@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RVReservationGuestSrv', '$stateParams', '$state', '$timeout', 'ngDialog',
-	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog) {
+sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RVReservationGuestSrv', '$stateParams', '$state', '$timeout', 'ngDialog', 'dateFilter',
+	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog, dateFilter) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.guestData = {};
@@ -13,12 +13,16 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 * @return boolean [description]
 		 */
 		function isWithinMaxOccupancy() {
-			var maxOccupancy = 5; //TODO: Get the max occupancy here
-			var currentTotal = parseInt($scope.guestData.adult_count || 0) +
-				parseInt($scope.guestData.children_count || 0) +
-				parseInt($scope.guestData.infants_count || 0);
+			var maxOccupancy = $scope.reservationData.reservation_card.max_occupancy; //TODO: Get the max occupancy here
+			if (maxOccupancy) {
+				var currentTotal = parseInt($scope.guestData.adult_count || 0) +
+					parseInt($scope.guestData.children_count || 0) +
+					parseInt($scope.guestData.infants_count || 0);
 
-			return currentTotal > maxOccupancy;
+				return currentTotal > parseInt(maxOccupancy);
+			} else { // If the max occupancy aint configured DONT CARE -- Just pass it thru
+				return true;
+			}
 		}
 
 		/**
@@ -26,21 +30,40 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 * @return boolean [description]
 		 */
 		function isOccupancyRateConfigured() {
-			////////
-			// TODO: Make an API call or refer the model to find if the rate for the occupancy is configured
-			////////
+			if ($scope.reservationData.reservation_card.is_hourly_reservation) {
+				// check if current staydate object has a single rate configured
+				var stayDate = _.findWhere($scope.reservationData.reservation_card.stay_dates, {
+					date: $scope.reservationData.reservation_card.arrival_date
+				});
+				return (!!(stayDate && stayDate.rate_config && stayDate.rate_config.single));
+			} else {
+				var flag = true;
+				angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
+					if (flag) {
+						if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) == 1) {
+							flag = !!(item.rate_config.single);
+						} else if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) == 2) {
+							flag = !!(item.rate_config.double);
+						} else if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) > 2) {
+							flag = !!(item.rate_config.double && item.rate_config.extra_adult);
+						}
 
-			return false;
-			// return Math.random() < 0.5;
+						if ($scope.guestData.children_count && !!parseInt($scope.guestData.children_count)) {
+							flag = !!(item.rate_config.child);
+						}
+					}
+				});
+				return flag;
+			}
 		}
 
-		function saveChanges() {
-			var successCallback = function(data) {
+		function saveChanges(data) {
+			$scope.$emit('showLoader');
+			/*var successCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = '';
 				$scope.$emit("GETVARYINGOCCUPANCY");
-				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
-				initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
+
 			};
 
 			var errorCallback = function(errorMessage) {
@@ -63,64 +86,82 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				}
 			});
 
-			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);
+			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);*/
+
+			// Note: when editing number of guests for an INHOUSE reservation, the new number of guests should only apply from this day onwards, any previous days need to retain the previous guest count.
+
+			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
+				var adults = parseInt($scope.guestData.adult_count || 0),
+					children = parseInt($scope.guestData.children_count || 0),
+					rateToday = item.rate_config;
+				$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].guests = {
+					adults: adults,
+					children: children,
+					infants: parseInt($scope.guestData.infants_count || 0)
+				}
+				if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
+					var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
+					var extraAdults = adults >= 2 ? adults - 2 : 0;
+					var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+
+					$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = roomAmount;
+					$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = roomAmount;
+				}
+			})
+
+			presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
+			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
+
+
+			$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
+				"id": $scope.reservationData.reservation_card.reservation_id,
+				"confirmationId": $scope.reservationData.reservation_card.confirmation_num,
+				"isrefresh": true
+			});
+
+
+
 		}
 
+		function closeDialog() {
+			ngDialog.close();
+		}
 
-		$scope.init = function() {
+		$scope.applyCurrentRate = function() {
+			console.log('applyCurrentRate');
+			closeDialog();
 
-			var success Callback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.guestData = data;
-				$scope.$emit("GETVARYINGOCCUPANCY");
-				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to revert in case of exceeding occupancy
-				initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to make API call to update if some change has been made
-				$scope.errorMessage = '';
-			};
+		}
 
-			var errorCallback = function(errorMessage) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = errorMessage;
-			};
-
-			var data = {
-				"reservation_id": $scope.reservationData.reservation_card.reservation_id
-			};
-
-			$scope.invokeApi(RVReservationGuestSrv.fetchGuestTabDetails, data, successCallback, errorCallback);
-		};
-
-		$scope.$on("VARYINGOCCUPANCY", function(e, data) {
-			$scope.guestData.varying_occupancy = data;
-		});
+		$scope.cancelOccupancyChange = function() {
+			// RESET
+			$scope.guestData = JSON.parse(JSON.stringify($scope.initialGuestInfo));
+			$scope.presentGuestInfo = JSON.parse(JSON.stringify($scope.initialGuestInfo));
+			closeDialog();
+		}
 
 
 		/* To save guest details */
 		$scope.saveGuestDetails = function() {
+
 			var data = JSON.parse(JSON.stringify($scope.guestData));
 			if (!angular.equals(data, initialGuestInfo)) {
+				$scope.$emit('showLoader');
 				if (isOccupancyRateConfigured()) {
-					saveChanges();
+					saveChanges(data);
 				} else {
+					$scope.$emit('hideLoader');
 					ngDialog.open({
-						template: '/assets/partials/reservation/alerts/occupancy.html',
+						template: '/assets/partials/reservation/alerts/notConfiguredOccupancyInStayCard.html',
 						className: 'ngdialog-theme-default',
 						scope: $scope,
 						closeByDocument: false,
-						closeByEscape: false,
-						data: JSON.stringify({
-							roomType: "Sample Room",
-							roomMax: "4"
-						})
+						closeByEscape: false
 					});
 				}
 			}
+
 		};
-
-		$scope.$on("UPDATEGUESTDEATAILS", function(e) {
-			$scope.saveGuestDetails();
-		});
-
 
 
 		/**
@@ -144,8 +185,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					closeByDocument: false,
 					closeByEscape: false,
 					data: JSON.stringify({
-						roomType: "Sample Room",
-						roomMax: "4"
+						roomType: $scope.reservationData.reservation_card.room_type_description,
+						roomMax: $scope.reservationData.reservation_card.max_occupancy
 					})
 				});
 
@@ -160,6 +201,39 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		}
 
+		$scope.init = function() {
+
+			var successCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.guestData = data;
+				$scope.$emit("GETVARYINGOCCUPANCY");
+				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to revert in case of exceeding occupancy
+				initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to make API call to update if some change has been made
+				$scope.errorMessage = '';
+			};
+
+			var errorCallback = function(errorMessage) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+			};
+
+			var data = {
+				"reservation_id": $scope.reservationData.reservation_card.reservation_id
+			};
+
+			$scope.invokeApi(RVReservationGuestSrv.fetchGuestTabDetails, data, successCallback, errorCallback);
+		};
+
+
 		$scope.init();
+
+		$scope.$on("VARYINGOCCUPANCY", function(e, data) {
+			$scope.guestData.varying_occupancy = data;
+		});
+
+		$scope.$on("UPDATEGUESTDEATAILS", function(e) {
+			$scope.saveGuestDetails();
+		});
+
 	}
 ]);
