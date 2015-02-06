@@ -151,4 +151,14 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		});
 		return deferred.promise;
 	};
+	this.deleteRoom = function(data) {
+			var deferred = $q.defer();
+			var url = '/admin/hotel_rooms/' + data.room_id;
+			ADBaseWebSrv.deleteJSON(url).then(function(data) {
+			deferred.resolve(data);
+			},function(errorMessage){
+			deferred.reject(errorMessage);
+			});
+		return deferred.promise;
+		};
 }]);

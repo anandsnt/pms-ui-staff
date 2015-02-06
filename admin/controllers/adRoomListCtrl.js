@@ -44,21 +44,16 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 		);
 	}
 	$scope.deleteRoom = function(index, room_id){
-		//TODO-
-		//var successCallBack = function(){
+
+		console.log(room_id);
+		var successCallBack = function(){
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
 			$scope.tableParams.page(1);
         	$scope.tableParams.reload();
-		//}
-
-	var errorCallback = function(data){
-	 		$scope.$emit('hideLoader');
-	 		$scope.successMessage ="";
-	 		$scope.errorMessage = data;	
-	 	}
+		}	
 	//TODO API CALL	
-	//	$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack, errorCallback);
+	$scope.invokeApi(ADRoomSrv.deleteRoom, {'room_id': room_id}, successCallBack);
 	}
 	$scope.loadTable();
 }]);
