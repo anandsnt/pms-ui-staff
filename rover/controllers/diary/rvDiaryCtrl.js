@@ -1510,17 +1510,24 @@ sntRover
 			openMessageShowingPopup();
 			return;
 		}
-		var params = getReservationTransferParams (reservation, newValue)
-		var options = {
-    		params: 			params,
-    		successCallBack: 	successCallBackOfDateSelectedInEditMode,	 
-    		failureCallBack: 	failureCallBackOfSelectDateInEditMode,
-    		successCallBackParameters:{
-				chosenDate : newValue,
-				oldGridProps: util.deepCopy ($scope.gridProps),	
-	    	}      		
-	    }
-	    $scope.callAPI(rvDiarySrv.checkAvailabilityForReservationToA_Date, options);
+		var current_date = $scope.gridProps.filter.arrival_date;
+		// we will allow only if there is any change in date
+		if(newValue.getFullYear() !== current_date.getFullYear() || 
+			newValue.getMonth() !== current_date.getMonth() ||
+			newValue.getDay() !== current_date.getDay()) {	
+
+			var params = getReservationTransferParams (reservation, newValue)
+			var options = {
+	    		params: 			params,
+	    		successCallBack: 	successCallBackOfDateSelectedInEditMode,	 
+	    		failureCallBack: 	failureCallBackOfSelectDateInEditMode,
+	    		successCallBackParameters:{
+					chosenDate : newValue,
+					oldGridProps: util.deepCopy ($scope.gridProps),	
+		    	}      		
+		    }
+		    $scope.callAPI(rvDiarySrv.checkAvailabilityForReservationToA_Date, options);
+		}
 	}.bind($scope.gridProps);
 
 	/**
@@ -1576,6 +1583,8 @@ sntRover
 			};
 
 			$scope.gridProps.filter.arrival_date = propertyDate;
+			//changing the display date in calendar also	
+			changeCalendarDate ($scope.gridProps.filter.arrival_date);
 			$scope.gridProps.display.min_hours = 4;
 
 			if(!$scope.$$phase) {	
