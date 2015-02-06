@@ -48,7 +48,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 							flag = !!(item.rate_config.double && item.rate_config.extra_adult);
 						}
 
-						if ($scope.guestData.children_count && !!parseInt($scope.guestData.children_count)) {
+						if (flag && $scope.guestData.children_count && !!parseInt($scope.guestData.children_count)) {
 							flag = !!(item.rate_config.child);
 						}
 					}
@@ -57,7 +57,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			}
 		}
 
-		function saveChanges(data) {
+		function saveChanges(override) {
 			$scope.$emit('showLoader');
 			/*var successCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -100,12 +100,22 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					infants: parseInt($scope.guestData.infants_count || 0)
 				}
 				if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
-					var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
-					var extraAdults = adults >= 2 ? adults - 2 : 0;
-					var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+					if (override) {
+						var actual_amount = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount;
+						if (parseFloat(actual_amount) > 0.00) {
+							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = actual_amount;
+						}
+						$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = 0;
+					} else {
+						var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
+						var extraAdults = adults >= 2 ? adults - 2 : 0;
+						var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
 
-					$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = roomAmount;
-					$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = roomAmount;
+						$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = roomAmount;
+						$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = roomAmount;
+					}
+
+
 				}
 			})
 
@@ -128,7 +138,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		}
 
 		$scope.applyCurrentRate = function() {
-			console.log('applyCurrentRate');
+			saveChanges(true); //override
 			closeDialog();
 
 		}

@@ -222,7 +222,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
         };
 
-        $scope.reset_guest_details = function(){
+        $scope.reset_guest_details = function() {
             $scope.reservationData.guest = {
                 id: null, // if new guest, then it is null, other wise his id
                 firstName: '',
@@ -330,7 +330,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             var rateConfigured = true;
             if (typeof $scope.reservationData.rateDetails[roomIndex] != "undefined") {
                 _.each($scope.reservationData.rateDetails[roomIndex], function(d, dateIter) {
-                    if (dateIter != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id != '') {
+                    if (dateIter != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id != '' && parseFloat($scope.reservationData.rooms[roomIndex].stayDates[dateIter].rateDetails.actual_amount) != 0.00) {
                         var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id].rateBreakUp;
                         var numAdults = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.adults);
                         var numChildren = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.children);
