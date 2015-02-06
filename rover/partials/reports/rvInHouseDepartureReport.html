@@ -7,7 +7,8 @@
 		<strong class="title">{{ each.name }}</strong>
 		<span class="confirmation">{{ each.confirm_no }}</span>
 		<span ng-if="each.is_vip">&#8226; <span class="vip">VIP</span></span>
-		<span ng-if="each.addtional_guest_counts">&#8226; <span class="guests">{{ each.addtional_guest_counts }} guest(s)</span></span>
+		<span ng-if="each.addtional_guest_counts">&#8226; <span class="guests">{{ each.addtional_adults_counts }} Adult(s)</span></span>
+		<span ng-if="each.addtional_guest_counts">&#8226; <span class="guests">{{ each.addtional_children_counts }} Children</span></span>
 	</td>
 	<td ng-if="each.isReport">
 		<div class="arrival-departure">
@@ -26,6 +27,13 @@
 		</div>
 		<div ng-if="each.total_time" class="hours">{{ each.total_time }}</div> 
 	</td>
+
+	<td>
+		<span>{{ each.company_name }}</span>
+		<span>{{ each.travel_agent_name }}</span>
+		<span>{{ each.group_name }}</span>
+	</td>
+
 	<td ng-if="each.isReport">
 		<span class="room">{{ each.room_type }}</span>
 		<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
