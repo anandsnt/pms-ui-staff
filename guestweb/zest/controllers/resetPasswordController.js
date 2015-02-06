@@ -20,11 +20,13 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
 	};
 	
     $scope.resetPasswordClicked = function()	{
+    	    
 		    if($scope.data.password.localeCompare($scope.data.confirm_password) == 0 && $scope.data.password != "" && $scope.data.confirm_password != ""){
 		    	$scope.data.perishable_token = $scope.accessToken;
+		    	$scope.isPosting = true;
 		    	resetPasswordService.resetPassword($scope.data).then(function(response) {
 		    
-
+                $scope.isPosting = false;
 		        if(response.status === 'failure') {
 		           $scope.errorMessage = "The password reset is unsuccessful. Please contact the front Desk"
 		           $modal.open($scope.opts); // error modal popup
@@ -34,6 +36,7 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
 		           $scope.isPasswordReset = true;
 	           } 
                },function(){
+               	   $scope.isPosting = false;
                	   $scope.isPasswordReset = false;
 	               $scope.errorMessage = "The password reset is unsuccessful. Please contact the front Desk"
 		           $modal.open($scope.opts); // error modal popup
