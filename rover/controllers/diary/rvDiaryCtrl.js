@@ -146,6 +146,9 @@ sntRover
 		};
 
 
+		//first we are resetting the reservation data if ther was already there
+		resetTheDataForReservationMoveFromOneDateToAnother();
+		
 		/*DATE UI CONFIG*/
 		var minDate = new tzIndependentDate($rootScope.businessDate);
 		minDate.setDate(minDate.getDate() - 1);
@@ -153,8 +156,6 @@ sntRover
 	    	showOn: 'button',
 	    	//dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
-	    	//minDate: minDate,
-	    	//yearRange: '-0:'
 	    	onSelect: onDateSelectionFromDatepicker
 	    };
 
@@ -593,6 +594,8 @@ sntRover
 						(originalOccupancy.departure !== row_item_data.departure)) {
 						
 						$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);		
+						//resetting the reservation data, that set during transfrer
+						resetTheDataForReservationMoveFromOneDateToAnother ();	
 					}
 					else{
 						//reseting to min date
@@ -606,10 +609,14 @@ sntRover
 							$scope.renderGrid();
 
 						}
+						//resetting the reservation data, that set during transfrer
+						resetTheDataForReservationMoveFromOneDateToAnother ();
 					}
 				}
 				else{
 					$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);
+					//resetting the reservation data, that set during transfrer
+					resetTheDataForReservationMoveFromOneDateToAnother ();	
 				}
 				
 				
@@ -627,6 +634,7 @@ sntRover
 			roomXfer = $scope.roomXfer,
 			current = (roomXfer.current),
 			next = (roomXfer.next);
+
 			dataToPassConfirmScreen.arrival_date = nextRoom.arrivalDate;
 			dataToPassConfirmScreen.arrival_time = nextRoom.arrivalTime;
 			
@@ -653,7 +661,6 @@ sntRover
 			};
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
-
 			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(dataToPassConfirmScreen));
 			
 			$scope.closeDialog();
@@ -772,9 +779,9 @@ sntRover
 	    	this.currentResizeItemRow.new_price = parseFloat(avData.new_rate_amount);
 	    	this.currentResizeItemRow.rate_id 		= avData.old_rate_id;
 	    	this.currentResizeItemRow.departureTime = successParams.params.end_time;
-	    	this.currentResizeItemRow.departureDate = new Date(successParams.params.end_date).toComponents().date.toDateString();
+	    	this.currentResizeItemRow.departureDate = new Date(successParams.params.end_date).toComponents().date.toDateString().replace(/-/g, '/');
     		this.currentResizeItemRow.arrivalTime = successParams.params.begin_time;
-	    	this.currentResizeItemRow.arrivalDate = new Date(successParams.params.begin_date).toComponents().date.toDateString(); 
+	    	this.currentResizeItemRow.arrivalDate = new Date(successParams.params.begin_date).toComponents().date.toDateString().replace(/-/g, '/'); 
 	    	this.availability.resize.last_arrival_time = this.currentResizeItem[meta.occupancy.start_date];
 	    	this.availability.resize.last_departure_time = this.currentResizeItem[meta.occupancy.end_date];
 	    	if(this.availability.drag.lastRoom && (this.availability.drag.lastRoom.id !== this.currentResizeItemRow.id)){
@@ -1007,7 +1014,9 @@ sntRover
 
 				//we are loading the diary with reservation date
 				$scope.gridProps.filter.arrival_date = goBackDate;
-				
+				//changing the display date in calendar also				
+				changeCalendarDate (goBackDate);
+
 				//resetting the reservation data, that set during transfrer
 				resetTheDataForReservationMoveFromOneDateToAnother ();
 			}
@@ -1147,8 +1156,8 @@ sntRover
 		start_date 	= new Date(this.display.x_n), 
 		start_time 	= new Date(filter.arrival_times.indexOf(filter.arrival_time) * 900000 + start_date.getTime()).toComponents().time,
 		
-		start 		= new Date(this.currentResizeItem.arrival).toComponents().date.toDateString(),
-		end 		= new Date(this.currentResizeItem.departure).toComponents().date.toDateString(),
+		start 		= new Date(this.currentResizeItem.arrival).toComponents().date.toDateString().replace(/-/g, '/'),
+		end 		= new Date(this.currentResizeItem.departure).toComponents().date.toDateString().replace(/-/g, '/'),
 		rate_type 	= getRateType (this.currentResizeItem),
 		account_id  = getAccountID (this.currentResizeItem),		
 
@@ -1262,8 +1271,7 @@ sntRover
 			if ( !!_.size($_resetObj) ) {
 				$_resetObj.callback();
 			} 
-			else {				
-
+			else {	
 				$scope.clearAvailability();
 				$scope.resetEdit();	
 				$scope.renderGrid();				
@@ -1377,6 +1385,17 @@ sntRover
 		console.log('yes I failed');
 	};
 
+	/**
+	* function to change the date of the calendar
+	* it is only for displaying purpose
+	* it is not actual date model
+	* actual data model is $scope.gridProps.filter.arrival_date
+	* we are keeping both inorder to perform some operation on select and if it  is okey
+	* after selection we will assign duplicate model to original model
+	*/
+	var changeCalendarDate = function (date) {
+		$scope.duplicte_arrival_date = date;		
+	};
 
 	/**
 	* success callback of API in edit mode date change
@@ -1414,6 +1433,9 @@ sntRover
 			case "NOT_AVAILABLE":
 				$scope.message = [response.response_message];
 				openMessageShowingPopup();
+
+				//changing the display date in calendar also	
+				changeCalendarDate (old_props.filter.arrival_date);
 				break;					
 			case "OOO":
 				$scope.message = [response.response_message];
@@ -1539,6 +1561,7 @@ sntRover
 
     $scope.resetEverything = function() {
     	var _sucessCallback = function(propertyTime) {
+
 	    	var propertyDate = new tzIndependentDate( propertyTime.hotel_time.date );
 			propertyDate.setHours(0, 0, 0);
 
@@ -1548,14 +1571,15 @@ sntRover
 				$scope.gridProps.filter.arrival_time = $_resetObj.arrival_time;
 				$scope.gridProps.filter.rate_type = 'Standard';
 				$scope.gridProps.filter.room_type = '';
-				$scope.$emit('hideLoader');	
+				
 				var display_offset = new tzIndependentDate($_resetObj.start_date);
 				
-				$scope.gridProps.edit.reset_scroll = {
+		    	$scope.gridProps.edit.reset_scroll = {
 		    		'x_n'      : propertyDate,
-		    		'x_origin' : display_offset.getTime()
-	    		};
+		    		'x_origin' : $_resetObj.start_date
+		    	};
 	    		$scope.renderGrid();
+	    		$scope.$emit('hideLoader');	
 				$timeout(function() {
 					$_resetObj = {};
 				}, 300);
@@ -1566,6 +1590,7 @@ sntRover
 			if(!$scope.$$phase) {	
 				$scope.$apply();
 			}	    	
+
     	};
 
 
@@ -1924,7 +1949,7 @@ sntRover
 	};
 	currentTimeLineChanger();
 	/**
-	* Destroy event of scope
+	* Destroy event of scope, , we have to wipe out some events, data..
 	*/
 	$scope.$on("$destroy", function(){
 

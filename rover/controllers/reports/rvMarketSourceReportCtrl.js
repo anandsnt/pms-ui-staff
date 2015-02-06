@@ -137,11 +137,11 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 				}
 			}
 			// put 'Not Defined' to the end
-			if ($scope.sources.indexOf('Not Defined') > -1) {
+			if ($scope.sources && $scope.sources.indexOf('Not Defined') > -1) {
 				$scope.sources = _.without($scope.sources, 'Not Defined');
 				$scope.sources.push('Not Defined');
 			}
-			if ($scope.markets.indexOf('Not Defined') > -1) {
+			if ($scope.markets && $scope.markets.indexOf('Not Defined') > -1) {
 				$scope.markets = _.without($scope.markets, 'Not Defined');
 				$scope.markets.push('Not Defined');
 			}
@@ -184,7 +184,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 			$scope.reportStatus.graph = {
 				sourceNumber: getRange(sourcesValues),
 				marketNumber: getRange(marketsValues)
-			}			
+			}
 
 			$timeout(function() {
 				$scope.refreshScroller('report-details-scroll');

@@ -43,7 +43,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					if (searchData.travelAgent.id != null) {
 						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
 							if ($stateParams.reservation && $stateParams.reservation != 'HOURLY' && $stateParams.mode && $stateParams.mode != 'OTHER') {
-								$scope.switchCard('travel-agent-card');
+<!-- ngInclude: '/assets/partials/cards/header/guestCardHeader.html' -->								$scope.switchCard('travel-agent-card');
 							}
 						}
 						$scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
@@ -892,7 +892,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				'userId': "",
 				'avatar': "",
 				'guestId': "",
-				'vip': "" //TODO: check with API or the product team
+				'vip': false
 			};
 			// // $scope.$emit('guestCardUpdateData', contactInfoData);
 			$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
@@ -975,6 +975,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.init();
+
+		// CICO-6049 Toggle VIP button
+		$scope.vipToggleClicked = function(){
+			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
+			$scope.updateContactInfo();
+		};
 
 	}
 ]);
