@@ -16,37 +16,32 @@
 	$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
 	$scope.reservationData = checkinDetailsService.getResponseData();
 	$rootScope.confirmationNumber = $scope.reservationData.confirm_no;	
+	$scope.showTermsPopup = false;
 
-	//setup options for terms and conditions modal
-	$scope.termsPopup = {
-		backdrop: true,
-		backdropClick: true,
-		templateUrl: '/assets/checkin/partials/termsAndContions.html',
-		controller: TermsCtrl,
-		resolve: {
-	        termsText:function(){
-	          return $scope.reservationData.terms_and_conditions;
-	        }
-      }
-	};
-
-	// check if checkbox is checked and  enable/disable checkin button 
-	// $scope.$watch('checked',function(){
-	// 	if($scope.checked)
-	// 		$rootScope.checkedApplyCharges = true;
-	// 	else
-	// 		$rootScope.checkedApplyCharges = false;				
-	// });
-    
-    $scope.termsClicked = function(){
-    	$modal.open($scope.termsPopup);
-    }
-    //setup options for modal
+	//setup options for modal
 	$scope.opts = {
 		backdrop: true,
 		backdropClick: true,
-		templateUrl: '/assets/checkin/partials/errorModal.html',
+		templateUrl: '/assets/checkin/partials/acceptChargesError.html',
 		controller: ModalInstanceCtrl
+	};
+	
+	$scope.termsClicked = function(){
+    	$scope.showTermsPopup = true;
+     };
+
+	$scope.agreeClicked = function(){
+		$rootScope.checkedApplyCharges = $scope.checked =  true;
+		$scope.showTermsPopup = false;
+		// $scope.closeDialog();
+		// console.log("fgrvhjfkvgb4rjk")
+	};
+
+	$scope.cancel = function(){
+		$rootScope.checkedApplyCharges = $scope.checked = false;
+		$scope.showTermsPopup = false;
+		// $scope.closeDialog();
+		// console.log("fgrvhjfdwdgwdgkvgb4rjk")
 	};
 
 	$scope.checkInButtonClicked = function(){
@@ -80,25 +75,3 @@ checkInReservationDetails
 
 snt.controller('checkInReservationDetails', dependencies);
 })();
-
-// controller for the modal
-
-var TermsCtrl = function ($scope, $modalInstance,$rootScope,termsText) {
-	$scope.termsText = termsText;
-	$scope.closeDialog = function () {
-		$modalInstance.dismiss('cancel');
-	};
-
-	$scope.agreeClicked = function(){
-		$rootScope.checkedApplyCharges = true;
-		$scope.closeDialog();
-		console.log("fgrvhjfkvgb4rjk")
-	};
-
-	$scope.cancel = function(){
-		$rootScope.checkedApplyCharges = false;
-		$scope.closeDialog();
-		console.log("fgrvhjfdwdgwdgkvgb4rjk")
-	};
-};
-
