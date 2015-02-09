@@ -142,8 +142,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		$scope.cancelOccupancyChange = function() {
 			// RESET
-			$scope.guestData = JSON.parse(JSON.stringify($scope.initialGuestInfo));
-			$scope.presentGuestInfo = JSON.parse(JSON.stringify($scope.initialGuestInfo));
+			$scope.guestData = JSON.parse(JSON.stringify(initialGuestInfo));
+			$scope.presentGuestInfo = JSON.parse(JSON.stringify(initialGuestInfo));
 			closeDialog();
 		}
 
