@@ -629,18 +629,18 @@ body { overflow: hidden; }
                     &.abbr { width: 60px; }
                     &.date { width: 160px; }
 
-                    /* On/off toggle td, Delete icon ***/
-                    &.activate,
-                    &.delete {
-                        .icon-delete,
-                        .switch-icon {
-                            margin: 0 auto;
-                            .show;
-                            .hide-text;
-                        }
-
-                        .icon-delete { margin: 5px auto; }
+                    /* On/off toggle td, Delete / lock icon ***/
+                    .icon-delete,
+                    .icon-lock,
+                    .switch-icon {
+                        .show;
+                        .hide-text;
                     }
+
+                    .switch-icon,
+                    .icon-lock { margin: 0 auto; }
+
+                    .icon-delete { margin: 5px auto; }
 
                     &:first-child { #border-radius > .left(); }
                     &:last-child { #border-radius > .right(); }
@@ -745,6 +745,11 @@ body { overflow: hidden; }
 /* Datatable                ==============================*/
     .datatable {
 
+        th {
+            &.activate,
+            &.delete { text-align: center; }
+        }
+
         th,
         td {
             &.activate {  
@@ -753,8 +758,10 @@ body { overflow: hidden; }
                 &.long { width: 200px; }
             }
             
-
-            &.delete { width: 100px; } 
+            &.delete { 
+                padding: 0 10px;
+                width: 80px; 
+            } 
         }
         
         tbody {

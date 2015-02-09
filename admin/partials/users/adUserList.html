@@ -22,10 +22,13 @@
 						<div class="entry" ng-show="user.can_delete">
 							<label for=""></label>
 							<div class="switch-button single" ng-class="{ on : user.is_active == 'true' }" ng-click="activateInactivate(user.id, user.is_active, $index)">
-							<input type="checkbox" value="" name="" id="">
-							<span class="switch-icon"></span>
+								<input type="checkbox" value="" name="" id="">
+								<span class="switch-icon"></span>
 							</div>
-							</div>
+						</div>
+					</td>
+					<td data-title="'Locked'" class="delete">
+						<button type="button" class="icons icon-lock">Unlock</button>
 					</td>
 					<td data-title="'Delete'" class="delete" >
 						<a id="165" ng-show="user.can_delete" class="icons icon-delete large-icon" ng-click="deleteUser($index, user.id)">Delete this user</a>							
