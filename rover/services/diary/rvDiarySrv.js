@@ -801,7 +801,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             _.extend(params, { account_id: account_id });
                         }
                     }
-
+           
+                    
                     Availability.read(params)
                     .then(function(data) {                        
                         if(data && data.results) {                      
@@ -840,7 +841,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 end_date,       
                                 guid,
                                 false
-                            ]);                           
+                            ]);                          
                             q.resolve(Availability.store.data);
                        }
                     },
