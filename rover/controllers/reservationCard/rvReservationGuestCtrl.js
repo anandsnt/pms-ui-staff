@@ -15,8 +15,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			var maxOccupancy = $scope.reservationData.reservation_card.max_occupancy; //TODO: Get the max occupancy here
 			if (maxOccupancy) {
 				var currentTotal = parseInt($scope.guestData.adult_count || 0) +
-					parseInt($scope.guestData.children_count || 0) +
-					parseInt($scope.guestData.infants_count || 0);
+					parseInt($scope.guestData.children_count || 0);
 
 				return currentTotal > parseInt(maxOccupancy);
 			} else { // If the max occupancy aint configured DONT CARE -- Just pass it thru
