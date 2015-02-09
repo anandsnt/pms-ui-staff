@@ -1,0 +1,18 @@
+"BEACON_ID": "Beacon Id",
+"TYPE": "Type",
+"TRIGGER": "Trigger",
+"NEARBY_BEACONS":"Near by beacons",
+"PROXIMITY_ID_PLACEHOLDER":"Enter proximity ID",
+"MAJOR_ID_PLACEHOLDER":"Major id",
+"MINOR_ID_PLACEHOLDER":"Minor id",
+"ENTER_DESCRIPTION" :"Enter description",
+"ENTER_TITLE":"Enter title",
+"ENTER_LOCATION":"Enter Location",
+"SELECT_TYPE":"Select type",
+"SELECT_TRIGGER":"Select Trigger",
+"LINK_BEACON":"Link Beacon",
+"GUEST_MESSAGE":"Guest Message",
+"IBEACON_SETUP":"iBeacon setup",
+"MESSAGE":"Message",
+"ENTER_MESSAGE":"Enter Message"
+

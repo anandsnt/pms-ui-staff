@@ -327,6 +327,7 @@ select[disabled],{
         /* 3 column select layout for time selection ***/
         &.select-col {
             .pull-left;
+            line-height: 40px;
 
             &.col1-2 { 
                 width: 48%; 
@@ -337,6 +338,13 @@ select[disabled],{
 
             &.col1-3 { 
                 width: 30%; 
+                margin-right: 3.3333%;
+
+                &:last-child { margin-right: 0; }
+            }
+
+            &.col1-4 { 
+                width: 22%; 
                 margin-right: 3.3333%;
 
                 &:last-child { margin-right: 0; }
@@ -354,6 +362,10 @@ select[disabled],{
             z-index: 99;
             .size(100%, 25px);
             #border-radius > .right();
+        }
+
+        &.no-bg:after {
+            background: none;
         }
     }
 

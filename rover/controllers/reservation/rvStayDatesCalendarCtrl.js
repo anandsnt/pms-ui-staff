@@ -317,8 +317,9 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			// we are re-assinging our new checkin/checkout date for calendar
 			$scope.checkinDateInCalender = finalCheckin;
 			$scope.checkoutDateInCalender = finalCheckout;
+			$scope.nights = getNumOfStayNights();
 
-			//Reload the calendar with new arrival, departure dates
+			//Reload the calendar with new arrival, departure dates			
 			$scope.refreshCalendarEvents()
 		};
 
@@ -396,7 +397,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				}
 
 				//Event is check-in
-				if (thisDate.getTime() === checkinDate.getTime()) {
+				if (thisDate.getDate() === checkinDate.getDate()&&thisDate.getMonth() === checkinDate.getMonth()&&thisDate.getYear() === checkinDate.getYear()) {
 					calEvt.id = "check-in";
 					calEvt.className = "check-in";
 					//For inhouse reservations, we can not move the arrival date
@@ -404,15 +405,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 						calEvt.startEditable = "true";
 					}
 					calEvt.durationEditable = "false";
-
 					//If check-in date and check-out dates are the same, show split view.
-					if (checkinDate.getTime() == checkoutDate.getTime()) {
+					if (checkinDate.getDate() == checkoutDate.getDate()&&checkinDate.getMonth() == checkoutDate.getMonth()&&checkinDate.getYear() == checkoutDate.getYear()) {
 						calEvt.className = "check-in split-view";
 						events.push(calEvt);
 						//checkout-event
 						calEvt = {};
-						calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
-
+						calEvt.title =getRateForTheDay(dateDetails[availabilityKey]).value;
 						calEvt.start = thisDate;
 						calEvt.end = thisDate;
 						calEvt.day = thisDate.getDate().toString();
@@ -425,17 +424,18 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				//mid-stay range
 				} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 					calEvt.id = "availability";
-					calEvt.className = "mid-stay";
+					calEvt.className = "mid-stay";					
 				//Event is check-out
-				} else if (thisDate.getTime() == checkoutDate.getTime()) {
+				} else if (thisDate.getDate() == checkoutDate.getDate()&&thisDate.getMonth() == checkoutDate.getMonth()&&thisDate.getYear() == checkoutDate.getYear()) {
 					calEvt.id = "check-out";
 					calEvt.className = "check-out";
 					calEvt.startEditable = "true";
 					calEvt.durationEditable = "false";
-
 				/**Following are for dates prior to check-in and dates after checkout*/
 				} else if (($scope.calendarType == "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType == "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
-					calEvt.className = "type-available"; //TODO: verify class name
+					calEvt.className = "type-available"; 
+					calEvt.durationEditable = "false";
+					//TODO: verify class name
 					//room type not available but house available   
 				} else if (dateDetails["house"].availability > 0) {
 					//calEvt.className = ""; //TODO: verify class name from stjepan
@@ -499,6 +499,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			// we are re-assinging our new checkin/checkout date for calendar
 			$scope.checkinDateInCalender = finalCheckin;
 			$scope.checkoutDateInCalender = finalCheckout;
+			$scope.nights = getNumOfStayNights();
 
 			//Reload the calendar with new arrival, departure dates
 			$scope.refreshCalendarEvents()

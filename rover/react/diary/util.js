@@ -152,6 +152,19 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 			return ret.hh + ':' + ret.mm + ' ' + ret.amPM;
 		}
 	};
+	
+	Time.prototype.toHourAndMinute = function(seperator, format) {
+		var ret;
+		if (typeof format === 'undefined') format = 12;
+		if (typeof seperator === 'undefined') seperator = ":";
+
+		ret = {
+			hh: this.padZeroes(this.hours % format),
+			mm: this.padZeroes(this.minutes),
+		};
+		return ret.hh + seperator + ret.mm;
+	};
+
 	Time.prototype.constructor = Time;
 
 	String.prototype.toTimeComponent = function(time) {
@@ -172,6 +185,34 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
 		return;
 	};
+
+	Date.prototype.stdTimezoneOffset = function() {
+	    var jan = new Date(this.getFullYear(), 0, 1);
+	    var jul = new Date(this.getFullYear(), 6, 1);
+	    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+	}
+
+	Date.prototype.isOnDST = function() {
+	    return this.getTimezoneOffset() < this.stdTimezoneOffset();
+	}
+
+	Date.prototype.getDSTDifference = function() {
+		var firstMonth, lastMonth, firstMonthOffset, lastMonthOffset, dstDiff;
+		if(this.getMonth() >= 0 && this.getMonth() <= 6){
+			firstMonth = 0;
+			lastMonth  = 6;
+		}
+		else if(this.getMonth() >6 && this.getMonth() <= 11){
+			firstMonth = 7;
+			lastMonth  = 11;
+		}
+		firstMonth = new Date(this.getFullYear(), firstMonth, 1);
+      	firstMonthOffset = firstMonth.getTimezoneOffset();
+      	lastMonth = new Date(this.getFullYear(), lastMonth, 1);
+      	lastMonthOffset = lastMonth.getTimezoneOffset();
+		dstDiff = (firstMonthOffset - lastMonthOffset);
+		return dstDiff;
+	}
 
 	Date.prototype.toComponents = function() {
 		var __DAYS = ['Monday', 

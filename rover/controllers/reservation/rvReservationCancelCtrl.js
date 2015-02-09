@@ -156,6 +156,15 @@
 				}
 			};
 
+	// CICO-12408 : To calculate Total of fees and amount to pay.
+	$scope.calculateTotalAmount = function(amount) {
+		
+		var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
+		var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
+		
+		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
+	};
+
 	var refreshCardsList = function() {
 		$timeout(function() {
 			$scope.refreshScroller('cardsList');
@@ -220,12 +229,7 @@
 		if(!$scope.newPaymentInfo.tokenDetails.isSixPayment){
 			paymentData.card_expiry = cardExpiry;
 		};
-		if($scope.isShowFees()){
-			if($scope.feeData.calculatedFee)
-				paymentData.fees_amount = $scope.feeData.calculatedFee;
-			if($scope.feeData.feesInfo)
-				paymentData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
-		}
+		
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess);
 	};
 
@@ -317,6 +321,12 @@
 			},
 			"reservation_id":$scope.passData.reservationId
 		};
+		if($scope.isShowFees()){
+			if($scope.feeData.calculatedFee)
+				dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
+			if($scope.feeData.feesInfo)
+				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+		}
 		// add to guest card only if new card is added and checkbox is selected
 		if($scope.newCardAdded){
 			dataToSrv.postData.add_to_guest_card =  $scope.cancellationData.addToGuestCard;

@@ -6,18 +6,19 @@
 	<td ng-if="each.isReport">
 		<strong class="title">{{ each.name }}</strong>
 		<span class="confirmation">{{ each.confirm_no }}</span>
-		<span ng-if="each.is_vip"> &#8226; <span class="vip">VIP</span></span>
+		<span ng-if="each.is_vip">&#8226; <span class="vip">VIP</span></span>
+		<span ng-if="each.addtional_guest_counts">&#8226; <span class="guests">{{ each.addtional_guest_counts }} guest(s)</span></span>
 	</td>
 	<td ng-if="each.isReport">
 		<div class="arrival-departure">
-			<span class="guest-status check-in" ng-class="{ 'cancel': (each.status =='CANCELED' || each.status =='Canceled') }">check-in</span>
+			<span class="guest-status check-in" ng-class="{ 'cancel': each.status =='CANCELED', 'no-show': each.status == 'NO SHOW' }">check-in</span>
 			<time>
 				<span>{{ each.arrival_date | date : dateFormat }}</span>
 				<span>{{ each.arrival_time }}</span>
 			</time>
 		</div>
 		<div class="departing">
-			<span class="guest-status check-out" ng-class="{ 'cancel': (each.status =='CANCELED' || each.status =='Canceled') }">check-out</span>
+			<span class="guest-status check-out" ng-class="{ 'cancel': each.status =='CANCELED', 'no-show': each.status == 'NO SHOW' }">check-out</span>
 			<time>
 				<span>{{ each.departure_date | date : dateFormat }}</span>
 				<span>{{ each.departure_time }}</span>
@@ -35,7 +36,23 @@
 		<span>{{ each.reason }}</span>
 	</td>
 
+	<td ng-if="each.isGuest" class="is-note" colspan="3">
+		<strong>Accompanying guests</strong>
+		<span ng-repeat="name in each.guest">{{ name }}</span>
+	</td>
+	
 	<td ng-if="each.isNote" class="is-note" colspan="3">
+		<strong ng-if="each.isHeading">Notes</strong>
+		<span><time>{{ each.date | date : dateFormat }}</time><span ng-if="each.name" class="note-by-name"> &#8226; {{ each.name }}</span></span>
+		<span>{{ each.note }}</span>
+	</td>
+
+
+	<td ng-if="each.isGuest_n_Note && each.guest" class="is-note" rowspan="{{ each.tdRowSpan }}">
+		<strong>Accompanying guests</strong>
+		<span ng-repeat="name in each.guest">{{ name }}</span>
+	</td>
+	<td ng-if="each.isGuest_n_Note" class="is-note" colspan="2">
 		<strong ng-if="each.isHeading">Notes</strong>
 		<span><time>{{ each.date | date : dateFormat }}</time><span ng-if="each.name" class="note-by-name"> &#8226; {{ each.name }}</span></span>
 		<span>{{ each.note }}</span>

@@ -3,58 +3,58 @@ sntRover.service('RVHkRoomDetailsSrv', [
 	'$q',
 	'rvBaseWebSrvV2',
 	'$window',
-	function($http, $q, rvBaseWebSrvV2, $window) {
+	'$filter',
+	function($http, $q, rvBaseWebSrvV2, $window, $filter) {
 
 		this.roomDetails = {};
 
-		this.fetch = function(id, businessDate){
+		this.fetch = function(id, businessDate) {
 			var deferred = $q.defer();
 			var url = '/house/room/' + id + '.json';
 
 			$http.get(url).success(function(response, status) {
-				if(response.status == "success"){
+				if (response.status == "success") {
 					this.roomDetails = response.data.room_details;
-			    	deferred.resolve(this.roomDetails);
-			    }else{
-			    	deferred.reject(response);
-			    }
+					deferred.resolve(this.roomDetails);
+				} else {
+					deferred.reject(response);
+				}
 
 			}.bind(this)).error(function(response, status) {
-				if(status == 401){ // 401- Unauthorized
+				if (status == 401) { // 401- Unauthorized
 					// so lets redirect to login page
-					$window.location.href = '/house/logout' ;
-				}else{
+					$window.location.href = '/house/logout';
+				} else {
 					deferred.reject(response);
 				}
 			});
 			return deferred.promise;
 		};
 
-		this.updateHKStatus = function(data){
+		this.updateHKStatus = function(data) {
 			var deferred = $q.defer();
 			var url = '/house/change_house_keeping_status.json';
 
 			$http({
-	            url: url,
-	            method: "POST",
-	            data: data,
-	        }).success(function (response, status) {
-				if(response.status == "success"){
-	        		deferred.resolve(response.data);
-	        	}else{
-	        		deferred.reject(response);
-	        	}
-	        }).error(function (response, status) {
-			    if(status == 401){ // 401- Unauthorized
-	    			// so lets redirect to login page
-					$window.location.href = '/house/logout' ;
-	    		}else{
-	    			deferred.reject(response);
-	    		}
-	        });
+				url: url,
+				method: "POST",
+				data: data,
+			}).success(function(response, status) {
+				if (response.status == "success") {
+					deferred.resolve(response.data);
+				} else {
+					deferred.reject(response);
+				}
+			}).error(function(response, status) {
+				if (status == 401) { // 401- Unauthorized
+					// so lets redirect to login page
+					$window.location.href = '/house/logout';
+				} else {
+					deferred.reject(response);
+				}
+			});
 			return deferred.promise;
 		};
-
 
 
 
@@ -66,14 +66,14 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer(),
 				url = 'api/room_services/status_list';
 
-			if ( allServiceStatus.length ) {
+			if (allServiceStatus.length) {
 				deferred.resolve(allServiceStatus);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						allServiceStatus = data.results;
 						deferred.resolve(allServiceStatus);
-					}.bind(this), function(data){
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			};
@@ -87,14 +87,14 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer(),
 				url = 'api/maintenance_reasons';
 
-			if ( maintenanceReasons.length ) {
+			if (maintenanceReasons.length) {
 				deferred.resolve(maintenanceReasons);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						maintenanceReasons = data.maintenance_reasons;
 						deferred.resolve(maintenanceReasons);
-					}.bind(this), function(data){
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			};
@@ -105,15 +105,15 @@ sntRover.service('RVHkRoomDetailsSrv', [
 		// fetch oo/os details from server
 		this.getRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/room_services/' + params.roomId;
+				url = 'api/room_services/' + params.room_id;
 
-			rvBaseWebSrvV2.getJSON(url)
+			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
-			
+
 			return deferred.promise;
 		};
 
@@ -125,7 +125,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
@@ -140,7 +140,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.putJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
@@ -150,15 +150,17 @@ sntRover.service('RVHkRoomDetailsSrv', [
 		// save the room back to in sevice
 		this.putRoomInService = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/room_services/' + params.roomId,
+				url = 'api/room_services/' + params.room_id,
 				options = {
-					"room_service_status_id" : params.inServiceID
+					"room_service_status_id": params.inServiceID,
+					"from_date": params.from_date,
+					"to_date": params.to_date
 				}
 
 			rvBaseWebSrvV2.putJSON(url, options)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
@@ -171,14 +173,14 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var deferred = $q.defer(),
 				url = 'api/work_types';
 
-			if ( workTypesList.length ) {
+			if (workTypesList.length) {
 				deferred.resolve(workTypesList);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						workTypesList = data.results;
 						deferred.resolve(workTypesList);
-					}.bind(this), function(data){
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			};
@@ -195,11 +197,31 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
-				}.bind(this), function(data){
+				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
 
 			return deferred.promise;
 		};
+
+		//CICO-12520 Room service status
+		this.fetchRoomStatus = function(params) {
+			var queryString = {
+				from_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month - 1, 1)), 'yyyy-MM-dd'),
+				to_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month + 1, 1)), 'yyyy-MM-dd'),
+				room_id: params.room_id
+			}
+			var deferred = $q.defer(),
+				url = '/api/room_services/service_info.json?';
+			rvBaseWebSrvV2.getJSON(url, queryString)
+				.then(function(data) {
+					deferred.resolve({
+						service_status: data.service_status
+					});
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
 	}
 ]);
