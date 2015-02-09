@@ -10,9 +10,12 @@
                 <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
             </li>
         </ul>
-        <div class="actions">
+        <div class="actions" ng-hide="fromPage=='staycard'">
             <button type="button" ng-click="closePopup()" class="button white modal-hide" translate>ADD_MORE_TO_THIS_ROOM</button>
             <button class="button green has-arrow skip" ng-click="goToSummaryAndConfirm()" translate>BOOK</button>
+        </div>
+        <div class="actions" ng-show="fromPage=='staycard'">
+            <button class="button blank" ng-click="goToSummaryAndConfirm()" translate>CLOSE</button>
         </div>
     </div>
 </div>

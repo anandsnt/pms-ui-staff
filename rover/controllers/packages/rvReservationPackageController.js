@@ -2,9 +2,11 @@ sntRover.controller('RVReservationPackageController',
 				 ['$scope', 
 				  '$rootScope',
 				  'RVReservationPackageSrv',
+				  '$state',
 				function($scope, 
 					$rootScope,
-					RVReservationPackageSrv) {
+					RVReservationPackageSrv,
+					$state) {
 
 	var reservationId = $scope.reservationData.reservation_card.reservation_id;
 	var successCallBack = function(data){
@@ -14,7 +16,21 @@ sntRover.controller('RVReservationPackageController',
            item.totalAmount = (item.count)*(item.price_per_piece);
   		});
 	};
+	//console.log($scope);
 	$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, successCallBack);
+
+	$scope.goToAddons = function(){
+		$scope.closeDialog();
+		 $state.go('rover.reservation.staycard.mainCard.addons',
+		 	{
+		 		'from_date': $scope.reservation.reservation_card.arrival_date,
+		 		'to_date': $scope.reservation.reservation_card.departure_date,
+		 		'is_active': true,
+		 		'is_not_rate_only': true,
+		 		'from_screen': 'staycard'
+
+		 	});
+	};
 
 }
 

@@ -10,7 +10,11 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
     '$stateParams',
     '$vault',
     function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv, $stateParams, $vault) {
+console.log("addons screen");
 
+
+console.log("================"+$stateParams.from_screen);
+console.log($scope.reservationData.reservationId)
         // set the previous state
         $rootScope.setPrevState = {
             title: $filter('translate')('ROOM_RATES'),
@@ -53,7 +57,12 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         $scope.setHeadingTitle($scope.heading);
 
         $scope.showEnhancementsPopup = function() {
+
             var selectedAddons = $scope.reservationData.rooms[$scope.activeRoom].addons;
+            $scope.fromPage = "";
+            if($stateParams.from_screen == "staycard"){
+                $scope.fromPage = "staycard";
+            }
             if (selectedAddons.length > 0) {
                 ngDialog.open({
                     template: '/assets/partials/reservation/selectedAddonsListPopup.html',

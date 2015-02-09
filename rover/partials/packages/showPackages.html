@@ -8,15 +8,16 @@
         <li ng-repeat="existingPackages in packageData.existing_packages">
             <span class="item">{{existingPackages.package_name}}</span>
             <span class="count"> ({{existingPackages.count}})</span>
-            <span class="base">at ${{existingPackages.price_per_piece}} / ADULT PER STAY</span>
-            <span class="price">${{existingPackages.totalAmount}}</span>
+            <span class="base">at {{currencySymbol}}{{existingPackages.price_per_piece}} / ADULT PER STAY</span>
+            <span class="price">{{currencySymbol}}{{existingPackages.totalAmount}}</span>
+            <span ng-show="existingPackages.is_inclusive=='true'">INCL</span>
             <button type="button" class="icons icon-trash">Remove</button>
         </li>
        
     </ul>
     <div class="actions">
         <!-- On Stay Card -->
-        <button type="button" class="button orange">Add More to This Room</button>
+        <button type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>
         <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
 
         <!-- On Addons screen 
