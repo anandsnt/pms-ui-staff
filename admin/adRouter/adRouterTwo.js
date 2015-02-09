@@ -389,4 +389,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADStationaryCtrl',
 			url : '/stationary'
 		});
+
+		$stateProvider.state('admin.analyticsSetup', {
+			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
+			controller: 'adAnalyticSetupCtrl',
+			url : '/analyticSetup'
+		});
 });

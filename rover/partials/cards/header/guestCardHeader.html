@@ -12,7 +12,7 @@
                     <strong class="status">{{guestCardData.selectedLoyaltyLevel}}</strong>
                 </div>
                 
-                <div ng-show="isStandAlone" class="switch-button" ng-class="{ 'on': !guestCardData.contactInfo.vip}">
+                <div ng-show="isStandAlone" class="switch-button" ng-class="{ 'on': guestCardData.contactInfo.vip}">
                     <input name="vip" id="vip" type="checkbox" ng-model="guestCardData.contactInfo.vip" ng-click="vipToggleClicked()"/>
                     <label class="data-off">
                         <span class="switch-icon vip" >VIP</span>

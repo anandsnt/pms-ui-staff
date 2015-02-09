@@ -1,0 +1,12 @@
+
+
+
+"ANALYTIC_SETUP_HEADER": "Analytic Setup",
+"PLACEHOLDER_TRACKING_ID": "Enter Tracker ID",
+"SNT_TRACKERS_TITLE": "SNT Tracking IDs",
+"HOTEL_TRACKERS_TITLE": "Hotel Tracking IDs",
+"ZEST_WEB_LABEL": "Zest web",
+"ZEST_IOS_LABEL": "Zest app(IOS)",
+"ZEST_ANDROID_LABEL": "Zest app(Android)",
+"ANALYTIC_SERVICE_LABEL": "Analytic service",
+"SELECT_SERVICE": "Select service"
