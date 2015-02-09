@@ -153,12 +153,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		/* To save guest details */
 		$scope.saveGuestDetails = function() {
-
 			var data = JSON.parse(JSON.stringify($scope.guestData));
 			if (!angular.equals(data, initialGuestInfo)) {
 				$scope.$emit('showLoader');
 				if (isOccupancyRateConfigured()) {
-					saveChanges(data);
+					saveChanges();
 				} else {
 					$scope.$emit('hideLoader');
 					ngDialog.open({
