@@ -19,28 +19,28 @@
 							<span> {{campaign.id}}</span>
 						</td>
 											
-						<td data-title="'Name'"  sortable="'based_on'" header-class="name width-20" >
+						<td data-title="'Name'"  sortable="'name'" header-class="name width-20" >
 							<a class="edit-data" ng-click="editCampaign(campaign.id, $index)" >
 								<span>
 									{{campaign.name}}
 								</span>
 							</a>
 						</td>
-						<td data-title="'Audience'" sortable="'rate_type'" header-class="width-25" >
+						<td data-title="'Audience'" sortable="'audience_type'" header-class="width-25" >
 							<span>
 								{{campaign.audience_type}}
 							</span>
 						</td>
-						<td data-title="'Delivery'" sortable="'rate_type'" header-class="width-25" >
+						<td data-title="'Delivery'" sortable="'delivery'" header-class="width-25" >
 							<span>
 								{{campaign.delivery}}
 							</span>
 						</td>
-						<td data-title="'Status'" sortable="'rate_type'" header-class="width-20" class="status" ng-class="{'draft': campaign.status== 'DRAFT', 'active': campaign.status== 'ACTIVE', 'completed': campaign.status== 'COMPLETED'}">
+						<td data-title="'Status'" sortable="'status'" header-class="width-20" class="status" ng-class="{'draft': campaign.status== 'DRAFT', 'active': campaign.status== 'ACTIVE', 'completed': campaign.status== 'COMPLETED'}">
 							{{campaign.status}}
 						</td>
 
-						<td data-title="'Last Update'" sortable="'rate_type'" header-class="width-25">
+						<td data-title="'Last Update'" sortable="'last_updated_date'" header-class="width-25">
 							<em>{{campaign.last_updated_date | date : dateFormat }} {{getTimeConverted(campaign.last_updated_time)}}</em>
 						</td>
 

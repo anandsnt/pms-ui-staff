@@ -1,7 +1,15 @@
 <section class="content current" ng-click='clearErrorMessage()'>
-	<header class="content-title">
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+	<header class="content-title" ng-show="mode == 'ADD'">
 	    <h2>New Campaign</h2>
 	    <a class="action back" ng-click="gobackToCampaignListing();">Back</a>
+	</header>
+
+	<header class="content-title" ng-show="mode == 'EDIT'">
+	    <h2>Edit Campaign <span>{{campaignData.name}}</span></h2>
+	    <a ng-click="gobackToCampaignListing();" class="action back">Back</a>
+	    <button type="button" class="action remove" ng-click="deleteCampaign();">Delete Campaign</button>
 	</header>
 
 	<section class="content-scroll">
@@ -14,6 +22,21 @@
 		            <h3><span>Campaign</span> details</h3>
 		            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
 		        </div>
+				<div class="entry full-width" ng-show = "mode == 'EDIT' && campaignData.status == 'COMPLETED'">
+		            <div id="campaign-completed" class="notice success">
+		                <strong>Completed</strong>
+		                {{campaignData.completed_date}} {{getTimeConverted(campaignData.completed_time)}}
+		            </div>
+		        </div>
+		        <div class="entry full-width" ng-show = "mode == 'EDIT' && campaignData.status !== 'COMPLETED'">
+                    <label for="campaign-status">Status</label>
+                    
+                    <div class="switch-button" ng-class="{ 'on' :campaignData.is_active == 'true' }" ng-click="statusChanged()"> <!-- Remove class "on" when checkbox is unchecked -->
+                        <input id="campaign-status" type="checkbox"/>
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+
 		        <div class="entry short">
 		            <label for="campaign-id">ID</label>
 		            <input type="text" id="campaign-id" value="campaignData.id" ng-model="campaignData.id" readonly/>
@@ -90,7 +113,7 @@
 	        <!-- Delivery -->
 	        <div class="form-title">
 	            <h3><span>Delivery</span> details</h3>
-	            <em class="status">Time Zone: <strong class="zone">{{hotel_time_zone_full}} ({{hotelTimeZoneAbbr}})</strong></em>
+	            <em class="status">Time Zone: <strong class="zone">{{hotelTimeZoneFull}} ({{hotelTimeZoneAbbr}})</strong></em>
 	        </div>
 	        <div class="large-block">
 	            <label class="radio large">
@@ -180,34 +203,12 @@
 								<option value="" data-text="Not set" class="placeholder">HH</option>
 								<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==campaignData.delivery_hour" >{{i}}</option>
 							</select>
-	                        <!-- <select id="delivery-hour" class="placeholder">
-	                            <option value="" selected>HH</option>
-	                            <option value="01">01</option>
-	                            <option value="02">02</option>
-	                            <option value="03">03</option>
-	                            <option value="04">04</option>
-	                            <option value="05">05</option>
-	                            <option value="06">06</option>
-	                            <option value="07">07</option>
-	                            <option value="08">08</option>
-	                            <option value="09">09</option>
-	                            <option value="10">10</option>
-	                            <option value="11">11</option>
-	                            <option value="12">12</option>
-	                        </select> -->
 	                    </div>
 	                    <div class="select">
 	                    	<select ng-model="campaignData.delivery_min" id="delivery-minute" class="placeholder">
 								<option value="" data-text="Not set" class="placeholder">MM</option>
 								<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i == campaignData.delivery_min" >{{i}}</option>
 							</select>
-	                        <!-- <select id="delivery-minute" class="placeholder">
-	                            <option value="" selected>MM</option>
-	                            <option value="00">00</option>
-	                            <option value="15">15</option>
-	                            <option value="30">30</option>
-	                            <option value="45">45</option>
-	                        </select> -->
 	                    </div>
 	                    <div class="select" >
 	                        <select id="delivery-daytime" ng-model="campaignData.delivery_primetime" >
@@ -230,7 +231,7 @@
 	                    </label>
 	                    <div id="recurring-datepicker" class="has-datepicker" ng-show = "campaignData.recurring_end_type == 'END_OF_DAY'"> <!-- Remove class "hidden" when "At End Of Day" is selected. Add when "Never" is selected. -->
 	                        <input id="delivery-date" placeholder="Set Delivery Date" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date == ''"/>
-	                        <input id="delivery-date" placeholder="{{campaignData.recurrence_end_date | date : dateFormat }}" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date !== '' && campaignData.recurrence_end_date !== undefined"/>
+	                        <input id="delivery-date" placeholder="{{campaignData.recurrence_end_date | date : dateFormat }}" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-hide=" mode == 'EDIT' && campaignData.recurrence_end_date !== '' && campaignData.recurrence_end_date !== undefined"/>
 	                    </div>
 	                </div>
 	            </div>
@@ -255,11 +256,20 @@
 	        </div>          
 	    </fieldset>
 	    
-	    <div class="actions">
+	    <div class="actions" ng-show = "mode == 'ADD'">
 	        <button type="button" class="button blank" ng-click="gobackToCampaignListing();">Cancel</button>
 	        <button type="button" class="button blue" ng-click="saveAsDraft()">Save as Draft</button> 
 	        <button type="button" class="button green" ng-click="startCampaignPressed()">Start Campaign</button>
 	    </div>
+
+	    <div class="actions" ng-show = "mode == 'EDIT' && campaignData.status !== 'COMPLETED'">
+            <button type="button" class="button blank" ng-click="gobackToCampaignListing();">Cancel</button>
+            <button type="button" class="button green" ng-click="saveAsDraft()">Save</button>
+        </div>
+
+        <div class="actions" ng-show = "mode == 'EDIT' && campaignData.status == 'COMPLETED'">
+            <button type="button" class="button blank" ng-click="gobackToCampaignListing();">Close</button>
+        </div>
 	</form>
 
 </section>

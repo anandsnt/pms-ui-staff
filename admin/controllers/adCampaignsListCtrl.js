@@ -30,9 +30,9 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page
-		        /*sorting: {
-		            rate: 'asc' // initial sorting
-		        }*/
+		        sorting: {
+		            name: 'asc' // initial sorting
+		        }
 		    }, {
 		        total: 0, // length of data
 		        getData: $scope.fetchTableData

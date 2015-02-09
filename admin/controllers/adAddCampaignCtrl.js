@@ -1,10 +1,12 @@
 admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'ngDialog', '$timeout', '$state', '$stateParams', function($scope, $rootScope,ADCampaignSrv, ngDialog, $timeout,$state, $stateParams){
 
 	BaseCtrl.call(this, $scope);
+
+	$s = $scope;
 	
 	var init = function(){
 		console.log($stateParams);
-
+		$scope.mode = 'ADD';
 		if($stateParams.type == 'EDIT'){
 			$scope.mode = 'EDIT';
 			fetchCampaignDetails($stateParams.id);
@@ -39,6 +41,13 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.is_recurring = data.is_recurring? 'true': 'false';
 		$scope.campaignData.day_of_week = data.day_of_week;
 
+		$scope.campaignData.completed_date = data.completed_date;
+		$scope.campaignData.completed_time = data.completed_time;
+		$scope.campaignData.status = data.status;
+		$scope.campaignData.is_active = data.is_active? 'true' : 'false';
+
+		$scope.campaignData.end_date_for_display = data.recurrence_end_date;
+		
 		var deliveryTime = tConvert(data.time_to_send);
 		if(!isEmptyObject(deliveryTime)){
 			$scope.campaignData.delivery_hour = deliveryTime.hh;
@@ -46,7 +55,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 			$scope.campaignData.delivery_primetime = deliveryTime.ampm;
 		}
 		
-		//$scope.campaignData.recurring_end_type = (data.recurrence_end_date == undefined || data.recurrence_end_date == '') ? : 'NEVER' : 'END_OF_DAY';
+		$scope.campaignData.recurring_end_type = (data.recurrence_end_date == undefined || data.recurrence_end_date == '') ? 'NEVER' : 'END_OF_DAY';
 		$scope.campaignData.recurrence_end_date = data.recurrence_end_date;
 		$scope.campaignData.alert_ios8 = data.alert_ios8;
 		$scope.campaignData.alert_ios7 = data.alert_ios7;
@@ -68,6 +77,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	var computeCampaignSaveData = function(){
 		var campaign = {};
 		campaign.name = $scope.campaignData.name;
+		campaign.is_active = $scope.campaignData.is_active == 'true' ? true : false;
 		campaign.audience_type = $scope.campaignData.audience_type;
 		campaign.specific_users = $scope.campaignData.specific_users;
 		campaign.subject = $scope.campaignData.subject;
@@ -112,6 +122,8 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 			if(action == "START_CAMPAIGN"){
 				startCampaign(data.id);
 				
+			}else{
+				$scope.gobackToCampaignListing();
 			}
 		}
 		var data = computeCampaignSaveData();
@@ -135,19 +147,29 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 	};
 
-	/*$scope.showCalendar = function() {
-		//alert("show date picker");
-		$scope.campaignData.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
-        ngDialog.open({
-                template: '/assets/partials/campaigns/adCampaignDatepicker.html',
-                controller: 'ADcampaignDatepicker',
-                className: ' ',
-                scope: $scope,
-                closeByDocument: true
-            });
+	$scope.statusChanged = function(){
+		$scope.campaignData.is_active = $scope.campaignData.is_active == 'true' ? 'false' : 'true';
 
+	}
 
-	};*/
+	$scope.getTimeConverted = function(time) {
+		if (time == null || time == undefined) {
+			return "";
+		}
+		var timeDict = tConvert(time);
+		return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
+	};
+
+	$scope.deleteCampaign = function(){
+
+		var deleteSuccess = function(){
+			$scope.$emit('hideLoader');
+			$scope.gobackToCampaignListing();
+			
+		}
+		var params = {"id" : $scope.campaignData.id}
+		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
+	}
 
 	$scope.showDatePicker = function(){
 		console.log("show showDatePicker123213");
