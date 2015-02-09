@@ -1,4 +1,4 @@
-admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', function($scope, $rootScope,ADCampaignSrv){
+admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'ngDialog', '$timeout', function($scope, $rootScope,ADCampaignSrv, ngDialog, $timeout){
 
 	BaseCtrl.call(this, $scope);
 	$scope.campaignData = {};
@@ -25,7 +25,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', fu
 		//TODO: time_to_send
 		campaign.time_to_send = tConvertToAPIFormat($scope.campaignData.delivery_hour, $scope.campaignData.delivery_min, $scope.campaignData.delivery_primetime);
 		//TODO: recurrence_end_date
-		campaign.recurrence_end_date = '2015-03-15';
+		campaign.recurrence_end_date = $scope.campaignData.end_date_for_display;
 		campaign.alert_ios7 = $scope.campaignData.alert_ios7;
 		campaign.alert_ios8 = $scope.campaignData.alert_ios8;
 
@@ -35,40 +35,64 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', fu
 	};
 
 
-	$scope.startCampaign = function(){
-
+	$scope.startCampaignPressed = function(){
+		$scope.saveAsDraft("START_CAMPAIGN");
 		//alert("startCampaign");
 		console.log($scope.campaignData.is_recurring);
 	};
 
-	$scope.saveAsDraft = function(){
+	var startCampaign = function(id){
+		var campaignStartSuccess = function(data){
+			$scope.$emit('hideLoader');
+		}
+		var data = {"id": id};
+		$scope.invokeApi(ADCampaignSrv.startCampaign, data, campaignStartSuccess);
+	}
+
+	$scope.saveAsDraft = function(action){
 		var saveSucess = function(data){
-	alert('saveSucess');
+			$scope.$emit('hideLoader');
+			if(action == "START_CAMPAIGN"){
+				startCampaign(data.id);
+				
+			}
 		}
 		var data = computeCampaignSaveData();
-		console.log(data);
 		$scope.invokeApi(ADCampaignSrv.saveCampaign, data, saveSucess);
 	};
 	$scope.onFromDateChanged = function(datePicked){
 		console.log(datePicked);
 	};
 
-	$scope.showCalendar = function(controller) {
-		alert("show date picker");
-		$scope.focusSearchField = false;
-		$scope.$emit("showSearchResultsArea", true);
-        $timeout(function() {
-            ngDialog.open({
-                template: '/assets/partials/search/rvDatePickerPopup.html',
-                controller: 'RVReservationSearchFromDatepickerCtrl',
-                className: '',
-                scope: $scope
-            });
-        }, 1000);
+	$scope.gobackToCampaignListing = function(){
+		$state.go('admin.campaigns');  
+
 	};
 
+	/*$scope.showCalendar = function() {
+		//alert("show date picker");
+		$scope.campaignData.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+        ngDialog.open({
+                template: '/assets/partials/campaigns/adCampaignDatepicker.html',
+                controller: 'ADcampaignDatepicker',
+                className: ' ',
+                scope: $scope,
+                closeByDocument: true
+            });
+
+
+	};*/
+
 	$scope.showDatePicker = function(){
-		alert("show showDatePicker");
+		console.log("show showDatePicker123213");
+		//$scope.campaignData.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+        ngDialog.open({
+                template: '/assets/partials/campaigns/adCampaignDatepicker.html',
+                controller: 'ADcampaignDatepicker',
+                className: 'ngdialog-theme-default single-calendar-modal',
+                scope: $scope,
+                closeByDocument: true
+            });
 	};
 
 	$scope.$watch(function(){

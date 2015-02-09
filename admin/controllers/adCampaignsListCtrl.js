@@ -20,7 +20,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
             $defer.resolve($scope.data);
 		};
 		$scope.invokeApi(ADCampaignSrv.fetchCampaigns, getParams, fetchSuccessOfItemList);
-	}
+	};
 
 
 	$scope.loadTable = function(){
@@ -36,7 +36,29 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 		        getData: $scope.fetchTableData
 		    }
 		);
-	}
+	};
+
+	$scope.editCampaign = function(id , index){
+
+	};
+
+	$scope.deleteCampaign = function(id, index){
+
+		var deleteSuccess = function(){
+			$scope.$emit('hideLoader');
+			
+			for(var i in $scope.data){
+				if($scope.data[i].id == id){
+					$scope.data.splice(i, 1);
+					break;
+				}
+			}
+
+			$scope.reloadTable();
+		}
+		var params = {"id" : id}
+		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
+	};
 
 	$scope.loadTable();
 

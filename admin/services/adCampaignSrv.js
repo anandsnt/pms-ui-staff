@@ -26,6 +26,32 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             return deferred.promise;
         };
 
+        this.startCampaign = function(){
+			var deferred = $q.defer();
+			var url = "/api/campaigns";
+			ADBaseWebSrvV2.postJSON(url, data).then(function (data) {
+			    deferred.resolve(data);
+			}, function (data) {
+			    deferred.reject(data);
+			});
+			return deferred.promise;
+
+        };
+
+        this.deleteCampaign = function(params){
+
+        	var deferred = $q.defer();
+        	var url = "/api/campaigns/"+ params.id;
+        	ADBaseWebSrvV2.deleteJSON(url).then(function (data) {
+        	    deferred.resolve(data);
+        	}, function (data) {
+        	    deferred.reject(data);
+        	});
+        	return deferred.promise;
+
+
+        };
+
        
     }
 ]);

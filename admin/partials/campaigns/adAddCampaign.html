@@ -1,7 +1,7 @@
 <section class="content current" ng-click='clearErrorMessage()'>
 	<header class="content-title">
 	    <h2>New Campaign</h2>
-	    <a href="{link}" class="action back">Back</a>
+	    <a class="action back" ng-click="gobackToCampaignListing();">Back</a>
 	</header>
 
 	<form method="post" action="" id="new-campaign" name="new-campaign" class="form campaign-details">
@@ -90,7 +90,7 @@
 	        <!-- Delivery -->
 	        <div class="form-title">
 	            <h3><span>Delivery</span> details</h3>
-	            <em class="status">Time Zone: <strong class="zone">{{campaignData.is_recurring}} ({{hotelTimeZoneAbbr}})</strong></em>
+	            <em class="status">Time Zone: <strong class="zone">{{hotel_time_zone_full}} ({{hotelTimeZoneAbbr}})</strong></em>
 	        </div>
 	        <div class="large-block">
 	            <label class="radio large">
@@ -256,9 +256,9 @@
 	    </fieldset>
 	    
 	    <div class="actions">
-	        <button type="button" class="button blank">Cancel</button>
+	        <button type="button" class="button blank" ng-click="gobackToCampaignListing();">Cancel</button>
 	        <button type="button" class="button blue" ng-click="saveAsDraft()">Save as Draft</button> 
-	        <button type="button" class="button green" ng-click="startCampaign()">Start Campaign</button>
+	        <button type="button" class="button green" ng-click="startCampaignPressed()">Start Campaign</button>
 	    </div>
 	</form>
 </section>

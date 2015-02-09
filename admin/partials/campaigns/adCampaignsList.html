@@ -7,41 +7,46 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/keyEncoders/adEncoderAdd.html'"></div>
+			<!-- <div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/keyEncoders/adEncoderAdd.html'"></div> -->
 
-			<div id="new-form-holder"></div>
+			<!-- <div id="new-form-holder"></div> -->
 
 			<!--ng-table component -->
-			<table class="grid datatable campaign-grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
+			<table class="grid datatable campaign-grid" ng-table="tableParams" template-pagination="custom/pager">
 				<tbody>
 					<tr ng-repeat="campaign in $data"> 
-						<td data-title="'ID'" header-class="id" ng-hide="currentClickedElement == $index">
+						<td data-title="'ID'"  header-class="width-10" >
 							<span> {{campaign.id}}</span>
 						</td>
-					
-						<td data-title="'Name'"  sortable="'based_on'" header-class="name width-25" ng-hide="currentClickedElement == $index">
-							<a class="edit-data" ng-click="editEncoder(campaign.id, $index)" >
+											
+						<td data-title="'Name'"  sortable="'based_on'" header-class="name width-20" >
+							<a class="edit-data" ng-click="editCampaign(campaign.id, $index)" >
 								<span>
 									{{campaign.name}}
 								</span>
 							</a>
 						</td>
-						<td data-title="'Audience'" sortable="'rate_type'" header-class="width-25" ng-hide="currentClickedElement == $index">
+						<td data-title="'Audience'" sortable="'rate_type'" header-class="width-25" >
 							<span>
 								{{campaign.audience}}
 							</span>
 						</td>
-						<td data-title="'Delivery'" sortable="'rate_type'" header-class="width-25" ng-hide="currentClickedElement == $index">
+						<td data-title="'Delivery'" sortable="'rate_type'" header-class="width-25" >
 							<span>
 								{{campaign.delivery}}
 							</span>
 						</td>
-						<td data-title="'Status'" sortable="'rate_type'" header-class="width-25" ng-hide="currentClickedElement == $index" class="status" ng-class="{'draft': campaign.status== 'DRAFT', 'active': campaign.status== 'ACTIVE', 'completed': campaign.status== 'COMPLETED'}">
+						<td data-title="'Status'" sortable="'rate_type'" header-class="width-20" class="status" ng-class="{'draft': campaign.status== 'DRAFT', 'active': campaign.status== 'ACTIVE', 'completed': campaign.status== 'COMPLETED'}">
 							{{campaign.status}}
 						</td>
 
-						
-						
+						<td data-title="'Last Update'" sortable="'rate_type'" header-class="width-25">
+							<em>{Last update DateTime}</em>
+						</td>
+
+						<td class="delete" data-title="'Delete'" header-class="delete width-15">
+			                <button type="button" class="icons icon-delete large-icon" ng-click="deleteCampaign(campaign.id);">Delete</button>
+			            </td>
 						<td colspan="5" header-class="width-0" ng-include="getTemplateUrl($index, campaign.id)" ></td>
 					</tr> 
 				</tbody>
