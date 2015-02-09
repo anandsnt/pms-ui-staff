@@ -4,87 +4,87 @@
 	    <a class="action back" ng-click="gobackToCampaignListing();">Back</a>
 	</header>
 
-	<form method="post" action="" id="new-campaign" name="new-campaign" class="form campaign-details">
-	    
-	    <fieldset class="holder left">
+	<section class="content-scroll">
+		<form method="post" action="" id="new-campaign" name="new-campaign" class="form campaign-details">
+		    
+		    <fieldset class="holder left">
 
-	        <!-- Campaign details -->
-	        <div class="form-title">
-	            <h3><span>Campaign</span> details</h3>
-	            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
-	        </div>
-	        <div class="entry short">
-	            <label for="campaign-id">ID</label>
-	            <input type="text" id="campaign-id" value="campaignData.id" ng-model="campaignData.id" readonly />
-	        </div>
-	        <div class="entry long">
-	            <label for="campaign-name">Campaign name <strong>*</strong></label>
-	            <input type="text" id="campaign-name" placeholder="Enter Campaign name" ng-model="campaignData.name" value="" required />
-	        </div>        
-	        <div class="entry full-width">
-	            <label for="campaign-audience">Audience <strong>*</strong></label>
-	            <div class="boxes">
-	                <label class="radio">
-	                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='DUE_IN_GUESTS'}"></span>
-	                    <input name="audience" id="audience-duein" value="DUE_IN_GUESTS" type="radio" ng-model="campaignData.audience_type"/>
-	                    Due In Guests
-	                </label>
-	                <label class="radio">
-	                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='IN_HOUSE_GUESTS'}"></span>
-	                    <input name="audience" id="audience-inhouse" value="IN_HOUSE_GUESTS" type="radio" ng-model="campaignData.audience_type"/>
-	                    In House Guests
-	                </label>
-	                <label class="radio">
-	                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='EVERYONE'}"></span>
-	                    <input name="audience" id="audience-everyone" value="EVERYONE" type="radio" ng-model="campaignData.audience_type"/>
-	                    Everyone
-	                </label>
-	                <label class="radio">
-	                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='SPECIFIC_USERS'}"></span>
-	                    <input name="audience" id="audience-users" type="radio" value="SPECIFIC_USERS" ng-model="campaignData.audience_type"/>
-	                    Specific User(s)
-	                </label>
-	                <input id="audience-specific-user" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.guest_name"/> <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
-	            </div>
-	        </div>
+		        <!-- Campaign details -->
+		        <div class="form-title">
+		            <h3><span>Campaign</span> details</h3>
+		            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+		        </div>
+		        <div class="entry short">
+		            <label for="campaign-id">ID</label>
+		            <input type="text" id="campaign-id" value="campaignData.id" ng-model="campaignData.id" readonly />
+		        </div>
+		        <div class="entry long">
+		            <label for="campaign-name">Campaign name <strong>*</strong></label>
+		            <input type="text" id="campaign-name" placeholder="Enter Campaign name" ng-model="campaignData.name" value="" required />
+		        </div>        
+		        <div class="entry full-width">
+		            <label for="campaign-audience">Audience <strong>*</strong></label>
+		            <div class="boxes">
+		                <label class="radio">
+		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='DUE_IN_GUESTS'}"></span>
+		                    <input name="audience" id="audience-duein" value="DUE_IN_GUESTS" type="radio" ng-model="campaignData.audience_type"/>
+		                    Due In Guests
+		                </label>
+		                <label class="radio">
+		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='IN_HOUSE_GUESTS'}"></span>
+		                    <input name="audience" id="audience-inhouse" value="IN_HOUSE_GUESTS" type="radio" ng-model="campaignData.audience_type"/>
+		                    In House Guests
+		                </label>
+		                <label class="radio">
+		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='EVERYONE'}"></span>
+		                    <input name="audience" id="audience-everyone" value="EVERYONE" type="radio" ng-model="campaignData.audience_type"/>
+		                    Everyone
+		                </label>
+		                <label class="radio">
+		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='SPECIFIC_USERS'}"></span>
+		                    <input name="audience" id="audience-users" type="radio" value="SPECIFIC_USERS" ng-model="campaignData.audience_type"/>
+		                    Specific User(s)
+		                </label>
+		                <input id="audience-specific-user" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.guest_name"/> <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
+		            </div>
+		        </div>
 
-	        <!-- Message -->
-	        <div class="form-title">
-	            <h3><span>Message</span> (in App)</h3>
-	            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
-	        </div>
-	        <div class="entry full-width">
-	            <label for="message-subject">Message Subject<strong>*</strong></label>
-	            <input type="text" id="message-subject" maxlength="{{campaignData.messageSubjectMaxLength}}" placeholder="Subject or Message" value="campaignData.subject" required ng-model="campaignData.subject" />
-	            <p class="counter"><span ng-class="{'done': campaignData.subject.length == campaignData.messageSubjectMaxLength}">{{campaignData.messageSubjectMaxLength - campaignData.subject.length}}</span> Characters Remaining</p>
-	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
-	        </div>
-	        
-	        <div class="entry full-width">
-	            <label for="message-header">Message Header Image <span>(JPEG or PNG, {XxY}px in size)</span></label>
-	            <div class="file-upload with-preview">
-	            	<span class="input">{{campaignData.header_file}}</span>
-	                <input type="file" id="message-header" ng-model="campaignData.header_image" accept="image/*" app-filereader />
-	                <button type="button" class="button brand-colors">Add image</button>
-	            </div>
-	            <span class="file-preview"><img ng-src="{{campaignData.header_image}}" alt="" height="112" width="auto"> <em>Preview not available</em></span>
-	        </div>   
-	        <div class="entry full-width">
-	            <label for="message-body">Message body<strong>*</strong></label>
-	            <textarea id="message-body" rows="4" maxlength="{{campaignData.messageBodyMaxLength}}" placeholder="Text" ng-model="campaignData.body"></textarea>
-	            <p class="counter" ng-class = "{'done': campaignData.messageBodyMaxLength == campaignData.body.length}"><span>{{campaignData.messageBodyMaxLength - campaignData.body.length}}</span> Characters Remaining</p>
-	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
-	        </div>
-	        <div class="entry">
-	            <label for="call-label">Call To Action Label</label>
-	            <input type="text" id="call-label" placeholder="Text displayed on button" ng-model="campaignData.call_to_action_label" value="campaignData.call_to_action_label" />
-	        </div>
-	        <div class="entry full-width">
-	            <label for="call-target">Call To Action Target</label>
-	            <input type="text" id="call-target" placeholder="Button link" ng-model="campaignData.call_to_action_target" value="campaignData.call_to_action_target"/>
-	        </div>
-	    </fieldset>
-
+		        <!-- Message -->
+		        <div class="form-title">
+		            <h3><span>Message</span> (in App)</h3>
+		            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+		        </div>
+		        <div class="entry full-width">
+		            <label for="message-subject">Message Subject<strong>*</strong></label>
+		            <input type="text" id="message-subject" maxlength="{{campaignData.messageSubjectMaxLength}}" placeholder="Subject or Message" value="campaignData.subject" required ng-model="campaignData.subject" />
+		            <p class="counter"><span ng-class="{'done': campaignData.subject.length == campaignData.messageSubjectMaxLength}">{{campaignData.messageSubjectMaxLength - campaignData.subject.length}}</span> Characters Remaining</p>
+		            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
+		        </div>
+		        
+		        <div class="entry full-width">
+		            <label for="message-header">Message Header Image <span>(JPEG or PNG, {XxY}px in size)</span></label>
+		            <div class="file-upload with-preview">
+		            	<span class="input">{{campaignData.header_file}}</span>
+		                <input type="file" id="message-header" ng-model="campaignData.header_image" accept="image/*" app-filereader />
+		                <button type="button" class="button brand-colors">Add image</button>
+		            </div>
+		            <span class="file-preview"><img ng-src="{{campaignData.header_image}}" alt="" height="112" width="auto"> <em>Preview not available</em></span>
+		        </div>   
+		        <div class="entry full-width">
+		            <label for="message-body">Message body<strong>*</strong></label>
+		            <textarea id="message-body" rows="4" maxlength="{{campaignData.messageBodyMaxLength}}" placeholder="Text" ng-model="campaignData.body"></textarea>
+		            <p class="counter" ng-class = "{'done': campaignData.messageBodyMaxLength == campaignData.body.length}"><span>{{campaignData.messageBodyMaxLength - campaignData.body.length}}</span> Characters Remaining</p>
+		            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
+		        </div>
+		        <div class="entry">
+		            <label for="call-label">Call To Action Label</label>
+		            <input type="text" id="call-label" placeholder="Text displayed on button" ng-model="campaignData.call_to_action_label" value="campaignData.call_to_action_label" />
+		        </div>
+		        <div class="entry full-width">
+		            <label for="call-target">Call To Action Target</label>
+		            <input type="text" id="call-target" placeholder="Button link" ng-model="campaignData.call_to_action_target" value="campaignData.call_to_action_target"/>
+		        </div>
+		    </fieldset>
 	    <fieldset class="holder right">
 	        
 	        <!-- Delivery -->
@@ -261,4 +261,5 @@
 	        <button type="button" class="button green" ng-click="startCampaignPressed()">Start Campaign</button>
 	    </div>
 	</form>
+
 </section>
