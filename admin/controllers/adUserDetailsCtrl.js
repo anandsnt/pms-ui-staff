@@ -244,11 +244,14 @@ admin.controller('ADUserDetailsCtrl',
 	};
 
 	$scope.isInUnlockingMode = function (){
-		return $stateParams.isUnlocking;
+		return ($stateParams.isUnlocking === "true");
 	};
 
 	$scope.disableReInviteButton = function (data) {
-		return (data.is_activated == 'true' && (!$scope.isInUnlockingMode()));
+		if (!$scope.isInUnlockingMode())
+			return (data.is_activated == 'true');
+		else
+			return false;
 	};
 
 	/**
