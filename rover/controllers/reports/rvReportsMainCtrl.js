@@ -168,7 +168,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenShowGuests',
 			'chosenIncludeRoverUsers',
 			'chosenIncludeZestUsers',
-			'chosenIncludeZestWebUsers'
+			'chosenIncludeZestWebUsers',
+			'chosenVariance',
+			'chosenLastYear'
 		];
 
 		var hasList = [
