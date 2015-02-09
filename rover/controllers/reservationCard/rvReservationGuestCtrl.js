@@ -57,37 +57,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		}
 
 		function saveChanges(override) {
+
 			$scope.$emit('showLoader');
-			/*var successCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = '';
-				$scope.$emit("GETVARYINGOCCUPANCY");
-
-			};
-
-			var errorCallback = function(errorMessage) {
-				$scope.$emit('hideLoader');
-				$scope.$emit("OPENGUESTTAB");
-				$scope.errorMessage = errorMessage;
-			};
-
-			var dataToSend = dclone(data, ["primary_guest_details", "accompanying_guests_details"]);
-			dataToSend.accompanying_guests_details = [];
-			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-
-			angular.forEach(data.accompanying_guests_details, function(item, index) {
-				delete item.image;
-				if ((item.first_name == "" || item.first_name == null) && (item.last_name == "" || item.last_name == null)) {
-					// do nothing
-				} else {
-					// Only valid data is going to send.
-					dataToSend.accompanying_guests_details.push(item);
-				}
-			});
-
-			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);*/
-
-
 			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
 				// Note: when editing number of guests for an INHOUSE reservation, the new number of guests should only apply from this day onwards, any previous days need to retain the previous guest count.	
 				if (new tzIndependentDate(item.date) >= new tzIndependentDate($rootScope.businessDate)) {
@@ -124,11 +95,37 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 
 
-			$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
-				"id": $scope.reservationData.reservation_card.reservation_id,
-				"confirmationId": $scope.reservationData.reservation_card.confirmation_num,
-				"isrefresh": true
+
+			var successCallback = function(data) {
+				$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
+					"id": $scope.reservationData.reservation_card.reservation_id,
+					"confirmationId": $scope.reservationData.reservation_card.confirmation_num,
+					"isrefresh": true
+				});
+				$scope.errorMessage = '';
+			};
+
+			var errorCallback = function(errorMessage) {
+				$scope.$emit('hideLoader');
+				$scope.$emit("OPENGUESTTAB");
+				$scope.errorMessage = errorMessage;
+			};
+
+			var dataToSend = dclone($scope.guestData, ["primary_guest_details", "accompanying_guests_details"]);
+			dataToSend.accompanying_guests_details = [];
+			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+
+			angular.forEach($scope.guestData.accompanying_guests_details, function(item, index) {
+				delete item.image;
+				if ((item.first_name == "" || item.first_name == null) && (item.last_name == "" || item.last_name == null)) {
+					// do nothing
+				} else {
+					// Only valid data is going to send.
+					dataToSend.accompanying_guests_details.push(item);
+				}
 			});
+
+			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);
 
 
 
@@ -163,8 +160,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				} else {
 					$scope.$emit('hideLoader');
 					ngDialog.open({
-						template: '/assets/partials/reservation/alerts/notConfiguredOccupancyInStayCard.html',
-						className: 'ngdialog-theme-default',
+						template: '/assets/partials/reservation/alerts/notConfiguredOccupancyInStayCard.html',						
 						scope: $scope,
 						closeByDocument: false,
 						closeByEscape: false
@@ -190,8 +186,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				// Step 1 : Check against max occupancy and let know the user if the occupancy is not allowed
 				////////
 				ngDialog.open({
-					template: '/assets/partials/reservation/alerts/occupancy.html',
-					className: 'ngdialog-theme-default',
+					template: '/assets/partials/reservation/alerts/occupancy.html',					
 					scope: $scope,
 					closeByDocument: false,
 					closeByEscape: false,
