@@ -93,8 +93,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 
-
-
 			var successCallback = function(data) {
 				$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": $scope.reservationData.reservation_card.reservation_id,
@@ -126,8 +124,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);
 
-
-
 		}
 
 		function closeDialog() {
@@ -143,10 +139,9 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.cancelOccupancyChange = function() {
 			// RESET
 			$scope.guestData = JSON.parse(JSON.stringify(initialGuestInfo));
-			$scope.presentGuestInfo = JSON.parse(JSON.stringify(initialGuestInfo));
+			presentGuestInfo = JSON.parse(JSON.stringify(initialGuestInfo));
 			closeDialog();
 		}
-
 
 		/* To save guest details */
 		$scope.saveGuestDetails = function() {
@@ -167,7 +162,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					});
 				}
 			}
-
 		};
 
 
@@ -199,7 +193,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				presentGuestInfo.children_count = $scope.guestData.children_count;
 				presentGuestInfo.infants_count = $scope.guestData.infants_count;
 			}
-
 		}
 
 		$scope.init = function() {
