@@ -207,7 +207,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			var successCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.guestData = data;				
+				$scope.guestData = data;
 				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to revert in case of exceeding occupancy
 				initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to make API call to update if some change has been made
 				$scope.errorMessage = '';
@@ -230,6 +230,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		$scope.$on("UPDATEGUESTDEATAILS", function(e) {
 			$scope.saveGuestDetails();
+		});
+
+		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {
+			$scope.$emit("OPENGUESTTAB");
+			$scope.errorMessage = data;
 		});
 
 	}
