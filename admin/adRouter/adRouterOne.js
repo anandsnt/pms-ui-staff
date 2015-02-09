@@ -84,6 +84,4 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADTemplateConfigurationCtrl',
 			url : '/templateconfiguration'
 		});
-		
-        
 });

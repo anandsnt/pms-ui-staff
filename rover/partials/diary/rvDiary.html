@@ -22,7 +22,9 @@
         <div class="entry date">
             <label for="arrival-date">Date</label>
             <div class="entry-data">
-                <input name="arrival-date" ui-date="dateOptions" id="arrival-date" type="text" class="datepicker" ng-model="gridProps.filter.arrival_date" readonly />
+                <!-- we are using calendar's model as duplicate_arrival_date,
+                actual data model is gridProps.filter.arrival_date -->
+                <input name="arrival-date" ui-date="dateOptions" ng-model="duplicte_arrival_date" id="arrival-date" type="text" class="datepicker"  readonly /> <!--ng-model="gridProps.filter.arrival_date" -->
                 <strong id="arrival-date-day" class="day">{{gridProps.filter.arrival_date.getDate()}}</strong>
                 <span id="arrival-date-month" class="month">{{gridProps.filter.arrival_date.toComponents().date.monthName}}</span>
                 <span id="arrival-date-year" class="year">{{gridProps.filter.arrival_date.getFullYear()}}</span>

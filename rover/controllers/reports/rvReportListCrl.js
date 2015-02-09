@@ -18,7 +18,7 @@ sntRover.controller('RVReportListCrl', [
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
             hasFauxSelect = false,
             hasDisplaySelect = false;
-        hasMarketSelect = false;
+            hasMarketSelect = false;
 
         /**
          * inorder to refresh after list rendering
@@ -106,6 +106,9 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['canRemoveDate'] = true;
                         reportList[i]['showRemove'] = true;
                         reportList[i]['hasSourceMarketFilter'] = true;
+
+                        reportList[i]['canRemoveArrivalDate'] = true;
+                        reportList[i]['showRemoveArrivalDate'] = true;
                         break;
 
                     case 'Login and out Activity':

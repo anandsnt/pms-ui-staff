@@ -892,7 +892,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				'userId': "",
 				'avatar': "",
 				'guestId': "",
-				'vip': "" //TODO: check with API or the product team
+				'vip': false
 			};
 			// // $scope.$emit('guestCardUpdateData', contactInfoData);
 			$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
@@ -975,6 +975,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.init();
+
+		// CICO-6049 Toggle VIP button
+		$scope.vipToggleClicked = function(){
+			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
+			$scope.updateContactInfo();
+		};
 
 	}
 ]);

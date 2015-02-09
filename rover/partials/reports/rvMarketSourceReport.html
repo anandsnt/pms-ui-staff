@@ -1,178 +1,184 @@
 <!-- Report content -->
-<div ng-show="!sources.length && !markets.length" class="report-content no-content"> 
-	<div class="info">
-		<span class="icon-no-content icon-reports"></span>
-		<strong class="h1">No reports found</strong>
-		<span class="h2">Try changing search criteria or modify dates</span>
-	</div>
+<div ng-show="!sources.length && !markets.length" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
 </div>
-<div ng-show="sources.length || markets.length" id="report-content" class="report-content with-graphs scrollable" ng-iscroll="report-details-scroll" > 
-	<div class="wrapper">
-		<!-- Sources -->
-		<div class="report-block" ng-show="chosenReport.showSource && sources.length > 0">
-			<ul class="graph-summary">
-				<li class="header">
-					<span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort()">Source</span> <!-- Add class 'sorting-asc' for ASC sort, and 'sorting-desc' for DESC sort -->
-					<span class="sort count" ng-class="{'sorting-asc': !reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': !reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort(false,true)">#</span>
-				</li>
-				
-				<!-- Repeat this <li> for all sources -->
-				<li ng-repeat="sourceName in sources" ng-class="{'undefined' : sourceName == 'Not Defined'}"> <!-- Add class "undefined" for Not Defined display -->
-					<span class="title">{{sourceName}}</span>
-					<span class="count">{{results.source[sourceName]}}</span>
-				</li>
-				<li class="footer">
-					<span class="title">Total</span>
-					<span class="count">{{sourcesValuesTotal}}</span>
-				</li>
-			</ul>
-			<div class="graph-chart">
-				<div class="chart">
-					<h2>Number of Bookings by Source</h2>
-					<ul>
-						<li ng-repeat="sourceName in sources">
-							<span class="label" ng-class="{'undefined' : sourceName == 'Not Defined'}">{{sourceName}}</span><!-- Add class "undefined" for Not Defined display -->
-							<div class="fill-container">
-								<div class="fill blue" style="width:{{results.source[sourceName]/reportStatus.graph.sourceNumber.upperLimit * 100}}%;"></div>
-								<span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.sourceNumber.ticks}}%;" ></span>
-								<!-- ... repeat this span.mark as needed, see comment on the bottom of the file. -->
-							</div>
-						</li>
-						<!-- ... repeat for all sources -->
-						<li class="legend">
-							<span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.sourceNumber.ticks}}%;" 
-							ng-hide="$last">
-							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span> 
-							<!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
-							<span class="mark last" style="width:{{100/ reportStatus.graph.sourceNumber.ticks}}%;">
-								<span class="left-num">{{(reportStatus.graph.sourceNumber.ticks-1) * reportStatus.graph.sourceNumber.breakingPoint}}</span>
-								<span class="right-num">{{(reportStatus.graph.sourceNumber.ticks) * reportStatus.graph.sourceNumber.breakingPoint}}</span>
-							</span>
-						</li>
-					</ul>
-				</div>
-				<div class="chart">
-					<h2>Percentage of Bookings by Source</h2>
-					<ul>
-						<li ng-repeat="sourceName in sources">
-							<span class="label" ng-class="{'undefined' : sourceName == 'Not Defined'}">{{sourceName}}</span><!-- Add class "undefined" for Not Defined display -->
-							<div class="fill-container">
-								<div class="fill purple" style="width:{{results.source[sourceName]/sourcesValuesTotal*100}}%;"></div>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-							</div>
-						</li>
-						<!-- ... repeat for all sources -->
-						<li class="legend">
-							<span class="mark percentage">0</span>
-							<span class="mark percentage">10</span>
-							<span class="mark percentage">20</span>
-							<span class="mark percentage">30</span>
-							<span class="mark percentage">40</span>
-							<span class="mark percentage">50</span>
-							<span class="mark percentage">60</span>
-							<span class="mark percentage">70</span>
-							<span class="mark percentage">80</span>
-							<span class="mark percentage last">
-								<span class="left-num">90</span>
-								<span class="right-num">100</span>
-							</span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>  
+<div ng-show="sources.length || markets.length" id="report-content" class="report-content with-graphs scrollable" ng-iscroll="report-details-scroll">
+    <div class="wrapper">
+        <!-- Sources -->
+        <div class="report-block" ng-if="chosenReport.showSource && sources.length > 0">
+            <ul class="graph-summary">
+                <li class="header">
+                    <span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort()">Source</span>
+                    <!-- Add class 'sorting-asc' for ASC sort, and 'sorting-desc' for DESC sort -->
+                    <span class="sort count" ng-class="{'sorting-asc': !reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': !reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort(false,true)">#</span>
+                </li>
 
-		<!-- Markets: Identical Markup as for Sources, except titles -->
-		<div class="report-block" ng-show="chosenReport.showMarket && markets.length > 0">
-			<ul class="graph-summary">
-				<li class="header">
-					<span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true)">Market</span> <!-- Add class 'sorting-asc' for ASC sort, and 'sorting-desc' for DESC sort -->
-					<span class="sort count" ng-class="{'sorting-asc': !reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': !reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true,true)">#</span>
-				</li>
-				<!-- Repeat this <li> for all markets -->
-				<li ng-repeat="marketName in markets" ng-class="{'undefined' : marketName == 'Not Defined'}"> <!-- Add class "undefined" for Not Defined display -->
-					<span class="title">{{marketName}}</span>
-					<span class="count">{{results.market[marketName]}}</span>
-				</li>
-				<li class="footer">
-					<span class="title">Total</span>
-					<span class="count">{{marketsValuesTotal}}</span>
-				</li>
-			</ul>
-			<div class="graph-chart">
-				<div class="chart">
-					<h2>Number of Bookings by Market</h2>
-					<ul>
-						<li ng-repeat="marketName in markets">
-							<span class="label" ng-class="{'undefined' : marketName == 'Not Defined'}">{{marketName}}</span><!-- Add class "undefined" for Not Defined display -->
-							<div class="fill-container">
-								<div class="fill blue" style="width:{{results.market[marketName]/reportStatus.graph.marketNumber.upperLimit * 100}}%;"></div>
-								<span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.marketNumber.ticks}}%;" ></span>
-								<!-- ... repeat this span.mark as needed, see comment on the bottom of the file. -->
-							</div>
-						</li>
-						<!-- ... repeat for all sources -->
-						<li class="legend">
-							<span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.marketNumber.ticks}}%;" 
-							ng-hide="$last">
-							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span> 
-							<!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
-							<span class="mark last" style="width:{{100/ reportStatus.graph.marketNumber.ticks}}%;">
-								<span class="left-num">{{(reportStatus.graph.marketNumber.ticks-1) * reportStatus.graph.marketNumber.breakingPoint}}</span>
-								<span class="right-num">{{(reportStatus.graph.marketNumber.ticks) * reportStatus.graph.marketNumber.breakingPoint}}</span>
-							</span>
-						</li>						
-					</ul>
-				</div>
-				<div class="chart">
-					<h2>Percentage of Bookings by Market</h2>
-					<ul>
-						<li ng-repeat="marketName in markets">
-							<span class="label" ng-class="{'undefined' : marketName == 'Not Defined'}">{{marketName}}</span><!-- Add class "undefined" for Not Defined display -->
-							<div class="fill-container">								
-								<div class="fill purple" style="width:{{results.market[marketName]/marketsValuesTotal*100}}%;"></div>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-								<span class="mark percentage"></span>
-							</div>
-						</li>
-						<!-- ... repeat for all sources -->
-						<li class="legend">
-							<span class="mark percentage">0</span>
-							<span class="mark percentage">10</span>
-							<span class="mark percentage">20</span>
-							<span class="mark percentage">30</span>
-							<span class="mark percentage">40</span>
-							<span class="mark percentage">50</span>
-							<span class="mark percentage">60</span>
-							<span class="mark percentage">70</span>
-							<span class="mark percentage">80</span>
-							<span class="mark percentage last">
+                <!-- Repeat this <li> for all sources -->
+                <li ng-repeat="sourceName in sources" ng-class="{'undefined' : sourceName == 'Not Defined'}">
+                    <!-- Add class "undefined" for Not Defined display -->
+                    <span class="title">{{sourceName}}</span>
+                    <span class="count">{{results.source[sourceName]}}</span>
+                </li>
+                <li class="footer">
+                    <span class="title">Total</span>
+                    <span class="count">{{sourcesValuesTotal}}</span>
+                </li>
+            </ul>
+            <div class="graph-chart">
+                <div class="chart">
+                    <h2>Number of Bookings by Source</h2>
+                    <ul>
+                        <li ng-repeat="sourceName in sources">
+                            <span class="label" ng-class="{'undefined' : sourceName == 'Not Defined'}">{{sourceName}}</span>
+                            <!-- Add class "undefined" for Not Defined display -->
+                            <div class="fill-container">
+                                <div class="fill blue" style="width:{{results.source[sourceName]/reportStatus.graph.sourceNumber.upperLimit * 100}}%;"></div>
+                                <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.sourceNumber.ticks}}%;"></span>
+                                <!-- ... repeat this span.mark as needed, see comment on the bottom of the file. -->
+                            </div>
+                        </li>
+                        <!-- ... repeat for all sources -->
+                        <li class="legend">
+                            <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.sourceNumber.ticks}}%;" ng-hide="$last">
+							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span>
+                            <!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
+                            <span class="mark last" style="width:{{100/ reportStatus.graph.sourceNumber.ticks}}%;">
+								<span class="left-num" ng-if="reportStatus.graph.sourceNumber.ticks > 0">{{(reportStatus.graph.sourceNumber.ticks-1) * reportStatus.graph.sourceNumber.breakingPoint}}</span>
+                            <span class="right-num">{{(reportStatus.graph.sourceNumber.ticks) * reportStatus.graph.sourceNumber.breakingPoint}}</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart">
+                    <h2>Percentage of Bookings by Source</h2>
+                    <ul>
+                        <li ng-repeat="sourceName in sources">
+                            <span class="label" ng-class="{'undefined' : sourceName == 'Not Defined'}">{{sourceName}}</span>
+                            <!-- Add class "undefined" for Not Defined display -->
+                            <div class="fill-container">
+                                <div class="fill purple" style="width:{{results.source[sourceName]/sourcesValuesTotal*100}}%;"></div>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                            </div>
+                        </li>
+                        <!-- ... repeat for all sources -->
+                        <li class="legend">
+                            <span class="mark percentage">0</span>
+                            <span class="mark percentage">10</span>
+                            <span class="mark percentage">20</span>
+                            <span class="mark percentage">30</span>
+                            <span class="mark percentage">40</span>
+                            <span class="mark percentage">50</span>
+                            <span class="mark percentage">60</span>
+                            <span class="mark percentage">70</span>
+                            <span class="mark percentage">80</span>
+                            <span class="mark percentage last">
 								<span class="left-num">90</span>
-								<span class="right-num">100</span>
-							</span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+                            <span class="right-num">100</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Markets: Identical Markup as for Sources, except titles -->
+        <div class="report-block" ng-if="chosenReport.showMarket && markets.length > 0">
+            <ul class="graph-summary">
+                <li class="header">
+                    <span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true)">Market</span>
+                    <!-- Add class 'sorting-asc' for ASC sort, and 'sorting-desc' for DESC sort -->
+                    <span class="sort count" ng-class="{'sorting-asc': !reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': !reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true,true)">#</span>
+                </li>
+                <!-- Repeat this <li> for all markets -->
+                <li ng-repeat="marketName in markets" ng-class="{'undefined' : marketName == 'Not Defined'}">
+                    <!-- Add class "undefined" for Not Defined display -->
+                    <span class="title">{{marketName}}</span>
+                    <span class="count">{{results.market[marketName]}}</span>
+                </li>
+                <li class="footer">
+                    <span class="title">Total</span>
+                    <span class="count">{{marketsValuesTotal}}</span>
+                </li>
+            </ul>
+            <div class="graph-chart">
+                <div class="chart">
+                    <h2>Number of Bookings by Market</h2>
+                    <ul>
+                        <li ng-repeat="marketName in markets">
+                            <span class="label" ng-class="{'undefined' : marketName == 'Not Defined'}">{{marketName}}</span>
+                            <!-- Add class "undefined" for Not Defined display -->
+                            <div class="fill-container">
+                                <div class="fill blue" style="width:{{results.market[marketName]/reportStatus.graph.marketNumber.upperLimit * 100}}%;"></div>
+                                <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.marketNumber.ticks}}%;"></span>
+                                <!-- ... repeat this span.mark as needed, see comment on the bottom of the file. -->
+                            </div>
+                        </li>
+                        <!-- ... repeat for all sources -->
+                        <li class="legend">
+                            <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.marketNumber.ticks}}%;" ng-hide="$last">
+							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span>
+                            <!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
+                            <span class="mark last" style="width:{{100/ reportStatus.graph.marketNumber.ticks}}%;">
+								<span class="left-num" ng-if="reportStatus.graph.marketNumber.ticks > 0">{{(reportStatus.graph.marketNumber.ticks-1) * reportStatus.graph.marketNumber.breakingPoint}}</span>
+                            <span class="right-num">{{(reportStatus.graph.marketNumber.ticks) * reportStatus.graph.marketNumber.breakingPoint}}</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart">
+                    <h2>Percentage of Bookings by Market</h2>
+                    <ul>
+                        <li ng-repeat="marketName in markets">
+                            <span class="label" ng-class="{'undefined' : marketName == 'Not Defined'}">{{marketName}}</span>
+                            <!-- Add class "undefined" for Not Defined display -->
+                            <div class="fill-container">
+                                <div class="fill purple" style="width:{{results.market[marketName]/marketsValuesTotal*100}}%;"></div>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                                <span class="mark percentage"></span>
+                            </div>
+                        </li>
+                        <!-- ... repeat for all sources -->
+                        <li class="legend">
+                            <span class="mark percentage">0</span>
+                            <span class="mark percentage">10</span>
+                            <span class="mark percentage">20</span>
+                            <span class="mark percentage">30</span>
+                            <span class="mark percentage">40</span>
+                            <span class="mark percentage">50</span>
+                            <span class="mark percentage">60</span>
+                            <span class="mark percentage">70</span>
+                            <span class="mark percentage">80</span>
+                            <span class="mark percentage last">
+								<span class="left-num">90</span>
+                            <span class="right-num">100</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- HOW TO SET UP NUMBER OF BOOKINGS CHART

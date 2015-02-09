@@ -400,7 +400,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include cancelled
 			if (chosenReport.hasOwnProperty('hasIncludeCancelled')) {
-
 				key = chosenReport.hasIncludeCancelled.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeCancelled ? true : false;
 			};
@@ -425,7 +424,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include zest web users
 			if (chosenReport.hasOwnProperty('hasIncludeZestWebUsers')) {
-
 				key = chosenReport.hasIncludeZestWebUsers.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeZestWebUsers ? true : false;
 			};
