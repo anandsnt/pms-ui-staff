@@ -15,6 +15,18 @@ angular.module('reportsModule', [])
             },
             activeUserList: function(RVreportsSrv) {
                 return RVreportsSrv.fetchActiveUsers();
+            },
+            companyList: function(RVreportsSrv) {
+                return RVreportsSrv.fetchCompanies();
+            },
+            travelAgentList: function(RVreportsSrv) {
+                return RVreportsSrv.fetchTravelAgents();
+            },
+            groupList: function(RVreportsSrv) {
+                return RVreportsSrv.fetchGroups();
+            },
+            guaranteeTypes: function(RVreportsSrv) {
+                return RVreportsSrv.fetchGuaranteeTypes();
             }
         }
     });

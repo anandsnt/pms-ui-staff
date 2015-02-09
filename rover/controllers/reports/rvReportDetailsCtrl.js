@@ -82,6 +82,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case 'Login and out Activity':
+				case 'Arrival':
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
 					break;

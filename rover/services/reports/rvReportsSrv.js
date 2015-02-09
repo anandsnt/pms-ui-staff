@@ -61,5 +61,69 @@ sntRover.service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
+
+		this.fetchCompanies = function() {
+			var deferred = $q.defer(),
+				url = '/api/';
+
+			deferred.resolve([]);
+
+			// rvBaseWebSrvV2.getJSON(url)
+			// 	.then(function(data) {
+			// 		deferred.resolve(data);
+			// 	}.bind(this), function(data){
+			// 		deferred.reject(data);
+			// 	});
+
+			return deferred.promise;
+		};
+
+		this.fetchTravelAgents = function() {
+			var deferred = $q.defer(),
+				url = '/api/';
+
+			deferred.resolve([]);
+
+			// rvBaseWebSrvV2.getJSON(url)
+			// 	.then(function(data) {
+			// 		deferred.resolve(data);
+			// 	}.bind(this), function(data){
+			// 		deferred.reject(data);
+			// 	});
+
+			return deferred.promise;
+		};
+
+		this.fetchGroups = function() {
+			var deferred = $q.defer(),
+				url = '/api/';
+
+			deferred.resolve([]);
+
+			// rvBaseWebSrvV2.getJSON(url)
+			// 	.then(function(data) {
+			// 		deferred.resolve(data);
+			// 	}.bind(this), function(data){
+			// 		deferred.reject(data);
+			// 	});
+
+			return deferred.promise;
+		};
+
+		this.fetchGuaranteeTypes = function() {
+			var deferred = $q.defer(),
+				url = '/api/';
+
+			deferred.resolve([]);
+
+			// rvBaseWebSrvV2.getJSON(url)
+			// 	.then(function(data) {
+			// 		deferred.resolve(data);
+			// 	}.bind(this), function(data){
+			// 		deferred.reject(data);
+			// 	});
+
+			return deferred.promise;
+		};
 	}
 ]);
