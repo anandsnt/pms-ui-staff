@@ -26,13 +26,9 @@
 								<span class="switch-icon"></span>
 							</div>
 						</div>
-
-
-					</td>					
-					<td data-title="'Locked'" class="delete" >
-						<a ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: true})" class="button green" ng-if="user.is_locked">
-								Unlock
-						</a>						
+					</td>
+					<td data-title="'Locked'" class="delete">
+						<a type="button" ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: true})" class="icons icon-lock" ng-if="user.is_locked">Locked</a>
 					</td>
 					<td data-title="'Delete'" class="delete" >
 						<a id="165" ng-show="user.can_delete" class="icons icon-delete large-icon" ng-click="deleteUser($index, user.id)">Delete this user</a>							
