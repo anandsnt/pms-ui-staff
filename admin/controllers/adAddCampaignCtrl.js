@@ -14,6 +14,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		var campaign = {};
 		campaign.name = $scope.campaignData.name;
 		campaign.audience_type = $scope.campaignData.audience_type;
+		campaign.specific_users = $scope.campaignData.specific_users;
 		campaign.subject = $scope.campaignData.subject;
 		//TODO: Header image
 		campaign.header_image = $scope.campaignData.header_image;

@@ -45,7 +45,7 @@
 		                    <input name="audience" id="audience-users" type="radio" value="SPECIFIC_USERS" ng-model="campaignData.audience_type"/>
 		                    Specific User(s)
 		                </label>
-		                <input id="audience-specific-user" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.guest_name"/> <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
+		                <input id="audience-specific-user" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.specific_users"/> <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
 		            </div>
 		        </div>
 
