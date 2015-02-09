@@ -37,7 +37,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.call_to_action_target = data.call_to_action_target;  
 
 		$scope.campaignData.is_recurring = data.is_recurring? 'true': 'false';
-		$scope.campaignData.day_of_Week = data.day_of_Week;
+		$scope.campaignData.day_of_week = data.day_of_week;
 
 		var deliveryTime = tConvert(data.time_to_send);
 		if(!isEmptyObject(deliveryTime)){
@@ -77,7 +77,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		campaign.call_to_action_label = $scope.campaignData.call_to_action_label;
 		campaign.call_to_action_target = $scope.campaignData.call_to_action_target;
 		campaign.is_recurring = $scope.campaignData.is_recurring == "true"? true : false;
-		campaign.day_of_week = $scope.campaignData.day_of_week;
+		campaign.day_of_week = $scope.campaignData.day_of_week; 
 		//TODO: time_to_send
 		campaign.time_to_send = tConvertToAPIFormat($scope.campaignData.delivery_hour, $scope.campaignData.delivery_min, $scope.campaignData.delivery_primetime);
 		//TODO: recurrence_end_date
@@ -107,6 +107,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 	$scope.saveAsDraft = function(action){
 		var saveSucess = function(data){
+			$scope.campaignData.id = data.id;
 			$scope.$emit('hideLoader');
 			if(action == "START_CAMPAIGN"){
 				startCampaign(data.id);
@@ -115,11 +116,13 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		}
 		var data = computeCampaignSaveData();
 			
-		if($scope.mode = 'EDIT'){
+		if($scope.mode == 'EDIT'){
+			console.log('mode edit');
 			data.id = $scope.campaignData.id;
 			$scope.invokeApi(ADCampaignSrv.updateCampaign, data, saveSucess);
 
 		} else {
+			console.log("mode no edit");
 			$scope.invokeApi(ADCampaignSrv.saveCampaign, data, saveSucess);
 		}
 	};

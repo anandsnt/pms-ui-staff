@@ -53,9 +53,9 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             return deferred.promise;
         }; 
 
-        this.startCampaign = function(){
+        this.startCampaign = function(data){
 			var deferred = $q.defer();
-			var url = "/api/campaigns";
+			var url = "api/campaigns/start_campaign/";
 			ADBaseWebSrvV2.postJSON(url, data).then(function (data) {
 			    deferred.resolve(data);
 			}, function (data) {

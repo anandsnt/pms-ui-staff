@@ -152,7 +152,7 @@
 	                </div>
 	            </div> -->
 	        </div>
-	        <div class="large-block">
+	        <div class="large-block" ng-class = "{'open': campaignData.is_recurring}">
 	            <label class="radio large">
 	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.is_recurring == 'true'}"></span>
 	                <input name="delivery" id="delivery-recurring" value="true" type="radio" ng-model="campaignData.is_recurring"/>
@@ -163,15 +163,15 @@
 	                    <label class="label" for="recurring-dayofweek">Send</label>
 	                    <span class="delimiter">Every</span>
 	                    <div class="select day">
-	                        <select id="recurring-dayofweek" class="placeholder" ng-model="campaignData.day_of_Week">
+	                        <select id="recurring-dayofweek" class="placeholder" ng-model="campaignData.day_of_week">
 	                            <option value="">Day of Week</option>
-	                            <option value="MONDAY" ng-selected="campaignData.day_of_Week == 'MONDAY'">Monday</option>
-	                            <option value="TUESDAY" ng-selected="campaignData.day_of_Week == 'TUESDAY'">Tuesday</option>
-	                            <option value="WEDNESDAY" ng-selected="campaignData.day_of_Week == 'WEDNESDAY'">Wednesday</option>
-	                            <option value="THURSDAY" ng-selected="campaignData.day_of_Week == 'THURSDAY'">Thursday</option>
-	                            <option value="FRIDAY" ng-selected="campaignData.day_of_Week == 'FRIDAY'">Friday</option>
-	                            <option value="SATURDAY" ng-selected="campaignData.day_of_Week == 'SATURDAY'">Saturday</option>
-	                            <option value="SUNDAY" ng-selected="campaignData.day_of_Week == 'SUNDAY'">Sunday</option>
+	                            <option value="MONDAY" ng-selected="campaignData.day_of_week == 'MONDAY'">Monday</option>
+	                            <option value="TUESDAY" ng-selected="campaignData.day_of_week == 'TUESDAY'">Tuesday</option>
+	                            <option value="WEDNESDAY" ng-selected="campaignData.day_of_week == 'WEDNESDAY'">Wednesday</option>
+	                            <option value="THURSDAY" ng-selected="campaignData.day_of_week == 'THURSDAY'">Thursday</option>
+	                            <option value="FRIDAY" ng-selected="campaignData.day_of_week == 'FRIDAY'">Friday</option>
+	                            <option value="SATURDAY" ng-selected="campaignData.day_of_week == 'SATURDAY'">Saturday</option>
+	                            <option value="SUNDAY" ng-selected="campaignData.day_of_week == 'SUNDAY'">Sunday</option>
 	                        </select>
 	                    </div>
 	                    <span class="delimiter">at</span>

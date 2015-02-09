@@ -26,6 +26,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 
 	$scope.loadTable = function(){
 		console.log("loadTable");
+		$scope.data = [];
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page
