@@ -13,13 +13,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 */
 		function isWithinMaxOccupancy() {
 			var maxOccupancy = $scope.reservationData.reservation_card.max_occupancy; //TODO: Get the max occupancy here
-			if (maxOccupancy) {
+			if (!!maxOccupancy) {
 				var currentTotal = parseInt($scope.guestData.adult_count || 0) +
 					parseInt($scope.guestData.children_count || 0);
 
 				return currentTotal > parseInt(maxOccupancy);
 			} else { // If the max occupancy aint configured DONT CARE -- Just pass it thru
-				return true;
+				return false;
 			}
 		}
 
@@ -122,7 +122,15 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				}
 			});
 
-			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);
+			if (dataToSend.accompanying_guests_details.length > 0) {
+				$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);
+			} else {
+				$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
+					"id": $scope.reservationData.reservation_card.reservation_id,
+					"confirmationId": $scope.reservationData.reservation_card.confirmation_num,
+					"isrefresh": true
+				});
+			}
 
 		}
 
