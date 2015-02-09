@@ -450,6 +450,9 @@ var getJqDateFormat = function(dateFormat) {
 };
 /** Convert 24hr format into 12hr (am/pm) format **/
 var tConvert = function(time){
+	if(time == '' || time == undefined){
+		return {};
+	}
     tDict = {};
     var t = time.split(':');
     tDict.hh = (t[0] >= 12) ? (t[0] - 12) : t[0];

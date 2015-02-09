@@ -1,14 +1,69 @@
-admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'ngDialog', '$timeout', function($scope, $rootScope,ADCampaignSrv, ngDialog, $timeout){
+admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'ngDialog', '$timeout', '$state', '$stateParams', function($scope, $rootScope,ADCampaignSrv, ngDialog, $timeout,$state, $stateParams){
 
 	BaseCtrl.call(this, $scope);
-	$scope.campaignData = {};
-	$scope.campaignData.audience_type = "EVERYONE";
-	$scope.campaignData.delivery_primetime = "AM";
-	$scope.campaignData.alert_max_length = 120;
-	$scope.campaignData.messageSubjectMaxLength = 60;
-	$scope.campaignData.messageBodyMaxLength = 320;
-	$scope.campaignData.is_recurring = "false";
-	$scope.campaignData.header_file = $scope.fileName;
+	
+	var init = function(){
+		console.log($stateParams);
+
+		if($stateParams.type == 'EDIT'){
+			$scope.mode = 'EDIT';
+			fetchCampaignDetails($stateParams.id);
+		}
+		
+
+		$scope.campaignData = {};
+		$scope.campaignData.audience_type = "EVERYONE";
+		$scope.campaignData.delivery_primetime = "AM";
+		$scope.campaignData.alert_max_length = 120;
+		$scope.campaignData.messageSubjectMaxLength = 60;
+		$scope.campaignData.messageBodyMaxLength = 320;
+		$scope.campaignData.is_recurring = "false";
+		$scope.campaignData.header_file = $scope.fileName;
+
+
+	}
+
+	var computeCampaignDataToUIFormat = function(data){
+		console.log("hesreeeeeeeeeeeeeeeeeeeeeeee");
+		console.log(data);
+
+		$scope.campaignData.id = data.id;
+		$scope.campaignData.name = data.name;
+		$scope.campaignData.audience_type = data.audience_type;
+		$scope.campaignData.subject = data.subject;
+		$scope.campaignData.header_image = data.header_image;
+		$scope.campaignData.body = data.body;
+		$scope.campaignData.call_to_action_label = data.call_to_action_label;
+		$scope.campaignData.call_to_action_target = data.call_to_action_target;  
+
+		$scope.campaignData.is_recurring = data.is_recurring? 'true': 'false';
+		$scope.campaignData.day_of_Week = data.day_of_Week;
+
+		var deliveryTime = tConvert(data.time_to_send);
+		if(!isEmptyObject(deliveryTime)){
+			$scope.campaignData.delivery_hour = deliveryTime.hh;
+			$scope.campaignData.delivery_min = deliveryTime.mm;
+			$scope.campaignData.delivery_primetime = deliveryTime.ampm;
+		}
+		
+		//$scope.campaignData.recurring_end_type = (data.recurrence_end_date == undefined || data.recurrence_end_date == '') ? : 'NEVER' : 'END_OF_DAY';
+		$scope.campaignData.recurrence_end_date = data.recurrence_end_date;
+		$scope.campaignData.alert_ios8 = data.alert_ios8;
+		$scope.campaignData.alert_ios7 = data.alert_ios7;
+	}
+
+	var fetchCampaignDetails = function(id){
+
+		var fetchSuccessOfCampaignData = function(data){
+			console.log(data);
+			computeCampaignDataToUIFormat(data);
+			$scope.$emit('hideLoader');
+		};
+
+		var params = {'id': id}
+		$scope.invokeApi(ADCampaignSrv.fetchCampaignData, params, fetchSuccessOfCampaignData);
+
+	}
 
 	var computeCampaignSaveData = function(){
 		var campaign = {};
@@ -59,7 +114,14 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 			}
 		}
 		var data = computeCampaignSaveData();
-		$scope.invokeApi(ADCampaignSrv.saveCampaign, data, saveSucess);
+			
+		if($scope.mode = 'EDIT'){
+			data.id = $scope.campaignData.id;
+			$scope.invokeApi(ADCampaignSrv.updateCampaign, data, saveSucess);
+
+		} else {
+			$scope.invokeApi(ADCampaignSrv.saveCampaign, data, saveSucess);
+		}
 	};
 	$scope.onFromDateChanged = function(datePicked){
 		console.log(datePicked);
@@ -104,6 +166,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 			$scope.campaignData.header_file = $scope.fileName;
 		}
 	);
+
+
+	init();
 
 
 	

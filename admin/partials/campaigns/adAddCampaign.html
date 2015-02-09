@@ -16,7 +16,7 @@
 		        </div>
 		        <div class="entry short">
 		            <label for="campaign-id">ID</label>
-		            <input type="text" id="campaign-id" value="campaignData.id" ng-model="campaignData.id" readonly />
+		            <input type="text" id="campaign-id" value="campaignData.id" ng-model="campaignData.id" readonly/>
 		        </div>
 		        <div class="entry long">
 		            <label for="campaign-name">Campaign name <strong>*</strong></label>
@@ -68,7 +68,7 @@
 		                <input type="file" id="message-header" ng-model="campaignData.header_image" accept="image/*" app-filereader />
 		                <button type="button" class="button brand-colors">Add image</button>
 		            </div>
-		            <span class="file-preview"><img ng-src="{{campaignData.header_image}}" alt="" height="112" width="auto"> <em>Preview not available</em></span>
+		            <span class="file-preview"><img ng-src="{{campaignData.header_image}}" alt="" height="112" width="auto"> <em ng-show="campaignData.header_image == '' || campaignData.header_image == undefined">Preview not available</em></span>
 		        </div>   
 		        <div class="entry full-width">
 		            <label for="message-body">Message body<strong>*</strong></label>
@@ -230,7 +230,7 @@
 	                    </label>
 	                    <div id="recurring-datepicker" class="has-datepicker" ng-show = "campaignData.recurring_end_type == 'END_OF_DAY'"> <!-- Remove class "hidden" when "At End Of Day" is selected. Add when "Never" is selected. -->
 	                        <input id="delivery-date" placeholder="Set Delivery Date" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date == ''"/>
-	                        <input id="delivery-date" placeholder="{{campaignData.recurrence_end_date | date : dateFormat }}" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date !== ''"/>
+	                        <input id="delivery-date" placeholder="{{campaignData.recurrence_end_date | date : dateFormat }}" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date !== '' && campaignData.recurrence_end_date !== undefined"/>
 	                    </div>
 	                </div>
 	            </div>

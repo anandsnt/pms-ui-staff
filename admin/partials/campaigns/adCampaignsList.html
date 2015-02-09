@@ -28,7 +28,7 @@
 						</td>
 						<td data-title="'Audience'" sortable="'rate_type'" header-class="width-25" >
 							<span>
-								{{campaign.audience}}
+								{{campaign.audience_type}}
 							</span>
 						</td>
 						<td data-title="'Delivery'" sortable="'rate_type'" header-class="width-25" >
@@ -41,7 +41,7 @@
 						</td>
 
 						<td data-title="'Last Update'" sortable="'rate_type'" header-class="width-25">
-							<em>{Last update DateTime}</em>
+							<em>{{campaign.last_updated_date | date : dateFormat }} {{getTimeConverted(campaign.last_updated_time)}}</em>
 						</td>
 
 						<td class="delete" data-title="'Delete'" header-class="delete width-15">

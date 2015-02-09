@@ -94,7 +94,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.addCampaign', {
 			templateUrl: '/assets/partials/campaigns/adAddCampaign.html',
 			controller: 'ADAddCampaignCtrl',
-			url : '/campaigns'
+			url : '/campaigns/:id/:type'
 		});
 		
         

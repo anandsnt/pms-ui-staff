@@ -7,6 +7,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 
 
 	$scope.fetchTableData = function($defer, params){
+		console.log('fetchTableData');
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
@@ -39,7 +40,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 	};
 
 	$scope.editCampaign = function(id , index){
-
+		$state.go('admin.addCampaign', {'id' : id, 'type': 'EDIT'});
 	};
 
 	$scope.deleteCampaign = function(id, index){
@@ -58,6 +59,14 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 		}
 		var params = {"id" : id}
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
+	};
+
+	$scope.getTimeConverted = function(time) {
+		if (time == null || time == undefined) {
+			return "";
+		}
+		var timeDict = tConvert(time);
+		return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 	};
 
 	$scope.loadTable();
