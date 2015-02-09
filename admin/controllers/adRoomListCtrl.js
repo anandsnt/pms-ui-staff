@@ -44,15 +44,12 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 		);
 	}
 	$scope.deleteRoom = function(index, room_id){
-
-		console.log(room_id);
-		var successCallBack = function(){
+			var successCallBack = function(){
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
 			$scope.tableParams.page(1);
         	$scope.tableParams.reload();
 		}	
-	//TODO API CALL	
 	$scope.invokeApi(ADRoomSrv.deleteRoom, {'room_id': room_id}, successCallBack);
 	}
 	$scope.loadTable();
