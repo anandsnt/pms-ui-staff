@@ -68,9 +68,9 @@
                     <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
                 </div>
                 <div class="actions">
-                    <button type="button" class="button blue"  ng-if="!depositDetails.isFromCheckin" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null" ng-click="closeDialog()">Pay deposit later</button>
+                    <button type="button" class="button blue"  ng-if="!depositDetails.isFromCheckin" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null || reservationData.depositAmount < 0" ng-click="closeDialog()">Pay deposit later</button>
                     <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin"  ng-hide="depositData.paymentType ==='' || depositData.paymentType === null"ng-click="proceedCheckin()">Pay deposit later</button>
-                    <button type="button" class="button green" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null" ng-click="payDeposit()">Pay deposit now</button>
+                    <button type="button" class="button green" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null || reservationData.depositAmount< 0" ng-click="payDeposit()">Pay deposit now</button>
                 </div>
             </div>
 
