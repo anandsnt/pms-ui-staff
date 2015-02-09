@@ -1,31 +1,41 @@
-<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}" ngrepeatend>
+<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
 	<td ng-if="each.isReport" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
-		<strong ng-if="each.room_no" class="title">{{ each.room_no }}</strong>
-		<strong ng-if="!each.room_no" class="title unassigned">N/A</strong>
+		<strong class="title">{{ each.room_no }}</strong>
+		<span class="status">{{ each.status }}</span>
 	</td>
 	<td ng-if="each.isReport">
 		<strong class="title">{{ each.name }}</strong>
 		<span class="confirmation">{{ each.confirm_no }}</span>
 		<span ng-if="each.is_vip">&#8226; <span class="vip">VIP</span></span>
-		<span ng-if="each.addtional_guest_counts">&#8226; <span class="guests">{{ each.addtional_guest_counts }} guest(s)</span></span>
+
+		<span ng-if="each.addtional_guest_counts && (!each.addtional_adults_counts || !each.addtional_children_counts)">&#8226; <span class="guests">{{ each.addtional_guest_counts }} guest(s)</span></span>
+		<span ng-if="each.addtional_adults_counts">&#8226; <span class="guests">{{ each.addtional_adults_counts }} Adult(s)</span></span>
+		<span ng-if="each.addtional_children_counts">&#8226; <span class="guests">{{ each.addtional_children_counts }} Children</span></span>
 	</td>
 	<td ng-if="each.isReport">
 		<div class="arrival-departure">
-			<span class="guest-status check-in" ng-class="{ 'cancel': each.status =='CANCELED', 'no-show': each.status == 'NO SHOW' }">check-in</span>
+			<span class="guest-status check-in">check-in</span>
 			<time>
 				<span>{{ each.arrival_date | date : dateFormat }}</span>
 				<span>{{ each.arrival_time }}</span>
 			</time>
 		</div>
 		<div class="departing">
-			<span class="guest-status check-out" ng-class="{ 'cancel': each.status =='CANCELED', 'no-show': each.status == 'NO SHOW' }">check-out</span>
+			<span class="guest-status check-out">check-out</span>
 			<time>
 				<span>{{ each.departure_date | date : dateFormat }}</span>
 				<span>{{ each.departure_time }}</span>
 			</time>
 		</div>
-		<div ng-if="each.total_time" class="hours">{{ each.total_time }}</div>
+		<div ng-if="each.total_time" class="hours">{{ each.total_time }}</div> 
 	</td>
+
+	<td ng-if="DO_NOT_SHOW_YET">
+		<span>{{ each.company_name }}</span>
+		<span>{{ each.travel_agent_name }}</span>
+		<span>{{ each.group_name }}</span>
+	</td>
+
 	<td ng-if="each.isReport">
 		<span class="room">{{ each.room_type }}</span>
 		<span class="rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
@@ -35,7 +45,7 @@
 		<strong class="red">Cancellation Reason</strong>
 		<span>{{ each.reason }}</span>
 	</td>
-
+	
 	<td ng-if="each.isGuest" class="is-note" colspan="3">
 		<strong>Accompanying guests</strong>
 		<span ng-repeat="name in each.guest">{{ name }}</span>

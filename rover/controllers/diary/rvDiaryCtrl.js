@@ -602,7 +602,7 @@ sntRover
 						$scope.dateOptions.minDate = null;
 						
 						if(originalRow.id !== row_data.id) {
-							saveReservation(row_item_data, row_data);
+							$scope.saveReservation(row_item_data, row_data);
 						}
 						else {
 							$scope.resetEdit();
@@ -1617,6 +1617,8 @@ sntRover
 			//changing the display date in calendar also	
 			changeCalendarDate ($scope.gridProps.filter.arrival_date);
 			$scope.gridProps.display.min_hours = 4;
+			//resetting the reservation data, that set during transfrer
+			resetTheDataForReservationMoveFromOneDateToAnother ();
 			if(!$scope.$$phase) {	
 				$scope.$apply();
 			}	    	
@@ -1655,7 +1657,7 @@ sntRover
     	}
     }
 
-	var saveReservation = function(reservation, roomDetails){
+	$scope.saveReservation = function(reservation, roomDetails){
 		var params = formReservationParams(reservation, roomDetails)
 		var options = {
     		params: 			params,
