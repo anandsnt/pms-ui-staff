@@ -160,7 +160,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				} else {
 					$scope.$emit('hideLoader');
 					ngDialog.open({
-						template: '/assets/partials/reservation/alerts/notConfiguredOccupancyInStayCard.html',						
+						template: '/assets/partials/reservation/alerts/notConfiguredOccupancyInStayCard.html',
+						className: '',
 						scope: $scope,
 						closeByDocument: false,
 						closeByEscape: false
@@ -175,18 +176,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 * CICO-12672 Occupancy change from the staycard --
 		 */
 		$scope.onStayCardOccupancyChange = function() {
-			console.log({
-				adults: $scope.guestData.adult_count,
-				children: $scope.guestData.children_count,
-				infants: $scope.guestData.infants_count
-			})
-
 			if (isWithinMaxOccupancy()) {
 				////////
 				// Step 1 : Check against max occupancy and let know the user if the occupancy is not allowed
 				////////
 				ngDialog.open({
-					template: '/assets/partials/reservation/alerts/occupancy.html',					
+					template: '/assets/partials/reservation/alerts/occupancy.html',
+					className: '',
 					scope: $scope,
 					closeByDocument: false,
 					closeByEscape: false,
@@ -211,8 +207,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			var successCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.guestData = data;
-				$scope.$emit("GETVARYINGOCCUPANCY");
+				$scope.guestData = data;				
 				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to revert in case of exceeding occupancy
 				initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to make API call to update if some change has been made
 				$scope.errorMessage = '';
@@ -232,10 +227,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 
 		$scope.init();
-
-		$scope.$on("VARYINGOCCUPANCY", function(e, data) {
-			$scope.guestData.varying_occupancy = data;
-		});
 
 		$scope.$on("UPDATEGUESTDEATAILS", function(e) {
 			$scope.saveGuestDetails();
