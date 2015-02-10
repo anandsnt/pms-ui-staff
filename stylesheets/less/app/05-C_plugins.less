@@ -1540,55 +1540,72 @@
 			}
 
 			&.room-enhancements {
+				padding: 20px 0;
 				width: 420px;
+				max-height: 500px;
 
-				ul {
+				.scrollable {
+					position: relative;
 					margin: 40px 0;
+					max-height: 240px;
 
-					li {
-						position: relative;
-						font-weight: 600;
-						text-transform: uppercase;
-						padding: 0 100px 10px 0;
-						margin-bottom: 10px;
-						border-bottom: 1px solid rgba(0,0,0,.1);
+					.wrapper {
+						margin: 0;
+						padding: 0 20px;
 
-						span {
-							color: @grey3;
-							font-weight: 400;
+						li {
+							position: relative;
+							font-weight: 600;
+							text-transform: uppercase;
+							padding: 0 100px 10px 0;
+							margin-bottom: 10px;
+							border-bottom: 1px solid rgba(0,0,0,.1);
 
-							&.base {
-								font-size: 13px;
-								line-height: 1em;
-								.show;
+							span {
+								color: @grey3;
+								font-weight: 400;
+
+								&.base {
+									font-size: 13px;
+									line-height: 1em;
+									.show;
+								}
+
+								&.price,
+								&.value { color: @textColor; }
+
+								&.price {
+									position: absolute;
+									top: 0;
+									right: 40px;
+								}
 							}
 
-							&.price,
-							&.value { color: @textColor; }
-
-							&.price {
+							.icon-trash {
 								position: absolute;
 								top: 0;
-								right: 40px;
+								right: 0;
+								cursor: pointer;
+							}
+
+							&:last-child { 
+								margin-bottom: 0; 
+								padding-bottom: 0;
+								border: 0;
 							}
 						}
+					}
 
-						.icon-trash {
-							position: absolute;
-							top: 0;
-							right: 0;
-							cursor: pointer;
-						}
-
-						&:last-child { 
-							margin-bottom: 0; 
-							padding-bottom: 0;
-							border: 0;
-						}
+					.iScrollVerticalScrollbar {
+						top: 0;
+						bottom: 0;
 					}
 				}
 
 				.actions {
+					height: 114px;
+					padding: 0 20px;
+					
 					.button {
 						margin-bottom: 10px;
 
