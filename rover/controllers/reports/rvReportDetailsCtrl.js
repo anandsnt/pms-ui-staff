@@ -502,9 +502,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var i = j = k = l = m = n = 0;
 
-			if ( $scope.parsedApiFor == 'Arrival' ||
-					$scope.parsedApiFor == 'In-House Guests' ||
-					$scope.parsedApiFor == 'Departure' ||
+			if ( $scope.parsedApiFor == 'Departure' ||
 					$scope.parsedApiFor == 'Cancelation & No Show' ||
 					$scope.parsedApiFor == 'Login and out Activity' ) {
 
@@ -619,8 +617,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// dont remove yet
 				console.log( 'API reponse changed as follows: ');
 				console.log( _retResult );
-				
-			} else if ($scope.parsedApiFor == 'Arrival') {
+
+			} else if ($scope.parsedApiFor == 'Arrival' || $scope.parsedApiFor == 'In-House Guests') {
 
 
 
@@ -629,6 +627,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 				var guestData  = {};
 				var noteData   = {};
 				var cancelData = {};
+
+				var excludeReports = function(names) {
+					return !!_.find(names, function(n) {
+						return n == $scope.parsedApiFor;
+					});
+				};
 
 				var checkGuest = function(item) {
 					var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
@@ -642,7 +646,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				};
 
 				var checkCancel = function(item) {
-					return !!item['cancel_reason']
+					return excludeReports(['Arrival', 'In-House Guests']) ? !!item['cancel_reason'] : false;
 				};
 
 				i = j = 0;
@@ -658,9 +662,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 						guestData = {
 							isGuestData : true,
 							guestNames  : angular.copy( itemCopy['accompanying_names'] ),
+
 							company_name      : itemCopy.company_name,
 							travel_agent_name : itemCopy.travel_agent_name,
-							group_name        : itemCopy.group_name
+							group_name        : itemCopy.group_name,
+
+							addOns : angular.copy( itemCopy['add_ons'] )
 						};
 						customData.push( guestData );
 					};
