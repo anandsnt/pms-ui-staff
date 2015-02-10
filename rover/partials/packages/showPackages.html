@@ -12,7 +12,7 @@
                 <span class="base">at {{currencySymbol}}{{existingPackages.price_per_piece}} / ADULT PER STAY</span>
                 <span class="price">{{currencySymbol}}{{existingPackages.totalAmount}}</span>
                 <span ng-show="existingPackages.is_inclusive=='true'">INCL</span>
-                <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons(existingPackages.package_id)">Remove</button>
+                <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons(existingPackages.package_id, $index)">Remove</button>
             </li>
            
         </ul>

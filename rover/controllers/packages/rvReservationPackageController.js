@@ -42,12 +42,18 @@ sntRover.controller('RVReservationPackageController',
 	};
 
 
-	$scope.removeSelectedAddons = function(addonId){
+	$scope.removeSelectedAddons = function(addonId, index){
 		var successDelete = function(){
 			$scope.$emit('hideLoader');
+			$scope.packageData.existing_packages.splice(index)
 		}
+		var addonArray = [];
+		addonArray.push(addonId)
 		var dataToApi = {
-			"addons":[addonId],
+			"postData": {
+				"addons":addonArray
+			},
+			
 			"reservationId": reservationId
 		}
 		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
