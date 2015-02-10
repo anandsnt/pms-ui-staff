@@ -1,6 +1,4 @@
 <section class="content current" ng-click='clearErrorMessage()'>
-	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 	<header class="content-title" ng-show="mode == 'ADD'">
 	    <h2 translate>NEW_CAMPAIGN_TITLE</h2>
 	    <a class="action back" ng-click="gobackToCampaignListing();" translate>BACK</a>
@@ -11,8 +9,10 @@
 	    <a ng-click="gobackToCampaignListing();" class="action back" translate> BACK</a>
 	    <button type="button" class="action remove" ng-click="deleteCampaign();" translate>DELETE_CAMPAIGN</button>
 	</header>
-
 	<section class="content-scroll">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
 		<form method="post" action="" id="new-campaign" name="new-campaign" class="form campaign-details">
 		    
 		    <fieldset class="holder left">
