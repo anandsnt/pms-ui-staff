@@ -58,6 +58,7 @@
                                         <!-- {{chosenReport.chosenLastYear}}{{chosenReport.chosenVariance}} -->
                                         <!-- If showing variance AND/OR last year, add second row: -->
                                         <tr ng-if="chosenReport.chosenLastYear || chosenReport.chosenVariance" class="bottom-row">
+                                                        <!-- TODO : Need to get a condition right to get the 'day-end' -->
                                                         <th  ng-repeat="n in getNumber() track by $index">{{getHeader($index)}}</th>
                                                         <!-- <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}">Last Year</th>
                                                         // Output only if showing last year. Add class "day-end" if not showing variance.
@@ -68,13 +69,13 @@
                                 <tbody>
                                         <tr ng-repeat="numbers in tabularData.displayValues track by $index">
                                                 <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
-                                                <td ng-repeat="number in numbers track by $index">{{number}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index">100</td>
                                                 <!-- <td>{Occupancy / Revenue}</td> -->
                                                 <!-- If showing lat year, add this: -->
-                                                <td ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}" class="last-year"></td>
+                                                <!-- <td ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}" class="last-year"></td> -->
                                                 <!-- // Add class "day-end" if not showing variance -->
                                                 <!-- If showing variance, add this: -->
-                                                <td ng-if="chosenReport.chosenVariance" class="day-end"></td>
+                                                <!-- <td ng-if="chosenReport.chosenVariance" class="day-end"></td> -->
                                                 <!-- Add class "negative" if negative value -->
                                                 <!-- ... repeat for all dates in the date range -->
                                         </tr>

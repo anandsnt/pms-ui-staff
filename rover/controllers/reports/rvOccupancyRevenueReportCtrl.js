@@ -38,7 +38,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.getHeader = function(indexValue) {
 			if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
-				return (indexValue % 2 == 0) ? "This Year" : (indexValue % 2 == 2) ? "Variance" : "Last Year"
+				return (indexValue % 3 == 0) ? "This Year" : (indexValue % 3 == 2) ? "Variance" : "Last Year"
 			} else if (!!$scope.chosenReport.chosenLastYear || !!$scope.chosenReport.chosenVariance) {
 				return (indexValue % 2 == 0) ? "This Year" : !!$scope.chosenReport.chosenVariance ? "Variance" : "Last Year"
 			} else {
