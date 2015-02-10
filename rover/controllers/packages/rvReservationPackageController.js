@@ -41,8 +41,16 @@ sntRover.controller('RVReservationPackageController',
 		 	});
 	};
 
-	$scope.removeSelectedAddons = function(addonId){
 
+	$scope.removeSelectedAddons = function(addonId){
+		var successDelete = function(){
+			$scope.$emit('hideLoader');
+		}
+		var dataToApi = {
+			"addons":[addonId],
+			"reservationId": reservationId
+		}
+		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
 	};
 
 }
