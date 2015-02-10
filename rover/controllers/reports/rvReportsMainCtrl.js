@@ -243,13 +243,11 @@ sntRover.controller('RVReportsMainCtrl', [
 		//specific for markets
 		$scope.selectMarketsClicked = function(e, item) {
 			var selectCount = 0;
-
 			// if clicked outside, close the open dropdowns
 			if (!e) {
 				closeAllMultiSelects();
 				return;
 			};
-
 			if (!item) {
 				return;
 			};
@@ -260,11 +258,24 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (!item) {
 				return;
 			};
-
 			e.stopPropagation();
-
-			$scope.fauxOptionClicked(e, item);
+			var selectedCount = 0;
 		};
+
+		$scope.fauxMarketOptionClicked = function(item) {
+			var selectedData = _.where($scope.reportsState.markets, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.marketTitle = "Select";
+			} else if (selectedData.length == 1) {
+				item.marketTitle = selectedData[0].name;
+			} else if (selectedData.length > 1) {
+				item.marketTitle = selectedData.length + "Selected";
+			}
+
+		}
 
 		$scope.fauxOptionClicked = function(e, item) {
 			e.stopPropagation();
@@ -445,6 +456,21 @@ sntRover.controller('RVReportsMainCtrl', [
 				key = chosenReport.hasSource.value.toLowerCase();
 				params[key] = chosenReport.showSource ? true : false;
 			};
+
+			//selected markets for CICO-10202
+			if (chosenReport.hasOwnProperty('hasMarketsList')) {
+				var selectedMarkets = _.where($scope.reportsState.markets, {
+					selected: true
+				});
+				if (selectedMarkets.length > 0) {
+					key = 'market_ids';
+					params[key] = [];
+					_.each(selectedMarkets, function(market) {
+						params[key].push(market.value);
+					})
+				}
+
+			}
 
 
 			var callback = function(response) {

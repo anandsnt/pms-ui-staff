@@ -168,13 +168,13 @@
 </div>
 
 <!-- CICO-10202 Report & Summary Markets filter -->
-<div class="options long-list" ng-if="item.hasVariance">
+<div class="options long-list" ng-if="item.hasMarketsList">
     <label for="report-options">Market(s)</label>
-    <div class="faux-select placeholder" ng-click="selectMarketsClicked($event, item)">{{ item.displayTitle }}</div>
+    <div class="faux-select placeholder" ng-click="selectMarketsClicked($event, item)">{{ item.marketTitle }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.selectMarketsOpen }" ng-click="fauxOptionClicked($event, item)">
         <label class="checkbox inline" ng-repeat="market in reportsState.markets">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNotes}"></span>
-            <input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters"> {{ market.name }}
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
+            <input type="checkbox" ng-model="market.selected" ng-change="fauxMarketOptionClicked(item)" name="room-filters"> {{ market.name }}
         </label>
     </div>
 </div>

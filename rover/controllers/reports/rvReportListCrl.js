@@ -18,7 +18,7 @@ sntRover.controller('RVReportListCrl', [
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
             hasFauxSelect = false,
             hasDisplaySelect = false;
-            hasMarketSelect = false;
+        hasMarketSelect = false;
 
         /**
          * inorder to refresh after list rendering
@@ -118,10 +118,11 @@ sntRover.controller('RVReportListCrl', [
 
                     case 'Occupancy & Revenue Summary':
                         reportList[i]['reportIconCls'] = 'icon-report icon-occupancy';
+                        reportList[i]['hasMarketsList'] = true;
                         // CICO-10202 start populating the markets list
                         populateMarketsList();
                         break;
-                        
+
                     default:
                         reportList[i]['reportIconCls'] = 'icon-report';
                         break;
@@ -288,6 +289,7 @@ sntRover.controller('RVReportListCrl', [
                 if (hasMarketSelect) {
                     reportList[i]['selectMarketsOpen'] = false;
                     reportList[i]['displayTitle'] = 'Select';
+                    reportList[i]['marketTitle'] = 'Select';
                 }
 
                 // sort by options
