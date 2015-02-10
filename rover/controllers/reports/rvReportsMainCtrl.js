@@ -422,6 +422,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.subHeaders = response.sub_headers;
 				$scope.results = response.results;
 				$scope.resultsTotalRow = response.results_total_row;
+				$scope.summaryCounts = response.summary_counts;
 
 				// track the total count
 				$scope.totalCount = response.total_count;

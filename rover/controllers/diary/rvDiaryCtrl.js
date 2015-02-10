@@ -602,7 +602,7 @@ sntRover
 						$scope.dateOptions.minDate = null;
 						
 						if(originalRow.id !== row_data.id) {
-							saveReservation(row_item_data, row_data);
+							$scope.saveReservation(row_item_data, row_data);
 						}
 						else {
 							$scope.resetEdit();
@@ -1657,7 +1657,7 @@ sntRover
     	}
     }
 
-	var saveReservation = function(reservation, roomDetails){
+	$scope.saveReservation = function(reservation, roomDetails){
 		var params = formReservationParams(reservation, roomDetails)
 		var options = {
     		params: 			params,
