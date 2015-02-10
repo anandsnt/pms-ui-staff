@@ -230,8 +230,8 @@
 	                        At End Of Day
 	                    </label>
 	                    <div id="recurring-datepicker" class="has-datepicker" ng-show = "campaignData.recurring_end_type == 'END_OF_DAY'"> <!-- Remove class "hidden" when "At End Of Day" is selected. Add when "Never" is selected. -->
-	                        <input id="delivery-date" placeholder="Set Delivery Date" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.recurrence_end_date == ''"/>
-	                        <input id="delivery-date" placeholder="{{campaignData.recurrence_end_date | date : dateFormat }}" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-hide=" mode == 'EDIT' && campaignData.recurrence_end_date !== '' && campaignData.recurrence_end_date !== undefined"/>
+	                        <input id="delivery-date" placeholder="Set Delivery Date" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-show="campaignData.end_date_for_display == '' || campaignData.end_date_for_display == undefined"/>
+	                        <input id="delivery-date" placeholder="{{campaignData.end_date_for_display | date : dateFormat }}" class="datepicker" type="text" readonly ng-click = "showDatePicker();" ng-hide="campaignData.end_date_for_display == '' || campaignData.end_date_for_display == undefined"/>
 	                    </div>
 	                </div>
 	            </div>
