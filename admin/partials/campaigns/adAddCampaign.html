@@ -31,7 +31,7 @@
 		        <div class="entry full-width" ng-show = "mode == 'EDIT' && campaignData.status !== 'COMPLETED'">
                     <label for="campaign-status" translate>STATUS</label>
                     
-                    <div class="switch-button" ng-show="(campaignData.is_recurring == 'true'&& campaignData.is_started)" ng-class="{ 'on' :campaignData.is_active == 'true' }" ng-click="statusChanged()"> <!-- Remove class "on" when checkbox is unchecked -->
+                    <div class="switch-button" ng-show="campaignData.status == 'ACTIVE' || campaignData.status == 'INACTIVE'" ng-class="{ 'on' :campaignData.status == 'ACTIVE' }" ng-click="statusChanged()"> <!-- Remove class "on" when checkbox is unchecked -->
                         <input id="campaign-status" type="checkbox"/>
                         <span class="switch-icon"></span>
                     </div>
@@ -265,7 +265,7 @@
 	    <div class="actions" ng-show = "mode == 'EDIT' && campaignData.status !== 'COMPLETED'">
             <button type="button" class="button blank" ng-click="gobackToCampaignListing();" translate>CANCEL</button>
             <button type="button" class="button green" ng-click="saveAsDraft()" translate>SAVE</button>
-	        <button type="button" class="button green" ng-click="startCampaignPressed()" ng-hide="(campaignData.is_recurring == 'true'&& campaignData.is_started) || (campaignData.is_recurring == 'false'&& campaignData.status != 'DRAFT')" translate>START_CAMPAIGN</button>
+	        <button type="button" class="button green" ng-click="startCampaignPressed()" ng-show="campaignData.status == 'DRAFT'" translate>START_CAMPAIGN</button>
         </div>
 
         <div class="actions" ng-show = "mode == 'EDIT' && campaignData.status == 'COMPLETED'">

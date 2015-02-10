@@ -44,9 +44,6 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.completed_date = data.completed_date;
 		$scope.campaignData.completed_time = data.completed_time;
 		$scope.campaignData.status = data.status;
-		$scope.campaignData.is_active = data.is_active? 'true' : 'false';
-		$scope.campaignData.is_started = data.is_started;
-
 		$scope.campaignData.end_date_for_display = data.recurrence_end_date;
 		
 		var deliveryTime = tConvert(data.time_to_send);
@@ -78,7 +75,6 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	var computeCampaignSaveData = function(){
 		var campaign = {};
 		campaign.name = $scope.campaignData.name;
-		campaign.is_active = ($scope.campaignData.is_active == 'false' || $scope.campaignData.is_active == undefined) ? false : true;
 		campaign.audience_type = $scope.campaignData.audience_type;
 		campaign.specific_users = $scope.campaignData.specific_users;
 		campaign.subject = $scope.campaignData.subject;
@@ -110,7 +106,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 	var startCampaign = function(id){
 		var campaignStartSuccess = function(data){
-			$scope.campaignData.is_started = true;
+			$scope.campaignData.status = 'ACTIVE';
 			$scope.$emit('hideLoader');
 		}
 		var data = {"id": id};
@@ -150,8 +146,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	};
 
 	$scope.statusChanged = function(){
-		$scope.campaignData.is_active = $scope.campaignData.is_active == 'true' ? 'false' : 'true';
-
+		$scope.campaignData.status = $scope.campaignData.status == 'ACTIVE' ? 'INACTIVE': 'ACTIVE';
 	}
 
 	$scope.getTimeConverted = function(time) {
