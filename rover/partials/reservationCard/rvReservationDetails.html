@@ -1,218 +1,232 @@
 <div ng-show="reservationDisplayStatus" role="tabpanel" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true" ng-click="clearErrorMessage()">
-	
-	<!-- Reservation header -->
-	<div class="reservation-header">
-		<div class="data">
-			<span class="date"><span class="guest-status small-icon check-in">check-in</span>
-			<span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
-			<span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span>
-			{{reservationData.reservation_card.arrival_date|date:dateFormat}} 
-			<span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.arrival_time}} </span>
-			 </span>
-			<span class="date"><span class="guest-status small-icon check-out">check-out</span>
-			<span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
-			<span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span>
-			{{reservationData.reservation_card.departure_date|date:dateFormat}} 
-			<span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.departure_time}} </span>
-			</span>
-		</div>
-		<div class="actions">
-			<a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button times check-in toggle">
-				<span class="icons time check-in"></span>{{reservationData.reservation_card.arrival_time ? reservationData.reservation_card.arrival_time : 'NOT SET' }}
-			</a>
-			<a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.departure_time ,'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="button times check-out toggle">
-				<span class="icons time check-out"></span>{{reservationData.reservation_card.departure_time ? reservationData.reservation_card.departure_time : 'NOT SET' }}
-			</a>
-			<a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.late_checkout_time ,'active': shouldShowTimeDetails}"  ng-if="reservationData.reservation_card.is_opted_late_checkout" class="button times late-check-out toggle">
-				<span class="icons time late-check-out"></span>{{reservationData.reservation_card.late_checkout_time}}
-			</a>		
 
-			<a class="button has-arrow toggle" ng-class="{'active': shouldShowGuestDetails}" ng-click="toggleGuests()"> 
-				<span class="label" >Guests</span> 
-				{{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }} 
-			</a>
-			<!-- nights button is clickable only for the below status -->
-			<a class="button has-arrow next-view" ng-show="isNightsEnabled() && !reservationData.reservation_card.is_hourly_reservation" ng-click="extendNights()">
-  				<span class="label">
+        <!-- Reservation header -->
+        <div class="reservation-header">
+                <div class="data">
+                        <span class="date"><span class="guest-status small-icon check-in">check-in</span>
+                        <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
+                        <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span> {{reservationData.reservation_card.arrival_date|date:dateFormat}}
+                        <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.arrival_time}} </span>
+                        </span>
+                        <span class="date"><span class="guest-status small-icon check-out">check-out</span>
+                        <span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
+                        <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> {{reservationData.reservation_card.departure_date|date:dateFormat}}
+                        <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.departure_time}} </span>
+                        </span>
+                </div>
+                <div class="actions">
+                        <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button times check-in toggle">
+                                <span class="icons time check-in"></span>{{reservationData.reservation_card.arrival_time ? reservationData.reservation_card.arrival_time : 'NOT SET' }}
+                        </a>
+                        <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.departure_time ,'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="button times check-out toggle">
+                                <span class="icons time check-out"></span>{{reservationData.reservation_card.departure_time ? reservationData.reservation_card.departure_time : 'NOT SET' }}
+                        </a>
+                        <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.late_checkout_time ,'active': shouldShowTimeDetails}" ng-if="reservationData.reservation_card.is_opted_late_checkout" class="button times late-check-out toggle">
+                                <span class="icons time late-check-out"></span>{{reservationData.reservation_card.late_checkout_time}}
+                        </a>
+
+                        <a class="button has-arrow toggle" ng-class="{'active': shouldShowGuestDetails}" ng-click="toggleGuests()">
+                                <span class="label">Guests</span> {{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }}
+                        </a>
+                        <!-- nights button is clickable only for the below status -->
+                        <a class="button has-arrow next-view" ng-show="isNightsEnabled() && !reservationData.reservation_card.is_hourly_reservation" ng-click="extendNights()">
+                                <span class="label">
     				Nights
-  				</span>
-  				{{reservationData.reservation_card.total_nights}}
-			</a>
-			<div class="inactive-nights" ng-hide="isNightsEnabled() || reservationData.reservation_card.is_hourly_reservation" >
-  				<span class="label">
+  				</span> {{reservationData.reservation_card.total_nights}}
+                        </a>
+                        <div class="inactive-nights" ng-hide="isNightsEnabled() || reservationData.reservation_card.is_hourly_reservation">
+                                <span class="label">
     			Nights
-  				</span>
-  				{{reservationData.reservation_card.total_nights}}
-			</div>
-			<div class="button has-arrow next-view" ng-show="reservationData.reservation_card.is_hourly_reservation" ng-click="showDiaryScreen()">
-  				<span class="label">
+  				</span> {{reservationData.reservation_card.total_nights}}
+                        </div>
+                        <div class="button has-arrow next-view" ng-show="reservationData.reservation_card.is_hourly_reservation" ng-click="showDiaryScreen()">
+                                <span class="label">
     			Hours
   				</span>
-  				
-			</div>
-			<!-- Show only a label for displaying nights -->
-		</div>
 
-		<!-- Arrival / Departure -->
-		<div class="reservation-times" ng-class="{'late-check-out': reservationData.reservation_card.is_opted_late_checkout}" ng-show="shouldShowTimeDetails"> <!-- Add class 'late-check-out' if it's a late check out reservation -->
-			<!-- Arrival time -->
-			<div class="check-data icons icon-time time-in" ng-class="{'locked':reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT'}"> <!-- Add class 'locked' if time is not editable -->
-			    <label for="check-in-hour" class="label">Arrival</label>
-			    <div class="select hour">
-			        <select id="check-in-hour" name="check-in" ng-model="reservationParentData.checkinTime.hh" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation"> <!-- Add attribute 'disabled' if time is not editable -->
-			            <option value="">HH</option> <!-- Selected if time not set -->
-			            <option value="01">01</option>
-			            <option value="02">02</option>
-			            <option value="03">03</option>
-			            <option value="04">04</option>
-			            <option value="05">05</option>
-			            <option value="06">06</option>
-			            <option value="07">07</option>
-			            <option value="08">08</option>
-			            <option value="09">09</option>
-			            <option value="10">10</option>
-			            <option value="11">11</option>
-			            <option value="12">12</option>
-			        </select>
-			    </div>
-			    <div class="select minutes">
-			        <select id="check-in-minutes" name="check-in" ng-model="reservationParentData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation"> <!-- Add attribute 'disabled' if time is not editable -->
-			            <option value="">MM</option> <!-- Selected if time not set -->
-			            <option value="00">00</option>
-			            <option value="15">15</option>
-			            <option value="30">30</option>
-			            <option value="45">45</option>
-			        </select>
-			    </div>
-			    <div class="select ampm">
-			        <select id="check-in-ampm" name="check-in" ng-model="reservationParentData.checkinTime.ampm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation">
-			            <option value="AM" selected>AM</option>
-			            <option value="PM">PM</option>
-			        </select>
-			    </div>
-			</div>
-			
-			<!-- Departure time  -->
-			<div class="check-data icons icon-time time-out" ng-class="{'locked': reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDOUT'}"> <!-- Add class 'locked' if time is not editable -->
-			    <label for="check-out-hour" class="label">Departure</label>
-			    <div class="select hour">
-			        <select id="check-out-hour" name="check-out" ng-model="reservationParentData.checkoutTime.hh" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation"> <!-- Add attribute 'disabled' if time is not editable -->
-			            <option value="">HH</option> <!-- Selected if time not set -->
-			            <option value="01">01</option>
-			            <option value="02">02</option>
-			            <option value="03">03</option>
-			            <option value="04">04</option>
-			            <option value="05">05</option>
-			            <option value="06">06</option>
-			            <option value="07">07</option>
-			            <option value="08">08</option>
-			            <option value="09">09</option>
-			            <option value="10">10</option>
-			            <option value="11">11</option>
-			            <option value="12">12</option>
-			        </select>
-			    </div>
-			    <div class="select minutes">
-			        <select id="check-out-minutes" name="check-out" ng-model="reservationParentData.checkoutTime.mm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation"> <!-- Add attribute 'disabled' if time is not editable -->
-			            <option value="">MM</option> <!-- Selected if time not set -->
-			            <option value="00">00</option> 
-			            <option value="15">15</option>
-			            <option value="30">30</option>
-			            <option value="45">45</option>
-			        </select>
-			    </div>
-			    <div class="select ampm">
-			        <select id="check-out-ampm" name="check-out" ng-model="reservationParentData.checkoutTime.ampm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation">
-			            <option value="AM">AM</option>
-			            <option value="PM" selected>PM</option>
-			        </select>
-			    </div>
-			</div>  
-		</div>
-		
-		<!-- Guest details -->
-		<div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
-			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<span class="notice" ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
-			<ul class="guest-count">
-			    <li>
-			        <span class="guest-icon">18+</span>
-			        <span class="label">Adults</span>
-			        <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
-			    </li>
-			    <li>
-			        <span class="guest-icon">3-18</span>
-			        <span class="label">Children</span>
-			        <input name="children-count" id="children-count" type="text" ng-model="guestData.children_count" value="{{guestData.children_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
-			    </li>
-			    <li>
-			        <span class="guest-icon">0-3</span>
-			        <span class="label">Infants</span>
-			        <input name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" value="{{guestData.infants_count}}" maxlength="2" ng-readonly="!isStandAlone"/>
-			    </li>
-			</ul>
+                        </div>
+                        <!-- Show only a label for displaying nights -->
+                </div>
 
-			<form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
-			    <div class="entry">
-			        <figure class="guest-image">
-			            <img src="{{guestData.primary_guest_details.image}}" alt="" />
-			            <span ng-show="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
-			        </figure>
-			        <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{guestData.primary_guest_details.first_name}}" readonly />
-			        <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{guestData.primary_guest_details.last_name}}" readonly />
-			    </div>
-			    <label for="acc1-first-name">Accompanying guests</label>
-			    
-			    <div class="entry" ng-repeat="guest in guestData.accompanying_guests_details">
-			        <figure class="guest-image">
-			            <img src="{{guest.image}}" alt="" />
-			        </figure>
-			        <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guest.first_name" value="{{guest.first_name}}" />
-			        <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" />
-			    </div>
-			    
-			</form>
-		</div>
-	</div>
-	
+                <!-- Arrival / Departure -->
+                <div class="reservation-times" ng-class="{'late-check-out': reservationData.reservation_card.is_opted_late_checkout}" ng-show="shouldShowTimeDetails">
+                        <!-- Add class 'late-check-out' if it's a late check out reservation -->
+                        <!-- Arrival time -->
+                        <div class="check-data icons icon-time time-in" ng-class="{'locked':reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT'}">
+                                <!-- Add class 'locked' if time is not editable -->
+                                <label for="check-in-hour" class="label">Arrival</label>
+                                <div class="select hour">
+                                        <select id="check-in-hour" name="check-in" ng-model="reservationParentData.checkinTime.hh" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation">
+                                                <!-- Add attribute 'disabled' if time is not editable -->
+                                                <option value="">HH</option>
+                                                <!-- Selected if time not set -->
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                        </select>
+                                </div>
+                                <div class="select minutes">
+                                        <select id="check-in-minutes" name="check-in" ng-model="reservationParentData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation">
+                                                <!-- Add attribute 'disabled' if time is not editable -->
+                                                <option value="">MM</option>
+                                                <!-- Selected if time not set -->
+                                                <option value="00">00</option>
+                                                <option value="15">15</option>
+                                                <option value="30">30</option>
+                                                <option value="45">45</option>
+                                        </select>
+                                </div>
+                                <div class="select ampm">
+                                        <select id="check-in-ampm" name="check-in" ng-model="reservationParentData.checkinTime.ampm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation">
+                                                <option value="AM" selected>AM</option>
+                                                <option value="PM">PM</option>
+                                        </select>
+                                </div>
+                        </div>
 
-	<div class="reservation-content scrollable" ng-iscroll='resultDetails' ng-iscroll-delay='50'>
-		<div class="wrapper">
-			
-			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                        <!-- Departure time  -->
+                        <div class="check-data icons icon-time time-out" ng-class="{'locked': reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDOUT'}">
+                                <!-- Add class 'locked' if time is not editable -->
+                                <label for="check-out-hour" class="label">Departure</label>
+                                <div class="select hour">
+                                        <select id="check-out-hour" name="check-out" ng-model="reservationParentData.checkoutTime.hh" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation">
+                                                <!-- Add attribute 'disabled' if time is not editable -->
+                                                <option value="">HH</option>
+                                                <!-- Selected if time not set -->
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                        </select>
+                                </div>
+                                <div class="select minutes">
+                                        <select id="check-out-minutes" name="check-out" ng-model="reservationParentData.checkoutTime.mm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation">
+                                                <!-- Add attribute 'disabled' if time is not editable -->
+                                                <option value="">MM</option>
+                                                <!-- Selected if time not set -->
+                                                <option value="00">00</option>
+                                                <option value="15">15</option>
+                                                <option value="30">30</option>
+                                                <option value="45">45</option>
+                                        </select>
+                                </div>
+                                <div class="select ampm">
+                                        <select id="check-out-ampm" name="check-out" ng-model="reservationParentData.checkoutTime.ampm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.is_opted_late_checkout || reservationData.reservation_card.reservation_status == 'CHECKEDOUT' || reservationData.reservation_card.is_hourly_reservation">
+                                                <option value="AM">AM</option>
+                                                <option value="PM" selected>PM</option>
+                                        </select>
+                                </div>
+                        </div>
+                </div>
 
-			<!-- Accompany in guest card -->
-			<div ng-if ="reservationData.reservation_card.group_name != '' || reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
+                <!-- Guest details -->
+                <div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
+                        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                        <span class="notice" ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
+                        <ul class="guest-count">
+                                <li>
+                                        <span class="guest-icon">18+</span>
+                                        <span class="label">Adults</span>
+                                        <!-- <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
+                                        <select ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" style="width:40px" ng-change="onStayCardOccupancyChange()">
+                                                <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
+                                        </select>
+                                </li>
+                                <li>
+                                        <span class="guest-icon">3-18</span>
+                                        <span class="label">Children</span>
+                                        <!-- <input name="children-count" id="children-count" type="text" ng-model="guestData.children_count" value="{{guestData.children_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
+                                        <select ng-readonly="!isStandAlone" name="children-count" id="children-count" ng-model="guestData.children_count" style="width:40px" ng-change="onStayCardOccupancyChange()">
+                                                <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==guestData.children_count">{{i}}</option>
+                                        </select>
+                                </li>
+                                <li>
+                                        <span class="guest-icon">0-3</span>
+                                        <span class="label">Infants</span>
+                                        <!-- <input name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" value="{{guestData.infants_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
+                                        <select ng-readonly="!isStandAlone" name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" style="width:40px" ng-change="onStayCardOccupancyChange()">
+                                                <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==guestData.infants_count">{{i}}</option>
+                                        </select>
+                                </li>
+                        </ul>
 
-			<!-- Credit card -->
-			<div ng-include="'/assets/partials/reservationCard/rvReservationCardPayment.html'"></div>
+                        <form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
+                                <div class="entry">
+                                        <figure class="guest-image">
+                                                <img src="{{guestData.primary_guest_details.image}}" alt="" />
+                                                <span ng-show="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
+                                        </figure>
+                                        <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{guestData.primary_guest_details.first_name}}" readonly />
+                                        <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{guestData.primary_guest_details.last_name}}" readonly />
+                                </div>
+                                <label for="acc1-first-name">Accompanying guests</label>
 
-			<!-- Display only the upgrades option -->
-			<div ng-include="'/assets/partials/reservationCard/reservationCardRoom.html'"></div>			
+                                <div class="entry" ng-repeat="guest in guestData.accompanying_guests_details">
+                                        <figure class="guest-image">
+                                                <img src="{{guest.image}}" alt="" />
+                                        </figure>
+                                        <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guest.first_name" value="{{guest.first_name}}" />
+                                        <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" />
+                                </div>
 
-			<!-- ADR / Total Stay Cost -->
-			<div ng-include="'/assets/partials/reservationCard/reservationCardTotalStayCost.html'"></div>
+                        </form>
+                </div>
+        </div>
 
-			<!-- Clubbing the Wakeup and NewsPaper Partials together as per new markup from Stjepan -->
-			<!-- Wake up / Newspaper / Loyalty -->
-			<div ng-include="'/assets/partials/reservationCard/reservationCardWakeup.html'"></div>						
-			
- 			<!-- Loyalty -->
-			<div ng-include="'/assets/partials/reservationCard/rvReservationCardLoyalty.html'" ng-controller="rvReservationCardLoyaltyController"></div>
-			
-			<!-- Additional Details -->
-			<div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'"  ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>				
 
-			<!-- Notes -->
-			<div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'"  ng-controller="rvReservationCardNotesController"></div>
-		</div>
-	</div>
+        <div class="reservation-content scrollable" ng-iscroll='resultDetails' ng-iscroll-delay='50'>
+                <div class="wrapper">
 
-	<!-- Reservation actions pane -->
-	<span ng-include="'/assets/partials/reservationCard/reservationActions.html'"></span>
+                        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+                        <!-- Accompany in guest card -->
+                        <div ng-if="reservationData.reservation_card.group_name != '' || reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
+
+                        <!-- Credit card -->
+                        <div ng-include="'/assets/partials/reservationCard/rvReservationCardPayment.html'"></div>
+
+                        <!-- Display only the upgrades option -->
+                        <div ng-include="'/assets/partials/reservationCard/reservationCardRoom.html'"></div>
+
+                        <!-- ADR / Total Stay Cost -->
+                        <div ng-include="'/assets/partials/reservationCard/reservationCardTotalStayCost.html'"></div>
+
+                        <!-- Clubbing the Wakeup and NewsPaper Partials together as per new markup from Stjepan -->
+                        <!-- Wake up / Newspaper / Loyalty -->
+                        <div ng-include="'/assets/partials/reservationCard/reservationCardWakeup.html'"></div>
+
+                        <!-- Loyalty -->
+                        <div ng-include="'/assets/partials/reservationCard/rvReservationCardLoyalty.html'" ng-controller="rvReservationCardLoyaltyController"></div>
+
+                        <!-- Additional Details -->
+                        <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>
+
+                        <!-- Notes -->
+                        <div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'" ng-controller="rvReservationCardNotesController"></div>
+                </div>
+        </div>
+
+        <!-- Reservation actions pane -->
+        <span ng-include="'/assets/partials/reservationCard/reservationActions.html'"></span>
 </div>
 
 <div ng-include="'/assets/partials/reservationCard/reservationNoUpcoming.html'"></div>
 <div ng-include="'/assets/partials/reservationCard/reservationNoCurrent.html'"></div>
 <div ng-include="'/assets/partials/reservationCard/reservationNoHistory.html'"></div>
-

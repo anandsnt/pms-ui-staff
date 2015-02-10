@@ -22,12 +22,14 @@
 			<!-- top section starts here-->
 			<div class="row checkin-wrapper" id="get-key-wrapper">
 				<div class="chekin-heading centeralign">
-					You're checked in!
+					You're checked in,
 				</div>
 				<div class="reservation-id centeralign">
 					<span class="res-conf-no">RESERVATION #: {{confirmationNumber}}</span>
 				</div>
-
+				<p class="roomnumber centeralign">
+					<span>Room {{responseData.room_no}}</span>
+				</p>
 				<div class="get-key">
 					<p class="key-msg">{{responseData.delivery_message}}</p>
 				</div>
