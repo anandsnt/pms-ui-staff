@@ -98,6 +98,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 3;
 					break;
 
+				case 'Arrival':
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 4;
+					break;
+
 				case 'Web Check In Conversion':
 				case 'Web Check Out Conversion':
 					$scope.leftColSpan = 8;
