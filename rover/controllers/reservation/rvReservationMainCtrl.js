@@ -12,7 +12,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         //setting the main header of the screen
         $scope.heading = "Reservations";
-
+        
         $scope.viewState = {
             isAddNewCard: false,
             pendingRemoval: {
@@ -1842,7 +1842,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     } else {
                     	postData.reservationId = $scope.reservationData.reservationId;
                     }
-                    
+                    postData.addons = $scope.existingAddons;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);

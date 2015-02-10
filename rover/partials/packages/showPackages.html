@@ -4,17 +4,19 @@
 
 <!-- <div class="modal-content room-enhancements enhancements-added"> -->
     <span class="h2 message">Room {{packageData.room_no}} Enhancements</span>
-    <ul>
-        <li ng-repeat="existingPackages in packageData.existing_packages">
-            <span class="item">{{existingPackages.package_name}}</span>
-            <span class="count"> ({{existingPackages.count}})</span>
-            <span class="base">at {{currencySymbol}}{{existingPackages.price_per_piece}} / ADULT PER STAY</span>
-            <span class="price">{{currencySymbol}}{{existingPackages.totalAmount}}</span>
-            <span ng-show="existingPackages.is_inclusive=='true'">INCL</span>
-            <button type="button" class="icons icon-trash">Remove</button>
-        </li>
-       
-    </ul>
+    <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">
+        <ul  style="height:50px">
+            <li ng-repeat="existingPackages in packageData.existing_packages">
+                <span class="item">{{existingPackages.package_name}}</span>
+                <span class="count"> ({{existingPackages.count}})</span>
+                <span class="base">at {{currencySymbol}}{{existingPackages.price_per_piece}} / ADULT PER STAY</span>
+                <span class="price">{{currencySymbol}}{{existingPackages.totalAmount}}</span>
+                <span ng-show="existingPackages.is_inclusive=='true'">INCL</span>
+                <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons(existingPackages.package_id)">Remove</button>
+            </li>
+           
+        </ul>
+    </div>
     <div class="actions">
         <!-- On Stay Card -->
         <button type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>

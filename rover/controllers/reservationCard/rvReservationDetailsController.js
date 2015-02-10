@@ -515,13 +515,23 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		$scope.handleAddonsOnReservation = function(isPackageExist){
-			//if(isPackageExist){
+			if(isPackageExist){
 				ngDialog.open({
 					template: '/assets/partials/packages/showPackages.html',
 					controller: 'RVReservationPackageController',
 					scope: $scope
 				});
-			//}
+			} else {
+				$state.go('rover.reservation.staycard.mainCard.addons',
+			 	{
+			 		'from_date': $scope.reservation.reservation_card.arrival_date,
+			 		'to_date': $scope.reservation.reservation_card.departure_date,
+			 		'is_active': true,
+			 		'is_not_rate_only': true,
+			 		'from_screen': 'staycard'
+
+			 	});
+			}
 		};
 
 	}

@@ -18,7 +18,16 @@ sntRover.controller('RVReservationPackageController',
 	};
 	//console.log($scope);
 	$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, successCallBack);
+	$scope.setScroller('resultDetails', {
+			'click': true
+		});
+	setTimeout(function() {
+					$scope.refreshScroller('resultDetails');
+					
+				},
+				2000);
 
+	
 	$scope.goToAddons = function(){
 		$scope.closeDialog();
 		 $state.go('rover.reservation.staycard.mainCard.addons',
@@ -30,6 +39,10 @@ sntRover.controller('RVReservationPackageController',
 		 		'from_screen': 'staycard'
 
 		 	});
+	};
+
+	$scope.removeSelectedAddons = function(addonId){
+
 	};
 
 }

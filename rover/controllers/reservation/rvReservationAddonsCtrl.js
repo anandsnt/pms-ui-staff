@@ -9,12 +9,33 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
     'RVReservationSummarySrv',
     '$stateParams',
     '$vault',
-    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv, $stateParams, $vault) {
-console.log("addons screen");
+    'RVReservationPackageSrv',
+    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv, $stateParams, $vault, RVReservationPackageSrv) {
 
+        $scope.activeRoom = 0;
+        $scope.fromPage = "";
+                    
+        if($stateParams.from_screen == "staycard"){
+            $scope.fromPage = "staycard";
+        }
+        var successCallBack = function(data){
+            $scope.$emit('hideLoader');
+            $scope.existingAddons = [];
 
-console.log("================"+$stateParams.from_screen);
-console.log($scope.reservationData.reservationId)
+            angular.forEach(data.existing_packages,function(item, index) {
+                var addonsData = {};
+                addonsData.id = item.package_id;
+                addonsData.title = item.package_name;
+                addonsData.quantity = item.count;
+                $scope.existingAddons.push(addonsData);
+            });
+            $scope.existingAddonsLength = $scope.existingAddons.length;
+                    
+        };
+       
+        $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
+        
+
         // set the previous state
         $rootScope.setPrevState = {
             title: $filter('translate')('ROOM_RATES'),
@@ -51,18 +72,15 @@ console.log($scope.reservationData.reservationId)
         // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons] 
         // same will be overrided if with valid charge code id
         $scope.activeAddonCategoryId = -1;
-        $scope.activeRoom = 0;
+        
 
         $scope.heading = 'Enhance Stay';
         $scope.setHeadingTitle($scope.heading);
 
         $scope.showEnhancementsPopup = function() {
 
-            var selectedAddons = $scope.reservationData.rooms[$scope.activeRoom].addons;
-            $scope.fromPage = "";
-            if($stateParams.from_screen == "staycard"){
-                $scope.fromPage = "staycard";
-            }
+            var selectedAddons = $scope.existingAddons;
+         
             if (selectedAddons.length > 0) {
                 ngDialog.open({
                     template: '/assets/partials/reservation/selectedAddonsListPopup.html',
@@ -85,29 +103,46 @@ console.log($scope.reservationData.reservationId)
 
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
-            var save = function() {
-                if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
-                    // $scope.saveReservation('rover.reservation.staycard.mainCard.summaryAndConfirm');
-                    /**
-                     * 1. Move check for guest / company / ta card attached to the screen before the reservation summary screen.
-                     * This may either be the rooms and rates screen or the Add on screen when turned on.
-                     * -- QA Comments : done, but returns to enhance stay screen.
-                     *    Upon closing, user should be on summary screen
-                     */
+            console.log(":::::::::::::::::::::")
+             console.log($scope.reservationData);
+             
+            if($scope.fromPage == "staycard"){
+              
+                var saveData = {};
+                saveData.addons = $scope.existingAddons;
+                saveData.reservationId = $scope.reservationData.reservationId;
+                $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData)
+                $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                        id: $scope.reservationData.reservationId,
+                        confirmationId: $scope.reservationData.confirmNum,
+                        isrefresh: true
+                });
+            } else {
+
+                var save = function() {
+                    if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
+                        // $scope.saveReservation('rover.reservation.staycard.mainCard.summaryAndConfirm');
+                        /**
+                         * 1. Move check for guest / company / ta card attached to the screen before the reservation summary screen.
+                         * This may either be the rooms and rates screen or the Add on screen when turned on.
+                         * -- QA Comments : done, but returns to enhance stay screen.
+                         *    Upon closing, user should be on summary screen
+                         */
+                        $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
+                            "reservation": $stateParams.reservation
+                        });
+                    }
+                }
+                if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+                    $scope.$emit('PROMPTCARD');
+                    $scope.$watch("reservationData.guest.id", save);
+                    $scope.$watch("reservationData.company.id", save);
+                    $scope.$watch("reservationData.travelAgent.id", save);
+                } else {
                     $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
                         "reservation": $stateParams.reservation
                     });
                 }
-            }
-            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
-                $scope.$emit('PROMPTCARD');
-                $scope.$watch("reservationData.guest.id", save);
-                $scope.$watch("reservationData.company.id", save);
-                $scope.$watch("reservationData.travelAgent.id", save);
-            } else {
-                $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
-                    "reservation": $stateParams.reservation
-                });
             }
 
         }
@@ -128,6 +163,20 @@ console.log($scope.reservationData.reservationId)
         }
 
         $scope.selectAddon = function(addon, addonQty) {
+            var alreadyAdded = false;
+            angular.forEach($scope.existingAddons,function(item, index) {
+                if(item.id == addon.id){
+                    alreadyAdded = true;
+                    item.quantity = parseInt(item.quantity) + parseInt(addonQty);
+                }
+            });
+            if(!alreadyAdded){
+                var newAddonToReservation = {};
+                newAddonToReservation.id = addon.id;
+                newAddonToReservation.quantity = addonQty;
+                $scope.existingAddons.push(newAddonToReservation)
+            }
+
             var elemIndex = -1;
             $($scope.reservationData.rooms[$scope.activeRoom].addons).each(function(index, elem) {
                 if (elem.id == addon.id) {
@@ -166,8 +215,9 @@ console.log($scope.reservationData.reservationId)
         $scope.removeSelectedAddons = function(index) {
             // subtract selected addon amount from total stay cost
             // $scope.reservationData.totalStayCost -= parseInt($scope.reservationData.rooms[$scope.activeRoom].addons[index].quantity) * parseInt($scope.reservationData.rooms[$scope.activeRoom].addons[index].price);
+            $scope.existingAddons.splice(index, 1);
             $scope.reservationData.rooms[$scope.activeRoom].addons.splice(index, 1);
-            if ($scope.reservationData.rooms[$scope.activeRoom].addons.length === 0) {
+            if ($scope.existingAddons.length === 0) {
                 $scope.closePopup();
             }
             $scope.computeTotalStayCost();
