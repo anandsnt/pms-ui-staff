@@ -48,7 +48,7 @@
 
             <section ng-if="chosenReport.title !='Booking Source & Market Report'">
                 <div ng-show="results.length" class="report-header">
-                    <div ng-include="'/assets/partials/reports/summaryCounts.html'" style="float:left"></div>
+                    <ul ng-include="'/assets/partials/reports/summaryCounts.html'" class="totals"></ul>
 
                     <div class="actions">
                         <div class="select" ng-if="HIDE_THIS_FEATURE">

@@ -1,9 +1,2 @@
-<div ng-if="!!summaryCounts.arrivals" style="float:left">
-	<span>ARRIVALS</span>
-	<span>{{ summaryCounts.arrivals }}</span>
-</div>
-
-<div ng-if="!!summaryCounts.adr" style="float:left">
-	<span>ADR</span>
-	<span>{{ summaryCounts.currency }}{{ summaryCounts.adr }}</span>
-</div>
+<li ng-if="!!summaryCounts.arrivals">Total Arrival Rooms<span>{{ summaryCounts.arrivals }}</span></li>
+<li ng-if="!!summaryCounts.adr">ADR<span>{{ currencySymbol }}{{ each.adr }}</span></li>

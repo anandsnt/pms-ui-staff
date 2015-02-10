@@ -489,8 +489,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var i = j = k = l = m = n = 0;
 
-			if ( $scope.parsedApiFor == 'Arrival' ||
-					$scope.parsedApiFor == 'In-House Guests' ||
+			if ( $scope.parsedApiFor == 'In-House Guests' ||
 					$scope.parsedApiFor == 'Departure' ||
 					$scope.parsedApiFor == 'Cancelation & No Show' ||
 					$scope.parsedApiFor == 'Login and out Activity' ) {
@@ -606,6 +605,95 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// dont remove yet
 				console.log( 'API reponse changed as follows: ');
 				console.log( _retResult );
+
+
+
+			} else if ($scope.parsedApiFor == 'Arrival') {
+
+
+
+				var itemCopy   = {};
+				var customData = [];
+				var guestData  = {};
+				var noteData   = {};
+				var cancelData = {};
+
+				var checkGuest = function(item) {
+					var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
+					var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
+
+					return guests || compTravelGrp ? true : false;
+				};
+
+				var checkNote = function(item) {
+					return !!item['notes'] && !!item['notes'].length;
+				};
+
+				var checkCancel = function(item) {
+					return !!item['cancel_reason']
+				};
+
+				i = j = 0;
+
+				for (i = 0, j = apiResponse.length; i < j; i++) {
+					itemCopy   = angular.copy( apiResponse[i] );
+					customData = [];
+					guestData  = {};
+					noteData   = {};
+					cancelData = {};
+
+					if ( checkGuest(itemCopy) ) {
+						guestData = {
+							isGuestData : true,
+							guestNames  : angular.copy( itemCopy['accompanying_names'] ),
+							company_name      : itemCopy.company_name,
+							travel_agent_name : itemCopy.travel_agent_name,
+							group_name        : itemCopy.group_name
+						};
+						customData.push( guestData );
+					};
+
+					if ( checkCancel(itemCopy) ) {
+						_cancelRes = {
+							isCancelData : true,
+							reason       : angular.copy( itemCopy['cancel_reason'] )
+						};
+						customData.push( cancelData );
+					};
+
+					if ( checkNote(itemCopy) ) {
+						noteData = {
+							isNoteData : true,
+							note       : angular.copy( itemCopy['notes'] )
+						}
+					};
+
+					// IF: we found custom items
+						// set row span for the parent tr a rowspan
+						// mark the class that must be added to the last tr
+					// ELSE: since this tr won't have any childs, mark the class that must be added to the last tr
+					if ( !!customData.length ) {
+						itemCopy.rowspan = customData.length + 1;
+						customData[customData.length - 1]['trCls'] = 'row-break';
+					} else {
+						itemCopy.trCls = 'row-break';
+					};
+
+					// push 'itemCopy' into '_retResult'
+					itemCopy.isReport = true;
+					_retResult.push( itemCopy );
+
+					// push each item in 'customData' in to '_retResult'
+					for (m = 0, n = customData.length; m < n; m++) {
+						_retResult.push( customData[m] );
+					};
+				}
+
+
+				// dont remove yet
+				console.log( 'API reponse changed as follows: ');
+				console.log( _retResult );
+
 			} else {
 				_retResult = apiResponse;
 			};
