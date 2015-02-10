@@ -463,7 +463,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					selected: true
 				});
 				if (selectedMarkets.length > 0) {
-					key = 'market_ids';
+					key = 'market_ids[]';
 					params[key] = [];
 					_.each(selectedMarkets, function(market) {
 						params[key].push(market.value);
