@@ -231,8 +231,31 @@ var TimelineResizeGrip = React.createClass({
 				classes             = "set-times " + label_class,
 				time_txt            = '';
 
+
 			if(currentResizeItem) {
-			 	time_txt = (new Date(currentResizeItem[direction])).toComponents().time.toString(true);
+				var dateDirection = new Date(currentResizeItem[direction]);
+				time_txt = dateDirection.toComponents().time.toString(true);
+				var display_start_time = (props.display.x_n instanceof Date ? props.display.x_n : new Date (props.display.x_n) );
+				
+				if(display_start_time.isOnDST()==false && dateDirection.isOnDST() ==true ) {					
+					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
+					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
+					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;					
+					
+				}
+
+				else if(display_start_time.isOnDST()==true && dateDirection.isOnDST() ==false ) {					
+					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);					
+					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
+					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;					
+					//The special case adjustment
+					if(dateForCalculatingLeft.isOnDST()){
+						left = (dateForCalculatingLeft.getTime() + 3600000 - x_origin) * px_per_ms;
+					}
+					//time_txt = dateForCalculatingLeft.toComponents().time.toString(true);
+				}
+
+			 	
 			}
 
 			if(this.props.edit.active) {
@@ -268,3 +291,4 @@ var TimelineResizeGrip = React.createClass({
 			);
 		}
 });
+

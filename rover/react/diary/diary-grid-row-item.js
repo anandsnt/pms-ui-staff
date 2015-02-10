@@ -115,11 +115,32 @@ var GridRowItem = React.createClass({
 			className 				= (!is_temp_reservation ? 'occupied ' : '') + 
 																data[m.status] + (state.editing ? ' editing' : '') + 
 																(is_temp_reservation && data.selected ? ' reserved' : ''),
-			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms);
+			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms),
+			left 					= (start_time_ms - x_origin) * px_per_ms + 'px';
 
 			
+		var start_date = new Date(start_time_ms);
+				
+		var display_start_time = (display.x_n instanceof Date ? display.x_n : new Date (display.x_n) );
+		
+		if(!display_start_time.isOnDST() && start_date.isOnDST()){
+			var dateForCalculatingLeft = new Date(start_time_ms);
+			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
+			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';			
+		}
+		else if(display_start_time.isOnDST() && !start_date.isOnDST()){
+			var dateForCalculatingLeft = new Date(start_time_ms);
+			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 			
+			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
 
+			//The special case adjustment
+			if(dateForCalculatingLeft.isOnDST()){
+				left = (dateForCalculatingLeft.getTime() +3600000 - x_origin) * px_per_ms + 'px';
+			}
+
+
+		}
 
 		return GridRowItemDrag({
 			key: 				data.key,
@@ -138,7 +159,7 @@ var GridRowItem = React.createClass({
 			currentDragItem:    props.currentResizeItem,
 			style: 			   { 
 				display: 'block',
-				left: (start_time_ms - x_origin) * px_per_ms + 'px'
+				left: left
 			}
 		}, 
 		React.DOM.span({

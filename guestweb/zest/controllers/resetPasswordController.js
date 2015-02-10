@@ -28,7 +28,7 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
 		    
                 $scope.isPosting = false;
 		        if(response.status === 'failure') {
-		           $scope.errorMessage = "The password reset is unsuccessful. Please contact the front Desk"
+		           $scope.errorMessage = response.errors[0];
 		           $modal.open($scope.opts); // error modal popup
 	           }
 	           else{		    
