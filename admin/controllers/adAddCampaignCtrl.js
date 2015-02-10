@@ -91,6 +91,8 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		campaign.recurrence_end_date = $scope.campaignData.end_date_for_display;
 		campaign.alert_ios7 = $scope.campaignData.alert_ios7;
 		campaign.alert_ios8 = $scope.campaignData.alert_ios8;
+		campaign.status = $scope.campaignData.status;
+
 
 		return campaign;
 
@@ -108,6 +110,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		var campaignStartSuccess = function(data){
 			$scope.campaignData.status = 'ACTIVE';
 			$scope.$emit('hideLoader');
+			$scope.gobackToCampaignListing();
 		}
 		var data = {"id": id};
 		$scope.invokeApi(ADCampaignSrv.startCampaign, data, campaignStartSuccess);
