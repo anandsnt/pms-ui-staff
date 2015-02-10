@@ -45,6 +45,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.completed_time = data.completed_time;
 		$scope.campaignData.status = data.status;
 		$scope.campaignData.is_active = data.is_active? 'true' : 'false';
+		$scope.campaignData.is_started = data.is_started;
 
 		$scope.campaignData.end_date_for_display = data.recurrence_end_date;
 		

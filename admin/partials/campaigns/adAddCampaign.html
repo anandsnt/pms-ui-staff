@@ -265,6 +265,7 @@
 	    <div class="actions" ng-show = "mode == 'EDIT' && campaignData.status !== 'COMPLETED'">
             <button type="button" class="button blank" ng-click="gobackToCampaignListing();">Cancel</button>
             <button type="button" class="button green" ng-click="saveAsDraft()">Save</button>
+	        <button type="button" class="button green" ng-click="startCampaignPressed()" ng-show="campaignData.is_started">Start Campaign</button>
         </div>
 
         <div class="actions" ng-show = "mode == 'EDIT' && campaignData.status == 'COMPLETED'">
