@@ -78,7 +78,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	var computeCampaignSaveData = function(){
 		var campaign = {};
 		campaign.name = $scope.campaignData.name;
-		campaign.is_active = $scope.campaignData.is_active == 'true' ? true : false;
+		campaign.is_active = ($scope.campaignData.is_active == 'false' || $scope.campaignData.is_active == undefined) ? false : true;
 		campaign.audience_type = $scope.campaignData.audience_type;
 		campaign.specific_users = $scope.campaignData.specific_users;
 		campaign.subject = $scope.campaignData.subject;
