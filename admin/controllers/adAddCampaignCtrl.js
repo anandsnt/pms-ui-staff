@@ -110,6 +110,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 	var startCampaign = function(id){
 		var campaignStartSuccess = function(data){
+			$scope.campaignData.is_started = true;
 			$scope.$emit('hideLoader');
 		}
 		var data = {"id": id};
