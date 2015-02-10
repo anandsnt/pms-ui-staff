@@ -32,6 +32,20 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		}, 1000);
 
+		$scope.getNumber = function() {
+			return new Array((1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance) * 3);
+		}
+
+		$scope.getHeader = function(indexValue) {
+			if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
+				return (indexValue % 2 == 0) ? "This Year" : (indexValue % 2 == 2) ? "Variance" : "Last Year"
+			} else if (!!$scope.chosenReport.chosenLastYear || !!$scope.chosenReport.chosenVariance) {
+				return (indexValue % 2 == 0) ? "This Year" : !!$scope.chosenReport.chosenVariance ? "Variance" : "Last Year"
+			} else {
+				return "This Year"
+			}
+		}
+
 		$scope.tabularData = {
 			hotelName: "Sample Hotel",
 			markets: [{
@@ -55,25 +69,25 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				name: "ChargeCodeThree"
 			}],
 			displayValues: [
-				[5650, 5650, 5650],
-				[2401, 2401, 2401],
-				[5928, 5928, 5928],
-				[3080, 3080, 3080],
-				[1698, 1698, 1698],
-				[2024, 2024, 2024],
-				[3254, 2024, 2024],
-				[4698, 4698, 4698],
-				[5650, 5650, 5650],
-				[2401, 2401, 2401],
-				[5928, 5928, 5928],
-				[3080, 3080, 3080],
-				[1698, 1698, 1698],
-				[2024, 2024, 2024],
-				[3254, 2024, 2024],
-				[4698, 4698, 4698],
-				[2024, 2024, 2024],
-				[3254, 2024, 2024],
-				[4698, 4698, 4698]
+				[2401, 2401, 2401, ],
+				[5928, 5928, 5928, ],
+				[3080, 3080, 3080, ],
+				[1698, 1698, 1698, ],
+				[2024, 2024, 2024, ],
+				[3254, 2024, 2024, ],
+				[4698, 4698, 4698, ],
+				[5650, 5650, 5650, ],
+				[5650, 5650, 5650, ],
+				[2401, 2401, 2401, ],
+				[5928, 5928, 5928, ],
+				[3080, 3080, 3080, ],
+				[1698, 1698, 1698, ],
+				[2024, 2024, 2024, ],
+				[3254, 2024, 2024, ],
+				[4698, 4698, 4698, ],
+				[2024, 2024, 2024, ],
+				[3254, 2024, 2024, ],
+				[4698, 4698, 4698, ]
 			],
 			table: {
 				"2014-12-01": {
@@ -151,3 +165,10 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$scope.refreshScroller('leftPanelScroll');
 	}
 ])
+
+
+sntRover.directive('tableHeaders', function() {
+	return {
+		templateUrl: '/assets/partials/reports/rvOccupancyRevenueReport.html'
+	};
+});

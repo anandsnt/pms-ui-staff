@@ -58,11 +58,11 @@
                                         <!-- {{chosenReport.chosenLastYear}}{{chosenReport.chosenVariance}} -->
                                         <!-- If showing variance AND/OR last year, add second row: -->
                                         <tr ng-if="chosenReport.chosenLastYear || chosenReport.chosenVariance" class="bottom-row">
-                                                <th>This Year</th>
-                                                <th ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}">Last Year</th>
-                                                <!-- // Output only if showing last year. Add class "day-end" if not showing variance. -->
-                                                <th ng-if="chosenReport.chosenVariance" class="day-end">Variance</th>
-                                                <!-- // Output only if showing variance. -->
+                                                        <th  ng-repeat="n in getNumber() track by $index">{{getHeader($index)}}</th>
+                                                        <!-- <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}">Last Year</th>
+                                                        // Output only if showing last year. Add class "day-end" if not showing variance.
+                                                        <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenVariance" class="day-end">Variance</th> -->
+                                                </div>
                                         </tr>
                                 </thead>
                                 <tbody>

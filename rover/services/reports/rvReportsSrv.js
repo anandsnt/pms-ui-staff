@@ -22,23 +22,7 @@ sntRover.service('RVreportsSrv', [
 				deferred.resolve(this.cacheReportList);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
-					.then(function(data) {
-						data.results.unshift({
-							"id": 8,
-							"title": "Occupancy & Revenue Summary",
-							"sub_title": "By Date Range",
-							"description": "Occupancy & Revenue Statistics by Day / Date Range by Market",
-							"filters": [{
-								"value": "DATE_RANGE",
-								"description": "Date Range"
-							}, {
-								"value": "INCLUDE_VARIANCE",
-								"description": "Include Variance"
-							}, {
-								"value": "INCLUDE_LASTYEAR",
-								"description": "Include Last Year"
-							}]
-						})
+					.then(function(data) {						
 						this.cacheReportList = data;
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {

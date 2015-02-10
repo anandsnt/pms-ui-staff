@@ -225,7 +225,7 @@ sntRover.controller('RVReportListCrl', [
                     };
 
                     // INCLUDE_LASTYEAR
-                    if (item.value === 'INCLUDE_LASTYEAR') {
+                    if (item.value === 'INCLUDE_LAST_YEAR') {
                         reportList[i]['hasLastYear'] = item;
                         hasFauxSelect = true;
                         hasMarketSelect = true;
