@@ -13,6 +13,20 @@ sntRover.service('RVReservationPackageSrv',['$http', '$q', 'rvBaseWebSrvV2', fun
 			});	
 		return deferred.promise;
 	};
+
+	this.deleteAddonsFromReservation = function(dataToApi){
+		var deferred = $q.defer();
+		//var url = '/sample_json/packages/reservationPackages.json';
+		var url = 'api/reservations/'+dataToApi.reservationId+'/delete_addons';
+	
+		RVBaseWebSrvV2.postJSON(url, dataToApi.postData).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+		
+	}
 	
 	
 	

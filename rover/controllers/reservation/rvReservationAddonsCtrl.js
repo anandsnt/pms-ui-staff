@@ -103,8 +103,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
-            console.log(":::::::::::::::::::::")
-             console.log($scope.reservationData);
              
             if($scope.fromPage == "staycard"){
               
@@ -174,6 +172,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 var newAddonToReservation = {};
                 newAddonToReservation.id = addon.id;
                 newAddonToReservation.quantity = addonQty;
+                newAddonToReservation.title = addon.title;
                 $scope.existingAddons.push(newAddonToReservation)
             }
 

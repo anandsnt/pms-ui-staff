@@ -1,6 +1,6 @@
 <div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()" ng-cloak>
     <div class="modal-content room-enhancements">
-        <span class="h2 message">Room {number} Enhancements</span>
+        <span class="h2 message">Room {{packageData.room_no}} Enhancements</span>
         <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        
             <ul class="wrapper" style="margin-right: auto;">
                 <li ng-repeat="existingPackages in packageData.existing_packages">
@@ -15,8 +15,8 @@
         </div>
         <div class="actions">
             <!-- On Stay Card -->
-        <button type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>
-        <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
+            <button type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>
+            <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
 
             <!-- On Addons screen 
             <button type="button" class="button blank">Close</button>
