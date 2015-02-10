@@ -1,5 +1,5 @@
-<div class="block-item item-rate " ng-class="{'has-button':reservationData.reservation_card.is_package_exist}">
-	<h3 class="block-title"> ADR &amp; Add-Ons</h3>
+<div class="block-item item-rate has-button" >
+	<h3 class="block-title"> Rates &amp; Add Ons</h3>
 	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="showEditReservationPrompt()"> 
 		<span class="number" ng-show="reservationData.reservation_card.is_rates_suppressed">
 			{{reservationData.reservation_card.text_rates_suppressed}}
