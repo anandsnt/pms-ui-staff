@@ -84,8 +84,6 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADTemplateConfigurationCtrl',
 			url : '/templateconfiguration'
 		});
-<<<<<<< HEAD
-=======
 
 		$stateProvider.state('admin.campaigns', {
 			templateUrl: '/assets/partials/campaigns/adCampaignsList.html',
@@ -100,5 +98,4 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		});
 		
         
->>>>>>> 4c9320fe292a31741470a8168d03dd960876c29d
 });
