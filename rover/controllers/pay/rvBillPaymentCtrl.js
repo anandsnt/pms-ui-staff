@@ -37,7 +37,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 
 	$scope.disableMakePayment = function(){
-		 if($scope.saveData.paymentType.length > 0){
+		 if($scope.saveData.paymentType.length > 0 && $scope.renderData.defaultPaymentAmount >= 0){
 			return false
 		}
 		else{
@@ -103,9 +103,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				}
 			}
 			if($scope.renderData.defaultPaymentAmount < 0){
-				$scope.refundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+				
+				$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 				$scope.shouldShowMakePaymentButton = false;
 			} else {
+
 				$scope.shouldShowMakePaymentButton = true;
 			}
 		}
