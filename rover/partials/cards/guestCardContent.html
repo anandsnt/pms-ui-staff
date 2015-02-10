@@ -40,6 +40,7 @@
                         <a ng-click="selectGuest(guest, $event)">
                             <figure class="guest-image">
                                 <img ng-src="{{ guest.image }}" alt="" />
+                                <span ng-show="guest.vip" class="vip">VIP</span>
                             </figure>
                             <div class="data" ng-class="{'no-stay': guest.stayCount == 0}">
                                 <h2>
