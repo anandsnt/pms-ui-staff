@@ -39,6 +39,12 @@
                 strong {
                     color: @red;
                     font-weight: 400;
+
+                    &.zone {
+                        font-style: normal;
+                        font-weight: 600;
+                        color: @blue;
+                    }
                 }
 
                 span { color: @grey3; }
@@ -102,6 +108,7 @@
                 strong {
                     color: @red;
                     line-height: 14px;
+                    margin-left: 2px;
                 }
 
                 span { color: @grey4; }
@@ -163,6 +170,8 @@
 
                 .radio,
                 .checkbox {
+                    .icon-form { background-color: @white; }
+                    
                     &:last-child { margin-bottom: 0; }
                 }
 
