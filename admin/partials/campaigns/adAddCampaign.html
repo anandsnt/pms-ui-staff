@@ -7,7 +7,7 @@
 	</header>
 
 	<header class="content-title" ng-show="mode == 'EDIT'">
-	    <h2>{{'EDIT_CAMPAIGN_TITLE' |translate}}<span translate>{{campaignData.name}}</span></h2>
+	    <h2>{{'EDIT_CAMPAIGN_TITLE' |translate}}<span translate> {{campaignData.name}}</span></h2>
 	    <a ng-click="gobackToCampaignListing();" class="action back" translate> BACK</a>
 	    <button type="button" class="action remove" ng-click="deleteCampaign();" translate>DELETE_CAMPAIGN</button>
 	</header>
@@ -31,7 +31,7 @@
 		        <div class="entry full-width" ng-show = "mode == 'EDIT' && campaignData.status !== 'COMPLETED'">
                     <label for="campaign-status" translate>STATUS</label>
                     
-                    <div class="switch-button" ng-show="campaignData.status == 'ACTIVE' || campaignData.status == 'INACTIVE'" ng-class="{ 'on' :campaignData.status == 'ACTIVE' }" ng-click="statusChanged()"> <!-- Remove class "on" when checkbox is unchecked -->
+                    <div class="switch-button" ng-show="campaignData.is_recurring == 'true' && (campaignData.status == 'ACTIVE' || campaignData.status == 'INACTIVE')" ng-class="{ 'on' :campaignData.status == 'ACTIVE' }" ng-click="statusChanged()"> <!-- Remove class "on" when checkbox is unchecked -->
                         <input id="campaign-status" type="checkbox"/>
                         <span class="switch-icon"></span>
                     </div>
