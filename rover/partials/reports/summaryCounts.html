@@ -2,6 +2,10 @@
 <li ng-if="!!summaryCounts.adr">ADR<span>{{ currencySymbol }}{{ summaryCounts.adr }}</span></li>
 
 
-<li ng-if="!!summaryCounts.total_count">Total Rooms<span>{{ summaryCounts.total_count }}</span></li>
-<li ng-if="!!summaryCounts.total_adult_and_children">Total Adults / Children<span>{{ summaryCounts.total_adult_and_children }} / {{ summaryCounts.total_adult_and_children }}</span></li>
+<li ng-if="!!summaryCounts.total_rooms_count">Total Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
+<li ng-if="!!summaryCounts.total_adults">Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>	
 <li ng-if="!!summaryCounts.total_balance">Total Balance<span class="green">{{ currencySymbol }}{{ summaryCounts.total_balance }}</span></li>
+
+<li ng-if="!!summaryCounts.due">Due<span>{{ currencySymbol }}{{ summaryCounts.due }}</span></li>
+<li ng-if="!!summaryCounts.paid">Paid<span>{{ currencySymbol }}{{ summaryCounts.paid }}</span></li>	
+<li ng-if="!!summaryCounts.past_due">Past Due<span class="green">{{ currencySymbol }}{{ summaryCounts.past_due }}</span></li>
