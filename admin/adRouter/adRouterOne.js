@@ -84,4 +84,21 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADTemplateConfigurationCtrl',
 			url : '/templateconfiguration'
 		});
+<<<<<<< HEAD
+=======
+
+		$stateProvider.state('admin.campaigns', {
+			templateUrl: '/assets/partials/campaigns/adCampaignsList.html',
+			controller: 'ADCampaignsListCtrl',
+			url : '/campaigns'
+		});
+
+		$stateProvider.state('admin.addCampaign', {
+			templateUrl: '/assets/partials/campaigns/adAddCampaign.html',
+			controller: 'ADAddCampaignCtrl',
+			url : '/campaigns/:id/:type'
+		});
+		
+        
+>>>>>>> 4c9320fe292a31741470a8168d03dd960876c29d
 });

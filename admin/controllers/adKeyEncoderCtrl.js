@@ -133,56 +133,5 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	/****************************************************************************************/
 
 
-	/**
-	* To fetch and display the rate popover
-	* @param {int} index of the selected rate type
-	* @param {string} id of the selected rate type
-	* @param {string} number of rates available for the rate type
-	*/
-	$scope.showRates = function(index, id, fetchKey, baseRate){
-		$scope.popoverRates = {};
-		if(baseRate == "" || typeof baseRate == "undefined") return false;
-		var rateFetchSuccess = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.popoverRates = data;
-			$scope.mouseEnterPopover = true;
-		};
-
-		//Fetch the rates only when we enter the popover area - 
-		//no need to repeat the fetch when we hover over the area.
-		if(!$scope.mouseEnterPopover){
-			$scope.popoverRates = {};
-			$scope.currentHoverElement = index;
-			var params = {};
-			params[fetchKey] = id;
-			$scope.invokeApi(ADRatesSrv.fetchRates, params, rateFetchSuccess, '', 'NONE');
-		}
-	};
-
-	/**
-	* To fetch and display the rate popover
-	* @param {int} index of the selected rate type
-	* @param {string} id of the selected rate type
-	* @param {string} number of rates available for the rate type
-	*/
-	$scope.showDateRanges = function(index, id, fetchKey, dateCount){
-		if(dateCount == 0) return false;
-		var dateFetchSuccess = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.popoverRates = data;
-			$scope.mouseEnterPopover = true;
-		};
-
-		//Fetch the rates only when we enter the popover area.
-		if(!$scope.mouseEnterPopover){
-			$scope.popoverRates = {};
-			$scope.currentHoverElement = index;
-			var params = {};
-			params[fetchKey] = id;
-			$scope.invokeApi(ADRatesSrv.fetchDateRanges, params, dateFetchSuccess, '', 'NONE');
-		}
-	};
-
-
 }]);
 
