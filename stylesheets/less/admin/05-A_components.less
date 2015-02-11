@@ -528,7 +528,190 @@
             }
         }
     }
-    
+
+/* Campaigns                ==============================*/
+    .campaign-grid {
+
+        th {
+            &.id { width: 60px; }
+
+            &.name { width: 180px; }
+        }
+
+        td {
+            &:first-child { text-align: center; }
+
+            &.status {
+                font-size: 14px;
+                text-transform: uppercase;
+                
+
+                &.draft { 
+                    color: @grey3; 
+                    font-style: italic;
+                }
+
+                &.active { 
+                    color: @logoPrimary; 
+                    font-weight: 600;
+                }
+
+                &.completed {
+                    color: @green; 
+                }
+            }
+        }      
+    }
+
+    .form {
+        &.campaign-details {
+
+            .entry {
+                &.short { 
+                    #pixel-to-percent > .right-margin(20, 580);
+                    #pixel-to-percent > .width(80, 580); 
+                }
+
+                &.long { 
+                    margin-right: 0;
+                    #pixel-to-percent > .width(480, 580); 
+                }
+            }
+
+            #campaign-completed {
+                font-size: 16px;
+                text-align: center;
+
+                strong { .show; }
+            }
+
+            .counter {
+                margin-top: 5px;
+                text-align: right;
+                font-size: 14px;
+                color: @grey3;
+
+                span { 
+                    color: @green;
+                    &.done { color: @red; }
+                }
+            }
+
+            .large-block {
+                padding: 10px;
+                margin-bottom: 10px;
+                background: @grey1;
+                .box-shadow(1px 1px 0 rgba(0,0,0,.15));
+                #border-radius > .rounded();
+                .show;
+                .float;
+
+                .radio {
+                    clear: none;
+                    width: 30%;
+                    margin: 0;
+                    .pull-left;
+
+                    .icon-form { background-color: @white; }
+
+                    &.large {
+                        font-size: 18px;
+                        font-weight: 600;
+                    }
+
+                    &.small {
+                        font-size: 14px;
+                        font-weight: 400;
+                        width: 35%;
+                    }
+
+                    &.block {
+                        float: none;
+                        width: 100%;
+                    }
+                }
+
+                .inner-block {
+                    clear: both;
+                    padding-top: 20px;
+                    .float;
+
+                    .entry {
+                        margin: 0;
+
+                        input,
+                        .select:after,
+                        select { background-color: @white; }
+
+                        &.has-datepicker { #pixel-to-percent > .right-margin(20, 580); }
+
+                        &.recurring {
+                            float: none;
+                            width: 100%;
+                            .float;
+
+                            .label { 
+                                font-size: 16px;
+                                font-weight: 600;
+                                padding-bottom: 5px;
+                                margin-bottom: 10px;
+                                border-bottom: 1px solid rgba(0,0,0,.1);
+                                .show;
+                            }
+
+                            .delimiter {
+                                font-size: 14px;
+                                line-height: 40px;
+                                margin-right: 10px;
+                                .pull-left;
+                            }
+
+                            .select {
+                                width: 15%;
+                                margin-right: 10px;
+                                .pull-left;
+
+                                &.day { width: 30%; }
+                            }
+
+                            .radio {
+                                width: auto;
+
+                                &.clear { 
+                                    float: none;
+                                    margin-bottom: 10px; 
+                                }
+                            }
+
+                            .has-datepicker {
+                                position: relative;
+                                margin: -10px 0 0 10px;
+                                #pixel-to-percent > .width(280, 580);
+                                .pull-left;
+                            }
+
+                            &.first { margin-bottom: 20px; }
+                        }
+                    }                  
+                }
+
+                &.open {
+                    padding: 20px;
+                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+                }
+            }
+        }
+    }
+
+    @media only screen and (min-width : 1025px) { 
+        .campaign-grid {
+
+            th {
+                &.name { width: 340px; }
+            } 
+        }
+    } 
+   
 // To align text to center with margin
 .align-text-center{
   margin-top: 10px;
