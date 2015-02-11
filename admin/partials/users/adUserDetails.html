@@ -70,7 +70,7 @@
 					</div>
 					<div class="entry re-invite" ng-show="mod == 'edit'">
 						<label>
-							<button id="re-invite" ng-click="sendInvitation(data.user_id)" class="button" ng-disabled="data.is_activated=='true'" ng-class="{'green': data.is_activated == 'false', 'grey': data.is_activated == 'true'}">
+							<button id="re-invite" ng-click="sendInvitation(data.user_id)" class="button" ng-disabled="disableReInviteButton(data)" ng-class="{'green': !disableReInviteButton(data), 'grey': disableReInviteButton(data)}">
 								Re-Invite
 							</button> </label>
 					</div>
