@@ -1,5 +1,6 @@
 <div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }" ng-click="fauxSelectClicked();">
         <div ng-include="'/assets/partials/common/header.html'"></div>
+
         <section id="reports" class="content scrollable reports-wrapper" role="main" ng-hide="showReportDetails" ng-controller="RVReportListCrl" ng-iscroll="report-list-scroll">
                 <div class="wrapper">
                         <ul class="reports-list">
@@ -9,8 +10,8 @@
                                                 <div class="data">
                                                         <h2>
                                 {{ item.title }}
-            <span ng-if="item.sub_title">{{ item.sub_title }}</span>
-             </h2>
+                                <span ng-if="item.sub_title">{{ item.sub_title }}</span>
+                            </h2>
                                                         <em>{{ item.description }}</em>
                                                 </div>
                                         </a>
@@ -111,7 +112,7 @@
                                 </div>
 
 
-                                <div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting }" ng-iscroll="report-details-scroll">
+                                <div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
                                         <div class="wrapper">
                                                 <table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport }">
                                                         <!-- Reports table header -->
@@ -125,6 +126,7 @@
                                                                         <th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
                                                                 </tr>
                                                         </thead>
+
                                                         <!-- Reports sort by header -->
                                                         <thead ng-if="!headers.length">
                                                                 <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
@@ -190,7 +192,7 @@
                                         </div>
                                 </div>
 
-                                <div class="search-pagination hk-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
+                                <div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
                                         <!-- removed buttons since they include +300ms delay on touch pads -->
                                         <label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
                                         <label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
