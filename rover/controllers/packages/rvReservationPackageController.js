@@ -3,10 +3,12 @@ sntRover.controller('RVReservationPackageController',
 				  '$rootScope',
 				  'RVReservationPackageSrv',
 				  '$state',
+				  '$timeout',
+				  'ngDialog',
 				function($scope, 
 					$rootScope,
 					RVReservationPackageSrv,
-					$state) {
+					$state, $timeout, ngDialog) {
 
 	var reservationId = $scope.reservationData.reservation_card.reservation_id;
 	var successCallBack = function(data){
@@ -26,11 +28,17 @@ sntRover.controller('RVReservationPackageController',
 					
 				},
 				2000);
-
+	$scope.closeAddOnPopup = function(){
+		//to add stjepan's popup showing animation
+		$rootScope.modalOpened = false; 
+		$timeout(function(){
+			ngDialog.close();
+		}, 300); 
+	};
 	
 	$scope.goToAddons = function(){
-		$scope.closeDialog();
-		 $state.go('rover.reservation.staycard.mainCard.addons',
+		$scope.closeAddOnPopup();
+		$state.go('rover.reservation.staycard.mainCard.addons',
 		 	{
 		 		'from_date': $scope.reservation.reservation_card.arrival_date,
 		 		'to_date': $scope.reservation.reservation_card.departure_date,
