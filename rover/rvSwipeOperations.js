@@ -20,6 +20,11 @@ var SwipeOperation = function(){
 			} else if(swipedCardData.RVCardReadETB !=""){
 				getTokenFrom.etb = swipedCardData.RVCardReadETB;
 			}
+			if(swipedCardData.is_encrypted || typeof swipedCardData.is_encrypted == 'undefined'){
+				getTokenFrom.is_encrypted = 'true';
+			}else {
+				getTokenFrom.is_encrypted = 'false';
+			}
 			return getTokenFrom;
 	};
 	/*
