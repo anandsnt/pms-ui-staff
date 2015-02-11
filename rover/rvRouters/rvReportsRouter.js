@@ -15,6 +15,9 @@ angular.module('reportsModule', [])
             },
             activeUserList: function(RVreportsSrv) {
                 return RVreportsSrv.fetchActiveUsers();
+            },
+            guaranteeTypes: function(RVreportsSrv) {
+                return RVreportsSrv.fetchGuaranteeTypes();
             }
         }
     });
