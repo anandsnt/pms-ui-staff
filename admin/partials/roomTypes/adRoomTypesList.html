@@ -16,7 +16,7 @@
 				<thead>
 					<tr>
 						 
-	           		<th  ng-class="{
+	           		<th width="45%" ng-class="{
 	           			'sortable': currentClickedElement == -1,
 	                    'sort-asc': tableParams.isSortBy('name', 'asc'),
 	                    'sort-desc': tableParams.isSortBy('name', 'desc')
@@ -25,7 +25,7 @@
 	                    ng-click="sortByName()" rowspan="2">
 	                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Type</span></div>
 	                </th>
-	                <th  ng-class="{
+	                <th width="40%" ng-class="{
 	                	'sortable': currentClickedElement == -1,
 	                    'sort-asc': tableParams.isSortBy('code', 'asc'),
 	                    'sort-desc': tableParams.isSortBy('code', 'desc')
@@ -34,7 +34,7 @@
 	                    ng-click="sortByCode()" rowspan="2">
 	                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Code</span></div>
 	                </th>
-	                <th><div><span>Delete</span></div>
+	                <th width="15%"><div><span>Delete</span></div>
 	                </th>
 					</tr>
 				</thead>
