@@ -16,7 +16,7 @@
 				<thead>
 					<tr>
 						 
-	           <th  ng-class="{
+	           		<th  ng-class="{
 	           			'sortable': currentClickedElement == -1,
 	                    'sort-asc': tableParams.isSortBy('name', 'asc'),
 	                    'sort-desc': tableParams.isSortBy('name', 'desc')
@@ -34,6 +34,8 @@
 	                    ng-click="sortByCode()" rowspan="2">
 	                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Code</span></div>
 	                </th>
+	                <th><div><span>Delete</span></div>
+	                </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -44,7 +46,11 @@
 						<td header-class=" width-30" class="text-left" ng-hide="currentClickedElement == $index" >
 							{{room_types.code}}
 						</td>
-						<td colspan="2" ng-include="getTemplateUrl($index,room_types.id)" ng-show="currentClickedElement == $index"></td>
+						<td ng-hide="currentClickedElement == $index">
+							<a class="icons icon-delete large-icon" ng-click="deleteRoomTypes(room_types.id)" ></a>										
+						</td>						
+						<td colspan="3" ng-include="getTemplateUrl($index, room_types.id)" ng-show="currentClickedElement == $index">						
+						</td>
 					</tr>
 				</tbody>
 			</table>

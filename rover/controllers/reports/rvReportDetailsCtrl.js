@@ -78,6 +78,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isLogReport = true;
 					break;
 
+				case 'Upsell':
+				case 'Late Check Out':
+					$scope.hasNoTotals = true;
+					break;
+
+				case 'Check In / Check Out':
+					console.log($scope.chosenReport.chosenCico);
+					if ( $scope.chosenReport.chosenCico == 'IN' || $scope.chosenReport.chosenCico == 'OUT' ) {
+						$scope.hasNoTotals = true;
+					};
+					break;
+
 				case 'Web Check In Conversion':
 				case 'Web Check Out Conversion':
 					$scope.isLargeReport = true;
@@ -286,8 +298,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// this is done only once when the report details is loaded
 		// and when user updated the filters
 		var calPagination = function(response, pageNum) {
-			console.log( $_pageNo );
-
 			if ( ! $scope.hasPagination ) {
 				return;
 			};
@@ -455,7 +465,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportSubmit = $rootScope.$on('report.submit', function() {
 			$_pageNo = 1;
-			console.log( 'report.submit' );
 
 			afterFetch();
 			findBackNames();
