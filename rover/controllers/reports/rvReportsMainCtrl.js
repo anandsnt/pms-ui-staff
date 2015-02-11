@@ -5,7 +5,8 @@ sntRover.controller('RVReportsMainCtrl', [
 	'RVreportsSrv',
 	'$filter',
 	'activeUserList',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList) {
+	'guaranteeTypes',
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -29,6 +30,11 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.reportList = reportsResponse.results;
 		$scope.reportCount = reportsResponse.total_count;
 		$scope.activeUserList = activeUserList;
+
+		$scope.guaranteeTypes = guaranteeTypes;
+		_.each($scope.guaranteeTypes, function(guarantee) {
+			guarantee.selected = false;
+		});
 
 		$scope.showReportDetails = false;
 
@@ -164,7 +170,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenShowGuests',
 			'chosenIncludeRoverUsers',
 			'chosenIncludeZestUsers',
-			'chosenIncludeZestWebUsers'
+			'chosenIncludeZestWebUsers',
+			'chosenIncludeComapnyTaGroup',
+			'chosenGuaranteeType'
 		];
 
 		var hasList = [
@@ -175,7 +183,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasShowGuests',
 			'hasIncludeRoverUsers',
 			'hasIncludeZestUsers',
-			'hasIncludeZestWebUsers'
+			'hasIncludeZestWebUsers',
+			'hasIncludeComapnyTaGroup',
+			'hasGuaranteeType'
 		];
 
 		// common faux select method
@@ -218,6 +228,36 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			e.stopPropagation();
 			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+
+			$scope.fauxOptionClicked(e, item);
+
+		};
+
+		// specific for Source and Markets reports
+		$scope.guranteeTypeClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				_.each($scope.reportList, function(item) {
+					item.fauxSelectOpen = false;
+					item.selectGuaranteeOpen = false;
+				});
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectGuaranteeOpen = item.selectGuaranteeOpen ? false : true;
 
 			if (!item) {
 				return;
@@ -298,6 +338,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			var key = '';
+			var ary = [];
 
 			// include dates
 			if (!!chosenReport.hasDateFilter) {
@@ -409,6 +450,25 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[key] = chosenReport.showSource ? true : false;
 			};
 
+			// include company/ta/group
+			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup')) {
+				key = chosenReport.hasIncludeComapnyTaGroup.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeComapnyTaGroup;
+			};
+
+			// include guarantee type
+			if (chosenReport.hasOwnProperty('hasGuaranteeType')) {
+				ary = [];
+				_.each(chosenReport.guaranteeTypes, function(type) {
+					if ( type.selected ) {
+						ary.push( type.guarantee_type );
+					};
+				});
+
+				key = chosenReport.hasGuaranteeType.value.toLowerCase();
+				params[key] = angular.copy( ary );
+			};
+
 
 			var callback = function(response) {
 				if (changeView) {
@@ -446,6 +506,8 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
+
+
 		var activeUserAutoCompleteObj = [];
 		_.each($scope.activeUserList, function(user) {
 			activeUserAutoCompleteObj.push({
@@ -467,8 +529,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			thisReport = item;
 		};
 
-		$scope.autoCompleteOptions = {
-
+		$scope.userAutoCompleteOptions = {
 			delay: 0,
 			position: {
 				my: 'left bottom',
@@ -518,6 +579,46 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 
 		};
+
+
+
+
+		$scope.comTaGrpAutoCompleteOptions = {
+			position: {
+				my: 'left bottom',
+				at: 'left top',
+				collision: 'flip'
+			},
+			minLength: 3,
+			source: function(request, response) {
+				RVreportsSrv.fetchComTaGrp(request.term)
+					.then(function(data) {
+						var list = [];
+						var entry = {}
+						$.map(data, function(each) {
+							entry = {
+								label: each.account_name,
+								value: each.id
+							};
+							list.push(entry);
+						});
+
+						response( list );
+					});
+			},
+			select: function(event, ui) {
+				this.value = ui.item.label;
+				setTimeout(function() {
+					$scope.$apply(function() {
+						thisReport.chosenIncludeComapnyTaGroup = ui.item.label;
+					});
+				}.bind(this), 100);
+				return false;
+			},
+			focus: function(event, ui) {
+				return false;
+			}
+		}
 
 	}
 ]);

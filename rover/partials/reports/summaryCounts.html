@@ -1,7 +1,7 @@
-<li ng-if="!!summaryCounts.arrivals">Total Arrival Rooms<span>{{ summaryCounts.arrivals }}</span></li>
-<li ng-if="!!summaryCounts.adr">ADR<span>{{ currencySymbol }}{{ summaryCounts.adr }}</span></li>
+<li ng-if="chosenReport.title == 'Arrival'">Total Arrival Rooms<span>{{ summaryCounts.arrivals }}</span></li>
+<li ng-if="chosenReport.title == 'Arrival'">ADR<span>{{ currencySymbol }}{{ summaryCounts.adr }}</span></li>
 
 
-<li ng-if="!!summaryCounts.total_count">Total Rooms<span>{{ summaryCounts.total_count }}</span></li>
-<li ng-if="!!summaryCounts.total_adult_and_children">Total Adults / Children<span>{{ summaryCounts.total_adult_and_children }} / {{ summaryCounts.total_adult_and_children }}</span></li>
-<li ng-if="!!summaryCounts.total_balance">Total Balance<span class="green">{{ currencySymbol }}{{ summaryCounts.total_balance }}</span></li>
+<li ng-if="chosenReport.title == 'In-House Guests'">Total Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
+<li ng-if="chosenReport.title == 'In-House Guests'">Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>	
+<li ng-if="chosenReport.title == 'In-House Guests'">Total Balance<span class="green">{{ currencySymbol }}{{ summaryCounts.total_balance }}</span></li>
