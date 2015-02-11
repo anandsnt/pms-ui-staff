@@ -212,7 +212,7 @@ $scope.saveClick = function(){
     } 	
     // $scope.validateUpsellWindowTime();
     $scope.setUpUpsellWindowDataToSave();
-    $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours != null && $scope.upsell_rate.hours != "")?$scope.upsell_rate.hours + "." + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
+    $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours != null && $scope.upsell_rate.hours != "")?$scope.upsell_rate.hours + ":" + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
    	var upsellEarlyCheckinSaveSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
        	
