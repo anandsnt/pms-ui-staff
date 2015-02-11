@@ -3,14 +3,15 @@
         <span class="h2 message">Room 1 Enhancements</span>
         <!-- Initial markup -->
         <!-- Markup as you add items -->
-        <ul id="room-1-enhancements" class="enhancements-added">
+        <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        
+        <ul id="room-1-enhancements" class=" wrapper enhancements-added">
             <li ng-repeat="addon in existingAddons">
                 <span class="item">{{ addon.title }}</span>
                 <span class="count">({{ addon.quantity }})</span>
                 <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
             </li>
         </ul>
-        
+        </div>
         <div class="actions" ng-hide="fromPage=='staycard'">
             <button type="button" ng-click="closePopup()" class="button white modal-hide" translate>ADD_MORE_TO_THIS_ROOM</button>
             <button class="button green has-arrow skip" ng-click="goToSummaryAndConfirm()" translate>BOOK</button>
