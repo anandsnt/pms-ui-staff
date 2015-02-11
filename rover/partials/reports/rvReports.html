@@ -108,8 +108,23 @@
                                 </tr>
                             </thead>
 
+                            <!-- GUEST REPORTS: Reports sort by header -->
+                            <thead ng-if="!headers.length || !!subHeaders.length">
+                                <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+                                    "sorting-asc" when ASC sorting
+                                    "sorting-desc" when DESC sorting -->
+                                <tr>
+                                    <th ng-repeat="item in subHeaders track by $index">
+                                        <span ng-class="{'sort'         : !!chosenReport.sortByOptions[$index],
+                                                         'sorting-asc'  : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === true,
+                                                         'sorting-desc' : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === false
+                                                     }" ng-click="sortResultBy(chosenReport.sortByOptions[$index])">{{ item }}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+
                             <!-- Reports sort by header -->
-                            <thead ng-if="!headers.length">
+                            <thead ng-if="!headers.length && !subHeaders.length">
                                 <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
 									"sorting-asc" when ASC sorting
 									"sorting-desc" when DESC sorting -->
