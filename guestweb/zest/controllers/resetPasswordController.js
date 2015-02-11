@@ -28,7 +28,7 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
 		    
                 $scope.isPosting = false;
 		        if(response.status === 'failure') {
-		           $scope.errorMessage = "The password reset is unsuccessful. Please contact the front Desk"
+		           $scope.errorMessage = response.errors[0];
 		           $modal.open($scope.opts); // error modal popup
 	           }
 	           else{		    
@@ -41,10 +41,16 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
 	               $scope.errorMessage = "The password reset is unsuccessful. Please contact the front Desk"
 		           $modal.open($scope.opts); // error modal popup
                });	 
+		    }else if($scope.data.password == ""){
+                $scope.errorMessage = "The password field is blank"
+                $modal.open($scope.opts); // error modal popup
+		    }else if($scope.data.confirm_password == ""){
+                $scope.errorMessage = "The confirm password field is blank"
+                $modal.open($scope.opts); // error modal popup
 		    }else{
                 $scope.errorMessage = "The password fields does not match"
                 $modal.open($scope.opts); // error modal popup
 		    }
 		    	
-	};
+	};		    
 }]);
