@@ -32,6 +32,8 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.id = data.id;
 		$scope.campaignData.name = data.name;
 		$scope.campaignData.audience_type = data.audience_type;
+		$scope.campaignData.specific_users = data.specific_users;
+
 		$scope.campaignData.subject = data.subject;
 		$scope.campaignData.header_image = data.header_image;
 		$scope.campaignData.body = data.body;
