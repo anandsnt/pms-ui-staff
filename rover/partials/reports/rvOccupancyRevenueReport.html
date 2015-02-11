@@ -78,19 +78,19 @@
                                                 <!-- ... repeat for all dates in the date range -->
                                         </tr>
                                         <tr ng-repeat="market in reportsState.markets" ng-show="market.selected">
-                                                <td ng-repeat="n in getNumber() track by $index">100</td>
+                                                <td ng-repeat="n in getNumber() track by $index">TODO</td>
                                         </tr>
                                         <tr ng-repeat="occupancyTotal in stateStore.occupancyTotals track by $index">
-                                                <td ng-repeat="n in getNumber() track by $index">100</td>
+                                                <td ng-repeat="n in getNumber() track by $index">{{getValue(occupancyTotal.key,$index) | number:2}} %</td>
                                         </tr>
                                         <tr ng-repeat="revenue in stateStore.revenues track by $index">
-                                                <td ng-repeat="n in getNumber() track by $index">100</td>
+                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getValue(revenue.key,$index) | number: 0}}</td>
                                         </tr>
                                         <tr ng-repeat="market in reportsState.markets" ng-show="market.selected">
-                                                <td ng-repeat="n in getNumber() track by $index">100</td>
+                                                <td ng-repeat="n in getNumber() track by $index">TODO</td>
                                         </tr>
                                         <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
-                                                <td ng-repeat="n in getNumber() track by $index">300</td>
+                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getValue(revenueTotal.key,$index);}}</td>
                                         </tr>
                                 </tbody>
                         </table>

@@ -89,13 +89,15 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		}
 
 		$scope.getValue = function(key, columnIndex) {
-			console.log({
-				key: key,
-				columnIndex: columnIndex
-			});
-			var candidate = $scope.results[key][$scope.selectedDays[index / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance)]];
+			var candidate = $scope.results[key][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance))]];
 			if (candidate) {
-				return candidate.this_year;
+				if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenReport.chosenLastYear || !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenReport.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					return candidate.this_year;
+				}
 			} else {
 				return -1;
 			}
