@@ -394,7 +394,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         return true;
                     }
                     // CICO-9575: The occupancy warning should pop up only once during the reservation process if no changes are being made to the room type.
-                    if (!$scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted || $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted != activeRoom) {
+                    if ((!$scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted || $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted != activeRoom) && $state.current.name != "rover.reservation.staycard.reservationcard.reservationdetails") {
                         ngDialog.open({
                             template: '/assets/partials/reservation/alerts/occupancy.html',
                             className: 'ngdialog-theme-default',
@@ -1825,8 +1825,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             nextStateParameters = {};
                         }
                         $state.go(nextState, nextStateParameters);
+                    } else {
+                        $scope.$emit('hideLoader');
                     }
-                    $scope.$emit('hideLoader');
                 };
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
@@ -1977,5 +1978,5 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             }
         };
     }
-    
+
 ]);
