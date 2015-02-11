@@ -29,7 +29,7 @@
 		<span class="data room">{{ each.room_type }}</span>
 		<span class="data rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
 	</td>
-	<td ng-if="each.isReport" class="balance" ng-class="{ 'red': each.when_red, 'green': !each.when_red }"> <!-- Add class "red" or "green" as required -->
+	<td ng-if="each.isReport" class="balance red"> <!-- Add class "red" or "green" as required -->
 		{{ currencySymbol }}{{ each.balance_amount }}
 	</td>
 
