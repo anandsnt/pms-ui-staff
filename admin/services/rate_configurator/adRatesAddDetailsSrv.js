@@ -24,7 +24,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
             }
 
             that.fetchSelectedRestrictions = function () {
-               var url = "api/restriction_types";
+               var url = "/api/restriction_types";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.selectedRestrictions = data.results;
                     that.fetchBusinessDate();

@@ -11,7 +11,6 @@ sntRover.controller('RVOutsidePostChargeController',
 			BaseCtrl.call( this, $scope );
 			$scope.reservationsArray = [];
 			$scope.init = function(){
-				$s = $scope;
 				// quick ref to fetched items
 				// and chosen one from the list
 				$scope.fetchedItems = $scope.fetchedData.items;

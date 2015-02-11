@@ -39,7 +39,7 @@
       </strong>
       <figure class="guest-image">
         <img src="{{ roomDetails.avatar_src }}" alt="">
-        <span ng-id="roomDetails.is_vip == 'true'" class="vip">VIP</span>
+        <span ng-if="roomDetails.is_vip == 'true'" class="vip">VIP</span>
       </figure>
       <h2>
         <span class="guest-status {{ guestViewStatus }}"></span>

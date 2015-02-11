@@ -127,7 +127,7 @@ var DiaryContent = React.createClass({
 			var data 	= props.data,
 			display = props.display,
 			rowHeight = display.row_height + display.row_height_margin,
-			rowNumber = state.edit.active ? _.indexOf(_.pluck(data, 'id'), state.edit.originalRowItem.id) - 2 : 0,
+			rowNumber = state.edit.active ? _.indexOf(_.pluck(data, 'id'), props.currentResizeItem.room_id) - 2 : 0,
 			rowNumber = rowNumber > 0 ? rowNumber : 0;
 
 			var scrollYPos = rowNumber * rowHeight;
