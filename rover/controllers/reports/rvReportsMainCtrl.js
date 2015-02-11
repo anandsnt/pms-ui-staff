@@ -451,7 +451,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			// include company/ta/group
-			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup')) {
+			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup') && !!chosenReport.chosenIncludeComapnyTaGroup) {
 				key = chosenReport.hasIncludeComapnyTaGroup.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeComapnyTaGroup;
 			};
@@ -582,7 +582,13 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
+		$scope.removeCompTaGrpId = function(item) {
+			console.log( item.uiChosenIncludeComapnyTaGroup );
 
+			if ( !item.uiChosenIncludeComapnyTaGroup ) {
+				item.chosenIncludeComapnyTaGroup = null;
+			};
+		};
 		$scope.comTaGrpAutoCompleteOptions = {
 			position: {
 				my: 'left bottom',
