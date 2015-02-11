@@ -24,13 +24,15 @@ function ADBaseTableCtrl($scope, ngTableParams){
     });
 
     $scope.$watch("filterType", function () {
-        $scope.tableParams.page(1);
-    	$scope.tableParams.reload();       
+        $scope.reloadTable();
+        /*$scope.tableParams.page(1);
+    	$scope.tableParams.reload();*/       
     });
 
     $scope.searchEntered = function() {
-        $scope.tableParams.page(1);
-    	$scope.tableParams.reload();
+        $scope.reloadTable();
+        /*$scope.tableParams.page(1);
+    	$scope.tableParams.reload();*/
     };
 
     $scope.reloadTable = function(){
@@ -44,7 +46,6 @@ function ADBaseTableCtrl($scope, ngTableParams){
     };
 
    	$scope.calculateGetParams = function(tableParams){
-        console.log("calculateGetParams");
     	var getParams = {};
 		getParams.per_page = $scope.displyCount;
 		getParams.page = tableParams.page();

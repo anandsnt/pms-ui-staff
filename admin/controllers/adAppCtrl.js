@@ -415,7 +415,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				$scope.menuOpen = !$scope.menuOpen;
 				$scope.showSubMenu = false;
 			}
-
 		};
 
 		$scope.$on("changedSelectedMenu", function(event, menu) {

@@ -96,6 +96,27 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     	url: '/tripDetails',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Pre Check-in'
+	}).state('preCheckinStatus', {
+		url: '/preCheckinStatus',
+		templateUrl: '/assets/preCheckin/partials/CARLYLE/preCheckinStatus.html',
+		controller : 'preCheckinStatusController',
+		title: 'Status - Pre Check-In'
+	 });
+
+	// zest web states
+
+    $stateProvider.state('resetPassword', {
+    	url: '/resetPassword',
+	 	templateUrl: '/assets/zest/partials/resetPassword.html',
+	 	controller : 'resetPasswordController',
+	 	title: 'Reset Password'
+	});
+
+	$stateProvider.state('emailVerification', {
+    	url: '/emailVerification',
+	 	templateUrl: '/assets/zest/partials/emailVerificationStatus.html',
+	 	controller : 'emailVerificationStatusController',
+	 	title: 'Email Verification'
 	});
 
 

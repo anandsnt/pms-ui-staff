@@ -1506,9 +1506,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     deposit: deposit,
                     depositText: (function() {
                         if (!isOutOfCancellationPeriod) {
-                            return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + deposit + " is refundable.";
+                            return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
                         } else {
-                            return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + penalty + " will be charged, deposit not refundable";
+                            return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
                         }
                     })()
                 })
@@ -1755,7 +1755,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     };
 
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
-                    $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
+                    $scope.reservation.reservation_card.departure_date = $scope.reservationData.departureDate;
 
 
 
