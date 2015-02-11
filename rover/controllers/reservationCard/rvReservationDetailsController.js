@@ -470,8 +470,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		};
-
-
+		/**
+		* we are capturing model opened to add some class mainly for animation
+		*/
+		$rootScope.$on('ngDialog.opened', function (e, $dialog) {
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false;
+			$timeout(function(){
+				$rootScope.modalOpened = true;
+			}, 300);    		
+		});
+		$rootScope.$on('ngDialog.closing', function (e, $dialog) {
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false; 		
+		});
+		
+		$scope.closeAddOnPopup = function(){
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false; 
+			$timeout(function(){
+				ngDialog.close();
+			}, 300); 
+		};
 
 		$scope.showAddNewPaymentModel = function(swipedCardData) {
 

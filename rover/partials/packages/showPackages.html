@@ -1,22 +1,22 @@
-<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()" ng-cloak>
+<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-click="clearErrorMessage()" ng-cloak>
     <div class="modal-content room-enhancements">
         <span class="h2 message">Room {{packageData.room_no}} Enhancements</span>
         <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        
-            <ul class="wrapper" style="margin-right: auto;">
+            <ul class="wrapper" >
                 <li ng-repeat="existingPackages in packageData.existing_packages">
                     <span class="item">{{existingPackages.package_name}}</span>
                     <span class="count"> ({{existingPackages.count}})</span>
                     <span class="base">at {{currencySymbol}}{{existingPackages.price_per_piece}} / ADULT PER STAY</span>
                     <span class="price">{{currencySymbol}}{{existingPackages.totalAmount}}</span>
                     <span ng-show="existingPackages.is_inclusive=='true'">INCL</span>
-                    <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons(existingPackages.package_id)">Remove</button>
+                    <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons(existingPackages.package_id, $index)">Remove</button>
                 </li>
             </ul>
         </div>
         <div class="actions">
             <!-- On Stay Card -->
             <button type="button" class="button orange" ng-click="goToAddons()">Add More to This Room</button>
-            <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
+            <button type="button" class="button blank" ng-click="closeAddOnPopup()">Close</button>
 
             <!-- On Addons screen 
             <button type="button" class="button blank">Close</button>
