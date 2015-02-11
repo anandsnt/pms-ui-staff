@@ -249,7 +249,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
-				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
+				if(typeof data.userId != 'undefined'){
+					$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
+				}
 			}
 		};
 
@@ -554,6 +556,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 						guestData.firstName = item.first_name;
 						guestData.lastName = item.last_name;
 						guestData.image = item.image_url;
+						guestData.vip = item.vip;
 						if (item.address != null) {
 							guestData.address = {};
 							guestData.address.city = item.address.city;
@@ -892,7 +895,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				'userId': "",
 				'avatar': "",
 				'guestId': "",
-				'vip': "" //TODO: check with API or the product team
+				'vip': false
 			};
 			// // $scope.$emit('guestCardUpdateData', contactInfoData);
 			$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
@@ -975,6 +978,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.init();
+
+		// CICO-6049 Toggle VIP button
+		$scope.vipToggleClicked = function(){
+			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
+			$scope.updateContactInfo();
+		};
 
 	}
 ]);

@@ -91,7 +91,7 @@
                 </div>
 
 
-                <div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting }" ng-iscroll="report-details-scroll">
+                <div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
                     <div class="wrapper">
                         <table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport }">
                             <!-- Reports table header -->
@@ -169,6 +169,13 @@
                             <tbody ng-include="parsedApiTemplate()"></tbody>
                         </table>
                     </div>
+                </div>
+
+                <div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
+                    <!-- removed buttons since they include +300ms delay on touch pads -->
+                    <label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
+                    <label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
+                    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
                 </div>
             </section>
         </div>

@@ -448,8 +448,11 @@ var getJqDateFormat = function(dateFormat) {
         return DateFormatInfoMappings[dateFormat][1];
     }
 };
-
+/** Convert 24hr format into 12hr (am/pm) format **/
 var tConvert = function(time){
+	if(time == '' || time == undefined){
+		return {};
+	}
     tDict = {};
     var t = time.split(':');
     tDict.hh = (t[0] >= 12) ? (t[0] - 12) : t[0];
@@ -458,4 +461,19 @@ var tConvert = function(time){
     tDict.ampm = (t[0] >= 12) ? 'PM' : 'AM';
 
     return tDict;
+}
+/** Convert 12hr format to 24 hr format **/
+var tConvertToAPIFormat = function(hh, mm, ampm){
+	var time = "";
+	if(parseInt(mm) < 10){
+		mm = '0' + mm; 
+	}
+	if(ampm == "PM"){
+		time = ( parseInt(hh) + 12) + ":" + mm;
+	} else {
+		time = (parseInt(hh) == 12 ? '00': hh) + ":" + mm;
+	}
+
+	return time;
+
 }
