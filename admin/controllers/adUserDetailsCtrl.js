@@ -6,7 +6,8 @@ admin.controller('ADUserDetailsCtrl',
 	'$rootScope', 
 	'ADUserRolesSrv',
 	'$timeout' ,
-	function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv, $timeout){
+	'$window',
+	function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv, $timeout, $window){
 	
 	BaseCtrl.call(this, $scope);
 	//navigate back to user list if no id
@@ -268,6 +269,17 @@ admin.controller('ADUserDetailsCtrl',
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
 	};
    
+	/**
+	* success callback of send inivtaiton mail (API)
+	* will go back to the list of users
+	*/
+	var successCallbackOfSendInvitation = function (data) {
+		$scope.$emit('hideLoader');
+		$state.go('admin.users', { id: $stateParams.hotelId });
+	};
+
+
+
    /*
     * Function to send invitation
     * @param {int} user id
@@ -275,7 +287,6 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.sendInvitation = function(userId){
 		//reseting the error message
 		$scope.errorMessage = '';
-
 		if(userId == "" || userId == undefined){
 			return false;
 		}		
@@ -284,16 +295,19 @@ admin.controller('ADUserDetailsCtrl',
 		//if it is in unlocking mode
 		if ($scope.isInUnlockingMode()) {
 			//if the erntered password is not matching
-			if ($scope.data.password !== $scope.data.confirm_password) {
-				$scope.errorMessage = ["Password's deos not match"];
-				$timeout(setFocusOnPasswordField, 500);
+			if ($scope.data.password !== $scope.data.confirm_password) {				
+
+				$timeout(function(){
+					$scope.errorMessage = ["Password's deos not match"];
+					$window.scrollTo(0, 0);
+					setFocusOnPasswordField();
+				}, 500);
 				return false;
 			}
 			data.password = $scope.data.password;
 			data.is_trying_to_unlock = true;
 		}
-
-	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data);	
+	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data, successCallbackOfSendInvitation);	
 	};
 
 	$scope.reachedUnAssignedRoles = function(event, ui){
