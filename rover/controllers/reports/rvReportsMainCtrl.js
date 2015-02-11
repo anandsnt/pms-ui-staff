@@ -453,7 +453,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include company/ta/group
 			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup')) {
 				key = chosenReport.hasIncludeComapnyTaGroup.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeComapnyTaGroup ? true : false;
+				params[key] = chosenReport.chosenIncludeComapnyTaGroup;
 			};
 
 			// include guarantee type
@@ -506,6 +506,8 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
+
+
 		var activeUserAutoCompleteObj = [];
 		_.each($scope.activeUserList, function(user) {
 			activeUserAutoCompleteObj.push({
@@ -527,7 +529,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			thisReport = item;
 		};
 
-		$scope.autoCompleteOptions = {
+		$scope.userAutoCompleteOptions = {
 			delay: 0,
 			position: {
 				my: 'left bottom',
@@ -577,6 +579,46 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 
 		};
+
+
+
+
+		$scope.comTaGrpAutoCompleteOptions = {
+			position: {
+				my: 'left bottom',
+				at: 'left top',
+				collision: 'flip'
+			},
+			minLength: 3,
+			source: function(request, response) {
+				RVreportsSrv.fetchComTaGrp(request.term)
+					.then(function(data) {
+						var list = [];
+						var entry = {}
+						$.map(data, function(each) {
+							entry = {
+								label: each.account_name,
+								value: each.id
+							};
+							list.push(entry);
+						});
+
+						response( list );
+					});
+			},
+			select: function(event, ui) {
+				this.value = ui.item.label;
+				setTimeout(function() {
+					$scope.$apply(function() {
+						thisReport.chosenIncludeComapnyTaGroup = ui.item.label;
+					});
+				}.bind(this), 100);
+				return false;
+			},
+			focus: function(event, ui) {
+				return false;
+			}
+		}
 
 	}
 ]);

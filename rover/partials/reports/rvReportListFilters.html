@@ -83,7 +83,7 @@
 
 <div class="filter" ng-if="item.hasUserFilter">
     <label>User</label>
-    <input class="icons icon-search" auto-complete auto-options="autoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
+    <input class="icons icon-search" auto-complete auto-options="userAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
     <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
 </div>
 
@@ -140,20 +140,21 @@
     </div>
 </div>
 
-<div class="filter" ng-if="item.chosenIncludeComapnyTaGroup">
+<div class="filter" ng-if="item.hasIncludeComapnyTaGroup">
     <label>Company/TA/Group</label>
-    <input class="icons icon-search" auto-complete auto-options="autoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.chosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
+    <input class="icons icon-search" auto-complete auto-options="comTaGrpAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.chosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)">
 </div>
 
 <div class="options" ng-if="item.hasGuaranteeType">
     <label for="report-options">Guarantee Type</label>
     <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, item)">{{ item.guaranteeTitle }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, item)">
-        <label class="checkbox inline" ng-repeat="each in item.guaranteeTypes">
+        <label class="checkbox inline" ng-if="item.guaranteeTypes.length" ng-repeat="each in item.guaranteeTypes">
             <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
             <input type="checkbox" ng-model="each.selected">
             {{ each.guarantee_type }}
         </label>
+        <label class="checkbox inline" ng-if="!item.guaranteeTypes.length">No Guarantees</label>
     </div>
 </div>
 
