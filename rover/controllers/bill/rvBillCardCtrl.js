@@ -1426,12 +1426,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	$scope.calculateBillDaysWidth = function(){
 		angular.forEach(reservationBillData.bills, function(value, key) {
-			var data = {};
-	        // Bill is reviewed(true) or not-reviewed(false).
-			data.reviewStatus = false;
-			data.billNumber = value.bill_number;
-			data.billIndex = key;
-			$scope.reviewStatusArray.push(data);
 			billDaysWidth = 0;
 			angular.forEach(value.days, function(daysValue, daysKey){
 				billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
@@ -1446,5 +1440,20 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		});	
 		$scope.refreshBillDaysScroller();
 	};
+
+	$scope.setupReviewStatusArray = function(){
+		
+		angular.forEach(reservationBillData.bills, function(value, key) {
+			var data = {};
+	        // Bill is reviewed(true) or not-reviewed(false).
+			data.reviewStatus = false;
+			data.billNumber = value.bill_number;
+			data.billIndex = key;
+			$scope.reviewStatusArray.push(data);
+		});
+	};
+
+	$scope.setupReviewStatusArray();
+
 	$scope.calculateBillDaysWidth();
 }]);

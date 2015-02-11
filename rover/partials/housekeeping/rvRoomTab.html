@@ -2,8 +2,9 @@
 
     <div class="room-actions has-date">
         <div class="has-datepicker">
-            <input name="room-service-date" id="room-service-date" class="datepicker" readonly="" type="text" placeholder="{{updateService.selected_date | date : dateFormat }}" value="{{updateService.selected_date | date : dateFormat}}" />
-            <button ng-click="showCalendar('rvHkServiceStatusDateSelectorCtrl')" type="button" class="ui-datepicker-trigger"></button>
+            <input name="room-service-date" id="room-service-date" type="text" class="datepicker" ui-date="selectDateOptions" ng-model="updateService.selected_date" ui-date-format readonly>               
+            <!-- <input name="room-service-date" id="room-service-date" class="datepicker" readonly="" type="text" placeholder="{{updateService.selected_date | date : dateFormat }}" value="{{updateService.selected_date | date : dateFormat}}" />
+            <button ng-click="showCalendar('rvHkServiceStatusDateSelectorCtrl')" type="button" class="ui-datepicker-trigger"></button> -->
         </div>
         <div class="select">
             <select name="room-service-status" id="room-service-status" ng-model="updateService.room_service_status_id" ng-options="item.id as item.description for item in allServiceStatus" ng-change="statusChange()">

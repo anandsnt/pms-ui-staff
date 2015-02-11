@@ -12,7 +12,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         //setting the main header of the screen
         $scope.heading = "Reservations";
-
+        
         $scope.viewState = {
             isAddNewCard: false,
             pendingRemoval: {
@@ -222,21 +222,21 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
         };
 
-        $scope.reset_guest_details = function(){
+        $scope.reset_guest_details = function() {
             $scope.reservationData.guest = {
-                    id: null, // if new guest, then it is null, other wise his id
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    city: '',
-                    loyaltyNumber: '',
-                    sendConfirmMailTo: ''
-            }; 
-            $scope.reservationDetails.guestCard = {
-                    id: "",
-                    futureReservations: 0
+                id: null, // if new guest, then it is null, other wise his id
+                firstName: '',
+                lastName: '',
+                email: '',
+                city: '',
+                loyaltyNumber: '',
+                sendConfirmMailTo: ''
             };
-                       
+            $scope.reservationDetails.guestCard = {
+                id: "",
+                futureReservations: 0
+            };
+
         }
 
         $scope.reset_company_details = function() {
@@ -244,24 +244,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 id: null, // if new company, then it is null, other wise his id
                 name: '',
                 corporateid: '', // Add different fields for company as in story
-            };  
-            
+            };
+
             $scope.reservationDetails.companyCard = {
                 id: "",
                 futureReservations: 0
             }
-                          
+
         };
 
         $scope.reset_travel_details = function() {
             $scope.reservationData.travelAgent = {
-                            id: null, // if new , then it is null, other wise his id
-                            name: '',
-                            iataNumber: '', // Add different fields for travelAgent as in story
+                id: null, // if new , then it is null, other wise his id
+                name: '',
+                iataNumber: '', // Add different fields for travelAgent as in story
             };
             $scope.reservationDetails.travelAgent = {
-                    id: "",
-                    futureReservations: 0
+                id: "",
+                futureReservations: 0
             };
         }
 
@@ -330,7 +330,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             var rateConfigured = true;
             if (typeof $scope.reservationData.rateDetails[roomIndex] != "undefined") {
                 _.each($scope.reservationData.rateDetails[roomIndex], function(d, dateIter) {
-                    if (dateIter != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id != '') {
+                    if (dateIter != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id != '' && parseFloat($scope.reservationData.rooms[roomIndex].stayDates[dateIter].rateDetails.actual_amount) != 0.00) {
                         var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id].rateBreakUp;
                         var numAdults = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.adults);
                         var numChildren = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.children);
@@ -1006,28 +1006,28 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.arrivalDate), 'yyyy-MM-dd')];
             }
             if (reservationDetails.reservation_card.payment_method_used !== "" && reservationDetails.reservation_card.payment_method_used !== null) {
-           
+
                 $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
                 $scope.reservationData.paymentType.type.value = reservationDetails.reservation_card.payment_method_used;
-                if($scope.reservationData.paymentType.type.value == "CC"){
-                	$scope.renderData = {};
-                	$scope.renderData.creditCardType = reservationDetails.reservation_card.payment_details.card_type_image.replace(".png", "").toLowerCase();
-					$scope.renderData.endingWith = reservationDetails.reservation_card.payment_details.card_number;
-					$scope.renderData.cardExpiry = reservationDetails.reservation_card.payment_details.card_expiry;
-					$scope.renderData.isSwiped = reservationDetails.reservation_card.payment_details.is_swiped;
-					$scope.reservationData.selectedPaymentId = reservationDetails.reservation_card.payment_details.id;
-					//CICO-11579 - To show credit card if C&P swiped or manual.
-					//In other cases condition in HTML will work
-					if($rootScope.paymentGateway == "sixpayments"){
-						if(reservationDetails.reservation_card.payment_details.is_swiped){
-							//can't set manual true..that is why added this flag.. Added in HTML too
-							$scope.reservationEditMode = true;
-						} else {
-							$scope.isManual = true;
-						}
-					} 
-					$scope.showSelectedCreditCard = true;
-										
+                if ($scope.reservationData.paymentType.type.value == "CC") {
+                    $scope.renderData = {};
+                    $scope.renderData.creditCardType = reservationDetails.reservation_card.payment_details.card_type_image.replace(".png", "").toLowerCase();
+                    $scope.renderData.endingWith = reservationDetails.reservation_card.payment_details.card_number;
+                    $scope.renderData.cardExpiry = reservationDetails.reservation_card.payment_details.card_expiry;
+                    $scope.renderData.isSwiped = reservationDetails.reservation_card.payment_details.is_swiped;
+                    $scope.reservationData.selectedPaymentId = reservationDetails.reservation_card.payment_details.id;
+                    //CICO-11579 - To show credit card if C&P swiped or manual.
+                    //In other cases condition in HTML will work
+                    if ($rootScope.paymentGateway == "sixpayments") {
+                        if (reservationDetails.reservation_card.payment_details.is_swiped) {
+                            //can't set manual true..that is why added this flag.. Added in HTML too
+                            $scope.reservationEditMode = true;
+                        } else {
+                            $scope.isManual = true;
+                        }
+                    }
+                    $scope.showSelectedCreditCard = true;
+
                 }
             }
 
@@ -1506,9 +1506,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     deposit: deposit,
                     depositText: (function() {
                         if (!isOutOfCancellationPeriod) {
-                            return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + deposit + " is refundable.";
+                            return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
                         } else {
-                            return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + penalty + " will be charged, deposit not refundable";
+                            return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
                         }
                     })()
                 })
@@ -1671,6 +1671,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         $scope.saveReservation = function(navigateTo, stateParameters, index) {
+            $scope.$emit('showLoader');
             nextState = navigateTo;
             nextStateParameters = stateParameters;
             /**
@@ -1694,13 +1695,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     //calculate sum of each reservation deposits
                     $scope.reservationsListArray = data;
                     angular.forEach(data.reservations, function(reservation, key) {
-                    	
+
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                     });
-                    totalDeposit = $filter('number')(totalDeposit,2);
+                    totalDeposit = $filter('number')(totalDeposit, 2);
                     $scope.reservationData.depositAmount = totalDeposit;
-                    $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
-                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
+                    $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
 
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
                         angular.forEach(data.reservations, function(reservation, key) {
@@ -1755,7 +1756,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     };
 
                     $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
-                    $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
+                    $scope.reservation.reservation_card.departure_date = $scope.reservationData.departureDate;
 
 
 
@@ -1786,36 +1787,36 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
 
                 var updateSuccess = function(data) {
-                	
-                	var totalDepositOnRateUpdate = 0;
+
+                    var totalDepositOnRateUpdate = 0;
 
                     /**
-                     * CICO-10195 : While extending a hourly reservation from  
+                     * CICO-10195 : While extending a hourly reservation from
                      * diary the reservationListArray would be undefined
-                     * Hence.. at this point as it is enough to just update 
+                     * Hence.. at this point as it is enough to just update
                      * reservation.deposit_amount
                      * totalDepositOnRateUpdate for just the single reservation.
                      */
-                    
-                    if($scope.reservationsListArray){
+
+                    if ($scope.reservationsListArray) {
                         angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                        	if(key == index){
-                        		reservation.deposit_amount = data.deposit_amount;
-                        		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
-                        	} else {
-                        		totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
-                        	}                            
+                            if (key == index) {
+                                reservation.deposit_amount = data.deposit_amount;
+                                totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
+                            } else {
+                                totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(reservation.deposit_amount);
+                            }
                         });
-                    }else{
+                    } else {
                         totalDepositOnRateUpdate = parseFloat(data.deposit_amount);
                     }
 
                     // $scope.reservationData.depositAmount = data.deposit_amount;
-                    $scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate,2);;
-                    $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true:false;
-                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) >0 ;
+                    $scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate, 2);;
+                    $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
+                    $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
                     $scope.reservationData.fees_details = data.fees_details;
-                    
+
                     $scope.$broadcast('UPDATEFEE');
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
@@ -1829,20 +1830,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
-                    if(typeof index!== 'undefined'){
-                    	angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                    		if(key == index){
-                    			postData.reservationId = reservation.id;
-                    			var roomId = postData.room_id[index];
-                    			postData.room_id = [];
-                    			postData.room_id.push(roomId);
-                    		}
-                    			
-                    	});
+                    if (typeof index !== 'undefined') {
+                        angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
+                            if (key == index) {
+                                postData.reservationId = reservation.id;
+                                var roomId = postData.room_id[index];
+                                postData.room_id = [];
+                                postData.room_id.push(roomId);
+                            }
+
+                        });
                     } else {
-                    	postData.reservationId = $scope.reservationData.reservationId;
+                        postData.reservationId = $scope.reservationData.reservationId;
                     }
-                    
+
+                    postData.addons = $scope.existingAddons;
+
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
@@ -1975,11 +1978,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.checkOccupancyLimit(null, true);
             }
         };
-
-        $scope.$on("GETVARYINGOCCUPANCY", function(e) {
-            $scope.reservationData.rooms[0].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(0);
-            $scope.$broadcast("VARYINGOCCUPANCY", $scope.reservationData.rooms[0].varyingOccupancy);
-        });
-
     }
+    
 ]);

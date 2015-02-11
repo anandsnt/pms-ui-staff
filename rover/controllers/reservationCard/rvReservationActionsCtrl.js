@@ -404,7 +404,7 @@ sntRover.controller('reservationActionsController', [
 							return penalty + (penalty > 1 ? " nights" : " night");
 						}
 						else if(isPercent){
-							return penalty + " %";
+							return $rootScope.currencySymbol+penalty;//as calculated amount based on percentage is provided from API
 						}
 						else {
 							return $rootScope.currencySymbol + $filter('number')(penalty, 2);
@@ -427,9 +427,9 @@ sntRover.controller('reservationActionsController', [
 					deposit:deposit,
 					depositText: (function() {
 						if (!isOutOfCancellationPeriod) {
-							return "Within Cancellation Period. Deposit of "+$rootScope.currencySymbol+deposit+" is refundable.";
+							return "Within Cancellation Period. Deposit of "+$rootScope.currencySymbol+$filter('number')(deposit, 2)+" is refundable.";
 						} else {
-							return "Reservation outside of cancellation period. A cancellation fee of "+$rootScope.currencySymbol+penalty+" will be charged, deposit not refundable";
+							return "Reservation outside of cancellation period. A cancellation fee of "+$rootScope.currencySymbol+$filter('number')(penalty, 2)+" will be charged, deposit not refundable";
 						}
 					})()
 				})
@@ -610,14 +610,15 @@ sntRover.controller('reservationActionsController', [
 		
 
 		$scope.showResendConfirmation = function(reservationStatus){
-				var showResendConfirmationFlag = false;
+			var showResendConfirmationFlag = false;
+			if($rootScope.isStandAlone){
 				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
 					if($scope.guestCardData.contactInfo.email !=null && $scope.guestCardData.contactInfo.email !=""){
-						showResendConfirmationFlag = true;
+					showResendConfirmationFlag = true;
 					}
 				}
-				return showResendConfirmationFlag;
-			
+			}
+			return showResendConfirmationFlag;
 		};
 		$scope.sendConfirmationEmail = function(){
 			var postData = {

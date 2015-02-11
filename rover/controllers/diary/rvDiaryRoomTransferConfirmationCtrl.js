@@ -48,9 +48,9 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
 
-		$scope.moveWithoutRateChange = function() {
-			$scope.roomXfer.next.room.new_price = $scope.roomXfer.current.room.old_price;
-			$scope.confirm();
+		$scope.moveWithoutRateChange = function() {			
+			$scope.saveReservation ($scope.roomXfer.next.occupancy, $scope.roomXfer.next.room);
+			$scope.closeDialog();
 		};
 
 		$scope.selectAdditional = function() {

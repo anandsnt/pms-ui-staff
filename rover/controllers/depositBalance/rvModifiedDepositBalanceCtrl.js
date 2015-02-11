@@ -36,12 +36,17 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				};
 			});
 	$scope.addmode = ($scope.cardsList.length>0) ? false :true;
-
+	$scope.shouldShowMakePaymentButton = true;
 	$scope.shouldShowMakePaymentScreen = true;
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;
 	$scope.depositBalanceMakePaymentData = {};
 	$scope.depositBalanceMakePaymentData.amount = $filter('number') ($scope.depositBalanceData.data.outstanding_stay_total,2);
+	$scope.refundAmount = 0;
+	if($scope.depositBalanceMakePaymentData.amount < 0){
+		$scope.refundAmount = (-1)*parseFloat($scope.depositBalanceMakePaymentData.amount);
+		$scope.shouldShowMakePaymentButton = false;
+	}
 	$scope.depositBalanceMakePaymentData.add_to_guest_card = false;
 	$scope.makePaymentButtonDisabled = true;
 	$scope.isDisplayReference = false;
@@ -63,7 +68,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 	$scope.disableMakePayment = function(){
 		 if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
+			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.depositBalanceMakePaymentData.amount >=0) ? false :true;
 		}
 		else{
 			return true;
@@ -76,7 +81,17 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showMakePaymentButtonStatus = function(){
 		var buttonClass = "";
 		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "green" :"grey";
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.depositBalanceMakePaymentData.amount >=0) ? "green" :"grey";
+		}else {
+			buttonClass = "grey";
+		};
+		return buttonClass;
+	};
+
+	$scope.showRefundButtonStatus = function(){
+		var buttonClass = "";
+		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "blue" :"grey";
 		}else {
 			buttonClass = "grey";
 		};
@@ -226,7 +241,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			isShowFees = false;
 		}
 		else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
-			isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.depositBalanceMakePaymentData.payment_type !=='CC') && $scope.depositBalanceMakePaymentData.payment_type !=="") ? true:false;
+			if($scope.depositBalanceMakePaymentData.amount >= 0){
+				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.depositBalanceMakePaymentData.payment_type !=='CC') && $scope.depositBalanceMakePaymentData.payment_type !=="") ? true:false;
+			}
+			
 		}
 		return isShowFees;
 	};
@@ -262,6 +280,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
 					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
 				}
+			}
+
+			if($scope.depositBalanceMakePaymentData.amount < 0){
+				$scope.refundAmount = (-1)*parseFloat($scope.depositBalanceMakePaymentData.amount);
+				$scope.shouldShowMakePaymentButton = false;
+			} else {
+				$scope.shouldShowMakePaymentButton = true;
 			}
 		}
 	};
