@@ -163,6 +163,12 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.refreshScroller('rightPanelScroll');
 		$scope.refreshScroller('leftPanelScroll');
+
+		function init() {
+			
+		};
+
+		init();
 	}
 ])
 
