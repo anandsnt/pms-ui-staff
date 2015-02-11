@@ -82,7 +82,7 @@ sntRover.service('RVreportsSrv', [
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
-					deferred.resolve(data.accounts);
+					deferred.resolve(data.results);
 				}.bind(this), function(data){
 					deferred.reject(data);
 				});

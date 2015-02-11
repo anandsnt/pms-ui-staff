@@ -597,7 +597,7 @@ sntRover.controller('RVReportsMainCtrl', [
 						var entry = {}
 						$.map(data, function(each) {
 							entry = {
-								label: each.account_name,
+								label: each.name,
 								value: each.id
 							};
 							list.push(entry);
@@ -610,7 +610,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				this.value = ui.item.label;
 				setTimeout(function() {
 					$scope.$apply(function() {
-						thisReport.chosenIncludeComapnyTaGroup = ui.item.label;
+						thisReport.uiChosenIncludeComapnyTaGroup = ui.item.label;
+						thisReport.chosenIncludeComapnyTaGroup = ui.item.value;
 					});
 				}.bind(this), 100);
 				return false;
