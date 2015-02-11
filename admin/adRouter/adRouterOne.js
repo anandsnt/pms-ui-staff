@@ -35,7 +35,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
-			url : '/user/:page/:id/:hotelId'
+			url : '/user/:page/:id/:hotelId/:isUnlocking'
 		});
 		
 		$stateProvider.state('admin.linkexisting', {
@@ -84,4 +84,18 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADTemplateConfigurationCtrl',
 			url : '/templateconfiguration'
 		});
+
+		$stateProvider.state('admin.campaigns', {
+			templateUrl: '/assets/partials/campaigns/adCampaignsList.html',
+			controller: 'ADCampaignsListCtrl',
+			url : '/campaigns'
+		});
+
+		$stateProvider.state('admin.addCampaign', {
+			templateUrl: '/assets/partials/campaigns/adAddCampaign.html',
+			controller: 'ADAddCampaignCtrl',
+			url : '/campaigns/:id/:type'
+		});
+		
+        
 });

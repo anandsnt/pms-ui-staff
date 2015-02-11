@@ -51,6 +51,16 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADDailyWorkAssi
 			});
 			return deferred.promise;
 		};
+		this.deleteRoomTypes = function(data) {
+			var deferred = $q.defer();
+			var url = '/admin/room_types/' + data.roomtype_id;
+			ADBaseWebSrv.deleteJSON(url).then(function(data) {
+			deferred.resolve(data);
+			},function(errorMessage){
+			deferred.reject(errorMessage);
+			});
+		return deferred.promise;
+		};
 		/*
 		 * To import room
 		 * @return {object} status of import

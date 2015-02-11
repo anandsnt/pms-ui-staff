@@ -3448,6 +3448,21 @@
                             }                  
                         }
                     }
+
+                    .actions {
+                        .button {
+                            .count {
+                                position: absolute;
+                                top: -6px;
+                                right: -6px;
+                                font-size: 12px;
+                                line-height: 24px;
+                                background-color: @softRedStart;
+                                #border-radius > .rounded(24px);
+                                .square(24px);
+                            }
+                        }
+                    }
                 }
 
                 /* Block details - notes **/
@@ -3458,13 +3473,14 @@
                         .float;
 
                         textarea {
-                            height: 110px;
-                            margin-right: 10px;
-                            #pixel-to-percent > .width(780, 1070); 
+                            height: 100px;
+                            #pixel-to-percent > .width(780, 1070);
+                            .pull-left;  
                         }
 
                         .actions {
                             #pixel-to-percent > .width(250, 1070); 
+                            .pull-right;
 
                             .select { 
                                 width: 100%;
@@ -3541,14 +3557,23 @@
                 &.has-button {
                     .next-view,
                     .no-view,
-                    .select-item,
-                    textarea {
-                        .pull-left;
-                    }
+                    .select-item { .pull-left; }
 
                     .actions {
                         .pull-right;
                     }
+                }
+
+                &.has-buttons {
+                    .next-view,
+                    .no-view,
+                    .select-item { .calc-width(100, 150); }
+                }
+
+                &.has-button {
+                    .next-view,
+                    .no-view,
+                    .select-item { .calc-width(100, 75); }
                 }
             }
 

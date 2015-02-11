@@ -80,6 +80,8 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 		};
 		$scope.invokeApi(ADUserSrv.deleteUser, data, successDelete );
 	};	
+
+
 	/**
     * Handle back action
     */ 
