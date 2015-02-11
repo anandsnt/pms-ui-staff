@@ -140,6 +140,23 @@
     </div>
 </div>
 
+<div class="filter" ng-if="item.chosenIncludeComapnyTaGroup">
+    <label>Company/TA/Group</label>
+    <input class="icons icon-search" auto-complete auto-options="autoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.chosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
+</div>
+
+<div class="options" ng-if="item.hasGuaranteeType">
+    <label for="report-options">Guarantee Type</label>
+    <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, item)">{{ item.guaranteeTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, item)">
+        <label class="checkbox inline" ng-repeat="each in item.guaranteeTypes">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+            <input type="checkbox" ng-model="each.selected">
+            {{ each.guarantee_type }}
+        </label>
+    </div>
+</div>
+
 <!-- Specifice markup for display options for the Source and Market reports -->
 <div class="options" ng-if="item.hasSourceMarketFilter">
     <label for="report-options">Display</label>
