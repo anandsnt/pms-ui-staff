@@ -53,7 +53,7 @@
 // 
 			// $scope.handleMLISessionId();
 		// } else {
-//<<<<<<< HEAD
+//
 // 
 			// $scope.savePayment("selectedCard");
 		// }
@@ -102,7 +102,7 @@
 		// catch(err) {
 		   // $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 		// };
-// 
+// app/assets/rover/controllers/depositBalance/rvDepositBalanceCtrl.js://
 	// };
 	// /*
 	 // * Function to save payment
@@ -195,7 +195,7 @@
 		// $scope.$emit("hideLoader");
 // 
 	// });
-	// /*
+	// /*app/assets/rover/controllers/depositBalance/rvDepositBalanceCtrl.js://
 	 // * Show Add Card Active and show screen
 	 // */
 	// $scope.clickedAddCard = function(){		
@@ -280,7 +280,7 @@
 // 
 	// $scope.closeDepositModal = function(){
 		// $scope.roverFlags.isDepositBalanceScreenOpened = false;
-		// $scope.closeDialog();
+		// $scope.closeDialog();app/assets/rover/controllers/depositBalance/rvDepositBalanceCtrl.js://
 	// };
 	// $scope.successMakePayment = function(){
 		// $scope.$emit("hideLoader");

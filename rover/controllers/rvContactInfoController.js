@@ -121,7 +121,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         presentContactInfo = JSON.parse(JSON.stringify(dataToUpdate));;
         //change date format to be send to API
         dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
-        var unwantedKeys = ["avatar", "vip"]; // remove unwanted keys for API
+        var unwantedKeys = ["avatar"]; // remove unwanted keys for API
         dataToUpdate = dclone(dataToUpdate, unwantedKeys);
       };
 
