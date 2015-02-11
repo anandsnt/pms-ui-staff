@@ -99,18 +99,24 @@
 		}
 
 		&.sidebar-left {
-			height: 100%;
-
 			.ui-resizable-handle {
-				top: auto;
-				bottom: 170px;
-
 				&.ui-resizable-e {
+					top: auto;
+					bottom: 20px;
 					background-image: @icons, @rcardTexture1;
 
 					@media @highdpi {
 						background-image: @icons2x, @rcardTexture1;
 						background-size: 120px, 40px;
+					}
+				}
+			}
+
+			&#report-update {
+				.ui-resizable-handle {
+					&.ui-resizable-e {
+						top: 20px;
+						bottom: auto;
 					}
 				}
 			}

@@ -23,7 +23,7 @@
 
     <section id="report-details" class="content reports-wrapper" role="main" ng-show="showReportDetails">
         <div ng-controller="RVReportDetailsCtrl">
-            <div id="report-update" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
+            <div id="report-update" class="sidebar-left" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
 
             <section ng-if="chosenReport.title =='Booking Source & Market Report'">
                 <div ng-show="results.length" class="report-header">
