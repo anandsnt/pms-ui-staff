@@ -4,9 +4,47 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 	'$filter',
 	'RVreportsSrv',
 	'$timeout',
-	function($scope, $rootScope, $filter, RVreportsSrv, $timeout) {
+	'dateFilter',
+	function($scope, $rootScope, $filter, RVreportsSrv, $timeout, dateFilter) {
 		$scope.occupanyRevenueState = {
 			name: "Occupancy & Revenue Summary"
+		}
+
+		$scope.stateStore = {
+			occupancy: [{
+				key: "available_rooms",
+				name: "Available Rooms"
+			}, {
+				key: "occupied_rooms",
+				name: "Occupied Rooms"
+			}, {
+				key: "complimentary_rooms",
+				name: "Complimentary Rooms"
+			}, {
+				key: "occupied_minus_comp",
+				name: "Occupied Rooms (Excl. Comp.)"
+			}],
+			occupancyTotals: [{
+				key: "total_occupancy_in_percentage",
+				name: "Total Occ."
+			}, {
+				key: "total_occupancy_minus_comp_in_percentage",
+				name: "Total Occ. (Excl. Comp.)"
+			}],
+			revenues: [{
+				key: "rev_par",
+				name: "RevPar"
+			}, {
+				key: "adr_inclusive_complimentary_rooms",
+				name: "ADR (Incl. Comp.)"
+			}, {
+				key: "adr_exclusive_complimentatry_rooms",
+				name: "ADR (Excl. Comp.)"
+			}],
+			revenueTotals: [{
+				key: "total_revenue",
+				name: "Total Revenue"
+			}]
 		}
 
 		$scope.setScroller('leftPanelScroll', {
@@ -19,6 +57,10 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			probeType: 3,
 			scrollX: true
 		});
+
+		$scope.selectedDays = [];
+
+		$scope.horizontalLength = 1200;
 
 		$timeout(function() {
 			$scope.$parent.myScroll['leftPanelScroll'].on('scroll', function() {
@@ -33,7 +75,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		}, 1000);
 
 		$scope.getNumber = function() {
-			return new Array((1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance) * 3);
+			return new Array((1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance) * $scope.selectedDays.length);
 		}
 
 		$scope.getHeader = function(indexValue) {
@@ -46,129 +88,45 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}
 		}
 
-		$scope.tabularData = {
-			hotelName: "Sample Hotel",
-			markets: [{
-				id: "1",
-				name: "MarketOne"
-			}, {
-				id: "2",
-				name: "MarketTwo"
-			}, {
-				id: "3",
-				name: "MarketThree"
-			}],
-			chargeCodes: [{
-				id: "1",
-				name: "ChargeCodeOne"
-			}, {
-				id: "2",
-				name: "ChargeCodeTwo"
-			}, {
-				id: "3",
-				name: "ChargeCodeThree"
-			}],
-			displayValues: [
-				[2401, 2401, 2401, ],
-				[5928, 5928, 5928, ],
-				[3080, 3080, 3080, ],
-				[1698, 1698, 1698, ],
-				[2024, 2024, 2024, ],
-				[3254, 2024, 2024, ],
-				[4698, 4698, 4698, ],
-				[5650, 5650, 5650, ],
-				[5650, 5650, 5650, ],
-				[2401, 2401, 2401, ],
-				[5928, 5928, 5928, ],
-				[3080, 3080, 3080, ],
-				[1698, 1698, 1698, ],
-				[2024, 2024, 2024, ],
-				[3254, 2024, 2024, ],
-				[4698, 4698, 4698, ],
-				[2024, 2024, 2024, ],
-				[3254, 2024, 2024, ],
-				[4698, 4698, 4698, ]
-			],
-			table: {
-				"2014-12-01": {
-					availableRooms: 5650,
-					occupiedRooms: 2401,
-					complimentaryRooms: 5928,
-					occupiedRoomsMinusComp: 3080,
-					markets: {
-						1: 1698,
-						2: 2024,
-						3: 3254
-					},
-					chargeCodes: {
-						1: 4698,
-						2: 5024,
-						3: 6254
-					},
-					totalOccupancy: 1234,
-					totalOccupancyMinusComp: 2568,
-					RevPar: 456,
-					ADRInclComp: 3245,
-					ADRExclComp: 4245,
-					TotalRevenue: 8562
-				},
-				"2014-12-02": {
-					availableRooms: 5650,
-					occupiedRooms: 2401,
-					complimentaryRooms: 5928,
-					occupiedRoomsMinusComp: 3080,
-					markets: {
-						1: 1698,
-						2: 2024,
-						3: 3254
-					},
-					chargeCodes: {
-						1: 4698,
-						2: 5024,
-						3: 6254
-					},
-					totalOccupancy: 1234,
-					totalOccupancyMinusComp: 2568,
-					RevPar: 456,
-					ADRInclComp: 3245,
-					ADRExclComp: 4245,
-					TotalRevenue: 8562
-				},
-				"2014-12-03": {
-					availableRooms: 5650,
-					occupiedRooms: 2401,
-					complimentaryRooms: 5928,
-					occupiedRoomsMinusComp: 3080,
-					markets: {
-						1: 1698,
-						2: 2024,
-						3: 3254
-					},
-					chargeCodes: {
-						1: 4698,
-						2: 5024,
-						3: 6254
-					},
-					totalOccupancy: 1234,
-					totalOccupancyMinusComp: 2568,
-					RevPar: 456,
-					ADRInclComp: 3245,
-					ADRExclComp: 4245,
-					TotalRevenue: 8562
-				}
+		$scope.getValue = function(key, columnIndex) {
+			console.log({
+				key: key,
+				columnIndex: columnIndex
+			});
+			var candidate = $scope.results[key][$scope.selectedDays[index / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance)]];
+			if (candidate) {
+				return candidate.this_year;
+			} else {
+				return -1;
 			}
-
 
 		}
 
-		$scope.refreshScroller('rightPanelScroll');
-		$scope.refreshScroller('leftPanelScroll');
+
+
+		function refreshScrollers() {
+			$scope.refreshScroller('rightPanelScroll');
+			$scope.refreshScroller('leftPanelScroll');
+		}
 
 		function init() {
-			
+			var chosenReport = RVreportsSrv.getChoosenReport();
+			$scope.selectedDays = [];
+			for (var ms = new tzIndependentDate(chosenReport.fromDate) * 1, last = new tzIndependentDate(chosenReport.untilDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+				$scope.selectedDays.push(dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'));
+			}
+			$timeout(function() {
+				$scope.horizontalLength = $scope.getNumber().length * 80;
+				refreshScrollers();
+			}, 1000)
+
 		};
 
 		init();
+
+		$rootScope.$on('report.updated', function() {
+			init();
+		});
 	}
 ])
 

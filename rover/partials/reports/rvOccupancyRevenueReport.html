@@ -1,12 +1,11 @@
 <!-- Report content -->
 <div id="report-content" class="report-content no-totals statistics">
-
         <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
         <div class="statistics-headings">
                 <div class="scrollable" ng-iscroll="leftPanelScroll">
                         <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
                         <ul class="wrapper">
-                                <li class="main-heading" ng-class="{'double-row':chosenReport.chosenLastYear || chosenReport.chosenVariance}">{{tabularData.hotelName}}</li>
+                                <li class="main-heading" ng-class="{'double-row':chosenReport.chosenLastYear || chosenReport.chosenVariance}">TODO:Hotel Name </li>
                                 <!-- Add class "double-row" if showing variance or last year -->
                                 <li>Available Rooms</li>
                                 <li>Occupied Rooms</li>
@@ -51,7 +50,7 @@
                         <table class="statistics-reports">
                                 <thead>
                                         <tr>
-                                                <th ng-repeat="(date, values) in tabularData.table" colspan="{{1 + !!chosenReport.chosenLastYear + !!chosenReport.chosenVariance}}">{{date}}</th>
+                                                <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenReport.chosenLastYear + !!chosenReport.chosenVariance}}">{{date}}</th>
                                                 <!-- If showing variance OR last year, add colspan="2". If showing variance AND last year, add colspan="3" -->
                                                 <!-- ... repeat for all dates in the date range -->
                                         </tr>
@@ -63,25 +62,48 @@
                                                 <!-- <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}">Last Year</th>
                                                         // Output only if showing last year. Add class "day-end" if not showing variance.
                                                         <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenVariance" class="day-end">Variance</th> -->
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        <tr ng-repeat="occupancy in stateStore.occupancy track by $index">
+                                                <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
+                                                <td ng-repeat="n in getNumber() track by $index">{{getValue(occupancy.key,$index);}}</td>
+                                                <!-- <td>{Occupancy / Revenue}</td> -->
+                                                <!-- If showing lat year, add this: -->
+                                                <!-- <td ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}" class="last-year"></td> -->
+                                                <!-- // Add class "day-end" if not showing variance -->
+                                                <!-- If showing variance, add this: -->
+                                                <!-- <td ng-if="chosenReport.chosenVariance" class="day-end"></td> -->
+                                                <!-- Add class "negative" if negative value -->
+                                                <!-- ... repeat for all dates in the date range -->
+                                        </tr>
+                                        <tr ng-repeat="market in reportsState.markets" ng-show="market.selected">
+                                                <td ng-repeat="n in getNumber() track by $index">100</td>
+                                        </tr>
+                                        <tr ng-repeat="occupancyTotal in stateStore.occupancyTotals track by $index">
+                                                <td ng-repeat="n in getNumber() track by $index">100</td>
+                                        </tr>
+                                        <tr ng-repeat="revenue in stateStore.revenues track by $index">
+                                                <td ng-repeat="n in getNumber() track by $index">100</td>
+                                        </tr>
+                                        <tr ng-repeat="market in reportsState.markets" ng-show="market.selected">
+                                                <td ng-repeat="n in getNumber() track by $index">100</td>
+                                        </tr>
+                                        <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
+                                                <td ng-repeat="n in getNumber() track by $index">300</td>
+                                        </tr>
+                                </tbody>
+                        </table>
                 </div>
-                </tr>
-                </thead>
-                <tbody>
-                        <tr ng-repeat="numbers in tabularData.displayValues track by $index">
-                                <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
-                                <td ng-repeat="n in getNumber() track by $index">100</td>
-                                <!-- <td>{Occupancy / Revenue}</td> -->
-                                <!-- If showing lat year, add this: -->
-                                <!-- <td ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}" class="last-year"></td> -->
-                                <!-- // Add class "day-end" if not showing variance -->
-                                <!-- If showing variance, add this: -->
-                                <!-- <td ng-if="chosenReport.chosenVariance" class="day-end"></td> -->
-                                <!-- Add class "negative" if negative value -->
-                                <!-- ... repeat for all dates in the date range -->
-                        </tr>
-                        <!-- ... repeat for all list items on the left side -->
-                </tbody>
-                </table>
         </div>
 </div>
-</div>
+
+
+<!-- 
+    RIGHT SIDE WRAPPER WIDTH NEEDS TO BE SET INLINE IN ORDER FOR SCROLLING TO WORK OK
+    Table cell width 80px, which is our base to calculate wrapper's width. 
+    Other parameters are: number of days, last year shown/not shown and variance shown/not shown.
+        - If we're showing both last year AND variance, wrapper width = number of days * 240 ==> 80px for value, 80px for last year and 80px for variance
+        - If we're showing last year OR, variance (not both), wrapper = number of days * 160
+        - If we're NOT SHOWING last year AND variance, wrapper = number of days * 80
+-->
