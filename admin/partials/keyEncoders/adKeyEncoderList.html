@@ -36,18 +36,18 @@
 							</a>
 						</td>
 					
-						<td data-title="'Location'"  sortable="'based_on'" header-class="width-30" ng-hide="currentClickedElement == $index">
+						<td data-title="'Location'"  header-class="width-30" ng-hide="currentClickedElement == $index">
 							<span>
 								{{encoder.location}}
 							</span>
 						</td>
-						<td data-title="'Encoder ID'" sortable="'rate_type'" header-class="width-25" ng-hide="currentClickedElement == $index">
+						<td data-title="'Encoder ID'" header-class="width-25" ng-hide="currentClickedElement == $index">
 							<span>
 								<strong>{{encoder.encoder_id}}</strong>
 							</span>
 						</td>
 
-						<td data-title="'Status'" sortable="'rate_type'" header-class="width-25" ng-hide="currentClickedElement == $index">
+						<td data-title="'Status'" header-class="width-25" ng-hide="currentClickedElement == $index">
 							<div id="encoder-status" class="switch-button single" ng-class="{ on : encoder.enabled == true }">
 								<input type="checkbox" ng-click="statusToggle($index)">
 								<span class="switch-icon"></span>
