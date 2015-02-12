@@ -14,15 +14,46 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.activeRoom = 0;
         $scope.fromPage = "";
-                    
+
         if($stateParams.from_screen == "staycard"){
             $scope.fromPage = "staycard";
+            $rootScope.setPrevState = {
+                title: $filter('translate')('STAY_CARD'),
+                callback: 'goBackToStayCard',
+                scope: $scope
+            };
+
+            $scope.goBackToStayCard = function() {
+                var reservationId = $scope.reservationData.reservationId,
+                    confirmationNumber = $scope.reservationData.confirmNum;
+
+               
+                $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+               
+            };
+
+
+        } else {
+            // set the previous state
+            $rootScope.setPrevState = {
+                title: $filter('translate')('ROOM_RATES'),
+                name: 'rover.reservation.staycard.mainCard.roomType',
+                param: {
+                    from_date: $scope.reservationData.arrivalDate,
+                    to_date: $scope.reservationData.departureDate,
+                    view: "ROOM_RATE",
+                    company_id: null,
+                    travel_agent_id: null,
+                    fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
+                }
+            }
         }
         $scope.existingAddons = [];
+        $scope.roomNumber = '';
         var successCallBack = function(data){
             $scope.$emit('hideLoader');
             
-
+            $scope.roomNumber = data.room_no;
             angular.forEach(data.existing_packages,function(item, index) {
                 var addonsData = {};
                 addonsData.id = item.package_id;
@@ -39,19 +70,10 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         
         
 
-        // set the previous state
-        $rootScope.setPrevState = {
-            title: $filter('translate')('ROOM_RATES'),
-            name: 'rover.reservation.staycard.mainCard.roomType',
-            param: {
-                from_date: $scope.reservationData.arrivalDate,
-                to_date: $scope.reservationData.departureDate,
-                view: "ROOM_RATE",
-                company_id: null,
-                travel_agent_id: null,
-                fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
-            }
-        }
+        
+
+        
+
 
         var init = function() {
             $scope.reservationData.isHourly = true;
