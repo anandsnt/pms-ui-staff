@@ -53,7 +53,8 @@ sntRover.controller('RVReservationPackageController',
 	$scope.removeSelectedAddons = function(addonId, index){
 		var successDelete = function(){
 			$scope.$emit('hideLoader');
-			$scope.packageData.existing_packages.splice(index)
+			$scope.packageData.existing_packages.splice(index, 1);
+			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count)-parseInt(1);
 		}
 		var addonArray = [];
 		addonArray.push(addonId)

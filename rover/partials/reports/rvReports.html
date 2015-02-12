@@ -8,10 +8,9 @@
                                         <a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter()">
                                                 <span ng-class="item.reportIconCls"></span>
                                                 <div class="data">
-                                                        <h2>
-                                {{ item.title }}
-                                <span ng-if="item.sub_title">{{ item.sub_title }}</span>
-                            </h2>
+                                                        <h2>{{ item.title }}
+                                                            <span ng-if="item.sub_title">{{ item.sub_title }}</span>
+                                                        </h2>
                                                         <em>{{ item.description }}</em>
                                                 </div>
                                         </a>
@@ -25,7 +24,7 @@
                 <div ng-controller="RVReportDetailsCtrl">
                         <div id="report-update" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
 
-                        <section ng-if="chosenReport.title =='Booking Source & Market Report' && chosenReport.title !='Occupancy & Revenue Summary'">
+                        <section ng-if="chosenReport.title =='Booking Source & Market Report'">
                                 <div ng-show="results.market || results.source" class="report-header">
                                         <div class="actions">
                                                 <div class="select" ng-if="HIDE_THIS_FEATURE">
@@ -46,7 +45,8 @@
                                 <div ng-controller="rvMarketSourceReportCtrl" ng-include="'/assets/partials/reports/rvMarketSourceReport.html'"></div>
                         </section>
 
-                        <section ng-if="chosenReport.title !='Booking Source & Market Report' && chosenReport.title =='Occupancy & Revenue Summary'">
+
+                        <section ng-if="chosenReport.title =='Occupancy & Revenue Summary'">
                                 <div ng-show="results" class="report-header">
                                         <div class="actions">
                                                 <div class="select" ng-if="HIDE_THIS_FEATURE">
@@ -69,6 +69,8 @@
 
                         <section ng-if="chosenReport.title !='Booking Source & Market Report' && chosenReport.title !='Occupancy & Revenue Summary'">
                                 <div ng-show="results.length" class="report-header">
+                                        <ul ng-include="'/assets/partials/reports/summaryCounts.html'" class="totals"></ul>
+
                                         <div class="actions">
                                                 <div class="select" ng-if="HIDE_THIS_FEATURE">
                                                         <select name="" id="">
@@ -127,8 +129,23 @@
                                                                 </tr>
                                                         </thead>
 
+                                                        <!-- GUEST REPORTS: Reports sort by header -->
+                                                        <thead ng-if="!headers.length || !!subHeaders.length">
+                                                                <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+                                    "sorting-asc" when ASC sorting
+                                    "sorting-desc" when DESC sorting -->
+                                                                <tr>
+                                                                        <th ng-repeat="item in subHeaders track by $index">
+                                                                                <span ng-class="{'sort'         : !!chosenReport.sortByOptions[$index],
+                                                         'sorting-asc'  : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === true,
+                                                         'sorting-desc' : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === false
+                                                     }" ng-click="sortResultBy(chosenReport.sortByOptions[$index])">{{ item }}</span>
+                                                                        </th>
+                                                                </tr>
+                                                        </thead>
+
                                                         <!-- Reports sort by header -->
-                                                        <thead ng-if="!headers.length">
+                                                        <thead ng-if="!headers.length && !subHeaders.length">
                                                                 <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
                                     "sorting-asc" when ASC sorting
                                     "sorting-desc" when DESC sorting -->

@@ -1,4 +1,13 @@
-admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', 'ADUserRolesSrv', function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv){
+admin.controller('ADUserDetailsCtrl',
+	[ '$scope', 
+	'$state',
+	'$stateParams', 
+	'ADUserSrv', 
+	'$rootScope', 
+	'ADUserRolesSrv',
+	'$timeout' ,
+	'$window',
+	function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv, $timeout, $window){
 	
 	BaseCtrl.call(this, $scope);
 	//navigate back to user list if no id
@@ -20,6 +29,7 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	$scope.assignedRoles = [];
 	$scope.rolesWithDashboards = [];
 	$scope.errorMessage = "";
+	$scope.focusOnPassword = false;
 
 	$scope.getMyDashboards = function() { 
 
@@ -223,9 +233,30 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	   			
 	    		}
 			}
+
+			if ($scope.isInUnlockingMode()) {
+				setFocusOnPasswordField();
+			}
 		};
 		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id} , successCallbackRender);
 	};
+
+	var setFocusOnPasswordField = function() {
+		//$('#edit-user #password').focus();
+		$scope.focusOnPassword = true;
+	};
+
+	$scope.isInUnlockingMode = function (){
+		return ($stateParams.isUnlocking === "true");
+	};
+
+	$scope.disableReInviteButton = function (data) {
+		if (!$scope.isInUnlockingMode())
+			return (data.is_activated == 'true');
+		else
+			return false;
+	};
+
 	/**
     * To render add screen
     */
@@ -240,17 +271,45 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
 	};
    
+	/**
+	* success callback of send inivtaiton mail (API)
+	* will go back to the list of users
+	*/
+	var successCallbackOfSendInvitation = function (data) {
+		$scope.$emit('hideLoader');
+		$state.go('admin.users', { id: $stateParams.hotelId });
+	};
+
+
+
    /*
     * Function to send invitation
     * @param {int} user id
     */
 	$scope.sendInvitation = function(userId){
-		console.log("send invitation");
+		//reseting the error message
+		$scope.errorMessage = '';
 		if(userId == "" || userId == undefined){
 			return false;
-		}
+		}		
 		var data = {"id": userId};
-	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data);	
+
+		//if it is in unlocking mode
+		if ($scope.isInUnlockingMode()) {
+			//if the erntered password is not matching
+			if ($scope.data.password !== $scope.data.confirm_password) {				
+
+				$timeout(function(){
+					$scope.errorMessage = ["Password's deos not match"];
+					$window.scrollTo(0, 0);
+					setFocusOnPasswordField();
+				}, 500);
+				return false;
+			}
+			data.password = $scope.data.password;
+			data.is_trying_to_unlock = true;
+		}
+	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data, successCallbackOfSendInvitation);	
 	};
 
 	$scope.reachedUnAssignedRoles = function(event, ui){

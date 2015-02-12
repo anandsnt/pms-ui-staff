@@ -22,7 +22,7 @@ sntRover.service('RVreportsSrv', [
 				deferred.resolve(this.cacheReportList);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
-					.then(function(data) {						
+					.then(function(data) {
 						this.cacheReportList = data;
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {
@@ -77,5 +77,32 @@ sntRover.service('RVreportsSrv', [
 			return deferred.promise;
 		};
 
+		this.fetchGuaranteeTypes = function() {
+			var deferred = $q.defer(),
+				url = '/api/reports/search_by_guarantee';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.fetchComTaGrp = function(query) {
+			var deferred = $q.defer(),
+				url = 'api/reports/search_by_company_agent_group?query=' + query;
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);
