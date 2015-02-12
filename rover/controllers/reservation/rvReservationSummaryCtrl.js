@@ -282,8 +282,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.showCC = false;
 			$scope.showSelectedCreditCard = true;
 			// CICO-9457 : Data for fees details - standalone only.	
+			//CICO-13427 : API response changed from fees_information to fees_details
 			if ($scope.isStandAlone) {
-				$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
+				$scope.feeData.feesInfo = $scope.cardsList[index].fees_details;
 				$scope.setupFeeData();
 			}
 
