@@ -15,6 +15,8 @@ html {
     background: transparent;
 }
 
+body { overflow: visible; }
+
 #main-menu,
 #availability,
 .logo-hide, 
@@ -47,10 +49,11 @@ table {
     table-layout: auto;
     border-collapse: collapse; 
     border-spacing: 0;
+    page-break-inside: avoid;
 
     tr {
-        page-break-after: auto;
         page-break-inside: avoid;
+        page-break-after: auto;
 
         th { white-space: normal; }
 
@@ -60,10 +63,10 @@ table {
             line-height: 1em;
             vertical-align: top;
             text-align: left;
-            page-break-after: auto;
-            page-break-inside: avoid;
             white-space: normal;
             padding: 8pt 4pt;
+            page-break-after: auto;
+            page-break-inside: avoid;
         }
 
         td { border-bottom: 1px solid @grey2; }
@@ -570,9 +573,7 @@ table {
                             line-height: 10pt;
                             color: @grey3;
 
-                            span { color: @textColor; }
-
-                            .pagination { .hide; }                            
+                            span { color: @textColor; }                       
 
                             &:last-child { text-align: right; }
                         }
@@ -591,18 +592,26 @@ table {
 
                 &.guest-reports {
 
+                    .unassigned { color: @grey3; }
+
                     tr {
-                        th { 
-                            &.room { width: 2.5cm; }
-                            &.name { width: 5cm; }
-                            &.date { width: 7cm; }
+                        th {
+                            &:first-child { width: 2cm; }
                         }
 
                         td {
-                            font-weight: 600;
+                            padding-bottom: 4pt;
                             border-bottom: 0;
+                            min-height: 30px;
 
-                            strong {
+                            strong,
+                            span,
+                            div { 
+                                page-break-inside: avoid; 
+                                min-height: 10px;
+                            }
+
+                            strong { 
                                 font-weight: 600;
                                 .show;
 
@@ -610,93 +619,148 @@ table {
                                     font-size: 12pt;
                                     font-weight: 700;
                                     text-transform: none;
-                        
-                                    &.unassigned { color: @grey3; }
                                 }
                             }
 
-                            .confirmation,
-                            .guests { margin-right: 5px; }
+                            .data {
+                                margin: 0 2pt;
 
-                            .status { .show; }
+                                &:first-of-type,
+                                &.status,
+                                &.penalty,
+                                &.rate { margin-left: 0; }
 
-                            .vip {
-                                font-size: 10pt;
-                                line-height: 1em;
-                                font-weight: 400;
-                                text-align: left;
-                                background: transparent;
-                                color: @grey3;
-                                margin-left: 5px;
-                                .size(auto);
+                                &.upper { text-transform: uppercase; }
+
+                                &.room,
+                                &.rate,
+                                &.status,
+                                &.penalty {
+                                    text-transform: uppercase;
+                                    .show;
+                                }
+
+                                &.rate { 
+                                    strong { 
+                                        display: inline;
+                                        font-weight: 600;
+                                    }
+                                }
+
+                                &.vip {
+                                    font-size: 10pt;
+                                    line-height: 1em;
+                                    font-weight: 400;
+                                    text-align: left;
+                                    vertical-align: inherit;
+                                    background: transparent;
+                                    color: @grey3;
+                                    .square(auto);
+                                }
+
+                                &.guarantee {
+                                    color: @grey3;
+                                    text-transform: uppercase;
+                                    font-size: 9pt;
+                                    margin-left: 4pt;
+                                    width: 2cm;
+                                    .show;
+                                    .pull-left;
+                                }
                             }
 
-                            .arrival-departure,
-                            .departing {
-                                .size(30px, 3cm);
+                            .guest-status {
+                                float: none;
+                                display: inline-block;
+                                text-indent: 0;
+                                margin-right: 5px;
+                                color: transparent;
+                                .pull-left;
+                                .square(30px); 
+
+                                &.pre-check-in,
+                                &.check-in { background-position: 7px 7px; }
+                                &.check-out { background-position: 7px -33px; }
+                                &.inhouse { background-position: 6px -74px; }
+                                &.late-check-out { background-position: 7px -114px; }
+                                &.cancel { background-position: 6px -154px; }
+                            }
+
+                            time {
+                                .show;
                                 .pull-left;
 
-                                .guest-status { 
-                                    margin-right: 5px;
-                                    .square(30px); 
-
-                                    &.check-in { background-position: 7px 6px; }
-                                    &.check-out { background-position: 7px -32px; }
-                                    &.cancel { background-position: 7px -153px; }
-                                }
-
-                                time {      
-                                    span { .show; }
-                                }
+                                span { .show; }
                             }
 
-                            .arrival-departure { margin-right: 10px; }
-
                             .hours {
-                                font-size: 18px;
+                                font-size: 12pt;
                                 line-height: 30px;
                                 font-weight: 600;
                                 text-align: center;
                                 border: 1px solid @textColor;
-                                margin-left: 10px;
+                                margin-left: 4pt;
+                                .show;
                                 .square(30px);
                                 .pull-left;
                             }
 
-                            .room,
-                            .rate {
-                                text-align: right;
-                                .show;
+                            &.name { width: 7cm; }
 
-                                strong { display: inline; }
+                            &.date { 
+                                width: 3cm;
+                                .float; 
+
+                                &.hour { width: 4cm; }
+                                &.guarantee { width: 6.5cm; }
                             }
 
-                            &:first-child { min-width: 2.5cm; }
+                            &.balance { font-weight: 600; }
 
-                            &[rowspan] { border-bottom: 1px solid @grey2; }
-
-                            &.is-note {
-                                color: @grey3;
-                                text-transform: none;
-                                font-weight: 400;                                
-
-                                strong { 
-                                    color: @textColor;
-                                    text-transform: uppercase;
-                                    font-weight: 600;
-                                }
-
-                                span { 
+                            &.guest-info {
+                                span {
+                                    color: @grey3;
+                                    line-height: 18px;
+                                    padding-left: 20px;
                                     .show;
-                                    &.note-by-name { display: inline; } 
+                                    .nowrap();
                                 }
+                            }
 
-                                &:last-child { width: auto; }
+                            &[rowspan] { border-bottom: 2px solid @grey2; }
+
+                            &:last-child {
+                                .data {
+                                    &.room,
+                                    &.rate { text-align: right; }
+                                }
+                            }
+
+                            &.secondary {
+                                color: @grey3;
+                                font-weight: 400;
+                                border-top: 1px solid @grey1;
+
+                                span { .show;}
+
+                                &.notes {
+                                    strong { 
+                                        color: @grey4;
+                                        text-transform: uppercase;
+                                        font-weight: 600;
+                                        .show;
+                                    }
+
+                                    p { line-height: 1em; }
+                                }
                             }
                         }
 
                         &.row-break {
-                            td { border-bottom: 1px solid @grey2; }
+                            td { 
+                                padding-bottom: 8pt;
+                                border-bottom: 2px solid @grey2; 
+                            }
                         }
                     }
                 }
