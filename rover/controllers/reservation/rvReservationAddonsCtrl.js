@@ -18,9 +18,10 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         if($stateParams.from_screen == "staycard"){
             $scope.fromPage = "staycard";
         }
+        $scope.existingAddons = [];
         var successCallBack = function(data){
             $scope.$emit('hideLoader');
-            $scope.existingAddons = [];
+            
 
             angular.forEach(data.existing_packages,function(item, index) {
                 var addonsData = {};
@@ -32,8 +33,10 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             $scope.existingAddonsLength = $scope.existingAddons.length;
                     
         };
-       
-        $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
+        if(typeof $scope.reservationData.reservationId !="undefined" && $scope.reservationData.reservationId != "" && $scope.reservationData.reservationId!= null){
+            $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
+        }
+        
         
 
         // set the previous state
