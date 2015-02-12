@@ -140,7 +140,8 @@
 
 <div class="filter" ng-if="chosenReport.hasIncludeComapnyTaGroup">
     <label>Company/TA/Group</label>
-    <input class="icons icon-search" auto-complete auto-options="comTaGrpAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.chosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)">
+    <input class="icons icon-search" auto-complete auto-options="comTaGrpAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(item)">
+    <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeComapnyTaGroup">
 </div>
 
 <div class="options" ng-if="chosenReport.hasGuaranteeType">

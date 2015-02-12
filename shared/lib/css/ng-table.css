@@ -172,6 +172,9 @@
 .ng-table th.width-40 {
     width: 40%;
 }
+.ng-table th.width-50 {
+    width: 50%;
+}
 .ng-table th.width-0 {
     width: 0;
 }
