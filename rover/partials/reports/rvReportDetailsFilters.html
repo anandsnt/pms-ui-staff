@@ -1,188 +1,218 @@
-<div class="date-range" ng-if="chosenReport.hasCancelDateFilter">
-    <label>{{ chosenReport.hasCancelDateFilter.description }}</label>
-    <div class="has-datepicker">
-        <input id="chosenReportFromCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromCancelDate" readonly>
-        <input id="chosenReportFromCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromCancelDate" readonly>
-        <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
-        </button>
-    </div>  
-    <span class="span-to"> To </span>
-    <div class="has-datepicker">
-        <input id="chosenReportToCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilCancelDate" readonly>
-        <input id="chosenReportToCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilCancelDate" readonly>
-        <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
-        </button>
+<div class="scrollable">
+    <div class="wrapper">
+
+        <a href="" class="settings-title toggle has-arrow" ng-class="{'active': filterItems.itemA}" ng-click="toggleFilterItems('itemA')">
+            <span class="title">A boy</span>
+        </a>
+        <div class="settings-content" ng-class="{'hidden': !filterItems.itemA}">
+            <p>Vijay</p>
+            <p>Dev</p>
+        </div>
+
+
+        <a href="" class="settings-title toggle has-arrow" ng-class="{'active': filterItems.itemB}" ng-click="toggleFilterItems('itemB')">
+            <span class="title">A Girl</span>
+        </a>
+        <div class="settings-content" ng-class="{'hidden': !filterItems.itemB}">
+            <p>Ann</p>
+            <p>Susan</p>
+            <p>Babu</p>
+        </div>
+
+
+
+
+        <div class="date-range" ng-if="chosenReport.hasCancelDateFilter">
+            <label>{{ chosenReport.hasCancelDateFilter.description }}</label>
+            <div class="has-datepicker">
+                <input id="chosenReportFromCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromCancelDate" readonly>
+                <input id="chosenReportFromCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromCancelDate" readonly>
+                <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
+                    <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
+                </button>
+            </div>  
+            <span class="span-to"> To </span>
+            <div class="has-datepicker">
+                <input id="chosenReportToCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilCancelDate" readonly>
+                <input id="chosenReportToCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilCancelDate" readonly>
+                <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
+                    <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="date-range" ng-if="chosenReport.hasDateFilter">
+            <label>{{ chosenReport.hasDateFilter.description }}</label>
+            <div class="has-datepicker">
+                <input id="chosenReportFromDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
+                <input id="chosenReportFromDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" readonly>
+                <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
+                    <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')">Clear query</span>
+                </button>
+            </div>
+            <span class="span-to">To</span>
+            <div class="has-datepicker">
+                <input id="chosenReportToDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
+                <input id="chosenReportToDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" readonly>
+                <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
+                    <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')">Clear query</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="date-range" ng-if="chosenReport.hasArrivalDateFilter">
+            <label>{{ chosenReport.hasArrivalDateFilter.description }}</label>
+            <div class="has-datepicker">
+                <input id="chosenReportFromCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromArrivalDate" readonly>
+                <input id="chosenReportFromCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromArrivalDate" readonly>
+                <button ng-if="chosenReport.canRemoveArrivalDate" ng-show="chosenReport.showRemove" class="clear-query">
+                    <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
+                </button>
+            </div>  
+            <span class="span-to"> To </span>
+            <div class="has-datepicker">
+                <input id="chosenReportToCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilArrivalDate" readonly>
+                <input id="chosenReportToCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilArrivalDate" readonly>
+                <button ng-if="chosenReport.canRemoveArrivalDate" ng-show="chosenReport.showRemove" class="clear-query">
+                    <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="date-range" ng-if="chosenReport.hasTimeFilter">
+            <label>{{ chosenReport.hasTimeFilter.description }}</label>
+            <div class="select">
+                <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
+                    <option value="">From Time</option>
+                </select>
+            </div>
+            <span>to</span>
+            <div class="select">
+                <select id="chosenReportToTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
+                    <option value="">Until Time</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter" ng-if="chosenReport.hasCicoFilter">
+            <label>{{ chosenReport.hasCicoFilter.description }}</label>
+            <div class="select">
+                <select name="" id="" ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
+                    <option value="">Transaction Type</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter" ng-if="chosenReport.hasUserFilter">
+            <label>User</label>
+            <input class="icons icon-search" auto-complete auto-options="userAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(chosenReport)">
+            <select multiple class="hidden" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
+        </div>
+
+        <div class="options" ng-if="showFauxSelect(chosenReport)">
+            <label for="report-options">Options</label>
+            <div class="faux-select placeholder" ng-click="fauxSelectClicked($event, chosenReport)">{{ chosenReport.fauxTitle }}</div>
+            <!-- When single checkbox selected 
+            <div class="faux-select">{Option}</div>
+            -->
+            <!-- When multiple checkboxes selected 
+            <div class="faux-select">{count} selected ...</div>
+            -->
+            <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.fauxSelectOpen }" ng-click="fauxOptionClicked($event, chosenReport)"> <!-- Remove class "hidden" when ".faux-select" clicked -->
+                <label class="checkbox inline" ng-if="chosenReport.hasIncludeNotes">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeNotes}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenIncludeNotes" name="room-filters">
+                    {{ chosenReport.hasIncludeNotes.description }}
+                </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasIncludeCancelled">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeCancelled}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenIncludeCancelled" name="room-filters">
+                    {{ chosenReport.hasIncludeCancelled.description }}
+                </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasIncludeVip">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeVip}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenIncludeVip" name="room-filters">
+                    {{ chosenReport.hasIncludeVip.description }}
+                </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasIncludeNoShow">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeNoShow}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenIncludeNoShow" name="room-filters">
+                    {{ chosenReport.hasIncludeNoShow.description }}
+                </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasShowGuests">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenShowGuests}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenShowGuests" name="room-filters">
+                    {{ chosenReport.hasShowGuests.description }}
+                </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasIncludeRoverUsers">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeRoverUsers}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenIncludeRoverUsers" name="room-filters">
+                    {{ chosenReport.hasIncludeRoverUsers.description }}
+                </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestUsers">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestUsers}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenIncludeZestUsers" name="room-filters">
+                    {{ chosenReport.hasIncludeZestUsers.description }}
+                </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestWebUsers">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestWebUsers}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenIncludeZestWebUsers" name="room-filters">
+                    {{ chosenReport.hasIncludeZestWebUsers.description }}
+                </label>
+            </div>
+        </div>
+
+        <div class="filter" ng-if="chosenReport.hasIncludeComapnyTaGroup">
+            <label>Company/TA/Group</label>
+            <input class="icons icon-search" auto-complete auto-options="comTaGrpAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(item)">
+            <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeComapnyTaGroup">
+        </div>
+
+        <div class="options" ng-if="chosenReport.hasGuaranteeType">
+            <label for="report-options">Guarantee Type</label>
+            <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, chosenReport)">{{ chosenReport.guaranteeTitle }}</div>
+            <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, chosenReport)">
+                <label class="checkbox inline" ng-if="chosenReport.guaranteeTypes.length" ng-repeat="each in chosenReport.guaranteeTypes">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+                    <input type="checkbox" ng-model="each.selected">
+                    {{ each.guarantee_type }}
+                </label>
+                <label class="checkbox inline" ng-if="!chosenReport.guaranteeTypes.length">No Guarantees</label>
+            </div>
+        </div>
+
+        <!-- Specifice markup for display options for the Source and Market reports -->
+        <div class="options" ng-if="chosenReport.hasSourceMarketFilter">
+            <label for="report-options">Display</label>
+            <div class="faux-select placeholder" ng-click="selectDisplayClicked($event, chosenReport)">{{ chosenReport.displayTitle }}</div>   
+            <!-- Remove class "hidden" when ".faux-select" clicked -->
+            <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.selectDisplayOpen }" ng-click="fauxOptionClicked($event, chosenReport)"> 
+                <label class="checkbox inline">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showSource}"></span>
+                    <input type="checkbox" ng-model="chosenReport.showSource">
+                    {{ chosenReport.hasSource.description }}
+                </label>
+                <label class="checkbox inline">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showMarket}"></span>
+                    <input type="checkbox" ng-model="chosenReport.showMarket">
+                    {{ chosenReport.hasMarket.description }} 
+                </label>
+            </div>
+        </div>
+
+        <div class="sort" ng-if="chosenReport.sortByOptions && headers.length">
+            <label>Sort by</label>
+            <div class="select">
+                <select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
+                    <option value="">Sort By</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button type="button" class="button green" ng-click="fetchUpdatedReport()">Update</button>
     </div>
 </div>
 
-<div class="date-range" ng-if="chosenReport.hasDateFilter">
-	<label>{{ chosenReport.hasDateFilter.description }}</label>
-	<div class="has-datepicker">
-        <input id="chosenReportFromDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
-        <input id="chosenReportFromDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" readonly>
-        <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')">Clear query</span>
-        </button>
-	</div>
-	<span class="span-to">To</span>
-	<div class="has-datepicker">
-        <input id="chosenReportToDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
-        <input id="chosenReportToDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" readonly>
-        <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')">Clear query</span>
-        </button>
-	</div>
-</div>
-
-<div class="date-range" ng-if="chosenReport.hasArrivalDateFilter">
-    <label>{{ chosenReport.hasArrivalDateFilter.description }}</label>
-    <div class="has-datepicker">
-        <input id="chosenReportFromCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromArrivalDate" readonly>
-        <input id="chosenReportFromCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromArrivalDate" readonly>
-        <button ng-if="chosenReport.canRemoveArrivalDate" ng-show="chosenReport.showRemove" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
-        </button>
-    </div>  
-    <span class="span-to"> To </span>
-    <div class="has-datepicker">
-        <input id="chosenReportToCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilArrivalDate" readonly>
-        <input id="chosenReportToCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilArrivalDate" readonly>
-        <button ng-if="chosenReport.canRemoveArrivalDate" ng-show="chosenReport.showRemove" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
-        </button>
-    </div>
-</div>
-
-<div class="date-range" ng-if="chosenReport.hasTimeFilter">
-	<label>{{ chosenReport.hasTimeFilter.description }}</label>
-	<div class="select">
-        <select id="chosenReportFromTime" name="time-from" ng-model="chosenReport.fromTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
-        	<option value="">From Time</option>
-        </select>
-    </div>
-    <span>to</span>
-    <div class="select">
-        <select id="chosenReportToTime" name="time-to" ng-model="chosenReport.untilTime" ng-options="time.value as time.name for time in chosenReport.timeFilterOptions" iscroll-stop-propagation>
-        	<option value="">Until Time</option>
-        </select>
-    </div>
-</div>
-
-<div class="filter" ng-if="chosenReport.hasCicoFilter">
-	<label>{{ chosenReport.hasCicoFilter.description }}</label>
-	<div class="select">
-		<select name="" id="" ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
-			<option value="">Transaction Type</option>
-		</select>
-	</div>
-</div>
-
-<div class="filter" ng-if="chosenReport.hasUserFilter">
-    <label>User</label>
-    <input class="icons icon-search" auto-complete auto-options="userAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(chosenReport)">
-    <select multiple class="hidden" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
-</div>
-
-<div class="options" ng-if="showFauxSelect(chosenReport)">
-    <label for="report-options">Options</label>
-    <div class="faux-select placeholder" ng-click="fauxSelectClicked($event, chosenReport)">{{ chosenReport.fauxTitle }}</div>
-    <!-- When single checkbox selected 
-    <div class="faux-select">{Option}</div>
-    -->
-    <!-- When multiple checkboxes selected 
-    <div class="faux-select">{count} selected ...</div>
-    -->
-    <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.fauxSelectOpen }" ng-click="fauxOptionClicked($event, chosenReport)"> <!-- Remove class "hidden" when ".faux-select" clicked -->
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeNotes">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeNotes}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeNotes" name="room-filters">
-            {{ chosenReport.hasIncludeNotes.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeCancelled">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeCancelled}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeCancelled" name="room-filters">
-            {{ chosenReport.hasIncludeCancelled.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeVip">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeVip}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeVip" name="room-filters">
-            {{ chosenReport.hasIncludeVip.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeNoShow">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeNoShow}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeNoShow" name="room-filters">
-            {{ chosenReport.hasIncludeNoShow.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasShowGuests">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenShowGuests}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenShowGuests" name="room-filters">
-            {{ chosenReport.hasShowGuests.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeRoverUsers">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeRoverUsers}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeRoverUsers" name="room-filters">
-            {{ chosenReport.hasIncludeRoverUsers.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestUsers">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestUsers}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeZestUsers" name="room-filters">
-            {{ chosenReport.hasIncludeZestUsers.description }}
-        </label>
-        <label class="checkbox inline" ng-if="chosenReport.hasIncludeZestWebUsers">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestWebUsers}"></span>
-            <input type="checkbox" ng-model="chosenReport.chosenIncludeZestWebUsers" name="room-filters">
-            {{ chosenReport.hasIncludeZestWebUsers.description }}
-        </label>
-    </div>
-</div>
-
-<div class="filter" ng-if="chosenReport.hasIncludeComapnyTaGroup">
-    <label>Company/TA/Group</label>
-    <input class="icons icon-search" auto-complete auto-options="comTaGrpAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(item)">
-    <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeComapnyTaGroup">
-</div>
-
-<div class="options" ng-if="chosenReport.hasGuaranteeType">
-    <label for="report-options">Guarantee Type</label>
-    <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, chosenReport)">{{ chosenReport.guaranteeTitle }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, chosenReport)">
-        <label class="checkbox inline" ng-if="chosenReport.guaranteeTypes.length" ng-repeat="each in chosenReport.guaranteeTypes">
-            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
-            <input type="checkbox" ng-model="each.selected">
-            {{ each.guarantee_type }}
-        </label>
-        <label class="checkbox inline" ng-if="!chosenReport.guaranteeTypes.length">No Guarantees</label>
-    </div>
-</div>
-
-<!-- Specifice markup for display options for the Source and Market reports -->
-<div class="options" ng-if="chosenReport.hasSourceMarketFilter">
-    <label for="report-options">Display</label>
-    <div class="faux-select placeholder" ng-click="selectDisplayClicked($event, chosenReport)">{{ chosenReport.displayTitle }}</div>   
-    <!-- Remove class "hidden" when ".faux-select" clicked -->
-    <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.selectDisplayOpen }" ng-click="fauxOptionClicked($event, chosenReport)"> 
-        <label class="checkbox inline">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showSource}"></span>
-            <input type="checkbox" ng-model="chosenReport.showSource">
-            {{ chosenReport.hasSource.description }}
-        </label>
-        <label class="checkbox inline">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showMarket}"></span>
-            <input type="checkbox" ng-model="chosenReport.showMarket">
-            {{ chosenReport.hasMarket.description }} 
-        </label>
-    </div>
-</div>
-
-<div class="sort" ng-if="chosenReport.sortByOptions && headers.length">
-	<label>Sort by</label>
-	<div class="select">
-		<select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
-			<option value="">Sort By</option>
-		</select>
-	</div>
-</div>
-
-<a class="button green" ng-click="fetchUpdatedReport()">Update</a>
+<div class="ui-resizable-handle ui-resizable-e"></div>

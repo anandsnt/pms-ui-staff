@@ -21,9 +21,9 @@
         </div>
     </section>
 
-    <section id="report-details" class="content reports-wrapper" role="main" ng-show="showReportDetails">
+    <section id="report-details" class="content reports-wrapper" role="main" ng-show="showReportDetails" ng-click="toggleSidebar()">
         <div ng-controller="RVReportDetailsCtrl">
-            <div id="report-update" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
+            <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
 
             <section ng-if="chosenReport.title =='Booking Source & Market Report'">
                 <div ng-show="results.length" class="report-header">

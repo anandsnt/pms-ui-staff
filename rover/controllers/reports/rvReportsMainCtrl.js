@@ -46,6 +46,20 @@ sntRover.controller('RVReportsMainCtrl', [
 			$rootScope.setPrevState.hide = true;
 			$scope.showReportDetails = false;
 			$scope.heading = listTitle;
+			$scope.showSidebar = false;
+		};
+
+
+		$scope.showSidebar = false;
+		$scope.toggleSidebar = function(e) {
+			if ( !!e ) {
+				if ( $(e.target).is('.ui-resizable-handle') ) {
+					$scope.showSidebar = $scope.showSidebar ? false : true;
+				};
+				e.stopPropagation();
+			} else {
+				$scope.showSidebar = false;
+			}
 		};
 
 
@@ -583,8 +597,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 		$scope.removeCompTaGrpId = function(item) {
-			console.log( item.uiChosenIncludeComapnyTaGroup );
-
 			if ( !item.uiChosenIncludeComapnyTaGroup ) {
 				item.chosenIncludeComapnyTaGroup = null;
 			};

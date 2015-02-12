@@ -33,6 +33,24 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
 
+		$scope.filterItems = {
+			itemA: false,
+			itemB: false,
+			itemC: false,
+			itemD: false,
+			itemE: false,
+			itemF: false,
+			itemG: false,
+			itemH: false,
+			itemI: false,
+			itemJ: false
+		};
+		$scope.toggleFilterItems = function(item) {
+			if ( $scope.filterItems.hasOwnProperty(item) ) {
+				$scope.filterItems[item] = $scope.filterItems[item] ? false : true;
+			};
+		};
+
 
 		// common methods to do things after fetch report
 		var afterFetch = function() {
@@ -408,6 +426,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// refetch the reports with new filter values
 		// Note: not resetting page to page #1
 		$scope.fetchUpdatedReport = function() {
+			// hide sidebar
+			$scope.$parent.showSidebar = false;
+
 			// reset the page
 			$_pageNo = 1;
 
