@@ -6,7 +6,7 @@
         <button ng-if="item.canRemoveDate" ng-show="item.showRemove" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
         </button>
-    </div>  
+    </div>
     <span class="span-to"> To </span>
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilCancelDate" readonly>
@@ -57,7 +57,7 @@
         <button ng-if="item.canRemoveArrivalDate" ng-show="item.showRemove" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
         </button>
-    </div>  
+    </div>
     <span class="span-to"> To </span>
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilArrivalDate" readonly>
@@ -109,46 +109,47 @@
     <!-- When multiple checkboxes selected 
     <div class="faux-select">{count} selected ...</div>
     -->
-    <div class="faux-select-options" ng-class="{ 'hidden': !item.fauxSelectOpen }" ng-click="fauxOptionClicked($event, item)"> <!-- Remove class "hidden" when ".faux-select" clicked -->
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.fauxSelectOpen }" ng-click="fauxOptionClicked($event, item)">
+        <!-- Remove class "hidden" when ".faux-select" clicked -->
         <label class="checkbox inline" ng-if="item.hasIncludeNotes">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNotes}"></span>
-            <input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters">
-            {{ item.hasIncludeNotes.description }}
+            <input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters"> {{ item.hasIncludeNotes.description }}
         </label>
         <label class="checkbox inline" ng-if="item.hasIncludeCancelled">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeCancelled}"></span>
-            <input type="checkbox" ng-model="item.chosenIncludeCancelled" name="room-filters">
-            {{ item.hasIncludeCancelled.description }}
+            <input type="checkbox" ng-model="item.chosenIncludeCancelled" name="room-filters"> {{ item.hasIncludeCancelled.description }}
         </label>
         <label class="checkbox inline" ng-if="item.hasIncludeVip">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeVip}"></span>
-            <input type="checkbox" ng-model="item.chosenIncludeVip" name="room-filters">
-            {{ item.hasIncludeVip.description }}
+            <input type="checkbox" ng-model="item.chosenIncludeVip" name="room-filters"> {{ item.hasIncludeVip.description }}
         </label>
         <label class="checkbox inline" ng-if="item.hasIncludeNoShow">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNoShow}"></span>
-            <input type="checkbox" ng-model="item.chosenIncludeNoShow" name="room-filters">
-            {{ item.hasIncludeNoShow.description }}
+            <input type="checkbox" ng-model="item.chosenIncludeNoShow" name="room-filters"> {{ item.hasIncludeNoShow.description }}
         </label>
         <label class="checkbox inline" ng-if="item.hasShowGuests">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenShowGuests}"></span>
-            <input type="checkbox" ng-model="item.chosenShowGuests" name="room-filters">
-            {{ item.hasShowGuests.description }}
+            <input type="checkbox" ng-model="item.chosenShowGuests" name="room-filters"> {{ item.hasShowGuests.description }}
         </label>
         <label class="checkbox inline" ng-if="item.hasIncludeRoverUsers">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeRoverUsers}"></span>
-            <input type="checkbox" ng-model="item.chosenIncludeRoverUsers" name="room-filters">
-            {{ item.hasIncludeRoverUsers.description }}
+            <input type="checkbox" ng-model="item.chosenIncludeRoverUsers" name="room-filters"> {{ item.hasIncludeRoverUsers.description }}
         </label>
         <label class="checkbox inline" ng-if="item.hasIncludeZestUsers">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeZestUsers}"></span>
-            <input type="checkbox" ng-model="item.chosenIncludeZestUsers" name="room-filters">
-            {{ item.hasIncludeZestUsers.description }}
+            <input type="checkbox" ng-model="item.chosenIncludeZestUsers" name="room-filters"> {{ item.hasIncludeZestUsers.description }}
         </label>
         <label class="checkbox inline" ng-if="item.hasIncludeZestWebUsers">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeZestWebUsers}"></span>
-            <input type="checkbox" ng-model="item.chosenIncludeZestWebUsers" name="room-filters">
-            {{ item.hasIncludeZestWebUsers.description }}
+            <input type="checkbox" ng-model="item.chosenIncludeZestWebUsers" name="room-filters"> {{ item.hasIncludeZestWebUsers.description }}
+        </label>
+        <label class="checkbox inline" ng-if="item.hasVariance">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenVariance}"></span>
+            <input type="checkbox" ng-model="item.chosenVariance" name="room-filters"> {{ item.hasVariance.description }}
+        </label>
+        <label class="checkbox inline" ng-if="item.hasLastYear">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenLastYear}"></span>
+            <input type="checkbox" ng-model="item.chosenLastYear" name="room-filters"> {{ item.hasLastYear.description }}
         </label>
         <label class="checkbox inline" ng-if="item.hasIncludeDepositPaid">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeDepositPaid}"></span>
@@ -192,16 +193,14 @@
     <label for="report-options">Display</label>
     <div class="faux-select placeholder" ng-click="selectDisplayClicked($event, item)">{{ item.displayTitle }}</div>
     <!-- Remove class "hidden" when ".faux-select" clicked -->
-    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectDisplayOpen }" ng-click="fauxOptionClicked($event, item)"> 
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectDisplayOpen }" ng-click="fauxOptionClicked($event, item)">
         <label class="checkbox inline">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showSource}"></span>
-            <input type="checkbox" ng-model="item.showSource">
-            {{ item.hasSource.description }}
+            <input type="checkbox" ng-model="item.showSource"> {{ item.hasSource.description }}
         </label>
         <label class="checkbox inline">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showMarket}"></span>
-            <input type="checkbox" ng-model="item.showMarket">
-            {{ item.hasMarket.description }} 
+            <input type="checkbox" ng-model="item.showMarket"> {{ item.hasMarket.description }}
         </label>
     </div>
 </div>
@@ -212,6 +211,18 @@
         <select name="" id="" ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions" iscroll-stop-propagation>
             <option value="">Sort By</option>
         </select>
+    </div>
+</div>
+
+<!-- CICO-10202 Report & Summary Markets filter -->
+<div class="options long-list" ng-if="item.hasMarketsList">
+    <label for="report-options">Market(s)</label>
+    <div class="faux-select placeholder" ng-click="selectMarketsClicked($event, item)">{{ item.marketTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectMarketsOpen }" ng-click="fauxOptionClicked($event, item)">
+        <label class="checkbox inline" ng-repeat="market in reportsState.markets">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
+            <input type="checkbox" ng-model="market.selected" ng-change="fauxMarketOptionClicked(item)" name="room-filters"> {{ market.name }}
+        </label>
     </div>
 </div>
 
