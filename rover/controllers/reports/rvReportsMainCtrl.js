@@ -274,6 +274,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			} else if (selectedData.length > 1) {
 				item.marketTitle = selectedData.length + "Selected";
 			}
+			// CICO-10202
+			$scope.$emit('report.filter.change');
 
 		}
 
@@ -320,6 +322,8 @@ sntRover.controller('RVReportsMainCtrl', [
 					item.displayTitle = 'Select';
 				};
 			}
+			// CICO-10202
+			$scope.$emit('report.filter.change');
 		};
 
 		$scope.showFauxSelect = function(item) {

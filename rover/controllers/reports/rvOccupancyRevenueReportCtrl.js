@@ -60,8 +60,6 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.selectedDays = [];
 
-		$scope.horizontalLength = 1200;
-
 		$timeout(function() {
 			$scope.$parent.myScroll['leftPanelScroll'].on('scroll', function() {
 				var yPos = this.y;
@@ -124,7 +122,37 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 					return candidate.this_year;
 				}
 			} else {
+				return '';
+			}
+		}
+
+		$scope.getMarketOccupancyValue = function(marketIndex, columnIndex) {
+			var candidate = $scope.results.market_room_number[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance))]];
+			if (candidate) {
+				if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenReport.chosenLastYear || !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenReport.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					return candidate.this_year;
+				}
+			} else {
 				return -1;
+			}
+		}
+
+		$scope.getMarketRevenueValue = function(marketIndex, columnIndex) {
+			var candidate = $scope.results.market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance))]];
+			if (candidate) {
+				if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenReport.chosenLastYear || !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenReport.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					return candidate.this_year;
+				}
+			} else {
+				return '';
 			}
 		}
 
@@ -140,9 +168,8 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				$scope.selectedDays.push(dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'));
 			}
 			$timeout(function() {
-				$scope.horizontalLength = $scope.getNumber().length * 80;
 				refreshScrollers();
-			}, 1000)
+			}, 400)
 
 		};
 
@@ -150,6 +177,12 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$rootScope.$on('report.updated', function() {
 			init();
+		});
+
+		$rootScope.$on('report.filter.change', function() {
+			$timeout(function() {
+				refreshScrollers();
+			}, 400)
 		});
 	}
 ])
