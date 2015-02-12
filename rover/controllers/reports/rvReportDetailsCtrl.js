@@ -287,7 +287,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case 'Deposit Report':
-					template = '/assets/partials/reports/rvDepositDue.html';
+					template = '/assets/partials/reports/rvDepositReport.html';
 					break;
 
 				default:

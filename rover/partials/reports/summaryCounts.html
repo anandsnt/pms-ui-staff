@@ -5,6 +5,6 @@
 <li ng-if="chosenReport.title == 'In-House Guests'">Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>	
 <li ng-if="chosenReport.title == 'In-House Guests'">Total Balance<span class="green">{{ currencySymbol }}{{ summaryCounts.total_balance }}</span></li>
 
-<li ng-if="chosenReport.title == 'Deposit Report'">Due<span>{{ currencySymbol }}{{ summaryCounts.due }}</span></li>
-<li ng-if="chosenReport.title == 'Deposit Report'">Paid<span>{{ currencySymbol }}{{ summaryCounts.paid }}</span></li>	
-<li ng-if="chosenReport.title == 'Deposit Report'">Past Due<span class="green">{{ currencySymbol }}{{ summaryCounts.past_due }}</span></li>
+<li ng-if="chosenReport.title == 'Deposit Report'">Due<span>{{ currencySymbol }}{{ summaryCounts.total_deposit_due }}</span></li>
+<li ng-if="chosenReport.title == 'Deposit Report'">Paid<span>{{ currencySymbol }}{{ summaryCounts.total_deposit_paid }}</span></li>	
+<li ng-if="chosenReport.title == 'Deposit Report'">Past Due<span class="green">{{ currencySymbol }}{{ summaryCounts.total_deposit_passed }}</span></li>

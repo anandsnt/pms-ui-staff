@@ -148,8 +148,8 @@ sntRover.controller('RVReportListCrl', [
                     };
 
                     // check for Deposit due date range filter and keep a ref to that item (introduced in 'Deposit Report' filters)
-                    if (item.value === 'DUE_DATE_RANGE') {
-                        reportList[i]['hasDueDateFilter'] = item;
+                    if (item.value === 'DEPOSIT_DATE_RANGE') {
+                        reportList[i]['hasDepositDateFilter'] = item;
                     };
 
                     // check for time filter and keep a ref to that item
@@ -362,11 +362,12 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].fromDate = fromDate;
                     reportList[i].fromCancelDate = fromDate;
                     reportList[i].fromArrivalDate = fromDate;
-                    reportList[i].fromDueDate = fromDate;
+                    reportList[i].fromDepositDate = fromDate;
+                    
                     reportList[i].untilDate = untilDate;
                     reportList[i].untilCancelDate = untilDate;
                     reportList[i].untilArrivalDate = untilDate;
-                    reportList[i].untilDueDate = untilDate;
+                    reportList[i].untilDepositDate = untilDate;
                 };
             };
 
