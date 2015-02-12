@@ -25,6 +25,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		//showSearchResultsAre
 		$scope.showSearchResultsArea = false;
 		$scope.searchResultsFetchDone = false;
+		$scope.searchAreaIsHiding = false;
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name == "rover.search");
@@ -209,19 +210,25 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * reciever function to show/hide the search result area.
 		 */
 		$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus) {
-			$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+			
 
 			// if it is hiding, we need to clear the search text
-			if (!searchAreaVisibilityStatus) {
+			if (!searchAreaVisibilityStatus) {				
 				$scope.textInQueryBox = '';
 				$vault.set('searchQuery', '');
 				// hide the dashboard back button (dont remove yet)
 				// $rootScope.setPrevState.hide = true;
+				$scope.searchAreaIsHiding = true;
+				$timeout(function() {
+					$scope.searchAreaIsHiding = false;
+					$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+				}, 400)
 			} else {
-
+				$scope.showSearchResultsArea = searchAreaVisibilityStatus;
 				// show the dashboard back button (dont remove yet)
 				// $rootScope.setPrevState.hide = false;
 			}
+
 		});
 
 		/**
