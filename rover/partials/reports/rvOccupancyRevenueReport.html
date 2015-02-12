@@ -58,7 +58,7 @@
                                         <!-- If showing variance AND/OR last year, add second row: -->
                                         <tr ng-if="chosenReport.chosenLastYear || chosenReport.chosenVariance" class="bottom-row">
                                                 <!-- TODO : Need to get a condition right to get the 'day-end' -->
-                                                <th ng-repeat="n in getNumber() track by $index">{{getHeader($index)}}</th>
+                                                <th ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">{{getHeader($index)}}</th>
                                                 <!-- <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}">Last Year</th>
                                                         // Output only if showing last year. Add class "day-end" if not showing variance.
                                                         <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenVariance" class="day-end">Variance</th> -->
@@ -67,7 +67,7 @@
                                 <tbody>
                                         <tr ng-repeat="occupancy in stateStore.occupancy track by $index">
                                                 <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
-                                                <td ng-repeat="n in getNumber() track by $index">{{getValue(occupancy.key,$index);}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">{{getValue(occupancy.key,$index);}}</td>
                                                 <!-- <td>{Occupancy / Revenue}</td> -->
                                                 <!-- If showing lat year, add this: -->
                                                 <!-- <td ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}" class="last-year"></td> -->
@@ -78,22 +78,23 @@
                                                 <!-- ... repeat for all dates in the date range -->
                                         </tr>
                                         <tr ng-repeat="market in reportsState.markets" ng-show="market.selected">
-                                                <td ng-repeat="n in getNumber() track by $index">TODO</td>
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">TODO</td>
                                         </tr>
                                         <tr ng-repeat="occupancyTotal in stateStore.occupancyTotals track by $index">
-                                                <td ng-repeat="n in getNumber() track by $index">{{getValue(occupancyTotal.key,$index) | number:2}} %</td>
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)"><strong>{{getValue(occupancyTotal.key,$index) | number:0}} %</strong>
+                                                </td>
                                         </tr>
                                         <tr ng-repeat="revenue in stateStore.revenues track by $index">
-                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getValue(revenue.key,$index) | number: 2}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">{{currencySymbol}}{{getValue(revenue.key,$index) | number: 2}}</td>
                                         </tr>
                                         <tr ng-repeat="market in reportsState.markets" ng-show="market.selected">
-                                                <td ng-repeat="n in getNumber() track by $index">TODO</td>
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">TODO</td>
                                         </tr>
                                         <tr ng-repeat="chargeCode in results.charge_codes" ng-init="outerIndex = $index">
-                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getChargeCodeValue(outerIndex,$index) | number:2}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">{{currencySymbol}}{{getChargeCodeValue(outerIndex,$index) | number:2}}</td>
                                         </tr>
                                         <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
-                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getValue(revenueTotal.key,$index) | number:2}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)"><strong>{{currencySymbol}}{{getValue(revenueTotal.key,$index) | number:2}}</td></strong>
                                         </tr>
                                 </tbody>
                         </table>

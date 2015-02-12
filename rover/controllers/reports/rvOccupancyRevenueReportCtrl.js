@@ -103,6 +103,16 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}
 		}
 
+		$scope.getClass = function(columnIndex) {
+			if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
+				return (columnIndex % 3 == 0) ? "" : (columnIndex % 3 == 2) ? "day-end" : "last-year";
+			} else if (!!$scope.chosenReport.chosenLastYear || !!$scope.chosenReport.chosenVariance) {
+				return (columnIndex % 2 == 0) ? "" : !!$scope.chosenReport.chosenVariance ? "day-end" : "last-year day-end";
+			} else {
+				return "day-end";
+			}
+		}
+
 		$scope.getChargeCodeValue = function(chargeCodeIndex, columnIndex) {
 			var candidate = $scope.results.charge_codes[chargeCodeIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance))]];
 			if (candidate) {
