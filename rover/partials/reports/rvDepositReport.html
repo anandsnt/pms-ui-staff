@@ -1,11 +1,11 @@
 <tr ng-repeat="each in results track by $index" class="row-break" ngrepeatend>
-	<td>{{ each.confirm_no }}</td>
+	<td>{{ each.reservation_no }}</td>
 	<td class="name">
 		<strong class="title">{{ each.name }}</strong>
 		<span class="data">{{ each.payment_method }}</span>
-		<span ng-if="each.payment_status == 'DUE'">&#8226; <span class="data upper">Due</span></span>
-		<span ng-if="each.payment_status == 'PAID'">&#8226; <span class="data upper green">Paid</span></span>
-		<span ng-if="each.payment_status == 'PAST_DUE'">&#8226; <span class="data upper red">Past Due</span></span>
+		<span ng-if="each.deposit_payment_status == 'DUE'">&#8226; <span class="data upper">Due</span></span>
+		<span ng-if="each.deposit_payment_status == 'PAID'">&#8226; <span class="data upper green">Paid</span></span>
+		<span ng-if="each.deposit_payment_status == 'PASSED'">&#8226; <span class="data upper red">Past Due</span></span>
 	</td>
 	<td class="date">
 		<span class="guest-status check-in">check-in</span>
@@ -21,10 +21,10 @@
 	</td>
 	<td>
 		<strong>{{ each.due_date | date : dateFormat }}</strong>
-		<span class="data">{{ currencySymbol }}{{ each.due_amount }}</span>
+		<span class="data">{{ currencySymbol }}{{ each.deposit_due_amount }}</span>
 	</td>
 	<td>
-		<strong ng-if="each.payment_status == 'PAID'">{{ each.paid_date | date : dateFormat }}</strong>
-		<span ng-if="each.payment_status == 'PAID'" class="data">{{ currencySymbol }}{{ each.paid_amount }}</span>
+		<strong ng-if="each.deposit_payment_status == 'PAID'">{{ each.paid_date | date : dateFormat }}</strong>
+		<span ng-if="each.deposit_payment_status == 'PAID'" class="data">{{ currencySymbol }}{{ each.paid_amount }}</span>
 	</td>
 </tr>

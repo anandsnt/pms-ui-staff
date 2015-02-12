@@ -366,8 +366,8 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include due dates
 			if (!!chosenReport.hasDepositDateFilter) {
-				params['due_from_date'] = $filter('date')(chosenReport.fromDepositDate, 'yyyy/MM/dd');
-				params['due_to_date'] = $filter('date')(chosenReport.untilDepositDate, 'yyyy/MM/dd');
+				params['deposit_from_date'] = $filter('date')(chosenReport.fromDepositDate, 'yyyy/MM/dd');
+				params['deposit_to_date'] = $filter('date')(chosenReport.untilDepositDate, 'yyyy/MM/dd');
 			};
 
 			// include times
