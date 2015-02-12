@@ -55,9 +55,14 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $scope.backtoDash = function() {
       $vault.set('searchType', '');
       $scope.$broadcast("showSearchResultsArea", false);
-      $state.go('rover.dashboard', {
-        useCache: true
-      });
+    
+      setTimeout(function(){
+         $state.go('rover.dashboard', {
+          useCache: true
+        });       
+
+      }, 150);
+
     }
     // saving/reseting search params to $vault
     $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
