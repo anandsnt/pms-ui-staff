@@ -5,7 +5,7 @@
 		<span class="data">{{ each.payment_method }}</span>
 		<span ng-if="each.payment_status == 'DUE'">&#8226; <span class="data upper">Due</span></span>
 		<span ng-if="each.payment_status == 'PAID'">&#8226; <span class="data upper green">Paid</span></span>
-		<span ng-if="each.payment_status == 'PAST DUE'">&#8226; <span class="data upper red">Past Due</span></span>
+		<span ng-if="each.payment_status == 'PAST_DUE'">&#8226; <span class="data upper red">Past Due</span></span>
 	</td>
 	<td class="date">
 		<span class="guest-status check-in">check-in</span>

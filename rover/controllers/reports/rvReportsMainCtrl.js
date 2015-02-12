@@ -172,7 +172,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenIncludeZestUsers',
 			'chosenIncludeZestWebUsers',
 			'chosenIncludeComapnyTaGroup',
-			'chosenGuaranteeType'
+			'chosenGuaranteeType',
+			'chosenIncludeDepositPaid',
+			'chosenIncludeDepositDue',
+			'chosenIncludeDepositPastDue'
 		];
 
 		var hasList = [
@@ -185,7 +188,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeZestUsers',
 			'hasIncludeZestWebUsers',
 			'hasIncludeComapnyTaGroup',
-			'hasGuaranteeType'
+			'hasGuaranteeType',
+			'hasIncludeDepositPaid',
+			'hasIncludeDepositDue',
+			'hasIncludeDepositPastDue'
 		];
 
 		// common faux select method
@@ -352,10 +358,16 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['cancel_to_date'] = $filter('date')(chosenReport.untilCancelDate, 'yyyy/MM/dd');
 			};
 
-			//// include arrival dates -- IFF both the limits of date range have been selected
+			// include arrival dates -- IFF both the limits of date range have been selected
 			if (!!chosenReport.hasArrivalDateFilter && !!chosenReport.fromArrivalDate && !!chosenReport.untilArrivalDate) {
 				params['arrival_from_date'] = $filter('date')(chosenReport.fromArrivalDate, 'yyyy/MM/dd');
 				params['arrival_to_date'] = $filter('date')(chosenReport.untilArrivalDate, 'yyyy/MM/dd');
+			};
+
+			// include due dates
+			if (!!chosenReport.hasDueDateFilter) {
+				params['due_from_date'] = $filter('date')(chosenReport.fromDueDate, 'yyyy/MM/dd');
+				params['due_to_date'] = $filter('date')(chosenReport.untilDueDate, 'yyyy/MM/dd');
 			};
 
 			// include times
@@ -467,6 +479,24 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				key = chosenReport.hasGuaranteeType.value.toLowerCase();
 				params[key] = angular.copy( ary );
+			};
+
+			// include include deposit paid
+			if (chosenReport.hasOwnProperty('hasIncludeDepositPaid')) {
+				key = chosenReport.hasIncludeDepositPaid.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeDepositPaid ? true : false;
+			};
+
+			// include include deposit due
+			if (chosenReport.hasOwnProperty('hasIncludeDepositDue')) {
+				key = chosenReport.hasIncludeDepositDue.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeDepositDue ? true : false;
+			};
+
+			// include include deposit past due
+			if (chosenReport.hasOwnProperty('hasIncludeDepositPastDue')) {
+				key = chosenReport.hasIncludeDepositPastDue.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeDepositPastDue ? true : false;
 			};
 
 

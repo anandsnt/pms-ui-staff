@@ -106,6 +106,11 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasDateLimit'] = false;
                         break;
 
+                    case 'Deposit Report':
+                        reportList[i]['reportIconCls'] = 'icon-report icon-deposit';
+                        reportList[i]['hasDateLimit'] = false;
+                        break;
+
                     default:
                         reportList[i]['reportIconCls'] = 'icon-report';
                         break;
@@ -140,6 +145,11 @@ sntRover.controller('RVReportListCrl', [
                     // check for arrival date filter and keep a ref to that item (introduced in 'Booking Source & Market Report' filters)
                     if (item.value === 'ARRIVAL_DATE_RANGE') {
                         reportList[i]['hasArrivalDateFilter'] = item;
+                    };
+
+                    // check for Deposit due date range filter and keep a ref to that item (introduced in 'Deposit Report' filters)
+                    if (item.value === 'DUE_DATE_RANGE') {
+                        reportList[i]['hasDueDateFilter'] = item;
                     };
 
                     // check for time filter and keep a ref to that item
@@ -247,6 +257,24 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['guaranteeTypes'] = angular.copy( $scope.$parent.guaranteeTypes );
                         hasGuaranteeSelect = true;
                     }
+
+                    // check for include deposit paid filter and keep a ref to that item
+                    if (item.value === 'INCLUDE_DEPOSIT_PAID') {
+                        reportList[i]['hasIncludeDepositPaid'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // check for include deposit due filter and keep a ref to that item
+                    if (item.value === 'INCLUDE_DEPOSIT_DUE') {
+                        reportList[i]['hasIncludeDepositDue'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // check for include deposit past due filter and keep a ref to that item
+                    if (item.value === 'INCLUDE_DEPOSIT_PAST') {
+                        reportList[i]['hasIncludeDepositPastDue'] = item;
+                        hasFauxSelect = true;
+                    };
                 });
 
                 // NEW! faux select DS and logic
@@ -265,7 +293,7 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i]['guaranteeTitle'] = 'Select';
                 };
 
-                // sort by options
+                // sort by options - include sort direction
                 if (reportList[i]['sort_fields'] && reportList[i]['sort_fields'].length) {
                     _.each(reportList[i]['sort_fields'], function(item, index, list) {
                         item['sortDir'] = undefined;
@@ -334,9 +362,11 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].fromDate = fromDate;
                     reportList[i].fromCancelDate = fromDate;
                     reportList[i].fromArrivalDate = fromDate;
+                    reportList[i].fromDueDate = fromDate;
                     reportList[i].untilDate = untilDate;
                     reportList[i].untilCancelDate = untilDate;
                     reportList[i].untilArrivalDate = untilDate;
+                    reportList[i].untilDueDate = untilDate;
                 };
             };
 
