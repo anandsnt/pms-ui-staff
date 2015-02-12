@@ -32,7 +32,7 @@
                                 <!-- .. repeat for all markets -->
 
 
-                                <li ng-repeat="chargeCode in tabularData.chargeCodes"><em>{{chargeCode.name}}</em>
+                                <li ng-repeat="chargeCode in results.charge_codes"><em>Revenue by Charge Group {{chargeCode.name}}</em>
                                 </li>
                                 <!-- ... repeat for all charge group titles -->
 
@@ -46,7 +46,7 @@
         <div class="statistics-content scrollable" ng-iscroll="rightPanelScroll">
                 <!-- Attach iscroll here, should scroll vertically and horizontally. While scrolling vertically it should update iscoll on the left side as well -->
                 <!-- <div class="wrapper" style="width:{see bottom comment for widht calculation}px;"> -->
-                <div class="wrapper" style="width:1200px;">
+                <div class="wrapper" style="width:{{getNumber().length * 80}}px;">
                         <table class="statistics-reports">
                                 <thead>
                                         <tr>
@@ -84,13 +84,16 @@
                                                 <td ng-repeat="n in getNumber() track by $index">{{getValue(occupancyTotal.key,$index) | number:2}} %</td>
                                         </tr>
                                         <tr ng-repeat="revenue in stateStore.revenues track by $index">
-                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getValue(revenue.key,$index) | number: 0}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getValue(revenue.key,$index) | number: 2}}</td>
                                         </tr>
                                         <tr ng-repeat="market in reportsState.markets" ng-show="market.selected">
                                                 <td ng-repeat="n in getNumber() track by $index">TODO</td>
                                         </tr>
+                                        <tr ng-repeat="chargeCode in results.charge_codes" ng-init="outerIndex = $index">
+                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getChargeCodeValue(outerIndex,$index) | number:2}}</td>
+                                        </tr>
                                         <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
-                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getValue(revenueTotal.key,$index);}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index">{{currencySymbol}}{{getValue(revenueTotal.key,$index) | number:2}}</td>
                                         </tr>
                                 </tbody>
                         </table>

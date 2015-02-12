@@ -101,10 +101,22 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return -1;
 			}
-
 		}
 
-
+		$scope.getChargeCodeValue = function(chargeCodeIndex, columnIndex) {
+			var candidate = $scope.results.charge_codes[chargeCodeIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance))]];
+			if (candidate) {
+				if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenReport.chosenLastYear || !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenReport.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					return candidate.this_year;
+				}
+			} else {
+				return -1;
+			}
+		}
 
 		function refreshScrollers() {
 			$scope.refreshScroller('rightPanelScroll');
@@ -131,10 +143,3 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		});
 	}
 ])
-
-
-sntRover.directive('tableHeaders', function() {
-	return {
-		templateUrl: '/assets/partials/reports/rvOccupancyRevenueReport.html'
-	};
-});
