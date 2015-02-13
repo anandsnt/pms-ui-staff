@@ -846,9 +846,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				if($scope.isAddToGuestCardEnabledDuringCheckin!== undefined){
 					addToGuest = $scope.isAddToGuestCardEnabledDuringCheckin;
 				}
-				
 				if($scope.isSwipeHappenedDuringCheckin){
 					var cardExpiry = "20"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2)+"-01";
+					
 	 				var data = {
 						"is_promotions_and_email_set" : $scope.saveData.promotions,
 						"signature" : signatureData,
@@ -865,6 +865,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					    "no_post" : ($scope.roomChargeEnabled == "") ? "": !$scope.roomChargeEnabled,
 					    "add_to_guest_card" : addToGuest
 					};
+					//CICO-12554 indicator if the track data is encrypted or not
+					data.is_encrypted = true;
+					if(swipedTrackDataForCheckin.RVCardReadIsEncrypted == 0){
+						data.is_encrypted = false;
+					}
 	 		    } else {
 	 		    	var data = {
 						"is_promotions_and_email_set" : $scope.saveData.promotions,

@@ -20,10 +20,9 @@ var SwipeOperation = function(){
 			} else if(swipedCardData.RVCardReadETB !=""){
 				getTokenFrom.etb = swipedCardData.RVCardReadETB;
 			}
-
-			getTokenFrom.is_encrypted = 'true';
-			if(swipedCardData.is_encrypted == 0){
-				getTokenFrom.is_encrypted = 'false';
+			getTokenFrom.is_encrypted = true;
+			if(swipedCardData.RVCardReadIsEncrypted == 0){
+				getTokenFrom.is_encrypted = false;
 			}
 			return getTokenFrom;
 	};
