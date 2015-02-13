@@ -345,15 +345,7 @@ sntRover
 	    		}
 	    	},
     		toggleRates: function() {
-				var rateMenu = $('.faux-select-options');
-
-				if(rateMenu.length > 0) {
-					if(rateMenu.hasClass('hidden')) {
-						rateMenu.removeClass('hidden');
-					}else {
-						rateMenu.addClass('hidden');
-					}
-				}
+				$scope.openRateTypeChoosingBox = !$scope.openRateTypeChoosingBox;
 			},
 			toggleRange: function() {
 	    		var hourFormat12 							= ($scope.gridProps.viewport.hours === 12);
@@ -377,7 +369,13 @@ sntRover
 	};
 
 	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
-			  	
+	
+	//initially we dont want to set focus on CorporateSearch Text box
+	$scope.focusOnCorporateSearchText = false;
+
+	//whether we want the opened rate type choosing box
+	$scope.openRateTypeChoosingBox = false;
+
 		/*--------------------------------------------------*/
 		/* BEGIN UTILITY METHOD SECTION */
 		/*--------------------------------------------------*/
@@ -416,6 +414,16 @@ sntRover
 		  ________________________________________________________
 		*/
 			
+
+		/**
+		* to clear the query in corporate finding text box
+		* will focus to the textbox again
+		*/
+		$scope.clearCorporateSearchText = function () {
+			$scope.corporateSearchText = '';
+			setFocusOnCorporateSearchText ();
+		};
+
 	    /*_________________________________________________________
 		    BEGIN EVENT HOOKS 
 		  ________________________________________________________
@@ -534,9 +542,18 @@ sntRover
 			});	 
 	    };
 
-	    var setFocusOnAccountChoosingTextbox = function(){
-	    	$("#diary-corporate-query").focus();
-	    };
+	   	/**
+	    * method used to set focus on corporate account choosing textbox
+	    */
+	    var setFocusOnCorporateSearchText = function(){
+	    	//turning on focusing directive's model value
+	    	$scope.focusOnCorporateSearchText = true;
+	    	
+	    	//if it is coming from 'Outside of Angular world'
+	    	if(!$scope.$$phase) {
+				$scope.$apply();
+			}
+ 	    };
 
 
 	    var openEditConfirmationPopup = function() {
@@ -1109,8 +1126,7 @@ sntRover
 	}
 
 	var openRateTypeSelectBox = function() {
-		var rateMenu = $('.faux-select-options');
-		rateMenu.removeClass('hidden');
+		$scope.openRateTypeChoosingBox = true;
 	}
 
 	var callAvailabilityAPI = function(){
@@ -1122,7 +1138,7 @@ sntRover
 			openRateTypeSelectBox();
 
 			//opening the popup with messages
-			$scope.callBackAfterClosingMessagePopUp = setFocusOnAccountChoosingTextbox;				
+			$scope.callBackAfterClosingMessagePopUp = setFocusOnCorporateSearchText;				
 			$scope.message	= ['Please choose a Company Card or Travel Agent to proceed'];
 			openMessageShowingPopup();
 

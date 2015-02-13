@@ -50,7 +50,7 @@
 
 					<div class="entry full-width">
 						<label for="password"> Password <strong>*</strong> </label>
-						<input type="password" ng-model="data.password" required="yes" placeholder="Enter password" name="password" id="password" autocomplete="off">
+						<input type="password" ng-model="data.password" required="yes" placeholder="Enter password" name="password" id="password" autocomplete="off" focus-me="focusOnPassword">
 					</div>
 
 					<div class="entry full-width">
@@ -70,7 +70,7 @@
 					</div>
 					<div class="entry re-invite" ng-show="mod == 'edit'">
 						<label>
-							<button id="re-invite" ng-click="sendInvitation(data.user_id)" class="button" ng-disabled="data.is_activated=='true'" ng-class="{'green': data.is_activated == 'false', 'grey': data.is_activated == 'true'}">
+							<button id="re-invite" ng-click="sendInvitation(data.user_id)" class="button" ng-disabled="disableReInviteButton(data)" ng-class="{'green': !disableReInviteButton(data), 'grey': disableReInviteButton(data)}">
 								Re-Invite
 							</button> </label>
 					</div>

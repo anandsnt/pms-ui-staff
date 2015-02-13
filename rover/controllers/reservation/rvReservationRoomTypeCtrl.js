@@ -466,16 +466,45 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
 				$scope.computeTotalStayCost();
-				$scope.enhanceStay();
+				
+				if($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD"){
+					$scope.saveAndGotoStayCard();
+				}
+				else{
+					$scope.enhanceStay();
+				}
 			}
 		}
+		// CICO-12757 : To save and go back to stay card
+		$scope.saveAndGotoStayCard = function(){
+
+			var staycardDetails = {
+				title: $filter('translate')('STAY_CARD'),
+				name: 'rover.reservation.staycard.reservationcard.reservationdetails',
+				param: {
+					confirmationId: $scope.reservationData.confirmNum,
+					id: $scope.reservationData.reservationId,
+					isrefresh: true
+				}
+			};
+			$scope.saveReservation(staycardDetails.name , staycardDetails.param);
+		};
 
 		$scope.handleNoEdit = function(event, roomId, rateId) {
 			event.stopPropagation();
+
+console.log("Handle booking");
+console.log($stateParams.fromState);
+			
 			$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
 			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 			if (!$scope.stateCheck.stayDatesMode) {
-				$scope.enhanceStay();
+				if($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD"){
+					$scope.saveAndGotoStayCard();
+				}
+				else{
+					$scope.enhanceStay();
+				}
 			}
 		}
 
@@ -523,9 +552,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 			})
 		}
-
+		
 		$scope.handleBooking = function(roomId, rateId, event) {
+
 			event.stopPropagation();
+			
+console.log("Handle booking");
+console.log($stateParams.fromState);
+			
 			/*	Using the populateStayDates method, the stayDates object for the active room are 
 			 *	are updated with the rate and rateName information
 			 */
@@ -595,7 +629,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				//TODO : 7641 - Update the rateDetails array in the reservationData
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 				$scope.checkOccupancyLimit();
-				$scope.enhanceStay();
+
+				if($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD"){
+					populateStayDates(rateId, roomId);
+					$scope.saveAndGotoStayCard();
+				}
+				else{
+					$scope.enhanceStay();
+				}
 			}
 
 			// check whether any one of the rooms rate has isSuppressed on and turn on flag
@@ -609,7 +650,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				}
 			});
-
+			
 			$scope.$emit("REFRESHACCORDIAN");
 		}
 

@@ -16,6 +16,7 @@
 	$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
 	$scope.reservationData = checkinDetailsService.getResponseData();
 	$rootScope.confirmationNumber = $scope.reservationData.confirm_no;	
+	$scope.showTermsPopup = false;
 
 	//setup options for modal
 	$scope.opts = {
@@ -24,14 +25,24 @@
 		templateUrl: '/assets/checkin/partials/acceptChargesError.html',
 		controller: ModalInstanceCtrl
 	};
+	
+	$scope.termsClicked = function(){
+    	$scope.showTermsPopup = true;
+     };
 
-	// check if checkbox is checked and  enable/disable checkin button 
-	$scope.$watch('checked',function(){
-		if($scope.checked)
-			$rootScope.checkedApplyCharges = true;
-		else
-			$rootScope.checkedApplyCharges = false;				
-	});
+	$scope.agreeClicked = function(){
+		$rootScope.checkedApplyCharges = $scope.checked =  true;
+		$scope.showTermsPopup = false;
+		// $scope.closeDialog();
+		// console.log("fgrvhjfkvgb4rjk")
+	};
+
+	$scope.cancel = function(){
+		$rootScope.checkedApplyCharges = $scope.checked = false;
+		$scope.showTermsPopup = false;
+		// $scope.closeDialog();
+		// console.log("fgrvhjfdwdgwdgkvgb4rjk")
+	};
 
 	$scope.checkInButtonClicked = function(){
 		if($scope.checked){
@@ -64,4 +75,3 @@ checkInReservationDetails
 
 snt.controller('checkInReservationDetails', dependencies);
 })();
-

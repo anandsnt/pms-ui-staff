@@ -1,11 +1,11 @@
 <div id="modal" class="modal-show">
-	<div class="modal-content modal-vertical-centered">
-		<div class="centeralign alert-box">
-			No rate information for additional guests.
-			<br/>
-			<br/>
-			<a ng-click="applyCurrentRate()" class="button blank">Apply current rate</a>
-			<a ng-click="cancelOccupancyChange()" class="button blank">Cancel</a>
-		</div>
-	</div>
+        <div class="modal-content form confirmation">
+                <button ng-click="closeDialog()" id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></span>
+                </button>
+                <strong class="h2 message">No rate information for additional guest</strong>
+                <div class="actions">
+                        <button type="button" ng-click="applyCurrentRate()" class="button blue">Apply Current Rate</button>
+                        <button type="button" ng-click="cancelOccupancyChange()" class="button blank">Cancel</button>
+                </div>
+        </div>
 </div>

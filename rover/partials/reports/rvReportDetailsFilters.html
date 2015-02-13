@@ -17,6 +17,19 @@
     </div>
 </div>
 
+<div class="date-range" ng-if="chosenReport.hasDepositDateFilter">
+    <label>{{ chosenReport.hasDepositDateFilter.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDepositDate" readonly>
+        <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDepositDate" readonly>
+    </div>  
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDepositDate" readonly>
+        <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDepositDate" readonly>
+    </div>
+</div>
+
 <div class="date-range" ng-if="chosenReport.hasDateFilter">
 	<label>{{ chosenReport.hasDateFilter.description }}</label>
 	<div class="has-datepicker">
@@ -81,7 +94,7 @@
 
 <div class="filter" ng-if="chosenReport.hasUserFilter">
     <label>User</label>
-    <input class="icons icon-search" auto-complete auto-options="autoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(chosenReport)">
+    <input class="icons icon-search" auto-complete auto-options="userAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(chosenReport)">
     <select multiple class="hidden" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
 </div>
 
@@ -135,6 +148,49 @@
             <input type="checkbox" ng-model="chosenReport.chosenIncludeZestWebUsers" name="room-filters">
             {{ chosenReport.hasIncludeZestWebUsers.description }}
         </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeDepositPaid">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeDepositPaid}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeDepositPaid" name="room-filters">
+            {{ chosenReport.hasIncludeDepositPaid.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeDepositDue">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeDepositDue}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeDepositDue" name="room-filters">
+            {{ chosenReport.hasIncludeDepositDue.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasIncludeDepositPastDue">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeDepositPastDue}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenIncludeDepositPastDue" name="room-filters">
+            {{ chosenReport.hasIncludeDepositPastDue.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasVariance">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenVariance}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenVariance" name="room-filters">
+            {{ chosenReport.hasVariance.description }}
+        </label>
+        <label class="checkbox inline" ng-if="chosenReport.hasLastYear">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenLastYear}"></span>
+            <input type="checkbox" ng-model="chosenReport.chosenLastYear" name="room-filters">
+            {{ chosenReport.hasLastYear.description }}
+        </label>
+    </div>
+</div>
+
+<div class="filter" ng-if="chosenReport.hasIncludeComapnyTaGroup">
+    <label>Company/TA/Group</label>
+    <input class="icons icon-search" auto-complete auto-options="comTaGrpAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport)">
+    <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeComapnyTaGroup">
+</div>
+
+<div class="options" ng-if="chosenReport.hasGuaranteeType && chosenReport.guaranteeTypes.length">
+    <label for="report-options">Guarantee Type</label>
+    <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, chosenReport)">{{ chosenReport.guaranteeTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, chosenReport)">
+        <label class="checkbox inline" ng-repeat="each in chosenReport.guaranteeTypes">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+            <input type="checkbox" ng-model="each.selected">
+            {{ each.guarantee_type }}
+        </label>
     </div>
 </div>
 
@@ -164,6 +220,18 @@
 			<option value="">Sort By</option>
 		</select>
 	</div>
+</div>
+
+<!-- CICO-10202 Report & Summary Markets filter -->
+<div class="options long-list" ng-if="chosenReport.hasMarketsList">
+    <label for="report-options">Market(s)</label>
+    <div class="faux-select placeholder" ng-click="selectMarketsClicked($event, chosenReport)">{{ chosenReport.marketTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.selectMarketsOpen }" ng-click="fauxOptionClicked($event, chosenReport)">
+        <label class="checkbox inline" ng-repeat="market in reportsState.markets">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
+            <input type="checkbox" ng-model="market.selected" ng-change="fauxMarketOptionClicked(chosenReport)" name="room-filters"> {{ market.name }}
+        </label>
+    </div>
 </div>
 
 <a class="button green" ng-click="fetchUpdatedReport()">Update</a>

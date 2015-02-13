@@ -191,15 +191,10 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						roomMax: $scope.reservationData.reservation_card.max_occupancy
 					})
 				});
-
-				$scope.guestData.adult_count = presentGuestInfo.adult_count;
-				$scope.guestData.children_count = presentGuestInfo.children_count;
-				$scope.guestData.infants_count = presentGuestInfo.infants_count;
-			} else {
-				presentGuestInfo.adult_count = $scope.guestData.adult_count;
-				presentGuestInfo.children_count = $scope.guestData.children_count;
-				presentGuestInfo.infants_count = $scope.guestData.infants_count;
 			}
+			presentGuestInfo.adult_count = $scope.guestData.adult_count;
+			presentGuestInfo.children_count = $scope.guestData.children_count;
+			presentGuestInfo.infants_count = $scope.guestData.infants_count;
 		}
 
 		$scope.init = function() {
