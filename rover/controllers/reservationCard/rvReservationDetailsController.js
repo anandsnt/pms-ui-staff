@@ -470,8 +470,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		};
-
-
+		/**
+		* we are capturing model opened to add some class mainly for animation
+		*/
+		$rootScope.$on('ngDialog.opened', function (e, $dialog) {
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false;
+			$timeout(function(){
+				$rootScope.modalOpened = true;
+			}, 300);    		
+		});
+		$rootScope.$on('ngDialog.closing', function (e, $dialog) {
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false; 		
+		});
+		
+		$scope.closeAddOnPopup = function(){
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false; 
+			$timeout(function(){
+				ngDialog.close();
+			}, 300); 
+		};
 
 		$scope.showAddNewPaymentModel = function(swipedCardData) {
 
@@ -512,6 +532,26 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
 				checkin_date: $scope.reservationData.reservation_card.arrival_date,
 			});
+		};
+
+		$scope.handleAddonsOnReservation = function(isPackageExist){
+			if(isPackageExist){
+				ngDialog.open({
+					template: '/assets/partials/packages/showPackages.html',
+					controller: 'RVReservationPackageController',
+					scope: $scope
+				});
+			} else {
+				$state.go('rover.reservation.staycard.mainCard.addons',
+			 	{
+			 		'from_date': $scope.reservation.reservation_card.arrival_date,
+			 		'to_date': $scope.reservation.reservation_card.departure_date,
+			 		'is_active': true,
+			 		'is_not_rate_only': true,
+			 		'from_screen': 'staycard'
+
+			 	});
+			}
 		};
 
 	}

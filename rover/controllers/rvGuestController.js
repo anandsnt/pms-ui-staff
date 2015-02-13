@@ -249,7 +249,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
-				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
+				if(typeof data.userId != 'undefined'){
+					$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
+				}
 			}
 		};
 
@@ -554,6 +556,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 						guestData.firstName = item.first_name;
 						guestData.lastName = item.last_name;
 						guestData.image = item.image_url;
+						guestData.vip = item.vip;
 						if (item.address != null) {
 							guestData.address = {};
 							guestData.address.city = item.address.city;

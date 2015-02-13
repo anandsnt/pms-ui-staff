@@ -72,8 +72,8 @@
 							</div>
 						</div>
 						<div class="row applycharge grey-text">
-							<input type="checkbox" ng-model="checked"  ng-checked="checkedApplyCharges">&nbsp
-							APPLY CHARGES TO MY CREDIT CARD ON FILE.
+							 <input type="checkbox" ng-click="termsClicked()" ng-model="checked"  ng-checked="checkedApplyCharges">&nbsp
+							I ACCEPT ALL TERMS AND CONDITIONS
 						</div>
 					</div></div>
 					<div class="verti-ruler"></div>
@@ -87,12 +87,30 @@
 				<div class="row checkin-wrapper no-top-bottom-padding" id="error-container">
 					<div class="col-md-6 error-callus">
 						<div class="lightcontent">
-							QUESTIONS? <a href="tel: {{hotelPhone}}" class="light-blue-text under-line">CALL US AT  <a href="tel: {{hotelPhone}}"class="grey-text hotel-phone under-line">{{hotelPhone}}.</a></a>
+							QUESTIONS? <a href="tel: {{hotelPhone}}" class="light-blue-text">CALL US AT  <a href="tel: {{hotelPhone}}"class="grey-text hotel-phone">{{hotelPhone}}.</a></a>
 						</div>
 					</div>
 					<div class="verti-ruler"></div>
 				</div>			
 			</div>
 			<!-- checkinbtn section ends here-->
+		</div>
+	</div>
+
+		<!-- Termas and conditions popup -->
+	<div class="date-picker-bg terms-and-conditions-container" ng-show="showTermsPopup">
+		<div class="modal-content modal-vertical-centered full-screen">
+			<div class="centeralign terms-alert">
+				<div style="text-align:left;" class="cc-number-description terms-padding">
+					<p class="ccv-headings centeralign green-text"><p class="terms-main">To complete Check-in,</p><p class="terms-sub"> Please read and agree to the following:</p></p>
+
+					<description class="terms-list" template="{{reservationData.terms_and_conditions}}">
+					</description>
+				</div>
+				<div class="terms-actions">
+					<button type="button" ng-click="agreeClicked()" class="btn btn-close room-error-button room-error-green-button terms-buttons">I AGREE</button>
+					<button type="button" ng-click="cancel()" class="btn btn-close room-error-button light-gray-bg terms-buttons terms-buttons">CANCEL</button>
+				</div>
+			</div>
 		</div>
 	</div>

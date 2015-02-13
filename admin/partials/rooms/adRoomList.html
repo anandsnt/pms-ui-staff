@@ -8,7 +8,7 @@
 			<span class="count">
 				( {{totalCount}} )
 				<span class="status">
-					{{totalCount}} {{ 'OF' | translate }} {{total_number_of_rooms}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
+					{{totalCount}} {{ 'OF' | translate }} {{	}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
 				</span>
 		    </span>
 			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="is_add_available === 'yes'">{{ 'ADD_NEW' | translate }}</a>
@@ -29,13 +29,16 @@
 			<table id="rooms" class="grid datatable" ng-table="tableParams" template-pagination="custom/pager">
 				<tbody>
 					<tr ng-repeat="room in $data" room-id="{{room.room_id}}">
-						<td data-title="'Room Number'" sortable="'room_number'">
+						<td data-title="'Room Number'" sortable="'room_number'"  header-class="width-50">
 							<a ui-sref='admin.roomdetails({roomId:room.room_id})' class="number edit-data">
 								{{room.room_number}}
 							</a>
 						</td>
-						<td data-title="'Room Type'" sortable="'room_type'">
+						<td data-title="'Room Type'" sortable="'room_type'" header-class="width-50">
 							{{room.room_type}}
+						</td>
+						<td data-title="'Delete'" data-title-text="Delete" ng-click="deleteRoom($index, room.room_id)" header-class="width-15" ng-show="isStandAlone">
+							<a class="icons icon-delete large-icon" ></a>				
 						</td>
 					</tr>
 				</tbody>

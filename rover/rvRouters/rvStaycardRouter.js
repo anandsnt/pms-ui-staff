@@ -89,7 +89,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.addons', {
-            url: '/addons/:from_date/:to_date/:reservation',
+            url: '/addons/:from_date/:to_date/:reservation/:from_screen',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVReservationAddonsCtrl',
             onEnter: function($stateParams) {

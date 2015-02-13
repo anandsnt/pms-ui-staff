@@ -17,7 +17,8 @@ sntRover.controller('RVReportListCrl', [
             fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
             hasFauxSelect = false,
-            hasDisplaySelect = false;
+            hasDisplaySelect = false,
+            hasGuaranteeSelect = false;
 
         /**
          * inorder to refresh after list rendering
@@ -40,6 +41,7 @@ sntRover.controller('RVReportListCrl', [
             fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7);
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
             hasFauxSelect = false;
+            hasGuaranteeSelect = false;
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
@@ -163,13 +165,6 @@ sntRover.controller('RVReportListCrl', [
                         }];
                     };
 
-                    // // check for user filter and keep a ref to that item
-                    // if ( item.value === 'USER' ) {
-                    //     // currently only show users for 'Login and out Activity' report
-                    //     if ( reportList[i].title == 'Login and out Activity' ) {
-                    //         reportList[i]['hasUserFilter'] = item;
-                    //     }
-                    // };
                     // currently only show users for 'Login and out Activity' report
                     if (reportList[i].title == 'Login and out Activity') {
                         reportList[i]['hasUserFilter'] = true;
@@ -219,6 +214,7 @@ sntRover.controller('RVReportListCrl', [
                     if (item.value === 'SHOW_GUESTS') {
                         reportList[i]['hasShowGuests'] = item;
                     }
+
                     // SPL: for User login details
                     // check for include rover users filter and keep a ref to that item
                     if (item.value === 'ROVER') {
@@ -239,6 +235,18 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasIncludeZestWebUsers'] = item;
                         hasFauxSelect = true;
                     };
+
+                    // check for include company/ta/group filter and keep a ref to that item
+                    if (item.value === 'INCLUDE_COMPANYCARD_TA_GROUP') {
+                        reportList[i]['hasIncludeComapnyTaGroup'] = item;
+                    };
+
+                    // check for include guarantee type filter and keep a ref to that item
+                    if (item.value === 'INCLUDE_GUARANTEE_TYPE') {
+                        reportList[i]['hasGuaranteeType'] = item;
+                        reportList[i]['guaranteeTypes'] = angular.copy( $scope.$parent.guaranteeTypes );
+                        hasGuaranteeSelect = true;
+                    }
                 });
 
                 // NEW! faux select DS and logic
@@ -250,6 +258,11 @@ sntRover.controller('RVReportListCrl', [
                 if (hasDisplaySelect) {
                     reportList[i]['selectDisplayOpen'] = false;
                     reportList[i]['displayTitle'] = 'Select';
+                };
+
+                if (hasGuaranteeSelect) {
+                    reportList[i]['selectGuaranteeOpen'] = false;
+                    reportList[i]['guaranteeTitle'] = 'Select';
                 };
 
                 // sort by options

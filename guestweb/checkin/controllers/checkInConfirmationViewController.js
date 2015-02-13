@@ -42,24 +42,22 @@
 		$scope.isPosting = false;
 
 		if(response.status === 'failure') {
-		$modal.open($scope.opts); // error modal popup
-	}
-	else{
-
-		// display options for room upgrade screen
-
-		$rootScope.ShowupgradedLabel = false;
-		$rootScope.roomUpgradeheading = "Your trip details";
-		$scope.isResponseSuccess = true;
-		checkinDetailsService.setResponseData(response.data);
-		$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
-		//navigate to next page
-		$state.go('checkinReservationDetails');
-	}
-},function(){
-	$rootScope.netWorkError = true;
-	$scope.isPosting = false;
-});
+			$modal.open($scope.opts); // error modal popup
+		}
+		else{
+			// display options for room upgrade screen
+			$rootScope.ShowupgradedLabel = false;
+			$rootScope.roomUpgradeheading = "Your trip details";
+			$scope.isResponseSuccess = true;
+			checkinDetailsService.setResponseData(response.data);
+			$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
+			//navigate to next page
+			$state.go('checkinReservationDetails');
+		}
+	},function(){
+		$rootScope.netWorkError = true;
+		$scope.isPosting = false;
+	});
 };
 
 	// moved date picker controller logic
