@@ -58,7 +58,7 @@
             <div class="faux-select" ng-click="gridProps.filter.toggleRates()">
                 {{gridProps.filter.rate_type}} Rate
             </div>
-            <div id="diary-rates" class="faux-select-options hidden"  ng-class="{'showing-search': gridProps.filter.rate_type === 'Corporate'}">
+            <div id="diary-rates" class="faux-select-options"  ng-class="{'showing-search': gridProps.filter.rate_type === 'Corporate', 'hidden': !openRateTypeChoosingBox}">
                 <div class="header">
                     
                     <label class="radio inline" ng-click="clickedOnRateType()">
@@ -93,14 +93,14 @@
                     </label> 
                 </div>
                 <div id="corporate-rate-search" class="entry search" ng-show="gridProps.filter.rate_type === 'Corporate'">
-                    <a href="#" id="diary-corporate-clear-query" class="clear-query" ng-class="{'visible': corporateSearchText != ''}">
+                    <a href="#" id="diary-corporate-clear-query" class="clear-query" ng-class="{'visible': corporateSearchText != ''}"  ng-click="clearCorporateSearchText()">
                         <span class="icons icon-clear-search">Clear query</span>
                     </a>
                     <button type="submit" name="submit" class="icons icon-search">
                         Search
                     </button>
                     <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-                    <input auto-complete="" auto-options="autocompleteOptions" name="diary-corporate-query" id="diary-corporate-query" class="query ui-autocomplete-input" placeholder="Type Company or Travel Agent Name" type="search" ng-model="corporateSearchText" ul-class="find-diary-card">
+                    <input auto-complete="" auto-options="autocompleteOptions" name="diary-corporate-query" id="diary-corporate-query" class="query ui-autocomplete-input" placeholder="Type Company or Travel Agent Name" type="search" ng-model="corporateSearchText" ul-class="find-diary-card" focus-me="focusOnCorporateSearchText">
                 </div>                           
                          
             </div>
