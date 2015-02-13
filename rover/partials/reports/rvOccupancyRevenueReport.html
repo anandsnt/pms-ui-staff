@@ -46,11 +46,11 @@
         <div class="statistics-content scrollable" ng-iscroll="rightPanelScroll">
                 <!-- Attach iscroll here, should scroll vertically and horizontally. While scrolling vertically it should update iscoll on the left side as well -->
                 <!-- <div class="wrapper" style="width:{see bottom comment for widht calculation}px;"> -->
-                <div class="wrapper" style="width:{{getNumber().length * 80}}px;">
+                <div class="wrapper" style="width:{{getNumber().length * 90}}px;">
                         <table class="statistics-reports">
                                 <thead>
                                         <tr>
-                                                <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenReport.chosenLastYear + !!chosenReport.chosenVariance}}">{{date | date : dateFormat }}</th>
+                                                <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenReport.chosenLastYear + !!chosenReport.chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
                                         </tr>
                                         <tr ng-if="chosenReport.chosenLastYear || chosenReport.chosenVariance" class="bottom-row">
                                                 <th ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">{{getHeader($index)}}</th>
