@@ -177,43 +177,30 @@ sntRover.controller('reservationActionsController', [
 		/* Entering staycard we check if any deposit is left else noraml checkin 
 		/*
 		/**************************************************************************/
+		
+
 		$scope.depositDetails.isFromCheckin = false;
-		var fetchDepositDetailsSuccess = function(data){
-			$scope.$emit('hideLoader');
-			$scope.depositDetails = data;
+		var paymentTypes = angular.copy($scope.reservationData.paymentTypes);
+		$scope.paymentTypes = paymentTypes;
+		$scope.reservationData.paymentTypes = [];
+		$scope.cardTypes = [];
+		paymentTypes.forEach(function(paymentType,index) {
+	          if(paymentType.name === 'CC'){
+			     $scope.cardTypes.push(paymentType);
+			  };
+		});
 
-			if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone){
-				if(!$scope.depositPopupData.isShown){
-					$scope.depositDetails.isFromCheckin = false;
-					if(!$scope.reservationData.justCreatedRes)
-					{
-						openDepositPopup();
-					};
-					$scope.depositPopupData.isShown = true;
-				};				
-			};
+		$scope.depositDetails = angular.copy($scope.reservationData.reseravationDepositData)
+		if((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) >0 && $rootScope.isStandAlone){
+			if(!$scope.depositPopupData.isShown){
+				$scope.depositDetails.isFromCheckin = false;
+				if(!$scope.reservationData.justCreatedRes)
+				{
+					openDepositPopup();
+				};
+				$scope.depositPopupData.isShown = true;
+			};				
 		};
-
-		$scope.fetchDepositDetails = function(){
-			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,fetchDepositDetailsSuccess);
-		};
-
-		var fetcCreditCardTypes = function(cancellationCharge, nights){
-			var successCallback = function(data){
-				$scope.$emit('hideLoader');
-				$scope.paymentTypes = data;
-				data.forEach(function(item) {
-		          if(item.name === 'CC'){
-				     $scope.creditCardTypes = item.values;
-				  };
-				});
-				$scope.fetchDepositDetails();
-			};
-			$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
-		};
-
-		fetcCreditCardTypes();
-
 
 		var startCheckin = function() {
 			
