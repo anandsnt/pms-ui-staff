@@ -1,5 +1,4 @@
-<section class="content current" ng-click='clearErrorMessage()'>
-	<div>
+<section class="content content-holder current" id="load-listing" ng-click='clearErrorMessage()'>
 		<header class="content-title">
 		    <h2 translate>CAMPAIGNS_LIST_TITLE</h2>
 		    <a ui-sref="admin.addCampaign" class="action add" translate>CAMPAIGN</a>
@@ -12,42 +11,41 @@
 			<!-- <div id="new-form-holder"></div> -->
 
 			<!--ng-table component -->
-			<table class="grid datatable campaign-grid" ng-table="tableParams" template-pagination="custom/pager">
+			<table id="" class="grid datatable campaign-grid" ng-table="tableParams" template-pagination="custom/pager">
 				<tbody>
 					<tr ng-repeat="campaign in $data"> 
-						<td data-title="'ID'"  header-class="width-10" >
+						<td data-title="'ID'"  header-class="id" >
 							<span> {{campaign.id}}</span>
 						</td>
 											
-						<td data-title="'Name'"  sortable="'name'" header-class="name width-20" >
+						<td data-title="'Name'"  sortable="'name'" header-class="name" >
 							<a class="edit-data" ng-click="editCampaign(campaign.id, $index)" >
 								<span>
 									{{campaign.name}}
 								</span>
 							</a>
 						</td>
-						<td data-title="'Audience'" sortable="'audience_type'" header-class="width-25" >
+						<td data-title="'Audience'" sortable="'audience_type'" header-class="" >
 							<span>
 								{{campaign.audience_type}}
 							</span>
 						</td>
-						<td data-title="'Delivery'" sortable="'delivery'" header-class="width-25" >
+						<td data-title="'Delivery'" sortable="'delivery'" header-class="" >
 							<span>
 								{{campaign.delivery}}
 							</span>
 						</td>
-						<td data-title="'Status'" sortable="'status'" header-class="width-20" class="status" ng-class="{'draft': campaign.status== 'DRAFT', 'active': campaign.status== 'ACTIVE', 'completed': campaign.status== 'COMPLETED'}">
+						<td data-title="'Status'" sortable="'status'" header-class="" class="status" ng-class="{'draft': campaign.status== 'DRAFT', 'active': campaign.status== 'ACTIVE', 'completed': campaign.status== 'COMPLETED'}">
 							{{campaign.status}}
 						</td>
 
-						<td data-title="'Last Update'" sortable="'last_updated_date'" header-class="width-25">
+						<td data-title="'Last Update'" sortable="'last_updated_date'" header-class="">
 							<em>{{campaign.last_updated_date | date : dateFormat }} {{getTimeConverted(campaign.last_updated_time)}}</em>
 						</td>
 
-						<td class="delete" data-title="'Delete'" header-class="delete width-15">
+						<td class="delete" data-title="'Delete'" header-class="delete">
 			                <button type="button" class="icons icon-delete large-icon" ng-click="deleteCampaign(campaign.id);">Delete</button>
-			            </td>
-						<td colspan="5" header-class="width-0" ng-include="getTemplateUrl($index, campaign.id)" ></td>
+			            </td>						
 					</tr> 
 				</tbody>
 			</table>
@@ -76,7 +74,6 @@
 	        </div>
 		</script>
 		<!--end-->
-	</div>
 </section>
 
 <div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">

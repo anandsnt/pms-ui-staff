@@ -32,9 +32,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.activeUserList = activeUserList;
 
 		$scope.guaranteeTypes = guaranteeTypes;
-		_.each($scope.guaranteeTypes, function(guarantee) {
-			guarantee.selected = false;
-		});
 
 		$scope.showReportDetails = false;
 
@@ -258,6 +255,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				item.fauxSelectOpen = false;
 				item.selectDisplayOpen = false;
 				item.selectMarketsOpen = false;
+				item.selectGuaranteeOpen = false;
 			});
 		}
 
@@ -344,6 +342,21 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.$emit('report.filter.change');
 
 		}
+
+		$scope.fauxGuaranteeOptionClicked = function(item) {
+			var selectedData = _.where(item.guaranteeTypes, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.guaranteeTitle = "Select";
+			} else if (selectedData.length == 1) {
+				item.guaranteeTitle = selectedData[0].guarantee_type;
+			} else if (selectedData.length > 1) {
+				item.guaranteeTitle = selectedData.length + "Selected";
+			}
+		}
+
 
 		// specific for Source and Markets reports
 		$scope.guranteeTypeClicked = function(e, item) {

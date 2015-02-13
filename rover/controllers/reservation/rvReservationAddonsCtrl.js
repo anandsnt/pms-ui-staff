@@ -48,7 +48,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 }
             }
         }
-        $scope.existingAddons = [];
+        $scope.existingAddonsLength = 0;
+        
         $scope.roomNumber = '';
         var successCallBack = function(data){
             $scope.$emit('hideLoader');
@@ -198,7 +199,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                     item.totalAmount = (item.quantity)*(item.price_per_piece);
                 }
             });
-            console.log(addon)
+   
             if(!alreadyAdded){
                 var newAddonToReservation = {};
                 newAddonToReservation.id = addon.id;

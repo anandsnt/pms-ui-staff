@@ -181,7 +181,7 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, item)">
         <label class="checkbox inline" ng-repeat="each in item.guaranteeTypes">
             <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
-            <input type="checkbox" ng-model="each.selected">
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxGuaranteeOptionClicked(item)">
             {{ each.guarantee_type }}
         </label>
     </div>
