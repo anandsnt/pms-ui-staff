@@ -703,7 +703,8 @@ sntRover.controller('RVReportsMainCtrl', [
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
-								value: each.id
+								value: each.id,
+								type: each.type
 							};
 							list.push(entry);
 						});
