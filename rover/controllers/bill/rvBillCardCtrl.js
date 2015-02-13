@@ -869,6 +869,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					data.is_encrypted = true;
 					if(swipedTrackDataForCheckin.RVCardReadIsEncrypted == 0){
 						data.is_encrypted = false;
+						data.unmasked_pan = swipedTrackDataForCheckin.RVCardReadPAN;
 					}
 	 		    } else {
 	 		    	var data = {
