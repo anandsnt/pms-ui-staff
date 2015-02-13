@@ -123,9 +123,11 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
             $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
             //CICO-9429                  
             if ($rootScope.isAddonOn) {
+                var arrival_date = $scope.vaultSelections.arrival_date;
+                var departure_date = $scope.vaultSelections.departure_date;
                 $state.go('rover.reservation.staycard.mainCard.addons', {
-                    "from_date": $scope.reservationData.arrivalDate,
-                    "to_date": $scope.reservationData.departureDate,
+                    "from_date": arrival_date,
+                    "to_date": departure_date,
                     "reservation": 'HOURLY'
                 });
             } else {
