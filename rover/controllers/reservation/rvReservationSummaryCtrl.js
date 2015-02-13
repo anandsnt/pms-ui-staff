@@ -671,6 +671,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
 				postData.reservation_ids = $scope.reservationData.reservationIds;
+				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
 			} else {
 				//updating reservation
