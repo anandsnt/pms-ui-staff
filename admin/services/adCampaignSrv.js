@@ -75,9 +75,23 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         	    deferred.reject(data);
         	});
         	return deferred.promise;
-
-
         };
+
+        this.fetchIOSAlertLength = function(){
+        	console.log("in servie");
+
+        	var deferred = $q.defer();
+        	var url = "/sample_json/campaign/alertLength.json";
+            //var url = "/sample_json/campaign/campaigns.json";
+
+        	ADBaseWebSrvV2.getJSON(url).then(function (data) {
+        		console.log(data);
+        	    deferred.resolve(data);
+        	}, function (data) {
+        	    deferred.reject(data);
+        	});
+        	return deferred.promise;
+        }
 
        
     }

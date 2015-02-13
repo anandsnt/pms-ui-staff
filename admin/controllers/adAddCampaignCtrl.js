@@ -3,13 +3,6 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	BaseCtrl.call(this, $scope);
 
 	var init = function(){
-		$scope.mode = 'ADD';
-		if($stateParams.type == 'EDIT'){
-			$scope.mode = 'EDIT';
-			fetchCampaignDetails($stateParams.id);
-		}
-		
-
 		$scope.campaignData = {};
 		$scope.campaignData.audience_type = "";
 		$scope.campaignData.delivery_primetime = "AM";
@@ -19,6 +12,25 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.is_recurring = "false";
 		$scope.campaignData.header_file = $scope.fileName;
 
+		$scope.mode = 'ADD';
+		fetchIOSAletLength();
+		if($stateParams.type == 'EDIT'){
+			$scope.mode = 'EDIT';
+			fetchCampaignDetails($stateParams.id);
+		}
+
+
+
+
+	}
+	//Get the alert length - set in admin settings
+	var fetchIOSAletLength = function(){
+		var fetchSuccessOfCampaignData = function(data){
+			$scope.campaignData.ios8_alert_length = data.ios8_alert_length;
+			$scope.campaignData.ios7_alert_length = data.ios7_alert_length;
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADCampaignSrv.fetchIOSAlertLength, {}, fetchSuccessOfCampaignData);
 
 	}
 
