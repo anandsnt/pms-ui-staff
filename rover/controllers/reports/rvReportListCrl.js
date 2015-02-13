@@ -292,19 +292,19 @@ sntRover.controller('RVReportListCrl', [
                     }
 
                     // check for include deposit paid filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_DEPOSIT_PAID') {
+                    if (item.value === 'DEPOSIT_PAID') {
                         reportList[i]['hasIncludeDepositPaid'] = item;
                         hasFauxSelect = true;
                     };
 
                     // check for include deposit due filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_DEPOSIT_DUE') {
+                    if (item.value === 'DEPOSIT_DUE') {
                         reportList[i]['hasIncludeDepositDue'] = item;
                         hasFauxSelect = true;
                     };
 
                     // check for include deposit past due filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_DEPOSIT_PAST') {
+                    if (item.value === 'DEPOSIT_PAST') {
                         reportList[i]['hasIncludeDepositPastDue'] = item;
                         hasFauxSelect = true;
                     };
