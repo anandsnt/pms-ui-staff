@@ -81,11 +81,10 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         	console.log("in servie");
 
         	var deferred = $q.defer();
-        	var url = "/sample_json/campaign/alertLength.json";
-            //var url = "/sample_json/campaign/campaigns.json";
+        	//var url = "/sample_json/campaign/alertLength.json";
+            var url = "api/campaigns/alert_length";
 
         	ADBaseWebSrvV2.getJSON(url).then(function (data) {
-        		console.log(data);
         	    deferred.resolve(data);
         	}, function (data) {
         	    deferred.reject(data);
