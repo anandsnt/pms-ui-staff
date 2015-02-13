@@ -49,7 +49,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             }
         }
         $scope.existingAddonsLength = 0;
-        $scope.existingAddons = [];
+        
         $scope.roomNumber = '';
         var successCallBack = function(data){
             $scope.$emit('hideLoader');

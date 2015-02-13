@@ -7,7 +7,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
-
+        $scope.existingAddons = [];
         var that = this;
 
         //setting the main header of the screen
@@ -1846,6 +1846,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     }
 
                     postData.addons = $scope.existingAddons;
+
+                    console.log("============*****************===================");
+                    console.log($scope.existingAddons);
 
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 } else {
