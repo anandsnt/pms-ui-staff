@@ -80,7 +80,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	}
 	else if($rootScope.hasOwnProperty('isPasswordResetView')){		
 		var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
-		$location.path(path);		
+		$location.path(path);	
+		$location.replace();	
 	}else{
          $location.path('/checkoutRoomVerification');
 	};

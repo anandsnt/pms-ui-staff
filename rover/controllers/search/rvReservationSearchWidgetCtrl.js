@@ -26,10 +26,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.showSearchResultsArea = false;
 		$scope.searchResultsFetchDone = false;
 		$scope.searchAreaIsHiding = false;
+		$scope.searchAreaIsOpening = false;
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name == "rover.search");
-
+		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search": "search";
 		//Date picker from date should default to current business date - CICO-8490
 		//Get the date stored in service, and clear the service
 		$scope.fromDate = RVSearchSrv.fromDate == undefined ? $rootScope.businessDate : RVSearchSrv.fromDate;
@@ -217,14 +218,26 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.textInQueryBox = '';
 				$vault.set('searchQuery', '');
 				// hide the dashboard back button (dont remove yet)
-				// $rootScope.setPrevState.hide = true;
-				$scope.searchAreaIsHiding = true;
-				$timeout(function() {
+				// $rootScope.setPrevState.hide = true;				
+				if (!$scope.reservationSearch) {
+					$scope.searchAreaIsHiding = true;					
+					$timeout(function() {
+						$scope.searchAreaIsHiding = false;
+						$scope.searchAreaIsOpening = false;
+						$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+					}, 400)					
+				}
+				else {
 					$scope.searchAreaIsHiding = false;
+					$scope.searchAreaIsOpening = false;
 					$scope.showSearchResultsArea = searchAreaVisibilityStatus;
-				}, 400)
+				}
+
 			} else {
 				$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+				if (!$scope.reservationSearch) {
+					$scope.searchAreaIsOpening = true;
+				}
 				// show the dashboard back button (dont remove yet)
 				// $rootScope.setPrevState.hide = false;
 			}

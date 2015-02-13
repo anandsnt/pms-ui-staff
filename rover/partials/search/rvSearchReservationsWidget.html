@@ -32,7 +32,7 @@
 	    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
 	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
 	</div>
-	<section id="dashboard-search" class="content scrollable" ng-class="{'no-pagination': ((totalSearchResults < searchPerPage && results.length > 0) || isSwiped), 'no-results' : results.length == 0, 'hidden': !showSearchResultsArea, 'showing-search': showSearchResultsArea, 'closing-search': searchAreaIsHiding}" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
+	<section ng-attr-id="{{search_area_id}}" class="content scrollable" ng-class="{'no-pagination': ((totalSearchResults < searchPerPage && results.length > 0) || isSwiped), 'no-results' : results.length == 0, 'hidden': !showSearchResultsArea, 'showing-search': searchAreaIsOpening, 'closing-search': searchAreaIsHiding}" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
