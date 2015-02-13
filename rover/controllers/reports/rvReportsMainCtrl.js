@@ -49,6 +49,12 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 
+		// show only valid sort_by Options "Filter"
+		$scope.showValidSortBy = function(sortBy) {
+			return !!sortBy && !!sortBy.value;
+		};
+
+
 
 		/**
 		 * inorder to refresh after list rendering
@@ -208,7 +214,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				item.selectDisplayOpen = false;
 				item.selectMarketsOpen = false;
 			});
-
 		}
 
 		// common faux select method
@@ -451,7 +456,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean') {
 					params['sort_dir'] = _chosenSortBy.sortDir;
-				};
+				}
 			};
 
 			// include notes
