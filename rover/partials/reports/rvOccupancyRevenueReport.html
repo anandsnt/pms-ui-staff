@@ -50,53 +50,48 @@
                         <table class="statistics-reports">
                                 <thead>
                                         <tr>
-                                                <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenReport.chosenLastYear + !!chosenReport.chosenVariance}}">{{date}}</th>
-                                                <!-- If showing variance OR last year, add colspan="2". If showing variance AND last year, add colspan="3" -->
-                                                <!-- ... repeat for all dates in the date range -->
+                                                <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenReport.chosenLastYear + !!chosenReport.chosenVariance}}">{{date | date : dateFormat }}</th>
                                         </tr>
-                                        <!-- {{chosenReport.chosenLastYear}}{{chosenReport.chosenVariance}} -->
-                                        <!-- If showing variance AND/OR last year, add second row: -->
                                         <tr ng-if="chosenReport.chosenLastYear || chosenReport.chosenVariance" class="bottom-row">
-                                                <!-- TODO : Need to get a condition right to get the 'day-end' -->
                                                 <th ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">{{getHeader($index)}}</th>
-                                                <!-- <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}">Last Year</th>
-                                                        // Output only if showing last year. Add class "day-end" if not showing variance.
-                                                        <th ng-repeat="(date, values) in tabularData.table" ng-if="chosenReport.chosenVariance" class="day-end">Variance</th> -->
                                         </tr>
                                 </thead>
                                 <tbody>
                                         <tr ng-repeat="occupancy in stateStore.occupancy track by $index">
                                                 <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
-                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(occupancy.key,$index) < 0}">{{getValue(occupancy.key,$index);}}</td>
-                                                <!-- <td>{Occupancy / Revenue}</td> -->
-                                                <!-- If showing lat year, add this: -->
-                                                <!-- <td ng-if="chosenReport.chosenLastYear" ng-class="{'day-end':!chosenReport.chosenVariance}" class="last-year"></td> -->
-                                                <!-- // Add class "day-end" if not showing variance -->
-                                                <!-- If showing variance, add this: -->
-                                                <!-- <td ng-if="chosenReport.chosenVariance" class="day-end"></td> -->
-                                                <!-- Add class "negative" if negative value -->
-                                                <!-- ... repeat for all dates in the date range -->
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(occupancy.key,$index) < 0}">
+                                                        {{absoulte(getValue(occupancy.key,$index))}}
+                                                </td>
                                         </tr>
                                         <tr ng-repeat="market in reportsState.markets" ng-show="market.selected" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketOccupancyValue(outerIndex,$index) < 0}">
-                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>{{getMarketOccupancyValue(outerIndex,$index) | number:0}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                        {{absoulte(getMarketOccupancyValue(outerIndex,$index)) | number:0}}
+                                                </td>
                                         </tr>
                                         <tr ng-repeat="occupancyTotal in stateStore.occupancyTotals track by $index">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(occupancyTotal.key,$index) < 0}">
-                                                        <strong>{{getValue(occupancyTotal.key,$index) | number:0}} %</strong>
+                                                        <strong>{{absoulte(getValue(occupancyTotal.key,$index)) | number:0}} %</strong>
                                                 </td>
                                         </tr>
                                         <tr ng-repeat="revenue in stateStore.revenues track by $index">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(revenue.key,$index) < 0}">
-                                                        {{currencySymbol}}{{getValue(revenue.key,$index) | number: 2}}</td>
+                                                        {{currencySymbol}}{{absoulte(getValue(revenue.key,$index)) | number: 2}}
+                                                </td>
                                         </tr>
                                         <tr ng-repeat="market in reportsState.markets" ng-show="market.selected" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketRevenueValue(outerIndex,$index) < 0}">
-                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>{{getMarketRevenueValue(outerIndex,$index) | number:0}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                        {{absoulte(getMarketRevenueValue(outerIndex,$index)) | number:0}}
+                                                </td>
                                         </tr>
                                         <tr ng-repeat="chargeCode in results.charge_codes" ng-init="outerIndex = $index">
-                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getChargeCodeValue(outerIndex,$index) < 0}">{{currencySymbol}}{{getChargeCodeValue(outerIndex,$index) | number:2}}</td>
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getChargeCodeValue(outerIndex,$index) < 0}">
+                                                        {{currencySymbol}}{{absoulte(getChargeCodeValue(outerIndex,$index)) | number:2}}
+                                                </td>
                                         </tr>
                                         <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
-                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(revenueTotal.key,$index) < 0}"><strong>{{currencySymbol}}{{getValue(revenueTotal.key,$index) | number:2}}</td></strong>
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(revenueTotal.key,$index) < 0}">
+                                                        <strong>{{currencySymbol}}{{absoulte(getValue(revenueTotal.key,$index)) | number:2}}</strong>
+                                                </td>
                                         </tr>
                                 </tbody>
                         </table>
