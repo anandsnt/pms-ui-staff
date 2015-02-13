@@ -1,21 +1,29 @@
 <div class="scrollable">
     <div class="wrapper">
-
-        <a href="" class="settings-title toggle has-arrow" ng-class="{'active': filterItemsToggle.itemA}" ng-click="toggleFilterItems('itemA')">
-            <span class="title">A boy</span>
+        
+        <!-- cancellation date range -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasCancelDateFilter" ng-class="{'active': filterItemsToggle.itemA}" ng-click="toggleFilterItems('itemA')">
+            <span class="title">{{ chosenReport.hasCancelDateFilter.description }}</span>
         </a>
-        <div class="settings-content" ng-class="{'hidden': !filterItemsToggle.itemA}">
-            <p>Vijay</p>
-            <p>Dev</p>
-        </div>
-
-        <a href="" class="settings-title toggle has-arrow" ng-class="{'active': filterItemsToggle.itemB}" ng-click="toggleFilterItems('itemB')">
-            <span class="title">A Girl</span>
-        </a>
-        <div class="settings-content" ng-class="{'hidden': !filterItemsToggle.itemB}">
-            <p>Ann</p>
-            <p>Susan</p>
-            <p>Babu</p>
+        <div class="settings-content" ng-if="chosenReport.hasCancelDateFilter" ng-class="{'hidden': !filterItemsToggle.itemA}">
+            <div class="entry date-range">
+                <label for="arrival-range-from">From</label>
+                <div class="has-datepicker">
+                    <input id="chosenReportFromCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromCancelDate" readonly>
+                    <input id="chosenReportFromCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromCancelDate" readonly>
+                    <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
+                    </button>
+                </div>
+                <label for="arrival-range-to">To</label>
+                <div class="has-datepicker">
+                    <input id="chosenReportToCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilCancelDate" readonly>
+                    <input id="chosenReportToCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilCancelDate" readonly>
+                    <button ng-if="chosenReport.canRemoveDate" ng-show="chosenReport.showRemove" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromCancelDate', 'untilCancelDate')">Clear query</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
 
