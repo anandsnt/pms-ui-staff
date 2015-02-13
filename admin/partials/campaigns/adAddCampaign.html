@@ -37,16 +37,17 @@
                     </div>
                 </div>
 
+		        
+		        <div class="entry full-width">
+		            <label for="campaign-name">{{'CAMPAIGN_NAME'|translate}} <strong>*</strong></label>
+		            <input type="text" id="campaign-name" placeholder="Enter Campaign name" ng-model="campaignData.name" value="" required ng-disabled="campaignData.status == 'COMPLETED'"/>
+		        </div>  
 		        <div class="entry short">
 		            <label for="campaign-id" translate>ID</label>
 		            <input type="text" id="campaign-id" value="campaignData.id" ng-model="campaignData.id" readonly/>
-		        </div>
-		        <div class="entry long">
-		            <label for="campaign-name">{{'CAMPAIGN_NAME'|translate}} <strong>*</strong></label>
-		            <input type="text" id="campaign-name" placeholder="Enter Campaign name" ng-model="campaignData.name" value="" required ng-disabled="campaignData.status == 'COMPLETED'"/>
-		        </div>        
+		        </div>      
 		        <div class="entry full-width">
-		            <label for="campaign-audience" translate>AUDIENCE <strong>*</strong></label>
+		            <label for="campaign-audience">{{'AUDIENCE'|translate}} <strong>*</strong></label>
 		            <div class="boxes">
 		                <label class="radio">
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='DUE_IN_GUESTS'}"></span>
@@ -115,19 +116,20 @@
 	            <h3><span translate>DELIVERY</span> {{'DETAILS'|translate}}</h3>
 	            <em class="status">{{'TIME_ZONE'|translate}}<strong class="zone">{{hotelTimeZoneFull}} ({{hotelTimeZoneAbbr}})</strong></em>
 	        </div>
-	        <div class="large-block">
+	        <div class="large-block" ng-class = "{'open': campaignData.is_recurring == 'false'}">
 	            <label class="radio large">
 	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.is_recurring == 'false'}"></span>
 	                <input name="delivery" id="delivery-onetime" value="false" type="radio" ng-model="campaignData.is_recurring" ng-disabled="campaignData.status == 'COMPLETED'"/>
 	                {{'ONE_TIME'|translate}}
 	            </label>
 	            
-	            <!-- Lines 97-148 are For future use, not for CICO-11909 
-	            <label class="radio small"> // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option.
-	                <span class="icon-form icon-radio checked"></span>
+	            <!-- Lines 97-148 are For future use, not for CICO-11909  -->
+	            <label class="radio small"> <!-- // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option. -->
+	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.is_recurring == 'false'}"></span>
 	                <input name="delivery-once" id="delivery-immediately" value="immediately" type="radio" checked />
 	                Immediately
 	            </label>
+	            <!-- 
 	            <label class="radio small"> // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option.
 	                <span class="icon-form icon-radio"></span>
 	                <input name="delivery-once" id="delivery-scheduled" value="scheduled" type="radio" />
@@ -175,7 +177,7 @@
 	                </div>
 	            </div> -->
 	        </div>
-	        <div class="large-block" ng-class = "{'open': campaignData.is_recurring}">
+	        <div class="large-block" ng-class = "{'open': campaignData.is_recurring == 'true'}">
 	            <label class="radio large">
 	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.is_recurring == 'true'}"></span>
 	                <input name="delivery" id="delivery-recurring" value="true" type="radio" ng-model="campaignData.is_recurring" ng-disabled="campaignData.status == 'COMPLETED'"/>
@@ -244,14 +246,14 @@
 	        </div>
 	        <div class="entry full-width">
 	            <label for="notification-ios8">{{'NOTIFICATION_BANNER_OR_ALERT'|translate}}<span>({{'IOS8'|translate}})</span><strong>*</strong></label>
-	            <textarea id="notification-ios8" rows="1" maxlength="{{campaignData.alert_max_length}}" placeholder="Text" ng-model="campaignData.alert_ios8" ng-disabled="campaignData.status == 'COMPLETED'"></textarea>
-	            <p class="counter"><span ng-class= "{'done': campaignData.alert_max_length == campaignData.alert_ios8.length}">{{campaignData.alert_max_length - campaignData.alert_ios8.length}}</span>{{'CHARACTERS_REMINING' |translate}}</p>
+	            <textarea id="notification-ios8" rows="1" maxlength="{{campaignData.ios8_alert_length}}" placeholder="Text" ng-model="campaignData.alert_ios8" ng-disabled="campaignData.status == 'COMPLETED'"></textarea>
+	            <p class="counter"><span ng-class= "{'done': campaignData.ios8_alert_length == campaignData.alert_ios8.length}">{{campaignData.ios8_alert_length - campaignData.alert_ios8.length}}</span>&nbsp;{{'CHARACTERS_REMINING' |translate}}</p>
 	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 	        </div>
 	        <div class="entry full-width">
 	            <label for="notification-ios7">{{'NOTIFICATION_BANNER_OR_ALERT'|translate}}<span>({{'IOS7'|translate}})</span><strong>*</strong></label>
-	            <textarea id="notification-ios7" rows="1" maxlength="{{campaignData.alert_max_length}}" placeholder="Text" ng-model="campaignData.alert_ios7" ng-disabled="campaignData.status == 'COMPLETED'"></textarea>
-	            <p class="counter"><span ng-class= "{'done': campaignData.alert_max_length == campaignData.alert_ios7.length}">{{campaignData.alert_max_length - campaignData.alert_ios7.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
+	            <textarea id="notification-ios7" rows="1" maxlength="{{campaignData.ios7_alert_length}}" placeholder="Text" ng-model="campaignData.alert_ios7" ng-disabled="campaignData.status == 'COMPLETED'"></textarea>
+	            <p class="counter"><span ng-class= "{'done': campaignData.ios7_alert_length == campaignData.alert_ios7.length}">{{campaignData.ios7_alert_length - campaignData.alert_ios7.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
 	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 	        </div>          
 	    </fieldset>

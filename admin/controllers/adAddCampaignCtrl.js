@@ -2,19 +2,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 	BaseCtrl.call(this, $scope);
 
-	$s = $scope;
-	
 	var init = function(){
-		console.log($stateParams);
-		$scope.mode = 'ADD';
-		if($stateParams.type == 'EDIT'){
-			$scope.mode = 'EDIT';
-			fetchCampaignDetails($stateParams.id);
-		}
-		
-
 		$scope.campaignData = {};
-		$scope.campaignData.audience_type = "EVERYONE";
+		$scope.campaignData.audience_type = "";
 		$scope.campaignData.delivery_primetime = "AM";
 		$scope.campaignData.alert_max_length = 120;
 		$scope.campaignData.messageSubjectMaxLength = 60;
@@ -22,12 +12,29 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.is_recurring = "false";
 		$scope.campaignData.header_file = $scope.fileName;
 
+		$scope.mode = 'ADD';
+		fetchIOSAletLength();
+		if($stateParams.type == 'EDIT'){
+			$scope.mode = 'EDIT';
+			fetchCampaignDetails($stateParams.id);
+		}
+
+
+
+
+	}
+	//Get the alert length - set in admin settings
+	var fetchIOSAletLength = function(){
+		var fetchSuccessOfCampaignData = function(data){
+			$scope.campaignData.ios8_alert_length = data.ios8_alert_length;
+			$scope.campaignData.ios7_alert_length = data.ios7_alert_length;
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADCampaignSrv.fetchIOSAlertLength, {}, fetchSuccessOfCampaignData);
 
 	}
 
 	var computeCampaignDataToUIFormat = function(data){
-		console.log("hesreeeeeeeeeeeeeeeeeeeeeeee");
-		console.log(data);
 
 		$scope.campaignData.id = data.id;
 		$scope.campaignData.name = data.name;
@@ -64,7 +71,6 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	var fetchCampaignDetails = function(id){
 
 		var fetchSuccessOfCampaignData = function(data){
-			console.log(data);
 			computeCampaignDataToUIFormat(data);
 			$scope.$emit('hideLoader');
 		};
@@ -104,8 +110,6 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 	$scope.startCampaignPressed = function(){
 		$scope.saveAsDraft("START_CAMPAIGN");
-		//alert("startCampaign");
-		console.log($scope.campaignData.is_recurring);
 	};
 
 	var startCampaign = function(id){
@@ -132,12 +136,10 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		var data = computeCampaignSaveData();
 			
 		if($scope.mode == 'EDIT'){
-			console.log('mode edit');
 			data.id = $scope.campaignData.id;
 			$scope.invokeApi(ADCampaignSrv.updateCampaign, data, saveSucess);
 
 		} else {
-			console.log("mode no edit");
 			$scope.invokeApi(ADCampaignSrv.saveCampaign, data, saveSucess);
 		}
 	};
@@ -174,8 +176,6 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	}
 
 	$scope.showDatePicker = function(){
-		console.log("show showDatePicker123213");
-		//$scope.campaignData.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
         ngDialog.open({
                 template: '/assets/partials/campaigns/adCampaignDatepicker.html',
                 controller: 'ADcampaignDatepicker',
