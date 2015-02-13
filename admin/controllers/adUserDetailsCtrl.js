@@ -29,6 +29,7 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.assignedRoles = [];
 	$scope.rolesWithDashboards = [];
 	$scope.errorMessage = "";
+	$scope.focusOnPassword = false;
 
 	$scope.getMyDashboards = function() { 
 
@@ -241,7 +242,8 @@ admin.controller('ADUserDetailsCtrl',
 	};
 
 	var setFocusOnPasswordField = function() {
-		$('#edit-user #password').focus();
+		//$('#edit-user #password').focus();
+		$scope.focusOnPassword = true;
 	};
 
 	$scope.isInUnlockingMode = function (){

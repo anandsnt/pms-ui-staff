@@ -33,23 +33,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
 
-		$scope.filterItems = {
-			itemA: false,
-			itemB: false,
-			itemC: false,
-			itemD: false,
-			itemE: false,
-			itemF: false,
-			itemG: false,
-			itemH: false,
-			itemI: false,
-			itemJ: false
-		};
-		$scope.toggleFilterItems = function(item) {
-			if ( $scope.filterItems.hasOwnProperty(item) ) {
-				$scope.filterItems[item] = $scope.filterItems[item] ? false : true;
-			};
-		};
+		// ref to parents for filter item toggles
+		$scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
+		$scope.toggleFilterItems = $scope.$parent.toggleFilterItems;
 
 
 		// common methods to do things after fetch report
@@ -80,6 +66,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'In-House Guests':
 				case 'Departure':
 				case 'Arrival':
+				case 'Deposit Report':
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					break;
@@ -130,6 +117,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case 'Arrival':
 				case 'In-House Guests':
+				case 'Deposit Report':
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
@@ -304,6 +292,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvUserActivityReport.html';
 					break;
 
+				case 'Deposit Report':
+					template = '/assets/partials/reports/rvDepositReport.html';
+					break;
+
 				default:
 					template = '/assets/partials/reports/rvCommonReport.html';
 					break;
@@ -406,7 +398,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// un-select sort dir of others
 			_.each($scope.chosenReport.sortByOptions, function(item) {
-				if ( item.value != sortBy.value ) {
+				if ( item && item.value != sortBy.value ) {
 					item.sortDir = undefined;
 				};
 			});

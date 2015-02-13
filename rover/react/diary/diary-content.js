@@ -3,7 +3,8 @@ React.initializeTouchEvents(true);
 var DiaryContent = React.createClass({
 	_recalculateGridSize: function() {
 		var display = _.extend({}, this.state.display),
-			viewport = _.extend({}, this.state.viewport);
+			viewport = _.extend({}, this.state.viewport),
+			iscroll =  this.state.iscroll;
 
 		viewport.width = $(window).width() - 120;
 		viewport.height = $(window).height() - 230;
@@ -19,13 +20,16 @@ var DiaryContent = React.createClass({
 				viewport: viewport,
 				display: display
 			},function() {
-                console.log(display);
             });  
             //, function() {
                 //this.state.iscroll.grid.scrollTo((display.x_origin - display.x_n) * display.px_per_ms, this.state.iscroll.grid.y);
                 //this.state.iscroll.timeline.scrollTo((display.x_origin - display.x_n) * display.px_per_ms, 0);
             //});
 		}
+		//reffreshing the timeline scroller and calling the onscroll fn so that others will get corrected
+		iscroll.timeline.scrollTo(iscroll.timeline.x, iscroll.timeline.y);
+		iscroll.timeline.refresh();
+		iscroll.timeline._scrollFn();
 	},
 	__toggleRows: function(state) {
 		this.state.angular_evt.toggleRows(state, Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n); //.x_origin);	

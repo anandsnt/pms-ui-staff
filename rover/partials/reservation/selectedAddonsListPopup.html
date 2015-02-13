@@ -1,6 +1,6 @@
 <div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog">
     <div class="modal-content room-enhancements">
-        <span class="h2 message">Room 1 Enhancements</span>
+        <span class="h2 message">Room {{roomNumber}} Enhancements</span>
         <!-- Initial markup -->
         <!-- Markup as you add items -->
         <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        
@@ -8,6 +8,9 @@
             <li ng-repeat="addon in existingAddons">
                 <span class="item">{{ addon.title }}</span>
                 <span class="count">({{ addon.quantity }})</span>
+                <span class="base" ng-hide="addon.is_inclusive">at {{currencySymbol}}{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} </span>
+                    <span class="price" ng-hide="addon.is_inclusive">{{currencySymbol}}{{addon.totalAmount | number : 2}}</span>
+                    <span class="price" ng-show="addon.is_inclusive">INCL</span>
                 <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
             </li>
         </ul>

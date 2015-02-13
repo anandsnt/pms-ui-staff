@@ -47,7 +47,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.showReportDetails = false;
 			$scope.heading = listTitle;
 			$scope.showSidebar = false;
+			$scope.resetFilterItemsToggle();
 		};
+
+
 
 
 		$scope.showSidebar = false;
@@ -60,6 +63,40 @@ sntRover.controller('RVReportsMainCtrl', [
 			} else {
 				$scope.showSidebar = false;
 			}
+		};
+
+		$scope.filterItemsToggle = {
+			itemA: false,
+			itemB: false,
+			itemC: false,
+			itemD: false,
+			itemE: false,
+			itemF: false,
+			itemG: false,
+			itemH: false,
+			itemI: false,
+			itemJ: false
+		};
+		$scope.toggleFilterItems = function(item) {
+			console.log( 'heree ????');
+
+			console.log( 'heree ????' + item);
+			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
+				$scope.filterItemsToggle[item] = $scope.filterItemsToggle[item] ? false : true;
+			};
+		};
+		$scope.resetFilterItemsToggle = function() {
+			_.each($scope.filterItemsToggle, function(value, key) {
+				$scope.filterItemsToggle[key] = false;
+			});
+		};
+
+
+
+
+		// show only valid sort_by Options "Filter"
+		$scope.showValidSortBy = function(sortBy) {
+			return !!sortBy && !!sortBy.value;
 		};
 
 
@@ -103,6 +140,10 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 
+		// CICO-10202
+		$scope.reportsState = {
+			markets: []
+		};
 
 
 		$scope.showRemoveDateBtn = function() {
@@ -185,8 +226,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenIncludeRoverUsers',
 			'chosenIncludeZestUsers',
 			'chosenIncludeZestWebUsers',
+			'chosenVariance',
+			'chosenLastYear',
 			'chosenIncludeComapnyTaGroup',
-			'chosenGuaranteeType'
+			'chosenGuaranteeType',
+			'chosenIncludeDepositPaid',
+			'chosenIncludeDepositDue',
+			'chosenIncludeDepositPastDue'
 		];
 
 		var hasList = [
@@ -198,18 +244,28 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeRoverUsers',
 			'hasIncludeZestUsers',
 			'hasIncludeZestWebUsers',
+			'hasVariance',
+			'hasLastYear',
 			'hasIncludeComapnyTaGroup',
-			'hasGuaranteeType'
+			'hasGuaranteeType',
+			'hasIncludeDepositPaid',
+			'hasIncludeDepositDue',
+			'hasIncludeDepositPastDue'
 		];
+
+		var closeAllMultiSelects = function() {
+			_.each($scope.reportList, function(item) {
+				item.fauxSelectOpen = false;
+				item.selectDisplayOpen = false;
+				item.selectMarketsOpen = false;
+			});
+		}
 
 		// common faux select method
 		$scope.fauxSelectClicked = function(e, item) {
 			// if clicked outside, close the open dropdowns
 			if (!e) {
-				_.each($scope.reportList, function(item) {
-					item.fauxSelectOpen = false;
-					item.selectDisplayOpen = false;
-				});
+				closeAllMultiSelects();
 				return;
 			};
 
@@ -229,10 +285,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// if clicked outside, close the open dropdowns
 			if (!e) {
-				_.each($scope.reportList, function(item) {
-					item.fauxSelectOpen = false;
-					item.selectDisplayOpen = false;
-				});
+				closeAllMultiSelects();
 				return;
 			};
 
@@ -252,6 +305,45 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.fauxOptionClicked(e, item);
 
 		};
+
+		//specific for markets
+		$scope.selectMarketsClicked = function(e, item) {
+			var selectCount = 0;
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
+
+			if (!item) {
+				return;
+			};
+			e.stopPropagation();
+			var selectedCount = 0;
+		};
+
+		$scope.fauxMarketOptionClicked = function(item) {
+			var selectedData = _.where($scope.reportsState.markets, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.marketTitle = "Select";
+			} else if (selectedData.length == 1) {
+				item.marketTitle = selectedData[0].name;
+			} else if (selectedData.length > 1) {
+				item.marketTitle = selectedData.length + "Selected";
+			}
+			// CICO-10202
+			$scope.$emit('report.filter.change');
+
+		}
 
 		// specific for Source and Markets reports
 		$scope.guranteeTypeClicked = function(e, item) {
@@ -326,6 +418,8 @@ sntRover.controller('RVReportsMainCtrl', [
 					item.displayTitle = 'Select';
 				};
 			}
+			// CICO-10202
+			$scope.$emit('report.filter.change');
 		};
 
 		$scope.showFauxSelect = function(item) {
@@ -366,10 +460,16 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['cancel_to_date'] = $filter('date')(chosenReport.untilCancelDate, 'yyyy/MM/dd');
 			};
 
-			//// include arrival dates -- IFF both the limits of date range have been selected
+			// include arrival dates -- IFF both the limits of date range have been selected
 			if (!!chosenReport.hasArrivalDateFilter && !!chosenReport.fromArrivalDate && !!chosenReport.untilArrivalDate) {
 				params['arrival_from_date'] = $filter('date')(chosenReport.fromArrivalDate, 'yyyy/MM/dd');
 				params['arrival_to_date'] = $filter('date')(chosenReport.untilArrivalDate, 'yyyy/MM/dd');
+			};
+
+			// include due dates
+			if (!!chosenReport.hasDepositDateFilter) {
+				params['deposit_from_date'] = $filter('date')(chosenReport.fromDepositDate, 'yyyy/MM/dd');
+				params['deposit_to_date'] = $filter('date')(chosenReport.untilDepositDate, 'yyyy/MM/dd');
 			};
 
 			// include times
@@ -396,12 +496,12 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 
 				var _chosenSortBy = _.find(chosenReport.sortByOptions, function(item) {
-					return item.value == chosenReport.chosenSortBy;
+					return item && item.value == chosenReport.chosenSortBy;
 				});
 
 				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean') {
 					params['sort_dir'] = _chosenSortBy.sortDir;
-				};
+				}
 			};
 
 			// include notes
@@ -464,6 +564,20 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[key] = chosenReport.showSource ? true : false;
 			};
 
+			//selected markets for CICO-10202
+			if (chosenReport.hasOwnProperty('hasMarketsList')) {
+				var selectedMarkets = _.where($scope.reportsState.markets, {
+					selected: true
+				});
+				if (selectedMarkets.length > 0) {
+					key = 'market_ids[]';
+					params[key] = [];
+					_.each(selectedMarkets, function(market) {
+						params[key].push(market.value);
+					})
+				}
+
+			}
 			// include company/ta/group
 			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup') && !!chosenReport.chosenIncludeComapnyTaGroup) {
 				key = chosenReport.hasIncludeComapnyTaGroup.value.toLowerCase();
@@ -474,13 +588,31 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (chosenReport.hasOwnProperty('hasGuaranteeType')) {
 				ary = [];
 				_.each(chosenReport.guaranteeTypes, function(type) {
-					if ( type.selected ) {
-						ary.push( type.guarantee_type );
+					if (type.selected) {
+						ary.push(type.guarantee_type);
 					};
 				});
 
 				key = chosenReport.hasGuaranteeType.value.toLowerCase();
-				params[key] = angular.copy( ary );
+				params[key] = angular.copy(ary);
+			};
+
+			// include include deposit paid
+			if (chosenReport.hasOwnProperty('hasIncludeDepositPaid')) {
+				key = chosenReport.hasIncludeDepositPaid.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeDepositPaid ? true : false;
+			};
+
+			// include include deposit due
+			if (chosenReport.hasOwnProperty('hasIncludeDepositDue')) {
+				key = chosenReport.hasIncludeDepositDue.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeDepositDue ? true : false;
+			};
+
+			// include include deposit past due
+			if (chosenReport.hasOwnProperty('hasIncludeDepositPastDue')) {
+				key = chosenReport.hasIncludeDepositPastDue.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeDepositPastDue ? true : false;
 			};
 
 
@@ -517,8 +649,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, callback);
 		};
-
-
 
 
 
@@ -597,7 +727,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 		$scope.removeCompTaGrpId = function(item) {
-			if ( !item.uiChosenIncludeComapnyTaGroup ) {
+			if (!item.uiChosenIncludeComapnyTaGroup) {
 				item.chosenIncludeComapnyTaGroup = null;
 			};
 		};
@@ -616,12 +746,13 @@ sntRover.controller('RVReportsMainCtrl', [
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
-								value: each.id
+								value: each.id,
+								type: each.type
 							};
 							list.push(entry);
 						});
 
-						response( list );
+						response(list);
 					});
 			},
 			select: function(event, ui) {

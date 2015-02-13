@@ -14,41 +14,70 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.activeRoom = 0;
         $scope.fromPage = "";
-                    
+
         if($stateParams.from_screen == "staycard"){
             $scope.fromPage = "staycard";
+            $rootScope.setPrevState = {
+                title: $filter('translate')('STAY_CARD'),
+                callback: 'goBackToStayCard',
+                scope: $scope
+            };
+
+            $scope.goBackToStayCard = function() {
+                var reservationId = $scope.reservationData.reservationId,
+                    confirmationNumber = $scope.reservationData.confirmNum;
+
+               
+                $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+               
+            };
+
+
+        } else {
+            // set the previous state
+            $rootScope.setPrevState = {
+                title: $filter('translate')('ROOM_RATES'),
+                name: 'rover.reservation.staycard.mainCard.roomType',
+                param: {
+                    from_date: $scope.reservationData.arrivalDate,
+                    to_date: $scope.reservationData.departureDate,
+                    view: "ROOM_RATE",
+                    company_id: null,
+                    travel_agent_id: null,
+                    fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
+                }
+            }
         }
+        $scope.existingAddons = [];
+        $scope.roomNumber = '';
         var successCallBack = function(data){
             $scope.$emit('hideLoader');
-            $scope.existingAddons = [];
-
+            
+            $scope.roomNumber = data.room_no;
             angular.forEach(data.existing_packages,function(item, index) {
                 var addonsData = {};
                 addonsData.id = item.package_id;
                 addonsData.title = item.package_name;
                 addonsData.quantity = item.count;
+                addonsData.totalAmount = (addonsData.quantity)*(item.price_per_piece);
+                addonsData.price_per_piece = item.price_per_piece;
+                addonsData.amount_type = item.amount_type
+                addonsData.is_inclusive = item.is_inclusive
                 $scope.existingAddons.push(addonsData);
             });
             $scope.existingAddonsLength = $scope.existingAddons.length;
                     
         };
-       
-        $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
+        if(typeof $scope.reservationData.reservationId !="undefined" && $scope.reservationData.reservationId != "" && $scope.reservationData.reservationId!= null){
+            $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
+        }
+        
         
 
-        // set the previous state
-        $rootScope.setPrevState = {
-            title: $filter('translate')('ROOM_RATES'),
-            name: 'rover.reservation.staycard.mainCard.roomType',
-            param: {
-                from_date: $scope.reservationData.arrivalDate,
-                to_date: $scope.reservationData.departureDate,
-                view: "ROOM_RATE",
-                company_id: null,
-                travel_agent_id: null,
-                fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
-            }
-        }
+        
+
+        
+
 
         var init = function() {
             $scope.reservationData.isHourly = true;
@@ -166,13 +195,20 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 if(item.id == addon.id){
                     alreadyAdded = true;
                     item.quantity = parseInt(item.quantity) + parseInt(addonQty);
+                    item.totalAmount = (item.quantity)*(item.price_per_piece);
                 }
             });
+            console.log(addon)
             if(!alreadyAdded){
                 var newAddonToReservation = {};
                 newAddonToReservation.id = addon.id;
                 newAddonToReservation.quantity = addonQty;
                 newAddonToReservation.title = addon.title;
+                newAddonToReservation.totalAmount = (newAddonToReservation.quantity)*(addon.price);
+                newAddonToReservation.price_per_piece = addon.price;
+                newAddonToReservation.amount_type = addon.stay
+
+                $scope.existingAddonsLength = parseInt($scope.existingAddonsLength) + parseInt(1);
                 $scope.existingAddons.push(newAddonToReservation)
             }
 
