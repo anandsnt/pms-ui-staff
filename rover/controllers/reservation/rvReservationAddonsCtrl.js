@@ -59,6 +59,10 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 addonsData.id = item.package_id;
                 addonsData.title = item.package_name;
                 addonsData.quantity = item.count;
+                addonsData.totalAmount = (addonsData.quantity)*(item.price_per_piece);
+                addonsData.price_per_piece = item.price_per_piece;
+                addonsData.amount_type = item.amount_type
+                addonsData.is_inclusive = item.is_inclusive
                 $scope.existingAddons.push(addonsData);
             });
             $scope.existingAddonsLength = $scope.existingAddons.length;
@@ -191,13 +195,20 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 if(item.id == addon.id){
                     alreadyAdded = true;
                     item.quantity = parseInt(item.quantity) + parseInt(addonQty);
+                    item.totalAmount = (item.quantity)*(item.price_per_piece);
                 }
             });
+            console.log(addon)
             if(!alreadyAdded){
                 var newAddonToReservation = {};
                 newAddonToReservation.id = addon.id;
                 newAddonToReservation.quantity = addonQty;
                 newAddonToReservation.title = addon.title;
+                newAddonToReservation.totalAmount = (newAddonToReservation.quantity)*(addon.price);
+                newAddonToReservation.price_per_piece = addon.price;
+                newAddonToReservation.amount_type = addon.stay
+
+                $scope.existingAddonsLength = parseInt($scope.existingAddonsLength) + parseInt(1);
                 $scope.existingAddons.push(newAddonToReservation)
             }
 
