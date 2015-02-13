@@ -10,11 +10,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
+		$scope.setScroller( 'report-filter-sidebar-scroll', {click: true, preventDefault: false} );
 
 		var refreshScroll = function() {
 			if ( !!$scope.$parent.myScroll['report-details-scroll'] ) {
 				$scope.refreshScroller( 'report-details-scroll' );
 				$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			};
+		};
+
+		var refreshSidebarScroll = function() {
+			if ( !!$scope.$parent.myScroll['report-filter-sidebar-scroll'] ) {
+				$scope.refreshScroller( 'report-filter-sidebar-scroll' );
 			};
 		};
 
@@ -35,7 +42,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		// ref to parents for filter item toggles
 		$scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
-		$scope.toggleFilterItems = $scope.$parent.toggleFilterItems;
+		$scope.toggleFilterItems = function(item) {
+			$scope.$parent.toggleFilterItems(item);
+			refreshSidebarScroll();
+		};
 
 
 		// common methods to do things after fetch report
