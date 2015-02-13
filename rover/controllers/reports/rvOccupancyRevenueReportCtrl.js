@@ -60,6 +60,8 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.selectedDays = [];
 
+		$scope.absoulte = Math.abs;
+
 		$timeout(function() {
 			$scope.$parent.myScroll['leftPanelScroll'].on('scroll', function() {
 				var yPos = this.y;
