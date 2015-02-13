@@ -6,8 +6,8 @@
                 <li ng-repeat="existingPackages in packageData.existing_packages">
                     <span class="item">{{existingPackages.package_name}}</span>
                     <span class="count"> ({{existingPackages.count}})</span>
-                    <span class="base" ng-hide="existingPackages.is_inclusive">at {{currencySymbol}}{{existingPackages.price_per_piece}} / {{existingPackages.amount_type}} </span>
-                    <span class="price" ng-hide="existingPackages.is_inclusive">{{currencySymbol}}{{existingPackages.totalAmount}}</span>
+                    <span class="base" ng-hide="existingPackages.is_inclusive">at {{currencySymbol}}{{existingPackages.price_per_piece | number : 2}} / {{existingPackages.amount_type}} </span>
+                    <span class="price" ng-hide="existingPackages.is_inclusive">{{currencySymbol}}{{existingPackages.totalAmount | number : 2}}</span>
                     <span class="price" ng-show="existingPackages.is_inclusive">INCL</span>
                     <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons(existingPackages.package_id, $index)">Remove</button>
                 </li>
