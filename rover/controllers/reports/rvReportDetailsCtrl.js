@@ -113,6 +113,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case 'Arrival':
 				case 'In-House Guests':
+				case 'Deposit Report':
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;

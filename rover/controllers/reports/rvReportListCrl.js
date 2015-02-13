@@ -121,6 +121,7 @@ sntRover.controller('RVReportListCrl', [
                     case 'Deposit Report':
                         reportList[i]['reportIconCls'] = 'icon-report icon-deposit';
                         reportList[i]['hasDateLimit'] = false;
+                        break;
 
                     case 'Occupancy & Revenue Summary':
                         reportList[i]['reportIconCls'] = 'icon-report icon-occupancy';
