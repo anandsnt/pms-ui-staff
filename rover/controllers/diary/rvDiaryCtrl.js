@@ -1535,7 +1535,7 @@ sntRover
 		$scope.$emit('hideLoader');
 		if(newValue.getFullYear() !== oldValue.getFullYear() || 
 			newValue.getMonth() !== oldValue.getMonth() ||
-			newValue.getDay() !== oldValue.getDay()) {	
+			newValue.getDate() !== oldValue.getDate()) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
             $scope.gridProps.display = util.deepCopy(time_set.display);
 	    	
