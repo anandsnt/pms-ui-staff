@@ -62,6 +62,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'In-House Guests':
 				case 'Departure':
 				case 'Arrival':
+				case 'Deposit Report':
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					break;
@@ -286,6 +287,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvUserActivityReport.html';
 					break;
 
+				case 'Deposit Report':
+					template = '/assets/partials/reports/rvDepositReport.html';
+					break;
+
 				default:
 					template = '/assets/partials/reports/rvCommonReport.html';
 					break;
@@ -388,7 +393,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// un-select sort dir of others
 			_.each($scope.chosenReport.sortByOptions, function(item) {
-				if ( item.value != sortBy.value ) {
+				if ( item && item.value != sortBy.value ) {
 					item.sortDir = undefined;
 				};
 			});
