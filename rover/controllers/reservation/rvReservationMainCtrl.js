@@ -1847,8 +1847,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     postData.addons = $scope.existingAddons;
 
-                    console.log("============*****************===================");
-                    console.log($scope.existingAddons);
 
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 } else {
