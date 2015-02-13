@@ -2,12 +2,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter) {
 
 		// smart switch btw edit reservation flow and create reservation flow
-		if ( !!$state.params && $state.params.isFromChangeStayDates ) {
+		if (!!$state.params && $state.params.isFromChangeStayDates) {
 			$rootScope.setPrevState = {
 				title: 'Stay Dates',
 				name: 'rover.reservation.staycard.changestaydates'
 			}
-		} else if( $scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId ) {
+		} else if ($scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId) {
 			$rootScope.setPrevState = {
 				title: $filter('translate')('STAY_CARD'),
 				name: 'rover.reservation.staycard.reservationcard.reservationdetails',
@@ -286,6 +286,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				roomRates = data;
 				init();
 				if (isfromCalendar) {
+					populateStayDates($scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id, $scope.reservationData.rooms[0].roomTypeId);
 					selectRoomAndRate();
 				}
 			}
@@ -1195,10 +1196,10 @@ console.log($stateParams.fromState);
 				$scope.filteredRates = $($scope.displayData.availableRates).filter(function() {
 					return this.rate.name.match(re);
 				})
-				if($scope.filteredRates.length){
+				if ($scope.filteredRates.length) {
 					// CICO-11119
-					$scope.isRateFilterActive = true;	
-				}				
+					$scope.isRateFilterActive = true;
+				}
 			} else {
 				$scope.filteredRates = [];
 			}
