@@ -10,7 +10,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
-		$scope.setScroller( 'report-filter-sidebar-scroll', {click: true, preventDefault: false} );
+		$scope.setScroller( 'report-filter-sidebar-scroll' );
 
 		var refreshScroll = function() {
 			if ( !!$scope.$parent.myScroll['report-details-scroll'] ) {
@@ -128,6 +128,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'Arrival':
 				case 'In-House Guests':
 				case 'Deposit Report':
+				case 'Cancelation & No Show':
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
@@ -254,6 +255,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// scroller refresh and reset position
 			refreshScroll();
+			refreshSidebarScroll();
 
 			// need to keep a separate object to show the date stats in the footer area
 			// dirty hack to get the val() not model value
@@ -541,7 +543,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var i = j = k = l = m = n = 0;
 
 			if ( $scope.parsedApiFor == 'Departure' ||
-					$scope.parsedApiFor == 'Cancelation & No Show' ||
 					$scope.parsedApiFor == 'Login and out Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
@@ -656,7 +657,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				console.log( 'API reponse changed as follows: ');
 				console.log( _retResult );
 
-			} else if ($scope.parsedApiFor == 'Arrival' || $scope.parsedApiFor == 'In-House Guests') {
+			} else if ($scope.parsedApiFor == 'Arrival' || $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Cancelation & No Show') {
 
 
 

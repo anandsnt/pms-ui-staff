@@ -63,19 +63,19 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.filterItemsToggle = {
-			item_A: false,
-			item_B: false,
-			item_C: false,
-			item_D: false,
-			item_E: false,
-			item_F: false,
-			item_G: false,
-			item_H: false,
-			item_I: false,
-			item_J: false,
-			item_K: false,
-			item_L: false,
-			item_M: false
+			item_01: false,
+			item_02: false,
+			item_03: false,
+			item_04: false,
+			item_05: false,
+			item_06: false,
+			item_07: false,
+			item_08: false,
+			item_09: false,
+			item_10: false,
+			item_11: false,
+			item_12: false,
+			item_13: false,
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
