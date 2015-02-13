@@ -384,12 +384,12 @@ sntRover.controller('RVReportListCrl', [
 
                 // need to reorder the sort_by options
                 // for deposit report in the following order
-                if ( reportList[i].title == 'Deposit Report' ) {
+                if (reportList[i].title == 'Deposit Report') {
                     var reservationSortBy = angular.copy(reportList[i].sortByOptions[4]),
-                        nameSortBy        = angular.copy(reportList[i].sortByOptions[3]),
-                        dateSortBy        = angular.copy(reportList[i].sortByOptions[0]),
-                        dueDateSortBy     = angular.copy(reportList[i].sortByOptions[1]),
-                        paidDateSortBy    = angular.copy(reportList[i].sortByOptions[2]);
+                        nameSortBy = angular.copy(reportList[i].sortByOptions[3]),
+                        dateSortBy = angular.copy(reportList[i].sortByOptions[0]),
+                        dueDateSortBy = angular.copy(reportList[i].sortByOptions[1]),
+                        paidDateSortBy = angular.copy(reportList[i].sortByOptions[2]);
 
                     reportList[i].sortByOptions[0] = reservationSortBy;
                     reportList[i].sortByOptions[1] = nameSortBy;
@@ -420,7 +420,7 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].fromCancelDate = fromDate;
                     reportList[i].fromArrivalDate = fromDate;
                     reportList[i].fromDepositDate = fromDate;
-                    
+
                     reportList[i].untilDate = untilDate;
                     reportList[i].untilCancelDate = untilDate;
                     reportList[i].untilArrivalDate = untilDate;

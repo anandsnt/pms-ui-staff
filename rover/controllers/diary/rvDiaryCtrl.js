@@ -94,7 +94,6 @@ sntRover
 		var onDateSelectionFromDatepicker = function(date_string, date_picker_obj) {
 			var isOnEditMode = $scope.gridProps.edit.active,
 				going_date = new Date (date_string);
-			
 			if (!isOnEditMode) {
 				$scope.gridProps.filter.arrival_date = going_date;
 				if(!$scope.$$phase) {
@@ -1558,12 +1557,12 @@ sntRover
 			openMessageShowingPopup();
 			return;
 		}
-		var current_date = $scope.gridProps.filter.arrival_date;
+		var current_date = new Date ($scope.gridProps.filter.arrival_date);
+
 		// we will allow only if there is any change in date
 		if(newValue.getFullYear() !== current_date.getFullYear() || 
 			newValue.getMonth() !== current_date.getMonth() ||
-			newValue.getDay() !== current_date.getDay()) {	
-
+			newValue.getDate() !== current_date.getDate()) {	
 			var params = getReservationTransferParams (reservation, newValue)
 			var options = {
 	    		params: 			params,
@@ -1590,7 +1589,7 @@ sntRover
 		$scope.$emit('hideLoader');
 		if(newValue.getFullYear() !== oldValue.getFullYear() || 
 			newValue.getMonth() !== oldValue.getMonth() ||
-			newValue.getDay() !== oldValue.getDay()) {	
+			newValue.getDate() !== oldValue.getDate()) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
             $scope.gridProps.display = util.deepCopy(time_set.display);
 	    	

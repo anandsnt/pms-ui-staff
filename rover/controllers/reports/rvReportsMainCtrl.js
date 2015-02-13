@@ -32,9 +32,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.activeUserList = activeUserList;
 
 		$scope.guaranteeTypes = guaranteeTypes;
-		_.each($scope.guaranteeTypes, function(guarantee) {
-			guarantee.selected = false;
-		});
 
 		$scope.showReportDetails = false;
 
@@ -46,7 +43,52 @@ sntRover.controller('RVReportsMainCtrl', [
 			$rootScope.setPrevState.hide = true;
 			$scope.showReportDetails = false;
 			$scope.heading = listTitle;
+			$scope.showSidebar = false;
+			$scope.resetFilterItemsToggle();
 		};
+
+
+
+
+		$scope.showSidebar = false;
+		$scope.toggleSidebar = function(e) {
+			if ( !!e ) {
+				if ( $(e.target).is('.ui-resizable-handle') ) {
+					$scope.showSidebar = $scope.showSidebar ? false : true;
+				};
+				e.stopPropagation();
+			} else {
+				$scope.showSidebar = false;
+			}
+		};
+
+		$scope.filterItemsToggle = {
+			item_01: false,
+			item_02: false,
+			item_03: false,
+			item_04: false,
+			item_05: false,
+			item_06: false,
+			item_07: false,
+			item_08: false,
+			item_09: false,
+			item_10: false,
+			item_11: false,
+			item_12: false,
+			item_13: false,
+		};
+		$scope.toggleFilterItems = function(item) {
+			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
+				$scope.filterItemsToggle[item] = $scope.filterItemsToggle[item] ? false : true;
+			};
+		};
+		$scope.resetFilterItemsToggle = function() {
+			_.each($scope.filterItemsToggle, function(value, key) {
+				$scope.filterItemsToggle[key] = false;
+			});
+		};
+
+
 
 
 		// show only valid sort_by Options "Filter"
@@ -213,6 +255,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				item.fauxSelectOpen = false;
 				item.selectDisplayOpen = false;
 				item.selectMarketsOpen = false;
+				item.selectGuaranteeOpen = false;
 			});
 		}
 
@@ -299,6 +342,21 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.$emit('report.filter.change');
 
 		}
+
+		$scope.fauxGuaranteeOptionClicked = function(item) {
+			var selectedData = _.where(item.guaranteeTypes, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.guaranteeTitle = "Select";
+			} else if (selectedData.length == 1) {
+				item.guaranteeTitle = selectedData[0].guarantee_type;
+			} else if (selectedData.length > 1) {
+				item.guaranteeTitle = selectedData.length + "Selected";
+			}
+		}
+
 
 		// specific for Source and Markets reports
 		$scope.guranteeTypeClicked = function(e, item) {
@@ -682,8 +740,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 		$scope.removeCompTaGrpId = function(item) {
-			console.log(item.uiChosenIncludeComapnyTaGroup);
-
 			if (!item.uiChosenIncludeComapnyTaGroup) {
 				item.chosenIncludeComapnyTaGroup = null;
 			};
@@ -703,7 +759,8 @@ sntRover.controller('RVReportsMainCtrl', [
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
-								value: each.id
+								value: each.id,
+								type: each.type
 							};
 							list.push(entry);
 						});
