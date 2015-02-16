@@ -19,7 +19,7 @@
 		    </div>
 			<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="">
 				
-				<table id="guests" class="grid datatable table" ng-table="tableParams" template-pagination="nil">
+				<table id="guests" class="grid datatable table" ng-table="tableParams" template-pagination="custom/pager">
 					<tr ng-repeat="emailData in $data">
 						<td header-class="width-5 padding-checkbox" style="text-align: left; " header="'ng-table/headers/checkbox.html'">
 							<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
@@ -31,6 +31,28 @@
 					</tr>
 
 				</table>
+				<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
 
 				<script type="text/ng-template" id="ng-table/headers/checkbox.html">
 				
