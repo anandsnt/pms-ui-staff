@@ -6,7 +6,17 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-			
+			<span class="count-show">Show</span>
+			<div class="select table-count rates-table-count">
+				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
+			</div>
+			<span class="count-entries">entries</span>
+				
+			<div class="entry table-search">
+				<span class="search-text">Search</span>
+				<span class="icons icon-search" name="submit" type="submit"></span>
+				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+		    </div>
 			<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="">
 				
 				<table id="guests" class="grid datatable table" ng-table="tableParams" template-pagination="nil">
