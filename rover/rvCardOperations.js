@@ -20,7 +20,7 @@ var CardOperation = function(){
           					'RVCardReadCardName': 'Sample Name',
           					'RVCardReadExpDate':"17012",
           					'RVCardReadCardIIN': "002226",
-          					'is_encrypted': 0
+          					'RVCardReadIsEncrypted': 0
 						  };
 
 			if (typeof data != 'undefined'){ carddata = data;}
