@@ -244,10 +244,10 @@
 
 
         <!-- item_09: company/ta/group -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasIncludeComapnyTaGroup" ng-class="{'active': filterItemsToggle.item_09:}" ng-click="toggleFilterItems('item_09:')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasIncludeComapnyTaGroup" ng-class="{'active': filterItemsToggle.item_09}" ng-click="toggleFilterItems('item_09')">
             <span class="title">Company/TA/Group</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasIncludeComapnyTaGroup" ng-class="{'hidden': !filterItemsToggle.item_09:}">
+        <div class="settings-content" ng-if="chosenReport.hasIncludeComapnyTaGroup" ng-class="{'hidden': !filterItemsToggle.item_09}">
             <input class="icons icon-search" auto-complete auto-options="comTaGrpAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport)">
             <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeComapnyTaGroup">
         </div>
