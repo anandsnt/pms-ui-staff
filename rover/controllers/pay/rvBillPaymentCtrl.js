@@ -157,7 +157,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	var checkReferencetextAvailable = function(){
-		angular.forEach($scope.renderData, function(value, key) {
+		angular.forEach($scope.renderData.paymentTypes, function(value, key) {
 			if(value.name == $scope.saveData.paymentType){
 				$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
 
@@ -197,12 +197,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.getPaymentListSuccess = function(data){
 		
 		$scope.$emit('hideLoader');
-		$scope.renderData = data;
+		$scope.renderData.paymentTypes = data;
 
 		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 		$scope.renderDefaultValues();
 		$scope.creditCardTypes = [];
-		angular.forEach($scope.renderData, function(item, key) {
+		angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 			if(item.name === 'CC'){
 				$scope.creditCardTypes = item.values;
 			};					
@@ -211,7 +211,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	
 	var checkReferencetextAvailableForCC = function(){
-		angular.forEach($scope.renderData, function(paymentType, key) {
+		angular.forEach($scope.renderData.paymentTypes, function(paymentType, key) {
 			if(paymentType.name == 'CC'){
 				angular.forEach(paymentType.values, function(value, key) {
 					if($scope.defaultPaymentTypeCard.toUpperCase() === value.cardcode){
@@ -290,7 +290,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	$scope.renderDefaultValues = function(){
 		var ccExist = false;
-		if($scope.renderData.length > 0){
+		if($scope.renderData.paymentTypes.length > 0){
 			if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
 				$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
 				$scope.saveData.payment_type_id = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_id;
@@ -299,7 +299,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 						ccExist = true;
 					}
 				});
-
 				$scope.saveData.paymentType = $scope.defaultPaymentTypeOfBill;
 				checkReferencetextAvailable();
 				if($scope.defaultPaymentTypeOfBill == 'CC'){
@@ -329,9 +328,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		if($scope.isStandAlone){
 			$scope.feeData.feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
 			$scope.setupFeeData();
-		}
-		$scope.$apply();
-	
+		}	
 	};
 	
 

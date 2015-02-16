@@ -65,7 +65,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		}, 1500);
 	};
 
-
+	$scope.reservationData.reservation_card.payment_method_used = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used :"";
+	
 	$scope.disableMakePayment = function(){
 		 if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
 			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.depositBalanceMakePaymentData.amount >=0) ? false :true;

@@ -22,7 +22,7 @@
                     <div class="select">
                         <select id="payment-options" ng-model="saveData.paymentType"  name="payment-options" ng-change="showHideCreditCard()">
                             <option value="" translate>SELECT_PAYMENT_TYPE</option>
-                            <option ng-repeat="paymentData in renderData" value="{{paymentData.name}}" ng-selected="{{paymentData.name == defaultPaymentTypeOfBill}}" ng-hide="(removeDirectPayment && paymentData.name == 'DB')">{{paymentData.description}}</option>
+                            <option ng-repeat="paymentData in renderData.paymentTypes" value="{{paymentData.name}}" ng-selected="paymentData.name == defaultPaymentTypeOfBill" ng-hide="(removeDirectPayment && paymentData.name == 'DB')">{{paymentData.description}}</option>
                         </select>
                     </div>
                 </div>
