@@ -41,7 +41,7 @@
 					</li>
 					<li id="items-list" ng-repeat="each in fetchedChargeCodes" ng-show="each.show && isResultOnFetchedChargecode" ng-click="addItem(each)">
 						<a class="button white">
-							<span ng-bind-html="'{{ each.description }}' | highlight:query:false"></span>
+							<span ng-bind-html="each.description | highlight:query:false"></span>
 							<span class="price">
 								<span class="value" ng-bind-html="'{{ each.charge_code }}' | highlight:query:false"></span>
 							</span>

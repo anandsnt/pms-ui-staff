@@ -671,6 +671,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
 				postData.reservation_ids = $scope.reservationData.reservationIds;
+				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
 			} else {
 				//updating reservation
@@ -847,6 +848,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				postData.reservation_ids = $scope.reservationData.reservationIds;
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
+				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
 			} else {
 				//updating reservation

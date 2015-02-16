@@ -10,11 +10,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
+		$scope.setScroller( 'report-filter-sidebar-scroll' );
 
 		var refreshScroll = function() {
 			if ( !!$scope.$parent.myScroll['report-details-scroll'] ) {
 				$scope.refreshScroller( 'report-details-scroll' );
 				$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			};
+		};
+
+		var refreshSidebarScroll = function() {
+			if ( !!$scope.$parent.myScroll['report-filter-sidebar-scroll'] ) {
+				$scope.refreshScroller( 'report-filter-sidebar-scroll' );
 			};
 		};
 
@@ -32,6 +39,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
+
+		// ref to parents for filter item toggles
+		$scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
+		$scope.toggleFilterItems = function(item) {
+			$scope.$parent.toggleFilterItems(item);
+			refreshSidebarScroll();
+		};
 
 
 		// common methods to do things after fetch report
@@ -62,6 +76,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'In-House Guests':
 				case 'Departure':
 				case 'Arrival':
+				case 'Deposit Report':
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					break;
@@ -108,6 +123,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'Login and out Activity':
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
+					break;
+
+				case 'Arrival':
+				case 'In-House Guests':
+				case 'Deposit Report':
+				case 'Cancelation & No Show':
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 4;
 					break;
 
 				case 'Web Check In Conversion':
@@ -232,6 +255,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// scroller refresh and reset position
 			refreshScroll();
+			refreshSidebarScroll();
 
 			// need to keep a separate object to show the date stats in the footer area
 			// dirty hack to get the val() not model value
@@ -278,6 +302,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case 'Login and out Activity':
 					template = '/assets/partials/reports/rvUserActivityReport.html';
+					break;
+
+				case 'Deposit Report':
+					template = '/assets/partials/reports/rvDepositReport.html';
 					break;
 
 				default:
@@ -382,7 +410,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// un-select sort dir of others
 			_.each($scope.chosenReport.sortByOptions, function(item) {
-				if ( item.value != sortBy.value ) {
+				if ( item && item.value != sortBy.value ) {
 					item.sortDir = undefined;
 				};
 			});
@@ -402,6 +430,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// refetch the reports with new filter values
 		// Note: not resetting page to page #1
 		$scope.fetchUpdatedReport = function() {
+			// hide sidebar
+			$scope.$parent.showSidebar = false;
+
 			// reset the page
 			$_pageNo = 1;
 
@@ -511,10 +542,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var i = j = k = l = m = n = 0;
 
-			if ( $scope.parsedApiFor == 'Arrival' ||
-					$scope.parsedApiFor == 'In-House Guests' ||
-					$scope.parsedApiFor == 'Departure' ||
-					$scope.parsedApiFor == 'Cancelation & No Show' ||
+			if ( $scope.parsedApiFor == 'Departure' ||
 					$scope.parsedApiFor == 'Login and out Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
@@ -628,6 +656,102 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// dont remove yet
 				console.log( 'API reponse changed as follows: ');
 				console.log( _retResult );
+
+			} else if ($scope.parsedApiFor == 'Arrival' || $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Cancelation & No Show') {
+
+
+
+				var itemCopy   = {};
+				var customData = [];
+				var guestData  = {};
+				var noteData   = {};
+				var cancelData = {};
+
+				var excludeReports = function(names) {
+					return !!_.find(names, function(n) {
+						return n == $scope.parsedApiFor;
+					});
+				};
+
+				var checkGuest = function(item) {
+					var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
+					var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
+
+					return guests || compTravelGrp ? true : false;
+				};
+
+				var checkNote = function(item) {
+					return !!item['notes'] && !!item['notes'].length;
+				};
+
+				var checkCancel = function(item) {
+					return excludeReports(['Arrival', 'In-House Guests']) ? !!item['cancel_reason'] : false;
+				};
+
+				i = j = 0;
+
+				for (i = 0, j = apiResponse.length; i < j; i++) {
+					itemCopy   = angular.copy( apiResponse[i] );
+					customData = [];
+					guestData  = {};
+					noteData   = {};
+					cancelData = {};
+
+					if ( checkGuest(itemCopy) ) {
+						guestData = {
+							isGuestData : true,
+							guestNames  : angular.copy( itemCopy['accompanying_names'] ),
+
+							company_name      : itemCopy.company_name,
+							travel_agent_name : itemCopy.travel_agent_name,
+							group_name        : itemCopy.group_name,
+
+							addOns : angular.copy( itemCopy['add_ons'] )
+						};
+						customData.push( guestData );
+					};
+
+					if ( checkCancel(itemCopy) ) {
+						_cancelRes = {
+							isCancelData : true,
+							reason       : angular.copy( itemCopy['cancel_reason'] )
+						};
+						customData.push( cancelData );
+					};
+
+					if ( checkNote(itemCopy) ) {
+						noteData = {
+							isNoteData : true,
+							note       : angular.copy( itemCopy['notes'] )
+						}
+					};
+
+					// IF: we found custom items
+						// set row span for the parent tr a rowspan
+						// mark the class that must be added to the last tr
+					// ELSE: since this tr won't have any childs, mark the class that must be added to the last tr
+					if ( !!customData.length ) {
+						itemCopy.rowspan = customData.length + 1;
+						customData[customData.length - 1]['trCls'] = 'row-break';
+					} else {
+						itemCopy.trCls = 'row-break';
+					};
+
+					// push 'itemCopy' into '_retResult'
+					itemCopy.isReport = true;
+					_retResult.push( itemCopy );
+
+					// push each item in 'customData' in to '_retResult'
+					for (m = 0, n = customData.length; m < n; m++) {
+						_retResult.push( customData[m] );
+					};
+				}
+
+
+				// dont remove yet
+				console.log( 'API reponse changed as follows: ');
+				console.log( _retResult );
+
 			} else {
 				_retResult = apiResponse;
 			};

@@ -349,6 +349,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			}
 			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkoutTime.hh != '') {
 				var postData = $scope.computeReservationDataforUpdate();
+				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		}
@@ -412,6 +413,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var postData = $scope.computeReservationDataforUpdate();
 			postData.reservationId = $scope.reservationData.reservationId;
+			postData.addons = $scope.existingAddons;
 			$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 		}
 		$scope.init();
