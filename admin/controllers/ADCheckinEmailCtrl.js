@@ -25,24 +25,26 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
     $scope.selectAllOption = false;
   	$scope.emailTitle = 'Guests Checking In';
     $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
-    var getParams = $scope.calculateGetParams(params);  	
+    var getParams = $scope.calculateGetParams(params);  
+    getParams.id = 'checkin';
     var fetchEmailListSuccessCallback = function(data) {
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
-        console.log(data); 
-        $scope.currentClickedElement = -1;  
-        //TODO     
-        $scope.totalCount = 2;//parseInt(data.number_of_rooms_configured);
-        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
-        console.log($scope.totalPage);
+        $scope.currentClickedElement = -1;
+
+        $scope.totalCount = parseInt(data.total_count);
+        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);   
+        
+
         $scope.currentPage = params.page();     
         $scope.emailDatas  = data.due_out_guests;
-        $scope.currentPage = params.page();
+
         params.total($scope.totalCount);
         $scope.data=$scope.emailDatas;
-        $defer.resolve($scope.data);       
+        $defer.resolve($scope.data);  
+        $scope.isAllOptionsSelected();
   };  
-  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':'checkin'},fetchEmailListSuccessCallback);
+  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
   };
 
 $scope.loadTable = function(){
@@ -68,21 +70,20 @@ $scope.loadTable = function(){
   *
   */
   $scope.isAllOptionsSelected = function(){
-    var status = true;
+    var status = false;
     $scope.disableSave = true;
     if($scope.emailDatas.length ==0){
       return false;
     }
      angular.forEach($scope.emailDatas,function(item, index) {      
-           if(item.is_selected == false){
-              status = false;
+           if(item.is_selected == true){
+              status = true;
            }
            else
            {
             $scope.disableSave = false;
            }
        });
-
      return status;
   };
 /*
