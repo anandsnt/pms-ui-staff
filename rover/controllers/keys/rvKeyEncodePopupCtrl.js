@@ -8,6 +8,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	};
 
 	$scope.init = function(){
+		//CICO-11444 to fix the issue of poping up select box in ipad
+		$('#encoder-type').blur();
+
 		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/***************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
@@ -544,6 +547,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
 		$scope.pressedCancelStatus = true;
+
+		$('#encoder-type').blur();
 		//TODO:verfiy if required
 		//$scope.$apply();
 	};
