@@ -8,7 +8,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	};
 
 	$scope.init = function(){
-
 		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/***************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
@@ -22,9 +21,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		if (sessionStorage.encoderSelected && sessionStorage.encoderSelected !== '') {
 			$scope.encoderSelected = parseInt(sessionStorage.encoderSelected);
 		}
-		if($scope.keySystemVendor == 'SAFLOK_MSR'){
-			fetchEncoderTypes();
-		}
+
 		/*****************************************************************************/
 
 
@@ -104,16 +101,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		}
 		
 
-	};
-	//Fetch encoder types for SAFLOK_MSR
-	var fetchEncoderTypes = function(){
-
-		var encoderFetchSuccess = function(data){
-			$scope.$emit('hideLoader');
-			$scope.encoderTypes = data;
-		};
-
-	    $scope.invokeApi(RVKeyPopupSrv.fetchActiveEncoders, {}, encoderFetchSuccess);
 	};
 
 	$scope.isPrintKeyEnabled = function(){
