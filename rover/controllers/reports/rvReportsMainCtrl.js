@@ -6,7 +6,8 @@ sntRover.controller('RVReportsMainCtrl', [
 	'$filter',
 	'activeUserList',
 	'guaranteeTypes',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes) {
+	'$timeout',
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes,$timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -257,6 +258,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				item.selectMarketsOpen = false;
 				item.selectGuaranteeOpen = false;
 			});
+			$timeout(function(){
+				$scope.refreshScroller('report-list-scroll');
+				$scope.myScroll['report-list-scroll'].refresh();
+			},300);
 		}
 
 		// common faux select method
@@ -307,6 +312,10 @@ sntRover.controller('RVReportsMainCtrl', [
 		//specific for markets
 		$scope.selectMarketsClicked = function(e, item) {
 			var selectCount = 0;
+			$timeout(function(){
+				$scope.refreshScroller('report-list-scroll');
+				$scope.myScroll['report-list-scroll'].refresh();
+			},300);
 			// if clicked outside, close the open dropdowns
 			if (!e) {
 				closeAllMultiSelects();
@@ -323,22 +332,29 @@ sntRover.controller('RVReportsMainCtrl', [
 				return;
 			};
 			e.stopPropagation();
-			var selectedCount = 0;
+			
 		};
 
-		$scope.fauxMarketOptionClicked = function(item) {
-			var selectedData = _.where($scope.reportsState.markets, {
-				selected: true
-			});
+		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
+			if(allMarkets){				
+				_.each($scope.reportsState.markets, function(market){
+					market.selected = !!item.allMarketsSelected;
+				});
+			} else {
+				var selectedData = _.where($scope.reportsState.markets, {
+					selected: true
+				});
 
-			if (selectedData.length == 0) {
-				item.marketTitle = "Select";
-			} else if (selectedData.length == 1) {
-				item.marketTitle = selectedData[0].name;
-			} else if (selectedData.length > 1) {
-				item.marketTitle = selectedData.length + " Selected";
+				if (selectedData.length == 0) {
+					item.marketTitle = "Select";
+				} else if (selectedData.length == 1) {
+					item.marketTitle = selectedData[0].name;
+				} else if (selectedData.length > 1) {
+					item.marketTitle = selectedData.length + "Selected";
+				}
 			}
 			// CICO-10202
+			
 			$scope.$emit('report.filter.change');
 
 		}

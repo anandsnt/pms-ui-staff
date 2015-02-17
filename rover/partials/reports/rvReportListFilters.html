@@ -218,6 +218,10 @@
     <label for="report-options">Market(s)</label>
     <div class="faux-select placeholder" ng-click="selectMarketsClicked($event, item)">{{ item.marketTitle }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.selectMarketsOpen }" ng-click="fauxOptionClicked($event, item)">
+        <label class="checkbox inline" ng-show="reportsState.markets.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.allMarketsSelected}"></span>
+            <input type="checkbox" ng-model="item.allMarketsSelected" ng-change="fauxMarketOptionClicked(item,true)" name="room-filters"> Select All
+        </label>
         <label class="checkbox inline" ng-repeat="market in reportsState.markets">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
             <input type="checkbox" ng-model="market.selected" ng-change="fauxMarketOptionClicked(item)" name="room-filters"> {{ market.name }}
