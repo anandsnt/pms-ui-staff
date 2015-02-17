@@ -146,7 +146,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.showRemoveDateBtn = function() {
 			var cancellationReport = _.find($scope.reportList, function(item) {
-				return item.title == 'Cancelation & No Show';
+				return item.title == 'Cancellation & No Show';
 			});
 
 			if (!!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] && (!!cancellationReport['fromCancelDate'] || !!cancellationReport['untilCancelDate'])) {
