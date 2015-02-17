@@ -63,6 +63,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 addonsData.totalAmount = (addonsData.quantity)*(item.price_per_piece);
                 addonsData.price_per_piece = item.price_per_piece;
                 addonsData.amount_type = item.amount_type
+                addonsData.post_type = item.post_type;
                 addonsData.is_inclusive = item.is_inclusive
                 $scope.existingAddons.push(addonsData);
             });
@@ -191,6 +192,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         }
 
         $scope.selectAddon = function(addon, addonQty) {
+
             var alreadyAdded = false;
             angular.forEach($scope.existingAddons,function(item, index) {
                 if(item.id == addon.id){
@@ -207,8 +209,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 newAddonToReservation.title = addon.title;
                 newAddonToReservation.totalAmount = (newAddonToReservation.quantity)*(addon.price);
                 newAddonToReservation.price_per_piece = addon.price;
-                newAddonToReservation.amount_type = addon.stay
-
+                newAddonToReservation.amount_type = addon.amountType.description;
+                newAddonToReservation.post_type = addon.postType.description;
                 $scope.existingAddonsLength = parseInt($scope.existingAddonsLength) + parseInt(1);
                 $scope.existingAddons.push(newAddonToReservation)
             }

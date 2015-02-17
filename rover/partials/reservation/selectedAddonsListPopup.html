@@ -5,10 +5,10 @@
         <!-- Markup as you add items -->
         <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        
         <ul id="room-1-enhancements" class=" wrapper enhancements-added">
-            <li ng-repeat="addon in existingAddons">
+            <li ng-repeat="addon in existingAddons" class="addons-list">
                 <span class="item">{{ addon.title }}</span>
                 <span class="count">({{ addon.quantity }})</span>
-                <span class="base" ng-hide="addon.is_inclusive">at {{currencySymbol}}{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} </span>
+                <span class="base" ng-hide="addon.is_inclusive">at {{currencySymbol}}{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} <span ng-show="addon.post_type ==='First Night'">per stay</span><span ng-show="addon.post_type ==='Entire Stay'"> per night</span></span>
                     <span class="price" ng-hide="addon.is_inclusive">{{currencySymbol}}{{addon.totalAmount | number : 2}}</span>
                     <span class="price" ng-show="addon.is_inclusive">INCL</span>
                 <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
