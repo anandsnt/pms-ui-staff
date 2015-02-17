@@ -61,7 +61,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
       page: 1,            // show first page
       count: $scope.emailDatas.length,    // count per page - Need to change when on pagination implemntation
       sorting: {
-          name: 'asc'     // initial sorting
+          first_name: 'asc'     // initial sorting
       }
     }, {
         total: $scope.emailDatas.length, // length of data

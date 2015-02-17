@@ -52,7 +52,7 @@ $scope.loadTable = function(){
             page: 1,  // show first page
             count: $scope.displyCount, // count per page
             sorting: {
-                name: 'asc' // initial sorting
+                first_name: 'asc' // initial sorting
             }
         }, {
             total: 0, // length of data
