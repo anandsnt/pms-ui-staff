@@ -16,6 +16,7 @@ sntRover.controller('RVReportListCrl', [
             dateParts = businessDate.match(/(\d+)/g),
             fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
+            yesterDay = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]-1),
             hasFauxSelect = false,
             hasDisplaySelect = false,
             hasMarketSelect = false,
@@ -126,6 +127,7 @@ sntRover.controller('RVReportListCrl', [
                     case 'Occupancy & Revenue Summary':
                         reportList[i]['reportIconCls'] = 'icon-report icon-occupancy';
                         reportList[i]['hasMarketsList'] = true;
+                        reportList[i]['hasDateLimit'] = false;
                         // CICO-10202 start populating the markets list
                         populateMarketsList();
                         break;
@@ -414,7 +416,11 @@ sntRover.controller('RVReportListCrl', [
                 if (reportList[i].title == 'Arrival' || reportList[i].title == 'Departure') {
                     reportList[i].fromDate = untilDate;
                     reportList[i].untilDate = untilDate;
-                } else {
+                } else if(reportList[i].title == 'Occupancy & Revenue Summary'){
+                    //CICO-10202
+                    reportList[i].fromDate = yesterDay;
+                    reportList[i].untilDate = yesterDay;
+                }else {
                     // set the from and untill dates
                     reportList[i].fromDate = fromDate;
                     reportList[i].fromCancelDate = fromDate;
