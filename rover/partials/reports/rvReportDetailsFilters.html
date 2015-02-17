@@ -265,7 +265,7 @@
                 <label class="checkbox" ng-repeat="each in chosenReport.guaranteeTypes">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
                     <input type="checkbox" ng-model="each.selected" ng-change="fauxGuaranteeOptionClicked(chosenReport)">
-                    {{ each.guarantee_type }}
+                    {{ each.name }}
                 </label>
             </div>
         </div>

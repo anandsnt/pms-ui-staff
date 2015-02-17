@@ -83,7 +83,7 @@ sntRover.service('RVreportsSrv', [
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
-					deferred.resolve(data.results);
+					deferred.resolve(data.reservation_types);
 				}.bind(this), function(data) {
 					deferred.reject(data);
 				});

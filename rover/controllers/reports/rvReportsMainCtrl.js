@@ -618,7 +618,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				ary = [];
 				_.each(chosenReport.guaranteeTypes, function(type) {
 					if (type.selected) {
-						ary.push(type.guarantee_type);
+						ary.push(type.value);
 					};
 				});
 
