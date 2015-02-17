@@ -157,6 +157,12 @@ angular.module('stayCardModule', [])
                 },
                 baseData: function(RVReservationSummarySrv) {
                     return RVReservationSummarySrv.fetchInitialData();
+                },
+                paymentTypes: function(RVPaymentSrv){
+                    return RVPaymentSrv.renderPaymentScreen();
+                },
+                reseravationDepositData: function(RVReservationCardSrv,$stateParams){
+                    return RVReservationCardSrv.fetchDepositDetails($stateParams.id);
                 }
             }
         });

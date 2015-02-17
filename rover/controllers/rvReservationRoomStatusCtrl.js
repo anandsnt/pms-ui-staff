@@ -1,5 +1,6 @@
 sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv){
 	BaseCtrl.call(this, $scope);
+	$scope.encoderTypes = [];
 	$scope.getRoomClass = function(reservationStatus){
 		var reservationRoomClass = '';
 		if(reservationStatus == 'CANCELED'){
@@ -120,7 +121,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			if($scope.reservationData.reservation_card.hotel_selected_key_system == 'SAFLOK_MSR'){
+			if($scope.reservationData.reservation_card.hotel_selected_key_system == 'SAFLOK_MSR' && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
 				fetchEncoderTypes();
 			} else {
 				openKeyEncodePopup();
