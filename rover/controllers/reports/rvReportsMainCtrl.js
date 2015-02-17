@@ -346,6 +346,8 @@ sntRover.controller('RVReportsMainCtrl', [
 					selected: true
 				});
 
+				item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
+
 				if (selectedData.length == 0) {
 					item.marketTitle = "Select";
 				} else if (selectedData.length == 1) {
