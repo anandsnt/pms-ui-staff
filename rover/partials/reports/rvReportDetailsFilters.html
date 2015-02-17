@@ -322,6 +322,10 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.hasMarketsList" ng-class="{'hidden': !filterItemsToggle.item_13}">
             <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
+                <label class="checkbox" ng-show="reportsState.markets.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.allMarketsSelected}"></span>
+                        <input type="checkbox" ng-model="chosenReport.allMarketsSelected" ng-change="fauxMarketOptionClicked(chosenReport,true)" name="room-filters"> Select All
+                </label>
                 <label class="checkbox" ng-repeat="market in reportsState.markets">
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
                     <input type="checkbox" ng-model="market.selected" ng-change="fauxMarketOptionClicked(chosenReport)" name="room-filters"> {{ market.name }}
