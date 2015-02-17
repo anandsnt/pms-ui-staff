@@ -79,7 +79,7 @@ sntRover.service('RVreportsSrv', [
 
 		this.fetchGuaranteeTypes = function() {
 			var deferred = $q.defer(),
-				url = '/api/reports/search_by_guarantee';
+				url = '/api/reservation_types.json?is_active=true';
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
