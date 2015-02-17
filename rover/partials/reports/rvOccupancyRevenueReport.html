@@ -27,12 +27,12 @@
                                 <li>ADR (Incl. Comp.)</li>
                                 <li>ADR (Excl. Comp.)</li>
 
-                                <li ng-repeat="market in reportsState.markets" ng-show="market.selected"><em>Revenue by Market {{market.name}}</em>
+                                <li ng-repeat="market in reportsState.markets" ng-show="market.selected"><em>{{market.name}}</em>
                                 </li>
                                 <!-- .. repeat for all markets -->
 
 
-                                <li ng-repeat="chargeCode in results.charge_codes"><em>Revenue by Charge Group {{chargeCode.name}}</em>
+                                <li ng-repeat="chargeCode in results.charge_codes"><em>{{chargeCode.name}}</em>
                                 </li>
                                 <!-- ... repeat for all charge group titles -->
 
@@ -80,7 +80,7 @@
                                         </tr>
                                         <tr ng-repeat="market in reportsState.markets" ng-show="market.selected" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketRevenueValue(outerIndex,$index) < 0}">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                        {{absoulte(getMarketRevenueValue(outerIndex,$index)) | number:0}}
+                                                        {{currencySymbol}}{{absoulte(getMarketRevenueValue(outerIndex,$index)) | number:2}}
                                                 </td>
                                         </tr>
                                         <tr ng-repeat="chargeCode in results.charge_codes" ng-init="outerIndex = $index">
