@@ -7,7 +7,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   $scope.errorMessage = '';
   $scope.successMessage = '';
   $scope.isLoading = true;
-
+  BaseCtrl.call(this, $scope);
     ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
   $scope.init = function(){
@@ -38,7 +38,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
         
 
         $scope.currentPage = params.page();     
-        $scope.emailDatas  = data;
+        $scope.emailDatas  = data.due_out_guests;
 
         params.total($scope.totalCount);
         $scope.data=$scope.emailDatas;
