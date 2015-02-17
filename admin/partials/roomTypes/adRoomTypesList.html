@@ -47,7 +47,7 @@
 							{{room_types.code}}
 						</td>
 						<td ng-hide="currentClickedElement == $index|| !isStandAlone">
-							<a class="icons icon-delete large-icon" ng-click="deleteRoomTypes(room_types.id)" ></a>										
+							<a class="icons icon-delete large-icon icon-delete-margin" ng-click="deleteRoomTypes(room_types.id)" ></a>										
 						</td>						
 						<td colspan="3" ng-include="getTemplateUrl($index, room_types.id)" ng-show="currentClickedElement == $index">						
 						</td>
