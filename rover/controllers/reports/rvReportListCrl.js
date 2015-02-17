@@ -97,7 +97,7 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasDateLimit'] = false;
                         break;
 
-                    case 'Cancelation & No Show':
+                    case 'Cancellation & No Show':
                         reportList[i]['reportIconCls'] = 'guest-status cancel';
                         reportList[i]['hasDateLimit'] = false;
                         reportList[i]['canRemoveDate'] = true;
@@ -146,9 +146,9 @@ sntRover.controller('RVReportListCrl', [
                     if (item.value === 'DATE_RANGE') {
                         reportList[i]['hasDateFilter'] = item;
 
-                        // for 'Cancelation & No Show' report the description should be 'Arrival Date Range'
+                        // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                         // rather than the default 'Date Range'
-                        if (reportList[i]['title'] == 'Cancelation & No Show') {
+                        if (reportList[i]['title'] == 'Cancellation & No Show') {
                             reportList[i]['hasDateFilter']['description'] = 'Arrival Date Range';
                         };
 
@@ -244,7 +244,7 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasIncludeCancelled'] = item;
                         hasFauxSelect = true;
 
-                        if (reportList[i].title == 'Cancelation & No Show') {
+                        if (reportList[i].title == 'Cancellation & No Show') {
                             reportList[i]['chosenIncludeCancelled'] = true;
                         };
                     };
