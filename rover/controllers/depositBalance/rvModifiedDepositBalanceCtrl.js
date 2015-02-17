@@ -545,5 +545,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		
 		
 	});
-
+	//CICO-12488
+	$scope.changePaymentType();
 }]);

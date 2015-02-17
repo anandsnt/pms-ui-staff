@@ -7,7 +7,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
-        $scope.existingAddons = [];
+        //$scope.viewState.existingAddons = [];
         var that = this;
 
         //setting the main header of the screen
@@ -53,9 +53,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         $scope.otherData = {};
+        // needed to add an extra data variable as others were getting reset
+        $scope.addonsData = {};
+        $scope.addonsData.existingAddons = [];
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
+            $scope.addonsData.existingAddons = [];
             // intialize reservation object
             $scope.reservationData = {
                 isHourly: false,
@@ -1846,7 +1850,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         postData.reservationId = $scope.reservationData.reservationId;
                     }
 
-                    postData.addons = $scope.existingAddons;
+                    postData.addons = $scope.viewState.existingAddons;
 
 
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
