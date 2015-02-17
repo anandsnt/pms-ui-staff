@@ -442,6 +442,26 @@ sntRover.controller('RVReportListCrl', [
             $scope.genReport();
         };
 
+        $scope.sortByChanged = function(item) {
+            var _sortBy;
+
+            // un-select sort dir of others
+            // and get a ref to the chosen item
+            _.each(item.sortByOptions, function(each) {
+                console.log(each);
+                if ( each && each.value != item.chosenSortBy ) {
+                    each.sortDir = undefined;
+                } else if ( each && each.value == item.chosenSortBy ) {
+                    _sortBy = each;
+                }
+            });
+
+            // select sort_dir for chosen item
+            if ( !!_sortBy ) {
+                _sortBy.sortDir = true;
+            };
+        };
+
 
         // little helpers
         function $_createTimeSlots() {
