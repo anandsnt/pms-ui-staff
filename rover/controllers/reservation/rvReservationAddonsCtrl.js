@@ -55,6 +55,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             $scope.$emit('hideLoader');
             
             $scope.roomNumber = data.room_no;
+            $scope.duration_of_stay = data.duration_of_stay;
             angular.forEach(data.existing_packages,function(item, index) {
                 var addonsData = {};
                 addonsData.id = item.package_id;
