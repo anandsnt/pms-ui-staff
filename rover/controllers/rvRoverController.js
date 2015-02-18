@@ -709,6 +709,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         ngDialog.open({
           template: '/assets/partials/errorPopup/rvTimeoutError.html',
           className: 'ngdialog-theme-default1 modal-theme1',
+          controller: 'RVTimeoutErrorCtrl',
           closeByDocument: false,
           scope: $scope
         });
