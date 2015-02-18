@@ -340,8 +340,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				_.each($scope.reportsState.markets, function(market){
 					market.selected = !!item.allMarketsSelected;
 				});
-
-			}else{
+			} else {
 				var selectedData = _.where($scope.reportsState.markets, {
 					selected: true
 				});
@@ -372,7 +371,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			} else if (selectedData.length == 1) {
 				item.guaranteeTitle = selectedData[0].guarantee_type;
 			} else if (selectedData.length > 1) {
-				item.guaranteeTitle = selectedData.length + "Selected";
+				item.guaranteeTitle = selectedData.length + " Selected";
 			}
 		}
 
@@ -621,12 +620,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				ary = [];
 				_.each(chosenReport.guaranteeTypes, function(type) {
 					if (type.selected) {
-						ary.push(type.guarantee_type);
+						ary.push(type.name);
 					};
 				});
-
-				key = chosenReport.hasGuaranteeType.value.toLowerCase();
-				params[key] = angular.copy(ary);
+				params['include_guarantee_type[]'] = angular.copy( ary );
 			};
 
 			// include include deposit paid
@@ -705,13 +702,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			thisReport = item;
 		};
 
-		$scope.userAutoCompleteOptions = {
-			delay: 0,
-			position: {
-				my: 'left bottom',
-				at: 'left top',
-				collision: 'flip'
-			},
+		var userAutoCompleteCommon = {
 			source: function(request, response) {
 				// delegate back to autocomplete, but extract the last term
 				response($.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)));
@@ -753,8 +744,22 @@ sntRover.controller('RVReportsMainCtrl', [
 			focus: function(event, ui) {
 				return false;
 			}
+		}
+		$scope.listUserAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left bottom',
+				at: 'left top',
+				collision: 'flip'
+			}
+		}, userAutoCompleteCommon);
+		$scope.detailsUserAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left bottom',
+				at: 'right+20 bottom',
+				collision: 'flip'
+			}
+		}, userAutoCompleteCommon);
 
-		};
 
 
 
@@ -763,13 +768,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				item.chosenIncludeComapnyTaGroup = null;
 			};
 		};
-		$scope.comTaGrpAutoCompleteOptions = {
-			position: {
-				my: 'left bottom',
-				at: 'left top',
-				collision: 'flip'
-			},
-			minLength: 3,
+		var ctgAutoCompleteCommon = {
 			source: function(request, response) {
 				RVreportsSrv.fetchComTaGrp(request.term)
 					.then(function(data) {
@@ -801,6 +800,20 @@ sntRover.controller('RVReportsMainCtrl', [
 				return false;
 			}
 		}
+		$scope.listCtgAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left top',
+				at: 'left bottom',
+				collision: 'flip'
+			}
+		}, ctgAutoCompleteCommon);
+		$scope.detailsCtgAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left bottom',
+				at: 'right+20 bottom',
+				collision: 'flip'
+			}
+		}, ctgAutoCompleteCommon);
 
 	}
 ]);

@@ -16,6 +16,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         $scope.fromPage = "";
         $scope.duration_of_stay = $scope.reservationData.numNights ? $scope.reservationData.numNights : 1;
 
+
         if($stateParams.from_screen == "staycard"){
             $scope.fromPage = "staycard";
             $rootScope.setPrevState = {
@@ -36,6 +37,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
 
         } else {
+            $scope.reservationData.number_of_adults = parseInt($scope.reservationData.rooms[0].numAdults);
+            $scope.reservationData.number_of_children = parseInt($scope.reservationData.rooms[0].numChildren);
             // set the previous state
             $rootScope.setPrevState = {
                 title: $filter('translate')('ROOM_RATES'),
@@ -161,6 +164,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 });
             } else {
 
+
                 var save = function() {
                     if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
                         // $scope.saveReservation('rover.reservation.staycard.mainCard.summaryAndConfirm');
@@ -206,7 +210,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.selectAddon = function(addon, addonQty) {
             var alreadyAdded = false;
-            console.log($scope.addonsData.existingAddons);
             angular.forEach($scope.addonsData.existingAddons,function(item, index) {
                 if(item.id == addon.id){
                     alreadyAdded = true;
@@ -214,7 +217,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                     item.totalAmount = (item.quantity)*(item.price_per_piece);
                 }
             });
-         console.log($scope.addonsData.existingAddons);
     
             if(!alreadyAdded){
                 var newAddonToReservation = {};
@@ -269,6 +271,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             // $scope.reservationData.totalStayCost -= parseInt($scope.reservationData.rooms[$scope.activeRoom].addons[index].quantity) * parseInt($scope.reservationData.rooms[$scope.activeRoom].addons[index].price);
             $scope.addonsData.existingAddons.splice(index, 1);
             $scope.reservationData.rooms[$scope.activeRoom].addons.splice(index, 1);
+            $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
             if ($scope.addonsData.existingAddons.length === 0) {
                 $scope.closePopup();
             }

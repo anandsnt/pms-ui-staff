@@ -96,7 +96,7 @@
 
 <div class="filter" ng-if="item.hasUserFilter">
     <label>User</label>
-    <input class="icons icon-search" auto-complete auto-options="userAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
+    <input class="icons icon-search" auto-complete auto-options="listUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
     <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
 </div>
 
@@ -171,7 +171,7 @@
 
 <div class="filter" ng-if="item.hasIncludeComapnyTaGroup">
     <label>Company/TA/Group</label>
-    <input class="icons icon-search" auto-complete auto-options="comTaGrpAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
+    <input class="icons icon-search" auto-complete auto-options="listCtgAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
     <input type="text" class="hidden" ng-model="item.chosenIncludeComapnyTaGroup">
 </div>
 
@@ -182,7 +182,7 @@
         <label class="checkbox inline" ng-repeat="each in item.guaranteeTypes">
             <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
             <input type="checkbox" ng-model="each.selected" ng-change="fauxGuaranteeOptionClicked(item)">
-            {{ each.guarantee_type }}
+            {{ each.name }}
         </label>
     </div>
 </div>
@@ -207,7 +207,7 @@
 <div class="sort" ng-if="item.sortByOptions">
     <label>Sort By</label>
     <div class="select">
-        <select ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions | filter:showValidSortBy" iscroll-stop-propagation>
+        <select ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(item)" iscroll-stop-propagation>
             <option value="">Sort By</option>
         </select>
     </div>

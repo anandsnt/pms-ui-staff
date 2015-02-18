@@ -92,6 +92,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		BaseCtrl.call(this, $scope);
 
 		$scope.reservationCardSrv = RVReservationCardSrv;
+		console.log("------------------");
+		console.log(reservationDetails)
 		/*
 		 * success call back of fetch reservation details
 		 */
