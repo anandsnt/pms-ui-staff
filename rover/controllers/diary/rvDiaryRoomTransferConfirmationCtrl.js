@@ -22,27 +22,27 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		var formDateAndTimeForMe = function(obj, custom_date) {
+		var formDateAndTimeForMe = function(obj) {
 			var arrivalDate, departureDate;
 
 			obj.arrivalTime 			= new Date(obj[r.row_children][m.start_date]).toLocaleTimeString();
 			obj.departureTime 			= new Date(obj[r.row_children][m.end_date]).toLocaleTimeString();		
 
-			arrivalDate 				= tzIndependentDate(custom_date.date.toDateString().replace(/-/g, '/'));
+			arrivalDate 				= tzIndependentDate(new Date(obj[r.row_children][m.start_date]).toComponents().date.toDateString().replace(/-/g, '/'));
 			obj.arrivalDateToShow 		= $filter('date')(arrivalDate, $rootScope.dateFormat);
 			obj.arrivalDate 			= $filter('date')(arrivalDate, $rootScope.mmddyyyyBackSlashFormat);
 
-			departureDate 				= tzIndependentDate(custom_date.date.toDateString().replace(/-/g, '/'));
+			departureDate 				= tzIndependentDate(new Date(obj[r.row_children][m.end_date]).toComponents().date.toDateString().replace(/-/g, '/'));
 			obj.departureDateToShow 	= $filter('date')(departureDate, $rootScope.dateFormat);
 			obj.departureDate 			= $filter('date')(departureDate, $rootScope.mmddyyyyBackSlashFormat);
 		};
 
 		
 		//forming date & time for current to display and to pass
-		formDateAndTimeForMe(current, oldArrivalDateComp);
+		formDateAndTimeForMe(current);
 
 		//forming date & time for next to display and to pass
-		formDateAndTimeForMe(next, newArrivalDateComp);
+		formDateAndTimeForMe(next);
 
 
 
