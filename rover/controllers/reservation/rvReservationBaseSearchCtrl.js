@@ -110,11 +110,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 intMins = '00';
             } else if ( intMins > 45 && intHrs + 1 == 12 ) {
                 if ( ampm == 'AM' ) {
-                    intHrs  = 12;
+                    intHrs  = '00';
                     intMins = '00';
                     ampm    = 'PM';
                 } else {
-                    intHrs  = 12;
+                    intHrs  = '00';
                     intMins = '00';
                     ampm    = 'AM';
                 }
@@ -131,7 +131,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
             // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
             $scope.reservationData.checkinTime = {
-                hh   : intHrs < 10 ? '0' + intHrs : intHrs.toString(),
+                hh   : (intHrs < 10  && intHrs.length < 2) ? '0' + intHrs : intHrs.toString(),
                 mm   : intMins.toString(),
                 ampm : ampm
             };
@@ -139,7 +139,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // NOTE: on UI we are no appending a leading '0' for hours less than 12
             // This could change in future, only God knows
             $scope.fullCheckinTime = intHrs + ':' + intMins + ' ' + ampm;
-
             $scope.setDepartureHours();
         };
 

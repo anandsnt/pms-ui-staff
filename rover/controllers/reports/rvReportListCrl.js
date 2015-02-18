@@ -16,6 +16,7 @@ sntRover.controller('RVReportListCrl', [
             dateParts = businessDate.match(/(\d+)/g),
             fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
+            yesterDay = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]-1),
             hasFauxSelect = false,
             hasDisplaySelect = false,
             hasMarketSelect = false,
@@ -96,7 +97,7 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasDateLimit'] = false;
                         break;
 
-                    case 'Cancelation & No Show':
+                    case 'Cancellation & No Show':
                         reportList[i]['reportIconCls'] = 'guest-status cancel';
                         reportList[i]['hasDateLimit'] = false;
                         reportList[i]['canRemoveDate'] = true;
@@ -126,6 +127,7 @@ sntRover.controller('RVReportListCrl', [
                     case 'Occupancy & Revenue Summary':
                         reportList[i]['reportIconCls'] = 'icon-report icon-occupancy';
                         reportList[i]['hasMarketsList'] = true;
+                        reportList[i]['hasDateLimit'] = false;
                         // CICO-10202 start populating the markets list
                         populateMarketsList();
                         break;
@@ -144,9 +146,9 @@ sntRover.controller('RVReportListCrl', [
                     if (item.value === 'DATE_RANGE') {
                         reportList[i]['hasDateFilter'] = item;
 
-                        // for 'Cancelation & No Show' report the description should be 'Arrival Date Range'
+                        // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                         // rather than the default 'Date Range'
-                        if (reportList[i]['title'] == 'Cancelation & No Show') {
+                        if (reportList[i]['title'] == 'Cancellation & No Show') {
                             reportList[i]['hasDateFilter']['description'] = 'Arrival Date Range';
                         };
 
@@ -242,7 +244,7 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasIncludeCancelled'] = item;
                         hasFauxSelect = true;
 
-                        if (reportList[i].title == 'Cancelation & No Show') {
+                        if (reportList[i].title == 'Cancellation & No Show') {
                             reportList[i]['chosenIncludeCancelled'] = true;
                         };
                     };
@@ -414,7 +416,11 @@ sntRover.controller('RVReportListCrl', [
                 if (reportList[i].title == 'Arrival' || reportList[i].title == 'Departure') {
                     reportList[i].fromDate = untilDate;
                     reportList[i].untilDate = untilDate;
-                } else {
+                } else if(reportList[i].title == 'Occupancy & Revenue Summary'){
+                    //CICO-10202
+                    reportList[i].fromDate = yesterDay;
+                    reportList[i].untilDate = yesterDay;
+                }else {
                     // set the from and untill dates
                     reportList[i].fromDate = fromDate;
                     reportList[i].fromCancelDate = fromDate;
@@ -440,6 +446,26 @@ sntRover.controller('RVReportListCrl', [
         $scope.setnGenReport = function() {
             RVreportsSrv.setChoosenReport(this.item);
             $scope.genReport();
+        };
+
+        $scope.sortByChanged = function(item) {
+            var _sortBy;
+
+            // un-select sort dir of others
+            // and get a ref to the chosen item
+            _.each(item.sortByOptions, function(each) {
+                console.log(each);
+                if ( each && each.value != item.chosenSortBy ) {
+                    each.sortDir = undefined;
+                } else if ( each && each.value == item.chosenSortBy ) {
+                    _sortBy = each;
+                }
+            });
+
+            // select sort_dir for chosen item
+            if ( !!_sortBy ) {
+                _sortBy.sortDir = true;
+            };
         };
 
 
