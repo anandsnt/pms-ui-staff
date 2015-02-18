@@ -23,6 +23,40 @@ sntRover.service('RVreportsSrv', [
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
+
+						// TESTING: mocking data
+						data.results[5] = {
+							id: 12,
+							title: "Deposit Report",
+							sub_title: null,
+							description: "Deposit due / paid by date",
+							filters: [{
+								value: "ARRIVAL_DATE_RANGE",
+								description: "Arrival Date Range"
+							},
+							{
+								value: "DEPOSIT_DATE_RANGE",
+								description: "Deposit due date range"
+							},
+							{
+								value: "DEPOSIT_DUE",
+								description: "Include Deposit Due"
+							},
+							{
+								value: "DEPOSIT_PAID",
+								description: "Include Deposit Paid"
+							},
+							{
+								value: "DEPOSIT_PAST",
+								description: "Include Deposit Past"
+							}],
+							sort_fields: [{value: "DATE", description: "Date"},
+									{value: "DUE_DATE_RANGE", description: "Deposit Due Date"},
+									{value: "PAID_DATE_RANGE", description: "Deposit Paid Date"},
+									{value: "NAME", description: "Name"},
+									{value: "RESERVATION", description: "Reservation Number"}]
+						};
+
 						this.cacheReportList = data;
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {
