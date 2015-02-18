@@ -8,15 +8,28 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<span class="grid" ng-show="isAddMode" ng-include="getTemplateUrl()"></span>
-			<table id="brands" class="grid" ng-table="tableParams" template-pagination="nil">
-				
+			<table id="brands" class="grid ng-table" ng-table="tableParams" template-pagination="nil">
+				<thead>
+					<tr>
+						 
+	                     <th colspan="4" class="sortable" ng-class="{
+	                       'sort-asc': tableParams.isSortBy('email', 'asc'),
+	                       'sort-desc': tableParams.isSortBy('email', 'desc')
+	                       }"
+	                       ng-click="tableParams.sorting({'email' : tableParams.isSortBy('email', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+	                       <div><i class="glyphicon glyphicon-user"></i> <span translate>EMAIL_LABEL</span></div>
+	                     </th>                 
+
+	           
+	                </tr>
+	            </thead>
 				<tbody>
-					<tr ng-repeat="email in emailList" > 
+					<tr ng-repeat="email in $data" > 
 						<td  colspan="2" class="text-left"  >
 							<a  class="edit-data-inline" >{{email.email}} </a>
 							
 						</td>
-						<td colspan="1" header-class=" width-10"  class="text-left"  >
+						<td colspan="2" header-class=" width-10"  class="text-left"  >
 							<span ng-click="deleteEmail($index)" class="icons icon-delete large-icon floor_delete">&nbsp;</span>
 						</td>
 						

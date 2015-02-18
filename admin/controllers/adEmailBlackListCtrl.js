@@ -16,7 +16,27 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 		
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
-			$scope.emailList = data;			
+			$scope.emailList = data;
+
+            $scope.tableParams = new ngTableParams({
+		       page: 1,            // show first page
+		       	count: 100,    // count per page - Need to change when on pagination implemntation
+		        sorting: { email: 'asc'     // initial sorting 
+		        }
+		    }, {
+		     
+		        getData: function($defer, params) {
+		            // use build-in angular filter
+		            var orderedData = params.sorting() ?
+		                                $filter('orderBy')($scope.emailList, params.orderBy()) :
+		                                $scope.emailList;
+		                              
+		            $scope.orderedData =  orderedData;
+		                                 
+		            $defer.resolve(orderedData);
+		        }
+		    });
+
 		};
 	   $scope.invokeApi(ADEmailBlackListSrv.fetch, {} , successCallbackFetch);	
 	};
@@ -44,6 +64,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		$scope.emailList.push(data);
+    		$scope.tableParams.reload();
     		$scope.emailData = {};
     		$scope.emailData.email = "";	
     		$scope.isAddMode =false;
@@ -66,6 +87,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
     	var successCallbackDelete = function(){
     		$scope.$emit('hideLoader');    		
     		$scope.emailList.splice(index, 1);
+    		$scope.tableParams.reload();
     	};
     	$scope.invokeApi(ADEmailBlackListSrv.deleteBlacklistedEmail, param, successCallbackDelete);
     };
