@@ -395,4 +395,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'adAnalyticSetupCtrl',
 			url : '/analyticSetup'
 		});
+
+		$stateProvider.state('admin.emailBlacklist', {
+			templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',
+			controller: 'ADEmailBlackListCtrl',
+			url : '/emailBlacklist'
+		});
 });

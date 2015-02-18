@@ -1,0 +1,28 @@
+<section class="content current" >	
+	<div data-view="HotelRoomTypesView">
+		<header class="content-title float">
+			<h2 translate> EMAIL_BLACKLIST_HEADER </h2>
+			<span class="count"> ({{emailList.length}}) </span>
+			<a id="import-rooms" class="action add" ng-click="addNewClicked()"  translate>ADD_NEW</a>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<span class="grid" ng-show="isAddMode" ng-include="getTemplateUrl()"></span>
+			<table id="brands" class="grid" ng-table="tableParams" template-pagination="nil">
+				
+				<tbody>
+					<tr ng-repeat="email in emailList" > 
+						<td  colspan="2" class="text-left"  >
+							<a  class="edit-data-inline" >{{email.email}} </a>
+							
+						</td>
+						<td colspan="1" header-class=" width-10"  class="text-left"  >
+							<span ng-click="deleteEmail($index)" class="icons icon-delete large-icon floor_delete">&nbsp;</span>
+						</td>
+						
+						
+					</tr>
+				</tbody>
+			</table>
+		</section>
+</section>
