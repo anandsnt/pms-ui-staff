@@ -1,5 +1,6 @@
 sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv){
 	BaseCtrl.call(this, $scope);
+	$scope.encoderTypes = [];
 	$scope.getRoomClass = function(reservationStatus){
 		var reservationRoomClass = '';
 		if(reservationStatus == 'CANCELED'){
@@ -120,13 +121,34 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			ngDialog.open({
-			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
-			    controller: 'RVKeyEncodePopupCtrl',
-			    className: '',
-			    scope: $scope
-			});
+			if($scope.reservationData.reservation_card.hotel_selected_key_system == 'SAFLOK_MSR' && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+				fetchEncoderTypes();
+			} else {
+				openKeyEncodePopup();
+			}
 		}
+	};
+
+	var openKeyEncodePopup = function(){
+		ngDialog.open({
+		    template: '/assets/partials/keys/rvKeyEncodePopup.html',
+		    controller: 'RVKeyEncodePopupCtrl',
+		    className: '',
+		    scope: $scope
+		});
+	}
+
+	//Fetch encoder types for SAFLOK_MSR
+	var fetchEncoderTypes = function(){
+
+		var encoderFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.encoderTypes = data;
+
+			openKeyEncodePopup();
+		};
+
+	    $scope.invokeApi(RVKeyPopupSrv.fetchActiveEncoders, {}, encoderFetchSuccess);
 	};
 	
 	/**
