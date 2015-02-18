@@ -623,9 +623,7 @@ sntRover.controller('RVReportsMainCtrl', [
 						ary.push(type.name);
 					};
 				});
-
-				key = chosenReport.hasGuaranteeType.value.toLowerCase();
-				params[key] = angular.copy( ary );
+				params['include_guarantee_type[]'] = angular.copy( ary );
 			};
 
 			// include include deposit paid
