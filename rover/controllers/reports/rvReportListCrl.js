@@ -12,10 +12,12 @@ sntRover.controller('RVReportListCrl', [
         });
 
         // until date is business date and from date is a week ago
+        // untill date fute is business date + 7, a week after
         var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
             dateParts = businessDate.match(/(\d+)/g),
             fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
+            untilDateFuture = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] + 7),
             hasFauxSelect = false,
             hasDisplaySelect = false,
             hasMarketSelect = false,
@@ -52,6 +54,7 @@ sntRover.controller('RVReportListCrl', [
             dateParts = businessDate.match(/(\d+)/g);
             fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7);
             untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            untilDateFuture = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] + 7);
             hasFauxSelect = false;
             hasGuaranteeSelect = false;
 
@@ -121,6 +124,12 @@ sntRover.controller('RVReportListCrl', [
                     case 'Deposit Report':
                         reportList[i]['reportIconCls'] = 'icon-report icon-deposit';
                         reportList[i]['hasDateLimit'] = false;
+
+                        reportList[i]['canRemoveDate'] = true;
+                        reportList[i]['showRemove'] = true;
+
+                        reportList[i]['canRemoveArrivalDate'] = true;
+                        reportList[i]['showRemoveArrivalDate'] = true;
                         break;
 
                     case 'Occupancy & Revenue Summary':
@@ -384,7 +393,7 @@ sntRover.controller('RVReportListCrl', [
 
                 // need to reorder the sort_by options
                 // for deposit report in the following order
-                if (reportList[i].title == 'Deposit Report') {
+                if (reportList[i].title == 'Deposit Report') { return;
                     var reservationSortBy = angular.copy(reportList[i].sortByOptions[4]),
                         nameSortBy = angular.copy(reportList[i].sortByOptions[3]),
                         dateSortBy = angular.copy(reportList[i].sortByOptions[0]),
@@ -414,17 +423,24 @@ sntRover.controller('RVReportListCrl', [
                 if (reportList[i].title == 'Arrival' || reportList[i].title == 'Departure') {
                     reportList[i].fromDate = untilDate;
                     reportList[i].untilDate = untilDate;
+                }
+                // for deposit report the arrival dates
+                // should be from today to +1 week
+                else if (reportList[i].title == 'Deposit Report') {
+                    reportList[i].fromArrivalDate = untilDate;
+                    reportList[i].untilArrivalDate = untilDateFuture;
+
+                    reportList[i].fromDepositDate = fromDate;
+                    reportList[i].untilDepositDate = untilDate;
                 } else {
                     // set the from and untill dates
                     reportList[i].fromDate = fromDate;
                     reportList[i].fromCancelDate = fromDate;
                     reportList[i].fromArrivalDate = fromDate;
-                    reportList[i].fromDepositDate = fromDate;
 
                     reportList[i].untilDate = untilDate;
                     reportList[i].untilCancelDate = untilDate;
                     reportList[i].untilArrivalDate = untilDate;
-                    reportList[i].untilDepositDate = untilDate;
                 };
             };
 
