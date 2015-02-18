@@ -25,10 +25,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		//showSearchResultsAre
 		$scope.showSearchResultsArea = false;
 		$scope.searchResultsFetchDone = false;
+		$scope.searchAreaIsHiding = false;
+		$scope.searchAreaIsOpening = false;
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name == "rover.search");
-
+		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search": "search";
 		//Date picker from date should default to current business date - CICO-8490
 		//Get the date stored in service, and clear the service
 		$scope.fromDate = RVSearchSrv.fromDate == undefined ? $rootScope.businessDate : RVSearchSrv.fromDate;
@@ -209,19 +211,37 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * reciever function to show/hide the search result area.
 		 */
 		$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus) {
-			$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+			
 
 			// if it is hiding, we need to clear the search text
-			if (!searchAreaVisibilityStatus) {
+			if (!searchAreaVisibilityStatus) {				
 				$scope.textInQueryBox = '';
 				$vault.set('searchQuery', '');
 				// hide the dashboard back button (dont remove yet)
-				// $rootScope.setPrevState.hide = true;
-			} else {
+				// $rootScope.setPrevState.hide = true;				
+				if (!$scope.reservationSearch) {
+					$scope.searchAreaIsHiding = true;					
+					$timeout(function() {
+						$scope.searchAreaIsHiding = false;
+						$scope.searchAreaIsOpening = false;
+						$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+					}, 400)					
+				}
+				else {
+					$scope.searchAreaIsHiding = false;
+					$scope.searchAreaIsOpening = false;
+					$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+				}
 
+			} else {
+				$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+				if (!$scope.reservationSearch) {
+					$scope.searchAreaIsOpening = true;
+				}
 				// show the dashboard back button (dont remove yet)
 				// $rootScope.setPrevState.hide = false;
 			}
+
 		});
 
 		/**
@@ -620,6 +640,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				'etb': data.RVCardReadETB
 
 			};
+
+			swipeData.is_encrypted = true;
+			if(data.RVCardReadIsEncrypted == 0){
+				swipeData.is_encrypted = false;
+			}
 
 			$scope.invokeApi(RVSearchSrv.searchByCC, swipeData, $scope.searchSwipeSuccessCallback);
 

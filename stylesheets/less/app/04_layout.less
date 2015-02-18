@@ -1759,17 +1759,18 @@ body { overflow: hidden; }
 		position: absolute;
 		top: 150px;
 		left: 0;
-		width: 30px;
 		padding-right: 25px;
-		height: 100%;
-		z-index: 990;
+		z-index: 1040;
+		width: 30px;
+		.calc-height(100, 150);
+		.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
 		.show;
 
 		.scrollable {
+			position: relative;
 			background: @rcardTexture1;
-			width: 100%;
+			height: 100%;
 			.box-shadow(1px 0 1px rgba(0,0,0,.2));
-			.calc-height(100, 150);
 
 			> .wrapper { padding: 0; }
 			> .iScrollVerticalScrollbar { 
@@ -1816,6 +1817,38 @@ body { overflow: hidden; }
 			}
 
 			@media @highdpi { background-size: 40px; }
+		}
+
+		&#report-update {
+			top: 50px;
+			.calc-height(100, 50);
+			.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
+
+			&.open {
+				width: 260px;
+			}
+
+			.scrollable {
+
+				> .wrapper { padding-bottom: 80px; }
+				> .iScrollVerticalScrollbar {
+					bottom: 100px;
+					z-index: 4; 
+				}
+				
+				.actions {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					padding: 20px;
+					background: #bfbfbf @darkTexture;
+					z-index: 9;
+					.box-shadow(0 -1px 1px rgba(0,0,0,.15));
+					.size(80px, 100%);
+
+					.button { width: 100%; }
+				}
+			}
 		}
 	}
 

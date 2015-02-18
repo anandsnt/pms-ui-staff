@@ -18,7 +18,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                         var $content = highlightFilter(item.label, scope.ngModel),
                             $result = $("<a></a>").html($content),
-                            defIcon = item.type === 'COMPANY' ? 'icon-company' : 'icon-travel-agent',
+                            defIcon = item.type === 'COMPANY' ? 'icon-company' : item.type === 'TRAVELAGENT' ? 'icon-travel-agent' : 'icon-group',
                             $image = '';
 
                         if (item.image) {

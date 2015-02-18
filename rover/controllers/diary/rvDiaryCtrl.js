@@ -94,7 +94,6 @@ sntRover
 		var onDateSelectionFromDatepicker = function(date_string, date_picker_obj) {
 			var isOnEditMode = $scope.gridProps.edit.active,
 				going_date = new Date (date_string);
-			
 			if (!isOnEditMode) {
 				$scope.gridProps.filter.arrival_date = going_date;
 				if(!$scope.$$phase) {
@@ -345,15 +344,7 @@ sntRover
 	    		}
 	    	},
     		toggleRates: function() {
-				var rateMenu = $('.faux-select-options');
-
-				if(rateMenu.length > 0) {
-					if(rateMenu.hasClass('hidden')) {
-						rateMenu.removeClass('hidden');
-					}else {
-						rateMenu.addClass('hidden');
-					}
-				}
+				$scope.openRateTypeChoosingBox = !$scope.openRateTypeChoosingBox;
 			},
 			toggleRange: function() {
 	    		var hourFormat12 							= ($scope.gridProps.viewport.hours === 12);
@@ -377,7 +368,13 @@ sntRover
 	};
 
 	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
-			  	
+	
+	//initially we dont want to set focus on CorporateSearch Text box
+	$scope.focusOnCorporateSearchText = false;
+
+	//whether we want the opened rate type choosing box
+	$scope.openRateTypeChoosingBox = false;
+
 		/*--------------------------------------------------*/
 		/* BEGIN UTILITY METHOD SECTION */
 		/*--------------------------------------------------*/
@@ -416,6 +413,16 @@ sntRover
 		  ________________________________________________________
 		*/
 			
+
+		/**
+		* to clear the query in corporate finding text box
+		* will focus to the textbox again
+		*/
+		$scope.clearCorporateSearchText = function () {
+			$scope.corporateSearchText = '';
+			setFocusOnCorporateSearchText ();
+		};
+
 	    /*_________________________________________________________
 		    BEGIN EVENT HOOKS 
 		  ________________________________________________________
@@ -534,9 +541,18 @@ sntRover
 			});	 
 	    };
 
-	    var setFocusOnAccountChoosingTextbox = function(){
-	    	$("#diary-corporate-query").focus();
-	    };
+	   	/**
+	    * method used to set focus on corporate account choosing textbox
+	    */
+	    var setFocusOnCorporateSearchText = function(){
+	    	//turning on focusing directive's model value
+	    	$scope.focusOnCorporateSearchText = true;
+	    	
+	    	//if it is coming from 'Outside of Angular world'
+	    	if(!$scope.$$phase) {
+				$scope.$apply();
+			}
+ 	    };
 
 
 	    var openEditConfirmationPopup = function() {
@@ -1109,8 +1125,7 @@ sntRover
 	}
 
 	var openRateTypeSelectBox = function() {
-		var rateMenu = $('.faux-select-options');
-		rateMenu.removeClass('hidden');
+		$scope.openRateTypeChoosingBox = true;
 	}
 
 	var callAvailabilityAPI = function(){
@@ -1122,7 +1137,7 @@ sntRover
 			openRateTypeSelectBox();
 
 			//opening the popup with messages
-			$scope.callBackAfterClosingMessagePopUp = setFocusOnAccountChoosingTextbox;				
+			$scope.callBackAfterClosingMessagePopUp = setFocusOnCorporateSearchText;				
 			$scope.message	= ['Please choose a Company Card or Travel Agent to proceed'];
 			openMessageShowingPopup();
 
@@ -1542,12 +1557,12 @@ sntRover
 			openMessageShowingPopup();
 			return;
 		}
-		var current_date = $scope.gridProps.filter.arrival_date;
+		var current_date = new Date ($scope.gridProps.filter.arrival_date);
+
 		// we will allow only if there is any change in date
 		if(newValue.getFullYear() !== current_date.getFullYear() || 
 			newValue.getMonth() !== current_date.getMonth() ||
-			newValue.getDay() !== current_date.getDay()) {	
-
+			newValue.getDate() !== current_date.getDate()) {	
 			var params = getReservationTransferParams (reservation, newValue)
 			var options = {
 	    		params: 			params,
@@ -1574,7 +1589,7 @@ sntRover
 		$scope.$emit('hideLoader');
 		if(newValue.getFullYear() !== oldValue.getFullYear() || 
 			newValue.getMonth() !== oldValue.getMonth() ||
-			newValue.getDay() !== oldValue.getDay()) {	
+			newValue.getDate() !== oldValue.getDate()) {	
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
             $scope.gridProps.display = util.deepCopy(time_set.display);
 	    	

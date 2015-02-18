@@ -282,8 +282,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.showCC = false;
 			$scope.showSelectedCreditCard = true;
 			// CICO-9457 : Data for fees details - standalone only.	
+			//CICO-13427 : API response changed from fees_information to fees_details
 			if ($scope.isStandAlone) {
-				$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
+				$scope.feeData.feesInfo = $scope.cardsList[index].fees_details;
 				$scope.setupFeeData();
 			}
 
@@ -671,6 +672,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
 				postData.reservation_ids = $scope.reservationData.reservationIds;
+				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
 			} else {
 				//updating reservation
@@ -847,6 +849,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				postData.reservation_ids = $scope.reservationData.reservationIds;
 				//creating reservation
 				postData.reservationId = $scope.reservationData.reservationId;
+				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
 			} else {
 				//updating reservation

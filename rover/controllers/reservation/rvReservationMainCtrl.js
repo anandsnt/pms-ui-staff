@@ -7,12 +7,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
-
+        //$scope.viewState.existingAddons = [];
         var that = this;
 
         //setting the main header of the screen
         $scope.heading = "Reservations";
-        
+
         $scope.viewState = {
             isAddNewCard: false,
             pendingRemoval: {
@@ -53,9 +53,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         $scope.otherData = {};
+        // needed to add an extra data variable as others were getting reset
+        $scope.addonsData = {};
+        $scope.addonsData.existingAddons = [];
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
+            $scope.addonsData.existingAddons = [];
             // intialize reservation object
             $scope.reservationData = {
                 isHourly: false,
@@ -140,7 +144,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 isSameCard: false, // Set flag to retain the card details,
                 rateDetails: [], // This array would hold the configuration information of rates selected for each room
                 isRoomRateSuppressed: false, // This variable will hold flag to check whether any of the room rates is suppressed?
-                reservation_card: {}
+                reservation_card: {},
+                number_of_infants:0,
+                number_of_adults:0,
+                number_of_children:0                
+
             };
 
             $scope.searchData = {
@@ -394,7 +402,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         return true;
                     }
                     // CICO-9575: The occupancy warning should pop up only once during the reservation process if no changes are being made to the room type.
-                    if (!$scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted || $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted != activeRoom) {
+                    if ((!$scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted || $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted != activeRoom) && $state.current.name != "rover.reservation.staycard.reservationcard.reservationdetails") {
                         ngDialog.open({
                             template: '/assets/partials/reservation/alerts/occupancy.html',
                             className: 'ngdialog-theme-default',
@@ -886,6 +894,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             $scope.reservationData.isHourly = reservationDetails.reservation_card.is_hourly_reservation;
 
+            $scope.reservationData.number_of_infants = reservationDetails.reservation_card.number_of_infants;
+            $scope.reservationData.number_of_adults = reservationDetails.reservation_card.number_of_adults;
+            $scope.reservationData.number_of_children = reservationDetails.reservation_card.number_of_children;
+
+
             /** CICO-6135
              *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
              */
@@ -1330,7 +1343,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         adults_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
                         children_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
                         infants_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
-                        rate_amount: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount : staydata.rateDetails.modified_amount
+                        rate_amount: (date == $scope.reservationData.departureDate) ? ((room.stayDates[$scope.reservationData.arrivalDate] && room.stayDates[$scope.reservationData.arrivalDate].rateDetails && room.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydata.rateDetails && staydata.rateDetails.modified_amount) || 0)
+
                     });
                 });
                 stay.push(reservationStayDetails);
@@ -1825,8 +1839,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             nextStateParameters = {};
                         }
                         $state.go(nextState, nextStateParameters);
+                    } else {
+                        $scope.$emit('hideLoader');
                     }
-                    $scope.$emit('hideLoader');
                 };
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
@@ -1844,12 +1859,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         postData.reservationId = $scope.reservationData.reservationId;
                     }
 
-                    postData.addons = $scope.existingAddons;
+                    postData.addons = $scope.viewState.existingAddons;
+
 
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
+              
             }
         };
 
@@ -1979,5 +1996,5 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             }
         };
     }
-    
+
 ]);

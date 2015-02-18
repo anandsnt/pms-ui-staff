@@ -52,6 +52,44 @@ font-family: 'Source Sans Pro';
 }
 
 
+@green:#269b17;
+.green-text,.terms-main,.terms-sub{
+	color:@green  !important;
+}
+.terms-main{
+	font-size:22px !important;
+}
+.terms-sub{
+	font-size:15px !important;
+}
+.terms-and-conditions-container{
+	padding:5% !important;
+}
+.full-screen{
+	height: 100% !important;
+    overflow: scroll;
+}
+.terms-list{
+	margin-top:10px;
+	color:#45304f !important;
+	font-size:15px !important;
+	word-wrap: break-word;
+	p{
+		margin-bottom:0px;
+	}
+}
+.terms-actions {
+    margin-top: 3%;
+}
+.terms-alert{
+	padding-top:2% !important;
+}
+
+.btn.room-error-button.room-error-green-button.terms-buttons{
+	background:#80D726 !important;
+}
+
+
 .white-text{
 	color:@white;
 }
@@ -238,8 +276,44 @@ body {
 	.now-later-options.no-screen-attach {
 		margin: 0 10px;
 	}
+	.btn.room-error-button.room-error-green-button.terms-buttons{
+		padding: 5% !important;
+	}
+	.btn.room-error-button.light-gray-bg.terms-buttons{
+    	padding: 4% !important;
+  		width: 60% !important;
+  		margin-top:10px !important;
+  		margin-bottom:10px !important;
+	}
+	.terms-padding{
+		padding: 0 7% !important;
+	}
 }
-
+.btn.room-error-button.light-gray-bg.terms-buttons{
+	background: none repeat scroll 0 0 #787878 !important;
+}
+@media (min-width: 480px) {
+	.btn.room-error-button.room-error-green-button.terms-buttons,.btn.room-error-button.light-gray-bg.terms-buttons{
+		padding: 21px 25px !important;
+		height: 72px !important;
+    	width: 266px !important;
+		float:left;
+		margin-bottom:5% !important;
+	}
+	.btn.room-error-button.light-gray-bg.terms-buttons{
+		padding:10px 25px !important;
+		height: 57px !important;
+		margin-left:48px;
+		margin-top:3%;
+	}
+	.terms-actions{
+		text-align:left !important;
+		padding:0px 10% !important;
+	}
+	.terms-padding{
+		padding: 0 5% !important;
+	}
+}
 @media (max-width: 992px) {
 	.checkout-later-back-button{
 	  display:none;
@@ -260,6 +334,23 @@ body {
 	 
 	.room-error{
 	  font-size:18px !important;
+	}
+	.terms-and-conditions-container{
+		padding:4% !important;
+	}
+
+	.btn.room-error-button.room-error-green-button.terms-buttons,.btn.room-error-button.light-gray-bg.terms-buttons{
+    	width: 220px !important;
+	}
+	.terms-main{
+		font-size:30px !important;
+	}
+	.terms-sub{
+		font-size:20px !important;
+		margin-bottom: 2%;
+	}
+	.terms-list{
+		font-size:16px !important;
 	}
 }
 
@@ -524,6 +615,7 @@ svg {
 	top: 30%;
 	margin-top: -11px;
 }
+
 
 @media (max-width: 480px) {
 	.backbtn  img{
