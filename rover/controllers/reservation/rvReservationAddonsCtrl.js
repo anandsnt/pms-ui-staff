@@ -271,6 +271,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             // $scope.reservationData.totalStayCost -= parseInt($scope.reservationData.rooms[$scope.activeRoom].addons[index].quantity) * parseInt($scope.reservationData.rooms[$scope.activeRoom].addons[index].price);
             $scope.addonsData.existingAddons.splice(index, 1);
             $scope.reservationData.rooms[$scope.activeRoom].addons.splice(index, 1);
+            $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
             if ($scope.addonsData.existingAddons.length === 0) {
                 $scope.closePopup();
             }
