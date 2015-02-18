@@ -144,7 +144,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 isSameCard: false, // Set flag to retain the card details,
                 rateDetails: [], // This array would hold the configuration information of rates selected for each room
                 isRoomRateSuppressed: false, // This variable will hold flag to check whether any of the room rates is suppressed?
-                reservation_card: {}
+                reservation_card: {},
+                number_of_infants:0,
+                number_of_adults:0,
+                number_of_children:0                
+
             };
 
             $scope.searchData = {
@@ -889,6 +893,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             $scope.reservationData.isHourly = reservationDetails.reservation_card.is_hourly_reservation;
+
+            $scope.reservationData.number_of_infants = reservationDetails.reservation_card.number_of_infants;
+            $scope.reservationData.number_of_adults = reservationDetails.reservation_card.number_of_adults;
+            $scope.reservationData.number_of_children = reservationDetails.reservation_card.number_of_children;
+
 
             /** CICO-6135
              *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
@@ -1857,6 +1866,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
+              
             }
         };
 
