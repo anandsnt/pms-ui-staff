@@ -62,10 +62,13 @@
             <!-- Fields -->
             <div class="entry full-width" ng-hide="showCCPage || depositPaidSuccesFully" ng-class="{'amount': isShowFees()}">
                 <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
-                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
-                <span  ng-show="isShowFees()" class="fee">
-                    + {{currencySymbol}}{{feeData.calculatedFee}} fee
-                </span>
+                
+                <!-- CICO-12408 : Use only when fee exsists -->
+                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" />
+                <span ng-show="isShowFees()" class="delimiter">+</span> 
+                <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(renderData.defaultPaymentAmount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
+                <span ng-show="isShowFees()" class="delimiter">fee</span>
+
                 <span  ng-show="isShowFees()" class="total">
                     Total:
                     <strong id="total-deposit-amount">

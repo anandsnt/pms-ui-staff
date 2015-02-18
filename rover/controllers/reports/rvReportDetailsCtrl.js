@@ -12,9 +12,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
 
 		var refreshScroll = function() {
-			$scope.refreshScroller( 'report-details-scroll' );
-			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			if ( !!$scope.$parent.myScroll['report-details-scroll'] ) {
+				$scope.refreshScroller( 'report-details-scroll' );
+				$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			};
 		};
+
+
+		var $_pageNo = 1;
+		var $_resultsPerPage = 25;
 
 
         /**
@@ -26,7 +32,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
-		
+
+
 		// common methods to do things after fetch report
 		var afterFetch = function() {
 			var totals          = $scope.$parent.totals,
@@ -44,23 +51,87 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset this
 			$scope.parsedApiFor = undefined;
 
-			// is this guest reports or not
-			if ( $scope.chosenReport.title == 'Arrival' ||
-					$scope.chosenReport.title == 'Cancelation & No Show' ||
-					$scope.chosenReport.title == 'Departure' ||
-					$scope.chosenReport.title == 'In-House Guests' ) {
-				$scope.isGuestReport = true;
-			} else {
-				$scope.isGuestReport = false;
+			// reset flags
+			$scope.isGuestReport = false;
+			$scope.isLargeReport = false;
+			$scope.isLogReport   = false;
+			$scope.hasNoSorting  = false;
+			$scope.hasNoTotals   = false;
+
+			switch ( $scope.chosenReport.title ) {
+				case 'In-House Guests':
+				case 'Departure':
+				case 'Arrival':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					break;
+
+				case 'Cancelation & No Show':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.hasNoSorting = true;
+					break;
+
+				case 'Login and out Activity':
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.isLogReport = true;
+					break;
+
+				case 'Upsell':
+				case 'Late Check Out':
+					$scope.hasNoTotals = true;
+					break;
+
+				case 'Check In / Check Out':
+					console.log($scope.chosenReport.chosenCico);
+					if ( $scope.chosenReport.chosenCico == 'IN' || $scope.chosenReport.chosenCico == 'OUT' ) {
+						$scope.hasNoTotals = true;
+					};
+					break;
+
+				case 'Web Check In Conversion':
+				case 'Web Check Out Conversion':
+					$scope.isLargeReport = true;
+					break;
 			};
 
-			// is this is a large report
-			if ( $scope.chosenReport.title == 'Web Check In Conversion' ||
-					$scope.chosenReport.title == 'Web Check Out Conversion' ) {
-				$scope.isLargeReport = true;
-			} else {
-				$scope.isLargeReport = false;
+
+			// hack to set the colspan for reports details tfoot
+			switch ( $scope.chosenReport.title ) {
+				case 'Check In / Check Out':
+				case 'Upsell':
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
+					break;
+
+				case 'Login and out Activity':
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
+					break;
+
+				case 'Web Check In Conversion':
+				case 'Web Check Out Conversion':
+					$scope.leftColSpan = 8;
+					$scope.rightColSpan = 8;
+					break;
+
+				default:
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 2;
+					break;
 			};
+
+			// when should pagination
+			if ( $scope.chosenReport.title != 'Booking Source & Market Report' ) {
+				$scope.hasPagination = true;
+			} else {
+				$scope.hasPagination = false;
+			}
+
+
+
+
 
 			// for hard coding styles for report headers
 			// if the header count is greater than 4
@@ -159,15 +230,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			    };
 			};
 
-
-			// hack to set the colspan for reports details tfoot - 'Check In / Check Out' or 'Upsell'
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 4 : 2;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
-
-			// hack to set the colspan for reports details tfoot - 'Web Check Out Conversion''
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.leftColSpan;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check In Conversion' || $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.rightColSpan;
-
 			// scroller refresh and reset position
 			refreshScroll();
 
@@ -189,42 +251,69 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 			// new more detailed reports
-			if ( $scope.chosenReport.title === 'In-House Guests' ||
-					$scope.chosenReport.title === 'Arrival' ||
-					$scope.chosenReport.title === 'Departure' ||
-					$scope.chosenReport.title === 'Cancelation & No Show' ) {
-				$scope.parsedApiFor = $scope.chosenReport.title;
-				$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
-			};
+			$scope.parsedApiFor = $scope.chosenReport.title;
+			$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 		};
+
+
+		$scope.parsedApiTemplate = function() {
+			var template = '';
+
+			switch ($scope.parsedApiFor) {
+				case 'In-House Guests':
+					template = '/assets/partials/reports/rvInHouseReport.html';
+					break;
+
+				case 'Departure':
+					template = '/assets/partials/reports/rvDepartureReport.html';
+					break;
+
+				case 'Arrival':
+					template = '/assets/partials/reports/rvArrivalReport.html';
+					break;
+
+				case 'Cancelation & No Show':
+					template = '/assets/partials/reports/rvCancellationReport.html';
+					break;
+
+				case 'Login and out Activity':
+					template = '/assets/partials/reports/rvUserActivityReport.html';
+					break;
+
+				default:
+					template = '/assets/partials/reports/rvCommonReport.html';
+					break;
+			};
+
+			return template;
+		};
+
+
 
 		// we are gonna need to drop some pagination
 		// this is done only once when the report details is loaded
 		// and when user updated the filters
 		var calPagination = function(response, pageNum) {
-		    var results =        $scope.$parent.results,
-		    	totalCount =     $scope.$parent.totalCount,
-		    	resultsPerPage = $scope.$parent.resultsPerPage,
-		    	pageNum =        typeof pageNum == "undefined" ? 1 : pageNum;
+			if ( ! $scope.hasPagination ) {
+				return;
+			};
 
-		    $scope.pagination = [];
+			// clear old results and update total counts
+			$scope.netTotalCount = $scope.$parent.totalCount;
+			$scope.uiTotalCount  = !!$scope.$parent.results ? $scope.$parent.results.length : 0;
 
-		    if (results.length < totalCount) {
-		        var pages = Math.floor( totalCount / resultsPerPage );
-		        var extra = totalCount % results.length;
-
-		        if (extra > 0) {
-		            pages++;
-		        };
-
-		        for (var i = 1; i <= pages; i++) {
-		            $scope.pagination.push({
-		                no: i,
-		                active: i === pageNum ? true : false
-		            })
-		        };
-		    };
-		};
+			if ( $_pageNo === 1 ) {
+				$scope.resultFrom = 1;
+				$scope.resultUpto = $scope.netTotalCount < $_resultsPerPage ? $scope.netTotalCount : $_resultsPerPage;
+				$scope.disablePrevBtn = true;
+				$scope.disableNextBtn = $scope.netTotalCount > $_resultsPerPage ? false : true;
+			} else {
+				$scope.resultFrom = $_resultsPerPage * ($_pageNo - 1) + 1;
+				$scope.resultUpto = ($scope.resultFrom + $_resultsPerPage - 1) < $scope.netTotalCount ? ($scope.resultFrom + $_resultsPerPage - 1) : $scope.netTotalCount;
+				$scope.disablePrevBtn = false;
+				$scope.disableNextBtn = $scope.resultUpto === $scope.netTotalCount ? true : false;
+			}
+ 		};
 
 		// hacks to track back the chosenCico & chosenUsers names
 		// from their avaliable values
@@ -242,51 +331,46 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    // keep track of the Users chosen for UI
 		    // if there is just one user
 		    if ( $scope.chosenReport.chosenUsers ) {
-		        if ( typeof $scope.chosenReport.chosenUsers === 'number' ) {
+		    	var _userNames = [];
 
-		            // first find the full name
-		            var name = _.find($scope.userList, function(user) {
-		                return user.id === $scope.chosenReport.chosenUsers;
-		            });
+		    	_.each($scope.activeUserList, function(user) {
+					var match = _.find($scope.chosenReport.chosenUsers, function(id) {
+						return id == user.id;
+					});
 
-		            $scope.userNames = name.full_name || false;
-		        } else {
-		            
-		            // if there are more than one user
-		            for (var i = 0, j = $scope.chosenReport.chosenUsers.length; i < j; i++) {
+					if ( !!match ) {
+						_userNames.push( user.full_name );
+					};
+				});
 
-		                // first find the full name
-		                var name = _.find($scope.userList, function(user) {
-		                    return user.id === $scope.chosenReport.chosenUsers[i];
-		                    });
-
-		                $scope.userNames += name.full_name + (i < j ? ', ' : '');
-		            };
-		        }
+				$scope.userNames = _userNames.join(', ');
 		    };
 		};
 
 		// fetch next page on pagination change
 		$scope.fetchNextPage = function(returnToPage) {
+			// returning to the previous page before print
 			if ( !!returnToPage ) {
-				// should-we-change-view, specify-page, per-page-value
-				$scope.genReport( false, returnToPage );
+				$_pageNo = returnToPage;
+				$scope.genReport( false, $_pageNo );
 			} else {
-				// user clicked on current page
-				if (this.page.active) {
-				    return;
-				};
+				if ( $scope.disableNextBtn ) {
+					return;
+				}
 
-				// change the current active number
-				var currPage = _.find($scope.pagination, function(page) {
-				    return page.active === true
-				});
-				currPage.active = false;
-				this.page.active = true;
+				$_pageNo++;
+				$scope.genReport( false, $_pageNo );
+			};
+		};
 
-				// should-we-change-view, specify-page, per-page-value
-				$scope.genReport( false, this.page.no );
+		// fetch prev page on pagination change
+		$scope.fetchPrevPage = function() {
+			if ( $scope.disablePrevBtn ) {
+				return;
 			}
+
+			$_pageNo--;
+			$scope.genReport( false, $_pageNo );
 		};
 
 		// refetch the report while sorting with..
@@ -308,6 +392,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.chosenReport.chosenSortBy = sortBy.value;
 
+			// reset the page
+			$_pageNo = 1;
+
 			// should-we-change-view, specify-page, per-page-value
 			$scope.genReport( false, 1 );
 		};
@@ -315,6 +402,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// refetch the reports with new filter values
 		// Note: not resetting page to page #1
 		$scope.fetchUpdatedReport = function() {
+			// reset the page
+			$_pageNo = 1;
+
 			// should-we-change-view, specify-page, per-page-value
 		    $scope.genReport( false );
 		};
@@ -324,17 +414,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// since we are loading the entire report and show its print preview
 			// we need to keep a back up of the original report with its pageNo
-		    $scope.returnToPage = 1;
-
-		    // now since we are gonna update the filter
-		    // we are gonna start from page one
-		    var currPage = _.find($scope.pagination, function(page) {
-		        return page.active === true
-		    });
-
-		    if( currPage ){
-		       $scope.returnToPage = currPage.no;
-		    }
+		    $scope.returnToPage = $_pageNo;
 
 		    // should-we-change-view, specify-page, per-page-value
 		    $scope.genReport( false, 1, 1000 );
@@ -380,6 +460,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		var reportSubmit = $rootScope.$on('report.submit', function() {
+			$_pageNo = 1;
+
 			afterFetch();
 			findBackNames();
 			calPagination();
@@ -395,6 +477,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportPageChanged = $rootScope.$on('report.page.changed', function() {
 			afterFetch();
+			calPagination();
 			refreshScroll();
 		});
 
@@ -419,21 +502,30 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var _retResult   = [],
 				_eachItem    = {},
 				_eachNote    = {},
+				_eachGuest   = {},
+				_eachGuestNote = {},
 				_cancelRes   = {},
-				_customItems = [];
+				_customItems = [],
+				_uiDate      = '',
+				_uiTime      = '';
 
 			var i = j = k = l = m = n = 0;
 
 			if ( $scope.parsedApiFor == 'Arrival' ||
 					$scope.parsedApiFor == 'In-House Guests' ||
 					$scope.parsedApiFor == 'Departure' ||
-					$scope.parsedApiFor == 'Cancelation & No Show' ) {
+					$scope.parsedApiFor == 'Cancelation & No Show' ||
+					$scope.parsedApiFor == 'Login and out Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					_eachItem    = angular.copy( apiResponse[i] );
 					_customItems = [];
 					_cancelRes   = {};
 					_eachNote    = {};
+					_eachGuest   = {};
+					_eachGuestNote = {};
+					_uiDate        = '';
+					_uiTime        = '';
 
 					// first check for cancel reason
 					// if so then create a custom entry
@@ -446,12 +538,25 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_customItems.push( _cancelRes );
 					};
 
-					// second check for notes
-					// if so then create a custom entry for
-					// each note and push each to '_customItems'
-					if ( !!_eachItem['notes'] && !!_eachItem['notes'].length ) {
+					// second check for notes && || accompanying guests					
+
+					// 1. we only have accompanying guests -- and no notes
+					if ( (!_eachItem['notes'] || (!!_eachItem['notes'] && !_eachItem['notes'].length)) &&
+							!!_eachItem['accompanying_names'] &&
+							!!_eachItem['accompanying_names'].length ) {
+						_eachGuest = {
+							isGuest : true,
+							guest   : angular.copy( _eachItem['accompanying_names'] )
+						};
+						_customItems.push( _eachGuest );
+					};
+
+					// 2. we only have notes -- and no accompanying guests
+					if ( (!_eachItem['accompanying_names'] || (!!_eachItem['accompanying_names'] && !_eachItem['accompanying_names'].length)) &&
+							!!_eachItem['notes'] &&
+							!!_eachItem['notes'].length ){
 						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
-							_eachNote        = angular.copy( _eachItem['notes'][k] );
+							_eachNote = angular.copy( _eachItem['notes'][k] );
 							_eachNote.isNote = true;
 							if ( k == 0 ) {
 								_eachNote.isHeading = true;
@@ -460,7 +565,33 @@ sntRover.controller('RVReportDetailsCtrl', [
 						};
 					};
 
-					// since this tr won't have any (figuritive) childs
+					// 3. we have both -- accompanying guests and notes
+					if ( (!!_eachItem['notes'] && !!_eachItem['notes'].length) &&
+							(!!_eachItem['accompanying_names'] && !!_eachItem['accompanying_names'].length) ) {
+
+						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
+							_eachGuestNote = angular.copy( _eachItem['notes'][k] );
+							if ( k == 0 ) {
+								_eachGuestNote.isHeading = true;
+								_eachGuestNote.guest = angular.copy( _eachItem['accompanying_names'] );
+								_eachGuestNote.tdRowSpan = _eachItem['notes'].length;
+							};
+							_eachGuestNote.isGuest_n_Note = true;
+							_customItems.push( _eachGuestNote );
+						};
+					};
+
+					// additional date time split for 'Login and out Activity' report
+					if ( $scope.parsedApiFor == 'Login and out Activity' ) {
+						if ( !!_eachItem['date'] ) {
+							_uiDate = _eachItem['date'].split(', ')[0];
+							_uiTime = _eachItem['date'].split(', ')[1];
+							_eachItem['uiDate'] = _uiDate;
+							_eachItem['uiTime'] = _uiTime;
+						};
+					};
+
+					// since this tr won't have any (figurative) childs
 					if ( !_customItems.length ) {
 						_eachItem.trCls = 'row-break';
 					};
@@ -473,26 +604,36 @@ sntRover.controller('RVReportDetailsCtrl', [
 						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
 					};
 
+					// check for invalid login for 'Login and out Activity' report 
+					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID_LOGIN' ) {
+						_eachItem['action_type'] = 'INVALID LOGIN';
+						_eachItem.trCls = 'row-break invalid';
+					};
+
+					// check for no user name for 'Login and out Activity' report 
+					if ( _eachItem.hasOwnProperty('user_name') && !_eachItem['user_name'] ) {
+						_eachItem['user_name'] = 'NA';
+					};
+
 					// push '_eachItem' into '_retResult'
 					_eachItem.isReport = true;
 					_retResult.push( _eachItem );
 
-					// push each item in '_customItems' in ot '_retResult'
+					// push each item in '_customItems' in to '_retResult'
 					for (m = 0, n = _customItems.length; m < n; m++) {
 						_retResult.push( _customItems[m] );
 					};
 				};
+
+				// dont remove yet
+				console.log( 'API reponse changed as follows: ');
+				console.log( _retResult );
 			} else {
 				_retResult = apiResponse;
 			};
 
-			// dont remove
-			console.log( 'API reponse changed as follows: ');
-			console.log( _retResult );
-
 			return _retResult;
 		};
-
 
 
     }

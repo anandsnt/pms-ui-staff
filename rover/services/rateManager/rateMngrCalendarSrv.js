@@ -150,9 +150,22 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 	};
 
+	this.checkIfAnyHourlyRatePresent = function(rateData){
+		var hasHourly = false;
+		angular.forEach(rateData, function(rate){
+			if(rate.is_hourly == true){
+				hasHourly = true;
+				return false;
+			}
+
+		});
+		return hasHourly;
+	};
+
 	this.calculateRoomTypeViewCalData = function(){
 		var calendarData = {};
-		
+
+		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.roomTypeRates.results[0].room_rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup 
 		var formattedRestrictionTypes = {};
 		angular.forEach(that.allRestrictionTypes, function(item){
@@ -222,7 +235,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 	this.calculateRateViewCalData = function(){
 		var calendarData = {};
-		
+	
+		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup 
 		var formattedRestrictionTypes = {};
 		angular.forEach(that.allRestrictionTypes, function(item){
@@ -361,17 +375,23 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		}
 		if('MIN_STAY_LENGTH' == restriction_type.value) {
 			restriction_type_updated.background_class = "bg-blue";
-			restriction_type_updated.hideOnHourly = true; // CICO-9555
+			if(that.hasAnyHourlyRate){
+				restriction_type_updated.hideOnHourly = true; // CICO-9555
+			}
 		}
 		if('MAX_STAY_LENGTH' == restriction_type.value) {
-			restriction_type_updated.hideOnHourly = true; // CICO-9555
+			if(that.hasAnyHourlyRate){
+				restriction_type_updated.hideOnHourly = true; // CICO-9555
+			}
 		}
 		if('MIN_ADV_BOOKING' == restriction_type.value) {
 			restriction_type_updated.background_class = "bg-green";
 		}
 		if('MIN_STAY_THROUGH' == restriction_type.value) {
 			restriction_type_updated.background_class = "bg-violet";
-			restriction_type_updated.hideOnHourly = true; // CICO-9555
+			if(that.hasAnyHourlyRate){
+				restriction_type_updated.hideOnHourly = true; // CICO-9555
+			}
 		}
 		restriction_type_updated.id = restriction_type.id;
 		restriction_type_updated.description = restriction_type.description;
@@ -383,6 +403,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		return restriction_type_updated;
 	};
+
 
 
 }]);

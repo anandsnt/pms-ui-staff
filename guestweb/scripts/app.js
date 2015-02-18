@@ -3,6 +3,17 @@ var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
+	var that = this;
+	//load the style elements. Done to reduce the loading time of web page.
+
+	loadStyleSheets('/assets/' + $('body').attr('data-theme') +'.css');
+	loadAssets('/assets/favicon.png', 'icon', 'image/png');
+	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
+	loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait)');
+	loadAssets('/assets/apple-touch-startup-image-1024x748.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape)');
+	loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
+	loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
+
 	//store basic details as rootscope variables
 
 	$rootScope.reservationID = $attrs.reservationId;
@@ -34,16 +45,30 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isCcAttachedFromGuestWeb = false;
  	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
- 	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
- 	if($attrs.accessToken != "undefined")
+ 	$rootScope.isAutoCheckinOn = (($attrs.isAutoCheckin === 'true') && ($attrs.isPrecheckinOnly === 'true')) ? true :false;;
+ 	$rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
+
+    //Params for zest mobile and desktop screens
+    if($attrs.hasOwnProperty('isPasswordReset')){
+    	$rootScope.isPasswordResetView = $attrs.isPasswordReset;
+    	$rootScope.isTokenExpired = $attrs.isTokenExpired == "true"? true: false;
+    	$rootScope.accessToken = $attrs.token;
+    	$rootScope.user_id = $attrs.id;
+    	$rootScope.user_name = $attrs.login;
+    }
+    
+
+ 	if(typeof $attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
-	
 
 	//navigate to different pages
 
-	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
+	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
  		$location.path('/tripDetails');
- 	}	
+ 	}
+ 	else if	($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && ($attrs.isAutoCheckin === 'true')){
+ 		$location.path('/checkinConfirmation');
+ 	}
  	else if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
  	}
@@ -53,22 +78,40 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
   	else if($rootScope.isCheckedout)	{
 		$location.path('/checkOutStatus');	
 	}
-	else{
-		$location.path('/checkoutRoomVerification');
+	else if($rootScope.hasOwnProperty('isPasswordResetView')){		
+		var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
+		$location.path(path);		
+	}else{
+         $location.path('/checkoutRoomVerification');
 	};
 
-	//setTimeout(function() {
-		$( ".loading-container" ).hide();
+	$( ".loading-container" ).hide();
+}
 
-	//}, 500);
-/*
-	$( ".loading-container" ).slideUp( "slow", function() {
-		console.log("animation complete");
-	    // Animation complete.
-	});
-*/
 
-}]);
+
+]);
+
+var loadStyleSheets = function(filename){
+		var fileref = document.createElement("link");
+		fileref.setAttribute("rel", "stylesheet");
+		fileref.setAttribute("type", "text/css");
+		fileref.setAttribute("href", filename);
+		$('body').append(fileref);
+};
+
+
+var loadAssets = function(filename, rel, type, media){
+		var fileref = document.createElement("link");
+		fileref.setAttribute("rel", rel);
+		fileref.setAttribute("href", filename);
+		if(type !== '') fileref.setAttribute("type", type);
+		if(media !== '') fileref.setAttribute("media", media);
+		document.getElementsByTagName('head')[0].appendChild(fileref);
+};
+
+
+
 
 
 

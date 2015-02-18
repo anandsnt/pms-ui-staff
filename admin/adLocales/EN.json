@@ -1,4 +1,16 @@
-{"BEACON_ID": "Beacon Id",
+{
+
+
+"ANALYTIC_SETUP_HEADER": "Analytic Setup",
+"PLACEHOLDER_TRACKING_ID": "Enter Tracker ID",
+"SNT_TRACKERS_TITLE": "SNT Tracking IDs",
+"HOTEL_TRACKERS_TITLE": "Hotel Tracking IDs",
+"ZEST_WEB_LABEL": "Zest web",
+"ZEST_IOS_LABEL": "Zest app(IOS)",
+"ZEST_ANDROID_LABEL": "Zest app(Android)",
+"ANALYTIC_SERVICE_LABEL": "Analytic service",
+"SELECT_SERVICE": "Select service"
+,"BEACON_ID": "Beacon Id",
 "TYPE": "Type",
 "TRIGGER": "Trigger",
 "NEARBY_BEACONS":"Near by beacons",
@@ -21,7 +33,77 @@
 
 "BILLING_GROUPS": "Billing Groups",
 "BILLING_GROUP_NAME": "Name",
-"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name",
+"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name","CAMPAIGNS_LIST_TITLE": "Campaigns",
+"CAMPAIGN": "Campaign",
+"ID": "ID",
+"NAME":"Name",
+"AUDIENCE": "Audience",
+"DELIVERY":"Delivery",
+"STATUS":"Status",
+"LAST_UPDATE":"Last Update",
+"DELETE":"Delete",
+
+"NEW_CAMPAIGN_TITLE":"New Campaign",
+"EDIT_CAMPAIGN_TITLE":"Edit Campaign",
+"BACK":"Back",
+"DELETE_CAMPAIGN":"Delete Campaign",
+"DETAILS":"details",
+"COMPLETED":"Completed",
+"CAMPAIGN_NAME":"Campaign name",
+"DUE_IN_GUESTS":"Due In Guests",
+"IN_HOUSE_GUESTS":"In House Guests",
+"EVERYONE":"Everyone",
+"SPECIFIC_USERS":"Specific User(s)",
+
+"MESSAGE":"Message",
+"IN_APP":"in App",
+"MESSAGE_SUBJECT":"Message Subject",
+"CHARACTERS_REMINING":"Characters Remaining",
+"MESSAGE_HEADER_IMAGE":"Message Header Image",
+"IMAGE_TYPE":"JPEG or PNG, {XxY}px in size",
+"ADD_IMAGE":"Add image",
+"PREVIEW_NOT_AVAILABLE":"Preview not available",
+"MESSAGE_BODY":"Message body",
+"CALL_TO_ACTION_LABEL":"Call To Action Label",
+"CALL_TO_ACTION_TARGET":"Call To Action Target",
+"TIME_ZONE":"time Zone",
+"ONE_TIME":"One Time",
+"RECURRING":"Recurring",
+"SEND":"Send",
+"EVERY":"Every",
+"DAY_OF_WEEK":"Day of Week",
+"MONDAY":"Monday",
+"TUESDAY":"Tuesday",
+"WEDNESDAY":"Wednesday",
+"THURSDAY":"Thursday",
+"FRIDAY":"Friday",
+"SATURDAY":"Saturday",
+"SUNDAY":"Sunday",
+"AT":"at",
+"HH":"HH",
+"MM":"MM",
+"AM":"AM",
+"PM":"PM",
+"END":"End",
+"NEVER":"Never",
+"AT_END_OF_DAY":"At End Of Day",
+"NOTIFICATIONS":"Notifications",
+"OUTSIDE_APP":"outside App",
+"NOTIFICATION_BANNER_OR_ALERT":"Notification - Banner or Alert",
+"IOS8":"iOS 8+",
+"IOS7":"iOS 7",
+"CANCEL":"Cancel",
+"SAVE_AS_DRAFT":"Save as Draft",
+"START_CAMPAIGN":"Start Campaign",
+"SAVE":"Save",
+"CLOSE":"Close"
+
+
+
+
+
+
+,
 
 
 "CHARGE_GROUPS":"Charge Groups",
@@ -77,7 +159,74 @@
     
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",
-	"DELETE":"Delete"
+	"DELETE":"Delete",
+
+
+	"CAMPAIGNS_LIST_TITLE": "Campaigns",
+"CAMPAIGN": "Campaign",
+"ID": "ID",
+"NAME":"Name",
+"AUDIENCE": "Audience",
+"DELIVERY":"Delivery",
+"STATUS":"Status",
+"LAST_UPDATE":"Last Update",
+"DELETE":"Delete",
+
+"NEW_CAMPAIGN_TITLE":"New Campaign",
+"EDIT_CAMPAIGN_TITLE":"Edit Campaign",
+"BACK":"Back",
+"DELETE_CAMPAIGN":"Delete Campaign",
+"DETAILS":"details",
+"COMPLETED":"Completed",
+"CAMPAIGN_NAME":"Campaign name",
+"DUE_IN_GUESTS":"Due In Guests",
+"IN_HOUSE_GUESTS":"In House Guests",
+"EVERYONE":"Everyone",
+"SPECIFIC_USERS":"Specific User(s)",
+
+"MESSAGE":"Message",
+"IN_APP":"in App",
+"MESSAGE_SUBJECT":"Message Subject",
+"CHARACTERS_REMINING":"Characters Remaining",
+"MESSAGE_HEADER_IMAGE":"Message Header Image",
+"IMAGE_TYPE":"JPEG or PNG, {XxY}px in size",
+"ADD_IMAGE":"Add image",
+"PREVIEW_NOT_AVAILABLE":"Preview not available",
+"MESSAGE_BODY":"Message body",
+"CALL_TO_ACTION_LABEL":"Call To Action Label",
+"CALL_TO_ACTION_TARGET":"Call To Action Target",
+"TIME_ZONE":"Time Zone: ",
+"ONE_TIME":"One Time",
+"RECURRING":"Recurring",
+"SEND":"Send",
+"EVERY":"Every",
+"DAY_OF_WEEK":"Day of Week",
+"MONDAY":"Monday",
+"TUESDAY":"Tuesday",
+"WEDNESDAY":"Wednesday",
+"THURSDAY":"Thursday",
+"FRIDAY":"Friday",
+"SATURDAY":"Saturday",
+"SUNDAY":"Sunday",
+"AT":"at",
+"HH":"HH",
+"MM":"MM",
+"AM":"AM",
+"PM":"PM",
+"END":"End",
+"NEVER":"Never",
+"AT_END_OF_DAY":"At End Of Day",
+"NOTIFICATIONS":"Notifications",
+"OUTSIDE_APP":"outside App",
+"NOTIFICATION_BANNER_OR_ALERT":"Notification - Banner or Alert",
+"IOS8":"iOS 8+",
+"IOS7":"iOS 7",
+"CANCEL":"Cancel",
+"SAVE_AS_DRAFT":"Save as Draft",
+"START_CAMPAIGN":"Start Campaign",
+"SAVE":"Save",
+
+"CLOSE":"Close"
 ,
 
 
@@ -153,7 +302,19 @@
 "ADD_ICON_LABEL" : "Add icon",
 "ADD_IMAGE_LABEL" : "Add image"
 
-,
+,"EARLY_CHECKIN_UPSELL": "Early Checkin Upsell",
+"EARLY_CHECKIN" : "Early Checkin",
+"EARLY_CHECKIN_GENERAL": "GENERAL",
+"EARLY_CHECKIN_UPSELL_WINDOWS": "Early Checkin Upsell Windows",
+"EARLY_CHECKIN_START_TIME" : "Start Time",
+"EARLY_CHECKIN_CHARGE" : "Charge",
+"EARLY_CHECKIN_ADDON" : "Add On",
+"EARLY_CHECKIN_BY_RATE" : "Allow Early Checkin By Rate",
+"SELECT_RATE" : "Select Rate",
+"ADD_RATE": "Add Rate",
+"RATES": "Rates",
+"NUMBER_OF_EARLY_CHECKINS_PER_DAY" : "Number Of Early Checkin Upsells Per Day",
+"NUMBER_OF_EARLY_CHECKIN_UPSELLS_PER_DAY": "Number Of Early Checkin Upsells Per Day",
 
 
 "CHARGE_CODE":"Charge Code",
@@ -275,7 +436,11 @@
 	"WORKSTATION": "Work Station",
 	"STATION_NAME": "Work Station Name",
 	"STATION_ID": "Work Station Id",
-	"WORKSTATIONS":"Work Stations"
+	"WORKSTATIONS":"Work Stations",
+	"LOCATION_LABEL": "Location",
+	"ECODER_ID_LABEL": "Encoder ID",
+	"ENCODER_ID_PLACEHOLDER": "Enter encoder id"
+
 ,
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)",
@@ -332,7 +497,9 @@
 "SOURCE_NAME_PLACEHOLDER":"Enter source name",
 "DISABLE_CC_SWIPE_AT_CHECK_IN": "DISABLE CC SWIPE AT CHECK IN",
 "DISABLE_TERMS_AND_CONDITIONS_AT_CHECK_IN": "DISABLE TERMS AND CONDITIONS AT CHECK IN",
-"DISABLE_EMAIL_PHONE_DIALOGUE": "DISABLE EMAIL/PHONE DIALOGUE"
+"DISABLE_EMAIL_PHONE_DIALOGUE": "DISABLE EMAIL/PHONE DIALOGUE",
+"DISABLE_EARLY_DEPARTURE_PENALTY": "DISABLE EARLY DEPARTURE PENALTY",
+"DISABLE_RESERVATION_POSTING_CONTROL": "DISABLE RESERVATION POSTING CONTROL"
 ,
 
     "ROOMS":"Rooms",
@@ -491,7 +658,13 @@
 	"TITLE": "Title",
 	"ENTER_TITLE": "Enter Title",
 	"CANCELLATION_TEXT" : "Cancellation text",
-	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text",
+	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text"
+,
+
+
+"TEMPLATE_CONFIGURATION":"Template Configuration",
+"SEND_CHECKOUT_EMAIL":"Send Checkout Email",
+"SEND_CHECKOUT_NOTIFICATON_EMAIL":"Sent check out notification email to all DUE OUT guests at",
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
@@ -517,5 +690,11 @@
 "AND": "and",
 "ON_WEEKDAYS": "on weekdays",
 "ON_SATURDAY_SUNDAY": "on saturday /sunday",
-"ROOM_VERIFICATION_INSTRUCTIONS":"ROOM NUMBER VERIFICATION INSTRUCTIONS"
+"ROOM_VERIFICATION_INSTRUCTIONS":"ROOM NUMBER VERIFICATION INSTRUCTIONS",
+"CHECKIN_ACTION": "Check In Action",
+"AUTO_CHECK_IN": "AUTO CHECK IN",
+"STOP_AUTO_CHECK_IN_AT": "STOP AUTO CHECK IN AT",
+"START_AUTO_CHECK_IN_FROM": "START AUTO CHECK IN FROM",
+"SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY": "SENT NONE CC RESERVATIONS TO FRONT DESK ONLY",
+"CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT": "CHECK IN COMPLETE CONFIRMATION SCREEN TEXT"
 }

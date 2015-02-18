@@ -161,6 +161,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
     * @param {string} id of the rate
     */
 	$scope.getTemplateUrl = function(index, id){
+		console.log("getTemplateUrl");
+		console.log(index);
+		console.log(id);
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
 		if($scope.currentClickedElement == index){ 
 			return "/assets/partials/rates/adRateInlineEdit.html";

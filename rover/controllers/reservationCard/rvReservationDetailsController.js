@@ -141,7 +141,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
 			}
+			
+			// CICO-12454: Upon close the guest tab - save api call for guest details for standalone
+			if(!$scope.shouldShowGuestDetails && $scope.isStandAlone){
+				$scope.$broadcast("UPDATEGUESTDEATAILS");
+			}
 		};
+
+		$scope.$on("OPENGUESTTAB", function(e) {
+			$scope.toggleGuests();
+		});
 
 		$scope.shouldShowTimeDetails = false;
 		$scope.toggleTime = function() {
@@ -273,6 +282,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				swipedCardData.swipeFrom = "depositBalance";
 			} else if ($scope.isCancelReservationPenaltyOpened) {
 				swipedCardData.swipeFrom = "cancelReservationPenalty";
+			} else if ($scope.isStayCardDepositScreenOpened) {
+				swipedCardData.swipeFrom = "stayCardDeposit";
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
 			} else {
@@ -459,8 +470,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		};
-
-
+		/**
+		* we are capturing model opened to add some class mainly for animation
+		*/
+		$rootScope.$on('ngDialog.opened', function (e, $dialog) {
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false;
+			$timeout(function(){
+				$rootScope.modalOpened = true;
+			}, 300);    		
+		});
+		$rootScope.$on('ngDialog.closing', function (e, $dialog) {
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false; 		
+		});
+		
+		$scope.closeAddOnPopup = function(){
+			//to add stjepan's popup showing animation
+			$rootScope.modalOpened = false; 
+			$timeout(function(){
+				ngDialog.close();
+			}, 300); 
+		};
 
 		$scope.showAddNewPaymentModel = function(swipedCardData) {
 
@@ -478,8 +509,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty") {
+				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
 					$scope.openPaymentDialogModal(passData, paymentData);
+				} else if(swipedCardDataToRender.swipeFrom == "stayCardDeposit") {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
 				} else if (swipedCardDataToRender.swipeFrom == "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 				} else {
@@ -499,6 +532,26 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
 				checkin_date: $scope.reservationData.reservation_card.arrival_date,
 			});
+		};
+
+		$scope.handleAddonsOnReservation = function(isPackageExist){
+			if(isPackageExist){
+				ngDialog.open({
+					template: '/assets/partials/packages/showPackages.html',
+					controller: 'RVReservationPackageController',
+					scope: $scope
+				});
+			} else {
+				$state.go('rover.reservation.staycard.mainCard.addons',
+			 	{
+			 		'from_date': $scope.reservation.reservation_card.arrival_date,
+			 		'to_date': $scope.reservation.reservation_card.departure_date,
+			 		'is_active': true,
+			 		'is_not_rate_only': true,
+			 		'from_screen': 'staycard'
+
+			 	});
+			}
 		};
 
 	}

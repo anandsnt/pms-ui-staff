@@ -69,6 +69,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	url: '/checkinSuccess',
 	 	templateUrl: '/assets/checkin/partials/Huntley/checkinSuccess.html',
 	 	title: 'Status - Check-in'
+	 }).state('checkinArrival', {
+	 	url: '/checkinArrival',	 	
+	 	controller:'checkinArrivalDetailsController',
+	 	templateUrl: '/assets/checkin/partials/Huntley/arrivalDetails.html',
+	 	title: 'Arrival Details - Check-in'
 	 });
 
 
@@ -92,5 +97,10 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     	url: '/tripDetails',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Pre Check-in'
-	});
+	}).state('preCheckinStatus', {
+		url: '/preCheckinStatus',
+		templateUrl: '/assets/preCheckin/partials/Huntley/preCheckinStatus.html',
+		controller : 'preCheckinStatusController',
+		title: 'Status - Pre Check-In'
+	 });
 }]);

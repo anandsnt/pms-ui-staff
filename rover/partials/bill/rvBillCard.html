@@ -89,7 +89,7 @@
 						<!-- Incoming billing info -->
 						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0 && !isStandAlone" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
 						
-						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton'" ng-click="noPostButtonClicked()" ng-class = "{'green':roomChargeEnabled, 'red': !roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
+						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton' && !reservationBillData.is_res_posting_control_disabled" ng-click="noPostButtonClicked()" ng-class = "{'green':roomChargeEnabled, 'red': !roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
 						
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all bill-tab-ul" role="tablist">
 							
@@ -120,12 +120,14 @@
 						</ul>
 						</div>
 					</div>
+					
 					<!-- Bill Tabs for Day items and Group items -->
 					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-position bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills">
 						<div class="bill-summary-wrapper">
 							<!-- TODO: IMPLEMENT HORIZONTAL SCROLL -->
-							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50'>
-								<ul class="wrapper" style="width: {{calculatedWidth}}px;">
+							
+							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50' id="bill-days-new">
+								<ul class="wrapper" style="width: {{billData.billDaysWidth}}px;">
 									<li class="add-new" ng-click="openPostCharge(billData.bill_number)">
 										<a id="add-new-button" class="add-new-button">+ <span translate>ADD</span></a>
 									</li>

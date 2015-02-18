@@ -18,14 +18,14 @@ sntRover.service('RVreportsSrv', [
 			var deferred = $q.defer(),
 				url = '/api/reports';
 
-			if ( backToList ) {
-				deferred.resolve( this.cacheReportList );
+			if (backToList) {
+				deferred.resolve(this.cacheReportList);
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-						this.cacheReportList = data;
+						this.cacheReportList = data;						
 						deferred.resolve(this.cacheReportList);
-					}.bind(this), function(data){
+					}.bind(this), function(data) {
 						deferred.reject(data);
 					});
 			}
@@ -39,6 +39,20 @@ sntRover.service('RVreportsSrv', [
 				params = _.omit(params, 'id');
 
 			rvBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.fetchActiveUsers = function() {
+			var deferred = $q.defer(),
+				url = '/api/users/active';
+
+			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data){

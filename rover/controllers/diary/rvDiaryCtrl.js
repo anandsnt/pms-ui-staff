@@ -19,6 +19,7 @@ sntRover
 		'RVReservationBaseSearchSrv',
 		'$timeout',
 		'RVReservationSummarySrv',
+		'baseSearchData',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -35,7 +36,8 @@ sntRover
 			 propertyTime,
 			 $vault, 
 			 $stateParams, 
-			 RVReservationBaseSearchSrv, $timeout, RVReservationSummarySrv) {
+			 RVReservationBaseSearchSrv, 
+			 $timeout, RVReservationSummarySrv, baseSearchData) {
 
 		$scope.$emit('showLoader');
 
@@ -74,6 +76,14 @@ sntRover
 		};
 
 
+	//adjuested property date time (rounded to next 15min slot time)
+	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
+
+
+	/*--------------------------------------------------*/
+	/*BEGIN CONFIGURATION 
+	/*--------------------------------------------------*/
+	/*DATE UI CONFIG*/
 	
 		/**
 		* function to execute on date selection
@@ -235,11 +245,13 @@ sntRover
 				row_height_margin: 			0,
 				intervals_per_hour: 		4, 
 				ms_15:                      900000,
+				ms_hr: 						3600000,
 				px_per_ms: 					undefined,
 				px_per_int: 				undefined,
 				px_per_hr: 					undefined,
 				currency_symbol:            $rootScope.currencySymbol,
-				min_hours: 					isVaultDataSet ? vaultData.minHours : payload.display.min_hours
+				min_hours: 					isVaultDataSet ? vaultData.minHours : payload.display.min_hours,				
+				property_date_time:  		$scope.adj_property_date_time,
 			},
 
 			availability: {
@@ -322,7 +334,7 @@ sntRover
 		    rate:                        undefined,
 	    	room_type: 					(payload.filter.room_type_id) ? rvDiarySrv.data_Store.get('_room_type.values.id')[payload.filter.room_type_id] : undefined,
 	    	room_types:                 payload.filter.room_type,
-		    show_all_rooms: 			'off',
+		    show_all_rooms: 			'off',		    
 		    toggleHoursDays: function() {
 	    		this.reservation_format = (this.reservation_format === 'h') ? 'd' : 'h';
 
@@ -590,7 +602,7 @@ sntRover
 						$scope.dateOptions.minDate = null;
 						
 						if(originalRow.id !== row_data.id) {
-							saveReservation(row_item_data, row_data);
+							$scope.saveReservation(row_item_data, row_data);
 						}
 						else {
 							$scope.resetEdit();
@@ -1104,7 +1116,7 @@ sntRover
 	var callAvailabilityAPI = function(){
 		var params = getAvailabilityCallingParams(),
 			filter = $scope.gridProps.filter;
-		
+
 		if(filter.rate_type == 'Corporate' && !filter.rate) {			
 			//if Rate type select box is not open, we have to
 			openRateTypeSelectBox();
@@ -1176,16 +1188,24 @@ sntRover
 	var getAvailabilityCallingParams = function() {		
 		var filter 		= _.extend({}, this.filter),
 			time_span 	= Time({ hours: this.display.min_hours }), 
-			start_date 	= new Date(this.display.x_n),
-			getIndex    = filter.arrival_times.indexOf(filter.arrival_time),
+			start_date 	= new Date(this.display.x_n);
+			start_date.setHours(0, 0, 0);
+			
+
+		var	getIndex    = filter.arrival_times.indexOf(filter.arrival_time),
 			start_time 	= new Date((getIndex * 900000) + start_date.getTime()).toComponents().time,
+
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
 							 start_time.hours,
 							 start_time.minutes,
-							 0, 0),
-			end = new Date(start.getFullYear(),
+							 0, 0);
+			var selected_hour_min = $scope.gridProps.filter.arrival_time.split(":"),
+					hour = selected_hour_min[0],
+					min  = selected_hour_min[1];
+			start.setHours(hour, min)
+		var end = new Date(start.getFullYear(),
 						   start.getMonth(),
 						   start.getDate(),
 						   start.getHours()  + time_span.hours,
@@ -1194,14 +1214,27 @@ sntRover
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
 			rate_type = filter.rate_type,			
 			account_id = (filter.rate_type == 'Corporate' && filter.rate && filter.rate != '' ) ? filter.rate.id : undefined, 
-			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding
+			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding			
+	
+			
+			if(start.isOnDST()){
+				/*var selected_hour_min = $scope.gridProps.filter.arrival_time.split(":"),
+					hour = selected_hour_min[0],
+					min  = selected_hour_min[1];
+				start.setHours(hour, min);*/
+				console.log('ys hhh ' + start.getDSTDifference());
+				//start.setMinutes(start.getMinutes() - start.getDSTDifference());
+			}
+			if(end.isOnDST()){
+				//end.setMinutes(end.getMinutes() - end.getDSTDifference());
+			}
+
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
 				start = new Date(this.availability.resize.current_arrival_time);
 				end = new Date(this.availability.resize.current_departure_time);
-			}	
+			}
 
-		
 		var paramsToReturn = {
 			start_date: start,
 			end_date: end,
@@ -1254,13 +1287,12 @@ sntRover
     		$scope.gridProps.stats = data.availability_count;
 
 			$scope.gridProps.display.x_0 = $scope.gridProps.viewport.row_header_right;	
-
 			
 			//Resetting as per CICO-11314
 			if ( !!_.size($_resetObj) ) {
 				$_resetObj.callback();
-			} else {				
-
+			} 
+			else {	
 				$scope.clearAvailability();
 				$scope.resetEdit();	
 				$scope.renderGrid();				
@@ -1510,17 +1542,24 @@ sntRover
 			openMessageShowingPopup();
 			return;
 		}
-		var params = getReservationTransferParams (reservation, newValue)
-		var options = {
-    		params: 			params,
-    		successCallBack: 	successCallBackOfDateSelectedInEditMode,	 
-    		failureCallBack: 	failureCallBackOfSelectDateInEditMode,
-    		successCallBackParameters:{
-				chosenDate : newValue,
-				oldGridProps: util.deepCopy ($scope.gridProps),	
-	    	}      		
-	    }
-	    $scope.callAPI(rvDiarySrv.checkAvailabilityForReservationToA_Date, options);
+		var current_date = $scope.gridProps.filter.arrival_date;
+		// we will allow only if there is any change in date
+		if(newValue.getFullYear() !== current_date.getFullYear() || 
+			newValue.getMonth() !== current_date.getMonth() ||
+			newValue.getDay() !== current_date.getDay()) {	
+
+			var params = getReservationTransferParams (reservation, newValue)
+			var options = {
+	    		params: 			params,
+	    		successCallBack: 	successCallBackOfDateSelectedInEditMode,	 
+	    		failureCallBack: 	failureCallBackOfSelectDateInEditMode,
+	    		successCallBackParameters:{
+					chosenDate : newValue,
+					oldGridProps: util.deepCopy ($scope.gridProps),	
+		    	}      		
+		    }
+		    $scope.callAPI(rvDiarySrv.checkAvailabilityForReservationToA_Date, options);
+		}
 	}.bind($scope.gridProps);
 
 	/**
@@ -1551,7 +1590,6 @@ sntRover
     $scope.resetEverything = function() {
     	var _sucessCallback = function(propertyTime) {
 
-
 	    	var propertyDate = new tzIndependentDate( propertyTime.hotel_time.date );
 			propertyDate.setHours(0, 0, 0);
 
@@ -1576,8 +1614,11 @@ sntRover
 			};
 
 			$scope.gridProps.filter.arrival_date = propertyDate;
+			//changing the display date in calendar also	
+			changeCalendarDate ($scope.gridProps.filter.arrival_date);
 			$scope.gridProps.display.min_hours = 4;
-
+			//resetting the reservation data, that set during transfrer
+			resetTheDataForReservationMoveFromOneDateToAnother ();
 			if(!$scope.$$phase) {	
 				$scope.$apply();
 			}	    	
@@ -1616,7 +1657,7 @@ sntRover
     	}
     }
 
-	var saveReservation = function(reservation, roomDetails){
+	$scope.saveReservation = function(reservation, roomDetails){
 		var params = formReservationParams(reservation, roomDetails)
 		var options = {
     		params: 			params,
@@ -1905,6 +1946,7 @@ sntRover
         }
     };
 
+
     var autoCompleteSelectHandler = function(event, ui) {	
     	$scope.gridProps.filter.rate = ui.item;    	
         $scope.$apply();      
@@ -1921,10 +1963,32 @@ sntRover
         select: autoCompleteSelectHandler
     };
 
-    /**
-    * when destroying the diary state, we have to wipe out some events, data..
-    */
-    $scope.$on("$destroy", function(event){
-    	
-    });
+    var timeoutforLine;
+    var currentTimeLineChanger = function(){
+    	timeoutforLine = setTimeout(function(){
+	    	//adjuested property date time (rounded to next 15min slot time)
+	    	var newTime = new tzIndependentDate($scope.adj_property_date_time.start_date);
+	    	
+	    	newTime.setMinutes(newTime.getMinutes() + 15);
+			$scope.adj_property_date_time.start_date = newTime.getTime();
+			$scope.gridProps.display.property_date_time = $scope.adj_property_date_time;
+			$scope.gridProps.display = util.deepCopy($scope.gridProps.display);
+			$scope.renderGrid();
+			currentTimeLineChanger();
+    	}, ($scope.gridProps.display.ms_hr / ($scope.gridProps.display.intervals_per_hour)))
+
+		
+	};
+	currentTimeLineChanger();
+	/**
+	* Destroy event of scope, , we have to wipe out some events, data..
+	*/
+	$scope.$on("$destroy", function(){
+
+		//clearing the red line timeout
+		if(timeoutforLine){
+			clearTimeout(timeoutforLine);
+		}
+	});
+	
 }]);

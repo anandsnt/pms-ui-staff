@@ -68,9 +68,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	url: '/checkinSuccess',
 	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
 	 	title: 'Status - Check-in'
+	 }).state('checkinArrival', {
+	 	url: '/checkinArrival',	 	
+	 	controller:'checkinArrivalDetailsController',
+	 	templateUrl: '/assets/checkin/partials/MGM/arrivalDetails.html',
+	 	title: 'Arrival Details - Check-in'
 	 });
-
-
 	 //room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {
@@ -91,7 +94,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     	url: '/tripDetails',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Pre Check-in'
-	});
+	}).state('preCheckinStatus', {
+		url: '/preCheckinStatus',
+		templateUrl: '/assets/preCheckin/partials/MGM/preCheckinStatus.html',
+		controller : 'preCheckinStatusController',
+		title: 'Status - Pre Check-In'
+	 });
 
 
 }]);

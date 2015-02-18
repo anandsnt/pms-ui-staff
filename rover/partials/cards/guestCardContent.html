@@ -2,6 +2,7 @@
     <div id="guest-card-content" class="card-tabs card-search card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-if="!searchMode" ng-class="UICardContentCls('guest-card')">
         <!-- Guest Card tabs navigation -->
 
+
         <ul role="tablist" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all card-tabs-nav" id="guest-card-tabs-nav" class="card-tabs-nav">
             <li aria-selected="true" aria-labelledby="guest-contact" aria-controls="contact-info" tabindex="0" role="tab" class="ui-state-default ui-corner-top ui-tabs-active" ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
                 <a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information </a>
@@ -35,36 +36,35 @@
             <!-- Guest Card Results listing -->
             <div class="wrapper" ng-controller="guestResults" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
                 <ul id="search-guests-results" class="search-results">
-                    <li class="reservation" ng-repeat="guest in guests">
+                    <li class="reservation identify-guest" ng-repeat="guest in guests">
                         <a ng-click="selectGuest(guest, $event)">
                             <figure class="guest-image">
                                 <img ng-src="{{ guest.image }}" alt="" />
+                                <span ng-show="guest.vip" class="vip">VIP</span>
                             </figure>
-                            <div class="data">
+                            <div class="data" ng-class="{'no-stay': guest.stayCount == 0}">
                                 <h2>
-                                    <span class="no-right-margin" ng-bind-html="'{{guest.firstName}}' | highlight:searchData.guestCard.guestFirstName:false">
-                                    </span>
-                                    <span ng-bind-html="'{{ guest.lastName }}' | highlight:searchData.guestCard.guestLastName:false">
-                                    </span>
+                                    <span ng-bind-html="'{{guest.firstName}}' | highlight:searchData.guestCard.guestFirstName:false"></span>
+                                    <span ng-bind-html="'{{ guest.lastName }}' | highlight:searchData.guestCard.guestLastName:false"></span>
                                 </h2>
+                                <span class="stay-count" ng-if="guest.stayCount > 1">{{ guest.stayCount }} stays</span>
+                                <span class="stay-count" ng-if="guest.stayCount == 1">{{ guest.stayCount }} stay</span>
                                 <span class="confirmation" ng-if="guest.address.postalCode != '' && guest.address.postalCode != null">{{ guest.address.postalCode}}</span>
                                 <span class="icons icon-location" ng-hide = "(guest.address.city == null || guest.address.city == '') && (guest.address.state =='' || guest.address.state == null)">
-                                    <span class="no-right-margin" ng-bind-html="'{{guest.address.city}}'|highlight:searchData.guestCard.guestCity:false"></span>
-                                    <span class="no-right-margin comma" ng-hide="guest.address.city == null || guest.address.city == '' || guest.address.state =='' || guest.address.state == null">, </span>
-                                    <span class="no-right-margin">{{ guest.address.state }}</span>
+                                    <span ng-bind-html="'{{guest.address.city}}'|highlight:searchData.guestCard.guestCity:false"></span>
+                                    <span ng-hide="guest.address.city == null || guest.address.city == '' || guest.address.state =='' || guest.address.state == null">, </span>
+                                    <span>{{ guest.address.state }}</span>
                                 </span>
                                 <span class="icons icon-phone" ng-hide="guest.phone == '' || guest.phone == null">{{ guest.phone }}</span>
+                                <span class="icons icon-email-grey" ng-bind-html="'{{guest.email}}' | highlight:searchData.guestCard.email:false" ng-hide="guest.email == '' || guest.email == null"></span>
                             </div>
-                            <div class="stays">
-                                <div class="count">
-                                    <span class="label">Stays</span>{{ guest.stayCount }}
-                                </div>
-                                <div class="last-stay">
-                                    <span class="label">Last</span>
-                                    {{ guest.lastStay.date | date: 'MMMM d, yyyy'}}
-                                    <strong>{{ guest.lastStay.room }}</strong>
-                                    <em>{{ guest.lastStay.roomType }}</em>
-                                </div>
+                            <div class="last-stay" ng-if="guest.stayCount > 0">
+                                <span class="label">
+                                    Last
+                                    <span class="date">{{ guest.lastStay.date | date: 'MMMM d, yyyy'}}</span>
+                                </span>
+                                <strong class="room">{{ guest.lastStay.room }}</strong>
+                                <em class="type">{{ guest.lastStay.roomType }}</em>
                             </div>
                         </a>
                     </li>

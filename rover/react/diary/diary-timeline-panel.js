@@ -31,11 +31,20 @@ var TimelinePanel = React.createClass({
 		this.props.iscroll.timeline.destroy();
 		this.props.iscroll.timeline = null;
 	},
-	shouldComponentUpdate: function(nextProps, nextState) {
+	componentWillReceiveProps: function(nextProps) {
+
+		var hops = Object.prototype.hasOwnProperty;
+		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
+  			this.setState({
+  				filter: nextProps.filter
+  			});	
+  		}
+	},
+	shouldComponentUpdate: function(nextProps, nextState) {		
 		if(this.props.viewport !== nextProps.viewport ||
 		   this.props.display !== nextProps.display ||
 		   !this.props.currentResizeItem && nextProps.currentResizeItem ||
-		   this.props.currentResizeItem) {
+		   this.props.currentResizeItem || this.props.filter !== nextProps.filter ) {
 			return true;
 		} else {
 			return false;

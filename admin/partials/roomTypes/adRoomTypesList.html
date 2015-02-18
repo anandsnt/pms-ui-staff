@@ -11,7 +11,7 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 			<div id="new-form-holder"></div>
-			<span id="new-form-holder" class="grid" ng-show="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
+			<span id="new-form-holder" class="grid" ng-if="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
 			<table id="brands" class="grid " ng-table="tableParams" template-pagination="nil">
 				<thead>
 					<tr>

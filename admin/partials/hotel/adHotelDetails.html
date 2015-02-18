@@ -32,8 +32,8 @@
 			</div>
 
 			<div class="entry">
-				<label for="hotel-zipcode"> ZipCode <strong>*</strong> </label>
-				<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="yes" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
+				<label for="hotel-zipcode"> ZipCode</label>
+				<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
 			</div>
 
 			<div class="entry">
@@ -217,6 +217,10 @@
 			<div class="entry">
 				<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 				<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
+			</div>
+			<div class="entry" ng-hide="isAdminSnt">
+				<label for="auto-logout"> Password Expiry [Days] <strong>*</strong> </label>
+				<input type="text" ng-model="data.password_expiry" value="{{data.password_expiry}}" required="yes" placeholder="Enter password expiry delay">
 			</div>
 			<div class="entry date has-datepicker" ng-if="isAdminSnt">
 				<label for="auto-logout"> PMS Start Date  </label>

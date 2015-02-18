@@ -1,0 +1,14 @@
+<div class="faux-select-wrap" ng-class="{ open: !hidden }">
+	<!-- When single checkbox selected <div class="faux-select">{Option}</div> -->
+	<!-- When multiple checkboxes selected <div class="faux-select">{count} selected ...</div> -->
+	<div class="faux-select" ng-click="fauxToggle()">{{ fauxTitle }}</div>
+
+	<!-- Remove class "hidden" when ".faux-select" clicked -->
+	<div class="faux-select-options" ng-class="{ hidden: hidden }" ng-click="fauxOptionChosen()">
+		<label class="checkbox inline" ng-repeat="item in source">
+			<span class="icon-form icon-checkbox" ng-class="{'checked' : item.selected}"></span>
+			<input type="checkbox" ng-model="item.selected">
+			{{ item.itemName }}
+		</label>
+	</div>
+</div>

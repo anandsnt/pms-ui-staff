@@ -25,6 +25,10 @@ var GridRowItemDrag = React.createClass({
 
 		e.stopPropagation();
 		e.preventDefault();	
+		e = this.isTouchEnabled ? e.changedTouches[0] : e;
+
+		document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
+		document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 
 		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 
@@ -244,7 +248,7 @@ var GridRowItemDrag = React.createClass({
 
 			var commonFactor= ((((cFactor) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
 				newArrival  = (commonFactor * fifteenMin);			
-			
+
 			var diff = newArrival - model.arrival;		
 
 			var state_to_set = {			
@@ -257,14 +261,16 @@ var GridRowItemDrag = React.createClass({
 	            state_to_set.left = left;			
 	            model.arrival = newArrival;
 	            model.departure = model.departure + diff;
-            }                  
+            }               
+
 
 			this.setState({
 				currentResizeItem: 	model,
 				resizing: true			
 			}, function() {
 				props.__onResizeCommand(model);
-			});			
+			});	
+					
 			this.setState(state_to_set);
 		}
 	},
@@ -274,7 +280,6 @@ var GridRowItemDrag = React.createClass({
 		e.preventDefault();
 		
 		e = this.isTouchEnabled ? e.changedTouches[0] : e;
-
 		var state = this.state, 
 			props = this.props,
 			item = this.state.currentDragItem,

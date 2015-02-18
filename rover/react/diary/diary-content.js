@@ -232,7 +232,7 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter
-  			});			
+  			});	
   		}
 
   		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {  

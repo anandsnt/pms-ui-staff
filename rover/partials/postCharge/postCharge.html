@@ -32,7 +32,7 @@
 				<ul id="search-item-results" class="wrapper">
 					<li id="items-list" ng-repeat="each in fetchedItems" ng-show="each.show" ng-click="addItem(each)">
 						<a class="button white">
-							<span ng-bind-html="'{{ each.item_name }}' | highlight:query:false"></span>
+							<span ng-bind-html="{{convertToJSONString(each.item_name)}} | highlight:query:false"></span>
 							<span class="price">
 								{{ currencySymbol }} <span class="value">{{ each.unit_price | number : 2 }}</span>
 							</span>

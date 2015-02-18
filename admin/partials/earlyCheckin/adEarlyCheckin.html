@@ -1,0 +1,212 @@
+<section id="replacing-div-first" class="content current" ng-click="">
+	<div data-view="EarlyCheckinView">
+		<section>
+			<header class="content-title float">
+				<h2 translate>EARLY_CHECKIN_UPSELL</h2>
+				<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()" translate>BACK</a>
+			</header>
+			<section class="content-scroll">
+				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+				<form name="upsell-early-checkin" method="post" id="upsell-early-checkin" class="form float" action="">
+					<div class="form-title full-width">
+						<h3><span translate>EARLY_CHECKIN_GENERAL</span> </h3>
+					</div>
+					<fieldset class="holder left">
+						<div></div>
+
+						<!-- Switch -->
+						<div class="entry">
+							<label for="early-checkin-upsell" translate>EARLY_CHECKIN_UPSELL</label>
+							<div id="div-early-checkin-upsell" class="switch-button single" ng-class="{ on : upsellData.is_early_checkin_allowed}"  ng-click="switchClicked()">
+								<input type="checkbox" value="10" name="late-checkout-upsell" id="late-checkout-upsell">
+								<span class="switch-icon"></span>
+
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="holder right">	
+						<!-- charge code -->
+						<ad-dropdown label="{{'CHARGE_CODE' | translate}}" label-in-drop-down="{{'CHARGE_CODE' | translate}}" list="charge_codes" selected-Id='upsellData.early_checkin_charge_code' selbox-class='placeholder'></ad-dropdown>
+					</fieldset>					
+						
+
+					<div class="form-title full-width">
+						<h3><span translate>EARLY_CHECKIN_UPSELL_WINDOWS</span> </h3>
+					</div>
+					<fieldset class='holder column full-width'>
+						<div></div>
+						<div class="entry early_checkin_upsell">
+							<label translate> EARLY_CHECKIN_START_TIME </label>
+							<div class="entry full-width float">
+								<div class="select select-col col1-3">
+
+									<select ng-options="hour for hour  in hours" ng-model="upsellWindows[0].hours">
+										<option  value="" translate>HH</option>
+									</select>
+
+								</div>
+
+								<div class="select select-col col1-3">
+
+									<select ng-options="minute for minute  in minutes" ng-model="upsellWindows[0].minutes">
+										<option  value="" translate>MM</option>
+									</select>
+
+								</div>
+								<div class="select select-col col1-3">
+									<select name="primetime" ng-model = "upsellWindows[0].meridiem" class="styled">
+										<option value="AM" translate>AM</option>
+										<option value="PM" selected="" translate>PM</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
+
+						<ad-textbox value="upsellWindows[0].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" styleclass="early_checkin_upsell"></ad-textbox>
+
+						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[0].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
+
+						<div class="entry early_checkin_upsell">
+							<label translate> EARLY_CHECKIN_START_TIME </label>
+							<div class="entry full-width float">
+								<div class="select select-col col1-3">
+
+									<select ng-options="hour for hour  in hours" ng-model="upsellWindows[1].hours" >
+										<option  value="" translate>HH</option>
+									</select>
+
+								</div>
+
+								<div class="select select-col col1-3">
+
+									<select ng-options="minute for minute  in minutes" ng-model="upsellWindows[1].minutes" >
+										<option  value="" translate>MM</option>
+									</select>
+
+								</div>
+								<div class="select select-col col1-3">
+									<select name="primetime" class="styled" ng-model="upsellWindows[1].meridiem">
+										<option value="AM" translate>AM</option>
+										<option value="PM" selected="" translate>PM</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
+						<ad-textbox value="upsellWindows[1].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" disabled="disableSecondOption" styleclass="early_checkin_upsell"></ad-textbox>
+
+						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[1].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
+
+						<div class="entry early_checkin_upsell">
+							<label translate> EARLY_CHECKIN_START_TIME </label>
+							<div class="entry full-width float">
+								<div class="select select-col col1-3">
+									<select ng-options="hour for hour  in hours" ng-model="upsellWindows[2].hours">
+										<option  value="" translate >HH</option>
+									</select>
+
+								</div>
+								<div class="select select-col col1-3">
+									<select ng-options="minute for minute  in minutes" ng-model="upsellWindows[2].minutes" ng-disabled="disableThirdOption">
+										<option  value="" translate >MM</option>
+									</select>
+
+								</div>
+								<div class="select select-col col1-3">
+									<select name="primetime" class="styled" ng-model="upsellWindows[2].meridiem">
+										<option value="AM" translate>AM</option>
+										<option value="PM" selected="" translate>PM</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
+
+						<ad-textbox value="upsellWindows[2].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" disabled="disableThirdOption" styleclass="early_checkin_upsell" ></ad-textbox>
+
+						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[2].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
+
+						<ad-textbox value="upsellData.number_of_early_checkins_per_day"   label = "{{'NUMBER_OF_EARLY_CHECKINS_PER_DAY' | translate}}" placeholder = "{{'TYPE_NUMBER' | translate}}" ></ad-textbox>
+
+					</fieldset>
+                    <div class="form-title full-width">
+						<h3><span translate>EARLY_CHECKIN_BY_RATE</span> </h3>
+					</div>
+
+					<div class="entry">
+							<label translate> EARLY_CHECKIN_START_TIME </label>
+							<div class="entry full-width float">
+								<div class="select select-col col1-3">
+									<select ng-options="hour for hour  in hours" ng-model="upsell_rate.hours">
+										<option  value="" translate >HH</option>
+									</select>
+
+								</div>
+								<div class="select select-col col1-3">
+									<select ng-options="minute for minute  in minutes" ng-model="upsell_rate.minutes" >
+										<option  value="" translate >MM</option>
+									</select>
+
+								</div>
+								<div class="select select-col col1-3">
+									<select name="primetime" class="styled" ng-model="upsell_rate.meridiem">
+										<option value="AM" translate>AM</option>
+										<option value="PM" selected="" translate>PM</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
+
+					<fieldset class='holder column full-width'>
+						
+						<ad-dropdown label-in-drop-down="{{'SELECT_RATE' | translate}}" list="rates" selected-id='upsell_rate.selected_rate_id' selbox-class="placeholder" options = "{'showOptionsIf': isRateAvailable}"></ad-dropdown>
+		
+						<div class='entry'>
+							<div class='early_checkin_add_rates'>
+								<button class='button green' id='add-room-type' ng-click="clickAddRoomType()" translate>
+									ADD_RATE
+								</button>
+							</div>
+						</div>
+						<div class='entry full-width' id='room-type-header'>
+							<div class='entry' ng-show="isRateSelected">
+								<label> <h4 translate>RATES</h4> </label>
+							</div>
+							<!-- <div class='entry' ng-show="upsellData.isRoomTypesSelectedFlag">
+								<label> <h4 translate>MAX_PER_DAY </h4> </label>
+							</div> -->
+							<div id='room-type-details' ng-repeat="rate in upsellData.early_checkin_rates">
+								
+								<div class="entry full-width room-type-details" >
+									<div class="entry">
+										<span class="align-text-center"> {{rate.name}} </span>
+									</div>
+									<div class="entry">
+										<!-- <span class="entry">
+											<ad-textbox value="roomType.max_late_checkouts" inputtype="number"></ad-textbox>
+										</span> -->
+										<span class="entry">
+											<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRate(rate.id,rate.name)"></a>
+										</span>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</fieldset>
+					
+					<div class="actions float">
+						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
+							CANCEL
+						</button>
+						<button type="button" id="save" class="button green" ng-click="saveClick()" translate>
+							SAVE_CHANGES
+						</button>
+					</div>
+				</form>
+			</section>
+		</section>
+	</div>
+</section>

@@ -298,6 +298,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/ibeaconSettings'
 		});
 
+		$stateProvider.state('admin.earlyCheckin', {
+			templateUrl: '/assets/partials/earlyCheckin/adEarlyCheckin.html',
+			controller: 'ADEarlyCheckinCtrl',
+			url : '/earlyCheckin'
+		});
+
 		$stateProvider.state('admin.iBeaconDetails', {
 			templateUrl: '/assets/partials/iBeaconSettings/adiBeaconDetails.html',
 			controller: 'ADiBeaconDetailsCtrl',
@@ -382,5 +388,11 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/stationary/adStationary.html',
 			controller: 'ADStationaryCtrl',
 			url : '/stationary'
+		});
+
+		$stateProvider.state('admin.analyticsSetup', {
+			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
+			controller: 'adAnalyticSetupCtrl',
+			url : '/analyticSetup'
 		});
 });

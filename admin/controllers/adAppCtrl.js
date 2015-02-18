@@ -415,7 +415,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				$scope.menuOpen = !$scope.menuOpen;
 				$scope.showSubMenu = false;
 			}
-
 		};
 
 		$scope.$on("changedSelectedMenu", function(event, menu) {
@@ -451,6 +450,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
+			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
+			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
+
 			setupLeftMenu();
 
 		};

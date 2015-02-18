@@ -505,7 +505,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 					"isSelected": true,
 					"is_primary":false,
 					"payment_type":"CC",
-					"payment_type_id": 1
+					"payment_type_id": 1,
+					"is_credit_card": true
+
 				};
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);

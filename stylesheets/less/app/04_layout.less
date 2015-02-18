@@ -784,6 +784,10 @@ body { overflow: hidden; }
 			&.dashboard { .hide; }
 		}
 
+		#refresh-data {
+			display: none;
+		}
+
 		&.no-filter-no-options { .show; }
 	}
 
@@ -801,7 +805,6 @@ body { overflow: hidden; }
 
 				.entry {
 					&.search { 
-						margin-right: 10px;
 						.calc-width(50, 10);
 					}
 
@@ -850,16 +853,26 @@ body { overflow: hidden; }
 				&.has-options {
 					.entry {
 						&.search { .calc-width(45, 50); }
-						&.options { .calc-width(55, 10); }
+						&.options {
+							float: left;
+							border-right: 1px solid rgba(0, 0, 0, 0.1);
+							padding-right: 10px;
+							.calc-width(55, 60);
+						}
 					}
 				}
 
 				&.single-option {
 					.entry {
 						&.search { .calc-width(60, 50); }
-						&.options { .calc-width(40, 10); }
+						&.options { .calc-width(40, 60); }
 					}
 				}
+			}
+
+			#refresh-data {
+				display: block;
+				margin-left: 10px;
 			}
 		}
 	}
@@ -893,13 +906,13 @@ body { overflow: hidden; }
 				&.has-options {
 					.entry {
 						&.search { .calc-width(50, 50); }
-						&.options { .calc-width(50, 10); }
+						&.options { .calc-width(50, 60); }
 					}
 				}
 
 				&.single-option {
 					.entry {
-						&.search { .calc-width(75, 50); }
+						&.search { .calc-width(75, 100); }
 						&.options { .calc-width(25, 10); }
 					}
 				}
