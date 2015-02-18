@@ -396,7 +396,6 @@ sntRover.controller('RVReportListCrl', [
                 // need to reorder the sort_by options
                 // for deposit report in the following order
                 if (reportList[i].title == 'Deposit Report') {
-                    return;
                     var reservationSortBy = angular.copy(reportList[i].sortByOptions[4]),
                         nameSortBy = angular.copy(reportList[i].sortByOptions[3]),
                         dateSortBy = angular.copy(reportList[i].sortByOptions[0]),
