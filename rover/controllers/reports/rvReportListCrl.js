@@ -430,7 +430,7 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].fromArrivalDate = untilDate;
                     reportList[i].untilArrivalDate = untilDateFuture;
 
-                    reportList[i].fromDepositDate = fromDate;
+                    reportList[i].fromDepositDate = untilDate;
                     reportList[i].untilDepositDate = untilDate;
                 } else {
                     // set the from and untill dates
