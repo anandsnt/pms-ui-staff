@@ -1,0 +1,21 @@
+<div class="data-holder">
+	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
+		<div class="form-title">
+			
+			<h3 ><span translate>ADD</span> </h3>
+			
+		</div>
+		<div class = "holder left">
+		     <ad-textbox styleclass="full-width actions_margin_top" value="emailData.email" name = "email" id = "email" label = "{{ 'EMAIL_LABEL' | translate }}" placeholder = "{{ 'EMAIL_PLACEHOLDER' | translate }}" required="yes" ></ad-textbox>
+		</div>
+		
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()" translate>
+				CANCEL
+			</button>
+			<button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveEmail()" translate>
+				SAVE_CHANGES
+			</button>
+		</div>
+	</form>
+</div>
