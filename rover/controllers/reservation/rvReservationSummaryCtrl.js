@@ -275,7 +275,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 
 		var setCreditCardFromList = function(index) {
-			$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value;
+			//Value of $scope.reservationData.selectedPaymentId is hold by cardList.value or cardList.id
+			$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value || $scope.cardsList[index].id;
 			$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
 			$scope.renderData.endingWith = $scope.cardsList[index].mli_token;
 			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
