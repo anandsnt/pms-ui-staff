@@ -14,14 +14,20 @@ sntRover.controller('RVReportListCrl', [
         // until date is business date and from date is a week ago
         // untill date fute is business date + 7, a week after
         var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
-            dateParts = businessDate.match(/(\d+)/g),
-            fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
-            untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
-            untilDateFuture = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] + 7),
-            yesterDay = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 1),
-            hasFauxSelect = false,
-            hasDisplaySelect = false,
-            hasMarketSelect = false,
+            dateParts    = businessDate.match(/(\d+)/g),
+
+            _year  = parseInt( dateParts[0] ),
+            _month = parseInt( dateParts[1] ) - 1,
+            _date  = parseInt( dateParts[2] ),
+
+            fromDate        = new Date(_year, _month, _date - 7),
+            untilDate       = new Date(_year, _month, _date),
+            untilDateFuture = new Date(_year, _month, _date + 7),
+            yesterDay       = new Date(_year, _month, _date - 1),
+
+            hasFauxSelect      = false,
+            hasDisplaySelect   = false,
+            hasMarketSelect    = false,
             hasGuaranteeSelect = false;
 
         /**
@@ -50,14 +56,24 @@ sntRover.controller('RVReportListCrl', [
          */
         var postProcess = function(reportList) {
 
-            // re-cal just it case (totally useless in my opinon)
+            // re-cal just in case (totally useless in my opinon)
             businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd');
-            dateParts = businessDate.match(/(\d+)/g);
-            fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7);
-            untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-            untilDateFuture = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] + 7);
-            hasFauxSelect = false;
+            dateParts    = businessDate.match(/(\d+)/g);
+
+            _year  = parseInt( dateParts[0] );
+            _month = parseInt( dateParts[1] ) - 1;
+            _date  = parseInt( dateParts[2] );
+
+            fromDate        = new Date(_year, _month, _date - 7);
+            untilDate       = new Date(_year, _month, _date);
+            untilDateFuture = new Date(_year, _month, _date + 7);
+            yesterDay       = new Date(_year, _month, _date - 1);
+
+            hasFauxSelect      = false,
+            hasDisplaySelect   = false,
+            hasMarketSelect    = false,
             hasGuaranteeSelect = false;
+
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
