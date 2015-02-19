@@ -4,7 +4,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	
 	BaseCtrl.call(this, $scope);	
-
 	// set a back button on header
 	$rootScope.setPrevState = {
 		title: $filter('translate')('STAY_CARD'),
@@ -62,7 +61,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	//To send track details on checkin button;
 	var swipedTrackDataForCheckin = {};
 
-	$scope.roomChargeEnabled = false;
+	//CICO-13667 default the button to green color
+	$scope.roomChargeEnabled = true;
 
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
@@ -176,6 +176,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 * on the basis of payment type
 		 */
 	$scope.setNoPostStatus = function(){
+		//CICO-13667 default the button to green color
 		if($scope.reservationBillData.reservation_status != "CHECKING_IN"){
 			$scope.roomChargeEnabled = false;
 		} else if($scope.reservationBillData.no_post == "true"){
@@ -183,7 +184,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		} else if($scope.reservationBillData.no_post == "false"){
 			$scope.roomChargeEnabled = true;
 		} else if($scope.reservationBillData.no_post == ""){
-			$scope.roomChargeEnabled = "";
+			$scope.roomChargeEnabled = true;
 		}
 
 		// else if($scope.reservationBillData.no_post == "" && $scope.reservationBillData.bills[0].credit_card_details.payment_type == "CC"){
