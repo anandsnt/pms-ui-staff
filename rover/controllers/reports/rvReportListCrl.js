@@ -410,18 +410,18 @@ sntRover.controller('RVReportListCrl', [
                 // need to reorder the sort_by options
                 // for deposit report in the following order
                 if (reportList[i].title == 'Deposit Report') {
-                    // var reservationSortBy = angular.copy(reportList[i].sortByOptions[4]),
-                    //     nameSortBy = angular.copy(reportList[i].sortByOptions[3]),
-                    //     dateSortBy = angular.copy(reportList[i].sortByOptions[0]),
-                    //     dueDateSortBy = angular.copy(reportList[i].sortByOptions[1]),
-                    //     paidDateSortBy = angular.copy(reportList[i].sortByOptions[2]);
+                    var reservationSortBy = angular.copy(reportList[i].sortByOptions[4]),
+                        nameSortBy = angular.copy(reportList[i].sortByOptions[3]),
+                        dateSortBy = angular.copy(reportList[i].sortByOptions[0]),
+                        dueDateSortBy = angular.copy(reportList[i].sortByOptions[1]),
+                        paidDateSortBy = angular.copy(reportList[i].sortByOptions[2]);
 
-                    // reportList[i].sortByOptions[0] = reservationSortBy;
-                    // reportList[i].sortByOptions[1] = nameSortBy;
-                    // reportList[i].sortByOptions[2] = dateSortBy;
-                    // reportList[i].sortByOptions[3] = null;
-                    // reportList[i].sortByOptions[4] = dueDateSortBy;
-                    // reportList[i].sortByOptions[5] = paidDateSortBy;
+                    reportList[i].sortByOptions[0] = reservationSortBy;
+                    reportList[i].sortByOptions[1] = nameSortBy;
+                    reportList[i].sortByOptions[2] = dateSortBy;
+                    reportList[i].sortByOptions[3] = null;
+                    reportList[i].sortByOptions[4] = dueDateSortBy;
+                    reportList[i].sortByOptions[5] = paidDateSortBy;
                 };
 
 
@@ -484,7 +484,6 @@ sntRover.controller('RVReportListCrl', [
             // un-select sort dir of others
             // and get a ref to the chosen item
             _.each(item.sortByOptions, function(each) {
-                console.log(each);
                 if (each && each.value != item.chosenSortBy) {
                     each.sortDir = undefined;
                 } else if (each && each.value == item.chosenSortBy) {
