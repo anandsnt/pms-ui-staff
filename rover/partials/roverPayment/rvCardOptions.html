@@ -10,7 +10,7 @@
 		</li>
 	</ul>
 	<!-- Exsiting cards - use only when they exsit -->
-	<div id="cc-exsiting-card" class="cards-list scrollable" ng-show="!addmode" ng-iscroll="cardsList" style="max-height:250px;height:auto;">
+	<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="!addmode" ng-iscroll="cardsList">
 		<div class="wrapper">
 
 			<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card"> <!-- Add class "primary" when selected -->
