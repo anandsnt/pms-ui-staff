@@ -8,7 +8,20 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<span class="grid" ng-show="isAddMode" ng-include="getTemplateUrl()"></span>
-			<table id="brands" class="grid ng-table" ng-table="tableParams" template-pagination="nil">
+
+            <span class="count-show">Show</span>
+			<div class="select table-count rates-table-count">
+				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
+			</div>
+			<span class="count-entries">entries</span>
+				
+			<div class="entry table-search">
+				<span class="search-text">Search</span>
+				<span class="icons icon-search" name="submit" type="submit"></span>
+				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+		    </div>
+
+			<table id="brands" class="grid" ng-table="tableParams" template-pagination="nil">
 				<thead>
 					<tr>
 						 
@@ -36,6 +49,53 @@
 						
 					</tr>
 				</tbody>
+                <tfoot>
+                	<td colspan="4">
+                		<div class = "pager">
+				        <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				        <span ng-show="totalCount==0">Showing 0 items</span>
+				        <ul class="ng-cloak">
+	              	        <li ng-repeat="page in pages"
+		                    ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                      <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                      <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                      <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                      <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                      <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                      <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	        </li>
+	                    </ul>
+	                    </div>
+                	</td>
+                </tfoot>
+                
+
 			</table>
 		</section>
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
+	</div>
 </section>
