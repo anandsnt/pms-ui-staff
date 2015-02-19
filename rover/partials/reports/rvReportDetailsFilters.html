@@ -99,7 +99,7 @@
                     <input id="chosenReportFromCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromArrivalDate" readonly>
                     <input id="chosenReportFromCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromArrivalDate" readonly>
                     <button ng-if="chosenReport.canRemoveArrivalDate" ng-class="{'visible': chosenReport.showRemove}" class="clear-query">
-                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate')">Clear query</span>
                     </button>
                 </div>
                 <label for="arrival-range-to">To</label>
@@ -107,7 +107,7 @@
                     <input id="chosenReportToCancelDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilArrivalDate" readonly>
                     <input id="chosenReportToCancelDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilArrivalDate" readonly>
                     <button ng-if="chosenReport.canRemoveArrivalDate" ng-class="{'visible': chosenReport.showRemove}" class="clear-query">
-                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromArrivalDate', 'untilArrivalDate')">Clear query</span>
                     </button>
                 </div>
             </div>

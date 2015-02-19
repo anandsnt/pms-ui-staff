@@ -152,6 +152,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( !!item[first.from] && !!item[first.until] && (!!item[second.from] || !!item[second.until]) ) {
 					item['showRemove'] = true;
 				};
+
+				$scope.$apply();
 			};
 
 			// "Booking Source & Market Report"
