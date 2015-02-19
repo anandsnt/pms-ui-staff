@@ -143,8 +143,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			markets: []
 		};
 
-		$scope.touchedReport = function(i) { console.log(i) };
 
+		// logic to re-show the remove date button
 		$scope.showRemoveDateBtn = function() {
 
 			// default handler for when to show the delete button again
