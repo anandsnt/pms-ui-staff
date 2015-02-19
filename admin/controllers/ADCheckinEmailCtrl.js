@@ -9,9 +9,10 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   $scope.isLoading = true;
 
   BaseCtrl.call(this, $scope);
+  ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
   $scope.init = function(){
-      $scope.emailDatas = {};
+      $scope.emailDatas = {};      
   };
 
   $scope.init();
@@ -20,63 +21,72 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   * To show email list
   *
   */
-  $scope.showSendEmailOptions = function(){
+  $scope.fetchTableData = function($defer, params){
+    $scope.selectAllOption = false;
   	$scope.emailTitle = 'Guests Checking In';
     $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
-  	$scope.selectAllOption = false;
+    var getParams = $scope.calculateGetParams(params);  
+    getParams.id = 'checkin';
     var fetchEmailListSuccessCallback = function(data) {
-         $scope.isLoading = false;
+        $scope.isLoading = false;
         $scope.$emit('hideLoader');
+        $scope.currentClickedElement = -1;
+
+        $scope.totalCount = parseInt(data.total_count);
+        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);   
+        
+
+        $scope.currentPage = params.page();     
         $scope.emailDatas  = data.due_out_guests;
-        angular.forEach($scope.emailDatas,function(item, index) {
-           item.is_selected = false;
 
-              // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-              $scope.tableParams = new ngTableParams({
-              page: 1,            // show first page
-              count: $scope.emailDatas.length,    // count per page - Need to change when on pagination implemntation
-              sorting: {
-                  name: 'asc'     // initial sorting
-              }
-          }, {
-              total: $scope.emailDatas.length, // length of data
-              getData: function($defer, params) {
-                  // use build-in angular filter
-                  var orderedData = params.sorting() ?
-                  $filter('orderBy')($scope.emailDatas, params.orderBy()) :
-                  $scope.emailDatas;
-                  $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-              }
-          });
-
-          });
+        params.total($scope.totalCount);
+        $scope.data=$scope.emailDatas;
+        $defer.resolve($scope.data);  
+        $scope.isAllOptionsSelected();
+  };  
+  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
   };
-  $scope.emailDatas =[];
-  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':'checkin'},fetchEmailListSuccessCallback);
 
-  };
-  $scope.showSendEmailOptions();
+$scope.loadTable = function(){
+    $scope.tableParams = new ngTableParams({
+            page: 1,  // show first page
+            count: $scope.displyCount, // count per page
+            sorting: {
+                first_name: 'asc' // initial sorting
+            }
+        }, {
+            total: 0, // length of data
+            getData: $scope.fetchTableData
+        }
+    );
+  }
+
+  $scope.loadTable();
+
+
+
 /*
   * To check if all options are all selected or not
   *
   */
   $scope.isAllOptionsSelected = function(){
-    var status = true;
+    var selectedCount = false;
     $scope.disableSave = true;
     if($scope.emailDatas.length ==0){
       return false;
     }
      angular.forEach($scope.emailDatas,function(item, index) {
-           if(item.is_selected === false){
-             status = false;
+           if(item.is_selected === true){
+             selectedCount++;
+             $scope.disableSave = false;
            }
            else
            {
-            $scope.disableSave = false;
+            
            }
        });
 
-     return status;
+     return $scope.emailDatas.length == selectedCount;
   };
 /*
   * To watch if all options are selcted 
@@ -87,7 +97,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
            item.is_selected = $scope.selectAllOption;
   });
   });
-  
+    
   $scope.backActionFromEmail = function(){
   	$state.go('admin.checkin');
   };
@@ -95,7 +105,6 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   * To toggle options
   *
   */
-
   $scope.toggleAllOptions = function(){
 
    var selectedStatus =  $scope.isAllOptionsSelected() ? false : true;
