@@ -1,6 +1,6 @@
 
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv','RVPaymentSrv', 
-	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv,RVPaymentSrv){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv','RVPaymentSrv', 'RVSearchSrv',
+	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv,RVPaymentSrv,RVSearchSrv){
 
 	
 	BaseCtrl.call(this, $scope);	
@@ -1071,8 +1071,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			else{
 				var stateParams = {'type': 'DUEOUT', 'from_page': 'DASHBOARD'};
 			}
-            $state.go('rover.search', stateParams);
-			//$state.go("rover.search");
+			if(RVSearchSrv.searchTypeStatus === undefined){
+				var stateParams = {'type': 'NORMAL_SEARCH', 'useCache': true};
+				$scope.reservationBillData.reservation_status = "CHECKEDOUT";
+				RVSearchSrv.updateRoomDetails($scope.reservationBillData.confirm_no, $scope.reservationBillData);
+			}
+			if(RVSearchSrv.totalSearchResults=='1'){
+				$state.go('rover.dashboard');
+			}
+			else{
+            	$state.go('rover.search', stateParams);
+			}
 		};
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
