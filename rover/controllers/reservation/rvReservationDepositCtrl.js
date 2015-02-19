@@ -518,5 +518,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.showCCPage = false;
 				$scope.cardSelected = true;
 	};
+	
+	// CICO-12488 : Handle initial case of change Payment type.
+	$scope.showHideCreditCard();
 
 }]);
