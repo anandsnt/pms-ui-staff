@@ -42,6 +42,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );	
 		
 
+		$scope.setScroller('room-status-filter');
 
 		/* ***** ***** ***** ***** ***** */
 
@@ -166,6 +167,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
+			$scope.refreshScroller('room-status-filter');
 		};
 
 		$scope.refreshData = function() {
