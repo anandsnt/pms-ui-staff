@@ -859,6 +859,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"ksn": swipedTrackDataForCheckin.RVCardReadTrack2KSN,
 						"pan": swipedTrackDataForCheckin.RVCardReadMaskedPAN,
 						"card_name": swipedTrackDataForCheckin.RVCardReadCardName,
+						"name_on_card": swipedTrackDataForCheckin.RVCardReadCardName,
 						"card_expiry": cardExpiry,	
 						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
 						"do_not_cc_auth" : true,
