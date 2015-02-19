@@ -546,6 +546,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.parsedApiFor == 'Login and out Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
+
 					_eachItem    = angular.copy( apiResponse[i] );
 					_customItems = [];
 					_cancelRes   = {};
@@ -659,8 +660,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			} else if ($scope.parsedApiFor == 'Arrival' || $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Cancellation & No Show') {
 
-
-
 				var itemCopy   = {};
 				var customData = [];
 				var guestData  = {};
@@ -722,8 +721,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( checkNote(itemCopy) ) {
 						noteData = {
 							isNoteData : true,
-							note       : angular.copy( itemCopy['notes'] )
-						}
+							notes      : angular.copy( itemCopy['notes'] )
+						};
+						customData.push( noteData );
 					};
 
 					// IF: we found custom items

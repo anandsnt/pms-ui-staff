@@ -144,39 +144,94 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 
+		// logic to re-show the remove date button
 		$scope.showRemoveDateBtn = function() {
-			var cancellationReport = _.find($scope.reportList, function(item) {
-				return item.title == 'Cancellation & No Show';
-			});
 
-			if (!!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] && (!!cancellationReport['fromCancelDate'] || !!cancellationReport['untilCancelDate'])) {
-				cancellationReport['showRemove'] = true;
+			// default handler for when to show the delete button again
+			var defaultHandler = function(item, first, second) {
+				if ( (!!item[first.from] && !!item[first.until]) && (!!item[second.from] && !!item[second.until]) ) {
+					item['showRemove'] = true;
+				}
+
+				$scope.$apply();
 			};
 
-			if (!!cancellationReport['fromCancelDate'] && !!cancellationReport['untilCancelDate'] && (!!cancellationReport['fromDate'] || !!cancellationReport['untilDate'])) {
-				cancellationReport['showRemove'] = true;
-			};
-
-			var sourceReport = _.find($scope.reportList, function(item) {
-				return item.title == 'Booking Source & Market Report';
-			});
-
-			if (sourceReport) {
+			// "Booking Source & Market Report"
+			// custom handler for when to show the delete button again
+			var sourceReportHandler = function(item, first, second) {
 				// CICO-10200
 				// If source markets report and a date is selected, have to enable the delete button to remove the date in case both days are selected i.e. the date range has both upper and
 				// lower limits
-				if (!!sourceReport['fromArrivalDate'] && !!sourceReport['untilArrivalDate']) {
-					sourceReport['showRemoveArrivalDate'] = true;
+				if ( !!item['fromArrivalDate'] && !!item['untilArrivalDate'] ) {
+					item['showRemoveArrivalDate'] = true;
 
 				}
 
-				if (!!sourceReport['fromDate'] && !!sourceReport['untilDate']) {
-					sourceReport['showRemove'] = true;
+				if ( !!item['fromDate'] && !!item['untilDate'] ) {
+					item['showRemove'] = true;
 				};
 
 				$scope.$apply();
-			}
+			};
+
+			// array of all in use prop name sets
+			// any future addintions must be added here
+			var propNames = [{
+				from: 'fromDate',
+				until: 'untilDate'
+			}, {
+				from: 'fromArrivalDate',
+				until: 'untilArrivalDate'
+			}, {
+				from: 'fromCancelDate',
+				until: 'untilCancelDate'
+			}, {
+				from: 'fromDepositDate',
+				until: 'untilDepositDate'
+			}];
+
+			// loop over each report
+			_.each($scope.reportList, function(item) {
+
+				// as of now each report can have atmost
+				// two pair of date range sets - each having 'from' and 'until'
+				var setOne = {};
+				var setTwo = {};
+
+				// loop over the propNames and
+				// create setOne and setTwo
+				_.each(propNames, function(prop) {
+
+					// if found a matching prop name in this report
+					// should be atmost two at the moment
+					if ( item.hasOwnProperty(prop.from) && item.hasOwnProperty(prop.until) ) {
+
+						// if setOne is empty fill in that
+						if ( _.isEmpty(setOne) ) {
+							setOne.from = prop.from;
+							setOne.until = prop.until;
+						}
+						// else fill in setTwo
+						else {
+							setTwo.from = prop.from;
+							setTwo.until = prop.until;
+						};
+
+					};
+				});
+
+				// both sets are filled.
+				// TODO: in future we may have a single set rather than a pair
+				if ( !_.isEmpty(setOne) && !_.isEmpty(setTwo) ) {
+					if ( item.title == 'Booking Source & Market Report' ) {
+						sourceReportHandler( item, angular.copy(setOne), angular.copy(setTwo) )
+					} else {
+						defaultHandler( item, angular.copy(setOne), angular.copy(setTwo) );
+					}
+				};
+			});
 		};
+
 
 		$scope.clearDateFromFilter = function(list, key1, key2, property) {
 			if (list.hasOwnProperty(key1) && list.hasOwnProperty(key2)) {
@@ -340,8 +395,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				_.each($scope.reportsState.markets, function(market){
 					market.selected = !!item.allMarketsSelected;
 				});
-
-			}else{
+			} else {
 				var selectedData = _.where($scope.reportsState.markets, {
 					selected: true
 				});
@@ -370,9 +424,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (selectedData.length == 0) {
 				item.guaranteeTitle = "Select";
 			} else if (selectedData.length == 1) {
-				item.guaranteeTitle = selectedData[0].guarantee_type;
+				item.guaranteeTitle = selectedData[0].name;	
 			} else if (selectedData.length > 1) {
-				item.guaranteeTitle = selectedData.length + "Selected";
+				item.guaranteeTitle = selectedData.length + " Selected";
 			}
 		}
 
@@ -621,12 +675,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				ary = [];
 				_.each(chosenReport.guaranteeTypes, function(type) {
 					if (type.selected) {
-						ary.push(type.guarantee_type);
+						ary.push(type.name);
 					};
 				});
-
-				key = chosenReport.hasGuaranteeType.value.toLowerCase();
-				params[key] = angular.copy(ary);
+				params['include_guarantee_type[]'] = angular.copy( ary );
 			};
 
 			// include include deposit paid
@@ -705,13 +757,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			thisReport = item;
 		};
 
-		$scope.userAutoCompleteOptions = {
-			delay: 0,
-			position: {
-				my: 'left bottom',
-				at: 'left top',
-				collision: 'flip'
-			},
+		var userAutoCompleteCommon = {
 			source: function(request, response) {
 				// delegate back to autocomplete, but extract the last term
 				response($.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)));
@@ -753,8 +799,22 @@ sntRover.controller('RVReportsMainCtrl', [
 			focus: function(event, ui) {
 				return false;
 			}
+		}
+		$scope.listUserAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left bottom',
+				at: 'left top',
+				collision: 'flip'
+			}
+		}, userAutoCompleteCommon);
+		$scope.detailsUserAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left bottom',
+				at: 'right+20 bottom',
+				collision: 'flip'
+			}
+		}, userAutoCompleteCommon);
 
-		};
 
 
 
@@ -763,13 +823,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				item.chosenIncludeComapnyTaGroup = null;
 			};
 		};
-		$scope.comTaGrpAutoCompleteOptions = {
-			position: {
-				my: 'left bottom',
-				at: 'left top',
-				collision: 'flip'
-			},
-			minLength: 3,
+		var ctgAutoCompleteCommon = {
 			source: function(request, response) {
 				RVreportsSrv.fetchComTaGrp(request.term)
 					.then(function(data) {
@@ -801,6 +855,20 @@ sntRover.controller('RVReportsMainCtrl', [
 				return false;
 			}
 		}
+		$scope.listCtgAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left top',
+				at: 'left bottom',
+				collision: 'flip'
+			}
+		}, ctgAutoCompleteCommon);
+		$scope.detailsCtgAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left bottom',
+				at: 'right+20 bottom',
+				collision: 'flip'
+			}
+		}, ctgAutoCompleteCommon);
 
 	}
 ]);

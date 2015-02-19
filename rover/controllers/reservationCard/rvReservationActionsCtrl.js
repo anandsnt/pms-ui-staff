@@ -182,11 +182,10 @@ sntRover.controller('reservationActionsController', [
 		$scope.depositDetails.isFromCheckin = false;
 		var paymentTypes = angular.copy($scope.reservationData.paymentTypes);
 		$scope.paymentTypes = paymentTypes;
-		$scope.reservationData.paymentTypes = [];
-		$scope.cardTypes = [];
+		$scope.creditCardTypes = [];
 		paymentTypes.forEach(function(paymentType,index) {
 	          if(paymentType.name === 'CC'){
-			     $scope.cardTypes.push(paymentType);
+			     $scope.creditCardTypes= paymentType.values;
 			  };
 		});
 

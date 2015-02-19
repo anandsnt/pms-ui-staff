@@ -11,6 +11,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		callback: 'goBackToStayCard',
 		scope: $scope
 	};
+	$scope.encoderTypes = [];
+
 
 	// Setup ng-scroll for 'registration-content' , 'bill-tab-scroller' , 'billDays'
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
@@ -796,16 +798,35 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			$scope.isSmartbandCreateWithKeyWrite = isSmartBandKeyCreationAlongWithKeyCreationEnabled();
-			ngDialog.open({
-			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
-			    controller: 'RVKeyEncodePopupCtrl',
-			    className: '',
-			    closeByDocument: false,
-			    scope: $scope
-			});
+			if($scope.reservationBillData.hotel_selected_key_system == 'SAFLOK_MSR' && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+				fetchEncoderTypes();
+			} else {
+				openKeyEncodePopup();
+			}
 		}
 	};
+
+	var openKeyEncodePopup = function(){
+		$scope.isSmartbandCreateWithKeyWrite = isSmartBandKeyCreationAlongWithKeyCreationEnabled();
+		ngDialog.open({
+		    template: '/assets/partials/keys/rvKeyEncodePopup.html',
+		    controller: 'RVKeyEncodePopupCtrl',
+		    className: '',
+		    closeByDocument: false,
+		    scope: $scope
+		});
+	}
+
+		//Fetch encoder types for SAFLOK_MSR
+	var fetchEncoderTypes = function(){
+		var encoderFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.encoderTypes = data;
+			openKeyEncodePopup();
+		};
+	    $scope.invokeApi(RVKeyPopupSrv.fetchActiveEncoders, {}, encoderFetchSuccess);
+	};
+
 
 	$scope.completeCheckinFailureCallback = function(data){
 
@@ -858,6 +879,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"et2": swipedTrackDataForCheckin.RVCardReadTrack2,
 						"ksn": swipedTrackDataForCheckin.RVCardReadTrack2KSN,
 						"pan": swipedTrackDataForCheckin.RVCardReadMaskedPAN,
+						"card_name": swipedTrackDataForCheckin.RVCardReadCardName,
 						"name_on_card": swipedTrackDataForCheckin.RVCardReadCardName,
 						"card_expiry": cardExpiry,	
 						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
