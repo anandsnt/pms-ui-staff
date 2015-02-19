@@ -149,9 +149,9 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// default handler for when to show the delete button again
 			var defaultHandler = function(item, first, second) {
-				if ( !!item[first.from] && !!item[first.until] && (!!item[second.from] || !!item[second.until]) ) {
+				if ( (!!item[first.from] && !!item[first.until]) && (!!item[second.from] && !!item[second.until]) ) {
 					item['showRemove'] = true;
-				};
+				}
 
 				$scope.$apply();
 			};
