@@ -5,14 +5,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					'RVDepositBalanceSrv',
 					'RVPaymentSrv',
 					'$stateParams',
-					'$filter',
+					'$filter','$timeout',
 		function($scope,
 				ngDialog,
 				$rootScope,
 				RVDepositBalanceSrv,
 				RVPaymentSrv,
 				$stateParams,
-				$filter){
+				$filter,$timeout){
 					
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);

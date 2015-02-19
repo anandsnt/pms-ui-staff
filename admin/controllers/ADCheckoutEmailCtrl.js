@@ -7,8 +7,8 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   $scope.errorMessage = '';
   $scope.successMessage = '';
   $scope.isLoading = true;
-
   BaseCtrl.call(this, $scope);
+    ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
   $scope.init = function(){
       $scope.emailDatas = {};
@@ -20,64 +20,78 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   * To show email list
   *
   */
-  $scope.showSendEmailOptions = function(){
+  $scope.showSendEmailOptions = function($defer, params){
     
     $scope.emailTitle = 'Guests Checking Out';
     $scope.saveButtonTitle = 'SEND CHECKOUT EMAIL';
   	$scope.selectAllOption = false;
+    var getParams = $scope.calculateGetParams(params);  
+    getParams.id = 'checkout';
+
     var fetchEmailListSuccessCallback = function(data) {
-         $scope.isLoading = false;
+        $scope.isLoading = false;
         $scope.$emit('hideLoader');
+        $scope.currentClickedElement = -1;
+
+        $scope.totalCount = parseInt(data.total_count);
+        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);   
+        
+
+        $scope.currentPage = params.page();     
         $scope.emailDatas  = data.due_out_guests;
+
+        params.total($scope.totalCount);
+        $scope.data=$scope.emailDatas;
+        $defer.resolve($scope.data);  
         angular.forEach($scope.emailDatas,function(item, index) {
-           item.is_selected = false;
+          item.is_selected = false;
 
-              // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-              $scope.tableParams = new ngTableParams({
-              page: 1,            // show first page
-              count: $scope.emailDatas.length,    // count per page - Need to change when on pagination implemntation
-              sorting: {
-                  name: 'asc'     // initial sorting
-              }
-          }, {
-              total: $scope.emailDatas.length, // length of data
-              getData: function($defer, params) {
-                  // use build-in angular filter
-                  var orderedData = params.sorting() ?
-                  $filter('orderBy')($scope.emailDatas, params.orderBy()) :
-                  $scope.emailDatas;
-                  $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-              }
-          });
+        });
 
-          });
-  };
-  $scope.emailDatas =[];
-  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':'checkout'},fetchEmailListSuccessCallback);
+        $scope.isAllOptionsSelected();
+
+    };
+    $scope.emailDatas =[];
+    $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
 
   };
-  $scope.showSendEmailOptions();
+  $scope.loadTable = function(){
+    // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+    $scope.tableParams = new ngTableParams({
+      page: 1,            // show first page
+      count: $scope.emailDatas.length,    // count per page - Need to change when on pagination implemntation
+      sorting: {
+          first_name: 'asc'     // initial sorting
+      }
+    }, {
+        total: $scope.emailDatas.length, // length of data
+        getData: $scope.showSendEmailOptions
+    });
+  };
+
+  $scope.loadTable();
+  
 /*
   * To check if all options are all selected or not
   *
   */
   $scope.isAllOptionsSelected = function(){
-    var status = true;
+    var selectedCount = false;
     $scope.disableSave = true;
     if($scope.emailDatas.length ==0){
       return false;
     }
      angular.forEach($scope.emailDatas,function(item, index) {
-           if(item.is_selected === false){
-             status = false;
+           if(item.is_selected === true){
+             selectedCount++;
+             $scope.disableSave = false;
            }
            else
            {
-            $scope.disableSave = false;
            }
        });
 
-     return status;
+     return $scope.emailDatas.length == selectedCount;
   };
 /*
   * To watch if all options are selcted 
@@ -114,7 +128,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   */
 
   $scope.sendMailClicked = function(){
-  	reservations = [];
+  	var reservations = [];
   	angular.forEach($scope.emailDatas,function(item, index) {
        if(item.is_selected)
          reservations.push(item.reservation_id)

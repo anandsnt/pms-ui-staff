@@ -424,7 +424,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (selectedData.length == 0) {
 				item.guaranteeTitle = "Select";
 			} else if (selectedData.length == 1) {
-				item.guaranteeTitle = selectedData[0].guarantee_type;
+				item.guaranteeTitle = selectedData[0].name;	
 			} else if (selectedData.length > 1) {
 				item.guaranteeTitle = selectedData.length + " Selected";
 			}

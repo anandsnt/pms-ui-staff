@@ -466,7 +466,7 @@ var tConvert = function(time){
 var tConvertToAPIFormat = function(hh, mm, ampm){
 	var time = "";
 	if(parseInt(mm) < 10){
-		mm = '0' + mm; 
+		mm = '0' + parseInt(mm); 
 	}
 	if(ampm == "PM"){
 		time = ( parseInt(hh) + 12) + ":" + mm;
