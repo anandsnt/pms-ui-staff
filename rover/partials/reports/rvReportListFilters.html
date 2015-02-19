@@ -22,11 +22,17 @@
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDepositDate" readonly>
         <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDepositDate" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDepositDate', 'untilDepositDate')">Clear query</span>
+        </button>
     </div>  
     <span class="span-to"> To </span>
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDepositDate" readonly>
         <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDepositDate" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDepositDate', 'untilDepositDate')">Clear query</span>
+        </button>
     </div>
 </div>
 
@@ -55,7 +61,7 @@
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromArrivalDate" readonly>
         <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromArrivalDate" readonly>
         <button ng-if="item.canRemoveArrivalDate" ng-class="{'visible': item.showRemove}" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromArrivalDate', 'untilArrivalDate')">Clear query</span>
         </button>
     </div>
     <span class="span-to"> To </span>
@@ -63,7 +69,7 @@
         <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilArrivalDate" readonly>
         <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilArrivalDate" readonly>
         <button ng-if="item.canRemoveArrivalDate" ng-class="{'visible': item.showRemove}" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromArrivalDate', 'untilArrivalDate', 'showRemove')">Clear query</span>
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromArrivalDate', 'untilArrivalDate')">Clear query</span>
         </button>
     </div>
 </div>
