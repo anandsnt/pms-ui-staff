@@ -20,6 +20,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.newCardAdded = false;
 		$scope.shouldShowWaiting = false;
 		$scope.isSwipedCardSave = false;
+		$scope.cardsList = [];
 		$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
 
 		$scope.depositData = {
