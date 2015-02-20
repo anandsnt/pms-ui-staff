@@ -12,14 +12,22 @@ sntRover.controller('RVReportListCrl', [
         });
 
         // until date is business date and from date is a week ago
+        // untill date fute is business date + 7, a week after
         var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
-            dateParts = businessDate.match(/(\d+)/g),
-            fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
-            untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]),
-            yesterDay = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]-1),
-            hasFauxSelect = false,
-            hasDisplaySelect = false,
-            hasMarketSelect = false,
+            dateParts    = businessDate.match(/(\d+)/g),
+
+            _year  = parseInt( dateParts[0] ),
+            _month = parseInt( dateParts[1] ) - 1,
+            _date  = parseInt( dateParts[2] ),
+
+            fromDate        = new Date(_year, _month, _date - 7),
+            untilDate       = new Date(_year, _month, _date),
+            untilDateFuture = new Date(_year, _month, _date + 7),
+            yesterDay       = new Date(_year, _month, _date - 1),
+
+            hasFauxSelect      = false,
+            hasDisplaySelect   = false,
+            hasMarketSelect    = false,
             hasGuaranteeSelect = false;
 
         /**
@@ -48,13 +56,24 @@ sntRover.controller('RVReportListCrl', [
          */
         var postProcess = function(reportList) {
 
-            // re-cal just it case (totally useless in my opinon)
+            // re-cal just in case (totally useless in my opinon)
             businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd');
-            dateParts = businessDate.match(/(\d+)/g);
-            fromDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7);
-            untilDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-            hasFauxSelect = false;
+            dateParts    = businessDate.match(/(\d+)/g);
+
+            _year  = parseInt( dateParts[0] );
+            _month = parseInt( dateParts[1] ) - 1;
+            _date  = parseInt( dateParts[2] );
+
+            fromDate        = new Date(_year, _month, _date - 7);
+            untilDate       = new Date(_year, _month, _date);
+            untilDateFuture = new Date(_year, _month, _date + 7);
+            yesterDay       = new Date(_year, _month, _date - 1);
+
+            hasFauxSelect      = false,
+            hasDisplaySelect   = false,
+            hasMarketSelect    = false,
             hasGuaranteeSelect = false;
+
 
             for (var i = 0, j = reportList.length; i < j; i++) {
 
@@ -122,6 +141,10 @@ sntRover.controller('RVReportListCrl', [
                     case 'Deposit Report':
                         reportList[i]['reportIconCls'] = 'icon-report icon-deposit';
                         reportList[i]['hasDateLimit'] = false;
+                        reportList[i]['canRemoveDate'] = true;
+                        reportList[i]['showRemove'] = true;
+                        reportList[i]['canRemoveArrivalDate'] = true;
+                        reportList[i]['showRemoveArrivalDate'] = true;
                         break;
 
                     case 'Occupancy & Revenue Summary':
@@ -416,21 +439,28 @@ sntRover.controller('RVReportListCrl', [
                 if (reportList[i].title == 'Arrival' || reportList[i].title == 'Departure') {
                     reportList[i].fromDate = untilDate;
                     reportList[i].untilDate = untilDate;
-                } else if(reportList[i].title == 'Occupancy & Revenue Summary'){
+                }
+                // for deposit report the arrival dates
+                // should be from today to +1 week
+                else if (reportList[i].title == 'Deposit Report') {
+                    reportList[i].fromArrivalDate = untilDate;
+                    reportList[i].untilArrivalDate = untilDateFuture;
+
+                    reportList[i].fromDepositDate = untilDate;
+                    reportList[i].untilDepositDate = untilDate;
+                } else if (reportList[i].title == 'Occupancy & Revenue Summary') {
                     //CICO-10202
                     reportList[i].fromDate = yesterDay;
                     reportList[i].untilDate = yesterDay;
-                }else {
+                } else {
                     // set the from and untill dates
                     reportList[i].fromDate = fromDate;
                     reportList[i].fromCancelDate = fromDate;
                     reportList[i].fromArrivalDate = fromDate;
-                    reportList[i].fromDepositDate = fromDate;
 
                     reportList[i].untilDate = untilDate;
                     reportList[i].untilCancelDate = untilDate;
                     reportList[i].untilArrivalDate = untilDate;
-                    reportList[i].untilDepositDate = untilDate;
                 };
             };
 
@@ -454,16 +484,15 @@ sntRover.controller('RVReportListCrl', [
             // un-select sort dir of others
             // and get a ref to the chosen item
             _.each(item.sortByOptions, function(each) {
-                console.log(each);
-                if ( each && each.value != item.chosenSortBy ) {
+                if (each && each.value != item.chosenSortBy) {
                     each.sortDir = undefined;
-                } else if ( each && each.value == item.chosenSortBy ) {
+                } else if (each && each.value == item.chosenSortBy) {
                     _sortBy = each;
                 }
             });
 
             // select sort_dir for chosen item
-            if ( !!_sortBy ) {
+            if (!!_sortBy) {
                 _sortBy.sortDir = true;
             };
         };

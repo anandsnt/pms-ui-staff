@@ -61,7 +61,7 @@
 			
 			<!-- New Card form - this is same as in {modals/pay-bill/card-attached.html}, lines 98-129 -->
 			<div class="payment-form for-deposit" id="set-payment" >
-				<div class="entry full-width" ng-show="shouldShowMakePaymentScreen" >
+				<div class="entry full-width" ng-hide="!shouldShowMakePaymentScreen || depositPaidSuccesFully" >
 					<label for="payment-type">Payment type</label>
 					<div class="select">
 						<select ng-disabled="depositPaidSuccesFully" name="payment-type" ng-model="depositBalanceMakePaymentData.payment_type" id="payment-type" class="placeholder" ng-change="changePaymentType()">
@@ -131,7 +131,7 @@
 				</div>
 		   
 				<!-- Reference field - use only when it exsits -->
-			     <div class="feedback" ng-show="shouldShowMakePaymentScreen && depositPaidSuccesFully">
+			     <div class="feedback no-top-border" ng-show="shouldShowMakePaymentScreen && depositPaidSuccesFully">
 	                <div class="notice success">Deposit paid!</div>
 	                <ul class="transaction">
 	                    <li ng-hide="authorizedCode.length === 0">
