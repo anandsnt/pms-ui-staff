@@ -1835,7 +1835,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.viewState.identifier = "UPDATED";
                     $scope.reservationData.is_routing_available = data.is_routing_available;
 
-                    $scope.reservationData.status = data.reservation_status || 'CHECKEDIN';
+                    $scope.reservationData.status = data.reservation_status;
 
                     if (nextState) {
                         if (!nextStateParameters) {
