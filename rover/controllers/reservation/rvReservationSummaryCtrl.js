@@ -44,6 +44,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 $scope.successPaymentList = function(data) {
             $scope.$emit("hideLoader");
             $scope.cardsList = data;
+            angular.forEach($scope.cardsList, function(card, key) {
+                card.value = card.id; //For common payment HTML to work - Payment modifications story
+                delete card.id;
+            });
         };
         $scope.fetchGuestCreditCards = function(){
         	if(typeof $scope.cardsList == 'undefined' && $scope.reservationData.guest.id !== null){
@@ -275,8 +279,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 
 		var setCreditCardFromList = function(index) {
-			//Value of $scope.reservationData.selectedPaymentId is hold by cardList.value or cardList.id
-			$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value || $scope.cardsList[index].id;
+			$scope.reservationData.selectedPaymentId = $scope.cardsList[index].value;
 			$scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
 			$scope.renderData.endingWith = $scope.cardsList[index].mli_token;
 			$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
