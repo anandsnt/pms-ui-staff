@@ -33,8 +33,12 @@ angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
       if(rejection.status === 503){
         $window.location.href = '/500';
       }
-      if(rejection.status === 502 || rejection.status === 504){
+      if(rejection.status === 502){
         $rootScope.showOWSError && $rootScope.showOWSError();
+        return;
+      }
+      if(rejection.status === 504){
+        $rootScope.showOWSError && $rootScope.showTimeoutError();
         return;
       }
       /*

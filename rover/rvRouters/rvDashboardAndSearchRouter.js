@@ -1,7 +1,7 @@
 angular.module('dashboardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
 
         $stateProvider.state('rover.search', {
-            url: '/search/:type/:from_page',
+            url: '/search/:type/:from_page/:useCache',
             templateUrl: '/assets/partials/search/rvSearchReservation.html', 
             controller: 'rvReservationSearchController',
             resolve: {
@@ -9,6 +9,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     var oldType = "";
                     var dataDict = {};
                     oldType = $stateParams.type;
+
                     if( oldType != null && oldType!= '' && oldType !="RESET") {
                         if(oldType == "LATE_CHECKOUT"){
                             dataDict.is_late_checkout_only = true;

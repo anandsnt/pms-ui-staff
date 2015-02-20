@@ -317,6 +317,11 @@
 "NUMBER_OF_EARLY_CHECKIN_UPSELLS_PER_DAY": "Number Of Early Checkin Upsells Per Day",
 
 
+"EMAIL_BLACKLIST_HEADER": "Email Blacklist",
+"EMAIL_LABEL": "Email",
+"EMAIL_PLACEHOLDER": "Enter Email Address",
+
+
 "CHARGE_CODE":"Charge Code",
 "DETAILS":"details",
 "DESC_PLACEHOLDER":"Enter Description",

@@ -44,6 +44,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 $scope.successPaymentList = function(data) {
             $scope.$emit("hideLoader");
             $scope.cardsList = data;
+            angular.forEach($scope.cardsList, function(card, key) {
+                card.value = card.id; //For common payment HTML to work - Payment modifications story
+                delete card.id;
+            });
         };
         $scope.fetchGuestCreditCards = function(){
         	if(typeof $scope.cardsList == 'undefined' && $scope.reservationData.guest.id !== null){
@@ -282,8 +286,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.showCC = false;
 			$scope.showSelectedCreditCard = true;
 			// CICO-9457 : Data for fees details - standalone only.	
+			//CICO-13427 : API response changed from fees_information to fees_details
 			if ($scope.isStandAlone) {
-				$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
+				$scope.feeData.feesInfo = $scope.cardsList[index].fees_details;
 				$scope.setupFeeData();
 			}
 

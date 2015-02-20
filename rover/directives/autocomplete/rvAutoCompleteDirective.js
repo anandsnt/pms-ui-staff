@@ -27,7 +27,8 @@ sntRover.directive('autoComplete', ['highlightFilter',
                             $image = '<span class="icons ' + defIcon + '"></span>';
                         }
 
-                        $($image).prependTo($result);
+                        if (item.type)
+                            $($image).prependTo($result);
 
                         return $('<li></li>').append($result).appendTo(ul);
                     };

@@ -20,6 +20,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.newCardAdded = false;
 		$scope.shouldShowWaiting = false;
 		$scope.isSwipedCardSave = false;
+		$scope.cardsList = [];
 		$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
 
 		$scope.depositData = {
@@ -341,14 +342,18 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.errorOccured = false;
 		$scope.depositPaidSuccesFully = true;
 		$scope.isLoading =  false;
+		$scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.$parent.depositDetails.deposit_amount);		
+		$scope.$apply();
 		var cardName = "";
-		if($scope.isSwipedCardSave){
-			cardName = $scope.swipedCardHolderName;
-		} else {
-			cardName = ($scope.cardValues.tokenDetails.isSixPayment) ? $scope.passData.details.firstName+" "+$scope.passData.details.lastName: $scope.cardValues.cardDetails.userName;
-		}
 	
-		if($scope.depositData.addToGuestCard){
+	
+		if($scope.depositData.addToGuestCard && $scope.newCardAdded){
+
+				if($scope.isSwipedCardSave){
+					cardName = $scope.swipedCardHolderName;
+				} else {
+					cardName = ($scope.newPaymentInfo.tokenDetails.isSixPayment) ? $scope.passData.details.firstName+" "+$scope.passData.details.lastName: $scope.newPaymentInfo.cardDetails.userName;
+				};
 			
 				var cardCode = $scope.depositData.card_type;
 				var cardNumber = $scope.depositData.cardNumber;
@@ -366,7 +371,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				};
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
-		}
+		};
 	};
 
 	var paymentFailed = function(data){
@@ -518,5 +523,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.showCCPage = false;
 				$scope.cardSelected = true;
 	};
+	
+	// CICO-12488 : Handle initial case of change Payment type.
+	$scope.checkReferencetextAvailable();
 
 }]);

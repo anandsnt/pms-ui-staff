@@ -81,7 +81,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isGuestReport = true;
 					break;
 
-				case 'Cancelation & No Show':
+				case 'Cancellation & No Show':
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.hasNoSorting = true;
@@ -128,7 +128,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'Arrival':
 				case 'In-House Guests':
 				case 'Deposit Report':
-				case 'Cancelation & No Show':
+				case 'Cancellation & No Show':
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
@@ -296,7 +296,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvArrivalReport.html';
 					break;
 
-				case 'Cancelation & No Show':
+				case 'Cancellation & No Show':
 					template = '/assets/partials/reports/rvCancellationReport.html';
 					break;
 
@@ -546,6 +546,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.parsedApiFor == 'Login and out Activity' ) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
+
 					_eachItem    = angular.copy( apiResponse[i] );
 					_customItems = [];
 					_cancelRes   = {};
@@ -657,9 +658,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				console.log( 'API reponse changed as follows: ');
 				console.log( _retResult );
 
-			} else if ($scope.parsedApiFor == 'Arrival' || $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Cancelation & No Show') {
-
-
+			} else if ($scope.parsedApiFor == 'Arrival' || $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Cancellation & No Show') {
 
 				var itemCopy   = {};
 				var customData = [];
@@ -722,8 +721,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( checkNote(itemCopy) ) {
 						noteData = {
 							isNoteData : true,
-							note       : angular.copy( itemCopy['notes'] )
-						}
+							notes      : angular.copy( itemCopy['notes'] )
+						};
+						customData.push( noteData );
 					};
 
 					// IF: we found custom items
