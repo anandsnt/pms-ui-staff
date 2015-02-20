@@ -29,6 +29,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 				}
 				
 				self.data = data.results;
+				self.searchTypeStatus = dataToSend.status;
 				self.totalSearchResults = data.total_count;
 				deferred.resolve(self.data);
 			},function(data){
@@ -48,7 +49,6 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 		// update room related details based on confirmation id
 		for (var i = 0, j = self.data.length; i < j; i++) {
 			if ( self.data[i]['confirmation'] === confirmation ) {
-
 				// special check since the ctrl could ask to set room number to null
 				if ( data.hasOwnProperty('room') ) {
 					self.data[i]['room'] = data.room;
