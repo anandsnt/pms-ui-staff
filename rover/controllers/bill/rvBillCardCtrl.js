@@ -4,7 +4,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	
 	BaseCtrl.call(this, $scope);	
-
 	// set a back button on header
 	$rootScope.setPrevState = {
 		title: $filter('translate')('STAY_CARD'),
@@ -62,7 +61,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	//To send track details on checkin button;
 	var swipedTrackDataForCheckin = {};
 
-	$scope.roomChargeEnabled = false;
+	$scope.reservationBillData.roomChargeEnabled = "";
 
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
@@ -169,7 +168,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.setNoPostStatus();
      	$scope.calculateHeightAndRefreshScroll();
      	$scope.refreshScroller('bill-tab-scroller');
-     	$scope.reservationBillDatabillingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
+     	$scope.reservationBillData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 
 	/*
@@ -177,25 +176,21 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 * on the basis of payment type
 		 */
 	$scope.setNoPostStatus = function(){
-		if($scope.reservationBillData.reservation_status != "CHECKING_IN"){
-			$scope.roomChargeEnabled = false;
+
+		if($scope.reservationData.paymentType.type.value === 'CC'){
+			$scope.reservationBillData.roomChargeEnabled = true;
 		} else if($scope.reservationBillData.no_post == "true"){
-			$scope.roomChargeEnabled = false;
+			$scope.reservationBillData.roomChargeEnabled = false;
 		} else if($scope.reservationBillData.no_post == "false"){
-			$scope.roomChargeEnabled = true;
-		} else if($scope.reservationBillData.no_post == ""){
-			$scope.roomChargeEnabled = "";
+			$scope.reservationBillData.roomChargeEnabled = true;
+		}else {
+			$scope.reservationBillData.roomChargeEnabled = "";
 		}
 
-		// else if($scope.reservationBillData.no_post == "" && $scope.reservationBillData.bills[0].credit_card_details.payment_type == "CC"){
-		// 	$scope.roomChargeEnabled = true;
-		// }else{
-		// 	$scope.roomChargeEnabled = false;
-		// }
 	};
 
 	$scope.getNoPostButtonTiltle = function(){
-		return $scope.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
+		return $scope.reservationBillData.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
 	};
 	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
@@ -205,7 +200,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		setTimeout(function(){
 	     		buttonClicked = false;
 	        }, 200);
-		$scope.roomChargeEnabled = !$scope.roomChargeEnabled;
+		$scope.reservationBillData.roomChargeEnabled = !$scope.reservationBillData.roomChargeEnabled;
 	};
 
 	$scope.init(reservationBillData);
@@ -885,7 +880,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"card_expiry": cardExpiry,	
 						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
 						"do_not_cc_auth" : true,
-					    "no_post" : ($scope.roomChargeEnabled == "") ? "": !$scope.roomChargeEnabled,
+					    "no_post" : ($scope.reservationBillData.roomChargeEnabled == "") ? "": !$scope.reservationBillData.roomChargeEnabled,
 					    "add_to_guest_card" : addToGuest
 					};
 					//CICO-12554 indicator if the track data is encrypted or not
@@ -905,7 +900,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"signature" : signatureData,
 						"reservation_id" : $scope.reservationBillData.reservation_id,
 						"do_not_cc_auth" : $scope.do_not_cc_auth,
-					    "no_post" : ($scope.roomChargeEnabled === "") ? "": !$scope.roomChargeEnabled	
+					    "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? "": !$scope.reservationBillData.roomChargeEnabled	
 					};
 	 		    }
 
