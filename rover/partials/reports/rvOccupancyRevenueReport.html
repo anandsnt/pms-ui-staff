@@ -16,10 +16,10 @@
                                 </li>
                                 <!-- .. repeat for all market codes -->
 
-                                <li class="double-row"><strong>Total Occ.</strong>
+                                <li ng-class="{'double-row': !!results.nightly}"><strong>Total Occ.</strong>
                                 </li>
                                 <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
-                                <li class="double-row"><strong>Total Occ. (Excl. Comp.)</strong>
+                                <li ng-class="{'double-row': !!results.nightly}"><strong>Total Occ. (Excl. Comp.)</strong>
                                 </li>
                                 <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
 
@@ -32,7 +32,7 @@
                                 <!-- .. repeat for all markets -->
 
 
-                                <li ng-repeat="chargeCode in results.charge_codes"><em>{{chargeCode.name}}</em>
+                                <li ng-repeat="chargeGroup in results.charge_groups"><em>{{chargeGroup.name}}</em>
                                 </li>
                                 <!-- ... repeat for all charge group titles -->
 
@@ -68,10 +68,10 @@
                                                         {{absoulte(getMarketOccupancyValue(outerIndex,$index)) | number:0}}
                                                 </td>
                                         </tr>
-                                        <tr ng-repeat="occupancyTotal in stateStore.occupancyTotals track by $index" class="double-row">
+                                        <tr ng-repeat="occupancyTotal in stateStore.occupancyTotals track by $index" ng-class="{'double-row': !!results.nightly}">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(occupancyTotal.key,$index) < 0}">
                                                         <strong>{{absoulte(getValue(occupancyTotal.key,$index)) | number:2}} %</strong>
-                                                        <span>(10% N.)</span>
+                                                        <span ng-if="!!results.nightly">({{absoulte(getNigtlyValue(occupancyTotal.key,$index)) | number:2}}% N.)</span>
                                                 </td>
                                         </tr>
                                         <tr ng-repeat="revenue in stateStore.revenues track by $index">
@@ -84,7 +84,7 @@
                                                         {{currencySymbol}}{{absoulte(getMarketRevenueValue(outerIndex,$index)) | number:2}}
                                                 </td>
                                         </tr>
-                                        <tr ng-repeat="chargeCode in results.charge_codes" ng-init="outerIndex = $index">
+                                        <tr ng-repeat="chargeGroup in results.charge_groups" ng-init="outerIndex = $index">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getChargeCodeValue(outerIndex,$index) < 0}">
                                                         {{currencySymbol}}{{absoulte(getChargeCodeValue(outerIndex,$index)) | number:2}}
                                                 </td>
