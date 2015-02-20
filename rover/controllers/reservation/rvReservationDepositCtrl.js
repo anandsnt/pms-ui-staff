@@ -52,7 +52,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		var refreshCardsList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
-			}, 2000);
+			}, 3000);
 		};
 
 		var showCardOptions = function(){
@@ -61,7 +61,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		};
 
 		$scope.changeOnsiteCallIn = function(){
-		 $scope.isManual ? showCardOptions() : "";
+		 	$scope.isManual ? showCardOptions() : "";
+		 	refreshCardsList();
 		};
 
 
