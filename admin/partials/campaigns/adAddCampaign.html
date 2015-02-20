@@ -40,7 +40,7 @@
 		        
 		        <div class="entry full-width">
 		            <label for="campaign-name">{{'CAMPAIGN_NAME'|translate}} <strong>*</strong></label>
-		            <input type="text" id="campaign-name" placeholder="Enter Campaign name" ng-model="campaignData.name" value="" required ng-disabled="campaignData.status == 'COMPLETED'"/>
+		            <input type="text" id="campaign-name" placeholder="Enter Campaign name" ng-model="campaignData.name" value="" required ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
 		        </div>  
 		        <div class="entry short">
 		            <label for="campaign-id" translate>ID</label>
@@ -69,7 +69,7 @@
 		                    <input name="audience" id="audience-users" type="radio" value="SPECIFIC_USERS" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 		                    <span translate>SPECIFIC_USERS</span>
 		                </label>
-		                <input id="audience-specific-user" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.specific_users" ng-disabled="campaignData.status == 'COMPLETED'"/> <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
+		                <input id="audience-specific-user" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.specific_users" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/> <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
 		            </div>
 		        </div>
 
@@ -80,7 +80,7 @@
 		        </div>
 		        <div class="entry full-width">
 		            <label for="message-subject">{{'MESSAGE_SUBJECT'|translate}}<strong>*</strong></label>
-		            <input type="text" id="message-subject" maxlength="{{campaignData.messageSubjectMaxLength}}" placeholder="Subject or Message" value="campaignData.subject" required ng-model="campaignData.subject" ng-disabled="campaignData.status == 'COMPLETED'"/>
+		            <input type="text" id="message-subject" maxlength="{{campaignData.messageSubjectMaxLength}}" placeholder="Subject or Message" value="campaignData.subject" required ng-model="campaignData.subject" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
 		            <p class="counter"><span ng-class="{'done': campaignData.subject.length == campaignData.messageSubjectMaxLength}">{{campaignData.messageSubjectMaxLength - campaignData.subject.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
 		            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 		        </div>
@@ -96,17 +96,17 @@
 		        </div>   
 		        <div class="entry full-width">
 		            <label for="message-body">{{'MESSAGE_BODY'|translate}}<strong>*</strong></label>
-		            <textarea id="message-body" rows="4" maxlength="{{campaignData.messageBodyMaxLength}}" placeholder="Text" ng-model="campaignData.body" ng-disabled="campaignData.status == 'COMPLETED'"></textarea>
+		            <textarea id="message-body" rows="4" maxlength="{{campaignData.messageBodyMaxLength}}" placeholder="Text" ng-model="campaignData.body" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"></textarea>
 		            <p class="counter" ng-class = "{'done': campaignData.messageBodyMaxLength == campaignData.body.length}"><span>{{campaignData.messageBodyMaxLength - campaignData.body.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
 		            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 		        </div>
 		        <div class="entry">
 		            <label for="call-label" translate>CALL_TO_ACTION_LABEL</label>
-		            <input type="text" id="call-label" placeholder="Text displayed on button" ng-model="campaignData.call_to_action_label" value="campaignData.call_to_action_label" ng-disabled="campaignData.status == 'COMPLETED'"/>
+		            <input type="text" id="call-label" placeholder="Text displayed on button" ng-model="campaignData.call_to_action_label" value="campaignData.call_to_action_label" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
 		        </div>
 		        <div class="entry full-width">
 		            <label for="call-target" translate>CALL_TO_ACTION_TARGET</label>
-		            <input type="text" id="call-target" placeholder="Button link" ng-model="campaignData.call_to_action_target" value="campaignData.call_to_action_target" ng-disabled="campaignData.status == 'COMPLETED'"/>
+		            <input type="text" id="call-target" placeholder="Button link" ng-model="campaignData.call_to_action_target" value="campaignData.call_to_action_target" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
 		        </div>
 		    </fieldset>
 	    <fieldset class="holder right">
@@ -246,13 +246,13 @@
 	        </div>
 	        <div class="entry full-width">
 	            <label for="notification-ios8">{{'NOTIFICATION_BANNER_OR_ALERT'|translate}}<span>({{'IOS8'|translate}})</span><strong>*</strong></label>
-	            <textarea id="notification-ios8" rows="1" maxlength="{{campaignData.ios8_alert_length}}" placeholder="Text" ng-model="campaignData.alert_ios8" ng-disabled="campaignData.status == 'COMPLETED'"></textarea>
+	            <textarea id="notification-ios8" rows="1" maxlength="{{campaignData.ios8_alert_length}}" placeholder="Text" ng-model="campaignData.alert_ios8" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"></textarea>
 	            <p class="counter"><span ng-class= "{'done': campaignData.ios8_alert_length == campaignData.alert_ios8.length}">{{campaignData.ios8_alert_length - campaignData.alert_ios8.length}}</span>&nbsp;{{'CHARACTERS_REMINING' |translate}}</p>
 	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 	        </div>
 	        <div class="entry full-width">
 	            <label for="notification-ios7">{{'NOTIFICATION_BANNER_OR_ALERT'|translate}}<span>({{'IOS7'|translate}})</span><strong>*</strong></label>
-	            <textarea id="notification-ios7" rows="1" maxlength="{{campaignData.ios7_alert_length}}" placeholder="Text" ng-model="campaignData.alert_ios7" ng-disabled="campaignData.status == 'COMPLETED'"></textarea>
+	            <textarea id="notification-ios7" rows="1" maxlength="{{campaignData.ios7_alert_length}}" placeholder="Text" ng-model="campaignData.alert_ios7" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"></textarea>
 	            <p class="counter"><span ng-class= "{'done': campaignData.ios7_alert_length == campaignData.alert_ios7.length}">{{campaignData.ios7_alert_length - campaignData.alert_ios7.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
 	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 	        </div>          

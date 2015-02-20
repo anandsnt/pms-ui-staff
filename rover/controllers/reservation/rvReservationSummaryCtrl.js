@@ -605,7 +605,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.refreshScroller('reservationSummary');
 				$scope.refreshScroller('paymentInfo');
 				$scope.refreshScroller('cardsList');
-			}, 1500);
+			}, 2000);
 		};
 
 		/**

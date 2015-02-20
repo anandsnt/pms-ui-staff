@@ -173,7 +173,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.addmode = ($scope.cardsList.length>0) ? false :true;
 		//in case c&p no need to show attached CC
 		$scope.shouldCardAvailable 				 = ($scope.shouldShowMakePaymentScreen) ? false: true;
-		// refreshCardScroll();
 		refreshScroll();
 	};
 	/*
@@ -516,7 +515,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.shouldShowExistingCards  		 = true;
 		$scope.addmode                 			 = false;
 		$scope.makePaymentButtonDisabled         = false;
-		refreshCardScroll();
+		refreshScroll();
 	};
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.shouldShowMakePaymentScreen       = true; 
