@@ -768,6 +768,22 @@ table {
 
             &.with-graphs {
                 .report-block {
+
+                    .totals {
+                        font-size: 8pt;
+                        line-height: 10pt;
+                        text-transform: uppercase;
+                        .float;
+
+                        .pull-left,
+                        .pull-right {
+                            color: @grey3;
+                            .show;
+
+                            span { color: @textColor; }
+                        }
+                    }
+
                     .graph-summary {
                         page-break-after: always;
                         page-break-inside: avoid;
@@ -788,9 +804,8 @@ table {
                                 background: @grey1;
                             }
 
-                            &.footer {
+                            &.totals {
                                 margin-bottom: 0;
-                                padding-bottom: 0;
                                 border-bottom: 0;
                             }
                         }
@@ -842,6 +857,12 @@ table {
                                     .calc-width(100, 200);
                                 }
                             }
+                        }
+
+                        .totals {
+                            border-top: 1px solid @grey2;
+                            padding-top: 8pt;
+                            margin: 8pt 0 1cm 0;
                         }
                     }
                 }
