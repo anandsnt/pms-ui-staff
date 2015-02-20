@@ -167,7 +167,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
-			$scope.refreshScroller('room-status-filter');
+			setTimeout(function(){ $scope.refreshScroller('room-status-filter'); }, 1500);
 		};
 
 		$scope.refreshData = function() {

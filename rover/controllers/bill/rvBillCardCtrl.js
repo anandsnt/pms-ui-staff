@@ -1,6 +1,6 @@
 
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv','RVPaymentSrv', 
-	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv,RVPaymentSrv){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv','RVPaymentSrv', 'RVSearchSrv',
+	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv,RVPaymentSrv,RVSearchSrv){
 
 	
 	BaseCtrl.call(this, $scope);	
@@ -123,6 +123,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	// Initializing reviewStatusArray
 	$scope.reviewStatusArray = [];
+
 	
 	$scope.init = function(reservationBillData){
 		
@@ -167,7 +168,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.setNoPostStatus();
      	$scope.calculateHeightAndRefreshScroll();
      	$scope.refreshScroller('bill-tab-scroller');
-        
+     	$scope.reservationBillData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 
 	/*
@@ -219,12 +220,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * Get the title for the billing info button, 
 	 * on the basis of routes available or not
 	 */
-	$scope.getBillingInfoTitle = function(){
-		if($scope.reservationBillData.routing_array.length > 0)
-			return $filter('translate')('BILLING_INFO_TITLE');
-		else
-			return $filter('translate')('ADD_BILLING_INFO_TITLE');
-	};
+	// $scope.getBillingInfoTitle = function(){
+	// 	if($scope.reservationBillData.routing_array.length > 0)
+	// 		return $filter('translate')('BILLING_INFO_TITLE');
+	// 	else
+	// 		return $filter('translate')('ADD_BILLING_INFO_TITLE');
+	// };
 
 	/*
 	 * Adding class for active bill
@@ -1093,8 +1094,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			else{
 				var stateParams = {'type': 'DUEOUT', 'from_page': 'DASHBOARD'};
 			}
-            $state.go('rover.search', stateParams);
-			//$state.go("rover.search");
+			if(RVSearchSrv.searchTypeStatus === undefined){
+				var stateParams = {'type': 'NORMAL_SEARCH', 'useCache': true};
+				$scope.reservationBillData.reservation_status = "CHECKEDOUT";
+				RVSearchSrv.updateRoomDetails($scope.reservationBillData.confirm_no, $scope.reservationBillData);
+			}
+			if(RVSearchSrv.totalSearchResults=='1'){
+				$state.go('rover.dashboard');
+			}
+			else{
+            	$state.go('rover.search', stateParams);
+			}
 		};
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
