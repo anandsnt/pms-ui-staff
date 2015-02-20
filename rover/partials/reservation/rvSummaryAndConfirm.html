@@ -188,7 +188,7 @@
             <div class="wrapper" style="height:120%;">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div id="set-payment" class="payment-form for-reservation"> 
-                <div class="entry full-width" ng-show="!showCC">
+                <div class="entry full-width" ng-hide="showCC ||(depositData.attempted && !depositData.depositAttemptFailure)">
                     <span ng-hide="true">{{reservationData.paymentType}}</span>
                     <label for="payment-type" translate>PAYMENT_TYPE</label>
                     <div class="select">
@@ -258,7 +258,7 @@
                     </div>
                     
                     <!-- Deposit paid succesfully -->
-                    <div class="feedback" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && !depositData.depositAttemptFailure">
+                    <div class="feedback no-top-border" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && !depositData.depositAttemptFailure">
                         <div class="notice success">Deposit paid</div>
                         <ul class="transaction">
                             <li ng-show="depositData.authorizationCode!==''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>

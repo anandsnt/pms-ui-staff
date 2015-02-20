@@ -20,6 +20,7 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.newCardAdded = false;
 		$scope.shouldShowWaiting = false;
 		$scope.isSwipedCardSave = false;
+		$scope.cardsList = [];
 		$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
 
 		$scope.depositData = {
@@ -341,6 +342,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.errorOccured = false;
 		$scope.depositPaidSuccesFully = true;
 		$scope.isLoading =  false;
+		$scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.$parent.depositDetails.deposit_amount);		
+		$scope.$apply();
 		var cardName = "";
 		if($scope.isSwipedCardSave){
 			cardName = $scope.swipedCardHolderName;
@@ -518,5 +521,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 				$scope.showCCPage = false;
 				$scope.cardSelected = true;
 	};
+	
+	// CICO-12488 : Handle initial case of change Payment type.
+	$scope.showHideCreditCard();
 
 }]);

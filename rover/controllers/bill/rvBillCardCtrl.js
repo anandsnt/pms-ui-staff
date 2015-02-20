@@ -869,7 +869,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				}
 				if($scope.isSwipeHappenedDuringCheckin){
 					var cardExpiry = "20"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2)+"-01";
-					
 	 				var data = {
 						"is_promotions_and_email_set" : $scope.saveData.promotions,
 						"signature" : signatureData,
@@ -877,6 +876,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					    "payment_type": "CC",	
  						"mli_token": swipedTrackDataForCheckin.token,
 						"et2": swipedTrackDataForCheckin.RVCardReadTrack2,
+						"etb": swipedTrackDataForCheckin.RVCardReadETB,
 						"ksn": swipedTrackDataForCheckin.RVCardReadTrack2KSN,
 						"pan": swipedTrackDataForCheckin.RVCardReadMaskedPAN,
 						"card_name": swipedTrackDataForCheckin.RVCardReadCardName,
@@ -892,6 +892,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					if(swipedTrackDataForCheckin.RVCardReadIsEncrypted == 0){
 						data.is_encrypted = false;
 						data.card_number = swipedTrackDataForCheckin.RVCardReadPAN;
+					}
+					//CICO-12554 Adding the KSN conditionally
+					data.ksn = swipedTrackDataForCheckin.RVCardReadTrack2KSN;
+		      		if(swipedTrackDataForCheckin.RVCardReadETBKSN != "" && typeof swipedTrackDataForCheckin.RVCardReadETBKSN != "undefined"){
+						data.ksn = swipedTrackDataForCheckin.RVCardReadETBKSN;
 					}
 	 		    } else {
 	 		    	var data = {

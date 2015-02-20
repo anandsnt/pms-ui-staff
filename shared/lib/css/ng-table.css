@@ -148,6 +148,9 @@
 .ng-table th.text-center {
     text-align: center;
 }
+.ng-table th.text-center-important {
+    text-align: center !important;
+}
 .ng-table th.width-5 {
     width: 5%;
 }

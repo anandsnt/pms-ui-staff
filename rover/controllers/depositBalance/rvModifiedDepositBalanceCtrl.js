@@ -5,14 +5,16 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					'RVDepositBalanceSrv',
 					'RVPaymentSrv',
 					'$stateParams',
-					'$filter','$timeout',
+					'$filter',
+					'$timeout',
 		function($scope,
 				ngDialog,
 				$rootScope,
 				RVDepositBalanceSrv,
 				RVPaymentSrv,
 				$stateParams,
-				$filter,$timeout){
+				$filter,
+				$timeout){
 					
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
@@ -171,7 +173,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.addmode = ($scope.cardsList.length>0) ? false :true;
 		//in case c&p no need to show attached CC
 		$scope.shouldCardAvailable 				 = ($scope.shouldShowMakePaymentScreen) ? false: true;
-		refreshCardScroll();
+		// refreshCardScroll();
+		refreshScroll();
 	};
 	/*
 	 * on succesfully created the token
