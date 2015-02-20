@@ -146,7 +146,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.showRemoveDateBtn = function() {
 			var cancellationReport = _.find($scope.reportList, function(item) {
-				return item.title == 'Cancelation & No Show';
+				return item.title == 'Cancellation & No Show';
 			});
 
 			if (!!cancellationReport['fromDate'] && !!cancellationReport['untilDate'] && (!!cancellationReport['fromCancelDate'] || !!cancellationReport['untilCancelDate'])) {
@@ -345,6 +345,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				var selectedData = _.where($scope.reportsState.markets, {
 					selected: true
 				});
+
+				item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
 
 				if (selectedData.length == 0) {
 					item.marketTitle = "Select";
