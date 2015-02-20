@@ -341,6 +341,8 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.errorOccured = false;
 		$scope.depositPaidSuccesFully = true;
 		$scope.isLoading =  false;
+		$scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.$parent.depositDetails.deposit_amount);		
+		$scope.$apply();
 		var cardName = "";
 		if($scope.isSwipedCardSave){
 			cardName = $scope.swipedCardHolderName;
