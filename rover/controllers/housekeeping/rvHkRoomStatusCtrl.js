@@ -167,7 +167,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
-			$scope.refreshScroller('room-status-filter');
+			setTimeout(function(){ $scope.refreshScroller('room-status-filter'); }, 1500);
 		};
 
 		$scope.refreshData = function() {
@@ -1022,7 +1022,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// stop browser bounce while swiping on filter-options element
 		angular.element( $_filterRoomsEl )
 			.on('touchmove', function(e) {
-				e.stopPropagation();
+				// e.stopPropagation(); - CICO-13434 Changed to iscroll from native scroll. 
 			});
 
 		// There are a lot of bindings that need to cleared

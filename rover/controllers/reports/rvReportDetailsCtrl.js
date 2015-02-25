@@ -530,164 +530,41 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// since API response and Template Design are 
 		// trying to F*(|< each others A$/
 		function $_parseApiToTemplate (apiResponse) {
-			var _retResult   = [],
-				_eachItem    = {},
-				_eachNote    = {},
-				_eachGuest   = {},
-				_eachGuestNote = {},
-				_cancelRes   = {},
-				_customItems = [],
-				_uiDate      = '',
-				_uiTime      = '';
+			var _retResult = [];
 
-			var i = j = k = l = m = n = 0;
+			var itemCopy   = {};
+			var customData = [];
+			var guestData  = {};
+			var noteData   = {};
+			var cancelData = {};
 
-			if ( $scope.parsedApiFor == 'Departure' ||
-					$scope.parsedApiFor == 'Login and out Activity' ) {
+			var i = j = 0;
 
-				for (i = 0, j = apiResponse.length; i < j; i++) {
+			var checkGuest = function(item) {
+				var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
+				var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
 
-					_eachItem    = angular.copy( apiResponse[i] );
-					_customItems = [];
-					_cancelRes   = {};
-					_eachNote    = {};
-					_eachGuest   = {};
-					_eachGuestNote = {};
-					_uiDate        = '';
-					_uiTime        = '';
+				return guests || compTravelGrp ? true : false;
+			};
 
-					// first check for cancel reason
-					// if so then create a custom entry
-					// and push to '_customItems'
-					if ( !!_eachItem['cancel_reason'] ) {
-						_cancelRes = {
-							isCancel : true,
-							reason   : angular.copy( _eachItem['cancel_reason'] )
-						};
-						_customItems.push( _cancelRes );
-					};
+			var checkNote = function(item) {
+				return !!item['notes'] && !!item['notes'].length;
+			};
 
-					// second check for notes && || accompanying guests					
+			var excludeReports = function(names) {
+				return !!_.find(names, function(n) {
+					return n == $scope.parsedApiFor;
+				});
+			};
 
-					// 1. we only have accompanying guests -- and no notes
-					if ( (!_eachItem['notes'] || (!!_eachItem['notes'] && !_eachItem['notes'].length)) &&
-							!!_eachItem['accompanying_names'] &&
-							!!_eachItem['accompanying_names'].length ) {
-						_eachGuest = {
-							isGuest : true,
-							guest   : angular.copy( _eachItem['accompanying_names'] )
-						};
-						_customItems.push( _eachGuest );
-					};
+			var checkCancel = function(item) {
+				return excludeReports(['Arrival', 'In-House Guests']) ? !!item['cancel_reason'] : false;
+			};
 
-					// 2. we only have notes -- and no accompanying guests
-					if ( (!_eachItem['accompanying_names'] || (!!_eachItem['accompanying_names'] && !_eachItem['accompanying_names'].length)) &&
-							!!_eachItem['notes'] &&
-							!!_eachItem['notes'].length ){
-						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
-							_eachNote = angular.copy( _eachItem['notes'][k] );
-							_eachNote.isNote = true;
-							if ( k == 0 ) {
-								_eachNote.isHeading = true;
-							};
-							_customItems.push( _eachNote );
-						};
-					};
-
-					// 3. we have both -- accompanying guests and notes
-					if ( (!!_eachItem['notes'] && !!_eachItem['notes'].length) &&
-							(!!_eachItem['accompanying_names'] && !!_eachItem['accompanying_names'].length) ) {
-
-						for (k = 0, l = _eachItem['notes'].length; k < l; k++) {
-							_eachGuestNote = angular.copy( _eachItem['notes'][k] );
-							if ( k == 0 ) {
-								_eachGuestNote.isHeading = true;
-								_eachGuestNote.guest = angular.copy( _eachItem['accompanying_names'] );
-								_eachGuestNote.tdRowSpan = _eachItem['notes'].length;
-							};
-							_eachGuestNote.isGuest_n_Note = true;
-							_customItems.push( _eachGuestNote );
-						};
-					};
-
-					// additional date time split for 'Login and out Activity' report
-					if ( $scope.parsedApiFor == 'Login and out Activity' ) {
-						if ( !!_eachItem['date'] ) {
-							_uiDate = _eachItem['date'].split(', ')[0];
-							_uiTime = _eachItem['date'].split(', ')[1];
-							_eachItem['uiDate'] = _uiDate;
-							_eachItem['uiTime'] = _uiTime;
-						};
-					};
-
-					// since this tr won't have any (figurative) childs
-					if ( !_customItems.length ) {
-						_eachItem.trCls = 'row-break';
-					};
-
-					// if we found custom items
-					// set row span for the parent tr a rowspan
-					// mark the class that must be added to the last tr
-					if ( !!_customItems.length ) {
-						_eachItem.rowspan = _customItems.length + 1;
-						_customItems[_customItems.length - 1]['trCls'] = 'row-break';
-					};
-
-					// check for invalid login for 'Login and out Activity' report 
-					if ( !!_eachItem['action_type'] && _eachItem['action_type'] == 'INVALID_LOGIN' ) {
-						_eachItem['action_type'] = 'INVALID LOGIN';
-						_eachItem.trCls = 'row-break invalid';
-					};
-
-					// check for no user name for 'Login and out Activity' report 
-					if ( _eachItem.hasOwnProperty('user_name') && !_eachItem['user_name'] ) {
-						_eachItem['user_name'] = 'NA';
-					};
-
-					// push '_eachItem' into '_retResult'
-					_eachItem.isReport = true;
-					_retResult.push( _eachItem );
-
-					// push each item in '_customItems' in to '_retResult'
-					for (m = 0, n = _customItems.length; m < n; m++) {
-						_retResult.push( _customItems[m] );
-					};
-				};
-
-				// dont remove yet
-				console.log( 'API reponse changed as follows: ');
-				console.log( _retResult );
-
-			} else if ($scope.parsedApiFor == 'Arrival' || $scope.parsedApiFor == 'In-House Guests' || $scope.parsedApiFor == 'Cancellation & No Show') {
-
-				var itemCopy   = {};
-				var customData = [];
-				var guestData  = {};
-				var noteData   = {};
-				var cancelData = {};
-
-				var excludeReports = function(names) {
-					return !!_.find(names, function(n) {
-						return n == $scope.parsedApiFor;
-					});
-				};
-
-				var checkGuest = function(item) {
-					var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
-					var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
-
-					return guests || compTravelGrp ? true : false;
-				};
-
-				var checkNote = function(item) {
-					return !!item['notes'] && !!item['notes'].length;
-				};
-
-				var checkCancel = function(item) {
-					return excludeReports(['Arrival', 'In-House Guests']) ? !!item['cancel_reason'] : false;
-				};
-
-				i = j = 0;
+			if ( $scope.parsedApiFor == 'Arrival' ||
+					$scope.parsedApiFor == 'In-House Guests' ||
+					$scope.parsedApiFor == 'Cancellation & No Show' ||
+					$scope.parsedApiFor == 'Departure' || $scope.parsedApiFor == 'Login and out Activity') {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					itemCopy   = angular.copy( apiResponse[i] );
@@ -711,7 +588,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 
 					if ( checkCancel(itemCopy) ) {
-						_cancelRes = {
+						cancelData = {
 							isCancelData : true,
 							reason       : angular.copy( itemCopy['cancel_reason'] )
 						};
@@ -735,6 +612,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 						customData[customData.length - 1]['trCls'] = 'row-break';
 					} else {
 						itemCopy.trCls = 'row-break';
+					};
+
+					// sepecific checks for 'Login and out Activity' report
+					// check for invalid logins
+					if ( itemCopy.hasOwnProperty('action_type') && itemCopy['action_type'] == 'INVALID_LOGIN' ) {
+						itemCopy['action_type'] = 'INVALID LOGIN';
+						itemCopy.trCls = 'row-break invalid';
+					};
+					// check for no user name
+					if ( itemCopy.hasOwnProperty('user_name') && !itemCopy['user_name'] ) {
+						itemCopy['user_name'] = 'NA';
 					};
 
 					// push 'itemCopy' into '_retResult'

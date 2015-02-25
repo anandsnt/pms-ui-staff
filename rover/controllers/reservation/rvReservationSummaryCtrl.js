@@ -44,6 +44,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 $scope.successPaymentList = function(data) {
             $scope.$emit("hideLoader");
             $scope.cardsList = data;
+            angular.forEach($scope.cardsList, function(card, key) {
+                card.value = card.id; //For common payment HTML to work - Payment modifications story
+                delete card.id;
+            });
         };
         $scope.fetchGuestCreditCards = function(){
         	if(typeof $scope.cardsList == 'undefined' && $scope.reservationData.guest.id !== null){
@@ -601,7 +605,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.refreshScroller('reservationSummary');
 				$scope.refreshScroller('paymentInfo');
 				$scope.refreshScroller('cardsList');
-			}, 1500);
+			}, 2000);
 		};
 
 		/**

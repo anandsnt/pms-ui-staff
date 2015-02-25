@@ -264,6 +264,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit("hideLoader");
 				ngDialog.close();
 				that.reloadStaycard();
+				$scope.$broadcast('paymentTypeUpdated');// to update bill screen data
 			};
 
 			var params = {};
