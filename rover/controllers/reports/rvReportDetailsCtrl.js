@@ -561,6 +561,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 				return excludeReports(['Arrival', 'In-House Guests']) ? !!item['cancel_reason'] : false;
 			};
 
+			var checkActivityReport = function(name) {
+				return name == 'Login and out Activity' ? true : false;
+			};
+
 			if ( $scope.parsedApiFor == 'Arrival' ||
 					$scope.parsedApiFor == 'In-House Guests' ||
 					$scope.parsedApiFor == 'Cancellation & No Show' ||
@@ -603,6 +607,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 						customData.push( noteData );
 					};
 
+
+
 					// IF: we found custom items
 						// set row span for the parent tr a rowspan
 						// mark the class that must be added to the last tr
@@ -614,16 +620,20 @@ sntRover.controller('RVReportDetailsCtrl', [
 						itemCopy.trCls = 'row-break';
 					};
 
-					// sepecific checks for 'Login and out Activity' report
-					// check for invalid logins
-					if ( itemCopy.hasOwnProperty('action_type') && itemCopy['action_type'] == 'INVALID_LOGIN' ) {
-						itemCopy['action_type'] = 'INVALID LOGIN';
-						itemCopy.trCls = 'row-break invalid';
+					// do this only after the above code that adds
+					// 'row-break' class to the row
+					if ( checkActivityReport($scope.parsedApiFor) ) {
+						if ( itemCopy.hasOwnProperty('action_type') && itemCopy['action_type'] == 'INVALID_LOGIN' ) {
+							itemCopy['action_type'] = 'INVALID LOGIN';
+							itemCopy.trCls = 'row-break invalid';
+						};
+
+						if ( itemCopy.hasOwnProperty('date') ) {
+							itemCopy['uiDate'] = itemCopy['date'].split( ', ' )[0];
+							itemCopy['uiTime'] = itemCopy['date'].split( ', ' )[1];
+						};
 					};
-					// check for no user name
-					if ( itemCopy.hasOwnProperty('user_name') && !itemCopy['user_name'] ) {
-						itemCopy['user_name'] = 'NA';
-					};
+
 
 					// push 'itemCopy' into '_retResult'
 					itemCopy.isReport = true;
