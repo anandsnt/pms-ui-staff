@@ -621,7 +621,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 
 					// do this only after the above code that adds
-					// 'row-break' class
+					// 'row-break' class to the row
 					if ( checkActivityReport($scope.parsedApiFor) ) {
 						if ( itemCopy.hasOwnProperty('action_type') && itemCopy['action_type'] == 'INVALID_LOGIN' ) {
 							itemCopy['action_type'] = 'INVALID LOGIN';
