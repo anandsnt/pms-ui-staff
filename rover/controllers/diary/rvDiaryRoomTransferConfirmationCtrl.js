@@ -8,7 +8,8 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 												'$vault',
 												'rvDiaryUtil',
 												'$filter',
-	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta, $vault, util, $filter) {
+												'$timeout',
+	function($scope, $rootScope, $state, rvDiarySrv, ngDialog, meta, $vault, util, $filter, $timeout) {
 
 		var roomXfer = $scope.roomXfer,
 			current = (roomXfer.current),
@@ -50,11 +51,13 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		$scope.moveWithoutRateChange = function() {			
 			$scope.saveReservation ($scope.roomXfer.next.occupancy, $scope.roomXfer.next.room);
+			//$scope.confirm();
 			$scope.closeDialog();
+			$scope.renderGrid();
 		};
 
 		$scope.selectAdditional = function() {
-			ngDialog.close();
+			$scope.closeDialog();
 		};
 
 
@@ -63,7 +66,11 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		};
 
 		$scope.closeDialog = function() {
-			ngDialog.close();
+            //to add stjepan's popup showing animation
+            $rootScope.modalOpened = false; 
+            $timeout(function(){
+                ngDialog.close();
+            }, 300);  
 		};
 
 		
