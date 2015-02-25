@@ -20,6 +20,7 @@ sntRover
 		'$timeout',
 		'RVReservationSummarySrv',
 		'baseSearchData',
+		'$filter',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -37,7 +38,8 @@ sntRover
 			 $vault, 
 			 $stateParams, 
 			 RVReservationBaseSearchSrv, 
-			 $timeout, RVReservationSummarySrv, baseSearchData) {
+			 $timeout, 
+			 RVReservationSummarySrv, baseSearchData, $filter) {
 
 		$scope.$emit('showLoader');
 
@@ -1651,6 +1653,9 @@ sntRover
     	};
     };
 
+    /**
+	* utility function to form reservation params for save API
+	*/
     var formReservationParams = function(reservation, roomDetails) {
 
     	var arrDate 	= roomDetails.arrivalDate,
@@ -1660,18 +1665,44 @@ sntRover
 
 
     		arrTime 	= getTimeFormated(arrTime[0], arrTime[1]),
-    		depTime 	= getTimeFormated(depTime[0], depTime[1])
+    		depTime 	= getTimeFormated(depTime[0], depTime[1]);
+
+        
+        //  CICO-13760
+        //  The API request payload changes
+        var stay = [];
+        var reservationStayDetails = [];
+        var stayDates = getDatesBetweenTwoDates (new Date(arrDate), new Date(depDate));
+
+       _.each(stayDates, function(date) {
+            reservationStayDetails.push({
+                date: 			$filter('date')(date, $rootScope.dateFormatForAPI),
+                rate_id: 		roomDetails.rate_id, // In case of the last day, send the first day's occupancy
+                room_type_id: 	roomDetails.room_type_id,
+                adults_count: 	reservation.adults,
+                children_count: reservation.children,
+                infants_count: 	reservation.infants,
+                room_id: 		roomDetails.id
+            });
+        });
+        stay.push(reservationStayDetails);	
     	
     	return {
-    		'room_id'		: [roomDetails.id],
+    		// I dont knw y this require, but for the simplicity of API they force me to add :( 
+    	 	// even though it is in staydates array
+    		'room_id'		: [roomDetails.id], 
     		'arrival_date'	: arrDate,
     		'arrival_time'	: arrTime,
     		'departure_date': depDate,
     		'departure_time': depTime,
     		'reservationId' : reservation.reservation_id,
+    		'stay_dates': stay
     	}
     }
 
+    /**
+    * function used to save reservation from Diary itself
+    */
 	$scope.saveReservation = function(reservation, roomDetails){
 		var params = formReservationParams(reservation, roomDetails)
 		var options = {
@@ -1857,7 +1888,11 @@ sntRover
 			$vault.remove('searchReservationData');
 		}, 10);
 	};
-
+	
+	/**
+	* React calling method after rendering
+	* will switch to edit mode if there is any reservaion id in stateparam
+	*/
 	$scope.eventAfterRendering = function() {
 		$scope.$apply(function(){
 			$scope.$emit('hideLoader');
