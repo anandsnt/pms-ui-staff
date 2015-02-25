@@ -130,7 +130,7 @@
                                                         </thead>
 
                                                         <!-- GUEST REPORTS: Reports sort by header -->
-                                                        <thead ng-if="!headers.length || !!subHeaders.length">
+                                                        <thead ng-if="!headers.length && !!subHeaders.length">
                                                                 <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
                                     "sorting-asc" when ASC sorting
                                     "sorting-desc" when DESC sorting -->
