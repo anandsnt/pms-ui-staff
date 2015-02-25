@@ -122,17 +122,19 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	};
 	
 	this.updateRoomDataOnUpdate = function(roomId, param, updatedValue){
-		angular.forEach(that.roomsArray.rooms, function(value, key) {
-	     	if(value.room_id == roomId){
-	     		if(param == "room_number"){
-	     			value.room_number = updatedValue;
-	     		}
-	     		if(param == "room_type"){
-	     			value.room_type = updatedValue;
-	     		}
-	     		
-	     	}
-	    });
+		if(typeof that.roomsArray != 'undefined'){
+			angular.forEach(that.roomsArray.rooms, function(value, key) {
+		     	if(value.room_id == roomId){
+		     		if(param == "room_number"){
+		     			value.room_number = updatedValue;
+		     		}
+		     		if(param == "room_type"){
+		     			value.room_type = updatedValue;
+		     		}
+		     		
+		     	}
+		    });
+		}
 	};
 	
    /*
