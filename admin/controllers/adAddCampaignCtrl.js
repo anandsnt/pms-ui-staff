@@ -83,7 +83,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	var computeCampaignSaveData = function(){
 		var campaign = {};
 		campaign.name = $scope.campaignData.name;
+		if($scope.campaignData.audience_type){
 		campaign.audience_type = $scope.campaignData.audience_type;
+		}
 		campaign.specific_users = $scope.campaignData.specific_users;
 		campaign.subject = $scope.campaignData.subject;
 		//TODO: Header image
@@ -96,7 +98,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		//TODO: time_to_send
 		campaign.time_to_send = tConvertToAPIFormat($scope.campaignData.delivery_hour, $scope.campaignData.delivery_min, $scope.campaignData.delivery_primetime);
 		//TODO: recurrence_end_date
+		if($scope.campaignData.end_date_for_display){
 		campaign.recurrence_end_date = $scope.campaignData.end_date_for_display;
+		}
 		campaign.alert_ios7 = $scope.campaignData.alert_ios7;
 		campaign.alert_ios8 = $scope.campaignData.alert_ios8;
 		campaign.status = $scope.campaignData.status;

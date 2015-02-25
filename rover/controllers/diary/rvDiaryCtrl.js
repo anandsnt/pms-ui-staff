@@ -1691,8 +1691,14 @@ sntRover
 
 			room_type = filter.room_type,
 			rate_type = filter.rate_type;
-
+				
         $scope.gridProps.display = util.deepCopy(time_set.display);
+        //CICO-13623
+        var x_n = $scope.gridProps.display.x_n;
+        x_n = new Date (x_n);
+        x_n.setHours (0, 0, 0);
+        $scope.gridProps.display.x_n = x_n.getTime();
+
         //rerendering diary with new data	
 		callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate(), rate_type, arrival_time, room_type);			
 	}.bind($scope.gridProps);
@@ -1870,8 +1876,30 @@ sntRover
 				
 			}		
 		}, 1000);
-	};	
+	};
 
+	/**
+	* we are capturing model opened to add some class mainly for animation
+	*/
+	$rootScope.$on('ngDialog.opened', function (e, $dialog) {
+		//to add stjepan's popup showing animation
+		$rootScope.modalOpened = false;
+		$timeout(function(){
+			$rootScope.modalOpened = true;
+		}, 300);    		
+	});
+	$rootScope.$on('ngDialog.closing', function (e, $dialog) {
+		//to add stjepan's popup showing animation
+		$rootScope.modalOpened = false; 		
+	});
+	
+	$scope.closeDialog = function(){
+		//to add stjepan's popup showing animation
+		$rootScope.modalOpened = false; 
+		$timeout(function(){
+			ngDialog.close();
+		}, 300); 
+	};
 
 	$scope.compCardOrTravelAgSelected = function(){
 		if (!$scope.gridProps.edit.active) {

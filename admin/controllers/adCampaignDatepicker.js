@@ -11,7 +11,7 @@ $scope.setUpData = function(){
         changeMonth: true,
         minDate: tzIndependentDate($rootScope.businessDate),
         onSelect: function(dateText, inst) {
-            $scope.campaignData.end_date_for_display = $filter('date')(tzIndependentDate($scope.campaignData.end_date), $rootScope.dateFormat);
+            $scope.campaignData.end_date_for_display = $filter('date')(tzIndependentDate($scope.campaignData.end_date), 'yyyy-MM-dd');
             console.log($scope.campaignData.end_date_for_display);
             ngDialog.close();
         }
