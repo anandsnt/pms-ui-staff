@@ -20,6 +20,7 @@ sntRover
 		'$timeout',
 		'RVReservationSummarySrv',
 		'baseSearchData',
+		'$filter',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -37,7 +38,8 @@ sntRover
 			 $vault, 
 			 $stateParams, 
 			 RVReservationBaseSearchSrv, 
-			 $timeout, RVReservationSummarySrv, baseSearchData) {
+			 $timeout, 
+			 RVReservationSummarySrv, baseSearchData, $filter) {
 
 		$scope.$emit('showLoader');
 
@@ -1651,6 +1653,9 @@ sntRover
     	};
     };
 
+    /**
+	* utility function to form reservation params for save API
+	*/
     var formReservationParams = function(reservation, roomDetails) {
 
     	var arrDate 	= roomDetails.arrivalDate,
@@ -1660,18 +1665,44 @@ sntRover
 
 
     		arrTime 	= getTimeFormated(arrTime[0], arrTime[1]),
-    		depTime 	= getTimeFormated(depTime[0], depTime[1])
+    		depTime 	= getTimeFormated(depTime[0], depTime[1]);
+
+        
+        //  CICO-13760
+        //  The API request payload changes
+        var stay = [];
+        var reservationStayDetails = [];
+        var stayDates = getDatesBetweenTwoDates (new Date(arrDate), new Date(depDate));
+
+       _.each(stayDates, function(date) {
+            reservationStayDetails.push({
+                date: 			$filter('date')(date, $rootScope.dateFormatForAPI),
+                rate_id: 		roomDetails.rate_id, // In case of the last day, send the first day's occupancy
+                room_type_id: 	roomDetails.room_type_id,
+                adults_count: 	reservation.adults,
+                children_count: reservation.children,
+                infants_count: 	reservation.infants,
+                room_id: 		roomDetails.id
+            });
+        });
+        stay.push(reservationStayDetails);	
     	
     	return {
-    		'room_id'		: [roomDetails.id],
+    		// I dont knw y this require, but for the simplicity of API they force me to add :( 
+    	 	// even though it is in staydates array
+    		'room_id'		: [roomDetails.id], 
     		'arrival_date'	: arrDate,
     		'arrival_time'	: arrTime,
     		'departure_date': depDate,
     		'departure_time': depTime,
     		'reservationId' : reservation.reservation_id,
+    		'stay_dates': stay
     	}
     }
 
+    /**
+    * function used to save reservation from Diary itself
+    */
 	$scope.saveReservation = function(reservation, roomDetails){
 		var params = formReservationParams(reservation, roomDetails)
 		var options = {
@@ -1691,8 +1722,14 @@ sntRover
 
 			room_type = filter.room_type,
 			rate_type = filter.rate_type;
-
+				
         $scope.gridProps.display = util.deepCopy(time_set.display);
+        //CICO-13623
+        var x_n = $scope.gridProps.display.x_n;
+        x_n = new Date (x_n);
+        x_n.setHours (0, 0, 0);
+        $scope.gridProps.display.x_n = x_n.getTime();
+
         //rerendering diary with new data	
 		callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate(), rate_type, arrival_time, room_type);			
 	}.bind($scope.gridProps);
@@ -1851,7 +1888,11 @@ sntRover
 			$vault.remove('searchReservationData');
 		}, 10);
 	};
-
+	
+	/**
+	* React calling method after rendering
+	* will switch to edit mode if there is any reservaion id in stateparam
+	*/
 	$scope.eventAfterRendering = function() {
 		$scope.$apply(function(){
 			$scope.$emit('hideLoader');
@@ -1870,8 +1911,30 @@ sntRover
 				
 			}		
 		}, 1000);
-	};	
+	};
 
+	/**
+	* we are capturing model opened to add some class mainly for animation
+	*/
+	$rootScope.$on('ngDialog.opened', function (e, $dialog) {
+		//to add stjepan's popup showing animation
+		$rootScope.modalOpened = false;
+		$timeout(function(){
+			$rootScope.modalOpened = true;
+		}, 300);    		
+	});
+	$rootScope.$on('ngDialog.closing', function (e, $dialog) {
+		//to add stjepan's popup showing animation
+		$rootScope.modalOpened = false; 		
+	});
+	
+	$scope.closeDialog = function(){
+		//to add stjepan's popup showing animation
+		$rootScope.modalOpened = false; 
+		$timeout(function(){
+			ngDialog.close();
+		}, 300); 
+	};
 
 	$scope.compCardOrTravelAgSelected = function(){
 		if (!$scope.gridProps.edit.active) {
