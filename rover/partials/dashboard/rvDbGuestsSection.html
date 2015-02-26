@@ -19,7 +19,7 @@
         </li>
         <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">
             <a  class="button white red-text" ng-click = "clickedOnQueuedRoomsIcon()">
-            <strong bo-text="userInfo.queue_rooms_count"></strong>Queued</a>
+            <strong bo-text="statisticsData.guests.queued"></strong>Queued</a>
         </li>
         <li>
             <a class="button blue" ng-click="clickedOnGuestsToday($event, 'INHOUSE', statisticsData.guests.in_house)">
@@ -35,7 +35,7 @@
         </li> 
         <li ng-if="isLateCheckoutTurnedOn && shouldShowLateCheckout">
             <a class="button red" ng-click="clickedOnHeaderLateCheckoutIcon($event)">
-                <strong bo-text="userInfo.late_checkout_count"></strong>
+                <strong bo-text="statisticsData.guests.late_checkout"></strong>
                 Late check out
             </a>
         </li>           
