@@ -48,6 +48,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 
+		var $reportUpdateNode = $( '#report-update' );
+
+
 		// common methods to do things after fetch report
 		var afterFetch = function() {
 			var totals          = $scope.$parent.totals,
@@ -122,6 +125,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case 'Login and out Activity':
 					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
+					break;
+
+				case 'Departure':
+					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 3;
 					break;
 
@@ -261,13 +269,40 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// dirty hack to get the val() not model value
 			// delay as it cost time for ng-bindings
 			$timeout(function() {
-				$scope.displayedReport           = {};
-				$scope.displayedReport.fromDate  = $( '#chosenReportFromDate' ).val();
-				$scope.displayedReport.untilDate = $( '#chosenReportToDate' ).val();
-				$scope.displayedReport.fromCancelDate  = $( '#chosenReportFromCancelDate' ).val();
-				$scope.displayedReport.untilCancelDate = $( '#chosenReportToCancelDate' ).val();
-				$scope.displayedReport.fromTime  = $( '#chosenReportFromTime' ).val();
-				$scope.displayedReport.untilTime = $( '#chosenReportToTime' ).val();
+
+				// clear out old values
+				$scope.displayedReport = {};
+
+				// chosenReportFromCancelDate
+				// chosenReportToCancelDate
+				$scope.displayedReport.chosenReportFromCancelDate = $( '#chosenReportFromCancelDate' ).val();
+				$scope.displayedReport.chosenReportToCancelDate = $( '#chosenReportToCancelDate' ).val();
+
+				// chosenReportFromDepositDate
+				// chosenReportToDepositDate
+				$scope.displayedReport.chosenReportFromDepositDate = $( '#chosenReportFromDepositDate' ).val();
+				$scope.displayedReport.chosenReportToDepositDate = $( '#chosenReportToDepositDate' ).val();
+
+				// chosenReportFromArrivalDate
+				// chosenReportToArrivalDate
+				$scope.displayedReport.chosenReportFromArrivalDate = $( '#chosenReportFromArrivalDate' ).val();
+				$scope.displayedReport.chosenReportToArrivalDate = $( '#chosenReportToArrivalDate' ).val();
+
+				// chosenReportFromDate
+				// chosenReportToDate
+				$scope.displayedReport.chosenReportFromDate = $( '#chosenReportFromDate' ).val();
+				$scope.displayedReport.chosenReportToDate = $( '#chosenReportToDate' ).val();
+
+				// chosenReportFromTime
+				// chosenReportToTime
+				$scope.displayedReport.chosenReportFromTime = $( '#chosenReportFromTime option:selected' ).text() != 'From Time' ? $( '#chosenReportFromTime option:selected' ).text() : '';
+				$scope.displayedReport.chosenReportToTime = $( '#chosenReportToTime option:selected' ).text() != 'Until Time' ? $( '#chosenReportToTime option:selected' ).text() : '';
+
+				// choosenReportUser
+				$scope.displayedReport.choosenReportUser = $( '#choosenReportUser' ).val();
+
+				// chosenReportCompTaGrp
+				$scope.displayedReport.chosenReportCompTaGrp = $( '#chosenReportCompTaGrp' ).val();
 
 				// call again may be.. :(
 				refreshScroll();

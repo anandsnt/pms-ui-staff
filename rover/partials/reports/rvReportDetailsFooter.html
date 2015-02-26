@@ -6,26 +6,52 @@
 <tr>
 	<!-- chosenReport -->
 	<td colspan="{{ leftColSpan }}">
-		<div ng-if="chosenReport.hasCancelDateFilter">
+
+		<!-- cancellation date range -->
+		<div ng-if="chosenReport.hasCancelDateFilter && (displayedReport.chosenReportFromCancelDate || displayedReport.chosenReportToCancelDate)">
 			<label>Cancellation Dates - </label>
-			From: <span>{{ displayedReport.fromCancelDate | date:dateFormat }}</span> To: <span>{{ displayedReport.untilCancelDate | date:dateFormat }}</span>
+			From: <span>{{ displayedReport.chosenReportFromCancelDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToCancelDate | date:dateFormat }}</span>
 		</div>
+
+		<!-- deposit date range -->
+		<div ng-if="chosenReport.hasDepositDateFilter && (displayedReport.chosenReportFromDepositDate || displayedReport.chosenReportToDepositDate)">
+			<label>Deposit Dates - </label>
+			From: <span>{{ displayedReport.chosenReportFromDepositDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToDepositDate | date:dateFormat }}</span>
+		</div>
+
+		<!-- arrival date range -->
+		<div ng-if="chosenReport.hasArrivalDateFilter && (displayedReport.chosenReportFromDepositDate || displayedReport.chosenReportToDepositDate)">
+			<label>Arrival Dates - </label>
+			From: <span>{{ displayedReport.chosenReportFromArrivalDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToArrivalDate | date:dateFormat }}</span>
+		</div>
+
+		<!-- common date range -->
 		<div ng-if="chosenReport.hasDateFilter">
-			<label ng-if="chosenReport.hasCancelDateFilter">Arrival Dates - </label>
-			<label ng-if="!chosenReport.hasCancelDateFilter">Date Range - </label>
-			From: <span>{{ displayedReport.fromDate | date:dateFormat }}</span> To: <span>{{ displayedReport.untilDate | date:dateFormat }}</span>
+			<label>Date Range - </label>
+			From: <span>{{ displayedReport.chosenReportFromDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToDate | date:dateFormat }}</span>
 		</div>
-		<div ng-if="chosenReport.hasTimeFilter && (chosenReport.fromTime || chosenReport.untilTime)">
+
+		<!-- time range -->
+		<div ng-if="chosenReport.hasTimeFilter && (displayedReport.chosenReportFromTime || displayedReport.chosenReportToTime)">
 			<label>Time Range - </label>
-			<label ng-if="chosenReport.fromTime">From: </label><span>{{ chosenReport.fromTime }}</span>
-			<label ng-if="chosenReport.untilTime">To: </label><span>{{ chosenReport.untilTime }}</span>
+			From: <span>{{ displayedReport.chosenReportFromTime }}</span> To: <span>{{ displayedReport.chosenReportToTime }}</span>
 		</div>
+		
+		<!-- CICO type -->
 		<div ng-if="chosenReport.chosenCico">
 			Transaction type: <span>{{ transcationTypes }}</span>
 		</div>
-		<div ng-if="chosenReport.chosenUsers">
-			Users: <span>{{ userNames }}</span>
+		
+		<!-- chosen user nanme -->
+		<div ng-if="chosenReport.choosenReportUser && displayedReport.choosenReportUser">
+			Users: <span>{{ displayedReport.choosenReportUser }}</span>
 		</div>
+		
+		<!-- chosen user nanme -->
+		<div ng-if="chosenReport.hasIncludeComapnyTaGroup && displayedReport.chosenReportCompTaGrp">
+			Company/TA/Group: <span>{{ displayedReport.chosenReportCompTaGrp }}</span>
+		</div>
+
 		<!-- Never REMOVE this span -->
 		<span> &nbsp; </span>
 	</td>
