@@ -476,7 +476,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		// add the print orientation after printing
 		var removePrintOrientation = function() {
-			$( '#papprinter-orientation' ).remove();
+			$( '#print-orientation' ).remove();
 		};
 
 		// print the page
@@ -496,21 +496,21 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
 		    	*/
 
-		        // $window.print();
-		        // if ( sntapp.cordovaLoaded ) {
-		        //     cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		        // };
+		        $window.print();
+		        if ( sntapp.cordovaLoaded ) {
+		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		        };
 		    }, 100);
 
 		    /*
 		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
 		    */
 
-		    // remove the orientation
-			removePrintOrientation();
-
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
+		    	// remove the orientation
+				removePrintOrientation();
+
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );
 		    }, 100);
