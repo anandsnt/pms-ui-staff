@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter',
-	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter) {
+sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter','ngDialog',
+	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter,ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -47,6 +47,11 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 		$scope.reservationData.depositAmount = $filter('number')(parseInt($scope.depositDetails.deposit_amount), 2);
 		
+
+		$scope.closeDialog = function(){
+			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
+      		ngDialog.close();
+      	};
 
 		$scope.setScroller('cardsList');		
 		var refreshCardsList = function() {
