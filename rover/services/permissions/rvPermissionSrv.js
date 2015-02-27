@@ -16,16 +16,28 @@ sntRover.service('rvPermissionSrv',
 	this.fetchRoverPermissions = function() {
 		var deferred = $q.defer(),
 			url = '/ui/show?format=json&json_input=permissions/permission.json';
+		
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
-			roverPermissions = data;		
+			roverPermissions = data.permissions;		
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});	
+		return deferred.promise;
 	};
 
 	/**
 	* method exposed for others to check permissions
+	* if not found in the list, will return false
+	* will return true or false
 	*/
-	this.
-});
+	this.hasPermission = function (permissionString) {
+		var permission = _.findWhere (roverPermissions, {code: permissionString});
+		if (permission) {
+			return permission.value;
+		}
+		return false;
+	};
+
+
+}] );
