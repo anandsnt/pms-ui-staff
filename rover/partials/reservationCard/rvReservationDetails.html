@@ -2,7 +2,7 @@
 
         <!-- Reservation header -->
         <div class="reservation-header">
-                <div class="data">
+                <div class="actions">
                         <span class="date"><span class="guest-status small-icon check-in">check-in</span>
                         <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
                         <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span> {{reservationData.reservation_card.arrival_date|date:dateFormat}}
@@ -13,8 +13,7 @@
                         <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> {{reservationData.reservation_card.departure_date|date:dateFormat}}
                         <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.departure_time}} </span>
                         </span>
-                </div>
-                <div class="actions">
+           
                         <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button times check-in toggle">
                                 <span class="icons time check-in"></span>{{reservationData.reservation_card.arrival_time ? reservationData.reservation_card.arrival_time : 'NOT SET' }}
                         </a>
