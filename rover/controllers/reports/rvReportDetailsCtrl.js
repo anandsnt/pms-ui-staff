@@ -451,8 +451,41 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    $scope.genReport( false, 1, 1000 );
 		};
 
+
+		// add the print orientation before printing
+		var addPrintOrientation = function() {
+			var orientation = 'portrait';
+
+			switch( $scope.chosenReport.title ) {
+				case 'Arrival':
+				case 'In-House Guests':
+				case 'Departure':
+				case 'Deposit Report':
+				case 'Cancellation & No Show':
+				case 'Web Check Out Conversion':
+				case 'Web Check In Conversion':
+				case 'Occupancy & Revenue Summary':
+					orientation = 'landscape';
+					break;
+
+				default:
+					orientation = 'portrait';
+					break;
+			}
+
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+		};
+
+		// add the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();
+		};
+
 		// print the page
 		var printReport = function() {
+
+			// add the orientation
+			addPrintOrientation();
 
 			/*
 			*	=====[ READY TO PRINT ]=====
@@ -472,11 +505,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    }, 100);
 
 		    /*
-		    *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
+		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
 		    */
 
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
+		    	// remove the orientation
+				removePrintOrientation();
+
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );
 		    }, 100);
@@ -489,6 +525,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.saveFullReport = function() {
 			alert( 'Download Full Report API yet to be completed/implemented/integrated' );
 		};
+
+
+
+
+
 
 		var reportSubmit = $rootScope.$on('report.submit', function() {
 			$_pageNo = 1;
@@ -524,6 +565,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
+
+
+
+
 
 
 		// parse API to template helpers

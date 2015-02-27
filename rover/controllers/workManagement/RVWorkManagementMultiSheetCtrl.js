@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'activeWorksheetEmp',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, activeWorksheetEmp) {
+sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'activeWorksheetEmp', '$window',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, activeWorksheetEmp, $window) {
 		BaseCtrl.call(this, $scope);
 		$scope.setHeading("Work Management");
 
@@ -663,6 +663,16 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 
 
+		// add the print orientation before printing
+		var addPrintOrientation = function() {
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+		};
+
+		// add the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();
+		};
+
 		$scope.printWorkSheet = function() {
 			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo)
 				$scope.$parent.myScroll['assignedRoomList-0'].scrollTo(0, 0);
@@ -676,7 +686,33 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				$scope.$parent.myScroll['assignedRoomList-4'].scrollTo(0, 0);
 			if ($scope.$parent.myScroll['assignedRoomList-5'] && $scope.$parent.myScroll['assignedRoomList-5'].scrollTo)
 				$scope.$parent.myScroll['assignedRoomList-5'].scrollTo(0, 0);
-			window.print();
+
+
+
+			// add the orientation
+			addPrintOrientation();
+
+			/*
+			*	=====[ READY TO PRINT ]=====
+			*/
+			// this will show the popup with full bill
+			$timeout(function() {
+				/*
+				*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+				*/
+
+				$window.print();
+				if ( sntapp.cordovaLoaded ) {
+					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				};
+			}, 100);
+
+			/*
+			*	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+			*/
+
+			// remove the orientation after similar delay
+			$timeout(removePrintOrientation, 100);
 		}
 
 		init();

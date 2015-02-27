@@ -1336,6 +1336,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$parent.myScroll['registration-content'].scrollTo(0, 0, 100);
 	};
 
+
+
+	// add the print orientation before printing
+	var addPrintOrientation = function() {
+		$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+	};
+
+	// add the print orientation after printing
+	var removePrintOrientation = function() {
+		$( '#print-orientation' ).remove();
+	};
+
 	// print the page
 	var printBill = function() {
 		var data = {
@@ -1346,43 +1358,50 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
 			$scope.errorMessage = "";
-		/*
-		*	=====[ READY TO PRINT ]=====
-		*/
-		// this will show the popup with full bill
-	    $timeout(function() {
-	    	/*
-	    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
-	    	*/
-	    	// CICO-9569 to solve the hotel logo issue
+
+			// CICO-9569 to solve the hotel logo issue
 			$("header .logo").addClass('logo-hide');
 			$("header .h2").addClass('text-hide');
 
+		    // add the orientation
+		    addPrintOrientation();
 
-	        $window.print();
+		    /*
+		    *	=====[ READY TO PRINT ]=====
+		    */
+		    // this will show the popup with full bill
+		    $timeout(function() {
+		    	/*
+		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	*/
 
-	        // CICO-9569 to solve the hotel logo issue
-			$("header .logo").removeClass('logo-hide');	 
-			$("header .h2").addClass('text-hide');
+		    	$window.print();
+		    	if ( sntapp.cordovaLoaded ) {
+		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		    	};
+		    }, 100);
 
+		    /*
+		    *	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+		    */
+		    
+		    $timeout(function() {
+				// CICO-9569 to solve the hotel logo issue
+				$("header .logo").removeClass('logo-hide');	 
+				$("header .h2").addClass('text-hide');
 
-	        if ( sntapp.cordovaLoaded ) {
-	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        };
-	    }, 500);
+				// remove the orientation after similar delay
+		    	removePrintOrientation();
+		    }, 100);
 
 		};
+
 		var printDataFailureCallback = function(errorData){
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorData;
 		};
+
 		$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
-
-
-	    /*
-	    *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
-	    */
-
 	};
 
 	 

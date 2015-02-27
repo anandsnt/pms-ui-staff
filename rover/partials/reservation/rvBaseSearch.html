@@ -38,7 +38,7 @@
                     <!-- Option for having 2 separate input fields for nights/hours entry. If nights is default, nights should be hidden until switch button is tapped.
                     Feel free to use just one input field id you want to -->
                     <input ng-show="shouldShowNights" name="nights-number" id="nights-number" type="tel" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
-                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-change="setDepartureHours()"  ng-blur="setDepartureHours('force')"/>
+                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-blur="setDepartureHours()"/>
                 </div>
             </div>
 
