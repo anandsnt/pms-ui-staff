@@ -25,7 +25,7 @@
                                 <!-- Day name if arrival date is not today or tomorrow -->
                             </label>
                             <!-- ng-click="isHourly || stayDatesClicked()" -->
-                            <div class="entry-data arriving" style="position:relative">
+                            <div class="entry-data arriving">
                                 <input ui-date="arrivalDateOptions" id="sidebar-check-in-date" name="check-in-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.arrivalDate" readonly ng-change="arrivalDateChanged()"/>
                                 <strong class="day">{{reservationData.arrivalDate|date:dayInMonth}}</strong>
                                 <span class="month">{{reservationData.arrivalDate|date:fullMonth}}</span>
@@ -37,7 +37,7 @@
                                 <!-- Day name if departure date is not today or tomorrow -->
                             </label>
                             <!-- ng-click="isHourly || stayDatesClicked()" -->                            
-                            <div class="entry-data departing" style="position:relative">
+                            <div class="entry-data departing">
                                 <input ui-date="departureDateOptions" name="check-out-date" id="sidebar-check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
                                 <strong class="day">{{reservationData.departureDate|date:dayInMonth}}</strong>
                                 <span class="month">{{reservationData.departureDate|date:fullMonth}}</span>
