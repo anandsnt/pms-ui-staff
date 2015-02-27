@@ -1,5 +1,16 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
+sntRover.controller('roverController', 
+  ['$rootScope', '$scope', '$state', 
+  '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 
+  'ngDialog', '$translate', 'hotelDetails', 
+  'userInfoDetails', 'RVChargeItems', '$stateParams',
+  'rvMenuSrv',
+  function($rootScope, $scope, $state, 
+    $window, RVDashboardSrv, RVHotelDetailsSrv, 
+    ngDialog, $translate, hotelDetails, 
+    userInfoDetails, RVChargeItems, $stateParams,
+    rvMenuSrv) {
+
+
     $rootScope.isOWSErrorShowing = false;    
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -202,130 +213,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     if ($rootScope.isStandAlone && $rootScope.default_dashboard ==="MANAGER") {
-      // OBJECT WITH THE MENU STRUCTURE
-      $scope.menu = [{
-          title: "MENU_DASHBOARD",
-          action: getDefaultDashboardState(),
-          menuIndex: "dashboard",
-          submenu: [],
-          iconClass: "icon-dashboard"
-        },
-        // {
-        //   title: "MENU_AVAILABILITY",
-        //   action: "",
-        //   iconClass: "icon-availability",
-        //   submenu: [{
-        //     title: "MENU_HOUSE_STATUS",
-        //     action: ""
-        //   }, {
-        //     title: "MENU_AVAILABILITY",
-        //     action: ""
-        //   }]
-        // }, 
-        {
-          title: "MENU_FRONT_DESK",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-frontdesk",
-          submenu: [{
-            title: "MENU_SEARCH_RESERVATIONS",
-            action: "rover.search",
-            menuIndex: "search"
-          }, {
-            title: "MENU_CREATE_RESERVATION",
-            action: "rover.reservation.search",
-            standAlone: true,
-            menuIndex: "createReservation"
-          }, {
-            title: "MENU_ROOM_DIARY",
-            action: 'rover.diary',
-            standAlone: true,
-            hidden: !$rootScope.isHourlyRateOn,
-            menuIndex: 'diaryReservation'
-          }, {
-            title: "MENU_POST_CHARGES",
-            action: "",
-            actionPopup: true,
-            menuIndex: "postcharges"
-          }, {
-            title: "MENU_CASHIER",
-            action: "rover.financials.journal({ id: 2 })",
-            menuIndex: "cashier"
-          }]
-        }, {
-          title: "MENU_CONVERSATIONS",
-          hidden: true,
-          action: "",
-          iconClass: "icon-conversations",
-          submenu: [{
-            title: "MENU_SOCIAL_LOBBY",
-            action: ""
-          }, {
-            title: "MENU_MESSAGES",
-            action: ""
-          }, {
-            title: "MENU_REVIEWS",
-            action: ""
-          }]
-        }, {
-          title: "MENU_REV_MAN",
-          action: "",
-          iconClass: "icon-revenue",
-          submenu: [{
-            title: "MENU_RATE_MANAGER",
-            action: "rover.ratemanager",
-            menuIndex: "rateManager"
-          }, {
-            title: "MENU_TA_CARDS",
-            action: "rover.companycardsearch",
-            menuIndex: "cards"
-          }, {
-            title: "MENU_DISTRIBUTION_MANAGER",
-            action: ""
-          }]
-        }, {
-          title: "MENU_HOUSEKEEPING",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-housekeeping",
-          submenu: [{
-            title: "MENU_ROOM_STATUS",
-            action: "rover.housekeeping.roomStatus",
-            menuIndex: "roomStatus"
-          }, {
-            title: "MENU_TASK_MANAGEMENT",
-            action: "rover.workManagement.start",
-            menuIndex: "workManagement",
-            hidden: $rootScope.isHourlyRateOn
+      
+      var menuOptions = {
+        defaultDashboard: $rootScope.default_dashboard,
+        isHourlyRateOn:   $rootScope.isHourlyRateOn
+      };
 
-          }, {
-            title: "MENU_MAINTAENANCE",
-            action: ""
-          }]
-        }, {
-          title: "MENU_FINANCIALS",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-financials",
-          submenu: [{
-            title: "MENU_JOURNAL",
-            action: "rover.financials.journal({ id : 0})",
-            menuIndex: "journals"
-          }, {
-            title: "MENU_ACCOUNTING",
-            action: ""
-          }, {
-            title: "MENU_COMMISIONS",
-            action: ""
-          }]
-        }, {
-          title: "MENU_REPORTS",
-          action: "rover.reports",
-          menuIndex: "reports",
-          iconClass: "icon-reports",
-          submenu: []
-        }
-      ];
+
+      // OBJECT WITH THE MENU STRUCTURE
+      $scope.menu = rvMenuSrv.getMenuForRover (menuOptions);
 
       // menu for mobile views
       $scope.mobileMenu = [{
