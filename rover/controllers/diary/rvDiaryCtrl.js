@@ -1715,9 +1715,9 @@ sntRover
 
 	var successCallBackOfSaveReservation = function(data){
 		var filter 		= this.filter, 		
-			arrival_ms 	= new Date(filter.arrival_date).getTime(),
+			arrival_ms 	= $scope.gridProps.display.x_n,
 
-			time_set 	= util.gridTimeComponents($scope.gridProps.display.x_n, 48, util.deepCopy(this.display)),
+			time_set 	= util.gridTimeComponents(arrival_ms, 48, util.deepCopy(this.display)),
 			arrival_time = filter.arrival_time,
 
 			room_type = filter.room_type,
