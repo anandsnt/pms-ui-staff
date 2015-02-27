@@ -89,7 +89,14 @@
 
             </div>
 
-            <p class="grid-footer payment"><span translate>TOTAL</span> {{currencySymbol}}{{ getTotalOfAllPayments() | number: precisonTwo}}</p>
+            <div class="grid-footer">
+                <p class="filters-applied">
+                    <span><label>{{'EMPLOYEE / DEPARTMENT / HOUSE' | translate}}: </label> {{ data.filterTitle }}</span>
+                    <span><label>Date Range - From:</label> {{ data.fromDate | date : dateFormat }} <label>To: </label>{{ data.toDate | date : dateFormat }}</span>
+                    <span><label>{{'PAYMENT_TYPE' | translate}} / {{'CHARGE_CODE' | translate}}: </label>  {{ printFilterValues.selectedPaymentType }}</span>
+                </p>
+                <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ getTotalOfAllPayments() | number: precisonTwo}}</p>
+            </div>
         </div>
 
     </div>

@@ -265,6 +265,12 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	// print the journal page
 	var printJournal = function() {
+
+		$scope.printFilterValues = {};
+		$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
+		$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
+		$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
+		console.log( $scope.printFilterValues );
 		
 		/*
 		 *	=====[ READY TO PRINT ]=====

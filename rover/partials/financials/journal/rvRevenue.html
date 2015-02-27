@@ -60,7 +60,16 @@
                         
                     </div>
                 </div>
-                <p class="grid-footer payment"><span translate>TOTAL</span> {{currencySymbol}}{{ getTotalOfAllChargeGroups() | number: precisonTwo}}</p>
+
+                <div class="grid-footer">
+                    <p class="filters-applied">
+                        <span><label>{{'EMPLOYEE / DEPARTMENT / HOUSE' | translate}}: </label> {{ data.filterTitle }}</span>
+                        <span><label>Date Range - From: </label> {{ data.fromDate | date : dateFormat }} <label>TO: </label>{{ data.toDate | date : dateFormat }}</span>
+                        <span><label>{{'CHARGE_GROUPS' | translate}}: </label> {{ printFilterValues.selectedChargeGroup }}</span>
+                        <span><label>{{'CHARGE_CODE_NAME' | translate}}: </label> {{ printFilterValues.selectedChargeCode }}</span>
+                    </p>
+                    <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ getTotalOfAllChargeGroups() | number: precisonTwo}}</p>
+                </div>
             </div>
 
     </div>
