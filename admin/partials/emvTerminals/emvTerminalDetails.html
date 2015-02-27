@@ -1,10 +1,10 @@
 <section class="content current" ng-click="clearErrorMessage()"><!-- Add new Item -->
 	<div id="add-new-item" data-view="ItemsDetailsView">
 		<header class="content-title float">
-			<h2 ng-show="mod == 'edit'">{{'EDIT' | translate}} <span>{{itemDetails.item_description}} </span></h2>
-			<h2 ng-show="mod == 'add'" translate>ADD_NEW_ITEM</h2>
+			<h2 ng-show="mod == 'edit'">{{'EDIT' | translate}} <span>{{itemDetails.name}} </span></h2>
+			<h2 ng-show="mod == 'add'" translate>ADD_NEW_EMV_TERMINALS</h2>
 			
-			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_ITEMS</a>
+			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_EMV_TERMINALS</a>
 			<em class="status required" ng-show="mod == 'edit'">
 				{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
 				<strong>*</strong>
@@ -28,18 +28,12 @@
 					</div>
 				</fieldset>
 				<fieldset class="holder left float">
-					<ad-textbox value="itemDetails.item_description" name = "item_desc" id = "item_desc" label = "{{'ITEM_DESCRIPTION' |translate}}" placeholder = "{{'ITEM_DESCRIPTION_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
+					<ad-textbox value="itemDetails.name" name = "item_desc" id = "item_desc" label = "{{'TERMINAL_NAME' |translate}}" placeholder = "{{'TERMINAL_NAME_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
 
-					<ad-textbox value="itemDetails.unit_price" name = "unit_price" id = "unit_price" label = "{{'UNIT_PRICE' |translate}}" placeholder = "{{'UNIT_PRICE_PLACEHOLDER' |translate}}" required = "no" styleclass="full-width" ></ad-textbox>
-
-				</fieldset>
-				<fieldset ng-class="(mod == 'add') ? 'holder right float' :  'holder left float'">
-					<ad-dropdown label="{{'SELECT_CHARGE_CODE' |translate}}" label-in-drop-down="{{'SELECT_CHARGE_CODE' |translate}}" list="itemDetails.charge_code" selected-Id='itemDetails.selected_charge_code' required = "yes" div-class="full-width" id="charge_code"></ad-dropdown>						
-				</fieldset>
-				<fieldset class="holder left float">
-					<ad-checkbox is-checked="itemDetails.is_favourite" label="{{'FAVOURITE' |translate}}" name="favorite" id="favorite"></ad-checkbox>	
+					<ad-textbox value="itemDetails.terminal_identifier" name = "unit_price" id = "unit_price" label = "{{'TERMINAL_ID' |translate}}" placeholder = "{{'TERMINAL_ID_PLACEHOLDER' |translate}}" required = "no" styleclass="full-width" ></ad-textbox>
 
 				</fieldset>
+				
 			<div class="actions float">
 				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
 

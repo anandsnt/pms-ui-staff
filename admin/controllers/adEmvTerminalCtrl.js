@@ -1,4 +1,4 @@
-admin.controller('ADEmvTerminalCtrl', ['$scope','ADEmvTerminalsSrv', 'ngTableParams', '$filter', function($scope, ADEmvTerminalsSrv, ngTableParams, $filter){
+admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv', 'ngTableParams', '$filter', function($scope, $rootScope, ADEmvTerminalsSrv, ngTableParams, $filter){
    /*
 	* Controller class for Room List
 	*/
@@ -44,25 +44,15 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','ADEmvTerminalsSrv', 'ngTablePar
 	$scope.deleteItem = function(index, id){	
 		
 		var successCallBack = function(){
+
 			$scope.$emit('hideLoader');
-			$scope.data.results.splice(index, 1);	
-			$scope.itemList = new ngTableParams({
-		        page: 1,            // show first page
-		        count: $scope.data.results.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: {
-		            name: 'asc'     // initial sorting
-		        }
-		    }, {
-		        total: $scope.data.results.length, // length of data
-		        getData: function($defer, params) {
-		            // use build-in angular filter
-		            var orderedData = params.sorting() ?
-		                                $filter('orderBy')($scope.data.results, params.orderBy()) :
-		                                $scope.data.results;
-		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		        }
-		    });						
+			$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);	
 		};
 		$scope.invokeApi(ADEmvTerminalsSrv.deleteItem, {'item_id': id}, successCallBack);		
 	};
+
+	$rootScope.$on("UPDATELIST", function(event) {
+    	$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);
+   	});
+
 }]);

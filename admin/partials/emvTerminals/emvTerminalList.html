@@ -8,21 +8,19 @@
 			{{data.results.length}}
 			)
 		</span>
-		<a id="add-new-button" ui-sref="admin.terminaldetails({itemid:''})" class="action add" translate>ADD_NEW</a>
+		<a id="add-new-button" ui-sref="admin.emvTerminalDetails({itemid:''})" class="action add" translate>ADD_NEW</a>
 	</header>
 	<section class="content-scroll">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder"></div>
 		<table id="items" class="grid datatable dataTable" ng-table="itemList" template-pagination="nil">
-
-
 		
 			<tr role="row" ng-repeat="item in $data">
 				<td width="40%" class="sorting" data-title="'Terminal Name'" sortable="'name'">
-					<a ui-sref="admin.itemdetails({itemid: item.id})">{{item.name}}</a>
+					<a ui-sref="admin.emvTerminalDetails({itemid: item.id})">{{item.name}}</a>
 				</td>
-				<td width="40%" class="sorting" data-title="'Terminal Id'" sortable="'id'">
-					{{item.id}}
+				<td width="40%" class="sorting" data-title="'Terminal Identifier'" sortable="'id'">
+					{{item.terminal_identifier}}
 				</td>
 				<td width="10%" class="delete" data-title="'Delete'">
 					<a class="icons icon-delete large-icon" ng-click="deleteItem($index, item.id)"></a>
