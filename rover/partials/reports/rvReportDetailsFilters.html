@@ -242,6 +242,16 @@
                     <input type="checkbox" ng-model="chosenReport.chosenLastYear" name="room-filters">
                     {{ chosenReport.hasLastYear.description }}
                 </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasDueInArrivals">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenDueInArrivals}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenDueInArrivals" name="room-filters">
+                    {{ chosenReport.hasDueInArrivals.description }}
+                </label>
+                <label class="checkbox inline" ng-if="chosenReport.hasDueOutDepartures">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenDueOutDepartures}"></span>
+                    <input type="checkbox" ng-model="chosenReport.chosenDueOutDepartures" name="room-filters">
+                    {{ chosenReport.hasDueOutDepartures.description }}
+                </label>
             </div>
         </div>
 

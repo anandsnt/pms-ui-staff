@@ -263,6 +263,29 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		printJournal();
 	};
 
+	// add the print orientation before printing
+	var addPrintOrientation = function() {
+		var orientation = 'portrait';
+
+		switch( $scope.data.activeTab ) {
+			case 0:
+			case 1:
+				orientation = 'landscape';
+				break;
+
+			default:
+				orientation = 'portrait';
+				break;
+		}
+
+		$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+	};
+
+	// add the print orientation after printing
+	var removePrintOrientation = function() {
+		$( '#print-orientation' ).remove();
+	};
+
 	// print the journal page
 	var printJournal = function() {
 
@@ -271,6 +294,9 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
 		$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
 		console.log( $scope.printFilterValues );
+		
+		// add the orientation
+		addPrintOrientation();
 		
 		/*
 		 *	=====[ READY TO PRINT ]=====
@@ -289,8 +315,11 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	    }, 100);
 
 	    /*
-	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
+	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
 	     */
+
+		// remove the orientation after similar delay
+		$timeout(removePrintOrientation, 100);
 	};
 
 }]);

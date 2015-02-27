@@ -172,6 +172,16 @@
             <input type="checkbox" ng-model="item.chosenIncludeDepositPastDue" name="room-filters">
             {{ item.hasIncludeDepositPastDue.description }}
         </label>
+        <label class="checkbox inline" ng-if="item.hasDueInArrivals">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenDueInArrivals}"></span>
+            <input type="checkbox" ng-model="item.chosenDueInArrivals" name="room-filters">
+            {{ item.hasDueInArrivals.description }}
+        </label>
+        <label class="checkbox inline" ng-if="item.hasDueOutDepartures">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenDueOutDepartures}"></span>
+            <input type="checkbox" ng-model="item.chosenDueOutDepartures" name="room-filters">
+            {{ item.hasDueOutDepartures.description }}
+        </label>
     </div>
 </div>
 

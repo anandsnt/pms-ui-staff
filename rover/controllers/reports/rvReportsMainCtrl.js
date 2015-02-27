@@ -285,7 +285,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenGuaranteeType',
 			'chosenIncludeDepositPaid',
 			'chosenIncludeDepositDue',
-			'chosenIncludeDepositPastDue'
+			'chosenIncludeDepositPastDue',
+			'chosenDueInArrivals',
+			'chosenDueOutDepartures'
 		];
 
 		var hasList = [
@@ -303,7 +305,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasGuaranteeType',
 			'hasIncludeDepositPaid',
 			'hasIncludeDepositDue',
-			'hasIncludeDepositPastDue'
+			'hasIncludeDepositPastDue',
+			'hasDueInArrivals',
+			'hasDueOutDepartures'
 		];
 
 		var closeAllMultiSelects = function() {
@@ -697,6 +701,18 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (chosenReport.hasOwnProperty('hasIncludeDepositPastDue')) {
 				key = chosenReport.hasIncludeDepositPastDue.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeDepositPastDue ? true : false;
+			};
+
+			// include due in arrivals option
+			if (chosenReport.hasOwnProperty('hasDueInArrivals')) {
+				key = chosenReport.hasDueInArrivals.value.toLowerCase();
+				params[key] = chosenReport.chosenDueInArrivals ? true : false;
+			};
+
+			// include due out departure option
+			if (chosenReport.hasOwnProperty('hasDueOutDepartures')) {
+				key = chosenReport.hasDueOutDepartures.value.toLowerCase();
+				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
 			};
 
 

@@ -335,6 +335,18 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasIncludeDepositPastDue'] = item;
                         hasFauxSelect = true;
                     };
+
+                    // check for due in filter and keep a ref to that item
+                    if (item.value === 'DUE_IN_ARRIVALS') {
+                        reportList[i]['hasDueInArrivals'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // check for due out filter and keep a ref to that item
+                    if (item.value === 'DUE_OUT_DEPARTURES') {
+                        reportList[i]['hasDueOutDepartures'] = item;
+                        hasFauxSelect = true;
+                    };
                 });
 
                 // NEW! faux select DS and logic

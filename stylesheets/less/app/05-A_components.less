@@ -8121,38 +8121,59 @@
             .add-new-button { .show; }
 
             &#sidebar-nights {
-                .stay-dates {
-                    line-height: 1em;
-                    padding: 10px 15px;
-                    .clickable;
+                .entry-data {
+                    position: relative;
+                    cursor: pointer;
+                    .size(60px, 100%);
+                    .faux-clickable;
+                    background: @white @calendar no-repeat 90% 20px;
+                    background-size: 20px;
+                   
+                    input { .hide; }
 
-                    .title {
-                        font-size: 14px;
-                        color: @textColor;
-                        text-transform: uppercase;
-                        margin-bottom: 5px;
-                        .show;
-
-                        span { color: @grey3; }
+                    .ui-datepicker-trigger {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 99;
+                        cursor: pointer;
+                        .square(100%);
+                        .opacity(0);
                     }
 
-                    .date {
+                    .day,
+                    .month,
+                    .year {  position: absolute; }
+
+                    .month,
+                    .year {
+                        left: 70px;
                         font-size: 18px;
-                        font-weight: 600;
-                        .show;
+                        line-height: 1em;
                     }
 
-                    .check-in {
-                        margin-bottom: 10px;
-                        padding-bottom: 10px;
-                        border-bottom: 1px solid rgba(0,0,0,.1);
-                        .date { color: @green; }
+                    .day {
+                        top: 20px;
+                        left: 10px;
+                        font-size: 48px;
                     }
 
-                    .check-out {
-                        .date { color: @red; }
+                    .month { top: 10px; }
+                    .year { top: 30px; }
+
+                    @media @highdpi { background-image: @calendar2x; }
+
+                    &.arriving { 
+                        color: @green; 
+                        margin-bottom: 20px;
                     }
-                }
+
+                    &.departing { 
+                        color: @red; 
+                    }
+
+                    &:hover { background-position: 90% -30px; }
+                } 
             }
 
             &#sidebar-rooms {
