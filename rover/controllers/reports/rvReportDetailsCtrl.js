@@ -460,9 +460,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case 'Arrival':
 				case 'In-House Guests':
 				case 'Departure':
+				case 'Deposit Report':
 				case 'Cancellation & No Show':
 				case 'Web Check Out Conversion':
 				case 'Web Check In Conversion':
+				case 'Occupancy & Revenue Summary':
 					orientation = 'landscape';
 					break;
 
