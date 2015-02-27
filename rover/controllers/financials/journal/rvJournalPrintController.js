@@ -102,6 +102,12 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			}
        	});
        	$scope.data.selectedChargeCode = 'ALL';
+       	$scope.chargeCodeChanged();
+
+       	var uiValue = _.find($scope.data.revenueData.charge_groups, function(each) {
+       		return each.id == $scope.data.selectedChargeGroup;
+       	});
+       	$scope.data.uiSelectedChargeGroup = !!uiValue ? uiValue['name'] : '';
 	};
 
 	// On changing charge code on PRINT filter
@@ -126,6 +132,11 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 				}
 			});
        	});
+
+       	var uiValue = _.find($scope.data.activeChargeCodes, function(each) {
+       		return each.id == $scope.data.selectedChargeCode;
+       	});
+       	$scope.data.uiSelectedChargeCode = !!uiValue ? uiValue['name'] : '';
 	};
 
 	$scope.toggleRevenueTransactions = function(){
@@ -211,6 +222,11 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	        	payment_types.filterFlag = false;
 	        }
         });
+
+		var uiValue = _.find($scope.data.paymentData.payment_types, function(each) {
+			return each.id == $scope.data.selectedPaymentType;
+		});
+		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type'] : '';
 	};
 
 	/*
@@ -267,6 +283,8 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	var addPrintOrientation = function() {
 		var orientation = 'portrait';
 
+		$scope.data.vj = 'Vijay Dev'
+
 		switch( $scope.data.activeTab ) {
 			case 0:
 			case 1:
@@ -288,12 +306,10 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	// print the journal page
 	var printJournal = function() {
-
 		$scope.printFilterValues = {};
 		$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
 		$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
 		$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
-		console.log( $scope.printFilterValues );
 		
 		// add the orientation
 		addPrintOrientation();
@@ -312,14 +328,14 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	        if ( sntapp.cordovaLoaded ) {
 	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 	        };
-	    }, 100);
+	    }, 500);
 
 	    /*
 	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
 	     */
 
 		// remove the orientation after similar delay
-		$timeout(removePrintOrientation, 100);
+		$timeout(removePrintOrientation, 500);
 	};
 
 }]);

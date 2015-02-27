@@ -65,8 +65,8 @@
                     <p class="filters-applied">
                         <span><label>{{'EMPLOYEE / DEPARTMENT / HOUSE' | translate}}: </label> {{ data.filterTitle }}</span>
                         <span><label>Date Range - From: </label> {{ data.fromDate | date : dateFormat }} <label>TO: </label>{{ data.toDate | date : dateFormat }}</span>
-                        <span><label>{{'CHARGE_GROUPS' | translate}}: </label> {{ printFilterValues.selectedChargeGroup }}</span>
-                        <span><label>{{'CHARGE_CODE_NAME' | translate}}: </label> {{ printFilterValues.selectedChargeCode }}</span>
+                        <span ng-if="data.uiSelectedChargeGroup"><label>{{'CHARGE_GROUPS' | translate}}: </label> {{ data.uiSelectedChargeGroup }}</span>
+                        <span ng-if="data.uiSelectedChargeCode"><label>{{'CHARGE_CODE_NAME' | translate}}: </label> {{ data.uiSelectedChargeCode }}</span>
                     </p>
                     <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ getTotalOfAllChargeGroups() | number: precisonTwo}}</p>
                 </div>
