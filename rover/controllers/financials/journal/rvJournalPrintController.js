@@ -283,8 +283,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	var addPrintOrientation = function() {
 		var orientation = 'portrait';
 
-		$scope.data.vj = 'Vijay Dev'
-
 		switch( $scope.data.activeTab ) {
 			case 0:
 			case 1:
@@ -328,14 +326,14 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	        if ( sntapp.cordovaLoaded ) {
 	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 	        };
-	    }, 500);
+	    }, 100);
 
 	    /*
 	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
 	     */
 
 		// remove the orientation after similar delay
-		$timeout(removePrintOrientation, 500);
+		$timeout(removePrintOrientation, 100);
 	};
 
 }]);
