@@ -1841,8 +1841,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         totalDepositOnRateUpdate = parseFloat(data.deposit_amount);
                     }
 
+                    // CICO-13748 , CICO-14143 : Added depositAmountWithoutFilter to handle PAY DEPOSIT LATER or PAY NOW buttons.
+                    $scope.reservationData.depositAmountWithoutFilter = totalDepositOnRateUpdate;
+                    totalDepositOnRateUpdate = $filter('number')(totalDepositOnRateUpdate, 2);
+                    $scope.reservationData.depositAmount = totalDepositOnRateUpdate;
+
                     // $scope.reservationData.depositAmount = data.deposit_amount;
-                    $scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate, 2);;
+                    //$scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate, 2);;
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
                     $scope.reservationData.fees_details = data.fees_details;
