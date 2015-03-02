@@ -202,98 +202,34 @@ sntRover.controller('roverController',
 
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
+    
 
-    var getDefaultDashboardState = function() {
-      var statesForDashbaord = {
-        'HOUSEKEEPING': 'rover.dashboard.housekeeping',
-        'FRONT_DESK': 'rover.dashboard.frontoffice',
-        'MANAGER': 'rover.dashboard.manager'
-      };
-      return statesForDashbaord[$rootScope.default_dashboard];
+    /**
+    * menu - forming & associate logic
+    * NOTE: Menu forming and logic and things are in service rvMenuSrv
+    **/
+    $scope.formMenu = function() {    
+      
+        var menuOptions = {
+            defaultDashboard  : $rootScope.default_dashboard,
+            isHourlyRateOn    : $rootScope.isHourlyRateOn,
+            userRole          : $scope.userInfo.user_role,
+            isAutoChangeBussinessDate: hotelDetails.is_auto_change_bussiness_date
+        };  
+
+        // if it standalone
+        if ($rootScope.isStandAlone && $rootScope.default_dashboard === "MANAGER") { 
+            $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover (menuOptions);
+            $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover (menuOptions); 
+        } 
+        else {
+            $scope.menu       = rvMenuSrv.getMainMenuForConnectedRover (menuOptions);
+            $scope.mobileMenu = rvMenuSrv.getMobileMenuForConnectedRover (menuOptions);
+        }
     };
 
-    if ($rootScope.isStandAlone && $rootScope.default_dashboard ==="MANAGER") {
-      
-      var menuOptions = {
-        defaultDashboard: $rootScope.default_dashboard,
-        isHourlyRateOn:   $rootScope.isHourlyRateOn
-      };
 
 
-      // OBJECT WITH THE MENU STRUCTURE
-      $scope.menu = rvMenuSrv.getMenuForRover (menuOptions);
-
-      // menu for mobile views
-      $scope.mobileMenu = [{
-        title: "MENU_DASHBOARD",
-        action: getDefaultDashboardState(),
-        menuIndex: "dashboard",
-        iconClass: "icon-dashboard"
-      }, {
-        title: "MENU_ROOM_STATUS",
-        action: "rover.housekeeping.roomStatus",
-        menuIndex: "roomStatus",
-        iconClass: "icon-housekeeping",
-        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
-      }];
-
-
-      if(!hotelDetails.is_auto_change_bussiness_date){
-          var eodSubMenu = {
-            title: "MENU_END_OF_DAY",
-            action: "",
-            actionPopup: true,
-            menuIndex: "endOfDay"
-          }
-          angular.forEach($scope.menu, function(menu, index) {
-              if(menu.title === 'MENU_FRONT_DESK'){
-                menu.submenu.push(eodSubMenu)
-              }
-          });
-       }     
-
-    } else {
-      // OBJECT WITH THE MENU STRUCTURE
-      $scope.menu = [{
-        title: "MENU_DASHBOARD",
-        action: getDefaultDashboardState(),
-        menuIndex: "dashboard",
-        submenu: [],
-        iconClass: "icon-dashboard"
-      }, {
-        title: "MENU_HOUSEKEEPING",
-        //hidden: true,
-        action: "",
-        iconClass: "icon-housekeeping",
-        submenu: [{
-          title: "MENU_ROOM_STATUS",
-          action: "rover.housekeeping.roomStatus",
-          menuIndex: "roomStatus"
-        }]
-      }, {
-        title: "MENU_REPORTS",
-        action: "rover.reports",
-        menuIndex: "reports",
-        iconClass: "icon-reports",
-        submenu: [],
-        hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
-      }];
-
-      // menu for mobile views
-      $scope.mobileMenu = [{
-        title: "MENU_DASHBOARD",
-        action: getDefaultDashboardState(),
-        menuIndex: "dashboard",
-        iconClass: "icon-dashboard"
-      }, {
-        title: "MENU_ROOM_STATUS",
-        action: "rover.housekeeping.roomStatus",
-        menuIndex: "roomStatus",
-        iconClass: "icon-housekeeping",
-        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
-      }];
-
-    }
 
     $rootScope.updateSubMenu = function(idx, item) {
       if (item && item.submenu && item.submenu.length > 0) {
@@ -335,18 +271,21 @@ sntRover.controller('roverController',
      * which set during it's creation, we can use
      */
     $scope.$on('refreshLeftMenu', function(event) {
-      setupLeftMenu();
+        setupLeftMenu();
     });
 
     $scope.init = function() {
-      BaseCtrl.call(this, $scope);
-      $rootScope.adminRole = '';
-      $scope.selectedMenuIndex = 0;
+        BaseCtrl.call(this, $scope);
+        $rootScope.adminRole = '';
 
-      // if menu is open, close it
-      $scope.isMenuOpen();
-      $scope.menuOpen = false;
+        $scope.selectedMenuIndex = 0;      
+        $scope.formMenu();
+
+        // if menu is open, close it
+        $scope.isMenuOpen();
+        $scope.menuOpen = false;
     };
+
     $scope.init();
 
     /*
