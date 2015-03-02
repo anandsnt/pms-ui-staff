@@ -1,0 +1,58 @@
+admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv', 'ngTableParams', '$filter', function($scope, $rootScope, ADEmvTerminalsSrv, ngTableParams, $filter){
+   /*
+	* Controller class for Room List
+	*/
+	$scope.errorMessage = '';
+	//inheriting from base controller
+	BaseCtrl.call(this, $scope);
+   /*
+    * Success call back of fetch
+    * @param {object} items list
+    */
+	var fetchSuccessOfItemList = function(data){
+		$scope.$emit('hideLoader');
+		$scope.data = data;
+		//applying sorting functionality in item list
+		$scope.itemList = new ngTableParams({
+		        page: 1,            // show first page
+		        count: $scope.data.results.length,    // count per page - Need to change when on pagination implemntation
+		        sorting: {
+		            name: 'asc'     // initial sorting
+		        }
+		    }, {
+		        total: $scope.data.results.length, // length of data
+		        getData: function($defer, params) {
+		            // use build-in angular filter
+		            var orderedData = params.sorting() ?
+		                                $filter('orderBy')($scope.data.results, params.orderBy()) :
+		                                $scope.data.results;
+		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		        }
+		    });		
+		
+	};
+	
+	//To list items
+	$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);	
+
+	
+   /*
+    * Function to delete item
+    * @param {int} index of the item
+    * @param {string} id of the selected item
+    */
+	$scope.deleteItem = function(index, id){	
+		
+		var successCallBack = function(){
+
+			$scope.$emit('hideLoader');
+			$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);	
+		};
+		$scope.invokeApi(ADEmvTerminalsSrv.deleteItem, {'item_id': id}, successCallBack);		
+	};
+
+	$rootScope.$on("UPDATELIST", function(event) {
+    	$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);
+   	});
+
+}]);
