@@ -4,6 +4,20 @@
 									CLEAR_FILTERS_LABEL
 								</button>
 							</div>
+							<div class="entry radio-check">
+                                <label class="checkbox inline checked">
+                                    <span ng-class="{'icon-form':true, 'icon-checkbox' :true, 'checked':isAllFloorSelected}"></span>
+                                    <input name="show-all-floors" ng-model="isAllFloorSelected" id="show-all-floors" value="show-all-floors" type="checkbox" checked />
+                                    Show All Floors
+                                </label>
+                                <div ng-class="{'select':true, 'hidden':isAllFloorSelected}">                  
+                                    <select name="floor-filter" id="floor-filter" class="placeholder">
+                                        <option value="" selected>Floor </option>
+                                        <option value="1">1</option>
+                                        ... repeat for all floors
+                                    </select>
+                                </div>               
+                            </div>
 							
 							<div class="entry radio-check" ng-repeat="group in roomFeatures">
 								<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> 
@@ -12,7 +26,7 @@
 									ng-click="setSelectionForFeature($parent.$index, $index)">
 									{{feature.name}} </label>
 
-							</div>				
-							
+							</div>	
+								
 					
 </div>

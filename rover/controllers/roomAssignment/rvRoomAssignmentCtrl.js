@@ -42,6 +42,7 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.roomAssgnment = {};
 	$scope.roomAssgnment.inProgress = false;
+	$scope.isAllFloorSelected = true;
 
 	/**
 	* function to to get the rooms based on the selected room type
