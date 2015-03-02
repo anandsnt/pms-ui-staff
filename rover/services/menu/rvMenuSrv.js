@@ -15,14 +15,14 @@ sntRover.service('rvMenuSrv',
     };
 
     /**
-    * function to decide whether dashboard is front desk
+    * utility function to decide whether dashboard is front desk
     */
     var isFrontDeskDashboard = function (dashboard){
     	return dashboard === 'FRONT_DESK';
     };
 	
 	/**
-	* whether the user role is 'Floor & Maintanance staff'	
+	* utility the user role is 'Floor & Maintanance staff'	
 	*/
     var isFloorMaintananceStaff= function (userRole){
     	return (userRole === "Floor & Maintenance Staff");
@@ -159,6 +159,7 @@ sntRover.service('rvMenuSrv',
 		];
 
 		//if auto change business is not enabled, we have to show EOD menu
+		// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
 		if(!isAutoChangeBussinessDate) {
 			//finding the index where to insert EOD menu
 			menuFrontDeskIndex 		= _.indexOf(_.pluck(menu, 'title'), "MENU_FRONT_DESK");
