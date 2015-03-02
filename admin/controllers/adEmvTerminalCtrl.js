@@ -45,17 +45,10 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
 	$scope.deleteItem = function(index, id){	
 		
 		var successCallBack = function(){
-
 			$scope.$emit('hideLoader');
 			$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);	
 		};
 		$scope.invokeApi(ADEmvTerminalsSrv.deleteItem, {'item_id': id}, successCallBack);		
 	};
-
-	$rootScope.$on("UPDATELIST", function(event) {
-		$timeout(function() {
-            $scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);
-    	}, 3000);
-   	});
 
 }]);
