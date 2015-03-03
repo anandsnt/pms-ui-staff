@@ -85,21 +85,44 @@ sntRover.controller('RVroomAssignmentController',[
 		};
 	};
 
-	$scope.reserveRoom = function(){
-
-	}
+	$scope.moveInHouseRooms = function(){
+		$scope.selectedRoomType = $scope.getCurrentRoomType();
+		var successCallbackMoveInHouseRooms = function(response){
+			$scope.roomTransfer.newRoomRate = response.data.new_rate_amount;
+			$scope.roomTransfer.oldRoomRate = response.data.old_rate_amount;
+			$scope.$emit('hideLoader');
+		
+			if(oldRoomType !== $scope.roomType){
+				$scope.roomTransfer.newRoomType = $scope.selectedRoomType.description;
+				$scope.roomTransfer.isNewRoomType = true;
+			}
+			else{
+				$scope.roomTransfer.newRoomType = $scope.reservationData.reservation_card.room_type_description;
+				$scope.roomTransfer.isNewRoomType = false;
+			}
+			ngDialog.open({
+	          template: '/assets/partials/roomAssignment/rvRoomTransferConfirmation.html',
+	          controller: 'rvRoomTransferConfirmationCtrl',
+	          scope: $scope
+        	});
+		};
+		var errorCallbackMoveInHouseRooms = function(error){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = error;
+		};
+		var params = {};
+		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+		params.room_type_id = $scope.selectedRoomType.id;
+		params.room_number = $scope.roomTransfer.newRoomNumber;
+		$scope.invokeApi(RVRoomAssignmentSrv.moveInHouseRooms, params, successCallbackMoveInHouseRooms, errorCallbackMoveInHouseRooms);
+		
+	};
 
 	/**
 	* function to check occupancy for the reservation
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
-	
-		$scope.roomTransfer.roomNumber = $scope.filteredRooms[index].room_number;
 		
-		$scope.roomTransfer.newRoomNumber = $scope.reservationData.reservation_card.room_number;
-		$scope.roomTransfer.newRoomType = $scope.reservationData.reservation_card.room_type_description;
-		$scope.roomTransfer.newRoomRate = $scope.reservationData.reservation_card.deposit_attributes.room_cost;
-
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 		
 		var showOccupancyMessage = false;
@@ -117,27 +140,19 @@ sntRover.controller('RVroomAssignmentController',[
 			
 		$scope.assignedRoom = $scope.filteredRooms[index];
 
-		if(reservationStatus=="CHECKEDIN"){
-			if(oldRoomType !== $scope.roomType){
-				$scope.roomTransfer.isNewRoomType = true;
-			}
+		if(showOccupancyMessage){
+	    //if(true){
+	    	$scope.oldRoomType = oldRoomType;
 			ngDialog.open({
-	          template: '/assets/partials/roomAssignment/rvRoomTransferConfirmation.html',
-	          controller: 'rvRoomTransferConfirmationCtrl',
-	          scope: $scope
-        	});
-		}
-		else{
-			
-			if(showOccupancyMessage){
-		    //if(true){
-		    	$scope.oldRoomType = oldRoomType;
-				ngDialog.open({
-	                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
-	                  controller: 'rvMaximumOccupancyDialogController',
-	                  className: 'ngdialog-theme-default',
-	                  scope: $scope
-	                });
+                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
+                  controller: 'rvMaximumOccupancyDialogController',
+                  className: 'ngdialog-theme-default',
+                  scope: $scope
+                });
+		}else{
+			if(reservationStatus=="CHECKEDIN"){
+				$scope.roomTransfer.newRoomNumber = $scope.filteredRooms[index].room_number;
+				$scope.moveInHouseRooms();
 			}else{
 				if(oldRoomType !== $scope.roomType){
 				//if(true){
@@ -146,7 +161,6 @@ sntRover.controller('RVroomAssignmentController',[
 				} else {
 					$scope.assignRoom();
 				}
-				
 			}
 		}
 	};
@@ -628,7 +642,6 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
 		$scope.roomTransfer.oldRoomNumber = $scope.reservationData.reservation_card.room_number;
 		$scope.roomTransfer.oldRoomType = $scope.reservationData.reservation_card.room_type_description;
-		$scope.roomTransfer.oldRoomRate = $scope.reservationData.reservation_card.deposit_attributes.room_cost;
 	};
 	$scope.init();
 	

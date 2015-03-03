@@ -4,7 +4,7 @@
 
         <span class="h2 message">
             Move Guest to Room
-            <span class="green">{{roomTransfer.roomNumber}}</span>
+            <span class="green">{{roomTransfer.newRoomNumber}}</span>
         </span>
 
         <div class="diary-moved">
@@ -12,15 +12,15 @@
             <ul class="details">
                 <li class="type">{{roomTransfer.oldRoomType}}</li>
                 <li class="room">Room {{roomTransfer.oldRoomNumber}}</li>
-                <li class="price">$ {{roomTransfer.oldRoomRate}}</li>
+                <li class="price">{{currencySymbol}} {{roomTransfer.oldRoomRate}}</li>
             </ul>
         </div>
         <div class="diary-moved">
             <span class="label">To</span>
             <ul class="details">
                 <li class="type">{{roomTransfer.newRoomType}}</li>
-                <li class="room">Room {{roomTransfer.roomNumber}}</li>
-                <li class="price">$ {{roomTransfer.newRoomRate}}</li> <!-- Add class "red" if larger than old rate. Add class "green" if smaller than old rate -->
+                <li class="room">Room {{roomTransfer.newRoomNumber}}</li>
+                <li class="price">{{currencySymbol}} {{roomTransfer.newRoomRate}}</li> <!-- Add class "red" if larger than old rate. Add class "green" if smaller than old rate -->
             </ul>
         </div>
        
