@@ -139,6 +139,26 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 
+
+		var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+			dateParts    = businessDate.match(/(\d+)/g),
+			year  = parseInt( dateParts[0] ),
+			month = parseInt( dateParts[1] ) - 1,
+			date  = parseInt( dateParts[2] ),
+			dbObj = new Date(year, month, date);
+		$scope.dateChanged = function (item, dateName) {
+			if ( item.title == 'Arrival' ) {
+				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
+					item.chosenDueInArrivals = false;
+				}
+			};
+			if ( item.title == 'Departure' ) {
+				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
+					item.chosenDueOutDepartures = false;
+				}
+			}
+		};
+
 		// CICO-10202
 		$scope.reportsState = {
 			markets: []
@@ -420,9 +440,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			}
 			// CICO-10202
-
 			$scope.$emit('report.filter.change');
-
 		}
 
 		$scope.fauxGuaranteeOptionClicked = function(item) {

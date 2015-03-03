@@ -1656,7 +1656,7 @@ sntRover
     /**
 	* utility function to form reservation params for save API
 	*/
-    var formReservationParams = function(reservation, roomDetails) {
+    var formReservationParams = function(reservation, roomDetails, isMoveWithoutRateChange) {
 
     	var arrDate 	= roomDetails.arrivalDate,
     		depDate   	= roomDetails.departureDate,
@@ -1667,7 +1667,6 @@ sntRover
     		arrTime 	= getTimeFormated(arrTime[0], arrTime[1]),
     		depTime 	= getTimeFormated(depTime[0], depTime[1]);
 
-        
         //  CICO-13760
         //  The API request payload changes
         var stay = [];
@@ -1696,15 +1695,19 @@ sntRover
     		'departure_date': depDate,
     		'departure_time': depTime,
     		'reservationId' : reservation.reservation_id,
-    		'stay_dates': stay
+    		'stay_dates': stay,
+    		
+    		//CICO-14143: Diary - Move without rate change actually changes rate
+    		'is_move_without_rate_change' : isMoveWithoutRateChange ?  isMoveWithoutRateChange : false,
     	}
     }
 
     /**
     * function used to save reservation from Diary itself
     */
-	$scope.saveReservation = function(reservation, roomDetails){
-		var params = formReservationParams(reservation, roomDetails)
+	$scope.saveReservation = function(reservation, roomDetails, isMoveWithoutRateChange){
+		var params = formReservationParams(reservation, roomDetails, isMoveWithoutRateChange);
+
 		var options = {
     		params: 			params,
     		successCallBack: 	successCallBackOfSaveReservation,	 
