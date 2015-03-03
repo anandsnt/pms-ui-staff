@@ -3,7 +3,8 @@ sntRover.controller('RVReportListCrl', [
     '$rootScope',
     '$filter',
     'RVreportsSrv',
-    function($scope, $rootScope, $filter, RVreportsSrv) {
+    'RVReportUtilsFac',
+    function($scope, $rootScope, $filter, RVreportsSrv, reportUtils) {
 
         BaseCtrl.call(this, $scope);
 
@@ -82,48 +83,48 @@ sntRover.controller('RVReportListCrl', [
 
                 // add report icon class
                 switch (reportList[i]['title']) {
-                    case 'Check In / Check Out':
+                    case reportUtils.getName('CHECK_IN_CHECK_OUT'):
                         reportList[i]['reportIconCls'] = 'icon-report icon-check-in-check-out';
                         break;
 
-                    case 'Upsell':
+                    case reportUtils.getName('UPSELL'):
                         reportList[i]['reportIconCls'] = 'icon-report icon-upsell';
                         break;
 
-                    case 'Web Check Out Conversion':
+                    case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
                         reportList[i]['reportIconCls'] = 'icon-report icon-check-out';
                         break;
 
-                    case 'Web Check In Conversion':
+                    case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
                         reportList[i]['reportIconCls'] = 'icon-report icon-check-in';
                         break;
 
-                    case 'Late Check Out':
+                    case reportUtils.getName('LATE_CHECK_OUT'):
                         reportList[i]['reportIconCls'] = 'guest-status late-check-out';
                         break;
 
-                    case 'In-House Guests':
+                    case reportUtils.getName('IN_HOUSE_GUEST'):
                         reportList[i]['reportIconCls'] = 'guest-status inhouse';
                         break;
 
-                    case 'Arrival':
+                    case reportUtils.getName('ARRIVAL'):
                         reportList[i]['reportIconCls'] = 'guest-status check-in';
                         reportList[i]['hasDateLimit'] = false;
                         break;
 
-                    case 'Departure':
+                    case reportUtils.getName('DEPARTURE'):
                         reportList[i]['reportIconCls'] = 'guest-status check-out';
                         reportList[i]['hasDateLimit'] = false;
                         break;
 
-                    case 'Cancellation & No Show':
+                    case reportUtils.getName('CANCELLATION_NO_SHOW'):
                         reportList[i]['reportIconCls'] = 'guest-status cancel';
                         reportList[i]['hasDateLimit'] = false;
                         reportList[i]['canRemoveDate'] = true;
                         reportList[i]['showRemove'] = true;
                         break;
 
-                    case 'Booking Source & Market Report':
+                    case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
                         reportList[i]['reportIconCls'] = 'icon-report icon-booking';
                         reportList[i]['canRemoveDate'] = true;
                         reportList[i]['showRemove'] = true;
@@ -135,12 +136,12 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasArrivalDateLimit'] = false;
                         break;
 
-                    case 'Login and out Activity':
+                    case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
                         reportList[i]['reportIconCls'] = 'icon-report icon-activity';
                         reportList[i]['hasDateLimit'] = false;
                         break;
 
-                    case 'Deposit Report':
+                    case reportUtils.getName('DEPOSIT_REPORT'):
                         reportList[i]['reportIconCls'] = 'icon-report icon-deposit';
                         reportList[i]['hasDateLimit'] = false;
                         reportList[i]['canRemoveDate'] = true;
@@ -149,7 +150,7 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['showRemoveArrivalDate'] = true;
                         break;
 
-                    case 'Occupancy & Revenue Summary':
+                    case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
                         reportList[i]['reportIconCls'] = 'icon-report icon-occupancy';
                         reportList[i]['hasMarketsList'] = true;
                         reportList[i]['hasDateLimit'] = false;
@@ -173,12 +174,12 @@ sntRover.controller('RVReportListCrl', [
 
                         // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                         // rather than the default 'Date Range'
-                        if (reportList[i]['title'] == 'Cancellation & No Show') {
+                        if (reportList[i]['title'] == reportUtils.getName('CANCELLATION_NO_SHOW')) {
                             reportList[i]['hasDateFilter']['description'] = 'Arrival Date Range';
                         };
 
                         // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                        if (reportList[i]['title'] == 'Booking Source & Market Report') {
+                        if (reportList[i]['title'] == reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT')) {
                             reportList[i]['hasDateFilter']['description'] = 'Booked Date';
                         };
                     };
@@ -222,7 +223,7 @@ sntRover.controller('RVReportListCrl', [
                     };
 
                     // currently only show users for 'Login and out Activity' report
-                    if (reportList[i].title == 'Login and out Activity') {
+                    if (reportList[i].title == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY')) {
                         reportList[i]['hasUserFilter'] = true;
                     }
 
@@ -263,13 +264,12 @@ sntRover.controller('RVReportListCrl', [
                         hasMarketSelect = true;
                     };
 
-
                     // check for include cancelled filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_CANCELED') {
+                    if (item.value === 'INCLUDE_CANCELLED') {
                         reportList[i]['hasIncludeCancelled'] = item;
                         hasFauxSelect = true;
 
-                        if (reportList[i].title == 'Cancellation & No Show') {
+                        if (reportList[i].title == reportUtils.getName('CANCELLATION_NO_SHOW')) {
                             reportList[i]['chosenIncludeCancelled'] = true;
                         };
                     };
@@ -347,6 +347,24 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i]['hasDueOutDepartures'] = item;
                         hasFauxSelect = true;
                     };
+
+                    // check for create date range and keep a ref to that item
+                    if (item.value === 'CREATE_DATE_RANGE') {
+                        reportList[i]['hasCreateDateRange'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // check for include new filter and keep a ref to that item
+                    if (item.value === 'INCLUDE_NEW') {
+                        reportList[i]['hasIncludeNew'] = item;
+                        hasFauxSelect = true;
+                    };
+
+                    // check for include both filter and keep a ref to that item
+                    if (item.value === 'INCLUDE_BOTH') {
+                        reportList[i]['hasIncludeBoth'] = item;
+                        hasFauxSelect = true;
+                    };
                 });
 
                 // NEW! faux select DS and logic
@@ -384,7 +402,7 @@ sntRover.controller('RVReportListCrl', [
                 // for (arrival, departure) report the sort by items must be
                 // ordered in a specific way as per the design
                 // [date - name - room] > TO > [room - name - date]
-                if (reportList[i].title == 'Arrival' || reportList[i].title == 'Departure') {
+                if (reportList[i].title == reportUtils.getName('ARRIVAL') || reportList[i].title == reportUtils.getName('DEPARTURE')) {
                     var dateSortBy = angular.copy(reportList[i].sortByOptions[0]),
                         roomSortBy = angular.copy(reportList[i].sortByOptions[2]);
 
@@ -398,7 +416,7 @@ sntRover.controller('RVReportListCrl', [
                 // for in-house report the sort by items must be
                 // ordered in a specific way as per the design
                 // [name - room] > TO > [room - name]
-                if (reportList[i].title == 'In-House Guests') {
+                if (reportList[i].title == reportUtils.getName('IN_HOUSE_GUEST')) {
                     var nameSortBy = angular.copy(reportList[i].sortByOptions[0]),
                         roomSortBy = angular.copy(reportList[i].sortByOptions[1]);
 
@@ -412,8 +430,8 @@ sntRover.controller('RVReportListCrl', [
                 // for Login and out Activity report
                 // the colspans should be adjusted
                 // the sort descriptions should be update to design
-                //    THIS MUST NOT BE CHANGED IN BACKEND
-                if (reportList[i].title == 'Login and out Activity') {
+                //    THIS MUST NOT BE _CHANGED_ IN BACKEND
+                if (reportList[i].title == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY')) {
                     reportList[i].sortByOptions[0]['description'] = 'Date & Time';
 
                     reportList[i].sortByOptions[0]['colspan'] = 2;
@@ -423,7 +441,7 @@ sntRover.controller('RVReportListCrl', [
 
                 // need to reorder the sort_by options
                 // for deposit report in the following order
-                if (reportList[i].title == 'Deposit Report') {
+                if (reportList[i].title == reportUtils.getName('DEPOSIT_REPORT')) {
                     var reservationSortBy = angular.copy(reportList[i].sortByOptions[4]),
                         nameSortBy = angular.copy(reportList[i].sortByOptions[3]),
                         dateSortBy = angular.copy(reportList[i].sortByOptions[0]),
@@ -450,19 +468,19 @@ sntRover.controller('RVReportListCrl', [
                 };
 
                 // set the from and untill dates as business date (which is untilDate)
-                if (reportList[i].title == 'Arrival' || reportList[i].title == 'Departure') {
+                if (reportList[i].title == reportUtils.getName('ARRIVAL') || reportList[i].title == reportUtils.getName('DEPARTURE')) {
                     reportList[i].fromDate = untilDate;
                     reportList[i].untilDate = untilDate;
                 }
                 // for deposit report the arrival dates
                 // should be from today to +1 week
-                else if (reportList[i].title == 'Deposit Report') {
+                else if (reportList[i].title == reportUtils.getName('DEPOSIT_REPORT')) {
                     reportList[i].fromArrivalDate = untilDate;
                     reportList[i].untilArrivalDate = untilDateFuture;
 
                     reportList[i].fromDepositDate = untilDate;
                     reportList[i].untilDepositDate = untilDate;
-                } else if (reportList[i].title == 'Occupancy & Revenue Summary') {
+                } else if (reportList[i].title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY')) {
                     //CICO-10202
                     reportList[i].fromDate = yesterDay;
                     reportList[i].untilDate = yesterDay;
