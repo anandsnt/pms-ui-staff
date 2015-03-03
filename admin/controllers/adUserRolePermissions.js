@@ -87,8 +87,10 @@ admin.controller('ADUserRolePermissionsCtrl', [
 					$scope.initiatePermissionforSelectedUserRole();		
 					}
 				var postData = {};
+				postData.permissions = [];
+				postData.permissions.length =0;
 				postData.role_id = $scope.selectedUserRole.value;				
-				postData.permissions =$scope.removedElement[0].value;								 
+				postData.permissions.push($scope.removedElement[0].value);								 
 				$scope.invokeApi(ADUserRolePermissionSrv.removeUserRolePermission,postData , successCallback, failureCallback);
     		}else
     		{    
@@ -104,8 +106,10 @@ admin.controller('ADUserRolePermissionsCtrl', [
 				$scope.initiatePermissionforSelectedUserRole();	
 				}
 				var postData = {};
+				postData.permissions = [];
+				postData.permissions.length =0;
 				postData.role_id = $scope.selectedUserRole.value;				
-				postData.permissions=$scope.addedElement[0].value;				
+				postData.permissions.push($scope.addedElement[0].value);				
 				$scope.invokeApi(ADUserRolePermissionSrv.addedUserRolePermission,postData , successCallback, failureCallback);
     		}
     	}
