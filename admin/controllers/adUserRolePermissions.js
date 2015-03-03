@@ -81,11 +81,12 @@ admin.controller('ADUserRolePermissionsCtrl', [
     				var index =$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.indexOf($scope.removedElement[0].value);
     				$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.splice(index, 1);
     				$scope.$emit('hideLoader');		
-					};
+				};
 				var failureCallback = function(data){
+					$scope.errorMessage = data;
 					$scope.$emit('hideLoader');	
 					$scope.initiatePermissionforSelectedUserRole();		
-					}
+				}
 				var postData = {};
 				postData.permissions = [];
 				postData.permissions.length =0;
@@ -97,13 +98,14 @@ admin.controller('ADUserRolePermissionsCtrl', [
     			$scope.addedElement = $scope.calculateArrayDifferance($scope.assignedPermissions, $scope.previuosAssignedPermissions);
     			$scope.previuosAssignedPermissions = $scope.previuosAssignedPermissions.concat($scope.addedElement);
     			var successCallback = function(data){
-    			$scope.$emit('hideLoader');    			
-    			$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.push($scope.addedElement[0].value);
-    			$scope.$emit('hideLoader');		
+	    			$scope.$emit('hideLoader');    			
+	    			$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.push($scope.addedElement[0].value);
+	    			$scope.$emit('hideLoader');		
 				};
 				var failureCallback = function(data){
-				$scope.$emit('hideLoader');	
-				$scope.initiatePermissionforSelectedUserRole();	
+					$scope.errorMessage = data;
+					$scope.$emit('hideLoader');	
+					$scope.initiatePermissionforSelectedUserRole();	
 				}
 				var postData = {};
 				postData.permissions = [];
