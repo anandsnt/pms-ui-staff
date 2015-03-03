@@ -1,7 +1,11 @@
-sntRover.service('rvMenuSrv',
-	['rvPermissionSrv', 
-	function(rvPermissionSrv) {
+sntRover.service('rvMenuSrv',	
+	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv',
+	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv) {
 	
+
+	//we have to keep reference 
+	var self = this;
+
 	/**
 	* method to return default dashboard state for rover
 	* @param {string}, dashboard
@@ -24,15 +28,75 @@ sntRover.service('rvMenuSrv',
     var isFrontDeskDashboard = function (dashboard){
     	return dashboard === 'FRONT_DESK';
     };
-	
+
+    /**
+    * utility function to decide whether the hourly rate is on or not
+    * will use the hotel details API response
+    * @return {Boolean}
+    */
+    var isHourlyRateOn = function() {
+    	return RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
+    };
+
+    /**
+    * utility function to decide whether the it is connected
+    * will use the hotel details API response
+    * @return {Boolean}
+    */
+    var isConnected = function() {
+    	return (RVHotelDetailsSrv.hotelDetails.pms_type === null);
+    };
+
+    /**
+    * utility function to decide whether the auto business date change is enabled or not
+    * will use the hotel details API response
+    * @return {Boolean}
+    */
+    var isAutoBussinessDateChangeEnabled = function() {
+    	return RVHotelDetailsSrv.hotelDetails.is_auto_change_bussiness_date;
+    };
+
 	/**
 	* utility the user role is 'Floor & Maintanance staff'	
     * @param {string}, user role
 	* @return {boolean}	
 	*/
-    var isFloorMaintananceStaff= function (userRole){
-    	return (userRole === "Floor & Maintenance Staff");
+    var isFloorMaintananceStaff= function() {
+    	var userDetails = RVDashboardSrv.getUserDetails();
+    	return (userDetails.user_role === "Floor & Maintenance Staff");
     };
+
+    /**
+    * utility function to process menu list
+    * will check permission, check role permission, visibility permission
+    * @param {array of Objects}
+    * @return {array of Objects}
+    */
+    var processMenuList = function (menuList) {
+    	//deep copying the obeject before proceeding
+    	menuList = JSON.parse(JSON.stringify(menuList));
+
+    	var menuToReturn = [];
+    	//we are processing on the menu list we have
+		_.each (menuList, function(menuItem) {
+			//if the menu is hi
+			isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
+			if(isMenuItemVisible) {
+				menuToReturn.push (menuItem);
+				
+				//looping through submenus
+				_.each (menuItem.submenu, function (subMenuItem, index){
+					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);
+					if(!isMenuItemVisible) {
+						menuItem.submenu.splice (index, 1);
+					}					
+				});				
+			}
+		});
+
+		return menuToReturn;
+    };
+
 
 	/**
 	* method to get menu for rover
@@ -45,15 +109,12 @@ sntRover.service('rvMenuSrv',
 			isHourlyRateOn 			= options['isHourlyRateOn'],
 			isAutoChangeBussinessDate = options['isAutoChangeBussinessDate'],
 			menuFrontDeskIndex 		= -1,
-			eodSubMenu 				= {
-	                title: "MENU_END_OF_DAY",
-	                action: "",
-	                actionPopup: true,
-	                menuIndex: "endOfDay"
-            };
+			isMenuItemVisible		= true,
+            menuList = [], //storing the menu list, will process on this and will append to 'menuToReturn' list
+            menuToReturn = [];
 
 
-		var menu = [{
+		menuList = [{
 		        title: "MENU_DASHBOARD",
 		        action: defaultDashboardState,
 		        menuIndex: "dashboard",
@@ -72,12 +133,10 @@ sntRover.service('rvMenuSrv',
 		        }, {
 		            title: "MENU_CREATE_RESERVATION",
 		            action: "rover.reservation.search",
-		            standAlone: true,
 		            menuIndex: "createReservation"
 		        }, {
 		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.diary',
-		            standAlone: true,
 		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
 		        }, {
@@ -89,7 +148,12 @@ sntRover.service('rvMenuSrv',
 		            title: "MENU_CASHIER",
 		            action: "rover.financials.journal({ id: 2 })",
 		            menuIndex: "cashier"
-		        }]
+		        },{
+	                title: "MENU_END_OF_DAY",
+	                action: "",
+	                actionPopup: true,
+	                menuIndex: "endOfDay"
+            	}]
 		    }, {
 		        title: "MENU_CONVERSATIONS",
 		        //hidden: true,
@@ -121,7 +185,8 @@ sntRover.service('rvMenuSrv',
 		            menuIndex: "cards"
 		        }, {
 		            title: "MENU_DISTRIBUTION_MANAGER",
-		            action: ""
+		            action: "",
+		            menuIndex: "distribution_manager"
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
@@ -137,11 +202,11 @@ sntRover.service('rvMenuSrv',
 		            title: "MENU_TASK_MANAGEMENT",
 		            action: "rover.workManagement.start",
 		            menuIndex: "workManagement",
-		            //hidden: isHourlyRateOn
 
 		        }, {
 		            title: "MENU_MAINTAENANCE",
-		            action: ""
+		            action: "",
+		            menuIndex: "maintanance",
 		        }]
 		    }, {
 		        title: "MENU_FINANCIALS",
@@ -155,10 +220,12 @@ sntRover.service('rvMenuSrv',
 		            menuIndex: "journals"
 		        }, {
 		            title: "MENU_ACCOUNTING",
-		            action: ""
+		            action: "",
+		            menuIndex: "accounting"
 		        }, {
 		            title: "MENU_COMMISIONS",
-		            action: ""
+		            action: "",
+		            menuIndex: "commisions"
 		        }]
 		    }, {
 		        title: "MENU_REPORTS",
@@ -168,16 +235,9 @@ sntRover.service('rvMenuSrv',
 		        submenu: []
 		    }
 		];
+		menuToReturn = processMenuList (menuList);
 
-		//if auto change business is not enabled, we have to show EOD menu
-		// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
-		if(!isAutoChangeBussinessDate) {
-			//finding the index where to insert EOD menu
-			menuFrontDeskIndex 		= _.indexOf(_.pluck(menu, 'menuIndex'), "front_desk");
-			menu[menuFrontDeskIndex].submenu.push(eodSubMenu);
-		}
-
-		return menu;
+		return menuToReturn;
 	};
 
 	/**
@@ -279,8 +339,29 @@ sntRover.service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.hasMenuPermission = function(menuIndex) {
+		// search,createReservation,diaryReservation,postcharges,cashier,endOfDay, rateManager,cards,
+		//roomStatus,workManagement,, journals,,
 		var menuPermissions = {
-			'search': ['SEARCH_RESERVATIONS']
+			'search': 				['SEARCH_RESERVATIONS'],
+			'createReservation': 	['CREATE_EDIT_RESERVATIONS'],
+			'postcharges': 			['ACCESS_POST_CHARGES'],
+			
+			'cashier': 				['ACCESS_CASHIERING'],
+			'endOfDay': 			['ACCESS_RUN_END_OF_DAY'],
+			'rateManager': 			['ACCESS_RATE_MANAGER'],
+			
+			'cards': 				['ACCESS_COMPANY_TA_CARDS'],
+			'distribution_manager': ['ACCESS_DISTRIBUTION_MENU'],
+			'roomStatus': 			['HOUSEKEEPING_ROOM_STATUS_ACCESS'],
+			
+			'workManagement': 		['ACCESS_TASK_MANAGEMENT'],
+			'maintanance': 			['ACCESS_TASK_MAINTENANCE'],
+			'journals': 			['ACCESS_JOURNAL'],
+
+			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],		
+			'commisions': 			['ACCESS_COMMISSIONS'],	
+					
+
 		};
 
 		var permissions = null, collectivePermissionValue = true;
@@ -303,7 +384,17 @@ sntRover.service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.hasRolePermission = function(menuIndex) {
-		return true;
+		var user = RVDashboardSrv.getUserDetails(),
+			role = user.user_role,
+			isHotelAdmin = (role === "Hotel Admin"),
+			isHotelStaff = user.is_staff,
+			returnValue = false;
+
+		//currently every menu is available for Hotel Admin & Hotel Staff
+		returnValue = (isHotelAdmin || isHotelStaff);
+
+
+		return returnValue;
 	};
 
 	/**
@@ -311,8 +402,37 @@ sntRover.service('rvMenuSrv',
 	* @param {string}, menu index
 	* @return {boolean}
 	*/
-	this.hasSettingsVisbility = function(menuIndex) {
-		return true;
+	this.hasSettingsPermission = function(menuIndex) {
+		var returnValue = true;
+		switch (menuIndex){
+			case 'diaryReservation': 
+				returnValue = isHourlyRateOn();
+				break;
+
+			//if auto change business is not enabled, we have to show EOD menu
+			// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
+			case 'endOfDay':
+				returnValue = !isAutoBussinessDateChangeEnabled(); 
+				break;
+
+			//we are hiding conversations for now
+			case 'conversations':
+				returnValue = false;
+				break;
+
+			case 'reports':		
+				// we are hiding the reports menu if it is a floor & maintanance staff	in connected	
+				returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : true;
+			
+			case 'workManagement':
+				returnValue = !isHourlyRateOn();
+				break;
+
+			default:
+        		break;
+		}
+
+		return returnValue;
 	};
 
 	/**
@@ -320,34 +440,11 @@ sntRover.service('rvMenuSrv',
 	* @param {string}, menu index
 	* @return {boolean}
 	*/
-	this.shouldShowMenu = function(menuIndex) {
-		if (!hasMenuPermission (menuIndex)) return false;		
-		if (!hasRolePermission (menuIndex)) return false;	
-		if (!hasSettingsVisbility (menuIndex)) return false;
+	this.shouldShowMenuItem = function(menuIndex) {
+		if (!self.hasMenuPermission (menuIndex)) return false;		
+		if (!self.hasRolePermission (menuIndex)) return false;	
+		if (!self.hasSettingsPermission (menuIndex)) return false;
 		return true;
 	};	
 
 }] );
-
-
-
-
-/*def menu_permissions(menuIndex)
-
-	{ menuIndex : ['dasdsadsa', 'dasdsadasd'],
-
-	}
-
-
-	return true / false;
-
-def role_permissions(menu_index)
-	if menu_index == 'dasdsa':
-		if role = 'dadas' : return true
-			else : false
-def 
-
-def should_show_menu(menu_idex)
-	if !menu_permissions_visibility(menuIndex) return false
-	if !menu_role_visibility return false
-	if !menu_settings_visibility return false*/

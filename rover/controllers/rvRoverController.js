@@ -1,14 +1,20 @@
 sntRover.controller('roverController', 
+  
   ['$rootScope', '$scope', '$state', 
   '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 
+
   'ngDialog', '$translate', 'hotelDetails', 
   'userInfoDetails', 'RVChargeItems', '$stateParams',
-  'rvMenuSrv',
+
+  'rvMenuSrv', 'rvPermissionSrv',
+  
   function($rootScope, $scope, $state, 
     $window, RVDashboardSrv, RVHotelDetailsSrv, 
+
     ngDialog, $translate, hotelDetails, 
     userInfoDetails, RVChargeItems, $stateParams,
-    rvMenuSrv) {
+
+    rvMenuSrv, rvPermissionSrv) {
 
 
     $rootScope.isOWSErrorShowing = false;    
@@ -229,6 +235,15 @@ sntRover.controller('roverController',
         }
         // method to decide whether to show menu from 
         $scope.shouldShowMenu = rvMenuSrv.shouldShowMenu;
+    };
+
+    /**
+    * method to determine the visibility of availability
+    * will check the permission & standalone status
+    */
+    $scope.shouldShowAvailabilityHouseButton = function() {
+        return ($rootScope.isStandAlone && 
+            rvPermissionSrv.getPermissionValue ('AVAILABILITY_HOUSE_STATUS'));     
     };
 
 
