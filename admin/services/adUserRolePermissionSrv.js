@@ -1,14 +1,13 @@
 admin.service('ADUserRolePermissionSrv',['$q', 'ADBaseWebSrvV2', 
 	function($q, ADBaseWebSrvV2){
    /*
-	* service class for room related operations
+	* service class for Permission related operations
 	*/
 	var that = this;
 
-    this.roomTypesArray = [];
    /*
-    * getter method to fetch rooms list
-    * @return {object} room list
+    * getter method to fetch Permission list
+    * @return {object} Permission list
     */	
 	this.fetchUserRolePermission = function(params){
 		var deferred = $q.defer();
