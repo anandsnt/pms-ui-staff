@@ -32,7 +32,7 @@ sntRover.service('rvPermissionSrv',
 	* if not found in the list, will return false
 	* will return true or false
 	*/
-	this.hasPermission = function (permissionString) {
+	this.getPermissionValue = function (permissionString) {
 		var permission = _.findWhere (roverPermissions, {code: permissionString});
 		if (permission) {
 			return permission.value;

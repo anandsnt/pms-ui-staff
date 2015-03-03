@@ -1,10 +1,12 @@
 sntRover.service('rvMenuSrv',
-	[function() {
+	['rvPermissionSrv', 
+	function(rvPermissionSrv) {
 	
-
 	/**
-	* method to return default dashboard state for rover	
-	*/ 
+	* method to return default dashboard state for rover
+	* @param {string}, dashboard
+	* @return {string}, corresponding state
+	*/
 	var getDefaultDashboardState = function(default_dashboard) {
 		var statesForDashbaord = {
 			'HOUSEKEEPING': 'rover.dashboard.housekeeping',
@@ -16,6 +18,8 @@ sntRover.service('rvMenuSrv',
 
     /**
     * utility function to decide whether dashboard is front desk
+    * @param {string}, dashboard
+	* @return {boolean}
     */
     var isFrontDeskDashboard = function (dashboard){
     	return dashboard === 'FRONT_DESK';
@@ -23,6 +27,8 @@ sntRover.service('rvMenuSrv',
 	
 	/**
 	* utility the user role is 'Floor & Maintanance staff'	
+    * @param {string}, user role
+	* @return {boolean}	
 	*/
     var isFloorMaintananceStaff= function (userRole){
     	return (userRole === "Floor & Maintenance Staff");
@@ -30,7 +36,7 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to get menu for rover
-	* param1 {object}, contains the different value/function to decide the enabling/disabling of a menu item
+	* @param {object}, contains the different value/function to decide the enabling/disabling of a menu item
 	* as well as different actions
 	*/
 	this.getMainMenuForStandAloneRover = function(options) {
@@ -56,8 +62,9 @@ sntRover.service('rvMenuSrv',
 		    }, {
 		        title: "MENU_FRONT_DESK",
 		        //hidden: true,
-		        action: "",
+		        action: "",		        
 		        iconClass: "icon-frontdesk",
+		        menuIndex: "front_desk",
 		        submenu: [{
 		            title: "MENU_SEARCH_RESERVATIONS",
 		            action: "rover.search",
@@ -71,7 +78,7 @@ sntRover.service('rvMenuSrv',
 		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.diary',
 		            standAlone: true,
-		            hidden: !isHourlyRateOn,
+		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
 		        }, {
 		            title: "MENU_POST_CHARGES",
@@ -85,9 +92,10 @@ sntRover.service('rvMenuSrv',
 		        }]
 		    }, {
 		        title: "MENU_CONVERSATIONS",
-		        hidden: true,
+		        //hidden: true,
 		        action: "",
 		        iconClass: "icon-conversations",
+		        menuIndex: "conversations",
 		        submenu: [{
 		            title: "MENU_SOCIAL_LOBBY",
 		            action: ""
@@ -102,6 +110,7 @@ sntRover.service('rvMenuSrv',
 		        title: "MENU_REV_MAN",
 		        action: "",
 		        iconClass: "icon-revenue",
+		        menuIndex: "revenue-manager",
 		        submenu: [{
 		            title: "MENU_RATE_MANAGER",
 		            action: "rover.ratemanager",
@@ -119,6 +128,7 @@ sntRover.service('rvMenuSrv',
 		        //hidden: true,
 		        action: "",
 		        iconClass: "icon-housekeeping",
+		        menuIndex: "housekeeping",
 		        submenu: [{
 		            title: "MENU_ROOM_STATUS",
 		            action: "rover.housekeeping.roomStatus",
@@ -127,7 +137,7 @@ sntRover.service('rvMenuSrv',
 		            title: "MENU_TASK_MANAGEMENT",
 		            action: "rover.workManagement.start",
 		            menuIndex: "workManagement",
-		            hidden: isHourlyRateOn
+		            //hidden: isHourlyRateOn
 
 		        }, {
 		            title: "MENU_MAINTAENANCE",
@@ -138,6 +148,7 @@ sntRover.service('rvMenuSrv',
 		        //hidden: true,
 		        action: "",
 		        iconClass: "icon-financials",
+		        menuIndex: "financials",
 		        submenu: [{
 		            title: "MENU_JOURNAL",
 		            action: "rover.financials.journal({ id : 0})",
@@ -162,7 +173,7 @@ sntRover.service('rvMenuSrv',
 		// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
 		if(!isAutoChangeBussinessDate) {
 			//finding the index where to insert EOD menu
-			menuFrontDeskIndex 		= _.indexOf(_.pluck(menu, 'title'), "MENU_FRONT_DESK");
+			menuFrontDeskIndex 		= _.indexOf(_.pluck(menu, 'menuIndex'), "front_desk");
 			menu[menuFrontDeskIndex].submenu.push(eodSubMenu);
 		}
 
@@ -171,7 +182,7 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to 3rd party connected PMS - for now OPERA
-	* param1 {object}, contains the different value/function to decide the enabling/disabling of a menu item
+	* @param {object}, contains the different value/function to decide the enabling/disabling of a menu item
 	* as well as different actions
 	*/
 	this.getMainMenuForConnectedRover = function(options) {
@@ -201,7 +212,7 @@ sntRover.service('rvMenuSrv',
 				menuIndex: "reports",
 				iconClass: "icon-reports",
 				submenu: [],
-				hidden: isF_and_M_Staff
+				//hidden: isF_and_M_Staff
 		}];
 
 		return menu;
@@ -209,7 +220,7 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to get mobile menu for standalone
-	* param1 {object}, contains the different value/function to decide the enabling/disabling of a menu item
+	* @param {object}, contains the different value/function to decide the enabling/disabling of a menu item
 	* as well as different actions
 	*/
 	this.getMobileMenuForStandAloneRover = function(options) {
@@ -227,7 +238,7 @@ sntRover.service('rvMenuSrv',
 			        action: "rover.housekeeping.roomStatus",
 			        menuIndex: "roomStatus",
 			        iconClass: "icon-housekeeping",
-			        hidden: isFrontDeskDashboard (defaultDashboard)
+			        //hidden: isFrontDeskDashboard (defaultDashboard)
 			    }
 		];
 
@@ -236,7 +247,7 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to get mobile menu for connected
-	* param1 {object}, contains the different value/function to decide the enabling/disabling of a menu item
+	* @param {object}, contains the different value/function to decide the enabling/disabling of a menu item
 	* as well as different actions
 	*/
 	this.getMobileMenuForConnectedRover = function(options) {
@@ -254,7 +265,7 @@ sntRover.service('rvMenuSrv',
 			        action: "rover.housekeeping.roomStatus",
 			        menuIndex: "roomStatus",
 			        iconClass: "icon-housekeeping",
-			        hidden: isFrontDeskDashboard (defaultDashboard)
+			        //hidden: isFrontDeskDashboard (defaultDashboard)
 			    }
 		];
 
@@ -262,5 +273,81 @@ sntRover.service('rvMenuSrv',
 	};
 
 
+	/**
+	* function to check permissions against a menu
+	* @param {string}, menu index
+	* @return {boolean}
+	*/
+	this.hasMenuPermission = function(menuIndex) {
+		var menuPermissions = {
+			'search': ['SEARCH_RESERVATIONS']
+		};
+
+		var permissions = null, collectivePermissionValue = true;
+
+		if(menuIndex in menuPermissions) {
+			permissions = menuPermissions[menuIndex];
+
+			_.each(permissions, function(item) {
+				collectivePermissionValue = collectivePermissionValue * rvPermissionSrv.getPermissionValue(item);
+			});
+
+			return collectivePermissionValue;
+		}
+		return true;
+	};
+
+	/**
+	* function to check whether a menu has some role based association
+	* @param {string}, menu index
+	* @return {boolean}
+	*/
+	this.hasRolePermission = function(menuIndex) {
+		return true;
+	};
+
+	/**
+	* function to check whether a menu has some role based association
+	* @param {string}, menu index
+	* @return {boolean}
+	*/
+	this.hasSettingsVisbility = function(menuIndex) {
+		return true;
+	};
+
+	/**
+	* function to check permissions against a menu
+	* @param {string}, menu index
+	* @return {boolean}
+	*/
+	this.shouldShowMenu = function(menuIndex) {
+		if (!hasMenuPermission (menuIndex)) return false;		
+		if (!hasRolePermission (menuIndex)) return false;	
+		if (!hasSettingsVisbility (menuIndex)) return false;
+		return true;
+	};	
 
 }] );
+
+
+
+
+/*def menu_permissions(menuIndex)
+
+	{ menuIndex : ['dasdsadsa', 'dasdsadasd'],
+
+	}
+
+
+	return true / false;
+
+def role_permissions(menu_index)
+	if menu_index == 'dasdsa':
+		if role = 'dadas' : return true
+			else : false
+def 
+
+def should_show_menu(menu_idex)
+	if !menu_permissions_visibility(menuIndex) return false
+	if !menu_role_visibility return false
+	if !menu_settings_visibility return false*/

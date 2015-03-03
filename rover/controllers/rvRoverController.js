@@ -222,10 +222,13 @@ sntRover.controller('roverController',
             $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover (menuOptions);
             $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover (menuOptions); 
         } 
+        //connected
         else {
             $scope.menu       = rvMenuSrv.getMainMenuForConnectedRover (menuOptions);
             $scope.mobileMenu = rvMenuSrv.getMobileMenuForConnectedRover (menuOptions);
         }
+        // method to decide whether to show menu from 
+        $scope.shouldShowMenu = rvMenuSrv.shouldShowMenu;
     };
 
 
