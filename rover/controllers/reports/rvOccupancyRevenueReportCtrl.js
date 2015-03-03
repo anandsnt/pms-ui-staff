@@ -103,6 +103,22 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}
 		}
 
+
+		$scope.getNigtlyValue = function(key, columnIndex) {
+			var candidate = $scope.results.nightly[key][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance))]];
+			if (candidate) {
+				if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenReport.chosenLastYear || !!$scope.chosenReport.chosenVariance) {
+					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenReport.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					return candidate.this_year;
+				}
+			} else {
+				return -1;
+			}
+		}
+
 		$scope.getClass = function(columnIndex) {
 			if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
 				return (columnIndex % 3 == 0) ? "" : (columnIndex % 3 == 2) ? "day-end" : "last-year";
@@ -113,8 +129,8 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}
 		}
 
-		$scope.getChargeCodeValue = function(chargeCodeIndex, columnIndex) {
-			var candidate = $scope.results.charge_codes[chargeCodeIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance))]];
+		$scope.getChargeCodeValue = function(chargeGroupIndex, columnIndex) {
+			var candidate = $scope.results.charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenReport.chosenLastYear + !!$scope.chosenReport.chosenVariance))]];
 			if (candidate) {
 				if (!!$scope.chosenReport.chosenLastYear && !!$scope.chosenReport.chosenVariance) {
 					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;

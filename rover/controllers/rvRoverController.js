@@ -699,6 +699,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
+	
+	//CICO-13582 Display a timeout error message, without try again button.
+	//We are using the same message as that of OWS timeout as of now.
+	//Keeping the two popup separate since the message may change in future.
+    $rootScope.showTimeoutError = function() {
+      // Hide loading message
+      $scope.$emit('hideLoader');
+        ngDialog.open({
+          template: '/assets/partials/errorPopup/rvTimeoutError.html',
+          className: 'ngdialog-theme-default1 modal-theme1',
+          controller: 'RVTimeoutErrorCtrl',
+          closeByDocument: false,
+          scope: $scope
+        });
+    };
 
     /**
      * Handles the bussiness date change in progress

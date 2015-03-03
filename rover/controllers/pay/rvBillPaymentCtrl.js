@@ -307,7 +307,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
 				$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
 				$scope.saveData.payment_type_id = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_id;
-				angular.forEach($scope.renderData, function(value, key) {
+				angular.forEach($scope.renderData.paymentTypes, function(value, key) {
 					if(value.name == "CC"){
 						ccExist = true;
 					}

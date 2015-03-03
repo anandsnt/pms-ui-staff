@@ -188,7 +188,7 @@
             <div class="wrapper" style="height:120%;">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div id="set-payment" class="payment-form for-reservation"> 
-                <div class="entry full-width" ng-show="!showCC">
+                <div class="entry full-width" ng-hide="showCC ||(depositData.attempted && !depositData.depositAttemptFailure)">
                     <span ng-hide="true">{{reservationData.paymentType}}</span>
                     <label for="payment-type" translate>PAYMENT_TYPE</label>
                     <div class="select">
@@ -251,14 +251,14 @@
                         <!-- Payment fields -->
                         <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>                        
                         <!-- Buttons - remove class "hidden" when payment type is defined-->
-                        <div class="actions" ng-show="!!reservationData.paymentType.type.value && reservationData.depositAmount >= 0">
+                        <div class="actions" ng-show="!!reservationData.paymentType.type.value && reservationData.depositAmountWithoutFilter >= 0">
                             <button type="button" class="button blue" ng-click="confirmReservation()">Pay deposit later</button>
                             <button type="button" class="button green" ng-click="payDeposit()">Pay deposit now</button>
                         </div>
                     </div>
                     
                     <!-- Deposit paid succesfully -->
-                    <div class="feedback" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && !depositData.depositAttemptFailure">
+                    <div class="feedback no-top-border" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && !depositData.depositAttemptFailure">
                         <div class="notice success">Deposit paid</div>
                         <ul class="transaction">
                             <li ng-show="depositData.authorizationCode!==''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span></li>

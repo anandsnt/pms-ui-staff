@@ -38,7 +38,7 @@
                     <!-- Option for having 2 separate input fields for nights/hours entry. If nights is default, nights should be hidden until switch button is tapped.
                     Feel free to use just one input field id you want to -->
                     <input ng-show="shouldShowNights" name="nights-number" id="nights-number" type="tel" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
-                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-change="setDepartureHours()"  ng-blur="setDepartureHours('force')"/>
+                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-blur="setDepartureHours()"/>
                 </div>
             </div>
 
@@ -62,10 +62,10 @@
                 <label for="arrival-time">Arrival Time</label>
                 <div class="select">
                     <select id="arrival-time" name="arrival-time" iscroll-stop-propagation ng-model="fullCheckinTime" ng-change="mapToCheckinTime()">
-                        <option value="12:00 AM">12:00 AM</option>
-                        <option value="12:15 AM">12:15 AM</option>
-                        <option value="12:30 AM">12:30 AM</option>
-                        <option value="12:45 AM">12:45 AM</option>
+                        <option value="00:00 AM">12:00 AM</option>
+                        <option value="00:15 AM">12:15 AM</option>
+                        <option value="00:30 AM">12:30 AM</option>
+                        <option value="00:45 AM">12:45 AM</option>
 
                         <option value="1:00 AM">1:00 AM</option>
                         <option value="1:15 AM">1:15 AM</option>
@@ -112,10 +112,10 @@
                         <option value="11:30 AM">11:30 AM</option>
                         <option value="11:45 AM">11:45 AM</option>
 
-                        <option value="12:00 PM">12:00 PM</option>
-                        <option value="12:15 PM">12:15 PM</option>
-                        <option value="12:30 PM">12:30 PM</option>
-                        <option value="12:45 PM">12:45 PM</option>
+                        <option value="00:00 PM">12:00 PM</option>
+                        <option value="00:15 PM">12:15 PM</option>
+                        <option value="00:30 PM">12:30 PM</option>
+                        <option value="00:45 PM">12:45 PM</option>
 
                         <option value="1:00 PM">1:00 PM</option>
                         <option value="1:15 PM">1:15 PM</option>

@@ -6,7 +6,8 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
     'rvDiarySrv',
     'rvDiaryUtil',
     '$filter',
-    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv, util, $filter) {
+    '$timeout',
+    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv, util, $filter, $timeout) {
         BaseCtrl.call(this, $scope);
 
         $scope.title = ($scope.selectedReservations.length > 1 ? 'these rooms' : 'this room');
@@ -96,10 +97,16 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
         $scope.initSelections();
 
-
+        $scope.closeWithAnimation = function (){
+            //to add stjepan's popup showing animation
+            $rootScope.modalOpened = false; 
+            $timeout(function(){
+                ngDialog.close();
+            }, 300); 
+        };
 
         $scope.selectAdditional = function() {
-            ngDialog.close();
+            $scope.closeWithAnimation ();
         };
 
         $scope.removeSelectedOccupancy = function(idx) {
@@ -135,7 +142,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                     reservation: 'HOURLY'
                 });
             }
-            ngDialog.close();
+            $scope.closeWithAnimation ();
         };
 
         // save data to $vault
@@ -172,15 +179,19 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
             removed.occupancy.selected = false;
 
 
-            ngDialog.close();
+            $scope.closeWithAnimation ();          
 
             $scope.renderGrid();
         };
 
-        $scope.closeDialog = function() {
-            $scope.cancelSelection();
-            ngDialog.close();
-            $scope.renderGrid();
+        $scope.closeDialog = function() {    
+            //to add stjepan's popup showing animation
+            $rootScope.modalOpened = false; 
+            $timeout(function(){
+                ngDialog.close();
+                $scope.cancelSelection();
+                $scope.renderGrid();
+            }, 300);            
         };
     }
 ]);

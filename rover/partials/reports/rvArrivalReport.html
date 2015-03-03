@@ -53,9 +53,9 @@
 	<!-- notes -->
 	<td ng-if="each.isNoteData" class="secondary notes" colspan="5">
 		<strong>Notes</strong>
-		<p ng-repeat="name in each.notes">
-			{{ each.date | date : dateFormat }} &#8226; {{ each.name }}
-			<span>{{ each.note }}</span>
+		<p ng-repeat="note in each.notes">
+			{{ note.date | date : dateFormat }} &#8226; {{ note.name }}
+			<span>{{ note.note }}</span>
 		</p>
 	</td>
 </tr>

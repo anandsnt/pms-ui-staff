@@ -188,6 +188,14 @@ table {
 
             .hotel,
             .user { font-size: 10pt; }
+
+            .user .date {
+                display: none;
+            }
+
+            .date {
+                .hide;
+            }
         }
 
         .logo {
@@ -768,6 +776,22 @@ table {
 
             &.with-graphs {
                 .report-block {
+
+                    .totals {
+                        font-size: 8pt;
+                        line-height: 10pt;
+                        text-transform: uppercase;
+                        .float;
+
+                        .pull-left,
+                        .pull-right {
+                            color: @grey3;
+                            .show;
+
+                            span { color: @textColor; }
+                        }
+                    }
+
                     .graph-summary {
                         page-break-after: always;
                         page-break-inside: avoid;
@@ -788,9 +812,8 @@ table {
                                 background: @grey1;
                             }
 
-                            &.footer {
+                            &.totals {
                                 margin-bottom: 0;
-                                padding-bottom: 0;
                                 border-bottom: 0;
                             }
                         }
@@ -842,6 +865,12 @@ table {
                                     .calc-width(100, 200);
                                 }
                             }
+                        }
+
+                        .totals {
+                            border-top: 1px solid @grey2;
+                            padding-top: 8pt;
+                            margin: 8pt 0 1cm 0;
                         }
                     }
                 }
@@ -1220,13 +1249,30 @@ table {
                     text-transform: uppercase;
                     line-height: 40px;
                     margin: 0;
+                    overflow: hidden;
+                    padding: 10px 43px 0 10px;
 
-                    &.payment {
-                        padding-left: -webkit-calc(~"90% - 130px");
-                        padding-left: -moz-calc(~"90% - 130px");
-                        padding-left: calc(~"90% - 130px");
+                    .payment {
+                        padding-left: 0;
+                        float: right;
+                        width: 49.5%;
+                        text-align: right;
 
                         span { margin-left: 20px; }
+                    }
+
+                    .filters-applied {
+                        display: block;
+                        float: left;
+                        width: 49.5%;
+
+                        span {
+                            display: block;
+                        }
+
+                        label {
+                            color: #9d9d9d;
+                        }
                     }
                 }
 
