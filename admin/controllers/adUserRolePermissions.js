@@ -32,11 +32,12 @@ admin.controller('ADUserRolePermissionsCtrl', [
 			$scope.selectedUserRole = $scope.userRoles[0];			
 			$scope.selectedUserRole.index = 0;
 			$scope.initiatePermissionforSelectedUserRole();
+			$scope.errorMessage = '';
 		};
 		var failureCallback = function(data){
 			$scope.$emit('hideLoader');
-			$scope.errorMessage = data.errorMessage;
-			}
+			$scope.errorMessage = data;
+		}
 		$scope.invokeApi(ADUserRolePermissionSrv.fetchUserRolePermission, {}, successCallback, failureCallback);
     }
 	$scope.fetchUserRolePermission();
@@ -80,7 +81,8 @@ admin.controller('ADUserRolePermissionsCtrl', [
     			var successCallback = function(data){
     				var index =$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.indexOf($scope.removedElement[0].value);
     				$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.splice(index, 1);
-    				$scope.$emit('hideLoader');		
+    				$scope.$emit('hideLoader');	
+    				$scope.errorMessage = '';	
 				};
 				var failureCallback = function(data){
 					$scope.errorMessage = data;
@@ -100,7 +102,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     			var successCallback = function(data){
 	    			$scope.$emit('hideLoader');    			
 	    			$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.push($scope.addedElement[0].value);
-	    			$scope.$emit('hideLoader');		
+	    			$scope.errorMessage = '';
 				};
 				var failureCallback = function(data){
 					$scope.errorMessage = data;
