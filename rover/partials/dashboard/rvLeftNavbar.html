@@ -4,11 +4,16 @@
 <div id="nav" ng-show="isHotelAdmin || isHotelStaff">
 
 	<!-- Property switch -->
-	<div class="change-hotel" ng-show="hotelDetails.userHotelsData.hotel_list.length>0">
+	<div class="change-hotel" ng-show="shouldShowMultiPropertySwitch()">
 		<h5 ng-click="showHotelSwitchList = !showHotelSwitchList">{{currentHotelData.name}}</h5>
+		
 		<dl class="dropdown">
 			<dt>Change hotel:</dt>
-			<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list"><a ng-click="redirectToHotel(hotel.hotel_id)">{{ hotel.hotel_name}}</a></dd>
+			<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list">
+				<a ng-click="redirectToHotel(hotel.hotel_id)">
+					{{ hotel.hotel_name}}
+				</a>
+			</dd>
 		</dl>
 	</div>
 

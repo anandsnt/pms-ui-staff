@@ -247,6 +247,15 @@ sntRover.controller('roverController',
             rvPermissionSrv.getPermissionValue ('AVAILABILITY_HOUSE_STATUS'));     
     };
 
+    /**
+    * method to determine the visibility of multiproperty switch
+    * will check the permission & number of hotels returned from API
+    * @return {Boolean}
+    */
+    $scope.shouldShowMultiPropertySwitch = function() {
+        return (hotelDetails.userHotelsData.hotel_list.length > 0 && 
+            rvPermissionSrv.getPermissionValue ('MULTI_PROPERTY_SWITCH'));     
+    };
 
 
 
