@@ -36,29 +36,17 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             })
         };
 
-        //scroller options
-        $scope.$parent.myScrollOptions = {
-            'reservation-settings': {
-                snap: false,
-                scrollbars: true,
-                vScroll: true,
-                vScrollbar: true,
-                hideScrollbar: false,
-                click: true,
-                bounce: false,
-                scrollbars: 'custom'
-            }
-        };
+        $scope.setScroller('reservation-settings');
 
         $scope.refreshScroll = function() {
-            $scope.$parent.myScroll['reservation-settings'].refresh();
+            $scope.refreshScroller('reservation-settings');
         };
 
         $scope.arrivalDateOptions = {
             showOn: 'button',
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
-            yearRange: '-0:',
+            yearRange: '-1:',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
@@ -74,7 +62,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             showOn: 'button',
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
-            yearRange: '-0:',
+            yearRange: '-1:',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
@@ -175,7 +163,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 } else if (isEmpty(ui.oldHeader)) { //means activating..
                     ui.newHeader.addClass('active');
                 }
-                $scope.$parent.myScroll['reservation-settings'].refresh();
+                $scope.refreshScroll();
             }
 
         };
@@ -191,7 +179,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 } else if (isEmpty(ui.oldHeader)) { //means activating..
                     ui.newHeader.addClass('active');
                 }
-                $scope.$parent.myScroll['reservation-settings'].refresh();
+                $scope.refreshScroll();
             }
 
         };
