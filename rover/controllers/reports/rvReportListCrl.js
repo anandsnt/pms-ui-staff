@@ -158,7 +158,7 @@ sntRover.controller('RVReportListCrl', [
                         break;
 
                     case 'Reservations By User':
-                        // reportList[i]['reportIconCls'] = 'guest-status cancel';
+                        reportList[i]['reportIconCls'] = 'icon-report icon-reservations';
                         reportList[i]['hasDateLimit'] = false;
                         reportList[i]['canRemoveDate'] = true;
                         reportList[i]['showRemove'] = true;

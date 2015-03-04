@@ -341,6 +341,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvDepositReport.html';
 					break;
 
+				case reportUtils.getName('RESERVATIONS_BY_USER'):
+					template = '/assets/partials/reports/rvReservationByUserReport.html';
+					break;
+
 				default:
 					template = '/assets/partials/reports/rvCommonReport.html';
 					break;
@@ -647,7 +651,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.parsedApiFor == reportUtils.getName('IN_HOUSE_GUEST') ||
 					$scope.parsedApiFor == reportUtils.getName('CANCELLATION_NO_SHOW') ||
 					$scope.parsedApiFor == reportUtils.getName('DEPARTURE') ||
-					$scope.parsedApiFor == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY')) {
+					$scope.parsedApiFor == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
+					$scope.parsedApiFor == reportUtils.getName('RESERVATIONS_BY_USER')) {
 
 				for (i = 0, j = apiResponse.length; i < j; i++) {
 					itemCopy   = angular.copy( apiResponse[i] );

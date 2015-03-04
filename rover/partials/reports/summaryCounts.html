@@ -1,10 +1,22 @@
+<!-- Arrival -->
 <li ng-if="chosenReport.title == 'Arrival'">Total Arrival Rooms<span>{{ summaryCounts.arrivals }}</span></li>
 <li ng-if="chosenReport.title == 'Arrival'">ADR<span>{{ currencySymbol }}{{ summaryCounts.adr }}</span></li>
 
+<!-- In-House Guests -->
 <li ng-if="chosenReport.title == 'In-House Guests'">Total Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
-<li ng-if="chosenReport.title == 'In-House Guests'">Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>	
+<li ng-if="chosenReport.title == 'In-House Guests'">Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>
 <li ng-if="chosenReport.title == 'In-House Guests'">Total Balance<span class="green">{{ currencySymbol }}{{ summaryCounts.total_balance }}</span></li>
 
+<!-- Deposit Report -->
 <li ng-if="chosenReport.title == 'Deposit Report'">Due<span>{{ currencySymbol }}{{ summaryCounts.total_deposit_due }}</span></li>
-<li ng-if="chosenReport.title == 'Deposit Report'">Paid<span>{{ currencySymbol }}{{ summaryCounts.total_deposit_paid }}</span></li>	
+<li ng-if="chosenReport.title == 'Deposit Report'">Paid<span>{{ currencySymbol }}{{ summaryCounts.total_deposit_paid }}</span></li>
 <li ng-if="chosenReport.title == 'Deposit Report'">Past Due<span class="green">{{ currencySymbol }}{{ summaryCounts.total_deposit_passed }}</span></li>
+
+<!-- Reservations By User -->
+<li ng-if="chosenReport.title == 'Reservations By User'">User<span>{{ summaryCounts.total_users }}</span></li>
+<li ng-if="chosenReport.title == 'Reservations By User'">New<span>{{ summaryCounts.total_new }}</span></li>
+<li ng-if="chosenReport.title == 'Reservations By User'">Cancel<span>{{ summaryCounts.total_cancel }}</span></li>
+<li ng-if="chosenReport.title == 'Reservations By User'">Overrides<span>{{ summaryCounts.total_rate_overrides }}</span></li>
+<li ng-if="chosenReport.title == 'Reservations By User'">Overrides<span>{{ currencySymbol }}{{ summaryCounts.total_rate_overrides }}</span></li>
+<li ng-if="chosenReport.title == 'Reservations By User'">Variance<span>{{ currencySymbol }}{{ summaryCounts.total_rate_variance }}</span></li>
+<li ng-if="chosenReport.title == 'Reservations By User'">Total Revenue<span>{{ currencySymbol }}{{ summaryCounts.total_revenue }}</span></li>
