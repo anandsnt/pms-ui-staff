@@ -606,11 +606,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.editStayDates = function() {
 			// reservation_id, arrival_date, departure_date
 			var onValidationSuccess = function(data) {
-					console.log("onValidationSuccess", data);
+					// console.log("onValidationSuccess", data);
+					ngDialog.open({
+						template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
+						className: '',
+						scope: $scope,
+						data: JSON.stringify({
+							is_assigned_room_available: data.data.is_assigned_room_available,
+							is_rate_available: data.data.is_rate_available,
+							is_stay_cost_changed: data.data.is_stay_cost_changed
+						})
+					});
 					$scope.$emit('hideLoader');
 				},
 				onValidationFaliure = function(error) {
-					console.log("onValidationFaliure", error);
+					// console.log("onValidationFaliure", error);
 					$scope.$emit('hideLoader');
 				}
 			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
