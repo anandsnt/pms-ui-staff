@@ -30,10 +30,10 @@ var GridRowItemDrag = React.createClass({
 		document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
 		document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 
-		e = this.isTouchEnabled ? e.changedTouches[0] : e;
+		/*e = this.isTouchEnabled ? e.changedTouches[0] : e;
 
 		document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
-		document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
+		document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);*/
 		page_offset = this.getDOMNode().getBoundingClientRect();
 		
 		el = props.viewport.element();
