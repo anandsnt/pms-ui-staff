@@ -333,8 +333,8 @@ sntRover.service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.hasMenuPermission = function(menuIndex) {
-		// search,createReservation,diaryReservation,postcharges,cashier,endOfDay, rateManager,cards,
-		//roomStatus,workManagement,, journals,,
+		
+		// NOTE:- {key: menuIndex, value: [PERMISSIONS]}
 		var menuPermissions = {
 			'search': 				['SEARCH_RESERVATIONS'],
 			'createReservation': 	['CREATE_EDIT_RESERVATIONS'],
