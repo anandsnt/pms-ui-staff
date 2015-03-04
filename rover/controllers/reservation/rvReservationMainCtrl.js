@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams', 'RVReservationGuestSrv',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1121,7 +1121,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //         travel_agent_id: $scope.reservationData.travelAgent.id
             //     });
             // }
-            
+
             // $scope.$broadcast('closeSidebar');
         };
 
@@ -2010,6 +2010,21 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal) + parseFloat(addOnCumulative);
             });
         };
+
+        $scope.updateAccompanyingGuests = function(room, roomIndex) {
+            console.log(room.accompanying_guest_details);
+            var onupdateSuccess = function() {
+                    $scope.$emit('hideLoader');
+                },
+                onUpdateFailure = function() {
+                    $scope.$emit('hideLoader');
+                }
+            $scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
+                accompanying_guests_details: room.accompanying_guest_details,
+                reservation_id: $scope.reservationData.reservationIds[roomIndex],
+            }, onupdateSuccess, onUpdateFailure);
+
+        }
 
         //CICO-11716
         $scope.onOccupancyChange = function(room, occupantType, idx) {
