@@ -596,7 +596,11 @@
     "DONT_APPLY": "Don't apply",
     "APPLY_CUSTOMRATE" : "Apply Custom Rate",
     "MODIFY_CUSTOMRATE" : "Modify Custom Rate",
-    "DIARY": "Diary"
+    "DIARY": "Diary",
+
+    "KEEP_CURRENT_RATE": "Keep current rate",
+    "CHANGE_TO_NEW_RATE": "Change to new rate"
+
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
