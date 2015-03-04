@@ -86,6 +86,18 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADKeyEncoderCtrl',
 			url : '/encoders'
 		});
+
+		$stateProvider.state('admin.emvTerminals', {
+			templateUrl: '/assets/partials/emvTerminals/emvTerminalList.html',
+			controller: 'ADEmvTerminalCtrl',
+			url : '/terminals'
+		});
+
+		$stateProvider.state('admin.emvTerminalDetails', {
+			templateUrl: '/assets/partials/emvTerminals/emvTerminalDetails.html',
+			controller: 'ADEmvTerminalDetailsCtrl',
+			url : '/terminaldetails/:itemid'
+		});
 		
 		$stateProvider.state('admin.templateconfiguration', {
 			templateUrl: '/assets/partials/templateConfiguration/adListHotel.html',
