@@ -66,6 +66,44 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			};
 		}
 
+		var datePickerCommon = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div').addClass('reservation hide-arrow');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+
+				setTimeout(function() {
+					$('body').find('#ui-datepicker-overlay')
+						.on('click', function() {
+							console.log('hey clicked');
+							$('#room-out-from').blur();
+							$('#room-out-to').blur();
+						});
+				}, 100);
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
+				$('#ui-datepicker-overlay').off('click').remove();
+			}
+		};
+
+		$scope.arrivalDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				// Handle onSelect
+			},
+		}, datePickerCommon);
+
+		$scope.departureDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				// Handle onSelect
+			},
+		}, datePickerCommon);
+
 
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
@@ -100,8 +138,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			 */
 			//Data fetched using resolve in router
 		var reservationMainData = $scope.$parent.reservationData;
+
 		$scope.reservationParentData = $scope.$parent.reservationData;
+
 		$scope.reservationData = reservationDetails;
+		// CICO-13564
+		$scope.editStore = {
+			arrival: $scope.reservationData.reservation_card.arrival_date,
+			departure: $scope.reservationData.reservation_card.departure_date
+		}
+
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
@@ -233,7 +279,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
-
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
 			$scope.updateSearchCache();
 		};
@@ -558,6 +603,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
+		$scope.editStayDates = function() {
+			// reservation_id, arrival_date, departure_date
+			var onValidationSuccess = function(data) {
+					console.log("onValidationSuccess", data);
+					$scope.$emit('hideLoader');
+				},
+				onValidationFaliure = function(error) {
+					console.log("onValidationFaliure", error);
+					$scope.$emit('hideLoader');
+				}
+			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
+				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), $rootScope.dateFormat),
+				departure_date: $filter('date')(tzIndependentDate($scope.editStore.departure), $rootScope.dateFormat),
+				reservation_id: $scope.reservationData.reservation_card.reservation_id
+			}, onValidationSuccess, onValidationFaliure);
+		}
 	}
-
 ]);

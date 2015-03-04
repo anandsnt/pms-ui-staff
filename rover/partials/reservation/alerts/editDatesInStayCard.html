@@ -1,0 +1,59 @@
+<div id="modal" class="modal-show">
+    <div class="modal-content form confirmation">
+
+        <form method="post" action="{}" id="change-stay-dates" name="change-stay-dates" class="modal-content change-stay-dates">
+            <!-- Add class "success" for Scenario 1 -->
+            <button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span>
+            </button>
+
+            <!-- Scenario 1: Room, Room Type, Rate & House is available  -->
+            <strong class="h2 message">Stay Dates change possible</strong>
+            <span class="notice">Total Stay Cost will change, please review rate</span> // Display this only if stay costs change, otherview don't.
+
+            <div class="dates-update old">
+                <span class="label">From</span>
+                <ul class="details">
+                    <li class="arrival">
+                        <span class="guest-status small-icon check-in">check-in</span> {Old Arrival Date}
+                    </li>
+                    <li class="departure">
+                        <span class="guest-status small-icon check-out">check-out</span> {Old Departure Date}
+                    </li>
+                </ul>
+            </div>
+            <div class="dates-update">
+                <span class="label">To</span>
+                <ul class="details">
+                    <li class="arrival">
+                        <span class="guest-status small-icon check-in">check-in</span> {New Arrival Date}
+                    </li>
+                    <li class="departure">
+                        <span class="guest-status small-icon check-out">check-out</span> {New Departure Date}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="actions">
+                <button type="button" class="button green">Confirm</button>
+                <button type="button" class="button blank">Close</button>
+            </div>
+
+            <!-- Scenario 2: Assigned Room no longer available
+    <span class="notice error">Assigned Room not available for selected dates. Please re-assign room.</span>
+    <div class="actions">
+        <button type="button" class="button blank">Close</button>
+    </div>   
+    -->
+
+            <!-- Scenario 3: Rate or Room Type not available or restricted.
+    <span class="notice error">Rate / Room Type not available for selected dates</span>
+    <div class="actions">
+        <button type="button" class="button blue">Rooms &amp; Rates</button>
+        <button type="button" class="button blank">Close</button>
+    </div>
+    -->
+    </div>
+
+    </form>
+</div>
+</div>

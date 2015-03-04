@@ -149,16 +149,19 @@
         </div>
 
         <!-- Edit dates -->
-        <div id="reservation-{confirmation}-dates" class="reservation-dates" ng-show="showEditDates">
+        <div class="reservation-dates" ng-show="showEditDates">
             <div class="check-data has-datepicker">
                 <label for="check-in-date" class="guest-status small-icon check-in">Arrival Date</label>
-                <input id="check-in-date" type="text" class="datepicker" value="{Arrival Date}" readonly />
+                <!-- <input id="" type="text" class="datepicker" value="{Arrival Date}" readonly /> -->
+                <input name="room-service-date" id="check-in-date" type="text" class="datepicker" ui-date="arrivalDateOptions" ng-model="editStore.arrival" ui-date-format readonly> 
             </div>
             <div class="check-data has-datepicker">
                 <label for="check-out-date" class="guest-status small-icon check-out">Departure Date</label>
-                <input id="check-out-date" type="text" class="datepicker" value="{Departure Date}" readonly />
+                <!-- <input id="check-out-date" type="text" class="datepicker" value="{Departure Date}" readonly /> -->
+                <input name="room-service-date" id="check-out-date" type="text" class="datepicker" ui-date="departureDateOptions" ng-model="editStore.departure" ui-date-format readonly> 
+
             </div>
-            <button type="button" class="button green">Check Dates</button>
+            <button type="button" class="button green" ng-click="editStayDates();">Check Dates</button>
         </div>
 
         <!-- Guest details -->

@@ -240,5 +240,16 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			return deferred.promise;
 		};
 
+		this.validateStayDateChange = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/validate_stay_dates_change';
+            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        }
+
 	}
 ]);
