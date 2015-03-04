@@ -1304,7 +1304,7 @@ sntRover
     		$scope.gridProps.stats = data.availability_count;
 
 			$scope.gridProps.display.x_0 = $scope.gridProps.viewport.row_header_right;	
-			
+
 			//Resetting as per CICO-11314
 			if ( !!_.size($_resetObj) ) {
 				$_resetObj.callback();
@@ -1656,7 +1656,7 @@ sntRover
     /**
 	* utility function to form reservation params for save API
 	*/
-    var formReservationParams = function(reservation, roomDetails) {
+    var formReservationParams = function(reservation, roomDetails, isMoveWithoutRateChange) {
 
     	var arrDate 	= roomDetails.arrivalDate,
     		depDate   	= roomDetails.departureDate,
@@ -1667,7 +1667,6 @@ sntRover
     		arrTime 	= getTimeFormated(arrTime[0], arrTime[1]),
     		depTime 	= getTimeFormated(depTime[0], depTime[1]);
 
-        
         //  CICO-13760
         //  The API request payload changes
         var stay = [];
@@ -1696,15 +1695,19 @@ sntRover
     		'departure_date': depDate,
     		'departure_time': depTime,
     		'reservationId' : reservation.reservation_id,
-    		'stay_dates': stay
+    		'stay_dates': stay,
+    		
+    		//CICO-14143: Diary - Move without rate change actually changes rate
+    		'is_move_without_rate_change' : isMoveWithoutRateChange ?  isMoveWithoutRateChange : false,
     	}
     }
 
     /**
     * function used to save reservation from Diary itself
     */
-	$scope.saveReservation = function(reservation, roomDetails){
-		var params = formReservationParams(reservation, roomDetails)
+	$scope.saveReservation = function(reservation, roomDetails, isMoveWithoutRateChange){
+		var params = formReservationParams(reservation, roomDetails, isMoveWithoutRateChange);
+
 		var options = {
     		params: 			params,
     		successCallBack: 	successCallBackOfSaveReservation,	 
@@ -1715,20 +1718,22 @@ sntRover
 
 	var successCallBackOfSaveReservation = function(data){
 		var filter 		= this.filter, 		
-			arrival_ms 	= new Date(filter.arrival_date).getTime(),
+			arrival_ms 	= $scope.gridProps.display.x_n,
 
 			time_set 	= util.gridTimeComponents(arrival_ms, 48, util.deepCopy(this.display)),
 			arrival_time = filter.arrival_time,
 
 			room_type = filter.room_type,
 			rate_type = filter.rate_type;
-				
+		
+		//CICO-14109 - Red line disappears from view after saving reservation from diary itself
+		var current_proptime = $scope.gridProps.display.property_date_time;
+		
+
         $scope.gridProps.display = util.deepCopy(time_set.display);
-        //CICO-13623
-        var x_n = $scope.gridProps.display.x_n;
-        x_n = new Date (x_n);
-        x_n.setHours (0, 0, 0);
-        $scope.gridProps.display.x_n = x_n.getTime();
+
+        //CICO-14109 - Red line disappears from view after saving reservation from diary itself
+        $scope.gridProps.display.property_date_time = current_proptime;
 
         //rerendering diary with new data	
 		callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate(), rate_type, arrival_time, room_type);			

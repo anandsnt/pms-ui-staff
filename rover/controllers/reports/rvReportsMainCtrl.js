@@ -138,6 +138,26 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 
+
+		var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+			dateParts    = businessDate.match(/(\d+)/g),
+			year  = parseInt( dateParts[0] ),
+			month = parseInt( dateParts[1] ) - 1,
+			date  = parseInt( dateParts[2] ),
+			dbObj = new Date(year, month, date);
+		$scope.dateChanged = function (item, dateName) {
+			if ( item.title == 'Arrival' ) {
+				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
+					item.chosenDueInArrivals = false;
+				}
+			};
+			if ( item.title == 'Departure' ) {
+				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
+					item.chosenDueOutDepartures = false;
+				}
+			}
+		};
+
 		// CICO-10202
 		$scope.reportsState = {
 			markets: []
@@ -285,7 +305,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenGuaranteeType',
 			'chosenIncludeDepositPaid',
 			'chosenIncludeDepositDue',
-			'chosenIncludeDepositPastDue'
+			'chosenIncludeDepositPastDue',
+			'chosenDueInArrivals',
+			'chosenDueOutDepartures'
 		];
 
 		var hasList = [
@@ -303,7 +325,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasGuaranteeType',
 			'hasIncludeDepositPaid',
 			'hasIncludeDepositDue',
-			'hasIncludeDepositPastDue'
+			'hasIncludeDepositPastDue',
+			'hasDueInArrivals',
+			'hasDueOutDepartures'
 		];
 
 		var closeAllMultiSelects = function() {
@@ -387,11 +411,11 @@ sntRover.controller('RVReportsMainCtrl', [
 				return;
 			};
 			e.stopPropagation();
-			
+
 		};
 
 		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
-			if(allMarkets){				
+			if(allMarkets){
 				_.each($scope.reportsState.markets, function(market){
 					market.selected = !!item.allMarketsSelected;
 				});
@@ -411,9 +435,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			}
 			// CICO-10202
-			
 			$scope.$emit('report.filter.change');
-
 		}
 
 		$scope.fauxGuaranteeOptionClicked = function(item) {
@@ -424,7 +446,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (selectedData.length == 0) {
 				item.guaranteeTitle = "Select";
 			} else if (selectedData.length == 1) {
-				item.guaranteeTitle = selectedData[0].name;	
+				item.guaranteeTitle = selectedData[0].name;
 			} else if (selectedData.length > 1) {
 				item.guaranteeTitle = selectedData.length + " Selected";
 			}
@@ -564,7 +586,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['to_time'] = chosenReport.untilTime || '';
 			};
 
-			// include CICO filter 
+			// include CICO filter
 			if (!!chosenReport.hasCicoFilter) {
 				params['checked_in'] = getProperCICOVal('checked_in');
 				params['checked_out'] = getProperCICOVal('checked_out');
@@ -697,6 +719,18 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (chosenReport.hasOwnProperty('hasIncludeDepositPastDue')) {
 				key = chosenReport.hasIncludeDepositPastDue.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeDepositPastDue ? true : false;
+			};
+
+			// include due in arrivals option
+			if (chosenReport.hasOwnProperty('hasDueInArrivals')) {
+				key = chosenReport.hasDueInArrivals.value.toLowerCase();
+				params[key] = chosenReport.chosenDueInArrivals ? true : false;
+			};
+
+			// include due out departure option
+			if (chosenReport.hasOwnProperty('hasDueOutDepartures')) {
+				key = chosenReport.hasDueOutDepartures.value.toLowerCase();
+				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
 			};
 
 

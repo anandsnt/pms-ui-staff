@@ -145,9 +145,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 rateDetails: [], // This array would hold the configuration information of rates selected for each room
                 isRoomRateSuppressed: false, // This variable will hold flag to check whether any of the room rates is suppressed?
                 reservation_card: {},
-                number_of_infants:0,
-                number_of_adults:0,
-                number_of_children:0                
+                number_of_infants: 0,
+                number_of_adults: 0,
+                number_of_children: 0
 
             };
 
@@ -1097,20 +1097,32 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             var fromState = $state.current.name;
             //If we are already in state for calendar/rooms&rates, 
             //then we only need to switch the vuew type to calendar
-            if (fromState == 'rover.reservation.staycard.mainCard.roomType') {
-                $scope.$broadcast('switchToStayDatesCalendar');
-                //Switch state to display the reservation calendar
-            } else {
-                $state.go('rover.reservation.staycard.mainCard.roomType', {
-                    from_date: $scope.reservationData.arrivalDate,
-                    to_date: $scope.reservationData.departureDate,
-                    view: "CALENDAR",
-                    fromState: fromState,
-                    company_id: $scope.reservationData.company.id,
-                    travel_agent_id: $scope.reservationData.travelAgent.id
-                });
-            }
-            $scope.$broadcast('closeSidebar');
+
+
+            $state.go('rover.reservation.staycard.mainCard.roomType', {
+                from_date: $scope.reservationData.arrivalDate,
+                to_date: $scope.reservationData.departureDate,
+                view: "DEFAULT",
+                fromState: fromState,
+                company_id: $scope.reservationData.company.id,
+                travel_agent_id: $scope.reservationData.travelAgent.id
+            });
+
+            // if (fromState == 'rover.reservation.staycard.mainCard.roomType') {
+            //     $scope.$broadcast('switchToStayDatesCalendar');
+            //     //Switch state to display the reservation calendar
+            // } else {
+            //     $state.go('rover.reservation.staycard.mainCard.roomType', {
+            //         from_date: $scope.reservationData.arrivalDate,
+            //         to_date: $scope.reservationData.departureDate,
+            //         view: "CALENDAR",
+            //         fromState: fromState,
+            //         company_id: $scope.reservationData.company.id,
+            //         travel_agent_id: $scope.reservationData.travelAgent.id
+            //     });
+            // }
+            
+            // $scope.$broadcast('closeSidebar');
         };
 
         $scope.$on("guestEmailChanged", function(e) {
@@ -1712,7 +1724,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                     });
-                    
+
                     // CICO-13748 : Added depositAmountWithoutFilter to handle PAY DEPOSIT LATER or PAY NOW buttons.
                     $scope.reservationData.depositAmountWithoutFilter = totalDeposit;
 
@@ -1829,8 +1841,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         totalDepositOnRateUpdate = parseFloat(data.deposit_amount);
                     }
 
+                    // CICO-13748 , CICO-14143 : Added depositAmountWithoutFilter to handle PAY DEPOSIT LATER or PAY NOW buttons.
+                    $scope.reservationData.depositAmountWithoutFilter = totalDepositOnRateUpdate;
+                    totalDepositOnRateUpdate = $filter('number')(totalDepositOnRateUpdate, 2);
+                    $scope.reservationData.depositAmount = totalDepositOnRateUpdate;
+
                     // $scope.reservationData.depositAmount = data.deposit_amount;
-                    $scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate, 2);;
+                    //$scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate, 2);;
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
                     $scope.reservationData.fees_details = data.fees_details;
@@ -1873,7 +1890,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
-              
+
             }
         };
 
