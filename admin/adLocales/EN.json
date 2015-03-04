@@ -670,6 +670,13 @@
 "TEMPLATE_CONFIGURATION":"Template Configuration",
 "SEND_CHECKOUT_EMAIL":"Send Checkout Email",
 "SEND_CHECKOUT_NOTIFICATON_EMAIL":"Sent check out notification email to all DUE OUT guests at",
+"EMV_TERMINALS":"EMV Terminals",
+"ADD_NEW_EMV_TERMINALS":"Add New EMV Terminals",
+"BACK_TO_EMV_TERMINALS":"Back To EMV Terminals",
+"TERMINAL_NAME":"Terminal Name",
+"TERMINAL_NAME_PLACEHOLDER":"Enter Terminal Name",
+"TERMINAL_ID":"Terminal ID",
+"TERMINAL_ID_PLACEHOLDER":"Enter Terminal ID",
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
