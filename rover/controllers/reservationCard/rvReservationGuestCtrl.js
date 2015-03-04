@@ -55,8 +55,31 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			}
 		}
 
-		function saveChanges(override) {
+		// CICO-13491 
+		var checkForRateChange = function(){
+console.log("checkForCustomRate");
+			ngDialog.open({
+				template: '/assets/partials/reservation/rvCustomRateSelectPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false,
+			});
+		}
 
+		$scope.keepCurrentRate = function(){
+			console.log("keepCurrentRate");
+		};
+
+		$scope.ChangeToNewRate = function(){
+			console.log("ChangeToNewRate");
+			saveChanges();
+		};
+
+		function saveChanges(override) {
+console.log("saveChanges");
+			checkForRateChange();
+console.log("reservationParentData.is_modified"+$scope.reservationParentData.is_modified);
 			$scope.$emit('showLoader');
 			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
 				// Note: when editing number of guests for an INHOUSE reservation, the new number of guests should only apply from this day onwards, any previous days need to retain the previous guest count.	
@@ -157,6 +180,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			if (!angular.equals(data, initialGuestInfo)) {
 				$scope.$emit('showLoader');
 				if (isOccupancyRateConfigured()) {
+					console.log("saveGuestDetails");
 					saveChanges();
 				} else {
 					$scope.$emit('hideLoader');

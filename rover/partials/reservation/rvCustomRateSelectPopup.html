@@ -1,0 +1,19 @@
+<div id="modal" class="modal-show" role="dialog">
+   <div>
+		<form method="post" id="rate-options" name="rate-options" class="modal-content form confirmation" ng-cloak>
+		    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+		    	<span class="icons icon-close invert">
+		    </button>
+
+		    <strong class="h3 message">Custom Rate of $xx applies to this reservation. Rate for current guest count is $yy</strong>
+		    
+		    <div class="actions">
+
+		        <button type="button" ng-click="keepCurrentRate()" class="button green" translate>KEEP_CURRENT_RATE</button>
+		        <button type="button" ng-click="ChangeToNewRate()" class="button blue" translate>CHANGE_TO_NEW_RATE</button>
+		        <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE</button>
+
+		    </div>
+		</form>
+	</div>
+</div>
