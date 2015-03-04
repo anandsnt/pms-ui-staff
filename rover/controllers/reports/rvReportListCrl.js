@@ -339,12 +339,14 @@ sntRover.controller('RVReportListCrl', [
                     // check for due in filter and keep a ref to that item
                     if (item.value === 'DUE_IN_ARRIVALS') {
                         reportList[i]['hasDueInArrivals'] = item;
+                        reportList[i]['chosenDueInArrivals'] = true;
                         hasFauxSelect = true;
                     };
 
                     // check for due out filter and keep a ref to that item
                     if (item.value === 'DUE_OUT_DEPARTURES') {
                         reportList[i]['hasDueOutDepartures'] = item;
+                        reportList[i]['chosenDueOutDepartures'] = true;
                         hasFauxSelect = true;
                     };
                 });
@@ -369,6 +371,33 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i]['selectGuaranteeOpen'] = false;
                     reportList[i]['guaranteeTitle'] = 'Select';
                 };
+
+
+                // need to watch the date range to disable these flags
+                // dwa
+                // if (reportList[i].title == 'Arrival' || reportList[i].title == 'Departure') {
+                //     $scope.$watch(reportList[i]['fromDate'], function (reportItem, oldVal, newVal, context) {
+                //         console.log( reportItem.chosenDueInArrivals );
+                //         console.log( angular.equals(oldVal, newVal) )
+                //
+                //         if ( reportItem.chosenDueInArrivals && !angular.equals(oldVal, newVal) ) {
+                //             reportItem.chosenDueInArrivals = false;
+                //         }
+                //         if ( reportItem.hasDueOutDepartures && !angular.equals(oldVal, newVal) ) {
+                //             reportItem.hasDueOutDepartures = false;
+                //         }
+                //     }.bind(null, reportList[i]), true);
+                //
+                //     $scope.$watch(reportList[i]['untilDate'], function (reportItem, oldVal, newVal, context) {
+                //         if ( reportItem.chosenDueInArrivals && !angular.equals(oldVal, newVal) ) {
+                //             reportItem.chosenDueInArrivals = false;
+                //         }
+                //         if ( reportItem.chosenDueOutDepartures && !angular.equals(oldVal, newVal) ) {
+                //             reportItem.chosenDueOutDepartures = false;
+                //         }
+                //     }.bind(null, reportList[i]), true);
+                // };
+
 
                 // sort by options - include sort direction
                 if (reportList[i]['sort_fields'] && reportList[i]['sort_fields'].length) {
