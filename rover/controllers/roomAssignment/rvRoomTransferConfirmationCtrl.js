@@ -1,8 +1,12 @@
 sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$filter', 'ngDialog', '$timeout',
 	function($scope, $rootScope,$filter, ngDialog , $timeout){
 
-	//var roomTransfer = $scope.roomTransfer;
-	
+	if($scope.roomTransfer.newRoomRate<$scope.roomTransfer.oldRoomRate){
+		$scope.isSmallerRate = true;
+	}else if($scope.roomTransfer.newRoomRate>$scope.roomTransfer.oldRoomRate){
+		$scope.isLargerRate = true;
+	}
+
 	BaseCtrl.call(this, $scope);
 	
 	$scope.closeDialog = function() {
@@ -14,10 +18,13 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 		};
 
 	$scope.moveWithoutRateChange = function() {	
-		
+		$scope.roomTransfer.withoutRateChange = true;
+		$scope.assignRoom();
+		$scope.closeDialog();
 	}
 
 	$scope.applyRateChange = function() {	
+		$scope.roomTransfer.newRoomRateChange = $scope.roomTransfer.newRoomRate;
 		$scope.assignRoom();
 		$scope.closeDialog();
 	}

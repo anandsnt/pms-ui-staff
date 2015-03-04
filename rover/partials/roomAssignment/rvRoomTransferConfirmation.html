@@ -20,7 +20,7 @@
             <ul class="details">
                 <li class="type">{{roomTransfer.newRoomType}}</li>
                 <li class="room">Room {{roomTransfer.newRoomNumber}}</li>
-                <li class="price">{{currencySymbol}} {{roomTransfer.newRoomRate}}</li> <!-- Add class "red" if larger than old rate. Add class "green" if smaller than old rate -->
+                <li class="price" ng-class="{'red': isLargerRate ,'green': isSmallerRate }">{{currencySymbol}} {{roomTransfer.newRoomRate}}</li> <!-- Add class "red" if larger than old rate. Add class "green" if smaller than old rate -->
             </ul>
         </div>
        

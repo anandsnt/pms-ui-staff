@@ -139,7 +139,7 @@ sntRover.controller('RVroomAssignmentController',[
 			}
 			
 		$scope.assignedRoom = $scope.filteredRooms[index];
-
+		$scope.roomTransfer.newRoomNumber = $scope.filteredRooms[index].room_number;
 		if(showOccupancyMessage){
 	    //if(true){
 	    	$scope.oldRoomType = oldRoomType;
@@ -151,7 +151,6 @@ sntRover.controller('RVroomAssignmentController',[
                 });
 		}else{
 			if(reservationStatus=="CHECKEDIN"){
-				$scope.roomTransfer.newRoomNumber = $scope.filteredRooms[index].room_number;
 				$scope.moveInHouseRooms();
 			}else{
 				if(oldRoomType !== $scope.roomType){
@@ -175,7 +174,13 @@ sntRover.controller('RVroomAssignmentController',[
 
 	$scope.occupancyDialogSuccess = function(){
 		//$scope.assignRoom();	
-		$scope.openApplyChargeDialog();		
+		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+        if(reservationStatus=="CHECKEDIN"){
+            	$scope.moveInHouseRooms();
+       	}else{
+        	    $scope.openApplyChargeDialog();         
+       	}
+	
 	};
 	// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 	var updateSearchCache = function() {
@@ -288,6 +293,8 @@ sntRover.controller('RVroomAssignmentController',[
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_number = $scope.assignedRoom.room_number;
+		params.without_rate_change = $scope.roomTransfer.withoutRateChange;
+		params.new_rate_amount = $scope.roomTransfer.newRoomRateChange;
 		$scope.roomAssgnment.inProgress = true;
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
