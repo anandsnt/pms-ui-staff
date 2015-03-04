@@ -110,8 +110,7 @@ sntRover.service('rvMenuSrv',
 			isAutoChangeBussinessDate = options['isAutoChangeBussinessDate'],
 			menuFrontDeskIndex 		= -1,
 			isMenuItemVisible		= true,
-            menuList = [], //storing the menu list, will process on this and will append to 'menuToReturn' list
-            menuToReturn = [];
+            menuList = []; //storing the menu list, will process on this and return
 
 
 		menuList = [{
@@ -235,9 +234,8 @@ sntRover.service('rvMenuSrv',
 		        submenu: []
 		    }
 		];
-		menuToReturn = processMenuList (menuList);
 
-		return menuToReturn;
+		return processMenuList (menuList);
 	};
 
 	/**
@@ -247,8 +245,7 @@ sntRover.service('rvMenuSrv',
 	*/
 	this.getMainMenuForConnectedRover = function(options) {
 		var defaultDashboard 		= options['defaultDashboard'],
-		 	defaultDashboardState 	= getDefaultDashboardState (defaultDashboard),
-			isF_and_M_Staff 		= isFloorMaintananceStaff (options['userRole']);
+		 	defaultDashboardState 	= getDefaultDashboardState (defaultDashboard);
 
 		var menu = [{
 				title: "MENU_DASHBOARD",
@@ -272,10 +269,9 @@ sntRover.service('rvMenuSrv',
 				menuIndex: "reports",
 				iconClass: "icon-reports",
 				submenu: [],
-				//hidden: isF_and_M_Staff
 		}];
 
-		return menu;
+		return processMenuList (menu);
 	};
 
 	/**
@@ -297,12 +293,11 @@ sntRover.service('rvMenuSrv',
 			        title: "MENU_ROOM_STATUS",
 			        action: "rover.housekeeping.roomStatus",
 			        menuIndex: "roomStatus",
-			        iconClass: "icon-housekeeping",
-			        //hidden: isFrontDeskDashboard (defaultDashboard)
+			        iconClass: "icon-housekeeping",			        
 			    }
 		];
 
-		return menu;
+		return processMenuList (menu);
 	};
 
 	/**
@@ -325,11 +320,10 @@ sntRover.service('rvMenuSrv',
 			        action: "rover.housekeeping.roomStatus",
 			        menuIndex: "roomStatus",
 			        iconClass: "icon-housekeeping",
-			        //hidden: isFrontDeskDashboard (defaultDashboard)
 			    }
 		];
 
-		return menu;
+		return processMenuList (menu);
 	};
 
 
@@ -359,8 +353,7 @@ sntRover.service('rvMenuSrv',
 			'journals': 			['ACCESS_JOURNAL'],
 
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],		
-			'commisions': 			['ACCESS_COMMISSIONS'],	
-					
+			'commisions': 			['ACCESS_COMMISSIONS'],						
 
 		};
 
@@ -421,9 +414,9 @@ sntRover.service('rvMenuSrv',
 				break;
 
 			case 'reports':		
-				// we are hiding the reports menu if it is a floor & maintanance staff	in connected	
-				returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : true;
-			
+				// we are hiding the reports menu if it is a floor & maintanance staff	in connected/standalon	
+				returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : (isFloorMaintananceStaff() ? false : true);				
+				break;
 			case 'workManagement':
 				returnValue = !isHourlyRateOn();
 				break;

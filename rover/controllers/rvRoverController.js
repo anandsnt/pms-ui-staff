@@ -223,7 +223,7 @@ sntRover.controller('roverController',
             isAutoChangeBussinessDate: hotelDetails.is_auto_change_bussiness_date
         };  
 
-        // if it standalone
+        // if it standalone & manager
         if ($rootScope.isStandAlone && $rootScope.default_dashboard === "MANAGER") { 
             $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover (menuOptions);
             $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover (menuOptions); 
@@ -240,6 +240,7 @@ sntRover.controller('roverController',
     /**
     * method to determine the visibility of availability
     * will check the permission & standalone status
+    * @return {Boolean}
     */
     $scope.shouldShowAvailabilityHouseButton = function() {
         return ($rootScope.isStandAlone && 
