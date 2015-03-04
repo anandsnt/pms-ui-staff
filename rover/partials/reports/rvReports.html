@@ -130,7 +130,7 @@
                                                         </thead>
 
                                                         <!-- GUEST REPORTS: Reports sort by header -->
-                                                        <thead ng-if="!headers.length || !!subHeaders.length">
+                                                        <thead ng-if="!headers.length && !!subHeaders.length">
                                                                 <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
                                     "sorting-asc" when ASC sorting
                                     "sorting-desc" when DESC sorting -->
@@ -157,51 +157,7 @@
                                                         </thead>
 
                                                         <!-- Reports table footer -->
-                                                        <tfoot>
-                                                                <tr class="totals" ng-if="resultsTotalRow">
-                                                                        <td>Total</td>
-                                                                        <td ng-repeat="item in resultsTotalRow track by $index">{{ item }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td colspan="{{ leftColSpan }}">
-                                                                                <div ng-if="chosenReport.hasCancelDateFilter">
-                                                                                        <label>Cancellation Dates - </label>
-                                                                                        From: <span>{{ displayedReport.fromCancelDate | date:dateFormat }}</span> To: <span>{{ displayedReport.untilCancelDate | date:dateFormat }}</span>
-                                                                                </div>
-                                                                                <div ng-if="chosenReport.hasDateFilter">
-                                                                                        <label ng-if="chosenReport.hasCancelDateFilter">Arrival Dates - </label>
-                                                                                        <label ng-if="!chosenReport.hasCancelDateFilter">Date Range - </label>
-                                                                                        From: <span>{{ displayedReport.fromDate | date:dateFormat }}</span> To: <span>{{ displayedReport.untilDate | date:dateFormat }}</span>
-                                                                                </div>
-                                                                                <div ng-if="chosenReport.hasTimeFilter && (chosenReport.fromTime || chosenReport.untilTime)">
-                                                                                        <label>Time Range - </label>
-                                                                                        <label ng-if="chosenReport.fromTime">From: </label><span>{{ chosenReport.fromTime }}</span>
-                                                                                        <label ng-if="chosenReport.untilTime">To: </label><span>{{ chosenReport.untilTime }}</span>
-                                                                                </div>
-                                                                                <div ng-if="chosenReport.chosenCico">
-                                                                                        Transaction type: <span>{{ transcationTypes }}</span>
-                                                                                </div>
-                                                                                <div ng-if="chosenReport.chosenUsers">
-                                                                                        Users: <span>{{ userNames }}</span>
-                                                                                </div>
-                                                                                <!-- Never REMOVE this span -->
-                                                                                <span> &nbsp; </span>
-                                                                        </td>
-                                                                        <td colspan="{{ rightColSpan }}">
-                                                                                Business date: <span>{{ userInfo.business_date | date:dateFormat }}</span>
-                                                                                <br> User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-                                                                                <br>
-                                                                                <ul class="pagination" ng-if="pagination.length">
-                                                                                        <li class="title">
-                                                                                                Pages:
-                                                                                                <li ng-repeat="page in pagination" ng-class="{'active': page.active}" ng-click="fetchNextPage()">
-                                                                                                        {{ page.no }}
-                                                                                                </li>
-                                                                                        </li>
-                                                                                </ul>
-                                                                        </td>
-                                                                </tr>
-                                                        </tfoot>
+                                                        <tfoot ng-include="'/assets/partials/reports/rvReportDetailsFooter.html'"></tfoot>
 
                                                         <!-- Reports table content -->
                                                         <tbody ng-include="parsedApiTemplate()"></tbody>

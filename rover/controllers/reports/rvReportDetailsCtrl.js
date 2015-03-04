@@ -48,6 +48,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 
+		var $reportUpdateNode = $( '#report-update' );
+
+
 		// common methods to do things after fetch report
 		var afterFetch = function() {
 			var totals          = $scope.$parent.totals,
@@ -122,6 +125,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case 'Login and out Activity':
 					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
+					break;
+
+				case 'Departure':
+					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 3;
 					break;
 
@@ -261,13 +269,40 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// dirty hack to get the val() not model value
 			// delay as it cost time for ng-bindings
 			$timeout(function() {
-				$scope.displayedReport           = {};
-				$scope.displayedReport.fromDate  = $( '#chosenReportFromDate' ).val();
-				$scope.displayedReport.untilDate = $( '#chosenReportToDate' ).val();
-				$scope.displayedReport.fromCancelDate  = $( '#chosenReportFromCancelDate' ).val();
-				$scope.displayedReport.untilCancelDate = $( '#chosenReportToCancelDate' ).val();
-				$scope.displayedReport.fromTime  = $( '#chosenReportFromTime' ).val();
-				$scope.displayedReport.untilTime = $( '#chosenReportToTime' ).val();
+
+				// clear out old values
+				$scope.displayedReport = {};
+
+				// chosenReportFromCancelDate
+				// chosenReportToCancelDate
+				$scope.displayedReport.chosenReportFromCancelDate = $( '#chosenReportFromCancelDate' ).val();
+				$scope.displayedReport.chosenReportToCancelDate = $( '#chosenReportToCancelDate' ).val();
+
+				// chosenReportFromDepositDate
+				// chosenReportToDepositDate
+				$scope.displayedReport.chosenReportFromDepositDate = $( '#chosenReportFromDepositDate' ).val();
+				$scope.displayedReport.chosenReportToDepositDate = $( '#chosenReportToDepositDate' ).val();
+
+				// chosenReportFromArrivalDate
+				// chosenReportToArrivalDate
+				$scope.displayedReport.chosenReportFromArrivalDate = $( '#chosenReportFromArrivalDate' ).val();
+				$scope.displayedReport.chosenReportToArrivalDate = $( '#chosenReportToArrivalDate' ).val();
+
+				// chosenReportFromDate
+				// chosenReportToDate
+				$scope.displayedReport.chosenReportFromDate = $( '#chosenReportFromDate' ).val();
+				$scope.displayedReport.chosenReportToDate = $( '#chosenReportToDate' ).val();
+
+				// chosenReportFromTime
+				// chosenReportToTime
+				$scope.displayedReport.chosenReportFromTime = $( '#chosenReportFromTime option:selected' ).text() != 'From Time' ? $( '#chosenReportFromTime option:selected' ).text() : '';
+				$scope.displayedReport.chosenReportToTime = $( '#chosenReportToTime option:selected' ).text() != 'Until Time' ? $( '#chosenReportToTime option:selected' ).text() : '';
+
+				// choosenReportUser
+				$scope.displayedReport.choosenReportUser = $( '#choosenReportUser' ).val();
+
+				// chosenReportCompTaGrp
+				$scope.displayedReport.chosenReportCompTaGrp = $( '#chosenReportCompTaGrp' ).val();
 
 				// call again may be.. :(
 				refreshScroll();
@@ -451,8 +486,41 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    $scope.genReport( false, 1, 1000 );
 		};
 
+
+		// add the print orientation before printing
+		var addPrintOrientation = function() {
+			var orientation = 'portrait';
+
+			switch( $scope.chosenReport.title ) {
+				case 'Arrival':
+				case 'In-House Guests':
+				case 'Departure':
+				case 'Deposit Report':
+				case 'Cancellation & No Show':
+				case 'Web Check Out Conversion':
+				case 'Web Check In Conversion':
+				case 'Occupancy & Revenue Summary':
+					orientation = 'landscape';
+					break;
+
+				default:
+					orientation = 'portrait';
+					break;
+			}
+
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+		};
+
+		// add the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();
+		};
+
 		// print the page
 		var printReport = function() {
+
+			// add the orientation
+			addPrintOrientation();
 
 			/*
 			*	=====[ READY TO PRINT ]=====
@@ -472,11 +540,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    }, 100);
 
 		    /*
-		    *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
+		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
 		    */
 
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
+		    	// remove the orientation
+				removePrintOrientation();
+
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );
 		    }, 100);
@@ -489,6 +560,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.saveFullReport = function() {
 			alert( 'Download Full Report API yet to be completed/implemented/integrated' );
 		};
+
+
+
+
+
 
 		var reportSubmit = $rootScope.$on('report.submit', function() {
 			$_pageNo = 1;
@@ -526,6 +602,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( 'destroy', reportPrinting );
 
 
+
+
+
+
 		// parse API to template helpers
 		// since API response and Template Design are 
 		// trying to F*(|< each others A$/
@@ -559,6 +639,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var checkCancel = function(item) {
 				return excludeReports(['Arrival', 'In-House Guests']) ? !!item['cancel_reason'] : false;
+			};
+
+			var checkActivityReport = function(name) {
+				return name == 'Login and out Activity' ? true : false;
 			};
 
 			if ( $scope.parsedApiFor == 'Arrival' ||
@@ -603,6 +687,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 						customData.push( noteData );
 					};
 
+
+
 					// IF: we found custom items
 						// set row span for the parent tr a rowspan
 						// mark the class that must be added to the last tr
@@ -614,16 +700,20 @@ sntRover.controller('RVReportDetailsCtrl', [
 						itemCopy.trCls = 'row-break';
 					};
 
-					// sepecific checks for 'Login and out Activity' report
-					// check for invalid logins
-					if ( itemCopy.hasOwnProperty('action_type') && itemCopy['action_type'] == 'INVALID_LOGIN' ) {
-						itemCopy['action_type'] = 'INVALID LOGIN';
-						itemCopy.trCls = 'row-break invalid';
+					// do this only after the above code that adds
+					// 'row-break' class to the row
+					if ( checkActivityReport($scope.parsedApiFor) ) {
+						if ( itemCopy.hasOwnProperty('action_type') && itemCopy['action_type'] == 'INVALID_LOGIN' ) {
+							itemCopy['action_type'] = 'INVALID LOGIN';
+							itemCopy.trCls = 'row-break invalid';
+						};
+
+						if ( itemCopy.hasOwnProperty('date') ) {
+							itemCopy['uiDate'] = itemCopy['date'].split( ', ' )[0];
+							itemCopy['uiTime'] = itemCopy['date'].split( ', ' )[1];
+						};
 					};
-					// check for no user name
-					if ( itemCopy.hasOwnProperty('user_name') && !itemCopy['user_name'] ) {
-						itemCopy['user_name'] = 'NA';
-					};
+
 
 					// push 'itemCopy' into '_retResult'
 					itemCopy.isReport = true;
