@@ -454,6 +454,13 @@
 	"ROVER_ONLY":"Rover Payments Only",
 	"WEB_ONLY":"Web Payments Only",
 	"DISPLAY_REFERENCE":"Display Reference",
+"PERMISSIONS" : "Permissions",
+"ASSIGNED_PERMISSIONS" : "Assigned Permissions",
+"PERMISSIONS_PLACEHOLDER1" : "Drop a permission here to assign it to the user",
+"PERMISSIONS_PLACEHOLDER2" : "To remove a permission for the user role simply drop it here",
+"ASSIGN_ROLES" : "Assign role(s)",
+"UNASSIGN_ROLES" : "Unassign role(s)",
+"NOT_ASSIGNED_PERMISSIONS" : "Not Assigned Permissions",
 
 
 "DAILY_UPSELL_SETUP":"Daily Upsell Setup",
