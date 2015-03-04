@@ -24,12 +24,14 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 	}
 
 	$scope.applyRateChange = function() {	
+    	$scope.roomTransfer.withoutRateChange = false;
 		$scope.roomTransfer.newRoomRateChange = $scope.roomTransfer.newRoomRate;
 		$scope.assignRoom();
 		$scope.closeDialog();
 	}
 
 	$scope.confirm = function() {
+		$scope.roomTransfer.withoutRateChange = true;
 		$scope.assignRoom();
 		$scope.closeDialog();
 	}
