@@ -22,15 +22,16 @@
 			<div class="row check-inout-wrapper">
 				<div class="col-md-6 headtext centeralign">
 					<div class=" black-text">Ready to check-out?</div>
-					<div class="lightcontent chekout-time  room-text black-text margin-10">To start please enter your room number:</div>
+					<div class="lightcontent chekout-time  room-text black-text margin-10">To start, please enter your room number:</div>
 					<div class="lightcontent chekout-time  room-text black-text margin-10" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
 				</div>
 				<!-- top section ends here-->
 				<div class="col-md-4 pad-lf-60 cabin-number">
 					<form class="centeralign padding-10">
 					<div class="row cabin_number_field">
-						<p class="lightcontent chekout-time room-number-text light-black-text">Room Number</p>
-						<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox shadow room-input" placeholder="Enter Room number"/> 
+	
+						<p class="lightcontent room-number-text grey-text room-text"      style=" font-size:15px !important; ">ROOM NUMBER</p>
+						<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox shadow room-input grey-placeholder" placeholder="Enter Room number"/> 
 					</div>								
 						<button class="checkin-button continue-button pink-bg room-verification-continue" ng-click="continueButtonClicked()">
 							<span class="continue-text white-text">Continue</span>

@@ -11,14 +11,14 @@
 	<div class="container"> 
 		<!-- top section starts here-->
 		<div class="row check-inout-wrapper container-top-padding">
-			<div class="col-md-6 headtext centeralign">
+			<div class="col-md-6 headtext centeralign container-top-padding">
 
 				<span class="black-text">Late checkout?</span>
-				<p class="centeralign leadtext black-text">Check-out time is at {{checkoutTime}}. <strong class="black-text">Request a late check-out if you need more time!</strong></p>
+				<p class="centeralign leadtext black-text padding-late-chekout">Check-out time is at {{checkoutTime}}. <strong class="black-text">Request a late check-out if you need more time!</strong></p>
 
 			</div>
 
-			<div class="col-md-6 no-padding now-later-options">
+			<div class="col-md-6 no-padding now-later-options container-top-padding">
 				<div class="row">
 					<div class="col-xs-6 checkoutnow light-pink-bg">
 						<div class="rel-wrapper">
@@ -29,7 +29,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-6 checkoutlater pink-bg">
+					<div class="col-xs-6 checkoutlater checkoutlater-pink-bg">
 						<div class="rel-wrapper">
 							<a ui-sref="checkOutLaterOptions"></a>
 							<div class="row checkout-later-text white-text">Check-out<br/>later.</div>
@@ -42,7 +42,7 @@
 			</div>
 
 			<div class="row clearboth">
-				<p class="centeralign foot-text black-text"><em>Come back to this page to check-out any time before {{checkoutTime}}.</em></p>
+				<p class="centeralign foot-text black-text"><em class="base-text">Come back to this page to check-out any time before {{checkoutTime}}.</em></p>
 			</div>
 		</div> 
 
