@@ -82,317 +82,22 @@ sntRover.controller('RVReportListCrl', [
                 reportList[i]['hasDateLimit'] = true;
 
                 // add report icon class
-                switch (reportList[i]['title']) {
-                    case 'Check In / Check Out':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-check-in-check-out';
-                        break;
+                reportUtils.applyIconClass( reportList[i] );
 
-                    case 'Upsell':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-upsell';
-                        break;
+                // add required flags this report
+                reportUtils.applyFlags( reportList[i] );
 
-                    case 'Web Check Out Conversion':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-check-out';
-                        break;
-
-                    case 'Web Check In Conversion':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-check-in';
-                        break;
-
-                    case 'Late Check Out':
-                        reportList[i]['reportIconCls'] = 'guest-status late-check-out';
-                        break;
-
-                    case 'In-House Guests':
-                        reportList[i]['reportIconCls'] = 'guest-status inhouse';
-                        break;
-
-                    case 'Arrival':
-                        reportList[i]['reportIconCls'] = 'guest-status check-in';
-                        reportList[i]['hasDateLimit'] = false;
-                        break;
-
-                    case 'Departure':
-                        reportList[i]['reportIconCls'] = 'guest-status check-out';
-                        reportList[i]['hasDateLimit'] = false;
-                        break;
-
-                    case 'Cancellation & No Show':
-                        reportList[i]['reportIconCls'] = 'guest-status cancel';
-                        reportList[i]['hasDateLimit'] = false;
-                        reportList[i]['canRemoveDate'] = true;
-                        reportList[i]['showRemove'] = true;
-                        break;
-
-                    case 'Booking Source & Market Report':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-booking';
-                        reportList[i]['canRemoveDate'] = true;
-                        reportList[i]['showRemove'] = true;
-                        reportList[i]['hasSourceMarketFilter'] = true;
-                        reportList[i]['hasDateLimit'] = false;
-
-                        reportList[i]['canRemoveArrivalDate'] = true;
-                        reportList[i]['showRemoveArrivalDate'] = true;
-                        reportList[i]['hasArrivalDateLimit'] = false;
-                        break;
-
-                    case 'Login and out Activity':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-activity';
-                        reportList[i]['hasDateLimit'] = false;
-                        break;
-
-                    case 'Deposit Report':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-deposit';
-                        reportList[i]['hasDateLimit'] = false;
-                        reportList[i]['canRemoveDate'] = true;
-                        reportList[i]['showRemove'] = true;
-                        reportList[i]['canRemoveArrivalDate'] = true;
-                        reportList[i]['showRemoveArrivalDate'] = true;
-                        break;
-
-                    case 'Occupancy & Revenue Summary':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-occupancy';
-                        reportList[i]['hasMarketsList'] = true;
-                        reportList[i]['hasDateLimit'] = false;
-                        // CICO-10202 start populating the markets list
-                        populateMarketsList();
-                        break;
-
-                    case 'Reservations By User':
-                        reportList[i]['reportIconCls'] = 'icon-report icon-reservations';
-                        reportList[i]['hasDateLimit'] = false;
-                        reportList[i]['canRemoveDate'] = true;
-                        reportList[i]['showRemove'] = true;
-                        reportList[i]['canRemoveArrivalDate'] = true;
-                        reportList[i]['showRemoveArrivalDate'] = true;
-                        break;
-
-                    default:
-                        reportList[i]['reportIconCls'] = 'icon-report';
-                        break;
+                // CICO-10202 start populating the markets list
+                if ( reportList[i]['title'] == 'Booking Source & Market Report' ) {
+                    populateMarketsList();
                 };
 
                 reportList[i]['show_filter'] = false;
 
-                // going around and taking a note on filtes
-                _.each(reportList[i]['filters'], function(item) {
-
-                    // check for date filter and keep a ref to that item
-                    if (item.value === 'DATE_RANGE') {
-                        reportList[i]['hasDateFilter'] = item;
-
-                        // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
-                        // rather than the default 'Date Range'
-                        if (reportList[i]['title'] == 'Cancellation & No Show') {
-                            reportList[i]['hasDateFilter']['description'] = 'Arrival Date Range';
-                        };
-
-                        // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                        if (reportList[i]['title'] == 'Booking Source & Market Report') {
-                            reportList[i]['hasDateFilter']['description'] = 'Booked Date';
-                        };
-                    };
-
-                    // check for cancellation date filter and keep a ref to that item
-                    if (item.value === 'CANCELATION_DATE_RANGE') {
-                        reportList[i]['hasCancelDateFilter'] = item;
-                    };
-
-                    // check for arrival date filter and keep a ref to that item (introduced in 'Booking Source & Market Report' filters)
-                    if (item.value === 'ARRIVAL_DATE_RANGE') {
-                        reportList[i]['hasArrivalDateFilter'] = item;
-                    };
-
-                    // check for Deposit due date range filter and keep a ref to that item (introduced in 'Deposit Report' filters)
-                    if (item.value === 'DEPOSIT_DATE_RANGE') {
-                        reportList[i]['hasDepositDateFilter'] = item;
-                    };
-
-                    // check for create date range and keep a ref to that item
-                    if (item.value === 'CREATE_DATE_RANGE') {
-                        reportList[i]['hasCreateDateFilter'] = item;
-                    };
-
-                    // check for time filter and keep a ref to that item
-                    // create std 15min stepped time slots
-                    if (item.value === 'TIME_RANGE') {
-                        reportList[i]['hasTimeFilter'] = item;
-                        reportList[i]['timeFilterOptions'] = $_createTimeSlots();
-                    };
-
-                    // check for CICO filter and keep a ref to that item
-                    // create the CICO filter options
-                    if (item.value === 'CICO') {
-                        reportList[i]['hasCicoFilter'] = item;
-                        reportList[i]['cicoOptions'] = [{
-                            value: 'BOTH',
-                            label: 'Show Check Ins and  Check Outs'
-                        }, {
-                            value: 'IN',
-                            label: 'Show only Check Ins'
-                        }, {
-                            value: 'OUT',
-                            label: 'Show only Check Outs'
-                        }];
-                    };
-
-                    // check for include notes filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_NOTES') {
-                        reportList[i]['hasIncludeNotes'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for vip filter and keep a ref to that item
-                    if (item.value === 'VIP_ONLY') {
-                        reportList[i]['hasIncludeVip'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for source and markets filter
-                    if (item.value === 'INCLUDE_MARKET') {
-                        reportList[i]['hasMarket'] = item;
-                        hasDisplaySelect = true;
-                    };
-
-                    if (item.value === 'INCLUDE_SOURCE') {
-                        reportList[i]['hasSource'] = item;
-                        hasDisplaySelect = true;
-                    };
-
-                    // INCLUDE_VARIANCE
-                    if (item.value === 'INCLUDE_VARIANCE') {
-                        reportList[i]['hasVariance'] = item;
-                        hasFauxSelect = true;
-                        hasMarketSelect = true;
-                    };
-
-                    // INCLUDE_LASTYEAR
-                    if (item.value === 'INCLUDE_LAST_YEAR') {
-                        reportList[i]['hasLastYear'] = item;
-                        hasFauxSelect = true;
-                        hasMarketSelect = true;
-                    };
-
-
-                    // check for include cancelled filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_CANCELLED') {
-                        reportList[i]['hasIncludeCancelled'] = item;
-                        hasFauxSelect = true;
-
-                        if (reportList[i].title == 'Cancellation & No Show') {
-                            reportList[i]['chosenIncludeCancelled'] = true;
-                        };
-                    };
-
-                    // check for include no show filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_NO_SHOW') {
-                        reportList[i]['hasIncludeNoShow'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for include no show filter and keep a ref to that item
-                    if (item.value === 'SHOW_GUESTS') {
-                        reportList[i]['hasShowGuests'] = item;
-                    }
-
-                    // SPL: for User login details
-                    // check for include rover users filter and keep a ref to that item
-                    if (item.value === 'ROVER') {
-                        reportList[i]['hasIncludeRoverUsers'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // SPL: for User login details
-                    // check for include zest users filter and keep a ref to that item
-                    if (item.value === 'ZEST') {
-                        reportList[i]['hasIncludeZestUsers'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // SPL: for User login details
-                    // check for include zest web users filter and keep a ref to that item
-                    if (item.value === 'ZEST_WEB') {
-                        reportList[i]['hasIncludeZestWebUsers'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for include company/ta/group filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_COMPANYCARD_TA_GROUP') {
-                        reportList[i]['hasIncludeComapnyTaGroup'] = item;
-                    };
-
-                    // check for include guarantee type filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_GUARANTEE_TYPE') {
-                        reportList[i]['hasGuaranteeType'] = item;
-                        reportList[i]['guaranteeTypes'] = angular.copy($scope.$parent.guaranteeTypes);
-                        hasGuaranteeSelect = true;
-                    }
-
-                    // check for include deposit paid filter and keep a ref to that item
-                    if (item.value === 'DEPOSIT_PAID') {
-                        reportList[i]['hasIncludeDepositPaid'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for include deposit due filter and keep a ref to that item
-                    if (item.value === 'DEPOSIT_DUE') {
-                        reportList[i]['hasIncludeDepositDue'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for include deposit past due filter and keep a ref to that item
-                    if (item.value === 'DEPOSIT_PAST') {
-                        reportList[i]['hasIncludeDepositPastDue'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for due in filter and keep a ref to that item
-                    if (item.value === 'DUE_IN_ARRIVALS') {
-                        reportList[i]['hasDueInArrivals'] = item;
-                        reportList[i]['chosenDueInArrivals'] = true;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for due out filter and keep a ref to that item
-                    if (item.value === 'DUE_OUT_DEPARTURES') {
-                        reportList[i]['hasDueOutDepartures'] = item;
-                        reportList[i]['chosenDueOutDepartures'] = true;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for include both filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_BOTH') {
-                        reportList[i]['hasIncludeBoth'] = item;
-                        hasFauxSelect = true;
-                    };
-
-                    // check for include new filter and keep a ref to that item
-                    if (item.value === 'INCLUDE_NEW') {
-                        reportList[i]['hasIncludeNew'] = item;
-                        hasFauxSelect = true;
-                    };
+                // to process the report filters
+                reportUtils.processFilters(reportList[i], {
+                    'guaranteeTypes': $scope.$parent.guaranteeTypes
                 });
-
-                // NEW! faux select DS and logic
-                if (hasFauxSelect) {
-                    reportList[i]['fauxSelectOpen'] = false;
-                    reportList[i]['fauxTitle'] = 'Select';
-                };
-
-                if (hasDisplaySelect) {
-                    reportList[i]['selectDisplayOpen'] = false;
-                    reportList[i]['displayTitle'] = 'Select';
-                };
-
-                if (hasMarketSelect) {
-                    reportList[i]['selectMarketsOpen'] = false;
-                    reportList[i]['displayTitle'] = 'Select';
-                    reportList[i]['marketTitle'] = 'Select';
-                }
-                if (hasGuaranteeSelect) {
-                    reportList[i]['selectGuaranteeOpen'] = false;
-                    reportList[i]['guaranteeTitle'] = 'Select';
-                };
 
                 // sort by options - include sort direction
                 if (reportList[i]['sort_fields'] && reportList[i]['sort_fields'].length) {
@@ -404,11 +109,6 @@ sntRover.controller('RVReportListCrl', [
                     });
                     reportList[i].sortByOptions = reportList[i]['sort_fields'];
                 };
-
-                // only show users for 'Login and out Activity' or 'Reservations By User' report
-                if (reportList[i].title == 'Login and out Activity' || reportList[i].title == 'Reservations By User') {
-                    reportList[i]['hasUserFilter'] = true;
-                }
 
                 // for (arrival, departure) report the sort by items must be
                 // ordered in a specific way as per the design
@@ -508,14 +208,11 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].untilCreateDate = untilDate;
                 };
 
-
-                // little hack to trigger the value update
-                // call this once for all items in reports
+                // call atleast once
                 $scope.fauxOptionClicked(null, reportList[i]);
             };
 
             $scope.refreshScroller('report-list-scroll');
-
         }($scope.$parent.reportList);
 
         // show hide filter toggle
