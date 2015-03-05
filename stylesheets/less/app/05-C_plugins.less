@@ -1620,6 +1620,60 @@
 				}
 			}
 
+			&.demographics {
+				width: 480px;
+
+				.text { 
+					strong { color: @red; }
+				}
+
+				.entry {
+					width: 50%;
+					margin-bottom: 20px;
+
+					label { 
+						margin-bottom: 0; 
+
+						strong {
+							color: @red;
+							font-weight: 600;
+							margin-left: 5px;
+						}
+					}
+
+					&.margin {
+						margin-right: 20px;
+						.calc-width(50, 20);
+					}
+
+					&.full-width { 
+						float: none;
+						width: 100%; 
+					}
+				}
+
+				.actions {
+					clear: both;
+					padding-top: 20px;
+					margin-top: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
+					text-align: center;
+					width: 100%;
+					.show;
+
+					.button {
+						display: inline-block;
+						width: auto;
+						padding: 0 40px;
+
+						&.blank { 
+							padding: 0 20px 0 0; 
+							text-align: right; 
+						}
+					}
+				}
+			}
+
 			&.diary-confirmation {
 				width: 580px;
 
