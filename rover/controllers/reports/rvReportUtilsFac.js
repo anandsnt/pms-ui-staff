@@ -11,7 +11,7 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         // standard report names list
-        var _reportNames = {
+        var __reportNames = {
             'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
             'UPSELL'                       : 'Upsell',
             'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',
@@ -32,11 +32,10 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-
         // getter method to provide the required value from
-        // private data store "_reportNames"
+        // private data store "__reportNames"
         factory.getName = function (name) {
-            return _reportNames[name] ? _reportNames[name] : undefined;
+            return __reportNames[name] ? __reportNames[name] : undefined;
         };
 
 
@@ -47,59 +46,59 @@ sntRover.factory('RVReportUtilsFac', [
         // report icon class to be applied
         factory.applyIconClass = function ( reportItem ) {
             switch ( reportItem['title'] ) {
-                case _reportNames['CHECK_IN_CHECK_OUT']:
+                case __reportNames['CHECK_IN_CHECK_OUT']:
                     reportItem['reportIconCls'] = 'icon-report icon-check-in-check-out';
                     break;
 
-                case _reportNames['UPSELL']:
+                case __reportNames['UPSELL']:
                     reportItem['reportIconCls'] = 'icon-report icon-upsell';
                     break;
 
-                case _reportNames['UPSWEB_CHECK_OUT_CONVERSIONELL']:
+                case __reportNames['UPSWEB_CHECK_OUT_CONVERSIONELL']:
                     reportItem['reportIconCls'] = 'icon-report icon-check-out';
                     break;
 
-                case _reportNames['WEB_CHECK_IN_CONVERSION']:
+                case __reportNames['WEB_CHECK_IN_CONVERSION']:
                     reportItem['reportIconCls'] = 'icon-report icon-check-in';
                     break;
 
-                case _reportNames['LATE_CHECK_OUT']:
+                case __reportNames['LATE_CHECK_OUT']:
                     reportItem['reportIconCls'] = 'guest-status late-check-out';
                     break;
 
-                case _reportNames['IN_HOUSE_GUEST']:
+                case __reportNames['IN_HOUSE_GUEST']:
                     reportItem['reportIconCls'] = 'guest-status inhouse';
                     break;
 
-                case _reportNames['ARRIVAL']:
+                case __reportNames['ARRIVAL']:
                     reportItem['reportIconCls'] = 'guest-status check-in';
                     break;
 
-                case _reportNames['DEPARTURE']:
+                case __reportNames['DEPARTURE']:
                     reportItem['reportIconCls'] = 'guest-status check-out';
                     break;
 
-                case _reportNames['CANCELLATION_NO_SHOW']:
+                case __reportNames['CANCELLATION_NO_SHOW']:
                     reportItem['reportIconCls'] = 'guest-status cancel';
                     break;
 
-                case _reportNames['BOOKING_SOURCE_MARKET_REPORT']:
+                case __reportNames['BOOKING_SOURCE_MARKET_REPORT']:
                     reportItem['reportIconCls'] = 'icon-report icon-booking';
                     break;
 
-                case _reportNames['LOGIN_AND_OUT_ACTIVITY']:
+                case __reportNames['LOGIN_AND_OUT_ACTIVITY']:
                     reportItem['reportIconCls'] = 'icon-report icon-activity';
                     break;
 
-                case _reportNames['DEPOSIT_REPORT']:
+                case __reportNames['DEPOSIT_REPORT']:
                     reportItem['reportIconCls'] = 'icon-report icon-deposit';
                     break;
 
-                case _reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+                case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
                     reportItem['reportIconCls'] = 'icon-report icon-occupancy';
                     break;
 
-                case _reportNames['RESERVATIONS_BY_USER']:
+                case __reportNames['RESERVATIONS_BY_USER']:
                     reportItem['reportIconCls'] = 'icon-report icon-reservations';
                     break;
 
@@ -116,22 +115,25 @@ sntRover.factory('RVReportUtilsFac', [
 
         // add required flags this report
         factory.applyFlags = function ( reportItem ) {
+
+            // by
+
             switch ( reportItem['title'] ) {
-                case _reportNames['ARRIVAL']:
+                case __reportNames['ARRIVAL']:
                     reportItem['hasDateLimit'] = false;
                     break;
 
-                case _reportNames['DEPARTURE']:
+                case __reportNames['DEPARTURE']:
                     reportItem['hasDateLimit'] = false;
                     break;
 
-                case _reportNames['CANCELLATION_NO_SHOW']:
+                case __reportNames['CANCELLATION_NO_SHOW']:
                     reportItem['hasDateLimit'] = false;
                     reportItem['canRemoveDate'] = true;
                     reportItem['showRemove'] = true;
                     break;
 
-                case _reportNames['BOOKING_SOURCE_MARKET_REPORT']:
+                case __reportNames['BOOKING_SOURCE_MARKET_REPORT']:
                     reportItem['canRemoveDate'] = true;
                     reportItem['showRemove'] = true;
                     reportItem['hasSourceMarketFilter'] = true;
@@ -141,12 +143,12 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasArrivalDateLimit'] = false;
                     break;
 
-                case _reportNames['LOGIN_AND_OUT_ACTIVITY']:
+                case __reportNames['LOGIN_AND_OUT_ACTIVITY']:
                     reportItem['hasDateLimit'] = false;
                     reportItem['hasUserFilter'] = true;
                     break;
 
-                case _reportNames['DEPOSIT_REPORT']:
+                case __reportNames['DEPOSIT_REPORT']:
                     reportItem['hasDateLimit'] = false;
                     reportItem['canRemoveDate'] = true;
                     reportItem['showRemove'] = true;
@@ -154,12 +156,12 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['showRemoveArrivalDate'] = true;
                     break;
 
-                case _reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+                case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
                     reportItem['hasMarketsList'] = true;
                     reportItem['hasDateLimit'] = false;
                     break;
 
-                case _reportNames['RESERVATIONS_BY_USER']:
+                case __reportNames['RESERVATIONS_BY_USER']:
                     reportItem['hasUserFilter'] = true;
                     reportItem['hasDateLimit'] = false;
                     reportItem['canRemoveDate'] = true;
@@ -169,6 +171,8 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 default:
+                    reportItem['show_filter'] = false;
+                    reportItem['hasDateLimit'] = true;
                     break;
             };
         };
@@ -289,7 +293,7 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasIncludeCancelled'] = filter;
                     _hasFauxSelect = true;
 
-                    if (reportItem.title == 'Cancellation & No Show') {
+                    if (reportItem['title'] == 'Cancellation & No Show') {
                         reportItem['chosenIncludeCancelled'] = true;
                     };
                 };
@@ -408,19 +412,21 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-        // to reorder the sort by to match the report details column positon
-        factory.reOrderSortBy = function (reportTitle) {
-
-        };
-
-
-
-
-
-
         // to process the report sort by
-        factory.processSortBy = function () {
+        factory.processSortBy = function ( reportItem ) {
 
+            // sort by options - include sort direction
+            if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
+                _.each(reportItem['sort_fields'], function(item, index, list) {
+                    item['sortDir'] = undefined;
+                    if (index == (list.length - 1)) {
+                        item['colspan'] = 2;
+                    };
+                });
+
+                // adding custom name ref
+                reportItem['sortByOptions'] = reportItem['sort_fields'];
+            };
         };
 
 
@@ -428,9 +434,66 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-        // to process the report group by
-        factory.processGroupBy = function () {
+        // to reorder the sort by to match the report details column positon
+        factory.reOrderSortBy = function ( reportItem ) {
 
+            // for (arrival, departure) report the sort by items must be
+            // ordered in a specific way as per the design
+            // [date - name - room] > TO > [room - name - date]
+            if ( reportItem['title'] == __reportNames['ARRIVAL'] ||
+                 reportItem['title'] == __reportNames['DEPARTURE'] ) {
+                var dateSortBy = angular.copy(reportItem.sortByOptions[0]),
+                    roomSortBy = angular.copy(reportItem.sortByOptions[2]);
+
+                dateSortBy['colspan'] = 2;
+                roomSortBy['colspan'] = 0;
+
+                reportItem.sortByOptions[0] = roomSortBy;
+                reportItem.sortByOptions[2] = dateSortBy;
+            };
+
+            // for in-house report the sort by items must be
+            // ordered in a specific way as per the design
+            // [name - room] > TO > [room - name]
+            if ( reportItem['title'] == __reportNames['IN_HOUSE_GUEST'] ) {
+                var nameSortBy = angular.copy(reportItem.sortByOptions[0]),
+                    roomSortBy = angular.copy(reportItem.sortByOptions[1]);
+
+                nameSortBy['colspan'] = 2;
+                roomSortBy['colspan'] = 0;
+
+                reportItem.sortByOptions[0] = roomSortBy;
+                reportItem.sortByOptions[1] = nameSortBy;
+            };
+
+            // for Login and out Activity report
+            // the colspans should be adjusted
+            // the sort descriptions should be update to design
+            //    THIS MUST NOT BE CHANGED IN BACKEND
+            if ( reportItem['title'] == __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
+                reportItem.sortByOptions[0]['description'] = 'Date & Time';
+
+                reportItem.sortByOptions[0]['colspan'] = 2;
+                reportItem.sortByOptions[1]['colspan'] = 2;
+            };
+
+
+            // need to reorder the sort_by options
+            // for deposit report in the following order
+            if ( reportItem['title'] == __reportNames['DEPOSIT_REPORT'] ) {
+                var reservationSortBy = angular.copy(reportItem.sortByOptions[4]),
+                    nameSortBy = angular.copy(reportItem.sortByOptions[3]),
+                    dateSortBy = angular.copy(reportItem.sortByOptions[0]),
+                    dueDateSortBy = angular.copy(reportItem.sortByOptions[1]),
+                    paidDateSortBy = angular.copy(reportItem.sortByOptions[2]);
+
+                    reportItem.sortByOptions[0] = reservationSortBy;
+                    reportItem.sortByOptions[1] = nameSortBy;
+                    reportItem.sortByOptions[2] = dateSortBy;
+                    reportItem.sortByOptions[3] = null;
+                    reportItem.sortByOptions[4] = dueDateSortBy;
+                    reportItem.sortByOptions[5] = paidDateSortBy;
+            };
         };
 
 
@@ -438,6 +501,75 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
+        // to assign inital date values for this report
+        factory.initDateValues = function ( reportItem ) {
+            var _getDates = factory.processDate();
+
+            switch ( reportItem['title'] ) {
+
+                // dates range must be the current business date
+                case __reportNames['ARRIVAL']:
+                case __reportNames['DEPARTURE']:
+                    reportItem['fromDate']  = _getDates.businessDate;
+                    reportItem['untilDate'] = _getDates.businessDate;
+                    break;
+
+                // arrival date range must be from business date to a week after
+                // deposit date range must the current business date
+                case __reportNames['DEPOSIT_REPORT']:
+                    reportItem['fromArrivalDate']  = _getDates.businessDate;
+                    reportItem['untilArrivalDate'] = _getDates.aWeekAfter;
+                    /**/
+                    reportItem['fromDepositDate']  = _getDates.businessDate;
+                    reportItem['untilDepositDate'] = _getDates.businessDate;
+                    break;
+
+                // date range must be yesterday - relative to current business date
+                case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+                    reportItem['fromDate']  = _getDates.yesterday;
+                    reportItem['untilDate'] = _getDates.yesterday;
+                    break;
+
+                // by default date range must be from a week ago to current business date
+                default:
+                    reportItem['fromDate']        = _getDates.aWeekAgo;
+                    reportItem['fromCancelDate']  = _getDates.aWeekAgo;
+                    reportItem['fromArrivalDate'] = _getDates.aWeekAgo;
+                    reportItem['fromCreateDate']  = _getDates.aWeekAgo;
+                    /**/
+                    reportItem['untilDate']        = _getDates.businessDate;
+                    reportItem['untilCancelDate']  = _getDates.businessDate;
+                    reportItem['untilArrivalDate'] = _getDates.businessDate;
+                    reportItem['untilCreateDate']  = _getDates.businessDate;
+                    break;
+            };
+        };
+
+
+
+
+
+        // HELPER: create meaningful date names
+        factory.processDate = function () {
+            var _businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+                _dateParts    = _businessDate.match(/(\d+)/g),
+                _year  = parseInt( _dateParts[0] ),
+                _month = parseInt( _dateParts[1] ) - 1,
+                _date  = parseInt( _dateParts[2] );
+
+            return {
+                'businessDate' : new Date(_year, _month, _date),
+                'yesterday'    : new Date(_year, _month, _date - 1),
+                'aWeekAgo'     : new Date(_year, _month, _date - 7),
+                'aWeekAfter'   : new Date(_year, _month, _date + 7)
+            }
+        };
+
+
+
+
+
+        // HELPER: create time slots
         factory.createTimeSlots = function () {
             var _ret = [],
                 _hh = '',
@@ -466,6 +598,11 @@ sntRover.factory('RVReportUtilsFac', [
 
             return _ret;
         };
+
+
+
+
+
 
         return factory;
     }
