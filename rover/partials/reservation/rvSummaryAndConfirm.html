@@ -144,7 +144,7 @@
                     <form id="room-1-accompany" class="form" ng-show="!!room.accompanying_guest_details">
                         <!-- Remove class hidden when button above clicked -->
                         <div class="entry" ng-repeat="guest in room.accompanying_guest_details">
-                            <label>Accompanying guest {{$index}}</label>
+                            <label>Accompanying guest {{$index + 1}}</label>
                             <input placeholder="First Name" type="text" ng-model="guest.first_name" />
                             <input placeholder="Last Name" type="text" ng-model="guest.last_name" />
                         </div>
