@@ -484,7 +484,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.fauxOptionClicked = function(e, item) {
-			e.stopPropagation();
+			e && e.stopPropagation();
 
 			var selectCount = 0,
 				maxCount = 0,

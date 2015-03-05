@@ -505,6 +505,9 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].untilCancelDate = untilDate;
                     reportList[i].untilArrivalDate = untilDate;
                 };
+
+                // call atleast once
+                $scope.fauxOptionClicked(null, reportList[i]);
             };
 
             $scope.refreshScroller('report-list-scroll');
