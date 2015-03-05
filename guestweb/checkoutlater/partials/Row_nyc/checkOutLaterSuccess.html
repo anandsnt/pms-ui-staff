@@ -1,10 +1,11 @@
 <div class="jumbotron">
-	<div class="container backgroundbg width-100">
+	<div class="container width-100 ">
 		<div>
-			<div class="row headerrow black-bg">
-				<logo-image-back></logo-image-back>
+			<div class="container-fluid eden_logo_bg">
+				<div class="row headerrow black-bg">
+					<logo-image></logo-image>
+				</div>
 			</div>
-		</div>
 
 		<!-- contentarea starts here-->
 		<div class="container">
@@ -39,7 +40,7 @@
 					<p class="latecheckout-charged centeralign">
 						<span class="black-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</span></p>
 				</div>
-				<div class="col-md-6 no-padding now-later-options margin-top-60">
+				<div class="col-md-6 no-padding now-later-options margin-top-mobile">
 					<a ui-sref="checkOutConfirmation" class="link-btn with-bg pink-bg back-to-checkout white-text btn_height btn-padding">Done</a>
 				</div>
 			</div>
