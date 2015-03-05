@@ -2011,21 +2011,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             });
         };
 
-        $scope.updateAccompanyingGuests = function(room, roomIndex) {
-            console.log(room.accompanying_guest_details);
-            var onupdateSuccess = function() {
-                    $scope.$emit('hideLoader');
-                },
-                onUpdateFailure = function() {
-                    $scope.$emit('hideLoader');
-                }
-            $scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
-                accompanying_guests_details: room.accompanying_guest_details,
-                reservation_id: $scope.reservationData.reservationIds[roomIndex],
-            }, onupdateSuccess, onUpdateFailure);
-
-        }
-
         //CICO-11716
         $scope.onOccupancyChange = function(room, occupantType, idx) {
             $scope.updateOccupancy(idx);

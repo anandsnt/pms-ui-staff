@@ -77,9 +77,9 @@
                     <div class="guests">
                         <h5><em>Guest: </em>{{guestCardData.contactInfo.first_name}}&nbsp;{{guestCardData.contactInfo.last_name}}</h5> <!-- Show primary guest name -->
                         <!-- Show accompanying guests if they have been added -->
-                        <!-- <ul class="accompanying-guests">
-                            <li><span>Accompanying guest</span><em>John Smith</em></li>
-                        </ul> -->
+                        <ul class="accompanying-guests" ng-show="(room.accompanying_guest_details | filter:{last_name : '!!', first_name: '!!'}).length > 0">
+                            <li ng-repeat="guest in room.accompanying_guest_details" ng-if="!!guest.last_name || !!guest.first_name"><span>Accompanying guest</span><em>{{guest.first_name}} {{guest.last_name}}</em></li>
+                        </ul>
                     </div>
                     
                     <!-- <a href="" class="button blue" ng-click = "openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</a>

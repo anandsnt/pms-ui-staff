@@ -145,11 +145,11 @@
                         <!-- Remove class hidden when button above clicked -->
                         <div class="entry" ng-repeat="guest in room.accompanying_guest_details">
                             <label>Accompanying guest {{$index}}</label>
-                            <input placeholder="First Name" type="text" ng-model="guest.first_name" ng-blur="updateAccompanyingGuests(room, roomIndex)" />
-                            <input placeholder="Last Name" type="text" ng-model="guest.last_name" ng-blur="updateAccompanyingGuests(room, roomIndex)" />
+                            <input placeholder="First Name" type="text" ng-model="guest.first_name" />
+                            <input placeholder="Last Name" type="text" ng-model="guest.last_name" />
                         </div>
                         <div class="actions">
-                            <button type="button" class="button blank">Cancel</button>
+                            <button type="button" class="button blank" ng-click="clearGuests(roomIndex)">Cancel</button>
                         </div>
                     </form>
                 </div>
