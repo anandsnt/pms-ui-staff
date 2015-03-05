@@ -3,7 +3,8 @@ sntRover.controller('RVReportListCrl', [
     '$rootScope',
     '$filter',
     'RVreportsSrv',
-    function($scope, $rootScope, $filter, RVreportsSrv) {
+    'RVReportUtilsFac',
+    function($scope, $rootScope, $filter, RVreportsSrv, reportUtils) {
 
         BaseCtrl.call(this, $scope);
 
@@ -235,11 +236,6 @@ sntRover.controller('RVReportListCrl', [
                         }];
                     };
 
-                    // currently only show users for 'Login and out Activity' report
-                    if (reportList[i].title == 'Login and out Activity') {
-                        reportList[i]['hasUserFilter'] = true;
-                    }
-
                     // check for include notes filter and keep a ref to that item
                     if (item.value === 'INCLUDE_NOTES') {
                         reportList[i]['hasIncludeNotes'] = item;
@@ -409,6 +405,11 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].sortByOptions = reportList[i]['sort_fields'];
                 };
 
+                // only show users for 'Login and out Activity' or 'Reservations By User' report
+                if (reportList[i].title == 'Login and out Activity' || reportList[i].title == 'Reservations By User') {
+                    reportList[i]['hasUserFilter'] = true;
+                }
+
                 // for (arrival, departure) report the sort by items must be
                 // ordered in a specific way as per the design
                 // [date - name - room] > TO > [room - name - date]
@@ -506,9 +507,15 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].untilArrivalDate = untilDate;
                     reportList[i].untilCreateDate = untilDate;
                 };
+
+
+                // little hack to trigger the value update
+                // call this once for all items in reports
+                $scope.fauxOptionClicked(null, reportList[i]);
             };
 
             $scope.refreshScroller('report-list-scroll');
+
         }($scope.$parent.reportList);
 
         // show hide filter toggle

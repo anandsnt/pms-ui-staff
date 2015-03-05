@@ -364,7 +364,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			e.stopPropagation();
 			item.fauxSelectOpen = item.fauxSelectOpen ? false : true;
 
-			//$scope.fauxOptionClicked(e, item);
+			$scope.fauxOptionClicked(e, item);
 		};
 
 		// specific for Source and Markets reports
@@ -490,7 +490,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.fauxOptionClicked = function(e, item) {
-			e.stopPropagation();
+			e && e.stopPropagation();
 
 			var selectCount = 0,
 				maxCount = 0,
@@ -535,6 +535,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			// CICO-10202
 			$scope.$emit('report.filter.change');
 		};
+
 
 		$scope.showFauxSelect = function(item) {
 			if (!item) {

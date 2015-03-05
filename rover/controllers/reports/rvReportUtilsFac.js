@@ -33,61 +33,94 @@ sntRover.factory('RVReportUtilsFac', [
         factory.applyIconClass = function (reportTitle) {
             var _className = '';
 
-            switch ( reportTitle ) {
-                case factory.reportNames['CHECK_IN_CHECK_OUT']:
-                    _className = 'icon-report icon-check-in-check-out';
+            // add report icon class
+            switch (reportList[i]['title']) {
+                case 'Check In / Check Out':
+                    reportList[i]['reportIconCls'] = 'icon-report icon-check-in-check-out';
                     break;
 
-                case factory.reportNames['UPSELL']:
-                    _className = 'icon-report icon-upsell';
+                case 'Upsell':
+                    reportList[i]['reportIconCls'] = 'icon-report icon-upsell';
                     break;
 
-                case factory.reportNames['WEB_CHECK_OUT_CONVERSION']:
-                    _className = 'icon-report icon-check-out';
+                case 'Web Check Out Conversion':
+                    reportList[i]['reportIconCls'] = 'icon-report icon-check-out';
                     break;
 
-                case factory.reportNames['WEB_CHECK_IN_CONVERSION']:
-                    _className = 'icon-report icon-check-in';
+                case 'Web Check In Conversion':
+                    reportList[i]['reportIconCls'] = 'icon-report icon-check-in';
                     break;
 
-                case factory.reportNames['LATE_CHECK_OUT']:
-                    _className = 'guest-status late-check-out';
+                case 'Late Check Out':
+                    reportList[i]['reportIconCls'] = 'guest-status late-check-out';
                     break;
 
-                case factory.reportNames['IN_HOUSE_GUEST']:
-                    _className = 'guest-status inhouse';
+                case 'In-House Guests':
+                    reportList[i]['reportIconCls'] = 'guest-status inhouse';
                     break;
 
                 case 'Arrival':
-                    _className = 'guest-status check-in';
+                    reportList[i]['reportIconCls'] = 'guest-status check-in';
+                    reportList[i]['hasDateLimit'] = false;
                     break;
 
                 case 'Departure':
-                    _className = 'guest-status check-out';
+                    reportList[i]['reportIconCls'] = 'guest-status check-out';
+                    reportList[i]['hasDateLimit'] = false;
                     break;
 
                 case 'Cancellation & No Show':
-                    _className = 'guest-status cancel';
+                    reportList[i]['reportIconCls'] = 'guest-status cancel';
+                    reportList[i]['hasDateLimit'] = false;
+                    reportList[i]['canRemoveDate'] = true;
+                    reportList[i]['showRemove'] = true;
                     break;
 
                 case 'Booking Source & Market Report':
-                    _className = 'icon-report icon-booking';
+                    reportList[i]['reportIconCls'] = 'icon-report icon-booking';
+                    reportList[i]['canRemoveDate'] = true;
+                    reportList[i]['showRemove'] = true;
+                    reportList[i]['hasSourceMarketFilter'] = true;
+                    reportList[i]['hasDateLimit'] = false;
+
+                    reportList[i]['canRemoveArrivalDate'] = true;
+                    reportList[i]['showRemoveArrivalDate'] = true;
+                    reportList[i]['hasArrivalDateLimit'] = false;
                     break;
 
                 case 'Login and out Activity':
-                    _className = 'icon-report icon-activity';
+                    reportList[i]['reportIconCls'] = 'icon-report icon-activity';
+                    reportList[i]['hasDateLimit'] = false;
                     break;
 
                 case 'Deposit Report':
-                    _className = 'icon-report icon-deposit';
+                    reportList[i]['reportIconCls'] = 'icon-report icon-deposit';
+                    reportList[i]['hasDateLimit'] = false;
+                    reportList[i]['canRemoveDate'] = true;
+                    reportList[i]['showRemove'] = true;
+                    reportList[i]['canRemoveArrivalDate'] = true;
+                    reportList[i]['showRemoveArrivalDate'] = true;
                     break;
 
                 case 'Occupancy & Revenue Summary':
-                    _className = 'icon-report icon-occupancy';
+                    reportList[i]['reportIconCls'] = 'icon-report icon-occupancy';
+                    reportList[i]['hasMarketsList'] = true;
+                    reportList[i]['hasDateLimit'] = false;
+                    // CICO-10202 start populating the markets list
+                    populateMarketsList();
+                    break;
+
+                case 'Reservations By User':
+                    reportList[i]['reportIconCls'] = 'icon-report icon-reservations';
+                    reportList[i]['hasDateLimit'] = false;
+                    reportList[i]['canRemoveDate'] = true;
+                    reportList[i]['showRemove'] = true;
+                    reportList[i]['canRemoveArrivalDate'] = true;
+                    reportList[i]['showRemoveArrivalDate'] = true;
                     break;
 
                 default:
-                    _className = 'icon-report';
+                    reportList[i]['reportIconCls'] = 'icon-report';
                     break;
             };
 
