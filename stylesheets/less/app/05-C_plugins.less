@@ -2642,6 +2642,72 @@
 					border-top: 1px solid rgba(0,0,0,.1);
 				}
 			}
+
+			/* Change Stay Dates ***/
+			&.change-stay-dates {
+				width: 360px;
+
+				.dates-update {
+					margin-top: 20px;
+					.float;
+
+					.label {
+						color: @textColor;
+						font-size: 16px;
+						line-height: 40px;
+						font-weight: 600;
+						text-transform: uppercase;
+						text-align: right;
+						width: 60px;
+						margin-right: 20px;
+						.pull-left;
+					}
+
+					.details {
+						background-color: @white;
+						padding: 0 10px;
+						#border-radius > .rounded();
+						.calc-width(100, 80);
+						.pull-left;
+
+						li {
+							font-weight: 600;
+							text-transform: uppercase;
+							text-align: center;
+							line-height: 20px;
+	                        margin: 0;
+	                        padding: 10px;
+	                        width: 50%;
+	                        .pull-left;
+	                        .show;
+
+	                        .guest-status { .square(20px); }
+
+	                        &.arrival { border-right: 1px solid rgba(0,0,0,.1); }
+						}
+					}
+
+					&.old {
+						.details {
+							li {
+								font-weight: 400;
+								.opacity(40);
+							}
+						}
+					}
+				}
+
+				.actions { margin-top: 20px; }
+
+				&.success {
+					width: 420px;
+
+					.actions {
+						padding-top: 20px;
+						border-top: 1px solid rgba(0,0,0,.1);
+					}
+				}
+			}
 		}
 	}
 
