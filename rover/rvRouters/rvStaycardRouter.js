@@ -227,4 +227,10 @@ angular.module('stayCardModule', [])
             templateUrl: "/assets/partials/bill_details.html",
             controller: 'billDetailsController'
         });
+
+        $stateProvider.state('rover.reservation.staycard.activitylog', {
+            url: '/activitylog',
+            templateUrl: "/assets/partials/activityLog/rvActivityLog.html",
+            controller: 'rvActivityLogCtrl'
+        });        
     });

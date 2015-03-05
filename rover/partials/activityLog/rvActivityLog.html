@@ -1,0 +1,156 @@
+<!-- Navbar 
+<header class="nav-bar" role="banner">
+    Back button
+    <a href="{link}" class="back-button">Stay Card</a>
+
+    Logo
+    <div class="logo">
+        <img src="{image}" alt="" />
+    </div>
+    Title
+    <h1>
+        <strong class="hotel">{Hotel Name}</strong>
+        Res. #{Num} Activity
+        <div class="user">
+            <strong>{User}</strong>
+            <em class="date">{Business date}</em>
+        </div>
+    </h1>
+</header> -->
+
+<!-- Report details -->
+<section id="report-details" class="content reservations-inner stay-card-inner" role="main">
+
+    <!-- Report update -->
+    <div id="report-update" class="sidebar-left" role="complementary">
+        <div class="scrollable">
+            <div class="wrapper">
+                <!-- Date Range -->
+                <a href="#sidebar-dates" class="settings-title toggle has-arrow">
+                    <span class="title">Date</span>
+                </a>
+                <div id="sidebar-dates" class="settings-content">
+                    <div class="entry date-range">
+                        <label for="activity-range-from">From</label>
+                        <div class="has-datepicker">
+                            <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
+                            <input name="activity-range-from" id="activity-range-from" class="range-datepicker" value="{date-from}" readonly />
+                        </div>
+                        <label for="activity-range-to">To</label>
+                        <div class="has-datepicker">
+                            <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
+                            <input name="activity-range-to" id="activity-range-to" class="range-datepicker" value="{date-to}" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter by User -->
+                <a href="#sidebar-filter" class="settings-title toggle has-arrow">
+                    <span class="title">Filter</span>
+                </a>
+                <div id="sidebar-filter" class="settings-content">
+                    <label for="activity-filter">User</label>
+                    <input name="activity-filter" id="activity-filter" class="icons icon-search" placeholder="Search by User Name" type="search" autocomplete="off" />
+                </div>
+
+                <!-- Options -->
+                <a href="#sidebar-options" class="settings-title toggle has-arrow">
+                    <span class="title">Options</span>
+                </a>
+                <div id="sidebar-options" class="settings-content">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox">
+                        <input name="activity-options" id="activity-new" value="Include {Activity Type}" type="checkbox" />
+                        Include {Activity Type}
+                    </label>
+                    .. repeat for all activity types
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="button green">Update Report</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Report header -->
+    <div class="report-header">
+        <ul class="totals">
+            <li>Activities<span>{Sum of activites}</span></li>
+        </ul>
+        <div class="actions">
+            <div class="select">
+                <select name="print-options">
+                    <option value="pdf" selected>Save/E-mail as PDF</option>
+                    <option value="word">Save/E-mail as Word</option>
+                    <option value="excel">Save/E-mail as Excel</option>
+                </select>
+            </div>
+            <button id="email-report" type="button" class="button with-icon only-icon blue"><span class="icons icon-email"></span></button>
+            <button id="print-report" type="button" class="button with-icon only-icon blue"><span class="icons icon-print"></span></button>
+            <button id="save-report" type="button" class="button with-icon only-icon purple"><span class="icons icon-save"></span></button>
+        </div>
+    </div>
+
+    <!-- Report content -->
+    <div id="report-content" class="report-content scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
+        <div class="wrapper">
+            <table class="log-reports">
+                <thead>
+                    <tr>
+                        <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+                        "sorting-asc" when ASC sorting
+                        "sorting-desc" when DESC sorting -->
+                        <th><span class="sort">User Name</span></th>
+                        <th><span class="sort">Date &amp; Time</span></th>
+                        <th><span class="sort">Action</span></th>
+                        <th><span>Details</span></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            From <span>{Range From}</span> to <span>{Range To}</span>
+                            <!-- If filtered by users, show:
+                            <br />
+                            Users <span>{User filter}</span>-->
+                        </td>
+                        <td colspan="2">
+                            Business date <span>{Business Date}</span><br />
+                            User <span>{User}</span>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td>{User Name}</td>
+                        <td>{Date}, {Time}</td>
+                        <td>{Activity }</td>
+                        <td class="details">{Details - stack required components, see bottom of template for code snippets}</td>
+                    </tr>
+                    ... repeat
+                </tbody>
+            </table>         
+        </div>
+    </div>
+
+    <!-- Report pagination // Shown when needed
+    {../_shared/pagination.html} -->
+    
+</section>
+
+
+<!-- 
+    Most of details should output in a simple way: 
+    {label}<strong>{value}</strong>
+    Success log status should output as:
+    <strong class="green">Success</strong>
+    Error log status should output as:
+    <strong class="red">Failed</strong>
+    Old value(rate, room etc.) should output as:
+    <span class="old">{label} <strong>{value}</strong>
+    For example, upsell output should look like this:
+        <span class="old">Old Room Type <strong>Standard Double</strong></span>
+        New Room Type <strong>Junior Suite</strong>
+        Fee <strong>$10.00</strong>
+        Reservation #<strong>1432677</strong>
+-->
