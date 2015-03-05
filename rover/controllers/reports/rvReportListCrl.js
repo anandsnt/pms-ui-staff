@@ -67,7 +67,6 @@ sntRover.controller('RVReportListCrl', [
                     populateMarketsList();
                 };
 
-
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ($rootScope.currentHotelData == 'Yotel London Heathrow') {
                     var sortDate = _.find(reportList[i].sortByOptions, function(item) {

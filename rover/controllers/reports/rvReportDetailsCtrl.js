@@ -182,6 +182,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 			if ( $scope.chosenReport.title === reportUtils.getName('WEB_CHECK_IN_CONVERSION') || $scope.chosenReport.title === reportUtils.getName('WEB_CHECK_OUT_CONVERSION') ) {
 				$scope.firstHalf = $scope.firstHalf.slice( 0, 3 );
 				$scope.restHalf  = $scope.restHalf.slice( 3 );
+			} else if ( $scope.chosenReport.title === reportUtils.getName('CHECK_IN_CHECK_OUT') ) {
+				$scope.firstHalf = $scope.firstHalf.slice( 0, 5 );
+				$scope.restHalf  = $scope.restHalf.slice( 5 );
+				$scope.restHalf.reverse();
 			} else {
 				$scope.firstHalf = $scope.firstHalf.slice( 0, 4 );
 				$scope.restHalf  = $scope.restHalf.slice( 4 );
