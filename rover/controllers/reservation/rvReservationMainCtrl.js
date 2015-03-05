@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams', 'RVReservationGuestSrv',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1121,7 +1121,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //         travel_agent_id: $scope.reservationData.travelAgent.id
             //     });
             // }
-            
+
             // $scope.$broadcast('closeSidebar');
         };
 

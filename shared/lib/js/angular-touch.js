@@ -404,7 +404,13 @@ ngTouch.directive('ngClick', ['$parse', '$timeout', '$rootElement',
         }
 
         if (!angular.isDefined(attr.disabled) || attr.disabled === false) {
-          element.triggerHandler('click', [event]);
+         //lets help out the ngTouch folks :D
+            if (element[0].dispatchEvent) {
+                element[0].dispatchEvent(new MouseEvent('click', event));
+            } else {
+                element.triggerHandler('click', [event]);
+            }
+         
         }
       }
 

@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams', '$timeout',
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams, $timeout) {
     $rootScope.isOWSErrorShowing = false;    
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -663,6 +663,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDialog = function() {
       document.activeElement.blur();
       $scope.$emit('hideLoader');
+      
+      //to add stjepan's popup showing animation
+      $rootScope.modalOpened = false;
+
       setTimeout(function() {
         ngDialog.close();
         window.scrollTo(0, 0);
@@ -726,6 +730,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
+      //to add stjepan's popup showing animation
+      $rootScope.modalOpened = false;
+      $timeout(function() {
+        $rootScope.modalOpened = true;
+      }, 300);  
+
       LastngDialogId = $dialog.attr('id');
     });
 
