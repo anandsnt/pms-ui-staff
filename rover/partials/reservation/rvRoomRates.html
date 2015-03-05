@@ -53,7 +53,7 @@
                     <a class="has-arrow toggle" ng-class="{active: isVisibleRoom}" ng-click="isVisibleRoom = !isVisibleRoom; refreshScroll()">
                         <div class="data">  
                             <h2>{{room.name}}</h2>
-                            <span ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" ng-show="displayData.roomTypes.length > 0 &&     $index > 0 && upsell > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell|number:0}}&nbsp;{{'RESV_MORE'|translate}}</span>
+                            <span class="recommended" ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" ng-show="displayData.roomTypes.length > 0 &&     $index > 0 && upsell > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell|number:0}}&nbsp;{{'RESV_MORE'|translate}}</span>
                         </div>
                         <div class="book-rate" ng-class="{hidden: isVisibleRoom}">
                             <h4 translate>RESV_BEST_RATE</h4>
