@@ -1,6 +1,6 @@
 <div class="scrollable" ng-iscroll="report-filter-sidebar-scroll">
     <div class="wrapper" id="report-filter">
-        
+
         <!-- item_01: cancellation date range -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasCancelDateFilter" ng-class="{'active': filterItemsToggle.item_01}" ng-click="toggleFilterItems('item_01')">
             <span class="title">{{ chosenReport.hasCancelDateFilter.description }}</span>
@@ -67,16 +67,16 @@
             <div class="entry date-range">
                 <label for="arrival-range-from">From</label>
                 <div class="has-datepicker">
-                    <input id="chosenReportFromDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" readonly>
-                    <input id="chosenReportFromDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" readonly>
+                    <input id="chosenReportFromDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'fromDate')" readonly>
+                    <input id="chosenReportFromDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'fromDate')" readonly>
                     <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.showRemove}" class="clear-query">
                         <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')">Clear query</span>
                     </button>
                 </div>
                 <label for="arrival-range-to">To</label>
                 <div class="has-datepicker">
-                    <input id="chosenReportToDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
-                    <input id="chosenReportToDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" readonly>
+                    <input id="chosenReportToDate" ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'untilDate')" readonly>
+                    <input id="chosenReportToDate" ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'untilDate')" readonly>
                     <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.showRemove}" class="clear-query">
                         <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDate', 'untilDate')">Clear query</span>
                     </button>
@@ -151,7 +151,7 @@
                 <select ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
                     <option value="">Transaction Type</option>
                 </select>
-            </div>        
+            </div>
         </div>
 
 
@@ -242,12 +242,12 @@
                     <input type="checkbox" ng-model="chosenReport.chosenLastYear" name="room-filters">
                     {{ chosenReport.hasLastYear.description }}
                 </label>
-                <label class="checkbox inline" ng-if="chosenReport.hasDueInArrivals">
+                <label class="checkbox" ng-if="chosenReport.hasDueInArrivals">
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenDueInArrivals}"></span>
                     <input type="checkbox" ng-model="chosenReport.chosenDueInArrivals" name="room-filters">
                     {{ chosenReport.hasDueInArrivals.description }}
                 </label>
-                <label class="checkbox inline" ng-if="chosenReport.hasDueOutDepartures">
+                <label class="checkbox" ng-if="chosenReport.hasDueOutDepartures">
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenDueOutDepartures}"></span>
                     <input type="checkbox" ng-model="chosenReport.chosenDueOutDepartures" name="room-filters">
                     {{ chosenReport.hasDueOutDepartures.description }}
@@ -289,7 +289,7 @@
 
 
 
-    
+
         <!-- item_11: Market Type -->
         <!-- Specifice markup for display options for the Source and Market reports -->
         <a href="" class="settings-title toggle has-arrow"  ng-if="chosenReport.hasSourceMarketFilter" ng-class="{'active': filterItemsToggle.item_11}" ng-click="toggleFilterItems('item_11')">
@@ -305,7 +305,7 @@
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showMarket}"></span>
                     <input type="checkbox" ng-model="chosenReport.showMarket">
-                    {{ chosenReport.hasMarket.description }} 
+                    {{ chosenReport.hasMarket.description }}
                 </label>
             </div>
         </div>
@@ -323,7 +323,7 @@
                 <select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
                     <option value="">Sort By</option>
                 </select>
-            </div>        
+            </div>
         </div>
 
 

@@ -1,33 +1,34 @@
-<section id="replacing-div-first" class="content current"><div data-view="ItemsListView">
-	<header class="content-title float">
-		<h2 translate>
-			EMV_TERMINALS
-		</h2>
-		<span class="count">
-			(
-			{{data.results.length}}
-			)
-		</span>
-		<a id="add-new-button" ui-sref="admin.emvTerminalDetails({itemid:''})" class="action add" translate>ADD_NEW</a>
-	</header>
-	<section class="content-scroll">
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<div id="new-form-holder"></div>
-		<table id="items" class="grid datatable dataTable" ng-table="itemList" template-pagination="nil">
-		
-			<tr role="row" ng-repeat="item in $data">
-				<td width="40%" class="sorting" data-title="'Terminal Name'" sortable="'name'">
-					<a ui-sref="admin.emvTerminalDetails({itemid: item.id})">{{item.name}}</a>
-				</td>
-				<td width="40%" class="sorting" data-title="'Terminal Identifier'" sortable="'id'">
-					{{item.terminal_identifier}}
-				</td>
-				<td width="10%" class="delete" data-title="'Delete'">
-					<a class="icons icon-delete large-icon" ng-click="deleteItem($index, item.id)"></a>
-				</td>
-			</tr>
+<section id="replacing-div-first" class="content current">
+	<div data-view="ItemsListView">
+		<header class="content-title float">
+			<h2 translate>
+				EMV_TERMINALS
+			</h2>
+			<span class="count">
+				(
+				{{data.results.length}}
+				)
+			</span>
+			<a id="add-new-button" ui-sref="admin.emvTerminalDetails({itemid:''})" class="action add" translate>ADD_NEW</a>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div id="new-form-holder"></div>
+			<table id="items" class="grid datatable dataTable" ng-table="itemListTerminals" template-pagination="nil">
 			
-		</table>
-	</section>
-</div>
+				<tr role="row" ng-repeat="item in $data">
+					<td width="40%" class="sorting" data-title="'Terminal Name'" sortable="'name'">
+						<a ui-sref="admin.emvTerminalDetails({itemid: item.id})">{{item.name}}</a>
+					</td>
+					<td width="40%" class="sorting" data-title="'Terminal Identifier'" sortable="'id'">
+						{{item.terminal_identifier}}
+					</td>
+					<td width="10%" class="delete" data-title="'Delete'">
+						<a class="icons icon-delete large-icon" ng-click="deleteItem($index, item.id)"></a>
+					</td>
+				</tr>
+				
+			</table>
+		</section>
+	</div>
 </section>

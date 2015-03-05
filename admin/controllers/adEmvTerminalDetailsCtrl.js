@@ -1,4 +1,4 @@
-admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTerminalsSrv', '$state','$stateParams', function($scope, $rootScope, ADEmvTerminalsSrv, $state, $stateParams){
+admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTerminalsSrv', '$state','$stateParams','$timeout', function($scope, $rootScope, ADEmvTerminalsSrv, $state, $stateParams, $timeout){
 	/*
 	* Controller class for Room List
 	*/
@@ -43,8 +43,9 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTermin
 		postData.terminal_identifier = $scope.itemDetails.terminal_identifier;
 
 		var fetchSuccessOfSaveItemDetails = function(){
-			$scope.goBack();
-			$rootScope.$emit("UPDATELIST");
+			$timeout(function() {
+				$scope.goBack();
+			}, 3000);
 		};	
 		
 		if($scope.mod == 'edit'){

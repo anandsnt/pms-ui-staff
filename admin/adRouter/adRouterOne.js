@@ -12,7 +12,15 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADHotelDetailsCtrl',
 			url : '/hoteldetails/edit'
 		});
-		
+
+
+		$stateProvider.state('admin.permissions', {
+			templateUrl: '/assets/partials/hotel/adUserRolePermissions.html',
+			controller: 'ADUserRolePermissionsCtrl',
+			url : '/hoteldetails/permissions'
+		});
+
+
 		$stateProvider.state('admin.snthoteldetails', {
 			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
