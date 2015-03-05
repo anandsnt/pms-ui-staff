@@ -8,16 +8,91 @@
 		
 		<fieldset class="holder left float">
 			
-			<!-- <ad-textbox value="floorListData.floor_number" name = "room-type-code" id = "room-type-code" label = "Floor No" placeholder = "Enter Floor No" required = "yes" ></ad-textbox> -->
+			<ad-textbox value="floorListData.floor_number" name = "floor-number" id = "floor-number" label = "Floor No" placeholder = "Enter Floor No" required = "yes" maxlength=10></ad-textbox>
 
-			<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_FLOOR' | translate }}"label="{{ 'FLOOR_NO' | translate }}" sel-class='placeholder'  list='floors' required='yes' selected-Id='floorListData.floor_number'></ad-dropdown>
+			<!-- <ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_FLOOR' | translate }}"label="{{ 'FLOOR_NO' | translate }}" sel-class='placeholder'  list='floors' required='yes' selected-Id='floorListData.floor_number'></ad-dropdown> -->
 			
 		</fieldset>
 		<fieldset class="holder right float">
 			
             <ad-textbox styleclass="full-width" value="floorListData.description" name = "room-type-name" id = "room-type-name" label = "{{ 'FLOOR_DESCRIPTION' | translate }}" placeholder = "Enter Description" ></ad-textbox>
 		</fieldset> 
+
+		<div class="form-title">
+			<h3>
+				<span translate>FLOOR</span>
+				Rooms
+			</h3>
+			<em class="status"> <span translate>ASSIGN_ROOMS_TO_THIS_FLOOR</span></em>
+		</div>
 		
+		<fieldset class="holder left">			
+			<div class="entry full-width has-sortable">
+				<h3 class="center_align" translate>
+					UNASSIGNED_ROOMS
+				</h3>				
+				<ul class="boxes col3 short-list sortable ui-sortable" 
+					
+					data-drop="true" 
+					style="overflow-y: scroll !important;" 
+
+					jqyoui-droppable="{multiple:true}" 
+					data-jqyoui-options="{accept:'.assigned-rooms'}" ng-model="unassignedRooms">
+
+					<li class="non-assigned-room" 
+						ng-repeat="room in unassignedRooms"
+
+						data-drag = "true"
+						jqyoui-draggable ="{index: {{$index}}, animate:true, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+
+						data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
+
+						ng-click = "unAssignedRoomSelected($event, $index)"
+						ng-class = '{selected: selectedUnAssignedRoomIndex === $index}'>
+
+						{{room.room_number}}
+
+						<span class="icons icon-handle"></span>
+					</li>
+							
+				</ul>
+			</div>
+			
+		</fieldset>	
+
+		<fieldset class="holder right">		
+			<div class="entry full-width has-sortable">
+				<h3 class="center_align" translate>
+					ASSIGNED_ROOMS
+				</h3>						
+				<ul class="boxes col3 short-list sortable ui-sortable" 					
+					
+					data-drop="true" 
+					style="overflow-y: scroll !important;" 
+
+					jqyoui-droppable="{multiple:true}" 
+					data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms">
+
+					<li class="non-assigned-room" 
+						ng-repeat="room in assignedRooms"
+
+						data-drag = "true"
+						jqyoui-draggable ="{index: {{$index}}, animate:true, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+
+						data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
+
+						ng-click = "unAssignedRoomSelected($event, $index)"
+						ng-class = '{selected: selectedUnAssignedRoomIndex === $index}'>
+
+						{{room.room_number}}
+
+						<span class="icons icon-handle"></span>
+					</li>
+							
+				</ul>
+			</div>
+			
+		</fieldset>	
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()" translate>
 				CANCEL

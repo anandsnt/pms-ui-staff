@@ -3,8 +3,22 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	$scope.floorListData = {};
-	
+
+	/**
+	* set of initial settings
+	*/
+	var initializeMe = function() {
+		$scope.floorListData = {};
+
+		//list of unassigned rooms
+		$scope.unassignedRooms = [];
+
+		//list of assigned rooms
+		$scope.assignedRooms = [];	
+
+		//To list room types
+		$scope.listFloorTypes(); 
+	};	
 
    /*
     * To fetch list of room types
@@ -37,8 +51,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		};
 	   $scope.invokeApi(ADFloorSetupSrv.fetch, {} , successCallbackFetch);	
 	};
-	//To list room types
-	$scope.listFloorTypes(); 
+
    /*
     * To render edit room types screen
     * @param {index} index of selected room type
@@ -92,6 +105,28 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     	$scope.invokeApi(ADFloorSetupSrv.updateFloor, params , successCallbackSave);
     };
 
+   /**
+   * successcallback of fetchAllUnAssignedRoom APi call
+   * will set unassignrooms with what we got  from API
+   */
+   var successCallBackOfFetchAllUnAssignedRoom = function(data) {
+   		$scope.unassignedRooms = data.rooms;
+   };
+
+   /**
+   * To fetch list of all unassigned room
+   */
+   var fetchAllUnAssignedRoom = function() {   		
+   		var params 	= {
+   			query: 	''
+   		};   		
+		var options = {
+    		params: 			params,
+    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom      		
+	    }
+	    $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);		
+   };
+
     /*
    * To delete a floor
    */
@@ -108,7 +143,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     	};
     	$scope.invokeApi(ADFloorSetupSrv.deleteFloor, data , successCallbackSave);
     };
-	 /*
+	/*
     * To add new floor
     * 
     */		
@@ -117,10 +152,16 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		$scope.isAddMode = $scope.isAddMode ? false : true;
 		//reset data
 		$scope.floorListData = {
-				"floor_number":"",
-				"description":"",
-				"floortitle":""
-			};	
+			"floor_number":"",
+			"description":"",
+			"floortitle":""
+		};	
+		//resetting the list unassigned rooms
+		$scope.unassignedRooms = [];
+
+		//fetching the list of unassigned rooms
+		fetchAllUnAssignedRoom();
+
 		$timeout(function() {
             $location.hash('new-form-holder');
             $anchorScroll();
@@ -142,18 +183,14 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
  			 return (n < 10)? '0' + n :'' + n;
 	}
 
-	$scope.floors = [];
-	for(i=0;i<100;i++){
-		var floorData = {"value":addZeros(i),"name":addZeros(i)};
-		$scope.floors.push(floorData);
-	};
-
 	$scope.validate = function(){
 		if ($scope.floorListData.floor_number == "" || typeof $scope.floorListData.floor_number == "undefined" || $scope.floorListData.description == " ") 
 			return false;
 		else
 			return true;
 	};
+
+	initializeMe();	
 
 }]);
 
