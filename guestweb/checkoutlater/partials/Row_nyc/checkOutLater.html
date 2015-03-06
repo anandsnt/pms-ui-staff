@@ -1,14 +1,13 @@
-<div class="jumbotron" id="check-in-out">
-	<div class="container backgroundbg">
-		<div class="black-bg">&nbsp;</div>
-		<div class="container-fluid">
-			<div class="row headerrow">
+<div class="jumbotron">
+	<div class="container backgroundbg width-100">
+		<div class="container-fluid eden_logo_bg">
+			<div class="row headerrow black-bg">
 				<div class="header">
 					<div class="container">
 						<div class="row pos-relative">
 							<div class="backbtn" ng-show="showBackButtonImage">
 								<a ui-sref="checkOutOptions" class="with-back-btn">
-									<img src="/assets/img/Nikko/backbtn.png">
+									<img src="/assets/img/backbtn.png">
 									<span class="checkout-later-back-button">back</span>
 								</a>
 							</div>
@@ -22,31 +21,30 @@
 		</div>
 		<!-- show posting message -->
 		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-			<p class="msg-head">Your request is being processed.</p>
-			<p class="msg-body">This may take a few seconds..... please wait!</p>
+			<p class="msg-head black-text">Your request is being processed.</p>
+			<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
 		</div>
 
 		<!-- show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+			<p class="msg-head black-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+			<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
 		</div>
 
 		<!-- contentarea starts here-->
-		<div class="container" ng-hide="isFetching || netWorkError">
+		<div class="container container-top-padding" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 			<div class="row check-inout-wrapper late-options">
 				<div class="col-md-6 headtext centeralign extra-head-pad" ng-show="optionsAvailable">
-					Select your new <br/>check-out time:
+					<span class="black-text">Select your new<br/>check-out time:</span>
 				</div>
 
 				<!-- checkoubtn section starts here-->
-				<div class="col-md-6 no-padding margin-top-20 now-later-options" ng-show="optionsAvailable">
+				<div class="col-md-6 no-padding now-later-options top-margin" ng-show="optionsAvailable">
 					<div class="row">
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
-
-							
+						
 							<div class="rel-wrapper">
 
 								 <a ng-click="gotToNextStep(charge.amount,charge.id)"></a> 
@@ -71,18 +69,15 @@
 									<span class="amount" ng-show="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:0}}</span>
 								</div>
 							</div>
-							</div>
-
 						</div>
 					</div>
-					<div class="row no-thanks-wrap">
-						<p class="centeralign no-thanks" ng-show="optionsAvailable">
-							<a class="no-thanks-text" ui-sref="checkOutOptions">No, thank you.</a>
-						</p>
-				</div>
 				</div>
 
-				
+				<div class="row no-thanks-wrap">
+					<p class="centeralign no-thanks grey-text" ng-show="optionsAvailable">
+						<a ui-sref="checkOutOptions" class="no-thanks-text">no, thanks</a>
+					</p>
+				</div>
 			</div>
 
 		</div>
