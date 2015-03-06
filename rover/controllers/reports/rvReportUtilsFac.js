@@ -410,6 +410,19 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
+        // to process the report group by
+        factory.processGroupBy = function ( reportItem ) {
+            if ( reportItem['group_fields'] && reportItem['group_fields'].length ) {
+                // adding custom name ref
+                reportItem['groupByOptions'] = reportItem['group_fields'];
+            };
+        };
+
+
+
+
+
+
         // to process the report sort by
         factory.processSortBy = function ( reportItem ) {
 

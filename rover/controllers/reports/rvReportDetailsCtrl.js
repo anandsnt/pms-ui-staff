@@ -314,7 +314,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.parsedApiFor = $scope.chosenReport.title;
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 
-			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.$parent.results, $scope.parsedApiFor) );
+			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.$parent.results, $scope.parsedApiFor, $scope.chosenReport.chosenGroupBy) );
 		};
 
 

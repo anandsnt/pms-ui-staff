@@ -11,8 +11,8 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        factory.parseAPI = function ( apiResponse, reportName ) {
-            if ( /*reportUtils.getName('RESERVATIONS_BY_USER') &&*/ false ) {
+        factory.parseAPI = function ( apiResponse, reportName, isGroupedBy ) {
+            if ( isGroupedBy ) {
                 return $_parseDataToSubArrays( apiResponse, reportName );
             } else {
                 return $_parseDataToInfo( apiResponse, reportName );
@@ -29,7 +29,8 @@ sntRover.factory('RVReportParserFac', [
                     name == reportUtils.getName('IN_HOUSE_GUEST') ||
                     name == reportUtils.getName('CANCELLATION_NO_SHOW') ||
                     name == reportUtils.getName('DEPARTURE') ||
-                    name == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY')) ? true : false;
+                    name == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
+                    name == reportUtils.getName('RESERVATIONS_BY_USER')) ? true : false;
         };
 
 
@@ -169,11 +170,12 @@ sntRover.factory('RVReportParserFac', [
             * tables on the UI
             **/
 
-            var endArray        = [];
-            var interMedArray   = [];
-            var groupByKey      = apiResponse[0]['group_by'];
-            var currentGroupVal = '';
-            var makeCopy        = {};
+            var returnObj         = {};
+            var interMedArray     = [];
+            var groupByKey        = 'guest_name';
+            var currentGroupByVal = '';
+            var makeCopy          = {};
+            var eachKey           = '';
 
             // loop through the api response
             for (i = 0, j = apiResponse.length; i < j; i++) {
@@ -183,12 +185,14 @@ sntRover.factory('RVReportParserFac', [
 
                 // if the group by key value has changed
                 if ( makeCopy[groupByKey] != currentGroupByVal ) {
-                    currentGroupByVal = makeCopy[groupByKey];
 
-                    // insert the intermediate array to the end array
+                    // insert the intermediate array to the returnObj
                     if ( interMedArray.length ) {
-                        endArray.push( angular.copy(interMedArray) );
+                        returnObj[currentGroupByVal] = angular.copy(interMedArray);
                     };
+
+                    // save the new value
+                    currentGroupByVal = makeCopy[groupByKey];
 
                     // init a new intermediate array and start filling from that
                     interMedArray = [];
@@ -201,11 +205,13 @@ sntRover.factory('RVReportParserFac', [
                 };
             };
 
-            for (i = 0, j = endArray.length; i < j; i++) {
-                endArray[i] = angular.copy( $_parseDataToInfo(endArray[i], reportName) );
-            }
+            _.each(returnObj, function (value, key, list) {
+                returnObj[key] = angular.copy( $_parseDataToInfo(value, reportName) );
+            });
 
-            return endArray;
+            console.log( returnObj );
+
+            return returnObj;
         };
 
 

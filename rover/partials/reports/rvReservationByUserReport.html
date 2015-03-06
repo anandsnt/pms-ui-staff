@@ -1,42 +1,59 @@
-<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}" ngrepeatend>
-	<td ng-if="each.isReport"> <!-- Add "rowspan="2" if showing company/travel-agent/group or packages -->
-	    <span class="data status">{{ each.transaction_type }}</span>
-	</td>
-	<td ng-if="each.isReport" class="name">
-		<strong class="title">{{ each.guest_name }}</strong>
-		<span class="data">{{ each.reservation_no }}</span>
-		<span ng-if="each.no_of_nights">&#8226; <span class="data">{{ each.no_of_nights }} nights</span></span>
-		<span ng-if="each.is_vip">&#8226; <span class="data vip">VIP</span></span>
-	</td>
-	<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_hours}">
-		<span class="guest-status check-in">check-in</span>
-		<time>
-			<span>{{ each.arrival_date | date : dateFormat }}</span>
-			<span>{{ each.arrival_time }}</span>
-		</time>
-		<div ng-if="each.total_hours" class="hours">{{ each.total_hours }}</div>
-		<div ng-if="each.guarantee_type" class="data guarantee">{{ each.guarantee_type }} Hold</div>
-	</td>
-	<td ng-if="each.isReport">
-		<span class="data room">{{ each.room_type }}</span>
-		<span class="data rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
-		<span ng-if="true" class="data status">{{ currencySymbol }}{{ each.rate_adjustment }} Adjusted</span>
-	</td>
-	<td>
-        <span class="data status">{{ each.create_date | date : dateFormat }}</span>
-        <span class="data status">{{ each.create_user }}</span>
-    </td>
+<!-- Report content - results.length -->
+<div ng-hide="true" class="report-content no-content">
+	<div class="info">
+		<span class="icon-no-content icon-reports"></span>
+		<strong class="h1">No reports found</strong>
+		<span class="h2">Try changing search criteria or modify dates</span>
+	</div>
+</div>
 
-	<!-- Left blank intentionally -->
-	<td ng-if="!each.isReport"></td>
 
-	<!-- guest data - company, travel agent & group name -->
-	<td ng-if="each.isGuestData" class="secondary guest-info" colspan="">
-		<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
-		<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
-		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
-	</td>
-	<td ng-if="each.isGuestData" class="secondary" colspan="2">
-		<span ng-repeat="name in each.addOns">{{ name }}</span>
-	</td>
-</tr>
+<div id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
+	<div class="wrapper">
+
+		<div ng-repeat="(key, resultItem) in results">
+			<h2>{{ key }}</h2>
+			<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport }">
+				<!-- Reports table header -->
+				<thead ng-if="!!headers.length">
+					<tr>
+						<!-- <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}" ng-class="{ 'align-right' : $first }">{{ item.value }}</th> -->
+						<!-- Fix for CICO-10246  -->
+						<th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}">{{ item.value }}</th>
+					</tr>
+					<tr class="bottom-row" ng-if="subHeaders">
+						<th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
+					</tr>
+				</thead>
+
+				<!-- GUEST REPORTS: Reports sort by header -->
+				<thead>
+					<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+						"sorting-asc" when ASC sorting
+						"sorting-desc" when DESC sorting -->
+					<tr>
+						<th ng-repeat="item in subHeaders track by $index">
+								<span ng-class="{'sort' : !!chosenReport.sortByOptions[$index],
+													'sorting-asc'  : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === true,
+													'sorting-desc' : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === false
+												}" ng-click="sortResultBy(chosenReport.sortByOptions[$index])">{{ item }}</span>
+						</th>
+					</tr>
+				</thead>
+
+				<!-- Reports table footer -->
+				<tfoot ng-if="$last" ng-include="'/assets/partials/reports/rvReportDetailsFooter.html'"></tfoot>
+
+				<!-- Reports table content -->
+				<tbody ng-include="'/assets/partials/reports/rvReservationByUserReportRow.html'"></tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
+		<!-- removed buttons since they include +300ms delay on touch pads -->
+		<label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
+		<label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
+		<p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
+</div>

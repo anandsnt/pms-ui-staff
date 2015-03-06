@@ -78,7 +78,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_11: false,
 			item_12: false,
 			item_13: false,
-			item_14: false
+			item_14: false,
+			item_15: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -617,6 +618,13 @@ sntRover.controller('RVReportsMainCtrl', [
 				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean') {
 					params['sort_dir'] = _chosenSortBy.sortDir;
 				}
+			};
+
+			// include group bys
+			if (chosenReport.groupByOptions) {
+				if (!!chosenReport.groupByOptions && chosenReport.chosenGroupBy != 'BLANK') {
+					params['group_fields'] = chosenReport.chosenGroupBy;
+				};
 			};
 
 			// include notes

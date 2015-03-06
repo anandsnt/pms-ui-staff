@@ -369,13 +369,28 @@
 
 
 
+        <!-- item_14: Group by -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.groupByOptions" ng-class="{'active': filterItemsToggle.item_14}" ng-click="toggleFilterItems('item_14')">
+            <span class="title">Group by</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.groupByOptions" ng-class="{'hidden': !filterItemsToggle.item_14}">
+            <div class="select">
+                <select name="" id="" ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in item.groupByOptions">
+                </select>
+            </div>
+        </div>
 
-        <!-- item_14: Market(s) -->
+
+
+
+
+
+        <!-- item_15: Market(s) -->
         <!-- CICO-10202 Report & Summary Markets filter -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasMarketsList" ng-class="{'active': filterItemsToggle.item_14}" ng-click="toggleFilterItems('item_14')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasMarketsList" ng-class="{'active': filterItemsToggle.item_15}" ng-click="toggleFilterItems('item_15')">
             <span class="title">Market(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasMarketsList" ng-class="{'hidden': !filterItemsToggle.item_14}">
+        <div class="settings-content" ng-if="chosenReport.hasMarketsList" ng-class="{'hidden': !filterItemsToggle.item_15}">
             <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
                 <label class="checkbox" ng-show="reportsState.markets.length > 1">
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.allMarketsSelected}"></span>

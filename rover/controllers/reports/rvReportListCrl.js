@@ -56,6 +56,9 @@ sntRover.controller('RVReportListCrl', [
                 // to reorder & map the sort_by to report details columns - for this report
                 reportUtils.reOrderSortBy( reportList[i] );
 
+                // to process the group_by for this report
+                reportUtils.processGroupBy( reportList[i] );
+
                 // to assign inital date values for this report
                 reportUtils.initDateValues( reportList[i] );
 

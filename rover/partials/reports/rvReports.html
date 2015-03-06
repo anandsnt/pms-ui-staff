@@ -67,6 +67,27 @@
                                 <div ng-controller="rvOccupancyRevenueReportCtrl" ng-include="'/assets/partials/reports/rvOccupancyRevenueReport.html'"></div>
                         </section>
 
+                        <section ng-if="chosenReport.title =='Reservations By User'">
+                                <div ng-show="results" class="report-header">
+                                        <div class="actions">
+                                                <div class="select" ng-if="HIDE_THIS_FEATURE">
+                                                        <select name="" id="">
+                                                                <option value="pdf">Save/E-mail as PDF</option>
+                                                                <option value="word">Save/E-mail as Word</option>
+                                                                <option value="excel">Save/E-mail as Excel</option>
+                                                        </select>
+                                                </div>
+                                                <button class="button with-icon only-icon blue" button="button" ng-click="emailReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span>
+                                                </button>
+                                                <button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
+                                                </button>
+                                                <button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span>
+                                                </button>
+                                        </div>
+                                </div>
+                                <div ng-include="'/assets/partials/reports/rvReservationByUserReport.html'"></div>
+                        </section>
+
                         <section ng-if="chosenReport.title !='Booking Source & Market Report' && chosenReport.title !='Occupancy & Revenue Summary'">
                                 <div ng-show="results.length" class="report-header">
                                         <ul ng-include="'/assets/partials/reports/summaryCounts.html'" class="totals"></ul>
