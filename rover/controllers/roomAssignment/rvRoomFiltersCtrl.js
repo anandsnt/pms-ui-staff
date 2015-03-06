@@ -12,25 +12,20 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 	* Listener to set the room filters when loaded
 	*/
 	$scope.$on('roomFeaturesLoaded', function(event, data){
-			$scope.roomFeatures = data;
-			console.log("roomfeatreload");
-			console.log($scope.roomFeatures);
+			$scope.roomFeatures = data;			
 	});
 	/**
 	* function to handle the filter selection
 	*/
 	$scope.selectedFloorChanged = function(){	
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
-			console.log($scope.roomFeatures);	
-					
 			var floorFilterdata ={
 				"isNoFloorSelected":$scope.data.isNoFloorSelected,
 				"selectedFloorId":$scope.data.selectedFloor
 			}
 			$scope.$parent.applyFloorFilter(floorFilterdata);			
 	}	
-	$scope.setSelectionForFeature = function(group, feature){
-			console.log(!$scope.roomFeatures[group].multiple_allowed);
+	$scope.setSelectionForFeature = function(group, feature){			
 			if(!$scope.roomFeatures[group].multiple_allowed){
 				for(var i = 0; i < $scope.roomFeatures[group].items.length; i++){
 					if(feature != i){

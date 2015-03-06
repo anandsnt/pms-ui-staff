@@ -437,10 +437,7 @@ sntRover.controller('RVroomAssignmentController',[
 	/**
 	* function to prepare the filtered room list
 	*/
-	$scope.applyFilterToRooms = function(){
-		console.log("applyFilterToRooms");
-		console.log($scope.selectedFiltersList);
-		console.log($scope.roomFeatures);
+	$scope.applyFilterToRooms = function(){		
 		$scope.filteredRooms = [];
 		var roomsWithInitialFilters = $scope.getRoomsWithInitialFilters();
 		for(var i = 0; i < roomsWithInitialFilters.length; i++){
@@ -578,9 +575,7 @@ sntRover.controller('RVroomAssignmentController',[
 	/**
 	* function to prepare the array of selected filters' ids
 	*/
-	$scope.setSelectedFiltersList = function(){
-		console.log("setSelectedFiltersList");
-		console.log($scope.roomFeatures);
+	$scope.setSelectedFiltersList = function(){		
 		$scope.selectedFiltersList = [];
 		for(var i = 0; i < $scope.roomFeatures.length; i++){
 			for(var j = 0; j < $scope.roomFeatures[i].items.length; j++){
@@ -617,7 +612,6 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.roomFeatures = roomPreferences.room_features;
 		$scope.rooms = roomsList.rooms;
 		$scope.floors = roomPreferences.floors.floor_details;
-		console.log($scope.floors);
 		$scope.addPredefinedFilters();
 		$scope.setSelectedFiltersList();
 		$scope.reservation_occupancy = roomsList.reservation_occupancy;

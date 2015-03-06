@@ -11,7 +11,7 @@
                                     Show All Floors
                                 </label>
                                 <div ng-class="{'select':true, 'hidden':data.isNoFloorSelected}">       
-  			<select ng-model="data.selectedFloor" ng-change='selectedFloorChanged($index)' class="placeholder">
+  			<select ng-model="data.selectedFloor" ng-change='selectedFloorChanged()' class="placeholder">
         	<option ng-repeat="floor in floor_details" value="{{floor.id}}" >{{floor.description}}</option>
       		</select>
 
