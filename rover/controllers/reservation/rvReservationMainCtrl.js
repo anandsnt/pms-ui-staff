@@ -1061,6 +1061,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.rooms[0].numChildren = arrivalDateDetails[0].children;
             $scope.reservationData.rooms[0].numInfants = arrivalDateDetails[0].infants;
 
+            if (reservationDetails.reservation_card.reservation_status == "CHECKEDIN") {
+                $scope.reservationData.inHouse = true;
+            }
+
             // Find if midstay or later
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
