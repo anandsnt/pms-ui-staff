@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams', '$timeout',
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams, $timeout) {
     $rootScope.isOWSErrorShowing = false;    
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -22,10 +22,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDrawer = function(event) {
       $scope.menuOpen = false;
     };
-	$scope.isAddToGuestCardEnabledDuringCheckin = false;
-	 $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
-	 	$scope.isAddToGuestCardEnabledDuringCheckin = value;
-	 });
+  $scope.isAddToGuestCardEnabledDuringCheckin = false;
+   $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
+    $scope.isAddToGuestCardEnabledDuringCheckin = value;
+   });
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
     //set current hotel details
@@ -663,6 +663,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDialog = function() {
       document.activeElement.blur();
       $scope.$emit('hideLoader');
+      
+      //to add stjepan's popup showing animation
+      $rootScope.modalOpened = false;
+
       setTimeout(function() {
         ngDialog.close();
         window.scrollTo(0, 0);
@@ -699,10 +703,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
-	
-	//CICO-13582 Display a timeout error message, without try again button.
-	//We are using the same message as that of OWS timeout as of now.
-	//Keeping the two popup separate since the message may change in future.
+  
+  //CICO-13582 Display a timeout error message, without try again button.
+  //We are using the same message as that of OWS timeout as of now.
+  //Keeping the two popup separate since the message may change in future.
     $rootScope.showTimeoutError = function() {
       // Hide loading message
       $scope.$emit('hideLoader');
@@ -726,6 +730,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
+      //to add stjepan's popup showing animation
+      $rootScope.modalOpened = false;
+      $timeout(function() {
+        $rootScope.modalOpened = true;
+      }, 300);  
+
       LastngDialogId = $dialog.attr('id');
     });
 

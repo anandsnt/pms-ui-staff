@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog">
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
    <div>
 		<form ng-cloak method="post" id="edit-rate" name="edit-rate" class="modal-content form modify-rate">
 		    <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
@@ -40,6 +40,10 @@
 		                    </tr>		                    
 		                </tbody>
 		            </table>
+		            <div class="entry full-width" ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false' || pastDay(date)">
+		                <label for="adjustment-reason">Adjustment reason(<span>optional</span>)</label>
+		                <textarea id="adjustment-reason" placeholder="Rate Adjusted because ...." rows="2" ng-model="adjustment_reason"/>
+            		</div>
 		        </div>
 		    </div>   
 

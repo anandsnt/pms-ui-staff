@@ -1,0 +1,89 @@
+<section id="load-listing" class="content content-holder current" style="opacity: 1;">
+    <header class="content-title float">
+        <h2 translate>PERMISSIONS</h2>
+        <a class="action back ng-scope" ng-click="goBackToPreviousState()" translate>BACK</a>
+    </header>
+
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <!-- Roles permissions navigation -->
+        <div id="permissions" class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all" data-tabs="details-tabs">
+            <div class="entry has-sortable locked">
+            <ul id="roles-menu" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist" ng-model='UserRoles'>
+                <li ng-repeat="role in userRoles" ng-click="selectUserRole($event, $index)" ng-class="{'ui-tabs-active':selectedUserRole.index ==$index }"role="tab" tabindex="0" aria-controls="hotel-admin" aria-labelledby="ui-id-10" aria-selected="true" ><a class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-10"> {{role.name}}</a></li>                           
+            </ul>
+            </div>
+            <form class="form float ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" role="tabpanel" aria-expanded="true" aria-hidden="false">
+                <fieldset class="holder full-width">
+                    <div class="entry has-sortable locked col3-with-button">
+                        <h3 translate>ASSIGNED_PERMISSIONS</h3>
+                        <ul id="assigned-roles" 
+                                data-placeholder="{{ 'PERMISSIONS_PLACEHOLDER1' | translate }}"
+
+                                data-jqyoui-options="{accept:'.unassigned-user-roles'}"
+                                
+                                class="boxes sortable empty short-list1" data-drop="true" 
+                                ng-model='assignedPermissions' 
+
+                                jqyoui-droppable="{multiple:true}" 
+
+                                style="overflow-y: scroll !important;" data-type="target">
+
+                                    <li ng-repeat="assignedPermission in assignedPermissions" 
+                                    class="assigned-user-roles li-draggable"
+
+                                    data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                                    ng-model="assignedPermissions" 
+
+                                    jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
+                                    ng-hide="!assignedPermission.name" 
+
+                                    ng-class="{selected: selectedAssignedPermission == $index, justDropped: justDropped == $index}" 
+
+                                    ng-click="selectAssignedPermission($event, $index)">
+
+                                        <span class="icons icon-handle"></span>
+                                        <span class="icons icon-handle"></span>
+                                        {{assignedPermission.name}}
+                                    </li>
+                                <span class="placeholder ui-state-disabled"  ng-show="assignedPermissions.length == 0" translate>PERMISSIONS_PLACEHOLDER1</span>
+                        </ul>
+                    </div>
+                    <div class="entry movers">
+                            <span data-type="target" class="icons icon-mover-right to-target" ng-click="leftToRight()" ng-class="{active: selectedAssignedPermission!=-1}" translate>ASSIGN_ROLES</span>
+                            <span data-type="source" class="icons icon-mover-left to-source" ng-click="rightToleft()" ng-class="{active: selectedUnassignedPermission!=-1}" translate>UNASSIGN_ROLES</span>
+                    </div>
+                    <div class="entry has-sortable locked col3-with-button">
+                        <h3 class="inactive" translate>NOT_ASSIGNED_PERMISSIONS</h3>
+                        <ul data-placeholder="{{ 'PERMISSIONS_PLACEHOLDER2' | translate }}"
+
+                        class="boxes sortable short-list1"  style="overflow-y: scroll !important;" 
+                        data-drop="true" ng-model='unAssignedPermissions' 
+
+                        data-jqyoui-options="{accept:'.assigned-user-roles'}"
+                        jqyoui-droppable="{multiple:true }" data-type="source">
+                                
+                            <li ng-repeat="unAssignedpPrmission in unAssignedPermissions" 
+                            class="unassigned-user-roles li-draggable"
+                            data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" 
+
+                            ng-model="unAssignedPermissions" 
+
+                            jqyoui-draggable="{index: {{$index}}, placeholder:false,animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
+
+                            ng-class="{selected: selectedUnassignedPermission == $index}" 
+                            ng-click="selectUnAssignedPermission($event, $index)">
+                                <span class="icons icon-handle"></span>
+                                <span class="icons icon-handle"></span>
+                                {{unAssignedpPrmission.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </fieldset>
+            </form>
+           
+        </div>
+
+    </section>
+
+</section>

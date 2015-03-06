@@ -188,6 +188,14 @@ table {
 
             .hotel,
             .user { font-size: 10pt; }
+
+            .user .date {
+                display: none;
+            }
+
+            .date {
+                .hide;
+            }
         }
 
         .logo {
@@ -1241,13 +1249,30 @@ table {
                     text-transform: uppercase;
                     line-height: 40px;
                     margin: 0;
+                    overflow: hidden;
+                    padding: 10px 43px 0 10px;
 
-                    &.payment {
-                        padding-left: -webkit-calc(~"90% - 130px");
-                        padding-left: -moz-calc(~"90% - 130px");
-                        padding-left: calc(~"90% - 130px");
+                    .payment {
+                        padding-left: 0;
+                        float: right;
+                        width: 49.5%;
+                        text-align: right;
 
                         span { margin-left: 20px; }
+                    }
+
+                    .filters-applied {
+                        display: block;
+                        float: left;
+                        width: 49.5%;
+
+                        span {
+                            display: block;
+                        }
+
+                        label {
+                            color: #9d9d9d;
+                        }
                     }
                 }
 
