@@ -8,7 +8,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 	* set of initial settings
 	*/
 	var initializeMe = function() {
-		$scope.floorListData = {};
+		$scope.floorData = {};
 
 		//list of unassigned rooms
 		$scope.unassignedRooms = [];
@@ -60,9 +60,18 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 	$scope.editFloor = function(index, id)	{
 		
 		$scope.currentClickedElement = index;
-	 	$scope.floorListData = $scope.orderedData[index]; 
-	 	$scope.floorListData.floortitle = $scope.floorListData.description ;
-	 	$scope.floorListData.floor_number_old = $scope.floorListData.floor_number ;
+	 	$scope.floorData = $scope.orderedData[index]; 
+		
+		//getting all unassinged rooms
+		$scope.unassignedRooms = [];
+		fetchAllUnAssignedRoom();
+
+		//resetting the list unassigned rooms
+		$scope.assignedRooms = [];
+
+		//fetching the list of assigned rooms
+		var floorID = $scope.floorData.id;
+		getFloorDetails(floorID);	 	
 	};
    
    /*
@@ -82,8 +91,8 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
    */
    $scope.saveFloor = function(){
 		
-		var unwantedKeys = [];
-		var params = dclone($scope.floorListData, unwantedKeys);
+		var unwantedKeys = ['rooms'];
+		var params = dclone($scope.floorData, unwantedKeys);
 		
 	
 		 
@@ -95,15 +104,44 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     			$scope.tableParams.reload();
     			$scope.isAddMode = false;
     		}else{
-    			$scope.orderedData[parseInt($scope.currentClickedElement)].description = $scope.floorListData.description;
-    			$scope.orderedData[parseInt($scope.currentClickedElement)].floor_number = $scope.floorListData.floor_number;
+    			$scope.orderedData[parseInt($scope.currentClickedElement)].description = $scope.floorData.description;
+    			$scope.orderedData[parseInt($scope.currentClickedElement)].floor_number = $scope.floorData.floor_number;
     			$scope.tableParams.reload();
     			$scope.currentClickedElement = -1;
     		}		
     		
     	};
+
+    	//appending the room ids in list
+    	params.room_ids = _.pluck($scope.assignedRooms, 'id');
+
     	$scope.invokeApi(ADFloorSetupSrv.updateFloor, params , successCallbackSave);
     };
+
+   /**
+   * successcallback of getFloorDetails APi call
+   * will set assignrooms with what we got  from API
+   */
+   var successCallBackOfGetAssignedRoomAgainstFloor = function(data) {
+   		$scope.assignedRooms = data.rooms;
+	 	
+	 	$scope.floorData.floortitle = data.description ;
+	 	$scope.floorData.floor_number_old = data.floor_number ;
+   };
+
+   /**
+   * To fetch list of all unassigned room
+   */
+   var getFloorDetails = function(floorID) {   		
+   		var params 	= {
+   			floorID: 	floorID
+   		};   		
+		var options = {
+    		params: 			params,
+    		successCallBack: 	successCallBackOfGetAssignedRoomAgainstFloor     		
+	    }
+	    $scope.callAPI(ADFloorSetupSrv.getFloorDetails, options);		
+   };
 
    /**
    * successcallback of fetchAllUnAssignedRoom APi call
@@ -116,7 +154,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
    /**
    * To fetch list of all unassigned room
    */
-   var fetchAllUnAssignedRoom = function() {   		
+   var fetchAllUnAssignedRoom = function(floorID) {   		
    		var params 	= {
    			query: 	''
    		};   		
@@ -127,7 +165,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 	    $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);		
    };
 
-    /*
+   /*
    * To delete a floor
    */
    $scope.deleteFloor = function(index){
@@ -151,14 +189,18 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		$scope.currentClickedElement = -1;
 		$scope.isAddMode = $scope.isAddMode ? false : true;
 		//reset data
-		$scope.floorListData = {
+		$scope.floorData = {
 			"floor_number":"",
 			"description":"",
-			"floortitle":""
+			"floortitle":"",
+
 		};	
 		//resetting the list unassigned rooms
 		$scope.unassignedRooms = [];
-
+		
+		//resetting the list unassigned rooms
+		$scope.assignedRooms = [];
+		
 		//fetching the list of unassigned rooms
 		fetchAllUnAssignedRoom();
 
@@ -172,8 +214,8 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     * To handle click event
     */	
 	$scope.clickCancel = function(){
-		$scope.floorListData.description = $scope.floorListData.floortitle;
-		$scope.floorListData.floor_number = $scope.floorListData.floor_number_old;
+		$scope.floorData.description = $scope.floorData.floortitle;
+		$scope.floorData.floor_number = $scope.floorData.floor_number_old;
 		if($scope.isAddMode)
 			$scope.isAddMode =false;
 		else
@@ -184,7 +226,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 	}
 
 	$scope.validate = function(){
-		if ($scope.floorListData.floor_number == "" || typeof $scope.floorListData.floor_number == "undefined" || $scope.floorListData.description == " ") 
+		if ($scope.floorData.floor_number == "" || typeof $scope.floorData.floor_number == "undefined" || $scope.floorData.description == " ") 
 			return false;
 		else
 			return true;

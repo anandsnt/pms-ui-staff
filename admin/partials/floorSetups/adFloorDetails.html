@@ -1,21 +1,21 @@
 <div class="data-holder">
 	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
 		<div class="form-title">
-			<h3 ng-show="!isAddMode"><span translate>EDIT</span> {{floorListData.floortitle}} </h3>
+			<h3 ng-show="!isAddMode"><span translate>EDIT</span> {{floorData.floortitle}} </h3>
 			<h3 ng-show="isAddMode"><span translate>ADD</span> </h3>
 			<em class="status"> <span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong> <span translate>MANDATORY_FIELDS_MESSAGE2</span> </em>
 		</div>
 		
 		<fieldset class="holder left float">
 			
-			<ad-textbox value="floorListData.floor_number" name = "floor-number" id = "floor-number" label = "Floor No" placeholder = "Enter Floor No" required = "yes" maxlength=10></ad-textbox>
+			<ad-textbox value="floorData.floor_number" name = "floor-number" id = "floor-number" label = "Floor No" placeholder = "Enter Floor No" required = "yes" maxlength=10></ad-textbox>
 
 			<!-- <ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_FLOOR' | translate }}"label="{{ 'FLOOR_NO' | translate }}" sel-class='placeholder'  list='floors' required='yes' selected-Id='floorListData.floor_number'></ad-dropdown> -->
 			
 		</fieldset>
 		<fieldset class="holder right float">
 			
-            <ad-textbox styleclass="full-width" value="floorListData.description" name = "room-type-name" id = "room-type-name" label = "{{ 'FLOOR_DESCRIPTION' | translate }}" placeholder = "Enter Description" ></ad-textbox>
+            <ad-textbox styleclass="full-width" value="floorData.description" name = "room-type-name" id = "room-type-name" label = "{{ 'FLOOR_DESCRIPTION' | translate }}" placeholder = "Enter Description" ></ad-textbox>
 		</fieldset> 
 
 		<div class="form-title">
@@ -26,8 +26,8 @@
 			<em class="status"> <span translate>ASSIGN_ROOMS_TO_THIS_FLOOR</span></em>
 		</div>
 		
-		<fieldset class="holder left">			
-			<div class="entry full-width has-sortable">
+		<fieldset class="holder left">	
+			<div class="entry full-width has-sortable" style="width: auto;">
 				<h3 class="center_align" translate>
 					UNASSIGNED_ROOMS
 				</h3>				
@@ -43,8 +43,9 @@
 						ng-repeat="room in unassignedRooms"
 
 						data-drag = "true"
-						jqyoui-draggable ="{index: {{$index}}, animate:true, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+						jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
 
+						ng-model="unassignedRooms"
 						data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
 
 						ng-click = "unAssignedRoomSelected($event, $index)"
@@ -61,10 +62,11 @@
 		</fieldset>	
 
 		<fieldset class="holder right">		
-			<div class="entry full-width has-sortable">
+			<div class="entry full-width has-sortable" style="width: auto;">
 				<h3 class="center_align" translate>
 					ASSIGNED_ROOMS
-				</h3>						
+				</h3>
+					
 				<ul class="boxes col3 short-list sortable ui-sortable" 					
 					
 					data-drop="true" 
@@ -73,14 +75,14 @@
 					jqyoui-droppable="{multiple:true}" 
 					data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms">
 
-					<li class="non-assigned-room" 
+					<li class="assigned-rooms" 
 						ng-repeat="room in assignedRooms"
 
 						data-drag = "true"
-						jqyoui-draggable ="{index: {{$index}}, animate:true, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+						jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
 
 						data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
-
+						ng-model="assignedRooms"
 						ng-click = "unAssignedRoomSelected($event, $index)"
 						ng-class = '{selected: selectedUnAssignedRoomIndex === $index}'>
 
