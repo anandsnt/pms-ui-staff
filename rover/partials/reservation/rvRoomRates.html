@@ -56,7 +56,8 @@
                             <span class="recommended" ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" ng-show="displayData.roomTypes.length > 0 &&     $index > 0 && upsell > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell|number:0}}&nbsp;{{'RESV_MORE'|translate}}</span>
                         </div>
                         <div class="book-rate" ng-class="{hidden: isVisibleRoom}">
-                            <h4 translate>RESV_BEST_RATE</h4>
+                            <h4 ng-hide="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_BEST_RATE</h4>
+                            <h4 ng-show="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_COR_RATE</h4>
                             <div class="price" ng-if="!roomAvailability[room.id].isSuppressed">
                                 {{currencySymbol}}{{roomAvailability[room.id].averagePerNight  | number: 0}}<span translate>RESV_AVG_NIGHT</span>
                             </div>
@@ -73,6 +74,7 @@
                         <li ng-repeat="rate in roomAvailability[room.id].rates"> 
                             <a class="has-arrow toggle" ng-class="{active: isActive}" ng-init="isActive=false;" ng-click="isActive = !isActive ; refreshScroll()">
                                 <h3>{{displayData.allRates[rate].name}}</h3>
+                                <span ng-show="isCorRate(roomAvailability[room.id].defaultRate)">COR</span>
                                 <div class="price" ng-if="!displayData.allRates[rate].is_suppress_rate_on">
                                     {{currencySymbol}}{{roomAvailability[room.id].total[rate].average | number: 0}}
                                     <span translate>RESV_AVG_NIGHT</span>
@@ -144,6 +146,7 @@
                 <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.preferredType" ng-hide="$index > 1 && showLessRates"> <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
                     <div class="data">
                         <h2>{{rate.rate.name}}</h2>
+                        <span ng-if="rate.rate.account_id">COR</span>
                     </div>
                     <div class="book-rate">
                         <div class="select" ng-click="$event.stopPropagation()">
