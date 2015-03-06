@@ -145,9 +145,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 rateDetails: [], // This array would hold the configuration information of rates selected for each room
                 isRoomRateSuppressed: false, // This variable will hold flag to check whether any of the room rates is suppressed?
                 reservation_card: {},
-                number_of_infants:0,
-                number_of_adults:0,
-                number_of_children:0                
+                number_of_infants: 0,
+                number_of_adults: 0,
+                number_of_children: 0
 
             };
 
@@ -503,7 +503,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                      */
                     var taxCalculated = 0;
                     if (taxData.amount_symbol == '%' && parseFloat(taxData.amount) != 0.0) {
-                        taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * taxOnAmount));
+                        if (isInclusive) {
+                            taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / (100 + parseFloat(taxData.amount))) * taxOnAmount));
+                        } else {
+                            taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * taxOnAmount));
+                        }
                     } else {
                         taxCalculated = parseFloat(multiplicity * parseFloat(taxData.amount));
                     }
@@ -1712,7 +1716,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                     });
-                    
+
                     // CICO-13748 : Added depositAmountWithoutFilter to handle PAY DEPOSIT LATER or PAY NOW buttons.
                     $scope.reservationData.depositAmountWithoutFilter = totalDeposit;
 
@@ -1878,7 +1882,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
-              
+
             }
         };
 
