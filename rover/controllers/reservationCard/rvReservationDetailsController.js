@@ -632,6 +632,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}, onValidationSuccess, onValidationFaliure);
 		}
 
+		$scope.moveToRoomRates = function() {
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+				to_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),				
+				fromState: $state.current.name,
+				company_id: $scope.$parent.reservationData.company.id,
+				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+			});
+		}
+
 		$scope.changeStayDates = function() {
 			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
 			var newDepartureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
@@ -646,7 +656,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				} else {
 					//go to take information from the new_stay_dates coming from the API response				
 
-					var newDateDetails = _.where(modifiedStayDays,{reservation_date:currentDate})[0];
+					var newDateDetails = _.where(modifiedStayDays, {
+						reservation_date: currentDate
+					})[0];
 
 					newStayDates[currentDate] = {
 						guests: {

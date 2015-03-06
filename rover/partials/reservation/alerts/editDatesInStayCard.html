@@ -52,7 +52,7 @@
         <section ng-if="!ngDialogData.is_rate_available">
             <span class="notice error">Rate / Room Type not available for selected dates</span>
             <div class="actions">
-                <button type="button" class="button blue">Rooms &amp; Rates</button>
+                <button type="button" class="button blue" ng-click="moveToRoomRates();">Rooms &amp; Rates</button>
                 <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
             </div>
         </section>
