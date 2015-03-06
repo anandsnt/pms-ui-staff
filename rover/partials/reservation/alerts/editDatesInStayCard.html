@@ -3,7 +3,6 @@
         <!-- Add class "success" for Scenario 1 -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog();"><span class="icons icon-close invert"></span>
         </button>
-
         <!-- Scenario 1: Room, Room Type, Rate & House is available  -->
         <section ng-if="ngDialogData.is_rate_available">
             <strong class="h2 message">Stay Dates change possible</strong>
@@ -34,7 +33,7 @@
             </div>
 
             <div class="actions">
-                <button type="button" class="button green">Confirm</button>
+                <button type="button" class="button green" ng-click="changeStayDates();">Confirm</button>
                 <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
             </div>
         </section>
