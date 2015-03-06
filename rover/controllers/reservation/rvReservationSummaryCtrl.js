@@ -1161,10 +1161,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					last_name: ''
 				}]
 			})
+			refreshScrolls();
 		}
 
 		$scope.clearGuests = function(room) {
 			room.accompanying_guest_details = null;
+			refreshScrolls();
 		}
 
 		$scope.init();
