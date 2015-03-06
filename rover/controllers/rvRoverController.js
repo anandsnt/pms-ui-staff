@@ -22,10 +22,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDrawer = function(event) {
       $scope.menuOpen = false;
     };
-	$scope.isAddToGuestCardEnabledDuringCheckin = false;
-	 $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
-	 	$scope.isAddToGuestCardEnabledDuringCheckin = value;
-	 });
+  $scope.isAddToGuestCardEnabledDuringCheckin = false;
+   $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
+    $scope.isAddToGuestCardEnabledDuringCheckin = value;
+   });
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
     //set current hotel details
@@ -703,10 +703,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
-	
-	//CICO-13582 Display a timeout error message, without try again button.
-	//We are using the same message as that of OWS timeout as of now.
-	//Keeping the two popup separate since the message may change in future.
+  
+  //CICO-13582 Display a timeout error message, without try again button.
+  //We are using the same message as that of OWS timeout as of now.
+  //Keeping the two popup separate since the message may change in future.
     $rootScope.showTimeoutError = function() {
       // Hide loading message
       $scope.$emit('hideLoader');
