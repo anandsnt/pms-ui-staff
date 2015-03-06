@@ -107,6 +107,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var updateBackButton = function() {
 				$scope.confirmationMailsSent = true;
+				var paramsArray = [];
 				var rooms = angular.copy($scope.reservationData.rooms);
 				_.each(rooms, function(room, index) {
 					var validGuests = [];
@@ -121,7 +122,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 							validGuests.push(guest);
 						}
 					});
-					$scope.reservationData.rooms[index].accompanying_guest_details = validGuests;
+					paramsArray.push(validGuests);
 				})
 
 				var onupdateSuccess = function() {
@@ -143,7 +144,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 				_.each($scope.reservationData.rooms, function(room, index) {
 					$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
-						accompanying_guests_details: room.accompanying_guest_details,
+						accompanying_guests_details: paramsArray[index],
 						reservation_id: $scope.reservationData.reservationIds[index],
 					}, onupdateSuccess, onUpdateFailure);
 				})
