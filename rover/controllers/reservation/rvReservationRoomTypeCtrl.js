@@ -199,13 +199,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$scope.stateCheck.suppressedRates.push(d.id);
 				}
 			});
-
+			
 			$scope.displayData.allRates = rates;
 
 			$scope.reservationData.ratesMeta = rates;
 
 			$scope.roomAvailability = $scope.getAvailability(roomRates);
-
 			//Filter for rooms which are available and have rate information
 			$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
 				return $scope.roomAvailability[this.id] && $scope.roomAvailability[this.id].availability == true &&
@@ -246,7 +245,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//$scope.displayData.allRooms = roomRates.room_types;
 			$scope.displayData.roomTypes = $scope.displayData.allRooms;
-
 			//TODO: Handle the selected roomtype from the previous screen
 			$scope.stateCheck.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomTypeId;
 			//$scope.preferredType = 5;
@@ -254,6 +252,19 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.filterRooms();
 			$scope.$emit('hideLoader');
 		};
+
+		$scope.isCorRate = function(id){
+			console.log(id);
+			var rateFlag=false;
+			$(roomRates.rates).each(function(i, d) {
+				if(d.id==id){
+					if (d.account_id) {
+						rateFlag = true;
+					}
+				}
+			});
+			return rateFlag;
+		}
 
 		var selectRoomAndRate = function() {
 			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
