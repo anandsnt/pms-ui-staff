@@ -15,7 +15,7 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 			$scope.roomFeatures = data;			
 	});
 	/**
-	* function to handle the filter selection
+	* function to handle the floor filter selection Explictily.
 	*/
 	$scope.selectedFloorChanged = function(){	
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
@@ -25,7 +25,11 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 			}
 			$scope.$parent.applyFloorFilter(floorFilterdata);			
 	}	
-	$scope.setSelectionForFeature = function(group, feature){			
+	/**
+	* function to handle the filter selection
+	*/
+	$scope.setSelectionForFeature = function(group, feature){
+			console.log(!$scope.roomFeatures[group].multiple_allowed);
 			if(!$scope.roomFeatures[group].multiple_allowed){
 				for(var i = 0; i < $scope.roomFeatures[group].items.length; i++){
 					if(feature != i){

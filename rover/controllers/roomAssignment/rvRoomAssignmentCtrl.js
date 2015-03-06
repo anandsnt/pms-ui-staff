@@ -575,7 +575,7 @@ sntRover.controller('RVroomAssignmentController',[
 	/**
 	* function to prepare the array of selected filters' ids
 	*/
-	$scope.setSelectedFiltersList = function(){		
+	$scope.setSelectedFiltersList = function(){
 		$scope.selectedFiltersList = [];
 		for(var i = 0; i < $scope.roomFeatures.length; i++){
 			for(var j = 0; j < $scope.roomFeatures[i].items.length; j++){
@@ -627,13 +627,16 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 	$scope.init();
 	/**
-	* function to determine whether to show unassignroom
+	* function to handle floor filter.
 	*/
 	$scope.applyFloorFilter = function(floorFilterData){
 		$scope.floorFilterData =floorFilterData;
 		$scope.setSelectedFiltersList();
 		$scope.applyFilterToRooms();		
 	}
+	/**
+	* function to determine whether to show unassignroom
+	*/
 	$scope.showUnAssignRoom = function() {
 		var r_data = $scope.reservationData.reservation_card;
 		return (r_data.reservation_status.indexOf(['CHECKING_IN', 'RESERVED']) && 
