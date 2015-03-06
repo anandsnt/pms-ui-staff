@@ -6,7 +6,8 @@ sntRover.controller('RVReportDetailsCtrl', [
     '$window',
     'RVreportsSrv',
 	'RVReportUtilsFac',
-	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils) {
+	'RVReportParserFac',
+	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -78,6 +79,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DEPARTURE'):
 				case reportUtils.getName('ARRIVAL'):
 				case reportUtils.getName('DEPOSIT_REPORT'):
+				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					break;
@@ -135,6 +137,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('IN_HOUSE_GUEST'):
 				case reportUtils.getName('DEPOSIT_REPORT'):
 				case reportUtils.getName('CANCELLATION_NO_SHOW'):
+				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
@@ -309,7 +312,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
-			$scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
+			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
+
+			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.$parent.results, $scope.parsedApiFor) );
 		};
 
 
@@ -602,145 +607,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
-
-
-
-
-
-
-		// parse API to template helpers
-		// since API response and Template Design are
-		// trying to F*(|< each others A$/
-		function $_parseApiToTemplate (apiResponse) {
-			var _retResult = [];
-
-			var itemCopy   = {};
-			var customData = [];
-			var guestData  = {};
-			var noteData   = {};
-			var cancelData = {};
-
-			var i = j = 0;
-
-			var checkGuest = function(item) {
-				var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
-				var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
-
-				return guests || compTravelGrp ? true : false;
-			};
-
-			var checkNote = function(item) {
-				return !!item['notes'] && !!item['notes'].length;
-			};
-
-			var excludeReports = function(names) {
-				return !!_.find(names, function(n) {
-					return n == $scope.parsedApiFor;
-				});
-			};
-
-			var checkCancel = function(item) {
-				return excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]) ? !!item['cancel_reason'] : false;
-			};
-
-			var checkActivityReport = function(name) {
-				return name == 'Login and out Activity' ? true : false;
-			};
-
-			if ( $scope.parsedApiFor == reportUtils.getName('ARRIVAL') ||
-					$scope.parsedApiFor == reportUtils.getName('IN_HOUSE_GUEST') ||
-					$scope.parsedApiFor == reportUtils.getName('CANCELLATION_NO_SHOW') ||
-					$scope.parsedApiFor == reportUtils.getName('DEPARTURE') ||
-					$scope.parsedApiFor == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
-					$scope.parsedApiFor == reportUtils.getName('RESERVATIONS_BY_USER')) {
-
-				for (i = 0, j = apiResponse.length; i < j; i++) {
-					itemCopy   = angular.copy( apiResponse[i] );
-					customData = [];
-					guestData  = {};
-					noteData   = {};
-					cancelData = {};
-
-					if ( checkGuest(itemCopy) ) {
-						guestData = {
-							isGuestData : true,
-							guestNames  : angular.copy( itemCopy['accompanying_names'] ),
-
-							company_name      : itemCopy.company_name,
-							travel_agent_name : itemCopy.travel_agent_name,
-							group_name        : itemCopy.group_name,
-
-							addOns : angular.copy( itemCopy['add_ons'] )
-						};
-						customData.push( guestData );
-					};
-
-					if ( checkCancel(itemCopy) ) {
-						cancelData = {
-							isCancelData : true,
-							reason       : angular.copy( itemCopy['cancel_reason'] )
-						};
-						customData.push( cancelData );
-					};
-
-					if ( checkNote(itemCopy) ) {
-						noteData = {
-							isNoteData : true,
-							notes      : angular.copy( itemCopy['notes'] )
-						};
-						customData.push( noteData );
-					};
-
-
-
-					// IF: we found custom items
-						// set row span for the parent tr a rowspan
-						// mark the class that must be added to the last tr
-					// ELSE: since this tr won't have any childs, mark the class that must be added to the last tr
-					if ( !!customData.length ) {
-						itemCopy.rowspan = customData.length + 1;
-						customData[customData.length - 1]['trCls'] = 'row-break';
-					} else {
-						itemCopy.trCls = 'row-break';
-					};
-
-					// do this only after the above code that adds
-					// 'row-break' class to the row
-					if ( checkActivityReport($scope.parsedApiFor) ) {
-						if ( itemCopy.hasOwnProperty('action_type') && itemCopy['action_type'] == 'INVALID_LOGIN' ) {
-							itemCopy['action_type'] = 'INVALID LOGIN';
-							itemCopy.trCls = 'row-break invalid';
-						};
-
-						if ( itemCopy.hasOwnProperty('date') ) {
-							itemCopy['uiDate'] = itemCopy['date'].split( ', ' )[0];
-							itemCopy['uiTime'] = itemCopy['date'].split( ', ' )[1];
-						};
-					};
-
-
-					// push 'itemCopy' into '_retResult'
-					itemCopy.isReport = true;
-					_retResult.push( itemCopy );
-
-					// push each item in 'customData' in to '_retResult'
-					for (m = 0, n = customData.length; m < n; m++) {
-						_retResult.push( customData[m] );
-					};
-				}
-
-
-				// dont remove yet
-				console.log( 'API reponse changed as follows: ');
-				console.log( _retResult );
-
-			} else {
-				_retResult = apiResponse;
-			};
-
-			return _retResult;
-		};
-
 
     }
 ]);
