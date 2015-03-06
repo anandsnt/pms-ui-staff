@@ -116,8 +116,6 @@ sntRover.factory('RVReportUtilsFac', [
         // add required flags this report
         factory.applyFlags = function ( reportItem ) {
 
-            // by
-
             switch ( reportItem['title'] ) {
                 case __reportNames['ARRIVAL']:
                     reportItem['hasDateLimit'] = false;
@@ -198,12 +196,12 @@ sntRover.factory('RVReportUtilsFac', [
 
                     // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                     // rather than the default 'Date Range'
-                    if ( reportItem['title'] == 'Cancellation & No Show' ) {
+                    if ( reportItem['title'] == __reportNames['CANCELLATION_NO_SHOW'] ) {
                         reportItem['hasDateFilter']['description'] = 'Arrival Date Range';
                     };
 
                     // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                    if ( reportItem['title'] == 'Booking Source & Market Report' ) {
+                    if ( reportItem['title'] == __reportNames['BOOKING_SOURCE_MARKET_REPORT'] ) {
                         reportItem['hasDateFilter']['description'] = 'Booked Date';
                     };
                 };
