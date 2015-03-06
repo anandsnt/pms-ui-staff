@@ -7,7 +7,8 @@ sntRover.controller('RVReportsMainCtrl', [
 	'activeUserList',
 	'guaranteeTypes',
 	'$timeout',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes,$timeout) {
+	'RVReportUtilsFac',
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes,$timeout, reportUtils) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -77,6 +78,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_11: false,
 			item_12: false,
 			item_13: false,
+			item_14: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -137,6 +139,26 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
+
+
+		var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+			dateParts    = businessDate.match(/(\d+)/g),
+			year  = parseInt( dateParts[0] ),
+			month = parseInt( dateParts[1] ) - 1,
+			date  = parseInt( dateParts[2] ),
+			dbObj = new Date(year, month, date);
+		$scope.dateChanged = function (item, dateName) {
+			if ( item.title == 'Arrival' ) {
+				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
+					item.chosenDueInArrivals = false;
+				}
+			};
+			if ( item.title == 'Departure' ) {
+				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
+					item.chosenDueOutDepartures = false;
+				}
+			}
+		};
 
 		// CICO-10202
 		$scope.reportsState = {
@@ -223,7 +245,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				// both sets are filled.
 				// TODO: in future we may have a single set rather than a pair
 				if ( !_.isEmpty(setOne) && !_.isEmpty(setTwo) ) {
-					if ( item.title == 'Booking Source & Market Report' ) {
+					if ( item.title == reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT') ) {
 						sourceReportHandler( item, angular.copy(setOne), angular.copy(setTwo) )
 					} else {
 						defaultHandler( item, angular.copy(setOne), angular.copy(setTwo) );
@@ -248,7 +270,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// only do this for this report
 			// I know this is ugly :(
-			if (chosenReport.title !== 'Check In / Check Out') {
+			if (chosenReport.title !== reportUtils.getName('CHECK_IN_CHECK_OUT')) {
 				return;
 			};
 
@@ -287,7 +309,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenIncludeDepositDue',
 			'chosenIncludeDepositPastDue',
 			'chosenDueInArrivals',
-			'chosenDueOutDepartures'
+			'chosenDueOutDepartures',
+			'chosenIncludeNew',
+			'chosenIncludeBoth'
 		];
 
 		var hasList = [
@@ -307,7 +331,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeDepositDue',
 			'hasIncludeDepositPastDue',
 			'hasDueInArrivals',
-			'hasDueOutDepartures'
+			'hasDueOutDepartures',
+			'hasIncludeNew',
+			'hasIncludeBoth'
 		];
 
 		var closeAllMultiSelects = function() {
@@ -338,7 +364,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			e.stopPropagation();
 			item.fauxSelectOpen = item.fauxSelectOpen ? false : true;
 
-			//$scope.fauxOptionClicked(e, item);
+			$scope.fauxOptionClicked(e, item);
 		};
 
 		// specific for Source and Markets reports
@@ -391,11 +417,11 @@ sntRover.controller('RVReportsMainCtrl', [
 				return;
 			};
 			e.stopPropagation();
-			
+
 		};
 
 		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
-			if(allMarkets){				
+			if(allMarkets){
 				_.each($scope.reportsState.markets, function(market){
 					market.selected = !!item.allMarketsSelected;
 				});
@@ -415,9 +441,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			}
 			// CICO-10202
-			
 			$scope.$emit('report.filter.change');
-
 		}
 
 		$scope.fauxGuaranteeOptionClicked = function(item) {
@@ -428,7 +452,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (selectedData.length == 0) {
 				item.guaranteeTitle = "Select";
 			} else if (selectedData.length == 1) {
-				item.guaranteeTitle = selectedData[0].name;	
+				item.guaranteeTitle = selectedData[0].name;
 			} else if (selectedData.length > 1) {
 				item.guaranteeTitle = selectedData.length + " Selected";
 			}
@@ -466,7 +490,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.fauxOptionClicked = function(e, item) {
-			e.stopPropagation();
+			e && e.stopPropagation();
 
 			var selectCount = 0,
 				maxCount = 0,
@@ -511,6 +535,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			// CICO-10202
 			$scope.$emit('report.filter.change');
 		};
+
 
 		$scope.showFauxSelect = function(item) {
 			if (!item) {
@@ -568,7 +593,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['to_time'] = chosenReport.untilTime || '';
 			};
 
-			// include CICO filter 
+			// include CICO filter
 			if (!!chosenReport.hasCicoFilter) {
 				params['checked_in'] = getProperCICOVal('checked_in');
 				params['checked_out'] = getProperCICOVal('checked_out');
