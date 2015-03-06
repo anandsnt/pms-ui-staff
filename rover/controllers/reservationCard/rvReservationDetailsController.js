@@ -603,18 +603,20 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
+		$scope.responseValidation = {};
+
 		$scope.editStayDates = function() {
 			// reservation_id, arrival_date, departure_date
-			var onValidationSuccess = function(data) {
-					// console.log("onValidationSuccess", data);
+			var onValidationSuccess = function(response) {
+					$scope.responseValidation = response.data;
 					ngDialog.open({
 						template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
 						className: '',
 						scope: $scope,
 						data: JSON.stringify({
-							is_assigned_room_available: data.data.is_assigned_room_available,
-							is_rate_available: data.data.is_rate_available,
-							is_stay_cost_changed: data.data.is_stay_cost_changed
+							is_stay_cost_changed: response.data.is_stay_cost_changed,
+							is_assigned_room_available: response.data.is_room_available,
+							is_rate_available: response.data.is_room_type_available
 						})
 					});
 					$scope.$emit('hideLoader');
@@ -625,9 +627,57 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				}
 			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
 				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), $rootScope.dateFormat),
-				departure_date: $filter('date')(tzIndependentDate($scope.editStore.departure), $rootScope.dateFormat),
+				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), $rootScope.dateFormat),
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
+		}
+
+		$scope.changeStayDates = function() {
+			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
+			var newDepartureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
+			var existingStayDays = $scope.reservationParentData.rooms[0].stayDates;
+			var modifiedStayDays = $scope.responseValidation.new_stay_dates;
+			var newStayDates = {};
+
+			for (var d = [], ms = new tzIndependentDate(newArrivalDate) * 1, last = new tzIndependentDate(newDepartureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+				var currentDate = $filter('date')(tzIndependentDate(ms), 'yyyy-MM-dd');
+				if (!!existingStayDays[currentDate]) {
+					newStayDates[currentDate] = existingStayDays[currentDate];
+				} else {
+					//go to take information from the new_stay_dates coming from the API response				
+
+					var newDateDetails = _.where(modifiedStayDays,{reservation_date:currentDate})[0];
+
+					newStayDates[currentDate] = {
+						guests: {
+							adults: newDateDetails.adults,
+							children: newDateDetails.children,
+							infants: newDateDetails.infants || 0
+						},
+						rate: {
+							id: newDateDetails.rate_id
+						},
+						rateDetails: {
+							actual_amount: newDateDetails.rate_amount,
+							modified_amount: newDateDetails.rate_amount
+						}
+					}
+
+				}
+			}
+
+			//change the reservationData model to have the newer values
+			$scope.reservationParentData.arrivalDate = newArrivalDate;
+			$scope.reservationParentData.departureDate = newDepartureDate;
+			$scope.reservationParentData.rooms[0].stayDates = newStayDates;
+
+			// console.log($scope.reservationParentData);
+			$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
+				"id": $stateParams.id,
+				"confirmationId": $stateParams.confirmationId,
+				"isrefresh": false
+			});
+			$scope.closeDialog();
 		}
 	}
 ]);
