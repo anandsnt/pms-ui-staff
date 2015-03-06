@@ -34,7 +34,12 @@ sntRover.controller('RVOutsidePostChargeController',
 			};
 
 			$scope.closeDialog = function(){
-  				ngDialog.close();
+				//to add stjepan's popup showing animation
+      			$rootScope.modalOpened = false;
+      			$timeout(function(){
+      				ngDialog.close();
+      			}, 200);
+  				
   			};
 			
 			var oldSearchGuestText = '';

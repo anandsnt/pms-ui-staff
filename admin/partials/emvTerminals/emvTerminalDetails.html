@@ -1,4 +1,4 @@
-<section class="content current" ng-click="clearErrorMessage()"><!-- Add new Item -->
+<section class="content current" ng-click="clearErrorMessage()">
 	<div id="add-new-item" data-view="ItemsDetailsView">
 		<header class="content-title float">
 			<h2 ng-show="mod == 'edit'">{{'EDIT' | translate}} <span>{{itemDetails.name}} </span></h2>
@@ -30,17 +30,17 @@
 				<fieldset class="holder left float">
 					<ad-textbox value="itemDetails.name" name = "item_desc" id = "item_desc" label = "{{'TERMINAL_NAME' |translate}}" placeholder = "{{'TERMINAL_NAME_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
 
-					<ad-textbox value="itemDetails.terminal_identifier" name = "unit_price" id = "unit_price" label = "{{'TERMINAL_ID' |translate}}" placeholder = "{{'TERMINAL_ID_PLACEHOLDER' |translate}}" required = "no" styleclass="full-width" ></ad-textbox>
+					<ad-textbox value="itemDetails.terminal_identifier" name = "unit_price" id = "unit_price" label = "{{'TERMINAL_ID' |translate}}" placeholder = "{{'TERMINAL_ID_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
 
 				</fieldset>
 				
-			<div class="actions float">
-				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
 
-				<button type="button" id="save" class="button green add-data-inline"  ng-click="saveItemDetails()" translate>SAVE_CHANGES</button>
+					<button type="button" id="save" class="button green add-data-inline"  ng-click="saveItemDetails()" translate>SAVE_CHANGES</button>
 
-			</div>
-		</form>
-	</section>
-</div>
+				</div>
+			</form>
+		</section>
+	</div>
 </section>
