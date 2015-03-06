@@ -23,10 +23,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
          * To setup departure time based on arrival time and hours selected
          *
          */
-
-        $scope.setDepartureHours = _.throttle($_setDepartureHours, 500, { leading: false });
-
-        function $_setDepartureHours () {
+        $scope.setDepartureHours = function () {
             // must not allow user to set hours less than 3
             var correctHours = function(value) {
                 $scope.reservationData.resHours = value;

@@ -1,22 +1,36 @@
-<div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl"  ui-jq="resizable" ui-options="resizableOptions" ng-click="clickedOnReservationSettings($event)" style="width: {{reservationSettingsWidth}}px;" ng-hide="hideSidebar">
-    <div class="scrollable"  ng-iscroll="reservation-settings" ng-iscroll-delay="500" >
-        <div class="wrapper" >
+<div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl" ui-jq="resizable" ui-options="resizableOptions" ng-click="clickedOnReservationSettings($event)" style="width: {{reservationSettingsWidth}}px;" ng-hide="hideSidebar">
+    <div class="scrollable" ng-iscroll="reservation-settings" ng-iscroll-delay="500">
+        <div class="wrapper">
             <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
-                <a class="settings-title toggle has-arrow active" >
+                <a class="settings-title toggle has-arrow active">
                     <span class="title" translate>NIGHTS</span>
                     <span class="value">{{reservationData.numNights}}</span>
                 </a>
                 <div id="sidebar-nights" class="settings-content">
-                    <a class="stay-dates" data-transition="nested-view" ng-class="{ disabled: isHourly}" ng-click="isHourly || stayDatesClicked()">
-                        <div class="check-in">
-                            <span class="title" >{{'ARRIVING_LABEL'|translate}} <span translate>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></span>
-                            <strong class="date">{{reservationData.arrivalDate|date:fullDateFullMonthYear}}</strong>
-                        </div>
-                        <div class="check-out">
-                            <span class="title" >{{'DEPARTING_LABEL'|translate}} <span translate>{{getSimplifiedDayName(reservationData.departureDate)}}</span></span>
-                            <strong class="date">{{reservationData.departureDate|date:fullDateFullMonthYear}}</strong>
-                        </div>
-                    </a>
+                    <label for="sidebar-check-in-date">
+                        <!-- {Arriving / Arrived} -->
+                        {{'ARRIVING_LABEL'|translate}}
+                        <!-- Arriving if in future, Arrived if in past -->
+                        <span translate>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span>
+                        <!-- Day name if arrival date is not today or tomorrow -->
+                    </label>
+                    <div class="entry-data arriving" ng-class="{'disabled-calendar': reservationData.inHouse}">
+                        <input ng-if="!reservationData.inHouse" ui-date="arrivalDateOptions" id="sidebar-check-in-date" name="check-in-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.arrivalDate" readonly ng-change="arrivalDateChanged()"/>
+                        <strong class="day">{{reservationData.arrivalDate|date:dayInMonth}}</strong>
+                        <span class="month">{{reservationData.arrivalDate|date:fullMonth}}</span>
+                        <span class="year">{{reservationData.arrivalDate|date:fullYear}}</span>
+                    </div>
+                    <label for="sidebar-check-out-date">
+                        {{'DEPARTING_LABEL'|translate}}
+                        <span translate>{{getSimplifiedDayName(reservationData.departureDate)}}</span></span>
+                        <!-- Day name if departure date is not today or tomorrow -->
+                    </label>
+                    <div class="entry-data departing" ng-class="{'disabled-calendar': reservationData.inHouse}">
+                        <input ng-if="!reservationData.inHouse" ui-date="departureDateOptions" name="check-out-date" id="sidebar-check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
+                        <strong class="day">{{reservationData.departureDate|date:dayInMonth}}</strong>
+                        <span class="month">{{reservationData.departureDate|date:fullMonth}}</span>
+                        <span class="year">{{reservationData.departureDate|date:fullYear}}</span>
+                    </div>
                 </div>
             </div>
             <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
@@ -24,10 +38,10 @@
                     <span class="title" translate>ROOMS_LABEL</span>
                     <span class="value">{{reservationData.roomCount}}</span>
                 </a>
-                <div id="sidebar-rooms" class="settings-content">                
+                <div id="sidebar-rooms" class="settings-content">
                     <div class="entry" ng-repeat="room in reservationData.rooms">
                         <label for="room-{{index+1}}-adults">{{'ROOM_LABEL'|translate}} {{$index+1}} </label>
-                         <span ng-show="room.varyingOccupancy" translate>VAR_OCCUPANCY</span>
+                        <span ng-show="room.varyingOccupancy" translate>VAR_OCCUPANCY</span>
                         <div class="select adults">
                             <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
                             <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults" ng-change="onOccupancyChange(room,'adult',$index)">
@@ -60,8 +74,8 @@
                                         <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 0}}</label>
                                         <label ng-if="room.isSuppressed">SR</label>
                                         <span translate>AVG_NIGHT</span>
-                                        <span class="total" ng-if="room.isSuppressed">SR</span>
-                                        <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 0}}</span>
+                                    <span class="total" ng-if="room.isSuppressed">SR</span>
+                                    <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 0}}</span>
                                     </span>
                                 </li>
                             </ul>
@@ -79,68 +93,60 @@
                     <div class="entry">
                         <label class="radio inline">
                             <span class="icon-form icon-radio checked"></span>
-                            <input name="codes" id="codes-none" type="radio" checked />
-                            {{'NONE_LABEL'|translate}}
+                            <input name="codes" id="codes-none" type="radio" checked /> {{'NONE_LABEL'|translate}}
                         </label>
                     </div>
                     <div class="entry">
                         <label class="radio inline" for="codes-promo-value">
                             <span class="icon-form icon-radio"></span>
-                            <input name="codes" id="codes-promo" type="radio" />
-                            {{'PROMOTION_CODE_LABEL'|translate}}
+                            <input name="codes" id="codes-promo" type="radio" /> {{'PROMOTION_CODE_LABEL'|translate}}
                         </label>
                         <input name="codes-promo-value" id="codes-promo-value" type="text" value="" translate/>
                     </div>
                     <div class="entry">
                         <label class="radio inline" for="codes-member-number-value">
                             <span class="icon-form icon-radio"></span>
-                            <input name="codes" id="codes-member-number" type="radio" translate/>
-                            {{'MEMBER_NUMBER_LABEL'|translate}}
+                            <input name="codes" id="codes-member-number" type="radio" translate/> {{'MEMBER_NUMBER_LABEL'|translate}}
                         </label>
                         <input name="codes-member-number-value" id="codes-member-number-value" type="text" value="" />
                     </div>
                     <div class="entry">
                         <label class="radio inline" for="codes-aaa-value">
                             <span class="icon-form icon-radio"></span>
-                            <input name="codes" id="codes-aaa" type="radio" translate/>
-                            {{'AAA_LABEL'|translate}}
+                            <input name="codes" id="codes-aaa" type="radio" translate/> {{'AAA_LABEL'|translate}}
                         </label>
                         <input name="codes-aaa-value" id="codes-aaa-value" type="text" value="" />
                     </div>
                     <div class="entry">
                         <label class="radio inline" for="codes-group-value">
                             <span class="icon-form icon-radio"></span>
-                            <input name="codes" id="codes-group" type="radio" translate/>
-                            {{'GROUP_LABEL'|translate}}
+                            <input name="codes" id="codes-group" type="radio" translate/> {{'GROUP_LABEL'|translate}}
                         </label>
                         <input name="codes-group-value" id="codes-group-value" type="text" value="" />
                     </div>
                     <div class="entry">
                         <label class="radio inline" for="codes-senior-value">
                             <span class="icon-form icon-radio"></span>
-                            <input name="codes" id="codes-senior" type="radio" translate/>
-                            {{'AARP_LABEL'|translate}}
+                            <input name="codes" id="codes-senior" type="radio" translate/> {{'AARP_LABEL'|translate}}
                         </label>
                         <input name="codes-senior-value" id="codes-senior-value" type="text" value="" />
                     </div>
                     <div class="entry">
                         <label class="radio inline" for="codes-gov-value">
                             <span class="icon-form icon-radio"></span>
-                            <input name="codes" id="codes-gov" type="radio" translate/>
-                            {{'GOVERNMENT_LABEL'|translate}}
+                            <input name="codes" id="codes-gov" type="radio" translate/> {{'GOVERNMENT_LABEL'|translate}}
                         </label>
                         <input name="codes-gov-value" id="codes-gov-value" type="text" value="" />
                     </div>
                     <div class="entry">
                         <label class="radio inline" for="codes-offers-value">
                             <span class="icon-form icon-radio"></span>
-                            <input name="codes" id="codes-offers" type="radio" translate/>
-                            {{'PROMOTIONS_OFFERS_LABEL'|translate}}
+                            <input name="codes" id="codes-offers" type="radio" translate/> {{'PROMOTIONS_OFFERS_LABEL'|translate}}
                         </label>
                         <input name="codes-offers-value" id="codes-offers-value" type="text" value="" />
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 </div>
