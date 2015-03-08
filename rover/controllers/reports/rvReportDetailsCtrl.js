@@ -330,40 +330,36 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// now flags that will determine correct template to be loaded
 			switch ( $scope.parsedApiFor ) {
 				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
-					$scope.hasReportTotals   = false;
-					$scope.showReportHeader  = $scope.$parent.results.market || $scope.$parent.results.source;
-					$scope.templateUrl       = '/assets/partials/reports/rvMarketSourceReport.html';
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = $scope.$parent.results.market || $scope.$parent.results.source;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSourceReport.html';
 					break;
 
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
-					$scope.hasReportTotals   = false;
-					$scope.showReportHeader  = !!$scope.$parent.results;
-					$scope.templateUrl   = '/assets/partials/reports/rvOccupancyRevenueReport.html';
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = !!$scope.$parent.results;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvOccupancyRevenueReport.html';
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					if ( /*check_has_groupby*/ true ) {
-						$scope.hasReportTotals   = true;
-						$scope.showReportHeader  = !!$scope.$parent.results;
-						$scope.templateUrl       = '/assets/partials/reports/rvReservationByUserReport.html';
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = !!$scope.$parent.results;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/rvReservationByUserReport.html';
 						break;
 					} else {
-						$scope.hasReportTotals   = tre;
-						$scope.showReportHeader  = !!$scope.$parent.results;
-						$scope.templateUrl       = '/assets/partials/reports/SOME_URL_TO_COME.html';
+						$scope.hasReportTotals    = tre;
+						$scope.showReportHeader   = !!$scope.$parent.results;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/SOME_URL_TO_COME.html';
 						break;
 					};
 
 				default:
-					$scope.hasReportTotals   = true;
-					$scope.showReportHeader  = !!$scope.$parent.results;
-					$scope.templateUrl       = '/assets/partials/reports/SOME_URL_TO_COME.html';
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = !!$scope.$parent.results;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/SOME_URL_TO_COME.html';
 					break;
 			};
-
-			console.log($scope.hasReportTotals);
-			console.log($scope.showReportHeader);
-			console.log($scope.templateUrl);
 		};
 
 
@@ -372,27 +368,27 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			switch ($scope.parsedApiFor) {
 				case reportUtils.getName('IN_HOUSE_GUEST'):
-					template = '/assets/partials/reports/rvInHouseReport.html';
+					template = '/assets/partials/reports/rvInHouseReportRow.html';
 					break;
 
 				case reportUtils.getName('DEPARTURE'):
-					template = '/assets/partials/reports/rvDepartureReport.html';
+					template = '/assets/partials/reports/rvDepartureReportRow.html';
 					break;
 
 				case reportUtils.getName('ARRIVAL'):
-					template = '/assets/partials/reports/rvArrivalReport.html';
+					template = '/assets/partials/reports/rvArrivalReportRow.html';
 					break;
 
 				case reportUtils.getName('CANCELLATION_NO_SHOW'):
-					template = '/assets/partials/reports/rvCancellationReport.html';
+					template = '/assets/partials/reports/rvCancellationReportRow.html';
 					break;
 
 				case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
-					template = '/assets/partials/reports/rvUserActivityReport.html';
+					template = '/assets/partials/reports/rvUserActivityReportRow.html';
 					break;
 
 				case reportUtils.getName('DEPOSIT_REPORT'):
-					template = '/assets/partials/reports/rvDepositReport.html';
+					template = '/assets/partials/reports/rvDepositReportRow.html';
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
@@ -400,7 +396,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				default:
-					template = '/assets/partials/reports/rvCommonReport.html';
+					template = '/assets/partials/reports/rvCommonReportRow.html';
 					break;
 			};
 
