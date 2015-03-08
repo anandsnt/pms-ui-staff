@@ -192,6 +192,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 			if ( $scope.chosenReport.title === reportUtils.getName('WEB_CHECK_IN_CONVERSION') || $scope.chosenReport.title === reportUtils.getName('WEB_CHECK_OUT_CONVERSION') ) {
 				$scope.firstHalf = $scope.firstHalf.slice( 0, 3 );
 				$scope.restHalf  = $scope.restHalf.slice( 3 );
+			} else if ( $scope.chosenReport.title === reportUtils.getName('CHECK_IN_CHECK_OUT') ) {
+				$scope.firstHalf = $scope.firstHalf.slice( 0, 5 );
+				$scope.restHalf  = $scope.restHalf.slice( 5 );
+				$scope.restHalf.reverse();
 			} else {
 				$scope.firstHalf = $scope.firstHalf.slice( 0, 4 );
 				$scope.restHalf  = $scope.restHalf.slice( 4 );
@@ -326,36 +330,40 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// now flags that will determine correct template to be loaded
 			switch ( $scope.parsedApiFor ) {
 				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
+					$scope.hasReportTotals   = false;
 					$scope.showReportHeader  = $scope.$parent.results.market || $scope.$parent.results.source;
-					$scope.withSubController = 'rvMarketSourceReportCtrl';
 					$scope.templateUrl       = '/assets/partials/reports/rvMarketSourceReport.html';
 					break;
 
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+					$scope.hasReportTotals   = false;
 					$scope.showReportHeader  = !!$scope.$parent.results;
-					$scope.withSubController = 'rvOccupancyRevenueReportCtrl';
-					$scope.templateUrl       = '/assets/partials/reports/rvOccupancyRevenueReport.html';
+					$scope.templateUrl   = '/assets/partials/reports/rvOccupancyRevenueReport.html';
 					break;
 
-				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					if ( /*check_has_groupby*/ true ) {
+						$scope.hasReportTotals   = true;
 						$scope.showReportHeader  = !!$scope.$parent.results;
-						$scope.withSubController = '';
 						$scope.templateUrl       = '/assets/partials/reports/rvReservationByUserReport.html';
 						break;
 					} else {
+						$scope.hasReportTotals   = tre;
 						$scope.showReportHeader  = !!$scope.$parent.results;
-						$scope.withSubController = '';
 						$scope.templateUrl       = '/assets/partials/reports/SOME_URL_TO_COME.html';
 						break;
 					};
 
 				default:
+					$scope.hasReportTotals   = true;
 					$scope.showReportHeader  = !!$scope.$parent.results;
-					$scope.withSubController = '';
 					$scope.templateUrl       = '/assets/partials/reports/SOME_URL_TO_COME.html';
 					break;
 			};
+
+			console.log($scope.hasReportTotals);
+			console.log($scope.showReportHeader);
+			console.log($scope.templateUrl);
 		};
 
 

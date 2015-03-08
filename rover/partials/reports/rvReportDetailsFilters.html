@@ -369,13 +369,14 @@
 
 
 
+
         <!-- item_14: Group by -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.groupByOptions" ng-class="{'active': filterItemsToggle.item_14}" ng-click="toggleFilterItems('item_14')">
             <span class="title">Group by</span>
         </a>
         <div class="settings-content" ng-if="chosenReport.groupByOptions" ng-class="{'hidden': !filterItemsToggle.item_14}">
             <div class="select">
-                <select name="" id="" ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions">
+                <select name="" id="" ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in item.groupByOptions">
                 </select>
             </div>
         </div>

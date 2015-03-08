@@ -116,6 +116,8 @@ sntRover.factory('RVReportUtilsFac', [
         // add required flags this report
         factory.applyFlags = function ( reportItem ) {
 
+            // by
+
             switch ( reportItem['title'] ) {
                 case __reportNames['ARRIVAL']:
                     reportItem['hasDateLimit'] = false;
@@ -196,12 +198,12 @@ sntRover.factory('RVReportUtilsFac', [
 
                     // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                     // rather than the default 'Date Range'
-                    if ( reportItem['title'] == __reportNames['CANCELLATION_NO_SHOW'] ) {
+                    if ( reportItem['title'] == 'Cancellation & No Show' ) {
                         reportItem['hasDateFilter']['description'] = 'Arrival Date Range';
                     };
 
                     // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                    if ( reportItem['title'] == __reportNames['BOOKING_SOURCE_MARKET_REPORT'] ) {
+                    if ( reportItem['title'] == 'Booking Source & Market Report' ) {
                         reportItem['hasDateFilter']['description'] = 'Booked Date';
                     };
                 };
@@ -409,7 +411,6 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-
         // to process the report group by
         factory.processGroupBy = function ( reportItem ) {
             if ( reportItem['group_fields'] && reportItem['group_fields'].length ) {
@@ -417,7 +418,6 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['groupByOptions'] = reportItem['group_fields'];
             };
         };
-
 
 
 
@@ -524,9 +524,6 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem.sortByOptions[4] = createdOn;
                 reportItem.sortByOptions[5] = guranteeType;
                 reportItem.sortByOptions[6] = overrideAmount;
-
-                // we dont need to show sort by username
-                // we have a seperate sort by user field
                 reportItem.sortByOptions[7] = null;
             };
         };
