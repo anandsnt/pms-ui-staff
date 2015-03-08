@@ -493,17 +493,38 @@ sntRover.factory('RVReportUtilsFac', [
             // for deposit report in the following order
             if ( reportItem['title'] == __reportNames['DEPOSIT_REPORT'] ) {
                 var reservationSortBy = angular.copy(reportItem.sortByOptions[4]),
-                    nameSortBy = angular.copy(reportItem.sortByOptions[3]),
-                    dateSortBy = angular.copy(reportItem.sortByOptions[0]),
-                    dueDateSortBy = angular.copy(reportItem.sortByOptions[1]),
-                    paidDateSortBy = angular.copy(reportItem.sortByOptions[2]);
+                    nameSortBy        = angular.copy(reportItem.sortByOptions[3]),
+                    dateSortBy        = angular.copy(reportItem.sortByOptions[0]),
+                    dueDateSortBy     = angular.copy(reportItem.sortByOptions[1]),
+                    paidDateSortBy    = angular.copy(reportItem.sortByOptions[2]);
 
-                    reportItem.sortByOptions[0] = reservationSortBy;
-                    reportItem.sortByOptions[1] = nameSortBy;
-                    reportItem.sortByOptions[2] = dateSortBy;
-                    reportItem.sortByOptions[3] = null;
-                    reportItem.sortByOptions[4] = dueDateSortBy;
-                    reportItem.sortByOptions[5] = paidDateSortBy;
+                reportItem.sortByOptions[0] = reservationSortBy;
+                reportItem.sortByOptions[1] = nameSortBy;
+                reportItem.sortByOptions[2] = dateSortBy;
+                reportItem.sortByOptions[3] = null;
+                reportItem.sortByOptions[4] = dueDateSortBy;
+                reportItem.sortByOptions[5] = paidDateSortBy;
+            };
+
+            // need to reorder the sort_by options
+            // for Reservation by User in the following order
+            if ( reportItem['title'] == __reportNames['RESERVATIONS_BY_USER'] ) {
+                var reservationType = angular.copy(reportItem.sortByOptions[6]),
+                    guestName       = angular.copy(reportItem.sortByOptions[3]),
+                    arrivalDate     = angular.copy(reportItem.sortByOptions[1]),
+                    rateAmount      = angular.copy(reportItem.sortByOptions[5]),
+                    createdOn       = angular.copy(reportItem.sortByOptions[0]),
+                    guranteeType    = angular.copy(reportItem.sortByOptions[2]),
+                    overrideAmount  = angular.copy(reportItem.sortByOptions[4]);
+
+                reportItem.sortByOptions[0] = reservationType;
+                reportItem.sortByOptions[1] = guestName;
+                reportItem.sortByOptions[2] = arrivalDate;
+                reportItem.sortByOptions[3] = rateAmount;
+                reportItem.sortByOptions[4] = createdOn;
+                reportItem.sortByOptions[5] = guranteeType;
+                reportItem.sortByOptions[6] = overrideAmount;
+                reportItem.sortByOptions[7] = null;
             };
         };
 
