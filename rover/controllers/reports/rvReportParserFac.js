@@ -12,7 +12,7 @@ sntRover.factory('RVReportParserFac', [
 
 
         factory.parseAPI = function ( apiResponse, reportName, isGroupedBy ) {
-            if ( isGroupedBy ) {
+            if ( !!isGroupedBy && isGroupedBy != 'BLANK' ) {
                 return $_parseDataToSubArrays( apiResponse, reportName );
             } else {
                 return $_parseDataToInfo( apiResponse, reportName );
@@ -149,7 +149,7 @@ sntRover.factory('RVReportParserFac', [
                 retResult = apiResponse;
 
                 // dont remove yet
-                // console.log( 'No API changes applied' );
+                console.log( 'No API changes applied' );
             };
 
 

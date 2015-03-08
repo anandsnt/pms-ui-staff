@@ -1,4 +1,4 @@
-<tr ng-repeat="each in resultItem track by $index" class="{{ each.trCls }}" ngrepeatend>
+<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}" ngrepeatend>
     <td ng-if="each.isReport"> <!-- Add "rowspan="2" if showing company/travel-agent/group or packages -->
         <span class="data status">{{ each.transaction_type }}</span>
     </td>

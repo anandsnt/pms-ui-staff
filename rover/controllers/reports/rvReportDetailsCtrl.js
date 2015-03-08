@@ -342,22 +342,22 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
-					if ( /*check_has_groupby*/ true ) {
+					if ( !!$scope.chosenReport.chosenGroupBy && $scope.chosenReport.chosenGroupBy != 'BLANK' ) {
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = !!$scope.$parent.results;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/rvReservationByUserReport.html';
 						break;
 					} else {
-						$scope.hasReportTotals    = tre;
+						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = !!$scope.$parent.results;
-						$scope.detailsTemplateUrl = '/assets/partials/reports/SOME_URL_TO_COME.html';
+						$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
 						break;
 					};
 
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = !!$scope.$parent.results;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/SOME_URL_TO_COME.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
 					break;
 			};
 		};
@@ -392,7 +392,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
-					template = '/assets/partials/reports/rvReservationByUserReport.html';
+					template = '/assets/partials/reports/rvReservationByUserReportRow.html';
 					break;
 
 				default:
