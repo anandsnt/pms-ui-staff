@@ -105,7 +105,7 @@
                 </ul>
             </div> 
         </div>
-        <form class="form payment-info scrollable" id="payment-info" name="payment_info" ng-iscroll='paymentInfo'>
+        <form class="form payment-info scrollable" id="payment-info" name="payment_info" ng-iscroll='paymentInfo' ng-hide="hideMakePayment()">
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
