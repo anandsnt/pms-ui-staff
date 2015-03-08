@@ -524,6 +524,9 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem.sortByOptions[4] = createdOn;
                 reportItem.sortByOptions[5] = guranteeType;
                 reportItem.sortByOptions[6] = overrideAmount;
+
+                // we dont need to show sort by username
+                // we have a seperate sort by user field
                 reportItem.sortByOptions[7] = null;
             };
         };

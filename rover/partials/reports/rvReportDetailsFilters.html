@@ -354,10 +354,10 @@
 
 
         <!-- item_13: Sort by -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.sortByOptions && headers.length" ng-class="{'active': filterItemsToggle.item_13}" ng-click="toggleFilterItems('item_13')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.sortByOptions && showSortBy" ng-class="{'active': filterItemsToggle.item_13}" ng-click="toggleFilterItems('item_13')">
             <span class="title">Sort by</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.sortByOptions && headers.length" ng-class="{'hidden': !filterItemsToggle.item_13}">
+        <div class="settings-content" ng-if="chosenReport.sortByOptions && showSortBy" ng-class="{'hidden': !filterItemsToggle.item_13}">
             <div class="select">
                 <select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
                     <option value="">Sort By</option>
@@ -375,7 +375,7 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.groupByOptions" ng-class="{'hidden': !filterItemsToggle.item_14}">
             <div class="select">
-                <select name="" id="" ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in item.groupByOptions">
+                <select name="" id="" ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions">
                 </select>
             </div>
         </div>

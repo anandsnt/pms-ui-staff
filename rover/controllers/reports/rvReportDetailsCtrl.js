@@ -73,27 +73,36 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isLogReport   = false;
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
+			$scope.showSortBy    = true;
+			$scope.hasPagination = true;
 
 			switch ( $scope.chosenReport.title ) {
 				case reportUtils.getName('IN_HOUSE_GUEST'):
 				case reportUtils.getName('DEPARTURE'):
 				case reportUtils.getName('ARRIVAL'):
 				case reportUtils.getName('DEPOSIT_REPORT'):
-				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
+					$scope.showSortBy = false;
 					break;
 
 				case reportUtils.getName('CANCELLATION_NO_SHOW'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.hasNoSorting = true;
+					$scope.showSortBy = false;
 					break;
 
 				case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.isLogReport = true;
+					$scope.showSortBy = false;
+					break;
+
+				case reportUtils.getName('RESERVATIONS_BY_USER'):
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
 					break;
 
 				case reportUtils.getName('UPSELL'):
@@ -102,7 +111,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
-					console.log($scope.chosenReport.chosenCico);
 					if ( $scope.chosenReport.chosenCico == 'IN' || $scope.chosenReport.chosenCico == 'OUT' ) {
 						$scope.hasNoTotals = true;
 					};
@@ -111,6 +119,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
 					$scope.isLargeReport = true;
+					break;
+
+				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
+					$scope.hasPagination = false;
+					break;
+
+				default:
 					break;
 			};
 
@@ -153,14 +168,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 2;
 					break;
 			};
-
-			// when should pagination
-			if ( $scope.chosenReport.title != reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT') ) {
-				$scope.hasPagination = true;
-			} else {
-				$scope.hasPagination = false;
-			}
-
 
 
 
@@ -215,9 +222,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			    if ( $scope.firstHalf[1] ) {
 			        $scope.firstHalf[1]['class'] = 'orange';
 
-			        // hack to add $ currency in front
+			        // hack to add ($) currency in front
 			        if ( $scope.chosenReport.title === reportUtils.getName('UPSELL') || $scope.chosenReport.title === reportUtils.getName('LATE_CHECK_OUT') ) {
-			            $scope.firstHalf[1]['value'] = '$' + $scope.firstHalf[1]['value'];
+			            $scope.firstHalf[1]['value'] = $rootScope.currencySymbol + $scope.firstHalf[1]['value'];
 			        };
 			    };
 
@@ -234,8 +241,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			    if ( $scope.chosenReport.title === reportUtils.getName('LATE_CHECK_OUT') ) {
 
-			        // hack to add curency $ symbol in front of values
-			        results[i][ results[i].length - 1 ] = '$' + results[i][ results[i].length - 1 ];
+			        // hack to add curency ($) symbol in front of values
+			        results[i][ results[i].length - 1 ] = $rootScope.currencySymbol + results[i][ results[i].length - 1 ];
 
 			        // hack to append ':00 PM' to time
 			        // thus makin the value in template 'X:00 PM'
@@ -244,9 +251,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			    if ( $scope.chosenReport.title === 'Upsell' ) {
 
-			        // hack to add curency $ symbol in front of values
-			        results[i][ results[i].length - 1 ] = '$' + results[i][ results[i].length - 1 ];
-			        results[i][ results[i].length - 2 ] = '$' + results[i][ results[i].length - 2 ];
+			        // hack to add curency ($) symbol in front of values
+			        results[i][ results[i].length - 1 ] = $rootScope.currencySymbol + results[i][ results[i].length - 1 ];
+			        results[i][ results[i].length - 2 ] = $rootScope.currencySymbol + results[i][ results[i].length - 2 ];
 			    };
 			};
 
@@ -313,8 +320,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
-
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.$parent.results, $scope.parsedApiFor, $scope.chosenReport.chosenGroupBy) );
+
+
+			// now flags that will determine correct template to be loaded
+			switch ($scope.parsedApiFor) {
+
+			}
 		};
 
 
