@@ -1,6 +1,35 @@
 
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv','RVPaymentSrv', 'RVSearchSrv',
-	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv,RVPaymentSrv,RVSearchSrv){
+sntRover.controller('RVbillCardController',
+	['$scope',
+	'$rootScope',
+	'$state',
+	'$stateParams',
+	'RVBillCardSrv',
+	'reservationBillData',
+	'RVReservationCardSrv', 
+	'RVChargeItems', 
+	'ngDialog',
+	'$filter',
+	'$window', 
+	'$timeout',
+	'chargeCodeData', 
+	'$sce', 
+	'RVKeyPopupSrv',
+	'RVPaymentSrv', 
+	'RVSearchSrv',
+	'rvPermissionSrv',
+	function($scope, $rootScope,
+			$state, $stateParams, 
+			RVBillCardSrv, reservationBillData,
+
+			RVReservationCardSrv, RVChargeItems, 
+			ngDialog, $filter, 
+
+			$window, $timeout,
+			chargeCodeData, $sce, 
+
+			RVKeyPopupSrv,RVPaymentSrv,
+			RVSearchSrv, rvPermissionSrv){
 
 
 	BaseCtrl.call(this, $scope);
@@ -96,6 +125,34 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	var isSmartBandKeyCreationAlongWithKeyCreationEnabled = function(){
 		return ($scope.reservationBillData.icare_enabled == "true" &&
 				$scope.reservationBillData.combined_key_room_charge_create == "true") ? "true": "false";
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Edit/Split/Move/Delete charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToChangeCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('EDIT_SPLITT_MOVE_DELETE_CHARGE');
+	};
+
+	/**
+	* function to decide whether to show Move Charge Drop Down
+	* @return {Boolean}
+	*/
+	$scope.showMoveChargeDropDown = function(){
+		return ($scope.hasPermissionToChangeCharges());
+	};
+
+	/**
+	* function to decide whether to show Edit charge button
+	* @param {String} - Fees type value
+	* @return {Boolean}
+	*/
+	$scope.showEditChargeButton = function(feesType){
+		return ($rootScope.isStandAlone && 
+				feesType!== 'TAX' && 
+				$scope.hasPermissionToChangeCharges());
 	};
 
 	// Refresh registration-content scroller.

@@ -222,7 +222,10 @@
 					</div>
 					<!-- we have to replicate code as option is not being hidden in devices -->
 					<div class="select selectBill" ng-show="isStandAlone">
-						<select iscroll-stop-propagation class="movetobill" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
+						<select iscroll-stop-propagation 
+						class="movetobill" 
+						ng-show="showMoveChargeDropDown()"
+						ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>							
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
 							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
@@ -230,7 +233,13 @@
 						</select>
 					</div>
 					</td>
-					<td class="edit"><a ng-show="isStandAlone" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="feesData.type.value != 'TAX'"> <span class="icons icon-pencil"></span> <span translate>EDIT</span> </a></td>
+					<td class="edit">
+						<a ng-show="showEditChargeButton(feesData.type.value)" 
+						class="button with-icon only-icon purple edit" 
+						ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)"> 
+							<span class="icons icon-pencil"></span> <span translate>EDIT</span> 
+						</a>
+					</td>
 				</tr>
 			</tbody>
 
