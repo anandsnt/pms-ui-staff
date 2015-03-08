@@ -28,6 +28,32 @@
         <div ng-controller="RVReportDetailsCtrl">
             <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
 
+
+
+            <section>
+                <div class="report-header" ng-show="showReportHeader">
+                    <div class="actions">
+                        <div class="select" ng-if="HIDE_THIS_FEATURE">
+                            <select name="" id="">
+                                <option value="pdf">Save/E-mail as PDF</option>
+                                <option value="word">Save/E-mail as Word</option>
+                                <option value="excel">Save/E-mail as Excel</option>
+                            </select>
+                        </div>
+                        <button class="button with-icon only-icon blue" button="button" ng-click="emailReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span>
+                        </button>
+                        <button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
+                        </button>
+                        <button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span>
+                        </button>
+                    </div>
+                </div>
+                <div ng-if="withSubController" ng-controller="withSubController" ng-include="templateUrl"></div>
+                <div ng-if="!withSubController" ng-include="templateUrl"></div>
+            </section>
+
+
+
             <section ng-if="chosenReport.title =='Booking Source & Market Report'">
                 <div ng-show="results.market || results.source" class="report-header">
                     <div class="actions">

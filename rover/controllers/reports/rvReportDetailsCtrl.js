@@ -324,9 +324,38 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 			// now flags that will determine correct template to be loaded
-			switch ($scope.parsedApiFor) {
+			switch ( $scope.parsedApiFor ) {
+				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
+					$scope.showReportHeader  = $scope.$parent.results.market || $scope.$parent.results.source;
+					$scope.withSubController = 'rvMarketSourceReportCtrl';
+					$scope.templateUrl       = '/assets/partials/reports/rvMarketSourceReport.html';
+					break;
 
-			}
+				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+					$scope.showReportHeader  = !!$scope.$parent.results;
+					$scope.withSubController = 'rvOccupancyRevenueReportCtrl';
+					$scope.templateUrl       = '/assets/partials/reports/rvOccupancyRevenueReport.html';
+					break;
+
+				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+					if ( /*check_has_groupby*/ true ) {
+						$scope.showReportHeader  = !!$scope.$parent.results;
+						$scope.withSubController = '';
+						$scope.templateUrl       = '/assets/partials/reports/rvReservationByUserReport.html';
+						break;
+					} else {
+						$scope.showReportHeader  = !!$scope.$parent.results;
+						$scope.withSubController = '';
+						$scope.templateUrl       = '/assets/partials/reports/SOME_URL_TO_COME.html';
+						break;
+					};
+
+				default:
+					$scope.showReportHeader  = !!$scope.$parent.results;
+					$scope.withSubController = '';
+					$scope.templateUrl       = '/assets/partials/reports/SOME_URL_TO_COME.html';
+					break;
+			};
 		};
 
 
