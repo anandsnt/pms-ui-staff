@@ -7,9 +7,9 @@ sntRover.service('RVActivityLogSrv', [
 
 		this.fetchActivityLog = function(params) {
 			var deferred = $q.defer();
-			var url = '/ui/show?format=json&json_input=activityLog/activity_log.json';
+			//var url = '/ui/show?format=json&json_input=activityLog/activity_log.json';
 			
-			//url = '/api/reservation_actions'+ params.id;
+			var url = '/api/reservation_actions/'+ params;
 
 			rvBaseWebSrvV2.getJSON(url)
 			.then(function(data) {

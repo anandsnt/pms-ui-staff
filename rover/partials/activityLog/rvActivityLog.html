@@ -105,8 +105,8 @@
                             Users <span>{User filter}</span>-->
                         </td>
                         <td colspan="2">
-                            Business date <span>{Business Date}</span><br />
-                            User <span>{User}</span>
+                            Business date <span>{{businessDate}}</span><br />
+                            User <span>{{userName}}</span>
                         </td>
                     </tr>
                 </tfoot>
@@ -116,9 +116,9 @@
                         <td>{{log.date}}</td>
                         <td>{{log.action}}</td>
                         <td class="details">
-                            <span  ng-repeat="details in log.details">
-                                <span class="old" ng-show="true" style="text-decoration:line-through">{{details.key}}<strong>{{details.new_value}}</strong>|</span>
-                                <span ng-show="true">{{details.key}}<strong>{{details.new_value}}</strong>|</span>
+                            <span ng-repeat="details in log.details">
+                                <span class="old" ng-show="isOldValue(details.old_value)" style="text-decoration:line-through">{{details.key}} <strong>{{details.old_value}}</strong>|</span>
+                                <span class="old">{{details.key}}<strong>{{details.new_value}}</strong>|</span>
                             </div>
                         </td>
                     </tr>

@@ -8,7 +8,10 @@ sntRover.controller('RVActivityLogCtrl',[
 	
 	BaseCtrl.call(this, $scope);
     console.log("RVActivityLogCtrllllllllll");
-    console.log($scope);
+    console.log($rootScope);
+    // var businessDate = $rootScope.businessDate;
+    // var userName = $rootScope.userName;
+    // console.log(businessDate);
 
     // we are hardcoding the min.width & max.width
     var resizableMinWidth = 30;
@@ -75,6 +78,13 @@ sntRover.controller('RVActivityLogCtrl',[
             $scope.fromDateOptions.maxDate = value;
         }
     }, datePickerCommon);
+
+    $scope.isOldValue = function(value){
+        if(value==="")
+            return false;
+        else
+            return true;
+    }
 
     /*
     * function to refresh scroller
