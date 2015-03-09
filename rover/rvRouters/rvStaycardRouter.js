@@ -229,22 +229,16 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.activitylog', {
-            url: '/activitylog',
+            url: '/activitylog/:id',
             templateUrl: "/assets/partials/activityLog/rvActivityLog.html",
-            controller: 'RVReportsMainCtrl',
+            controller: 'RVActivityLogCtrl',
             resolve: {
-                reportsResponse: function(RVreportsSrv) {
-                    if ( !!RVreportsSrv ) {
-                        return RVreportsSrv.fetchReportList();
+                activityLogResponse: function(RVActivityLogSrv, $stateParams) {
+                    if ( !!RVActivityLogSrv ) {
+                        return RVActivityLogSrv.fetchActivityLog($stateParams.id);
                     } else {
                         return {};
                     }
-                },
-                activeUserList: function() { 
-                    return []; 
-                },
-                guaranteeTypes: function() { 
-                    return []; 
                 }
             }
         });        

@@ -1,62 +1,33 @@
-sntRover.controller('rvActivityLogCtrl',[
+sntRover.controller('RVActivityLogCtrl',[
 	'$scope',
 	'$rootScope',
 	'$filter', 
-	function($scope, $rootScope ,$filter){
-	$scope.reportUpdateVisible = false;
+    'activityLogResponse',
+    '$state',
+	function($scope, $rootScope, $filter, activityLogResponse, $state){
 	
-	var resizableMinWidth = 30;
-    var resizableMaxWidth = 260;
-    $scope.reportUpdateWidth = resizableMinWidth;
-    /**
-     * scroller options
-     */
-    $scope.resizableOptions = {
-        minWidth: resizableMinWidth,
-        maxWidth: resizableMaxWidth,
-        handles: 'e',
-        resize: function(event, ui) {
-
-        },
-        stop: function(event, ui) {
-            preventClicking = true;
-            $scope.eventTimestamp = event.timeStamp;
-        }
-    }
-
-    $scope.accordionInitiallyNotCollapsedOptions = {
-        header: 'a.toggle',
-        heightStyle: 'content',
-        collapsible: true,
-        activate: function(event, ui) {
-            if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
-                ui.oldHeader.removeClass('active');
-            } else if (isEmpty(ui.oldHeader)) { //means activating..
-                ui.newHeader.addClass('active');
-            }
-            $scope.refreshScroll();
-        }
-
-    };
-
-	// set a back button on header
-	$rootScope.setPrevState = {
-		title: $filter('translate')('STAY_CARD'),
-		callback: 'backToStayCard',
-		scope: $scope
-	};
-		
 	BaseCtrl.call(this, $scope);
-	$scope.errorMessage = '';
-	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
-	$scope.setTitle(title);
+    console.log("RVActivityLogCtrllllllllll");
+    console.log($scope);
+
+    // we are hardcoding the min.width & max.width
+    var resizableMinWidth = 30;
+    var resizableMaxWidth = 260;
+
 
 	/**
 	* function to go back to reservation details
 	*/
 	$scope.backToStayCard = function(){
 		
-		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
+        console.log($scope.$parent.reservation.reservation_card.reservation_id);
+        console.log($scope.$parent.reservation.reservation_card.confirmation_num);
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", 
+            {
+                id:$scope.$parent.reservation.reservation_card.reservation_id, 
+                confirmationId:$scope.$parent.reservation.reservation_card.confirmation_num,
+                isRefresh:true
+            });
 		
 	};
 
@@ -77,8 +48,102 @@ sntRover.controller('rvActivityLogCtrl',[
         $scope.reportUpdateVisible = false;
     });
 
+    var datePickerCommon = {
+        dateFormat: $rootScope.jqDateFormat,
+        numberOfMonths: 1,
+        changeYear: true,
+        changeMonth: true,
+        beforeShow: function(input, inst) {
+            $('#ui-datepicker-div');
+            $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+        },
+        onClose: function(value) {
+            $('#ui-datepicker-div');
+            $('#ui-datepicker-overlay').remove();
+        }
+    };
+
+    $scope.fromDateOptions = angular.extend({
+        maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+        onSelect: function(value) {
+            $scope.untilDateOptions.minDate = value;
+        }
+    }, datePickerCommon);
+    $scope.untilDateOptions = angular.extend({
+        maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+        onSelect: function(value) {
+            $scope.fromDateOptions.maxDate = value;
+        }
+    }, datePickerCommon);
+
+    /*
+    * function to refresh scroller
+    * will refresh left filter scroller
+    */
+    var refreshScroller = function() {
+        $scope.refreshScroller ('report-update');
+    };
+
+
 	$scope.init = function(){
+        //setting the header caption
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));
+        
+        $scope.errorMessage = '';
+
+        $scope.reportUpdateVisible = false;
+
+        $scope.reportUpdateWidth = resizableMinWidth;
+
+        $scope.activityLogData = activityLogResponse.results;
+
+
+
+        // set a back button on header
+        $rootScope.setPrevState = {
+            title: $filter('translate')('STAY_CARD'),
+            callback: 'backToStayCard',
+            scope: $scope
+        };        
+        
+        //setting title        
+        var title = $filter('translate')('ACTIVITY_LOG_TITLE');
+        $scope.setTitle(title);
+
+        //left side filter scrollbar
+        $scope.setScroller('report-update');        
+        
+        /**
+        * scroller options
+        */
+        $scope.resizableOptions = {
+            minWidth: resizableMinWidth,
+            maxWidth: resizableMaxWidth,
+            handles: 'e',
+            resize: function(event, ui) {
+
+            },
+            stop: function(event, ui) {
+                preventClicking = true;
+                $scope.eventTimestamp = event.timeStamp;
+            }
+        }
+
+        //accordion options, will add/remove class on toggling
+        $scope.accordionInitiallyNotCollapsedOptions = {
+            header: 'a.toggle',
+            heightStyle: 'content',
+            collapsible: true,
+            activate: function(event, ui) {
+                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
+                    ui.oldHeader.removeClass('active');
+                } else if (isEmpty(ui.oldHeader)) { //means activating..
+                    ui.newHeader.addClass('active');
+                }
+                refreshScroller();
+            }
+
+        };        
 	};
 	$scope.init();
 

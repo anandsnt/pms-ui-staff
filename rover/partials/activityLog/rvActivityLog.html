@@ -1,5 +1,5 @@
 <!-- Report details -->
-<section id="report-details" class="content reservations-inner stay-card-inner" role="main" ng-controller="rvActivityLogCtrl">
+<section id="report-details" class="content reservations-inner stay-card-inner" role="main">
 
     <!-- Report update -->
     <div id="report-update" class="sidebar-left" ui-jq="resizable" ui-options="resizableOptions" role="complementary" ng-click="clickedOnReportUpdate($event)" style="width: {{reportUpdateWidth}}px;" ng-hide="hideSidebar">
@@ -14,13 +14,13 @@
                         <div class="entry date-range">
                             <label for="activity-range-from">From</label>
                             <div class="has-datepicker">
-                                <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
-                                <input name="activity-range-from" id="activity-range-from" class="range-datepicker" value="{date-from}" readonly />
+                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
+                                <input name="activity-range-from" id="activity-range-from" class="range-datepicker" ui-date="fromDateOptions" ng-model="fromDate"  readonly />
                             </div>
                             <label for="activity-range-to">To</label>
                             <div class="has-datepicker">
-                                <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
-                                <input name="activity-range-to" id="activity-range-to" class="range-datepicker" value="{date-to}" readonly />
+                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
+                                <input name="activity-range-to" id="activity-range-to" class="range-datepicker" ui-date="untilDateOptions" ng-model="toDate" readonly />
                             </div>
                         </div>
                     </div>
@@ -44,11 +44,15 @@
                     </a>
                     <div id="sidebar-options" class="settings-content">
                         <label class="checkbox">
-                            <span class="icon-form icon-checkbox">
-                            <input name="activity-options" id="activity-new" value="Include {Activity Type}" type="checkbox" />
-                            Include {Activity Type}
+                            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenIncludeNotes}">
+                            <input name="activity-options" ng-model="chosenIncludeNotes" type="checkbox" />
+                            {Activity Type}
                         </label>
-                        .. repeat for all activity types
+                        <label class="checkbox">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenIncludeCancelled}">
+                            <input name="activity-options" ng-model="chosenIncludeCancelled" type="checkbox" />
+                            {Activity Type}
+                        </label>
                     </div>
                 </div>
             </div>
@@ -61,7 +65,7 @@
     <!-- Report header -->
     <div class="report-header">
         <ul class="totals">
-            <li>Activities<span>{Sum of activites}</span></li>
+            <li>Activities<span>{{activityLogData.length}}</span></li>
         </ul>
         <div class="actions">
             <div class="select">
@@ -86,8 +90,8 @@
                         <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
                         "sorting-asc" when ASC sorting
                         "sorting-desc" when DESC sorting -->
-                        <th><span class="sort">User Name</span></th>
-                        <th><span class="sort">Date &amp; Time</span></th>
+                        <th><span class="sort" ng-class="sorting-asc">User Name</span></th>
+                        <th><span class="sort" ng-class="sorting-desc">Date &amp; Time</span></th>
                         <th><span class="sort">Action</span></th>
                         <th><span>Details</span></th>
                     </tr>
@@ -107,13 +111,17 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr>
-                        <td>{User Name}</td>
-                        <td>{Date}, {Time}</td>
-                        <td>{Activity }</td>
-                        <td class="details">{Details - stack required components, see bottom of template for code snippets}</td>
+                    <tr ng-repeat="log in activityLogData">
+                        <td>{{log.user_name}}</td>
+                        <td>{{log.date}}</td>
+                        <td>{{log.action}}</td>
+                        <td class="details">
+                            <span  ng-repeat="details in log.details">
+                                <span class="old" ng-show="true" style="text-decoration:line-through">{{details.key}}<strong>{{details.new_value}}</strong>|</span>
+                                <span ng-show="true">{{details.key}}<strong>{{details.new_value}}</strong>|</span>
+                            </div>
+                        </td>
                     </tr>
-                    ... repeat
                 </tbody>
             </table>         
         </div>
