@@ -758,7 +758,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 			// need to reset the "group by" if any new filter has been applied
-			if ( chosenReport.group_by_user ) {
+			if ( chosenReport.groupByOptions ) {
 				for (key in params) {
 					if ( !params.hasOwnProperty(key) ) {
 					    continue;
