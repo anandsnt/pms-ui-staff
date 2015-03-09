@@ -208,6 +208,9 @@
 										<tr>
 											<th class="price" translate>PRICE</th>
 											<th translate>PACKAGE</th>
+											<th>QUANTITY</th>
+											<th>TYPE</th>
+											<th>PROJECTED STAY COST</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -216,6 +219,9 @@
 											<td class="price" ng-if="expense.is_inclusive == 'false' && expense.price =='' " translate> EXCL </td>
 											<td class="price" ng-if="expense.is_inclusive == 'false' && expense.price !==''"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
+											<td>  </td>
+											<td>  </td>
+											<td>  </td>
 										</tr>
 									</tbody>
 								</table>
