@@ -11,11 +11,11 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        factory.parseAPI = function ( apiResponse, reportName, isGroupedBy ) {
-            if ( !!isGroupedBy && isGroupedBy != 'BLANK' ) {
-                return $_parseDataToSubArrays( apiResponse, reportName );
+        factory.parseAPI = function ( reportName, apiResponse, isGroupedBy ) {
+            if ( !!isGroupedBy ) {
+                return $_parseDataToSubArrays( reportName, apiResponse, isGroupedBy );
             } else {
-                return $_parseDataToInfo( apiResponse, reportName );
+                return $_parseDataToInfo( reportName, apiResponse );
             };
         };
 
@@ -38,7 +38,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDataToInfo ( apiResponse, reportName ) {
+        function $_parseDataToInfo ( reportName, apiResponse ) {
             var retResult  = [],
                 itemCopy   = {},
                 customData = [],
@@ -161,7 +161,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDataToSubArrays ( apiResponse, reportName ) {
+        function $_parseDataToSubArrays ( reportName, apiResponse, isGroupedBy ) {
             /****
             * OUR AIM: is to transform the api response to this format
             * [
@@ -176,16 +176,20 @@ sntRover.factory('RVReportParserFac', [
 
             var returnObj         = {};
             var interMedArray     = [];
-            var groupByKey        = 'guest_name';
+            var groupByKey        = isGroupedBy;
             var currentGroupByVal = '';
             var makeCopy          = {};
-            var eachKey           = '';
 
             // loop through the api response
             for (i = 0, j = apiResponse.length; i < j; i++) {
 
                 // make a copy of the ith object
                 makeCopy = angular.copy( apiResponse[i] );
+
+                // catching cases where the value is "" due to old data
+                if ( makeCopy[groupByKey] == '' ) {
+                    makeCopy[groupByKey] = 'NA';
+                };
 
                 // if the group by key value has changed
                 if ( makeCopy[groupByKey] != currentGroupByVal ) {
@@ -209,11 +213,19 @@ sntRover.factory('RVReportParserFac', [
                 };
             };
 
+            // if all the 'groupByKey' values are the same
+            // no entries had been inserted into 'returnObj'
+            // if so, let push them here
+            if ( _.size(returnObj) == 0 ) {
+                currentGroupByVal = makeCopy[groupByKey];
+                returnObj[currentGroupByVal] = angular.copy(interMedArray);
+            };
+
+
             _.each(returnObj, function (value, key, list) {
-                returnObj[key] = angular.copy( $_parseDataToInfo(value, reportName) );
+                returnObj[key] = angular.copy( $_parseDataToInfo(reportName, value) );
             });
 
-            console.log( returnObj );
 
             return returnObj;
         };

@@ -295,6 +295,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.displayedReport.chosenReportFromDepositDate = $( '#chosenReportFromDepositDate' ).val();
 				$scope.displayedReport.chosenReportToDepositDate = $( '#chosenReportToDepositDate' ).val();
 
+				// chosenReportFromCreateDate
+				// chosenReportToCreateDate
+				$scope.displayedReport.chosenReportFromCreateDate = $( '#chosenReportFromCreateDate' ).val();
+				$scope.displayedReport.chosenReportToCreateDate = $( '#chosenReportToCreateDate' ).val();
+
 				// chosenReportFromArrivalDate
 				// chosenReportToArrivalDate
 				$scope.displayedReport.chosenReportFromArrivalDate = $( '#chosenReportFromArrivalDate' ).val();
@@ -324,7 +329,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
-			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.$parent.results, $scope.parsedApiFor, $scope.chosenReport.chosenGroupBy) );
+			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, $scope.$parent.reportGroupedBy) );
 
 
 			// now flags that will determine correct template to be loaded
@@ -342,7 +347,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
-					if ( !!$scope.chosenReport.chosenGroupBy && $scope.chosenReport.chosenGroupBy != 'BLANK' ) {
+					if ( !!$scope.$parent.reportGroupedBy ) {
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = !!$scope.$parent.results;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/rvReservationByUserReport.html';
@@ -493,6 +498,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.sortResultBy = function(sortBy) {
 			if ( !sortBy ) {
 				return;
+			};
+
+			// if there a group by filter applied, reset it
+			if ( !!$scope.chosenReport.chosenGroupBy ) {
+				$scope.chosenReport.chosenGroupBy = 'BLANK';
 			};
 
 			// un-select sort dir of others
