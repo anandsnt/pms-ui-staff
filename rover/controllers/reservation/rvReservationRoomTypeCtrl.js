@@ -995,7 +995,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								name: roomDetails[d.id].name,
 								level: roomDetails[d.id].level,
 								availability: true,
-								availabilityCount: d.availability,
 								rates: [],
 								ratedetails: {},
 								total: [],
@@ -1029,6 +1028,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								taxes: taxes,
 								rateBreakUp: d,
 								day: new tzIndependentDate(for_date),
+								availabilityCount: d.availability
 							};
 
 							//calculate tax for the current day
