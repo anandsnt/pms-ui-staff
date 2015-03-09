@@ -6958,7 +6958,8 @@
                     }
 
                     &.guest-reports,
-                    &.log-reports {
+                    &.log-reports,
+                    &.transaction-reports {
                         tr {
                             th {
                                 line-height: 35px;
@@ -6995,10 +6996,48 @@
                         }
                     }
 
-                    &.guest-reports {
+                    &.guest-reports,
+                    &.transaction-reports {
                         border-collapse: collapse;
                         border-spacing: 0;
                         text-transform: none;
+
+                        tr {
+                            td {
+                               &[rowspan] {
+                                    position: relative;
+                                    padding-bottom: 20px;
+
+                                    &:after {
+                                        content: "";
+                                        position: absolute;
+                                        bottom: 0;
+                                        left: 0;
+                                        background: @textureImage;
+                                        .size(10px, 100%);
+                                    }
+                                } 
+                            }
+
+                            &.row-break {
+                                td {
+                                    position: relative;
+                                    padding-bottom: 20px;
+
+                                    &:after {
+                                        content: "";
+                                        position: absolute;
+                                        bottom: 0;
+                                        left: 0;
+                                        background: @textureImage;
+                                        .size(10px, 100%);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &.guest-reports {
 
                         .green { color: @green; }
                         .red,
@@ -7121,20 +7160,6 @@
                                     }
                                 }
 
-                                &[rowspan] {
-                                    position: relative;
-                                    padding-bottom: 20px;
-
-                                    &:after {
-                                        content: "";
-                                        position: absolute;
-                                        bottom: 0;
-                                        left: 0;
-                                        background: @textureImage;
-                                        .size(10px, 100%);
-                                    }
-                                }
-
                                 &:last-child {
                                     .data {
                                         &.room,
@@ -7162,22 +7187,6 @@
                                     }
                                 }
                             }
-
-                            &.row-break {
-                                td {
-                                    position: relative;
-                                    padding-bottom: 20px;
-
-                                    &:after {
-                                        content: "";
-                                        position: absolute;
-                                        bottom: 0;
-                                        left: 0;
-                                        background: @textureImage;
-                                        .size(10px, 100%);
-                                    }
-                                } 
-                            }
                         }                    
                     }
 
@@ -7192,96 +7201,30 @@
                         }
                     }
 
-                    &.statistics-reports {
-                        table-layout: fixed;
-                        border-collapse: collapse;
-                        border-spacing: 0;
-
-                        tr {
-                            th,
-                            td {
-                                line-height: 30px;
-                                padding: 0 10px;
-                            }
-                        }
-
-                        thead {
-                            tr {
-                                th {
-                                    color: @white;
-                                    font-size: 16px;
-                                    text-align: center;
-                                    font-weight: 600;
-                                    background-color: @gcard;
-                                    width: 80px;
-
-                                    &[colspan] { 
-                                        border-right: 1px solid rgba(0,0,0,.4); 
-
-                                        &:last-child { border-right: 0; }
-                                    }
-
-                                    &[colspan="2"] { width: 160px; }
-                                    &[colspan="3"] { width: 240px; }
-                                }
-
-                                &.bottom-row {
-                                    th { 
-                                        /*color: rgba(0,0,0,.5);*/
-                                        font-size: 13px;
-                                        text-transform: none;
-                                        font-style: italic;
-                                        font-weight: 400; 
-
-                                        border-right: 1px solid rgba(0,0,0,.1);
-                                        .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
-                                        /*background-color: @gcard;*/
-                                        /*background-color: lighten(@gcard, 20);*/
-
-                                        &.day-end { border-right: 1px solid rgba(0,0,0,.4); }
-
-                                        &:last-child { border-right: 0; }
-                                    }
-                                }
-                            }
-                        }
-
+                    &.transaction-reports {
                         tbody {
                             tr {
                                 td {
-                                    border: solid @grey2;
-                                    border-width: 0 1px 1px 0;
+                                    padding: 5px 10px;
+                                    border-bottom: 1px solid @grey2;
 
-                                    &.last-year {
-                                        color: @grey3;
-                                        background-color: @grey1;
-                                    }
+                                    .number { margin-right: 5px; }
 
-                                    &.negative { color: @red; }
-
-                                    &.day-end { border-right: 1px solid @grey4; }
-
-                                    strong { font-size: 16px; }
-
-                                    &:last-child { border-right-width: 0; }
+                                    &.group { font-weight: 600; }
+                                    &.code { width: 240px; }
                                 }
 
-                                &.double-row {
+                                &.row-break {
                                     td {
-                                        height: 60px;
+                                        font-weight: 600;
+                                        border-bottom: 0;
 
-                                        strong,
-                                        span { .show; }
-
-                                        span { 
-                                            color: @grey3; 
-                                            margin-top: -2px;
-                                        }
+                                        &:nth-child(1) { padding-left: 0; }
                                     }
                                 }
 
-                                &:last-child {
-                                    td { border-bottom: 0; }
+                                &:nth-child(1) {
+                                    td { padding-top: 10px; }
                                 }
                             }
                         }
@@ -7326,7 +7269,6 @@
                                         text-transform: none;
                                         font-style: italic;
                                         font-weight: 400; 
-
                                         border-right: 1px solid rgba(0,0,0,.1);
                                         .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
 
