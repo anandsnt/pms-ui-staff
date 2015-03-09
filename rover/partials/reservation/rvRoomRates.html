@@ -82,6 +82,15 @@
                         <li ng-repeat="rate in roomAvailability[room.id].rates">
                             <a class="has-arrow toggle" ng-class="{active: isActive}" ng-init="isActive=false;" ng-click="isActive = !isActive ; refreshScroll()">
                                 <h3>{{displayData.allRates[rate].name}}</h3>
+                                <!-- If corporate rate, show:
+                                     <span class="corporate">Cor</span>-->
+                                <!-- If restriction applies, show: -->
+                                <span class="restricted grey" ng-if="roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions.length > 1">MULTIPLE RESTRICTIONS APPLY</span>
+                                <span class="restricted {{restrictionColorClass[roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions[0].key]}}" ng-if="roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions.length == 1">
+                                    {{roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions[0].value}}
+                                </span>
+                                <!-- {restriction-color} can be: red, green, blue, purple and grey -->
+
                                 <div class="price" ng-if="!displayData.allRates[rate].is_suppress_rate_on">
                                     {{currencySymbol}}{{roomAvailability[room.id].total[rate].average | number: 0}}
                                     <span translate>RESV_AVG_NIGHT</span>
@@ -141,6 +150,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <br>
+                                <span ng-repeat="restriction in roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions" class="restricted {{restrictionColorClass[restriction.key]}}">
+                                    {{restriction.value}}
+                                </span>
                             </div>
                         </li>
                     </ul>
@@ -154,6 +167,14 @@
                     <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
                         <div class="data">
                             <h2>{{rate.rate.name}}</h2>
+                            <!-- If corporate rate, show:
+                                    <span class="corporate">Cor</span>-->
+                            <!-- If restriction applies, show: selectedRoom, rate.rate.id-->
+                                <span class="restricted grey" ng-if="roomAvailability[selectedRoom].ratedetails[reservationData.arrivalDate][rate.rate.id].restrictions.length > 1">MULTIPLE RESTRICTIONS APPLY</span>
+                                <span class="restricted {{restrictionColorClass[roomAvailability[selectedRoom].ratedetails[reservationData.arrivalDate][rate.rate.id].restrictions[0].key]}}" ng-if="roomAvailability[selectedRoom].ratedetails[reservationData.arrivalDate][rate.rate.id].restrictions.length == 1">
+                                    {{roomAvailability[selectedRoom].ratedetails[reservationData.arrivalDate][rate.rate.id].restrictions[0].value}}
+                                </span>
+                            <!-- {restriction-color} can be: red, green, blue, purple and grey -->           
                         </div>
                         <div class="book-rate">
                             <div class="select" ng-click="$event.stopPropagation()">
@@ -171,7 +192,7 @@
                             <span class="count green" ng-hide="!!selectedRoom && roomAvailability[selectedRoom].ratedetails[reservationData.arrivalDate][rate.rate.id].availabilityCount < 5">
                                 {{roomAvailability[selectedRoom].ratedetails[reservationData.arrivalDate][rate.rate.id].availabilityCount}} room(s) left
                             </span>
-                            
+
                             <div class="price" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">
                                 {{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}
                                 <span translate>RESV_AVG_NIGHT</span>

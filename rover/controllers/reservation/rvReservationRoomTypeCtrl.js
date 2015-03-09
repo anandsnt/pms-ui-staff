@@ -42,6 +42,22 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
 
+		// <!-- {restriction-color} can be: red, green, blue, purple and grey -->
+
+		$scope.restrictionColorClass = {
+			'CLOSED': 'red',
+			'CLOSED_ARRIVAL': 'red',
+			'CLOSED_DEPARTURE': 'red',
+			'MIN_STAY_LENGTH': 'blue',
+			'MAX_STAY_LENGTH': 'grey',
+			'MIN_STAY_THROUGH': 'purple',
+			'MIN_ADV_BOOKING': 'green',
+			'MAX_ADV_BOOKING': 'grey',
+			'DEPOSIT_REQUESTED': 'grey',
+			'CANCEL_PENALTIES': 'grey',
+			'LEVELS': 'grey'
+		}
+
 		// $scope.activeMode = "ROOM_RATE";
 		$scope.stateCheck = {
 			rateSelected: {
@@ -814,6 +830,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								}*/
 								validRate = false;
 							} else {
+
+								if (typeof today[rateId].restrictions == 'undefined') {
+									today[rateId].restrictions = [];
+								}
+
 								var rateConfiguration = today[rateId].rateBreakUp;
 								var numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults);
 								var numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
@@ -855,40 +876,72 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 											case 'CLOSED': // 1 CLOSED
 												// Cannot book a closed room
 												validRate = false;
+												today[rateId].restrictions.push({
+													key: 'CLOSED',
+													value: 'CLOSED'
+												});
 												break;
 											case 'CLOSED_ARRIVAL': // 2 CLOSED_ARRIVAL
 												if (new tzIndependentDate(currDate) - new tzIndependentDate($scope.reservationData.arrivalDate) == 0) {
 													validRate = false;
+													today[rateId].restrictions.push({
+														key: 'CLOSED_ARRIVAL',
+														value: 'CLOSED FOR ARRIVAL'
+													});
 												}
 												break;
 											case 'CLOSED_DEPARTURE': // 3 CLOSED_DEPARTURE
 												if (new tzIndependentDate(currDate) - new tzIndependentDate($scope.reservationData.departureDate) == 0) {
 													validRate = false;
+													today[rateId].restrictions.push({
+														key: 'CLOSED_DEPARTURE',
+														value: 'CLOSED FOR DEPARTURE'
+													});
 												}
 												break;
 											case 'MIN_STAY_LENGTH': // 4 MIN_STAY_LENGTH
 												if (restriction.days != null && stayLength < restriction.days) {
 													validRate = false;
+													today[rateId].restrictions.push({
+														key: 'MIN_STAY_LENGTH',
+														value: 'MIN. LENGTH OF STAY:' + restriction.days + ' DAYS'
+													});
 												}
 												break;
 											case 'MAX_STAY_LENGTH': // 5 MAX_STAY_LENGTH
 												if (restriction.days != null && stayLength > restriction.days) {
 													validRate = false;
+													today[rateId].restrictions.push({
+														key: 'MAX_STAY_LENGTH',
+														value: 'MAX. LENGTH OF STAY:' + restriction.days + ' DAYS'
+													});
 												}
 												break;
 											case 'MIN_STAY_THROUGH': // 6 MIN_STAY_THROUGH
 												if (Math.round((new tzIndependentDate($scope.reservationData.departureDate) - new tzIndependentDate(currDate)) / (1000 * 60 * 60 * 24)) < restriction.days) {
 													validRate = false;
+													today[rateId].restrictions.push({
+														key: 'MIN_STAY_THROUGH',
+														value: 'MIN. STAY THROUGH:' + restriction.days + ' DAYS'
+													});
 												}
 												break;
 											case 'MIN_ADV_BOOKING': // 7 MIN_ADV_BOOKING
 												if (restriction.days != null && daysTillArrival < restriction.days) {
 													validRate = false;
+													today[rateId].restrictions.push({
+														key: 'MIN_ADV_BOOKING',
+														value: 'MIN. ADVANCE BOOKING:' + restriction.days + ' DAYS'
+													});
 												}
 												break;
 											case 'MAX_ADV_BOOKING': // 8 MAX_ADV_BOOKING
 												if (restriction.days != null && daysTillArrival > restriction.days) {
 													validRate = false;
+													today[rateId].restrictions.push({
+														key: 'MAX_ADV_BOOKING',
+														value: 'MAX. ADVANCE BOOKING:' + restriction.days + ' DAYS'
+													});
 												}
 												break;
 											case 'DEPOSIT_REQUESTED': // 9 DEPOSIT_REQUESTED
@@ -915,9 +968,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								$scope.stateCheck.restrictedContractedRates[roomId].push(rateId);
 							}
 						} else if (!validRate) {
-							var existingRates = roomsIn[roomId].rates;
-							var afterRemoval = _.without(existingRates, rateId);
-							roomsIn[roomId].rates = afterRemoval;
+							// var existingRates = roomsIn[roomId].rates;
+							// var afterRemoval = _.without(existingRates, rateId);
+							// roomsIn[roomId].rates = afterRemoval;
+							// NOTE : NOT TO REMOVE RESTRICTED RATES
 						}
 					});
 				}
@@ -1070,8 +1124,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 			});
 
-			// rooms = restrictionCheck(rooms);
+			rooms = restrictionCheck(rooms);
+
 			//$scope.displayData.allRates[118].account_id
+
 			_.each(rooms, function(value) {
 				// step3: total and average calculation
 				// var value = rooms[id];
