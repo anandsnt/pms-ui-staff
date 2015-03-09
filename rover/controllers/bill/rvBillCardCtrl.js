@@ -156,8 +156,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.shouldShowEnableDisableChargeButton = function(){
-		return ($scope.hasPermissionToChangeCharges() &&
-			$scope.clickedButton == 'checkinButton' && 
+		return ($scope.clickedButton == 'checkinButton' && 
 			!$scope.reservationBillData.is_res_posting_control_disabled);
 	};
 
@@ -272,6 +271,11 @@ sntRover.controller('RVbillCardController',
 	};
 	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
+		if (!$scope.hasPermissionToMakePayment()){
+			$scope.errorMessage = [ "You have no permission to enable or disbable this button!"];
+			return false;
+		}
+
 		if(buttonClicked)
 			return;
 		buttonClicked = true;
