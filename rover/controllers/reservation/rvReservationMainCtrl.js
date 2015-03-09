@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams', 'RVReservationGuestSrv',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -503,7 +503,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                      */
                     var taxCalculated = 0;
                     if (taxData.amount_symbol == '%' && parseFloat(taxData.amount) != 0.0) {
-                        taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * taxOnAmount));
+                        if (isInclusive) {
+                            taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / (100 + parseFloat(taxData.amount))) * taxOnAmount));
+                        } else {
+                            taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * taxOnAmount));
+                        }
                     } else {
                         taxCalculated = parseFloat(multiplicity * parseFloat(taxData.amount));
                     }
@@ -1057,6 +1061,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.rooms[0].numChildren = arrivalDateDetails[0].children;
             $scope.reservationData.rooms[0].numInfants = arrivalDateDetails[0].infants;
 
+            if (reservationDetails.reservation_card.reservation_status == "CHECKEDIN") {
+                $scope.reservationData.inHouse = true;
+            }
+
             // Find if midstay or later
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
@@ -1121,7 +1129,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //         travel_agent_id: $scope.reservationData.travelAgent.id
             //     });
             // }
-            
+
             // $scope.$broadcast('closeSidebar');
         };
 
