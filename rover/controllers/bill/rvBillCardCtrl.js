@@ -144,11 +144,20 @@ sntRover.controller('RVbillCardController',
 	};
 
 	/**
+	* function to check whether the user has permission
+	* to move charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToMoveCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
+	};
+
+	/**
 	* function to decide whether to show Move Charge Drop Down
 	* @return {Boolean}
 	*/
 	$scope.showMoveChargeDropDown = function(){
-		return ($scope.hasPermissionToChangeCharges());
+		return ($scope.hasPermissionToMoveCharges());
 	};
 
 	/**
