@@ -152,6 +152,16 @@ sntRover.controller('RVbillCardController',
 	};
 
 	/**
+	* function to decide whether to show Enable/Disable Charge Button
+	* @return {Boolean}
+	*/
+	$scope.shouldShowEnableDisableChargeButton = function(){
+		return ($scope.hasPermissionToChangeCharges() &&
+			$scope.clickedButton == 'checkinButton' && 
+			!$scope.reservationBillData.is_res_posting_control_disabled);
+	};
+
+	/**
 	* function to decide whether to show Edit charge button
 	* @param {String} - Fees type value
 	* @return {Boolean}

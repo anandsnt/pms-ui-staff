@@ -185,7 +185,7 @@
                 </div>
             </div>
         </form>
-        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-hide="hideMakePayment() && reservationData.paymentType.type.value=== 'CC' && showCC" ng-click="clearErrorMessage()">
+        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-hide="reservationData.paymentType.type.value=== 'CC' && showCC" ng-click="clearErrorMessage()">
             <div class="wrapper" style="height:120%;">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div id="set-payment" class="payment-form for-reservation">
@@ -252,7 +252,7 @@
                         <!-- Buttons - remove class "hidden" when payment type is defined-->
                         <div class="actions" ng-show="!!reservationData.paymentType.type.value && reservationData.depositAmountWithoutFilter >= 0">
                             <button type="button" class="button blue" ng-click="confirmReservation()">Pay deposit later</button>
-                            <button type="button" class="button green" ng-click="payDeposit()">Pay deposit now</button>
+                            <button type="button" class="button green" ng-click="payDeposit()" ng-hide="hideMakePayment()">Pay deposit now</button>
                         </div>
                     </div>
 
