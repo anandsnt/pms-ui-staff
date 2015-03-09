@@ -8688,9 +8688,7 @@
 
                                 h2 {
                                     max-width: 100%;
-                                    overflow: hidden;
-                                    white-space: nowrap;
-                                    text-overflow: ellipsis;
+                                    .nowrap();
                                     .pull-left;
                                 }
 
@@ -9019,6 +9017,12 @@
                                 font-weight: 600;
                                 background: transparent !important;
                                 .box-shadow(none);
+
+                                &.red { color: @red; }
+                                &.green { color: @green; }
+                                &.purple { color: @purpleStart; }
+                                &.blue { color: @blue; }
+                                &.grey { color: @grey3; }
                             }
                         }
                     }
