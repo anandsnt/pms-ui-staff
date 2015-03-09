@@ -785,10 +785,6 @@ sntRover.controller('RVReportsMainCtrl', [
 					if ( key == 'group_by_date' || key == 'group_by_user' ) {
 						continue;
 					} else if ( params[key] != $scope.oldParams[key] ) {
-                        console.log(key);
-                        console.log(params[key]);
-                        console.log($scope.oldParams[key]);
-
 						chosenReport.chosenGroupBy = 'BLANK';
 						params['group_by_date'] = false;
 						params['group_by_user'] = false;
