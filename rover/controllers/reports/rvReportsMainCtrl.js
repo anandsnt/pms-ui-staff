@@ -753,20 +753,42 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
 			};
 
+            // include due out departure option
+			if (chosenReport.hasOwnProperty('hasDueOutDepartures')) {
+				key = chosenReport.hasDueOutDepartures.value.toLowerCase();
+				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
+			};
+
+            // include new option
+			if (chosenReport.hasOwnProperty('hasIncludeNew')) {
+				key = chosenReport.hasIncludeNew.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeNew ? true : false;
+			};
+
+            // include both option
+			if (chosenReport.hasOwnProperty('hasIncludeBoth')) {
+				key = chosenReport.hasIncludeBoth.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeBoth ? true : false;
+			};
+
 
 
 
 
 			// need to reset the "group by" if any new filter has been applied
-			if ( chosenReport.groupByOptions ) {
+			if ( !!chosenReport.groupByOptions && !!$scope.oldParams ) {
 				for (key in params) {
 					if ( !params.hasOwnProperty(key) ) {
 					    continue;
 					};
 
-					if ( params[key] == 'group_by_date' || params[key] == 'group_by_user' ) {
+					if ( key == 'group_by_date' || key == 'group_by_user' ) {
 						continue;
 					} else if ( params[key] != $scope.oldParams[key] ) {
+                        console.log(key);
+                        console.log(params[key]);
+                        console.log($scope.oldParams[key]);
+
 						chosenReport.chosenGroupBy = 'BLANK';
 						params['group_by_date'] = false;
 						params['group_by_user'] = false;
