@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardActivityLogCtrl', ['$scope', '$filter', '$rootScope',
-    function($scope, $filter, $rootScope) {
+sntRover.controller('rvReservationCardActivityLogCtrl', ['$scope', '$filter', '$rootScope', '$state',
+    function($scope, $filter, $rootScope , $state) {
        $scope.activityLog = "";
 
        var init = function(){
@@ -8,6 +8,9 @@ sntRover.controller('rvReservationCardActivityLogCtrl', ['$scope', '$filter', '$
             $scope.activityLog = {
                 hideDetails: hideLog
             }
+        }
+        $scope.showDetails = function(){
+            $state.go('rover.reservation.staycard.activitylog');
         }
         init();
     }
