@@ -1231,6 +1231,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.originsEnabled = baseData.demographics.is_use_origins;
             $scope.otherData.origins = baseData.demographics.origins;
             $scope.otherData.reservationTypes = baseData.demographics.reservationTypes;
+            $scope.otherData.marketIsForced = baseSearchData.settings.force_market_code;
+            $scope.otherData.sourceIsForced = baseSearchData.settings.force_source_code;
+            $scope.otherData.originIsForced = baseSearchData.settings.force_origin_of_booking;
+            $scope.otherData.reservationTypeIsForced = baseSearchData.settings.force_reservation_type;
 
             // call this. no sure how we can pass date from here
             $scope.checkOccupancyLimit();
