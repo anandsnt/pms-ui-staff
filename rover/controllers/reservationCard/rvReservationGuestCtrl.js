@@ -72,17 +72,43 @@ console.log("checkForCustomRate");
 
 		$scope.keepCurrentRate = function(){
 			console.log("keepCurrentRate");
+			closeDialog();
 		};
 
 		$scope.ChangeToNewRate = function(){
 			console.log("ChangeToNewRate");
-			saveChanges();
+			$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
+				"id": $scope.reservationData.reservation_card.reservation_id,
+				"confirmationId": $scope.reservationData.reservation_card.confirmation_num,
+				"isrefresh": true
+			});
+			closeDialog();
+		};
+
+		var saveReservation = function(){
+
+			var isRateChangeOcuured = false; 
+			angular.forEach($scope.reservationParentData.rooms[0].stayDates, function(item, index) {
+				console.log(item);
+				console.log(item.rateDetails);
+				if(item.rateDetails.actual_amount !== item.rateDetails.modified_amount ) isRateChangeOcuured = true;
+			});
+			console.log(isRateChangeOcuured);
+
+			if(isRateChangeOcuured){
+				checkForRateChange();
+			}
+			else{
+				$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
+					"id": $scope.reservationData.reservation_card.reservation_id,
+					"confirmationId": $scope.reservationData.reservation_card.confirmation_num,
+					"isrefresh": true
+				});
+			}
 		};
 
 		function saveChanges(override) {
-console.log("saveChanges");
-			checkForRateChange();
-console.log("reservationParentData.is_modified"+$scope.reservationParentData.is_modified);
+
 			$scope.$emit('showLoader');
 			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
 				// Note: when editing number of guests for an INHOUSE reservation, the new number of guests should only apply from this day onwards, any previous days need to retain the previous guest count.	
@@ -120,12 +146,14 @@ console.log("reservationParentData.is_modified"+$scope.reservationParentData.is_
 			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 
 			var successCallback = function(data) {
-				$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
+				/*$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": $scope.reservationData.reservation_card.reservation_id,
 					"confirmationId": $scope.reservationData.reservation_card.confirmation_num,
 					"isrefresh": true
-				});
+				});*/
+				saveReservation();
 				$scope.errorMessage = '';
+				$scope.$emit('hideLoader');
 			};
 
 			var errorCallback = function(errorMessage) {
@@ -150,12 +178,14 @@ console.log("reservationParentData.is_modified"+$scope.reservationParentData.is_
 
 			if (dataToSend.accompanying_guests_details.length > 0) {
 				$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);
-			} else {
-				$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
+			}
+			else {
+				saveReservation();
+				/*$scope.saveReservation("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": $scope.reservationData.reservation_card.reservation_id,
 					"confirmationId": $scope.reservationData.reservation_card.confirmation_num,
 					"isrefresh": true
-				});
+				});*/
 			}
 
 		}
@@ -183,7 +213,6 @@ console.log("reservationParentData.is_modified"+$scope.reservationParentData.is_
 			if (!angular.equals(data, initialGuestInfo)) {
 				$scope.$emit('showLoader');
 				if (isOccupancyRateConfigured()) {
-					console.log("saveGuestDetails");
 					saveChanges();
 				} else {
 					$scope.$emit('hideLoader');
