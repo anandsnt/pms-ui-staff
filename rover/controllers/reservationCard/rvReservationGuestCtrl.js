@@ -58,6 +58,9 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		// CICO-13491 
 		var checkForRateChange = function(){
 console.log("checkForCustomRate");
+			$scope.customRate = "xx";
+			$scope.rateForCurrentGuest = "yy";
+			
 			ngDialog.open({
 				template: '/assets/partials/reservation/rvCustomRateSelectPopup.html',
 				className: '',
