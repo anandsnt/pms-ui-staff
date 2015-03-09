@@ -29,7 +29,9 @@ $scope.fetchChargeCodes = function(){
        $scope.charge_codes = $scope.getChargeCodesWithNameValues(data.charge_codes);
        $scope.fetchAddons();
    };
-   $scope.invokeApi(ADChargeCodesSrv.fetch, {}, fetchSuccessOfChargeCodes);
+   var params = {};
+   params.is_no_pagination = true;
+   $scope.invokeApi(ADChargeCodesSrv.fetch, params, fetchSuccessOfChargeCodes);
 };
 
 $scope.fetchAddons = function(){
