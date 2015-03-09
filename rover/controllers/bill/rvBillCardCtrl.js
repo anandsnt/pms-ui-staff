@@ -123,6 +123,26 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	// Initializing reviewStatusArray
 	$scope.reviewStatusArray = [];
+	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
+		var inclLength=0;
+		console.log(expense_details);
+		angular.forEach(expense_details,function(elem){
+			console.log(elem);
+		if(elem.is_inclusive==true)
+		{
+			inclLength++;
+		}
+	})
+	if(inclLength==expense_details.length)
+	{
+		return 'INCl'
+	}else if(inclLength>0&&inclLength<expense_details.length)
+	{
+		return 'MULTI';
+	}else{
+		return returnAmount	;
+	}
+	}
 
 
 	$scope.init = function(reservationBillData){
@@ -133,7 +153,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 * Added same value to two different key because angular is two way binding
 		 * Check in HTML moveToBillAction
 		 */
-		angular.forEach(reservationBillData.bills, function(value, key) {
+		angular.forEach(reservationBillData.bills, function(value, key) {			
+			
+			
+
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
 			if(key == 0 && $scope.clickedButton == "viewBillButton"){

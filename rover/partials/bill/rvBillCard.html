@@ -146,9 +146,10 @@
 									<!-- packages -->
 									<li class="active package summarychargegroup" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
 										<a class="toggle dual-toggle" ng-class="{'active': $index == showAddonIndex}"> 
-											<span class="day"> {{addons.title}} </span> 
+											<span class="day"> {{addons.title}}</span> 
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
-											<span class="price" ng-show="addons.package_type == 'PACKAGES'">{{currencySymbol}}{{addons.amount | number: precisonZero}}</span> 
+											<span class="price" ng-show="addons.package_type == 'PACKAGES'">{{currencySymbol}}{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)| number: precisonZero}}</span> 
+											<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount | number: precisonZero}}</span> 
 										</a>
 									</li>
 
@@ -219,9 +220,9 @@
 											<td class="price" ng-if="expense.is_inclusive == 'false' && expense.price =='' " translate> EXCL </td>
 											<td class="price" ng-if="expense.is_inclusive == 'false' && expense.price !==''"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
-											<td>  </td>
-											<td>  </td>
-											<td>  </td>
+											<td> {{expense.quantity}} </td>
+											<td> PER {{expense.post_type}} </td>
+											<td> {{expense.quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
 									</tbody>
 								</table>
