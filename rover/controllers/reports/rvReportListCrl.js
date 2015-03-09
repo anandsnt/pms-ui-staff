@@ -118,37 +118,5 @@ sntRover.controller('RVReportListCrl', [
             };
         };
 
-
-        // little helpers
-        function $_createTimeSlots() {
-            var _ret = [],
-                _hh = '',
-                _mm = '',
-                _step = 15;
-
-            var i = m = 0,
-                h = -1;
-
-            for (i = 0; i < 96; i++) {
-                if (i % 4 == 0) {
-                    h++;
-                    m = 0;
-                } else {
-                    m += _step;
-                }
-
-                _hh = h < 10 ? '0' + h : h;
-                _mm = m < 10 ? '0' + m : m;
-
-                _ret.push({
-                    'value': _hh + ':' + _mm,
-                    'name': _hh + ':' + _mm
-                });
-            };
-
-            return _ret;
-        };
-
-
     }
 ]);

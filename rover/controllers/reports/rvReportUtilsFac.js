@@ -25,7 +25,8 @@ sntRover.factory('RVReportUtilsFac', [
             'DEPOSIT_REPORT'               : 'Deposit Report',
             'LOGIN_AND_OUT_ACTIVITY'       : 'Login and out Activity',
             'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
-            'RESERVATIONS_BY_USER'         : 'Reservations By User'
+            'RESERVATIONS_BY_USER'         : 'Reservations By User',
+            'DAILY_TRANSACTIONS'           : 'Daily Transactions'
         };
 
 
@@ -102,6 +103,10 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-reservations';
                     break;
 
+                case __reportNames['DAILY_TRANSACTIONS']:
+                    reportItem['reportIconCls'] = 'icon-report icon-transactions';
+                    break;
+
                 default:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
@@ -115,8 +120,6 @@ sntRover.factory('RVReportUtilsFac', [
 
         // add required flags this report
         factory.applyFlags = function ( reportItem ) {
-
-            // by
 
             switch ( reportItem['title'] ) {
                 case __reportNames['ARRIVAL']:
@@ -170,6 +173,10 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['showRemoveArrivalDate'] = true;
                     break;
 
+                case __reportNames['DAILY_TRANSACTIONS']:
+                    reportItem['hasDateLimit'] = false;
+                    break;
+
                 default:
                     reportItem['show_filter'] = false;
                     reportItem['hasDateLimit'] = true;
@@ -187,7 +194,9 @@ sntRover.factory('RVReportUtilsFac', [
             var _hasFauxSelect,
                 _hasDisplaySelect,
                 _hasMarketSelect,
-                _hasGuaranteeSelect;
+                _hasGuaranteeSelect,
+                _hasChargeGroupSelect,
+                _hasChargeCodeSelect;
 
             // going around and taking a note on filters
             _.each(reportItem['filters'], function(filter) {
@@ -223,9 +232,14 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasDepositDateFilter'] = filter;
                 };
 
-                // check for Deposit due date range filter and keep a ref to that item
+                // check for create date range filter and keep a ref to that item
                 if ( filter.value === 'CREATE_DATE_RANGE' ) {
                     reportItem['hasCreateDateFilter'] = filter;
+                };
+
+                // check for "by single date" filter and keep a ref to that item
+                if ( filter.value === 'BY_SINGLE_DATE' ) {
+                    reportItem['hasSingleDateFilter'] = filter;
                 };
 
                 // check for time filter and keep a ref to that item
@@ -332,13 +346,6 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasIncludeComapnyTaGroup'] = filter;
                 };
 
-                // check for include guarantee type filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
-                    reportItem['hasGuaranteeType'] = filter;
-                    reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
-                    _hasGuaranteeSelect = true;
-                };
-
                 // check for include deposit paid filter and keep a ref to that item
                 if ( filter.value === 'DEPOSIT_PAID' ) {
                     reportItem['hasIncludeDepositPaid'] = filter;
@@ -382,6 +389,28 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasIncludeBoth'] = filter;
                     _hasFauxSelect = true;
                 };
+
+
+                // check for include guarantee type filter and keep a ref to that item
+                if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
+                    reportItem['hasGuaranteeType'] = filter;
+                    reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
+                    _hasGuaranteeSelect = true;
+                };
+
+                // check for "by charge group" and keep a ref to that item
+                if ( filter.value === 'BY_CHARGE_GROUP' ) {
+                    reportItem['hasByChargeGroup'] = filter;
+                    // reportItem['chargeGroups'] = angular.copy( data.chargeGroups );
+                    _hasChargeGroupSelect = true;
+                };
+
+                // check for "by charge group" and keep a ref to that item
+                if ( filter.value === 'BY_CHARGE_CODE' ) {
+                    reportItem['hasByChargeCode'] = filter;
+                    // reportItem['chargeCodes'] = angular.copy( data.chargeCodes );
+                    _hasChargeCodeSelect = true;
+                };
             });
 
             // NEW! faux select DS and logic
@@ -404,6 +433,16 @@ sntRover.factory('RVReportUtilsFac', [
             if ( _hasGuaranteeSelect ) {
                 reportItem['selectGuaranteeOpen'] = false;
                 reportItem['guaranteeTitle'] = 'Select';
+            };
+
+            if ( _hasChargeGroupSelect ) {
+                reportItem['selectChargeGroupOpen'] = false;
+                reportItem['chargeGroupTitle'] = 'Select';
+            };
+
+            if ( _hasChargeCodeSelect ) {
+                reportItem['selectChargeCodeOpen'] = false;
+                reportItem['chargeCodeTitle'] = 'Select';
             };
         };
 
@@ -573,6 +612,8 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['untilCancelDate']  = _getDates.businessDate;
                     reportItem['untilArrivalDate'] = _getDates.businessDate;
                     reportItem['untilCreateDate']  = _getDates.businessDate;
+                    /**/
+                    reportItem['singleValueDate']  = _getDates.businessDate;
                     break;
             };
         };
