@@ -1,7 +1,7 @@
 <div id="modal" class="modal-show" role="dialog">
    <div>
 		<form method="post" id="rate-options" name="rate-options" class="modal-content form confirmation" ng-cloak>
-		    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+		    <button id="modal-close" type="button" class="modal-close" ng-click="cancelOccupancyChange()">
 		    	<span class="icons icon-close invert">
 		    </button>
 
@@ -12,7 +12,7 @@
 
 		        <button type="button" ng-click="keepCurrentRate()" class="button green" translate>KEEP_CURRENT_RATE</button>
 		        <button type="button" ng-click="ChangeToNewRate()" class="button blue" translate>CHANGE_TO_NEW_RATE</button>
-		        <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE</button>
+		        <button type="button" class="button blank" ng-click="cancelOccupancyChange()" translate>CLOSE</button>
 
 		    </div>
 		</form>
