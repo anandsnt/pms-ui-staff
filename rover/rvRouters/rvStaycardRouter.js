@@ -239,6 +239,9 @@ angular.module('stayCardModule', [])
                     } else {
                         return {};
                     }
+                },
+                activeUserList: function(RVActivityLogSrv) {
+                    return RVActivityLogSrv.fetchActiveUsers();
                 }
             }
         });        

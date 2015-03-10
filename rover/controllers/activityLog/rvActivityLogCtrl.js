@@ -3,13 +3,14 @@ sntRover.controller('RVActivityLogCtrl',[
 	'$rootScope',
 	'$filter', 
     'activityLogResponse',
+    'activeUserList',
     '$state',
-	function($scope, $rootScope, $filter, activityLogResponse, $state){
+    'RVActivityLogSrv',
+	function($scope, $rootScope, $filter, activityLogResponse, activeUserList, $state, RVActivityLogSrv){
 	
 	BaseCtrl.call(this, $scope);
-    console.log("RVActivityLogCtrllllllllll");
-    console.log($rootScope);
-    // var businessDate = $rootScope.businessDate;
+    
+    $scope.businessDate = $rootScope.businessDate;
     // var userName = $rootScope.userName;
     // console.log(businessDate);
 
@@ -23,8 +24,6 @@ sntRover.controller('RVActivityLogCtrl',[
 	*/
 	$scope.backToStayCard = function(){
 		
-        console.log($scope.$parent.reservation.reservation_card.reservation_id);
-        console.log($scope.$parent.reservation.reservation_card.confirmation_num);
 		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", 
             {
                 id:$scope.$parent.reservation.reservation_card.reservation_id, 
@@ -56,6 +55,8 @@ sntRover.controller('RVActivityLogCtrl',[
         numberOfMonths: 1,
         changeYear: true,
         changeMonth: true,
+        //maxDate: tzIndependentDate($rootScope.businessDate),
+        yearRange: "-50:+50",
         beforeShow: function(input, inst) {
             $('#ui-datepicker-div');
             $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
@@ -67,24 +68,163 @@ sntRover.controller('RVActivityLogCtrl',[
     };
 
     $scope.fromDateOptions = angular.extend({
-        maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+       // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
         onSelect: function(value) {
             $scope.untilDateOptions.minDate = value;
         }
     }, datePickerCommon);
     $scope.untilDateOptions = angular.extend({
-        maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+       // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
         onSelect: function(value) {
             $scope.fromDateOptions.maxDate = value;
         }
     }, datePickerCommon);
 
     $scope.isOldValue = function(value){
-        if(value==="")
+        if(value =="" || typeof value == "undefined" || value == null){
             return false;
-        else
+        }
+        else{
             return true;
+        }
     }
+
+    $scope.updateReport = function(){
+        var callback = function(data) {
+                console.log(data);
+                $scope.activityLogData = data.results;
+                $scope.$emit('hideLoader');
+        }
+        var params = {};
+        params.id=$scope.$parent.reservation.reservation_card.reservation_id;
+        params.from_date = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
+        params.to_date = $filter('date')($scope.toDate, 'yyyy-MM-dd');
+        params.sort_order = $scope.sort_order;
+        params.sort_field = $scope.sort_field ;
+        console.log(params);
+        $scope.invokeApi(RVActivityLogSrv.filterActivityLog, params, callback);
+    }
+
+    
+    $scope.sortByUserName = function(){
+        $scope.sort_field ="USERNAME";
+        if($scope.sortOrderOfUser){
+            $scope.sortOrderOfUser = false;
+            $scope.sort_order="desc";
+        }
+        else{
+            $scope.sortOrderOfUser = true;
+            $scope.sort_order="asc";
+        }
+        $scope.updateReport();
+    }
+
+    $scope.sortByDate = function(){
+        $scope.sort_field ="DATE";
+        if($scope.sortOrderOfDate){
+            $scope.sortOrderOfDate = false;
+            $scope.sort_order="desc";
+        }
+        else{
+            $scope.sortOrderOfDate = true;
+            $scope.sort_order="asc";
+        }
+        $scope.updateReport();
+    }
+
+    $scope.sortByAction = function(){
+        $scope.sort_field ="ACTION";
+        if($scope.sortOrderOfAction){
+            $scope.sortOrderOfAction = false;
+            $scope.sort_order="desc";
+        }
+        else{
+            $scope.sortOrderOfAction = true;
+            $scope.sort_order="asc";
+        }
+        $scope.updateReport();
+    }
+
+    
+    var activeUserAutoCompleteObj = [];
+    _.each($scope.activeUserList, function(user) {
+        activeUserAutoCompleteObj.push({
+            label: user.email,
+            value: user.id
+        });
+    });
+
+    function split(val) {
+        return val.split(/,\s*/);
+    }
+
+    function extractLast(term) {
+        return split(term).pop();
+    }
+
+
+    var thisReport;
+    $scope.returnItem = function(item) {
+        thisReport = item;
+    };
+
+    var userAutoCompleteCommon = {
+        source: function(request, response) {
+            // delegate back to autocomplete, but extract the last term
+            response($.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)));
+        },
+        select: function(event, ui) {
+            var uiValue = split(this.value);
+            uiValue.pop();
+            uiValue.push(ui.item.label);
+            uiValue.push("");
+
+            this.value = uiValue.join(", ");
+            setTimeout(function() {
+                $scope.$apply(function() {
+                    thisReport.uiChosenUsers = uiValue.join(", ");
+                });
+            }.bind(this), 100);
+            return false;
+        },
+        close: function(event, ui) {
+            var uiValues = split(this.value);
+            var modelVal = [];
+
+            _.each(activeUserAutoCompleteObj, function(user) {
+                var match = _.find(uiValues, function(email) {
+                    return email == user.label;
+                });
+
+                if (!!match) {
+                    modelVal.push(user.value);
+                };
+            });
+
+            setTimeout(function() {
+                $scope.$apply(function() {
+                    thisReport.chosenUsers = modelVal;
+                });
+            }.bind(this), 100);
+        },
+        focus: function(event, ui) {
+            return false;
+        }
+    }
+    $scope.listUserAutoCompleteOptions = angular.extend({
+        position: {
+            my: 'left top',
+            at: 'left bottom',
+            collision: 'flip'
+        }
+    }, userAutoCompleteCommon);
+    $scope.detailsUserAutoCompleteOptions = angular.extend({
+        position: {
+            my: 'left bottom',
+            at: 'right+20 bottom',
+            collision: 'flip'
+        }
+    }, userAutoCompleteCommon);
 
     /*
     * function to refresh scroller
@@ -106,8 +246,11 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.reportUpdateWidth = resizableMinWidth;
 
         $scope.activityLogData = activityLogResponse.results;
+        $scope.activeUserList = activeUserList;
 
-
+        $scope.sortOrderOfUser = false;
+        $scope.sortOrderOfDate = false;
+        $scope.sortOrderOfAction = false;
 
         // set a back button on header
         $rootScope.setPrevState = {

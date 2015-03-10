@@ -33,12 +33,12 @@
                     </a>
                     <div id="sidebar-filter" class="settings-content">
                         <label for="activity-filter">User</label>
-                        <input name="activity-filter" id="activity-filter" class="icons icon-search" placeholder="Search by User Name" type="search" autocomplete="off" />
+                         <input name="activity-filter" id="activity-filter" class="icons icon-search"  auto-complete auto-options="listUserAutoCompleteOptions" data-card-type="" placeholder="Search by User Name" type="search" autocomplete="off" ng-model="uiChosenUsers" report-source="activityLogData" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)"/>
                     </div>
                 </div>
 
-                <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
-                    <!-- Options -->
+               <!--  <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
+                    Options 
                     <a class="settings-title toggle has-arrow active">
                         <span class="title">Options</span>
                     </a>
@@ -54,10 +54,10 @@
                             {Activity Type}
                         </label>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="actions">
-                <button type="button" class="button green">Update Report</button>
+                <button type="button" class="button green" ng-click="updateReport()">Update Report</button>
             </div>
         </div>
     </div>
@@ -90,16 +90,16 @@
                         <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
                         "sorting-asc" when ASC sorting
                         "sorting-desc" when DESC sorting -->
-                        <th><span class="sort" ng-class="sorting-asc">User Name</span></th>
-                        <th><span class="sort" ng-class="sorting-desc">Date &amp; Time</span></th>
-                        <th><span class="sort">Action</span></th>
+                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfUser,'sorting-desc':sortOrderOfUser}" ng-click="sortByUserName()">User Name</span></th>
+                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfDate,'sorting-desc':sortOrderOfDate}" ng-click="sortByDate()">Date &amp; Time</span></th>
+                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfAction,'sorting-desc':sortOrderOfAction}" ng-click="sortByAction()">Action</span></th>
                         <th><span>Details</span></th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <td colspan="2">
-                            From <span>{Range From}</span> to <span>{Range To}</span>
+                            From <span>{{activityLogData.from_Date}}</span> to <span>{{activityLogData.to_Date}}</span>
                             <!-- If filtered by users, show:
                             <br />
                             Users <span>{User filter}</span>-->
@@ -118,7 +118,7 @@
                         <td class="details">
                             <span ng-repeat="details in log.details">
                                 <span class="old" ng-show="isOldValue(details.old_value)" style="text-decoration:line-through">{{details.key}} <strong>{{details.old_value}}</strong>|</span>
-                                <span class="old">{{details.key}}<strong>{{details.new_value}}</strong>|</span>
+                                <span class="old">{{details.key}}<strong>{{details.new_value}}</strong><span ng-show="!$last">|</span></span>
                             </div>
                         </td>
                     </tr>
