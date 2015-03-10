@@ -95,7 +95,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     addons: [],
                     varyingOccupancy: false,
                     stayDates: {},
-                    isOccupancyCheckAlerted: false
+                    isOccupancyCheckAlerted: false,
+                    demographics: {
+                        market: '',
+                        source: '',
+                        reservationType: '',
+                        origin: ''
+                    }
                 }],
                 totalTaxAmount: 0, //This is for ONLY exclusive taxes
                 totalStayCost: 0,

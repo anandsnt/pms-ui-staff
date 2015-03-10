@@ -1070,7 +1070,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             });
         };
 
-        $scope.updateAdditionalDetails = function() {
+        $scope.updateAdditionalDetails = function(reservationId) {
             var updateSuccess = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.closeDialog();
@@ -1084,15 +1084,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.errorMessage = [];
 
             var postData = $scope.computeReservationDataforUpdate(true);
-            postData.reservationId = $scope.reservationData.reservationId;
+            postData.reservationId = reservationId;
             $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
         };
 
-        $scope.setDemographics = function(showRequiredFieldsOnly) {
+        $scope.setDemographics = function(showRequiredFieldsOnly, index) {
             $scope.shouldShowReservationType = true;
             $scope.shouldShowMarket = true;
             $scope.shouldShowSource = true;
             $scope.shouldShowOriginOfBooking = true;
+            $scope.demographics = $scope.reservationData.rooms[index].demographics || $scope.reservationData.demographics;
             if(showRequiredFieldsOnly){
                 $scope.shouldShowReservationType = ($scope.otherData.reservationTypeIsForced) ? true : false;
                 $scope.shouldShowMarket = ($scope.otherData.marketIsForced) ? true : false;
@@ -1109,16 +1110,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         $scope.isDemographicsFormValid = function(){
             var isValid = true;
             if($scope.otherData.reservationTypeIsForced){
-                isValid = $scope.reservationData.demographics.reservationType != "";
+                isValid = $scope.demographics.reservationType != "";
             }
             if($scope.otherData.marketIsForced && isValid){
-                isValid = $scope.reservationData.demographics.market != "";
+                isValid = $scope.demographics.market != "";
             }
             if($scope.otherData.sourceIsForced && isValid){
-                isValid = $scope.reservationData.demographics.source != "";
+                isValid = $scope.demographics.source != "";
             }
             if($scope.otherData.originIsForced && isValid){
-                isValid = $scope.reservationData.demographics.origin != "";
+                isValid = $scope.demographics.origin != "";
             }
             return isValid;
         }
