@@ -6939,10 +6939,15 @@
                 position: relative;
                 .calc-height(100, 50);
 
-                > .wrapper { padding: 0 20px 20px 20px; }
-                > .iScrollVerticalScrollbar { 
-                    top: 0;
-                    bottom: 20px; 
+                > .wrapper { padding: 20px; }
+
+                h2 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 20px 0 10px 0;
+                    text-transform: uppercase;
+
+                    &:first-child { margin-top: 0; }
                 }
 
                 table {
@@ -8727,10 +8732,43 @@
                                 font-weight: 600;
                                 line-height: 40px;
                                 margin-right: 20px;
+
+                                .corporate { line-height: 40px; }
+                            }
+
+                            .restricted { 
+                                vertical-align: top; 
+                                line-height: 1.2em; 
+
+                                .corporate { line-height: 20px; }
+                            }
+
+                            .corporate {
+                                font-size: 10px;
+                                text-transform: uppercase;
+                                text-align: center;
+                                padding: 5px 10px;
+                                margin-left: 10px;
+                                color: @grey3;
+                                vertical-align: top;
+                                background: rgba(0,0,0,.1);
+                                #border-radius > .rounded();
+                            }
+
+                            span {
+                                color: @grey3;
+
+                                &.red { color: @red; }
+                                &.green { color: @green; }
+                                &.purple { color: @purpleStart; }
+                                &.blue { color: @blue; }
+                                &.grey { color: @grey3; }
+                                &.recommended { color: @logoPrimary; }
                             }
 
                             .data {
                                 #pixel-to-percent > .width(950, 1968);
+                                .float;
                                 .show;
                                 .pull-left;
 
@@ -8739,31 +8777,47 @@
                                     overflow: hidden;
                                     white-space: nowrap;
                                     text-overflow: ellipsis;
-                                    margin-right: 20px;
                                     .pull-left;
                                 }
 
-                                span {
+                                .corporate {
+                                    line-height: 10px;
+                                    margin-top: 10px;
+                                    .pull-left; 
+                                }
+
+                                .count,
+                                .restricted,
+                                .recommended {
                                     font-size: 16px;
                                     line-height: 40px;
                                     text-transform: uppercase;
                                     font-weight: 600;
-                                    color: @logoPrimary;
-                                    .pull-left;
+                                    margin-left: 10px;
+                                    .pull-left;                                
                                 }
                             }
 
                             .book-rate {
-                                #pixel-to-percent > .width(1018, 1968);
                                 text-align: right;
+                                #pixel-to-percent > .width(1018, 1968);
                                 .pull-left;
 
                                 .select {
-                                    width: 280px;
+                                    width: 240px;
                                     clear: both;
 
                                     select,
                                     &:after { background-color: @grey1; }
+                                }
+
+                                .count {
+                                    font-size: 16px;
+                                    line-height: 40px;
+                                    text-transform: uppercase;
+                                    font-weight: 600;
+                                    margin-left: 10px;
+                                    .pull-left;
                                 }
 
                                 .button {
@@ -8793,13 +8847,6 @@
                                 }
                             }
 
-                            .button { 
-                                &.green,
-                                &.green-text {
-                                    line-height: 38px; 
-                                }
-                            }
-
                             /* Nested list ***/
                             .rates {
                                 padding: 0 15px 15px 45px;
@@ -8814,10 +8861,22 @@
                                         text-align: right;
                                         .float;
 
-                                        h3 { .pull-left; }
+                                        h3 { 
+                                            text-align: left;
+                                            .pull-left; 
+
+                                            .restricted {
+                                                font-size: 14px;
+                                                line-height: 1em;
+                                                text-transform: uppercase;
+                                                .show;                          
+                                            }
+                                        } 
                                     }
 
                                     &:last-child { margin-bottom: 0; }
+
+                                    &.closed { background-color: darken(@grey1, 5); }
                                 }
                             }
 
@@ -8842,7 +8901,8 @@
                                 }
 
                                 .data {
-                                    span { .pull-right; }
+                                    .restricted,
+                                    .recommended { .pull-right; }
                                 }
 
                                 .book-rate {
@@ -8861,6 +8921,12 @@
                                 }
                             }
 
+                            &.is-recommended {
+                                .data {
+                                    .restricted { .pull-left; }
+                                }
+                            }
+
                             &.no-toggle {
                                 padding: 15px;
                                 .float;
@@ -8868,8 +8934,6 @@
                                 .data {
                                     width: 100%;
                                     float: none;
-
-                                    h2 { float: none; }
                                 }
 
                                 .book-rate { .hide; }
@@ -8925,6 +8989,8 @@
                                 &:before { top: 15px; }
                             }
 
+                            &.closed { background-color: darken(@grey1, 5); }
+
                             &:last-child { margin-bottom: 0; }
                         }
                     }
@@ -8941,7 +9007,10 @@
                             .pull-left;
                             #pixel-to-percent > .width(480, 1980);
 
-                            li { .box-shadow(none); }
+                            li { 
+                                background: transparent !important;
+                                .box-shadow(none); 
+                            }
                         }               
 
                         .room-cost {
@@ -8949,7 +9018,7 @@
                             table-layout: fixed;
                             border-collapse: collapse; 
                             border-spacing: 0;
-                            margin: 0 20px;
+                            margin: 0 0 20px 20px;
                             .pull-left;
                             #pixel-to-percent > .width(1380, 1980);
 
@@ -9017,6 +9086,25 @@
                                 tr {
                                     td { padding: 0; }
                                 }
+                            }
+                        }
+
+                        .restrictions {
+                            clear: both;
+                            padding-top: 10px;
+                            margin: 0 10px;
+                            border-top: 1px solid rgba(0,0,0,.1);
+                            .show;
+
+                            li {
+                                display: inline-block;
+                                font-size: 14px;
+                                margin: 0 20px 0 0;
+                                background: transparent;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                background: transparent !important;
+                                .box-shadow(none);
                             }
                         }
                     }

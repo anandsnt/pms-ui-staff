@@ -29,11 +29,13 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
+
 		$scope.reportList = reportsResponse.results;
 		$scope.reportCount = reportsResponse.total_count;
-		$scope.activeUserList = activeUserList;
 
+		$scope.activeUserList = activeUserList;
 		$scope.guaranteeTypes = guaranteeTypes;
+
 
 		$scope.showReportDetails = false;
 
@@ -619,6 +621,17 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			};
 
+			// include group bys
+			if (chosenReport.groupByOptions) {
+				if ( chosenReport.chosenGroupBy == 'DATE' ) {
+					params['group_by_date'] = true;
+				};
+
+				if ( chosenReport.chosenGroupBy == 'USER' ) {
+					params['group_by_user'] = true;
+				};
+			};
+
 			// include notes
 			if (chosenReport.hasOwnProperty('hasIncludeNotes')) {
 				key = chosenReport.hasIncludeNotes.value.toLowerCase();
@@ -740,6 +753,52 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
 			};
 
+            // include due out departure option
+			if (chosenReport.hasOwnProperty('hasDueOutDepartures')) {
+				key = chosenReport.hasDueOutDepartures.value.toLowerCase();
+				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
+			};
+
+            // include new option
+			if (chosenReport.hasOwnProperty('hasIncludeNew')) {
+				key = chosenReport.hasIncludeNew.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeNew ? true : false;
+			};
+
+            // include both option
+			if (chosenReport.hasOwnProperty('hasIncludeBoth')) {
+				key = chosenReport.hasIncludeBoth.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeBoth ? true : false;
+			};
+
+
+
+
+
+			// need to reset the "group by" if any new filter has been applied
+			if ( !!chosenReport.groupByOptions && !!$scope.oldParams ) {
+				for (key in params) {
+					if ( !params.hasOwnProperty(key) ) {
+					    continue;
+					};
+
+					if ( key == 'group_by_date' || key == 'group_by_user' ) {
+						continue;
+					} else if ( params[key] != $scope.oldParams[key] ) {
+						chosenReport.chosenGroupBy = 'BLANK';
+						params['group_by_date'] = false;
+						params['group_by_user'] = false;
+						break;
+					};
+				};
+			};
+
+			// keep a copy of the current params
+			$scope.oldParams = angular.copy( params );
+
+
+
+
 
 			var callback = function(response) {
 				if (changeView) {
@@ -748,12 +807,13 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 
 				// fill in data into seperate props
-				$scope.totals = response.totals;
-				$scope.headers = response.headers;
-				$scope.subHeaders = response.sub_headers;
-				$scope.results = response.results;
+				$scope.totals          = response.totals;
+				$scope.headers         = response.headers;
+				$scope.subHeaders      = response.sub_headers;
+				$scope.results         = response.results;
 				$scope.resultsTotalRow = response.results_total_row;
-				$scope.summaryCounts = response.summary_counts;
+				$scope.summaryCounts   = response.summary_counts;
+				$scope.reportGroupedBy = response.group_by;
 
 				// track the total count
 				$scope.totalCount = response.total_count;

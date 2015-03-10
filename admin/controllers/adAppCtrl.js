@@ -521,7 +521,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$scope.hasLoader = false;
 		});
 
-		$scope.isHotelListOpen = function() {
+		/*$scope.isHotelListOpen = function() {
 			$scope.hotelListOpen = ($scope.hotelListOpen == "open") ? "" : "open";
 		};
 		$scope.redirectToHotel = function(hotel_id) {
@@ -534,7 +534,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				$window.location.href = "/admin";
 			}, function() {
 			});
-		};
+		};*/
 
 		/**
 		    *   Method to go back to previous state.
