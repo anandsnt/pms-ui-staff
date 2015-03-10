@@ -67,6 +67,28 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
+		var calculateRateForCurrentGuest = function(){
+
+			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
+				
+				if (new tzIndependentDate(item.date) >= new tzIndependentDate($rootScope.businessDate)) {
+					
+					var adults = parseInt($scope.guestData.adult_count || 0),
+						children = parseInt($scope.guestData.children_count || 0),
+						rateToday = item.rate_config;
+
+					if(!$scope.reservationData.reservation_card.is_hourly_reservation) {
+						
+						var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
+						var extraAdults = adults >= 2 ? adults - 2 : 0;
+						var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+						
+						$scope.rateForCurrentGuest = parseFloat(roomAmount).toFixed(2);
+					}
+				}
+			});
+		};
+
 		var confirmForRateChange = function(){
 			
 			ngDialog.open({
@@ -79,14 +101,12 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		}
 
 		$scope.keepCurrentRate = function(){
-			console.log("keepCurrentRate");
 			//Save data variables keeping the Current Rate .
 			saveChanges(true);
 			closeDialog();
 		};
 
 		$scope.ChangeToNewRate = function(){
-			console.log("ChangeToNewRate");
 			//Save data variables taking the New Rate .
 			saveChanges();
 			closeDialog();
@@ -102,7 +122,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					$scope.customRate = item.rateDetails.modified_amount;
 				}
 			});
-			console.log("isRateChangeOcuured"+isRateChangeOcuured);
 			return isRateChangeOcuured;
 		};
 
@@ -138,8 +157,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = roomAmount;
 							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = roomAmount;
 						}
-
-
 					}
 				}
 			})
@@ -204,22 +221,20 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			if (!angular.equals(data, initialGuestInfo)) {
 				$scope.$emit('showLoader');
 				
-				if (isOccupancyRateConfigured()) 
-				{
+				if (isOccupancyRateConfigured()) {
 					// CICO-13491
 					// If the occupancy Rate is configured and a rate change occured
 					// We have to show the popup for 'Keep Current Rate' & 'Change to new Rate'
-                    if(isRateChangeOcuured())
-                    {
+                    if(isRateChangeOcuured()) {
+                    	calculateRateForCurrentGuest();
                     	confirmForRateChange();
                     }
-                    else
-                    {
+                    else {
 						saveChanges();
 					}
+					$scope.$emit('hideLoader');
 				} 
-				else 
-				{
+				else {
 					$scope.$emit('hideLoader');
 					ngDialog.open({
 						template: '/assets/partials/reservation/alerts/notConfiguredOccupancyInStayCard.html',
