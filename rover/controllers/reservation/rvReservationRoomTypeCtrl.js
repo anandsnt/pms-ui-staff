@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter',
-	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv',
+	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv) {
+
 
 		// smart switch btw edit reservation flow and create reservation flow
 		if (!!$state.params && $state.params.isFromChangeStayDates) {
@@ -216,7 +217,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$scope.stateCheck.suppressedRates.push(d.id);
 				}
 			});
-			
+
 			$scope.displayData.allRates = rates;
 
 			$scope.reservationData.ratesMeta = rates;
@@ -270,11 +271,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.$emit('hideLoader');
 		};
 
-		$scope.isCorRate = function(id){
-			console.log(id);
-			var rateFlag=false;
+		$scope.isCorRate = function(id) {
+			var rateFlag = false;
 			$(roomRates.rates).each(function(i, d) {
-				if(d.id==id){
+				if (d.id == id) {
 					if (d.account_id) {
 						rateFlag = true;
 					}
@@ -579,12 +579,37 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			})
 		}
 
+		var permissionCheck = function(roomId, rateId) {
+			var BOOK_RESTRICTED_ROOM_RATE = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
+				BOOK_ROOM_WITHOUT_INVENTORY = rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY');
+
+			if (BOOK_RESTRICTED_ROOM_RATE && BOOK_ROOM_WITHOUT_INVENTORY) {
+				return true;
+			} else {
+				var authorization = true;
+				var restrictions = $scope.stateCheck.stayDatesMode ? $scope.roomAvailability[roomId].ratedetails[$scopestateCheck.dateModeActiveDate][rateId].restrictions : $scope.getAllRestrictions(roomId, rateId);
+				var roomCount = $scope.stateCheck.stayDatesMode ? $scope.roomAvailability[roomId].ratedetails[$scopestateCheck.dateModeActiveDate][rateId].availabilityCount : $scope.getLeastAvailability(roomId, rateId);
+
+				if (restrictions.length > 0 && !BOOK_RESTRICTED_ROOM_RATE) {
+					authorization = false;
+					console.log('-- no premission to BOOK_RESTRICTED_ROOM_RATE --');
+				}
+				if (roomCount < 1 && !BOOK_ROOM_WITHOUT_INVENTORY) {
+					authorization = false;
+					console.log('-- no premission to BOOK_ROOM_WITHOUT_INVENTORY --');
+				}
+				return authorization;
+			}
+		}
+
 		$scope.handleBooking = function(roomId, rateId, event) {
 
 			event.stopPropagation();
 
-			console.log("Handle booking");
-			console.log($stateParams.fromState);
+			if (!permissionCheck(roomId, rateId)) {
+				console.log('--permissionCheck failed');
+				return false;
+			}
 
 			/*	Using the populateStayDates method, the stayDates object for the active room are 
 			 *	are updated with the rate and rateName information
@@ -844,6 +869,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 								if (typeof today[rateId].restrictions == 'undefined') {
 									today[rateId].restrictions = [];
+								}
+
+								if (today[rateId].availabilityCount < 1) {
+									validRate = false;
 								}
 
 								var rateConfiguration = today[rateId].rateBreakUp;
@@ -1387,13 +1416,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.getLeastAvailability = function(roomId, rateId) {
 			// roomAvailability[roomId].ratedetails[<date>][rateId].availabilityCount 
-			
+
 			var leastAvailability = $scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].availabilityCount
 			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail) {
 				if (rateDetail[rateId].availabilityCount < leastAvailability) {
 					leastAvailability = rateDetail[rateId].availabilityCount;
 				}
-			});			
+			});
 			return leastAvailability;
 		}
 
