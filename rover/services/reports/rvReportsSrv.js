@@ -23,50 +23,6 @@ sntRover.service('RVreportsSrv', [
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-
-						// var data = data;
-						// data.results.push({
-				        //     "id": 202,
-				        //     "title": "Daily Transactions",
-				        //     "filters": [
-				        //         {
-				        //             "value": "BY_SINGLE_DATE",
-				        //             "description": "By Single Date"
-				        //         },
-				        //         {
-				        //             "value": "BY_CHARGE_GROUP",
-				        //             "description": "By Charge Group"
-				        //         } ,
-				        //         {
-				        //             "value": "BY_CHARGE_CODE",
-				        //             "description": "By Charge Code"
-				        //         }
-				        //     ],
-				        //     "sort_fields": [
-				        //         {
-				        //             "value": "BY_REVENUE",
-				        //             "description": "By Revenue"
-				        //         },
-				        //         {
-				        //             "value": "BY_CHARGE_GROUP",
-				        //             "description": "By Charge Group"
-				        //         },
-				        //         {
-				        //             "value": "BY_CHARGE_CODE",
-				        //             "description": "By Charge Code"
-				        //         },
-				        //         {
-				        //             "value": "BY_VARIANCE_MTD",
-				        //             "description": "By Variance MTD"
-				        //         },
-				        //         {
-				        //             "value": "BY_VARIANCE_YTD",
-				        //             "description": "By Variance YTD"
-				        //         }
-				        //     ]
-				        // });
-
-
 						this.cacheReportList = data;
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {

@@ -20,3 +20,10 @@
 <li ng-if="chosenReport.title == 'Reservations By User'">Overrides<span>{{ currencySymbol }}{{ summaryCounts.total_rate_overrides }}</span></li>
 <li ng-if="chosenReport.title == 'Reservations By User'">Variance<span>{{ currencySymbol }}{{ summaryCounts.total_rate_variance }}</span></li>
 <li ng-if="chosenReport.title == 'Reservations By User'">Total Revenue<span>{{ currencySymbol }}{{ summaryCounts.total_revenue }}</span></li>
+
+<!-- Reservations By User -->
+<li ng-if="chosenReport.title == 'Daily Transactions'">Date<span>{{ summaryCounts.total_users | date : dateFormat }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">Transactions<span>{{ summaryCounts.total_new }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">Revenue<span class="green">{{ currencySymbol }}{{ summaryCounts.total_cancel }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">MTD<span>{{ currencySymbol }}{{ summaryCounts.total_rate_overrides }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">YTD<span>{{ currencySymbol }}{{ summaryCounts.total_rate_overrides }}</span></li>

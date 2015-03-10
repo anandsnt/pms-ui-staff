@@ -394,21 +394,21 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for include guarantee type filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
                     reportItem['hasGuaranteeType'] = filter;
-                    reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
+                    reportItem['guaranteeTypes'] = angular.copy(  data.guaranteeTypes  );
                     _hasGuaranteeSelect = true;
                 };
 
                 // check for "by charge group" and keep a ref to that item
                 if ( filter.value === 'BY_CHARGE_GROUP' ) {
                     reportItem['hasByChargeGroup'] = filter;
-                    // reportItem['chargeGroups'] = angular.copy( data.chargeGroups );
+                    // reportItem['chargeGroups'] = angular.copy(  data.chargeGroups  );
                     _hasChargeGroupSelect = true;
                 };
 
                 // check for "by charge group" and keep a ref to that item
                 if ( filter.value === 'BY_CHARGE_CODE' ) {
                     reportItem['hasByChargeCode'] = filter;
-                    // reportItem['chargeCodes'] = angular.copy( data.chargeCodes );
+                    // reportItem['chargeCodes'] = angular.copy(  data.chargeCodes  );
                     _hasChargeCodeSelect = true;
                 };
             });
@@ -492,8 +492,8 @@ sntRover.factory('RVReportUtilsFac', [
             // [date - name - room] > TO > [room - name - date]
             if ( reportItem['title'] == __reportNames['ARRIVAL'] ||
                  reportItem['title'] == __reportNames['DEPARTURE'] ) {
-                var dateSortBy = angular.copy(reportItem.sortByOptions[0]),
-                    roomSortBy = angular.copy(reportItem.sortByOptions[2]);
+                var dateSortBy = angular.copy( reportItem.sortByOptions[0] ),
+                    roomSortBy = angular.copy( reportItem.sortByOptions[2] );
 
                 dateSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
@@ -506,8 +506,8 @@ sntRover.factory('RVReportUtilsFac', [
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
             if ( reportItem['title'] == __reportNames['IN_HOUSE_GUEST'] ) {
-                var nameSortBy = angular.copy(reportItem.sortByOptions[0]),
-                    roomSortBy = angular.copy(reportItem.sortByOptions[1]);
+                var nameSortBy = angular.copy( reportItem.sortByOptions[0] ),
+                    roomSortBy = angular.copy( reportItem.sortByOptions[1] );
 
                 nameSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
@@ -531,11 +531,11 @@ sntRover.factory('RVReportUtilsFac', [
             // need to reorder the sort_by options
             // for deposit report in the following order
             if ( reportItem['title'] == __reportNames['DEPOSIT_REPORT'] ) {
-                var reservationSortBy = angular.copy(reportItem.sortByOptions[4]),
-                    nameSortBy        = angular.copy(reportItem.sortByOptions[3]),
-                    dateSortBy        = angular.copy(reportItem.sortByOptions[0]),
-                    dueDateSortBy     = angular.copy(reportItem.sortByOptions[1]),
-                    paidDateSortBy    = angular.copy(reportItem.sortByOptions[2]);
+                var reservationSortBy = angular.copy( reportItem.sortByOptions[4] ),
+                    nameSortBy        = angular.copy( reportItem.sortByOptions[3] ),
+                    dateSortBy        = angular.copy( reportItem.sortByOptions[0] ),
+                    dueDateSortBy     = angular.copy( reportItem.sortByOptions[1] ),
+                    paidDateSortBy    = angular.copy( reportItem.sortByOptions[2] );
 
                 reportItem.sortByOptions[0] = reservationSortBy;
                 reportItem.sortByOptions[1] = nameSortBy;
@@ -548,13 +548,13 @@ sntRover.factory('RVReportUtilsFac', [
             // need to reorder the sort_by options
             // for Reservation by User in the following order
             if ( reportItem['title'] == __reportNames['RESERVATIONS_BY_USER'] ) {
-                var reservationType = angular.copy(reportItem.sortByOptions[6]),
-                    guestName       = angular.copy(reportItem.sortByOptions[3]),
-                    arrivalDate     = angular.copy(reportItem.sortByOptions[1]),
-                    rateAmount      = angular.copy(reportItem.sortByOptions[5]),
-                    createdOn       = angular.copy(reportItem.sortByOptions[0]),
-                    guranteeType    = angular.copy(reportItem.sortByOptions[2]),
-                    overrideAmount  = angular.copy(reportItem.sortByOptions[4]);
+                var reservationType = angular.copy( reportItem.sortByOptions[6] ),
+                    guestName       = angular.copy( reportItem.sortByOptions[3] ),
+                    arrivalDate     = angular.copy( reportItem.sortByOptions[1] ),
+                    rateAmount      = angular.copy( reportItem.sortByOptions[5] ),
+                    createdOn       = angular.copy( reportItem.sortByOptions[0] ),
+                    guranteeType    = angular.copy( reportItem.sortByOptions[2] ),
+                    overrideAmount  = angular.copy( reportItem.sortByOptions[4] );
 
                 reportItem.sortByOptions[0] = reservationType;
                 reportItem.sortByOptions[1] = guestName;
@@ -564,6 +564,27 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem.sortByOptions[5] = guranteeType;
                 reportItem.sortByOptions[6] = overrideAmount;
                 reportItem.sortByOptions[7] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for daily transactions in the following order
+            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+                var chargeGroup = angular.copy( reportItem.sortByOptions[1] ),
+                    chargeCode  = angular.copy( reportItem.sortByOptions[0] ),
+                    revenue     = angular.copy( reportItem.sortByOptions[3] ),
+                    mtd         = angular.copy( reportItem.sortByOptions[2] ),
+                    ytd         = angular.copy( reportItem.sortByOptions[4] );
+
+                reportItem.sortByOptions[0] = chargeGroup;
+                reportItem.sortByOptions[1] = chargeCode;
+                reportItem.sortByOptions[2] = null;
+                reportItem.sortByOptions[3] = revenue;
+                reportItem.sortByOptions[4] = null;
+                reportItem.sortByOptions[5] = null;
+                reportItem.sortByOptions[6] = mtd;
+                reportItem.sortByOptions[7] = null;
+                reportItem.sortByOptions[8] = null;
+                reportItem.sortByOptions[9] = ytd;
             };
         };
 

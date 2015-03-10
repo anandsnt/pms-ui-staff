@@ -359,7 +359,7 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.sortByOptions && showSortBy" ng-class="{'hidden': !filterItemsToggle.item_13}">
             <div class="select">
-                <select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
+                <select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions | filter:showValidSortBy">
                     <option value="">Sort By</option>
                 </select>
             </div>
