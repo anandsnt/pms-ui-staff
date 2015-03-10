@@ -56,9 +56,6 @@
 		
 		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button staycard-button icon-bill" ng-hide="reservationData.reservation_card.is_routing_available == 'true'">Bill &amp; Charges</a>
 		
-		<!-- show add charge -->
-		
-		<a class="button white green-text" ng-click="openPostCharge()" ng-show="displayAddCharge(reservationData.reservation_card.reservation_status)">Add Charge</a>
 		
 		<!-- show smartbands -->
 		<a class="button staycard-button icon-smartband" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>
