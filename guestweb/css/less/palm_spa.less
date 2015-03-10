@@ -20,6 +20,15 @@
 .browntext, .white-alert-link-tag, .white-alert-link-tag:hover{
 	color:@brown !important;
 }
+.checkout-status.centeralign{
+	.msg-head,.msg-body{
+		color:@brown !important;
+	}
+}
+.img-responsive.img-center.logoImage{
+	background-color:@white !important;
+}
+
 
 body{
 	background-color:@white !important;
@@ -62,7 +71,49 @@ body{
 		height: 107px;
 	}
 	.margin-top{
-		margin-top:65px !important;
+	   margin-top:65px !important;
+	}
+
+	.margin-left-right{
+	   margin-left: 20%;
+   	   margin-right: 20%;
+	}
+
+}
+
+@media (max-width: 990px) {
+	.img-responsive.img-center.logoImage{
+		min-height:80px !important;
+		max-width: 120px !important;
+	}
+	.lightcontent.chekout-time.grey-text.room-text.browntext{
+		padding:5% 0% 0%;
+		font-size:16px !important;
+	}
+	.row.cabin_number_field{
+		padding:10% 0%;
+		.lightcontent{
+			font-size:14px !important;
+		}
+	}
+	.checkout-time-container{
+		padding:2% 0% 0%;
+	}
+	.col-md-6.headtext.centeralign.pad-rt-60.payment {
+   		padding: 18% 0 0;
+	}
+	.msg-head.thanks-msg.browntext {
+   	 	font-size: 26px !important;
+    	padding: 0 10%;
+	}
+
+	.row.check-inout-wrapper.late-options {
+    	.headtext{
+    		padding:5% 0%;
+    	}
+	}
+	.backbtn{
+		display:none !important;
 	}
 
 }
@@ -78,9 +129,7 @@ body{
 .checkoutlater{
 	background-color: @darkGreen ;
 }
-.margin-left-right{
-	margin-left: 50px; margin-right: 50px;
-}
+
 .backbtn{
 	 margin-top: -45px;
 }
@@ -127,4 +176,10 @@ body{
 .col-md-4.cabin-number {
     width: 300px;
     margin: 0 auto;
+}
+
+.link-btn.with-bg.green-bg.back-to-checkout.white-text-hover {
+    margin: 0 auto;
+    width: 70%;
+    padding: 4% 0;
 }
