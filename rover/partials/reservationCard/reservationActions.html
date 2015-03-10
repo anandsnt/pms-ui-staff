@@ -38,7 +38,7 @@
 		</div>
 		
 		<a id="deposit_balance" ng-show="showDepositBalance(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
-			Deposit/Balance&nbsp;{{currencySymbol}}{{reservationData.reservation_card.deposit_attributes.outstanding_stay_total | number:precisonZero}}
+			Deposit/Balance
 		</a>
 		<a id="deposit_balance" ng-show="showDepositBalanceWithSr(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
 			Deposit/Balance&nbsp;{{reservationData.reservation_card.text_rates_suppressed}}
@@ -56,9 +56,6 @@
 		
 		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button staycard-button icon-bill" ng-hide="reservationData.reservation_card.is_routing_available == 'true'">Bill &amp; Charges</a>
 		
-		<!-- show add charge -->
-		
-		<a class="button white green-text" ng-click="openPostCharge()" ng-show="displayAddCharge(reservationData.reservation_card.reservation_status)">Add Charge</a>
 		
 		<!-- show smartbands -->
 		<a class="button staycard-button icon-smartband" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>
