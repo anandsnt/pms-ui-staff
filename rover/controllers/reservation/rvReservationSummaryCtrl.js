@@ -687,7 +687,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
         $scope.clickedContinueButton = function() {
 
-            if (!$scope.isDemographicsFormValid()){
+            if (!$scope.isDemographicsFormValid()) {
                 $scope.setDemographics(true);
                 return;
             }
@@ -741,8 +741,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                         $scope.errorMessage = error;
 
                     });
-                } 
-                else {
+                } else {
                     $scope.proceedCreatingReservation();
                 }
                 //              
@@ -1065,14 +1064,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             ngDialog.open({
                 template: '/assets/partials/bill/rvBillingInformationPopup.html',
                 controller: 'rvBillingInformationPopupCtrl',
-                className: 'ngdialog-theme-default',
+                className: '',
                 scope: $scope
             });
         };
 
-        $scope.updateAdditionalDetails = function(reservationId) {
+        $scope.updateAdditionalDetails = function(reservationId, index) {
             var updateSuccess = function(data) {
                 $scope.$emit('hideLoader');
+
                 $scope.closeDialog();
             };
 
@@ -1082,6 +1082,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             };
 
             $scope.errorMessage = [];
+
+            $scope.reservationData.rooms[index].demographics = $scope.demographics;
 
             var postData = $scope.computeReservationDataforUpdate(true);
             postData.reservationId = reservationId;
@@ -1093,8 +1095,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.shouldShowMarket = true;
             $scope.shouldShowSource = true;
             $scope.shouldShowOriginOfBooking = true;
-            $scope.demographics = $scope.reservationData.rooms[index].demographics || $scope.reservationData.demographics;
-            if(showRequiredFieldsOnly){
+            $scope.demographics = $scope.reservationData.rooms[index].demographics || angular.copy($scope.reservationData.demographics);
+            if (showRequiredFieldsOnly) {
                 $scope.shouldShowReservationType = ($scope.otherData.reservationTypeIsForced) ? true : false;
                 $scope.shouldShowMarket = ($scope.otherData.marketIsForced) ? true : false;
                 $scope.shouldShowSource = ($scope.otherData.sourceIsForced) ? true : false;
@@ -1102,23 +1104,26 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             }
             ngDialog.open({
                 template: '/assets/partials/reservation/rvReservationDemographicsPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
+                className: '',
+                scope: $scope,
+                data: JSON.stringify({
+                    data:index
+                })
             });
         };
 
-        $scope.isDemographicsFormValid = function(){
+        $scope.isDemographicsFormValid = function() {
             var isValid = true;
-            if($scope.otherData.reservationTypeIsForced){
+            if ($scope.otherData.reservationTypeIsForced) {
                 isValid = $scope.demographics.reservationType != "";
             }
-            if($scope.otherData.marketIsForced && isValid){
+            if ($scope.otherData.marketIsForced && isValid) {
                 isValid = $scope.demographics.market != "";
             }
-            if($scope.otherData.sourceIsForced && isValid){
+            if ($scope.otherData.sourceIsForced && isValid) {
                 isValid = $scope.demographics.source != "";
             }
-            if($scope.otherData.originIsForced && isValid){
+            if ($scope.otherData.originIsForced && isValid) {
                 isValid = $scope.demographics.origin != "";
             }
             return isValid;
