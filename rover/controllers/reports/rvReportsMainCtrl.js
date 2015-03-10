@@ -7,7 +7,8 @@ sntRover.controller('RVReportsMainCtrl', [
 	'activeUserList',
 	'guaranteeTypes',
 	'$timeout',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes,$timeout) {
+	'RVReportUtilsFac',
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes,$timeout, reportUtils) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -28,11 +29,13 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
+
 		$scope.reportList = reportsResponse.results;
 		$scope.reportCount = reportsResponse.total_count;
-		$scope.activeUserList = activeUserList;
 
+		$scope.activeUserList = activeUserList;
 		$scope.guaranteeTypes = guaranteeTypes;
+
 
 		$scope.showReportDetails = false;
 
@@ -77,6 +80,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_11: false,
 			item_12: false,
 			item_13: false,
+			item_14: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -137,6 +141,26 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
+
+
+		var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+			dateParts    = businessDate.match(/(\d+)/g),
+			year  = parseInt( dateParts[0] ),
+			month = parseInt( dateParts[1] ) - 1,
+			date  = parseInt( dateParts[2] ),
+			dbObj = new Date(year, month, date);
+		$scope.dateChanged = function (item, dateName) {
+			if ( item.title == 'Arrival' ) {
+				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
+					item.chosenDueInArrivals = false;
+				}
+			};
+			if ( item.title == 'Departure' ) {
+				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
+					item.chosenDueOutDepartures = false;
+				}
+			}
+		};
 
 		// CICO-10202
 		$scope.reportsState = {
@@ -223,7 +247,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				// both sets are filled.
 				// TODO: in future we may have a single set rather than a pair
 				if ( !_.isEmpty(setOne) && !_.isEmpty(setTwo) ) {
-					if ( item.title == 'Booking Source & Market Report' ) {
+					if ( item.title == reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT') ) {
 						sourceReportHandler( item, angular.copy(setOne), angular.copy(setTwo) )
 					} else {
 						defaultHandler( item, angular.copy(setOne), angular.copy(setTwo) );
@@ -248,7 +272,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// only do this for this report
 			// I know this is ugly :(
-			if (chosenReport.title !== 'Check In / Check Out') {
+			if (chosenReport.title !== reportUtils.getName('CHECK_IN_CHECK_OUT')) {
 				return;
 			};
 
@@ -287,7 +311,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenIncludeDepositDue',
 			'chosenIncludeDepositPastDue',
 			'chosenDueInArrivals',
-			'chosenDueOutDepartures'
+			'chosenDueOutDepartures',
+			'chosenIncludeNew',
+			'chosenIncludeBoth'
 		];
 
 		var hasList = [
@@ -307,7 +333,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeDepositDue',
 			'hasIncludeDepositPastDue',
 			'hasDueInArrivals',
-			'hasDueOutDepartures'
+			'hasDueOutDepartures',
+			'hasIncludeNew',
+			'hasIncludeBoth'
 		];
 
 		var closeAllMultiSelects = function() {
@@ -338,7 +366,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			e.stopPropagation();
 			item.fauxSelectOpen = item.fauxSelectOpen ? false : true;
 
-			//$scope.fauxOptionClicked(e, item);
+			$scope.fauxOptionClicked(e, item);
 		};
 
 		// specific for Source and Markets reports
@@ -391,11 +419,11 @@ sntRover.controller('RVReportsMainCtrl', [
 				return;
 			};
 			e.stopPropagation();
-			
+
 		};
 
 		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
-			if(allMarkets){				
+			if(allMarkets){
 				_.each($scope.reportsState.markets, function(market){
 					market.selected = !!item.allMarketsSelected;
 				});
@@ -415,9 +443,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			}
 			// CICO-10202
-			
 			$scope.$emit('report.filter.change');
-
 		}
 
 		$scope.fauxGuaranteeOptionClicked = function(item) {
@@ -428,7 +454,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (selectedData.length == 0) {
 				item.guaranteeTitle = "Select";
 			} else if (selectedData.length == 1) {
-				item.guaranteeTitle = selectedData[0].name;	
+				item.guaranteeTitle = selectedData[0].name;
 			} else if (selectedData.length > 1) {
 				item.guaranteeTitle = selectedData.length + " Selected";
 			}
@@ -466,7 +492,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.fauxOptionClicked = function(e, item) {
-			e.stopPropagation();
+			e && e.stopPropagation();
 
 			var selectCount = 0,
 				maxCount = 0,
@@ -511,6 +537,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			// CICO-10202
 			$scope.$emit('report.filter.change');
 		};
+
 
 		$scope.showFauxSelect = function(item) {
 			if (!item) {
@@ -568,7 +595,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['to_time'] = chosenReport.untilTime || '';
 			};
 
-			// include CICO filter 
+			// include CICO filter
 			if (!!chosenReport.hasCicoFilter) {
 				params['checked_in'] = getProperCICOVal('checked_in');
 				params['checked_out'] = getProperCICOVal('checked_out');
@@ -592,6 +619,17 @@ sntRover.controller('RVReportsMainCtrl', [
 				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean') {
 					params['sort_dir'] = _chosenSortBy.sortDir;
 				}
+			};
+
+			// include group bys
+			if (chosenReport.groupByOptions) {
+				if ( chosenReport.chosenGroupBy == 'DATE' ) {
+					params['group_by_date'] = true;
+				};
+
+				if ( chosenReport.chosenGroupBy == 'USER' ) {
+					params['group_by_user'] = true;
+				};
 			};
 
 			// include notes
@@ -715,6 +753,52 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
 			};
 
+            // include due out departure option
+			if (chosenReport.hasOwnProperty('hasDueOutDepartures')) {
+				key = chosenReport.hasDueOutDepartures.value.toLowerCase();
+				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
+			};
+
+            // include new option
+			if (chosenReport.hasOwnProperty('hasIncludeNew')) {
+				key = chosenReport.hasIncludeNew.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeNew ? true : false;
+			};
+
+            // include both option
+			if (chosenReport.hasOwnProperty('hasIncludeBoth')) {
+				key = chosenReport.hasIncludeBoth.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeBoth ? true : false;
+			};
+
+
+
+
+
+			// need to reset the "group by" if any new filter has been applied
+			if ( !!chosenReport.groupByOptions && !!$scope.oldParams ) {
+				for (key in params) {
+					if ( !params.hasOwnProperty(key) ) {
+					    continue;
+					};
+
+					if ( key == 'group_by_date' || key == 'group_by_user' ) {
+						continue;
+					} else if ( params[key] != $scope.oldParams[key] ) {
+						chosenReport.chosenGroupBy = 'BLANK';
+						params['group_by_date'] = false;
+						params['group_by_user'] = false;
+						break;
+					};
+				};
+			};
+
+			// keep a copy of the current params
+			$scope.oldParams = angular.copy( params );
+
+
+
+
 
 			var callback = function(response) {
 				if (changeView) {
@@ -723,12 +807,13 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 
 				// fill in data into seperate props
-				$scope.totals = response.totals;
-				$scope.headers = response.headers;
-				$scope.subHeaders = response.sub_headers;
-				$scope.results = response.results;
+				$scope.totals          = response.totals;
+				$scope.headers         = response.headers;
+				$scope.subHeaders      = response.sub_headers;
+				$scope.results         = response.results;
 				$scope.resultsTotalRow = response.results_total_row;
-				$scope.summaryCounts = response.summary_counts;
+				$scope.summaryCounts   = response.summary_counts;
+				$scope.reportGroupedBy = response.group_by;
 
 				// track the total count
 				$scope.totalCount = response.total_count;

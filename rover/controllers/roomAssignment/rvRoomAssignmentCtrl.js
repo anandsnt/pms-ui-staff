@@ -43,7 +43,6 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.roomAssgnment = {};
 	$scope.roomAssgnment.inProgress = false;
 	$scope.roomTransfer = {};
-
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
@@ -483,7 +482,7 @@ sntRover.controller('RVroomAssignmentController',[
 	/**
 	* function to prepare the filtered room list
 	*/
-	$scope.applyFilterToRooms = function(){
+	$scope.applyFilterToRooms = function(){		
 		$scope.filteredRooms = [];
 		var roomsWithInitialFilters = $scope.getRoomsWithInitialFilters();
 		for(var i = 0; i < roomsWithInitialFilters.length; i++){
@@ -534,6 +533,10 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.includePreAssignedRooms(); 
 		if(includeClean)
 			$scope.includeClean();
+		if($scope.floorFilterData&&!$scope.floorFilterData.isNoFloorSelected){
+			$scope.includeFloorFilter();			
+		}
+
 	};
 
 	$scope.getRoomsWithInitialFilters = function(){
@@ -577,6 +580,25 @@ sntRover.controller('RVroomAssignmentController',[
 				$scope.addToFilteredRooms($scope.rooms[i]);
 		}
 	};
+	$scope.includeFloorFilter = function(){
+		var roomsInSelectedFloor;
+			var tempfilteredRooms=[];			
+				$scope.floors.forEach(function(element){
+					if(element.id==$scope.floorFilterData.selectedFloorId){								
+							roomsInSelectedFloor=element.room_ids;
+						}
+					});
+					$scope.filteredRooms.forEach(function(element){
+						roomsInSelectedFloor.map(function(x){
+								if(element.room_id==x){
+									tempfilteredRooms.push(element);
+								}
+						});
+
+					});
+					$scope.filteredRooms=tempfilteredRooms;					
+			
+	}
 
 	/**
 	* function to add the rooms to filtered list with sorting, handling the duplication
@@ -635,6 +657,7 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.roomTypes = roomPreferences.room_types;
 		$scope.roomFeatures = roomPreferences.room_features;
 		$scope.rooms = roomsList.rooms;
+		$scope.floors = roomPreferences.floors.floor_details;
 		$scope.addPredefinedFilters();
 		$scope.setSelectedFiltersList();
 		$scope.reservation_occupancy = roomsList.reservation_occupancy;
@@ -651,8 +674,14 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.roomTransfer.oldRoomType = $scope.reservationData.reservation_card.room_type_description;
 	};
 	$scope.init();
-	
-
+	/**
+	* function to handle floor filter.
+	*/
+	$scope.applyFloorFilter = function(floorFilterData){
+		$scope.floorFilterData =floorFilterData;
+		$scope.setSelectedFiltersList();
+		$scope.applyFilterToRooms();		
+	}
 	/**
 	* function to determine whether to show unassignroom
 	*/
@@ -664,5 +693,4 @@ sntRover.controller('RVroomAssignmentController',[
 			!$scope.roomAssgnment.inProgress &&
 			!r_data.is_hourly_reservation);
 	};
-
 }]);
