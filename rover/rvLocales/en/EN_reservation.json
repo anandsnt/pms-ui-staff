@@ -56,6 +56,7 @@
     "RESV_RECOMMENDED" : "Recommended",
     "RESV_ROOM" : "Room Type",
     "RESV_RATE" : "Rate",
+    "RESV_COR_RATE" : "Corporate Rate",
     "RESV_BEST_RATE" : "Best Available Rate",
     "RESV_AVG_NIGHT" : "Avg. Rate per night",
     "RESV_BOOK" : "Book",

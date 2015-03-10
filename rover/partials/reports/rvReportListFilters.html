@@ -258,6 +258,14 @@
     </div>
 </div>
 
+<div class="sort" ng-if="item.groupByOptions">
+    <label>Group By</label>
+    <div class="select">
+        <select ng-model="item.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in item.groupByOptions" ng-change="groupByChanged(item)" iscroll-stop-propagation>
+        </select>
+    </div>
+</div>
+
 <!-- CICO-10202 Report & Summary Markets filter -->
 <div class="options long-list" ng-if="item.hasMarketsList">
     <label for="report-options">Market(s)</label>

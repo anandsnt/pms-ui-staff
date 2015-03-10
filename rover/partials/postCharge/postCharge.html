@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}"  >
 	<form id="post-charge" class="modal-content post-charge" ng-click="setPosition()" ng-cloak>
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
@@ -162,7 +162,7 @@
 					</div>
 				</div>
 				<div class="actions float">
-					<button type="button" id="post" class="button green modal-close" ng-click="postCharges()" translate>POST_CHARGE</button>
+					<button type="button" id="post" class="button modal-close" ng-disabled="shouldDisablePostCharge()" ng-click="postCharges()" ng-class="{'green': !shouldDisablePostCharge(), 'grey': shouldDisablePostCharge()}" translate>POST_CHARGE</button>
 					<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
 				</div>
 			</div>
