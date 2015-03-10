@@ -33,8 +33,7 @@
                     </a>
                     <div id="sidebar-filter" class="settings-content">
                         <label for="activity-filter">User</label>
-                        <input type="search" class="icons icon-search" placeholder="Enter search criteria" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" ul-class="find-cards"/>
-                        <!--  <input name="activity-filter" id="activity-filter" class="icons icon-search"  auto-complete auto-options="listUserAutoCompleteOptions" data-card-type="" placeholder="Search by User Name" type="search" autocomplete="off" ng-model="uiChosenUsers" report-source="activityLogData" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)"/> -->
+                         <input name="activity-filter" id="activity-filter" class="icons icon-search"  placeholder="Search by User Name" type="search" autocomplete="off"/>
                     </div>
                 </div>
 
@@ -53,7 +52,7 @@
                 </div> -->
             </div>
             <div class="actions">
-                <button type="button" class="button green" ng-click="updateReport()">Update Report</button>
+                <button type="button" class="button green" ng-click="updateReportFilter()">Update Report</button>
             </div>
             <!-- Company Card Results / content -->
             <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100" >
@@ -75,7 +74,7 @@
     <!-- Report header -->
     <div class="report-header">
         <ul class="totals">
-            <li>Activities<span>{{activityLogData.length}}</span></li>
+            <li>Activities<span>{{totalResults}}</span></li>
         </ul>
         <div class="actions">
             <div class="select">
@@ -142,7 +141,7 @@
     <div class="search-pagination">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
+        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResults}}</strong> items</p>
     </div>
     
 </section>
