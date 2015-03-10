@@ -394,21 +394,21 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for include guarantee type filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
                     reportItem['hasGuaranteeType'] = filter;
-                    reportItem['guaranteeTypes'] = angular.copy(  data.guaranteeTypes  );
+                    reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
                     _hasGuaranteeSelect = true;
                 };
 
                 // check for "by charge group" and keep a ref to that item
-                if ( filter.value === 'BY_CHARGE_GROUP' ) {
+                if ( filter.value === 'INCLUDE_CHARGE_GROUP' ) {
                     reportItem['hasByChargeGroup'] = filter;
-                    // reportItem['chargeGroups'] = angular.copy(  data.chargeGroups  );
+                    reportItem['chargeGroups'] = angular.copy( data.chargeGroups );
                     _hasChargeGroupSelect = true;
                 };
 
                 // check for "by charge group" and keep a ref to that item
-                if ( filter.value === 'BY_CHARGE_CODE' ) {
+                if ( filter.value === 'INCLUDE_CHARGE_CODE' ) {
                     reportItem['hasByChargeCode'] = filter;
-                    // reportItem['chargeCodes'] = angular.copy(  data.chargeCodes  );
+                    reportItem['chargeCodes'] = angular.copy( data.chargeCodes );
                     _hasChargeCodeSelect = true;
                 };
             });
@@ -468,10 +468,11 @@ sntRover.factory('RVReportUtilsFac', [
             // sort by options - include sort direction
             if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
                 _.each(reportItem['sort_fields'], function(item, index, list) {
-                    item['sortDir'] = undefined;
-                    if (index == (list.length - 1)) {
-                        item['colspan'] = 2;
+
+                    if ( item != null) {
+                        item['sortDir'] = undefined;
                     };
+
                 });
 
                 // adding custom name ref

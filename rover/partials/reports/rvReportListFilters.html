@@ -245,13 +245,37 @@
 </div>
 
 <div class="options" ng-if="item.hasGuaranteeType && item.guaranteeTypes.length">
-    <label for="report-options">Guarantee Type</label>
+    <label>Guarantee Type</label>
     <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, item)">{{ item.guaranteeTitle }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, item)">
         <label class="checkbox inline" ng-repeat="each in item.guaranteeTypes">
             <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
             <input type="checkbox" ng-model="each.selected" ng-change="fauxGuaranteeOptionClicked(item)">
             {{ each.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasByChargeGroup && item.chargeGroups.length">
+    <label>Charge Group(s)</label>
+    <div class="faux-select placeholder" ng-click="chargeGroupClicked($event, item)">{{ item.chargeGroupTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectChargeGroupOpen }" ng-click="fauxChargeGroupOptionClicked($event, item)">
+        <label class="checkbox inline" ng-repeat="each in item.chargeGroups">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeGroupOptionClicked(item)">
+            {{ each.description }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasByChargeCode && item.chargeCodes.length">
+    <label>Charge Code(s)</label>
+    <div class="faux-select placeholder" ng-click="chargeCodeClicked($event, item)">{{ item.chargeCodeTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectChargeCodeOpen }" ng-click="fauxChargeCodeOptionClicked($event, item)">
+        <label class="checkbox inline" ng-repeat="each in item.chargeCodes">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeCodeOptionClicked(item)">
+            {{ each.description }}
         </label>
     </div>
 </div>

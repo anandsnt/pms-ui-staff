@@ -47,8 +47,14 @@ sntRover.controller('RVReportListCrl', [
 
                 // to process the filters for this report
                 reportUtils.processFilters(reportList[i], {
-                    'guaranteeTypes': $scope.$parent.guaranteeTypes
+                    'guaranteeTypes' : $scope.$parent.guaranteeTypes,
+                    'chargeGroups'   : $scope.$parent.chargeGroups,
+                    'chargeCodes'    : $scope.$parent.chargeCodes
                 });
+
+
+
+
 
                 // to process the sort by for this report
                 reportUtils.processSortBy( reportList[i] );

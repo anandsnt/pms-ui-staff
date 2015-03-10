@@ -6,9 +6,11 @@ sntRover.controller('RVReportsMainCtrl', [
 	'$filter',
 	'activeUserList',
 	'guaranteeTypes',
+	'chargeGroups',
+	'chargeCodes',
 	'$timeout',
 	'RVReportUtilsFac',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes,$timeout, reportUtils) {
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes, chargeGroups, chargeCodes, $timeout, reportUtils) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -33,8 +35,21 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.reportList = reportsResponse.results;
 		$scope.reportCount = reportsResponse.total_count;
 
+
 		$scope.activeUserList = activeUserList;
 		$scope.guaranteeTypes = guaranteeTypes;
+		$scope.chargeGroups = chargeGroups;
+		$scope.chargeCodes = chargeCodes;
+
+		_.each($scope.guaranteeTypes, function (item) {
+			item.selected = false;
+		});
+		_.each($scope.chargeGroups, function (item) {
+			item.selected = false;
+		});
+		_.each($scope.chargeCodes, function (item) {
+			item.selected = false;
+		});
 
 
 		$scope.showReportDetails = false;
@@ -338,6 +353,11 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeBoth'
 		];
 
+
+
+
+
+
 		var closeAllMultiSelects = function() {
 			_.each($scope.reportList, function(item) {
 				item.fauxSelectOpen = false;
@@ -368,129 +388,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.fauxOptionClicked(e, item);
 		};
-
-		// specific for Source and Markets reports
-		$scope.selectDisplayClicked = function(e, item) {
-			var selectCount = 0;
-
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-
-			$scope.fauxOptionClicked(e, item);
-
-		};
-
-		//specific for markets
-		$scope.selectMarketsClicked = function(e, item) {
-			var selectCount = 0;
-			$timeout(function(){
-				$scope.refreshScroller('report-list-scroll');
-				$scope.myScroll['report-list-scroll'].refresh();
-			},300);
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
-
-			if (!item) {
-				return;
-			};
-			e.stopPropagation();
-
-		};
-
-		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
-			if(allMarkets){
-				_.each($scope.reportsState.markets, function(market){
-					market.selected = !!item.allMarketsSelected;
-				});
-			} else {
-				var selectedData = _.where($scope.reportsState.markets, {
-					selected: true
-				});
-
-				item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
-
-				if (selectedData.length == 0) {
-					item.marketTitle = "Select";
-				} else if (selectedData.length == 1) {
-					item.marketTitle = selectedData[0].name;
-				} else if (selectedData.length > 1) {
-					item.marketTitle = selectedData.length + "Selected";
-				}
-			}
-			// CICO-10202
-			$scope.$emit('report.filter.change');
-		}
-
-		$scope.fauxGuaranteeOptionClicked = function(item) {
-			var selectedData = _.where(item.guaranteeTypes, {
-				selected: true
-			});
-
-			if (selectedData.length == 0) {
-				item.guaranteeTitle = "Select";
-			} else if (selectedData.length == 1) {
-				item.guaranteeTitle = selectedData[0].name;
-			} else if (selectedData.length > 1) {
-				item.guaranteeTitle = selectedData.length + " Selected";
-			}
-		}
-
-
-		// specific for Source and Markets reports
-		$scope.guranteeTypeClicked = function(e, item) {
-			var selectCount = 0;
-
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				_.each($scope.reportList, function(item) {
-					item.fauxSelectOpen = false;
-					item.selectGuaranteeOpen = false;
-				});
-				return;
-			};
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectGuaranteeOpen = item.selectGuaranteeOpen ? false : true;
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-
-			$scope.fauxOptionClicked(e, item);
-
-		};
-
 		$scope.fauxOptionClicked = function(e, item) {
 			e && e.stopPropagation();
 
@@ -538,6 +435,169 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.$emit('report.filter.change');
 		};
 
+		// specific for Source and Markets reports
+		$scope.selectDisplayClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+
+		//specific for markets
+		$scope.selectMarketsClicked = function(e, item) {
+			var selectCount = 0;
+			$timeout(function(){
+				$scope.refreshScroller('report-list-scroll');
+				$scope.myScroll['report-list-scroll'].refresh();
+			},300);
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
+
+			if (!item) {
+				return;
+			};
+			e.stopPropagation();
+
+		};
+		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
+			if(allMarkets){
+				_.each($scope.reportsState.markets, function(market){
+					market.selected = !!item.allMarketsSelected;
+				});
+			} else {
+				var selectedData = _.where($scope.reportsState.markets, {
+					selected: true
+				});
+
+				item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
+
+				if (selectedData.length == 0) {
+					item.marketTitle = "Select";
+				} else if (selectedData.length == 1) {
+					item.marketTitle = selectedData[0].name;
+				} else if (selectedData.length > 1) {
+					item.marketTitle = selectedData.length + "Selected";
+				}
+			}
+			// CICO-10202
+			$scope.$emit('report.filter.change');
+		};
+
+		// specific for Source and Markets reports
+		$scope.guranteeTypeClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectGuaranteeOpen = item.selectGuaranteeOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+		$scope.fauxGuaranteeOptionClicked = function(item) {
+			var selectedData = _.where(item.guaranteeTypes, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.guaranteeTitle = "Show All";
+			} else if (selectedData.length == 1) {
+				item.guaranteeTitle = selectedData[0].name;
+			} else if (selectedData.length > 1) {
+				item.guaranteeTitle = selectedData.length + " Selected";
+			}
+		};
+
+		// charge group faux select method
+		$scope.chargeGroupClicked = function(e, item) {
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectChargeGroupOpen = item.selectChargeGroupOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+		$scope.fauxChargeGroupOptionClicked = function(item) {
+			var selectedData = _.where(item.chargeGroups, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.chargeGroupTitle = "Show All";
+			} else if (selectedData.length == 1) {
+				item.chargeGroupTitle = selectedData[0].description;
+			} else if (selectedData.length > 1) {
+				item.chargeGroupTitle = selectedData.length + " Selected";
+			};
+		};
+
+		// charge code faux select method
+		$scope.chargeCodeClicked = function(e, item) {
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectChargeCodeOpen = item.selectChargeCodeOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+		$scope.fauxChargeCodeOptionClicked = function(item) {
+			var selectedData = _.where(item.chargeCodes, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.chargeCodeTitle = "Show All";
+			} else if (selectedData.length == 1) {
+				item.chargeCodeTitle = selectedData[0].description;
+			} else if (selectedData.length > 1) {
+				item.chargeCodeTitle = selectedData.length + " Selected";
+			}
+		};
 
 		$scope.showFauxSelect = function(item) {
 			if (!item) {
@@ -548,6 +608,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				return item.hasOwnProperty(has)
 			}) ? true : false;
 		};
+
+
+
+
 
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
@@ -583,10 +647,15 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['arrival_to_date'] = $filter('date')(chosenReport.untilArrivalDate, 'yyyy/MM/dd');
 			};
 
-			// include due dates
+			// include deposit due dates
 			if (!!chosenReport.hasDepositDateFilter) {
 				params['deposit_from_date'] = $filter('date')(chosenReport.fromDepositDate, 'yyyy/MM/dd');
 				params['deposit_to_date'] = $filter('date')(chosenReport.untilDepositDate, 'yyyy/MM/dd');
+			};
+
+			// include single dates
+			if (!!chosenReport.hasSingleDateFilter) {
+				params['date'] = $filter('date')(chosenReport.singleValueDate, 'yyyy/MM/dd');
 			};
 
 			// include times
@@ -721,6 +790,28 @@ sntRover.controller('RVReportsMainCtrl', [
 					};
 				});
 				params['include_guarantee_type[]'] = angular.copy( ary );
+			};
+
+			// include charge groups
+			if (chosenReport.hasOwnProperty('hasByChargeGroup')) {
+				ary = [];
+				_.each(chosenReport.chargeGroups, function(group) {
+					if (group.selected) {
+						ary.push(group.id);
+					};
+				});
+				params['charge_group_ids[]'] = angular.copy( ary );
+			};
+
+			// include charge code
+			if (chosenReport.hasOwnProperty('hasByChargeCode')) {
+				ary = [];
+				_.each(chosenReport.chargeCodes, function(code) {
+					if (code.selected) {
+						ary.push(code.id);
+					};
+				});
+				params['charge_code_ids[]'] = angular.copy( ary );
 			};
 
 			// include include deposit paid
