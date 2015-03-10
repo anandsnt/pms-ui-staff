@@ -38,7 +38,7 @@
 		</div>
 		
 		<a id="deposit_balance" ng-show="showDepositBalance(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
-			Deposit/Balance
+			Deposit/Balance&nbsp;{{currencySymbol}}{{reservationData.reservation_card.deposit_attributes.outstanding_stay_total | number:precisonZero}}
 		</a>
 		<a id="deposit_balance" ng-show="showDepositBalanceWithSr(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
 			Deposit/Balance&nbsp;{{reservationData.reservation_card.text_rates_suppressed}}
