@@ -222,7 +222,8 @@
 											<td> {{expense.package}} </td>
 											<td> {{expense.quantity}} </td>
 											<td> PER {{expense.post_type}} </td>
-											<td> {{expense.quantity*expense.price  | number: precisonTwo}} </td>
+											<td class="price" ng-if="expense.is_inclusive == 'true'" translate> INCL </td>
+											<td ng-if="expense.is_inclusive == 'false'"> {{expense.quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
 									</tbody>
 								</table>
