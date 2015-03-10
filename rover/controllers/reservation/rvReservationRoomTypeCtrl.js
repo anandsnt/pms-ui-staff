@@ -967,11 +967,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								}
 								$scope.stateCheck.restrictedContractedRates[roomId].push(rateId);
 							}
-						} else if (!validRate) {
-							// var existingRates = roomsIn[roomId].rates;
-							// var afterRemoval = _.without(existingRates, rateId);
-							// roomsIn[roomId].rates = afterRemoval;
-							// NOTE : NOT TO REMOVE RESTRICTED RATES
+						} else if (!validRate && !$scope.stateCheck.showClosedRates) {
+							var existingRates = roomsIn[roomId].rates;
+							var afterRemoval = _.without(existingRates, rateId);
+							roomsIn[roomId].rates = afterRemoval;
 						}
 					});
 				}
@@ -1367,6 +1366,39 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				});
 			}
 			init();
+		}
+
+		$scope.toggleClosedRates = function() {
+			$scope.stateCheck.showClosedRates = !$scope.stateCheck.showClosedRates;
+			init();
+		}
+
+
+		$scope.getLeastAvailability = function(roomId, rateId) {
+			// roomAvailability[roomId].ratedetails[<date>][rateId].availabilityCount 
+			
+			var leastAvailability = $scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].availabilityCount
+			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail) {
+				if (rateDetail[rateId].availabilityCount < leastAvailability) {
+					leastAvailability = rateDetail[rateId].availabilityCount;
+				}
+			});			
+			return leastAvailability;
+		}
+
+		$scope.getAllRestrictions = function(roomId, rateId) {
+			var restrictions = [];
+			var restrictionsValues = [];
+			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail, index) {
+				angular.forEach(rateDetail[rateId].restrictions, function(restriction) {
+					if (restrictionsValues.indexOf(restriction.value) < 0) {
+						restrictions.push(restriction);
+						restrictionsValues.push(restriction.value);
+					}
+				});
+			});
+			return restrictions;
+
 		}
 
 		init(true);
