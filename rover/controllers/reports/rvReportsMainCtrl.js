@@ -95,7 +95,11 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_11: false,
 			item_12: false,
 			item_13: false,
-			item_14: false
+			item_14: false,
+			item_15: false,
+			item_16: false,
+			item_17: false,
+			item_18: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -360,10 +364,24 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		var closeAllMultiSelects = function() {
 			_.each($scope.reportList, function(item) {
-				item.fauxSelectOpen = false;
-				item.selectDisplayOpen = false;
-				item.selectMarketsOpen = false;
-				item.selectGuaranteeOpen = false;
+				if ( item.hasOwnProperty('fauxSelectOpen') ) {
+					item.fauxSelectOpen = false;
+				};
+				if ( item.hasOwnProperty('selectDisplayOpen') ) {
+					item.selectDisplayOpen = false;
+				};
+				if ( item.hasOwnProperty('selectMarketsOpen') ) {
+					item.selectMarketsOpen = false;
+				};
+				if ( item.hasOwnProperty('selectGuaranteeOpen') ) {
+					item.selectGuaranteeOpen = false;
+				};
+				if ( item.hasOwnProperty('selectChargeGroupOpen') ) {
+					item.selectChargeGroupOpen = false;
+				};
+				if ( item.hasOwnProperty('selectChargeCodeOpen') ) {
+					item.selectChargeCodeOpen = false;
+				};
 			});
 			$timeout(function(){
 				$scope.refreshScroller('report-list-scroll');

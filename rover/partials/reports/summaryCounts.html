@@ -22,8 +22,8 @@
 <li ng-if="chosenReport.title == 'Reservations By User'">Total Revenue<span>{{ currencySymbol }}{{ summaryCounts.total_revenue }}</span></li>
 
 <!-- Reservations By User -->
-<li ng-if="chosenReport.title == 'Daily Transactions'">Date<span>{{ summaryCounts.total_users | date : dateFormat }}</span></li>
-<li ng-if="chosenReport.title == 'Daily Transactions'">Transactions<span>{{ summaryCounts.total_new }}</span></li>
-<li ng-if="chosenReport.title == 'Daily Transactions'">Revenue<span class="green">{{ currencySymbol }}{{ summaryCounts.total_cancel }}</span></li>
-<li ng-if="chosenReport.title == 'Daily Transactions'">MTD<span>{{ currencySymbol }}{{ summaryCounts.total_rate_overrides }}</span></li>
-<li ng-if="chosenReport.title == 'Daily Transactions'">YTD<span>{{ currencySymbol }}{{ summaryCounts.total_rate_overrides }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">Date<span>{{ summaryCounts.date | date : dateFormat }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">Transactions<span>{{ summaryCounts.grand_total_transactions }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">Revenue<span class="green">{{ currencySymbol }}{{ summaryCounts.grand_total_revenue }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">MTD<span>{{ currencySymbol }}{{ summaryCounts.grand_total_mtd }}</span></li>
+<li ng-if="chosenReport.title == 'Daily Transactions'">YTD<span>{{ currencySymbol }}{{ summaryCounts.grand_total_ytd }}</span></li>

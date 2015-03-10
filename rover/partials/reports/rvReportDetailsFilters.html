@@ -403,6 +403,57 @@
                 </label>
             </div>
         </div>
+
+
+
+
+
+        <!-- item_16: charge groups -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasByChargeGroup && chosenReport.chargeGroups.length" ng-class="{'active': filterItemsToggle.item_16}" ng-click="toggleFilterItems('item_16'); chargeGroupClicked($event, chosenReport)">
+            <span class="title">Charge Group(s)</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasByChargeGroup && chosenReport.chargeGroups.length" ng-class="{'hidden': !filterItemsToggle.item_16}">
+            <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
+                <label class="checkbox" ng-repeat="each in chosenReport.chargeGroups">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+                    <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeGroupOptionClicked(chosenReport)">
+                    {{ each.description }}
+                </label>
+            </div>
+        </div>
+
+
+
+
+        <!-- item_17: charge codes -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasByChargeCode && chosenReport.chargeCodes.length" ng-class="{'active': filterItemsToggle.item_17}" ng-click="toggleFilterItems('item_17'); chargeCodeClicked($event, chosenReport)">
+            <span class="title">Charge Code(s)</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasByChargeCode && chosenReport.chargeCodes.length" ng-class="{'hidden': !filterItemsToggle.item_17}">
+            <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
+                <label class="checkbox" ng-repeat="each in chosenReport.chargeCodes">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+                    <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeCodeOptionClicked(chosenReport)">
+                    {{ each.description }}
+                </label>
+            </div>
+        </div>
+
+
+
+
+        <!-- item_18: single value date -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasSingleDateFilter" ng-class="{'active': filterItemsToggle.item_18}" ng-click="toggleFilterItems('item_18')">
+            <span class="title">Date</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasSingleDateFilter" ng-class="{'hidden': !filterItemsToggle.item_18}">
+            <div class="entry date-range">
+                <div class="has-datepicker">
+                    <input id="chosenReportSingleValueDate" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.singleValueDate" readonly>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="actions">

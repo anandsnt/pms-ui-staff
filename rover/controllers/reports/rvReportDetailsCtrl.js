@@ -321,6 +321,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.displayedReport.chosenReportFromDate = $( '#chosenReportFromDate' ).val();
 				$scope.displayedReport.chosenReportToDate = $( '#chosenReportToDate' ).val();
 
+				// chosenReportSingleValueDate
+				$scope.displayedReport.chosenReportSingleValueDate = $( '#chosenReportSingleValueDate' ).val();
+
 				// chosenReportFromTime
 				// chosenReportToTime
 				$scope.displayedReport.chosenReportFromTime = $( '#chosenReportFromTime option:selected' ).text() != 'From Time' ? $( '#chosenReportFromTime option:selected' ).text() : '';
