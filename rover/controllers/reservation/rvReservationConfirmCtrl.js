@@ -11,7 +11,15 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'$vault',
 	'$rootScope',
 	'RVReservationGuestSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv, $vault, $rootScope, RVReservationGuestSrv) {
+	'rvPermissionSrv',
+	function($scope, $state, 
+		RVReservationSummarySrv, ngDialog, 
+		RVContactInfoSrv, $filter, 
+		RVBillCardSrv, $q, 
+		RVHkRoomDetailsSrv, $vault, 
+		$rootScope, RVReservationGuestSrv
+		, rvPermissionSrv) {
+
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 		var totalRoomsAvailable = 0;
@@ -26,6 +34,23 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			param: {
 				reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
 			}
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
+
+		/**
+		* function to determine the visibility of Make Payment button
+		* @return {Boolean}
+		*/
+		$scope.hideMakePayment = function() {
+			return ($scope.hasPermissionToMakePayment());
 		};
 
 		$scope.init = function() {

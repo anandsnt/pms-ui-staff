@@ -4,8 +4,11 @@ sntRover.controller('RVPostChargeController',
 		'$scope',
 		'RVChargeItems',
 		'RVSearchSrv',
-		'$timeout','RVBillCardSrv','ngDialog',
-		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout,RVBillCardSrv,ngDialog) {
+		'$timeout',
+		'RVBillCardSrv','ngDialog', 'rvPermissionSrv',
+		function($rootScope, $scope, 
+			RVChargeItems, RVSearchSrv, 
+			$timeout,RVBillCardSrv,ngDialog, rvPermissionSrv) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
@@ -22,8 +25,20 @@ sntRover.controller('RVPostChargeController',
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
 
-  			$scope.closeDialog = function(){
-  				ngDialog.close();
+  			/**
+  			* function to check whether the user has permission to Post charge
+  			* @return {Boolean}
+  			*/
+  			$scope.hasPostChargePermission = function (){
+  				return rvPermissionSrv.getPermissionValue ('ADD_CHARGE');
+  			};
+
+  			/*
+  			* whether we want to disable the POST charge button
+  			* @return {Boolean}
+  			*/
+  			$scope.shouldDisablePostCharge = function (){
+  				return (!$scope.hasPostChargePermission());
   			};
 
 			// // set the default bill number
