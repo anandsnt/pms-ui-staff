@@ -129,9 +129,11 @@
 							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50' id="bill-days-new">
 								<ul class="wrapper" style="width: {{billData.billDaysWidth}}px;">
 									<li class="add-new" ng-click="openPostCharge(billData.bill_number)">
-										<a id="add-new-button" class="add-new-button">+ <span translate>ADD</span></a>
+										<a  class="button with-icon brand-colors">
+											<span class="icons icon-charge"></span>
+											Add Charge
+										</a>
 									</li>
-
 									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
 										<!-- For checkin date -->
 										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
