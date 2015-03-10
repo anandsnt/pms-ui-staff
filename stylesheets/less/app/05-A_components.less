@@ -2828,71 +2828,129 @@
             top: 0;
             left: 0;
             z-index: 999;
-            .transition(height, .3s,cubic-bezier(.10, .10, .25, .90));
             .float;
 
-            .data {
-                .pull-left;
-                .calc-width(100, 360);
-            }
-
             .actions {
+                float: none;
+                width: 100%;
                 text-align: right;
-                width: 360px; 
-                .pull-right; 
 
+                .button,
                 .inactive-nights {
-                    font-weight: 600;
-                    #border-radius > .rounded(3px);
-                    .box-shadow(inset 0 -1px 0 rgba(0,0,0,.2));
+                    display: inline-block;
+                    display: inline-flex;
+                    vertical-align: top;
+                    text-shadow: none;
+                    .no-transition;
+
+                    .label { 
+                        display: inline;
+                        float: none;
+                        font-size: 12px;
+                    }
                 }
 
-                .times {
-                    position: relative;
-                    padding-left: 35px;
 
-                    .time {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
+                .button {
+                    margin-right: 20px;
+
+                    &.toggle,
+                    &.next-view {
+                        color: @textColor;
+                        background-color: @grey1;
+                        background-position: 90% 50%;
+
+                        &:hover,
+                        &:active { 
+                            color: @textColor;
+                            background-color: @grey1; 
+                        }
                     }
 
-                    &.check-in { color: @green; }
-                    &.check-out,
-                    &.late-check-out { color: @red; }
-                    &.late-check-out { background-color: lighten(@yellow, 20); }
-
-                    &.not-set {
-                        color: @grey3;
-                        font-size: 12px;
-                        font-weight: 400;
+                    &.toggle {
+                        &.active {
+                            padding-bottom: 40px;
+                            background-position: 90% -webkit-calc(~"50% - 5px");
+                            background-position: 90% -moz-calc(~"50% - 5px");
+                            background-position: 90% calc(~"50% - 5px");
+                            .box-shadow(1px 0 0 rgba(0,0,0,.2));
+                            #border-radius > .bottom(0px);
+                        }
                     }
+
+                    &.times {
+                        position: relative;
+                        padding-left: 35px;
+
+                        .time {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                        }
+
+                        &.check-in { color: @green; }
+                        &.check-out,
+                        &.late-check-out { color: @red; }
+                        &.late-check-out { background-color: lighten(@yellow, 20); }
+
+                        &.not-set {
+                            color: @grey3;
+                            font-size: 12px;
+                            font-weight: 400;
+                        }
+                    }
+
+                    &.has-arrow { padding-right: 30px; }
+
+                    &.dates {
+                        background-position: 98% 50%;
+                        .pull-left; 
+
+                        .date {
+                            text-transform: none;
+                            font-weight: 400;
+                        }
+
+                        &.active {
+                            background-position: 98% -webkit-calc(~"50% - 5px");
+                            background-position: 98% -moz-calc(~"50% - 5px");
+                            background-position: 98% calc(~"50% - 5px");
+                        }
+                    }
+
+                    &:first-child,
+                    &:last-child { margin-right: 0; }
                 }
             }
 
             .reservation-guests,
-            .reservation-times { 
+            .reservation-times,
+            .reservation-dates { 
+                width: 100%;
+                margin-bottom: 10px;
                 padding: 10px;
                 overflow: hidden;
                 background: @grey1;
                 z-index: 90;
-                .transition(height, .3s, cubic-bezier(.10, .10, .25, .90));
+                height: auto;
+                transform: scaleY(1);  
+                transform-origin: top;
+                .float;
+                .transition(transform, .3s,cubic-bezier(.10, .10, .25, .90));
                 .box-shadow(1px 1px 0 rgba(0,0,0,.2));
                 .show;
 
-                &.hidden,
-                &.ng-hide {
+                &.hidden {
                     display: block !important;
                     height: 0px !important;
                     padding: 0;
                     margin: 0;
-                    .transition(height, .3s,cubic-bezier(.10, .10, .25, .90));
+                    transform: scaleY(0); 
                 }
             }
 
             /* Reservation guest info ***/
             .reservation-guests {
-                .size(60px, 100%);
 
                 .notice { margin-bottom: 10px; }
 
@@ -2929,7 +2987,7 @@
                             .pull-left;      
 
                             &[disabled],
-                            &[readonly] { color: @textColor; }                       
+                            &[readonly] { color: @textColor; }            
                         }
 
                         &:first-child { 
@@ -2953,7 +3011,7 @@
                     .float;
 
                     label {
-                         display: inline-block;
+                        display: inline-block;
                         font-size: 14px;
                         line-height: 20px;
                         text-transform: uppercase;
@@ -2961,7 +3019,7 @@
                     }
 
                     .entry {
-                       
+
                         .guest-image {
                             margin-right: 10px;
                             .pull-left;
@@ -2979,8 +3037,6 @@
                 }
 
                 &.editable { 
-                    height: 350px; 
-
                     .guest-count {
                         li {
                             padding-bottom: 10px;
@@ -2992,9 +3048,6 @@
 
             /* Arrival / Departure times ***/
             .reservation-times {
-                .float;
-                .size(80px, 100%);
-
                 .check-data {
                     position: relative;
                     padding-left: 120px;
@@ -3036,6 +3089,34 @@
 
                 &.late-check-out { background-color: lighten(@yellow, 20); }
             }
+
+            /* Arrival / Departure dates ***/
+            .reservation-dates {
+                
+                .check-data {
+                    margin-right: 20px;
+                    .calc-width(50, 100);
+                    .pull-left;
+
+                    .guest-status {
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        .square(20px);
+                    }
+
+                    input { 
+                        padding-left: 40px;
+                        width: 100%; 
+                    }
+                }
+
+                .button {
+                    font-size: 16px;
+                    .size(40px, 160px);
+                    .pull-left;
+                }
+            }
         }
 
         /* Reservation card actions **/
@@ -3045,46 +3126,15 @@
             top: 70px; 
             bottom: 20px;
             .show;
-            .calc-height(100, 90); /* %, px */
+            .calc-height(100, 90);
             #pixel-to-percent > .width(388, 1588);
-            #border-radius > .rounded();
             .pull-right;
-
-            .time {
-                font-size: 24px;
-                line-height: 50px;
-                text-align: center;
-                font-weight: 300;
-                text-transform: uppercase;
-                border: 1px solid;
-                .show;
-
-                &.check-in { 
-                    margin-bottom: 10px;
-                    color: @green; 
-                    border-color: rgba(137,189,85,.3);
-                    background-color: rgba(137,189,85,.1);
-                }
-
-                &.check-out {
-                    color: @red; 
-
-                    border-color: rgba(230,56,56,.2);
-                    background-color: rgba(230,56,56,.05);
-                }
-
-                &.late-check-out {
-                    color: @red;
-                    
-                    border-color: @yellow;
-                    background-color: lighten(@yellow, 20);
-                    #border-radius > .rounded(3px);
-                }
-            }
 
             .balance {
                 text-align: right; 
                 padding: 10px 0;
+                margin-bottom: 10px;
+                border-bottom: 1px solid rgba(0,0,0,.1); 
 
                 .label { 
                     text-align: left;
@@ -3097,16 +3147,11 @@
                     &.red { color: @red; }
                     &.green { color: @green; }
                 }
-
-                &.break { 
-                    margin-bottom: 10px;
-                    border-bottom: 1px solid rgba(0,0,0,.1); 
-                }
             }
 
             .button { 
-                line-height: 50px;
                 padding: 0;
+                line-height: 50px;
                 margin-bottom: 10px;
                 width: 100%;
                 .show; 
@@ -3114,25 +3159,46 @@
                 &.green,
                 &.grey,
                 &.red { font-size: 18px; }
-            }
 
+                &.staycard-button {
+                    font-size: 16px;
+                    text-shadow: none;
+                    text-align: left;
+                    color: @blue;
+                    background-color: @white;
+                    height: 50px;
+                    padding: 0 20px 0 50px;
+                    .box-shadow();
 
-                &.red.cancel { font-size: 16px; }
+                    &.routing {
+                        line-height: 16px;
+                        padding: 9px 20px 9px 50px;
 
-                &#cancel-reservation {
-                    position: absolute;
-                    right: 0;
-                    bottom: 0;
-                    margin-bottom: 0;
-                    width: 100%;
+                        span { color: @logoPrimary; }
+                    }
+
+                    &.icon-queue {                   
+                        &.in {
+                            color: @red;
+                            line-height: 16px;
+                            padding: 9px 20px 9px 50px;
+                        }
+                    }
+
+                    &:hover,
+                    &:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
                 }
 
-                .bottom-buttons {
+                &.bottom-button {
                     position: absolute;
                     bottom: 0;
                     left: 0;
-                    width: 100%;
+                    font-size: 16px;
+
                 }
+
+                &:last-child { margin-bottom: 0; }
+            }
         }
 
         /* Reservation card content ***/
@@ -3777,8 +3843,8 @@
                                 .show;
                                 .pull-left;
 
-                                a.toggle,
-                                div.no-expense {
+                                .toggle,
+                                .no-expense {
                                     position: relative;
                                     color: @grey3;
                                     text-transform: uppercase;
@@ -3834,35 +3900,43 @@
                                     }
                                 }
 
-                                div.no-expense {
+                                .with-icon {
+                                    padding-top: 28px;
+                                    font-size: 11px;
+                                    line-height: 8px;
+                                    .size(50px, 60px);
+
+                                    .icons { top: 5px; }
+                                }
+
+                                .no-expense {
                                     cursor: default;
                                     .box-shadow(none);
-                                }
 
-                                a.add-new-button { 
-                                    line-height: 48px; 
-                                }   
+                                    &:hover,
+                                    &:active { .box-shadow(none); }
+                                }
                                 
-
-                                &.active {
-                                    a,
-                                    span { color: @textColor; }
+                                &.active { 
+                                    .toggle,
+                                    .no-expense { color: @textColor; }
                                 }
 
-                                &.expense {
-                                    a { background-color: @grey1; }
+                                &.package {
+                                    .toggle,
+                                    .no-expense { background-color: @grey1; }
                                 }
 
                                 &.check-in,
                                 &.check-out {
-                                    a.toggle,
-                                    div.no-expense {
+                                    .toggle,
+                                    .no-expense {
                                         padding-left: 30px;
                                     }
                                 }
 
                                 &.add-new,
-                                &.last {
+                                &.check-out {
                                     margin-right: 10px;
                                     padding-right: 10px;
                                     position: relative;
@@ -3874,29 +3948,6 @@
                                         right: 0;
                                         height: 50px;
                                         border-right: 1px solid rgba(0,0,0,.1);
-                                    }
-                                }
-
-                                &.expense {
-                                    
-                                    a.toggle,
-                                    div.no-expense {
-
-                                        span { 
-                                            position: static;
-                                            bottom: auto;
-                                            right: auto;
-                                            line-height: 1em;
-                                            padding-right: 5px;
-                                            overflow: hidden;
-                                            white-space: nowrap;
-                                            text-overflow: ellipsis;
-                                            width: 100%;
-                                            .show;
-
-                                            &.expense { margin-top: 5px; }
-                                            &.price {  margin-top: 14px; }
-                                        }
                                     }
                                 }
 
@@ -6858,10 +6909,15 @@
                 position: relative;
                 .calc-height(100, 50);
 
-                > .wrapper { padding: 0 20px 20px 20px; }
-                > .iScrollVerticalScrollbar { 
-                    top: 0;
-                    bottom: 20px; 
+                > .wrapper { padding: 20px; }
+
+                h2 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 20px 0 10px 0;
+                    text-transform: uppercase;
+
+                    &:first-child { margin-top: 0; }
                 }
 
                 table {
@@ -8646,10 +8702,43 @@
                                 font-weight: 600;
                                 line-height: 40px;
                                 margin-right: 20px;
+
+                                .corporate { line-height: 40px; }
+                            }
+
+                            .restricted { 
+                                vertical-align: top; 
+                                line-height: 1.2em; 
+
+                                .corporate { line-height: 20px; }
+                            }
+
+                            .corporate {
+                                font-size: 10px;
+                                text-transform: uppercase;
+                                text-align: center;
+                                padding: 5px 10px;
+                                margin-left: 10px;
+                                color: @grey3;
+                                vertical-align: top;
+                                background: rgba(0,0,0,.1);
+                                #border-radius > .rounded();
+                            }
+
+                            span {
+                                color: @grey3;
+
+                                &.red { color: @red; }
+                                &.green { color: @green; }
+                                &.purple { color: @purpleStart; }
+                                &.blue { color: @blue; }
+                                &.grey { color: @grey3; }
+                                &.recommended { color: @logoPrimary; }
                             }
 
                             .data {
                                 #pixel-to-percent > .width(950, 1968);
+                                .float;
                                 .show;
                                 .pull-left;
 
@@ -8658,31 +8747,47 @@
                                     overflow: hidden;
                                     white-space: nowrap;
                                     text-overflow: ellipsis;
-                                    margin-right: 20px;
                                     .pull-left;
                                 }
 
-                                span {
+                                .corporate {
+                                    line-height: 10px;
+                                    margin-top: 10px;
+                                    .pull-left; 
+                                }
+
+                                .count,
+                                .restricted,
+                                .recommended {
                                     font-size: 16px;
                                     line-height: 40px;
                                     text-transform: uppercase;
                                     font-weight: 600;
-                                    color: @logoPrimary;
-                                    .pull-left;
+                                    margin-left: 10px;
+                                    .pull-left;                                
                                 }
                             }
 
                             .book-rate {
-                                #pixel-to-percent > .width(1018, 1968);
                                 text-align: right;
+                                #pixel-to-percent > .width(1018, 1968);
                                 .pull-left;
 
                                 .select {
-                                    width: 280px;
+                                    width: 240px;
                                     clear: both;
 
                                     select,
                                     &:after { background-color: @grey1; }
+                                }
+
+                                .count {
+                                    font-size: 16px;
+                                    line-height: 40px;
+                                    text-transform: uppercase;
+                                    font-weight: 600;
+                                    margin-left: 10px;
+                                    .pull-left;
                                 }
 
                                 .button {
@@ -8712,13 +8817,6 @@
                                 }
                             }
 
-                            .button { 
-                                &.green,
-                                &.green-text {
-                                    line-height: 38px; 
-                                }
-                            }
-
                             /* Nested list ***/
                             .rates {
                                 padding: 0 15px 15px 45px;
@@ -8733,10 +8831,22 @@
                                         text-align: right;
                                         .float;
 
-                                        h3 { .pull-left; }
+                                        h3 { 
+                                            text-align: left;
+                                            .pull-left; 
+
+                                            .restricted {
+                                                font-size: 14px;
+                                                line-height: 1em;
+                                                text-transform: uppercase;
+                                                .show;                          
+                                            }
+                                        } 
                                     }
 
                                     &:last-child { margin-bottom: 0; }
+
+                                    &.closed { background-color: darken(@grey1, 5); }
                                 }
                             }
 
@@ -8761,7 +8871,8 @@
                                 }
 
                                 .data {
-                                    span { .pull-right; }
+                                    .restricted,
+                                    .recommended { .pull-right; }
                                 }
 
                                 .book-rate {
@@ -8780,6 +8891,12 @@
                                 }
                             }
 
+                            &.is-recommended {
+                                .data {
+                                    .restricted { .pull-left; }
+                                }
+                            }
+
                             &.no-toggle {
                                 padding: 15px;
                                 .float;
@@ -8787,8 +8904,6 @@
                                 .data {
                                     width: 100%;
                                     float: none;
-
-                                    h2 { float: none; }
                                 }
 
                                 .book-rate { .hide; }
@@ -8844,6 +8959,8 @@
                                 &:before { top: 15px; }
                             }
 
+                            &.closed { background-color: darken(@grey1, 5); }
+
                             &:last-child { margin-bottom: 0; }
                         }
                     }
@@ -8860,7 +8977,10 @@
                             .pull-left;
                             #pixel-to-percent > .width(480, 1980);
 
-                            li { .box-shadow(none); }
+                            li { 
+                                background: transparent !important;
+                                .box-shadow(none); 
+                            }
                         }               
 
                         .room-cost {
@@ -8868,7 +8988,7 @@
                             table-layout: fixed;
                             border-collapse: collapse; 
                             border-spacing: 0;
-                            margin: 0 20px;
+                            margin: 0 0 20px 20px;
                             .pull-left;
                             #pixel-to-percent > .width(1380, 1980);
 
@@ -8936,6 +9056,25 @@
                                 tr {
                                     td { padding: 0; }
                                 }
+                            }
+                        }
+
+                        .restrictions {
+                            clear: both;
+                            padding-top: 10px;
+                            margin: 0 10px;
+                            border-top: 1px solid rgba(0,0,0,.1);
+                            .show;
+
+                            li {
+                                display: inline-block;
+                                font-size: 14px;
+                                margin: 0 20px 0 0;
+                                background: transparent;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                background: transparent !important;
+                                .box-shadow(none);
                             }
                         }
                     }
