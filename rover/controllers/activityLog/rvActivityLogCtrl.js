@@ -9,10 +9,6 @@ sntRover.controller('RVActivityLogCtrl',[
 	function($scope, $rootScope, $filter, activityLogResponse, activeUserList, $state, RVActivityLogSrv){
 	
 	BaseCtrl.call(this, $scope);
-    
-    $scope.businessDate = $rootScope.businessDate;
-    // var userName = $rootScope.userName;
-    // console.log(businessDate);
 
     // we are hardcoding the min.width & max.width
     var resizableMinWidth = 30;
@@ -23,16 +19,27 @@ sntRover.controller('RVActivityLogCtrl',[
 	* function to go back to reservation details
 	*/
 	$scope.backToStayCard = function(){
-		
 		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", 
             {
                 id:$scope.$parent.reservation.reservation_card.reservation_id, 
                 confirmationId:$scope.$parent.reservation.reservation_card.confirmation_num,
                 isRefresh:true
             });
-		
 	};
 
+    /**
+     * Event propogated by ngrepeatend directive
+     * we used to hide activity indicator & refresh scroller
+     */
+    $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
+        setTimeout(function() {
+            $scope.refreshScroller('report_content');
+        }, 100);
+    });
+
+    /*
+    * SideBar
+    */
 	$scope.clickedOnReportUpdate = function($event) {
         if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-e")[0])) {
             if ($scope.reportUpdateVisible) {
@@ -91,8 +98,9 @@ sntRover.controller('RVActivityLogCtrl',[
 
     $scope.updateReport = function(){
         var callback = function(data) {
-                console.log(data);
                 $scope.activityLogData = data.results;
+                $scope.totalSearchResults = $scope.activityLogData.length;
+                $scope.initPaginationParams();
                 $scope.$emit('hideLoader');
         }
         var params = {};
@@ -105,15 +113,19 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.invokeApi(RVActivityLogSrv.filterActivityLog, params, callback);
     }
 
-    
+    /*
+    * Sorting
+    */    
     $scope.sortByUserName = function(){
         $scope.sort_field ="USERNAME";
-        if($scope.sortOrderOfUser){
-            $scope.sortOrderOfUser = false;
+        if($scope.sortOrderOfUserASC){
+            $scope.sortOrderOfUserDSC = true;
+            $scope.sortOrderOfUserASC = false;
             $scope.sort_order="desc";
         }
         else{
-            $scope.sortOrderOfUser = true;
+            $scope.sortOrderOfUserASC = true;
+            $scope.sortOrderOfUserDSC = false;
             $scope.sort_order="asc";
         }
         $scope.updateReport();
@@ -121,12 +133,14 @@ sntRover.controller('RVActivityLogCtrl',[
 
     $scope.sortByDate = function(){
         $scope.sort_field ="DATE";
-        if($scope.sortOrderOfDate){
-            $scope.sortOrderOfDate = false;
+        if($scope.sortOrderOfDateASC){
+            $scope.sortOrderOfDateDSC = true;
+            $scope.sortOrderOfDateASC = false;
             $scope.sort_order="desc";
         }
         else{
-            $scope.sortOrderOfDate = true;
+            $scope.sortOrderOfDateASC = true;
+             $scope.sortOrderOfDateDSC = false;
             $scope.sort_order="asc";
         }
         $scope.updateReport();
@@ -134,98 +148,61 @@ sntRover.controller('RVActivityLogCtrl',[
 
     $scope.sortByAction = function(){
         $scope.sort_field ="ACTION";
-        if($scope.sortOrderOfAction){
-            $scope.sortOrderOfAction = false;
+        if($scope.sortOrderOfActionASC){
+            $scope.sortOrderOfActionDSC = true;
+            $scope.sortOrderOfActionASC = false;
             $scope.sort_order="desc";
         }
         else{
-            $scope.sortOrderOfAction = true;
+            $scope.sortOrderOfActionASC = true;
+            $scope.sortOrderOfActionDSC = false;
             $scope.sort_order="asc";
         }
         $scope.updateReport();
     }
 
-    
-    var activeUserAutoCompleteObj = [];
-    _.each($scope.activeUserList, function(user) {
-        activeUserAutoCompleteObj.push({
-            label: user.email,
-            value: user.id
-        });
-    });
-
-    function split(val) {
-        return val.split(/,\s*/);
+    /*
+    * Pagination
+    */
+    $scope.initPaginationParams = function() {
+        RVActivityLogSrv.page = 1;
+        $scope.start = 1;
+        $scope.end = $scope.start + $scope.activityLogData.length - 1;
+        $scope.nextAction = false;
+        $scope.prevAction = false;
     }
 
-    function extractLast(term) {
-        return split(term).pop();
-    }
-
-
-    var thisReport;
-    $scope.returnItem = function(item) {
-        thisReport = item;
+    $scope.loadNextSet = function() {
+        RVActivityLogSrv.page++;
+        $scope.nextAction = true;
+        $scope.prevAction = false;
+        $scope.updateReport();
     };
 
-    var userAutoCompleteCommon = {
-        source: function(request, response) {
-            // delegate back to autocomplete, but extract the last term
-            response($.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)));
-        },
-        select: function(event, ui) {
-            var uiValue = split(this.value);
-            uiValue.pop();
-            uiValue.push(ui.item.label);
-            uiValue.push("");
+    $scope.loadPrevSet = function() {
+        RVActivityLogSrv.page--;
+        $scope.nextAction = false;
+        $scope.prevAction = true;
+        $scope.updateReport();
+    };
 
-            this.value = uiValue.join(", ");
-            setTimeout(function() {
-                $scope.$apply(function() {
-                    thisReport.uiChosenUsers = uiValue.join(", ");
-                });
-            }.bind(this), 100);
-            return false;
-        },
-        close: function(event, ui) {
-            var uiValues = split(this.value);
-            var modelVal = [];
-
-            _.each(activeUserAutoCompleteObj, function(user) {
-                var match = _.find(uiValues, function(email) {
-                    return email == user.label;
-                });
-
-                if (!!match) {
-                    modelVal.push(user.value);
-                };
-            });
-
-            setTimeout(function() {
-                $scope.$apply(function() {
-                    thisReport.chosenUsers = modelVal;
-                });
-            }.bind(this), 100);
-        },
-        focus: function(event, ui) {
-            return false;
+    $scope.isNextButtonDisabled = function() {
+        var isDisabled = false;
+        if ($scope.end >= $scope.totalSearchResults) {
+            isDisabled = true;
         }
-    }
-    $scope.listUserAutoCompleteOptions = angular.extend({
-        position: {
-            my: 'left top',
-            at: 'left bottom',
-            collision: 'flip'
-        }
-    }, userAutoCompleteCommon);
-    $scope.detailsUserAutoCompleteOptions = angular.extend({
-        position: {
-            my: 'left bottom',
-            at: 'right+20 bottom',
-            collision: 'flip'
-        }
-    }, userAutoCompleteCommon);
+        return isDisabled;
+    };
 
+    $scope.isPrevButtonDisabled = function() {
+        var isDisabled = false;
+        if (RVActivityLogSrv.page == 1) {
+            isDisabled = true;
+        }
+        return isDisabled;
+    };
+
+    
     /*
     * function to refresh scroller
     * will refresh left filter scroller
@@ -240,17 +217,26 @@ sntRover.controller('RVActivityLogCtrl',[
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));
         
         $scope.errorMessage = '';
-
-        $scope.reportUpdateVisible = false;
-
-        $scope.reportUpdateWidth = resizableMinWidth;
-
         $scope.activityLogData = activityLogResponse.results;
         $scope.activeUserList = activeUserList;
 
-        $scope.sortOrderOfUser = false;
-        $scope.sortOrderOfDate = false;
-        $scope.sortOrderOfAction = false;
+        //Filter
+        $scope.reportUpdateVisible = false;
+        $scope.reportUpdateWidth = resizableMinWidth;
+        $scope.fromDate = $filter('date')($rootScope.businessDate, 'dd/MM/yyyy');
+        $scope.toDate = $filter('date')($rootScope.businessDate, 'dd/MM/yyyy');
+
+        //Paginaton
+        $scope.totalSearchResults = $scope.activityLogData.length;
+        $scope.initPaginationParams();
+
+        //Sorting
+        $scope.sortOrderOfUserASC = false;
+        $scope.sortOrderOfDateASC = false;
+        $scope.sortOrderOfActionASC = false;
+        $scope.sortOrderOfUserDSC = false;
+        $scope.sortOrderOfDateDSC = false;
+        $scope.sortOrderOfActionDSC = false;
 
         // set a back button on header
         $rootScope.setPrevState = {
@@ -264,7 +250,9 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.setTitle(title);
 
         //left side filter scrollbar
-        $scope.setScroller('report-update');        
+        $scope.setScroller('report-update'); 
+
+        $scope.setScroller('report_content');       
         
         /**
         * scroller options
