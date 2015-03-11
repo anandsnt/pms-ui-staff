@@ -16,7 +16,7 @@
 <li ng-if="chosenReport.title == 'Reservations By User'">User<span>{{ summaryCounts.total_users }}</span></li>
 <li ng-if="chosenReport.title == 'Reservations By User'">New<span>{{ summaryCounts.total_new }}</span></li>
 <li ng-if="chosenReport.title == 'Reservations By User'">Cancel<span>{{ summaryCounts.total_cancel }}</span></li>
-<li ng-if="chosenReport.title == 'Reservations By User'">Overrides<span>{{ summaryCounts.total_rate_overrides | currency:currencySymbol:2 }}</span></li>
+<li ng-if="chosenReport.title == 'Reservations By User'">Overrides<span>{{ summaryCounts.total_rate_overrides }}</span></li>
 <li ng-if="chosenReport.title == 'Reservations By User'">Variance<span>{{ summaryCounts.total_rate_variance | currency:currencySymbol:2 }}</span></li>
 <li ng-if="chosenReport.title == 'Reservations By User'">Total Revenue<span class="green">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
 
