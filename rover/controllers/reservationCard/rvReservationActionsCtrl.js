@@ -56,12 +56,13 @@ sntRover.controller('reservationActionsController', [
 			return display;
 		};
 
+
 		$scope.getBalanceAmountColor = function(balance) {
 			var balanceClass = "";
-			if (balance == 0 || balance == 0.00 || balance == 0.0) {
-				balanceClass = "green";
-			} else {
+			if (balance == 0 || balance == 0.00 || balance == 0.0 || balance > 0) {
 				balanceClass = "red";
+			} else {
+				balanceClass = "green";
 			}
 			return balanceClass;
 		};

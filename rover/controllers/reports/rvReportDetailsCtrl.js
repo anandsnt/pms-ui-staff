@@ -75,6 +75,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.hasNoTotals   = false;
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
+			$scope.isTransactionReport = false;
 
 			switch ( $scope.chosenReport.title ) {
 				case reportUtils.getName('IN_HOUSE_GUEST'):
@@ -125,6 +126,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasPagination = false;
 					break;
 
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					$scope.hasNoTotals = true;
+					$scope.isTransactionReport = true;
+					break;
+
 				default:
 					break;
 			};
@@ -155,6 +161,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
+					break;
+
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					$scope.leftColSpan = 5;
+					$scope.rightColSpan = 5;
 					break;
 
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
@@ -310,6 +321,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				$scope.displayedReport.chosenReportFromDate = $( '#chosenReportFromDate' ).val();
 				$scope.displayedReport.chosenReportToDate = $( '#chosenReportToDate' ).val();
 
+				// chosenReportSingleValueDate
+				$scope.displayedReport.chosenReportSingleValueDate = $( '#chosenReportSingleValueDate' ).val();
+
 				// chosenReportFromTime
 				// chosenReportToTime
 				$scope.displayedReport.chosenReportFromTime = $( '#chosenReportFromTime option:selected' ).text() != 'From Time' ? $( '#chosenReportFromTime option:selected' ).text() : '';
@@ -332,7 +346,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, $scope.$parent.reportGroupedBy) );
 
 
-			// now flags that will determine correct template to be loaded
+			// a very different parent template / row template / content template for certain reports
+			// otherwise they all will share the same template
 			switch ( $scope.parsedApiFor ) {
 				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
 					$scope.hasReportTotals    = false;
@@ -398,6 +413,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					template = '/assets/partials/reports/rvReservationByUserReportRow.html';
+					break;
+
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					template = '/assets/partials/reports/rvDailyTransactionsReportRow.html';
 					break;
 
 				default:
@@ -562,6 +581,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
 					orientation = 'landscape';
 					break;
 

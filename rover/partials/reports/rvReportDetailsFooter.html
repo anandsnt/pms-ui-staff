@@ -41,6 +41,12 @@
 			From: <span>{{ displayedReport.chosenReportFromDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToDate | date:dateFormat }}</span>
 		</div>
 
+		<!-- single value date -->
+		<div ng-if="chosenReport.hasSingleDateFilter">
+			<label>Date: </label>
+			<span>{{ displayedReport.chosenReportSingleValueDate | date:dateFormat }}</span></span>
+		</div>
+
 		<!-- time range -->
 		<div ng-if="chosenReport.hasTimeFilter && (displayedReport.chosenReportFromTime || displayedReport.chosenReportToTime)">
 			<label>Time Range - </label>
