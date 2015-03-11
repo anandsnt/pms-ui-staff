@@ -17,8 +17,7 @@
                 <fieldset class="holder full-width">
                     <div class="entry has-sortable locked col3-with-button">
                         <h3 translate>ASSIGNED_PERMISSIONS</h3>
-                        <ul id="assigned-roles" 
-                                data-placeholder="{{ 'PERMISSIONS_PLACEHOLDER1' | translate }}"
+                        <ul data-placeholder="{{ 'PERMISSIONS_PLACEHOLDER1' | translate }}"
 
                                 data-jqyoui-options="{accept:'.unassigned-user-roles'}"
                                 
@@ -57,7 +56,7 @@
                         <h3 class="inactive" translate>NOT_ASSIGNED_PERMISSIONS</h3>
                         <ul data-placeholder="{{ 'PERMISSIONS_PLACEHOLDER2' | translate }}"
 
-                        class="boxes sortable short-list1"  style="overflow-y: scroll !important;" 
+                        class="boxes sortable empty short-list1"  style="overflow-y: scroll !important;" 
                         data-drop="true" ng-model='unAssignedPermissions' 
 
                         data-jqyoui-options="{accept:'.assigned-user-roles'}"
@@ -77,6 +76,7 @@
                                 <span class="icons icon-handle"></span>
                                 {{unAssignedpPrmission.name}}
                             </li>
+                            <span class="placeholder ui-state-disabled"  ng-show="unAssignedPermissions.length == 0" translate>PERMISSIONS_PLACEHOLDER2</span>
                         </ul>
                     </div>
                 </fieldset>

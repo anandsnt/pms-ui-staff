@@ -14,6 +14,12 @@
 		</div>
 
 		<!-- deposit date range -->
+		<div ng-if="chosenReport.hasCreateDateFilter">
+			<label>Create Dates - </label>
+			From: <span>{{ displayedReport.chosenReportFromCreateDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToCreateDate | date:dateFormat }}</span>
+		</div>
+
+		<!-- create date range -->
 		<div ng-if="chosenReport.hasDepositDateFilter && (displayedReport.chosenReportFromDepositDate || displayedReport.chosenReportToDepositDate)">
 			<label>Deposit Dates - </label>
 			From: <span>{{ displayedReport.chosenReportFromDepositDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToDepositDate | date:dateFormat }}</span>
@@ -21,6 +27,10 @@
 
 		<!-- arrival date range -->
 		<div ng-if="chosenReport.hasArrivalDateFilter && (displayedReport.chosenReportFromDepositDate || displayedReport.chosenReportToDepositDate)">
+			<label>Arrival Dates - </label>
+			From: <span>{{ displayedReport.chosenReportFromArrivalDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToArrivalDate | date:dateFormat }}</span>
+		</div>
+		<div ng-if="chosenReport.hasArrivalDateFilter && (!displayedReport.chosenReportFromDepositDate || !displayedReport.chosenReportToDepositDate)">
 			<label>Arrival Dates - </label>
 			From: <span>{{ displayedReport.chosenReportFromArrivalDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToArrivalDate | date:dateFormat }}</span>
 		</div>
@@ -36,18 +46,18 @@
 			<label>Time Range - </label>
 			From: <span>{{ displayedReport.chosenReportFromTime }}</span> To: <span>{{ displayedReport.chosenReportToTime }}</span>
 		</div>
-		
+
 		<!-- CICO type -->
 		<div ng-if="chosenReport.chosenCico">
 			Transaction type: <span>{{ transcationTypes }}</span>
 		</div>
-		
+
 		<!-- chosen user nanme -->
 		<div ng-if="chosenReport.choosenReportUser && displayedReport.choosenReportUser">
 			Users: <span>{{ displayedReport.choosenReportUser }}</span>
 		</div>
-		
-		<!-- chosen user nanme -->
+
+		<!-- chosen company/TA/group -->
 		<div ng-if="chosenReport.hasIncludeComapnyTaGroup && displayedReport.chosenReportCompTaGrp">
 			Company/TA/Group: <span>{{ displayedReport.chosenReportCompTaGrp }}</span>
 		</div>
