@@ -21,7 +21,7 @@
                 <div class="select infants">
                     <label for="room-infants" class="label" translate>INFANTS</label>
                     <select name="room-infants" id="room-infants" ng-model="stateCheck.selectedStayDate.guests.infants" ng-change="updateDayOccupancy('infants'); toggleEditGuestOptions()">
-                        <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}"ng-selected="i == stateCheck.selectedStayDate.guests.infants">{{i}}</option>
+                        <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i == stateCheck.selectedStayDate.guests.infants">{{i}}</option>
                     </select>
                 </div>
             </div>
@@ -37,10 +37,7 @@
         </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
         <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
-            <select ng-model="stateCheck.preferredType" 
-            ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'" 
-            ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" 
-            ng-change="filterRooms($event); resetRates();">
+            <select ng-model="stateCheck.preferredType" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms($event); resetRates();">
                 <option value="" translate>RESV_ALL_ROOMS</option>
             </select>
         </div>
@@ -49,30 +46,68 @@
         <div>
             <ul ng-if="activeCriteria == 'RECOMMENDED'" class="rooms-and-rates wrapper"></ul>
             <ul class="rooms-and-rates wrapper" ng-if="activeCriteria == 'ROOM_TYPE'">
-                <li ng-repeat="room in displayData.roomTypes" ng-hide="$index > 1 && showLessRooms" ng-init="isVisibleRoom = (selectedRoomType == room.id)"> 
+                <li ng-repeat="room in displayData.roomTypes" ng-hide="$index > 1 && showLessRooms" ng-init="isVisibleRoom = (selectedRoomType == room.id)">
                     <a class="has-arrow toggle" ng-class="{active: isVisibleRoom}" ng-click="isVisibleRoom = !isVisibleRoom; refreshScroll()">
-                        <div class="data">  
+                        <div class="data">
                             <h2>{{room.name}}</h2>
-                            <span ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" ng-show="displayData.roomTypes.length > 0 &&     $index > 0 && upsell > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell|number:0}}&nbsp;{{'RESV_MORE'|translate}}</span>
+
+                            <span class="recommended" ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" ng-show="displayData.roomTypes.length > 0 && $index > 0 && upsell > 0">
+                                {{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell|number:0}}&nbsp;{{'RESV_MORE'|translate}}
+                            </span>
+                            <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
+                            <span class="count red" 
+                                ng-show="(stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[$scope.stateCheck.selectedStayDate][roomAvailability[room.id].defaultRate].availabilityCount) || getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 5">
+                                {{(stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[$scope.stateCheck.selectedStayDate][roomAvailability[room.id].defaultRate].availabilityCount) || getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
+                            </span>
+
+                            <span class="count green" ng-hide="(stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[$scope.stateCheck.selectedStayDate][roomAvailability[room.id].defaultRate].availabilityCount) || getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 5">
+                                {{(stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[$scope.stateCheck.selectedStayDate][roomAvailability[room.id].defaultRate].availabilityCount) || getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
+                            </span>
+
                         </div>
                         <div class="book-rate" ng-class="{hidden: isVisibleRoom}">
-                            <h4 translate>RESV_BEST_RATE</h4>
+                            <h4 ng-hide="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_BEST_RATE</h4>
+                            <h4 ng-show="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_COR_RATE</h4>
                             <div class="price" ng-if="!roomAvailability[room.id].isSuppressed">
-                                {{currencySymbol}}{{roomAvailability[room.id].averagePerNight  | number: 0}}<span translate>RESV_AVG_NIGHT</span>
+                                {{currencySymbol}}{{roomAvailability[room.id].averagePerNight | number: 0}}<span translate>RESV_AVG_NIGHT</span>
                             </div>
                             <div class="price" ng-if="roomAvailability[room.id].isSuppressed">
                                 SR<span translate>RESV_AVG_NIGHT</span>
                             </div>
-    
-                            <button ng-show="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" class="button white green-text" ng-click="handleNoEdit($event, room.id, roomAvailability[room.id].defaultRate)">CURRENT RATE</button>
-                            <button ng-hide="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1}" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
+
+                            <button ng-show="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" class="button white blue-text" ng-click="handleNoEdit($event, room.id, roomAvailability[room.id].defaultRate)">CURRENT RATE</button>
+                            <button 
+                                ng-hide="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" class="button" 
+                                ng-class="{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1,
+                                    'grey': !stateCheck.stayDatesMode && getAllRestrictions(room.id,roomAvailability[room.id].defaultRate).length > 0, 
+                                    'white grey-text': stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].restrictions.length > 0, 
+                                    'white green-text': stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].restrictions.length == 0, 
+                                    'green': !stateCheck.stayDatesMode && getAllRestrictions(room.id,roomAvailability[room.id].defaultRate).length == 0 }" 
+                                ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
                         </div>
                     </a>
                     <!-- Rates list -->
                     <ul class="rates" ng-class="{hidden: !isVisibleRoom}">
-                        <li ng-repeat="rate in roomAvailability[room.id].rates"> 
+                        <li ng-repeat="rate in roomAvailability[room.id].rates" ng-class="{'closed': !stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions.length > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">  <!-- Add class "closed" if restrictions apply to rate -->
                             <a class="has-arrow toggle" ng-class="{active: isActive}" ng-init="isActive=false;" ng-click="isActive = !isActive ; refreshScroll()">
-                                <h3>{{displayData.allRates[rate].name}}</h3>
+                                <h3 ng-class="{'restricted': !stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions.length > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">{{displayData.allRates[rate].name}}</h3><!-- Add class "restricted" if restriction applies -->
+                                <!-- If corporate rate, show: -->
+                                    <span class="corporate" ng-show="isCorRate(roomAvailability[room.id].defaultRate)">COR</span>
+                                <!-- If restriction applies, show: -->
+                                <span class="restricted" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length > 1">MULTIPLE RESTRICTIONS APPLY</span>
+                                <span class="restricted {{restrictionColorClass[getAllRestrictions(room.id,rate)[0].key]}}" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length == 1">
+                                    {{getAllRestrictions(room.id,rate)[0].value}}
+                                </span>
+
+                                <span class="restricted" ng-if="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 1">MULTIPLE RESTRICTIONS APPLY</span>
+                                <span class="restricted {{restrictionColorClass[roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions[0].key]}}" ng-if="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length == 1">
+                                    {{roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions[0].value}}
+                                </span>
+
+                                <!-- {restriction-color} can be: red, green, blue, purple and grey
+
+                                
+
                                 <div class="price" ng-if="!displayData.allRates[rate].is_suppress_rate_on">
                                     {{currencySymbol}}{{roomAvailability[room.id].total[rate].average | number: 0}}
                                     <span translate>RESV_AVG_NIGHT</span>
@@ -82,8 +117,21 @@
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
 
-                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button white green-text" ng-click="handleNoEdit($event, room.id, rate)">CURRENT RATE</button>
-                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(rate) > -1}"  ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
+                                 <!--
+                                    In stay view, button should have class "grey" if room type is restricted, and "green" when not restricted.
+                                    If day view, use "white grey-text" instead of "grey", and "white green-text" instead of "green".
+                                    If it's booked room, use class "white blue-text", and have text "Booked".
+                                -->
+
+                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button white blue-text" ng-click="handleNoEdit($event, room.id, rate)">CURRENT RATE</button>
+                                <button class="button"
+                                    ng-hide="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id"  
+                                    ng-class="{'red': stateCheck.restrictedContractedRates[room.id].indexOf(rate) > -1, 
+                                      'grey': !stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length > 0, 
+                                      'white grey-text' : stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0, 
+                                      'white green-text' : stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length == 0, 
+                                      'green' :  !stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length == 0 }" 
+                                    ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
                             </a>
 
                             <!-- Rate Details -->
@@ -109,9 +157,10 @@
                                             <td colspan="3" class="total-label" translate>RESV_TOTAL_ROOM</td>
                                             <td class="total-value" ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].total[rate].total | number:2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
-                                            <td class="edit" ng-hide="true"> <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
+                                            <td class="edit" ng-hide="true">
+                                                <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                                    <span class="icons icon-pencil"></span>
+                                                </a>
 
                                             </td>
                                         </tr>
@@ -119,8 +168,7 @@
                                     <tbody>
                                         <tr ng-repeat="day in displayData.dates">
                                             <td>
-                                                {{day.obj | date: fulldayInWeek }},
-                                                {{day.obj | date: dateFormat }}
+                                                {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
                                             </td>
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
@@ -132,6 +180,21 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <br>
+
+                                <!-- If multiple restrictions apply: -->
+                                
+                                <ul ng-if="!stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length > 1" class="restrictions">
+                                    <li ng-repeat="restriction in getAllRestrictions(room.id,rate)" ng-class="restrictionColorClass[restriction.key]">
+                                        {{restriction.value}}
+                                    </li>
+                                </ul>
+                                <ul ng-if="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 1" class="restrictions">
+                                    <li ng-repeat="restriction in roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions" ng-class="restrictionColorClass[restriction.key]">
+                                        {{restriction.value}}
+                                    </li>
+                                </ul>
+
                             </div>
                         </li>
                     </ul>
@@ -141,30 +204,77 @@
                 </li>
             </ul>
             <ul class="rooms-and-rates wrapper" ng-if="activeCriteria == 'RATE'">
-                <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.preferredType" ng-hide="$index > 1 && showLessRates"> <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
-                    <div class="data">
-                        <h2>{{rate.rate.name}}</h2>
-                    </div>
-                    <div class="book-rate">
-                        <div class="select" ng-click="$event.stopPropagation()">
-                            <select name="room-1-type" class="placeholder" ng-model="selectedRoom" ng-change="refreshScroll()" ng-disabled="activeCriteria == 'ROOM_TYPE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
-                                <!-- <option value="-1">Select Room Type</option> -->
-                                <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="room.id == rate.preferredType">{{room.name}}</option>
-                            </select>
-                        </div>
-                        <div class="price" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">
-                            {{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}
-                            <span translate>RESV_AVG_NIGHT</span>
-                        </div>
-                        <div class="price" ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">
-                            SR
-                            <span translate>RESV_AVG_NIGHT</span>
-                        </div>
+                <!-- Add class "closed" if restrictions apply to rate -->
+                <li class="is-rate" 
+                    ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" 
+                    ng-init="isActive=false; selectedRoom = rate.preferredType" ng-hide="$index > 1 && showLessRates" 
+                    ng-class="{'closed' : !stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 0 || stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 0}">
+                    <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
+                        <div class="data">
+                            <h2>{{rate.rate.name}}</h2>
+                             <!-- If corporate rate, show: -->
+                            <span class="corporate" ng-if="rate.rate.account_id">COR</span>
+                            <!-- If restriction applies, show: selectedRoom, rate.rate.id -->
+                            <span class="restricted" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 1">MULTIPLE RESTRICTIONS APPLY</span>
 
-                        <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" class="button white green-text" ng-click="handleNoEdit($event, selectedRoom, rate.rate.id)">CURRENT RATE</button>
-                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" ng-class = "{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1}" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
-                    </div>
-                </a>
+                            <span class="restricted"
+                                ng-class="getAllRestrictions(selectedRoom,rate.rate.id)[0].key" 
+                                ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length == 1">
+                                    {{getAllRestrictions(selectedRoom,rate.rate.id)[0].value}}
+                            </span>
+
+                            <span class="restricted" ng-if="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 1">MULTIPLE RESTRICTIONS APPLY</span>
+                            <span class="restricted {{restrictionColorClass[roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions[0].key]}}" ng-if="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length == 1">
+                                    {{roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions[0].value}}
+                            </span>
+                            <!-- {restriction-color} can be: red, green, blue, purple and grey -->
+
+                        </div>
+                        <div class="book-rate">
+                            <div class="select" ng-click="$event.stopPropagation()">
+                                <select name="room-1-type" class="placeholder" ng-model="selectedRoom" ng-change="refreshScroll()" ng-disabled="activeCriteria == 'ROOM_TYPE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
+                                    <!-- <option value="-1">Select Room Type</option>
+                                    <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="room.id == rate.preferredType">{{room.name}}</option>
+                                </select>
+                            </div>
+
+                            <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
+                            <span class="count red" ng-show="(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[$scope.stateCheck.selectedStayDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id) < 5">
+                                {{(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[$scope.stateCheck.selectedStayDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
+                            </span>
+
+                            <span class="count green" ng-hide="(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[$scope.stateCheck.selectedStayDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id) < 5">
+                                {{(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[$scope.stateCheck.selectedStayDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
+                            </span>
+
+                            <div class="price" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">
+                                {{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}
+                                <span translate>RESV_AVG_NIGHT</span>
+                            </div>
+                            <div class="price" ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">
+                                SR
+                                <span translate>RESV_AVG_NIGHT</span>
+                            </div>
+
+                            <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" class="button white blue-text" ng-click="handleNoEdit($event, selectedRoom, rate.rate.id)">CURRENT RATE</button>
+                            <!--
+                                Button should have class "grey" until room type is selected - replace it with "green" then.
+                                If day view, use "white grey-text" instead of "grey", and "white green-text" instead of "green".
+                                If it's booked room, use class "white blue-text", and have text "Booked".
+                            -->
+                            <button 
+                                ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" 
+                                ng-class="{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1,
+                                    'grey': !stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 0, 
+                                    'white grey-text' : stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 0, 
+                                    'white green-text' : stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length == 0, 
+                                    'green' :  !stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length == 0 }" 
+                                class="button" 
+                                ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>
+                                RESV_BOOK
+                            </button>
+                        </div>
+                    </a>
 
                     <ul class="rate-details" ng-class="{hidden: !isActive}">
                         <ul class="info">
@@ -188,9 +298,10 @@
                                     <td colspan="3" class="total-label" translate>RESV_TOTAL_ROOM</td>
                                     <td class="total-value" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].total | number:2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
-                                    <td class="edit" ng-hide="true"> <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                        <span class="icons icon-pencil"></span>
-                                    </a>
+                                    <td class="edit" ng-hide="true">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
 
                                     </td>
                                 </tr>
@@ -198,8 +309,7 @@
                             <tbody>
                                 <tr ng-repeat="day in displayData.dates">
                                     <td>
-                                        {{day.obj | date: fulldayInWeek }},
-                                        {{day.obj | date: dateFormat }}
+                                        {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
                                     </td>
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
@@ -211,6 +321,18 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <!-- If multiple restrictions apply: -->
+                              
+                        <ul ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 1" class="restrictions">
+                            <li ng-repeat="restriction in getAllRestrictions(selectedRoom,rate.rate.id)" ng-class="restrictionColorClass[restriction.key]">
+                                {{restriction.value}}
+                            </li>
+                        </ul>
+                        <ul ng-if="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 1" class="restrictions">
+                            <li ng-repeat="restriction in roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions" ng-class="restrictionColorClass[restriction.key]">
+                                {{restriction.value}}
+                            </li>
+                        </ul>
                     </ul>
                 </li>
                 <li class="break" ng-show="showLessRates && rateFiltered == false && displayData.availableRates.length > 2 && selectedRoomType == -1" ng-click="showLessRates = false ; refreshScroll()"> <span translate>RESV_SEE_MORE_RATES</span>
