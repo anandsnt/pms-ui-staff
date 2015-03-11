@@ -6,9 +6,11 @@ sntRover.controller('RVReportsMainCtrl', [
 	'$filter',
 	'activeUserList',
 	'guaranteeTypes',
+	'chargeGroups',
+	'chargeCodes',
 	'$timeout',
 	'RVReportUtilsFac',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes,$timeout, reportUtils) {
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes, chargeGroups, chargeCodes, $timeout, reportUtils) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -29,11 +31,26 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
+
 		$scope.reportList = reportsResponse.results;
 		$scope.reportCount = reportsResponse.total_count;
-		$scope.activeUserList = activeUserList;
 
+
+		$scope.activeUserList = activeUserList;
 		$scope.guaranteeTypes = guaranteeTypes;
+		$scope.chargeGroups = chargeGroups;
+		$scope.chargeCodes = chargeCodes;
+
+		_.each($scope.guaranteeTypes, function (item) {
+			item.selected = false;
+		});
+		_.each($scope.chargeGroups, function (item) {
+			item.selected = false;
+		});
+		_.each($scope.chargeCodes, function (item) {
+			item.selected = false;
+		});
+
 
 		$scope.showReportDetails = false;
 
@@ -78,7 +95,11 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_11: false,
 			item_12: false,
 			item_13: false,
-			item_14: false
+			item_14: false,
+			item_15: false,
+			item_16: false,
+			item_17: false,
+			item_18: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -336,12 +357,31 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeBoth'
 		];
 
+
+
+
+
+
 		var closeAllMultiSelects = function() {
 			_.each($scope.reportList, function(item) {
-				item.fauxSelectOpen = false;
-				item.selectDisplayOpen = false;
-				item.selectMarketsOpen = false;
-				item.selectGuaranteeOpen = false;
+				if ( item.hasOwnProperty('fauxSelectOpen') ) {
+					item.fauxSelectOpen = false;
+				};
+				if ( item.hasOwnProperty('selectDisplayOpen') ) {
+					item.selectDisplayOpen = false;
+				};
+				if ( item.hasOwnProperty('selectMarketsOpen') ) {
+					item.selectMarketsOpen = false;
+				};
+				if ( item.hasOwnProperty('selectGuaranteeOpen') ) {
+					item.selectGuaranteeOpen = false;
+				};
+				if ( item.hasOwnProperty('selectChargeGroupOpen') ) {
+					item.selectChargeGroupOpen = false;
+				};
+				if ( item.hasOwnProperty('selectChargeCodeOpen') ) {
+					item.selectChargeCodeOpen = false;
+				};
 			});
 			$timeout(function(){
 				$scope.refreshScroller('report-list-scroll');
@@ -366,129 +406,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.fauxOptionClicked(e, item);
 		};
-
-		// specific for Source and Markets reports
-		$scope.selectDisplayClicked = function(e, item) {
-			var selectCount = 0;
-
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-
-			$scope.fauxOptionClicked(e, item);
-
-		};
-
-		//specific for markets
-		$scope.selectMarketsClicked = function(e, item) {
-			var selectCount = 0;
-			$timeout(function(){
-				$scope.refreshScroller('report-list-scroll');
-				$scope.myScroll['report-list-scroll'].refresh();
-			},300);
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
-
-			if (!item) {
-				return;
-			};
-			e.stopPropagation();
-
-		};
-
-		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
-			if(allMarkets){
-				_.each($scope.reportsState.markets, function(market){
-					market.selected = !!item.allMarketsSelected;
-				});
-			} else {
-				var selectedData = _.where($scope.reportsState.markets, {
-					selected: true
-				});
-
-				item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
-
-				if (selectedData.length == 0) {
-					item.marketTitle = "Select";
-				} else if (selectedData.length == 1) {
-					item.marketTitle = selectedData[0].name;
-				} else if (selectedData.length > 1) {
-					item.marketTitle = selectedData.length + "Selected";
-				}
-			}
-			// CICO-10202
-			$scope.$emit('report.filter.change');
-		}
-
-		$scope.fauxGuaranteeOptionClicked = function(item) {
-			var selectedData = _.where(item.guaranteeTypes, {
-				selected: true
-			});
-
-			if (selectedData.length == 0) {
-				item.guaranteeTitle = "Select";
-			} else if (selectedData.length == 1) {
-				item.guaranteeTitle = selectedData[0].name;
-			} else if (selectedData.length > 1) {
-				item.guaranteeTitle = selectedData.length + " Selected";
-			}
-		}
-
-
-		// specific for Source and Markets reports
-		$scope.guranteeTypeClicked = function(e, item) {
-			var selectCount = 0;
-
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				_.each($scope.reportList, function(item) {
-					item.fauxSelectOpen = false;
-					item.selectGuaranteeOpen = false;
-				});
-				return;
-			};
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectGuaranteeOpen = item.selectGuaranteeOpen ? false : true;
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-
-			$scope.fauxOptionClicked(e, item);
-
-		};
-
 		$scope.fauxOptionClicked = function(e, item) {
 			e && e.stopPropagation();
 
@@ -536,6 +453,169 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.$emit('report.filter.change');
 		};
 
+		// specific for Source and Markets reports
+		$scope.selectDisplayClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+
+		//specific for markets
+		$scope.selectMarketsClicked = function(e, item) {
+			var selectCount = 0;
+			$timeout(function(){
+				$scope.refreshScroller('report-list-scroll');
+				$scope.myScroll['report-list-scroll'].refresh();
+			},300);
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
+
+			if (!item) {
+				return;
+			};
+			e.stopPropagation();
+
+		};
+		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
+			if(allMarkets){
+				_.each($scope.reportsState.markets, function(market){
+					market.selected = !!item.allMarketsSelected;
+				});
+			} else {
+				var selectedData = _.where($scope.reportsState.markets, {
+					selected: true
+				});
+
+				item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
+
+				if (selectedData.length == 0) {
+					item.marketTitle = "Select";
+				} else if (selectedData.length == 1) {
+					item.marketTitle = selectedData[0].name;
+				} else if (selectedData.length > 1) {
+					item.marketTitle = selectedData.length + "Selected";
+				}
+			}
+			// CICO-10202
+			$scope.$emit('report.filter.change');
+		};
+
+		// specific for Source and Markets reports
+		$scope.guranteeTypeClicked = function(e, item) {
+			var selectCount = 0;
+
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectGuaranteeOpen = item.selectGuaranteeOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+		$scope.fauxGuaranteeOptionClicked = function(item) {
+			var selectedData = _.where(item.guaranteeTypes, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.guaranteeTitle = "Show All";
+			} else if (selectedData.length == 1) {
+				item.guaranteeTitle = selectedData[0].name;
+			} else if (selectedData.length > 1) {
+				item.guaranteeTitle = selectedData.length + " Selected";
+			}
+		};
+
+		// charge group faux select method
+		$scope.chargeGroupClicked = function(e, item) {
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectChargeGroupOpen = item.selectChargeGroupOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+		$scope.fauxChargeGroupOptionClicked = function(item) {
+			var selectedData = _.where(item.chargeGroups, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.chargeGroupTitle = "Show All";
+			} else if (selectedData.length == 1) {
+				item.chargeGroupTitle = selectedData[0].description;
+			} else if (selectedData.length > 1) {
+				item.chargeGroupTitle = selectedData.length + " Selected";
+			};
+		};
+
+		// charge code faux select method
+		$scope.chargeCodeClicked = function(e, item) {
+			// if clicked outside, close the open dropdowns
+			if (!e) {
+				closeAllMultiSelects();
+				return;
+			};
+
+			if (!item) {
+				return;
+			};
+
+			e.stopPropagation();
+			item.selectChargeCodeOpen = item.selectChargeCodeOpen ? false : true;
+
+			$scope.fauxOptionClicked(e, item);
+		};
+		$scope.fauxChargeCodeOptionClicked = function(item) {
+			var selectedData = _.where(item.chargeCodes, {
+				selected: true
+			});
+
+			if (selectedData.length == 0) {
+				item.chargeCodeTitle = "Show All";
+			} else if (selectedData.length == 1) {
+				item.chargeCodeTitle = selectedData[0].description;
+			} else if (selectedData.length > 1) {
+				item.chargeCodeTitle = selectedData.length + " Selected";
+			}
+		};
 
 		$scope.showFauxSelect = function(item) {
 			if (!item) {
@@ -546,6 +626,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				return item.hasOwnProperty(has)
 			}) ? true : false;
 		};
+
+
+
+
 
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
@@ -581,10 +665,15 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['arrival_to_date'] = $filter('date')(chosenReport.untilArrivalDate, 'yyyy/MM/dd');
 			};
 
-			// include due dates
+			// include deposit due dates
 			if (!!chosenReport.hasDepositDateFilter) {
 				params['deposit_from_date'] = $filter('date')(chosenReport.fromDepositDate, 'yyyy/MM/dd');
 				params['deposit_to_date'] = $filter('date')(chosenReport.untilDepositDate, 'yyyy/MM/dd');
+			};
+
+			// include single dates
+			if (!!chosenReport.hasSingleDateFilter) {
+				params['date'] = $filter('date')(chosenReport.singleValueDate, 'yyyy/MM/dd');
 			};
 
 			// include times
@@ -617,6 +706,17 @@ sntRover.controller('RVReportsMainCtrl', [
 				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean') {
 					params['sort_dir'] = _chosenSortBy.sortDir;
 				}
+			};
+
+			// include group bys
+			if (chosenReport.groupByOptions) {
+				if ( chosenReport.chosenGroupBy == 'DATE' ) {
+					params['group_by_date'] = true;
+				};
+
+				if ( chosenReport.chosenGroupBy == 'USER' ) {
+					params['group_by_user'] = true;
+				};
 			};
 
 			// include notes
@@ -710,6 +810,28 @@ sntRover.controller('RVReportsMainCtrl', [
 				params['include_guarantee_type[]'] = angular.copy( ary );
 			};
 
+			// include charge groups
+			if (chosenReport.hasOwnProperty('hasByChargeGroup')) {
+				ary = [];
+				_.each(chosenReport.chargeGroups, function(group) {
+					if (group.selected) {
+						ary.push(group.id);
+					};
+				});
+				params['charge_group_ids[]'] = angular.copy( ary );
+			};
+
+			// include charge code
+			if (chosenReport.hasOwnProperty('hasByChargeCode')) {
+				ary = [];
+				_.each(chosenReport.chargeCodes, function(code) {
+					if (code.selected) {
+						ary.push(code.id);
+					};
+				});
+				params['charge_code_ids[]'] = angular.copy( ary );
+			};
+
 			// include include deposit paid
 			if (chosenReport.hasOwnProperty('hasIncludeDepositPaid')) {
 				key = chosenReport.hasIncludeDepositPaid.value.toLowerCase();
@@ -740,6 +862,52 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
 			};
 
+            // include due out departure option
+			if (chosenReport.hasOwnProperty('hasDueOutDepartures')) {
+				key = chosenReport.hasDueOutDepartures.value.toLowerCase();
+				params[key] = chosenReport.chosenDueOutDepartures ? true : false;
+			};
+
+            // include new option
+			if (chosenReport.hasOwnProperty('hasIncludeNew')) {
+				key = chosenReport.hasIncludeNew.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeNew ? true : false;
+			};
+
+            // include both option
+			if (chosenReport.hasOwnProperty('hasIncludeBoth')) {
+				key = chosenReport.hasIncludeBoth.value.toLowerCase();
+				params[key] = chosenReport.chosenIncludeBoth ? true : false;
+			};
+
+
+
+
+
+			// need to reset the "group by" if any new filter has been applied
+			if ( !!chosenReport.groupByOptions && !!$scope.oldParams ) {
+				for (key in params) {
+					if ( !params.hasOwnProperty(key) ) {
+					    continue;
+					};
+
+					if ( key == 'group_by_date' || key == 'group_by_user' ) {
+						continue;
+					} else if ( params[key] != $scope.oldParams[key] ) {
+						chosenReport.chosenGroupBy = 'BLANK';
+						params['group_by_date'] = false;
+						params['group_by_user'] = false;
+						break;
+					};
+				};
+			};
+
+			// keep a copy of the current params
+			$scope.oldParams = angular.copy( params );
+
+
+
+
 
 			var callback = function(response) {
 				if (changeView) {
@@ -748,12 +916,13 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 
 				// fill in data into seperate props
-				$scope.totals = response.totals;
-				$scope.headers = response.headers;
-				$scope.subHeaders = response.sub_headers;
-				$scope.results = response.results;
+				$scope.totals          = response.totals;
+				$scope.headers         = response.headers;
+				$scope.subHeaders      = response.sub_headers;
+				$scope.results         = response.results;
 				$scope.resultsTotalRow = response.results_total_row;
-				$scope.summaryCounts = response.summary_counts;
+				$scope.summaryCounts   = response.summary_counts;
+				$scope.reportGroupedBy = response.group_by;
 
 				// track the total count
 				$scope.totalCount = response.total_count;

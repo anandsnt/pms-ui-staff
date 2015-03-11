@@ -165,6 +165,8 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 			$state.go('rover.diary', { reservation_id: $scope.reservationData.reservation_card.reservation_id });
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
+		}else if($scope.reservationData.reservation_card.reservation_status=="CHECKEDIN"){
+			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
 		}
 		
 	};

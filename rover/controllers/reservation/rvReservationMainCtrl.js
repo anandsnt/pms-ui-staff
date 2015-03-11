@@ -508,6 +508,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         } else {
                             taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * taxOnAmount));
                         }
+
                     } else {
                         taxCalculated = parseFloat(multiplicity * parseFloat(taxData.amount));
                     }
@@ -1060,6 +1061,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.rooms[0].numAdults = arrivalDateDetails[0].adults;
             $scope.reservationData.rooms[0].numChildren = arrivalDateDetails[0].children;
             $scope.reservationData.rooms[0].numInfants = arrivalDateDetails[0].infants;
+
+            if (reservationDetails.reservation_card.reservation_status == "CHECKEDIN") {
+                $scope.reservationData.inHouse = true;
+            }
 
             // Find if midstay or later
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
@@ -1874,15 +1879,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
                     if (typeof index !== 'undefined') {
-                        angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                            if (key == index) {
-                                postData.reservationId = reservation.id;
-                                var roomId = postData.room_id[index];
-                                postData.room_id = [];
-                                postData.room_id.push(roomId);
-                            }
+                        postData.reservationId = $scope.reservationData.reservationId;
+                        var roomId = postData.room_id[index];
+                        postData.room_id = [];
+                        postData.room_id.push(roomId);
 
-                        });
                     } else {
                         postData.reservationId = $scope.reservationData.reservationId;
                     }

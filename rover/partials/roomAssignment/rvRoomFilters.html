@@ -4,6 +4,22 @@
 									CLEAR_FILTERS_LABEL
 								</button>
 							</div>
+							<div class="entry radio-check">
+                                <label class="checkbox inline checked">
+                                    <span ng-class="{'icon-form':true, 'icon-checkbox' :true, 'checked':data.isNoFloorSelected}"></span>
+                                    <input name="show-all-floors" ng-model="data.isNoFloorSelected" id="show-all-floors" value="show-all-floors" type="checkbox" checked  ng-change="selectedFloorChanged()"/>
+                                    Show All Floors
+                                </label>
+                                <div ng-class="{'select':true, 'hidden':data.isNoFloorSelected}">       
+  			<select ng-model="data.selectedFloor" ng-change='selectedFloorChanged()' class="placeholder">
+        	<option ng-repeat="floor in floor_details" value="{{floor.id}}" >{{floor.description}}</option>
+      		</select>
+
+
+                           
+                                                                      
+                                </div>               
+                            </div>
 							
 							<div class="entry radio-check" ng-repeat="group in roomFeatures">
 								<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> 
@@ -12,7 +28,7 @@
 									ng-click="setSelectionForFeature($parent.$index, $index)">
 									{{feature.name}} </label>
 
-							</div>				
-							
+							</div>	
+								
 					
 </div>

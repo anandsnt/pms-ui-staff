@@ -1627,118 +1627,69 @@ body { overflow: hidden; }
 			overflow: hidden;
 			background: @white;
 			z-index: 90;
+			.float;
 			.box-shadow(0 1px 1px rgba(0,0,0,.1));
 			.show;		
 
-			.actions {
-				.button,
-				.inactive-nights {
-					display: inline-block;
-					display: inline-flex;
-					font-size: 14px;
-					text-shadow: none;
-					line-height: 30px;
-					vertical-align: top;
-					padding: 0 10px;
-					height: 30px;
-					.no-transition;
+			.data { .pull-right; }
+			.actions { .pull-left; }
 
-					.label { 
-						display: inline;
-						float: none;
-						font-size: 12px;
-					}
+			.icon-group,
+			.date,
+			.nights,
+			.room {
+				font-size: 14px;
+				line-height: 30px;
+				.pull-left;
+			}
 
-					&.has-arrow { padding-right: 30px; }
+			.icon-group {
+				color: @grey3;
+				padding-left: 20px;
+				margin-right: 20px;
+				background-position: 0 -45px;
+			}
 
-					&.toggle,
-					&.next-view {
-						color: @textColor;
-						background-color: @grey1;
-						background-position: 90% 50%;
+			.date {
+				.guest-status { text-indent: 9999px; }
+			}
 
-						&:hover,
-						&:active { 
-							color: @textColor;
-							background-color: @grey1; 
-						}
-					}
+			.date,
+			.nights,
+			.room {
+				margin-right: 20px;
 
-					&.toggle { 
-						margin-right: 10px; 
+				&:last-child { margin-right: 0; }
 
-						&.active {
-							/*CICO-10125 fixes. Updated CSS refering to prototype demo */
-							padding-bottom: 40px;
-							background-position: 90% -webkit-calc(~"50% - 5px");
-							background-position: 90% -moz-calc(~"50% - 5px");
-							background-position: 90% calc(~"50% - 5px");
-							.box-shadow(1px 0 0 rgba(0,0,0,.2));
-							#border-radius > .bottom();
-						}
-					}
+				.guest-status {
+					margin: 5px 5px 5px 0;
+					.square(20px);
 				}
 			}
-		}
 
-		.reservation-header,
-		#reservation-updates {
-			.data { 
-				.icon-group,
-				.date,
-				.nights,
-				.room {
-					font-size: 14px;
+			.room {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				max-width: 320px;
+
+				.room-number {
+					font-size: 18px;
 					line-height: 30px;
-					vertical-align: middle;
-					display: inline-block;
+					padding-right: 5px;
 				}
+			}
 
-				.icon-group {
-					color: @grey3;
-					padding-left: 20px;
-					margin-right: 20px;
-					background-position: 0 -45px;
-				}
-
-				.date,
-				.nights,
-				.room {
-					margin-right: 20px;
-
-					.guest-status {
-						margin: 5px 5px 5px 0;
-						.square(20px);
-					}
-				}
-
-				.room {
-					overflow: hidden;
-					white-space: nowrap;
-					text-overflow: ellipsis;
-					max-width: 320px;
-				}
+			.button,
+			.inactive-nights {
+				font-size: 14px;
+				line-height: 30px;
+				padding: 0 10px;
+				height: 30px;
 			}
 		}
 
 		.stay-card-inner {
-			/* Registration header ***/
-			.reservation-header {
-				.data { 
-					.pull-right;
-
-					.room-number {
-						font-size: 18px;
-						line-height: 30px;
-						padding-right: 5px;
-					}
-				}
-
-				.actions {
-					.pull-left; 
-				}
-			}
-
 			> .wrapper { padding: 20px; }
 
 			&.check-in {
