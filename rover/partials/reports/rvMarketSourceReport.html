@@ -141,17 +141,18 @@
                         <span class="title">Total</span>
                         <span class="count">{{marketsValuesTotal}}</span>
                     </li>
+                    <!-- Bottom filters -->
                     <li class="totals">
                         <span class="pull-left">
-                            Booked Date Range <span>{from date}</span> to <span>{to date}</span><br />
-                            Arrival Date Range <span>{from date}</span> to <span>{to date}</span><br>
+                            Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
                             <!-- chosen options -->
                     		<label ng-if="appliedFilter.options.length">
                     			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
                     		</label>
                         </span>
                         <span class="pull-right">
-                            Business date <span>{business date}</span>
+                            Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
                         </span>
                     </li>
                 </ul>
