@@ -938,7 +938,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( chosenReport.showMarket ) {
 					params[key] = true;
 					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasMarket.description );
+					$scope.appliedFilter.display.push( chosenReport.hasMarket.description );
 				};
 			};
 
@@ -948,11 +948,11 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( chosenReport.showSource ) {
 					params[key] = true;
 					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasSource.description );
+					$scope.appliedFilter.display.push( chosenReport.hasSource.description );
 				};
 			};
 
-			// include source
+			// include variance
 			if (chosenReport.hasOwnProperty('hasVariance')) {
 				key = chosenReport.hasVariance.value.toLowerCase();
 				if ( chosenReport.chosenVariance ) {
