@@ -662,7 +662,8 @@
     "PROCEED_WITHOUT_DEPOSIT_REFUND":"PROCEED WITHOUT REFUND",
     "PENALTY_WARNING_MSG1":"Deposit of",
     "PENALTY_WARNING_MSG2":"will not be refunded",
-    "RESEND_CONFIRMATION" : "Resend Confirmation"
+    "RESEND_CONFIRMATION" : "Resend Confirmation",
+    "CONFIRMATION":"Confirmation"
 ,	
 
 	"BACK_BUTTON_LABEL":"BACK",
