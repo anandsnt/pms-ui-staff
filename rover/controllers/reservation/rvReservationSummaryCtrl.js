@@ -667,6 +667,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
 
         $scope.confirmReservation = function() {
+            if (!$scope.isDemographicsFormValid()) {
+                $scope.setDemographics(true);
+                return;
+            }
             var postData = $scope.computeReservationDataforUpdate(false, true);
             postData.payment_type = {};
             angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
