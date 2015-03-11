@@ -15,6 +15,11 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 
 		//list of assigned rooms
 		$scope.assignedRooms = [];	
+        
+        //list of selected rooms from unassigned rooms list
+		$scope.selectedUnassignedRooms=[];
+
+		$scope.selectedAssignedRooms=[];
 
 		//To list room types
 		$scope.listFloorTypes(); 
@@ -202,8 +207,8 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		$scope.assignedRooms = [];
 		
 		//fetching the list of unassigned rooms
-		fetchAllUnAssignedRoom();
-
+		if($scope.isShowMode)
+		    fetchAllUnAssignedRoom();
 		$timeout(function() {
             $location.hash('new-form-holder');
             $anchorScroll();
@@ -232,6 +237,79 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 			return true;
 	};
 
+     $scope.searchInUnassignedRooms = function() { 
+
+   		var params 	= {
+   			query: $scope.floorData.searchKey
+   		};   		
+		var options = {
+    		params: 			params,
+    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom      		
+	    }
+	    $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);		
+   };
+   $scope.showAllUnassignedRooms=function(){
+   	  $scope.isShowMode=true;
+   	  $scope.isAddMode=false;
+   	  $scope.addNewFloor();
+   }
+   $scope.unAssignedRoomSelected=function($index){
+   	   
+   	   selectedIndex=$scope.selectedUnassignedRooms.indexOf($index);  
+   	   if(selectedIndex>-1)
+   	     $scope.selectedUnassignedRooms.splice(selectedIndex,1);
+   	   else
+   	     $scope.selectedUnassignedRooms.push($index); 
+   	     $scope.selectedUnassignedRooms.sort(function(a,b){
+   	     	return b-a;
+   	     }) 	 
+   }
+   $scope.assignSelected=function(){
+      
+       angular.forEach($scope.selectedUnassignedRooms,function(key){	 
+        	 $scope.assignedRooms.push($scope.unassignedRooms[key]);
+        	 $scope.assignedRooms.sort(function(a,b){
+   	     	return a-b;
+   	     }) 	 
+        	 $scope.unassignedRooms.splice(key,1)
+          })
+        $scope.selectedUnassignedRooms=[];
+   }
+   $scope.selectAllUnassignedRooms=function(){
+	        angular.forEach($scope.unassignedRooms,function(key){
+	        	index=$scope.unassignedRooms.indexOf(key)
+	        	 $scope.unAssignedRoomSelected(index)
+   	     })
+        
+   }
+   $scope.selectAllAssignedRooms=function(){
+   	       angular.forEach($scope.assignedRooms,function(key){
+	        	index=$scope.assignedRooms.indexOf(key)
+	        	 $scope.assignedRoomSelected(index)
+	        })
+   }
+    $scope.assignedRoomSelected=function($index){
+   	   
+   	   selectedIndex=$scope.selectedAssignedRooms.indexOf($index);  
+   	   if(selectedIndex>-1)
+   	     $scope.selectedAssignedRooms.splice(selectedIndex,1);
+   	   else
+   	     $scope.selectedAssignedRooms.push($index); 
+   	     $scope.selectedAssignedRooms.sort(function(a,b){
+   	     	return b-a;
+   	     }) 	 
+   }
+     $scope.unAssignSelected=function(){
+      
+       angular.forEach($scope.selectedAssignedRooms,function(key){
+        	 $scope.unassignedRooms.push($scope.assignedRooms[key]);
+        	 $scope.unassignedRooms.sort(function(a,b){
+   	     	return a-b;
+   	     }) 	 
+        	 $scope.assignedRooms.splice(key,1)
+          })
+        $scope.selectedAssignedRooms=[];
+   }
 	initializeMe();	
 
 }]);
