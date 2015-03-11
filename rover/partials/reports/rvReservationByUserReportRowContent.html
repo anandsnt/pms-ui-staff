@@ -7,13 +7,13 @@
     <span ng-if="each.no_of_nights">&#8226; <span class="data">{{ each.no_of_nights }} nights</span></span>
     <span ng-if="each.is_vip">&#8226; <span class="data vip">VIP</span></span>
 </td>
-<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.no_of_nights}">
+<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_hours}">
     <span class="guest-status check-in">check-in</span>
     <time>
         <span>{{ each.arrival_date | date : dateFormat }}</span>
         <span>{{ each.arrival_time }}</span>
     </time>
-    <div ng-if="each.total_hours" class="hours">{{ each.no_of_nights }}</div>
+    <div ng-if="each.total_hours" class="hours">{{ each.total_hours }}</div>
     <div ng-if="each.guarantee_type" class="data guarantee">{{ each.guarantee_type }}</div>
 </td>
 <td ng-if="each.isReport">
