@@ -198,7 +198,7 @@ sntRover.controller('RVActivityLogCtrl',[
     $scope.initPaginationParams = function() {
         $scope.start = 1;
         $scope.page = 1;
-        $scope.perPage = 2;
+        $scope.perPage = 50;
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
         $scope.nextAction = false;
         $scope.prevAction = false;
@@ -228,7 +228,7 @@ sntRover.controller('RVActivityLogCtrl',[
 
     $scope.isPrevButtonDisabled = function() {
         var isDisabled = false;
-        if (RVActivityLogSrv.page == 1) {
+        if ($scope.page == 1) {
             isDisabled = true;
         }
         return isDisabled;
