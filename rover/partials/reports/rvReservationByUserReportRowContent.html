@@ -18,7 +18,7 @@
 </td>
 <td ng-if="each.isReport">
     <span class="data room">{{ each.room_type }}</span>
-    <span class="data rate">{{ each.rate || NA }} / <strong>{{ each.adr || 0 | currency:currencySymbol:2 }} ADR</strong></span>
+    <span class="data rate">{{ each.rate_name }} / <strong>{{ each.rate || 0 | currency:currencySymbol:2 }} ADR</strong></span>
     <span ng-if="each.rate_adjustment" class="data status">{{ each.rate_adjustment | currency:currencySymbol:2 }} Adjusted</span>
 </td>
 <td>
