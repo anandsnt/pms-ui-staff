@@ -9,6 +9,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.alert_max_length = 120;
 		$scope.campaignData.messageSubjectMaxLength = 60;
 		$scope.campaignData.messageBodyMaxLength = 320;
+		$scope.campaignData.callToActionLabelMaxLength = 30;
 		$scope.campaignData.is_recurring = "false";
 		$scope.campaignData.header_file = $scope.fileName;
 

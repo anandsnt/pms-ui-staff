@@ -75,6 +75,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.hasNoTotals   = false;
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
+			$scope.isTransactionReport = false;
 
 			switch ( $scope.chosenReport.title ) {
 				case reportUtils.getName('IN_HOUSE_GUEST'):
@@ -125,6 +126,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasPagination = false;
 					break;
 
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					$scope.hasNoTotals = true;
+					$scope.isTransactionReport = true;
+					break;
+
 				default:
 					break;
 			};
@@ -155,6 +161,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
+					break;
+
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					$scope.leftColSpan = 5;
+					$scope.rightColSpan = 5;
 					break;
 
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
@@ -274,57 +285,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 			};
 
 			// scroller refresh and reset position
-			refreshScroll();
-			refreshSidebarScroll();
-
-			// need to keep a separate object to show the date stats in the footer area
-			// dirty hack to get the val() not model value
-			// delay as it cost time for ng-bindings
-			$timeout(function() {
-
-				// clear out old values
-				$scope.displayedReport = {};
-
-				// chosenReportFromCancelDate
-				// chosenReportToCancelDate
-				$scope.displayedReport.chosenReportFromCancelDate = $( '#chosenReportFromCancelDate' ).val();
-				$scope.displayedReport.chosenReportToCancelDate = $( '#chosenReportToCancelDate' ).val();
-
-				// chosenReportFromDepositDate
-				// chosenReportToDepositDate
-				$scope.displayedReport.chosenReportFromDepositDate = $( '#chosenReportFromDepositDate' ).val();
-				$scope.displayedReport.chosenReportToDepositDate = $( '#chosenReportToDepositDate' ).val();
-
-				// chosenReportFromCreateDate
-				// chosenReportToCreateDate
-				$scope.displayedReport.chosenReportFromCreateDate = $( '#chosenReportFromCreateDate' ).val();
-				$scope.displayedReport.chosenReportToCreateDate = $( '#chosenReportToCreateDate' ).val();
-
-				// chosenReportFromArrivalDate
-				// chosenReportToArrivalDate
-				$scope.displayedReport.chosenReportFromArrivalDate = $( '#chosenReportFromArrivalDate' ).val();
-				$scope.displayedReport.chosenReportToArrivalDate = $( '#chosenReportToArrivalDate' ).val();
-
-				// chosenReportFromDate
-				// chosenReportToDate
-				$scope.displayedReport.chosenReportFromDate = $( '#chosenReportFromDate' ).val();
-				$scope.displayedReport.chosenReportToDate = $( '#chosenReportToDate' ).val();
-
-				// chosenReportFromTime
-				// chosenReportToTime
-				$scope.displayedReport.chosenReportFromTime = $( '#chosenReportFromTime option:selected' ).text() != 'From Time' ? $( '#chosenReportFromTime option:selected' ).text() : '';
-				$scope.displayedReport.chosenReportToTime = $( '#chosenReportToTime option:selected' ).text() != 'Until Time' ? $( '#chosenReportToTime option:selected' ).text() : '';
-
-				// choosenReportUser
-				$scope.displayedReport.choosenReportUser = $( '#choosenReportUser' ).val();
-
-				// chosenReportCompTaGrp
-				$scope.displayedReport.chosenReportCompTaGrp = $( '#chosenReportCompTaGrp' ).val();
-
-				// call again may be.. :(
+			$timeout(function () {
 				refreshScroll();
-			}, 100);
-
+				refreshSidebarScroll();
+			}, 200);
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
@@ -332,7 +296,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, $scope.$parent.reportGroupedBy) );
 
 
-			// now flags that will determine correct template to be loaded
+			// a very different parent template / row template / content template for certain reports
+			// otherwise they all will share the same template
 			switch ( $scope.parsedApiFor ) {
 				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
 					$scope.hasReportTotals    = false;
@@ -398,6 +363,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					template = '/assets/partials/reports/rvReservationByUserReportRow.html';
+					break;
+
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					template = '/assets/partials/reports/rvDailyTransactionsReportRow.html';
 					break;
 
 				default:
@@ -562,6 +531,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
 					orientation = 'landscape';
 					break;
 

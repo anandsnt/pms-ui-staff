@@ -21,7 +21,8 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
 		            name: 'asc'     // initial sorting
 		        }
 		    }, {
-		        total: $scope.data.results.length, // length of data
+		    	counts: [], // hide page counts control
+		        total: 1, // hides the pagingation for now
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?

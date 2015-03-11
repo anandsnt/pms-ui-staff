@@ -47,14 +47,24 @@ sntRover.controller('RVReportListCrl', [
 
                 // to process the filters for this report
                 reportUtils.processFilters(reportList[i], {
-                    'guaranteeTypes': $scope.$parent.guaranteeTypes
+                    'guaranteeTypes' : $scope.$parent.guaranteeTypes,
+                    'chargeGroups'   : $scope.$parent.chargeGroups,
+                    'chargeCodes'    : $scope.$parent.chargeCodes
                 });
 
-                // to process the sort by for this report
-                reportUtils.processSortBy( reportList[i] );
+
+
+
+
+
 
                 // to reorder & map the sort_by to report details columns - for this report
+                // re-order must be called before processing
                 reportUtils.reOrderSortBy( reportList[i] );
+
+                // to process the sort by for this report
+                // processing must be called after re-odering
+                reportUtils.processSortBy( reportList[i] );
 
                 // to assign inital date values for this report
                 reportUtils.initDateValues( reportList[i] );
@@ -117,38 +127,6 @@ sntRover.controller('RVReportListCrl', [
                 _sortBy.sortDir = true;
             };
         };
-
-
-        // little helpers
-        function $_createTimeSlots() {
-            var _ret = [],
-                _hh = '',
-                _mm = '',
-                _step = 15;
-
-            var i = m = 0,
-                h = -1;
-
-            for (i = 0; i < 96; i++) {
-                if (i % 4 == 0) {
-                    h++;
-                    m = 0;
-                } else {
-                    m += _step;
-                }
-
-                _hh = h < 10 ? '0' + h : h;
-                _mm = m < 10 ? '0' + m : m;
-
-                _ret.push({
-                    'value': _hh + ':' + _mm,
-                    'name': _hh + ':' + _mm
-                });
-            };
-
-            return _ret;
-        };
-
 
     }
 ]);

@@ -8,7 +8,10 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTermin
 	
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
-	
+
+	$scope.itemDetails = {};
+	$scope.itemDetails.name = '';
+	$scope.itemDetails.terminal_identifier = '';
 	
 	var itemId = $stateParams.itemid;
 	//if itemid is null, means it is for add item form

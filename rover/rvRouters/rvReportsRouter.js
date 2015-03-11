@@ -18,6 +18,12 @@ angular.module('reportsModule', [])
             },
             guaranteeTypes: function(RVreportsSrv) {
                 return RVreportsSrv.fetchGuaranteeTypes();
+            },
+			chargeGroups: function(RVreportsSrv) {
+                return RVreportsSrv.fetchChargeGroups();
+            },
+			chargeCodes: function(RVreportsSrv) {
+                return RVreportsSrv.fetchChargeCodes();
             }
         }
     });
