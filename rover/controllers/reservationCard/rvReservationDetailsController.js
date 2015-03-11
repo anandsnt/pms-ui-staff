@@ -626,8 +626,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					$scope.$emit('hideLoader');
 				}
 			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
-				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), $rootScope.dateFormat),
-				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), $rootScope.dateFormat),
+				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
 		}
