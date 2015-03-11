@@ -33,7 +33,10 @@ sntRover.config([
                 },
                 userInfoDetails: function(RVDashboardSrv) {
                     return RVDashboardSrv.fetchUserInfo();
-                }
+                },
+                permissions: function (rvPermissionSrv) {
+                    return rvPermissionSrv.fetchRoverPermissions();
+                },
             }
 
         });
