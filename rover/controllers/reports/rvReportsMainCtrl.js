@@ -971,8 +971,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup') && !!chosenReport.chosenIncludeComapnyTaGroup) {
 				key = chosenReport.hasIncludeComapnyTaGroup.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeComapnyTaGroup;
-				/**/
-				$scope.appliedFilter['companyTaGroup'] = chosenReport.chosenIncludeComapnyTaGroup;
+				/* Note using the ui value here */
+				$scope.appliedFilter['companyTaGroup'] = chosenReport.uiChosenIncludeComapnyTaGroup;
 
 			};
 
@@ -1166,8 +1166,30 @@ sntRover.controller('RVReportsMainCtrl', [
 				setTimeout(function() {
 					$scope.$apply(function() {
 						thisReport.chosenUsers = modelVal;
+						console.log(thisReport.chosenUsers);
 					});
-				}.bind(this), 100);
+				}.bind(this), 10);
+			},
+			change: function () {
+				var uiValues = split(this.value);
+				var modelVal = [];
+
+				_.each(activeUserAutoCompleteObj, function(user) {
+					var match = _.find(uiValues, function(email) {
+						return email == user.label;
+					});
+
+					if (!!match) {
+						modelVal.push(user.value);
+					};
+				});
+
+				setTimeout(function() {
+					$scope.$apply(function() {
+						thisReport.chosenUsers = modelVal;
+						console.log(thisReport.chosenUsers);
+					});
+				}.bind(this), 10);
 			},
 			focus: function(event, ui) {
 				return false;
