@@ -5,6 +5,10 @@
 			Check in
 		</a>
 
+		<a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
+			Check out
+		</a>
+
 		<!-- Show balance -->
 		<div class="balance break">
 			<span class="label">Balance</span>
@@ -32,10 +36,7 @@
 		<button type="button" ng-click="putInQueue(reservationData.reservation_card.reservation_id)" class="button staycard-button icon-queue" ng-show="showPutInQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Put in Queue</button>
 		
 		<button type="button" ng-click="removeFromQueue(reservationData.reservation_card.reservation_id)" class="button staycard-button icon-queue in" ng-show="showRemoveFromQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Remove from Queue</button>
-		
-		<a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
-			Check out
-		</a>
+	
 		
     	<!-- Reservation is checking out -->
 		
