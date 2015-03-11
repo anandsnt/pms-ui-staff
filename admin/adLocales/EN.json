@@ -350,6 +350,13 @@
 "FEES_CODE":"Fees code",
 "FEES":"Fees",
 "MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee"
+,"FLOOR": "Floor",
+"ASSIGN_ROOMS_TO_THIS_FLOOR": "Assign rooms to this floor",
+"UNASSIGNED_ROOMS": "Unassigned Rooms",
+"ASSIGNED_ROOMS": "Assigned Rooms",
+"SELECT_ALL": "Select All",
+"ASSIGN_SELECTED": "Assign Selected"
+
 ,
 
 

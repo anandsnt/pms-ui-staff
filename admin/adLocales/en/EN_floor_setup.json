@@ -1,4 +1,7 @@
 "FLOOR": "Floor",
 "ASSIGN_ROOMS_TO_THIS_FLOOR": "Assign rooms to this floor",
 "UNASSIGNED_ROOMS": "Unassigned Rooms",
-"ASSIGNED_ROOMS": "Assigned Rooms"
+"ASSIGNED_ROOMS": "Assigned Rooms",
+"SELECT_ALL": "Select All",
+"ASSIGN_SELECTED": "Assign Selected"
+

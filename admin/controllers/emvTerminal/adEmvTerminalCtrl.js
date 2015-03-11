@@ -16,13 +16,13 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
 		//applying sorting functionality in item list
 		$scope.itemListTerminals = new ngTableParams({
 		        page: 1,            // show first page
-		        count: $scope.data.results.length,    // count per page - Need to change when on pagination implemntation
+		        count: $scope.data.results.length ? $scope.data.results.length : 1,    // count per page - Need to change when on pagination implemntation
 		        sorting: {
 		            name: 'asc'     // initial sorting
 		        }
 		    }, {
 		    	counts: [], // hide page counts control
-		        total: 1, // hides the pagingation for now
+		        total: 0, // hides the pagingation for now
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
