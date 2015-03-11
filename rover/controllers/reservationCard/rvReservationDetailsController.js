@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
 
 		// pre setups for back button
 		var backTitle,
@@ -90,20 +90,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
-		$scope.arrivalDateOptions = angular.extend({
-			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			onSelect: function(dateText, inst) {
-				// Handle onSelect
-			},
-		}, datePickerCommon);
-
-		$scope.departureDateOptions = angular.extend({
-			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			onSelect: function(dateText, inst) {
-				// Handle onSelect
-			},
-		}, datePickerCommon);
-
 
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
@@ -147,6 +133,20 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			arrival: $scope.reservationData.reservation_card.arrival_date,
 			departure: $scope.reservationData.reservation_card.departure_date
 		}
+
+		$scope.arrivalDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				// Handle onSelect
+			},
+		}, datePickerCommon);
+
+		$scope.departureDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				//
+			},
+		}, datePickerCommon);
 
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
@@ -607,18 +607,24 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.editStayDates = function() {
 			// reservation_id, arrival_date, departure_date
+			$scope.errorMessage = "";
 			var onValidationSuccess = function(response) {
-					$scope.responseValidation = response.data;
-					ngDialog.open({
-						template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
-						className: '',
-						scope: $scope,
-						data: JSON.stringify({
-							is_stay_cost_changed: response.data.is_stay_cost_changed,
-							is_assigned_room_available: response.data.is_room_available,
-							is_rate_available: response.data.is_room_type_available
-						})
-					});
+					if (response.errors.length == 0) {
+						$scope.responseValidation = response.data;
+						ngDialog.open({
+							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
+							className: '',
+							scope: $scope,
+							data: JSON.stringify({
+								is_stay_cost_changed: response.data.is_stay_cost_changed,
+								is_assigned_room_available: response.data.is_room_available,
+								is_rate_available: response.data.is_room_type_available
+							})
+						});
+					} else {
+						$scope.errorMessage = response.errors;
+					}
+
 					$scope.$emit('hideLoader');
 				},
 				onValidationFaliure = function(error) {
@@ -626,20 +632,53 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					$scope.$emit('hideLoader');
 				}
 			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
-				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), $rootScope.dateFormat),
-				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), $rootScope.dateFormat),
+				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
 		}
 
 		$scope.moveToRoomRates = function() {
+
+			var initStayDates = function(roomNumber) {
+				if (roomNumber == 0) {
+					$scope.reservationParentData.stayDays = [];
+				}
+				for (var d = [], ms = new tzIndependentDate($scope.reservationParentData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationParentData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+					if (roomNumber == 0) {
+						$scope.reservationParentData.stayDays.push({
+							date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
+							dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
+							day: dateFilter(new tzIndependentDate(ms), 'dd')
+						});
+					}
+					$scope.reservationParentData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+						guests: {
+							adults: parseInt($scope.reservationParentData.rooms[roomNumber].numAdults),
+							children: parseInt($scope.reservationParentData.rooms[roomNumber].numChildren),
+							infants: parseInt($scope.reservationParentData.rooms[roomNumber].numInfants)
+						},
+						rate: {
+							id: "",
+							name: ""
+						}
+					};
+				};
+			};
+
+			$scope.reservationParentData.arrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
+			$scope.reservationParentData.departureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
+			initStayDates(0);
+
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
-				to_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),				
+				to_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
 			});
+
+			$scope.closeDialog();
 		}
 
 		$scope.changeStayDates = function() {
