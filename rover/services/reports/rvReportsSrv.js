@@ -104,5 +104,35 @@ sntRover.service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
+
+		// id & description
+		this.fetchChargeGroups = function() {
+			var deferred = $q.defer(),
+				url = 'api/charge_groups';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		// id & description
+		this.fetchChargeCodes = function() {
+			var deferred = $q.defer(),
+				url = 'api/charge_codes';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);

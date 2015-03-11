@@ -55,6 +55,25 @@
     </div>
 </div>
 
+<div class="date-range" ng-if="item.hasCreateDateFilter">
+    <label>{{ item.hasCreateDateFilter.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromCreateDate" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromCreateDate" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCreateDate', 'untilCreateDate')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilCreateDate" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilCreateDate" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromCreateDate', 'untilCreateDate')">Clear query</span>
+        </button>
+    </div>
+</div>
+
 <div class="date-range" ng-if="item.hasArrivalDateFilter">
     <label>{{ item.hasArrivalDateFilter.description }}</label>
     <div class="has-datepicker">
@@ -74,7 +93,12 @@
     </div>
 </div>
 
-
+<div class="date-range single-date" ng-if="item.hasSingleDateFilter">
+    <label>Date</label>
+    <div class="has-datepicker">
+        <input type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate">
+    </div>
+</div>
 
 <div class="time-range" ng-if="item.hasTimeFilter">
     <label>{{ item.hasTimeFilter.description }}</label>
@@ -182,6 +206,16 @@
             <input type="checkbox" ng-model="item.chosenDueOutDepartures" name="room-filters">
             {{ item.hasDueOutDepartures.description }}
         </label>
+        <label class="checkbox inline" ng-if="item.hasIncludeNew">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNew}"></span>
+            <input type="checkbox" ng-model="item.chosenIncludeNew" name="room-filters">
+            {{ item.hasIncludeNew.description }}
+        </label>
+        <label class="checkbox inline" ng-if="item.hasIncludeBoth">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeBoth}"></span>
+            <input type="checkbox" ng-model="item.chosenIncludeBoth" name="room-filters">
+            {{ item.hasIncludeBoth.description }}
+        </label>
     </div>
 </div>
 
@@ -192,13 +226,37 @@
 </div>
 
 <div class="options" ng-if="item.hasGuaranteeType && item.guaranteeTypes.length">
-    <label for="report-options">Guarantee Type</label>
+    <label>Guarantee Type</label>
     <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, item)">{{ item.guaranteeTitle }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, item)">
         <label class="checkbox inline" ng-repeat="each in item.guaranteeTypes">
             <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
             <input type="checkbox" ng-model="each.selected" ng-change="fauxGuaranteeOptionClicked(item)">
             {{ each.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasByChargeGroup && item.chargeGroups.length">
+    <label>Charge Group(s)</label>
+    <div class="faux-select placeholder" ng-click="chargeGroupClicked($event, item)">{{ item.chargeGroupTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectChargeGroupOpen }" ng-click="fauxChargeGroupOptionClicked($event, item)">
+        <label class="checkbox inline" ng-repeat="each in item.chargeGroups">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeGroupOptionClicked(item)">
+            {{ each.description }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasByChargeCode && item.chargeCodes.length">
+    <label>Charge Code(s)</label>
+    <div class="faux-select placeholder" ng-click="chargeCodeClicked($event, item)">{{ item.chargeCodeTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectChargeCodeOpen }" ng-click="fauxChargeCodeOptionClicked($event, item)">
+        <label class="checkbox inline" ng-repeat="each in item.chargeCodes">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeCodeOptionClicked(item)">
+            {{ each.description }}
         </label>
     </div>
 </div>
@@ -225,6 +283,14 @@
     <div class="select">
         <select ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(item)" iscroll-stop-propagation>
             <option value="">Sort By</option>
+        </select>
+    </div>
+</div>
+
+<div class="sort" ng-if="item.groupByOptions">
+    <label>Group By</label>
+    <div class="select">
+        <select ng-model="item.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in item.groupByOptions" ng-change="groupByChanged(item)" iscroll-stop-propagation>
         </select>
     </div>
 </div>

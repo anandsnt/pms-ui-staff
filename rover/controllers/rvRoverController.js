@@ -1,5 +1,22 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
+sntRover.controller('roverController', 
+  
+  ['$rootScope', '$scope', '$state', 
+  '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 
+
+  'ngDialog', '$translate', 'hotelDetails', 
+  'userInfoDetails', 'RVChargeItems', '$stateParams',
+
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout',
+  
+  function($rootScope, $scope, $state, 
+    $window, RVDashboardSrv, RVHotelDetailsSrv, 
+
+    ngDialog, $translate, hotelDetails, 
+    userInfoDetails, RVChargeItems, $stateParams,
+
+    rvMenuSrv, rvPermissionSrv, $timeout) {
+
+
     $rootScope.isOWSErrorShowing = false;    
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -22,10 +39,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDrawer = function(event) {
       $scope.menuOpen = false;
     };
-	$scope.isAddToGuestCardEnabledDuringCheckin = false;
-	 $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
-	 	$scope.isAddToGuestCardEnabledDuringCheckin = value;
-	 });
+  $scope.isAddToGuestCardEnabledDuringCheckin = false;
+   $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
+    $scope.isAddToGuestCardEnabledDuringCheckin = value;
+   });
     $scope.roverFlags = {};
     $scope.hotelDetails = hotelDetails;
     //set current hotel details
@@ -191,213 +208,56 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
+    
 
-    var getDefaultDashboardState = function() {
-      var statesForDashbaord = {
-        'HOUSEKEEPING': 'rover.dashboard.housekeeping',
-        'FRONT_DESK': 'rover.dashboard.frontoffice',
-        'MANAGER': 'rover.dashboard.manager'
-      };
-      return statesForDashbaord[$rootScope.default_dashboard];
+    /**
+    * menu - forming & associate logic
+    * NOTE: Menu forming and logic and things are in service rvMenuSrv
+    **/
+    $scope.formMenu = function() {    
+      
+        var menuOptions = {
+            defaultDashboard  : $rootScope.default_dashboard,
+            isHourlyRateOn    : $rootScope.isHourlyRateOn,
+            userRole          : $scope.userInfo.user_role,
+            isAutoChangeBussinessDate: hotelDetails.is_auto_change_bussiness_date
+        };  
+
+        // if it standalone & manager
+        if ($rootScope.isStandAlone && $rootScope.default_dashboard === "MANAGER") { 
+            $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover (menuOptions);
+            $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover (menuOptions); 
+        } 
+        //connected
+        else {
+            $scope.menu       = rvMenuSrv.getMainMenuForConnectedRover (menuOptions);
+            $scope.mobileMenu = rvMenuSrv.getMobileMenuForConnectedRover (menuOptions);
+        }
+        // method to decide whether to show menu from 
+        $scope.shouldShowMenu = rvMenuSrv.shouldShowMenu;
     };
 
-    if ($rootScope.isStandAlone && $rootScope.default_dashboard ==="MANAGER") {
-      // OBJECT WITH THE MENU STRUCTURE
-      $scope.menu = [{
-          title: "MENU_DASHBOARD",
-          action: getDefaultDashboardState(),
-          menuIndex: "dashboard",
-          submenu: [],
-          iconClass: "icon-dashboard"
-        },
-        // {
-        //   title: "MENU_AVAILABILITY",
-        //   action: "",
-        //   iconClass: "icon-availability",
-        //   submenu: [{
-        //     title: "MENU_HOUSE_STATUS",
-        //     action: ""
-        //   }, {
-        //     title: "MENU_AVAILABILITY",
-        //     action: ""
-        //   }]
-        // }, 
-        {
-          title: "MENU_FRONT_DESK",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-frontdesk",
-          submenu: [{
-            title: "MENU_SEARCH_RESERVATIONS",
-            action: "rover.search",
-            menuIndex: "search"
-          }, {
-            title: "MENU_CREATE_RESERVATION",
-            action: "rover.reservation.search",
-            standAlone: true,
-            menuIndex: "createReservation"
-          }, {
-            title: "MENU_ROOM_DIARY",
-            action: 'rover.diary',
-            standAlone: true,
-            hidden: !$rootScope.isHourlyRateOn,
-            menuIndex: 'diaryReservation'
-          }, {
-            title: "MENU_POST_CHARGES",
-            action: "",
-            actionPopup: true,
-            menuIndex: "postcharges"
-          }, {
-            title: "MENU_CASHIER",
-            action: "rover.financials.journal({ id: 2 })",
-            menuIndex: "cashier"
-          }]
-        }, {
-          title: "MENU_CONVERSATIONS",
-          hidden: true,
-          action: "",
-          iconClass: "icon-conversations",
-          submenu: [{
-            title: "MENU_SOCIAL_LOBBY",
-            action: ""
-          }, {
-            title: "MENU_MESSAGES",
-            action: ""
-          }, {
-            title: "MENU_REVIEWS",
-            action: ""
-          }]
-        }, {
-          title: "MENU_REV_MAN",
-          action: "",
-          iconClass: "icon-revenue",
-          submenu: [{
-            title: "MENU_RATE_MANAGER",
-            action: "rover.ratemanager",
-            menuIndex: "rateManager"
-          }, {
-            title: "MENU_TA_CARDS",
-            action: "rover.companycardsearch",
-            menuIndex: "cards"
-          }, {
-            title: "MENU_DISTRIBUTION_MANAGER",
-            action: ""
-          }]
-        }, {
-          title: "MENU_HOUSEKEEPING",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-housekeeping",
-          submenu: [{
-            title: "MENU_ROOM_STATUS",
-            action: "rover.housekeeping.roomStatus",
-            menuIndex: "roomStatus"
-          }, {
-            title: "MENU_TASK_MANAGEMENT",
-            action: "rover.workManagement.start",
-            menuIndex: "workManagement",
-            hidden: $rootScope.isHourlyRateOn
+    /**
+    * method to determine the visibility of availability
+    * will check the permission & standalone status
+    * @return {Boolean}
+    */
+    $scope.shouldShowAvailabilityHouseButton = function() {
+        return ($rootScope.isStandAlone && 
+            rvPermissionSrv.getPermissionValue ('AVAILABILITY_HOUSE_STATUS'));     
+    };
 
-          }, {
-            title: "MENU_MAINTAENANCE",
-            action: ""
-          }]
-        }, {
-          title: "MENU_FINANCIALS",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-financials",
-          submenu: [{
-            title: "MENU_JOURNAL",
-            action: "rover.financials.journal({ id : 0})",
-            menuIndex: "journals"
-          }, {
-            title: "MENU_ACCOUNTING",
-            action: ""
-          }, {
-            title: "MENU_COMMISIONS",
-            action: ""
-          }]
-        }, {
-          title: "MENU_REPORTS",
-          action: "rover.reports",
-          menuIndex: "reports",
-          iconClass: "icon-reports",
-          submenu: []
-        }
-      ];
-
-      // menu for mobile views
-      $scope.mobileMenu = [{
-        title: "MENU_DASHBOARD",
-        action: getDefaultDashboardState(),
-        menuIndex: "dashboard",
-        iconClass: "icon-dashboard"
-      }, {
-        title: "MENU_ROOM_STATUS",
-        action: "rover.housekeeping.roomStatus",
-        menuIndex: "roomStatus",
-        iconClass: "icon-housekeeping",
-        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
-      }];
+    /**
+    * method to determine the visibility of multiproperty switch
+    * will check the permission & number of hotels returned from API
+    * @return {Boolean}
+    */
+    $scope.shouldShowMultiPropertySwitch = function() {
+        return (hotelDetails.userHotelsData.hotel_list.length > 0 && 
+            rvPermissionSrv.getPermissionValue ('MULTI_PROPERTY_SWITCH'));     
+    };
 
 
-      if(!hotelDetails.is_auto_change_bussiness_date){
-          var eodSubMenu = {
-            title: "MENU_END_OF_DAY",
-            action: "",
-            actionPopup: true,
-            menuIndex: "endOfDay"
-          }
-          angular.forEach($scope.menu, function(menu, index) {
-              if(menu.title === 'MENU_FRONT_DESK'){
-                menu.submenu.push(eodSubMenu)
-              }
-          });
-       }     
-
-    } else {
-      // OBJECT WITH THE MENU STRUCTURE
-      $scope.menu = [{
-        title: "MENU_DASHBOARD",
-        action: getDefaultDashboardState(),
-        menuIndex: "dashboard",
-        submenu: [],
-        iconClass: "icon-dashboard"
-      }, {
-        title: "MENU_HOUSEKEEPING",
-        //hidden: true,
-        action: "",
-        iconClass: "icon-housekeeping",
-        submenu: [{
-          title: "MENU_ROOM_STATUS",
-          action: "rover.housekeeping.roomStatus",
-          menuIndex: "roomStatus"
-        }]
-      }, {
-        title: "MENU_REPORTS",
-        action: "rover.reports",
-        menuIndex: "reports",
-        iconClass: "icon-reports",
-        submenu: [],
-        hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
-      }];
-
-      // menu for mobile views
-      $scope.mobileMenu = [{
-        title: "MENU_DASHBOARD",
-        action: getDefaultDashboardState(),
-        menuIndex: "dashboard",
-        iconClass: "icon-dashboard"
-      }, {
-        title: "MENU_ROOM_STATUS",
-        action: "rover.housekeeping.roomStatus",
-        menuIndex: "roomStatus",
-        iconClass: "icon-housekeeping",
-        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
-      }];
-
-    }
 
     $rootScope.updateSubMenu = function(idx, item) {
       if (item && item.submenu && item.submenu.length > 0) {
@@ -439,18 +299,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * which set during it's creation, we can use
      */
     $scope.$on('refreshLeftMenu', function(event) {
-      setupLeftMenu();
+        setupLeftMenu();
     });
 
     $scope.init = function() {
-      BaseCtrl.call(this, $scope);
-      $rootScope.adminRole = '';
-      $scope.selectedMenuIndex = 0;
+        BaseCtrl.call(this, $scope);
+        $rootScope.adminRole = '';
 
-      // if menu is open, close it
-      $scope.isMenuOpen();
-      $scope.menuOpen = false;
+        $scope.selectedMenuIndex = 0;      
+        $scope.formMenu();
+
+        // if menu is open, close it
+        $scope.isMenuOpen();
+        $scope.menuOpen = false;
     };
+
     $scope.init();
 
     /*
@@ -663,6 +526,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDialog = function() {
       document.activeElement.blur();
       $scope.$emit('hideLoader');
+
+      //to add stjepan's popup showing animation 
+      $rootScope.modalOpened = false; 
+
       setTimeout(function() {
         ngDialog.close();
         window.scrollTo(0, 0);
@@ -699,10 +566,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
-	
-	//CICO-13582 Display a timeout error message, without try again button.
-	//We are using the same message as that of OWS timeout as of now.
-	//Keeping the two popup separate since the message may change in future.
+  
+  //CICO-13582 Display a timeout error message, without try again button.
+  //We are using the same message as that of OWS timeout as of now.
+  //Keeping the two popup separate since the message may change in future.
     $rootScope.showTimeoutError = function() {
       // Hide loading message
       $scope.$emit('hideLoader');
@@ -726,7 +593,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
-      LastngDialogId = $dialog.attr('id');
+        LastngDialogId = $dialog.attr('id');
+        //to add stjepan's popup showing animation 
+        $rootScope.modalOpened = false; 
+        $timeout(function() { 
+            $rootScope.modalOpened = true; 
+        }, 300); 
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {
