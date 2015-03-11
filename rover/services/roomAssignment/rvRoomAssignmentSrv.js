@@ -46,4 +46,15 @@ sntRover.service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 
 		return deferred.promise;		
 		
 	};
+	this.moveInHouseRooms = function(param){
+		var deferred = $q.defer();
+		var url =  '/staff/reservation/room_inhouse_move';			
+		rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;		
+		
+	};
 }]);
