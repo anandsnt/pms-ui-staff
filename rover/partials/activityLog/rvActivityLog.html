@@ -127,9 +127,18 @@
                         <td>{{log.action}}</td>
                         <td class="details">
                             <span ng-repeat="details in log.details">
-                                <span class="old" ng-show="isOldValue(details.old_value)" style="text-decoration:line-through">{{details.key}} <strong>{{details.old_value}}</strong>|</span>
-                                <span class="old">{{details.key}}<strong>{{details.new_value}}</strong><span ng-show="!$last">|</span></span>
-                            </div>
+                                <span class="old" ng-show="isOldValue(details.old_value)" style="text-decoration:line-through">
+                                    {{ details.key }}&nbsp;
+                                    <strong>{{ details.old_value }}</strong>&nbsp;
+                                    |&nbsp;
+                                </span>
+                                <span class="old">
+                                    {{details.key}}&nbsp;
+                                    <strong>{{details.new_value}}</strong>&nbsp;
+                                    <span ng-show="!$last">
+                                        |&nbsp;
+                                    </span>
+                            </span>
                         </td>
                     </tr>
                 </tbody>
