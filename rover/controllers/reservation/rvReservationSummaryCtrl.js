@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv',
-    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv',
+    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, rvPermissionSrv) {
 
 
         BaseCtrl.call(this, $scope);
@@ -37,6 +37,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         $scope.depositData = {
             "depositAttemptFailure": false,
             "attempted": false
+        };
+
+        /**
+         * function to check whether the user has permission
+         * to make payment
+         * @return {Boolean}
+         */
+        $scope.hasPermissionToMakePayment = function() {
+            return rvPermissionSrv.getPermissionValue('MAKE_PAYMENT');
+        };
+
+        /**
+         * function to determine the visibility of Make Payment button
+         * @return {Boolean}
+         */
+        $scope.hideMakePayment = function() {
+            return ($scope.hasPermissionToMakePayment());
         };
 
         $scope.feeData = {};
@@ -1216,12 +1233,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     last_name: ''
                 }]
             })
+            refreshScrolls();
         }
 
         $scope.clearGuests = function(room) {
             room.accompanying_guest_details = null;
+            refreshScrolls();
         }
 
         $scope.init();
     }
+
 ]);

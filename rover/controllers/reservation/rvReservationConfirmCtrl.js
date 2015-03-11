@@ -11,7 +11,15 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'$vault',
 	'$rootScope',
 	'RVReservationGuestSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv, $vault, $rootScope, RVReservationGuestSrv) {
+	'rvPermissionSrv',
+	function($scope, $state, 
+		RVReservationSummarySrv, ngDialog, 
+		RVContactInfoSrv, $filter, 
+		RVBillCardSrv, $q, 
+		RVHkRoomDetailsSrv, $vault, 
+		$rootScope, RVReservationGuestSrv
+		, rvPermissionSrv) {
+
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 		var totalRoomsAvailable = 0;
@@ -26,6 +34,23 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			param: {
 				reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
 			}
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
+
+		/**
+		* function to determine the visibility of Make Payment button
+		* @return {Boolean}
+		*/
+		$scope.hideMakePayment = function() {
+			return ($scope.hasPermissionToMakePayment());
 		};
 
 		$scope.init = function() {
@@ -107,6 +132,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var updateBackButton = function() {
 				$scope.confirmationMailsSent = true;
+				var paramsArray = [];
 				var rooms = angular.copy($scope.reservationData.rooms);
 				_.each(rooms, function(room, index) {
 					var validGuests = [];
@@ -121,7 +147,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 							validGuests.push(guest);
 						}
 					});
-					$scope.reservationData.rooms[index].accompanying_guest_details = validGuests;
+					paramsArray.push(validGuests);
 				})
 
 				var onupdateSuccess = function() {
@@ -143,7 +169,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 				_.each($scope.reservationData.rooms, function(room, index) {
 					$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
-						accompanying_guests_details: room.accompanying_guest_details,
+						accompanying_guests_details: paramsArray[index],
 						reservation_id: $scope.reservationData.reservationIds[index],
 					}, onupdateSuccess, onUpdateFailure);
 				})
