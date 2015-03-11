@@ -734,7 +734,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include user ids
 			if (chosenReport.hasUserFilter && chosenReport.chosenUsers && chosenReport.chosenUsers.length) {
-				params['user_ids'] = chosenReport.chosenUsers;
+				key = 'user_ids[]';
+				params[key] = [];
+				_.each(chosenReport.chosenUsers, function(user) {
+					params[key].push( user );
+				});
 				/**/
 				$scope.appliedFilter['users'] = [];
 				_.each(chosenReport.chosenUsers, function (id) {
