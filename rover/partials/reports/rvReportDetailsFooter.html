@@ -9,7 +9,7 @@
 
 		<!-- common date range -->
 		<div ng-if="appliedFilter.fromDate || appliedFilter.toDate">
-			<label>Dates Range - </label>
+			<label>Date Range - </label>
 			From: <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
 		</div>
 
@@ -41,7 +41,7 @@
 
 		<!-- create date range -->
 		<div ng-if="appliedFilter.createFromDate || appliedFilter.createToDate">
-			<label>Deposit Due Dates - </label>
+			<label>Create Dates - </label>
 			From: <span>{{ appliedFilter.createFromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.createToDate | date:dateFormat }}</span>
 		</div>
 

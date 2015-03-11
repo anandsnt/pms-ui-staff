@@ -734,7 +734,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include user ids
 			if (chosenReport.hasUserFilter && chosenReport.chosenUsers && chosenReport.chosenUsers.length) {
-				params['user_ids'] = chosenReport.chosenUsers;
+				key = 'user_ids[]';
+				params[key] = [];
+				_.each(chosenReport.chosenUsers, function(user) {
+					params[key].push( user );
+				});
 				/**/
 				$scope.appliedFilter['users'] = [];
 				_.each(chosenReport.chosenUsers, function (id) {
@@ -938,7 +942,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( chosenReport.showMarket ) {
 					params[key] = true;
 					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasMarket.description );
+					$scope.appliedFilter.display.push( chosenReport.hasMarket.description );
 				};
 			};
 
@@ -948,11 +952,11 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( chosenReport.showSource ) {
 					params[key] = true;
 					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasSource.description );
+					$scope.appliedFilter.display.push( chosenReport.hasSource.description );
 				};
 			};
 
-			// include source
+			// include variance
 			if (chosenReport.hasOwnProperty('hasVariance')) {
 				key = chosenReport.hasVariance.value.toLowerCase();
 				if ( chosenReport.chosenVariance ) {
