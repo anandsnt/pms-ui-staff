@@ -119,16 +119,19 @@ sntRover.controller('RVActivityLogCtrl',[
                 $scope.end = $scope.start + $scope.activityLogData.length - 1;
                 $scope.$emit('hideLoader');
         }
-        var params = {};
-        params.id=$scope.$parent.reservation.reservation_card.reservation_id;
+        var params = {
+                id: $scope.$parent.reservation.reservation_card.reservation_id,
+                page: $scope.page,
+                per_page: $scope.perPage
+        };
         if($scope.isUpdateReportFilter){
-            params.from_date = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
-            params.to_date = $filter('date')($scope.toDate, 'yyyy-MM-dd');
+            params['from_date'] = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
+            params['to_date'] =$filter('date')($scope.toDate, 'yyyy-MM-dd');
             if($scope.user_id)
-                params.user_id = $scope.user_id;
+                params['user_id'] = $scope.user_id;
         }
-        params.sort_order = $scope.sort_order;
-        params.sort_field = $scope.sort_field ;
+        params['sort_order'] = $scope.sort_order;
+        params['sort_field'] = $scope.sort_field;
         $scope.invokeApi(RVActivityLogSrv.filterActivityLog, params, callback);
     }
 
@@ -194,22 +197,22 @@ sntRover.controller('RVActivityLogCtrl',[
     */
     $scope.initPaginationParams = function() {
         $scope.start = 1;
-        RVActivityLogSrv.page = 1;
-        $scope.perPage = RVActivityLogSrv.perPage;
+        $scope.page = 1;
+        $scope.perPage = 2;
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
         $scope.nextAction = false;
         $scope.prevAction = false;
     }
 
     $scope.loadNextSet = function() {
-        RVActivityLogSrv.page++;
+        $scope.page++;
         $scope.nextAction = true;
         $scope.prevAction = false;
         $scope.updateReport();
     };
 
     $scope.loadPrevSet = function() {
-        RVActivityLogSrv.page--;
+        $scope.page--;
         $scope.nextAction = false;
         $scope.prevAction = true;
         $scope.updateReport();
