@@ -56,11 +56,15 @@ sntRover.controller('RVReportListCrl', [
 
 
 
-                // to process the sort by for this report
-                reportUtils.processSortBy( reportList[i] );
+
 
                 // to reorder & map the sort_by to report details columns - for this report
+                // re-order must be called before processing
                 reportUtils.reOrderSortBy( reportList[i] );
+
+                // to process the sort by for this report
+                // processing must be called after re-odering
+                reportUtils.processSortBy( reportList[i] );
 
                 // to assign inital date values for this report
                 reportUtils.initDateValues( reportList[i] );

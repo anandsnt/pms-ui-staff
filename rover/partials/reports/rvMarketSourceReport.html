@@ -180,32 +180,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="report-details">
-        <div class="report-content">
-            <table class="guest-reports">
-                <tfoot>
-                    <tr>
-                        <td colspan="3">
-                            <!-- booking date range -->
-                            <div ng-if="chosenReport.hasDateFilter">
-                                <label>Booking Dates - </label>
-                                From: <span>{{ displayedReport.chosenReportFromDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToDate | date:dateFormat }}</span>
-                            </div>
-                            <!-- arrival date range -->
-                            <div ng-if="chosenReport.hasArrivalDateFilter">
-                                <label>Arrival Dates - </label>
-                                From: <span>{{ displayedReport.chosenReportFromArrivalDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToArrivalDate | date:dateFormat }}</span>
-                            </div>
-                        </td>
-                        <td colspan="3">
-                            Business date: <span>{{ userInfo.business_date | date:dateFormat }}</span>
-                            <br> User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-                        </td>
-                    </tr>
-                </tfoot>
+
+            <!-- Reports table footer -->
+            <table class="statistics-reports">
+                <tfoot ng-include="'/assets/partials/reports/rvReportDetailsFooter.html'"></tfoot>
             </table>
+            
         </div>
     </div>
 </div>
