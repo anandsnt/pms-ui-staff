@@ -570,8 +570,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.computeTotalStayCost = function(reset) {
             // TODO : Loop thru all rooms
             var roomIndex = 0;
-            var currentRoom = $scope.reservationData.rooms[roomIndex];
-
+            var currentRoom = $scope.reservationData.rooms[roomIndex];           
             //compute stay cost for the current room
             var adults = currentRoom.numAdults;
             var children = currentRoom.numChildren;

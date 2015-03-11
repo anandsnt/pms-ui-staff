@@ -216,8 +216,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                     item.quantity = parseInt(item.quantity) + parseInt(addonQty);
                     item.totalAmount = (item.quantity)*(item.price_per_piece);
                 }
-            });
-    
+            });    
             if(!alreadyAdded){
                 var newAddonToReservation = {};
                 newAddonToReservation.id = addon.id;
@@ -230,7 +229,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 $scope.existingAddonsLength = parseInt($scope.existingAddonsLength) + parseInt(1);
                 $scope.addonsData.existingAddons.push(newAddonToReservation)
             }
-
             var elemIndex = -1;
             $($scope.reservationData.rooms[$scope.activeRoom].addons).each(function(index, elem) {
                 if (elem.id == addon.id) {
@@ -263,7 +261,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             } else {
                 $scope.computeTotalStayCost();
             }
-
         }
 
         $scope.removeSelectedAddons = function(index) {
@@ -282,6 +279,13 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.fetchAddons = function(paramChargeGrpId) {
             var successCallBackFetchAddons = function(data) {
+                var inclusiveAddons =[];
+                angular.forEach(data.rate_addons, function(item) {
+                    if(item.is_inclusive){
+                        inclusiveAddons.push(item);
+                    }
+                });
+                $scope.reservationData.rooms[$scope.activeRoom].inclusiveAddons = inclusiveAddons;               
                 $scope.addons = [];
                 $scope.$emit("hideLoader");
                 angular.forEach(data.results, function(item) {

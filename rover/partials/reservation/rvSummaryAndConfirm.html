@@ -135,7 +135,15 @@
                                 <span translate>EACH</span>
                                 <span class="total">{{currencySymbol}}{{ addon.effectivePrice | number : 2}}</span>
                             </span>
-                        </li>                        
+                        </li>      
+                        <li ng-repeat='addon in room.inclusiveAddons'>
+                            <em>{{addon.name}}</em>
+                            <span class="price">
+                                {{currencySymbol}}{{ addon.amount | number : 2}}
+                                <span translate>EACH</span>
+                                <span class="total">INCL</span>
+                            </span>
+                        </li>                     
                     </ul>
                     <div class="actions">
                         <button type="button" class="button white blue-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click = "openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</a>
