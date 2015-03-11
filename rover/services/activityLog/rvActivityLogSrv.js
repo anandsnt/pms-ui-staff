@@ -14,7 +14,7 @@ sntRover.service('RVActivityLogSrv', [
 			//var url = '/ui/show?format=json&json_input=activityLog/activity_log.json';
 			var url = '/api/reservation_actions/'+ params;
 
-			rvBaseWebSrvV2.getJSON(url,{per_page:self.perPage,page:self.page})
+			rvBaseWebSrvV2.getJSON(url,{per_page:self.perPage,page:1})
 			.then(function(data) {
 				this.cacheReportList = data;
 				deferred.resolve(this.cacheReportList);
@@ -29,7 +29,7 @@ sntRover.service('RVActivityLogSrv', [
 			var deferred = $q.defer();
 			var url = '/api/reservation_actions/'+ params.id;
 
-			rvBaseWebSrvV2.getJSON(url, {from_date:params.from_date,to_date:params.to_date,sort_order:params.sort_order,sort_field:params.sort_field,per_page:self.perPage,page:self.page})
+			rvBaseWebSrvV2.getJSON(url, {from_date:params.from_date,to_date:params.to_date,sort_order:params.sort_order,sort_field:params.sort_field,per_page:self.perPage,page:self.page,user_id:params.user_id})
 			.then(function(data) {
 				this.cacheReportList = data;
 				deferred.resolve(this.cacheReportList);
