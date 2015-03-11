@@ -1083,11 +1083,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
             $scope.errorMessage = [];
 
-            $scope.reservationData.rooms[index].demographics = $scope.demographics;
+            if (typeof index === 'undefined') {
+                // TO HANDLE OVERRIDE ALL SCENARIO
+                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                    room.demographics = $scope.demographics;
+                    var postData = $scope.computeReservationDataforUpdate(true, false, currentRoomIndex);
+                    postData.reservationId = $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+                });
 
-            var postData = $scope.computeReservationDataforUpdate(true);
-            postData.reservationId = reservationId;
-            $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+            } else {
+                $scope.reservationData.rooms[index].demographics = $scope.demographics;
+                var postData = $scope.computeReservationDataforUpdate(true, false, index);
+                postData.reservationId = reservationId;
+                $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+            }
         };
 
         $scope.setDemographics = function(showRequiredFieldsOnly, index) {
@@ -1095,7 +1105,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.shouldShowMarket = true;
             $scope.shouldShowSource = true;
             $scope.shouldShowOriginOfBooking = true;
-            $scope.demographics = $scope.reservationData.rooms[index].demographics || angular.copy($scope.reservationData.demographics);
+
+            $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
+
             if (showRequiredFieldsOnly) {
                 $scope.shouldShowReservationType = ($scope.otherData.reservationTypeIsForced) ? true : false;
                 $scope.shouldShowMarket = ($scope.otherData.marketIsForced) ? true : false;
@@ -1107,25 +1119,28 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 className: '',
                 scope: $scope,
                 data: JSON.stringify({
-                    data:index
+                    data: index
                 })
             });
         };
 
         $scope.isDemographicsFormValid = function() {
             var isValid = true;
-            if ($scope.otherData.reservationTypeIsForced) {
-                isValid = $scope.demographics.reservationType != "";
-            }
-            if ($scope.otherData.marketIsForced && isValid) {
-                isValid = $scope.demographics.market != "";
-            }
-            if ($scope.otherData.sourceIsForced && isValid) {
-                isValid = $scope.demographics.source != "";
-            }
-            if ($scope.otherData.originIsForced && isValid) {
-                isValid = $scope.demographics.origin != "";
-            }
+            _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
+                if ($scope.otherData.reservationTypeIsForced) {
+                    isValid = demographicsData.reservationType != "";
+                }
+                if ($scope.otherData.marketIsForced && isValid) {
+                    isValid = demographicsData.market != "";
+                }
+                if ($scope.otherData.sourceIsForced && isValid) {
+                    isValid = demographicsData.source != "";
+                }
+                if ($scope.otherData.originIsForced && isValid) {
+                    isValid = demographicsData.origin != "";
+                }
+            });
             return isValid;
         }
 
