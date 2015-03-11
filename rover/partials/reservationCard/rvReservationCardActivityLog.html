@@ -1,7 +1,7 @@
 <div class="block-wrapper">
-    <a class="block-title toggle has-arrow" ng-click="activityLog.hideDetails=!activityLog.hideDetails; refreshReservationDetailsScroller(100)">Activity Log</a>
+    <a class="block-title toggle has-arrow" ng-click="toggleActivityLogDetails()">Activity Log</a>
     <div class="block-item" ng-class="{'hidden':activityLog.hideDetails}"> <!-- Remove class hidden when 'a.toggle' is clicked -->
-        <a ng-click="showDetails()" class="button brand-colors">
+        <a ng-click="showDetails()" class="button brand-colors" id="activity-log-button">
             Show Details
         </a>
     </div>
