@@ -161,8 +161,8 @@ angular.module('stayCardModule', [])
                 paymentTypes: function(RVPaymentSrv){
                     return RVPaymentSrv.renderPaymentScreen();
                 },
-                reseravationDepositData: function(RVReservationCardSrv,$stateParams){
-                    return RVReservationCardSrv.fetchDepositDetails($stateParams.id);
+                reseravationDepositData: function(RVReservationCardSrv,$stateParams,$rootScope){
+                    return $rootScope.isStandAlone? RVReservationCardSrv.fetchDepositDetails($stateParams.id) : {};
                 }
             }
         });
