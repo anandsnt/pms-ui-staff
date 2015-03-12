@@ -223,8 +223,8 @@ sntRover.controller('roverController',
             isAutoChangeBussinessDate: hotelDetails.is_auto_change_bussiness_date
         };  
 
-        // if it standalone & manager
-        if ($rootScope.isStandAlone && $rootScope.default_dashboard === "MANAGER") { 
+        // if it standalone
+        if ($rootScope.isStandAlone) { 
             $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover (menuOptions);
             $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover (menuOptions); 
         } 

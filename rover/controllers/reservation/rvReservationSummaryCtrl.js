@@ -53,7 +53,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
          * @return {Boolean}
          */
         $scope.hideMakePayment = function() {
-            return ($scope.hasPermissionToMakePayment());
+            return (!$scope.hasPermissionToMakePayment());
         };
 
         $scope.feeData = {};
@@ -667,6 +667,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
 
         $scope.confirmReservation = function() {
+            if (!$scope.isDemographicsFormValid(true)) {
+                $scope.setDemographics(true);
+                return;
+            }
             var postData = $scope.computeReservationDataforUpdate(false, true);
             postData.payment_type = {};
             angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
@@ -704,7 +708,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
         $scope.clickedContinueButton = function() {
 
-            if (!$scope.isDemographicsFormValid()) {
+            if (!$scope.isDemographicsFormValid(true)) {
                 $scope.setDemographics(true);
                 return;
             }
@@ -1143,23 +1147,51 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             });
         };
 
-        $scope.isDemographicsFormValid = function() {
+        $scope.isDemographicsFormValid = function(assertValidation) {
             var isValid = true;
-            _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-                var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
-                if ($scope.otherData.reservationTypeIsForced) {
-                    isValid = demographicsData.reservationType != "";
+
+            if (assertValidation) {
+                if ($scope.otherData.reservationTypeIsForced || $scope.otherData.marketIsForced || $scope.otherData.sourceIsForced || $scope.otherData.originIsForced) {
+                    _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                        if (!room.demographics) {
+                            isValid = false;
+                        } else {
+                            var demographicsData = room.demographics;
+
+                            if ($scope.otherData.reservationTypeIsForced) {
+                                isValid = demographicsData.reservationType != "";
+                            }
+                            if ($scope.otherData.marketIsForced && isValid) {
+                                isValid = demographicsData.market != "";
+                            }
+                            if ($scope.otherData.sourceIsForced && isValid) {
+                                isValid = demographicsData.source != "";
+                            }
+                            if ($scope.otherData.originIsForced && isValid) {
+                                isValid = demographicsData.origin != "";
+                            }
+                        }
+                    });
                 }
-                if ($scope.otherData.marketIsForced && isValid) {
-                    isValid = demographicsData.market != "";
-                }
-                if ($scope.otherData.sourceIsForced && isValid) {
-                    isValid = demographicsData.source != "";
-                }
-                if ($scope.otherData.originIsForced && isValid) {
-                    isValid = demographicsData.origin != "";
-                }
-            });
+            } else {
+                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+
+                    var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
+
+                    if ($scope.otherData.reservationTypeIsForced) {
+                        isValid = demographicsData.reservationType != "";
+                    }
+                    if ($scope.otherData.marketIsForced && isValid) {
+                        isValid = demographicsData.market != "";
+                    }
+                    if ($scope.otherData.sourceIsForced && isValid) {
+                        isValid = demographicsData.source != "";
+                    }
+                    if ($scope.otherData.originIsForced && isValid) {
+                        isValid = demographicsData.origin != "";
+                    }
+                });
+            }
             return isValid;
         }
 
