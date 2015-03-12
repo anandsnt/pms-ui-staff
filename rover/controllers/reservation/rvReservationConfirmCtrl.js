@@ -50,7 +50,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		* @return {Boolean}
 		*/
 		$scope.hideMakePayment = function() {
-			return ($scope.hasPermissionToMakePayment());
+			return (!$scope.hasPermissionToMakePayment());
 		};
 
 		$scope.init = function() {

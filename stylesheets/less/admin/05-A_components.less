@@ -711,6 +711,235 @@
             } 
         }
     } 
+
+/* Floor room assignment    ==============================*/
+    #assign-rooms {
+        .entry {
+            margin-right: 40px;
+            .calc-width(50, 20);
+
+            h4 { 
+                text-align: center;
+                margin-bottom: 10px;
+
+                &.green { 
+                    color: @green;
+                    font-weight: 600;
+                }            
+            }
+
+           &:last-child { margin-right: 0; }
+        }
+
+        .boxes {
+            position: relative;
+            padding: 0;
+            .size(420px, 100%);
+
+            .search-form {
+                position: relative;
+                background-color: rgba(0,0,0,.05);
+                padding: 10px;
+                .size(60px, 100%);
+                .show;
+
+                input { 
+                    margin-right: 10px;
+                    .calc-width(100, 120);
+                }
+
+                .button {
+                    line-height: 38px;
+                    .size(40px, 100px);
+                }
+
+                .clear-query {
+                    position: absolute;
+                    top: 10px;
+                    right: 130px;
+                    z-index: 99;
+                    visibility: hidden;
+                    .square(40px);
+
+                    .icons {
+                        position: absolute;
+                        top: 12.5px;
+                        right: 12.5px;
+                        background-color: @grey2;
+                        .hide-text;
+                        .square(15px);
+                        .opacity(0);
+                        .show;
+                        #fade > .out();
+                        #border-radius > .rounded(15px);
+                    }
+
+                    &.visible { 
+                        visibility: visible;
+
+                        .icons {    
+                            .opacity(100); 
+                            #fade > .in(); 
+                        }
+                    }
+
+                    &:hover,
+                    &.active { 
+                        .icons { background-color: @logoPrimary; }
+                    }
+                }
+            }
+
+            .no-content {
+                display: table;
+                text-align: center;
+                color: @grey3;
+                .size(420px, 100%);
+
+                .info {
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding: 0 20px;
+
+                    .h1 { 
+                        font-size: 24px;
+                        line-height: 24px;
+                        font-weight: 600;
+                        margin: 0 0 10px 0;
+                    }
+
+                    .h2 {
+                        font-size: 16px;
+                        line-height: 24px;
+                        font-weight: 300;
+                        font-style: italic;
+                        margin: 5px 0 10px;
+
+                        strong { font-weight: 600; }
+                    }
+                }
+            }
+
+            .sortable {
+                padding: 10px;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                .size(360px, 100%);
+                .float;
+
+                li {
+                    margin-right: 10px;
+                    .pull-left;
+                    .calc-width(25, 7.5);
+
+                    &:nth-child(4n) { margin-right: 0; }
+                }
+
+                /* Sortable source list ***/
+                &[data-type="source"] {
+                    li {
+                        color: @grey3;
+                        font-style: italic;
+
+                        &.selected {
+                            font-weight: 600;
+                            font-style: normal;
+                            color: @logoPrimary;
+
+                            .icon-handle { background-position: 0 -750px; }
+                        }
+                    }
+                }
+
+                /* Sortable target list ***/
+                &[data-type="target"] {
+                    li {
+                        font-weight: 600;
+
+                        .icon-handle {
+                            background-position: 0 -397px;
+                            &.dragging { background-position: 0 -750px; }
+                        }
+
+                        &.selected { 
+                            color: @logoPrimary; 
+
+                            .icon-handle { background-position: 0 -750px; }
+                        }
+                    }
+                }
+
+                &.empty {
+                    display: table;
+                    text-align: center;
+                    height: 420px;
+
+                    .placeholder{
+                        display: table-cell;
+                        vertical-align: middle;
+                        color: @grey3;
+                        font-style: italic;
+                        border: 1px dashed @grey2;
+
+                        &.over {
+                            color: darken(@yellow, 10);
+                            background: lighten(@yellow, 20);
+                            border-color: @yellow;
+                        }
+                    }
+
+                    .ui-state-highlight { 
+                        position: absolute;
+                        top: 20px;
+                        left: 20px;
+                        .calc-width(100, 40);
+                        .opacity(0); 
+                    }
+                }
+
+                &::-webkit-scrollbar{ 
+                    margin-right: 5px;
+                    width: 5px; 
+                }
+                &::-webkit-scrollbar-track{ background: transparent; }
+                &::-webkit-scrollbar-thumb{
+                    background: @logoGradientStart;
+                    #border-radius > .rounded(5px);
+                }
+                &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
+            }
+
+            .actions {
+                padding: 10px;
+                .size(60px, 100%);
+                .float;
+
+                .button {
+                    font-size: 14px;
+                    line-height: 35px;
+                    padding: 0 10px;
+                    .pull-right;
+
+                    &.red { .pull-left; }                    
+                }
+            }
+
+            &.with-search {
+
+                .no-content { height: 360px; }
+
+                .sortable { height: 300px; }
+
+                .actions {
+                    .button {
+                        .pull-left;
+                        &.green { .pull-right; }
+                    }
+                }
+            }
+        }
+    }
+
    
 // To align text to center with margin
 .align-text-center{

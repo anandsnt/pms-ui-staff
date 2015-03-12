@@ -105,11 +105,11 @@
                     </a>
                     <!-- Rates list -->
                     <ul class="rates" ng-class="{hidden: !isVisibleRoom}">
-                        <li ng-repeat="rate in roomAvailability[room.id].rates" ng-class="{'closed': !stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions.length > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">
+                        <li ng-repeat="rate in roomAvailability[room.id].rates" 
+                            ng-class="{'closed': !stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">
                             <!-- Add class "closed" if restrictions apply to rate -->
                             <a class="has-arrow toggle" ng-class="{active: isActive}" ng-init="isActive=false;" ng-click="isActive = !isActive ; refreshScroll()">
-
-                                <h3 ng-class="{'restricted': !stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions.length > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">
+                                <h3 ng-class="{'restricted': !stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">
                                     {{displayData.allRates[rate].name}}
                                     <!-- Add class "restricted" if restriction applies -->
                                     <!-- If corporate rate, show: -->
@@ -231,7 +231,11 @@
             </ul>
             <ul class="rooms-and-rates wrapper" ng-if="activeCriteria == 'RATE'">
                 <!-- Add class "closed" if restrictions apply to rate -->
-                <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.preferredType" ng-hide="$index > 1 && showLessRates" ng-class="{'closed' : !stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 0 || stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 0}">
+                <li class="is-rate"
+                    ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" 
+                    ng-init="isActive=false; selectedRoom = rate.preferredType" ng-hide="$index > 1 && showLessRates" 
+                    ng-class="{'closed' : (!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 0) || (stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 0)}">
+
                     <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
                         <div class="data">
                             <h2>{{rate.rate.name}}</h2>
@@ -240,12 +244,16 @@
                             <!-- If restriction applies, show: selectedRoom, rate.rate.id -->
                             <span class="restricted" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 1">MULTIPLE RESTRICTIONS APPLY</span>
 
-                            <span class="restricted" ng-class="getAllRestrictions(selectedRoom,rate.rate.id)[0].key" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length == 1">
+                            <span class="restricted {{restrictionColorClass[getAllRestrictions(selectedRoom,rate.rate.id)[0].key]}}" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length == 1">
                                     {{getAllRestrictions(selectedRoom,rate.rate.id)[0].value}}
                             </span>
 
-                            <span class="restricted" ng-if="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 1">MULTIPLE RESTRICTIONS APPLY</span>
-                            <span class="restricted {{restrictionColorClass[roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions[0].key]}}" ng-if="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length == 1">
+                            <span class="restricted"
+                                 ng-if="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 1">
+                                 MULTIPLE RESTRICTIONS APPLY
+                            </span>
+                            <span class="restricted {{restrictionColorClass[roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions[0].key]}}" 
+                                ng-if="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length == 1">
                                     {{roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions[0].value}}
                             </span>
                             <!-- {restriction-color} can be: red, green, blue, purple and grey -->
@@ -259,13 +267,23 @@
                                 </select>
                             </div>
 
-                            <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
-                            <span class="count red" ng-show="(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id) < 5">
-                                {{(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
-                            </span>
 
-                            <span class="count green" ng-hide="(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id) < 5">
-                                {{(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
+                            <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
+                            <span class="count red" 
+                                ng-show="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount < 5">
+                                {{roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount}} room(s) left
+                            </span>
+                            <span class="count red" 
+                                ng-show="!stateCheck.stayDatesMode && getLeastAvailability(selectedRoom, rate.rate.id) < 5">
+                                {{getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
+                            </span>
+                            <span class="count green" 
+                                ng-show="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount > 4">
+                                {{roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount}} room(s) left
+                            </span>
+                            <span class="count green" 
+                                ng-show="!stateCheck.stayDatesMode && getLeastAvailability(selectedRoom, rate.rate.id) > 4">
+                                {{getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
                             </span>
 
                             <div class="price" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">
