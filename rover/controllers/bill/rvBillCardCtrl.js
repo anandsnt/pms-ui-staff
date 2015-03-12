@@ -1,6 +1,35 @@
 
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv','RVPaymentSrv', 'RVSearchSrv',
-	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv,RVPaymentSrv,RVSearchSrv){
+sntRover.controller('RVbillCardController',
+	['$scope',
+	'$rootScope',
+	'$state',
+	'$stateParams',
+	'RVBillCardSrv',
+	'reservationBillData',
+	'RVReservationCardSrv', 
+	'RVChargeItems', 
+	'ngDialog',
+	'$filter',
+	'$window', 
+	'$timeout',
+	'chargeCodeData', 
+	'$sce', 
+	'RVKeyPopupSrv',
+	'RVPaymentSrv', 
+	'RVSearchSrv',
+	'rvPermissionSrv',
+	function($scope, $rootScope,
+			$state, $stateParams, 
+			RVBillCardSrv, reservationBillData,
+
+			RVReservationCardSrv, RVChargeItems, 
+			ngDialog, $filter, 
+
+			$window, $timeout,
+			chargeCodeData, $sce, 
+
+			RVKeyPopupSrv,RVPaymentSrv,
+			RVSearchSrv, rvPermissionSrv){
 
 
 	BaseCtrl.call(this, $scope);
@@ -63,9 +92,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	$scope.reservationBillData.roomChargeEnabled = "";
 
-	if($rootScope.isStandAlone){
-		$scope.showPayButton = true;
-	}
 	$scope.printData = {};
 	//This value changes when clicks on pay button
 	$scope.fromViewToPaymentPopup = "billcard";
@@ -98,6 +124,61 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				$scope.reservationBillData.combined_key_room_charge_create == "true") ? "true": "false";
 	};
 
+	/**
+	* function to check whether the user has permission
+	* to Edit/Split/Move/Delete charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToChangeCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
+	};
+
+
+	/**
+	* function to check whether the user has permission
+	* to make payment
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToMakePayment = function() {
+		return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to move charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToMoveCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
+	};
+
+	/**
+	* function to decide whether to show Move Charge Drop Down
+	* @return {Boolean}
+	*/
+	$scope.showMoveChargeDropDown = function(){
+		return ($scope.hasPermissionToMoveCharges());
+	};
+
+	/**
+	* function to decide whether to show Enable/Disable Charge Button
+	* @return {Boolean}
+	*/
+	$scope.shouldShowEnableDisableChargeButton = function(){
+		return ($scope.clickedButton == 'checkinButton' && 
+			!$scope.reservationBillData.is_res_posting_control_disabled);
+	};
+
+	/**
+	* function to decide whether to show Edit charge button
+	* @param {String} - Fees type value
+	* @return {Boolean}
+	*/
+	$scope.showEditChargeButton = function(feesType){
+		return (feesType!== 'TAX' && 
+				$scope.hasPermissionToChangeCharges());
+	};
+
 	// Refresh registration-content scroller.
 	$scope.calculateHeightAndRefreshScroll = function() {
 		$timeout(function(){
@@ -105,6 +186,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}, 500);
 	};
 
+
+	//Whatever permission of Make Payment we are assigning that
+	//removing standalone thing here
+	$scope.showPayButton = $scope.hasPermissionToMakePayment();
+	
 	//Calculate the scroll width for bill tabs in all the cases
 	$scope.getWidthForBillTabsScroll = function(){
 		var width = 0;
@@ -194,6 +280,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
+		if (!$scope.hasPermissionToMakePayment()){
+			$scope.errorMessage = [ "You have no permission to enable or disbable this button!"];
+			return false;
+		}
+
 		if(buttonClicked)
 			return;
 		buttonClicked = true;

@@ -16,12 +16,13 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
 		//applying sorting functionality in item list
 		$scope.itemListTerminals = new ngTableParams({
 		        page: 1,            // show first page
-		        count: $scope.data.results.length,    // count per page - Need to change when on pagination implemntation
+		        count: $scope.data.results.length ? $scope.data.results.length : 1,    // count per page - Need to change when on pagination implemntation
 		        sorting: {
 		            name: 'asc'     // initial sorting
 		        }
 		    }, {
-		        total: $scope.data.results.length, // length of data
+		    	counts: [], // hide page counts control
+		        total: 1, // hides the pagingation for now
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
@@ -45,8 +46,12 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
 	$scope.deleteItem = function(index, id){	
 		
 		var successCallBack = function(){
+
 			$scope.$emit('hideLoader');
-			$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);	
+			angular.forEach($scope.data.results, function(value, key) {
+				if(value.id === id) $scope.data.results.splice(key, 1);
+			});
+			$scope.itemListTerminals.reload();
 		};
 		$scope.invokeApi(ADEmvTerminalsSrv.deleteItem, {'item_id': id}, successCallBack);		
 	};

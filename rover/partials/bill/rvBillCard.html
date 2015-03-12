@@ -89,7 +89,7 @@
 						<!-- Incoming billing info -->
 						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0 && !isStandAlone" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
 						
-						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton' && !reservationBillData.is_res_posting_control_disabled" ng-click="noPostButtonClicked()" ng-class = "{'green':reservationBillData.roomChargeEnabled, 'red': !reservationBillData.roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
+						<a class="button no-post-button" ng-show="shouldShowEnableDisableChargeButton()" ng-click="noPostButtonClicked()" ng-class = "{'green':reservationBillData.roomChargeEnabled, 'red': !reservationBillData.roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
 						
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all bill-tab-ul" role="tablist">
 							
@@ -129,9 +129,11 @@
 							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50' id="bill-days-new">
 								<ul class="wrapper" style="width: {{billData.billDaysWidth}}px;">
 									<li class="add-new" ng-click="openPostCharge(billData.bill_number)">
-										<a id="add-new-button" class="add-new-button">+ <span translate>ADD</span></a>
+										<a  class="button with-icon brand-colors">
+											<span class="icons icon-charge"></span>
+											Add Charge
+										</a>
 									</li>
-
 									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
 										<!-- For checkin date -->
 										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
@@ -141,12 +143,6 @@
 											<span class="price" ng-show="days.amount == 'SR'">SR</span>
 											<span class="price" ng-hide="days.amount == 'SR'">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>  
 										</a>
-										<!-- For checkout date -->
-										<div class="no-expense" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'checkout')">
-											<span class="day"> {{days.date | date:'EEE'}} </span>
-											<span class="date"> {{days.date | date:'dd'}} </span>
-											<span class="guest-status check-out small-icon" ><span translate>CHECK_OUT</span></span>
-										</div>
 									</li>
 
 									<!-- packages -->
@@ -165,7 +161,14 @@
 											<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
 										</a>
 									</li>
-
+									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
+										<!-- For checkout date -->
+										<div class="no-expense" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'checkout')">
+											<span class="day"> {{days.date | date:'EEE'}} </span>
+											<span class="date"> {{days.date | date:'dd'}} </span>
+											<span class="guest-status check-out small-icon" ><span translate>CHECK_OUT</span></span>
+										</div>
+									</li>
 								</ul>
 
 							</div>

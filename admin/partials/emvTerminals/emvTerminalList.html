@@ -14,21 +14,22 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div id="new-form-holder"></div>
-			<table id="items" class="grid datatable dataTable" ng-table="itemListTerminals" template-pagination="nil">
+			<table id="items" class="grid datatable dataTable" ng-table="itemListTerminals">
 			
 				<tr role="row" ng-repeat="item in $data">
-					<td width="40%" class="sorting" data-title="'Terminal Name'" sortable="'name'">
+					<td  class="sorting" data-title="'Terminal Name'" sortable="'name'">
 						<a ui-sref="admin.emvTerminalDetails({itemid: item.id})">{{item.name}}</a>
 					</td>
-					<td width="40%" class="sorting" data-title="'Terminal Identifier'" sortable="'id'">
+					<td class="sorting" data-title="'Terminal Identifier'" sortable="'id'">
 						{{item.terminal_identifier}}
 					</td>
-					<td width="10%" class="delete" data-title="'Delete'">
+					<td  class="delete" data-title="'Delete'" header-class="delete">
 						<a class="icons icon-delete large-icon" ng-click="deleteItem($index, item.id)"></a>
 					</td>
 				</tr>
 				
 			</table>
 		</section>
+		
 	</div>
 </section>

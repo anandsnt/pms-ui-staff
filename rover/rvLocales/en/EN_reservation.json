@@ -101,6 +101,7 @@
     "YES":"Yes",
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
+    "SHOW_CLOSED_RATES": "Show Closed Rates",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
@@ -115,4 +116,8 @@
     "DONT_APPLY": "Don't apply",
     "APPLY_CUSTOMRATE" : "Apply Custom Rate",
     "MODIFY_CUSTOMRATE" : "Modify Custom Rate",
-    "DIARY": "Diary"
+    "DIARY": "Diary",
+
+    "KEEP_CURRENT_RATE": "Keep current rate",
+    "CHANGE_TO_NEW_RATE": "Change to new rate"
+

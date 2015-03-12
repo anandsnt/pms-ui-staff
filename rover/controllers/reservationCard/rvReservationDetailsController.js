@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
 
 		// pre setups for back button
 		var backTitle,
@@ -66,6 +66,30 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			};
 		}
 
+		var datePickerCommon = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div').addClass('reservation hide-arrow');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+
+				setTimeout(function() {
+					$('body').find('#ui-datepicker-overlay')
+						.on('click', function() {
+							console.log('hey clicked');
+							$('#room-out-from').blur();
+							$('#room-out-to').blur();
+						});
+				}, 100);
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
+				$('#ui-datepicker-overlay').off('click').remove();
+			}
+		};
+
 
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
@@ -100,8 +124,30 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			 */
 			//Data fetched using resolve in router
 		var reservationMainData = $scope.$parent.reservationData;
+
 		$scope.reservationParentData = $scope.$parent.reservationData;
+
 		$scope.reservationData = reservationDetails;
+		// CICO-13564
+		$scope.editStore = {
+			arrival: $scope.reservationData.reservation_card.arrival_date,
+			departure: $scope.reservationData.reservation_card.departure_date
+		}
+
+		$scope.arrivalDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				// Handle onSelect
+			},
+		}, datePickerCommon);
+
+		$scope.departureDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				//
+			},
+		}, datePickerCommon);
+
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
@@ -233,7 +279,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
-
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
 			$scope.updateSearchCache();
 		};
@@ -558,6 +603,132 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
-	}
+		$scope.responseValidation = {};
 
+		$scope.editStayDates = function() {
+			// reservation_id, arrival_date, departure_date
+			$scope.errorMessage = "";
+			var onValidationSuccess = function(response) {
+					if (response.errors.length == 0) {
+						$scope.responseValidation = response.data;
+						ngDialog.open({
+							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
+							className: '',
+							scope: $scope,
+							data: JSON.stringify({
+								is_stay_cost_changed: response.data.is_stay_cost_changed,
+								is_assigned_room_available: response.data.is_room_available,
+								is_rate_available: response.data.is_room_type_available
+							})
+						});
+					} else {
+						$scope.errorMessage = response.errors;
+					}
+
+					$scope.$emit('hideLoader');
+				},
+				onValidationFaliure = function(error) {
+					// console.log("onValidationFaliure", error);
+					$scope.$emit('hideLoader');
+				}
+			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
+				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+				reservation_id: $scope.reservationData.reservation_card.reservation_id
+			}, onValidationSuccess, onValidationFaliure);
+		}
+
+		$scope.moveToRoomRates = function() {
+
+			var initStayDates = function(roomNumber) {
+				if (roomNumber == 0) {
+					$scope.reservationParentData.stayDays = [];
+				}
+				for (var d = [], ms = new tzIndependentDate($scope.reservationParentData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationParentData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+					if (roomNumber == 0) {
+						$scope.reservationParentData.stayDays.push({
+							date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
+							dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
+							day: dateFilter(new tzIndependentDate(ms), 'dd')
+						});
+					}
+					$scope.reservationParentData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+						guests: {
+							adults: parseInt($scope.reservationParentData.rooms[roomNumber].numAdults),
+							children: parseInt($scope.reservationParentData.rooms[roomNumber].numChildren),
+							infants: parseInt($scope.reservationParentData.rooms[roomNumber].numInfants)
+						},
+						rate: {
+							id: "",
+							name: ""
+						}
+					};
+				};
+			};
+
+			$scope.reservationParentData.arrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
+			$scope.reservationParentData.departureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
+			initStayDates(0);
+
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+				to_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+				fromState: $state.current.name,
+				company_id: $scope.$parent.reservationData.company.id,
+				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+			});
+
+			$scope.closeDialog();
+		}
+
+		$scope.changeStayDates = function() {
+			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
+			var newDepartureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
+			var existingStayDays = $scope.reservationParentData.rooms[0].stayDates;
+			var modifiedStayDays = $scope.responseValidation.new_stay_dates;
+			var newStayDates = {};
+
+			for (var d = [], ms = new tzIndependentDate(newArrivalDate) * 1, last = new tzIndependentDate(newDepartureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+				var currentDate = $filter('date')(tzIndependentDate(ms), 'yyyy-MM-dd');
+				if (!!existingStayDays[currentDate]) {
+					newStayDates[currentDate] = existingStayDays[currentDate];
+				} else {
+					//go to take information from the new_stay_dates coming from the API response				
+
+					var newDateDetails = _.where(modifiedStayDays, {
+						reservation_date: currentDate
+					})[0];
+
+					newStayDates[currentDate] = {
+						guests: {
+							adults: newDateDetails.adults,
+							children: newDateDetails.children,
+							infants: newDateDetails.infants || 0
+						},
+						rate: {
+							id: newDateDetails.rate_id
+						},
+						rateDetails: {
+							actual_amount: newDateDetails.rate_amount,
+							modified_amount: newDateDetails.rate_amount
+						}
+					}
+
+				}
+			}
+
+			//change the reservationData model to have the newer values
+			$scope.reservationParentData.arrivalDate = newArrivalDate;
+			$scope.reservationParentData.departureDate = newDepartureDate;
+			$scope.reservationParentData.rooms[0].stayDates = newStayDates;
+
+			// console.log($scope.reservationParentData);
+			$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
+				"id": $stateParams.id,
+				"confirmationId": $stateParams.confirmationId,
+				"isrefresh": false
+			});
+			$scope.closeDialog();
+		}
+	}
 ]);

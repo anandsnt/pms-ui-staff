@@ -1,30 +1,29 @@
-<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}" ngrepeatend>
+<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
 	<td ng-if="each.isReport" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
-		<strong ng-if="each.room_no" class="title">{{ each.room_no }}</strong>
-		<strong ng-if="!each.room_no" class="title unassigned">N/A</strong>
+		<strong class="title">{{ each.room_no }}</strong>
+		<span class="status">{{ each.status }}</span>
 	</td>
-	<td ng-if="each.isReport" class="name">
+	<td ng-if="each.isReport">
 		<strong class="title">{{ each.name }}</strong>
-		<span class="data">{{ each.confirm_no }}</span>
-		<span ng-if="each.is_vip">&#8226; <span class="data vip">VIP</span></span>
-		<span ng-if="each.addtional_guest_counts">&#8226; <span class="data">{{ each.addtional_adults_counts }} Adult(s)</span></span>
-		<span ng-if="each.addtional_guest_counts">&#8226; <span class="data">{{ each.addtional_children_counts }} Children</span></span>
+		<span class="confirmation">{{ each.confirm_no }}</span>
+		<span ng-if="each.is_vip">&#8226; <span class="vip">VIP</span></span>
+		<span ng-if="each.addtional_guest_counts">&#8226; <span class="guests">{{ each.addtional_guest_counts }} guest(s)</span></span>
 	</td>
 	<td ng-if="each.isReport" class="date">
-		<span class="guest-status check-in" ng-class="{ 'cancel': (each.status =='CANCELED' || each.status =='Canceled') }">check-in</span>
+		<span class="guest-status check-in">check-in</span>
 		<time>
 			<span>{{ each.arrival_date | date : dateFormat }}</span>
 			<span>{{ each.arrival_time }}</span>
 		</time>
 	</td>
 	<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_time}">
-		<span class="guest-status check-out" ng-class="{ 'cancel': (each.status =='CANCELED' || each.status =='Canceled') }">check-out</span>
+		<span class="guest-status check-out">check-out</span>
 		<time>
 			<span>{{ each.departure_date | date : dateFormat }}</span>
 			<span>{{ each.departure_time }}</span>
 		</time>
 		<div ng-if="each.total_time" class="hours">{{ each.total_time }}</div>
-		<div ng-if="each.guarantee_type" class="data guarantee">{{ each.guarantee_type }} Hold</div>
+		<div ng-if="each.guarantee_type" class="data guarantee">{{ each.guarantee_type }}</div>
 	</td>
 	<td ng-if="each.isReport">
 		<span class="data room">{{ each.room_type }}</span>
@@ -44,12 +43,6 @@
 		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
 	</td>
 
-	<!-- cancel reason -->
-	<td ng-if="each.isCancelData" class="secondary cancel" colspan="5">
-		<strong>Cancellation Reason</strong>
-		<p>{{ each.reason }}</p>
-	</td>
-	
 	<!-- notes -->
 	<td ng-if="each.isNoteData" class="secondary notes" colspan="5">
 		<strong>Notes</strong>

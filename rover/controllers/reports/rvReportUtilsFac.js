@@ -25,7 +25,8 @@ sntRover.factory('RVReportUtilsFac', [
             'DEPOSIT_REPORT'               : 'Deposit Report',
             'LOGIN_AND_OUT_ACTIVITY'       : 'Login and out Activity',
             'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
-            'RESERVATIONS_BY_USER'         : 'Reservations By User'
+            'RESERVATIONS_BY_USER'         : 'Reservations By User',
+            'DAILY_TRANSACTIONS'           : 'Daily Transactions'
         };
 
 
@@ -102,6 +103,10 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-reservations';
                     break;
 
+                case __reportNames['DAILY_TRANSACTIONS']:
+                    reportItem['reportIconCls'] = 'icon-report icon-transactions';
+                    break;
+
                 default:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
@@ -115,8 +120,6 @@ sntRover.factory('RVReportUtilsFac', [
 
         // add required flags this report
         factory.applyFlags = function ( reportItem ) {
-
-            // by
 
             switch ( reportItem['title'] ) {
                 case __reportNames['ARRIVAL']:
@@ -170,6 +173,10 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['showRemoveArrivalDate'] = true;
                     break;
 
+                case __reportNames['DAILY_TRANSACTIONS']:
+                    reportItem['hasDateLimit'] = false;
+                    break;
+
                 default:
                     reportItem['show_filter'] = false;
                     reportItem['hasDateLimit'] = true;
@@ -187,7 +194,9 @@ sntRover.factory('RVReportUtilsFac', [
             var _hasFauxSelect,
                 _hasDisplaySelect,
                 _hasMarketSelect,
-                _hasGuaranteeSelect;
+                _hasGuaranteeSelect,
+                _hasChargeGroupSelect,
+                _hasChargeCodeSelect;
 
             // going around and taking a note on filters
             _.each(reportItem['filters'], function(filter) {
@@ -223,9 +232,14 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasDepositDateFilter'] = filter;
                 };
 
-                // check for Deposit due date range filter and keep a ref to that item
+                // check for create date range filter and keep a ref to that item
                 if ( filter.value === 'CREATE_DATE_RANGE' ) {
                     reportItem['hasCreateDateFilter'] = filter;
+                };
+
+                // check for "by single date" filter and keep a ref to that item
+                if ( filter.value === 'BY_SINGLE_DATE' ) {
+                    reportItem['hasSingleDateFilter'] = filter;
                 };
 
                 // check for time filter and keep a ref to that item
@@ -332,13 +346,6 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasIncludeComapnyTaGroup'] = filter;
                 };
 
-                // check for include guarantee type filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
-                    reportItem['hasGuaranteeType'] = filter;
-                    reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
-                    _hasGuaranteeSelect = true;
-                };
-
                 // check for include deposit paid filter and keep a ref to that item
                 if ( filter.value === 'DEPOSIT_PAID' ) {
                     reportItem['hasIncludeDepositPaid'] = filter;
@@ -382,6 +389,28 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasIncludeBoth'] = filter;
                     _hasFauxSelect = true;
                 };
+
+
+                // check for include guarantee type filter and keep a ref to that item
+                if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
+                    reportItem['hasGuaranteeType'] = filter;
+                    reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
+                    _hasGuaranteeSelect = true;
+                };
+
+                // check for "by charge group" and keep a ref to that item
+                if ( filter.value === 'INCLUDE_CHARGE_GROUP' ) {
+                    reportItem['hasByChargeGroup'] = filter;
+                    reportItem['chargeGroups'] = angular.copy( data.chargeGroups );
+                    _hasChargeGroupSelect = true;
+                };
+
+                // check for "by charge group" and keep a ref to that item
+                if ( filter.value === 'INCLUDE_CHARGE_CODE' ) {
+                    reportItem['hasByChargeCode'] = filter;
+                    reportItem['chargeCodes'] = angular.copy( data.chargeCodes );
+                    _hasChargeCodeSelect = true;
+                };
             });
 
             // NEW! faux select DS and logic
@@ -405,27 +434,27 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['selectGuaranteeOpen'] = false;
                 reportItem['guaranteeTitle'] = 'Select';
             };
+
+            if ( _hasChargeGroupSelect ) {
+                reportItem['selectChargeGroupOpen'] = false;
+                reportItem['chargeGroupTitle'] = 'Select';
+            };
+
+            if ( _hasChargeCodeSelect ) {
+                reportItem['selectChargeCodeOpen'] = false;
+                reportItem['chargeCodeTitle'] = 'Select';
+            };
         };
 
 
 
 
 
-
-        // to process the report sort by
-        factory.processSortBy = function ( reportItem ) {
-
-            // sort by options - include sort direction
-            if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
-                _.each(reportItem['sort_fields'], function(item, index, list) {
-                    item['sortDir'] = undefined;
-                    if (index == (list.length - 1)) {
-                        item['colspan'] = 2;
-                    };
-                });
-
+        // to process the report group by
+        factory.processGroupBy = function ( reportItem ) {
+            if ( reportItem['group_fields'] && reportItem['group_fields'].length ) {
                 // adding custom name ref
-                reportItem['sortByOptions'] = reportItem['sort_fields'];
+                reportItem['groupByOptions'] = reportItem['group_fields'];
             };
         };
 
@@ -442,28 +471,28 @@ sntRover.factory('RVReportUtilsFac', [
             // [date - name - room] > TO > [room - name - date]
             if ( reportItem['title'] == __reportNames['ARRIVAL'] ||
                  reportItem['title'] == __reportNames['DEPARTURE'] ) {
-                var dateSortBy = angular.copy(reportItem.sortByOptions[0]),
-                    roomSortBy = angular.copy(reportItem.sortByOptions[2]);
+                var dateSortBy = angular.copy( reportItem['sort_fields'][0] ),
+                    roomSortBy = angular.copy( reportItem['sort_fields'][2] );
 
                 dateSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
-                reportItem.sortByOptions[0] = roomSortBy;
-                reportItem.sortByOptions[2] = dateSortBy;
+                reportItem['sort_fields'][0] = roomSortBy;
+                reportItem['sort_fields'][2] = dateSortBy;
             };
 
             // for in-house report the sort by items must be
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
             if ( reportItem['title'] == __reportNames['IN_HOUSE_GUEST'] ) {
-                var nameSortBy = angular.copy(reportItem.sortByOptions[0]),
-                    roomSortBy = angular.copy(reportItem.sortByOptions[1]);
+                var nameSortBy = angular.copy( reportItem['sort_fields'][0] ),
+                    roomSortBy = angular.copy( reportItem['sort_fields'][1] );
 
                 nameSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
-                reportItem.sortByOptions[0] = roomSortBy;
-                reportItem.sortByOptions[1] = nameSortBy;
+                reportItem['sort_fields'][0] = roomSortBy;
+                reportItem['sort_fields'][1] = nameSortBy;
             };
 
             // for Login and out Activity report
@@ -471,31 +500,94 @@ sntRover.factory('RVReportUtilsFac', [
             // the sort descriptions should be update to design
             //    THIS MUST NOT BE CHANGED IN BACKEND
             if ( reportItem['title'] == __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
-                reportItem.sortByOptions[0]['description'] = 'Date & Time';
+                reportItem['sort_fields'][0]['description'] = 'Date & Time';
 
-                reportItem.sortByOptions[0]['colspan'] = 2;
-                reportItem.sortByOptions[1]['colspan'] = 2;
+                reportItem['sort_fields'][0]['colspan'] = 2;
+                reportItem['sort_fields'][1]['colspan'] = 2;
             };
 
 
             // need to reorder the sort_by options
             // for deposit report in the following order
             if ( reportItem['title'] == __reportNames['DEPOSIT_REPORT'] ) {
-                var reservationSortBy = angular.copy(reportItem.sortByOptions[4]),
-                    nameSortBy = angular.copy(reportItem.sortByOptions[3]),
-                    dateSortBy = angular.copy(reportItem.sortByOptions[0]),
-                    dueDateSortBy = angular.copy(reportItem.sortByOptions[1]),
-                    paidDateSortBy = angular.copy(reportItem.sortByOptions[2]);
+                var reservationSortBy = angular.copy( reportItem['sort_fields'][4] ),
+                    nameSortBy        = angular.copy( reportItem['sort_fields'][3] ),
+                    dateSortBy        = angular.copy( reportItem['sort_fields'][0] ),
+                    dueDateSortBy     = angular.copy( reportItem['sort_fields'][1] ),
+                    paidDateSortBy    = angular.copy( reportItem['sort_fields'][2] );
 
-                    reportItem.sortByOptions[0] = reservationSortBy;
-                    reportItem.sortByOptions[1] = nameSortBy;
-                    reportItem.sortByOptions[2] = dateSortBy;
-                    reportItem.sortByOptions[3] = null;
-                    reportItem.sortByOptions[4] = dueDateSortBy;
-                    reportItem.sortByOptions[5] = paidDateSortBy;
+                reportItem['sort_fields'][0] = reservationSortBy;
+                reportItem['sort_fields'][1] = nameSortBy;
+                reportItem['sort_fields'][2] = dateSortBy;
+                reportItem['sort_fields'][3] = null;
+                reportItem['sort_fields'][4] = dueDateSortBy;
+                reportItem['sort_fields'][5] = paidDateSortBy;
+            };
+
+            // need to reorder the sort_by options
+            // for Reservation by User in the following order
+            if ( reportItem['title'] == __reportNames['RESERVATIONS_BY_USER'] ) {
+                var reservationType = angular.copy( reportItem['sort_fields'][6] ),
+                    guestName       = angular.copy( reportItem['sort_fields'][3] ),
+                    arrivalDate     = angular.copy( reportItem['sort_fields'][1] ),
+                    rateAmount      = angular.copy( reportItem['sort_fields'][5] ),
+                    createdOn       = angular.copy( reportItem['sort_fields'][0] ),
+                    guranteeType    = angular.copy( reportItem['sort_fields'][2] ),
+                    overrideAmount  = angular.copy( reportItem['sort_fields'][4] );
+
+                reportItem['sort_fields'][0] = reservationType;
+                reportItem['sort_fields'][1] = guestName;
+                reportItem['sort_fields'][2] = arrivalDate;
+                reportItem['sort_fields'][3] = rateAmount;
+                reportItem['sort_fields'][4] = createdOn;
+                reportItem['sort_fields'][5] = guranteeType;
+                reportItem['sort_fields'][6] = overrideAmount;
+                reportItem['sort_fields'][7] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for daily transactions in the following order
+            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+                var chargeGroup = angular.copy( reportItem['sort_fields'][1] ),
+                    chargeCode  = angular.copy( reportItem['sort_fields'][0] ),
+                    revenue     = angular.copy( reportItem['sort_fields'][3] ),
+                    mtd         = angular.copy( reportItem['sort_fields'][2] ),
+                    ytd         = angular.copy( reportItem['sort_fields'][4] );
+
+                reportItem['sort_fields'][0] = chargeGroup;
+                reportItem['sort_fields'][1] = chargeCode;
+                reportItem['sort_fields'][2] = null;
+                reportItem['sort_fields'][3] = revenue;
+                reportItem['sort_fields'][4] = null;
+                reportItem['sort_fields'][5] = null;
+                reportItem['sort_fields'][6] = mtd;
+                reportItem['sort_fields'][7] = null;
+                reportItem['sort_fields'][8] = null;
+                reportItem['sort_fields'][9] = ytd;
             };
         };
 
+
+
+
+
+        // to process the report sort by
+        factory.processSortBy = function ( reportItem ) {
+
+            // sort by options - include sort direction
+            if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
+                _.each(reportItem['sort_fields'], function(item, index, list) {
+
+                    if ( item != null) {
+                        item['sortDir'] = undefined;
+                    };
+
+                });
+
+                // adding custom name ref for easy access
+                reportItem['sortByOptions'] = reportItem['sort_fields'];
+            };
+        };
 
 
 
@@ -541,6 +633,8 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['untilCancelDate']  = _getDates.businessDate;
                     reportItem['untilArrivalDate'] = _getDates.businessDate;
                     reportItem['untilCreateDate']  = _getDates.businessDate;
+                    /**/
+                    reportItem['singleValueDate']  = _getDates.businessDate;
                     break;
             };
         };

@@ -115,8 +115,13 @@
 			&#report-update {
 				.ui-resizable-handle {
 					&.ui-resizable-e {
-						top: 20px;
-						bottom: auto;
+						background-color: #bfbfbf;
+						background-image: @icons, @darkTexture;
+
+						@media @highdpi {
+							background-image: @icons2x, @darkTexture;
+							background-size: 120px, 40px;
+						}
 					}
 				}
 			}
@@ -141,26 +146,6 @@
                 }
             }
         }
-
-        &#report-update {
-			.ui-resizable-handle {
-				&.ui-resizable-s { 
-					top: auto;
-					bottom: -20px;
-                	font-size: 11px;
-                	line-height: 20px;
-                	text-align: center;
-                	text-transform: uppercase;
-                	font-weight: 600;
-                	background-image: @icons, @rcardTexture1;
-
-                	@media @highdpi {
-						background-image: @icons2x, @rcardTexture1;
-						background-size: 120px, 40px;
-					}
-				}
-			}
-		}
 	}
 
 /* jQuery UI datepicker		==============================*/
@@ -1620,6 +1605,60 @@
 				}
 			}
 
+			&.demographics {
+				width: 480px;
+
+				.text { 
+					strong { color: @red; }
+				}
+
+				.entry {
+					width: 50%;
+					margin-bottom: 20px;
+
+					label { 
+						margin-bottom: 0; 
+
+						strong {
+							color: @red;
+							font-weight: 600;
+							margin-left: 5px;
+						}
+					}
+
+					&.margin {
+						margin-right: 20px;
+						.calc-width(50, 20);
+					}
+
+					&.full-width { 
+						float: none;
+						width: 100%; 
+					}
+				}
+
+				.actions {
+					clear: both;
+					padding-top: 20px;
+					margin-top: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
+					text-align: center;
+					width: 100%;
+					.show;
+
+					.button {
+						display: inline-block;
+						width: auto;
+						padding: 0 40px;
+
+						&.blank { 
+							padding: 0 20px 0 0; 
+							text-align: right; 
+						}
+					}
+				}
+			}
+
 			&.diary-confirmation {
 				width: 580px;
 
@@ -2647,6 +2686,72 @@
 					margin-top: 20px;
 					padding-top: 19px;
 					border-top: 1px solid rgba(0,0,0,.1);
+				}
+			}
+
+			/* Change Stay Dates ***/
+			&.change-stay-dates {
+				width: 360px;
+
+				.dates-update {
+					margin-top: 20px;
+					.float;
+
+					.label {
+						color: @textColor;
+						font-size: 16px;
+						line-height: 40px;
+						font-weight: 600;
+						text-transform: uppercase;
+						text-align: right;
+						width: 60px;
+						margin-right: 20px;
+						.pull-left;
+					}
+
+					.details {
+						background-color: @white;
+						padding: 0 10px;
+						#border-radius > .rounded();
+						.calc-width(100, 80);
+						.pull-left;
+
+						li {
+							font-weight: 600;
+							text-transform: uppercase;
+							text-align: center;
+							line-height: 20px;
+	                        margin: 0;
+	                        padding: 10px;
+	                        width: 50%;
+	                        .pull-left;
+	                        .show;
+
+	                        .guest-status { .square(20px); }
+
+	                        &.arrival { border-right: 1px solid rgba(0,0,0,.1); }
+						}
+					}
+
+					&.old {
+						.details {
+							li {
+								font-weight: 400;
+								.opacity(40);
+							}
+						}
+					}
+				}
+
+				.actions { margin-top: 20px; }
+
+				&.success {
+					width: 420px;
+
+					.actions {
+						padding-top: 20px;
+						border-top: 1px solid rgba(0,0,0,.1);
+					}
 				}
 			}
 		}
