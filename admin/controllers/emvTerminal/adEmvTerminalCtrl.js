@@ -22,7 +22,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
 		        }
 		    }, {
 		    	counts: [], // hide page counts control
-		        total: 1, // hides the pagingation for now
+		        total: 0, // hides the pagingation for now
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
