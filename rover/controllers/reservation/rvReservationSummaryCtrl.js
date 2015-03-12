@@ -1149,21 +1149,49 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
         $scope.isDemographicsFormValid = function(assertValidation) {
             var isValid = true;
-            _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-                var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
-                if ($scope.otherData.reservationTypeIsForced) {
-                    isValid = demographicsData.reservationType != "";
+
+            if (assertValidation) {
+                if ($scope.otherData.reservationTypeIsForced || $scope.otherData.marketIsForced || $scope.otherData.sourceIsForced || $scope.otherData.originIsForced) {
+                    _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                        if (!room.demographics) {
+                            isValid = false;
+                        } else {
+                            var demographicsData = room.demographics;
+
+                            if ($scope.otherData.reservationTypeIsForced) {
+                                isValid = demographicsData.reservationType != "";
+                            }
+                            if ($scope.otherData.marketIsForced && isValid) {
+                                isValid = demographicsData.market != "";
+                            }
+                            if ($scope.otherData.sourceIsForced && isValid) {
+                                isValid = demographicsData.source != "";
+                            }
+                            if ($scope.otherData.originIsForced && isValid) {
+                                isValid = demographicsData.origin != "";
+                            }
+                        }
+                    });
                 }
-                if ($scope.otherData.marketIsForced && isValid) {
-                    isValid = demographicsData.market != "";
-                }
-                if ($scope.otherData.sourceIsForced && isValid) {
-                    isValid = demographicsData.source != "";
-                }
-                if ($scope.otherData.originIsForced && isValid) {
-                    isValid = demographicsData.origin != "";
-                }
-            });
+            } else {
+                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+
+                    var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
+
+                    if ($scope.otherData.reservationTypeIsForced) {
+                        isValid = demographicsData.reservationType != "";
+                    }
+                    if ($scope.otherData.marketIsForced && isValid) {
+                        isValid = demographicsData.market != "";
+                    }
+                    if ($scope.otherData.sourceIsForced && isValid) {
+                        isValid = demographicsData.source != "";
+                    }
+                    if ($scope.otherData.originIsForced && isValid) {
+                        isValid = demographicsData.origin != "";
+                    }
+                });
+            }
             return isValid;
         }
 
