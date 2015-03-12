@@ -209,6 +209,24 @@ sntRover.controller('RVbillCardController',
 
 	// Initializing reviewStatusArray
 	$scope.reviewStatusArray = [];
+	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
+		var inclLength=0;		
+		angular.forEach(expense_details,function(elem){			
+		if(elem.is_inclusive==true)
+		{
+			inclLength++;
+		}
+	})
+	if(inclLength==expense_details.length)
+	{		
+		return 'INCL'
+	}else if(inclLength>0&&inclLength<expense_details.length)
+	{
+		return 'MULTI';
+	}else{
+		return returnAmount	;
+	}
+	}
 
 
 	$scope.init = function(reservationBillData){
@@ -219,7 +237,10 @@ sntRover.controller('RVbillCardController',
 		 * Added same value to two different key because angular is two way binding
 		 * Check in HTML moveToBillAction
 		 */
-		angular.forEach(reservationBillData.bills, function(value, key) {
+		angular.forEach(reservationBillData.bills, function(value, key) {			
+			
+			
+
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
 			if(key == 0 && $scope.clickedButton == "viewBillButton"){
@@ -818,6 +839,26 @@ sntRover.controller('RVbillCardController',
 		}
 		return dayClass;
 	};
+	
+	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
+		var inclLength=0;		
+		angular.forEach(expense_details,function(elem){
+			console.log(elem);
+		if(elem.is_inclusive==true)
+		{
+			inclLength++;
+		}
+	})
+	if(inclLength==expense_details.length)
+	{		
+		return 'INCL'
+	}else if(inclLength>0&&inclLength<expense_details.length)
+	{
+		return 'MULTI';
+	}else{
+		return returnAmount	;
+	}
+	}
 	$scope.showBillingInfoHandle = function(){
 		$scope.showBillingInfo = !$scope.showBillingInfo;
 		$scope.calculateHeightAndRefreshScroll();
