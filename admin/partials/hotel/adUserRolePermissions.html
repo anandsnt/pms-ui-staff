@@ -15,18 +15,18 @@
             </div>
             <form class="form float ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" role="tabpanel" aria-expanded="true" aria-hidden="false">
                 <fieldset class="holder full-width">
-                    <div class="entry has-sortable locked col3-with-button">
+                    <div class="entry has-sortable">
                         <h3 translate>ASSIGNED_PERMISSIONS</h3>
                         <ul data-placeholder="{{ 'PERMISSIONS_PLACEHOLDER1' | translate }}"
 
                                 data-jqyoui-options="{accept:'.unassigned-user-roles'}"
                                 
-                                class="boxes sortable empty short-list1" data-drop="true" 
+                                class="boxes sortable empty" data-drop="true" 
                                 ng-model='assignedPermissions' 
 
                                 jqyoui-droppable="{multiple:true}" 
 
-                                style="overflow-y: scroll !important;" data-type="target">
+                                data-type="target">
 
                                     <li ng-repeat="assignedPermission in assignedPermissions" 
                                     class="assigned-user-roles li-draggable"
@@ -52,11 +52,11 @@
                             <span data-type="target" class="icons icon-mover-right to-target" ng-click="leftToRight()" ng-class="{active: selectedAssignedPermission!=-1}" translate>ASSIGN_ROLES</span>
                             <span data-type="source" class="icons icon-mover-left to-source" ng-click="rightToleft()" ng-class="{active: selectedUnassignedPermission!=-1}" translate>UNASSIGN_ROLES</span>
                     </div>
-                    <div class="entry has-sortable locked col3-with-button">
+                    <div class="entry has-sortable">
                         <h3 class="inactive" translate>NOT_ASSIGNED_PERMISSIONS</h3>
                         <ul data-placeholder="{{ 'PERMISSIONS_PLACEHOLDER2' | translate }}"
 
-                        class="boxes sortable empty short-list1"  style="overflow-y: scroll !important;" 
+                        class="boxes sortable empty" 
                         data-drop="true" ng-model='unAssignedPermissions' 
 
                         data-jqyoui-options="{accept:'.assigned-user-roles'}"

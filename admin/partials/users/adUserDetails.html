@@ -98,7 +98,7 @@
 
 						jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoles'}" 
 
-						style="overflow-y: scroll !important;" data-type="target">
+						data-type="target">
 
 							<li ng-repeat="role in assignedRoles" 
 							class="assigned-user-roles li-draggable"
@@ -133,7 +133,7 @@
 						<label>Not Assigned Roles</label>
 						<ul data-placeholder="To remove a role for the user simply drop it here" 
 
-						class="boxes sortable short-list"  style="overflow-y: scroll !important;" 
+						class="boxes sortable short-list"
 						data-drop="true" ng-model='unAssignedRoles' 
 
 						data-jqyoui-options="{accept:'.assigned-user-roles'}"

@@ -102,7 +102,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		$scope.keepCurrentRate = function() {
 			//Save data variables keeping the Current Rate .
-			saveChanges(true);
+			saveChanges(false, true);
 			closeDialog();
 		};
 
@@ -125,7 +125,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			return isRateChangeOcuured;
 		};
 
-		function saveChanges(override) {
+		function saveChanges(override, keepCurrentRate) {
 
 			$scope.$emit('showLoader');
 			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
@@ -146,6 +146,14 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 								$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = actual_amount;
 							}
 							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = 0;
+						} else if (keepCurrentRate) {
+							// Keep current Rate.
+							// Keeping modified amount (Custom rate) as it is , calculating the Actual Amount.
+							var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
+							var extraAdults = adults >= 2 ? adults - 2 : 0;
+							var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+
+							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = roomAmount;
 						} else {
 							var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
 							var extraAdults = adults >= 2 ? adults - 2 : 0;
@@ -195,7 +203,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			 */
 			angular.forEach($scope.guestData.accompanying_guests_details, function(guest, index) {
 				delete guest.image;
-				
+
 				if (!guest.first_name && !guest.last_name) {
 					guest.first_name = null;
 					guest.last_name = null;
