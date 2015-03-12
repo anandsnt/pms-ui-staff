@@ -598,6 +598,41 @@ table {
                     }
                 }
 
+                &.log-reports {
+                    tr {
+                        &.invalid { 
+                            td {
+                                color: @grey3;
+                                font-style: italic;
+                            }
+                        }
+                    }
+
+                    td {
+                        &.name { width: 3cm; }
+                        &.date { width: 4cm; }
+                        &.action { width: 2cm; }
+
+                        &.details { 
+                            color: @grey3;
+                            width: 12cm;   
+                            white-space: normal;
+                            overflow: visible;
+
+                            strong {
+                                font-weight: 400;
+                                color: @textColor;
+                                margin-right: 10px;
+                            }
+
+                            .old { 
+                                text-decoration: line-through;
+                                strong { color: @grey3; }
+                            }                                
+                        }
+                    }
+                }
+
                 &.guest-reports {
 
                     .unassigned { color: @grey3; }
@@ -772,6 +807,78 @@ table {
                         }
                     }
                 }
+
+                &.statistics-reports {
+
+                    tr {
+                        th,
+                        td { 
+                            font-size: 8pt; 
+                            line-height: 14pt;
+                            padding: 0 4pt 0 8pt;
+                        }
+                    }
+
+                    thead {
+                        tr {
+                            th {
+                                text-align: center;
+                                font-weight: 600;
+
+                                &[colspan] { 
+                                    border-right: 1px solid @grey3; 
+
+                                    &:last-child { border-right: 0; }
+                                }
+                            }
+
+                            &.bottom-row {
+                                th {
+                                    text-transform: none;
+                                    font-style: italic;
+                                    font-weight: 400; 
+                                    background: @grey1;
+                                    border-bottom: 0;
+
+                                    &.day-end { border-right: 1px solid @grey3; }
+
+                                    &:last-child { border-right: 0; }
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            td {
+                                border: solid @grey2;
+                                border-width: 0 1px 1px 0;
+
+                                &.last-year { color: @grey3; }
+                                &.day-end { border-right: 1px solid @grey3; }
+                                &:last-child { border-right-width: 0; }
+                            }
+
+                            &.double-row {
+                                td {
+                                    height: 38px;
+
+                                    strong,
+                                    span { .show; }
+
+                                    span { 
+                                        color: @grey3; 
+                                        margin-top: -2px;
+                                    }
+                                }
+                            }
+
+                            &:last-child {
+                                td { border-bottom: 0; }
+                            }
+                        }
+                    }
+                }
             }
 
             &.with-graphs {
@@ -873,6 +980,55 @@ table {
                             margin: 8pt 0 1cm 0;
                         }
                     }
+                }
+            }
+
+            &.statistics {
+                overflow-x: hidden;
+
+                .statistics-headings {
+                    
+                    .pull-left;
+                    .size(100%, 160px);
+                    .show; 
+
+                    > .iScrollVerticalScrollbar { .hide; }
+
+                    li {
+                        font-size: 8pt;
+                        line-height: 14pt;
+                        padding: 0 4pt 0 8pt;
+                        margin: 0;
+                        height: 19px;
+                        background-color: @grey1;
+                        border-bottom: 1px solid @grey2;
+
+                        em { color: rgba(0,0,0,.5); }
+
+                        strong { font-weight: 600; }
+
+                        &.double-row { 
+                            line-height: 28pt; 
+                            height: 38px;
+                        }
+
+                        &.main-heading {
+                            font-weight: 600;
+                            background: @grey1;
+                            border-bottom: 0;
+
+                            &.double-row { height: 36px; }
+                        }
+
+                        &:last-child { border-bottom: 0; }
+                    }
+                }
+
+                .statistics-content {
+                    .calc-width(100, 160);
+                    .pull-left;
+
+                    > .wrapper { width: 100% !important; }
                 }
             }
         }

@@ -285,60 +285,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 			};
 
 			// scroller refresh and reset position
-			refreshScroll();
-			refreshSidebarScroll();
-
-			// need to keep a separate object to show the date stats in the footer area
-			// dirty hack to get the val() not model value
-			// delay as it cost time for ng-bindings
-			$timeout(function() {
-
-				// clear out old values
-				$scope.displayedReport = {};
-
-				// chosenReportFromCancelDate
-				// chosenReportToCancelDate
-				$scope.displayedReport.chosenReportFromCancelDate = $( '#chosenReportFromCancelDate' ).val();
-				$scope.displayedReport.chosenReportToCancelDate = $( '#chosenReportToCancelDate' ).val();
-
-				// chosenReportFromDepositDate
-				// chosenReportToDepositDate
-				$scope.displayedReport.chosenReportFromDepositDate = $( '#chosenReportFromDepositDate' ).val();
-				$scope.displayedReport.chosenReportToDepositDate = $( '#chosenReportToDepositDate' ).val();
-
-				// chosenReportFromCreateDate
-				// chosenReportToCreateDate
-				$scope.displayedReport.chosenReportFromCreateDate = $( '#chosenReportFromCreateDate' ).val();
-				$scope.displayedReport.chosenReportToCreateDate = $( '#chosenReportToCreateDate' ).val();
-
-				// chosenReportFromArrivalDate
-				// chosenReportToArrivalDate
-				$scope.displayedReport.chosenReportFromArrivalDate = $( '#chosenReportFromArrivalDate' ).val();
-				$scope.displayedReport.chosenReportToArrivalDate = $( '#chosenReportToArrivalDate' ).val();
-
-				// chosenReportFromDate
-				// chosenReportToDate
-				$scope.displayedReport.chosenReportFromDate = $( '#chosenReportFromDate' ).val();
-				$scope.displayedReport.chosenReportToDate = $( '#chosenReportToDate' ).val();
-
-				// chosenReportSingleValueDate
-				$scope.displayedReport.chosenReportSingleValueDate = $( '#chosenReportSingleValueDate' ).val();
-
-				// chosenReportFromTime
-				// chosenReportToTime
-				$scope.displayedReport.chosenReportFromTime = $( '#chosenReportFromTime option:selected' ).text() != 'From Time' ? $( '#chosenReportFromTime option:selected' ).text() : '';
-				$scope.displayedReport.chosenReportToTime = $( '#chosenReportToTime option:selected' ).text() != 'Until Time' ? $( '#chosenReportToTime option:selected' ).text() : '';
-
-				// choosenReportUser
-				$scope.displayedReport.choosenReportUser = $( '#choosenReportUser' ).val();
-
-				// chosenReportCompTaGrp
-				$scope.displayedReport.chosenReportCompTaGrp = $( '#chosenReportCompTaGrp' ).val();
-
-				// call again may be.. :(
+			$timeout(function () {
 				refreshScroll();
-			}, 100);
-
+				refreshSidebarScroll();
+			}, 200);
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;

@@ -6613,6 +6613,7 @@
                     .fill-container {
                         position: absolute;
                         top: 0;
+                        overflow: hidden;
                         .extend-height(100, 5);
                         .show;
                         .float;
@@ -7247,6 +7248,43 @@
                                 td {
                                     color: @grey3;
                                     font-style: italic;
+                                }
+                            }
+
+                            td {
+                                &.details { 
+                                    color: @grey3;
+                                    width: 480px;   
+
+                                    strong {
+                                        position: relative;
+                                        font-weight: 400;
+                                        color: @textColor;
+                                        margin-right: 10px;
+
+                                        &:after {
+                                            content: "|";
+                                            position: absolute;
+                                            top: -2px;
+                                            right: -6px;
+                                            color: @grey3;
+                                        }
+
+                                        &:last-child {
+                                            &:after { .hide; }
+                                        }
+                                    }
+
+                                    .green { color: @green; }
+                                    .red { color: @red; }
+                                    .old { 
+                                        text-decoration: line-through;
+
+                                        strong {
+                                            color: @grey3;
+                                            &:after { .show; }
+                                        }
+                                    }                                
                                 }
                             }
                         }
