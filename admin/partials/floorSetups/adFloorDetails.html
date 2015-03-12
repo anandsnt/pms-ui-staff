@@ -38,7 +38,7 @@
 			         <div class="boxes with-search">
 			            <div class="search-form">
 
-			                <button class="clear-query"  > <!--ng-class="{'visible': floorData.searchKey!=='')" Add class "visible" when search params exsist. Clicking this resets search -->
+			                <button class="clear-query" ng-class="{'visible': isSomethingEnteredInSearchBox()}" > <!-- Add class "visible" when search params exsist. Clicking this resets search -->
 			                    <span class="icons icon-clear-search">Clear query</span>
 			                </button>
 			                <input name="rooms-query" id="rooms-query" class="query" placeholder="Search by Number or Range" autocomplete="off" type="text" ng-model="floorData.searchKey"  />

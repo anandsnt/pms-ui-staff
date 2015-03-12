@@ -416,6 +416,18 @@ admin.controller('ADFloorDetailsCtrl',
     };
 
     /**
+    * To enable/disable save button
+    * @return {Boolean}    
+    */
+    $scope.isSomethingEnteredInSearchBox = function(){
+        if ($scope.floorData.searchKey && 
+            $scope.floorData.searchKey.trim() !== ''){
+            return true;
+        }
+        return false;
+    };
+
+    /**
     * To get the id for form
     * is diff for edit/add
     * @return {String}
