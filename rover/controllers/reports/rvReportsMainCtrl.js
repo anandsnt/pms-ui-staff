@@ -761,11 +761,18 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include times
 			if (chosenReport.hasTimeFilter) {
-				params['from_time'] = chosenReport.fromTime || '';
-				params['to_time']   = chosenReport.untilTime || '';
-				/**/
-				$scope.appliedFilter['fromTime'] = angular.copy( chosenReport.fromTime );
-				$scope.appliedFilter['toTime']   = angular.copy( chosenReport.untilTime );
+
+				if ( chosenReport.fromTime ) {
+					params['from_time'] = chosenReport.fromTime;
+					/**/
+					$scope.appliedFilter['fromTime'] = angular.copy( chosenReport.fromTime );
+				};
+
+				if ( chosenReport.untilTime ) {
+					params['to_time']   = chosenReport.untilTime;
+					/**/
+					$scope.appliedFilter['toTime']   = angular.copy( chosenReport.untilTime );
+				};
 			};
 
 			// include CICO filter
