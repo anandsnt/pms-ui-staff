@@ -56,7 +56,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			'MAX_ADV_BOOKING': 'grey',
 			'DEPOSIT_REQUESTED': 'grey',
 			'CANCEL_PENALTIES': 'grey',
-			'LEVELS': 'grey'
+			'LEVELS': 'grey',
+			'RATE_NOT_CONFIGURED': 'red'
 		}
 
 		// $scope.activeMode = "ROOM_RATE";
@@ -892,21 +893,41 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								if (rateConfiguration.single == null && rateConfiguration.double == null && rateConfiguration.extra_adult == null && rateConfiguration.child == null) {
 									// ("This rate has to be removed as no rates are confugured for " + key);
 									validRate = false;
+									today[rateId].restrictions.push({
+										key: 'RATE_NOT_CONFIGURED',
+										value: 'RATE NOT CONFIGURED'
+									});
 								} else {
 									// Step 2: Check for the other constraints here
 									// Step 2 A : Children
 									if (numChildren > 0 && rateConfiguration.child == null) {
 										// ("This rate has to be removed as no children are configured for " + key);
 										validRate = false;
+										today[rateId].restrictions.push({
+											key: 'RATE_NOT_CONFIGURED',
+											value: 'RATE NOT CONFIGURED'
+										});
 									} else if (numAdults == 1 && rateConfiguration.single == null) { // Step 2 B: one adult - single needs to be configured
 										// ("This rate has to be removed as no single are configured for " + key);
 										validRate = false;
+										today[rateId].restrictions.push({
+											key: 'RATE_NOT_CONFIGURED',
+											value: 'RATE NOT CONFIGURED'
+										});
 									} else if (numAdults >= 2 && rateConfiguration.double == null) { // Step 2 C: more than one adult - double needs to be configured
 										// ("This rate has to be removed as no double are configured for " + key);
 										validRate = false;
+										today[rateId].restrictions.push({
+											key: 'RATE_NOT_CONFIGURED',
+											value: 'RATE NOT CONFIGURED'
+										});
 									} else if (numAdults > 2 && rateConfiguration.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
 										// ("This rate has to be removed as no adults are configured for " + key);
 										validRate = false;
+										today[rateId].restrictions.push({
+											key: 'RATE_NOT_CONFIGURED',
+											value: 'RATE NOT CONFIGURED'
+										});
 									}
 								}
 								//[TODO]Step 3 : Check if the rates are configured for the selected restrictions
@@ -1070,14 +1091,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				/*  --Initializing the displayData.dates array for the rows in the day wise rate table
 				 *	Need NOT show the departure day in the table. [It is NOT included in any of the computations]
 				 *	Hence check if the day is a departure day before adding it to the array
-				 *	TODO: Have added a check to handle zero nights > Need to check with product team if zero nights is an accepted scenario.
+				 *	Have added a check to handle zero nights > Need to check with product team if zero nights is an accepted scenario.
 				 *	If so, will have to change computation in other places as well to handle zero nights.
 				 */
-				if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
-					$scope.displayData.dates.push({
-						str: d.date,
-						obj: new tzIndependentDate(d.date)
-					});
+				// if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
+				if (true) {
+					if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
+						$scope.displayData.dates.push({
+							str: d.date,
+							obj: new tzIndependentDate(d.date)
+						});
+					}
 
 					var for_date = d.date;
 					//step1: check for room availability in the date range
