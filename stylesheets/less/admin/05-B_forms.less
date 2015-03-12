@@ -273,9 +273,8 @@
 
             /* Has sortable movers ***/
             &.movers {
-                margin: 0;
                 margin-top: 24px;
-                #pixel-to-percent > .width(100, 580);
+                width: 80px;
 
                 .icons {
                     margin: 0 auto;
@@ -306,7 +305,7 @@
             /* Has sortable content ***/
             &.has-sortable {
                 position: relative;
-                #pixel-to-percent > .width(240, 580);
+                .calc-width(50, 40);
                 margin-right: 0;
 
                 h3 {
@@ -327,12 +326,17 @@
                     
                     li {
                         position: relative;
-                        line-height: 40px;
-                        padding: 0 10px;
+                        display: flex;
+                        align-items: center;
+                        font-size: 15px;
+                        line-height: 1.1em;
+                        padding: 5px 40px 5px 10px;
+                        min-height: 40px;
                         margin-bottom: 10px;
                         cursor: pointer;
-                        .clickable;
-                        .no-transition;
+                        background-color: @white;
+                        #border-radius > .rounded();
+                        .box-shadow();
 
                         .icon-handle {
                             position: absolute;
@@ -384,6 +388,7 @@
                     /* Is sortable ***/
                     &.sortable {
                         overflow-y: auto;
+                        -webkit-overflow-scrolling: touch;
                         height: 480px;
 
                         &.short-list { height: 240px; }
@@ -408,8 +413,6 @@
                     /* Sortable target list ***/
                     &[data-type="target"] {
                         li {
-                            font-weight: 600;
-
                             .icon-handle {
                                 background-position: 0 -397px;
                                 &.dragging { background-position: 0 -750px; }
@@ -429,6 +432,7 @@
                         background: transparent;
                         height: 480px;
                         overflow-y: auto;
+                        -webkit-overflow-scrolling: touch;
                         .box-shadow(none);
                         #border-radius > .rounded(0px);
 
@@ -442,9 +446,11 @@
                     }
                 }
 
+                &.locked { width: 50%; }
+
                 &.col3 {
                     margin-right: 40px;
-                    .calc-width(33, 25); /* %, px */
+                    .calc-width(33, 25);
 
                     &:last-child { margin-right: 0; }
                 }
