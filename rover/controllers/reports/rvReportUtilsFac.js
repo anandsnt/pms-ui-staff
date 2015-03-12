@@ -462,6 +462,115 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
+
+        // to reorder the sort by to match the report details column positon
+        factory.reOrderSortBy = function ( reportItem ) {
+
+            // for (arrival, departure) report the sort by items must be
+            // ordered in a specific way as per the design
+            // [date - name - room] > TO > [room - name - date]
+            if ( reportItem['title'] == __reportNames['ARRIVAL'] ||
+                 reportItem['title'] == __reportNames['DEPARTURE'] ) {
+                var dateSortBy = angular.copy( reportItem['sort_fields'][0] ),
+                    roomSortBy = angular.copy( reportItem['sort_fields'][2] );
+
+                dateSortBy['colspan'] = 2;
+                roomSortBy['colspan'] = 0;
+
+                reportItem['sort_fields'][0] = roomSortBy;
+                reportItem['sort_fields'][2] = dateSortBy;
+            };
+
+            // for in-house report the sort by items must be
+            // ordered in a specific way as per the design
+            // [name - room] > TO > [room - name]
+            if ( reportItem['title'] == __reportNames['IN_HOUSE_GUEST'] ) {
+                var nameSortBy = angular.copy( reportItem['sort_fields'][0] ),
+                    roomSortBy = angular.copy( reportItem['sort_fields'][1] );
+
+                nameSortBy['colspan'] = 2;
+                roomSortBy['colspan'] = 0;
+
+                reportItem['sort_fields'][0] = roomSortBy;
+                reportItem['sort_fields'][1] = nameSortBy;
+            };
+
+            // for Login and out Activity report
+            // the colspans should be adjusted
+            // the sort descriptions should be update to design
+            //    THIS MUST NOT BE CHANGED IN BACKEND
+            if ( reportItem['title'] == __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
+                reportItem['sort_fields'][0]['description'] = 'Date & Time';
+
+                reportItem['sort_fields'][0]['colspan'] = 2;
+                reportItem['sort_fields'][1]['colspan'] = 2;
+            };
+
+
+            // need to reorder the sort_by options
+            // for deposit report in the following order
+            if ( reportItem['title'] == __reportNames['DEPOSIT_REPORT'] ) {
+                var reservationSortBy = angular.copy( reportItem['sort_fields'][4] ),
+                    nameSortBy        = angular.copy( reportItem['sort_fields'][3] ),
+                    dateSortBy        = angular.copy( reportItem['sort_fields'][0] ),
+                    dueDateSortBy     = angular.copy( reportItem['sort_fields'][1] ),
+                    paidDateSortBy    = angular.copy( reportItem['sort_fields'][2] );
+
+                reportItem['sort_fields'][0] = reservationSortBy;
+                reportItem['sort_fields'][1] = nameSortBy;
+                reportItem['sort_fields'][2] = dateSortBy;
+                reportItem['sort_fields'][3] = null;
+                reportItem['sort_fields'][4] = dueDateSortBy;
+                reportItem['sort_fields'][5] = paidDateSortBy;
+            };
+
+            // need to reorder the sort_by options
+            // for Reservation by User in the following order
+            if ( reportItem['title'] == __reportNames['RESERVATIONS_BY_USER'] ) {
+                var reservationType = angular.copy( reportItem['sort_fields'][6] ),
+                    guestName       = angular.copy( reportItem['sort_fields'][3] ),
+                    arrivalDate     = angular.copy( reportItem['sort_fields'][1] ),
+                    rateAmount      = angular.copy( reportItem['sort_fields'][5] ),
+                    createdOn       = angular.copy( reportItem['sort_fields'][0] ),
+                    guranteeType    = angular.copy( reportItem['sort_fields'][2] ),
+                    overrideAmount  = angular.copy( reportItem['sort_fields'][4] );
+
+                reportItem['sort_fields'][0] = reservationType;
+                reportItem['sort_fields'][1] = guestName;
+                reportItem['sort_fields'][2] = arrivalDate;
+                reportItem['sort_fields'][3] = rateAmount;
+                reportItem['sort_fields'][4] = createdOn;
+                reportItem['sort_fields'][5] = guranteeType;
+                reportItem['sort_fields'][6] = overrideAmount;
+                reportItem['sort_fields'][7] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for daily transactions in the following order
+            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+                var chargeGroup = angular.copy( reportItem['sort_fields'][1] ),
+                    chargeCode  = angular.copy( reportItem['sort_fields'][0] ),
+                    revenue     = angular.copy( reportItem['sort_fields'][3] ),
+                    mtd         = angular.copy( reportItem['sort_fields'][2] ),
+                    ytd         = angular.copy( reportItem['sort_fields'][4] );
+
+                reportItem['sort_fields'][0] = chargeGroup;
+                reportItem['sort_fields'][1] = chargeCode;
+                reportItem['sort_fields'][2] = null;
+                reportItem['sort_fields'][3] = revenue;
+                reportItem['sort_fields'][4] = null;
+                reportItem['sort_fields'][5] = null;
+                reportItem['sort_fields'][6] = mtd;
+                reportItem['sort_fields'][7] = null;
+                reportItem['sort_fields'][8] = null;
+                reportItem['sort_fields'][9] = ytd;
+            };
+        };
+
+
+
+
+
         // to process the report sort by
         factory.processSortBy = function ( reportItem ) {
 
@@ -475,120 +584,10 @@ sntRover.factory('RVReportUtilsFac', [
 
                 });
 
-                // adding custom name ref
+                // adding custom name ref for easy access
                 reportItem['sortByOptions'] = reportItem['sort_fields'];
             };
         };
-
-
-
-
-
-
-        // to reorder the sort by to match the report details column positon
-        factory.reOrderSortBy = function ( reportItem ) {
-
-            // for (arrival, departure) report the sort by items must be
-            // ordered in a specific way as per the design
-            // [date - name - room] > TO > [room - name - date]
-            if ( reportItem['title'] == __reportNames['ARRIVAL'] ||
-                 reportItem['title'] == __reportNames['DEPARTURE'] ) {
-                var dateSortBy = angular.copy( reportItem.sortByOptions[0] ),
-                    roomSortBy = angular.copy( reportItem.sortByOptions[2] );
-
-                dateSortBy['colspan'] = 2;
-                roomSortBy['colspan'] = 0;
-
-                reportItem.sortByOptions[0] = roomSortBy;
-                reportItem.sortByOptions[2] = dateSortBy;
-            };
-
-            // for in-house report the sort by items must be
-            // ordered in a specific way as per the design
-            // [name - room] > TO > [room - name]
-            if ( reportItem['title'] == __reportNames['IN_HOUSE_GUEST'] ) {
-                var nameSortBy = angular.copy( reportItem.sortByOptions[0] ),
-                    roomSortBy = angular.copy( reportItem.sortByOptions[1] );
-
-                nameSortBy['colspan'] = 2;
-                roomSortBy['colspan'] = 0;
-
-                reportItem.sortByOptions[0] = roomSortBy;
-                reportItem.sortByOptions[1] = nameSortBy;
-            };
-
-            // for Login and out Activity report
-            // the colspans should be adjusted
-            // the sort descriptions should be update to design
-            //    THIS MUST NOT BE CHANGED IN BACKEND
-            if ( reportItem['title'] == __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
-                reportItem.sortByOptions[0]['description'] = 'Date & Time';
-
-                reportItem.sortByOptions[0]['colspan'] = 2;
-                reportItem.sortByOptions[1]['colspan'] = 2;
-            };
-
-
-            // need to reorder the sort_by options
-            // for deposit report in the following order
-            if ( reportItem['title'] == __reportNames['DEPOSIT_REPORT'] ) {
-                var reservationSortBy = angular.copy( reportItem.sortByOptions[4] ),
-                    nameSortBy        = angular.copy( reportItem.sortByOptions[3] ),
-                    dateSortBy        = angular.copy( reportItem.sortByOptions[0] ),
-                    dueDateSortBy     = angular.copy( reportItem.sortByOptions[1] ),
-                    paidDateSortBy    = angular.copy( reportItem.sortByOptions[2] );
-
-                reportItem.sortByOptions[0] = reservationSortBy;
-                reportItem.sortByOptions[1] = nameSortBy;
-                reportItem.sortByOptions[2] = dateSortBy;
-                reportItem.sortByOptions[3] = null;
-                reportItem.sortByOptions[4] = dueDateSortBy;
-                reportItem.sortByOptions[5] = paidDateSortBy;
-            };
-
-            // need to reorder the sort_by options
-            // for Reservation by User in the following order
-            if ( reportItem['title'] == __reportNames['RESERVATIONS_BY_USER'] ) {
-                var reservationType = angular.copy( reportItem.sortByOptions[6] ),
-                    guestName       = angular.copy( reportItem.sortByOptions[3] ),
-                    arrivalDate     = angular.copy( reportItem.sortByOptions[1] ),
-                    rateAmount      = angular.copy( reportItem.sortByOptions[5] ),
-                    createdOn       = angular.copy( reportItem.sortByOptions[0] ),
-                    guranteeType    = angular.copy( reportItem.sortByOptions[2] ),
-                    overrideAmount  = angular.copy( reportItem.sortByOptions[4] );
-
-                reportItem.sortByOptions[0] = reservationType;
-                reportItem.sortByOptions[1] = guestName;
-                reportItem.sortByOptions[2] = arrivalDate;
-                reportItem.sortByOptions[3] = rateAmount;
-                reportItem.sortByOptions[4] = createdOn;
-                reportItem.sortByOptions[5] = guranteeType;
-                reportItem.sortByOptions[6] = overrideAmount;
-                reportItem.sortByOptions[7] = null;
-            };
-
-            // need to reorder the sort_by options
-            // for daily transactions in the following order
-            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
-                var chargeGroup = angular.copy( reportItem.sortByOptions[1] ),
-                    chargeCode  = angular.copy( reportItem.sortByOptions[0] ),
-                    revenue     = angular.copy( reportItem.sortByOptions[3] ),
-                    mtd         = angular.copy( reportItem.sortByOptions[2] ),
-                    ytd         = angular.copy( reportItem.sortByOptions[4] );
-
-                reportItem.sortByOptions[0] = chargeGroup;
-                reportItem.sortByOptions[1] = chargeCode;
-                reportItem.sortByOptions[2] = null;
-                reportItem.sortByOptions[3] = revenue;
-                reportItem.sortByOptions[4] = null;
-                reportItem.sortByOptions[5] = null;
-                reportItem.sortByOptions[6] = mtd;
-                reportItem.sortByOptions[7] = null;
-                reportItem.sortByOptions[8] = null;
-                reportItem.sortByOptions[9] = ytd;
-            };
-        };
-
 
 
 
