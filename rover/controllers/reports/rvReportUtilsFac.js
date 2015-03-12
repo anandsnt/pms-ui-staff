@@ -238,7 +238,7 @@ sntRover.factory('RVReportUtilsFac', [
                 };
 
                 // check for "by single date" filter and keep a ref to that item
-                if ( filter.value === 'BY_SINGLE_DATE' ) {
+                if ( filter.value === 'SINGLE_DATE' ) {
                     reportItem['hasSingleDateFilter'] = filter;
                 };
 

@@ -150,6 +150,7 @@
 
         <!-- Edit dates -->
         <div class="reservation-dates" ng-show="showEditDates">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="check-data has-datepicker">
                 <label for="check-in-date" class="guest-status small-icon check-in">Arrival Date</label>
                 <!-- <input id="" type="text" class="datepicker" value="{Arrival Date}" readonly /> -->
@@ -248,6 +249,9 @@
 
             <!-- Notes -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'" ng-controller="rvReservationCardNotesController"></div>
+
+            <!-- Activity Log -->
+            <div ng-include="'/assets/partials/reservationCard/rvReservationCardActivityLog.html'" ng-controller="rvReservationCardActivityLogCtrl"></div>
         </div>
     </div>
 

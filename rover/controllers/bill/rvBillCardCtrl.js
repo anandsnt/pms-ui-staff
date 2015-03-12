@@ -130,7 +130,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.hasPermissionToChangeCharges = function() {
-		return rvPermissionSrv.getPermissionValue ('EDIT_SPLITT_MOVE_DELETE_CHARGE');
+		return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
 	};
 
 

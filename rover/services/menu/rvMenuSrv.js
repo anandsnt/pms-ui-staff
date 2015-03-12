@@ -76,21 +76,37 @@ sntRover.service('rvMenuSrv',
     	//deep copying the obeject before proceeding
     	menuList = JSON.parse(JSON.stringify(menuList));
 
-    	var menuToReturn = [];
+    	var menuToReturn = [],  
+    		subMenuCount,
+    		subMenuVisibleCount, 
+    		hasSubMenu = false;
+
     	//we are processing on the menu list we have
 		_.each (menuList, function(menuItem) {
 			//if the menu is hi
 			isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
 			if(isMenuItemVisible) {
-				menuToReturn.push (menuItem);
-				
+				subMenuCount = menuItem.submenu ? menuItem.submenu.length : 0;
+				hasSubMenu = (subMenuCount > 0) ? true : false;
+				subMenuVisibleCount = 0;
+
 				//looping through submenus
-				_.each (menuItem.submenu, function (subMenuItem, index){
-					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);
-					if(!isMenuItemVisible) {
-						menuItem.submenu.splice (index, 1);
-					}					
-				});				
+				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem){
+					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);	
+					
+					if (isMenuItemVisible) subMenuVisibleCount++;
+					return isMenuItemVisible;									
+				});
+
+				// if it has submenu & none of them are visible we will not show that menu
+				if(hasSubMenu && subMenuVisibleCount != 0){
+					menuToReturn.push (menuItem);
+				}
+
+				//if it has no submenu, we will just push them
+				if(!hasSubMenu) {
+					menuToReturn.push (menuItem);
+				}
 			}
 		});
 
@@ -365,7 +381,6 @@ sntRover.service('rvMenuSrv',
 			_.each(permissions, function(item) {
 				collectivePermissionValue = collectivePermissionValue * rvPermissionSrv.getPermissionValue(item);
 			});
-
 			return collectivePermissionValue;
 		}
 		return true;
@@ -411,7 +426,7 @@ sntRover.service('rvMenuSrv',
 			//we are hiding conversations for now
 			case 'conversations':
 				returnValue = false;
-				break;
+				break;		
 
 			case 'reports':		
 				// we are hiding the reports menu if it is a floor & maintanance staff	in connected/standalon	
