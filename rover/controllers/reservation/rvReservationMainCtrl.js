@@ -582,12 +582,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
         };
 
-
         $scope.computeTotalStayCost = function(reset) {
             // TODO : Loop thru all rooms
             var roomIndex = 0;
-            var currentRoom = $scope.reservationData.rooms[roomIndex];
-            console.log(currentRoom);
+            var currentRoom = $scope.reservationData.rooms[roomIndex];         
             //compute stay cost for the current room
             var adults = currentRoom.numAdults;
             var children = currentRoom.numChildren;
@@ -831,8 +829,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll); // CICO-10161
 
                 //  CICO-9576
-
+                if(!addon.is_inclusive){
                 addOnCumulative += parseInt(finalRate);
+                }
                 addon.effectivePrice = finalRate;
             });
 
