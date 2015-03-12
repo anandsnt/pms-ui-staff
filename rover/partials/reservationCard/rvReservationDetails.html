@@ -3,7 +3,7 @@
     <!-- Reservation header -->
     <div class="reservation-header" ng-init="showEditDates = false">
         <div class="actions">
-            <a ng-show="!reservationData.reservation_card.is_hourly_reservation && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="showEditDates = !showEditDates">
+            <a ng-show="isStandAlone && !reservationData.reservation_card.is_hourly_reservation && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="showEditDates = !showEditDates">
                 <span class="date">
                                 <span class="guest-status small-icon check-in">check-in</span>
                 <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
@@ -16,12 +16,12 @@
                 </span>
             </a>
 
-            <span ng-if=" reservationData.reservation_card.is_hourly_reservation || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="date"><span class="guest-status small-icon check-in">check-in</span>
+            <span ng-if="!isStandAlone || reservationData.reservation_card.is_hourly_reservation || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="date"><span class="guest-status small-icon check-in">check-in</span>
             <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
             <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span> {{reservationData.reservation_card.arrival_date|date:dateFormat}}
             <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.arrival_time}} </span>
             </span>
-            <span ng-if=" reservationData.reservation_card.is_hourly_reservation || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="date"><span class="guest-status small-icon check-out">check-out</span>
+            <span ng-if="!isStandAlone || reservationData.reservation_card.is_hourly_reservation || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="date"><span class="guest-status small-icon check-out">check-out</span>
             <span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
             <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> {{reservationData.reservation_card.departure_date|date:dateFormat}}
             <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.departure_time}} </span>
@@ -150,6 +150,7 @@
 
         <!-- Edit dates -->
         <div class="reservation-dates" ng-show="showEditDates">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="check-data has-datepicker">
                 <label for="check-in-date" class="guest-status small-icon check-in">Arrival Date</label>
                 <!-- <input id="" type="text" class="datepicker" value="{Arrival Date}" readonly /> -->
@@ -248,6 +249,9 @@
 
             <!-- Notes -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'" ng-controller="rvReservationCardNotesController"></div>
+
+            <!-- Activity Log -->
+            <!-- <div ng-include="'/assets/partials/reservationCard/rvReservationCardActivityLog.html'" ng-controller="rvReservationCardActivityLogCtrl"></div> -->
         </div>
     </div>
 

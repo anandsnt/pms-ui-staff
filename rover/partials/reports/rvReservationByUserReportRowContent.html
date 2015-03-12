@@ -14,12 +14,12 @@
         <span>{{ each.arrival_time }}</span>
     </time>
     <div ng-if="each.total_hours" class="hours">{{ each.total_hours }}</div>
-    <div ng-if="each.guarantee_type" class="data guarantee">{{ each.guarantee_type }} Hold</div>
+    <div ng-if="each.guarantee_type" class="data guarantee">{{ each.guarantee_type }}</div>
 </td>
 <td ng-if="each.isReport">
     <span class="data room">{{ each.room_type }}</span>
-    <span class="data rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
-    <span ng-if="true" class="data status">{{ currencySymbol }}{{ each.rate_adjustment }} Adjusted</span>
+    <span class="data rate">{{ each.rate_name }} / <strong>{{ each.rate || 0 | currency:currencySymbol:2 }} ADR</strong></span>
+    <span ng-if="each.rate_adjustment" class="data status">{{ each.rate_adjustment | currency:currencySymbol:2 }} Adjusted</span>
 </td>
 <td>
     <span class="data status">{{ each.create_date | date : dateFormat }}</span>

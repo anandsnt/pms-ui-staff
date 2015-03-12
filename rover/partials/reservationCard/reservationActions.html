@@ -1,8 +1,12 @@
 <div class="reservation-actions" ng-controller="reservationActionsController">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Resevation is checking-in -->
-		<a class="button" ng-class="{'green':reservationData.reservation_card.room_number.length>0 ,'grey':reservationData.reservation_card.room_number.length === 0}"ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
+		<a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
 			Check in
+		</a>
+
+		<a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
+			Check out
 		</a>
 
 		<!-- Show balance -->
@@ -32,10 +36,7 @@
 		<button type="button" ng-click="putInQueue(reservationData.reservation_card.reservation_id)" class="button staycard-button icon-queue" ng-show="showPutInQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Put in Queue</button>
 		
 		<button type="button" ng-click="removeFromQueue(reservationData.reservation_card.reservation_id)" class="button staycard-button icon-queue in" ng-show="showRemoveFromQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Remove from Queue</button>
-		
-		<a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
-			Check out
-		</a>
+	
 		
     	<!-- Reservation is checking out -->
 		

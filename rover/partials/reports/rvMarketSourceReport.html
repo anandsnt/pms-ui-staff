@@ -29,6 +29,20 @@
                         <span class="title">Total</span>
                         <span class="count">{{sourcesValuesTotal}}</span>
                     </li>
+                    <!-- Bottom filters -->
+                    <li class="totals">
+                        <span class="pull-left">
+                            Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
+                            <!-- chosen options -->
+                    		<label ng-if="appliedFilter.options.length">
+                    			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
+                    		</label>
+                        </span>
+                        <span class="pull-right">
+                            Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
+                        </span>
+                    </li>
                 </ul>
                 <div class="graph-chart">
                     <div class="chart">
@@ -93,6 +107,19 @@
                             </li>
                         </ul>
                     </div>
+                    <li class="totals">
+                        <span class="pull-left">
+                            Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
+                            <!-- chosen options -->
+                    		<label ng-if="appliedFilter.options.length">
+                    			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
+                    		</label>
+                        </span>
+                        <span class="pull-right">
+                            Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
+                        </span>
+                    </li>
                 </div>
             </div>
 
@@ -113,6 +140,20 @@
                     <li class="footer">
                         <span class="title">Total</span>
                         <span class="count">{{marketsValuesTotal}}</span>
+                    </li>
+                    <!-- Bottom filters -->
+                    <li class="totals">
+                        <span class="pull-left">
+                            Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
+                            <!-- chosen options -->
+                    		<label ng-if="appliedFilter.options.length">
+                    			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
+                    		</label>
+                        </span>
+                        <span class="pull-right">
+                            Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
+                        </span>
                     </li>
                 </ul>
                 <div class="graph-chart">
@@ -178,34 +219,21 @@
                             </li>
                         </ul>
                     </div>
+                    <li class="totals">
+                        <span class="pull-left">
+                            Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br />
+                            <!-- chosen options -->
+                    		<label ng-if="appliedFilter.options.length">
+                    			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
+                    		</label>
+                        </span>
+                        <span class="pull-right">
+                            Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
+                        </span>
+                    </li>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="report-details">
-        <div class="report-content">
-            <table class="guest-reports">
-                <tfoot>
-                    <tr>
-                        <td colspan="3">
-                            <!-- booking date range -->
-                            <div ng-if="chosenReport.hasDateFilter">
-                                <label>Booking Dates - </label>
-                                From: <span>{{ displayedReport.chosenReportFromDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToDate | date:dateFormat }}</span>
-                            </div>
-                            <!-- arrival date range -->
-                            <div ng-if="chosenReport.hasArrivalDateFilter">
-                                <label>Arrival Dates - </label>
-                                From: <span>{{ displayedReport.chosenReportFromArrivalDate | date:dateFormat }}</span> To: <span>{{ displayedReport.chosenReportToArrivalDate | date:dateFormat }}</span>
-                            </div>
-                        </td>
-                        <td colspan="3">
-                            Business date: <span>{{ userInfo.business_date | date:dateFormat }}</span>
-                            <br> User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
         </div>
     </div>
 </div>
