@@ -944,7 +944,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MIN_STAY_LENGTH',
-														value: 'MIN. LENGTH OF STAY:' + restriction.days + ' DAYS'
+														value: 'MIN. LENGTH OF STAY: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -953,7 +953,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MAX_STAY_LENGTH',
-														value: 'MAX. LENGTH OF STAY:' + restriction.days + ' DAYS'
+														value: 'MAX. LENGTH OF STAY: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -962,7 +962,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MIN_STAY_THROUGH',
-														value: 'MIN. STAY THROUGH:' + restriction.days + ' DAYS'
+														value: 'MIN. STAY THROUGH: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -971,7 +971,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MIN_ADV_BOOKING',
-														value: 'MIN. ADVANCE BOOKING:' + restriction.days + ' DAYS'
+														value: 'MIN. ADVANCE BOOKING: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -980,7 +980,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MAX_ADV_BOOKING',
-														value: 'MAX. ADVANCE BOOKING:' + restriction.days + ' DAYS'
+														value: 'MAX. ADVANCE BOOKING: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
