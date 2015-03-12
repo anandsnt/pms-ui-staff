@@ -53,7 +53,6 @@
                     <a class="has-arrow toggle" ng-class="{active: isVisibleRoom}" ng-click="isVisibleRoom = !isVisibleRoom; refreshScroll()">
                         <div class="data">
                             <h2>{{room.name}}</h2>
-
                             <span class="recommended" 
                                 ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" 
                                 ng-show="displayData.roomTypes.length > 0 && $index > 0 && upsell > 0">
@@ -61,16 +60,23 @@
                             </span>
                             <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
                             <span class="count red" 
-                                ng-show="(stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[$scope.stateCheck.selectedStayDate][roomAvailability[room.id].defaultRate].availabilityCount) || getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 5">
-                                {{(stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[$scope.stateCheck.selectedStayDate][roomAvailability[room.id].defaultRate].availabilityCount) || getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
+                                ng-show="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount < 5">
+                                {{roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount}} room(s) left
                             </span>
-
+                            <span class="count red" 
+                                ng-show="!stateCheck.stayDatesMode && getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 5">
+                                {{getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
+                            </span>
                             <span class="count green" 
-                                ng-hide="(stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[$scope.stateCheck.selectedStayDate][roomAvailability[room.id].defaultRate].availabilityCount) || getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 5">
-                                {{(stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[$scope.stateCheck.selectedStayDate][roomAvailability[room.id].defaultRate].availabilityCount) || getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
+                                ng-show="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount > 4">
+                                {{roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount}} room(s) left
                             </span>
-
+                            <span class="count green" 
+                                ng-show="!stateCheck.stayDatesMode && getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) > 4">
+                                {{getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
+                            </span>
                         </div>
+
                         <div class="book-rate" ng-class="{hidden: isVisibleRoom}">
                             <h4 ng-hide="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_BEST_RATE</h4>
                             <h4 ng-show="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_COR_RATE</h4>
@@ -254,12 +260,12 @@
                             </div>
 
                             <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
-                            <span class="count red" ng-show="(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[$scope.stateCheck.selectedStayDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id) < 5">
-                                {{(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[$scope.stateCheck.selectedStayDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
+                            <span class="count red" ng-show="(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id) < 5">
+                                {{(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
                             </span>
 
-                            <span class="count green" ng-hide="(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[$scope.stateCheck.selectedStayDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id) < 5">
-                                {{(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[$scope.stateCheck.selectedStayDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
+                            <span class="count green" ng-hide="(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id) < 5">
+                                {{(stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount) || getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
                             </span>
 
                             <div class="price" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">
