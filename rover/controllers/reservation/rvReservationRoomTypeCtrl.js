@@ -895,7 +895,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 									validRate = false;
 									today[rateId].restrictions.push({
 										key: 'RATE_NOT_CONFIGURED',
-										value: 'RATE NOT CONFIGURED'
+										value: ''
 									});
 								} else {
 									// Step 2: Check for the other constraints here
@@ -905,28 +905,28 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 										validRate = false;
 										today[rateId].restrictions.push({
 											key: 'RATE_NOT_CONFIGURED',
-											value: 'RATE NOT CONFIGURED'
+											value: ''
 										});
 									} else if (numAdults == 1 && rateConfiguration.single == null) { // Step 2 B: one adult - single needs to be configured
 										// ("This rate has to be removed as no single are configured for " + key);
 										validRate = false;
 										today[rateId].restrictions.push({
 											key: 'RATE_NOT_CONFIGURED',
-											value: 'RATE NOT CONFIGURED'
+											value: ''
 										});
 									} else if (numAdults >= 2 && rateConfiguration.double == null) { // Step 2 C: more than one adult - double needs to be configured
 										// ("This rate has to be removed as no double are configured for " + key);
 										validRate = false;
 										today[rateId].restrictions.push({
 											key: 'RATE_NOT_CONFIGURED',
-											value: 'RATE NOT CONFIGURED'
+											value: ''
 										});
 									} else if (numAdults > 2 && rateConfiguration.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
 										// ("This rate has to be removed as no adults are configured for " + key);
 										validRate = false;
 										today[rateId].restrictions.push({
 											key: 'RATE_NOT_CONFIGURED',
-											value: 'RATE NOT CONFIGURED'
+											value: ''
 										});
 									}
 								}
@@ -1094,72 +1094,73 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				 *	Have added a check to handle zero nights > Need to check with product team if zero nights is an accepted scenario.
 				 *	If so, will have to change computation in other places as well to handle zero nights.
 				 */
-				// if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
-				if (true) {
-					if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
-						$scope.displayData.dates.push({
-							str: d.date,
-							obj: new tzIndependentDate(d.date)
-						});
-					}
 
-					var for_date = d.date;
-					//step1: check for room availability in the date range
-					$(d.room_types).each(function(i, d) {
-						if (typeof rooms[d.id] == "undefined") {
-							rooms[d.id] = {
-								id: d.id,
-								name: roomDetails[d.id].name,
-								level: roomDetails[d.id].level,
-								availability: true,
-								rates: [],
-								ratedetails: {},
-								total: [],
-								defaultRate: 0,
-								averagePerNight: 0,
-								description: roomDetails[d.id].description
-							};
-						}
-						//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
-						if (d.availability < 1) {
-							// rooms[d.id].availability = false;
-						}
+				if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
+					$scope.displayData.dates.push({
+						str: d.date,
+						obj: new tzIndependentDate(d.date)
 					});
+				}
 
-					//step2: extract rooms with rate information
-					$(d.rates).each(function(i, d) {
-						var rate_id = d.id;
+				var for_date = d.date;
+				//step1: check for room availability in the date range
+				$(d.room_types).each(function(i, d) {
+					if (typeof rooms[d.id] == "undefined") {
+						rooms[d.id] = {
+							id: d.id,
+							name: roomDetails[d.id].name,
+							level: roomDetails[d.id].level,
+							availability: true,
+							rates: [],
+							ratedetails: {},
+							total: [],
+							defaultRate: 0,
+							averagePerNight: 0,
+							description: roomDetails[d.id].description
+						};
+					}
+					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
+					if (d.availability < 1) {
+						// rooms[d.id].availability = false;
+					}
+				});
 
-						var taxes = d.taxes;
+				//step2: extract rooms with rate information
+				$(d.rates).each(function(i, d) {
+					var rate_id = d.id;
 
-						$(d.room_rates).each(function(i, d) {
-							if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
-								rooms[d.room_type_id].rates.push(rate_id);
-							}
-							if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
-								rooms[d.room_type_id].ratedetails[for_date] = [];
-							}
-							rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
-								rate_id: rate_id,
-								rate: $scope.calculateRate(d, for_date),
-								taxes: taxes,
-								rateBreakUp: d,
-								day: new tzIndependentDate(for_date),
-								availabilityCount: d.availability
-							};
+					var taxes = d.taxes;
 
-							//calculate tax for the current day
-							if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
-								var taxApplied = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
-								rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
-								rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(taxApplied.exclusive);
-							} else {
-								rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = 0;
-								rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = 0;
-							}
+					$(d.room_rates).each(function(i, d) {
+						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
+							rooms[d.room_type_id].rates.push(rate_id);
+						}
+						if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
+							rooms[d.room_type_id].ratedetails[for_date] = [];
+						}
+						rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
+							rate_id: rate_id,
+							rate: $scope.calculateRate(d, for_date),
+							taxes: taxes,
+							rateBreakUp: d,
+							day: new tzIndependentDate(for_date),
+							availabilityCount: d.availability
+						};
 
-							rooms[d.room_type_id].ratedetails[for_date][rate_id].total = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive) + parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate);
+						//calculate tax for the current day
+						if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
+							var taxApplied = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(taxApplied.exclusive);
+						} else {
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = 0;
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = 0;
+						}
 
+						rooms[d.room_type_id].ratedetails[for_date][rate_id].total = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive) + parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate);
+
+
+						if (for_date == $scope.reservationData.arrivalDate || for_date != $scope.reservationData.departureDate) {
 							//TODO : compute total
 							if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
 								rooms[d.room_type_id].total[rate_id] = {
@@ -1182,9 +1183,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							// Handle single days for calculating rates
 							if (stayLength == 0) stayLength = 1;
 							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].totalRate / stayLength).toFixed(2);
-						})
+						}
 					})
-				}
+				})
 			});
 
 			rooms = restrictionCheck(rooms);
