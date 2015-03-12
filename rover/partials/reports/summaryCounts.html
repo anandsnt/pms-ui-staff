@@ -1,28 +1,38 @@
 <!-- Arrival -->
-<li ng-if="chosenReport.title == 'Arrival'">Total Arrival Rooms<span>{{ summaryCounts.arrivals }}</span></li>
-<li ng-if="chosenReport.title == 'Arrival'">ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
+<ul ng-if="isThisReport('ARRIVAL')" class="totals">
+    <li>Total Arrival Rooms<span>{{ summaryCounts.arrivals }}</span></li>
+    <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
+</ul>
 
 <!-- In-House Guests -->
-<li ng-if="chosenReport.title == 'In-House Guests'">Total Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
-<li ng-if="chosenReport.title == 'In-House Guests'">Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>
-<li ng-if="chosenReport.title == 'In-House Guests'">Total Balance<span class="green">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span></li>
+<ul ng-if="isThisReport('IN_HOUSE_GUEST')" class="totals">
+    <li>Total Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
+    <li>Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>
+    <li>Total Balance<span class="green">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span></li>
+</ul>
 
 <!-- Deposit Report -->
-<li ng-if="chosenReport.title == 'Deposit Report'">Due<span>{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></li>
-<li ng-if="chosenReport.title == 'Deposit Report'">Paid<span>{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
-<li ng-if="chosenReport.title == 'Deposit Report'">Past Due<span class="green">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
+<ul ng-if="isThisReport('DEPOSIT_REPORT')" class="totals">
+    <li>Due<span>{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></li>
+    <li>Paid<span>{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
+    <li>Past Due<span class="green">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
+</ul>
 
 <!-- Reservations By User -->
-<li ng-if="chosenReport.title == 'Reservations By User'">User<span>{{ summaryCounts.total_users }}</span></li>
-<li ng-if="chosenReport.title == 'Reservations By User'">New<span>{{ summaryCounts.total_new }}</span></li>
-<li ng-if="chosenReport.title == 'Reservations By User'">Cancel<span>{{ summaryCounts.total_cancel }}</span></li>
-<li ng-if="chosenReport.title == 'Reservations By User'">Overrides<span>{{ summaryCounts.total_rate_overrides }}</span></li>
-<li ng-if="chosenReport.title == 'Reservations By User'">Variance<span>{{ summaryCounts.total_rate_variance | currency:currencySymbol:2 }}</span></li>
-<li ng-if="chosenReport.title == 'Reservations By User'">Total Revenue<span class="green">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
+<ul ng-if="isThisReport('RESERVATIONS_BY_USER')" class="totals">
+    <li>User<span>{{ summaryCounts.total_users }}</span></li>
+    <li>New<span>{{ summaryCounts.total_new }}</span></li>
+    <li>Cancel<span>{{ summaryCounts.total_cancel }}</span></li>
+    <li>Overrides<span>{{ summaryCounts.total_rate_overrides }}</span></li>
+    <li>Variance<span>{{ summaryCounts.total_rate_variance | currency:currencySymbol:2 }}</span></li>
+    <li>Total Revenue<span class="green">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
+</ul>
 
-<!-- Reservations By User -->
-<li ng-if="chosenReport.title == 'Daily Transactions'">Date<span>{{ summaryCounts.date | date : dateFormat }}</span></li>
-<li ng-if="chosenReport.title == 'Daily Transactions'">Transactions<span>{{ summaryCounts.grand_total_transactions }}</span></li>
-<li ng-if="chosenReport.title == 'Daily Transactions'">Revenue<span class="green">{{ summaryCounts.grand_total_revenue | currency:currencySymbol:2 }}</span></li>
-<li ng-if="chosenReport.title == 'Daily Transactions'">MTD<span>{{ summaryCounts.grand_total_mtd | currency:currencySymbol:2 }}</span></li>
-<li ng-if="chosenReport.title == 'Daily Transactions'">YTD<span>{{ summaryCounts.grand_total_ytd | currency:currencySymbol:2 }}</span></li>
+<!-- Daily Transactions -->
+<ul ng-if="isThisReport('DAILY_TRANSACTIONS')" class="totals">
+    <li>Date<span>{{ summaryCounts.date | date : dateFormat }}</span></li>
+    <li>Transactions<span>{{ summaryCounts.grand_total_transactions }}</span></li>
+    <li>Revenue<span class="green">{{ summaryCounts.grand_total_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>MTD<span>{{ summaryCounts.grand_total_mtd | currency:currencySymbol:2 }}</span></li>
+    <li>YTD<span>{{ summaryCounts.grand_total_ytd | currency:currencySymbol:2 }}</span></li>
+</ul>

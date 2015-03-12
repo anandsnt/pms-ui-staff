@@ -43,9 +43,35 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 
 		$stateProvider.state('admin.floorsetups', {
-			templateUrl: '/assets/partials/floorSetups/adFloorSetupList.html',
-			controller: 'ADFloorSetupCtrl',
-			url : '/floorsetups'
+			templateUrl: '/assets/partials/floorSetups/adFloors.html',
+			controller: 'ADFloorsListCtrl',
+			url : '/floors'
+		});
+
+		$stateProvider.state('admin.addFloor', {
+			templateUrl: '/assets/partials/floorSetups/adFloorDetails.html',
+			controller: 'ADFloorDetailsCtrl',
+			url : '/floors/add',
+			resolve: {
+				floorDetails: ['ADFloorSetupSrv', '$stateParams', 
+					function(ADFloorSetupSrv, $stateParams) {
+						return [];
+				}]
+			}
+		});
+		$stateProvider.state('admin.editFloor', {
+			templateUrl: '/assets/partials/floorSetups/adFloorDetails.html',
+			controller: 'ADFloorDetailsCtrl',
+			url : '/floors/:id',
+			resolve: {
+				floorDetails: ['ADFloorSetupSrv', '$stateParams', 
+					function(ADFloorSetupSrv, $stateParams) {
+						var params = {
+							floorID: $stateParams.id
+						}
+						return ADFloorSetupSrv.getFloorDetails(params);
+				}]
+			}			
 		});
 
 		$stateProvider.state('admin.billingGroups', {
