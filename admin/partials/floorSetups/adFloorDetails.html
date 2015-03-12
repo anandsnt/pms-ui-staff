@@ -2,9 +2,12 @@
 	<header class="content-title">
 	    <h2 ng-show="!isAddMode">Edit Floor <span>{{floorData.floor_number_old}}</span></h2>
 	    <a ng-click ="back()" class="action back">Back</a>
-	    <button ng-show="!isAddMode" type="button" class="action remove">Delete Floor</button>
+	    <button ng-show="!isAddMode" type="button" class="action remove" ng-click="deleteFloor()">
+	    	Delete Floor
+	    </button>
 	</header>
 	<section class="content-scroll">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<form id="edit-floor" name="edit-floor" class="form">
 			<fieldset class="holder full-width">
 
@@ -53,19 +56,10 @@
 						<ul class="sortable" data-type="source" 
 							
 							data-drop="true" 
-							style="overflow-y: scroll !important; min-height: 100px;"
 
-							jqyoui-droppable="{multiple:true}" 
+							jqyoui-droppable="{multiple:true, onDrop: 'droppedOnUnAssignedRoomList'}" 
 							data-jqyoui-options="{accept:'.assigned-rooms'}" ng-model="unassignedRooms">
 
-			<!-- 					<div ng-show="!isShowMode">
-			                Find Rooms<br>
-			                Search by number or range, eg:"10" or "40-60"<br>
-			                Search by multiple numbers or ranges, eg:"20,40-60"<br>
-			                <button type="button" id="showAllUnAssignedRooms" class="" ng-click="showAllUnassignedRooms()" translate>
-						    SHOW ALL UNASSIGNED ROOMS
-					        </button>
-					        </div> -->
 							<li class="non-assigned-room" 
 								ng-repeat="room in unassignedRooms"
 
@@ -105,9 +99,8 @@
 					<ul class="sortable" data-type="target" 					
 						
 						data-drop="true" 
-						style="overflow-y: scroll !important;min-height: 100px;" 
 
-						jqyoui-droppable="{multiple:true}" 
+						jqyoui-droppable="{multiple:true, onDrop: 'droppedOnAssignedRoomList'}" 
 						data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms">
 
 						<li class="assigned-rooms" 
@@ -119,7 +112,7 @@
 							data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
 							ng-model="assignedRooms"
 							ng-click = "assignedRoomSelected(room)"
-							ng-class = '{selected: selectedUnAssignedRoomIndex === $index}'>
+							ng-class = "{'selected': amInSelectedAssignedRooms(room)}">
 
 							{{room.room_number}}
 
