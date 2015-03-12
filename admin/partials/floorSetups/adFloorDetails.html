@@ -1,14 +1,15 @@
 <div id="wrapper" class="content current" ng-click="clearErrorMessage()" >
 	<header class="content-title">
 	    <h2 ng-show="!isAddMode">Edit Floor <span>{{floorData.floor_number_old}}</span></h2>
-	    <a ng-click ="back()" class="action back">Back</a>
+	    <h2 ng-show="isAddMode">New Floor</h2>
+	    <a ng-click ="back()" class="action back">Back to Floors</a>
 	    <button ng-show="!isAddMode" type="button" class="action remove" ng-click="deleteFloor()">
 	    	Delete Floor
 	    </button>
 	</header>
 	<section class="content-scroll">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<form id="edit-floor" name="edit-floor" class="form">
+		<form id="{{getFormIdForMe()}}" name="{{getFormNameForMe()}}" class="form">
 			<fieldset class="holder full-width">
 
 				<div class="form-title">
@@ -56,7 +57,7 @@
 						<ul class="sortable" data-type="source" 
 							
 							data-drop="true" 
-
+							style ="min-height: 360px;"
 							jqyoui-droppable="{multiple:true, onDrop: 'droppedOnUnAssignedRoomList'}" 
 							data-jqyoui-options="{accept:'.assigned-rooms'}" ng-model="unassignedRooms">
 
@@ -99,6 +100,7 @@
 					<ul class="sortable" data-type="target" 					
 						
 						data-drop="true" 
+						style ="min-height: 360px;"
 
 						jqyoui-droppable="{multiple:true, onDrop: 'droppedOnAssignedRoomList'}" 
 						data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms">
@@ -136,7 +138,10 @@
 				<button type="button" id="cancel" class="button blank" ng-click="clickCancel()" translate>
 					CANCEL
 				</button>
-				<button type="button" like-type="common" id="update" class="button  green" ng-click="saveFloor()" translate>
+				<button type="button" like-type="common" id="update" class="button " 
+				ng-click="saveFloor()" ng-disabled="shouldDisableSaveButton()"
+				ng-class="{'green': !shouldDisableSaveButton(), 'grey': shouldDisableSaveButton()}"
+				translate>
 					SAVE_CHANGES
 				</button>
 			</div>

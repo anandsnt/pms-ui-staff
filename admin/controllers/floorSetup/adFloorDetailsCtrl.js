@@ -403,7 +403,35 @@ admin.controller('ADFloorDetailsCtrl',
         $scope.callAPI(ADFloorSetupSrv.deleteFloor, options);
     };
 
+    /**
+    * To enable/disable save button
+    * @return {Boolean}    
+    */
+    $scope.shouldDisableSaveButton = function(){
+        if ($scope.floorData.floor_number && 
+            $scope.floorData.floor_number.trim() !== ''){
+            return false;
+        }
+        return true;
+    };
 
+    /**
+    * To get the id for form
+    * is diff for edit/add
+    * @return {String}
+    */
+    $scope.getFormIdForMe = function(){
+        return ($scope.isAddMode ? "new-floor" : "edit-floor");
+    };
+
+    /**
+    * To get the name for form
+    * is diff for edit/add
+    * @return {String}
+    */
+    $scope.getFormNameForMe = function(){
+        return ($scope.isAddMode ? "new-floor" : "edit-floor");
+    };
     initializeMe();	
 
 }]);
