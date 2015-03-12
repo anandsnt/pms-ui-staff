@@ -108,11 +108,12 @@
                         <li ng-repeat="rate in roomAvailability[room.id].rates" ng-class="{'closed': !stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions.length > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">
                             <!-- Add class "closed" if restrictions apply to rate -->
                             <a class="has-arrow toggle" ng-class="{active: isActive}" ng-init="isActive=false;" ng-click="isActive = !isActive ; refreshScroll()">
+
                                 <h3 ng-class="{'restricted': !stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[reservationData.arrivalDate][rate].restrictions.length > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">
                                     {{displayData.allRates[rate].name}}
                                     <!-- Add class "restricted" if restriction applies -->
                                     <!-- If corporate rate, show: -->
-                                    <span class="corporate" ng-show="isCorRate(roomAvailability[room.id].defaultRate)">COR</span>
+                                      <span class="corporate" ng-if="displayData.allRates[rate].account_id">COR</span>
                                     
                                     <!-- If restriction applies, show: -->
                                     <span class="restricted" 
@@ -134,7 +135,6 @@
                                 </h3>
 
                                 <!-- {restriction-color} can be: red, green, blue, purple and grey -->                                
-
                                 <div class="price" ng-if="!displayData.allRates[rate].is_suppress_rate_on">
                                     {{currencySymbol}}{{roomAvailability[room.id].total[rate].average | number: 0}}
                                     <span translate>RESV_AVG_NIGHT</span>

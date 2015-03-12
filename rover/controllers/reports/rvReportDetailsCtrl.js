@@ -378,6 +378,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 
+		// simple method to allow checking for report title
+		// from the template, even without making the entire reportUtils part of $scope
+		$scope.isThisReport = function (name) {
+			return reportUtils.getName(name) == $scope.parsedApiFor ? true : false;
+		};
+
+
 
 		// we are gonna need to drop some pagination
 		// this is done only once when the report details is loaded
