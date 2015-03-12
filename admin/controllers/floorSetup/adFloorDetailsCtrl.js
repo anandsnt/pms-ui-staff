@@ -2,20 +2,14 @@ admin.controller('ADFloorDetailsCtrl',
     [   '$scope', 
         '$state', 
         'ADFloorSetupSrv', 
-        '$filter', 
-        '$anchorScroll', 
-        '$timeout',  
-        '$location', 
+        '$filter',  
         'floorDetails',
-        '$stateParams', 
+        '$stateParams',
     function(
         $scope, 
         $state, 
         ADFloorSetupSrv, 
         $filter, 
-        $anchorScroll, 
-        $timeout, 
-        $location,
         floorDetails,
         $stateParams){
 	
@@ -91,7 +85,7 @@ admin.controller('ADFloorDetailsCtrl',
     * @return - {Boolean}
     */
     $scope.shouldShowFindRooms = function(){
-        return ($scope.unassignedRooms.length == 0)
+        return ($scope.unassignedRooms.length == 0 && !$scope.IsTryingToDropOnUnAssigned)
     };
 
 	/**
@@ -115,6 +109,9 @@ admin.controller('ADFloorDetailsCtrl',
         $scope.selectedUnassignedRooms = [];
 
         $scope.selectedAssignedRooms = [];
+
+        // used to hide 'find Rooms & ..' thing for a while
+        $scope.IsTryingToDropOnUnAssigned = false;
 	};	
     
     /**
@@ -211,7 +208,17 @@ admin.controller('ADFloorDetailsCtrl',
     */
     $scope.droppedOnAssignedRoomList = function(){
         //creating unique room list after pushing new entries
-        $scope.assignedRooms = $scope.changeToUniqueRoomList ($scope.assignedRooms);          
+        $scope.assignedRooms = $scope.changeToUniqueRoomList ($scope.assignedRooms);
+
+        //we have to remove from selected item from unassigned list after dropping
+        var roomIndex;
+        _.each($scope.assignedRooms, function(room){
+            //removing from UnAssigning list
+            roomIndex = _.indexOf(_.pluck($scope.selectedUnAssignedRooms, 'id'), room.id);
+            if (roomIndex != -1) {
+                $scope.selectedUnAssignedRooms.splice (roomIndex, 1);
+            }
+        });
     };
 
     /**
@@ -221,9 +228,24 @@ admin.controller('ADFloorDetailsCtrl',
     */
     $scope.droppedOnUnAssignedRoomList = function(){
         //creating unique room list after pushing new entries
-        $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms);          
+        $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms); 
+
+        //we have to remove from selected item from unassigned list after dropping
+        var roomIndex;
+        _.each($scope.unassignedRooms, function(room){
+            //removing from UnAssigning list
+            roomIndex = _.indexOf(_.pluck($scope.selectedAssignedRooms, 'id'), room.id);
+            if (roomIndex != -1) {
+                $scope.selectedAssignedRooms.splice (roomIndex, 1);
+            }
+        });
+        // we are back back with inital settings for find rooms..
+        $scope.IsTryingToDropOnUnAssigned = false;
     };
 
+    $scope.tryingToDropOnUnAssigned = function() {
+        $scope.IsTryingToDropOnUnAssigned = true;
+    };
     /**
     * will move the selected UnAssignItems to Selected Item List
     * @return - None
@@ -235,7 +257,9 @@ admin.controller('ADFloorDetailsCtrl',
 
             //removing from UnAssigning list
             roomIndex = _.indexOf(_.pluck($scope.unassignedRooms, 'id'), room.id);
-            $scope.unassignedRooms.splice (roomIndex, 1);
+            if (roomIndex != -1) {
+                $scope.unassignedRooms.splice (roomIndex, 1);
+            }
         });
 
         //resetting after moving all
@@ -258,7 +282,9 @@ admin.controller('ADFloorDetailsCtrl',
 
             //removing from UnAssigning list
             roomIndex = _.indexOf(_.pluck($scope.assignedRooms, 'id'), room.id);
-            $scope.assignedRooms.splice (roomIndex, 1);            
+            if (roomIndex != -1) {
+                $scope.assignedRooms.splice (roomIndex, 1);            
+            }
         });
 
         //resetting after moving all
@@ -309,7 +335,14 @@ admin.controller('ADFloorDetailsCtrl',
     * @return - None
     */
     var successCallBackOfFetchAllUnAssignedRoom = function(data) {
-    	$scope.unassignedRooms = data.rooms;
+
+        //if there is already some unassigned there, we will just append 
+        _.each(data.rooms, function(room){
+            $scope.unassignedRooms.push(room);
+        });
+     
+        //creating unique room list after pushing new entries
+        $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms);
 
         //resetting already choosed unassigned in last
         $scope.selectedUnassignedRooms = [];
@@ -319,7 +352,8 @@ admin.controller('ADFloorDetailsCtrl',
     * To fetch list of all unassigned room
     * @return - None
     */
-    $scope.showAllUnassignedRooms = function(){   		
+    $scope.showAllUnassignedRooms = function(){  
+        $scope.unassignedRooms = [];
 		var params 	= {
 			query: 	''
 		};   		

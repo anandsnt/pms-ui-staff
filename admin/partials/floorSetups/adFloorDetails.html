@@ -100,14 +100,15 @@
 						
 						data-drop="true" 
 
-						jqyoui-droppable="{multiple:true, onDrop: 'droppedOnAssignedRoomList'}" 
+						jqyoui-droppable="{multiple:true, onDrop: 'droppedOnAssignedRoomList'
+						, onOut: 'tryingToDropOnUnAssigned'}" 
 						data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms">
 
 						<li class="assigned-rooms" 
 							ng-repeat="room in assignedRooms"
 
 							data-drag = "true"
-							jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+							jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem', onDrag: 'tryingToDropOnUnAssigned' }"
 
 							data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
 							ng-model="assignedRooms"
