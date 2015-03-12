@@ -667,7 +667,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
 
         $scope.confirmReservation = function() {
-            if (!$scope.isDemographicsFormValid()) {
+            if (!$scope.isDemographicsFormValid(true)) {
                 $scope.setDemographics(true);
                 return;
             }
@@ -708,7 +708,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
         $scope.clickedContinueButton = function() {
 
-            if (!$scope.isDemographicsFormValid()) {
+            if (!$scope.isDemographicsFormValid(true)) {
                 $scope.setDemographics(true);
                 return;
             }
@@ -1147,7 +1147,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             });
         };
 
-        $scope.isDemographicsFormValid = function() {
+        $scope.isDemographicsFormValid = function(assertValidation) {
             var isValid = true;
             _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
