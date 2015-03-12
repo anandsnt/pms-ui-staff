@@ -1,7 +1,7 @@
 <tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
 	<td ng-if="each.isReport" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<span class="data red">{{ each.cancel_date | date:dateFormat }}</span>
-        <span class="data penalty">{{ currencySymbol }}{{ each.cancel_penalty }}</span>
+        <span class="data penalty">{{ each.cancel_penalty | currency:currencySymbol:2 }}</span>
 	</td>
 	<td ng-if="each.isReport">
 		<strong class="title">{{ each.name }}</strong>
@@ -28,7 +28,7 @@
 	</td>
 	<td ng-if="each.isReport">
 		<span class="data room">{{ each.room_type }}</span>
-		<span class="data rate">{{ each.rate }} / <strong>{{ currencySymbol }}{{ each.adr }} ADR</strong></span>
+		<span class="data rate">{{ each.rate }} / <strong>{{ each.adr | currency:currencySymbol:2 }} ADR</strong></span>
 	</td>
 
 	<!-- cancel reason -->

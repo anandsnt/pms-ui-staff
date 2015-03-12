@@ -25,11 +25,11 @@
 
 	<td>
 		<strong>{{ each.due_date | date : dateFormat }}</strong>
-		<span class="data">{{ currencySymbol }}{{ each.deposit_due_amount }}</span>
+		<span class="data">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</span>
 	</td>
 
 	<td>
 		<strong ng-if="each.deposit_payment_status == 'PAID' && each.paid_date">{{ each.paid_date | date : dateFormat }}</strong>
-		<span ng-if="each.deposit_payment_status == 'PAID' && each.paid_amount" class="data">{{ currencySymbol }}{{ each.paid_amount }}</span>
+		<span ng-if="each.deposit_payment_status == 'PAID' && each.paid_amount" class="data">{{ each.paid_amount | currency:currencySymbol:2 }}</span>
 	</td>
 </tr>
