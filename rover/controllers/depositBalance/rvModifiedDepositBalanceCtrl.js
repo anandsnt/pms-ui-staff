@@ -93,7 +93,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	* @return {Boolean}
 	*/
 	$scope.hideMakePayment = function() {
-		return ($scope.hasPermissionToMakePayment());
+		return (!$scope.hasPermissionToMakePayment());
 	};
 
 	/*
