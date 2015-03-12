@@ -174,6 +174,14 @@ admin.controller('ADFloorDetailsCtrl',
     };
 
     /**
+    * To clear query
+    * @return {None}
+    */
+    $scope.clearQuery = function(){
+        $scope.floorData.searchKey = '';
+    };
+
+    /**
     * we have to add 'Selected' against those unSelected rooms
     * @param {Object} - Room
     * @return {Boolean} 

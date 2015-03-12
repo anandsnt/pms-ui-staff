@@ -38,7 +38,7 @@
 			         <div class="boxes with-search">
 			            <div class="search-form">
 
-			                <button class="clear-query" ng-class="{'visible': isSomethingEnteredInSearchBox()}" > <!-- Add class "visible" when search params exsist. Clicking this resets search -->
+			                <button class="clear-query" ng-click="clearQuery()" ng-class="{'visible': isSomethingEnteredInSearchBox()}" > <!-- Add class "visible" when search params exsist. Clicking this resets search -->
 			                    <span class="icons icon-clear-search">Clear query</span>
 			                </button>
 			                <input name="rooms-query" id="rooms-query" class="query" placeholder="Search by Number or Range" autocomplete="off" type="text" ng-model="floorData.searchKey"  />
@@ -57,7 +57,6 @@
 						<ul class="sortable" data-type="source" 
 							
 							data-drop="true" 
-							style ="min-height: 360px;"
 							jqyoui-droppable="{multiple:true, onDrop: 'droppedOnUnAssignedRoomList'}" 
 							data-jqyoui-options="{accept:'.assigned-rooms'}" ng-model="unassignedRooms">
 
@@ -100,7 +99,6 @@
 					<ul class="sortable" data-type="target" 					
 						
 						data-drop="true" 
-						style ="min-height: 360px;"
 
 						jqyoui-droppable="{multiple:true, onDrop: 'droppedOnAssignedRoomList'}" 
 						data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms">
