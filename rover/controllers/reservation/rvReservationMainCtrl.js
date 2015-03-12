@@ -600,7 +600,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if ((date != $scope.reservationData.departure_date || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                if ((date == $scope.reservationData.arrivalDate || date != $scope.reservationData.departureDate) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
 
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;

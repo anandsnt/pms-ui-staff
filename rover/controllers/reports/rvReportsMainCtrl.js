@@ -313,6 +313,27 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 		};
 
+
+		$scope.sortByChanged = function(item) {
+            var _sortBy;
+
+            // un-select sort dir of others
+            // and get a ref to the chosen item
+            _.each(item.sortByOptions, function(each) {
+                if (each && each.value != item.chosenSortBy) {
+                    each.sortDir = undefined;
+                } else if (each && each.value == item.chosenSortBy) {
+                    _sortBy = each;
+                }
+            });
+
+            // select sort_dir for chosen item
+            if (!!_sortBy) {
+                _sortBy.sortDir = true;
+            };
+        };
+		
+
 		var chosenList = [
 			'chosenIncludeNotes',
 			'chosenIncludeCancelled',
@@ -734,7 +755,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include user ids
 			if (chosenReport.hasUserFilter && chosenReport.chosenUsers && chosenReport.chosenUsers.length) {
-				params['user_ids'] = chosenReport.chosenUsers;
+				key = 'user_ids[]';
+				params[key] = [];
+				_.each(chosenReport.chosenUsers, function(user) {
+					params[key].push( user );
+				});
 				/**/
 				$scope.appliedFilter['users'] = [];
 				_.each(chosenReport.chosenUsers, function (id) {
@@ -938,7 +963,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( chosenReport.showMarket ) {
 					params[key] = true;
 					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasMarket.description );
+					$scope.appliedFilter.display.push( chosenReport.hasMarket.description );
 				};
 			};
 
@@ -948,11 +973,11 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( chosenReport.showSource ) {
 					params[key] = true;
 					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasSource.description );
+					$scope.appliedFilter.display.push( chosenReport.hasSource.description );
 				};
 			};
 
-			// include source
+			// include variance
 			if (chosenReport.hasOwnProperty('hasVariance')) {
 				key = chosenReport.hasVariance.value.toLowerCase();
 				if ( chosenReport.chosenVariance ) {
@@ -967,8 +992,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup') && !!chosenReport.chosenIncludeComapnyTaGroup) {
 				key = chosenReport.hasIncludeComapnyTaGroup.value.toLowerCase();
 				params[key] = chosenReport.chosenIncludeComapnyTaGroup;
-				/**/
-				$scope.appliedFilter['companyTaGroup'] = chosenReport.chosenIncludeComapnyTaGroup;
+				/* Note using the ui value here */
+				$scope.appliedFilter['companyTaGroup'] = chosenReport.uiChosenIncludeComapnyTaGroup;
 
 			};
 
@@ -1105,6 +1130,9 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
+
+
+
 		var activeUserAutoCompleteObj = [];
 		_.each($scope.activeUserList, function(user) {
 			activeUserAutoCompleteObj.push({
@@ -1162,8 +1190,30 @@ sntRover.controller('RVReportsMainCtrl', [
 				setTimeout(function() {
 					$scope.$apply(function() {
 						thisReport.chosenUsers = modelVal;
+						console.log(thisReport.chosenUsers);
 					});
-				}.bind(this), 100);
+				}.bind(this), 10);
+			},
+			change: function () {
+				var uiValues = split(this.value);
+				var modelVal = [];
+
+				_.each(activeUserAutoCompleteObj, function(user) {
+					var match = _.find(uiValues, function(email) {
+						return email == user.label;
+					});
+
+					if (!!match) {
+						modelVal.push(user.value);
+					};
+				});
+
+				setTimeout(function() {
+					$scope.$apply(function() {
+						thisReport.chosenUsers = modelVal;
+						console.log(thisReport.chosenUsers);
+					});
+				}.bind(this), 10);
 			},
 			focus: function(event, ui) {
 				return false;

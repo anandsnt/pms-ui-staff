@@ -52,7 +52,7 @@
                     </span>
                
                 <span class="price" ng-show="addon.is_inclusive">INCL</span>
-                <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
+                <button type="button" ng-hide="addon.is_inclusive" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
             </li>
         </ul>
         </div>

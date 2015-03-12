@@ -15,6 +15,7 @@
     "POST_TYPE":"Post Type",
     "RATE_ONLY":"Rate Only",
     "RESERVATION_ONLY":"Reservation Only",
+    "MANUAL_POSTING":"Manual Posting",
     "EDIT":"Edit",
     "ADD_NEW_SMALL":"Add New",
     "ADD_ON":"Add-On",
