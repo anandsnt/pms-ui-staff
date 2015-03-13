@@ -979,6 +979,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
 		if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType!="DB"){
 			console.log("Standalone - Final bill having balance to pay");
+			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
 		else if(!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag){
