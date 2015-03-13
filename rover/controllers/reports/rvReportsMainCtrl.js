@@ -129,6 +129,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.refreshScroller('report-list-scroll');
 		});
 
+
+
+		// common date picker options object
 		var datePickerCommon = {
 			dateFormat: $rootScope.jqDateFormat,
 			numberOfMonths: 1,
@@ -145,6 +148,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		};
 
+		// common from and untill date picker options
+		// with added limits to choose dates
 		$scope.fromDateOptions = angular.extend({
 			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: function(value) {
@@ -158,23 +163,47 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
+		// custom from and untill date picker options
+		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 
+		// custom from and untill date picker options
+		// with limits to limit the chosen dates with 5 days
+		$scope.fromDateOptionFiveLimit = angular.extend({
+			onSelect: function(value) {
+				var format = $rootScope.dateFormat.toUpperCase(),
+					day,
+					month,
+					year,
+					dateP5;
 
-		var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
-			dateParts    = businessDate.match(/(\d+)/g),
-			year  = parseInt( dateParts[0] ),
-			month = parseInt( dateParts[1] ) - 1,
-			date  = parseInt( dateParts[2] ),
-			dbObj = new Date(year, month, date);
+				if ( format == 'MM-DD-YYYY' || format == 'MM/DD/YYYY' ) {
+					day   = parseInt( value.substring(3,5) );
+					month = parseInt( value.substring(0,2) );
+				} else if ( format == 'DD-MM-YYYY' || format == 'DD/MM/YYYY' ) {
+					day   = parseInt( value.substring(0,2) );
+					month = parseInt( value.substring(3,5) );
+				};
+
+				year   = parseInt( value.substring(6,10) );
+				dateP5 = new Date( year, month-1, day+5 );
+
+				$scope.untilDateOptionFiveLimit.maxDate = dateP5;
+			}
+		}, datePickerCommon);
+		$scope.untilDateOptionFiveLimit = angular.extend({}, datePickerCommon);
+
+
+
+		var dbObj = reportUtils.processDate().businessDate;
 		$scope.dateChanged = function (item, dateName) {
-			if ( item.title == 'Arrival' ) {
+			if ( item.title == reportUtils.getName('ARRIVAL') ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueInArrivals = false;
 				}
 			};
-			if ( item.title == 'Departure' ) {
+			if ( item.title == reportUtils.getName('DEPARTURE') ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueOutDepartures = false;
 				}
@@ -312,6 +341,27 @@ sntRover.controller('RVReportsMainCtrl', [
 				return chosenReport.chosenCico === 'OUT' || chosenReport.chosenCico === 'BOTH';
 			};
 		};
+
+
+		$scope.sortByChanged = function(item) {
+            var _sortBy;
+
+            // un-select sort dir of others
+            // and get a ref to the chosen item
+            _.each(item.sortByOptions, function(each) {
+                if (each && each.value != item.chosenSortBy) {
+                    each.sortDir = undefined;
+                } else if (each && each.value == item.chosenSortBy) {
+                    _sortBy = each;
+                }
+            });
+
+            // select sort_dir for chosen item
+            if (!!_sortBy) {
+                _sortBy.sortDir = true;
+            };
+        };
+
 
 		var chosenList = [
 			'chosenIncludeNotes',
@@ -711,11 +761,18 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include times
 			if (chosenReport.hasTimeFilter) {
-				params['from_time'] = chosenReport.fromTime || '';
-				params['to_time']   = chosenReport.untilTime || '';
-				/**/
-				$scope.appliedFilter['fromTime'] = angular.copy( chosenReport.fromTime );
-				$scope.appliedFilter['toTime']   = angular.copy( chosenReport.untilTime );
+
+				if ( chosenReport.fromTime ) {
+					params['from_time'] = chosenReport.fromTime;
+					/**/
+					$scope.appliedFilter['fromTime'] = angular.copy( chosenReport.fromTime );
+				};
+
+				if ( chosenReport.untilTime ) {
+					params['to_time']   = chosenReport.untilTime;
+					/**/
+					$scope.appliedFilter['toTime']   = angular.copy( chosenReport.untilTime );
+				};
 			};
 
 			// include CICO filter
@@ -966,6 +1023,16 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// include last year
+			if (chosenReport.hasOwnProperty('hasLastYear')) {
+				key = chosenReport.hasLastYear.value.toLowerCase();
+				if ( chosenReport.chosenLastYear ) {
+					params[key] = true;
+					/**/
+					$scope.appliedFilter.options.push( chosenReport.hasLastYear.description );
+				};
+			};
+
 
 			// include company/ta/group
 			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup') && !!chosenReport.chosenIncludeComapnyTaGroup) {
@@ -1002,7 +1069,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					key = 'include_guarantee_type[]';
 					params[key] = [];
 					_.each(selectedGuarantees, function(guarantee) {
-						params[key].push( guarantee.id );
+						params[key].push( guarantee.value );
 						/**/
 						$scope.appliedFilter.guarantees.push( guarantee.name );
 					});
@@ -1106,6 +1173,9 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, callback);
 		};
+
+
+
 
 
 

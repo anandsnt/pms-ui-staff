@@ -7,7 +7,8 @@ sntRover.controller('RVReportDetailsCtrl', [
     'RVreportsSrv',
 	'RVReportUtilsFac',
 	'RVReportParserFac',
-	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser) {
+	'ngDialog',
+	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -378,6 +379,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 
+		// simple method to allow checking for report title
+		// from the template, even without making the entire reportUtils part of $scope
+		$scope.isThisReport = function (name) {
+			return reportUtils.getName(name) == $scope.parsedApiFor ? true : false;
+		};
+
+
 
 		// we are gonna need to drop some pagination
 		// this is done only once when the report details is loaded
@@ -509,13 +517,61 @@ sntRover.controller('RVReportDetailsCtrl', [
 		//loads the content in the existing report view in the DOM.
 		$scope.fetchFullReport = function() {
 
+			// report scope limiter popup
+			// here we will give user another
+			// chance to limit the reports to
+			// a certain range
+			// TODO: in future make it more generic
+			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
+
+				// adjust dates accordingly to within 5 days
+
+
+				// show popup
+				ngDialog.open({
+				    template: '/assets/partials/reports/rvPrePrintPopup.html',
+				    className: 'ngdialog-theme-default',
+				    closeByDocument: true,
+				    scope: $scope,
+				    data: []
+				});
+			} else {
+				$_fetchFullReport();
+			};
+		};
+
+		$scope.adjustFromDate = function (fromDate, untilDate, item) {
+			if ( untilDate.getTime() < fromDate.getTime() ) {
+				item.fromDate = untilDate;
+			};
+		};
+
+		$scope.adjustUntilDate = function (fromDate, untilDate, item) {
+			if ( fromDate.getTime() > untilDate.getTime() ) {
+				item.untilDate = fromDate;
+			};
+		};
+
+		$scope.closeDialog = function() {
+		    ngDialog.close();
+		};
+
+		$scope.continueWithPrint = function () {
+			ngDialog.close();
+			$_fetchFullReport();
+		};
+
+		function $_fetchFullReport () {
+
 			// since we are loading the entire report and show its print preview
 			// we need to keep a back up of the original report with its pageNo
-		    $scope.returnToPage = $_pageNo;
+			$scope.returnToPage = $_pageNo;
 
-		    // should-we-change-view, specify-page, per-page-value
-		    $scope.genReport( false, 1, 1000 );
+			// should-we-change-view, specify-page, per-page-value
+			$scope.genReport( false, 1, 1000 );
 		};
+
+
 
 
 		// add the print orientation before printing

@@ -238,7 +238,7 @@ sntRover.factory('RVReportUtilsFac', [
                 };
 
                 // check for "by single date" filter and keep a ref to that item
-                if ( filter.value === 'BY_SINGLE_DATE' ) {
+                if ( filter.value === 'SINGLE_DATE' ) {
                     reportItem['hasSingleDateFilter'] = filter;
                 };
 
@@ -296,7 +296,7 @@ sntRover.factory('RVReportUtilsFac', [
                 };
 
                 // INCLUDE_LASTYEAR
-                if ( filter.value === 'INCLUDE_LAST_YEAR ') {
+                if ( filter.value === 'INCLUDE_LAST_YEAR' ) {
                     reportItem['hasLastYear'] = filter;
                     _hasFauxSelect = true;
                     _hasMarketSelect = true;
@@ -644,19 +644,27 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         // HELPER: create meaningful date names
-        factory.processDate = function () {
-            var _businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+        factory.processDate = function ( customDate, xDays ) {
+            var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
+                _businessDate = $filter('date')(_dateVal, 'yyyy-MM-dd'),
                 _dateParts    = _businessDate.match(/(\d+)/g),
                 _year  = parseInt( _dateParts[0] ),
                 _month = parseInt( _dateParts[1] ) - 1,
                 _date  = parseInt( _dateParts[2] );
 
-            return {
+            var returnObj = {
                 'businessDate' : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7)
-            }
+            };
+
+            if ( parseInt(xDays) != NaN ) {
+                returnObj.xDaysBefore = new Date(_year, _month, _date - xDays);
+                returnObj.xDaysAfter  = new Date(_year, _month, _date + xDays);
+            };
+
+            return returnObj;
         };
 
 
