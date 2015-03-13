@@ -86,6 +86,8 @@ sntRover.controller('roverController',
     $rootScope.fullYear = "yyyy";
     $rootScope.fulldayInWeek = "EEEE";
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
+    $rootScope.timeWithAMPM = "hh:mm a"; //01:00 AM
+
     $rootScope.isCurrentUserChangingBussinessDate = false;
     $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
     /*

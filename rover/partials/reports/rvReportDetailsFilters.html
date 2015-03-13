@@ -430,11 +430,17 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.hasByChargeGroup && chosenReport.chargeGroups.length" ng-class="{'hidden': !filterItemsToggle.item_16}">
             <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
-                <label class="checkbox" ng-repeat="each in chosenReport.chargeGroups">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
-                    <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeGroupOptionClicked(chosenReport)">
-                    {{ each.description }}
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.allChargeGroupSelected}"></span>
+                    <input type="checkbox" ng-model="chosenReport.allChargeGroupSelected" ng-change="fauxChargeGroupOptionClicked(chosenReport, true)" name="room-filters"> Select All
                 </label>
+                <div class="nested-options" ng-class="{'hidden': chosenReport.allChargeGroupSelected}">
+                    <label class="checkbox" ng-repeat="each in chosenReport.chargeGroups track by $index">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+                        <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeGroupOptionClicked(chosenReport)">
+                        {{ each.description }}
+                    </label>
+                </div>
             </div>
         </div>
 
@@ -447,11 +453,17 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.hasByChargeCode && chosenReport.chargeCodes.length" ng-class="{'hidden': !filterItemsToggle.item_17}">
             <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
-                <label class="checkbox" ng-repeat="each in chosenReport.chargeCodes">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
-                    <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeCodeOptionClicked(chosenReport)">
-                    {{ each.description }}
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.allChargeCodeSelected}"></span>
+                    <input type="checkbox" ng-model="chosenReport.allChargeCodeSelected" ng-change="fauxChargeCodeOptionClicked(chosenReport, true)" name="room-filters"> Select All
                 </label>
+                <div class="nested-options" ng-class="{'hidden': chosenReport.allChargeCodeSelected}">
+                    <label class="checkbox" ng-repeat="each in chosenReport.chargeCodes track by $index">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+                        <input type="checkbox" ng-model="each.selected" ng-change="fauxChargeCodeOptionClicked(chosenReport)">
+                        {{ each.description }}
+                    </label>
+                </div>
             </div>
         </div>
 

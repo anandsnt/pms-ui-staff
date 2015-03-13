@@ -39,6 +39,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             "attempted": false
         };
 
+        $scope.summaryState = {
+            forceDemographicsData: false
+        }
+
+
         /**
          * function to check whether the user has permission
          * to make payment
@@ -663,8 +668,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             });
         };
 
+
         $scope.confirmReservation = function() {
             if (!$scope.isDemographicsFormValid(true)) {
+                $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
                 return;
             }
@@ -706,6 +713,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         $scope.clickedContinueButton = function() {
 
             if (!$scope.isDemographicsFormValid(true)) {
+                $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
                 return;
             }
@@ -1087,10 +1095,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             });
         };
 
-        $scope.updateAdditionalDetails = function(reservationId, index) {
+        $scope.updateAdditionalDetails = function(reservationId, index, goToConfirmationScreen) {
             var updateSuccess = function(data) {
                 $scope.$emit('hideLoader');
-
                 $scope.closeDialog();
             };
 
@@ -1106,7 +1113,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                     room.demographics = $scope.demographics;
                     var postData = $scope.computeReservationDataforUpdate(true, false, currentRoomIndex);
-                    postData.reservationId = $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+                    postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 });
 
@@ -1115,6 +1122,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 var postData = $scope.computeReservationDataforUpdate(true, false, index);
                 postData.reservationId = reservationId;
                 $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+            }
+
+            if (goToConfirmationScreen) {
+                $scope.confirmReservation();
             }
         };
 
@@ -1144,9 +1155,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             });
         };
 
+
         $scope.isDemographicsFormValid = function(assertValidation) {
             var isValid = true;
-
             if (assertValidation) {
                 if ($scope.otherData.reservationTypeIsForced || $scope.otherData.marketIsForced || $scope.otherData.sourceIsForced || $scope.otherData.originIsForced) {
                     _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
