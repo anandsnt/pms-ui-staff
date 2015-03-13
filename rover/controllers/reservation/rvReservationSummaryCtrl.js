@@ -1113,7 +1113,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                     room.demographics = $scope.demographics;
                     var postData = $scope.computeReservationDataforUpdate(true, false, currentRoomIndex);
-                    postData.reservationId = $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+                    postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 });
 
