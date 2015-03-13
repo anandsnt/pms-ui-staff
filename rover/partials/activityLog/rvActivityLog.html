@@ -107,7 +107,7 @@
                 <tbody>
                     <tr ng-repeat="log in activityLogData" ngrepeatend>
                         <td>{{log.user_name}}</td>
-                        <td>{{log.date}}</td>
+                        <td>{{log.date | date : mmddyyyyFormat}}, {{log.date | date : timeWithAMPM}}</td>
                         <td>{{log.action}}</td>
                         <td class="details">
                             <span ng-repeat="details in log.details">
@@ -126,7 +126,7 @@
 
     <!-- Report pagination // Shown when needed
     {../_shared/pagination.html} -->
-    <div class="search-pagination">
+    <div class="search-pagination hk-pagination" ng-show="!isNextButtonDisabled || !isPrevButtonDisabled">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
         <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResults}}</strong> items</p>
