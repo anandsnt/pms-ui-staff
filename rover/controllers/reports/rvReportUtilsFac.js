@@ -296,7 +296,7 @@ sntRover.factory('RVReportUtilsFac', [
                 };
 
                 // INCLUDE_LASTYEAR
-                if ( filter.value === 'INCLUDE_LAST_YEAR ') {
+                if ( filter.value === 'INCLUDE_LAST_YEAR' ) {
                     reportItem['hasLastYear'] = filter;
                     _hasFauxSelect = true;
                     _hasMarketSelect = true;
