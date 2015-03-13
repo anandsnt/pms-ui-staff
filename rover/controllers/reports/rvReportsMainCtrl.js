@@ -1069,7 +1069,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					key = 'include_guarantee_type[]';
 					params[key] = [];
 					_.each(selectedGuarantees, function(guarantee) {
-						params[key].push( guarantee.value );
+						params[key].push( guarantee.name );
 						/**/
 						$scope.appliedFilter.guarantees.push( guarantee.name );
 					});
