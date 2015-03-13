@@ -1023,6 +1023,16 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// include last year
+			if (chosenReport.hasOwnProperty('hasLastYear')) {
+				key = chosenReport.hasLastYear.value.toLowerCase();
+				if ( chosenReport.chosenLastYear ) {
+					params[key] = true;
+					/**/
+					$scope.appliedFilter.options.push( chosenReport.hasLastYear.description );
+				};
+			};
+
 
 			// include company/ta/group
 			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup') && !!chosenReport.chosenIncludeComapnyTaGroup) {
