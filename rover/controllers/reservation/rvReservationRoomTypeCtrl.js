@@ -56,7 +56,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			'MAX_ADV_BOOKING': 'grey',
 			'DEPOSIT_REQUESTED': 'grey',
 			'CANCEL_PENALTIES': 'grey',
-			'LEVELS': 'grey'
+			'LEVELS': 'grey',
+			'RATE_NOT_CONFIGURED': 'red'
 		}
 
 		// $scope.activeMode = "ROOM_RATE";
@@ -892,21 +893,41 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								if (rateConfiguration.single == null && rateConfiguration.double == null && rateConfiguration.extra_adult == null && rateConfiguration.child == null) {
 									// ("This rate has to be removed as no rates are confugured for " + key);
 									validRate = false;
+									today[rateId].restrictions.push({
+										key: 'RATE_NOT_CONFIGURED',
+										value: ''
+									});
 								} else {
 									// Step 2: Check for the other constraints here
 									// Step 2 A : Children
 									if (numChildren > 0 && rateConfiguration.child == null) {
 										// ("This rate has to be removed as no children are configured for " + key);
 										validRate = false;
+										today[rateId].restrictions.push({
+											key: 'RATE_NOT_CONFIGURED',
+											value: ''
+										});
 									} else if (numAdults == 1 && rateConfiguration.single == null) { // Step 2 B: one adult - single needs to be configured
 										// ("This rate has to be removed as no single are configured for " + key);
 										validRate = false;
+										today[rateId].restrictions.push({
+											key: 'RATE_NOT_CONFIGURED',
+											value: ''
+										});
 									} else if (numAdults >= 2 && rateConfiguration.double == null) { // Step 2 C: more than one adult - double needs to be configured
 										// ("This rate has to be removed as no double are configured for " + key);
 										validRate = false;
+										today[rateId].restrictions.push({
+											key: 'RATE_NOT_CONFIGURED',
+											value: ''
+										});
 									} else if (numAdults > 2 && rateConfiguration.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
 										// ("This rate has to be removed as no adults are configured for " + key);
 										validRate = false;
+										today[rateId].restrictions.push({
+											key: 'RATE_NOT_CONFIGURED',
+											value: ''
+										});
 									}
 								}
 								//[TODO]Step 3 : Check if the rates are configured for the selected restrictions
@@ -944,7 +965,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MIN_STAY_LENGTH',
-														value: 'MIN. LENGTH OF STAY:' + restriction.days + ' DAYS'
+														value: 'MIN. LENGTH OF STAY: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -953,7 +974,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MAX_STAY_LENGTH',
-														value: 'MAX. LENGTH OF STAY:' + restriction.days + ' DAYS'
+														value: 'MAX. LENGTH OF STAY: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -962,7 +983,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MIN_STAY_THROUGH',
-														value: 'MIN. STAY THROUGH:' + restriction.days + ' DAYS'
+														value: 'MIN. STAY THROUGH: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -971,7 +992,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MIN_ADV_BOOKING',
-														value: 'MIN. ADVANCE BOOKING:' + restriction.days + ' DAYS'
+														value: 'MIN. ADVANCE BOOKING: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -980,7 +1001,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 													validRate = false;
 													today[rateId].restrictions.push({
 														key: 'MAX_ADV_BOOKING',
-														value: 'MAX. ADVANCE BOOKING:' + restriction.days + ' DAYS'
+														value: 'MAX. ADVANCE BOOKING: ' + restriction.days + ' DAYS'
 													});
 												}
 												break;
@@ -1070,72 +1091,76 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				/*  --Initializing the displayData.dates array for the rows in the day wise rate table
 				 *	Need NOT show the departure day in the table. [It is NOT included in any of the computations]
 				 *	Hence check if the day is a departure day before adding it to the array
-				 *	TODO: Have added a check to handle zero nights > Need to check with product team if zero nights is an accepted scenario.
+				 *	Have added a check to handle zero nights > Need to check with product team if zero nights is an accepted scenario.
 				 *	If so, will have to change computation in other places as well to handle zero nights.
 				 */
+
 				if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
 					$scope.displayData.dates.push({
 						str: d.date,
 						obj: new tzIndependentDate(d.date)
 					});
+				}
 
-					var for_date = d.date;
-					//step1: check for room availability in the date range
-					$(d.room_types).each(function(i, d) {
-						if (typeof rooms[d.id] == "undefined") {
-							rooms[d.id] = {
-								id: d.id,
-								name: roomDetails[d.id].name,
-								level: roomDetails[d.id].level,
-								availability: true,
-								rates: [],
-								ratedetails: {},
-								total: [],
-								defaultRate: 0,
-								averagePerNight: 0,
-								description: roomDetails[d.id].description
-							};
+				var for_date = d.date;
+				//step1: check for room availability in the date range
+				$(d.room_types).each(function(i, d) {
+					if (typeof rooms[d.id] == "undefined") {
+						rooms[d.id] = {
+							id: d.id,
+							name: roomDetails[d.id].name,
+							level: roomDetails[d.id].level,
+							availability: true,
+							rates: [],
+							ratedetails: {},
+							total: [],
+							defaultRate: 0,
+							averagePerNight: 0,
+							description: roomDetails[d.id].description
+						};
+					}
+					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
+					if (d.availability < 1) {
+						// rooms[d.id].availability = false;
+					}
+				});
+
+				//step2: extract rooms with rate information
+				$(d.rates).each(function(i, d) {
+					var rate_id = d.id;
+
+					var taxes = d.taxes;
+
+					$(d.room_rates).each(function(i, d) {
+						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
+							rooms[d.room_type_id].rates.push(rate_id);
 						}
-						//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
-						if (d.availability < 1) {
-							// rooms[d.id].availability = false;
+						if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
+							rooms[d.room_type_id].ratedetails[for_date] = [];
 						}
-					});
+						rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
+							rate_id: rate_id,
+							rate: $scope.calculateRate(d, for_date),
+							taxes: taxes,
+							rateBreakUp: d,
+							day: new tzIndependentDate(for_date),
+							availabilityCount: d.availability
+						};
 
-					//step2: extract rooms with rate information
-					$(d.rates).each(function(i, d) {
-						var rate_id = d.id;
+						//calculate tax for the current day
+						if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
+							var taxApplied = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(taxApplied.exclusive);
+						} else {
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = 0;
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = 0;
+						}
 
-						var taxes = d.taxes;
+						rooms[d.room_type_id].ratedetails[for_date][rate_id].total = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive) + parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate);
 
-						$(d.room_rates).each(function(i, d) {
-							if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
-								rooms[d.room_type_id].rates.push(rate_id);
-							}
-							if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
-								rooms[d.room_type_id].ratedetails[for_date] = [];
-							}
-							rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
-								rate_id: rate_id,
-								rate: $scope.calculateRate(d, for_date),
-								taxes: taxes,
-								rateBreakUp: d,
-								day: new tzIndependentDate(for_date),
-								availabilityCount: d.availability
-							};
 
-							//calculate tax for the current day
-							if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
-								var taxApplied = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
-								rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
-								rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(taxApplied.exclusive);
-							} else {
-								rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = 0;
-								rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = 0;
-							}
-
-							rooms[d.room_type_id].ratedetails[for_date][rate_id].total = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive) + parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate);
-
+						if (for_date == $scope.reservationData.arrivalDate || for_date != $scope.reservationData.departureDate) {
 							//TODO : compute total
 							if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
 								rooms[d.room_type_id].total[rate_id] = {
@@ -1158,9 +1183,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							// Handle single days for calculating rates
 							if (stayLength == 0) stayLength = 1;
 							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].totalRate / stayLength).toFixed(2);
-						})
+						}
 					})
-				}
+				})
 			});
 
 			rooms = restrictionCheck(rooms);

@@ -87,7 +87,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		if($scope.campaignData.audience_type){
 		campaign.audience_type = $scope.campaignData.audience_type;
 		}
+		if($scope.campaignData.audience_type=="SPECIFIC_USERS"){
 		campaign.specific_users = $scope.campaignData.specific_users;
+		}
 		campaign.subject = $scope.campaignData.subject;
 		//TODO: Header image
 		campaign.header_image = $scope.campaignData.header_image;
