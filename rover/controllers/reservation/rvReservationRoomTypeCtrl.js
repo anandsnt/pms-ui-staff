@@ -852,6 +852,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							rateId: rateId
 						})*/
 						var validRate = true;
+						var configuredRate = true;
+
 						_.each(room.ratedetails, function(today, key) {
 							var currDate = key;
 							//Step 1 : Check if the rates are configured for all the days of stay
@@ -866,6 +868,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 									validRate = false;
 								}*/
 								validRate = false;
+								configuredRate = false;
 							} else {
 
 								if (typeof today[rateId].restrictions == 'undefined') {
@@ -893,6 +896,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								if (rateConfiguration.single == null && rateConfiguration.double == null && rateConfiguration.extra_adult == null && rateConfiguration.child == null) {
 									// ("This rate has to be removed as no rates are confugured for " + key);
 									validRate = false;
+									configuredRate = false;
 									today[rateId].restrictions.push({
 										key: 'RATE_NOT_CONFIGURED',
 										value: ''
@@ -903,6 +907,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 									if (numChildren > 0 && rateConfiguration.child == null) {
 										// ("This rate has to be removed as no children are configured for " + key);
 										validRate = false;
+										configuredRate = false;
 										today[rateId].restrictions.push({
 											key: 'RATE_NOT_CONFIGURED',
 											value: ''
@@ -910,6 +915,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 									} else if (numAdults == 1 && rateConfiguration.single == null) { // Step 2 B: one adult - single needs to be configured
 										// ("This rate has to be removed as no single are configured for " + key);
 										validRate = false;
+										configuredRate = false;
 										today[rateId].restrictions.push({
 											key: 'RATE_NOT_CONFIGURED',
 											value: ''
@@ -917,6 +923,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 									} else if (numAdults >= 2 && rateConfiguration.double == null) { // Step 2 C: more than one adult - double needs to be configured
 										// ("This rate has to be removed as no double are configured for " + key);
 										validRate = false;
+										configuredRate = false;
 										today[rateId].restrictions.push({
 											key: 'RATE_NOT_CONFIGURED',
 											value: ''
@@ -924,6 +931,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 									} else if (numAdults > 2 && rateConfiguration.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
 										// ("This rate has to be removed as no adults are configured for " + key);
 										validRate = false;
+										configuredRate = false;
 										today[rateId].restrictions.push({
 											key: 'RATE_NOT_CONFIGURED',
 											value: ''
@@ -1028,7 +1036,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								}
 								$scope.stateCheck.restrictedContractedRates[roomId].push(rateId);
 							}
-						} else if (!validRate && !$scope.stateCheck.showClosedRates) {
+						} else if (!configuredRate || (!validRate && !$scope.stateCheck.showClosedRates)) {
 							var existingRates = roomsIn[roomId].rates;
 							var afterRemoval = _.without(existingRates, rateId);
 							roomsIn[roomId].rates = afterRemoval;
@@ -1443,8 +1451,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// roomAvailability[roomId].ratedetails[<date>][rateId].availabilityCount 
 
 			var leastAvailability = $scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].availabilityCount
-			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail) {
-				if (rateDetail[rateId].availabilityCount < leastAvailability) {
+			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail, date) {
+				if ((date == $scope.reservationData.arrivalDate || date != $scope.reservationData.departureDate) && rateDetail[rateId].availabilityCount < leastAvailability) {
 					leastAvailability = rateDetail[rateId].availabilityCount;
 				}
 			});
