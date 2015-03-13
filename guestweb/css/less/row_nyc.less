@@ -1,0 +1,288 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#000;
+@lightpink:#f06bc1;
+@darkpink:#e128a0;
+@light-black:#959595;
+@grey-text:#949494;
+@brown-text:#592800;
+
+body {
+  	background: url(/assets/img/bg-white.png) no-repeat center top !important;
+  	background-size: 100% 100% !important;
+}
+
+.eden_logo_bg{
+	padding:0 !important;
+}
+.black-text{
+	color:@black !important;
+}
+.brown-text{
+	color:@brown-text !important;
+}
+.grey-text{
+	color:@grey-text !important;
+}
+
+.pink-bg{
+	background: url(/assets/img/Row_nyc/row_bg.jpg) no-repeat center top !important;
+}
+.light-pink-bg{
+	background:@lightpink !important;
+}
+.light-black-text{
+	color:@light-black !important;
+}
+.black-bg{
+	background-color:@black !important;
+} 
+.width-100{
+	width:100% !important;
+}
+.jumbotron .check-inout-wrapper, .checkout-status{
+	border:none !important;
+}
+.room-number-text{
+	text-align:left;
+	margin-bottom:0 !important;
+}
+.container-top-padding{
+	padding-top:50px !important;
+}
+.checkout-status.centeralign{
+	.msg-head,.msg-body{
+		color:#000 !important;
+	}
+}
+@media (max-width: 480px) {
+	.container-top-padding{
+		padding-top:20px !important;
+	}
+	.qr-code-image .qr-code-info{
+		padding: 15px 0 0 0 !important;
+	}
+
+}
+
+.no-thanks a{
+	color: @darkpink !important;
+	text-decoration:underline !important;
+}
+.checkouttime1 {
+    background: none repeat scroll 0 0 @lightpink;
+}
+.checkouttime2, .checkoutlater-pink-bg {
+    background: none repeat scroll 0 0 @darkpink;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #c10a81;
+}
+.pink-text{
+	color: @darkpink !important;
+}
+.img-responsive.img-center{
+	padding:0 !important;
+	width:auto !important;
+}
+
+.date-picker-ok{
+	padding-top: 18px;
+	background:  url(/assets/img/Row_nyc/done_icon.png) 25px 0px no-repeat !important;
+}
+
+.date-picker-ok, .date-picker-back, .upgrades-label{
+	color:@darkpink !important;
+}
+
+.date-picker-wrap {
+   	background: url(/assets/img/bg-white.png) no-repeat center top !important;
+  	background-size: 100% 100% !important;
+  	background-color:#fff !important;
+}
+
+.pickadate-cell .pickadate-disabled,.pickadate-cell .pickadate-enabled {
+	  background-color: #e5e5e5 !important;
+	  color:@black !important;
+}
+
+.date-picker-header{
+  background-color: @black !important;
+}
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #134b52;
+}
+
+.departure-date{
+   p:first-child{
+       color:#e5e5e5;
+   }
+  
+}
+
+.pickadate-centered-heading, .pickadate-cell .pickadate-head, .pickadate-controls a, .pickadate-controls a:hover{
+  	color:@black !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:@darkpink !important;
+    color:@white !important;
+}
+
+.upgrade-details .upgrades-btn{
+    background-color:@darkpink;
+}
+
+.checkin-button-padding{
+	padding-top:20%;
+}
+
+.row .date-container {
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.no-border {
+    border: 0 none !important;
+}
+.verti-ruler {
+    background: none repeat scroll 0 0 #c9c9c9;
+}
+
+@media (min-width: 992px) {
+	.btn_height{
+		height:67px !important;
+	}
+	.jumbotron .checkin-wrapper-top.arrival-details{
+		padding: 5%;
+		margin:0 auto;
+	}
+	
+	.qr-code-info{
+		ol{
+			max-width:350px !important;
+		}
+	}
+
+   .checkin-width {
+		margin-top:20%;
+		//margin: 0 auto !important;
+		max-width: 570px;
+		text-align: center;
+	}
+
+	.base-text{
+		font-size:21px !important;
+	}
+	.foot-text{
+		margin-bottom:0 !important;
+	}
+	.padding-late-chekout{
+		padding-left: 100px;
+		padding-right: 100px;
+	}
+	.row.headerrow.black-bg {
+  	  padding-top: 2% !important;
+	}
+	.col-md-6.centeralign.headtext.nopadding-onblock.toggle-pos-rel.container-top-padding {
+   		 width: 54% !important;
+	}
+	
+}
+.arrival-details p{
+	font-size:14px !important;
+	font-weight: 500 !important;
+}
+.proceed-to-checkin{
+	background-color:#464646;
+}
+
+.checkin-room-number{
+	background:@darkpink !important;
+	border-radius: 15px;
+    font-size: 24px;
+    padding: 2px 29px;
+    font-weight: 300;
+}
+
+.qr-code-image .qr-code-info{
+	padding: 15px 0 0 30%;
+}
+
+.margin-left-0{
+	margin-left: 0 !important;	
+}
+
+.grey-placeholder{
+	color:#787878;
+	font-size:20px;
+}
+
+.row.checkin-wrapper.line-top.checkin-details.no-bottom-padding {
+    padding-bottom: 0 !important;
+}
+
+@media (max-width: 990px) {
+  
+	.checkin-width {
+	    margin: 0 auto !important;
+	    max-width: 570px;
+	    text-align: center;
+	}
+	.base-text{
+		font-size:16px !important;
+	}
+	.foot-text{
+		margin-bottom:15px !important;
+	}
+	.padding-late-chekout{
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	.margin-top-mobile{
+		margin-top:50px;
+	}
+	.msg-head.black-text.thanks-msg.thanks-msg-mobile {
+   		font-size: 26px !important;
+    	padding: 10%;
+	}
+	.backbtn {
+ 	   left: 6px !important;
+ 	}
+}
+.btn_height{
+	height:50px;
+}
+.link-btn.with-bg.nextbtn{
+	text-transform: none;
+	font-size:30px !important;
+}
+.subTitletext{
+	color:#18171d;
+}
+.reservation-details, .upgrades_text{
+	color:#18171c !important;
+}
+.margin-10{
+ 	margin-top:10px;
+}
+.room-text{
+	font-size: 17px !important;
+}
+.room-input {
+	height:56px;
+}
+
+.shadow {
+	background: none repeat scroll 0 0 #efefef;
+   -moz-box-shadow:    inset 2px 2px 3px #d1d1d1;
+   -webkit-box-shadow: inset 2px 2px 3px #d1d1d1;
+    box-shadow:         inset 2px 2px 3px #d1d1d1;
+    border: medium none !important;
+}
+.btn-padding{
+	padding: 17px !important;
+}
+
