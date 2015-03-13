@@ -524,11 +524,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// TODO: in future make it more generic
 			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
 
-				// adjust dates accordingly to within 5 days
-
+				// make a copy of the from and until dates
+				$scope.fromDateCopy = angular.copy( $scope.chosenReport.fromDate );
+				$scope.untilDateCopy = angular.copy( $scope.chosenReport.untilDate );
 
 				// show popup
 				ngDialog.open({
+					controller: 'RVPrePrintPopupCtrl',
 				    template: '/assets/partials/reports/rvPrePrintPopup.html',
 				    className: 'ngdialog-theme-default',
 				    closeByDocument: true,
@@ -540,19 +542,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			};
 		};
 
-		$scope.adjustFromDate = function (fromDate, untilDate, item) {
-			if ( untilDate.getTime() < fromDate.getTime() ) {
-				item.fromDate = untilDate;
-			};
-		};
-
-		$scope.adjustUntilDate = function (fromDate, untilDate, item) {
-			if ( fromDate.getTime() > untilDate.getTime() ) {
-				item.untilDate = fromDate;
-			};
-		};
-
 		$scope.closeDialog = function() {
+
+			// restore the old dates
+			$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
+			$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
+
 		    ngDialog.close();
 		};
 
@@ -631,10 +626,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
 		    */
 
+			// restore the old dates if dates were indeed saved
+			// this is hardcodding.. NEED BETTER WAY TO MANAGE
+		    $timeout(function() {
+				if ( angular.isDate($scope.fromDateCopy) && angular.isDate($scope.untilDateCopy) ) {
+					$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
+					$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
+
+					$scope.fromDateCopy = undefined;
+					$scope.untilDateCopy = undefined;
+				};
+		    }, 50);
+
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
 		    	// remove the orientation
 				removePrintOrientation();
+
+				// restore the old dates if dates were indeed saved
+				// this is hardcodding.. NEED BETTER WAY TO MANAGE
+				if ( !!$scope.fromDateCopy && !!$scope.untilDateCopy ) {
+					$scope.chosenReport.fromDate = angular.copy( $scope.chosenReport.fromDateCopy );
+					$scope.chosenReport.untilDate = angular.copy( $scope.chosenReport.untilDateCopy );
+
+					$scope.chosenReport.fromDateCopy = undefined;
+					$scope.chosenReport.untilDateCopy = undefined;
+				};
 
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );

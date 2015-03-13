@@ -168,34 +168,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 
-		// custom from and untill date picker options
-		// with limits to limit the chosen dates with 5 days
-		$scope.fromDateOptionFiveLimit = angular.extend({
-			onSelect: function(value) {
-				var format = $rootScope.dateFormat.toUpperCase(),
-					day,
-					month,
-					year,
-					dateP5;
-
-				if ( format == 'MM-DD-YYYY' || format == 'MM/DD/YYYY' ) {
-					day   = parseInt( value.substring(3,5) );
-					month = parseInt( value.substring(0,2) );
-				} else if ( format == 'DD-MM-YYYY' || format == 'DD/MM/YYYY' ) {
-					day   = parseInt( value.substring(0,2) );
-					month = parseInt( value.substring(3,5) );
-				};
-
-				year   = parseInt( value.substring(6,10) );
-				dateP5 = new Date( year, month-1, day+5 );
-
-				$scope.untilDateOptionFiveLimit.maxDate = dateP5;
-			}
-		}, datePickerCommon);
-		$scope.untilDateOptionFiveLimit = angular.extend({}, datePickerCommon);
-
-
-
 		var dbObj = reportUtils.processDate().businessDate;
 		$scope.dateChanged = function (item, dateName) {
 			if ( item.title == reportUtils.getName('ARRIVAL') ) {
