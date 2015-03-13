@@ -213,28 +213,19 @@ sntRover.controller('roverController',
     /**
     * menu - forming & associate logic
     * NOTE: Menu forming and logic and things are in service rvMenuSrv
-    **/
+    * @return - None
+    */
     $scope.formMenu = function() {    
-      
-        var menuOptions = {
-            defaultDashboard  : $rootScope.default_dashboard,
-            isHourlyRateOn    : $rootScope.isHourlyRateOn,
-            userRole          : $scope.userInfo.user_role,
-            isAutoChangeBussinessDate: hotelDetails.is_auto_change_bussiness_date
-        };  
-
         // if it standalone
         if ($rootScope.isStandAlone) { 
-            $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover (menuOptions);
-            $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover (menuOptions); 
+            $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover ();
+            $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover (); 
         } 
         //connected
         else {
-            $scope.menu       = rvMenuSrv.getMainMenuForConnectedRover (menuOptions);
-            $scope.mobileMenu = rvMenuSrv.getMobileMenuForConnectedRover (menuOptions);
+            $scope.menu       = rvMenuSrv.getMainMenuForConnectedRover ();
+            $scope.mobileMenu = rvMenuSrv.getMobileMenuForConnectedRover ();
         }
-        // method to decide whether to show menu from 
-        $scope.shouldShowMenu = rvMenuSrv.shouldShowMenu;
     };
 
     /**
@@ -257,6 +248,53 @@ sntRover.controller('roverController',
             rvPermissionSrv.getPermissionValue ('MULTI_PROPERTY_SWITCH'));     
     };
 
+    /**
+    * method to determine whether the user has permission to access admin
+    * @return {Boolean}
+    */
+    var hasPermissionToAccessAdmin = function(){
+        return (rvPermissionSrv.getPermissionValue ('SETTINGS_ACCESS_TO_HOTEL_ADMIN'));    
+    };
+
+    /**
+    * method to determine whether the user has permission to view the settings popup
+    * @return {Boolean}
+    */
+    var hasPermissionToViewUpdatePasswordPopup = function(){
+        return (rvPermissionSrv.getPermissionValue ('SETTINGS_CHANGE_PASSWORD_MENU'));    
+    };  
+
+    /**
+    * utility method to openup the settings popup
+    * @return - None
+    */
+    var openUpdatePasswordPopup = function(){
+        ngDialog.open({
+            template: '/assets/partials/settings/rvStaffSettingModal.html',
+            controller: 'RVStaffsettingsModalController',
+            className: 'calendar-modal'
+        }); 
+    };
+
+    /**
+    * when settings clicked, we will either redirect to admin or show popup to change popup
+    * @return - None
+    */
+    $scope.settingsClicked = function() {
+        //if we have admin permission, we will redirect to admin app
+        if (hasPermissionToAccessAdmin()){
+            //CICO-9816 bug fix - Akhila
+            $('body').addClass('no-animation');
+            $window.location.href = "/admin";            
+        }
+
+        //if we have permission to view the change password popup
+        else {
+            if(hasPermissionToViewUpdatePasswordPopup()){
+                openUpdatePasswordPopup();
+            }
+        }
+    };
 
 
     $rootScope.updateSubMenu = function(idx, item) {
@@ -418,21 +456,6 @@ sntRover.controller('roverController',
       //TODO: Log the error in proper way
     });
 
-    $scope.settingsClicked = function() {
-      if ($scope.isHotelAdmin) {
-        //CICO-9816 bug fix
-        $('body').addClass('no-animation');
-
-        $scope.selectedMenuIndex = "settings";
-        $window.location.href = "/admin";
-      } else if ($scope.isHotelStaff) {
-        ngDialog.open({
-          template: '/assets/partials/settings/rvStaffSettingModal.html',
-          controller: 'RVStaffsettingsModalController',
-          className: 'calendar-modal'
-        });
-      }
-    };
     //This variable is used to identify whether guest card is visible
     //Depends on $scope.guestCardVisible in rvguestcardcontroller.js
     $scope.isGuestCardVisible = false;
