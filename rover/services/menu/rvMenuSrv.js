@@ -369,7 +369,8 @@ sntRover.service('rvMenuSrv',
 			'journals': 			['ACCESS_JOURNAL'],
 
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],		
-			'commisions': 			['ACCESS_COMMISSIONS'],						
+			'commisions': 			['ACCESS_COMMISSIONS'],	
+			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],					
 
 		};
 
@@ -430,7 +431,7 @@ sntRover.service('rvMenuSrv',
 
 			case 'reports':		
 				// we are hiding the reports menu if it is a floor & maintanance staff	in connected/standalon	
-				returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : (isFloorMaintananceStaff() ? false : true);				
+				//returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : (isFloorMaintananceStaff() ? false : true);				
 				break;
 			case 'workManagement':
 				returnValue = !isHourlyRateOn();
