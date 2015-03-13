@@ -498,9 +498,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             return (idPresent || isPaymentTypeNotSelected || !depositPaid);
 
         };
-
-
-
         $scope.init = function() {
 
             if ($scope.isStandAlone) {
