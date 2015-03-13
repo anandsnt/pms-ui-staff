@@ -622,17 +622,23 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.fauxOptionClicked(e, item);
 		};
-		$scope.fauxChargeGroupOptionClicked = function(item) {
-			var selectedData = _.where(item.chargeGroups, {
-				selected: true
-			});
+		$scope.fauxChargeGroupOptionClicked = function(item, allChargeGroup) {
+			if( allChargeGroup ){
+				_.each(item.chargeGroups, function(group){
+					group.selected = !!item.allChargeGroupSelected;
+				});
+			} else {
+				var selectedData = _.where(item.chargeGroups, {
+					selected: true
+				});
 
-			if (selectedData.length == 0) {
-				item.chargeGroupTitle = "Show All";
-			} else if (selectedData.length == 1) {
-				item.chargeGroupTitle = selectedData[0].description;
-			} else if (selectedData.length > 1) {
-				item.chargeGroupTitle = selectedData.length + " Selected";
+				if (selectedData.length == 0) {
+					item.chargeGroupTitle = "Show All";
+				} else if (selectedData.length == 1) {
+					item.chargeGroupTitle = selectedData[0].description;
+				} else if (selectedData.length > 1) {
+					item.chargeGroupTitle = selectedData.length + " Selected";
+				};
 			};
 		};
 
@@ -653,18 +659,24 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.fauxOptionClicked(e, item);
 		};
-		$scope.fauxChargeCodeOptionClicked = function(item) {
-			var selectedData = _.where(item.chargeCodes, {
-				selected: true
-			});
+		$scope.fauxChargeCodeOptionClicked = function(item, allChargeCode) {
+			if( allChargeCode ){
+				_.each(item.chargeCodes, function(code){
+					code.selected = !!item.allChargeCodeSelected;
+				});
+			} else {
+				var selectedData = _.where(item.chargeCodes, {
+					selected: true
+				});
 
-			if (selectedData.length == 0) {
-				item.chargeCodeTitle = "Show All";
-			} else if (selectedData.length == 1) {
-				item.chargeCodeTitle = selectedData[0].description;
-			} else if (selectedData.length > 1) {
-				item.chargeCodeTitle = selectedData.length + " Selected";
-			}
+				if (selectedData.length == 0) {
+					item.chargeCodeTitle = "Show All";
+				} else if (selectedData.length == 1) {
+					item.chargeCodeTitle = selectedData[0].description;
+				} else if (selectedData.length > 1) {
+					item.chargeCodeTitle = selectedData.length + " Selected";
+				}
+			};
 		};
 
 		$scope.showFauxSelect = function(item) {
@@ -1236,7 +1248,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				setTimeout(function() {
 					$scope.$apply(function() {
 						thisReport.chosenUsers = modelVal;
-						console.log(thisReport.chosenUsers);
 					});
 				}.bind(this), 10);
 			},
@@ -1257,7 +1268,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				setTimeout(function() {
 					$scope.$apply(function() {
 						thisReport.chosenUsers = modelVal;
-						console.log(thisReport.chosenUsers);
 					});
 				}.bind(this), 10);
 			},
