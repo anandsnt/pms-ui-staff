@@ -163,10 +163,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					}
 
 				_.each($scope.reservationData.rooms, function(room, index) {
-					$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
-						accompanying_guests_details: paramsArray[index],
-						reservation_id: $scope.reservationData.reservationIds[index],
-					}, onupdateSuccess, onUpdateFailure);
+					if (paramsArray[index].length > 0) {
+						$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
+							accompanying_guests_details: paramsArray[index],
+							reservation_id: $scope.reservationData.reservationIds[index],
+						}, onupdateSuccess, onUpdateFailure);
+					}
 				})
 
 			}
