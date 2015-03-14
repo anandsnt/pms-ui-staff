@@ -521,8 +521,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// here we will give user another
 			// chance to limit the reports to
 			// a certain range
-			// TODO: in future make it more generic
-			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
+			if ( $_preFetchFullReport() ) {
 
 				// make a copy of the from and until dates
 				$scope.fromDateCopy = angular.copy( $scope.chosenReport.fromDate );
@@ -542,9 +541,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			};
 		};
 
+		// restore the old dates and close
 		$scope.closeDialog = function() {
-
-			// restore the old dates
 			$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
 			$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
 
@@ -554,6 +552,27 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.continueWithPrint = function () {
 			ngDialog.close();
 			$_fetchFullReport();
+		};
+
+		function $_preFetchFullReport () {
+			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
+				$scope.occupancyMaxDate = 0;
+
+				if ( $scope.chosenReport.chosenVariance && $scope.chosenReport.chosenLastYear ) {
+					$scope.occupancyMaxDate = 5;
+				} else if ( $scope.chosenReport.chosenVariance || $scope.chosenReport.chosenLastYear ) {
+					$scope.occupancyMaxDate = 10;
+				} else {
+					$scope.occupancyMaxDate = 15;
+				};
+
+				// if the current chosen dates are within
+				// the $scope.occupancyMaxDate, dont show pop
+				// go straight to printing
+				return ($scope.chosenReport.untilDate.getDate() - $scope.chosenReport.fromDate.getDate()) > $scope.occupancyMaxDate ? true : false;
+			} else {
+				return false;
+			};
 		};
 
 		function $_fetchFullReport () {
