@@ -13,7 +13,7 @@
 		</div>
 		<!-- show error message -->
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
+			<p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
 			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
 		</div>	
 		<!-- contentarea starts here-->
@@ -21,15 +21,13 @@
 			<!-- top section starts here-->
 			<div class="row checkin-wrapper" id="get-key-wrapper">
 				<div class="chekin-heading centeralign">
-					You're checked in!
+					You are checked in!
 				</div>
 				<div class="reservation-id centeralign">
 					<span class="res-conf-no">RESERVATION #: {{confirmationNumber}}</span>
 				</div>
 				<div class="get-key">
-					<p>Please go to the</p>
 					<p>{{responseData.delivery_message}}</p>
-					<p>at the front desk for your key.</p>
 				</div>
 			</div>
 			<!-- checkinbtn section ends here-->

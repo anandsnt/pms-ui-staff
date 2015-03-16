@@ -1,36 +1,37 @@
 <div class="jumbotron">
-	<div class="container">
+	<div class="container width-100">
 	<!-- contentarea starts here-->
-		<div class="container">
-			<div class="container-fluid">
-				<div class="row headerrow">
+		<div class="container width-100">
+			<div class="container-fluid eden_logo_bg">
+				<div class="row headerrow black-bg">
 					<logo-image></logo-image>
 				</div>
 			</div>
 			<!-- show posting message -->
 			<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head">Your request is being processed.</p>
-				<p class="msg-body">This may take a few seconds..... please wait!</p>
+				<p class="msg-head black-text">Your request is being processed.</p>
+				<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
 			</div>
 			<!-- show error message -->
 			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-				<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
-				<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+				<p class="msg-head black-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+				<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="brown-text">{{hotelPhone}}.</a></p>
 			</div>
 			<!-- top section starts here-->
-			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
-				<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel ">
-					<span class="blue-text">Check Out</span>
+			<div class="row check-inout-wrapper toggle-pos-rel container-top-padding" ng-show="optionsAvailable && !isFetching && !netWorkError">
+				<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel container-top-padding ">
+					<span class="black-text">Check-Out</span>
 					<p class="leadtext balance-container">
 						<span class="lightcontent chekout-time">
-							<span class="grey-text">Your balance is:</span>
+							<span class="black-text">Your balance is:</span>
 						</span>
-						<span class="balancevalue grey-text">{{currencySymbol}}{{billData.balance}}</span>
+						<span class="balancevalue black-text">{{currencySymbol}}{{billData.balance}}</span>
 					</p>
 
-					<div class="viewbill-toggle blue-text">
-						<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/rightarrow_brown.png" alt="" /><span class="brown-text">&nbsp;&nbsp;VIEW BILL</span></a>
-						<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/downarrow_brown.png" alt=""  /><span class="brown-text">&nbsp;&nbsp;VIEW BILL</span></a>
+					<div class="viewbill-toggle pink-text">
+
+						<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/Row_nyc/rightarrow.png" alt="" /><span class="pink-text">&nbsp;&nbsp;VIEW BILL</span></a>
+						<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/Row_nyc/downarrow.png" alt=""  /><span class="pink-text">&nbsp;&nbsp;VIEW BILL</span></a>
 					</div>
 					<div class="showbill-wrap" ng-show="showBill" >
 						<div class="trans-rel-wrap">
@@ -41,7 +42,7 @@
 									
 									<div class="bill-contain">
 										<div class="bill-hotel-logo">
-											<img class="img-responsive img-center mgm-logo" src="{{hotelLogo}}" alt="Responsive image">
+											<img class="img-responsive img-center" src="{{hotelLogo}}" alt="Responsive image">
 										</div>
 
 										<div class="guest-details leftalign">
@@ -106,13 +107,13 @@
 						</div>
 					</div>			
 				</div>
-				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+				<div class="col-md-6 no-padding now-later-options no-screen-attach container-top-padding">
 					<div class="row">
-						<div class="col-xs-12 accept-charges-button single blue-bg">
+						<div class="col-xs-12 accept-charges-button single pink-bg">
 							<div class="rel-wrapper">
 								<a ng-click="gotToNextStep()"></a>
 								<div class="row checkout-later-text white-text">
-									Accept charges and check out
+									Accept charges and check-out
 								</div>
 								<div class="row  icontop">
 									<img src="/assets/img/Fontainebleau/creditcard_icon.png" width="48" height="48" alt=""/>
@@ -123,7 +124,7 @@
 				</div>
 				<div class="row clearboth">
 				<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable && !netWorkError">
-						<em class = "base-text"> The credit card on record will be charged.</em>
+						<em class = "base-text black-text"> The credit card on record will be charged.</em>
 					</p>
 					
 				</div>
