@@ -157,6 +157,7 @@ sntRover.controller('RVroomAssignmentController',[
 					$scope.oldRoomType = oldRoomType;
 					$scope.openApplyChargeDialog();
 				} else {
+					$scope.roomTransfer.withoutRateChange = true;
 					$scope.assignRoom();
 				}
 			}
