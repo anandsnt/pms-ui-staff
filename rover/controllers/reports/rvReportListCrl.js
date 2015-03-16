@@ -50,7 +50,7 @@ sntRover.controller('RVReportListCrl', [
                     'guaranteeTypes': $scope.$parent.guaranteeTypes
                 });
 
-                // to process the sort_by for this report
+                // to process the sort by for this report
                 reportUtils.processSortBy( reportList[i] );
 
                 // to reorder & map the sort_by to report details columns - for this report
@@ -58,6 +58,9 @@ sntRover.controller('RVReportListCrl', [
 
                 // to assign inital date values for this report
                 reportUtils.initDateValues( reportList[i] );
+
+                // to process the group by for this report
+                reportUtils.processGroupBy( reportList[i] );
 
 
 
