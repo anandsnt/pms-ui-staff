@@ -132,6 +132,7 @@ sntRover.controller('RVActivityLogCtrl',[
         }
         params['sort_order'] = $scope.sort_order;
         params['sort_field'] = $scope.sort_field;
+        $scope.user_id ="";
         $scope.invokeApi(RVActivityLogSrv.filterActivityLog, params, callback);
     }
 
