@@ -318,6 +318,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.name = $scope.singleAddon.name;
 			singleAddonData.post_type_id = $scope.singleAddon.post_type_id;
 			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
+			singleAddonData.manual_posting = $scope.singleAddon.manual_posting;
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
@@ -325,7 +326,6 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.end_date = $scope.singleAddon.end_date? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
 
-	
 
 			// if we are adding new addon
 			if ( $scope.isAddMode ) {

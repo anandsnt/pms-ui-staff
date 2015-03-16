@@ -7,7 +7,8 @@ sntRover.controller('RVReportDetailsCtrl', [
     'RVreportsSrv',
 	'RVReportUtilsFac',
 	'RVReportParserFac',
-	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser) {
+	'ngDialog',
+	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -75,6 +76,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.hasNoTotals   = false;
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
+			$scope.isTransactionReport = false;
 
 			switch ( $scope.chosenReport.title ) {
 				case reportUtils.getName('IN_HOUSE_GUEST'):
@@ -125,6 +127,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasPagination = false;
 					break;
 
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					$scope.hasNoTotals = true;
+					$scope.isTransactionReport = true;
+					break;
+
 				default:
 					break;
 			};
@@ -155,6 +162,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
+					break;
+
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					$scope.leftColSpan = 5;
+					$scope.rightColSpan = 5;
 					break;
 
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
@@ -274,57 +286,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 			};
 
 			// scroller refresh and reset position
-			refreshScroll();
-			refreshSidebarScroll();
-
-			// need to keep a separate object to show the date stats in the footer area
-			// dirty hack to get the val() not model value
-			// delay as it cost time for ng-bindings
-			$timeout(function() {
-
-				// clear out old values
-				$scope.displayedReport = {};
-
-				// chosenReportFromCancelDate
-				// chosenReportToCancelDate
-				$scope.displayedReport.chosenReportFromCancelDate = $( '#chosenReportFromCancelDate' ).val();
-				$scope.displayedReport.chosenReportToCancelDate = $( '#chosenReportToCancelDate' ).val();
-
-				// chosenReportFromDepositDate
-				// chosenReportToDepositDate
-				$scope.displayedReport.chosenReportFromDepositDate = $( '#chosenReportFromDepositDate' ).val();
-				$scope.displayedReport.chosenReportToDepositDate = $( '#chosenReportToDepositDate' ).val();
-
-				// chosenReportFromCreateDate
-				// chosenReportToCreateDate
-				$scope.displayedReport.chosenReportFromCreateDate = $( '#chosenReportFromCreateDate' ).val();
-				$scope.displayedReport.chosenReportToCreateDate = $( '#chosenReportToCreateDate' ).val();
-
-				// chosenReportFromArrivalDate
-				// chosenReportToArrivalDate
-				$scope.displayedReport.chosenReportFromArrivalDate = $( '#chosenReportFromArrivalDate' ).val();
-				$scope.displayedReport.chosenReportToArrivalDate = $( '#chosenReportToArrivalDate' ).val();
-
-				// chosenReportFromDate
-				// chosenReportToDate
-				$scope.displayedReport.chosenReportFromDate = $( '#chosenReportFromDate' ).val();
-				$scope.displayedReport.chosenReportToDate = $( '#chosenReportToDate' ).val();
-
-				// chosenReportFromTime
-				// chosenReportToTime
-				$scope.displayedReport.chosenReportFromTime = $( '#chosenReportFromTime option:selected' ).text() != 'From Time' ? $( '#chosenReportFromTime option:selected' ).text() : '';
-				$scope.displayedReport.chosenReportToTime = $( '#chosenReportToTime option:selected' ).text() != 'Until Time' ? $( '#chosenReportToTime option:selected' ).text() : '';
-
-				// choosenReportUser
-				$scope.displayedReport.choosenReportUser = $( '#choosenReportUser' ).val();
-
-				// chosenReportCompTaGrp
-				$scope.displayedReport.chosenReportCompTaGrp = $( '#chosenReportCompTaGrp' ).val();
-
-				// call again may be.. :(
+			$timeout(function () {
 				refreshScroll();
-			}, 100);
-
+				refreshSidebarScroll();
+			}, 200);
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
@@ -332,7 +297,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, $scope.$parent.reportGroupedBy) );
 
 
-			// now flags that will determine correct template to be loaded
+			// a very different parent template / row template / content template for certain reports
+			// otherwise they all will share the same template
 			switch ( $scope.parsedApiFor ) {
 				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
 					$scope.hasReportTotals    = false;
@@ -400,12 +366,23 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvReservationByUserReportRow.html';
 					break;
 
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+					template = '/assets/partials/reports/rvDailyTransactionsReportRow.html';
+					break;
+
 				default:
 					template = '/assets/partials/reports/rvCommonReportRow.html';
 					break;
 			};
 
 			return template;
+		};
+
+
+		// simple method to allow checking for report title
+		// from the template, even without making the entire reportUtils part of $scope
+		$scope.isThisReport = function (name) {
+			return reportUtils.getName(name) == $scope.parsedApiFor ? true : false;
 		};
 
 
@@ -540,13 +517,75 @@ sntRover.controller('RVReportDetailsCtrl', [
 		//loads the content in the existing report view in the DOM.
 		$scope.fetchFullReport = function() {
 
+			// report scope limiter popup
+			// here we will give user another
+			// chance to limit the reports to
+			// a certain range
+			if ( $_preFetchFullReport() ) {
+
+				// make a copy of the from and until dates
+				$scope.fromDateCopy = angular.copy( $scope.chosenReport.fromDate );
+				$scope.untilDateCopy = angular.copy( $scope.chosenReport.untilDate );
+
+				// show popup
+				ngDialog.open({
+					controller: 'RVPrePrintPopupCtrl',
+				    template: '/assets/partials/reports/rvPrePrintPopup.html',
+				    className: 'ngdialog-theme-default',
+				    closeByDocument: true,
+				    scope: $scope,
+				    data: []
+				});
+			} else {
+				$_fetchFullReport();
+			};
+		};
+
+		// restore the old dates and close
+		$scope.closeDialog = function() {
+			$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
+			$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
+
+		    ngDialog.close();
+		};
+
+		$scope.continueWithPrint = function () {
+			ngDialog.close();
+			$_fetchFullReport();
+		};
+
+		function $_preFetchFullReport () {
+			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
+				$scope.occupancyMaxDate = 0;
+
+				if ( $scope.chosenReport.chosenVariance && $scope.chosenReport.chosenLastYear ) {
+					$scope.occupancyMaxDate = 5;
+				} else if ( $scope.chosenReport.chosenVariance || $scope.chosenReport.chosenLastYear ) {
+					$scope.occupancyMaxDate = 10;
+				} else {
+					$scope.occupancyMaxDate = 15;
+				};
+
+				// if the current chosen dates are within
+				// the $scope.occupancyMaxDate, dont show pop
+				// go straight to printing
+				return ($scope.chosenReport.untilDate.getDate() - $scope.chosenReport.fromDate.getDate()) > $scope.occupancyMaxDate ? true : false;
+			} else {
+				return false;
+			};
+		};
+
+		function $_fetchFullReport () {
+
 			// since we are loading the entire report and show its print preview
 			// we need to keep a back up of the original report with its pageNo
-		    $scope.returnToPage = $_pageNo;
+			$scope.returnToPage = $_pageNo;
 
-		    // should-we-change-view, specify-page, per-page-value
-		    $scope.genReport( false, 1, 1000 );
+			// should-we-change-view, specify-page, per-page-value
+			$scope.genReport( false, 1, 1000 );
 		};
+
+
 
 
 		// add the print orientation before printing
@@ -562,6 +601,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
 					orientation = 'landscape';
 					break;
 
@@ -605,10 +645,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
 		    */
 
+			// restore the old dates if dates were indeed saved
+			// this is hardcodding.. NEED BETTER WAY TO MANAGE
+		    $timeout(function() {
+				if ( angular.isDate($scope.fromDateCopy) && angular.isDate($scope.untilDateCopy) ) {
+					$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
+					$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
+
+					$scope.fromDateCopy = undefined;
+					$scope.untilDateCopy = undefined;
+				};
+		    }, 50);
+
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
 		    	// remove the orientation
 				removePrintOrientation();
+
+				// restore the old dates if dates were indeed saved
+				// this is hardcodding.. NEED BETTER WAY TO MANAGE
+				if ( !!$scope.fromDateCopy && !!$scope.untilDateCopy ) {
+					$scope.chosenReport.fromDate = angular.copy( $scope.chosenReport.fromDateCopy );
+					$scope.chosenReport.untilDate = angular.copy( $scope.chosenReport.untilDateCopy );
+
+					$scope.chosenReport.fromDateCopy = undefined;
+					$scope.chosenReport.untilDateCopy = undefined;
+				};
 
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );

@@ -77,25 +77,30 @@
                                             </tr>
                                             <tr ng-repeat="revenue in stateStore.revenues track by $index">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(revenue.key,$index) < 0}">
-                                                            {{currencySymbol}}{{absoulte(getValue(revenue.key,$index)) | number: 2}}
+                                                            {{ absoulte(getValue(revenue.key,$index)) | currency:currencySymbol:2 }}
                                                     </td>
                                             </tr>
                                             <tr ng-repeat="market in reportsState.markets" ng-show="market.selected" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketRevenueValue(outerIndex,$index) < 0}">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                            {{currencySymbol}}{{absoulte(getMarketRevenueValue(outerIndex,$index)) | number:2}}
+                                                            {{ absoulte(getMarketRevenueValue(outerIndex,$index)) | currency:currencySymbol:2 }}
                                                     </td>
                                             </tr>
                                             <tr ng-repeat="chargeGroup in results.charge_groups" ng-init="outerIndex = $index">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getChargeCodeValue(outerIndex,$index) < 0}">
-                                                            {{currencySymbol}}{{absoulte(getChargeCodeValue(outerIndex,$index)) | number:2}}
+                                                            {{absoulte(getChargeCodeValue(outerIndex,$index)) | currency:currencySymbol:2 }}
                                                     </td>
                                             </tr>
                                             <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(revenueTotal.key,$index) < 0}">
-                                                            <strong>{{currencySymbol}}{{absoulte(getValue(revenueTotal.key,$index)) | number:2}}</strong>
+                                                            <strong>{{absoulte(getValue(revenueTotal.key,$index)) | currency:currencySymbol:2 }}</strong>
                                                     </td>
                                             </tr>
                                     </tbody>
+                            </table>
+
+                            <!-- Reports table footer -->
+                            <table class="occupancy-footer">
+                                <tfoot ng-include="'/assets/partials/reports/rvReportDetailsFooter.html'"></tfoot>
                             </table>
                     </div>
             </div>

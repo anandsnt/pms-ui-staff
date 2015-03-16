@@ -12,13 +12,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'$rootScope',
 	'RVReservationGuestSrv',
 	'rvPermissionSrv',
-	function($scope, $state, 
-		RVReservationSummarySrv, ngDialog, 
-		RVContactInfoSrv, $filter, 
-		RVBillCardSrv, $q, 
-		RVHkRoomDetailsSrv, $vault, 
-		$rootScope, RVReservationGuestSrv
-		, rvPermissionSrv) {
+	function($scope, $state,
+		RVReservationSummarySrv, ngDialog,
+		RVContactInfoSrv, $filter,
+		RVBillCardSrv, $q,
+		RVHkRoomDetailsSrv, $vault,
+		$rootScope, RVReservationGuestSrv, rvPermissionSrv) {
 
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
@@ -37,20 +36,20 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		/**
-		* function to check whether the user has permission
-		* to make payment
-		* @return {Boolean}
-		*/
+		 * function to check whether the user has permission
+		 * to make payment
+		 * @return {Boolean}
+		 */
 		$scope.hasPermissionToMakePayment = function() {
-			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+			return rvPermissionSrv.getPermissionValue('MAKE_PAYMENT');
 		};
 
 		/**
-		* function to determine the visibility of Make Payment button
-		* @return {Boolean}
-		*/
+		 * function to determine the visibility of Make Payment button
+		 * @return {Boolean}
+		 */
 		$scope.hideMakePayment = function() {
-			return ($scope.hasPermissionToMakePayment());
+			return (!$scope.hasPermissionToMakePayment());
 		};
 
 		$scope.init = function() {
@@ -137,15 +136,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				_.each(rooms, function(room, index) {
 					var validGuests = [];
 					_.each(room.accompanying_guest_details, function(guest) {
-						if (!!guest.first_name && !guest.last_name) {
-							$scope.errorMessage = ["Validation failed: Accompanying guest's last name can't be blank"];
-							return;
-						} else if (!guest.first_name && !guest.last_name) {
+						if (!guest.first_name && !guest.last_name) {
 							guest.first_name = null;
 							guest.last_name = null;
-						} else {
-							validGuests.push(guest);
 						}
+						validGuests.push(guest);
 					});
 					paramsArray.push(validGuests);
 				})
@@ -168,10 +163,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					}
 
 				_.each($scope.reservationData.rooms, function(room, index) {
-					$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
-						accompanying_guests_details: paramsArray[index],
-						reservation_id: $scope.reservationData.reservationIds[index],
-					}, onupdateSuccess, onUpdateFailure);
+					if (paramsArray[index].length > 0) {
+						$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
+							accompanying_guests_details: paramsArray[index],
+							reservation_id: $scope.reservationData.reservationIds[index],
+						}, onupdateSuccess, onUpdateFailure);
+					}
 				})
 
 			}

@@ -153,6 +153,15 @@
 							ng-options="type.id as type.description for type in postTypes"></select>
 					</div>
 				</div>
+
+				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.manual_posting }"></span>
+						<label>{{'MANUAL_POSTING' | translate}}</label>
+						<input type="checkbox" ng-model="singleAddon.manual_posting">
+					</label>
+				</div>
+				
 			</fieldset>
 
 

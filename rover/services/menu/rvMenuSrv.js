@@ -8,16 +8,17 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to return default dashboard state for rover
-	* @param {string}, dashboard
+	* will find the dashboard from current user object
 	* @return {string}, corresponding state
 	*/
-	var getDefaultDashboardState = function(default_dashboard) {
+	var getDefaultDashboardState = function() {
+		var dashboard = RVHotelDetailsSrv.hotelDetails.current_user.default_dashboard;
 		var statesForDashbaord = {
 			'HOUSEKEEPING': 'rover.dashboard.housekeeping',
 			'FRONT_DESK': 'rover.dashboard.frontoffice',
 			'MANAGER': 'rover.dashboard.manager'
 		};
-		return statesForDashbaord[default_dashboard];
+		return statesForDashbaord[dashboard];
     };
 
     /**
@@ -76,21 +77,37 @@ sntRover.service('rvMenuSrv',
     	//deep copying the obeject before proceeding
     	menuList = JSON.parse(JSON.stringify(menuList));
 
-    	var menuToReturn = [];
+    	var menuToReturn = [],  
+    		subMenuCount,
+    		subMenuVisibleCount, 
+    		hasSubMenu = false;
+
     	//we are processing on the menu list we have
 		_.each (menuList, function(menuItem) {
 			//if the menu is hi
 			isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
 			if(isMenuItemVisible) {
-				menuToReturn.push (menuItem);
-				
+				subMenuCount = menuItem.submenu ? menuItem.submenu.length : 0;
+				hasSubMenu = (subMenuCount > 0) ? true : false;
+				subMenuVisibleCount = 0;
+
 				//looping through submenus
-				_.each (menuItem.submenu, function (subMenuItem, index){
-					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);
-					if(!isMenuItemVisible) {
-						menuItem.submenu.splice (index, 1);
-					}					
-				});				
+				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem){
+					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);	
+					
+					if (isMenuItemVisible) subMenuVisibleCount++;
+					return isMenuItemVisible;									
+				});
+
+				// if it has submenu & none of them are visible we will not show that menu
+				if(hasSubMenu && subMenuVisibleCount != 0){
+					menuToReturn.push (menuItem);
+				}
+
+				//if it has no submenu, we will just push them
+				if(!hasSubMenu) {
+					menuToReturn.push (menuItem);
+				}
 			}
 		});
 
@@ -100,14 +117,10 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to get menu for rover
-	* @param {object}, contains the different value/function to decide the enabling/disabling of a menu item
-	* as well as different actions
+	* @return {array} - List of Menu
 	*/
-	this.getMainMenuForStandAloneRover = function(options) {
-		var defaultDashboard 		= options['defaultDashboard'],
-		 	defaultDashboardState 	= getDefaultDashboardState (defaultDashboard),
-			isHourlyRateOn 			= options['isHourlyRateOn'],
-			isAutoChangeBussinessDate = options['isAutoChangeBussinessDate'],
+	this.getMainMenuForStandAloneRover = function() {
+		var defaultDashboardState 	= getDefaultDashboardState (),
 			menuFrontDeskIndex 		= -1,
 			isMenuItemVisible		= true,
             menuList = []; //storing the menu list, will process on this and return
@@ -240,12 +253,10 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to 3rd party connected PMS - for now OPERA
-	* @param {object}, contains the different value/function to decide the enabling/disabling of a menu item
-	* as well as different actions
+	* @return {array} - List of Menu
 	*/
-	this.getMainMenuForConnectedRover = function(options) {
-		var defaultDashboard 		= options['defaultDashboard'],
-		 	defaultDashboardState 	= getDefaultDashboardState (defaultDashboard);
+	this.getMainMenuForConnectedRover = function() {
+		var defaultDashboardState 	= getDefaultDashboardState ();
 
 		var menu = [{
 				title: "MENU_DASHBOARD",
@@ -276,12 +287,10 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to get mobile menu for standalone
-	* @param {object}, contains the different value/function to decide the enabling/disabling of a menu item
-	* as well as different actions
+	* @return {array} - List of Menu
 	*/
-	this.getMobileMenuForStandAloneRover = function(options) {
-		var defaultDashboard 		= options['defaultDashboard'],
-		 	defaultDashboardState 	= getDefaultDashboardState (defaultDashboard);
+	this.getMobileMenuForStandAloneRover = function() {
+		var defaultDashboardState 	= getDefaultDashboardState ();
 	    
 	    // menu for mobile views
 	    var menu = [{
@@ -302,12 +311,10 @@ sntRover.service('rvMenuSrv',
 
 	/**
 	* method to get mobile menu for connected
-	* @param {object}, contains the different value/function to decide the enabling/disabling of a menu item
-	* as well as different actions
+	* @return {array} - List of Menu
 	*/
-	this.getMobileMenuForConnectedRover = function(options) {
-		var defaultDashboard 		= options['defaultDashboard'],
-		 	defaultDashboardState 	= getDefaultDashboardState (defaultDashboard);
+	this.getMobileMenuForConnectedRover = function() {
+		var defaultDashboardState 	= getDefaultDashboardState ();
 	    
 	    // menu for mobile views
 	    var menu = [{
@@ -353,7 +360,8 @@ sntRover.service('rvMenuSrv',
 			'journals': 			['ACCESS_JOURNAL'],
 
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],		
-			'commisions': 			['ACCESS_COMMISSIONS'],						
+			'commisions': 			['ACCESS_COMMISSIONS'],	
+			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],					
 
 		};
 
@@ -365,7 +373,6 @@ sntRover.service('rvMenuSrv',
 			_.each(permissions, function(item) {
 				collectivePermissionValue = collectivePermissionValue * rvPermissionSrv.getPermissionValue(item);
 			});
-
 			return collectivePermissionValue;
 		}
 		return true;
@@ -411,11 +418,11 @@ sntRover.service('rvMenuSrv',
 			//we are hiding conversations for now
 			case 'conversations':
 				returnValue = false;
-				break;
+				break;		
 
 			case 'reports':		
 				// we are hiding the reports menu if it is a floor & maintanance staff	in connected/standalon	
-				returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : (isFloorMaintananceStaff() ? false : true);				
+				//returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : (isFloorMaintananceStaff() ? false : true);				
 				break;
 			case 'workManagement':
 				returnValue = !isHourlyRateOn();

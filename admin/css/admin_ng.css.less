@@ -719,11 +719,6 @@ section.content-scroll {
 
 
 
-/* style to fix draggable li resizing on dragging */
-
-.form .entry.has-sortable .boxes li{
-   min-width:100% ;
-}
 /*style to fix issue in rates grid */
 td{
   .rate_entry{
@@ -740,21 +735,27 @@ td{
 }
 
 
-.li-draggable{
-   min-width:22% !important; /* work around to fix drag and drop in touch devices*/
-  background-color:white !important;
+.ui-draggable-dragging{
   position: relative;
-  line-height: 40px;
-  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  line-height: 1.1em;
+  padding: 5px 40px 5px 10px;
+  width: 22% !important;
+  height: auto !important;
+  min-height: 40px;
   margin-bottom: 10px;
   cursor: pointer;
-  .clickable;
-  .no-transition;
+  background-color: @white;
+  #border-radius > .rounded();
+  .box-shadow();
 
   .icon-handle {
       position: absolute;
       top: 12px;
       right: 12px;
+      background-position: 0 -750px;
       .square(16px);
       .show;
   }
