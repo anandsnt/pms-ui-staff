@@ -439,12 +439,14 @@ sntRover.factory('RVReportUtilsFac', [
 
             if ( _hasChargeGroupSelect ) {
                 reportItem['selectChargeGroupOpen'] = false;
-                reportItem['chargeGroupTitle'] = 'Select';
+                reportItem['chargeGroupTitle'] = 'All Selected';
+                reportItem['allChargeGroupSelected'] = true;
             };
 
             if ( _hasChargeCodeSelect ) {
                 reportItem['selectChargeCodeOpen'] = false;
-                reportItem['chargeCodeTitle'] = 'Select';
+                reportItem['chargeCodeTitle'] = 'All Selected';
+                reportItem['allChargeCodeSelected'] = true;
             };
         };
 
@@ -624,6 +626,11 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['untilDate'] = _getDates.yesterday;
                     break;
 
+                // date range must be yesterday - relative to current business date
+                case __reportNames['DAILY_TRANSACTIONS']:
+                    reportItem['singleValueDate']  = _getDates.yesterday;
+                    break;
+
                 // by default date range must be from a week ago to current business date
                 default:
                     reportItem['fromDate']        = _getDates.aWeekAgo;
@@ -635,8 +642,6 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['untilCancelDate']  = _getDates.businessDate;
                     reportItem['untilArrivalDate'] = _getDates.businessDate;
                     reportItem['untilCreateDate']  = _getDates.businessDate;
-                    /**/
-                    reportItem['singleValueDate']  = _getDates.businessDate;
                     break;
             };
         };

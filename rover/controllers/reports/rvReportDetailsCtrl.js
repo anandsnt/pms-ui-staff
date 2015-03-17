@@ -46,7 +46,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// ref to parents for filter item toggles
 		$scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
 		$scope.toggleFilterItems = function(item) {
-			$scope.$parent.toggleFilterItems(item);
+			if ( item ) {
+				$scope.$parent.toggleFilterItems(item);
+			};
 			refreshSidebarScroll();
 		};
 
