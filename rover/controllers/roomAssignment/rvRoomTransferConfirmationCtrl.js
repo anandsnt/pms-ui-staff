@@ -1,14 +1,29 @@
 sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$filter', 'ngDialog', '$timeout',
 	function($scope, $rootScope,$filter, ngDialog , $timeout){
 
-	if($scope.roomTransfer.newRoomRate<$scope.roomTransfer.oldRoomRate){
-		$scope.isSmallerRate = true;
-	}else if($scope.roomTransfer.newRoomRate>$scope.roomTransfer.oldRoomRate){
-		$scope.isLargerRate = true;
+	BaseCtrl.call(this, $scope);
+
+	var newRate =parseInt($scope.roomTransfer.newRoomRate);
+	var oldRate =parseInt($scope.roomTransfer.oldRoomRate);
+	
+	$scope.isSmallerRate = function(){
+		if(newRate<oldRate){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	$scope.isLargerRate = function(){
+		if(newRate>oldRate){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
-	BaseCtrl.call(this, $scope);
-	
 	$scope.closeDialog = function() {
             //to add stjepan's popup showing animation
             $rootScope.modalOpened = false; 
