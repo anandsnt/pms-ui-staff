@@ -7,7 +7,8 @@ sntRover.controller('RVReportDetailsCtrl', [
     'RVreportsSrv',
 	'RVReportUtilsFac',
 	'RVReportParserFac',
-	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser) {
+	'ngDialog',
+	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -516,13 +517,75 @@ sntRover.controller('RVReportDetailsCtrl', [
 		//loads the content in the existing report view in the DOM.
 		$scope.fetchFullReport = function() {
 
+			// report scope limiter popup
+			// here we will give user another
+			// chance to limit the reports to
+			// a certain range
+			if ( $_preFetchFullReport() ) {
+
+				// make a copy of the from and until dates
+				$scope.fromDateCopy = angular.copy( $scope.chosenReport.fromDate );
+				$scope.untilDateCopy = angular.copy( $scope.chosenReport.untilDate );
+
+				// show popup
+				ngDialog.open({
+					controller: 'RVPrePrintPopupCtrl',
+				    template: '/assets/partials/reports/rvPrePrintPopup.html',
+				    className: 'ngdialog-theme-default',
+				    closeByDocument: true,
+				    scope: $scope,
+				    data: []
+				});
+			} else {
+				$_fetchFullReport();
+			};
+		};
+
+		// restore the old dates and close
+		$scope.closeDialog = function() {
+			$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
+			$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
+
+		    ngDialog.close();
+		};
+
+		$scope.continueWithPrint = function () {
+			ngDialog.close();
+			$_fetchFullReport();
+		};
+
+		function $_preFetchFullReport () {
+			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
+				$scope.occupancyMaxDate = 0;
+
+				if ( $scope.chosenReport.chosenVariance && $scope.chosenReport.chosenLastYear ) {
+					$scope.occupancyMaxDate = 5;
+				} else if ( $scope.chosenReport.chosenVariance || $scope.chosenReport.chosenLastYear ) {
+					$scope.occupancyMaxDate = 10;
+				} else {
+					$scope.occupancyMaxDate = 15;
+				};
+
+				// if the current chosen dates are within
+				// the $scope.occupancyMaxDate, dont show pop
+				// go straight to printing
+				return ($scope.chosenReport.untilDate.getDate() - $scope.chosenReport.fromDate.getDate()) > $scope.occupancyMaxDate ? true : false;
+			} else {
+				return false;
+			};
+		};
+
+		function $_fetchFullReport () {
+
 			// since we are loading the entire report and show its print preview
 			// we need to keep a back up of the original report with its pageNo
-		    $scope.returnToPage = $_pageNo;
+			$scope.returnToPage = $_pageNo;
 
-		    // should-we-change-view, specify-page, per-page-value
-		    $scope.genReport( false, 1, 1000 );
+			// should-we-change-view, specify-page, per-page-value
+			$scope.genReport( false, 1, 1000 );
 		};
+
+
 
 
 		// add the print orientation before printing
@@ -582,10 +645,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
 		    */
 
+			// restore the old dates if dates were indeed saved
+			// this is hardcodding.. NEED BETTER WAY TO MANAGE
+		    $timeout(function() {
+				if ( angular.isDate($scope.fromDateCopy) && angular.isDate($scope.untilDateCopy) ) {
+					$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
+					$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
+
+					$scope.fromDateCopy = undefined;
+					$scope.untilDateCopy = undefined;
+				};
+		    }, 50);
+
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
 		    	// remove the orientation
 				removePrintOrientation();
+
+				// restore the old dates if dates were indeed saved
+				// this is hardcodding.. NEED BETTER WAY TO MANAGE
+				if ( !!$scope.fromDateCopy && !!$scope.untilDateCopy ) {
+					$scope.chosenReport.fromDate = angular.copy( $scope.chosenReport.fromDateCopy );
+					$scope.chosenReport.untilDate = angular.copy( $scope.chosenReport.untilDateCopy );
+
+					$scope.chosenReport.fromDateCopy = undefined;
+					$scope.chosenReport.untilDateCopy = undefined;
+				};
 
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );

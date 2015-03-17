@@ -45,4 +45,40 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		return deferred.promise;
 	};
 
+   	/*
+    * To update room types data
+    * @params {object} with query
+    */
+	this.getUnAssignedRooms = function(params){
+		var deferred = $q.defer();
+		var data = {
+			query: params.query,
+			floor_unassigned:true
+		};
+		var url = '/api/floors/rooms';	
+		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};	
+
+
+   	/*
+    * To update room types data
+    * @params {object} with floorID
+    */
+	this.getFloorDetails = function(params){
+		var deferred = $q.defer();
+		var floorID = params.floorID;
+		var url = '/api/floors/' + floorID + ".json";	
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};	
+
 }]);

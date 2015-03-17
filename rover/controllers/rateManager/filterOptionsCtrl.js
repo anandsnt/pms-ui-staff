@@ -42,6 +42,12 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         });
 
         $scope.refreshFilterScroll = function() {
+            $scope.isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
+            if ($scope.isIpad){
+                setTimeout(function() {
+                   filterData.rate_type_selected = '';
+                }, 300);
+            }
             setTimeout(function() {
                 $scope.$$childTail.$parent.myScroll['filter_details'].refresh();
             }, 300);

@@ -582,12 +582,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
         };
 
-
         $scope.computeTotalStayCost = function(reset) {
             // TODO : Loop thru all rooms
             var roomIndex = 0;
             var currentRoom = $scope.reservationData.rooms[roomIndex];
-
             //compute stay cost for the current room
             var adults = currentRoom.numAdults;
             var children = currentRoom.numChildren;
@@ -600,7 +598,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if ((date != $scope.reservationData.departure_date || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                if ((date == $scope.reservationData.arrivalDate || date != $scope.reservationData.departureDate) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
 
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
@@ -831,8 +829,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll); // CICO-10161
 
                 //  CICO-9576
-
-                addOnCumulative += parseInt(finalRate);
+                if (!addon.is_inclusive) {
+                    addOnCumulative += parseInt(finalRate);
+                }
                 addon.effectivePrice = finalRate;
             });
 
@@ -972,6 +971,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.demographics.market = reservationDetails.reservation_card.market_segment_id == null ? "" : reservationDetails.reservation_card.market_segment_id;
             $scope.reservationData.demographics.source = reservationDetails.reservation_card.source_id == null ? "" : reservationDetails.reservation_card.source_id;
             $scope.reservationData.demographics.origin = reservationDetails.reservation_card.booking_origin_id == null ? "" : reservationDetails.reservation_card.booking_origin_id;
+
+            //Put them in a room too
+            $scope.reservationData.rooms[0].demographics = angular.copy($scope.reservationData.demographics);
 
             // TODO : This following LOC has to change if the room number changes to an array
             // to handle multiple rooms in future

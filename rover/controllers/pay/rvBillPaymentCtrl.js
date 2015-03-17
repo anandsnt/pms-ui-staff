@@ -152,6 +152,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 	
 	$scope.handleCloseDialog = function(){
+		$scope.reservationBillData.isCheckout = false;
 		$scope.paymentModalOpened = false;
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
@@ -289,7 +290,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
-		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
+		// changes for CICO-13763
+		var reservationData = { "reservation_id":$scope.reservationData.reservationId ,"is_checkout":$scope.reservationBillData.isCheckout}
+		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : '';
+		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.getPaymentListSuccess);
 		//$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.cardsListSuccess, '', 'NONE');
 		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId , $scope.cardsListSuccess);
 	};

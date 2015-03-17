@@ -6,14 +6,30 @@
 		<span class="number">{{ each.charge_code }}</span>
 		{{ each.charge_code_description }}
 	</td>
-	<td ng-if="each.isReport">{{ each.transaction_count || 'NA' }}</td>
-	<td ng-if="each.isReport">{{ each.revenue || 'NA' | currency:currencySymbol:2 }}</td>
-	<td ng-if="each.isReport">{{ each.mtd || 'NA' | currency:currencySymbol:2 }}</td>
-	<td ng-if="each.isReport">{{ each.mtd_last_year || 'NA' | currency:currencySymbol:2 }}</td>
-	<td ng-if="each.isReport">{{ each.mtd_variance_percent || 'NA' }}%</td>
-	<td ng-if="each.isReport">{{ each.ytd || 'NA' | currency:currencySymbol:2 }}</td>
-	<td ng-if="each.isReport">{{ each.ytd_last_year || 'NA' | currency:currencySymbol:2 }}</td>
-	<td ng-if="each.isReport">{{ each.ytd_variance_percent || 'NA' }}%</td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.transaction_count">{{ each.transaction_count }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.revenue">{{ each.revenue | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.mtd">{{ each.mtd | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.mtd_last_year">{{ each.mtd_last_year | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.mtd_variance_percent">{{ each.mtd_variance_percent }}%</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.ytd">{{ each.ytd | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.ytd_last_year">{{ each.ytd_last_year | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.ytd_variance_percent">{{ each.ytd_variance_percent }}%</span>
+    </td>
 
 	<!-- showing sub totals here -->
 	<td ng-if="each.isReportSubTotal" class="code">{{ each.chargeGroupName }} Totals</td>

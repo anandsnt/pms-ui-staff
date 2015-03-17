@@ -1,14 +1,16 @@
 <div id="modal" class="modal-show" role="dialog">
     <form method="post" action="" class="modal-content form demographics">
 
-        <strong class="h2 message">Demographics</strong>
-        <!-- If some are mandatory, add this:
-      <span class="text">Fields marked with <strong>*</strong> are mandatory</span>-->
+        <button ng-click="closeDialog()" ng-hide="summaryState.forceDemographicsData" id="modal-close" class="modal-close" type="button"><span class="icons icon-close invert"></span></button>
 
-        <!-- If mandatory forced popup, use this instead:
-      <strong class="h2 message">Demographics Missing!</strong>
-      <span class="text">Set mandatory demographics to continue</span>-->
+        <strong class="h2 message" ng-hide="summaryState.forceDemographicsData">Demographics</strong>
+        <span class="text" ng-hide="summaryState.forceDemographicsData">Fields marked with <strong>*</strong> are mandatory</span>
+        
+        <strong class="h2 message" ng-show="summaryState.forceDemographicsData">Demographics Missing!</strong>
+        <span class="text" ng-show="summaryState.forceDemographicsData">Set mandatory demographics to continue</span>
+
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
         <div class="entry margin" ng-show="shouldShowReservationType">
             <label for="reservation-type">Reservation type<strong ng-show="otherData.reservationTypeIsForced">*</strong>
             </label>
@@ -19,7 +21,7 @@
                 </select>
             </div>
         </div>
-        <div class="entry" ng-show="shouldShowMarket">
+        <div class="entry margin" ng-show="shouldShowMarket">
             <label for="market">Market<strong ng-show="otherData.marketIsForced">*</strong>
             </label>
             <div class="select">
@@ -39,7 +41,7 @@
                 </select>
             </div>
         </div>
-        <div class="entry" ng-show="shouldShowOriginOfBooking">
+        <div class="entry margin" ng-show="shouldShowOriginOfBooking">
             <label for="origin">Origin of Booking<strong ng-show="otherData.originIsForced">*</strong>
             </label>
             <div class="select">
@@ -50,11 +52,22 @@
             </div>
         </div>
         <div class="actions">
-            <button type="button" class="button" ng-disabled="!isDemographicsFormValid()" ng-class="isDemographicsFormValid() ? 'green' : 'grey'" 
-              ng-click="updateAdditionalDetails((reservationData.reservationIds[ngDialogData.data] || reservationData.reservationId) , ngDialogData.data)">
+            <button type="button" class="button blank" ng-hide="summaryState.forceDemographicsData" ng-click="closeDialog()">
+                Cancel
+            </button>
+
+            <button type="button" class="button"
+                ng-hide="summaryState.forceDemographicsData" 
+                ng-disabled="!isDemographicsFormValid(false)" ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'" 
+                ng-click="updateAdditionalDetails((reservationData.reservationIds[ngDialogData.data] || reservationData.reservationId) , ngDialogData.data)">
+                Save
+            </button>
+
+            <button ng-show="summaryState.forceDemographicsData" type="button" class="button" ng-disabled="!isDemographicsFormValid(false)" ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'" 
+              ng-click="updateAdditionalDetails((reservationData.reservationIds[ngDialogData.data] || reservationData.reservationId) , ngDialogData.data , true)">
                 Save & Continue
             </button>
-            <!-- If there are mandatory items, default class is "grey" instead of "green". When mandatory fields are set, replace "grey" with "green" and enable button -->
+            
         </div>
     </form>
 </div>

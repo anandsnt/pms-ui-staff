@@ -34,40 +34,24 @@
                     <div id="sidebar-filter" class="settings-content">
                         <label for="activity-filter">User</label>
                          <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" type="text" placeholder="Search by Email Id" value="" autocomplete="off">
-                        <!--  <input name="activity-filter" id="activity-filter" class="icons icon-search"  placeholder="Search by User Name" type="search" autocomplete="off"/> -->
                     </div>
                 </div>
 
-               <!--  <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
-                    Options 
-                    <a class="settings-title toggle has-arrow active">
-                        <span class="title">Options</span>
-                    </a>
-                    <div id="sidebar-options" class="settings-content">
-                        <label class="checkbox">
-                            <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenIncludeNotes}">
-                            <input name="activity-options" ng-model="chosenIncludeNotes" type="checkbox" />
-                            {Activity Type}
-                        </label>
-                    </div>
-                </div> -->
+                <!-- Options 
+                <a href="#sidebar-options" class="settings-title toggle has-arrow">
+                    <span class="title">Options</span>
+                </a>
+                <div id="sidebar-options" class="settings-content">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox">
+                        <input name="activity-options" id="activity-new" value="Include {Activity Type}" type="checkbox" />
+                        Include {Activity Type}
+                    </label>
+                    .. repeat for all activity types
+                </div>-->
             </div>
             <div class="actions">
                 <button type="button" class="button green" ng-click="updateReportFilter()">Update Report</button>
-            </div>
-            <!-- Company Card Results / content -->
-            <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100" >
-                <div class="search-results">
-                    <ul id="search-list">
-                        <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row, $event)">
-                            <div class="icon company-card" ng-if="escapeNull(row.account_type)=='COMPANY' && row.company_logo == ''"></div>
-                            <div class="icon travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT' && row.company_logo == ''"></div>
-                            <img ng-src="{{row.company_logo}}" alt="" ng-if="row.company_logo != ''">
-                            <h4 ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
-                        </li>
-                    </ul>
-                </div>
-                <span class="arrow-left" style="top: {{arrowPosFromTop}}px;" ng-hide="cmpCardSearchDivHgt < 40"></span>
             </div>
         </div>
     </div>
@@ -123,21 +107,15 @@
                 <tbody>
                     <tr ng-repeat="log in activityLogData" ngrepeatend>
                         <td>{{log.user_name}}</td>
-                        <td>{{log.date}}</td>
+                        <td>{{log.date | date : mmddyyyyFormat}}, {{log.date | date : timeWithAMPM}}</td>
                         <td>{{log.action}}</td>
                         <td class="details">
                             <span ng-repeat="details in log.details">
-                                <span class="old" ng-show="isOldValue(details.old_value)" style="text-decoration:line-through">
-                                    {{ details.key }}&nbsp;
-                                    <strong>{{ details.old_value }}</strong>&nbsp;
-                                    |&nbsp;
+                                <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
+                                    <strong>{{ details.old_value }}</strong>
                                 </span>
-                                <span class="old">
-                                    {{details.key}}&nbsp;
-                                    <strong>{{details.new_value}}</strong>&nbsp;
-                                    <span ng-show="!$last">
-                                        |&nbsp;
-                                    </span>
+                                {{details.key}}
+                                <strong>{{details.new_value}}</strong>
                             </span>
                         </td>
                     </tr>
@@ -148,7 +126,7 @@
 
     <!-- Report pagination // Shown when needed
     {../_shared/pagination.html} -->
-    <div class="search-pagination">
+    <div class="search-pagination hk-pagination" ng-show="!isNextButtonDisabled || !isPrevButtonDisabled">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
         <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResults}}</strong> items</p>

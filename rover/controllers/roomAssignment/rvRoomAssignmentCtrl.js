@@ -157,6 +157,7 @@ sntRover.controller('RVroomAssignmentController',[
 					$scope.oldRoomType = oldRoomType;
 					$scope.openApplyChargeDialog();
 				} else {
+					$scope.roomTransfer.withoutRateChange = true;
 					$scope.assignRoom();
 				}
 			}
@@ -691,6 +692,7 @@ sntRover.controller('RVroomAssignmentController',[
 			!!r_data.room_number && 
 			$rootScope.isStandAlone && 
 			!$scope.roomAssgnment.inProgress &&
-			!r_data.is_hourly_reservation);
+			!r_data.is_hourly_reservation &&
+			r_data.reservation_status!="CHECKEDIN");
 	};
 }]);

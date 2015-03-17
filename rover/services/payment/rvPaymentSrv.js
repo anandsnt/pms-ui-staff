@@ -2,10 +2,10 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
    
 
 	var that =this;	
-	this.renderPaymentScreen = function(){
+	this.renderPaymentScreen = function(data){
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
-		RVBaseWebSrv.getJSON(url).then(function(data) {
+		RVBaseWebSrv.getJSON(url,data).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
