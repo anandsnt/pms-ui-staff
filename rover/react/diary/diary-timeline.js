@@ -50,8 +50,8 @@ var Timeline = React.createClass({
 			interval_counter = 1;
 
 		if ( today instanceof Date ) {
-			todayShortDate = today.toComponents().date.toShortDateString();
-			tmrowShortDate = tmrow.toComponents().date.toShortDateString();
+			todayShortDate =  today.toComponents().date.weekday + " - " + today.toComponents().date.toShortDateString();
+			tmrowShortDate = tmrow.toComponents().date.weekday + " - " + tmrow.toComponents().date.toShortDateString();
 		} else {
 			todayShortDate = tmrowShortDate = '';
 		};
