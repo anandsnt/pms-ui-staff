@@ -157,7 +157,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.showMoveChargeDropDown = function(){
-		return ($scope.hasPermissionToMoveCharges());
+		return ($rootScope.isStandAlone && $scope.hasPermissionToMoveCharges());
 	};
 
 	/**
@@ -175,7 +175,8 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.showEditChargeButton = function(feesType){
-		return (feesType!== 'TAX' && 
+		return ($rootScope.isStandAlone && 
+				feesType!== 'TAX' && 
 				$scope.hasPermissionToChangeCharges());
 	};
 
@@ -189,7 +190,7 @@ sntRover.controller('RVbillCardController',
 
 	//Whatever permission of Make Payment we are assigning that
 	//removing standalone thing here
-	$scope.showPayButton = $scope.hasPermissionToMakePayment();
+	$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
 	
 	//Calculate the scroll width for bill tabs in all the cases
 	$scope.getWidthForBillTabsScroll = function(){
