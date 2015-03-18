@@ -1,0 +1,63 @@
+<!-- Search form -->
+<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form" role="search">
+    <div class="entry search">
+        <button id="groups-clear-query" class="clear-query">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <button type="submit" name="submit" class="icons icon-search">Search</button>
+        <input name="groups-query" id="groups-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" />
+    </div>
+    <div class="entry dates">
+        <div class="entry-data has-datepicker">
+            <label for="groups-date-from">From</label>
+            <button id="groups-date-from-clear" class="clear-query visible"> <!-- To hide this, remove class "visible" -->
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <input name="groups-date-from" id="groups-date-from" class="datepicker" value="{Business Date}" readonly type="text" />
+        </div>
+        <div class="entry-data has-datepicker">
+            <label for="groups-date-to">To</label>
+            <button id="groups-date-to-clear" class="clear-query"> <!-- Add class visible when date is selected -->
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <input name="groups-date-to" id="groups-date-to" class="datepicker" value="" readonly type="text" />
+        </div>
+    </div>
+</form>
+
+<!-- Search panel - WITH RESULTS -->
+<section id="find-group" class="content scrollable" role="main"> <!-- If no pagination, add class "no-pagination" -->
+    <div class="wrapper">
+        <ul class="search-results">
+            <li class="group">
+                <a href="{link}">
+                    <div class="data">
+                        <h2>{Group Name}</h2>
+                        <span class="confirmation">{Group Code}</span>
+                        <!-- If linked company exists:
+                        <span class="icons icon-guest-company">{Company Name}</span> -->
+                        <!-- If linked travel agent exists:
+                        <span class="icons icon-guest-travelagent">{Travel Agent Name}</span> -->
+                    </div>
+                    <div class="arrival">
+                        <span class="guest-status {check-in or cancel}">{arrival or cancel}</span>
+                        <time datetime="{arrival date}">{arrival date}</time>
+                    </div>
+                    <div class="departure">
+                        <span class="guest-status {check-out or cancel}">{departure or cancel}</span>
+                        <time datetime="{departure date}">{departure date}</time>
+                    </div>
+                    <div class="blocked"> <!-- If Status = Tentative, add class "tentative" -->
+                        <strong>{count}</strong>
+                        <span>{Status}</span>
+                    </div>
+                    <div class="picked"> <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
+                        <strong>{count}</strong>
+                        <span>Picked Up</span>
+                    </div>
+                </a>
+            </li>
+            ... repeat
+        </ul>
+    </div>
+</section>
