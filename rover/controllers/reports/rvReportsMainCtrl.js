@@ -41,14 +41,19 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.chargeGroups = chargeGroups;
 		$scope.chargeCodes = chargeCodes;
 
+		// make all the guarantee type unselected
 		_.each($scope.guaranteeTypes, function (item) {
 			item.selected = false;
 		});
+
+		// make all the charge groups selected by default
 		_.each($scope.chargeGroups, function (item) {
-			item.selected = false;
+			item.selected = true;
 		});
+
+		// make all the charge codes selected by default
 		_.each($scope.chargeCodes, function (item) {
-			item.selected = false;
+			item.selected = true;
 		});
 
 
@@ -594,7 +599,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.fauxOptionClicked(e, item);
 		};
-		$scope.fauxChargeGroupOptionClicked = function(item, allChargeGroup) {
+		$scope.fauxChargeGroupOptionClicked = function(e, item, allChargeGroup) {
+			if (e) {
+				e.stopPropagation();
+			};
+
 			if( allChargeGroup ){
 				_.each(item.chargeGroups, function(group){
 					group.selected = !!item.allChargeGroupSelected;
@@ -631,7 +640,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			$scope.fauxOptionClicked(e, item);
 		};
-		$scope.fauxChargeCodeOptionClicked = function(item, allChargeCode) {
+		$scope.fauxChargeCodeOptionClicked = function(e, item, allChargeCode) {
+			if (e) {
+				e.stopPropagation();
+			};
+
 			if( allChargeCode ){
 				_.each(item.chargeCodes, function(code){
 					code.selected = !!item.allChargeCodeSelected;
@@ -1073,6 +1086,12 @@ sntRover.controller('RVReportsMainCtrl', [
 						/**/
 						$scope.appliedFilter.chargeGroups.push( cg.description );
 					});
+
+					// in case if all charge groups is selected
+					if ( chosenReport.chargeGroups.length == selectedChargeGroups.length ) {
+						$scope.appliedFilter.chargeGroups = [];
+						$scope.appliedFilter.chargeGroups.push( 'All Groups' );
+					};
 				};
 			};
 
@@ -1089,6 +1108,12 @@ sntRover.controller('RVReportsMainCtrl', [
 						/**/
 						$scope.appliedFilter.chargeCode.push( cc.description );
 					});
+
+					// in case if all charge code is selected
+					if ( chosenReport.chargeCodes.length == selectedChargeCodes.length ) {
+						$scope.appliedFilter.chargeCode = [];
+						$scope.appliedFilter.chargeCode.push( 'All Codes' );
+					};
 				};
 			};
 
