@@ -312,13 +312,13 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 // Clear the variables for Enhancement pop up And rooms Add ons And repopulate.
                 // Do this only in case of create reservation. i.e. dont do if reservation ID exists.
                 if(typeof $scope.reservationData.reservationId =="undefined" || $scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null)
-                {
+                {                    
+                    if(!$scope.is_rate_addons_fetch){ 
                     $scope.addonsData.existingAddons=[];
-                    $scope.reservationData.rooms[$scope.activeRoom].addons =[];
-                    if(!$scope.is_rate_addons_fetch){                  
+                    $scope.reservationData.rooms[$scope.activeRoom].addons =[];                 
                         angular.forEach(data.rate_addons,function(addon, index) 
                         {  
-                            //Set this flag when there is Children in reservation.
+                            //Set this flag when there is Children in reservation & addon on for child.
                             var flag=addon.amount_type.value=="CHILD"&&$scope.reservationData.rooms[$scope.activeRoom].numChildren==0;                          
                             if(!flag)
                             {
