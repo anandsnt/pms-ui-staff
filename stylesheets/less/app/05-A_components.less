@@ -642,6 +642,7 @@
 /* Search                   ==============================*/
     #search,
     #find-cards,
+    #find-group,
     #rooms {
        &.no-results {
             .wrapper,
@@ -1247,6 +1248,93 @@
                         }
 
                         .highlight { color: @logoPrimary; }
+                    }
+                }
+
+                /* Groups ***/
+                &.group {
+                    a,
+                    .faux-anchor {
+
+                        .highlight { color: @logoPrimary; }
+                        
+                        .data {
+                            margin-right: 40px;
+                            .calc-width(100, 520);
+
+                            h2 {
+                                line-height: 24px;
+                                margin-bottom: 6px;
+                            }
+
+                            .confirmation,
+                            .icons {
+                                display: inline;
+                                line-height: 20px;
+                                height: 20px;
+                                overflow: hidden;
+                                margin-right: 20px;
+
+                                &:last-child { margin-right: 0; }
+                            }
+
+                            .icons {
+                                color: @grey3;
+                                padding-left: 20px;
+                            }
+
+                            .confirmation { color: @textColor; }
+                        }
+
+                        .arrival, 
+                        .departure {
+                            margin: 10px 20px 0 0;
+                            width: 120px;
+                            .pull-left;
+
+                            .guest-status { 
+                                margin-right: 5px;
+                                .square(30px); 
+                            }
+
+                            time { line-height: 30px; }
+                        }
+
+                        .blocked,
+                        .picked {
+                            margin-top: 10px;
+                            text-align: center;
+                            width: 80px;
+                            .pull-left;
+
+                            strong {
+                                font-size: 20px;
+                                line-height: 1em;
+                                font-weight: 600;
+                                .show;
+                            }
+
+                            span {
+                                font-size: 14px;
+                                text-transform: uppercase;
+                            }
+                        }
+
+                        .blocked { 
+                            margin: 10px 20px 0 20px; 
+
+                            &.tentative { color: @logoPrimary; }
+                        }
+
+                        .picked { 
+                            strong { 
+                                font-size: 24px;
+                                margin-top: -4px;
+                            }
+
+                            &.green { color: @green; }
+                            &.red { color: @red; }
+                        }
                     }
                 }
             }
