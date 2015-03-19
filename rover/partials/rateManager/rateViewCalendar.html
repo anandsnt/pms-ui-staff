@@ -39,7 +39,7 @@
 									<div>
                                                                             
 										<span ng-if="isRestrictTo(currentFilterData.zoom_level_selected,calendarData.all_rates[date]) == 3" 
-                                                                                      ng-repeat="restriction in calendarData.all_rates[date] track by $index" 
+                                                                                      ng-repeat="restriction in calendarData.all_rates[date] | limitTo: 3 track by $index" 
 											  ng-show="toggleRestrictionIconView()"
 											  class="restriction-icon right {{calendarData.restriction_types[restriction.type_id].background_class}} {{calendarData.restriction_types[restriction.type_id].icon}}"> {{restriction.days}} 
 										</span>		
@@ -75,7 +75,7 @@
 								<div>
 									<div>
 										<span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, rate[date]) == 3"
-                                                                                        ng-repeat="restriction in rate[date] track by $index | limitTo: 3" 
+                                                                                        ng-repeat="restriction in rate[date] | limitTo: 3 track by $index" 
 											  ng-show="toggleRestrictionIconView()"
 											  class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} 
                                                                                 </span>
