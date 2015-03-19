@@ -812,8 +812,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                  */
                             $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
                         }
-                        taxAmount = parseFloat(nights * taxApplied.exclusive);
-                        taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive); // CICO-10161
+                        // taxAmount = parseFloat(nights * taxApplied.exclusive); //CICO-14231
+                        taxAmount = parseFloat(taxApplied.exclusive); //CICO-14231
+                        // taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive); // CICO-14231
+                        taxAll = parseFloat(taxApplied.exclusive) + parseFloat(taxApplied.inclusive); // CICO-14231
                     } else { //STAY
                         if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
                             $scope.reservationData.taxDetails[description.id] = description;
