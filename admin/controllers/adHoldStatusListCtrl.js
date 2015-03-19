@@ -1,14 +1,13 @@
 admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADHoldStatusSrv, $location, $anchorScroll, $timeout){
 	
 	$scope.errorMessage = '';
-	BaseCtrl.call(this, $scope);
-	$scope.departmentData = {};
+	BaseCtrl.call(this, $scope);	
 	$scope.isAddMode = false;
+	$scope.holdstatusData={};
    /*
     * To fetch list of hold status
     */
 	$scope.listHoldStatus = function(){
-		console.log("in");
 		var successCallbackFetch = function(data){			
 			$scope.$emit('hideLoader');			
 			$scope.data.holdStatuses = data.data.hold_status;			
@@ -30,15 +29,18 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 		$scope.isAddMode = false;
 		$scope.data.holdStatuses.map(function(x){
 			if(x.id==id)
-				{
-					$scope.holdstatusData = x;					
+				{					
+				$scope.holdstatusData.name =x.name;
+				$scope.holdstatusData.id =x.id;
+				$scope.holdstatusData.is_enabled =x.is_enabled;
+				$scope.holdstatusData.is_default=x.is_default;				
 				}
-		});		    
+		});		
 	};
    /*
     * Render add hold status screen
     */
-	$scope.addNew = function()	{
+	$scope.addNew = function()	{		
 		$scope.holdstatusData={};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
@@ -52,7 +54,7 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * @param {int} index of the selected hold status
     * @param {string} id of the hold status
     */
-	$scope.getTemplateUrl = function(index, id){
+	$scope.getTemplateUrl = function(index, id){		
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
 		if($scope.currentClickedElement == index){ 
 			 	return "/assets/partials/holdStatus/adHoldStatusEdit.html";
@@ -61,45 +63,44 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
   /*
    * To save/update Hold status details
    */
-   $scope.saveHoldStatus = function(){   
-   	console.log($scope.holdstatusData);
+   $scope.saveHoldStatus = function(){  
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
 			if($scope.isAddMode){
-				// To add new data to scope
-				console.log(data)
-    			$scope.data.holdStatus.push(data);
+				// To add new data to scope				
+    			$scope.data.holdStatuses.push(data.data);    		
 	    	} else {
 	    		//To update data with new value
-	    		$scope.data.holdStatus[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_enabled = $scope.holdstatusData.is_enabled;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_default=$scope.holdstatusData.is_default;
 	    	}
     		$scope.currentClickedElement = -1;
     	};
     	if($scope.isAddMode){    		
     		$scope.invokeApi(ADHoldStatusSrv.saveHoldStatus, $scope.holdstatusData , successCallbackSave);
-    	} else {
-    		//TODO-Here we Done -Edit
+    	} else {    		
     		$scope.invokeApi(ADHoldStatusSrv.updateHoldStatus, $scope.holdstatusData , successCallbackSave);
     	}
     };
    /*
     * To handle click event
     */	
-	$scope.clickCancel = function(){
+	$scope.clickCancel = function(){		
 		$scope.currentClickedElement = -1;
 	};	
    /*
-    * To delete department
-    * @param {int} index of the selected department
-    * @param {string} id of the selected department
+    * To delete HoldStatus
+    * @param {int} index of the selected HoldStatus
+    * @param {string} id of the selected HoldStatus
     */		
-	$scope.deleteDepartment = function(index, id){
+	$scope.deleteHoldStatus = function(index, id){		
 		var successCallbackDelete = function(data){	
 	 		$scope.$emit('hideLoader');
-	 		$scope.data.departments.splice(index, 1);
+	 		$scope.data.holdStatuses.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
 	 	};
-		$scope.invokeApi(ADDepartmentSrv.deleteDepartment, id , successCallbackDelete);
+		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id , successCallbackDelete);
 	};
 }]);
 

@@ -1,8 +1,15 @@
 
 <div class="data-holder" >
 
-	<form class="form single-field-form float">
-		 <ad-textbox value="holdstatusData.name" name = "department-name" label = "" required="yes" placeholder = "Enter department" required = "yes"></ad-textbox>		
+	<form class="form double-field-form float">
+		<ad-textbox value="holdstatusData.name" name = "holdstatus-name" label = "" required="yes" placeholder = "Enter hold status" required = "yes">
+		</ad-textbox>
+		<ad class="entry radio-check" >
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox " ng-class="{ checked : holdstatusData.is_enabled }"></span>				
+								<input type="checkbox" ng-model="holdstatusData.is_enabled">
+							</label>
+		</ad>		
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
 				CANCEL
@@ -10,7 +17,7 @@
 			<button type="button" id="update" class="button green edit-data-inline" ng-click="saveHoldStatus()" translate>
 				SAVE_CHANGES
 			</button>
-			<button type="button" id="delete" class="button red edit-data-inline" ng-click="deleteDepartment(currentClickedElement, departmentData.value)" translate>
+			<button type="button" id="delete" class="button red edit-data-inline" ng-click="deleteHoldStatus(currentClickedElement, holdstatusData.id)" ng-hide="holdstatus.is_default" translate>
 				DELETE
 			</button>
 		</div>

@@ -20,11 +20,11 @@
 						<td class="entry full-width radio-check" ng-hide="currentClickedElement == $index" >
 							<label class="checkbox">
 								<span class="icon-form icon-checkbox" ng-class="{ checked :holdstatus.is_enabled  }"></span>						
-								<input type="checkbox">
+								<input type="checkbox" ng-click="editHoldStatus($index,holdstatus.id)" ng-model="holdstatus.is_enabled">
 							</label>
 						</td>
 						<td class="delete" ng-hide="currentClickedElement == $index" >
-							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDepartment($index, holdstatus.id)"></a>
+							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteHoldStatus($index, holdstatus.id)" ng-hide="holdstatus.is_default"></a>
 						</td>
 						<td colspan="2" ng-include="getTemplateUrl($index,holdstatus.id)"></td>
 					</tr>
