@@ -1,0 +1,35 @@
+<section id="replacing-div-first" class="content current" ng-click='clearErrorMessage()'>
+	
+	<div data-view="HotelDepartmentsView" class="inline-edit">
+		<header class="content-title float">
+			<h2 translate> DEPARTMENTS </h2>
+			<span class="count"> (7) </span>
+			<a id="add-new-button" class="action add" ng-click="addNew()" translate>ADD_NEW</a>
+			
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/departments/adDepartmentsAdd.html'"></div>		
+			<div id="new-form-holder"></div>
+			<table id="brands" class="grid">
+				<tbody>
+					<tr ng-repeat="holdstatus in data.holdStatus" ng-class="{'edit-data': currentClickedElement == $index}"> 
+						<td ng-click="editDepartments($index,holdstatus.value)" ng-hide="currentClickedElement == $index" >
+							<a data-item="3" data-colspan="2" class="edit-data-inline">{{holdstatus.name}}</a>
+						</td>
+						<td class="entry full-width radio-check" ng-hide="currentClickedElement == $index" >
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox" ng-class="{ checked : true }"></span>						
+								<input type="checkbox">
+							</label>
+						</td>
+						<td class="delete" ng-hide="currentClickedElement == $index" >
+							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDepartment($index, holdstatus.value)"></a>
+						</td>
+						<td colspan="2" ng-include="getTemplateUrl($index,holdstatus.value)"></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</div>
+</section>
