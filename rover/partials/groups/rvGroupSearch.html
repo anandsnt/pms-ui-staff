@@ -2,23 +2,23 @@
 <form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form" role="search">
     <div class="entry search">
         <button id="groups-clear-query" class="clear-query">
-            <span class="icons icon-clear-search">Clear query</span>
+            <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
         </button>
-        <button type="submit" name="submit" class="icons icon-search">Search</button>
+        <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
         <input name="groups-query" id="groups-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" />
     </div>
     <div class="entry dates">
         <div class="entry-data has-datepicker">
-            <label for="groups-date-from">From</label>
+            <label for="groups-date-from" translate>FROM</label>
             <button id="groups-date-from-clear" class="clear-query visible"> <!-- To hide this, remove class "visible" -->
-                <span class="icons icon-clear-search">Clear query</span>
+                <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
             </button>
             <input name="groups-date-from" id="groups-date-from" class="datepicker" value="{Business Date}" readonly type="text" />
         </div>
         <div class="entry-data has-datepicker">
-            <label for="groups-date-to">To</label>
+            <label for="groups-date-to" translate>TO</label>
             <button id="groups-date-to-clear" class="clear-query"> <!-- Add class visible when date is selected -->
-                <span class="icons icon-clear-search">Clear query</span>
+                <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
             </button>
             <input name="groups-date-to" id="groups-date-to" class="datepicker" value="" readonly type="text" />
         </div>
@@ -26,7 +26,7 @@
 </form>
 
 <!-- Search panel - WITH RESULTS -->
-<section id="find-group" class="content scrollable" role="main"> <!-- If no pagination, add class "no-pagination" -->
+<section id="find-group" class="content scrollable" role="main" style="padding-top: 20px;"> <!-- If no pagination, add class "no-pagination" -->
     <div class="wrapper">
         <ul class="search-results">
             <li class="group">
@@ -57,7 +57,6 @@
                     </div>
                 </a>
             </li>
-            ... repeat
         </ul>
     </div>
 </section>
