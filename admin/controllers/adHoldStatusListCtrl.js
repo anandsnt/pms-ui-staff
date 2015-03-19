@@ -10,9 +10,8 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 	$scope.listHoldStatus = function(){
 		console.log("in");
 		var successCallbackFetch = function(data){			
-			$scope.$emit('hideLoader');
-			//TODO- API INtegration
-			$scope.data.holdStatuses = data.data.departments;			
+			$scope.$emit('hideLoader');			
+			$scope.data.holdStatuses = data.data.hold_status;			
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
@@ -25,26 +24,19 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * @param {index} index of selected hold status
     * @param {id} id of selected hold status
     */	
-	$scope.editDepartments = function(index, id)	{		
+	$scope.editHoldStatus = function(index, id)	{				
 		$scope.holdstatusData={};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		$scope.data.holdStatuses.map(function(x){
-			if(x.value==id)
+			if(x.id==id)
 				{
 					$scope.holdstatusData = x;					
 				}
-		}); 
-		//TODO-remove below code
-	 	// var successCallbackRender = function(data){	
-	 	// 	$scope.holdstatusData = data;
-	 	// 	$scope.$emit('hideLoader');
-	 	// };
-	 	// var data = {"id":id };
-	 	// $scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);    
+		});		    
 	};
    /*
-    * Render add department screen
+    * Render add hold status screen
     */
 	$scope.addNew = function()	{
 		$scope.holdstatusData={};
@@ -57,8 +49,8 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 	};
    /*
     * To get the template of edit screen
-    * @param {int} index of the selected department
-    * @param {string} id of the department
+    * @param {int} index of the selected hold status
+    * @param {string} id of the hold status
     */
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
@@ -69,13 +61,13 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
   /*
    * To save/update Hold status details
    */
-   $scope.saveHoldStatus = function(){
-   	console.log("Save");
+   $scope.saveHoldStatus = function(){   
    	console.log($scope.holdstatusData);
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
 			if($scope.isAddMode){
 				// To add new data to scope
+				console.log(data)
     			$scope.data.holdStatus.push(data);
 	    	} else {
 	    		//To update data with new value
@@ -84,10 +76,10 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     		$scope.currentClickedElement = -1;
     	};
     	if($scope.isAddMode){    		
-    		$scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData , successCallbackSave);
+    		$scope.invokeApi(ADHoldStatusSrv.saveHoldStatus, $scope.holdstatusData , successCallbackSave);
     	} else {
     		//TODO-Here we Done -Edit
-    		$scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.holdstatusData , successCallbackSave);
+    		$scope.invokeApi(ADHoldStatusSrv.updateHoldStatus, $scope.holdstatusData , successCallbackSave);
     	}
     };
    /*

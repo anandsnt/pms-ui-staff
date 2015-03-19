@@ -14,19 +14,19 @@
 			<table id="brands" class="grid">
 				<tbody>
 					<tr ng-repeat="holdstatus in data.holdStatuses" ng-class="{'edit-data': currentClickedElement == $index}"> 
-						<td ng-click="editDepartments($index,holdstatus.value)" ng-hide="currentClickedElement == $index" >
+						<td ng-click="editHoldStatus($index,holdstatus.id)" ng-hide="currentClickedElement == $index" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{holdstatus.name}}</a>
 						</td>
 						<td class="entry full-width radio-check" ng-hide="currentClickedElement == $index" >
 							<label class="checkbox">
-								<span class="icon-form icon-checkbox" ng-class="{ checked : true }"></span>						
+								<span class="icon-form icon-checkbox" ng-class="{ checked :holdstatus.is_enabled  }"></span>						
 								<input type="checkbox">
 							</label>
 						</td>
 						<td class="delete" ng-hide="currentClickedElement == $index" >
-							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDepartment($index, holdstatus.value)"></a>
+							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDepartment($index, holdstatus.id)"></a>
 						</td>
-						<td colspan="2" ng-include="getTemplateUrl($index,holdstatus.value)"></td>
+						<td colspan="2" ng-include="getTemplateUrl($index,holdstatus.id)"></td>
 					</tr>
 				</tbody>
 			</table>

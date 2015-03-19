@@ -5,7 +5,7 @@ admin.service('ADHoldStatusSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
     */
 	this.fetch = function(){		
 		var deferred = $q.defer();
-		var url = '/admin/departments.json';
+		var url = '/api/group_hold_statuses';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -19,11 +19,10 @@ admin.service('ADHoldStatusSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
     * @param {array} data of the new department
     * @return {object} status and new id of new department
     */
-	this.saveDepartment = function(data){
+	this.saveHoldStatus = function(data){		
 		var deferred = $q.defer();
-		var url = '/admin/departments';	
-
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		var url = '/api/group_hold_statuses';
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -52,8 +51,8 @@ admin.service('ADHoldStatusSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
     * @param {array} data of the modified department
     * @return {object} status of updated department
     */
-	this.updateDepartment = function(data){
-
+	this.updateHoldStatus = function(data){
+		console.log(data);
 		var deferred = $q.defer();
 		var url = '/admin/departments/'+data.value;	
 
