@@ -27,12 +27,12 @@
 
 		<div class="price-set-title application">
 
-			<label for="cb_price" class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice" ng-show="popupData.fromRoomTypeView">
+			<label ng-if="hasPermissionToUpdateRates()" for="cb_price" class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice" ng-show="popupData.fromRoomTypeView">
 				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
 				<input id="cb_price" type="checkbox" ng-model="daysOptions.applyToPrice">
 				<span>APPLY TO PRICE </span> 
 			</label>
-			<label for="cb_restrictions" class="checkbox" ng-click="daysOptions.applyToRestrictions = !daysOptions.applyToRestrictions" ng-hide="showExpandedView && !popupData.fromRoomTypeView && !popupData.all_data_selected">
+			<label ng-if="hasPermissionToUpdateRestrictions()" for="cb_restrictions" class="checkbox" ng-click="daysOptions.applyToRestrictions = !daysOptions.applyToRestrictions" ng-hide="showExpandedView && !popupData.fromRoomTypeView && !popupData.all_data_selected">
 				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToRestrictions}" ></span>
 				<input id="cb_restrictions" type="checkbox" ng-model="daysOptions.applyToRestrictions">
 				<span>APPLY TO RESTRICTIONS </span> 

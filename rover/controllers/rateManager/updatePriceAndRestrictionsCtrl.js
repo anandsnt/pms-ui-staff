@@ -71,6 +71,43 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         ngDialog.close();
     };
 
+    /** 14750
+    * method to determine whether the user has permission to update Rate Mgr - Rate Prices
+    * @return {Boolean}
+    */
+    $scope.hasPermissionToUpdateRates = function(){
+        //return (rvPermissionSrv.getPermissionValue ('RATE_MGR_PRICE_UPDATES')); 
+        return true;
+    };
+    
+    
+    /**
+    * method to determine whether the user has permission to update Rate Mgr - Restrictions
+    * @return {Boolean}
+    */
+    $scope.hasPermissionToUpdateRestrictions = function(){
+        //return (rvPermissionSrv.getPermissionValue ('RATE_MGR_RESTRICTIONS_UPDATES')); 
+        return true;
+    };
+
+    $scope.noPermissionAlert = function(permission){
+        switch (permission){
+            case "UPDATE_RESTRICTIONS":
+                alert('You do not have permission to update restrictions!');
+                break;
+                
+            case "UPDATE_RATES":
+                alert('You do not have permission to update rate prices!');
+                break;
+                
+            case "RATES_RESTRICTIONS":
+                alert('You do not have permission to update rate prices or restrictions!');
+                break;
+            
+            default:
+                break;
+        }
+    }
     /**
     * For displaying the price in expanded view
     * Fetch the price info and update the $scope data variable
@@ -356,7 +393,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         if($scope.showExpandedView) {
             width = width + 270;
         }
-        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView && $scope.data.hasAmountConfigured) {
+        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView && $scope.data.hasAmountConfigured && $scope.hasPermissionToUpdateRates()) {
             width = width + 400;
         }
         if($scope.showExpandedView && !$scope.popupData.fromRoomTypeView && !$scope.popupData.all_data_selected) {
