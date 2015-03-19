@@ -100,7 +100,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
-					console.log($scope.chosenReport.chosenCico);
 					if ( $scope.chosenReport.chosenCico == 'IN' || $scope.chosenReport.chosenCico == 'OUT' ) {
 						$scope.hasNoTotals = true;
 					};
@@ -207,8 +206,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        }
 			    };
 
-			    if ( $scope.restHalf[0] ) {
-			        $scope.restHalf[0]['class'] = 'red';
+				// since the rest half is reversed
+				// the red needs ti be applied to the last item
+				var restHalfLastIndex = $scope.restHalf.length - 1;
+			    if ( $scope.restHalf[restHalfLastIndex] ) {
+			        $scope.restHalf[restHalfLastIndex]['class'] = 'red';
 			    };
 			} else {
 			    // NOTE: as per todays style this applies to
