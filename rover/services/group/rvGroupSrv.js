@@ -33,11 +33,11 @@ sntRover.service('rvGroupSrv',
 		* function to get business date
 		* @return {Promise} - After resolving it will return the business date
 		*/
-		that.fetchHotelBusinessDate = function(){
+		this.fetchHotelBusinessDate = function(){
 			var deferred = $q.defer(),
 				url = '/api/business_dates/active';
 
-			RVBaseWebSrvV2.getJSON(url).then(
+			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
 					deferred.resolve(data);
 				},

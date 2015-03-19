@@ -5,54 +5,69 @@
             <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
         </button>
         <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
-        <input name="groups-query" id="groups-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" />
+        <input name="groups-query" id="groups-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-model="query"  />
     </div>
     <div class="entry dates">
         <div class="entry-data has-datepicker">
             <label for="groups-date-from" translate>FROM</label>
-            <button id="groups-date-from-clear" class="clear-query visible"> <!-- To hide this, remove class "visible" -->
+            <button id="groups-date-from-clear" class="clear-query" ng-class=""> <!-- To hide this, remove class "visible" -->
                 <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
             </button>
-            <input name="groups-date-from" id="groups-date-from" class="datepicker" value="{Business Date}" readonly type="text" />
+            <input name="groups-date-from" id="groups-date-from" class="datepicker" readonly type="text" ui-date="fromDateOptions"
+             ng-model="fromDate"/>
         </div>
         <div class="entry-data has-datepicker">
             <label for="groups-date-to" translate>TO</label>
             <button id="groups-date-to-clear" class="clear-query"> <!-- Add class visible when date is selected -->
                 <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
             </button>
-            <input name="groups-date-to" id="groups-date-to" class="datepicker" value="" readonly type="text" />
+            <input name="groups-date-to" id="groups-date-to" class="datepicker" value="" readonly type="text" ui-date="toDateOptions"  ng-model="toDate"/>
         </div>
     </div>
 </form>
+<!-- Pagination -->
+<div class="search-pagination" >
+    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
+</div>
 
 <!-- Search panel - WITH RESULTS -->
-<section id="find-group" class="content scrollable" role="main" style="padding-top: 20px;"> <!-- If no pagination, add class "no-pagination" -->
+<section id="find-group" class="content scrollable" role="main"> <!-- If no pagination, add class "no-pagination" -->
     <div class="wrapper">
         <ul class="search-results">
-            <li class="group">
-                <a href="{link}">
+            <li class="group" ng-repeat="group in groupList">
+                <a >
                     <div class="data">
-                        <h2>{Group Name}</h2>
-                        <span class="confirmation">{Group Code}</span>
-                        <!-- If linked company exists:
-                        <span class="icons icon-guest-company">{Company Name}</span> -->
-                        <!-- If linked travel agent exists:
-                        <span class="icons icon-guest-travelagent">{Travel Agent Name}</span> -->
+                        <h2>{{group.group_name}}</h2>
+                        <span class="confirmation">{{group.group_code}}</span>
+                        <!-- If linked company exists: -->
+                        <span class="icons icon-guest-company" ng-hide="isEmpty(group.company)">
+                            {{group.company}}
+                        </span>
+                        <!-- If linked travel agent exists: -->
+                        <span class="icons icon-guest-travelagent" ng-hide="isEmpty(group.travel_agent)">
+                            {{group.travel_agent}}
+                        </span>
                     </div>
                     <div class="arrival">
-                        <span class="guest-status {check-in or cancel}">{arrival or cancel}</span>
-                        <time datetime="{arrival date}">{arrival date}</time>
+                        <span class="guest-status" ng-class="getGuestClassForArrival(group)">
+                            <!--{arrival or cancel}-->
+                        </span>
+                        <time datetime="group.arrival_date">{{group.arrival_date}}</time>
                     </div>
                     <div class="departure">
-                        <span class="guest-status {check-out or cancel}">{departure or cancel}</span>
-                        <time datetime="{departure date}">{departure date}</time>
+                        <span class="guest-status" ng-class="getGuestClassForDeparture(group)">
+                            <!--{departure or cancel} -->
+                        </span>
+                        <time datetime="group.departure_date">{{group.departure_date}}</time>
                     </div>
-                    <div class="blocked"> <!-- If Status = Tentative, add class "tentative" -->
-                        <strong>{count}</strong>
-                        <span>{Status}</span>
+                    <div class="blocked" ng-class="getClassAgainstHoldStatus(group)"> <!-- If Status = Tentative, add class "tentative" -->
+                        <strong>{{group.total_booked}}</strong>
+                        <span>{{group.hold_status}}</span>
                     </div>
-                    <div class="picked"> <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
-                        <strong>{count}</strong>
+                    <div class="picked" ng-class="getClassAgainstPickedStatus(group)"> <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
+                        <strong>{{group.total_picked_count}}</strong>
                         <span>Picked Up</span>
                     </div>
                 </a>

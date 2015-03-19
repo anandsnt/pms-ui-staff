@@ -1,4 +1,5 @@
     
     
     "FROM": "From",
-    "TO": "To"    
+    "TO": "To",
+    "GROUPS": "Groups"

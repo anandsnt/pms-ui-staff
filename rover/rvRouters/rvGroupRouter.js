@@ -29,11 +29,11 @@ angular.module('groupModule', [])
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
                         var params = {
-                            'q': '',
+                            'query': '',
                             'from_date': businessDate.business_date,
                             'to_date': businessDate.business_date
                         }
-                        return rvGroupSrv.getGroupList();
+                        return rvGroupSrv.getGroupList(params);
                     }
                 ]
             }
