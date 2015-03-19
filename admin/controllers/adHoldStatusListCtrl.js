@@ -5,44 +5,49 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 	$scope.departmentData = {};
 	$scope.isAddMode = false;
    /*
-    * To fetch list of departments
+    * To fetch list of hold status
     */
 	$scope.listHoldStatus = function(){
-		var successCallbackFetch = function(data){
-			console.log(data);
+		console.log("in");
+		var successCallbackFetch = function(data){			
 			$scope.$emit('hideLoader');
 			//TODO- API INtegration
-			$scope.data.holdStatus =data.departments;
+			$scope.data.holdStatuses = data.data.departments;			
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
 		$scope.invokeApi(ADHoldStatusSrv.fetch, {} , successCallbackFetch);	
 	};
-	//To list departments
+	//To list Hold status
 	$scope.listHoldStatus();
    /*
-    * To render edit department screen
-    * @param {index} index of selected department
-    * @param {id} id of the department
+    * To render edit hold status
+    * @param {index} index of selected hold status
+    * @param {id} id of selected hold status
     */	
-	$scope.editDepartments = function(index, id)	{
-		console.log(id);
+	$scope.editDepartments = function(index, id)	{		
 		$scope.holdstatusData={};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
-		
-	 	var successCallbackRender = function(data){	
-	 		$scope.holdstatusData = data;
-	 		$scope.$emit('hideLoader');
-	 	};
-	 	var data = {"id":id };
-	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);    
+		$scope.data.holdStatuses.map(function(x){
+			if(x.value==id)
+				{
+					$scope.holdstatusData = x;					
+				}
+		}); 
+		//TODO-remove below code
+	 	// var successCallbackRender = function(data){	
+	 	// 	$scope.holdstatusData = data;
+	 	// 	$scope.$emit('hideLoader');
+	 	// };
+	 	// var data = {"id":id };
+	 	// $scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);    
 	};
    /*
     * Render add department screen
     */
 	$scope.addNew = function()	{
-		$scope.departmentData={};
+		$scope.holdstatusData={};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
 		$timeout(function() {
@@ -62,14 +67,16 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 		}
 	};
   /*
-   * To save/update department details
+   * To save/update Hold status details
    */
-   $scope.saveDepartment = function(){
+   $scope.saveHoldStatus = function(){
+   	console.log("Save");
+   	console.log($scope.holdstatusData);
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
 			if($scope.isAddMode){
 				// To add new data to scope
-    			$scope.data.departments.push(data);
+    			$scope.data.holdStatus.push(data);
 	    	} else {
 	    		//To update data with new value
 	    		$scope.data.holdStatus[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;

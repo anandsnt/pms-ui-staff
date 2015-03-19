@@ -2,18 +2,18 @@
 	
 	<div data-view="HotelDepartmentsView" class="inline-edit">
 		<header class="content-title float">
-			<h2 translate> DEPARTMENTS </h2>
-			<span class="count"> (7) </span>
+			<h2 translate> HOLD STATUS </h2>
+			<span class="count"> ({{data.holdStatuses.length}}) </span>
 			<a id="add-new-button" class="action add" ng-click="addNew()" translate>ADD_NEW</a>
 			
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/departments/adDepartmentsAdd.html'"></div>		
+			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/holdStatus/adHoldStatusAdd.html'"></div>		
 			<div id="new-form-holder"></div>
 			<table id="brands" class="grid">
 				<tbody>
-					<tr ng-repeat="holdstatus in data.holdStatus" ng-class="{'edit-data': currentClickedElement == $index}"> 
+					<tr ng-repeat="holdstatus in data.holdStatuses" ng-class="{'edit-data': currentClickedElement == $index}"> 
 						<td ng-click="editDepartments($index,holdstatus.value)" ng-hide="currentClickedElement == $index" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{holdstatus.name}}</a>
 						</td>

@@ -1,10 +1,9 @@
-admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('ADHoldStatusSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
    /**
-    * To fetch the list of users
-    * @return {object} users list json
+    * To fetch the list of hold status
+    * @return {object} hold statuses json
     */
-	this.fetch = function(){
-		
+	this.fetch = function(){		
 		var deferred = $q.defer();
 		var url = '/admin/departments.json';
 
