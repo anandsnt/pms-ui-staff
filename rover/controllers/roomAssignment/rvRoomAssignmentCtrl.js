@@ -91,12 +91,12 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.roomTransfer.oldRoomRate = response.data.old_rate_amount;
 			$scope.$emit('hideLoader');
 		
-			if(oldRoomType !== $scope.roomType){
+			if($scope.roomTransfer.newRoomRate !== $scope.roomTransfer.oldRoomRate){
 				$scope.roomTransfer.newRoomType = $scope.selectedRoomType.description;
 				$scope.roomTransfer.isNewRoomType = true;
 			}
 			else{
-				$scope.roomTransfer.newRoomType = $scope.reservationData.reservation_card.room_type_description;
+				$scope.roomTransfer.newRoomType = $scope.selectedRoomType.description;
 				$scope.roomTransfer.isNewRoomType = false;
 			}
 			ngDialog.open({
