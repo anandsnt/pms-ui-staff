@@ -308,26 +308,26 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
 					$scope.hasReportTotals    = false;
-					$scope.showReportHeader   = !!$scope.$parent.results;
+					$scope.showReportHeader   = !!$scope.$parent.results && !!$scope.$parent.results.length;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvOccupancyRevenueReport.html';
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					if ( !!$scope.$parent.reportGroupedBy ) {
 						$scope.hasReportTotals    = true;
-						$scope.showReportHeader   = !!$scope.$parent.results;
+						$scope.showReportHeader   = !!$scope.$parent.results && !!$scope.$parent.results.length;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/rvReservationByUserReport.html';
 						break;
 					} else {
 						$scope.hasReportTotals    = true;
-						$scope.showReportHeader   = !!$scope.$parent.results;
+						$scope.showReportHeader   = !!$scope.$parent.results && !!$scope.$parent.results.length;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
 						break;
 					};
 
 				default:
 					$scope.hasReportTotals    = true;
-					$scope.showReportHeader   = !!$scope.$parent.results;
+					$scope.showReportHeader   = !!$scope.$parent.results && !!$scope.$parent.results.length;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
 					break;
 			};
@@ -399,7 +399,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.netTotalCount = $scope.$parent.totalCount;
 			$scope.uiTotalCount  = !!$scope.$parent.results ? $scope.$parent.results.length : 0;
 
-			if ( $_pageNo === 1 ) {
+			if ( $scope.netTotalCount == 0 && $scope.uiTotalCount == 0 ) {
+				$scope.disablePrevBtn = true;
+				$scope.disableNextBtn = true;
+			} else if ( $_pageNo === 1 ) {
 				$scope.resultFrom = 1;
 				$scope.resultUpto = $scope.netTotalCount < $_resultsPerPage ? $scope.netTotalCount : $_resultsPerPage;
 				$scope.disablePrevBtn = true;
@@ -719,11 +722,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 			refreshScroll();
 		});
 
+		var reportAPIfailure = $rootScope.$on('report.API.failure', function() {
+			$scope.errorMessage = $scope.$parent.errorMessage;
+			afterFetch();
+			calPagination();
+			refreshScroll();
+		});
+
 		// removing event listners when scope is destroyed
 		$scope.$on( 'destroy', reportSubmit );
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
+		$scope.$on( 'destroy', reportAPIfailure );
 
     }
 ]);
