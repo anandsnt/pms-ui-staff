@@ -1,0 +1,92 @@
+<div class="group-card cards fullscreen">
+    <div class="cards-wrapper">
+        <!-- Header -->
+        <header class="cards-header">
+            <div id="group-card-header" class="card-header">
+                <form>
+                    <div class="holder">
+                        <div class="entry">
+                            <input id="group-name" placeholder="" value="" type="text" class="masked-input h1" />
+                        </div>
+                    </div>
+                    <div class="holder data">
+                        <!-- These should not allow free text input, you should only be able to search and add -->
+                        <input class="masked-input icons icon-gc-company" id="group-company" value="" type="text" />
+                        <!-- Search only companies -->
+                        <input class="masked-input icons icon-gc-ta" id="group-ta" value="" type="text" />
+                        <!-- Search only travel agents -->
+                    </div>
+                </form>
+                <div class="card-actions">
+                    <button type="button" class="button green">Save Group</button>
+                    <button type="button" class="button blank">Discard</button>
+                </div>
+            </div>
+        </header>
+        <!-- Content -->
+        <div class="cards-content">
+            <div id="group-card-content" class="card-tabs card-content">
+                <!-- Group tabs navigation -->
+                <ul id="group-card-tabs-nav" class="card-tabs-nav">
+                    <li ng-click="groupConfigState.activeTab = 'SUMMARY'">
+                        <a>Summary</a>
+                    </li>
+                    <li class="with-filters"
+                        ng-click="groupConfigState.activeTab = 'ROOM_BLOCK'">
+                        <a>Room Block Details</a>
+                    </li>
+                    <li ng-click="groupConfigState.activeTab = 'ACCOUNT'">
+                        <a>Account</a>
+                    </li>
+                    <li class="with-filters"
+                        ng-click="groupConfigState.activeTab = 'ROOMING'">
+                        <a>Rooming List</a>
+                    </li>
+                    <li ng-click="groupConfigState.activeTab = 'TRANSACTIONS'">
+                        <a>Transactions</a>
+                    </li>
+                    <li ng-click="groupConfigState.activeTab = 'ACTIVITY'">
+                        <a>Activity Log</a>
+                    </li>
+                </ul>
+                <!-- Group Tab - Summary -->
+                <!-- SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY -->
+                <form id="group-summary" name="group-summary" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'SUMMARY'">
+                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationSummaryTab.html'">
+                        <!-- Keep in mind that all fields should be empty -->
+                    </div>
+                </form>
+                <!-- Group Card Tab - Room Block Details -->
+                <form id="group-room-block" name="group-room-block" class="form card-tab rooms" ng-if="groupConfigState.activeTab === 'ROOM_BLOCK'">
+                    <div ng-include="'/assets/partials/groups/rvGroupConfigurationRoomBlockTab.html'">
+                        <!-- Keep in mind that some fields should be empty -->
+                    </div>
+                </form>
+                <!-- Group Card Tab - Account -->
+                <form id="group-transactions" name="group-transactions" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'ACCOUNT'">
+                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationAccountTab.html'">
+                        <!-- Keep in mind that some fields should be empty -->
+                    </div>
+                </form>
+                <!-- Group Card Tab - Rooming List -->
+                <form id="group-rooming-list" name="group-rooming-list" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'ROOMING'">
+                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationRoomingListTab.html'">
+                        <!-- Keep in mind that some fields should be empty -->
+                    </div>
+                </form>
+                <!-- Group Card Tab - Transactions -->
+                <form id="group-transactions" name="group-transactions" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'TRANSACTIONS'">
+                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationTransactionsTab.html'">
+                        <!-- Keep in mind that some fields should be empty -->
+                    </div>
+                </form>
+                <!-- Group Card Tab - Activity Log -->
+                <form id="group-transactions" name="group-transactions" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'ACTIVITY'">
+                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationActivityTab.html'">
+                        <!-- Keep in mind that some fields should be empty -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

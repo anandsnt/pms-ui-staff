@@ -1,0 +1,94 @@
+<div class="holder left">
+    <strong class="h3">Group Info</strong>
+    <div class="entry full-width">
+        <label for="group-name">Name</label>
+        <input id="group-name" value="{Group Name}" type="text" />
+    </div>
+    <div class="entry margin">
+        <label for="group-code">Group Code</label>
+        <input id="group-code" value="{Group Code}" type="text" />
+    </div>
+    <div class="entry">
+        <label for="group-firstname">First Name</label>
+        <input id="group-firstname" value="{First Name}" type="text" />
+    </div>
+    <div class="entry margin">
+        <label for="group-lastname">Last Name</label>
+        <input id="group-lastname" value="{Last Name}" type="text" />
+    </div>
+    <div class="entry">
+        <label for="group-phone">Contact Phone</label>
+        <input id="group-phone" value="{Contact Phone}" type="text" />
+    </div>
+    <div class="entry full-width">
+        <label for="group-email">Contact E-mail</label>
+        <input id="group-email" value="{Contact E-mail}" type="text" />
+    </div>
+    <div class="entry break full-width">
+        <a href="{demographics popup}" class="button white brand-text">Demographics</a>
+    </div>
+</div>
+
+<div class="holder right">
+    <strong class="h3">Room Block Summary</strong>
+    <div class="entry margin">
+        <label for="group-block-from">From</label>
+        <input id="group-block-from" value="{Start Date - not earlier than business or arrival date, not after departure date}" type="text" readonly /> <!-- If new group, add class "datepicker" -->
+    </div>
+    <div class="entry">
+        <label for="group-block-to">To</label>
+        <input id="group-block-to" value="{End Date - not earlier than Start Date, not after departure date}" type="text" readonly /> <!-- If new group, add class "datepicker" -->
+    </div>
+    <div class="entry full-width with-button">
+        <label for="group-release-date">Room Release Date</label>
+        <input id="group-release-date" value="{Room Release Date}" class="datepicker" type="text" readonly />
+        <button type="button" class="button {red or grey}">Release Now</button> <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
+    </div>
+    <div class="entry clear">
+        <label for="group-hold-status">Hold Status</label>
+        <div class="select">
+            <select id="group-hold-status">
+                <option value="" selected>Set Status</option>
+                <option value="tentative">Tentative</option>
+                <option value="definite">Definite</option>
+                <option value="cancel">Cancel</option>
+            </select>
+        </div>
+    </div>
+    <div class="entry margin">
+        <label for="group-revenue">Actual / Potential Revenue</label>
+        <input id="group-revenue" value="{Values}" type="text" readonly />
+    </div>
+    <div class="entry margin small">
+        <label for="group-rooms">Rooms</label>
+        <input id="group-rooms" value="{Count}" type="text" readonly />
+    </div>
+    <div class="entry small">
+        <label for="group-pickup">Pick Up</label>
+        <input id="group-pickup" value="{Count}" type="text" readonly />
+    </div>
+    <div class="entry full-width with-button">
+        <label for="group-rate">Rate</label>
+        <div class="select">
+            <select id="group-rate">
+                <option value="" selected>Select Rate</option>
+                <option value="{rate-value}">{Rate Name}</option>
+                ... repeat for all rates
+            </select>
+        </div>
+        <a href="{addons-link}" class="button with-icon brand-colors"> <!-- {addons-link} can either be for a popup (existing group) or an addons screne (new group) -->
+            <!-- If addons already exist, show: 
+            <span class="count">Count</span> -->
+            <span class="icons icon-addons"></span>
+            Add-Ons
+        </a>
+    </div>
+
+    <!-- Notes -->
+    <strong class="h3 margin">Notes</strong>
+    <div class="entry full-width no-label with-notes">
+        <textarea id="group-notes" placeholder="Write a note" rows="2"></textarea>
+        <button type="button" class="button brand-colors post">Post</button>
+    </div>
+    {see cards/company-card/content/tabs/ar-account.html, L14-30 for notes markup}
+</div>

@@ -2,4 +2,5 @@
     
     "FROM": "From",
     "TO": "To",
-    "GROUPS": "Groups"
+    "GROUPS": "Groups",
+    "NEW_GROUP": "New Group"

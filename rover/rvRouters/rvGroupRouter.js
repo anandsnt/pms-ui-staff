@@ -37,5 +37,20 @@ angular.module('groupModule', [])
                     }
                 ]
             }
-        });        
+        });
+
+        //group summary : CICO-12790
+        $stateProvider.state('rover.groups.config', {
+            url: '/group/config/:id/:activeTab',
+            templateUrl: '/assets/partials/groups/rvGroupConfiguration.html',
+            controller: 'rvGroupConfigurationCtrl',
+            onEnter: function($stateParams) {
+                if (typeof $stateParams.id == "undefined" || $stateParams.id == null) {
+                    $stateParams.id = "NEW_GROUP";
+                }
+                if (typeof $stateParams.activeTab == "undefined" || $stateParams.activeTab == null) {
+                    $stateParams.activeTab = "SUMMARY";
+                }
+            }
+        });         
 }]);
