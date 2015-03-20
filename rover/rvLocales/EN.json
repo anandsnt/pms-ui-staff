@@ -125,6 +125,9 @@
     "MENU_JOURNAL":"Journal",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
+    "MENU_GROUPS": "Group",
+    "MENU_CREATE_GROUP": "Create Group",
+    "MENU_MANAGE_GROUP": "Manage Group",
     
     "DUEIN_TITLE": "Checking In",
     "IN_HOUSE_TITLE": "In House",
@@ -275,7 +278,12 @@
     "CONTINUE_WITH_END_OF_DAY":"Continue with end of day",
     "YES":"yes",
     "NO":"No",
-    "END_OF_DAY":"END OF DAY",	
+    "END_OF_DAY":"END OF DAY",    
+    
+    "FROM": "From",
+    "TO": "To",
+    "GROUPS": "Groups"
+,	
 	"HK_GUESTS": "Guests",
 	"HK_OCCUPIED": "Occupied",
 	"HK_VACANT_DIRTY": "Vacant (Dirty)",
@@ -693,7 +701,8 @@
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
     "DASHBOARD_SEARCH_VIP": "VIPS",
     "SEARCH_NORMAL": "Find Reservation",
-    "PRE_CHECKIN":"Pre Check In"
+    "PRE_CHECKIN":"Pre Check In",
+    "SEARCH":"Search"
 ,
 
 
