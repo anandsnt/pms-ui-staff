@@ -1405,8 +1405,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             // DEMOGRAPHICS
             var demographicsData = $scope.reservationData.demographics;
-            if (typeof roomIndex != 'undefined') {
+            if(typeof roomIndex != 'undefined') {
                 demographicsData = $scope.reservationData.rooms[roomIndex].demographics;
+            }
+
+            // CICO-11755
+            if(typeof demographicsData!= undefined){
                 data.reservation_type_id = parseInt(demographicsData.reservationType);
                 data.source_id = parseInt(demographicsData.source);
                 data.market_segment_id = parseInt(demographicsData.market);
