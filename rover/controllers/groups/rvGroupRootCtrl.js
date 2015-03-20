@@ -1,7 +1,8 @@
 sntRover.controller('rvGroupRootCtrl',	[
 	'$scope',
 	'$rootScope',
-	function($scope, $rootScope) {
+	'$filter',
+	function($scope, $rootScope, $filter) {
 
 		/**
 		* function to set Headinng
@@ -9,6 +10,6 @@ sntRover.controller('rvGroupRootCtrl',	[
 		*/
 		$scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;
-			$scope.setTitle(heading);
+			$scope.setTitle ($filter('translate')(heading));
 		};
 	}]);
