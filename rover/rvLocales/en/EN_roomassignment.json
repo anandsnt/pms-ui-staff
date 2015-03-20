@@ -18,4 +18,6 @@
     "ROOM_ASSIGNMENT_TITLE":"Room Assignment",
     "MAXIMUM_OCCUPANCY_LABEL": "Maximum occupancy of room is",
     "ASSIGN_LABEL": "Assign Room",
-    "CANCEL_LABEL":"Cancel"
+    "CANCEL_LABEL":"Cancel",
+    "SHOW_ALL_FLOORS" : "Show All Floors",
+    "SELECT_FLOOR" : "Select floor"
