@@ -5,7 +5,9 @@
 	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
 		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status, reservationData.reservation_card.room_ready_status,  reservationData.reservation_card.checkin_inspected_only)" >
 		 	 {{reservationData.reservation_card.room_number}} 
-		 </strong>{{reservationData.reservation_card.room_type_description}} 
+		 </strong>
+		 <span class="room-status room-red" ng-show="reservationData.reservation_card.sharer_information.length > 0">SHARER</span>
+		 {{reservationData.reservation_card.room_type_description}} 
 	</a>
 
 	<!-- If room assignment not available:
@@ -16,7 +18,7 @@
 	
 	<div class="actions" >
 
-  		<a id="upgrade-btn" ng-if="showUpgradeButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" class="button with-icon brand-colors" ui-sref="rover.reservation.staycard.upgrades({reservation_id:reservationData.reservation_card.reservation_id, clickedButton : 'upgradeButton'})">
+  		<a id="upgrade-btn" ng-if="showUpgradeButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" class="button with-icon brand-colors" ng-click="goToRoomUpgrades()">
     		<span class="icons icon-upgrade"></span>
     		Upgrade
   		</a>

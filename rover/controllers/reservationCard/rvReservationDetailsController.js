@@ -556,6 +556,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			 	});
 			}
 		};
+		//CICO-13907
+		$scope.hasAnySharerCheckedin = function(){
+			var isSharerCheckedin = false;
+			angular.forEach($scope.reservationData.reservation_card.sharer_information, function(sharer, key){
+				if(sharer.reservation_status == 'CHECKEDIN' || sharer.reservation_status == 'CHECKING_OUT'){
+					isSharerCheckedin = true;
+					return false;
+				}
+
+			})
+			return isSharerCheckedin;
+		}
 
 	}
 
