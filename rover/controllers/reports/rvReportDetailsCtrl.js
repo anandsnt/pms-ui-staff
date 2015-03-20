@@ -295,6 +295,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.parsedApiFor = $scope.chosenReport.title;
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, $scope.$parent.reportGroupedBy) );
+			// if there are any results
+			$scope.hasNoResults = _.isEmpty($scope.$parent.results);
 
 
 			// a very different parent template / row template / content template for certain reports
