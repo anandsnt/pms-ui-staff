@@ -4,24 +4,61 @@
         <button id="groups-clear-query" class="clear-query">
             <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
         </button>
+
         <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
-        <input name="groups-query" id="groups-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-model="query"  />
+        
+        <input  name="groups-query" 
+                id="groups-query" 
+                class="query" 
+
+                placeholder="Name, Group, Room No. or Confirmation No." 
+                type="search" 
+                autocomplete="off" 
+                ng-model="query"  rv-delay-textbox
+                delay="1000" function-to-fire="search"/>
     </div>
     <div class="entry dates">
         <div class="entry-data has-datepicker">
             <label for="groups-date-from" translate>FROM</label>
-            <button id="groups-date-from-clear" class="clear-query" ng-class=""> <!-- To hide this, remove class "visible" -->
-                <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+
+            <button id="groups-date-from-clear" 
+                    class="clear-query"> <!-- To hide this, remove class "visible" -->
+                    <!-- ng-class="{'visible': !isEmpty(fromDate)}" 
+                        ng-click="clearFromDate()" -->                       
+                    <span class="icons icon-clear-search" translate>
+                        CLEAR_QUERY
+                    </span>
             </button>
-            <input name="groups-date-from" id="groups-date-from" class="datepicker" readonly type="text" ui-date="fromDateOptions"
-             ng-model="fromDate"/>
+
+            <input  name="groups-date-from" 
+                    id="groups-date-from" 
+                    class="datepicker" 
+                    readonly 
+                    type="text" 
+                    ui-date="fromDateOptions" 
+                    value="{{fromDate}}"/>
         </div>
         <div class="entry-data has-datepicker">
             <label for="groups-date-to" translate>TO</label>
-            <button id="groups-date-to-clear" class="clear-query"> <!-- Add class visible when date is selected -->
-                <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+            
+            <button id="groups-date-to-clear" 
+                    class="clear-query"  
+                    ng-click="clearToDate()" 
+                    ng-class="{'visible': !isEmpty(toDate)}"> <!-- Add class visible when date is selected -->
+                    <span class="icons icon-clear-search" translate>
+                        CLEAR_QUERY
+                    </span>
             </button>
-            <input name="groups-date-to" id="groups-date-to" class="datepicker" value="" readonly type="text" ui-date="toDateOptions"  ng-model="toDate"/>
+
+            <input  name="groups-date-to" 
+                    id="groups-date-to"
+                    class="datepicker" 
+                    readonly 
+                    type="text" 
+                    ui-date="toDateOptions" 
+                    value="{{toDate}}" 
+                    rv-clear-text-box 
+                    listen-this="toDate"/>
         </div>
     </div>
 </form>
@@ -34,7 +71,7 @@
 
 <!-- Search panel - WITH RESULTS -->
 <section id="find-group" class="content scrollable" role="main"> <!-- If no pagination, add class "no-pagination" -->
-    <div class="wrapper">
+    <div class="wrapper" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
         <ul class="search-results">
             <li class="group" ng-repeat="group in groupList">
                 <a >
