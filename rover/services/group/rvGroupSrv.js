@@ -12,9 +12,11 @@ sntRover.service('rvGroupSrv',
 				url = '/ui/show?format=json&json_input=groups/groups.json';
 			
 			var data = {
-				'q': params.query,
-				'from_date': params.from_date,
-				'to_date': params.to_date
+				'q'			: params.query,
+				'from_date'	: params.from_date,
+				'to_date'	: params.to_date,
+				'per_page' 	: params.per_page,
+				'page'  	: params.page,
 			};
 
 			rvBaseWebSrvV2.getJSON(url, data).then(
