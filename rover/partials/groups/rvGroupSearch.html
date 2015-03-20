@@ -1,7 +1,11 @@
 <!-- Search form -->
 <form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search">
     <div class="entry search">
-        <button id="groups-clear-query" class="clear-query">
+        
+        <button id="groups-clear-query" 
+                class="clear-query"
+                ng-click="clearSearchQuery()" 
+                ng-class="{'visible': !isEmpty(query)}">
             <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
         </button>
 
@@ -63,21 +67,22 @@
     </div>
 </form>
 <!-- Pagination -->
-<div class="search-pagination" >
+<div class="search-pagination" ng-show="shouldShowPagination()">
     <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
     <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
+    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResultCount}}</strong> items</p>
 </div>
 
 <!-- Search panel - WITH RESULTS -->
-<section id="find-group" class="content scrollable" role="main"> <!-- If no pagination, add class "no-pagination" -->
-    <div class="wrapper" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
+<section id="find-group" class="content scrollable" role="main" ng-iscroll="result_showing_area" ng-iscroll-delay="1000"> <!-- If no pagination, add class "no-pagination" -->
+    <div class="wrapper" >
         <ul class="search-results">
-            <li class="group" ng-repeat="group in groupList">
+            <li class="group" ng-repeat="group in groupList" ngrepeatend ngrepeatstarted>
                 <a >
                     <div class="data">
-                        <h2>{{group.group_name}}</h2>
-                        <span class="confirmation">{{group.group_code}}</span>
+                        <h2 ng-bind-html="escapeNull(group.group_name)|highlight:query:false">
+                        </h2>
+                        <span class="confirmation" ng-bind-html="escapeNull(group.group_code)|highlight:query:false"></span>
                         <!-- If linked company exists: -->
                         <span class="icons icon-guest-company" ng-hide="isEmpty(group.company)">
                             {{group.company}}

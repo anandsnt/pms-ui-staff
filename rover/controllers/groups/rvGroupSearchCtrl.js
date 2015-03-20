@@ -5,12 +5,14 @@ sntRover.controller('rvGroupSearchCtrl',	[
 	'initialGroupListing',
 	'businessDate',
 	'$filter',
+	'$timeout',
 	function($scope, 
 			$rootScope, 
 			rvGroupSrv, 
 			initialGroupListing, 
 			businessDate, 
-			$filter) {
+			$filter,
+			$timeout) {
 			
 		BaseCtrl.call(this, $scope);
 
@@ -118,6 +120,18 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		};
 
 		/**
+		* Function to clear to search query
+		* @return {None}
+		*/
+		$scope.clearSearchQuery = function(){
+			$scope.query = '';
+			runDigestCycle();
+			
+			//we have to search on changing the from date
+			$scope.search();			
+		};
+
+		/**
 		* to run angular digest loop,
 		* will check if it is not running
 		* return - None
@@ -155,6 +169,25 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		};
 
 		/**
+		 * Event propogated by ngrepeatstart directive
+		 * we used to show activity indicator
+		 */
+		$scope.$on('NG_REPEAT_STARTED_RENDERING', function(event) {
+			$scope.$emit('showLoader');
+		});
+
+		/**
+		 * Event propogated by ngrepeatend directive
+		 * we used to hide activity indicator & refresh scroller
+		 */
+		$scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
+			$timeout(function() {
+				refreshScrollers();
+			}, 300);
+			$scope.$emit('hideLoader');
+		});
+
+		/**
 		* utility function to form API params for group search
 		* return {Object}
 		*/
@@ -163,6 +196,8 @@ sntRover.controller('rvGroupSearchCtrl',	[
 				query		: $scope.query,
 				from_date	: $scope.fromDate,
 				to_date		: $scope.toDate,
+				per_page 	: $scope.perPage,
+				page  		: $scope.start
 			};
 			return params;
 		};
@@ -187,7 +222,12 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		* @return {None}
 		*/
 		var successCallBackOfSearch = function(data){			
-			$scope.groupList = data.groups;  
+			//groupList
+			$scope.groupList = data.groups; 
+
+			//total result count
+			$scope.totalResultCount = data.total_count;
+
 			refreshScrollers ();
 		};
 
@@ -254,6 +294,73 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		};
 
 		/**
+		* Pagination things
+		*/
+		var setInitialPaginationThings = function(){
+			$scope.perPage 	= 50;
+			$scope.start 	= 1;
+			$scope.end 		= initialGroupListing.groups.length;
+		};
+
+		/**
+		* should we show pagination area
+		* @return {Boolean}
+		*/
+		$scope.shouldShowPagination = function(){
+			return ($scope.totalResultCount >= $scope.perPage);
+		};
+		
+		/**
+		* should we disable next button 
+		* @return {Boolean}
+		*/
+		$scope.isNextButtonDisabled = function(){
+			return ($scope.end >= $scope.totalResultCount);	
+		};
+
+		/**
+		* should we disable prev button 
+		* @return {Boolean}
+		*/
+		$scope.isPrevButtonDisabled = function(){
+			return ($scope.start === 1);	
+		};
+
+
+		/**
+		* function to trgger on clicking the next button
+		* will call the search API after updating the current page
+		* return - None
+		*/
+		$scope.loadPrevSet = function() {
+			$scope.start = $scope.start - $scope.groupList.length;
+			$scope.end = $scope.end - $scope.groupList.length;
+			
+			//yes we are calling the API
+			$scope.search();			
+		};
+
+		/**
+		* function to trgger on clicking the next button
+		* will call the search API after updating the current page
+		* return - None
+		*/
+		$scope.loadNextSet = function() {
+			$scope.start = $scope.start + $scope.groupList.length;
+			var isReachedEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
+			
+			if (isReachedEnd){
+				$scope.end = $scope.totalResultCount;
+			}
+			else {
+				$scope.end = $scope.end + $scope.groupList.length;
+			}
+			
+			//yes we are calling the API
+			$scope.search();			
+		};
+
+		/**
 		* function used to set initlial set of values
 		* @return {None}
 		*/
@@ -269,9 +376,15 @@ sntRover.controller('rvGroupSearchCtrl',	[
 
 			//groupList
 			$scope.groupList = initialGroupListing.groups; 
+			
+			//total result count
+			$scope.totalResultCount = initialGroupListing.total_count;
 
 			//scroller and related things
 			setScrollerForMe();
+
+			//pagination things
+			setInitialPaginationThings();
 		}();	
 
 
