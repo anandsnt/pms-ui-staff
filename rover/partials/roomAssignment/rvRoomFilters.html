@@ -11,14 +11,12 @@
                                     Show All Floors
                                 </label>
                                 <div ng-class="{'select':true, 'hidden':data.isNoFloorSelected}">       
-  			<select ng-model="data.selectedFloor" ng-change='selectedFloorChanged()' class="placeholder">
-        	<option ng-repeat="floor in floor_details" value="{{floor.id}}" >{{floor.description}}</option>
-      		</select>
-
-
-                           
-                                                                      
-                                </div>               
+  								<select ng-model="data.selectedFloor" ng-change='selectedFloorChanged()' class="placeholder" iscroll-stop-propagation>
+  								<option value="" ng-selected="data.selectedFloor == ''">Select floor
+  								</option>
+        						<option ng-repeat="floor in floor_details" ng-selected="data.selectedFloor == floor.id" value="{{floor.id}}" >{{floor.description}}</option>
+      							</select>                
+                                	</div>               
                             </div>
 							
 							<div class="entry radio-check" ng-repeat="group in roomFeatures">
