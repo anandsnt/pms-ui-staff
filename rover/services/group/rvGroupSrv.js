@@ -2,6 +2,10 @@ sntRover.service('rvGroupSrv',
 	['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
+		//some default values
+		this.DEFAULT_PER_PAGE 	= 50;
+		this.DEFAULT_PAGE 		= 1;
+		
 		/**
 		* functio to get list of groups against a query, from date, to date
 		* @param {Object} with search query, from_date, to_date

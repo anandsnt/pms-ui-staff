@@ -132,6 +132,17 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		};
 
 		/**
+		* function to stringify a string
+		* sample use case:- directive higlight filter 
+		* sometimes through error parsing speial charactes
+		* @param {String}
+		* @return {String}
+		*/
+		$scope.stringify = function(string){
+			return JSON.stringify (string);
+		};
+
+		/**
 		* to run angular digest loop,
 		* will check if it is not running
 		* return - None
@@ -188,6 +199,23 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		});
 
 		/**
+		* when there is any change in search query
+		* this function will execute
+		* @return {None}
+		*/
+		$scope.searchQueryChanged = function() {
+			if ($scope.isEmpty ($scope.query)){
+				return false;
+			}
+
+			if ($scope.query.length < 3){
+				return false;
+			}
+
+			$scope.search ();
+		};
+
+		/**
 		* utility function to form API params for group search
 		* return {Object}
 		*/
@@ -197,7 +225,7 @@ sntRover.controller('rvGroupSearchCtrl',	[
 				from_date	: $scope.fromDate,
 				to_date		: $scope.toDate,
 				per_page 	: $scope.perPage,
-				page  		: $scope.start
+				page  		: $scope.page
 			};
 			return params;
 		};
@@ -247,9 +275,9 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		var setDatePickerOptions = function() {
 			//date picker options - Common
 			var commonDateOptions = {
-				showOn: 'button',
-				dateFormat: $rootScope.jqDateFormat,
-				numberOfMonths: 1,
+				showOn 			: 'button',
+				dateFormat 		: $rootScope.jqDateFormat,
+				numberOfMonths	: 1,
 			};	
 
 			//date picker options - From
@@ -277,9 +305,9 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		var setScrollerForMe = function(){
 			//setting scroller things
 			var scrollerOptions = {
-				tap: true,
-				preventDefault: false,
-				deceleration: 0.0001,
+				tap 			: true,
+				preventDefault	: false,
+				deceleration 	: 0.0001,
 				shrinkScrollbars: 'clip'
 			};
 			$scope.setScroller('result_showing_area', scrollerOptions); 
@@ -296,10 +324,14 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		/**
 		* Pagination things
 		*/
-		var setInitialPaginationThings = function(){
-			$scope.perPage 	= 50;
+		var setInitialPaginationAndAPIThings = function(){
+			//pagination
+			$scope.perPage 	= rvGroupSrv.DEFAULT_PER_PAGE;
 			$scope.start 	= 1;
 			$scope.end 		= initialGroupListing.groups.length;
+
+			//what is page that we are requesting in the API
+			$scope.page = 1;
 		};
 
 		/**
@@ -333,8 +365,24 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		* return - None
 		*/
 		$scope.loadPrevSet = function() {
-			$scope.start = $scope.start - $scope.groupList.length;
-			$scope.end = $scope.end - $scope.groupList.length;
+			var isAtEnd = ($scope.end == $scope.totalResultCount);
+			if (isAtEnd){
+				//last diff will be diff from our normal diff
+				var lastDiff = ($scope.totalResultCount % $scope.perPage);				
+				if (lastDiff == 0){
+					lastDiff = $scope.perPage;
+				}
+
+				$scope.start = $scope.start - $scope.perPage;
+				$scope.end 	 = $scope.end - lastDiff;
+			}
+			else {
+				$scope.start = $scope.start - $scope.perPage;
+				$scope.end   = $scope.end - $scope.perPage;
+			}
+
+			//Decreasing the page param used for API calling
+			$scope.page--;
 			
 			//yes we are calling the API
 			$scope.search();			
@@ -346,19 +394,23 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		* return - None
 		*/
 		$scope.loadNextSet = function() {
-			$scope.start = $scope.start + $scope.groupList.length;
-			var isReachedEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
+			$scope.start = $scope.start + $scope.perPage;
+			var willNextBeEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
 			
-			if (isReachedEnd){
+			if (willNextBeEnd){
 				$scope.end = $scope.totalResultCount;
 			}
 			else {
-				$scope.end = $scope.end + $scope.groupList.length;
+				$scope.end = $scope.end + $scope.perPage;
 			}
-			
+
+			//Increasing the page param used for API calling
+			$scope.page++;
+
 			//yes we are calling the API
 			$scope.search();			
 		};
+
 
 		/**
 		* function used to set initlial set of values
@@ -383,8 +435,8 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			//scroller and related things
 			setScrollerForMe();
 
-			//pagination things
-			setInitialPaginationThings();
+			//pagination  & API things
+			setInitialPaginationAndAPIThings();
 		}();	
 
 

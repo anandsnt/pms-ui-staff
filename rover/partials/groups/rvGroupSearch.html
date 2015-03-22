@@ -16,10 +16,14 @@
                 class="query" 
 
                 placeholder="Name, Group, Room No. or Confirmation No." 
-                type="search" 
+                type="search"  
+
                 autocomplete="off" 
-                ng-model="query"  rv-delay-textbox
-                delay="1000" function-to-fire="search"/>
+                ng-model="query"  
+
+                rv-delay-textbox
+                delay="1000" 
+                function-to-fire="searchQueryChanged"/>
     </div>
     <div class="entry dates">
         <div class="entry-data has-datepicker">
@@ -80,9 +84,9 @@
             <li class="group" ng-repeat="group in groupList" ngrepeatend ngrepeatstarted>
                 <a >
                     <div class="data">
-                        <h2 ng-bind-html="escapeNull(group.group_name)|highlight:query:false">
+                        <h2 ng-bind-html="{{escapeNull(stringify(group.group_name))}}|highlight:query:false">
                         </h2>
-                        <span class="confirmation" ng-bind-html="escapeNull(group.group_code)|highlight:query:false"></span>
+                        <span class="confirmation" ng-bind-html="{{escapeNull(stringify(group.group_code))}}|highlight:query:false"></span>
                         <!-- If linked company exists: -->
                         <span class="icons icon-guest-company" ng-hide="isEmpty(group.company)">
                             {{group.company}}
