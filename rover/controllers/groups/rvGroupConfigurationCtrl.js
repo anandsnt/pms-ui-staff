@@ -61,8 +61,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			$scope.initializeDataModelForSummaryScreen();
 		};
 
-		$scope.openDemographicsPopup = function(){
+		$scope.openDemographicsPopup = function() {
 			console.log('openDemographicsPopup');
+		}
+
+		$scope.isAddMode = function() {
+			return $stateParams.id === "NEW_GROUP";
 		}
 
 		initGroupConfig();

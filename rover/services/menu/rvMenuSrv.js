@@ -174,7 +174,7 @@ sntRover.service('rvMenuSrv',
 		        menuIndex: "menuGroups",
 		        submenu: [{
 		            title: "MENU_CREATE_GROUP",
-		            action: "rover.groups.config",
+		            action: "rover.groups.config({id:'NEW_GROUP'})",
 		            menuIndex: "menuCreateGroup",
 		        }, {
 		            title: "MENU_MANAGE_GROUP",
