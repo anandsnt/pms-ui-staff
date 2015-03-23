@@ -61,7 +61,7 @@
         <ul class="totals">
             <li>Activities<span>{{totalResults}}</span></li>
         </ul>
-        <div class="actions">
+        <!-- <div class="actions">
             <div class="select">
                 <select name="print-options">
                     <option value="pdf" selected>Save/E-mail as PDF</option>
@@ -72,7 +72,7 @@
             <button id="email-report" type="button" class="button with-icon only-icon blue"><span class="icons icon-email"></span></button>
             <button id="print-report" type="button" class="button with-icon only-icon blue"><span class="icons icon-print"></span></button>
             <button id="save-report" type="button" class="button with-icon only-icon purple"><span class="icons icon-save"></span></button>
-        </div>
+        </div> -->
     </div>
 
     <!-- Report content -->
@@ -107,7 +107,7 @@
                 <tbody>
                     <tr ng-repeat="log in activityLogData" ngrepeatend>
                         <td>{{log.user_name}}</td>
-                        <td>{{log.date | date : mmddyyyyFormat}}, {{log.date | date : timeWithAMPM}}</td>
+                        <td>{{log.date}}, {{log.time}}</td>
                         <td>{{log.action}}</td>
                         <td class="details">
                             <span ng-repeat="details in log.details">
