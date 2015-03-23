@@ -153,6 +153,15 @@ sntRover.controller('RVbillCardController',
 	};
 
 	/**
+	* function to check whether the user has permission
+	* to Post Room Charge
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToPostRoomCharge = function() {
+		return rvPermissionSrv.getPermissionValue ('ENABLE_DISABLE_POST_CHARGES');
+	};
+
+	/**
 	* function to decide whether to show Move Charge Drop Down
 	* @return {Boolean}
 	*/
@@ -302,7 +311,7 @@ sntRover.controller('RVbillCardController',
 	};
 	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
-		if (!$scope.hasPermissionToMakePayment()){
+		if (!$scope.hasPermissionToPostRoomCharge()){
 			$scope.errorMessage = [ "You have no permission to enable or disbable this button!"];
 			return false;
 		}

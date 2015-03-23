@@ -540,8 +540,7 @@ sntRover.controller('RVroomAssignmentController',[
 
 	};
 
-	$scope.getRoomsWithInitialFilters = function(){
-		console.log();
+	$scope.getRoomsWithInitialFilters = function(){	
 		var roomsWithInitialFilters = [];
 		for (var i = 0; i < $scope.rooms.length; i++) {
 			if($scope.rooms[i].room_status == "READY" && $scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].is_preassigned){
@@ -584,11 +583,12 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.includeFloorFilter = function(){
 		var roomsInSelectedFloor;
 			var tempfilteredRooms=[];			
-				$scope.floors.forEach(function(element){
+					$scope.floors.forEach(function(element){
 					if(element.id==$scope.floorFilterData.selectedFloorId){								
 							roomsInSelectedFloor=element.room_ids;
 						}
-					});
+					});	
+					if(typeof roomsInSelectedFloor != 'undefined'){				
 					$scope.filteredRooms.forEach(function(element){
 						roomsInSelectedFloor.map(function(x){
 								if(element.room_id==x){
@@ -597,6 +597,7 @@ sntRover.controller('RVroomAssignmentController',[
 						});
 
 					});
+				}
 					$scope.filteredRooms=tempfilteredRooms;					
 			
 	}
