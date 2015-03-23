@@ -1,128 +1,132 @@
-<div id="group-room-block-header" class="tab-header with-filters">
-    <div class="entry date-range">
-        <div class="has-datepicker">
-            <label for="room-block-start">Start Date</label>
-            <input id="room-block-start" class="range-datepicker" placeholder="Select Start Date" value="{Start Date - not earlier than business or arrival date, not after departure date}" readonly />
-        </div>
-        <div class="has-datepicker">
-            <label for="room-block-end">End Date</label>
-            <input id="room-block-end" class="range-datepicker" placeholder="Select End Date" value="{End Date - not earlier than Start Date, not after departure date}" readonly />
-        </div>
-    </div>
-    <div class="entry status"> <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
-        <label for="group-hold-status">Hold Status</label>
-        <div class="select">
-            <select id="group-hold-status">
-                <option value="" selected>Set Status</option>
-                <option value="tentative">Tentative</option>
-                <option value="definite">Definite</option>
-                <option value="cancel">Cancel</option>
-            </select>
-        </div>
-    </div>
-    <div class="entry"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
-        <label for="group-total-rooms">Total Rooms</label>
-        <input id="group-total-rooms" placeholder="" value="{Count}" readonly />
-    </div>
-    <div class="entry"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
-        <label for="group-total-rooms">Total Pick Up</label>
-        <input id="group-total-rooms" placeholder="" value="{Count}" readonly />
-    </div>
-    <div class="actions">
-        <!-- If new group and/or start & end dates have not been defined: 
-        <button type="button" class="green grey">Create Block</button> // When start & end dates are set, enable button and change class "grey" with "green" -->
-        <!-- If existing group and/or room blocks are set:
-        <button type="button" class="button green">Update</button> -->
-    </div>
-</div>
+<form id="group-room-block" name="group-room-block" class="form card-tab rooms">
+	<div class="wrapper" >
+		<div id="group-room-block-header" class="tab-header with-filters">
+		    <div class="entry date-range">
+		        <div class="has-datepicker">
+		            <label for="room-block-start">Start Date</label>
+		            <input id="room-block-start" class="range-datepicker" placeholder="Select Start Date" value="{Start Date - not earlier than business or arrival date, not after departure date}" readonly />
+		        </div>
+		        <div class="has-datepicker">
+		            <label for="room-block-end">End Date</label>
+		            <input id="room-block-end" class="range-datepicker" placeholder="Select End Date" value="{End Date - not earlier than Start Date, not after departure date}" readonly />
+		        </div>
+		    </div>
+		    <div class="entry status"> <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
+		        <label for="group-hold-status">Hold Status</label>
+		        <div class="select">
+		            <select id="group-hold-status">
+		                <option value="" selected>Set Status</option>
+		                <option value="tentative">Tentative</option>
+		                <option value="definite">Definite</option>
+		                <option value="cancel">Cancel</option>
+		            </select>
+		        </div>
+		    </div>
+		    <div class="entry"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
+		        <label for="group-total-rooms">Total Rooms</label>
+		        <input id="group-total-rooms" placeholder="" value="{Count}" readonly />
+		    </div>
+		    <div class="entry"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
+		        <label for="group-total-rooms">Total Pick Up</label>
+		        <input id="group-total-rooms" placeholder="" value="{Count}" readonly />
+		    </div>
+		    <div class="actions">
+		        <!-- If new group and/or start & end dates have not been defined: 
+		        <button type="button" class="green grey">Create Block</button> // When start & end dates are set, enable button and change class "grey" with "green" -->
+		        <!-- If existing group and/or room blocks are set:
+		        <button type="button" class="button green">Update</button> -->
+		    </div>
+		</div>
 
-<div id="group-room-block-content" class="tab-details">
-    
-    <!-- If new group and/or room block have not been set:
-    <div class="no-content">
-        <div class="info">
-            <a href="{modals/group-room-grid.html}" class="button green">Add Rooms &amp; Rates</a> // Button should have class "hidden" until block is created
-        </div>
-    </div> -->
-    
-    <!-- Room block actions -->
-    <div class="room-block-actions">
-        <button type="button" class="button green hidden">Save</button> <!-- Hidden until change is made in the grid -->
-        <button type="button" class="button red hidden">Discard</button> <!-- Hidden until change is made in the grid -->
-        <button type="butotn" class="button blue">Rooms &amp; Rates</button>
-    </div>  
+		<div id="group-room-block-content" class="tab-details">
+		    
+		    <!-- If new group and/or room block have not been set:
+		    <div class="no-content">
+		        <div class="info">
+		            <a href="{modals/group-room-grid.html}" class="button green">Add Rooms &amp; Rates</a> // Button should have class "hidden" until block is created
+		        </div>
+		    </div> -->
+		    
+		    <!-- Room block actions -->
+		    <div class="room-block-actions">
+		        <button type="button" class="button green hidden">Save</button> <!-- Hidden until change is made in the grid -->
+		        <button type="button" class="button red hidden">Discard</button> <!-- Hidden until change is made in the grid -->
+		        <button type="butotn" class="button blue">Rooms &amp; Rates</button>
+		    </div>  
 
-    <!-- Room block room types -->
-    <div class="room-block-sidebar scrollable">
-        <div class="wrapper">
-            <div class="row"> <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
-                <p class="line line-toggle">{Room Type}</p> <!-- Toggle class "active" when clicked/tapped -->
-                <ul class="hidden"> <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
-                    <li class="line">Single</li>
-                    <li class="line">Double</li>
-                    <li class="line small add">+ Add Triple</li> <!-- When clicked, add L110-113 -->
-                    <!-- When + Add Triple is clicked, show option to add quadruple:
-                    <li class="line small add">+ Add Quadruple</li> // When clicked, add L115-118 -->
-                </ul>
-            </div>
-            ... repeat for every room type
-        </div>
-    </div>
+		    <!-- Room block room types -->
+		    <div class="room-block-sidebar scrollable">
+		        <div class="wrapper">
+		            <div class="row"> <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
+		                <p class="line line-toggle">{Room Type}</p> <!-- Toggle class "active" when clicked/tapped -->
+		                <ul class="hidden"> <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
+		                    <li class="line">Single</li>
+		                    <li class="line">Double</li>
+		                    <li class="line small add">+ Add Triple</li> <!-- When clicked, add L110-113 -->
+		                    <!-- When + Add Triple is clicked, show option to add quadruple:
+		                    <li class="line small add">+ Add Quadruple</li> // When clicked, add L115-118 -->
+		                </ul>
+		            </div>
+		            ... repeat for every room type
+		        </div>
+		    </div>
 
-    <!-- Room block days -->
-    <div class="room-block-timeline scrollable">
-        <ul class="wrapper" style="width:{number of days*190}px;">
-            <li>
-                <div class="inner">
-                    {Date, formated like 'March 19' or 'Noverber 02'}
-                    <em>{value}% Occupancy</em>
-                </div>
-            </li>
-            ... repeat for every day
-        </ul>
-    </div>
+		    <!-- Room block days -->
+		    <div class="room-block-timeline scrollable">
+		        <ul class="wrapper" style="width:{number of days*190}px;">
+		            <li>
+		                <div class="inner">
+		                    {Date, formated like 'March 19' or 'Noverber 02'}
+		                    <em>{value}% Occupancy</em>
+		                </div>
+		            </li>
+		            ... repeat for every day
+		        </ul>
+		    </div>
 
-    <!-- Room block grid -->
-    <div class="room-block-grid scrollable">
-        <div class="wrapper" style="width:{number of days*190}px;">
-            <div class="row">
-                <div class="column">
-                    <div class="line small hidden"> <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                        <em class="cell">Total</em>
-                        <em class="cell">Pick-up</em>
-                    </div>
-                    <!-- Room Type -->
-                    <div class="line">
-                        <input type="text" value="{Count}" class="cell" disabled />
-                        <input type="text" value="{Count}" class="cell" disabled />
-                    </div>
-                    <!-- Single -->
-                    <div class="line hidden"> <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                        <input type="text" value="{Count}" class="cell" />
-                        <input type="text" value="{Count}" class="cell" disabled />
-                    </div>
-                    <!-- Double -->
-                    <div class="line hidden"> <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                        <input type="text" value="{Count}" class="cell" />
-                        <input type="text" value="{Count}" class="cell" disabled />
-                    </div> 
-                    <!-- If L63 is clicked, generate option to add triple:
-                    <div class="line hidden"> // Toggle class hidden when .line-toggle (L59) is clicked/tapped
-                        <input type="text" value="{Count}" class="cell" />
-                        <input type="text" value="{Count}" class="cell" disabled />
-                    </div> -->
-                    <!-- If L65 is clicked, generate option to add quadruple:
-                    <div class="line hidden"> // Toggle class hidden when .line-toggle (L59) is clicked/tapped
-                        <input type="text" value="{Count}" class="cell" />
-                        <input type="text" value="{Count}" class="cell" disabled />
-                    </div> -->
-                    <div class="line small cellspan hidden">
-                        <em class="cellspan">Availability: <span class="{green or red}">{Availability count}</span></em>
-                    </div>
-                </div>
-                ... repeat of every day
-            </div>
-            ... repeat for every room type
-        </div>
-    </div>
-</div>
+		    <!-- Room block grid -->
+		    <div class="room-block-grid scrollable">
+		        <div class="wrapper" style="width:{number of days*190}px;">
+		            <div class="row">
+		                <div class="column">
+		                    <div class="line small hidden"> <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+		                        <em class="cell">Total</em>
+		                        <em class="cell">Pick-up</em>
+		                    </div>
+		                    <!-- Room Type -->
+		                    <div class="line">
+		                        <input type="text" value="{Count}" class="cell" disabled />
+		                        <input type="text" value="{Count}" class="cell" disabled />
+		                    </div>
+		                    <!-- Single -->
+		                    <div class="line hidden"> <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+		                        <input type="text" value="{Count}" class="cell" />
+		                        <input type="text" value="{Count}" class="cell" disabled />
+		                    </div>
+		                    <!-- Double -->
+		                    <div class="line hidden"> <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+		                        <input type="text" value="{Count}" class="cell" />
+		                        <input type="text" value="{Count}" class="cell" disabled />
+		                    </div> 
+		                    <!-- If L63 is clicked, generate option to add triple:
+		                    <div class="line hidden"> // Toggle class hidden when .line-toggle (L59) is clicked/tapped
+		                        <input type="text" value="{Count}" class="cell" />
+		                        <input type="text" value="{Count}" class="cell" disabled />
+		                    </div> -->
+		                    <!-- If L65 is clicked, generate option to add quadruple:
+		                    <div class="line hidden"> // Toggle class hidden when .line-toggle (L59) is clicked/tapped
+		                        <input type="text" value="{Count}" class="cell" />
+		                        <input type="text" value="{Count}" class="cell" disabled />
+		                    </div> -->
+		                    <div class="line small cellspan hidden">
+		                        <em class="cellspan">Availability: <span class="{green or red}">{Availability count}</span></em>
+		                    </div>
+		                </div>
+		                ... repeat of every day
+		            </div>
+		            ... repeat for every room type
+		        </div>
+		    </div>
+		</div>
+	</div>
+</form>
