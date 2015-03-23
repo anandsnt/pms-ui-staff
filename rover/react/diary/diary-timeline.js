@@ -17,6 +17,16 @@ var Timeline = React.createClass({
 		}
 		return point_to_plot;
 	},
+
+	/*
+	* function to get TUESDAY - MAR 10
+	* @param {Date Object}
+	* @return {String}
+	*/
+	__get_date_for_timeline_displaying: function(dateObj){
+		return (dateObj.toComponents().date.weekday + " - " + dateObj.toComponents().date.toShortDateString())
+	},
+
 	render: function() {
 		var props 					= this.props,
 			state 					= this.state,
@@ -50,8 +60,8 @@ var Timeline = React.createClass({
 			interval_counter = 1;
 
 		if ( today instanceof Date ) {
-			todayShortDate = today.toComponents().date.toShortDateString();
-			tmrowShortDate = tmrow.toComponents().date.toShortDateString();
+			todayShortDate = this.__get_date_for_timeline_displaying (today);
+			tmrowShortDate = this.__get_date_for_timeline_displaying (tmrow);
 		} else {
 			todayShortDate = tmrowShortDate = '';
 		};
