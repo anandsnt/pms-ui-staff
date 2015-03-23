@@ -5,27 +5,27 @@
             <strong class="h3">Group Info</strong>
             <div class="entry full-width">
                 <label for="group-name">Name</label>
-                <input id="group-name" ng-model="groupConfigState.summary.group_name" type="text" />
+                <input id="group-name" ng-model="groupConfigData.summary.group_name" type="text" />
             </div>
             <div class="entry margin">
                 <label for="group-code">Group Code</label>
-                <input id="group-code" ng-model="groupConfigState.summary.group_code" type="text" />
+                <input id="group-code" ng-model="groupConfigData.summary.group_code" type="text" />
             </div>
             <div class="entry">
                 <label for="group-firstname">First Name</label>
-                <input id="group-firstname" ng-model="groupConfigState.summary.first_name" type="text" />
+                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text" />
             </div>
             <div class="entry margin">
                 <label for="group-lastname">Last Name</label>
-                <input id="group-lastname" ng-model="groupConfigState.summary.last_name" type="text" />
+                <input id="group-lastname" ng-model="groupConfigData.summary.last_name" type="text" />
             </div>
             <div class="entry">
                 <label for="group-phone">Contact Phone</label>
-                <input id="group-phone" ng-model="groupConfigState.summary.contact_phone" type="text" />
+                <input id="group-phone" ng-model="groupConfigData.summary.contact_phone" type="text" />
             </div>
             <div class="entry full-width">
                 <label for="group-email">Contact E-mail</label>
-                <input id="group-email" ng-model="groupConfigState.summary.contact_email" type="text" />
+                <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" />
             </div>
             <div class="entry break full-width">
                 <a ng-click="openDemographicsPopup();" class="button white brand-text">Demographics</a>
@@ -37,7 +37,7 @@
             <div class="entry margin">
                 <label for="group-block-from">From</label>
                 <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
-                <input id="group-block-from" ng-if="!isInAddMode()" type="text" ng-model="groupConfigState.summary.block_from" readonly />         
+                <input id="group-block-from" ng-if="!isInAddMode()" type="text" ng-model="groupConfigData.summary.block_from" readonly />         
                 <!-- If new group, add class "datepicker" -->
                 <input id="group-block-from"
                 	ng-if="isInAddMode()" 
@@ -45,13 +45,13 @@
                  	type="text" 
                  	ui-date="fromDateOptions" 
                  	ui-date-format 
-                 	ng-model="groupConfigState.summary.block_from" 
+                 	ng-model="groupConfigData.summary.block_from" 
                  	readonly /> 
             </div>
             <div class="entry">
                 <label for="group-block-to">To</label>
                 <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
-                <input ng-if="!isInAddMode()" id="group-block-to" type="text" ng-model="groupConfigState.summary.block_from" readonly />         
+                <input ng-if="!isInAddMode()" id="group-block-to" type="text" ng-model="groupConfigData.summary.block_from" readonly />         
                 <!-- If new group, add class "datepicker" -->
                 <input id="group-block-to" 
                 	ng-if="isInAddMode()" 
@@ -59,7 +59,7 @@
                 	type="text" 
                 	ui-date="toDateOptions" 
                  	ui-date-format 
-                 	ng-model="groupConfigState.summary.block_to" 
+                 	ng-model="groupConfigData.summary.block_to" 
                 	readonly /> 
             </div>
             <div class="entry full-width with-button">
@@ -85,11 +85,11 @@
             </div>
             <div class="entry margin small">
                 <label for="group-rooms">Rooms</label>
-                <input id="group-rooms" ng-model="groupConfigState.summary.rooms_total" type="text" readonly />
+                <input id="group-rooms" ng-model="groupConfigData.summary.rooms_total" type="text" readonly />
             </div>
             <div class="entry small">
                 <label for="group-pickup">Pick Up</label>
-                <input id="group-pickup" ng-model="groupConfigState.summary.rooms_pickup" type="text" readonly />
+                <input id="group-pickup" ng-model="groupConfigData.summary.rooms_pickup" type="text" readonly />
             </div>
             <div class="entry full-width with-button">
                 <label for="group-rate">Rate</label>
@@ -102,8 +102,8 @@
                 </div>
                 <a href="{addons-link}" class="button with-icon brand-colors"> <!-- {addons-link} can either be for a popup (existing group) or an addons screne (new group) -->
                     <!-- If addons already exist, show:  -->
-                    <span ng-show="groupConfigState.summary.addons_count > 0" class="count">
-                    	{{groupConfigState.summary.addons_count}}
+                    <span ng-show="groupConfigData.summary.addons_count > 0" class="count">
+                    	{{groupConfigData.summary.addons_count}}
                     </span>
                     <span class="icons icon-addons"></span>
                     Add-Ons
