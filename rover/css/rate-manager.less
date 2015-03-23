@@ -33,7 +33,13 @@
         }
       }
     }
-
+    span.left-icons{
+      float:left;
+      color: white;
+      text-align: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
     span.right{
       float:right;
       color: white;
@@ -45,6 +51,11 @@
         float:right;
         margin: 1px;
         
+    }
+    span.ellipsis{
+        background-color: transparent;
+        color:black;
+        padding: 4 10 0 0;
     }
 
     
@@ -561,6 +572,7 @@
         /*CICO-8633*/
         vertical-align: middle; 
         padding: 6px 10px 0px;
+        padding-left: 24px;
 
         .rate-single {
           width: 25px;
@@ -1095,8 +1107,11 @@
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 12px;
-
-
+    }
+    &.ellipsis{
+        background-color: transparent;
+        color:black;
+        padding: 4 10 0 0;
     }
   }
   .strike-through{

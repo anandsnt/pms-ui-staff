@@ -176,7 +176,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                 var baseRestrictionItem = {
                     'activated': true,
                     'background_class': "bg-drk",
-                    'description': "Restrictions",
+                    'description': "Has Restrictions",
                     'editable': false,
                     'hideOnHourly': false,
                     'isOnRate': true,//hide when on adding/removing restrictions screen
@@ -261,7 +261,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                 var baseRestrictionItem = {
                     'activated': true,
                     'background_class': "bg-drk",
-                    'description': "Restrictions",
+                    'description': "Has Restrictions",
                     'editable': false,
                     'isOnRate': true,//hide when on adding/removing restrictions screen
                     'hideOnHourly': false,
