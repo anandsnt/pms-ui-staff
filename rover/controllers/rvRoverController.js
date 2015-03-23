@@ -409,13 +409,13 @@ sntRover.controller('roverController',
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     //(bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
+    // var routeChange = function(event, newURL) {
+    //   event.preventDefault();
+    //   return;
+    // };
 
-    $rootScope.$on('$locationChangeStart', routeChange);
-    window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+    // $rootScope.$on('$locationChangeStart', routeChange);
+    // window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
     //
     // DEPRICATED!

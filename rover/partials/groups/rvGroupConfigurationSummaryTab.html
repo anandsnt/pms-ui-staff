@@ -2,30 +2,30 @@
     <strong class="h3">Group Info</strong>
     <div class="entry full-width">
         <label for="group-name">Name</label>
-        <input id="group-name" value="{Group Name}" type="text" />
+        <input id="group-name" ng-model="groupConfigState.summary.group_name" type="text" />
     </div>
     <div class="entry margin">
         <label for="group-code">Group Code</label>
-        <input id="group-code" value="{Group Code}" type="text" />
+        <input id="group-code" ng-model="groupConfigState.summary.group_code" type="text" />
     </div>
     <div class="entry">
         <label for="group-firstname">First Name</label>
-        <input id="group-firstname" value="{First Name}" type="text" />
+        <input id="group-firstname" ng-model="groupConfigState.summary.first_name" type="text" />
     </div>
     <div class="entry margin">
         <label for="group-lastname">Last Name</label>
-        <input id="group-lastname" value="{Last Name}" type="text" />
+        <input id="group-lastname" ng-model="groupConfigState.summary.last_name" type="text" />
     </div>
     <div class="entry">
         <label for="group-phone">Contact Phone</label>
-        <input id="group-phone" value="{Contact Phone}" type="text" />
+        <input id="group-phone" ng-model="groupConfigState.summary.contact_phone" type="text" />
     </div>
     <div class="entry full-width">
         <label for="group-email">Contact E-mail</label>
-        <input id="group-email" value="{Contact E-mail}" type="text" />
+        <input id="group-email" ng-model="groupConfigState.summary.contact_email" type="text" />
     </div>
     <div class="entry break full-width">
-        <a href="{demographics popup}" class="button white brand-text">Demographics</a>
+        <a ng-click="openDemographicsPopup();" class="button white brand-text">Demographics</a>
     </div>
 </div>
 
@@ -61,19 +61,19 @@
     </div>
     <div class="entry margin small">
         <label for="group-rooms">Rooms</label>
-        <input id="group-rooms" value="{Count}" type="text" readonly />
+        <input id="group-rooms" ng-model="groupConfigState.summary.rooms_total" type="text" readonly />
     </div>
     <div class="entry small">
         <label for="group-pickup">Pick Up</label>
-        <input id="group-pickup" value="{Count}" type="text" readonly />
+        <input id="group-pickup" ng-model="groupConfigState.summary.rooms_pickup" type="text" readonly />
     </div>
     <div class="entry full-width with-button">
         <label for="group-rate">Rate</label>
         <div class="select">
             <select id="group-rate">
                 <option value="" selected>Select Rate</option>
-                <option value="{rate-value}">{Rate Name}</option>
-                ... repeat for all rates
+                <option value="-1">Custom Rate</option>
+                <!-- ... repeat for all rates -->
             </select>
         </div>
         <a href="{addons-link}" class="button with-icon brand-colors"> <!-- {addons-link} can either be for a popup (existing group) or an addons screne (new group) -->
