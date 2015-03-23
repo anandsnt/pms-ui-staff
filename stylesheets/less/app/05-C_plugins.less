@@ -406,27 +406,6 @@
 						.calc-width(100, 20);
 						.calc-height(100, 100);
 
-						/* custom scrollbars, cant revelage on iscroll */
-						/*overflow: auto;*/
-						-webkit-overflow-scrolling: touch;
-						/**/
-						&::-webkit-scrollbar {
-						  -webkit-appearance: scrollbarthumb-vertical;
-						  width: 7px;
-						}
-						/**/
-						&::-webkit-scrollbar-track {
-						  background: transparent none;
-						}
-						/**/
-						&::-webkit-scrollbar-thumb {
-						  width: 7px;
-						  background: rgba(0, 0, 0, 0.5);
-						  box-sizing: border-box;
-						  border: 1px solid rgba(255, 255, 255, 0.9);
-						  border-radius: 3px;
-						}
-
 						li {
 							margin: 0 20px 10px 0;
 
@@ -436,7 +415,7 @@
 								text-transform: none;
 								line-height: 26px;
 								min-height: 50px;
-								padding: 12px 80px 6px 10px;
+								padding: 12px 120px 6px 10px;
 
 								.highlight { color: @logoPrimary; }
 
@@ -491,38 +470,18 @@
 					}
 
 					.scrollable { 
-						position: relative;
-						width: 100%;
-						height: auto;
-						max-height: 190px;
+						position: absolute;
+						left: 15px;
+						top: 80px; 
+						.calc-width(100, 20);
+						.calc-height(100, 398);
 
-						/* custom scrollbars, cant revelage on iscroll */
-						/*overflow: auto;*/
-						-webkit-overflow-scrolling: touch;
-						/**/
-						&::-webkit-scrollbar {
-						  -webkit-appearance: scrollbarthumb-vertical;
-						  width: 7px;
-						}
-						/**/
-						&::-webkit-scrollbar-track {
-						  background: transparent none;
-						}
-						/**/
-						&::-webkit-scrollbar-thumb {
-						  width: 7px;
-						  background: rgba(0, 0, 0, 0.5);
-						  box-sizing: border-box;
-						  border: 1px solid rgba(255, 255, 255, 0.9);
-						  border-radius: 3px;
-						}
-
-            			> .wrapper { padding-bottom: 2px; }
+						> .wrapper { padding-bottom: 2px; }
 
 						li {
 							position: relative;
 							margin: 0 20px 0 0;
-							padding: 5px;
+							padding: 5px 80px 5px 5px;
 							text-align: left;
 							line-height: 1.1em;
 							font-weight: 600;
@@ -548,7 +507,12 @@
 								}
 							}
 
-							&.selected { .faux-clickable; }
+							&.selected { 
+								background-color: @white;
+								#border-radius > .rounded();
+								.box-shadow();
+								.show;
+							}
 						}
 
 						.iScrollVerticalScrollbar {
@@ -559,12 +523,14 @@
 					}
 
 					#total-charge {
+						position: absolute;
+						left: 15px;
+						top: 275px;
 						border-top: 2px solid rgba(0,0,0,.1);
 						padding-top: 10px;
-						padding-right: 15px;
 						font-weight: 600;
 						line-height: 30px;
-						width: auto;
+						.calc-width(100, 40);
 						.float;
 						
 						.price {
@@ -572,10 +538,6 @@
 							font-weight: 300;
 							.pull-right;
 						}
-						
-						&.offset-1 { top: 140px; }
-						/*&.offset-2 { top: 185px; }*/
-						&.offset-3 { top: 230px; }
 					}
 
 					#numpad {
@@ -627,7 +589,7 @@
 						position: absolute;
 						right: 20px;
 						bottom: 20px;
-						.calc-width(100, 280); /* %, px */
+						.calc-width(100, 280);
 					}
 				}
 
