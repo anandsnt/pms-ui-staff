@@ -33,16 +33,37 @@
     <strong class="h3">Room Block Summary</strong>
     <div class="entry margin">
         <label for="group-block-from">From</label>
-        <input id="group-block-from" value="{Start Date - not earlier than business or arrival date, not after departure date}" type="text" readonly /> <!-- If new group, add class "datepicker" -->
+        <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
+        <input id="group-block-from" ng-if="!isAddMode()" type="text" ng-model="groupConfigState.summary.block_from" readonly />         
+        <!-- If new group, add class "datepicker" -->
+        <input id="group-block-from"
+        	ng-if="isAddMode()" 
+         	class="datepicker"  
+         	type="text" 
+         	ui-date="fromDateOptions" 
+         	ui-date-format 
+         	ng-model="groupConfigState.summary.block_from" 
+         	readonly /> 
     </div>
     <div class="entry">
         <label for="group-block-to">To</label>
-        <input id="group-block-to" value="{End Date - not earlier than Start Date, not after departure date}" type="text" readonly /> <!-- If new group, add class "datepicker" -->
+        <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
+        <input ng-if="!isAddMode()" id="group-block-to" type="text" ng-model="groupConfigState.summary.block_from" readonly />         
+        <!-- If new group, add class "datepicker" -->
+        <input id="group-block-to" 
+        	ng-if="isAddMode()" 
+        	class="datepicker"  
+        	type="text" 
+        	ui-date="toDateOptions" 
+         	ui-date-format 
+         	ng-model="groupConfigState.summary.block_to" 
+        	readonly /> 
     </div>
     <div class="entry full-width with-button">
         <label for="group-release-date">Room Release Date</label>
         <input id="group-release-date" value="{Room Release Date}" class="datepicker" type="text" readonly />
-        <button type="button" class="button {red or grey}">Release Now</button> <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
+        <button type="button" class="button" ng-class="{'red': !isAddMode() ,'grey': isAddMode()}">Release Now</button> 
+        <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
     </div>
     <div class="entry clear">
         <label for="group-hold-status">Hold Status</label>
@@ -77,8 +98,10 @@
             </select>
         </div>
         <a href="{addons-link}" class="button with-icon brand-colors"> <!-- {addons-link} can either be for a popup (existing group) or an addons screne (new group) -->
-            <!-- If addons already exist, show: 
-            <span class="count">Count</span> -->
+            <!-- If addons already exist, show:  -->
+            <span ng-show="groupConfigState.summary.addons_count > 0" class="count">
+            	{{groupConfigState.summary.addons_count}}
+            </span>
             <span class="icons icon-addons"></span>
             Add-Ons
         </a>

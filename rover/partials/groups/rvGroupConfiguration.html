@@ -6,7 +6,7 @@
                 <form>
                     <div class="holder">
                         <div class="entry">
-                            <input id="group-name" placeholder="" value="" type="text" class="masked-input h1" />
+                            <input id="group-name" placeholder="" ng-model="groupConfigState.summary.group_name" type="text" class="masked-input h1" />
                         </div>
                     </div>
                     <div class="holder data">
@@ -52,7 +52,7 @@
                 <!-- Group Tab - Summary -->
                 <!-- SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY -->
                 <form id="group-summary" name="group-summary" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'SUMMARY'">
-                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationSummaryTab.html'">
+                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationSummaryTab.html'" ng-controller="rvGroupConfigurationSummaryTab">
                         <!-- Keep in mind that all fields should be empty -->
                     </div>
                 </form>
