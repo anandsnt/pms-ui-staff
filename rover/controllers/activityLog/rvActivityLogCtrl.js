@@ -314,6 +314,15 @@ sntRover.controller('RVActivityLogCtrl',[
     var refreshScroller = function() {
         $scope.refreshScroller ('report-update');
     };
+    $scope.clearToDate = function()
+    {      
+        $scope.toDate ="";    
+     }
+    $scope.clearFromDate = function()
+    {       
+       $scope.fromDate = "";   
+      
+    }
 
 
 	$scope.init = function(){
@@ -328,8 +337,8 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.isUpdateReportFilter = false;
         $scope.reportUpdateVisible = false;
         $scope.reportUpdateWidth = resizableMinWidth;
-        $scope.fromDate = new Date($rootScope.businessDate);
-        $scope.toDate = new Date($rootScope.businessDate);
+        $scope.fromDate ='';
+        $scope.toDate ='';
         $scope.user_id = 0;
 
         //Paginaton

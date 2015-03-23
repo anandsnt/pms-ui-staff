@@ -14,13 +14,14 @@
                         <div class="entry date-range">
                             <label for="activity-range-from">From</label>
                             <div class="has-datepicker">
-                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
-                                <input name="activity-range-from" id="activity-range-from" class="range-datepicker" ui-date="fromDateOptions" ng-model="fromDate"  readonly />
+                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search" ng-show='fromDate' ng-click="clearFromDate()">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
+                                <input name="activity-range-from" id="activity-range-from" class="range-datepicker" ui-date="fromDateOptions" ng-model="fromDate" placeholder ="{{'FROM_DATE' | translate }}" ui-date-format="yy-mm-dd"  readonly/>                               
                             </div>
                             <label for="activity-range-to">To</label>
                             <div class="has-datepicker">
-                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
-                                <input name="activity-range-to" id="activity-range-to" class="range-datepicker" ui-date="untilDateOptions" ng-model="toDate" readonly />
+                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search" ng-show='toDate' ng-click="clearToDate()">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
+                                <input name="activity-range-to" id="activity-range-to" class="range-datepicker" ui-date="untilDateOptions" ng-model="toDate" ui-date-format="yy-mm-dd" placeholder="{{'TO_DATE' | translate }}" readonly />
+                                
                             </div>
                         </div>
                     </div>
