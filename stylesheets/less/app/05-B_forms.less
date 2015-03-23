@@ -73,6 +73,7 @@
 					top: 35px;
 					right: 10px;
 					width: 140px;
+					.show;
 
 					.data-off,
 					.data-on {
@@ -319,6 +320,24 @@
 				}
 			}
 		}
+	}
+
+/* Datepicker input				==========================*/
+	.datepicker,
+	.range-datepicker {
+		background-image: @calendar;
+		background-repeat: no-repeat;
+		background-position: 95% 12px;
+    	background-size: 20px;
+    	cursor: pointer;
+    	.no-transition();
+
+		&:hover,
+		&:active { background-position: 95% -38px; }
+
+		@media @highdpi {
+			background-image: @calendar2x;
+		}			
 	}
 
 /* 6. IE
