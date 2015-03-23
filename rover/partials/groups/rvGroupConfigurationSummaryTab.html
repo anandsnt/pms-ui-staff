@@ -37,7 +37,7 @@
         <input id="group-block-from" ng-if="!isAddMode()" type="text" value="{{groupConfigState.summary.block_from | date : dateFormat}}" readonly />         
         <!-- If new group, add class "datepicker" -->
         <input id="group-block-from"
-        	ng-if="isAddMode()" 
+        	ng-if="isInAddMode()" 
          	class="datepicker"  
          	type="text" 
          	ui-date="fromDateOptions" 
@@ -52,7 +52,7 @@
         <input ng-if="!isAddMode()" id="group-block-to" type="text" value="{{groupConfigState.summary.block_to | date : dateFormat}}" readonly />         
         <!-- If new group, add class "datepicker" -->
         <input id="group-block-to" 
-        	ng-if="isAddMode()" 
+        	ng-if="isInAddMode()" 
         	class="datepicker"  
         	type="text" 
         	ui-date="toDateOptions" 
@@ -64,7 +64,7 @@
     <div class="entry full-width with-button">
         <label for="group-release-date">Room Release Date</label>
         <input id="group-release-date" value="{Room Release Date}" class="datepicker" type="text" readonly />
-        <button type="button" class="button" ng-class="{'red': !isAddMode() ,'grey': isAddMode()}">Release Now</button> 
+        <button type="button" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode()}">Release Now</button> 
         <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
     </div>
     <div class="entry clear">
