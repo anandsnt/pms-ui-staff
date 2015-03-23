@@ -46,13 +46,40 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		* @return - None
 		*/
 		$scope.initializeDataModelForSummaryScreen = function(){
-			$scope.groupConfigState = {
+			$scope.groupConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
 				summary: summaryData.summary
 			};
 		};
 
+		/**
+		* TAB - to swicth tab
+		* @return - None
+		*/
+		$scope.switchTabTo = function(tab){
+			$scope.groupConfigData.activeTab = tab;
+		};
 
+		/**
+		* to get the current tab url
+		* @return {String}
+		*/
+		$scope.getCurrentTabUrl = function(){
+			var tabAndUrls = {
+				'SUMMARY' 	: '/assets/partials/groups/rvGroupConfigurationSummaryTab.html',
+				'ROOM_BLOCK': '/assets/partials/groups/rvGroupConfigurationRoomBlockTab.html',
+				'ROOMING' 	: '/assets/partials/groups/rvGroupConfigurationRoomingListTab.html',
+				'TRANSACTIONS': '/assets/partials/groups/rvGroupConfigurationTransactionsTab.html',
+				'ACTIVITY'  : '/assets/partials/groups/rvGroupConfigurationActivityTab.html'
+			};
+
+			return tabAndUrls[$scope.groupConfigData.activeTab];
+		};
+
+		/**
+		* function to initialize things for group config.
+		* @return - None
+		*/
 		var initGroupConfig = function() {
 			//setting title and things
 			setTitle();

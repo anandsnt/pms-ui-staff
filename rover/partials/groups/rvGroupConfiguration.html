@@ -6,7 +6,7 @@
                 <form>
                     <div class="holder">
                         <div class="entry">
-                            <input id="group-name" placeholder="" ng-model="groupConfigState.summary.group_name" type="text" class="masked-input h1" />
+                            <input id="group-name" placeholder="" ng-model="groupConfigData.summary.group_name" type="text" class="masked-input h1" />
                         </div>
                     </div>
                     <div class="holder data">
@@ -28,64 +28,34 @@
             <div id="group-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
                 <ul id="group-card-tabs-nav" class="card-tabs-nav">
-                    <li ng-click="groupConfigState.activeTab = 'SUMMARY'">
+                    <li ng-click="switchTabTo('SUMMARY')">
                         <a>Summary</a>
                     </li>
                     <li class="with-filters"
-                        ng-click="groupConfigState.activeTab = 'ROOM_BLOCK'">
+                        ng-click="switchTabTo('ROOM_BLOCK')">
                         <a>Room Block Details</a>
                     </li>
-                    <li ng-click="groupConfigState.activeTab = 'ACCOUNT'">
+                    <li ng-click="switchTabTo('ACCOUNT')">
                         <a>Account</a>
                     </li>
                     <li class="with-filters"
-                        ng-click="groupConfigState.activeTab = 'ROOMING'">
+                        ng-click="switchTabTo('ROOMING')">
                         <a>Rooming List</a>
                     </li>
-                    <li ng-click="groupConfigState.activeTab = 'TRANSACTIONS'">
+                    <li ng-click="switchTabTo('TRANSACTIONS')">
                         <a>Transactions</a>
                     </li>
-                    <li ng-click="groupConfigState.activeTab = 'ACTIVITY'">
+                    <li ng-click="switchTabTo('ACTIVITY')">
                         <a>Activity Log</a>
                     </li>
                 </ul>
                 <!-- Group Tab - Summary -->
                 <!-- SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY -->
-                <form id="group-summary" name="group-summary" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'SUMMARY'">
-                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationSummaryTab.html'" ng-controller="rvGroupConfigurationSummaryTab">
-                        <!-- Keep in mind that all fields should be empty -->
-                    </div>
-                </form>
                 <!-- Group Card Tab - Room Block Details -->
-                <form id="group-room-block" name="group-room-block" class="form card-tab rooms" ng-if="groupConfigState.activeTab === 'ROOM_BLOCK'">
-                    <div ng-include="'/assets/partials/groups/rvGroupConfigurationRoomBlockTab.html'">
-                        <!-- Keep in mind that some fields should be empty -->
-                    </div>
-                </form>
-                <!-- Group Card Tab - Account -->
-                <form id="group-transactions" name="group-transactions" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'ACCOUNT'">
-                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationAccountTab.html'">
-                        <!-- Keep in mind that some fields should be empty -->
-                    </div>
-                </form>
-                <!-- Group Card Tab - Rooming List -->
-                <form id="group-rooming-list" name="group-rooming-list" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'ROOMING'">
-                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationRoomingListTab.html'">
-                        <!-- Keep in mind that some fields should be empty -->
-                    </div>
-                </form>
-                <!-- Group Card Tab - Transactions -->
-                <form id="group-transactions" name="group-transactions" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'TRANSACTIONS'">
-                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationTransactionsTab.html'">
-                        <!-- Keep in mind that some fields should be empty -->
-                    </div>
-                </form>
-                <!-- Group Card Tab - Activity Log -->
-                <form id="group-transactions" name="group-transactions" class="form card-tab scrollable" ng-if="groupConfigState.activeTab === 'ACTIVITY'">
-                    <div class="wrapper" ng-include="'/assets/partials/groups/rvGroupConfigurationActivityTab.html'">
-                        <!-- Keep in mind that some fields should be empty -->
-                    </div>
-                </form>
+                <ng-include src="getCurrentTabUrl()">
+                </ng-include>
+
+
             </div>
         </div>
     </div>
