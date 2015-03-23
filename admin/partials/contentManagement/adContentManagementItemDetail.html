@@ -43,6 +43,13 @@
                             <input type="radio" name="item-type" ng-model="data.page_template" id="link" value="LINK" />
                            <span translate>LINK_LABEL</span> 
                         </label>
+
+                        <label class="radio" ng-class = "{'checked': data.page_template=='SCREEN'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.page_template=='SCREEN'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.page_template" id="link" value="SCREEN" />
+                           <span translate>SCREEN_LABEL</span> 
+                        </label>
+
                     </div>
                 </div>
                 <div class="entry full-width">
