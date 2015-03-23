@@ -13,7 +13,22 @@
 			<div id="new-form-holder"></div>
 			<table id="brands" class="grid">
 				<tbody>
-					<tr ng-repeat="holdstatus in data.holdStatuses" ng-class="{'edit-data': currentClickedElement == $index}"> 
+
+					<tr ng-repeat="holdstatus in data.holdStatuses" ng-class="{'edit-data': currentClickedElement == $index}" ng-show="holdstatus.is_default"> 
+						<td >
+							<a data-item="3" data-colspan="2" class="edit-data-inline">{{holdstatus.name}}</a>
+						</td>
+						<td class="entry full-width radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox" ng-class="{ checked :holdstatus.is_enabled  }"></span>			
+								<input type="checkbox">
+							</label>
+						</td>
+						<td class="delete">
+							<a id="3" class="icons icon-delete large-icon delete_item"  ng-hide="holdstatus.is_default"></a>
+						</td>						
+					</tr>
+					<tr ng-repeat="holdstatus in data.holdStatuses" ng-class="{'edit-data': currentClickedElement == $index}" ng-hide="holdstatus.is_default"> 
 						<td ng-click="editHoldStatus($index,holdstatus.id)" ng-hide="currentClickedElement == $index" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{holdstatus.name}}</a>
 						</td>
@@ -24,7 +39,7 @@
 							</label>
 						</td>
 						<td class="delete" ng-hide="currentClickedElement == $index" >
-							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteHoldStatus($index, holdstatus.id)" ng-hide="holdstatus.is_default"></a>
+							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteHoldStatus($index, holdstatus.id)"></a>
 						</td>
 						<td colspan="2" ng-include="getTemplateUrl($index,holdstatus.id)"></td>
 					</tr>
