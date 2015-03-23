@@ -309,32 +309,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 			switch ( $scope.parsedApiFor ) {
 				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
 					$scope.hasReportTotals    = false;
-					$scope.showReportHeader   = $scope.$parent.results.market || $scope.$parent.results.source;
+					$scope.showReportHeader   = !_.isEmpty($scope.$parent.results.market) || !_.isEmpty($scope.$parent.results.source) ? true : false;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSourceReport.html';
 					break;
 
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
 					$scope.hasReportTotals    = false;
-					$scope.showReportHeader   = !!$scope.$parent.results && !!$scope.$parent.results.length;
+					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvOccupancyRevenueReport.html';
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					if ( !!$scope.$parent.reportGroupedBy ) {
 						$scope.hasReportTotals    = true;
-						$scope.showReportHeader   = !!$scope.$parent.results && !!$scope.$parent.results.length;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/rvReservationByUserReport.html';
 						break;
 					} else {
 						$scope.hasReportTotals    = true;
-						$scope.showReportHeader   = !!$scope.$parent.results && !!$scope.$parent.results.length;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
 						break;
 					};
 
 				default:
 					$scope.hasReportTotals    = true;
-					$scope.showReportHeader   = !!$scope.$parent.results && !!$scope.$parent.results.length;
+					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
 					break;
 			};
