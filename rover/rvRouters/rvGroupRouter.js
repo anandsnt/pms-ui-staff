@@ -46,13 +46,26 @@ angular.module('groupModule', [])
             url: '/config/:id/:activeTab',
             templateUrl: '/assets/partials/groups/rvGroupConfiguration.html',
             controller: 'rvGroupConfigurationCtrl',
-            onEnter: function($stateParams) {
+            onEnter: ['$stateParams', function($stateParams) {
                 if (typeof $stateParams.id == "undefined" || $stateParams.id == null) {
                     $stateParams.id = "NEW_GROUP";
                 }
                 if (typeof $stateParams.activeTab == "undefined" || $stateParams.activeTab == null) {
                     $stateParams.activeTab = "SUMMARY";
                 }
+            }],
+            resolve: {
+                //to tackle from coming admin app to rover
+                summaryData: ['rvGroupConfigurationSrv', '$stateParams', 
+                    function(rvGroupConfigurationSrv, $stateParams){
+                        var isInAddMode = ($stateParams.id === "NEW_GROUP");
+                        var params = {
+                            groupId: $stateParams.id
+                        };
+                        return rvGroupConfigurationSrv.getGroupSummary (params);
+                    }
+                ]                
             }
+
         });         
 }]);

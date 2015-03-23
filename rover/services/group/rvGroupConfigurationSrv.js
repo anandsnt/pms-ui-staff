@@ -1,6 +1,8 @@
 sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
+		var self = this;
+
 		this.baseConfigurationSummary = {
 			"summary": {
 				"group_id": null,
@@ -30,8 +32,6 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				"notes": []
 			}
 		};
-
-		var self = this;
 
 		this.getGroupSummary = function(params) {
 
