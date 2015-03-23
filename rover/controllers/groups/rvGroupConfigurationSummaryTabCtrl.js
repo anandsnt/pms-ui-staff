@@ -1,11 +1,11 @@
-sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv) {
+sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter) {
 		BaseCtrl.call(this, $scope);
 
 
 		$scope.fromDateOptions = {
 			showOn: 'button',
-			dateFormat: 'MM-dd-yyyy',
+			dateFormat: $rootScope.dateFormat,
 			numberOfMonths: 1,
 			yearRange: '-1:',
 			minDate: tzIndependentDate($rootScope.businessDate),
@@ -21,7 +21,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		$scope.toDateOptions = {
 			showOn: 'button',
-			dateFormat: 'MM-dd-yyyy',
+			dateFormat: $rootScope.dateFormat,
 			numberOfMonths: 1,
 			yearRange: '-1:',
 			minDate: tzIndependentDate($rootScope.businessDate),
@@ -35,6 +35,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			}
 		};
 
+		$scope.fromDateChanged = function() {
+			$scope.groupConfigState.summary.block_from = dateFilter($scope.groupConfigState.summary.block_from, 'yyyy-MM-dd');
+		}
 
+		$scope.toDateChanged = function() {
+			$scope.groupConfigState.summary.block_to = dateFilter($scope.groupConfigState.summary.to_from, 'yyyy-MM-dd');
+		}
 	}
 ]);
