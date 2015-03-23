@@ -1,12 +1,13 @@
 <div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)">
-	<h3 class="block-title">Room</h3>
+	<h3 class="block-title">Room
+		<span class="room-red sharer-label" ng-show="reservationData.reservation_card.sharer_information.length > 0">SHARER</span>
+	</h3>
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
 	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
 		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status, reservationData.reservation_card.room_ready_status,  reservationData.reservation_card.checkin_inspected_only)" >
 		 	 {{reservationData.reservation_card.room_number}} 
 		 </strong>
-		 <span class="room-status room-red" ng-show="reservationData.reservation_card.sharer_information.length > 0">SHARER</span>
 		 {{reservationData.reservation_card.room_type_description}} 
 	</a>
 
