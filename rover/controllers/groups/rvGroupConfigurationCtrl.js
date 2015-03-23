@@ -1,16 +1,16 @@
 sntRover.controller('rvGroupConfigurationCtrl', [
-	'$scope', 
-	'$rootScope', 
-	'rvGroupSrv', 
-	'$filter', 
-	'$stateParams', 
+	'$scope',
+	'$rootScope',
+	'rvGroupSrv',
+	'$filter',
+	'$stateParams',
 	'rvGroupConfigurationSrv',
 	'summaryData',
-	function($scope, 
-		$rootScope, 
-		rvGroupSrv, 
-		$filter, 
-		$stateParams, 
+	function($scope,
+		$rootScope,
+		rvGroupSrv,
+		$filter,
+		$stateParams,
 		rvGroupConfigurationSrv,
 		summaryData) {
 
@@ -18,34 +18,34 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 
 		/**
-		* whether current screen is in Add Mode
-		* @return {Boolean}		
-		*/
-		$scope.isInAddMode = function(){
+		 * whether current screen is in Add Mode
+		 * @return {Boolean}
+		 */
+		$scope.isInAddMode = function() {
 			return ($stateParams.id === "NEW_GROUP");
 		};
 
 		/**
-		* function to set title and things
-		* @return - None
-		*/
-		var setTitle = function(){
+		 * function to set title and things
+		 * @return - None
+		 */
+		var setTitle = function() {
 			var title = $filter('translate')('GROUPS');
-			
+
 			// we are changing the title if we are in Add Mode
-			if ($scope.isInAddMode()){
+			if ($scope.isInAddMode()) {
 				title = $filter('translate')('NEW_GROUP');
 			}
 
 			//yes, we are setting the headting and title
-			$scope.setHeadingTitle(title);			
-		}; 
-		
+			$scope.setHeadingTitle(title);
+		};
+
 		/**
-		* function to form data model for add/edit mode
-		* @return - None
-		*/
-		$scope.initializeDataModelForSummaryScreen = function(){
+		 * function to form data model for add/edit mode
+		 * @return - None
+		 */
+		$scope.initializeDataModelForSummaryScreen = function() {
 			$scope.groupConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
 				summary: summaryData.summary
@@ -53,33 +53,33 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
-		* TAB - to swicth tab
-		* @return - None
-		*/
-		$scope.switchTabTo = function(tab){
+		 * TAB - to swicth tab
+		 * @return - None
+		 */
+		$scope.switchTabTo = function(tab) {
 			$scope.groupConfigData.activeTab = tab;
 		};
 
 		/**
-		* to get the current tab url
-		* @return {String}
-		*/
-		$scope.getCurrentTabUrl = function(){
+		 * to get the current tab url
+		 * @return {String}
+		 */
+		$scope.getCurrentTabUrl = function() {
 			var tabAndUrls = {
-				'SUMMARY' 	: '/assets/partials/groups/rvGroupConfigurationSummaryTab.html',
+				'SUMMARY': '/assets/partials/groups/rvGroupConfigurationSummaryTab.html',
 				'ROOM_BLOCK': '/assets/partials/groups/rvGroupConfigurationRoomBlockTab.html',
-				'ROOMING' 	: '/assets/partials/groups/rvGroupConfigurationRoomingListTab.html',
+				'ROOMING': '/assets/partials/groups/rvGroupConfigurationRoomingListTab.html',
 				'TRANSACTIONS': '/assets/partials/groups/rvGroupConfigurationTransactionsTab.html',
-				'ACTIVITY'  : '/assets/partials/groups/rvGroupConfigurationActivityTab.html'
+				'ACTIVITY': '/assets/partials/groups/rvGroupConfigurationActivityTab.html'
 			};
 
 			return tabAndUrls[$scope.groupConfigData.activeTab];
 		};
 
 		/**
-		* function to initialize things for group config.
-		* @return - None
-		*/
+		 * function to initialize things for group config.
+		 * @return - None
+		 */
 		var initGroupConfig = function() {
 			//setting title and things
 			setTitle();
