@@ -1,17 +1,17 @@
-<form id="group-room-block" name="group-room-block" class="form card-tab rooms">
+<form id="group-room-block" name="group-room-block" class="form card-tab rooms" ng-controller="rvGroupRoomBlockCtrl" ng-iscroll="room_block_scroller" ng-iscroll-delay="500">
 	<div class="wrapper" >
 		<div id="group-room-block-header" class="tab-header with-filters">
 		    <div class="entry date-range">
 		        <div class="has-datepicker">
 		            <label for="room-block-start">Start Date</label>
-		            <input id="room-block-start" class="range-datepicker" placeholder="Select Start Date" value="{Start Date - not earlier than business or arrival date, not after departure date}" readonly />
+		            <input id="room-block-start" class="range-datepicker" placeholder="Select Start Date" ng-model="startDate" readonly ui-date="startDateOptions" />
 		        </div>
 		        <div class="has-datepicker">
 		            <label for="room-block-end">End Date</label>
-		            <input id="room-block-end" class="range-datepicker" placeholder="Select End Date" value="{End Date - not earlier than Start Date, not after departure date}" readonly />
+		            <input id="room-block-end" class="range-datepicker" placeholder="Select End Date"  ng-model="endDate" readonly ui-date="endDateOptions" />
 		        </div>
 		    </div>
-		    <div class="entry status"> <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
+		    <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}"> <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
 		        <label for="group-hold-status">Hold Status</label>
 		        <div class="select">
 		            <select id="group-hold-status">
@@ -22,19 +22,25 @@
 		            </select>
 		        </div>
 		    </div>
-		    <div class="entry"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
+		    <div class="entry" ng-class="{'hidden': shouldHideHoldStatus()}"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
 		        <label for="group-total-rooms">Total Rooms</label>
 		        <input id="group-total-rooms" placeholder="" value="{Count}" readonly />
 		    </div>
-		    <div class="entry"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
+		    <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
 		        <label for="group-total-rooms">Total Pick Up</label>
 		        <input id="group-total-rooms" placeholder="" value="{Count}" readonly />
 		    </div>
 		    <div class="actions">
-		        <!-- If new group and/or start & end dates have not been defined: 
-		        <button type="button" class="green grey">Create Block</button> // When start & end dates are set, enable button and change class "grey" with "green" -->
-		        <!-- If existing group and/or room blocks are set:
-		        <button type="button" class="button green">Update</button> -->
+		        <!-- If new group and/or start & end dates have not been defined:  -->
+		        <button type="button" class="green" 
+		        		ng-disabled="shouldDisableCreatBlockButton()"
+		        		ng-class="{	'grey' : shouldDisableCreatBlockButton(), 
+		        					'green': !shouldDisableCreatBlockButton()}">
+		        		Create Block
+		        </button> 
+		        <!-- // When start & end dates are set, enable button and change class "grey" with "green" -->
+		        <!-- If existing group and/or room blocks are set: -->
+		        <button type="button" class="button green" ng-hide="shouldHideUpdateButton()">Update</button> 
 		    </div>
 		</div>
 
