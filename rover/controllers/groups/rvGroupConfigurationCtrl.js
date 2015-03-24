@@ -71,6 +71,64 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
+		 * Autocompletions for company/travel agent
+		 * @return {None} 
+		 */
+		var initializeAutoCompletions = function(){
+			//this will be common for both company card & travel agent
+			var cardsAutoCompleteCommon = {
+				source: function(request, response) {
+					rvGroupConfigurationSrv.searchCards(request.term)
+						.then(function(data) {
+							var list = [];
+							var entry = {}
+							$.map(data, function(each) {
+								entry = {
+									label: each.name,
+									value: each.id,
+									type: each.type
+								};
+								list.push(entry);
+							});
+
+							response(list);
+						});
+				},
+				focus: function(event, ui) {
+					return false;
+				}
+			}
+
+			//merging auto complete setting for company card with common auto cmplt options
+			$scope.companyAutoCompleteOptions = angular.extend({
+				select: function(event, ui) {
+					this.value = ui.item.label;
+					setTimeout(function() {
+						$scope.$apply(function() {
+							$scope.groupConfigData.summary.company.name = ui.item.label;
+							$scope.groupConfigData.summary.company.id = ui.item.value;
+						});
+					}.bind(this), 100);
+					return false;
+				}
+			}, cardsAutoCompleteCommon);
+
+			//merging auto complete setting for travel agent with common auto cmplt options
+			$scope.travelAgentAutoCompleteOptions = angular.extend({
+				select: function(event, ui) {
+					this.value = ui.item.label;
+					setTimeout(function() {
+						$scope.$apply(function() {
+							$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
+							$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
+						});
+					}.bind(this), 100);
+					return false;
+				}
+			}, cardsAutoCompleteCommon);
+		};
+
+		/**
 		 * function to initialize things for group config.
 		 * @return - None
 		 */
@@ -80,57 +138,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 			//forming the data model if it is in add mode or populating the data if it is in edit mode
 			$scope.initializeDataModelForSummaryScreen();
+
+			//auto completion things
+			initializeAutoCompletions();
 		};
 
-		var cardsAutoCompleteCommon = {
-			source: function(request, response) {
-				rvGroupConfigurationSrv.searchCards(request.term)
-					.then(function(data) {
-						var list = [];
-						var entry = {}
-						$.map(data, function(each) {
-							entry = {
-								label: each.name,
-								value: each.id,
-								type: each.type
-							};
-							list.push(entry);
-						});
 
-						response(list);
-					});
-			},
-			focus: function(event, ui) {
-				return false;
-			}
-		}
-
-		
-		$scope.companyAutoCompleteOptions = angular.extend({
-			select: function(event, ui) {
-				this.value = ui.item.label;
-				setTimeout(function() {
-					$scope.$apply(function() {
-						$scope.groupConfigData.summary.company.name = ui.item.label;
-						$scope.groupConfigData.summary.company.id = ui.item.value;
-					});
-				}.bind(this), 100);
-				return false;
-			}
-		}, cardsAutoCompleteCommon);
-
-		$scope.travelAgentAutoCompleteOptions = angular.extend({
-			select: function(event, ui) {
-				this.value = ui.item.label;
-				setTimeout(function() {
-					$scope.$apply(function() {
-						$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
-						$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
-					});
-				}.bind(this), 100);
-				return false;
-			}
-		}, cardsAutoCompleteCommon);
 
 
 		initGroupConfig();
