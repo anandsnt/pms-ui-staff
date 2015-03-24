@@ -617,7 +617,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 					orientation = 'landscape';
-					margin: 'none';
+					margin: '2mm 2mm';
 					break;
 
 				default:
