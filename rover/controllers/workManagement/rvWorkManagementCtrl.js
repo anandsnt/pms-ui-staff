@@ -57,14 +57,18 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Arrived / Day use / Due out / Departed": "check-in"
 		}
 
+		// CICO-12517: Changed "no-show" to "check-out"
+		// since we want the count to go up anyway.
+		// @CHANGED_FOR: 'Arrival', 'Arrived', 'Not Reserved', 'Not Defined'
+		// @LINK: https://stayntouch.atlassian.net/browse/CICO-12517?focusedCommentId=42716&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-42716
 		$scope.departureClass = {
-			"Arrival": "no-show",
-			"Arrived": "no-show",
+			"Arrival": "check-out",
+			"Arrived": "check-out",
 			"Due out": "check-out",
 			"Departed": "check-out",
 			"Stayover": "inhouse",
-			"Not Reserved": "no-show",
-			"Not Defined": "no-show",
+			"Not Reserved": "check-out",
+			"Not Defined": "check-out",
 			"Day Use": "check-out",
 			"Due out / Arrival": "check-out",
 			"Departed / Arrival": "check-out",
@@ -139,7 +143,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 				};
 			} else {
 
-				//build the approp. filterObject 
+				//build the approp. filterObject
 				if (filter.selectedFloor) {
 					filterObject.floor_number = filter.selectedFloor;
 				}
@@ -167,7 +171,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 								cia = filter.checkin.after,
 								cob = filter.checkout.before,
 								coa = filter.checkout.after,
-								get24hourTime = function(time) { //time is in "12:34 pm" format 
+								get24hourTime = function(time) { //time is in "12:34 pm" format
 									if (time) {
 										var firstSplit = time.toString().split(':');
 										var secondSplit = firstSplit[1].split(' ');
@@ -207,7 +211,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 					});
 				}
 			};
-			
+
 			return filteredRooms;
 		};
 	}

@@ -1,7 +1,7 @@
 <!-- NOTE: Here "results" is an Object and NOT an Array -->
 
 <!-- Report content - results.length -->
-<div ng-hide="!!results" class="report-content no-content">
+<div ng-show="hasNoResults" class="report-content no-content">
 	<div class="info">
 		<span class="icon-no-content icon-reports"></span>
 		<strong class="h1">No reports found</strong>
@@ -10,7 +10,7 @@
 </div>
 
 
-<div id="report-content" class="report-content scrollable" ng-show="!!results" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
+<div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
 	<div class="wrapper">
 
 		<div ng-repeat="(key, resultItem) in results">
