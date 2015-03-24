@@ -88,6 +88,14 @@ admin.controller('ADFloorDetailsCtrl',
         return ($scope.unassignedRooms.length == 0 && !$scope.IsTryingToDropOnUnAssigned)
     };
 
+    $scope.shouldShowNoRooms=function(){
+        return ($scope.assignedRooms.length == 0 && $scope.unassignedRooms.length==0)
+    }
+
+    $scope.shouldShowDropHere=function(){
+        return ($scope.assignedRooms.length == 0 && $scope.unassignedRooms.length!=0)
+    }
+
 	/**
 	* set of initial settings
     * @return - None
