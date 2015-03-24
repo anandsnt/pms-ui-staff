@@ -7,7 +7,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		$scope.fromDateOptions = {
 			showOn: 'button',
-			dateFormat: $rootScope.dateFormat,
+			dateFormat: $rootScope.jqDateFormat,
 			numberOfMonths: 1,
 			yearRange: '-1:',
 			minDate: tzIndependentDate($rootScope.businessDate),
@@ -23,7 +23,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		$scope.toDateOptions = {
 			showOn: 'button',
-			dateFormat: $rootScope.dateFormat,
+			dateFormat: $rootScope.jqDateFormat,
 			numberOfMonths: 1,
 			yearRange: '-1:',
 			minDate: tzIndependentDate($rootScope.businessDate),
