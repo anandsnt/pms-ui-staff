@@ -928,7 +928,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				// additional overhead required by API
 				// we are to send either true or false anyway
 				// no mater if the flag is chosen or not
-				params[key] = chosenReport.chosenIncludeDepositPaid ? true false;
+				params[key] = chosenReport.chosenIncludeDepositPaid ? true : false;
 				/**/
 				if ( chosenReport.chosenIncludeDepositPaid ) {
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositPaid.description );
@@ -942,7 +942,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				// additional overhead required by API
 				// we are to send either true or false anyway
 				// no mater if the flag is chosen or not
-				params[key] = chosenReport.chosenIncludeDepositDue ? true false;
+				params[key] = chosenReport.chosenIncludeDepositDue ? true : false;
 				/**/
 				if ( chosenReport.chosenIncludeDepositDue ) {
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositDue.description );
@@ -956,7 +956,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				// additional overhead required by API
 				// we are to send either true or false anyway
 				// no mater if the flag is chosen or not
-				params[key] = chosenReport.chosenIncludeDepositPastDue ? true false;
+				params[key] = chosenReport.chosenIncludeDepositPastDue ? true : false;
 				/**/
 				if ( chosenReport.chosenIncludeDepositPastDue ) {
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositPastDue.description );
@@ -1141,7 +1141,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					    continue;
 					};
 
-					if ( key == 'group_by_date' || key == 'group_by_user' ) {
+					if ( key == 'group_by_date' || key == 'group_by_user' || key == 'page' || key == 'per_page' ) {
 						continue;
 					} else if ( params[key] != $scope.oldParams[key] ) {
 						chosenReport.chosenGroupBy = 'BLANK';
