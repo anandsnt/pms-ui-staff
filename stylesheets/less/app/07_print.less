@@ -986,10 +986,13 @@ table {
             &.statistics {
                 overflow-x: hidden;
                 display: table;
+                table-layout: fixed;
                 width: 100%;
 
                 .statistics-headings {
                     display: table-cell;
+                    vertical-align: top;
+                    .size(100, 160);
 
                     > .iScrollVerticalScrollbar { .hide; }
 
@@ -1026,6 +1029,7 @@ table {
                 .statistics-content {
                     width: auto;
                     display: table-cell;
+                    vertical-align: top;
 
                     > .wrapper { width: 100% !important; }
                 }

@@ -601,6 +601,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// add the print orientation before printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
+			var margin = '1cm 0.5cm';
 
 			switch( $scope.chosenReport.title ) {
 				case reportUtils.getName('ARRIVAL'):
@@ -611,16 +612,21 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+					orientation = 'landscape';
+					break;
+
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 					orientation = 'landscape';
+					margin: 'none';
 					break;
 
 				default:
 					orientation = 'portrait';
+					margin: '1cm 0.5cm';
 					break;
 			}
 
-			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; margin: " + margin + "; }</style>" );
 		};
 
 		// add the print orientation after printing
