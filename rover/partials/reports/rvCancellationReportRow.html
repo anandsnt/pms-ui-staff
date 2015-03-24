@@ -31,6 +31,16 @@
 		<span class="data rate">{{ each.rate }} / <strong>{{ each.adr | currency:currencySymbol:2 }} ADR</strong></span>
 	</td>
 
+	<!-- guest data - name, company, travel agent & group name -->
+	<td ng-if="each.isGuestData" class="secondary guest-names">
+		<span ng-repeat="name in each.guestNames">{{ name }}</span>
+	</td>
+	<td ng-if="each.isGuestData" class="secondary guest-info" colspan="4">
+		<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
+		<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
+		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
+	</td>
+
 	<!-- cancel reason -->
 	<td ng-if="each.isCancelData" class="secondary cancel" colspan="5">
 		<strong>Cancellation Reason</strong>
