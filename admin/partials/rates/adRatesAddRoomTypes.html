@@ -63,7 +63,6 @@
 					data-type="target" 
 					data-drop="true" 
 					ng-model="assignedRoomTypes"  
-					style="overflow-y: scroll !important;" 
 					jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoomTypes'}"  data-jqyoui-options="{accept:'.non-assigned-room-types'}">
 						<li ng-repeat="roomtype in assignedRoomTypes"
 						ng-click="assignedRoomSelected($event,$index)"

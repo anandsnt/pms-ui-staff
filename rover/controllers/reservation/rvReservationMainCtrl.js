@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams', 'RVReservationGuestSrv',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -95,7 +95,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     addons: [],
                     varyingOccupancy: false,
                     stayDates: {},
-                    isOccupancyCheckAlerted: false
+                    isOccupancyCheckAlerted: false,
+                    demographics: {
+                        market: '',
+                        source: '',
+                        reservationType: '',
+                        origin: ''
+                    }
                 }],
                 totalTaxAmount: 0, //This is for ONLY exclusive taxes
                 totalStayCost: 0,
@@ -145,9 +151,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 rateDetails: [], // This array would hold the configuration information of rates selected for each room
                 isRoomRateSuppressed: false, // This variable will hold flag to check whether any of the room rates is suppressed?
                 reservation_card: {},
-                number_of_infants:0,
-                number_of_adults:0,
-                number_of_children:0                
+                number_of_infants: 0,
+                number_of_adults: 0,
+                number_of_children: 0
 
             };
 
@@ -204,6 +210,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.isGuestPrimaryEmailChecked = false;
             $scope.otherData.isGuestAdditionalEmailChecked = false;
             $scope.otherData.reservationCreated = false;
+
+            $scope.otherData.marketIsForced = baseSearchData.settings.force_market_code;
+            $scope.otherData.sourceIsForced = baseSearchData.settings.force_source_code;
+            $scope.otherData.originIsForced = baseSearchData.settings.force_origin_of_booking;
+            $scope.otherData.reservationTypeIsForced = baseSearchData.settings.force_reservation_type;
 
             $scope.guestCardData = {};
             $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
@@ -571,12 +582,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
         };
 
-
         $scope.computeTotalStayCost = function(reset) {
             // TODO : Loop thru all rooms
             var roomIndex = 0;
             var currentRoom = $scope.reservationData.rooms[roomIndex];
-
             //compute stay cost for the current room
             var adults = currentRoom.numAdults;
             var children = currentRoom.numChildren;
@@ -589,7 +598,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if ((date != $scope.reservationData.departure_date || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                if ((date == $scope.reservationData.arrivalDate || date != $scope.reservationData.departureDate) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
 
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
@@ -803,8 +812,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                  */
                             $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
                         }
-                        taxAmount = parseFloat(nights * taxApplied.exclusive);
-                        taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive); // CICO-10161
+                        // taxAmount = parseFloat(nights * taxApplied.exclusive); //CICO-14231
+                        taxAmount = parseFloat(taxApplied.exclusive); //CICO-14231
+                        // taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive); // CICO-14231
+                        taxAll = parseFloat(taxApplied.exclusive) + parseFloat(taxApplied.inclusive); // CICO-14231
                     } else { //STAY
                         if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
                             $scope.reservationData.taxDetails[description.id] = description;
@@ -820,8 +831,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll); // CICO-10161
 
                 //  CICO-9576
-
-                addOnCumulative += parseInt(finalRate);
+                if (!addon.is_inclusive) {
+                    addOnCumulative += parseInt(finalRate);
+                }
                 addon.effectivePrice = finalRate;
             });
 
@@ -962,6 +974,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.demographics.source = reservationDetails.reservation_card.source_id == null ? "" : reservationDetails.reservation_card.source_id;
             $scope.reservationData.demographics.origin = reservationDetails.reservation_card.booking_origin_id == null ? "" : reservationDetails.reservation_card.booking_origin_id;
 
+            //Put them in a room too
+            $scope.reservationData.rooms[0].demographics = angular.copy($scope.reservationData.demographics);
+
             // TODO : This following LOC has to change if the room number changes to an array
             // to handle multiple rooms in future
             $scope.reservationData.rooms[0].roomNumber = reservationDetails.reservation_card.room_number;
@@ -1062,6 +1077,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.rooms[0].numChildren = arrivalDateDetails[0].children;
             $scope.reservationData.rooms[0].numInfants = arrivalDateDetails[0].infants;
 
+            if (reservationDetails.reservation_card.reservation_status == "CHECKEDIN") {
+                $scope.reservationData.inHouse = true;
+            }
+
             // Find if midstay or later
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
@@ -1102,20 +1121,32 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             var fromState = $state.current.name;
             //If we are already in state for calendar/rooms&rates, 
             //then we only need to switch the vuew type to calendar
-            if (fromState == 'rover.reservation.staycard.mainCard.roomType') {
-                $scope.$broadcast('switchToStayDatesCalendar');
-                //Switch state to display the reservation calendar
-            } else {
-                $state.go('rover.reservation.staycard.mainCard.roomType', {
-                    from_date: $scope.reservationData.arrivalDate,
-                    to_date: $scope.reservationData.departureDate,
-                    view: "CALENDAR",
-                    fromState: fromState,
-                    company_id: $scope.reservationData.company.id,
-                    travel_agent_id: $scope.reservationData.travelAgent.id
-                });
-            }
-            $scope.$broadcast('closeSidebar');
+
+
+            $state.go('rover.reservation.staycard.mainCard.roomType', {
+                from_date: $scope.reservationData.arrivalDate,
+                to_date: $scope.reservationData.departureDate,
+                view: "DEFAULT",
+                fromState: fromState,
+                company_id: $scope.reservationData.company.id,
+                travel_agent_id: $scope.reservationData.travelAgent.id
+            });
+
+            // if (fromState == 'rover.reservation.staycard.mainCard.roomType') {
+            //     $scope.$broadcast('switchToStayDatesCalendar');
+            //     //Switch state to display the reservation calendar
+            // } else {
+            //     $state.go('rover.reservation.staycard.mainCard.roomType', {
+            //         from_date: $scope.reservationData.arrivalDate,
+            //         to_date: $scope.reservationData.departureDate,
+            //         view: "CALENDAR",
+            //         fromState: fromState,
+            //         company_id: $scope.reservationData.company.id,
+            //         travel_agent_id: $scope.reservationData.travelAgent.id
+            //     });
+            // }
+
+            // $scope.$broadcast('closeSidebar');
         };
 
         $scope.$on("guestEmailChanged", function(e) {
@@ -1224,7 +1255,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.originsEnabled = baseData.demographics.is_use_origins;
             $scope.otherData.origins = baseData.demographics.origins;
             $scope.otherData.reservationTypes = baseData.demographics.reservationTypes;
-
             // call this. no sure how we can pass date from here
             $scope.checkOccupancyLimit();
         };
@@ -1245,7 +1275,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             });
         };
 
-        $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails) {
+        $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
             var data = {};
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
@@ -1337,22 +1367,25 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //  The API request payload changes
             var stay = [];
             data.room_id = [];
-            _.each($scope.reservationData.rooms, function(room) {
+            _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 var reservationStayDetails = [];
-                _.each(room.stayDates, function(staydata, date) {
-                    reservationStayDetails.push({
-                        date: date,
-                        rate_id: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
-                        room_type_id: room.roomTypeId,
-                        room_id: room.room_id,
-                        adults_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
-                        children_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
-                        infants_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
-                        rate_amount: (date == $scope.reservationData.departureDate) ? ((room.stayDates[$scope.reservationData.arrivalDate] && room.stayDates[$scope.reservationData.arrivalDate].rateDetails && room.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydata.rateDetails && staydata.rateDetails.modified_amount) || 0)
+                if (typeof roomIndex == 'undefined' || currentRoomIndex == roomIndex) {
+                    _.each(room.stayDates, function(staydata, date) {
+                        reservationStayDetails.push({
+                            date: date,
+                            rate_id: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
+                            room_type_id: room.roomTypeId,
+                            room_id: room.room_id,
+                            adults_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
+                            children_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
+                            infants_count: (date == $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
+                            rate_amount: (date == $scope.reservationData.departureDate) ? ((room.stayDates[$scope.reservationData.arrivalDate] && room.stayDates[$scope.reservationData.arrivalDate].rateDetails && room.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydata.rateDetails && staydata.rateDetails.modified_amount) || 0)
 
+                        });
                     });
-                });
-                stay.push(reservationStayDetails);
+                    stay.push(reservationStayDetails);
+                }
+
             });
 
             //  end of payload changes
@@ -1369,10 +1402,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             data.company_id = $scope.reservationData.company.id;
             data.travel_agent_id = $scope.reservationData.travelAgent.id;
-            data.reservation_type_id = parseInt($scope.reservationData.demographics.reservationType);
-            data.source_id = parseInt($scope.reservationData.demographics.source);
-            data.market_segment_id = parseInt($scope.reservationData.demographics.market);
-            data.booking_origin_id = parseInt($scope.reservationData.demographics.origin);
+
+            // DEMOGRAPHICS
+            var demographicsData = $scope.reservationData.demographics;
+            if (typeof roomIndex != 'undefined') {
+                demographicsData = $scope.reservationData.rooms[roomIndex].demographics;
+                data.reservation_type_id = parseInt(demographicsData.reservationType);
+                data.source_id = parseInt(demographicsData.source);
+                data.market_segment_id = parseInt(demographicsData.market);
+                data.booking_origin_id = parseInt(demographicsData.origin);
+            }
+
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
 
             //to delete starts here
@@ -1395,8 +1435,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //          $scope.reservationData.rooms[0].room_id = 324;
             // $scope.reservationData.rooms.push(room);
             data.room_id = [];
-            angular.forEach($scope.reservationData.rooms, function(room, key) {
-                data.room_id.push(room.room_id);
+            angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                if (typeof roomIndex == 'undefined' || currentRoomIndex == roomIndex) {
+                    data.room_id.push(room.room_id);
+                }
             });
             //to delete ends here
             return data;
@@ -1717,7 +1759,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                     });
-                    
+
                     // CICO-13748 : Added depositAmountWithoutFilter to handle PAY DEPOSIT LATER or PAY NOW buttons.
                     $scope.reservationData.depositAmountWithoutFilter = totalDeposit;
 
@@ -1863,15 +1905,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
                     if (typeof index !== 'undefined') {
-                        angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                            if (key == index) {
-                                postData.reservationId = reservation.id;
-                                var roomId = postData.room_id[index];
-                                postData.room_id = [];
-                                postData.room_id.push(roomId);
-                            }
+                        postData.reservationId = $scope.reservationData.reservationId;
+                        var roomId = postData.room_id[index];
+                        postData.room_id = [];
+                        postData.room_id.push(roomId);
 
-                        });
                     } else {
                         postData.reservationId = $scope.reservationData.reservationId;
                     }
@@ -1883,7 +1921,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
-              
+
             }
         };
 

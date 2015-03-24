@@ -10,7 +10,15 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'RVHkRoomDetailsSrv',
 	'$vault',
 	'$rootScope',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv, $vault, $rootScope) {
+	'RVReservationGuestSrv',
+	'rvPermissionSrv',
+	function($scope, $state,
+		RVReservationSummarySrv, ngDialog,
+		RVContactInfoSrv, $filter,
+		RVBillCardSrv, $q,
+		RVHkRoomDetailsSrv, $vault,
+		$rootScope, RVReservationGuestSrv, rvPermissionSrv) {
+
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 		var totalRoomsAvailable = 0;
@@ -25,6 +33,23 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			param: {
 				reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
 			}
+		};
+
+		/**
+		 * function to check whether the user has permission
+		 * to make payment
+		 * @return {Boolean}
+		 */
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue('MAKE_PAYMENT');
+		};
+
+		/**
+		 * function to determine the visibility of Make Payment button
+		 * @return {Boolean}
+		 */
+		$scope.hideMakePayment = function() {
+			return (!$scope.hasPermissionToMakePayment());
 		};
 
 		$scope.init = function() {
@@ -97,66 +122,106 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			};
 		}
 
+		$scope.confirmationMailsSent = false;
+
 		/**
 		 * Call API to send the confirmation email
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
+
 			var updateBackButton = function() {
-				$rootScope.setPrevState = {
-					title: $filter('translate')('CONFIRM_RESERVATION'),
-					name: 'rover.reservation.staycard.mainCard.reservationConfirm',
-					param: {
-						confirmationId: $scope.reservationData.confirmNum,
+				$scope.confirmationMailsSent = true;
+				var paramsArray = [];
+				var rooms = angular.copy($scope.reservationData.rooms);
+				_.each(rooms, function(room, index) {
+					var validGuests = [];
+					_.each(room.accompanying_guest_details, function(guest) {
+						if (!guest.first_name && !guest.last_name) {
+							guest.first_name = null;
+							guest.last_name = null;
+						}
+						validGuests.push(guest);
+					});
+					paramsArray.push(validGuests);
+				})
+
+				var onupdateSuccess = function() {
+						$scope.$emit('hideLoader');
+						$rootScope.setPrevState = {
+							title: $filter('translate')('CONFIRM_RESERVATION'),
+							name: 'rover.reservation.staycard.mainCard.reservationConfirm',
+							param: {
+								confirmationId: $scope.reservationData.confirmNum,
+							},
+							callback: 'unflagConfirmation',
+							scope: $scope
+						};
 					},
-					callback: 'unflagConfirmation',
-					scope: $scope
-				};
+					onUpdateFailure = function(errorMessage) {
+						$scope.errorMessage = errorMessage;
+						$scope.$emit('hideLoader');
+					}
+
+				_.each($scope.reservationData.rooms, function(room, index) {
+					if (paramsArray[index].length > 0) {
+						$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
+							accompanying_guests_details: paramsArray[index],
+							reservation_id: $scope.reservationData.reservationIds[index],
+						}, onupdateSuccess, onUpdateFailure);
+					}
+				})
+
 			}
 
-			// skip sending messages if no mail id is provided or none of the emails are checked, go to the next screen
-			if ((!$scope.otherData.additionalEmail && !$scope.reservationData.guest.email) || (!$scope.otherData.isGuestPrimaryEmailChecked && !$scope.otherData.isGuestAdditionalEmailChecked)) {
-				$scope.reservationStatus.confirmed = true;
+			if ($scope.confirmationMailsSent) {
 				updateBackButton();
-				return false;
-			}
-
-			var postData = {};
-			postData.reservationId = $scope.reservationData.reservationId;
-
-			/**
-			 * CICO-7077 Confirmation Mail to have tax details
-			 */
-			postData.tax_details = [];
-			_.each($scope.reservationData.taxDetails, function(taxDetail) {
-				postData.tax_details.push(taxDetail);
-			});
-			postData.tax_total = $scope.reservationData.totalTax;
-
-
-			postData.emails = [];
-			if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked)
-				postData.emails.push($scope.reservationData.guest.email);
-
-			if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked)
-				postData.emails.push($scope.otherData.additionalEmail);
-
-			if ($scope.reservationData.isHourly) {
-				postData.reservation_ids = [];
-				_.each($scope.reservationData.reservations, function(reservation) {
-					postData.reservation_ids.push(reservation.id);
-				});
-			}
-
-			var emailSentSuccess = function(data) {
-				$scope.reservationStatus.confirmed = true;
-				updateBackButton();
-				$scope.$emit('hideLoader');
-			};
-
-			if ($scope.reservationData.isHourly) {
-				$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
 			} else {
-				$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
+
+				// skip sending messages if no mail id is provided or none of the emails are checked, go to the next screen
+				if ((!$scope.otherData.additionalEmail && !$scope.reservationData.guest.email) || (!$scope.otherData.isGuestPrimaryEmailChecked && !$scope.otherData.isGuestAdditionalEmailChecked)) {
+					$scope.reservationStatus.confirmed = true;
+					updateBackButton();
+					return false;
+				}
+
+				var postData = {};
+				postData.reservationId = $scope.reservationData.reservationId;
+
+				/**
+				 * CICO-7077 Confirmation Mail to have tax details
+				 */
+				postData.tax_details = [];
+				_.each($scope.reservationData.taxDetails, function(taxDetail) {
+					postData.tax_details.push(taxDetail);
+				});
+				postData.tax_total = $scope.reservationData.totalTax;
+
+
+				postData.emails = [];
+				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked)
+					postData.emails.push($scope.reservationData.guest.email);
+
+				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked)
+					postData.emails.push($scope.otherData.additionalEmail);
+
+				if ($scope.reservationData.isHourly) {
+					postData.reservation_ids = [];
+					_.each($scope.reservationData.reservations, function(reservation) {
+						postData.reservation_ids.push(reservation.id);
+					});
+				}
+
+				var emailSentSuccess = function(data) {
+					$scope.reservationStatus.confirmed = true;
+					updateBackButton();
+					$scope.$emit('hideLoader');
+				};
+
+				if ($scope.reservationData.isHourly) {
+					$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
+				} else {
+					$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
+				}
 			}
 
 		};

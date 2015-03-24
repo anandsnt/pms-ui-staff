@@ -1,18 +1,27 @@
 <div  class="wrapper" >
-							<div class="action">
-								<button type="button" id="clear-filters-button" class="button blank clear-selection" ng-click="clearAllFilters()" translate>
-									CLEAR_FILTERS_LABEL
-								</button>
-							</div>
-							
-							<div class="entry radio-check" ng-repeat="group in roomFeatures">
-								<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> 
-									<span class="icon-form icon-checkbox" ng-class="{'checked':feature.selected}" ></span>
-									<input type="checkbox" value="{{feature.id}}" 
-									ng-click="setSelectionForFeature($parent.$index, $index)">
-									{{feature.name}} </label>
-
-							</div>				
-							
-					
+	<div class="action">
+		<button type="button" id="clear-filters-button" class="button blank clear-selection" ng-click="clearAllFilters()" translate>
+		CLEAR_FILTERS_LABEL
+		</button>
+	</div>
+	<div class="entry radio-check">
+		<label class="checkbox inline checked">
+			<span ng-class="{'icon-form':true, 'icon-checkbox' :true, 'checked':data.isNoFloorSelected}"></span>
+			<input name="show-all-floors" ng-model="data.isNoFloorSelected" id="show-all-floors" value="show-all-floors" type="checkbox" checked  ng-change="selectedFloorChanged()"/>
+			{{ 'SHOW_ALL_FLOORS' | translate }}
+		</label>
+		<div ng-class="{'select':true, 'hidden':data.isNoFloorSelected}">
+			<select ng-model="data.selectedFloor" ng-change='selectedFloorChanged()' class="placeholder" iscroll-stop-propagation>
+				<option value="" ng-selected="data.selectedFloor == ''" translate>SELECT_FLOOR</option>
+				<option ng-repeat="floor in floor_details" ng-selected="data.selectedFloor == floor.id" value="{{floor.id}}">{{floor.floor_number}}</option>
+			</select>
+		</div>               
+	</div>
+	<div class="entry radio-check" ng-repeat="group in roomFeatures">
+		<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> 
+		<span class="icon-form icon-checkbox" ng-class="{'checked':feature.selected}" ></span>
+		<input type="checkbox" value="{{feature.id}}" 
+		ng-click="setSelectionForFeature($parent.$index, $index)">
+		{{feature.name}} </label>
+	</div>	
 </div>

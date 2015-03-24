@@ -1,9 +1,9 @@
 /* 1. ROOT
 ==========================================================*/
-* { 
-    text-shadow: none !important; 
-    filter:none !important; 
-    -ms-filter: none !important; 
+* {
+    text-shadow: none !important;
+    filter:none !important;
+    -ms-filter: none !important;
     -webkit-print-color-adjust:exact;
 }
 
@@ -19,7 +19,7 @@ body { overflow: visible; }
 
 #main-menu,
 #availability,
-.logo-hide, 
+.logo-hide,
 .text-hide,
 .no-print,
 .search-pagination,
@@ -28,7 +28,7 @@ body { overflow: visible; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-p, 
+p,
 h1, .h1,
 h2, .h2,
 h3, .h3,
@@ -47,7 +47,7 @@ table {
     width: 100%;
     text-transform: uppercase;
     table-layout: auto;
-    border-collapse: collapse; 
+    border-collapse: collapse;
     border-spacing: 0;
     page-break-inside: avoid;
 
@@ -77,7 +77,7 @@ table {
            th {
                 font-weight: 600;
                 background: @grey1;
-            } 
+            }
         }
     }
 
@@ -90,11 +90,11 @@ table {
 ==========================================================*/
 /* 4. LAYOUT
 ==========================================================*/
-	
+
 /* App screens				==============================*/
 	.container {
         position: static;
-        top: 0 !important; 
+        top: 0 !important;
         left: 0 !important;
         height: auto !important;
         overflow: visible;
@@ -102,23 +102,23 @@ table {
 
         .page {
             position: static;
-            top: 0 !important; 
+            top: 0 !important;
             left: 0 !important;
             height: auto !important;
             background: transparent !important;
             overflow: visible;
             .hide;
-            
-            &.page-current { 
+
+            &.page-current {
                 .show;
-                .box-shadow(none); 
+                .box-shadow(none);
             }
 
             &.page-locked {
 
                 .nested-view {
                     position: static;
-                    top: 0 !important; 
+                    top: 0 !important;
                     left: 0 !important;
                     height: auto !important;
                     overflow: visible;
@@ -132,7 +132,7 @@ table {
         .main-view,
         .nested-view {
             position: static;
-            top: 0 !important; 
+            top: 0 !important;
             left: 0 !important;
             bottom: auto !important;
             right: auto !important;
@@ -145,7 +145,7 @@ table {
     .root-view,
     .ui-router-wrapper {
         position: static !important;
-        top: 0 !important; 
+        top: 0 !important;
         left: 0 !important;
         bottom: auto !important;
         right: auto !important;
@@ -160,7 +160,7 @@ table {
 
     .scrollable { overflow: visible; }
 
-    .wrapper { 
+    .wrapper {
         padding: 0 !important;
         transform: translate(0px, 0px) !important;
     }
@@ -188,6 +188,14 @@ table {
 
             .hotel,
             .user { font-size: 10pt; }
+
+            .user .date {
+                display: none;
+            }
+
+            .date {
+                .hide;
+            }
         }
 
         .logo {
@@ -195,7 +203,7 @@ table {
             .size(30px, 135px);
             .show;
 
-            img { 
+            img {
                 filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
                 filter: gray;
                 -webkit-filter: grayscale(100%);
@@ -209,7 +217,7 @@ table {
             h1 { .hide; }
         }
 
-        &.no-print { .hide; }  
+        &.no-print { .hide; }
     }
 
 /* Guest status             ==============================*/
@@ -223,8 +231,8 @@ table {
         &.check-out,
         &.inhouse,
         &.late-check-out,
-        &.cancel { 
-            background-image: @iconPrint; 
+        &.cancel {
+            background-image: @iconPrint;
             background-size: 40px;
         }
 
@@ -237,7 +245,7 @@ table {
 
         &.small-icon {
             background-size: 40px;
-            .square(28px); 
+            .square(28px);
 
             &.pre-check-in,
             &.check-in { background-position: 6px 6px; }
@@ -249,11 +257,11 @@ table {
 
         &.arrival,
         &.departed { background-color: @grey1; }
-        
+
         &.no-show,
         &.cancel { border-color: @grey2; }
     }
-      
+
 /* 5. COMPONENTS
 ==========================================================*/
 
@@ -266,9 +274,9 @@ table {
             .faux-anchor {
                 .float;
 
-                .guest-image { .hide; }               
+                .guest-image { .hide; }
             }
-            
+
             &.reservation {
 
                 &.transaction {
@@ -311,7 +319,7 @@ table {
 
                                 .guest-status { margin-right: 4pt; }
 
-                                .time { 
+                                .time {
                                     color: @grey3;
                                     .show;
                                 }
@@ -331,7 +339,7 @@ table {
                             &.paid { color: @grey3; }
                         }
 
-                        .switch-button { 
+                        .switch-button {
                             font-size: 10pt;
                             line-height: 44px;
                             text-align: right;
@@ -345,16 +353,16 @@ table {
                                 .switch-icon { .hide; }
                             }
 
-                            .data-on { 
-                                .hide; 
+                            .data-on {
+                                .hide;
 
                                 .value { color: @grey3; }
                             }
 
-                            .data-off { 
-                                .show; 
+                            .data-off {
+                                .show;
 
-                                .value { 
+                                .value {
                                     color: @textColor;
                                     font-weight: 600;
                                 }
@@ -370,7 +378,7 @@ table {
                     &:last-child { border-bottom: 0; }
                 }
             }
-            
+
         }
     }
 
@@ -381,14 +389,14 @@ table {
         size: landscape;
         .hide;
 
-        .cards-wrapper { 
+        .cards-wrapper {
 
             /* Card headers ***/
             .cards-header {
                 height: 30px;
 
                 .card-header {
-                    
+
                     form,
                     .card-search-form {
                         float: none;
@@ -426,11 +434,11 @@ table {
 
             /* Card content with tabs ***/
             .cards-content {
-                .card-content { 
+                .card-content {
 
-                    .card-tabs-nav { 
+                    .card-tabs-nav {
                         margin-bottom: 1cm;
-                        
+
                         li {
                             text-align: center;
                             font-size: 10pt;
@@ -507,7 +515,7 @@ table {
 
         .report-header { .hide; }
 
-        .report-totals { 
+        .report-totals {
             margin-bottom: 1em;
             clear: both;
             .float;
@@ -539,8 +547,8 @@ table {
 
                 &.col2 {
                     &:nth-child(2) {
-                        li { 
-                            .pull-right; 
+                        li {
+                            .pull-right;
 
                             &:first-child { margin-right: 0; }
                             &:last-child { margin-right: 16pt; }
@@ -573,19 +581,54 @@ table {
                             line-height: 10pt;
                             color: @grey3;
 
-                            span { color: @textColor; }                       
+                            span { color: @textColor; }
 
                             &:last-child { text-align: right; }
                         }
-                        
+
                         &.totals {
-                            td { 
+                            td {
                                 font-size: 10pt;
                                 line-height: 1em;
                                 font-weight: 600;
                                 color: @textColor;
                                 border-top: 1px solid @grey2;
-                            }  
+                            }
+                        }
+                    }
+                }
+
+                &.log-reports {
+                    tr {
+                        &.invalid {
+                            td {
+                                color: @grey3;
+                                font-style: italic;
+                            }
+                        }
+                    }
+
+                    td {
+                        &.name { width: 3cm; }
+                        &.date { width: 4cm; }
+                        &.action { width: 2cm; }
+
+                        &.details {
+                            color: @grey3;
+                            width: 12cm;
+                            white-space: normal;
+                            overflow: visible;
+
+                            strong {
+                                font-weight: 400;
+                                color: @textColor;
+                                margin-right: 10px;
+                            }
+
+                            .old {
+                                text-decoration: line-through;
+                                strong { color: @grey3; }
+                            }
                         }
                     }
                 }
@@ -606,12 +649,12 @@ table {
 
                             strong,
                             span,
-                            div { 
-                                page-break-inside: avoid; 
+                            div {
+                                page-break-inside: avoid;
                                 min-height: 10px;
                             }
 
-                            strong { 
+                            strong {
                                 font-weight: 600;
                                 .show;
 
@@ -640,8 +683,8 @@ table {
                                     .show;
                                 }
 
-                                &.rate { 
-                                    strong { 
+                                &.rate {
+                                    strong {
                                         display: inline;
                                         font-weight: 600;
                                     }
@@ -676,7 +719,7 @@ table {
                                 margin-right: 5px;
                                 color: transparent;
                                 .pull-left;
-                                .square(30px); 
+                                .square(30px);
 
                                 &.pre-check-in,
                                 &.check-in { background-position: 7px 7px; }
@@ -707,9 +750,9 @@ table {
 
                             &.name { width: 7cm; }
 
-                            &.date { 
+                            &.date {
                                 width: 3cm;
-                                .float; 
+                                .float;
 
                                 &.hour { width: 4cm; }
                                 &.guarantee { width: 6.5cm; }
@@ -744,7 +787,7 @@ table {
                                 span { .show;}
 
                                 &.notes {
-                                    strong { 
+                                    strong {
                                         color: @grey4;
                                         text-transform: uppercase;
                                         font-weight: 600;
@@ -757,9 +800,81 @@ table {
                         }
 
                         &.row-break {
-                            td { 
+                            td {
                                 padding-bottom: 8pt;
-                                border-bottom: 2px solid @grey2; 
+                                border-bottom: 2px solid @grey2;
+                            }
+                        }
+                    }
+                }
+
+                &.statistics-reports {
+
+                    tr {
+                        th,
+                        td {
+                            font-size: 8pt;
+                            line-height: 14pt;
+                            padding: 0 4pt 0 8pt;
+                        }
+                    }
+
+                    thead {
+                        tr {
+                            th {
+                                text-align: center;
+                                font-weight: 600;
+
+                                &[colspan] {
+                                    border-right: 1px solid @grey3;
+
+                                    &:last-child { border-right: 0; }
+                                }
+                            }
+
+                            &.bottom-row {
+                                th {
+                                    text-transform: none;
+                                    font-style: italic;
+                                    font-weight: 400;
+                                    background: @grey1;
+                                    border-bottom: 0;
+
+                                    &.day-end { border-right: 1px solid @grey3; }
+
+                                    &:last-child { border-right: 0; }
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            td {
+                                border: solid @grey2;
+                                border-width: 0 1px 1px 0;
+
+                                &.last-year { color: @grey3; }
+                                &.day-end { border-right: 1px solid @grey3; }
+                                &:last-child { border-right-width: 0; }
+                            }
+
+                            &.double-row {
+                                td {
+                                    height: 38px;
+
+                                    strong,
+                                    span { .show; }
+
+                                    span {
+                                        color: @grey3;
+                                        margin-top: -2px;
+                                    }
+                                }
+                            }
+
+                            &:last-child {
+                                td { border-bottom: 0; }
                             }
                         }
                     }
@@ -828,8 +943,8 @@ table {
                                 font-size: 8pt;
                                 line-height: 10px;
 
-                                .label { 
-                                    font-size: 8pt; 
+                                .label {
+                                    font-size: 8pt;
                                     line-height: 10px;
                                     width: 180px;
                                 }
@@ -838,21 +953,21 @@ table {
                                     left: 200px;
                                     .calc-width(100, 200);
 
-                                    .fill { 
+                                    .fill {
                                         height: 10px;
                                         background-color: @grey2;
                                     }
 
-                                    .mark { 
+                                    .mark {
                                         border-left: 1px solid @grey1;
 
                                         &:last-child { border-right: 1px solid @grey1; }
                                     }
                                 }
 
-                                &.legend { 
+                                &.legend {
                                     line-height: 20px;
-                                    border-top: 1px solid @grey1; 
+                                    border-top: 1px solid @grey1;
                                     margin-left: 200px;
                                     .calc-width(100, 200);
                                 }
@@ -867,6 +982,59 @@ table {
                     }
                 }
             }
+
+            &.statistics {
+                overflow-x: hidden;
+
+                .statistics-headings {
+
+                    .pull-left;
+                    .size(100%, 160px);
+                    .show;
+
+                    > .iScrollVerticalScrollbar { .hide; }
+
+                    li {
+                        font-size: 8pt;
+                        line-height: 14pt;
+                        padding: 0 4pt 0 8pt;
+                        margin: 0;
+                        height: 19px;
+                        background-color: @grey1;
+                        border-bottom: 1px solid @grey2;
+
+                        em { color: rgba(0,0,0,.5); }
+
+                        strong { font-weight: 600; }
+
+                        &.double-row {
+                            line-height: 28pt;
+                            height: 38px;
+                        }
+
+                        &.main-heading {
+                            font-weight: 600;
+                            background: @grey1;
+                            border-bottom: 0;
+
+                            &.double-row { height: 36px; }
+                        }
+
+                        &:last-child { border-bottom: 0; }
+                    }
+                }
+
+                .statistics-content {
+                    .calc-width(100, 160);
+                    .pull-left;
+
+                    > .wrapper { width: 100% !important; }
+                }
+            }
+
+            &.occupancy-footer {
+                display: table;
+            }
         }
     }
 
@@ -880,7 +1048,7 @@ table {
         .assigned-rooms h2,
         .sheet-placeholder { .hide; }
 
-        /* Worksheet room ***/           
+        /* Worksheet room ***/
         .worksheet-room {
             position: relative;
             text-align: left;
@@ -893,7 +1061,7 @@ table {
             page-break-after: auto;
             page-break-inside: avoid;
             .float;
-            
+
             h3 {
                 font-size: 30pt;
                 line-height: 1em;
@@ -902,7 +1070,7 @@ table {
                 color: @textColor;
                 .size(30pt, 4cm);
                 .pull-left;
-                
+
                 &.out { color: @grey2; }
             }
 
@@ -913,12 +1081,12 @@ table {
                     .size(40px, 6.5cm);
                     .pull-left;
 
-                    .guest-status { 
+                    .guest-status {
                         margin-right: 8pt;
                     }
 
                     .current,
-                    .next { 
+                    .next {
                         font-size: 10pt;
                         line-height: 40px;
                         text-transform: uppercase;
@@ -929,7 +1097,7 @@ table {
 
                 .icon-queued {
                     margin-right: 4pt;
-                    background-image: @iconPrint; 
+                    background-image: @iconPrint;
                     background-size: 40px;
                     background-position: 0px -188px;
                     .hide-text;
@@ -937,7 +1105,7 @@ table {
                     .show;
                     .pull-right;
                 }
-                
+
                 .vip {
                     font-size: 8pt;
                     line-height: 20pt;
@@ -964,13 +1132,13 @@ table {
 
                     &.green { .hide; }
 
-                    &.red { 
+                    &.red {
                         background: transparent !important;
                         border: 1px dashed @textColor;
                     }
                 }
 
-                .no-action { 
+                .no-action {
                     background: transparent !important;
                     border: 1px solid @grey2;
 
@@ -1009,8 +1177,8 @@ table {
                 }
 
                 .guest {
-                    padding-left: 30pt;  
-                    width: 4cm; 
+                    padding-left: 30pt;
+                    width: 4cm;
                     .pull-left;
 
                     &:before {
@@ -1026,19 +1194,19 @@ table {
                         .show;
                     }
 
-                    &.check-in { 
-                        &:before { background-position: 8px 8px; } 
+                    &.check-in {
+                        &:before { background-position: 8px 8px; }
                     }
 
-                    &.check-out { 
-                        &:before { background-position: 8px -32px; } 
+                    &.check-out {
+                        &:before { background-position: 8px -32px; }
                     }
 
-                    &.inhouse { 
-                        &:before { background-position: 8px -72px; } 
+                    &.inhouse {
+                        &:before { background-position: 8px -72px; }
                     }
 
-                    &.no-show { 
+                    &.no-show {
                         &:before { .hide; }
                     }
                 }
@@ -1059,7 +1227,7 @@ table {
                     }
 
                     &.clean,
-                    &.inspected { 
+                    &.inspected {
                         &:before {
                             content: "✔";
                             text-align: center;
@@ -1073,9 +1241,9 @@ table {
 
                     &.dirty,
                     &.pickup {
-                        &:before { 
+                        &:before {
                             content: "";
-                            border: 1px dashed @textColor; 
+                            border: 1px dashed @textColor;
                         }
                     }
                 }
@@ -1086,10 +1254,10 @@ table {
         .assigned-rooms {
 
             .worksheet-content { border-top: 1px solid @grey2; }
-            
+
             &.single-sheet {
-                
-                .worksheet-summary { 
+
+                .worksheet-summary {
                     text-align: center;
                     width: auto;
                     margin: 0 auto 8pt;
@@ -1107,7 +1275,7 @@ table {
                         border-right: 1px solid rgba(0,0,0,.1);
                         width: auto;
 
-                        span { 
+                        span {
                             font-size: 28pt;
                             font-weight: 300;
                             color: @textColor;
@@ -1132,12 +1300,12 @@ table {
             }
 
             &.multi-sheet {
-            
+
                 .sheet-content {
                     page-break-after: always;
                     page-break-inside: auto;
-                    
-                    .button { 
+
+                    .button {
                         font-size: 21pt;
                         text-transform: none;
                         color: @textColor;
@@ -1155,7 +1323,7 @@ table {
                         text-align: center;
                         width: auto;
                         margin: 0 auto 8pt;
-                        .show;  
+                        .show;
 
                         li {
                             display: inline-block;
@@ -1169,14 +1337,14 @@ table {
                             border-bottom: 0;
                             width: auto;
 
-                            span { 
+                            span {
                                 display: inline-block;
 
                                 &.completed { margin-right: 4pt; }
 
-                                &.total { 
-                                    padding-left: 4pt; 
-                                    border-left: 1px solid @textColor; 
+                                &.total {
+                                    padding-left: 4pt;
+                                    border-left: 1px solid @textColor;
                                 }
                             }
                         }
@@ -1213,12 +1381,12 @@ table {
                         margin: 0 20px 0 0;
                         .pull-left;
 
-                        &.value { 
+                        &.value {
                             width: 80px;
                             margin: 0;
                         }
                     }
-                    
+
                     &.payment {
                         li {
                             &.name { .calc-width(40, 30); }
@@ -1241,13 +1409,30 @@ table {
                     text-transform: uppercase;
                     line-height: 40px;
                     margin: 0;
+                    overflow: hidden;
+                    padding: 10px 43px 0 10px;
 
-                    &.payment {
-                        padding-left: -webkit-calc(~"90% - 130px");
-                        padding-left: -moz-calc(~"90% - 130px");
-                        padding-left: calc(~"90% - 130px");
+                    .payment {
+                        padding-left: 0;
+                        float: right;
+                        width: 49.5%;
+                        text-align: right;
 
                         span { margin-left: 20px; }
+                    }
+
+                    .filters-applied {
+                        display: block;
+                        float: left;
+                        width: 49.5%;
+
+                        span {
+                            display: block;
+                        }
+
+                        label {
+                            color: #9d9d9d;
+                        }
                     }
                 }
 
@@ -1269,7 +1454,7 @@ table {
 
                     .name { font-weight: 600; }
                     .value { width: 80px; }
-                    
+
                     &.has-arrow { background-image: none; }
                 }
 
@@ -1289,9 +1474,9 @@ table {
                             .name { .calc-width(40, 30); }
                             .code { .calc-width(30, 30); }
                             .number { .calc-width(20, 30); }
-                        }                      
+                        }
                     }
-                }  
+                }
 
                 /* 2nd level ***/
                 .grid-charge {
@@ -1303,14 +1488,14 @@ table {
                         .code { width: 80px; }
                         .name { .calc-width(100, 200); }
                     }
-                } 
+                }
 
                 /* 3rd level **/
                 .grid-items {
                     .hide;
 
                     thead {
-                        th { 
+                        th {
                             background: transparent;
                             font-weight: 400;
                             color: @grey3;
@@ -1329,14 +1514,14 @@ table {
                         }
                     }
 
-                    .grid-charge { 
-                        display: block !important; 
+                    .grid-charge {
+                        display: block !important;
 
                         &.hidden { display: block !important; }
                     }
 
-                    .grid-items { 
-                        display: table !important; 
+                    .grid-items {
+                        display: table !important;
 
                         &.hidden { display: table !important; }
                     }
@@ -1349,7 +1534,7 @@ table {
                 .pull-left;
 
                 .shift-details {
-                    
+
                     caption {
                         font-size: 10pt;
                         color: @grey3;
@@ -1363,8 +1548,8 @@ table {
                     tr {
 
                         th,
-                        td { 
-                            line-height: 18pt; 
+                        td {
+                            line-height: 18pt;
                             border-bottom: 1px solid @grey3;
                         }
 
@@ -1376,7 +1561,7 @@ table {
                             font-weight: 600;
                             text-align: right;
 
-                            &.entry { 
+                            &.entry {
                                 font-size: 10pt;
                                 line-height: 40px;
                                 font-weight: 400;
@@ -1406,7 +1591,7 @@ table {
                         text-transform: uppercase;
                         background: transparent;
                         padding: 8pt 8pt 8pt 0;
-                        margin: 0 1px 0 40px; 
+                        margin: 0 1px 0 40px;
                         border-bottom: 1px solid @grey1;
 
                         .status {
@@ -1520,11 +1705,11 @@ table {
                             page-break-after: avoid;
 
                             th,
-                            td { 
+                            td {
                                 padding: 0 4pt 0 0;
-                                page-break-after: avoid; 
+                                page-break-after: avoid;
                             }
-                            
+
                             td { padding-bottom: 8pt; }
                         }
                     }
@@ -1544,9 +1729,9 @@ table {
                             line-height: 11pt;
                             margin: 0;
 
-                            strong { 
+                            strong {
                                 font-weight: 600;
-                                .show; 
+                                .show;
                             }
                         }
 
@@ -1554,14 +1739,14 @@ table {
                             text-transform: none;
                             margin: 4pt 0;
                             page-break-after:auto;
-                            
+
                             caption {
                                 font-size: 14pt;
                                 line-height: 12pt;
                                 padding: 12pt 0 8pt;
                                 border-top: 2px solid @grey2;
 
-                                span { 
+                                span {
                                     font-size: 9pt;
                                     .show;
                                 }
@@ -1575,11 +1760,11 @@ table {
                                     &.align-right { text-align: right; }
 
                                     &.description {
-                                        span { 
-                                            .show; 
+                                        span {
+                                            .show;
 
-                                            &.reference { 
-                                                color: @grey3; 
+                                            &.reference {
+                                                color: @grey3;
                                                 margin-bottom: 2pt;
                                             }
                                         }
@@ -1595,7 +1780,7 @@ table {
 
                             thead {
                                 tr {
-                                   th { background-color: transparent; } 
+                                   th { background-color: transparent; }
                                 }
                             }
 

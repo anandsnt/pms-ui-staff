@@ -123,7 +123,7 @@
     "CANCEL": "Cancel",
     "SAVE_CHANGES": "Save Changes",
     "BACK": "Back",
-    "ADD_NEW":"ADD NEW",
+    "ADD_NEW":"Add New",
     "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
     "MANDATORY_FIELDS_MESSAGE2":"are mandatory!",
    
@@ -350,6 +350,13 @@
 "FEES_CODE":"Fees code",
 "FEES":"Fees",
 "MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee"
+,"FLOOR": "Floor",
+"ASSIGN_ROOMS_TO_THIS_FLOOR": "Assign rooms to this floor",
+"UNASSIGNED_ROOMS": "Unassigned Rooms",
+"ASSIGNED_ROOMS": "Assigned Rooms",
+"SELECT_ALL": "Select All",
+"ASSIGN_SELECTED": "Assign Selected"
+
 ,
 
 
@@ -454,6 +461,13 @@
 	"ROVER_ONLY":"Rover Payments Only",
 	"WEB_ONLY":"Web Payments Only",
 	"DISPLAY_REFERENCE":"Display Reference",
+"PERMISSIONS" : "Permissions",
+"ASSIGNED_PERMISSIONS" : "Assigned Permissions",
+"PERMISSIONS_PLACEHOLDER1" : "Drop a permission here to assign it to the user",
+"PERMISSIONS_PLACEHOLDER2" : "To remove a permission for the user role simply drop it here",
+"ASSIGN_ROLES" : "Assign role(s)",
+"UNASSIGN_ROLES" : "Unassign role(s)",
+"NOT_ASSIGNED_PERMISSIONS" : "Not Assigned Permissions",
 
 
 "DAILY_UPSELL_SETUP":"Daily Upsell Setup",
@@ -504,7 +518,11 @@
 "DISABLE_TERMS_AND_CONDITIONS_AT_CHECK_IN": "DISABLE TERMS AND CONDITIONS AT CHECK IN",
 "DISABLE_EMAIL_PHONE_DIALOGUE": "DISABLE EMAIL/PHONE DIALOGUE",
 "DISABLE_EARLY_DEPARTURE_PENALTY": "DISABLE EARLY DEPARTURE PENALTY",
-"DISABLE_RESERVATION_POSTING_CONTROL": "DISABLE RESERVATION POSTING CONTROL"
+"DISABLE_RESERVATION_POSTING_CONTROL": "DISABLE RESERVATION POSTING CONTROL",
+"FORCE_SOURCE_CODE": "FORCE SOURCE CODE",
+"FORCE_RESERVATION_TYPE": "FORCE RESERVATION TYPE",
+"FORCE_MARKET_CODE": "FORCE MARKET CODE",
+"FORCE_ORIGIN_OF_BOOKING": "FORCE ORIGIN OF BOOKING"
 ,
 
     "ROOMS":"Rooms",
@@ -596,6 +614,7 @@
     "POST_TYPE":"Post Type",
     "RATE_ONLY":"Rate Only",
     "RESERVATION_ONLY":"Reservation Only",
+    "MANUAL_POSTING":"Manual Posting",
     "EDIT":"Edit",
     "ADD_NEW_SMALL":"Add New",
     "ADD_ON":"Add-On",
@@ -670,6 +689,14 @@
 "TEMPLATE_CONFIGURATION":"Template Configuration",
 "SEND_CHECKOUT_EMAIL":"Send Checkout Email",
 "SEND_CHECKOUT_NOTIFICATON_EMAIL":"Sent check out notification email to all DUE OUT guests at",
+"EMV_TERMINAL":"EMV Terminal",
+"EMV_TERMINALS":"EMV Terminals",
+"ADD_NEW_EMV_TERMINALS":"Add New EMV Terminals",
+"BACK_TO_EMV_TERMINALS":"Back To EMV Terminals",
+"TERMINAL_NAME":"Terminal Name",
+"TERMINAL_NAME_PLACEHOLDER":"Enter Terminal Name",
+"TERMINAL_ID":"Terminal ID",
+"TERMINAL_ID_PLACEHOLDER":"Enter Terminal ID",
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",

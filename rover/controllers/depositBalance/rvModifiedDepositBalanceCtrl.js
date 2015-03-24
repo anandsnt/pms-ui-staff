@@ -7,6 +7,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					'$stateParams',
 					'$filter',
 					'$timeout',
+					'rvPermissionSrv',
 		function($scope,
 				ngDialog,
 				$rootScope,
@@ -14,7 +15,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				RVPaymentSrv,
 				$stateParams,
 				$filter,
-				$timeout){
+				$timeout, rvPermissionSrv){
 					
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
@@ -43,7 +44,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;
 	$scope.depositBalanceMakePaymentData = {};
-	$scope.depositBalanceMakePaymentData.amount = $filter('number') ($scope.depositBalanceData.data.outstanding_stay_total,2);
+	$scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.data.outstanding_stay_total).toFixed(2);
 	$scope.refundAmount = 0;
 	if($scope.depositBalanceMakePaymentData.amount < 0){
 		$scope.refundAmount = (-1)*parseFloat($scope.depositBalanceMakePaymentData.amount);
@@ -76,6 +77,23 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		else{
 			return true;
 		};
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to make payment
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToMakePayment = function() {
+		return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+	};
+
+	/**
+	* function to determine the visibility of Make Payment button
+	* @return {Boolean}
+	*/
+	$scope.hideMakePayment = function() {
+		return (!$scope.hasPermissionToMakePayment());
 	};
 
 	/*

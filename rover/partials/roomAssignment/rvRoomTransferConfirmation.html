@@ -1,0 +1,36 @@
+<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}">
+    <form id="move-room" class="modal-content diary-move room-move">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+
+        <span class="h2 message">
+            Move Guest to Room
+            <span class="green">{{roomTransfer.newRoomNumber}}</span>
+        </span>
+
+        <div class="diary-moved">
+            <span class="label">From</span>
+            <ul class="details">
+                <li class="type">{{roomTransfer.oldRoomType}}</li>
+                <li class="room">Room {{roomTransfer.oldRoomNumber}}</li>
+                <li class="price">{{currencySymbol}} {{roomTransfer.oldRoomRate}}</li>
+            </ul>
+        </div>
+        <div class="diary-moved">
+            <span class="label">To</span>
+            <ul class="details">
+                <li class="type">{{roomTransfer.newRoomType}}</li>
+                <li class="room">Room {{roomTransfer.newRoomNumber}}</li>
+                <li class="price" ng-class="{'red': isLargerRate() ,'green': isSmallerRate() }">{{currencySymbol}} {{roomTransfer.newRoomRate}}</li> <!-- Add class "red" if larger than old rate. Add class "green" if smaller than old rate -->
+            </ul>
+        </div>
+       
+        <div class="actions">
+            <!-- If same rate -->
+            <button type="button" class="button green clear" ng-hide="roomTransfer.isNewRoomType" ng-click="confirm()">Confirm</button>
+            <!-- If rate change use these buttons instead:-->    
+            <button type="button" class="button brand-colors" ng-show="roomTransfer.isNewRoomType" ng-click="moveWithoutRateChange()">Move without Rate Change</button>
+            <button type="button" class="button green" ng-show="roomTransfer.isNewRoomType" ng-click="applyRateChange()">Apply Rate Change</button> 
+            <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button> 
+        </div>
+    </form>
+</div>

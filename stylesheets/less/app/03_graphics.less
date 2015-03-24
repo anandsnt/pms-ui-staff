@@ -221,6 +221,7 @@
 		&.icon-wallet { background-position: 0 -1240px; }	
 		&.icon-save { background-position: 0 -3280px; }	
 		&.icon-addons { background-position: 0 -6280px; }	
+		&.icon-charge { background-position: 4px -6340px; }
 
 		&.icon-swiped {
 			.square(30px);
@@ -468,6 +469,8 @@
 		&.icon-occupancy { background-position: 0 -150px;}
 		&.icon-activity { background-position: 0 -180px;}
 		&.icon-deposit { background-position: 0 -210px;}
+		&.icon-reservations { background-position: 0 -240px;}
+		&.icon-transactions { background-position: 0 -270px;}
 
 		@media @highdpi {
 			background-image: @iconReports2x;
@@ -726,6 +729,24 @@
 			background-size: 50px;
 		}
 	}
+
+/* StayCard icons 		==================================*/
+.staycard-button {
+	background-image: @iconStayCard;
+	background-repeat: no-repeat;
+
+	&.icon-deposit { background-position: 0 0; }
+	&.icon-bill { background-position: 0 -50px; }
+	&.icon-smartband { background-position: 0 -100px; }
+	&.icon-confirmation { background-position: 0 -150px; }
+	&.icon-queue { background-position: 0 -200px; }
+	&.icon-queue.in { background-position: 0 -250px; }
+
+	@media @highdpi {
+		background-image: @iconStayCard2x;
+		background-size: 40px;
+	}
+}
 
 /* 4. LAYOUT
 ==========================================================*/

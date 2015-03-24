@@ -1,0 +1,46 @@
+<section class="content current" ng-click="clearErrorMessage()">
+	<div id="add-new-item" data-view="ItemsDetailsView">
+		<header class="content-title float">
+			<h2 ng-show="mod == 'edit'">{{'EDIT' | translate}} <span>{{itemDetails.name}} </span></h2>
+			<h2 ng-show="mod == 'add'" translate>ADD_NEW_EMV_TERMINALS</h2>
+			
+			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_EMV_TERMINALS</a>
+			<em class="status required" ng-show="mod == 'edit'">
+				{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
+				<strong>*</strong>
+				{{'MANDATORY_FIELDS_MESSAGE2' | translate}}
+			</em>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<form name="item-details" method="post" class="form float">
+				<fieldset class="holder full-width float" ng-show="mod == 'add'">
+					<div class="form-title" >
+						<h3>
+							<span translate>ADD_NEW</span>
+							{{'EMV_TERMINAL' | translate}}
+						</h3>
+						<em class="status">
+							{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
+							<strong>*</strong>
+							{{'MANDATORY_FIELDS_MESSAGE2' | translate}}
+						</em>
+					</div>
+				</fieldset>
+				<fieldset class="holder left float">
+					<ad-textbox value="itemDetails.name" name = "item_desc" id = "item_desc" label = "{{'TERMINAL_NAME' |translate}}" placeholder = "{{'TERMINAL_NAME_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
+
+					<ad-textbox value="itemDetails.terminal_identifier" name = "unit_price" id = "unit_price" label = "{{'TERMINAL_ID' |translate}}" placeholder = "{{'TERMINAL_ID_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
+
+				</fieldset>
+				
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
+
+					<button type="button" id="save" class="button green add-data-inline"  ng-click="saveItemDetails()" translate>SAVE_CHANGES</button>
+
+				</div>
+			</form>
+		</section>
+	</div>
+</section>

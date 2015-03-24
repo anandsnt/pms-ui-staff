@@ -1,4 +1,5 @@
-{    
+{
+"ACTIVITY_LOG_TITLE" : "Activity Log",    
     
     "STAY_CARD": "Stay Card",
     "ROOM_STATUS": "Room Status",
@@ -538,6 +539,7 @@
     "RESV_RECOMMENDED" : "Recommended",
     "RESV_ROOM" : "Room Type",
     "RESV_RATE" : "Rate",
+    "RESV_COR_RATE" : "Corporate Rate",
     "RESV_BEST_RATE" : "Best Available Rate",
     "RESV_AVG_NIGHT" : "Avg. Rate per night",
     "RESV_BOOK" : "Book",
@@ -582,6 +584,7 @@
     "YES":"Yes",
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
+    "SHOW_CLOSED_RATES": "Show Closed Rates",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
@@ -596,7 +599,11 @@
     "DONT_APPLY": "Don't apply",
     "APPLY_CUSTOMRATE" : "Apply Custom Rate",
     "MODIFY_CUSTOMRATE" : "Modify Custom Rate",
-    "DIARY": "Diary"
+    "DIARY": "Diary",
+
+    "KEEP_CURRENT_RATE": "Keep current rate",
+    "CHANGE_TO_NEW_RATE": "Change to new rate"
+
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
@@ -656,7 +663,8 @@
     "PROCEED_WITHOUT_DEPOSIT_REFUND":"PROCEED WITHOUT REFUND",
     "PENALTY_WARNING_MSG1":"Deposit of",
     "PENALTY_WARNING_MSG2":"will not be refunded",
-    "RESEND_CONFIRMATION" : "Resend Confirmation"
+    "RESEND_CONFIRMATION" : "Resend Confirmation",
+    "CONFIRMATION":"Confirmation"
 ,	
 
 	"BACK_BUTTON_LABEL":"BACK",
@@ -677,7 +685,9 @@
     "ROOM_ASSIGNMENT_TITLE":"Room Assignment",
     "MAXIMUM_OCCUPANCY_LABEL": "Maximum occupancy of room is",
     "ASSIGN_LABEL": "Assign Room",
-    "CANCEL_LABEL":"Cancel",    
+    "CANCEL_LABEL":"Cancel",
+    "SHOW_ALL_FLOORS" : "Show All Floors",
+    "SELECT_FLOOR" : "Select floor",    
     
     "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
     "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",

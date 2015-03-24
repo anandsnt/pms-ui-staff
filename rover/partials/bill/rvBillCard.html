@@ -89,7 +89,7 @@
 						<!-- Incoming billing info -->
 						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0 && !isStandAlone" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
 						
-						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton' && !reservationBillData.is_res_posting_control_disabled" ng-click="noPostButtonClicked()" ng-class = "{'green':reservationBillData.roomChargeEnabled, 'red': !reservationBillData.roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
+						<a class="button no-post-button" ng-show="shouldShowEnableDisableChargeButton()" ng-click="noPostButtonClicked()" ng-class = "{'green':reservationBillData.roomChargeEnabled, 'red': !reservationBillData.roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
 						
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all bill-tab-ul" role="tablist">
 							
@@ -129,9 +129,11 @@
 							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50' id="bill-days-new">
 								<ul class="wrapper" style="width: {{billData.billDaysWidth}}px;">
 									<li class="add-new" ng-click="openPostCharge(billData.bill_number)">
-										<a id="add-new-button" class="add-new-button">+ <span translate>ADD</span></a>
+										<a  class="button with-icon brand-colors">
+											<span class="icons icon-charge"></span>
+											Add Charge
+										</a>
 									</li>
-
 									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
 										<!-- For checkin date -->
 										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
@@ -141,20 +143,16 @@
 											<span class="price" ng-show="days.amount == 'SR'">SR</span>
 											<span class="price" ng-hide="days.amount == 'SR'">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>  
 										</a>
-										<!-- For checkout date -->
-										<div class="no-expense" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'checkout')">
-											<span class="day"> {{days.date | date:'EEE'}} </span>
-											<span class="date"> {{days.date | date:'dd'}} </span>
-											<span class="guest-status check-out small-icon" ><span translate>CHECK_OUT</span></span>
-										</div>
 									</li>
 
 									<!-- packages -->
 									<li class="active package summarychargegroup" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
 										<a class="toggle dual-toggle" ng-class="{'active': $index == showAddonIndex}"> 
-											<span class="day"> {{addons.title}} </span> 
+											<span class="day"> {{addons.title}}</span> 
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
-											<span class="price" ng-show="addons.package_type == 'PACKAGES'">{{currencySymbol}}{{addons.amount | number: precisonZero}}</span> 
+											<span class="price" ng-show="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{currencySymbol}}{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span> 
+											<span class="price" ng-hide="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span> 
+											<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount | number: precisonZero}}</span> 
 										</a>
 									</li>
 
@@ -165,7 +163,14 @@
 											<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
 										</a>
 									</li>
-
+									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
+										<!-- For checkout date -->
+										<div class="no-expense" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'checkout')">
+											<span class="day"> {{days.date | date:'EEE'}} </span>
+											<span class="date"> {{days.date | date:'dd'}} </span>
+											<span class="guest-status check-out small-icon" ><span translate>CHECK_OUT</span></span>
+										</div>
+									</li>
 								</ul>
 
 							</div>
@@ -207,14 +212,20 @@
 										<tr>
 											<th class="price" translate>PRICE</th>
 											<th translate>PACKAGE</th>
+											<th>QUANTITY</th>
+											<th>TYPE</th>
+											<th>PROJECTED STAY COST</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr ng-repeat="expense in billAddons.expense_details">
-											<td class="price" ng-if="expense.is_inclusive == 'true'" translate> INCL </td>
-											<td class="price" ng-if="expense.is_inclusive == 'false' && expense.price =='' " translate> EXCL </td>
-											<td class="price" ng-if="expense.is_inclusive == 'false' && expense.price !==''"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
+											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>								
+											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
+											<td> {{expense.quantity}} </td>
+											<td> PER {{expense.post_type}} </td>
+											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
+											<td ng-show="!expense.is_inclusive"> {{expense.quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
 									</tbody>
 								</table>

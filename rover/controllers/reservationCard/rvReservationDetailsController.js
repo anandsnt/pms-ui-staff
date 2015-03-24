@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout','paymentTypes','reseravationDepositData',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout,paymentTypes,reseravationDepositData) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
 
 		// pre setups for back button
 		var backTitle,
@@ -17,12 +17,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$rootScope.setPrevState = {
 				title: 'AR Transactions',
 				name: 'rover.companycarddetails',
-    			param: {id:$vault.get('cardId'), 
-    					type: $vault.get('type'), 
-    					query :$vault.get('query'),
-    					isBackFromStaycard : true
-    				},
-				};
+				param: {
+					id: $vault.get('cardId'),
+					type: $vault.get('type'),
+					query: $vault.get('query'),
+					isBackFromStaycard: true
+				},
+			};
 
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
 			$rootScope.setPrevState = {
@@ -65,6 +66,30 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			};
 		}
 
+		var datePickerCommon = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div').addClass('reservation hide-arrow');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+
+				setTimeout(function() {
+					$('body').find('#ui-datepicker-overlay')
+						.on('click', function() {
+							console.log('hey clicked');
+							$('#room-out-from').blur();
+							$('#room-out-to').blur();
+						});
+				}, 100);
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
+				$('#ui-datepicker-overlay').off('click').remove();
+			}
+		};
+
 
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
@@ -94,14 +119,36 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationCardSrv = RVReservationCardSrv;
 		console.log("------------------");
 		console.log(reservationDetails)
-		/*
-		 * success call back of fetch reservation details
-		 */
-		//Data fetched using resolve in router
+			/*
+			 * success call back of fetch reservation details
+			 */
+			//Data fetched using resolve in router
 		var reservationMainData = $scope.$parent.reservationData;
+
 		$scope.reservationParentData = $scope.$parent.reservationData;
+
 		$scope.reservationData = reservationDetails;
-		$scope.reservationData.paymentTypes =paymentTypes;
+		// CICO-13564
+		$scope.editStore = {
+			arrival: $scope.reservationData.reservation_card.arrival_date,
+			departure: $scope.reservationData.reservation_card.departure_date
+		}
+
+		$scope.arrivalDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				// Handle onSelect
+			},
+		}, datePickerCommon);
+
+		$scope.departureDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(dateText, inst) {
+				//
+			},
+		}, datePickerCommon);
+
+		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
 		$scope.reservationData.justCreatedRes = (typeof $stateParams.justCreatedRes !== "undefined" && $stateParams.justCreatedRes !== "" && $stateParams.justCreatedRes !== null && $stateParams.justCreatedRes === "true") ? true : false;
@@ -144,9 +191,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
 			}
-			
+
 			// CICO-12454: Upon close the guest tab - save api call for guest details for standalone
-			if(!$scope.shouldShowGuestDetails && $scope.isStandAlone){
+			if (!$scope.shouldShowGuestDetails && $scope.isStandAlone) {
 				$scope.$broadcast("UPDATEGUESTDEATAILS");
 			}
 		};
@@ -232,7 +279,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
-
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
 			$scope.updateSearchCache();
 		};
@@ -373,15 +419,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			// to handle multiple rooms in future
 			if ($rootScope.isStandAlone) {
 				//If standalone, go to change staydates calendar if rooms is assigned.
-				//If no room is assigned, go to stay dates calendar.
-				if (reservationMainData.rooms[0].roomNumber != "") {
+				//If no room is assigned, go to stay dates calendar. (REQUIREMENT HAS CHANGED - CICO-13566)
+				if (true) { // -- CICO-13566  (reservationMainData.rooms[0].roomNumber != "") - <<<< ALWAYS ROUTE TO THE STAYDATES SCREEN >>>>
 					$state.go('rover.reservation.staycard.changestaydates', {
 						reservationId: reservationMainData.reservationId,
 						confirmNumber: reservationMainData.confirmNum
 					});
-				} else {
-					$scope.goToRoomAndRates("CALENDAR");
 				}
+				/*else {
+						$scope.goToRoomAndRates("CALENDAR");
+					}*/
 			} else {
 				//If ext PMS connected, go to change staydates screen
 				$state.go('rover.reservation.staycard.changestaydates', {
@@ -406,7 +453,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 						closeByEscape: false
 					});
 				}
-			}else{
+			} else {
 				$state.go('rover.reservation.staycard.billcard', {
 					reservationId: $scope.reservationData.reservation_card.reservation_id,
 					clickedButton: "viewBillButton",
@@ -474,26 +521,26 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 		/**
-		* we are capturing model opened to add some class mainly for animation
-		*/
-		$rootScope.$on('ngDialog.opened', function (e, $dialog) {
+		 * we are capturing model opened to add some class mainly for animation
+		 */
+		$rootScope.$on('ngDialog.opened', function(e, $dialog) {
 			//to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
-			$timeout(function(){
+			$timeout(function() {
 				$rootScope.modalOpened = true;
-			}, 300);    		
+			}, 300);
 		});
-		$rootScope.$on('ngDialog.closing', function (e, $dialog) {
+		$rootScope.$on('ngDialog.closing', function(e, $dialog) {
 			//to add stjepan's popup showing animation
-			$rootScope.modalOpened = false; 		
+			$rootScope.modalOpened = false;
 		});
-		
-		$scope.closeAddOnPopup = function(){
+
+		$scope.closeAddOnPopup = function() {
 			//to add stjepan's popup showing animation
-			$rootScope.modalOpened = false; 
-			$timeout(function(){
+			$rootScope.modalOpened = false;
+			$timeout(function() {
 				ngDialog.close();
-			}, 300); 
+			}, 300);
 		};
 
 		$scope.showAddNewPaymentModel = function(swipedCardData) {
@@ -514,7 +561,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
 					$scope.openPaymentDialogModal(passData, paymentData);
-				} else if(swipedCardDataToRender.swipeFrom == "stayCardDeposit") {
+				} else if (swipedCardDataToRender.swipeFrom == "stayCardDeposit") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
 				} else if (swipedCardDataToRender.swipeFrom == "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
@@ -529,7 +576,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		};
 
-		$scope.showDiaryScreen = function() {			
+		$scope.showDiaryScreen = function() {
 			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 			$state.go('rover.diary', {
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
@@ -537,26 +584,151 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
-		$scope.handleAddonsOnReservation = function(isPackageExist){
-			if(isPackageExist){
+		$scope.handleAddonsOnReservation = function(isPackageExist) {
+			if (isPackageExist) {
 				ngDialog.open({
 					template: '/assets/partials/packages/showPackages.html',
 					controller: 'RVReservationPackageController',
 					scope: $scope
 				});
 			} else {
-				$state.go('rover.reservation.staycard.mainCard.addons',
-			 	{
-			 		'from_date': $scope.reservation.reservation_card.arrival_date,
-			 		'to_date': $scope.reservation.reservation_card.departure_date,
-			 		'is_active': true,
-			 		'is_not_rate_only': true,
-			 		'from_screen': 'staycard'
+				$state.go('rover.reservation.staycard.mainCard.addons', {
+					'from_date': $scope.reservation.reservation_card.arrival_date,
+					'to_date': $scope.reservation.reservation_card.departure_date,
+					'is_active': true,
+					'is_not_rate_only': true,
+					'from_screen': 'staycard'
 
-			 	});
+				});
 			}
 		};
 
-	}
+		$scope.responseValidation = {};
 
+		$scope.editStayDates = function() {
+			// reservation_id, arrival_date, departure_date
+			$scope.errorMessage = "";
+			var onValidationSuccess = function(response) {
+					if (response.errors.length == 0) {
+						$scope.responseValidation = response.data;
+						ngDialog.open({
+							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
+							className: '',
+							scope: $scope,
+							data: JSON.stringify({
+								is_stay_cost_changed: response.data.is_stay_cost_changed,
+								is_assigned_room_available: response.data.is_room_available,
+								is_rate_available: response.data.is_room_type_available
+							})
+						});
+					} else {
+						$scope.errorMessage = response.errors;
+					}
+
+					$scope.$emit('hideLoader');
+				},
+				onValidationFaliure = function(error) {
+					// console.log("onValidationFaliure", error);
+					$scope.$emit('hideLoader');
+				}
+			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
+				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+				reservation_id: $scope.reservationData.reservation_card.reservation_id
+			}, onValidationSuccess, onValidationFaliure);
+		}
+
+		$scope.moveToRoomRates = function() {
+
+			var initStayDates = function(roomNumber) {
+				if (roomNumber == 0) {
+					$scope.reservationParentData.stayDays = [];
+				}
+				for (var d = [], ms = new tzIndependentDate($scope.reservationParentData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationParentData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+					if (roomNumber == 0) {
+						$scope.reservationParentData.stayDays.push({
+							date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
+							dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
+							day: dateFilter(new tzIndependentDate(ms), 'dd')
+						});
+					}
+					$scope.reservationParentData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+						guests: {
+							adults: parseInt($scope.reservationParentData.rooms[roomNumber].numAdults),
+							children: parseInt($scope.reservationParentData.rooms[roomNumber].numChildren),
+							infants: parseInt($scope.reservationParentData.rooms[roomNumber].numInfants)
+						},
+						rate: {
+							id: "",
+							name: ""
+						}
+					};
+				};
+			};
+
+			$scope.reservationParentData.arrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
+			$scope.reservationParentData.departureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
+			initStayDates(0);
+
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+				to_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+				fromState: $state.current.name,
+				company_id: $scope.$parent.reservationData.company.id,
+				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+			});
+
+			$scope.closeDialog();
+		}
+
+		$scope.changeStayDates = function() {
+			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
+			var newDepartureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
+			var existingStayDays = $scope.reservationParentData.rooms[0].stayDates;
+			var modifiedStayDays = $scope.responseValidation.new_stay_dates;
+			var newStayDates = {};
+
+			for (var d = [], ms = new tzIndependentDate(newArrivalDate) * 1, last = new tzIndependentDate(newDepartureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+				var currentDate = $filter('date')(tzIndependentDate(ms), 'yyyy-MM-dd');
+				if (!!existingStayDays[currentDate]) {
+					newStayDates[currentDate] = existingStayDays[currentDate];
+				} else {
+					//go to take information from the new_stay_dates coming from the API response				
+
+					var newDateDetails = _.where(modifiedStayDays, {
+						reservation_date: currentDate
+					})[0];
+
+					newStayDates[currentDate] = {
+						guests: {
+							adults: newDateDetails.adults,
+							children: newDateDetails.children,
+							infants: newDateDetails.infants || 0
+						},
+						rate: {
+							id: newDateDetails.rate_id
+						},
+						rateDetails: {
+							actual_amount: newDateDetails.rate_amount,
+							modified_amount: newDateDetails.rate_amount
+						}
+					}
+
+				}
+			}
+
+			//change the reservationData model to have the newer values
+			$scope.reservationParentData.arrivalDate = newArrivalDate;
+			$scope.reservationParentData.departureDate = newDepartureDate;
+			$scope.reservationParentData.rooms[0].stayDates = newStayDates;
+
+			// console.log($scope.reservationParentData);
+			$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
+				"id": $stateParams.id,
+				"confirmationId": $stateParams.confirmationId,
+				"isrefresh": false
+			});
+			$scope.closeDialog();
+		}
+	}
 ]);

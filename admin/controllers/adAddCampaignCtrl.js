@@ -9,6 +9,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.alert_max_length = 120;
 		$scope.campaignData.messageSubjectMaxLength = 60;
 		$scope.campaignData.messageBodyMaxLength = 320;
+		$scope.campaignData.callToActionLabelMaxLength = 30;
 		$scope.campaignData.is_recurring = "false";
 		$scope.campaignData.header_file = $scope.fileName;
 
@@ -86,7 +87,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		if($scope.campaignData.audience_type){
 		campaign.audience_type = $scope.campaignData.audience_type;
 		}
+		if($scope.campaignData.audience_type=="SPECIFIC_USERS"){
 		campaign.specific_users = $scope.campaignData.specific_users;
+		}
 		campaign.subject = $scope.campaignData.subject;
 		//TODO: Header image
 		campaign.header_image = $scope.campaignData.header_image;

@@ -97,12 +97,13 @@
 		        <div class="entry full-width">
 		            <label for="message-body">{{'MESSAGE_BODY'|translate}}<strong>*</strong></label>
 		            <textarea id="message-body" rows="4" maxlength="{{campaignData.messageBodyMaxLength}}" placeholder="Text" ng-model="campaignData.body" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"></textarea>
-		            <p class="counter" ng-class = "{'done': campaignData.messageBodyMaxLength == campaignData.body.length}"><span>{{campaignData.messageBodyMaxLength - campaignData.body.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
+		            <p class="counter" ><span ng-class = "{'done': campaignData.messageBodyMaxLength == campaignData.body.length}">{{campaignData.messageBodyMaxLength - campaignData.body.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
 		            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 		        </div>
 		        <div class="entry">
 		            <label for="call-label" translate>CALL_TO_ACTION_LABEL</label>
-		            <input type="text" id="call-label" placeholder="Text displayed on button" ng-model="campaignData.call_to_action_label" value="campaignData.call_to_action_label" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
+		            <input type="text" id="call-label" placeholder="Text displayed on button" maxlength="{{campaignData.callToActionLabelMaxLength}}" ng-model="campaignData.call_to_action_label" value="campaignData.call_to_action_label" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
+		            <p class="counter" ><span ng-class = "{'done': campaignData.callToActionLabelMaxLength == campaignData.call_to_action_label.length}">{{campaignData.callToActionLabelMaxLength - campaignData.call_to_action_label.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
 		        </div>
 		        <div class="entry full-width">
 		            <label for="call-target" translate>CALL_TO_ACTION_TARGET</label>

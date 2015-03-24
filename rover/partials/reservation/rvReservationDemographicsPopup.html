@@ -1,58 +1,73 @@
 <div id="modal" class="modal-show" role="dialog">
-   <form method="post" id="demographics" class="modal-content form demographics">
-      <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
-      <div class="modal-header">
-         <strong class="h2 message">Demographics</strong>         
-      </div>
-      <div class="wrapper">    
-          <div id="{details-id}"> <!-- class="hidden" Remove class hidden when 'a.toggle' is clicked -->       
-              <!-- Reservation Type -->
-              <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-              <div class="block-item item-type">
-                  <h3 class="block-title">Reservation Type</h3>
-                  <div class="select">
-                     <div class="select">
-                         <select iscroll-stop-propagation name="reservation-type" id="reservation-type" ng-class="{'placeholder': reservationData.demographics.reservationType == ''}" ng-model="reservationData.demographics.reservationType" ng-change="updateAdditionalDetails()">
-                             <option value="" translate>RESERVATION_TYPE_PLACEHOLDER</option>
-                             <option ng-repeat="reservationType in otherData.reservationTypes" value="{{reservationType.value}}" ng-selected="reservationType.value==reservationData.demographics.reservationType">{{reservationType.name}}</option>
-                         </select>
-                     </div>
-                  </div>
-              </div> 
+    <form method="post" action="" class="modal-content form demographics">
 
-              <!-- Market -->
-              <div class="block-item item-market" ng-if="otherData.marketsEnabled">
-                  <h3 class="block-title">Market</h3>
-                  <div class="select">
-                      <select iscroll-stop-propagation name="market" id="market" ng-class="{'placeholder': reservationData.demographics.market == ''}" ng-model="reservationData.demographics.market" ng-change="updateAdditionalDetails()">
-                          <option value="" translate>MARKET_PLACEHOLDER</option>
-                          <option ng-repeat="market in otherData.markets" value="{{market.value}}" ng-selected="market.value==reservationData.demographics.market">{{market.name}}</option>
-                      </select>
-                  </div>
-              </div> 
+        <button ng-click="closeDialog()" ng-hide="summaryState.forceDemographicsData" id="modal-close" class="modal-close" type="button"><span class="icons icon-close invert"></span></button>
 
-              <!-- Source -->
-              <div class="block-item item-source" ng-if="otherData.sourcesEnabled">
-                  <h3 class="block-title">Source</h3>
-                     <div class="select">
-                         <select iscroll-stop-propagation name="source" id="source" ng-class="{'placeholder': reservationData.demographics.source == ''}" ng-model="reservationData.demographics.source" ng-change="updateAdditionalDetails()">
-                             <option value="" translate>SOURCE_PLACEHOLDER</option>
-                             <option ng-repeat="source in otherData.sources" value="{{source.value}}" ng-selected="source.value==reservationData.demographics.source">{{source.name}}</option>
-                         </select>
-                     </div>
-              </div> 
+        <strong class="h2 message" ng-hide="summaryState.forceDemographicsData">Demographics</strong>
+        <span class="text" ng-hide="summaryState.forceDemographicsData">Fields marked with <strong>*</strong> are mandatory</span>
+        
+        <strong class="h2 message" ng-show="summaryState.forceDemographicsData">Demographics Missing!</strong>
+        <span class="text" ng-show="summaryState.forceDemographicsData">Set mandatory demographics to continue</span>
 
-              <!-- Origin of Booking -->
-              <div class="block-item item-origin" ng-if="otherData.originsEnabled">
-                  <h3 class="block-title">Origin of Booking</h3>
-                  <div class="select">
-                      <select iscroll-stop-propagation name="origin" id="origin" ng-class="{'placeholder': reservationData.demographics.origin == ''}" ng-model="reservationData.demographics.origin" ng-change="updateAdditionalDetails()">
-                          <option value="" translate>ORIGIN_BOOKING_PLACEHOLDER</option>
-                          <option ng-repeat="origin in otherData.origins" value="{{origin.value}}" ng-selected="origin.value==reservationData.demographics.origin">{{origin.name}}</option>
-                      </select>
-                  </div>
-              </div>
-          </div>
-      </div>
-   </form>  
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <div class="entry margin" ng-show="shouldShowReservationType">
+            <label for="reservation-type">Reservation type<strong ng-show="otherData.reservationTypeIsForced">*</strong>
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="reservation-type" id="reservation-type" ng-class="{'placeholder': demographics.reservationType == ''}" ng-model="demographics.reservationType">
+                    <option value="" translate>RESERVATION_TYPE_PLACEHOLDER</option>
+                    <option ng-repeat="reservationType in otherData.reservationTypes" value="{{reservationType.value}}" ng-selected="reservationType.value==demographics.reservationType">{{reservationType.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="entry margin" ng-show="shouldShowMarket">
+            <label for="market">Market<strong ng-show="otherData.marketIsForced">*</strong>
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="market" id="market" ng-class="{'placeholder': demographics.market == ''}" ng-model="demographics.market">
+                    <option value="" translate>MARKET_PLACEHOLDER</option>
+                    <option ng-repeat="market in otherData.markets" value="{{market.value}}" ng-selected="market.value==demographics.market">{{market.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="entry margin" ng-show="shouldShowSource">
+            <label for="source">Source<strong ng-show="otherData.sourceIsForced">*</strong>
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="source" id="source" ng-class="{'placeholder': demographics.source == ''}" ng-model="demographics.source">
+                    <option value="" translate>SOURCE_PLACEHOLDER</option>
+                    <option ng-repeat="source in otherData.sources" value="{{source.value}}" ng-selected="source.value==demographics.source">{{source.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="entry margin" ng-show="shouldShowOriginOfBooking">
+            <label for="origin">Origin of Booking<strong ng-show="otherData.originIsForced">*</strong>
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="origin" id="origin" ng-class="{'placeholder': demographics.origin == ''}" ng-model="demographics.origin">
+                    <option value="" translate>ORIGIN_BOOKING_PLACEHOLDER</option>
+                    <option ng-repeat="origin in otherData.origins" value="{{origin.value}}" ng-selected="origin.value==demographics.origin">{{origin.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="button" class="button blank" ng-hide="summaryState.forceDemographicsData" ng-click="closeDialog()">
+                Cancel
+            </button>
+
+            <button type="button" class="button"
+                ng-hide="summaryState.forceDemographicsData" 
+                ng-disabled="!isDemographicsFormValid(false)" ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'" 
+                ng-click="updateAdditionalDetails((reservationData.reservationIds[ngDialogData.data] || reservationData.reservationId) , ngDialogData.data)">
+                Save
+            </button>
+
+            <button ng-show="summaryState.forceDemographicsData" type="button" class="button" ng-disabled="!isDemographicsFormValid(false)" ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'" 
+              ng-click="updateAdditionalDetails((reservationData.reservationIds[ngDialogData.data] || reservationData.reservationId) , ngDialogData.data , true)">
+                Save & Continue
+            </button>
+            
+        </div>
+    </form>
 </div>

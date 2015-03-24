@@ -1,0 +1,9 @@
+
+"EMV_TERMINAL":"EMV Terminal",
+"EMV_TERMINALS":"EMV Terminals",
+"ADD_NEW_EMV_TERMINALS":"Add New EMV Terminals",
+"BACK_TO_EMV_TERMINALS":"Back To EMV Terminals",
+"TERMINAL_NAME":"Terminal Name",
+"TERMINAL_NAME_PLACEHOLDER":"Enter Terminal Name",
+"TERMINAL_ID":"Terminal ID",
+"TERMINAL_ID_PLACEHOLDER":"Enter Terminal ID"

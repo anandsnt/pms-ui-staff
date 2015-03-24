@@ -1,0 +1,30 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	<header class="content-title">
+		<h2 translate> FLOORS </h2>
+		<span class="count"> ({{data.floors.length}}) </span>
+		<a class="action add" ng-click="gotoAddFloor()"  translate>ADD_NEW</a>
+	</header>
+	<section class="content-scroll">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>		
+		<table class="grid datatable" ng-table="tableParams" template-pagination="">
+
+			<tbody> 
+				<tr ng-repeat="floor in $data"> 
+					<td ng-click="gotoEditFloor(floor.id)" sortable="'floor_number'" data-title="'Floor No'">
+						<a  class="edit-data-inline" ng-click="gotoEditFloor(floor.id)">
+							{{floor.floor_number}} 
+						</a>						
+					</td>
+
+					<td ng-click="gotoEditFloor(floor.id)" sortable="'description'" data-title="'Floor Description'">
+						<a class="edit-data-inline">{{floor.description}} </a>
+					</td>
+
+					<td class="delete" header-class="delete" data-title="'DELETE'" >
+						<span ng-click="deleteFloor($index)" class="icons icon-delete large-icon floor_delete">&nbsp;</span>
+					</td>
+				</tr>
+			<!--</tbody> -->
+		</table>
+	</section>
+</section>
