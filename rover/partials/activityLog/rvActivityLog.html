@@ -34,7 +34,7 @@
                     </a>
                     <div id="sidebar-filter" class="settings-content">
                         <label for="activity-filter">User</label>
-                         <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" type="text" placeholder="Search by Email Id" value="" autocomplete="off">
+                         <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="userEmail" ng-change="userChanged()">
                     </div>
                 </div>
 
@@ -108,15 +108,15 @@
                 <tbody>
                     <tr ng-repeat="log in activityLogData" ngrepeatend>
                         <td>{{log.user_name}}</td>
-                        <td><em class="date"> {{log.date | date:'EEEE, d MMMM y'}}</em>, {{log.time}}</td>
+                        <td><em class="date"> {{log.date | date:dateFormat}}</em>, {{log.time}}</td>
                         <td>{{log.action}}</td>
                         <td class="details">
                             <span ng-repeat="details in log.details">
                                 <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
-                                    <strong>{{ details.old_value }}</strong>
+                                    <strong>{{ details.old_value | date:dateFormat }}</strong>
                                 </span>
                                 {{details.key}}
-                                <strong>{{details.new_value}}</strong>
+                                <strong>{{details.new_value | date:dateFormat}}</strong>
                             </span>
                         </td>
                     </tr>
