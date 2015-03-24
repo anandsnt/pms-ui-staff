@@ -13,10 +13,10 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				"contact_phone": "",
 				"contact_email": "",
 				"demographics": {
-					"reservation_type_id": null,
-					"market_segment_id": null,
-					"source_id": null,
-					"booking_origin_id": null
+					"reservation_type_id": '',
+					"market_segment_id": '',
+					"source_id": '',
+					"booking_origin_id": ''
 				},
 				"travel_agent": null,
 				"company": null,
