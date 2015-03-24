@@ -78,6 +78,12 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		
 		$scope.invokeApi(ADHotelConfigurationSrv.updateHotelConfiguration,postData,updateHotelConfigurationSuccessCallback);
 	};
+
+	$scope.cancelClicked = function(){
+		$scope.currentClickedElement = -1;
+		$scope.isAddmode = false;
+		$scope.isEditmode = false;
+	}
 	/*
 	 * to get the templates associated with the selected theme
 	 * 
