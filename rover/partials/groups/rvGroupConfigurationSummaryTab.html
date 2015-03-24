@@ -36,7 +36,7 @@
 
         <div class="holder right">
             <strong class="h3">Room Block Summary</strong>
-            <div class="entry margin">
+            <div class="entry margin has-datepicker">
                 <label for="group-block-from">From</label>
                 <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
                 <input id="group-block-from" ng-if="!isInAddMode()" type="text" ng-model="groupConfigData.summary.block_from" readonly />         
@@ -50,10 +50,10 @@
                  	ng-model="groupConfigData.summary.block_from" 
                  	readonly /> 
             </div>
-            <div class="entry">
+            <div class="entry has-datepicker">
                 <label for="group-block-to">To</label>
                 <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
-                <input ng-if="!isInAddMode()" id="group-block-to" type="text" ng-model="groupConfigData.summary.block_from" readonly />         
+                <input ng-if="!isInAddMode()" id="group-block-to" type="text" ng-model="groupConfigData.summary.block_to" readonly />         
                 <!-- If new group, add class "datepicker" -->
                 <input id="group-block-to" 
                 	ng-if="isInAddMode()" 

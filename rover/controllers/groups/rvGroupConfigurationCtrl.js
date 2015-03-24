@@ -10,7 +10,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-
 		/**
 		 * whether current screen is in Add Mode
 		 * @return {Boolean}
@@ -104,7 +103,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				return false;
 			}
 		}
-
 		
 		$scope.companyAutoCompleteOptions = angular.extend({
 			select: function(event, ui) {
@@ -132,8 +130,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 		}, cardsAutoCompleteCommon);
 
-
 		initGroupConfig();
-
 	}
 ]);

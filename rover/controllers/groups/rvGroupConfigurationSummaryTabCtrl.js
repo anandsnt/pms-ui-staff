@@ -12,11 +12,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			yearRange: '-1:',
 			minDate: tzIndependentDate($rootScope.businessDate),
 			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div').addClass('reservation arriving');
+				$('#ui-datepicker-div').addClass('arriving');
 				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
 			},
 			onClose: function(dateText, inst) {
-				$('#ui-datepicker-div').removeClass('reservation arriving');
+				$('#ui-datepicker-div').removeClass('arriving');
 				$('#ui-datepicker-overlay').remove();
 			}
 		};
@@ -28,11 +28,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			yearRange: '-1:',
 			minDate: tzIndependentDate($rootScope.businessDate),
 			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div').addClass('reservation departing');
+				$('#ui-datepicker-div').addClass('departing');
 				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
 			},
 			onClose: function(dateText, inst) {
-				$('#ui-datepicker-div').removeClass('reservation departing');
+				$('#ui-datepicker-div').removeClass('departing');
 				$('#ui-datepicker-overlay').remove();
 			}
 		};
@@ -47,6 +47,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		$scope.openDemographicsPopup = function() {
 			console.log('openDemographicsPopup');
+		}
+
+		$scope.saveGroup = function() {
+			console.log($scope.groupConfigData.summary);
 		}
 	}
 ]);
