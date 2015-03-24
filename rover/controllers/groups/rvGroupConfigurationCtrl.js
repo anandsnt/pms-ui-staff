@@ -6,13 +6,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'$stateParams',
 	'rvGroupConfigurationSrv',
 	'summaryData',
-	function($scope,
-		$rootScope,
-		rvGroupSrv,
-		$filter,
-		$stateParams,
-		rvGroupConfigurationSrv,
-		summaryData) {
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -88,9 +82,56 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			$scope.initializeDataModelForSummaryScreen();
 		};
 
-		$scope.openDemographicsPopup = function() {
-			console.log('openDemographicsPopup');
+		var cardsAutoCompleteCommon = {
+			source: function(request, response) {
+				rvGroupConfigurationSrv.searchCards(request.term)
+					.then(function(data) {
+						var list = [];
+						var entry = {}
+						$.map(data, function(each) {
+							entry = {
+								label: each.name,
+								value: each.id,
+								type: each.type
+							};
+							list.push(entry);
+						});
+
+						response(list);
+					});
+			},
+			focus: function(event, ui) {
+				return false;
+			}
 		}
+
+		
+		$scope.companyAutoCompleteOptions = angular.extend({
+			select: function(event, ui) {
+				this.value = ui.item.label;
+				setTimeout(function() {
+					$scope.$apply(function() {
+						$scope.groupConfigData.summary.company.name = ui.item.label;
+						$scope.groupConfigData.summary.company.id = ui.item.value;
+					});
+				}.bind(this), 100);
+				return false;
+			}
+		}, cardsAutoCompleteCommon);
+
+		$scope.travelAgentAutoCompleteOptions = angular.extend({
+			select: function(event, ui) {
+				this.value = ui.item.label;
+				setTimeout(function() {
+					$scope.$apply(function() {
+						$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
+						$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
+					});
+				}.bind(this), 100);
+				return false;
+			}
+		}, cardsAutoCompleteCommon);
+
 
 		initGroupConfig();
 

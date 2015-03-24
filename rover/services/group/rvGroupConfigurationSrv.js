@@ -53,6 +53,20 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		this.searchCards = function(query) {
+			var deferred = $q.defer(),
+				url = 'api/reports/search_by_company_agent_group?query=' + query;
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
 
 	}
 ]);

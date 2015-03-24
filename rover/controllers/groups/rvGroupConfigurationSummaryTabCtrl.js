@@ -2,6 +2,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter) {
 		BaseCtrl.call(this, $scope);
 
+		$scope.setScroller("groupSummaryScroller");
+
 
 		$scope.fromDateOptions = {
 			showOn: 'button',
@@ -41,6 +43,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		$scope.toDateChanged = function() {
 			$scope.groupConfigState.summary.block_to = dateFilter($scope.groupConfigState.summary.to_from, 'yyyy-MM-dd');
+		}
+
+		$scope.openDemographicsPopup = function() {
+			console.log('openDemographicsPopup');
 		}
 	}
 ]);
