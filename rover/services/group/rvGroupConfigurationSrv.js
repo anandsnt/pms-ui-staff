@@ -13,10 +13,10 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				"contact_phone": "",
 				"contact_email": "",
 				"demographics": {
-					"reservation_type_id": null,
-					"market_segment_id": null,
-					"source_id": null,
-					"booking_origin_id": null
+					"reservation_type_id": '',
+					"market_segment_id": '',
+					"source_id": '',
+					"booking_origin_id": ''
 				},
 				"travel_agent": null,
 				"company": null,
@@ -53,13 +53,27 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.searchCards = function(query) {
+		this.searchCompanyCards = function(query) {
 			var deferred = $q.defer(),
-				url = 'api/reports/search_by_company_agent_group?query=' + query;
+				url = 'api/accounts?account_type=COMPANY&query=' + query;
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
-					deferred.resolve(data.results);
+					deferred.resolve(data.accounts);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
+		this.searchTravelAgentCards = function(query) {
+			var deferred = $q.defer(),
+				url = 'api/accounts?account_type=TRAVELAGENT&query=' + query;
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.accounts);
 				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
