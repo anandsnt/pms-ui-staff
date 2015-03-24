@@ -1183,6 +1183,7 @@ sntRover.controller('RVbillCardController',
 		}
 		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType!="DB"){
 			// Show payment popup for stand-alone only.
+			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
 		else{
