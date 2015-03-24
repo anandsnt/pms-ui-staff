@@ -4,35 +4,49 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		$scope.setScroller("groupSummaryScroller");
 
+		$scope.groupSummaryData = {
+			releaseOnDate: $rootScope.businessDate
+		}
+
 
 		$scope.fromDateOptions = {
 			showOn: 'button',
-			dateFormat: $rootScope.dateFormat,
+			dateFormat: $rootScope.jqDateFormat,
 			numberOfMonths: 1,
 			yearRange: '-1:',
 			minDate: tzIndependentDate($rootScope.businessDate),
 			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div').addClass('arriving');
 				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
 			},
 			onClose: function(dateText, inst) {
-				$('#ui-datepicker-div').removeClass('arriving');
 				$('#ui-datepicker-overlay').remove();
 			}
 		};
 
 		$scope.toDateOptions = {
 			showOn: 'button',
-			dateFormat: $rootScope.dateFormat,
+			dateFormat: $rootScope.jqDateFormat,
 			numberOfMonths: 1,
 			yearRange: '-1:',
 			minDate: tzIndependentDate($rootScope.businessDate),
 			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div').addClass('departing');
 				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
 			},
 			onClose: function(dateText, inst) {
-				$('#ui-datepicker-div').removeClass('departing');
+				$('#ui-datepicker-overlay').remove();
+			}
+		};
+
+		$scope.releaseDateOptions = {
+			showOn: 'button',
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			yearRange: '-1:',
+			minDate: tzIndependentDate($rootScope.businessDate),
+			beforeShow: function(input, inst) {
+				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
+			},
+			onClose: function(dateText, inst) {
 				$('#ui-datepicker-overlay').remove();
 			}
 		};
@@ -49,8 +63,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			console.log('openDemographicsPopup');
 		}
 
-		$scope.saveGroup = function() {
-			console.log($scope.groupConfigData.summary);
-		}
+
 	}
 ]);

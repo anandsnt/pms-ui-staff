@@ -6,7 +6,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'$stateParams',
 	'rvGroupConfigurationSrv',
 	'summaryData',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData) {
+	'$state',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, $state) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -70,29 +71,41 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
-		 * Autocompletions for company/travel agent
-		 * @return {None} 
+		 * Save the new Group
+		 * @return undefined
 		 */
-		var initializeAutoCompletions = function(){
+		$scope.saveNewGroup = function() {
+			console.log($scope.groupConfigData.summary);
+		}
+
+		/**
+		 * Discard the new Group
+		 * @return undefined
+		 */
+		$scope.discardNewGroup = function() {
+			//TODO : Clarify functionality with Nicole
+		}
+
+		$scope.onCompanyCardChange = function(){
+			if($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === ""){
+				$scope.groupConfigData.summary.company = null
+			}
+		}
+
+		$scope.onTravelAgentCardChange = function(){
+			if($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === ""){
+				$scope.groupConfigData.summary.travel_agent = null
+			}			
+		}
+
+		/**
+		 * Autocompletions for company/travel agent
+		 * @return {None}
+		 */
+		var initializeAutoCompletions = function() {
 			//this will be common for both company card & travel agent
 			var cardsAutoCompleteCommon = {
-				source: function(request, response) {
-					rvGroupConfigurationSrv.searchCards(request.term)
-						.then(function(data) {
-							var list = [];
-							var entry = {}
-							$.map(data, function(each) {
-								entry = {
-									label: each.name,
-									value: each.id,
-									type: each.type
-								};
-								list.push(entry);
-							});
 
-							response(list);
-						});
-				},
 				focus: function(event, ui) {
 					return false;
 				}
@@ -100,28 +113,55 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 			//merging auto complete setting for company card with common auto cmplt options
 			$scope.companyAutoCompleteOptions = angular.extend({
+				source: function(request, response) {
+					rvGroupConfigurationSrv.searchCompanyCards(request.term)
+						.then(function(data) {
+							var list = [];
+							var entry = {}
+							$.map(data, function(each) {
+								entry = {
+									label: each.account_name,
+									value: each.id,
+									type: each.account_type
+								};
+								list.push(entry);
+							});
+
+							response(list);
+						});
+				},
 				select: function(event, ui) {
 					this.value = ui.item.label;
-					setTimeout(function() {
-						$scope.$apply(function() {
-							$scope.groupConfigData.summary.company.name = ui.item.label;
-							$scope.groupConfigData.summary.company.id = ui.item.value;
-						});
-					}.bind(this), 100);
+					$scope.groupConfigData.summary.company.name = ui.item.label;
+					$scope.groupConfigData.summary.company.id = ui.item.value;
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
 
 			//merging auto complete setting for travel agent with common auto cmplt options
 			$scope.travelAgentAutoCompleteOptions = angular.extend({
-				select: function(event, ui) {
-					this.value = ui.item.label;
-					setTimeout(function() {
-						$scope.$apply(function() {
-							$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
-							$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
+				source: function(request, response) {
+					rvGroupConfigurationSrv.searchTravelAgentCards(request.term)
+						.then(function(data) {
+							var list = [];
+							var entry = {}
+							$.map(data, function(each) {
+								entry = {
+									label: each.account_name,
+									value: each.id,
+									type: each.account_type
+								};
+								list.push(entry);
+							});
+
+							response(list);
 						});
-					}.bind(this), 100);
+				},
+				select: function(event, ui) {
+
+					this.value = ui.item.label;
+					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
+					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
@@ -141,7 +181,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//auto completion things
 			initializeAutoCompletions();
 		};
-		
+
 		initGroupConfig();
 	}
 ]);

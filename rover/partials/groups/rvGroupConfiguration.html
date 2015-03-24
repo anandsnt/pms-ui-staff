@@ -20,6 +20,7 @@
                             type="text" 
                             value="" 
                             autocomplete="off" 
+                            ng-change="onCompanyCardChange()"
                             ng-model="groupConfigData.summary.company.name">
                         <!-- Search only companies -->
                         <input class="masked-input icons icon-gc-ta" 
@@ -29,13 +30,14 @@
                             type="text" 
                             value="" 
                             autocomplete="off" 
+                            ng-change="onTravelAgentCardChange()" 
                             ng-model="groupConfigData.summary.travel_agent.name">
                         <!-- Search only travel agents -->
                     </div>
                 </form>
                 <div class="card-actions">
-                    <button type="button" class="button green">Save Group</button>
-                    <button type="button" class="button blank">Discard</button>
+                    <button type="button" class="button green" ng-click="saveNewGroup()">Save Group</button>
+                    <button type="button" class="button blank" ng-click="discardNewGroup()">Discard</button>
                 </div>
             </div>
         </header>
