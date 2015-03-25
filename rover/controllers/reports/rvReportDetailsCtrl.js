@@ -160,10 +160,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('ARRIVAL'):
 				case reportUtils.getName('IN_HOUSE_GUEST'):
 				case reportUtils.getName('DEPOSIT_REPORT'):
-				case reportUtils.getName('CANCELLATION_NO_SHOW'):
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
+					break;
+
+				case reportUtils.getName('CANCELLATION_NO_SHOW'):
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
@@ -298,8 +302,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
+
+			var parseAPIoptions = {
+				'groupedByKey' : $scope.$parent.reportGroupedBy,
+				'checkNote'    : $scope.chosenReport.chosenIncludeNotes ? true : false,
+				'checkGuest'   : $scope.chosenReport.chosenShowGuests ? true : false,
+				'checkCancel'  : $scope.chosenReport.chosenIncludeCancelled ? true : false
+			};
+
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
-			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, $scope.$parent.reportGroupedBy) );
+			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions) );
+
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty($scope.$parent.results);
 

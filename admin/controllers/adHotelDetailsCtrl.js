@@ -211,8 +211,8 @@ admin.controller('ADHotelDetailsCtrl', [
 		$scope.data.do_not_update_video_checkout = ($scope.data.do_not_update_video_checkout == 'true') ? 'false' : 'true';
 	};
 
-	/**
-    *   Method to toggle data for 'is_pms_tokenized' as true/false.
+    /**
+    *   Method to toggle data for 'room_status_per_room_type' as true/false.
     */
 	$scope.roomStatusUpdatePerRoomType = function(){
 		$scope.data.is_room_status_import_per_room_type_on = ($scope.data.is_room_status_import_per_room_type_on == 'true') ? 'false' : 'true';
