@@ -1,11 +1,14 @@
 <div role="dialog" id="modal" class="modal-show">
-	<div class="modal-content new-content form warning bussines-date-popup-container">
-	 <button class="modal-close" type="button"  ng-click="closeBussinnesDatePopup()"  id="modal-close"><span class="icons icon-close invert"></span></button>
-	   <div id="edit-preview" class="entry full-width notice">
-                <h1 class="h4 bussiness-date-warning" translate style="text-transform:uppercase;">End of Day Routine starting now</h1>
-        </div>
-	  <div class="float">
-	    <button class="button modal-close white green-text" ng-click="closeBussinnesDatePopup()">Ok</button>
-	  </div>
+	<div id="end-of-day" class="modal-content form confirmation">
+		<button class="modal-close" type="button" ng-click="closeBussinnesDatePopup()"  id="modal-close"><span class="icons icon-close invert"></span></button>
+	   	
+	   	<strong class="h2 message">End of Day</strong>
+	   	<div class="notice">
+	   		End of Day Routine starting now!
+	   	</div>
+
+	   	<div class="actions">
+	   		<button class="button green" ng-click="closeBussinnesDatePopup()">Ok</button>
+	   	</div>
 	</div>
 </div>
