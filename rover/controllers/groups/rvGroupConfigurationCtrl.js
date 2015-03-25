@@ -21,6 +21,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
+		 * Check if selecting Addons
+		 * @return {Boolean}
+		 */
+		$scope.isInAddonSelectionMode = function() {
+			return $scope.groupConfigData.selectAddons;
+		}
+
+		/**
 		 * function to set title and things
 		 * @return - None
 		 */
@@ -37,6 +45,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
+		 * function to set Back Navigation params
+		 */
+		var setBackNavigation = function() {
+			// TODO : Currently hardcoded to go to groups search.. 
+			// Change the same according to the requirements
+			$rootScope.setPrevState = {
+				title: $filter('translate')('GROUPS'),
+				name: 'rover.groups.search'
+			};
+
+			//setting title and things
+			setTitle();
+		}
+
+		/**
 		 * function to form data model for add/edit mode
 		 * @return - None
 		 */
@@ -45,6 +68,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
 				summary: summaryData.summary,
 				holdStatusList: holdStatusList.hold_status_list
+				selectAddons: false, // To be set to true while showing addons full view
+				addons: {}
 			};
 		};
 
@@ -55,6 +80,23 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		$scope.switchTabTo = function(tab) {
 			$scope.groupConfigData.activeTab = tab;
 		};
+
+		/**
+		 * Handle closing of addons screen
+		 * @return undefined
+		 */
+		$scope.closeGroupAddonsScreen = function() {
+			$scope.groupConfigData.selectAddons = false;
+			setBackNavigation();
+		}
+
+		/**
+		 * Handle opening the addons Management screen
+		 * @return undefined
+		 */
+		$scope.openGroupAddonsScreen = function() {
+			$scope.groupConfigData.selectAddons = true;
+		}
 
 		/**
 		 * to get the current tab url
@@ -88,16 +130,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//TODO : Clarify functionality with Nicole
 		}
 
-		$scope.onCompanyCardChange = function(){
-			if($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === ""){
+		$scope.onCompanyCardChange = function() {
+			if ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === "") {
 				$scope.groupConfigData.summary.company = null
 			}
 		}
 
-		$scope.onTravelAgentCardChange = function(){
-			if($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === ""){
+		$scope.onTravelAgentCardChange = function() {
+			if ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === "") {
 				$scope.groupConfigData.summary.travel_agent = null
-			}			
+			}
 		}
 
 		/**
@@ -174,14 +216,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return - None
 		 */
 		var initGroupConfig = function() {
-			//setting title and things
-			setTitle();
 
 			//forming the data model if it is in add mode or populating the data if it is in edit mode
 			$scope.initializeDataModelForSummaryScreen();
 
 			//auto completion things
 			initializeAutoCompletions();
+
+			//back navigation
+			setBackNavigation();
 		};
 
 		initGroupConfig();
