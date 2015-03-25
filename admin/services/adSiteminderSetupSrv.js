@@ -1,7 +1,8 @@
 admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
    
-	this.fetchSetup = function(){
-		
+	this.fetchSetup = function(data){
+            console.log('failed, data:');
+            console.log(data);
 		var deferred = $q.defer();
 		var url = 'admin/get_ota_connection_config.json';
 
@@ -15,7 +16,8 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
   
    
 	this.testSetup = function(data){
-
+            console.log('testing with data:');
+            console.log(data);
 		var deferred = $q.defer();
 		var url = 'admin/test_ota_connection';	
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
@@ -27,6 +29,8 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	};
         
 	this.saveSetup = function(data){
+            console.log('saving data:');
+            console.log(data);
 
 		var deferred = $q.defer();
 		var url = 'admin/save_ota_connection_config';	

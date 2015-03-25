@@ -27,6 +27,8 @@ admin.controller('adSiteminderSetupCtrl',['$scope','adSiteminderSetupSrv','$stat
   $scope.saveSiteminderSetup = function(){
     
     var saveSiteminderSetupSuccessCallback = function(data) {
+        console.log('Siteminder Save Success');
+        console.log(data);
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
   };
@@ -34,6 +36,7 @@ admin.controller('adSiteminderSetupCtrl',['$scope','adSiteminderSetupSrv','$stat
     var saveSiteminderSetupFailureCallback = function(data) {
         $scope.isLoading = false;
         console.log('Siteminder Save Failed');
+        console.log(data);
         $scope.$emit('hideLoader');
   };
   

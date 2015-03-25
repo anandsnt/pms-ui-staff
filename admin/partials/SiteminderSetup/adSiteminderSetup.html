@@ -9,13 +9,13 @@
 	<form class="form float" >	
 	    <fieldset class="holder left" ng-show="!isHotelAdmin">
 		
-	    	<ad-textbox value="data.product_cross_customer.tracker_user_name"  name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width" ></ad-textbox>
+	    	<ad-textbox value="data.data.product_cross_customer.tracker_user_name"  name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width" ></ad-textbox>
 			
-			<ad-textbox value="data.product_cross_customer.tracker_pass_word"  name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width" "></ad-textbox>
+			<ad-textbox value="data.data.product_cross_customer.tracker_pass_word"  name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 			
-                        <ad-textbox value="data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
+                        <ad-textbox value="data.data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 
-			<ad-textbox value="data.product_cross_customer.tracker_requester_id" name="requester-id" id="requester-id" label="{{'SITEMINDER_REQUESTER_ID_LABEL' | translate}}" styleclass="full-width"></ad-textbox>		
+			<ad-textbox value="data.data.product_cross_customer.tracker_requestor_id" name="requestor-id" id="requestor-id" label="{{'SITEMINDER_REQUESTOR_ID_LABEL' | translate}}" styleclass="full-width"></ad-textbox>		
 			
 		</fieldset>	
 		<fieldset class="holder left" ng-show="isHotelAdmin">
@@ -23,13 +23,13 @@
 						<h3><span translate>SITEMINDER_SUB_TITLE</span> </h3>
 					</div>
 		
-	    	<ad-textbox value="data.product_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
+	    	<ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 			
-			<ad-textbox value="data.product_customer.tracker_pass_word" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width" "></ad-textbox>
+			<ad-textbox value="data.data.product_cross_customer.tracker_pass_word" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
  
-                        <ad-textbox value="data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
+                        <ad-textbox value="data.data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 
-			<ad-textbox value="data.product_customer.tracker_requester_id" name="requester-id" id="requester-id" label="{{'SITEMINDER_REQUESTER_ID_LABEL' | translate}}" styleclass="full-width"></ad-textbox>		
+			<ad-textbox value="data.data.product_cross_customer.tracker_requestor_id" name="requestor-id" id="requestor-id" label="{{'SITEMINDER_REQUESTOR_ID_LABEL' | translate}}" styleclass="full-width"></ad-textbox>		
 			
 		</fieldset>
 
