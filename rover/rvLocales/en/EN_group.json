@@ -24,5 +24,12 @@
     "ADD_QUADRUPLE": "+ Add Quadruple",
     "TOTAL": "Total",
     "PICK_UP": "Pick-up",
-    "AVAILABILITY_GROUP": "Availability: "
+    "AVAILABILITY_GROUP": "Availability: ",
+    "ROOM_TYPES_AND_RATES": "Room Types and Rates",
+    "SELECT_ROOM_TYPE": "Select Room Type",
+    "BAR_SINGLE": "BAR (Single)",
+    "SINGLE_OCCUPANCY": "Single Occ.",
+    "DOUBLE_OCCUPANCY": "Double Occ.",
+    "ONE_MORE_ADULT": "1+ Adult"
+
 

@@ -53,6 +53,26 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		/**
+		 * Function to get list of Room types
+		 * @return {Promise} - After resolving it will return the list of Hold Room types
+		 */
+		this.getAllRoomTypes = function(){
+			var deferred = $q.defer(),
+				url = '/api/room_types.json?is_exclude_pseudo=true';
+
+			rvBaseWebSrvV2.getJSON(url).then(
+				function(data){			
+					deferred.resolve(data);
+				},
+				function(errorMessage){
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
 		this.getGroupSummary = function(params) {
 
 			var deferred = $q.defer();

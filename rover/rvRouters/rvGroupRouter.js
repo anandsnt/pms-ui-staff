@@ -69,7 +69,7 @@ angular.module('groupModule', [])
                     function (rvGroupConfigurationSrv) {
                         return rvGroupConfigurationSrv.getHoldStatusList ();
                     }
-                ]                
+                ]               
             }
 
         });         

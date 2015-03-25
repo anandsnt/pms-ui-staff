@@ -3,10 +3,14 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	'$rootScope',
 	'$filter',
 	'rvPermissionSrv',
+	'ngDialog',
+	'rvGroupConfigurationSrv',
 	function($scope,
 			$rootScope,
 			$filter,
-			rvPermissionSrv) {
+			rvPermissionSrv,
+			ngDialog,
+			rvGroupConfigurationSrv) {
 		
 		/**
 		* util function to check whether a string is empty
@@ -98,7 +102,8 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 * @return {Boolean}
 		 */
 		var hasPermissionToEditSummaryGroup = function(){
-			return (rvPermissionSrv.getPermissionValue ('EDIT_GROUP_SUMMARY'));
+			return true;
+			return (rvPermissionSrv.getPermissionValue ('EDIT_GROUP_SUMMARY'));			
 		};
 
 		/**
@@ -124,6 +129,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 * @return {Boolean}
 		 */
 		var hasPermissionToCreateRoomBlock = function(){
+			return true;
 			return (rvPermissionSrv.getPermissionValue ('CREATE_GROUP_ROOM_BLOCK'));
 		};
 
@@ -238,6 +244,48 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		};
 
 		/**
+		 * To open Add Rooms & Rates popup
+		 * @return - undefined
+		 */
+		var openAddRoomsAndRatesPopup = function(){
+			ngDialog.open({
+				template: '/assets/partials/groups/rvGroupAddRoomAndRatesPopup.html',
+				scope: $scope,
+				controller: 'rvGroupAddRoomsAndRatesPopupCtrl'				
+			});	 
+	    };
+
+	    /**
+	     * [successCallBackOfAllRoomTypeFetch description]
+	     * @param  {Objects} data of All Room Type
+	     * @return undefined
+	     */
+	    var successCallBackOfAllRoomTypeFetch = function(data){
+	    	$scope.roomTypes = data.results;
+	    	openAddRoomsAndRatesPopup();
+	    };
+
+		/**
+		 * when Add Room & Rates button clicked, we will fetch all room types,
+		 * then we will show the Add Room & Rates popup
+		 * @return None
+		 */
+		$scope.clickedOnAddRoomsAndRatesButton = function(){
+			var options = {
+				successCallBack: 	successCallBackOfAllRoomTypeFetch,	      		
+			};
+			$scope.callAPI(rvGroupConfigurationSrv.getAllRoomTypes, options);			
+		};
+		
+		/**
+		 * when Add Room & Rates button clicked, we will save new room Block
+		 * @return None
+		 */
+		$scope.clickedOnUpdateButton = function(){
+
+		};
+
+		/**
 		 * We have a list of variables to identify to initialize depending the mode (Add/Edit)
 		 * @return None
 		 */
@@ -280,6 +328,8 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 * @return - None
 		 */
 		var initializeMe = function(){
+			BaseCtrl.call(this, $scope);
+			
 			//updating the left side menu
 	    	$scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
 

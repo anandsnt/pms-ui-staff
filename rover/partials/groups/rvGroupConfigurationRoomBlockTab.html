@@ -62,7 +62,7 @@
 		        </button> 
 		        <!-- // When start & end dates are set, enable button and change class "grey" with "green" -->
 		        <!-- If existing group and/or room blocks are set: -->
-		        <button type="button" class="button green" ng-hide="shouldHideUpdateButton()" translate>
+		        <button type="button" class="button green" ng-click="clickedOnUpdateButton()" ng-hide="shouldHideUpdateButton()" translate>
 		        	UPDATE
 		        </button> 
 		    </div>
@@ -73,7 +73,7 @@
 		    <!-- If new group and/or room block have not been set: -->
 		    <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
 		        <div class="info">
-		            <a href="{modals/group-room-grid.html}" class="button" 
+		            <a ng-click="clickedOnAddRoomsAndRatesButton()" class="button" 
 		            	ng-disabled="shouldDisableAddRoomsAndRate()"
 		            	ng-class="{	'green': !shouldDisableAddRoomsAndRate(), 
 		            				'grey': shouldDisableAddRoomsAndRate()}"
