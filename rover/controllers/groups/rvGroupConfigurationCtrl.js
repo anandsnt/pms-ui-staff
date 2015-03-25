@@ -6,8 +6,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'$stateParams',
 	'rvGroupConfigurationSrv',
 	'summaryData',
+	'holdStatusList',
 	'$state',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, $state) {
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -42,7 +43,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		$scope.initializeDataModelForSummaryScreen = function() {
 			$scope.groupConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
-				summary: summaryData.summary
+				summary: summaryData.summary,
+				holdStatusList: holdStatusList.hold_status_list
 			};
 		};
 

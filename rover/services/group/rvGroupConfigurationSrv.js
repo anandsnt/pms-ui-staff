@@ -33,6 +33,26 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			}
 		};
 
+		/**
+		 * Function to get list of Hold status to display
+		 * @return {Promise} - After resolving it will return the list of Hold status
+		 */
+		this.getHoldStatusList = function(){
+			var deferred = $q.defer(),
+				url = '/ui/show?format=json&json_input=groups/hold_status_list.json';
+
+			rvBaseWebSrvV2.getJSON(url).then(
+				function(data){			
+					deferred.resolve(data);
+				},
+				function(errorMessage){
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
 		this.getGroupSummary = function(params) {
 
 			var deferred = $q.defer();

@@ -64,6 +64,11 @@ angular.module('groupModule', [])
                         };
                         return rvGroupConfigurationSrv.getGroupSummary (params);
                     }
+                ],
+                holdStatusList: ['rvGroupConfigurationSrv', 
+                    function (rvGroupConfigurationSrv) {
+                        return rvGroupConfigurationSrv.getHoldStatusList ();
+                    }
                 ]                
             }
 

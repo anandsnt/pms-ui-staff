@@ -184,11 +184,15 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 			//variable used to track Create Button
 			$scope.createButtonClicked = false;
 
-			var isOnEditMode = !$scope.isInAddMode();
+			var isOnEditMode = !$scope.isInAddMode(),
+				refData 	= $scope.groupConfigData;
 
 			if (isOnEditMode){
 				$scope.createButtonClicked = true;
 			}
+			
+			//list of holding status list
+			$scope.holdStatusList = refData.holdStatusList;
 		};
 
 		/**
