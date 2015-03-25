@@ -114,7 +114,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			var onFetchAddonsSuccess = function(addonsData) {
 					console.log(addonsData);					
 					$scope.groupConfigData.addons = addonsData;
-					$scope.groupConfigData.selectAddons = true;
+					$scope.openGroupAddonsScreen();
 				},
 				onFetchAddonsFailure = function(errorMessage) {
 					console.log(errorMessage);

@@ -7,6 +7,15 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 
 		$scope.setScroller("enhanceGroupStays");
 
+		$rootScope.setPrevState = {
+			title: "GROUP DETAILS",
+			name: 'rover.groups.config',
+			callback: 'backToGroupDetails',
+			scope: $scope
+		};
+
+		$scope.setHeadingTitle('Add-ons & Packages');
+
 		var refreshAddonsScroller = function() {
 			$scope.refreshScroller("enhanceGroupStays");
 		}
@@ -27,6 +36,13 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 				$scope.fetchAddons();
 			}
 		}
+
+		/**
+		 * function to go back to reservation details
+		 */
+		$scope.backToGroupDetails = function() {
+			$scope.closeGroupAddonsScreen();
+		};
 
 		$scope.fetchAddons = function(paramChargeGrpId) {
 			var successCallBackFetchAddons = function(data) {
@@ -89,8 +105,8 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 			});
 		}
 
-		if($scope.isInAddonSelectionMode()){
-			$scope.fetchAddons();	
-		}		
+		if ($scope.isInAddonSelectionMode()) {
+			$scope.fetchAddons();
+		}
 	}
 ]);

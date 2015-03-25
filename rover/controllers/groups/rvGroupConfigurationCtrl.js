@@ -21,7 +21,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		/**
 		 * Check if selecting Addons
-		 * @return {Boolean} 
+		 * @return {Boolean}
 		 */
 		$scope.isInAddonSelectionMode = function() {
 			return $scope.groupConfigData.selectAddons;
@@ -44,6 +44,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
+		 * function to set Back Navigation params
+		 */
+		var setBackNavigation = function() {
+			// TODO : Currently hardcoded to go to groups search.. 
+			// Change the same according to the requirements
+			$rootScope.setPrevState = {
+				title: $filter('translate')('GROUPS'),
+				name: 'rover.groups.search'
+			};
+
+			//setting title and things
+			setTitle();
+		}
+
+		/**
 		 * function to form data model for add/edit mode
 		 * @return - None
 		 */
@@ -63,6 +78,23 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		$scope.switchTabTo = function(tab) {
 			$scope.groupConfigData.activeTab = tab;
 		};
+
+		/**
+		 * Handle closing of addons screen
+		 * @return undefined
+		 */
+		$scope.closeGroupAddonsScreen = function() {
+			$scope.groupConfigData.selectAddons = false;
+			setBackNavigation();
+		}
+
+		/**
+		 * Handle opening the addons Management screen
+		 * @return undefined
+		 */
+		$scope.openGroupAddonsScreen = function() {
+			$scope.groupConfigData.selectAddons = true;
+		}
 
 		/**
 		 * to get the current tab url
@@ -182,14 +214,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return - None
 		 */
 		var initGroupConfig = function() {
-			//setting title and things
-			setTitle();
 
 			//forming the data model if it is in add mode or populating the data if it is in edit mode
 			$scope.initializeDataModelForSummaryScreen();
 
 			//auto completion things
 			initializeAutoCompletions();
+
+			//back navigation
+			setBackNavigation();
 		};
 
 		initGroupConfig();
