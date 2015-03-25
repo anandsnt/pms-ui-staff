@@ -554,6 +554,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
 			$scope.paymentData.bills[billNumber].credit_card_details.payment_type = "CC";
+			$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = true;
 		}
 		if($scope.dataToSave.addToGuestCard){
 				addToGuestCardOnSwipe(data);
