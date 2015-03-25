@@ -2,9 +2,11 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	'$scope',
 	'$rootScope',
 	'$filter',
+	'rvPermissionSrv',
 	function($scope,
-		$rootScope,
-		$filter) {
+			$rootScope,
+			$filter,
+			rvPermissionSrv) {
 		
 		/**
 		* util function to check whether a string is empty
@@ -74,6 +76,65 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		$scope.shouldHideAddRoomsButton = function() {
 			return $scope.shouldHideUpdateButton();
 		};
+
+		/**
+		 * we will change the total pickup rooms to readonly if it is on add mode
+		 * @return {Booean}
+		 */
+		$scope.shouldChangeTotalPickUpToReadOnly = function(){
+			return ($scope.isInAddMode());
+		};
+
+		/**
+		 * we will change the total rooms to readonly if it is on add mode
+		 * @return {Booean}
+		 */
+		$scope.shouldChangeTotalRoomsToReadOnly = function(){
+			return ($scope.isInAddMode());
+		};
+
+		/**
+		 * Has Permission To EditSummaryGroup 
+		 * @return {Boolean}
+		 */
+		var hasPermissionToEditSummaryGroup = function(){
+			return (rvPermissionSrv.getPermissionValue ('EDIT_GROUP_SUMMARY'));
+		};
+
+		/**
+		 * Function to decide whether to disable start date
+		 * for now we are checking only permission
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableStartDate = function(){
+			return !hasPermissionToEditSummaryGroup();
+		};
+
+		/**
+		 * Function to decide whether to disable end date
+		 * for now we are checking only permission
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableEndDate = function(){
+			return !hasPermissionToEditSummaryGroup();
+		};
+
+		/**
+		 * Has Permission To Create summary room block 
+		 * @return {Boolean}
+		 */
+		var hasPermissionToCreateRoomBlock = function(){
+			return (rvPermissionSrv.getPermissionValue ('CREATE_GROUP_ROOM_BLOCK'));
+		};
+
+		/**
+		 * Function to decide whether to disable Add Rooms & Rates button
+		 * for now we are checking only permission
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableAddRoomsAndRate = function(){
+			return !hasPermissionToCreateRoomBlock ();
+		}
 
 		/**
 		 * to run angular digest loop,
@@ -184,13 +245,19 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 			//variable used to track Create Button
 			$scope.createButtonClicked = false;
 
+			//total pickup & rooms
+			$scope.totalPickups = $scope.totalRooms = 0;
+
 			var isOnEditMode = !$scope.isInAddMode(),
 				refData 	= $scope.groupConfigData;
 
+
 			if (isOnEditMode){
 				$scope.createButtonClicked = true;
+				$scope.totalPickups = refData.summary.rooms_pickup;
+				$scope.totalRooms = refData.summary.rooms_total;
 			}
-			
+
 			//list of holding status list
 			$scope.holdStatusList = refData.holdStatusList;
 		};

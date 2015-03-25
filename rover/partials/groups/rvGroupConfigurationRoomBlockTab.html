@@ -13,7 +13,7 @@
 		            readonly 
 		            ui-date="startDateOptions" 
 		            rv-clear-text-box 
-                    listen-this="startDate"/>
+                    listen-this="startDate" ng-disabled="shouldDisableStartDate()"/>
 		        </div>
 		        <div class="has-datepicker">
 		            <label for="room-block-end" translate>END_DATE</label>
@@ -26,7 +26,7 @@
 		            readonly 
 		            ui-date="endDateOptions" 
 		            rv-clear-text-box 
-                    listen-this="endDate"/>
+                    listen-this="endDate" ng-disabled="shouldDisableEndDate()"/>
 		        </div>
 		    </div>
 		    <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}"> <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
@@ -42,11 +42,13 @@
 		    </div>
 		    <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
 		        <label for="group-total-rooms" translate>TOTAL_ROOMS</label>
-		        <input id="group-total-rooms" placeholder="" value="{Count}" readonly />
+		        <input id="group-total-rooms" placeholder="" ng-model="totalRooms" 
+		        ng-readonly="shouldChangeTotalRoomsToReadOnly()" />
 		    </div>
 		    <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}"><!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
 		        <label for="group-total-rooms" translate>TOTAL_PICK_UP</label>
-		        <input id="group-total-rooms" placeholder="" value="{Count}" ng-readonly="shouldChangeToReadOnly()" />
+		        <input id="group-total-rooms" placeholder="" ng-model="totalPickups" 
+		        ng-readonly="shouldChangeTotalPickUpToReadOnly()" />
 		    </div>
 		    <div class="actions">
 		        <!-- If new group and/or start & end dates have not been defined:  -->
@@ -71,7 +73,13 @@
 		    <!-- If new group and/or room block have not been set: -->
 		    <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
 		        <div class="info">
-		            <a href="{modals/group-room-grid.html}" class="button green" translate>ADD_ROOMS_AND_RATE</a> 
+		            <a href="{modals/group-room-grid.html}" class="button" 
+		            	ng-disabled="shouldDisableAddRoomsAndRate()"
+		            	ng-class="{	'green': !shouldDisableAddRoomsAndRate(), 
+		            				'grey': shouldDisableAddRoomsAndRate()}"
+		            	translate>	
+		            	ADD_ROOMS_AND_RATE
+		            </a> 
 		            <!-- // Button should have class "hidden" until block is created -->
 		        </div>
 		    </div> 
