@@ -544,6 +544,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.swipedCardDataToSave.cardType.toLowerCase()+".png";
 			$scope.paymentData.reservation_card.payment_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;	
+			$scope.paymentData.reservation_card.payment_details.is_swiped = true;
 		} else {
 			//CICO-13667 update the room charge button to green color if payment type is CC
 			if($scope.paymentData.bills[billNumber].bill_number === '1'){
