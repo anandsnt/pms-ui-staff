@@ -40,28 +40,28 @@ admin.controller('adSiteminderSetupCtrl',['$scope','adSiteminderSetupSrv','$stat
   var unwantedKeys = ["available_trackers"];
   var saveData = dclone($scope.data, unwantedKeys);
   
-  $scope.invokeApi(adSiteminderSetupSrv.saveSetup, saveData,saveSiteminderSetupSuccessCallback, saveSiteminderSetupFailureCallback);
+  $scope.invokeApi(adSiteminderSetupSrv.saveSetup, saveData, saveSiteminderSetupSuccessCallback, saveSiteminderSetupFailureCallback);
 
   };
   
   $scope.testSiteminderSetup = function(){
     
-    var saveSiteminderSetupSuccessCallback = function(data) {
+    var testSiteminderSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
         console.log('Siteminder Test Successful');
         console.log(data);
         $scope.$emit('hideLoader');
   };
-    var saveSiteminderSetupFailureCallback = function(data) {
+    var testSiteminderSetupFailureCallback = function(data) {
         $scope.isLoading = false;
         console.log('Siteminder Test Failed');
         console.log(data);
         $scope.$emit('hideLoader');
   };
   var unwantedKeys = ["available_trackers"];
-  var saveData = dclone($scope.data, unwantedKeys);
+  var testData = dclone($scope.data, unwantedKeys);
   
-  $scope.invokeApi(adSiteminderSetupSrv.saveSetup, saveData, saveSiteminderSetupSuccessCallback, saveSiteminderSetupFailureCallback);
+  $scope.invokeApi(adSiteminderSetupSrv.testSetup, testData, testSiteminderSetupSuccessCallback, testSiteminderSetupFailureCallback);
 
   };
 
