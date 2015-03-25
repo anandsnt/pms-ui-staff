@@ -58,8 +58,8 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage',errorMessage);
             };
-           
-            $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback, errorCallback);
+            var paymentParams = {"direct_bill":true};
+            $scope.invokeApi(RVPaymentSrv.renderPaymentScreen,paymentParams, successCallback, errorCallback);
     };
     $scope.fetchAvailablePaymentTypes();
 

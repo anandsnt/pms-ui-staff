@@ -64,7 +64,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		}, 2000);
 		
 	};
-	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
+	var paymentParams = {"direct_bill":true};
+	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.successRender);
 
 	$scope.successPaymentList = function(data){
 		$scope.$emit("hideLoader");
