@@ -852,8 +852,7 @@ sntRover.controller('RVbillCardController',
 	
 	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
 		var inclLength=0;		
-		angular.forEach(expense_details,function(elem){
-			console.log(elem);
+		angular.forEach(expense_details,function(elem){			
 		if(elem.is_inclusive==true)
 		{
 			inclLength++;
