@@ -103,16 +103,30 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		}
 
+
+		/**
+		 * Method to show addons popup
+		 * @return undefined
+		 */
+		$scope.viewAddons = function() {
+			ngDialog.open({
+				template: '/assets/partials/groups/groupAddonsPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		}
+
+
 		/**
 		 * manage addons selection/ updates
 		 * @return undefined
 		 */
-		$scope.manageAddons = function() {
+		$scope.manageAddons = function() {			
 			// ADD ONS button: pop up standard Add On screen - same functionality as on Stay Card, select new or show small window and indicator for existing Add Ons
-
-
 			var onFetchAddonsSuccess = function(addonsData) {
-					console.log(addonsData);					
+					console.log(addonsData);
 					$scope.groupConfigData.addons = addonsData;
 					$scope.openGroupAddonsScreen();
 				},
