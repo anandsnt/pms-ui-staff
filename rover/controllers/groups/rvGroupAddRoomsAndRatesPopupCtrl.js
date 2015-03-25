@@ -71,9 +71,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		var scrollToEnd = function(){
 			var scroller = $scope.$parent.myScroll['room_type_scroller'];
 			$timeout(function(){
-	            	scroller.scrollTo(scroller.maxScrollX, 
-	                   scroller.maxScrollY, 500);				
-				}
+	            scroller.scrollTo(scroller.maxScrollX, scroller.maxScrollY, 500);				
 			}, 300);
 
 		};
