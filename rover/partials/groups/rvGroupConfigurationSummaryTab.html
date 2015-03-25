@@ -85,7 +85,7 @@
                         <!-- ... repeat for all rates -->
                     </select>
                 </div>
-                <a href="{addons-link}" class="button with-icon brand-colors">
+                <a ng-click="manageAddons();" class="button with-icon brand-colors">
                     <!-- {addons-link} can either be for a popup (existing group) or an addons screne (new group) -->
                     <!-- If addons already exist, show:  -->
                     <span ng-show="groupConfigData.summary.addons_count > 0" class="count">

@@ -20,6 +20,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
+		 * Check if selecting Addons
+		 * @return {Boolean} 
+		 */
+		$scope.isInAddonSelectionMode = function() {
+			return $scope.groupConfigData.selectAddons;
+		}
+
+		/**
 		 * function to set title and things
 		 * @return - None
 		 */
@@ -42,7 +50,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		$scope.initializeDataModelForSummaryScreen = function() {
 			$scope.groupConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
-				summary: summaryData.summary
+				summary: summaryData.summary,
+				selectAddons: false, // To be set to true while showing addons full view
+				addons: {}
 			};
 		};
 
@@ -86,16 +96,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//TODO : Clarify functionality with Nicole
 		}
 
-		$scope.onCompanyCardChange = function(){
-			if($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === ""){
+		$scope.onCompanyCardChange = function() {
+			if ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === "") {
 				$scope.groupConfigData.summary.company = null
 			}
 		}
 
-		$scope.onTravelAgentCardChange = function(){
-			if($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === ""){
+		$scope.onTravelAgentCardChange = function() {
+			if ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === "") {
 				$scope.groupConfigData.summary.travel_agent = null
-			}			
+			}
 		}
 
 		/**
