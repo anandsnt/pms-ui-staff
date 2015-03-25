@@ -33,7 +33,7 @@ admin.controller('adSiteminderSetupCtrl',['$scope','adSiteminderSetupSrv','$stat
   
     var saveSiteminderSetupFailureCallback = function(data) {
         $scope.isLoading = false;
-        console.log('Siteminder Test Failed')
+        console.log('Siteminder Save Failed');
         $scope.$emit('hideLoader');
   };
   
