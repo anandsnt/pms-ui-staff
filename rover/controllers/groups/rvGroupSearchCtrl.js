@@ -6,13 +6,15 @@ sntRover.controller('rvGroupSearchCtrl',	[
 	'businessDate',
 	'$filter',
 	'$timeout',
+	'$state',
 	function($scope, 
 			$rootScope, 
 			rvGroupSrv, 
 			initialGroupListing, 
 			businessDate, 
 			$filter,
-			$timeout) {
+			$timeout,
+			$state) {
 			
 		BaseCtrl.call(this, $scope);
 
@@ -410,6 +412,17 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			//yes we are calling the API
 			$scope.search();			
 		};
+
+		/**
+		 * Navigate to the group configuration state for editing the group
+		 * @return undefined
+		 */
+		$scope.editGroupConfiguration = function(groupId){
+			$state.go('rover.groups.config',{
+				id: groupId,
+				activeTab: 'SUMMARY'
+			})
+		}
 
 
 		/**
