@@ -14,10 +14,22 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	};
   
    
-	this.saveSetup = function(data){
+	this.testSetup = function(data){
 
 		var deferred = $q.defer();
 		var url = 'admin/test_ota_connection';	
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+        
+	this.saveSetup = function(data){
+
+		var deferred = $q.defer();
+		var url = 'admin/save_ota_connection_config';	
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
