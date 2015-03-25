@@ -312,61 +312,66 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 // Clear the variables for Enhancement pop up And rooms Add ons And repopulate.
                 // Do this only in case of create reservation. i.e. dont do if reservation ID exists.
                 if(typeof $scope.reservationData.reservationId =="undefined" || $scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null)
-                {
-                    if(!$scope.is_rate_addons_fetch){                  
+                {                    
+                    if(!$scope.is_rate_addons_fetch){ 
+                    $scope.addonsData.existingAddons=[];
+                    $scope.reservationData.rooms[$scope.activeRoom].addons =[];                 
                         angular.forEach(data.rate_addons,function(addon, index) 
-                        {                            
-                            var newAddonToReservation = {};                           
-                            newAddonToReservation.id = addon.id;
-                            newAddonToReservation.quantity = 1;
-                            newAddonToReservation.title = addon.name;
-                            newAddonToReservation.totalAmount = (newAddonToReservation.quantity)*(addon.amount);
-                            newAddonToReservation.price_per_piece = addon.amount;
-                            newAddonToReservation.amount_type = addon.amount_type.description;
-                            newAddonToReservation.post_type = addon.post_type.description;
-                            newAddonToReservation.is_inclusive = addon.is_inclusive;
-                            $scope.addonsData.existingAddons.push(newAddonToReservation);                                                   
-                            // Temp Variable to translate API response keys
-                            // to data variable keys
-                            var addonItem = {};
-                            addonItem.id = addon.id;
-                            addonItem.isBestSeller = addon.bestseller;
-                            addonItem.category = addon.charge_group.name;
-                            addonItem.title = addon.name;
-                            addonItem.description = addon.description;
-                            addonItem.price = addon.amount;
-                            addonItem.taxes = addon.taxes;
-                            addonItem.stay = "";
-                            if (addon.amount_type != "") {
-                                addonItem.stay = addon.amount_type.description;
-                            }
-                            if (addon.post_type != "") {
-                                if (addonItem.stay != "") {
-                                    addonItem.stay += " / " + addon.post_type.description
-                                } else {
-                                    addonItem.stay = addon.post_type.description
+                        {  
+                            //Set this flag when there is Children in reservation & addon on for child.
+                            var flag=addon.amount_type.value=="CHILD"&&$scope.reservationData.rooms[$scope.activeRoom].numChildren==0;                          
+                            if(!flag)
+                            {
+                                var newAddonToReservation = {};                           
+                                newAddonToReservation.id = addon.id;
+                                newAddonToReservation.quantity = 1;
+                                newAddonToReservation.title = addon.name;
+                                newAddonToReservation.totalAmount = (newAddonToReservation.quantity)*(addon.amount);
+                                newAddonToReservation.price_per_piece = addon.amount;
+                                newAddonToReservation.amount_type = addon.amount_type.description;
+                                newAddonToReservation.post_type = addon.post_type.description;
+                                newAddonToReservation.is_inclusive = addon.is_inclusive;
+                                $scope.addonsData.existingAddons.push(newAddonToReservation);                                                   
+                                // Temp Variable to translate API response keys
+                                // to data variable keys
+                                var addonItem = {};
+                                addonItem.id = addon.id;
+                                addonItem.isBestSeller = addon.bestseller;
+                                addonItem.category = addon.charge_group.name;
+                                addonItem.title = addon.name;
+                                addonItem.description = addon.description;
+                                addonItem.price = addon.amount;
+                                addonItem.taxes = addon.taxes;
+                                addonItem.stay = "";
+                                if (addon.amount_type != "") {
+                                    addonItem.stay = addon.amount_type.description;
                                 }
+                                if (addon.post_type != "") {
+                                    if (addonItem.stay != "") {
+                                        addonItem.stay += " / " + addon.post_type.description
+                                    } else {
+                                        addonItem.stay = addon.post_type.description
+                                    }
+                                }
+                                addonItem.amountType = addon.amount_type;
+                                addonItem.postType = addon.post_type;
+                                addonItem.amountTypeDesc = addon.amount_type.description;
+                                addonItem.postTypeDesc = addon.post_type.description;
+                                addonItem.quantity = 1;
+                                addonItem.is_inclusive=addon.is_inclusive;
+                                // Push to the Rooms add ons information
+                                $scope.reservationData.rooms[$scope.activeRoom].addons.push(addonItem);
+                                // Recompute Total Stay Cost after Add ons are 
+                                // Updated
+                                // Need to verify this.
+                                $scope.computeTotalStayCost();
+                                $scope.existingAddonsLength = data.rate_addons.length;
+                                $scope.is_rate_addons_fetch = true;
                             }
-                        addonItem.amountType = addon.amount_type;
-                        addonItem.postType = addon.post_type;
-                        addonItem.amountTypeDesc = addon.amount_type.description;
-                        addonItem.postTypeDesc = addon.post_type.description;
-                        addonItem.quantity = 1;
-                        addonItem.is_inclusive=addon.is_inclusive;
-                        // Push to the Rooms add ons information
-                        $scope.reservationData.rooms[$scope.activeRoom].addons.push(addonItem);
-                        // Recompute Total Stay Cost after Add ons are 
-                        // Updated
-                        // Need to verify this.
-                        $scope.computeTotalStayCost();
-                        $scope.existingAddonsLength = data.rate_addons.length;
-                        $scope.is_rate_addons_fetch = true;
-
-                    });
-                }
-            }           
- 
-               
+                        });
+                        $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
+                    }
+                }                        
             }
 
 

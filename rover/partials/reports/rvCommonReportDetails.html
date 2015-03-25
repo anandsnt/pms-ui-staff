@@ -16,7 +16,7 @@
 
 
 <!-- Report content -->
-<div ng-hide="results.length" class="report-content no-content">
+<div ng-show="hasNoResults" class="report-content no-content">
     <div class="info">
         <span class="icon-no-content icon-reports"></span>
         <strong class="h1">No reports found</strong>
@@ -25,7 +25,7 @@
 </div>
 
 
-<div ng-show="results.length" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
+<div ng-hide="hasNoResults" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">
         <table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport, 'transaction-reports': isTransactionReport }">
             <!-- Reports table header -->

@@ -131,8 +131,7 @@ sntRover.controller('RVActivityLogCtrl',[
                 params['user_id'] = $scope.user_id;
         }
         params['sort_order'] = $scope.sort_order;
-        params['sort_field'] = $scope.sort_field;
-        $scope.user_id ="";
+        params['sort_field'] = $scope.sort_field;       
         $scope.invokeApi(RVActivityLogSrv.filterActivityLog, params, callback);
     }
 
@@ -314,8 +313,21 @@ sntRover.controller('RVActivityLogCtrl',[
     var refreshScroller = function() {
         $scope.refreshScroller ('report-update');
     };
-
-
+    $scope.clearToDate = function()
+    {      
+        $scope.toDate ="";    
+     }
+    $scope.clearFromDate = function()
+    {       
+       $scope.fromDate = "";   
+      
+    }
+    $scope.userChanged = function(){        
+        if($scope.userEmail==''){
+           $scope.user_id=0;
+        }
+    }
+    $scope.userEmail='';
 	$scope.init = function(){
         //setting the header caption
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));
@@ -328,9 +340,9 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.isUpdateReportFilter = false;
         $scope.reportUpdateVisible = false;
         $scope.reportUpdateWidth = resizableMinWidth;
-        $scope.fromDate = new Date($rootScope.businessDate);
-        $scope.toDate = new Date($rootScope.businessDate);
-        $scope.user_id = 0;
+        $scope.fromDate ='';
+        $scope.toDate ='';
+        $scope.user_id = 0;        
 
         //Paginaton
         $scope.totalResults = activityLogResponse.total_count;
