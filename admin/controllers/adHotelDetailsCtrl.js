@@ -212,13 +212,6 @@ admin.controller('ADHotelDetailsCtrl', [
 	};
 
 	/**
-    *   Method to toggle data for 'is_pms_tokenized' as true/false.
-    */
-	$scope.roomStatusUpdatePerRoomType = function(){
-		$scope.data.is_room_status_import_per_room_type_on = ($scope.data.is_room_status_import_per_room_type_on == 'true') ? 'false' : 'true';
-	};
-
-	/**
     *   Method to toggle data for 'use_kiosk_entity_id_for_fetch_booking' as true/false.
     */
 	$scope.kioskEntityToggleClicked = function(){
