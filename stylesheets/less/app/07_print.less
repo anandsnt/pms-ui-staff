@@ -985,12 +985,14 @@ table {
 
             &.statistics {
                 overflow-x: hidden;
+                display: table;
+                table-layout: fixed;
+                width: 100%;
 
                 .statistics-headings {
-
-                    .pull-left;
-                    .size(100%, 160px);
-                    .show;
+                    display: table-cell;
+                    vertical-align: top;
+                    .size(100, 160);
 
                     > .iScrollVerticalScrollbar { .hide; }
 
@@ -1025,8 +1027,9 @@ table {
                 }
 
                 .statistics-content {
-                    .calc-width(100, 160);
-                    .pull-left;
+                    width: auto;
+                    display: table-cell;
+                    vertical-align: top;
 
                     > .wrapper { width: 100% !important; }
                 }
