@@ -3,7 +3,7 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	this.fetchSetup = function(){
 		
 		var deferred = $q.defer();
-		var url = 'api/siteminders_setups.json';
+		var url = 'admin/get_ota_connection_config.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -17,7 +17,7 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	this.saveSetup = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/siteminders_setups/save_setup';	
+		var url = 'admin/test_ota_connection';	
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
