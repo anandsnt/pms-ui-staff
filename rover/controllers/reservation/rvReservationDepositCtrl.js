@@ -78,7 +78,7 @@ sntRover.controller('RVReservationDepositController',
       	$scope.shouldHidePayNowButtonInPopUp = function(){
       		var paymentType = $scope.depositData.paymentType,
       			resData = $scope.reservationData;
-      		return (paymentType === '' || paymentType === null || resData.depositAmount < 0 ||
+      		return (paymentType === '' || paymentType === null ||
       		 !$scope.hasPermissionToMakePayment());
       	};
 

@@ -33,7 +33,10 @@
 							<span class="checkin-room-number">Room {{responseData.room_no}}</span>
 						</p>
 					</div>
-					<div class="centeralign qr-code-image">
+					<div class="get-key">
+						<p>{{responseData.delivery_message}}</p>
+					</div>
+			<!-- 		<div class="centeralign qr-code-image">
 						<div class="qr-code-info">
 							<ol>
 								<li class="black-text"> Scan the QR code at kiosk located in the lobby.</li>
@@ -43,7 +46,7 @@
 						<img src="data:image/png;base64, {{image|| responseData.key_info}}"
 						width="180" height="180" alt="">
 					
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<!-- checkinbtn section ends here-->
