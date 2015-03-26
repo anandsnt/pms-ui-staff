@@ -193,6 +193,10 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		init();
 
+		$rootScope.$on('report.submit', function() {
+			init();
+		});
+
 		$rootScope.$on('report.updated', function() {
 			init();
 		});

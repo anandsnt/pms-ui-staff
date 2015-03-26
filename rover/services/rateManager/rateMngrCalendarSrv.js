@@ -171,6 +171,19 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		angular.forEach(that.allRestrictionTypes, function(item){
 			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
 		});
+                var totalRestrictions = formattedRestrictionTypes.length;
+                //ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
+                var baseRestrictionItem = {
+                    'activated': true,
+                    'background_class': "bg-drk",
+                    'description': "Has Restrictions",
+                    'editable': false,
+                    'hideOnHourly': false,
+                    'isOnRate': true,//hide when on adding/removing restrictions screen
+                    'icon': "R",
+                    'id': totalRestrictions,
+                    'value': "HAS_RESTRICTIONS"};
+                formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
 		calendarData.restriction_types = formattedRestrictionTypes;
 		
 		// In UI, tables are represented as rows of columns. 
@@ -242,6 +255,22 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		angular.forEach(that.allRestrictionTypes, function(item){
 			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
 		});
+                
+                var totalRestrictions = formattedRestrictionTypes.length;
+                //ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
+                var baseRestrictionItem = {
+                    'activated': true,
+                    'background_class': "bg-drk",
+                    'description': "Has Restrictions",
+                    'editable': false,
+                    'isOnRate': true,//hide when on adding/removing restrictions screen
+                    'hideOnHourly': false,
+                    'icon': "R",
+                    'id': totalRestrictions,
+                    'value': "HAS_RESTRICTIONS"};
+                formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
+                
+                
 		calendarData.restriction_types = formattedRestrictionTypes;
 		
 		// In UI, tables are represented as rows of columns. 
@@ -393,6 +422,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				restriction_type_updated.hideOnHourly = true; // CICO-9555
 			}
 		}
+               //ignore here
+               /*
+		if('HAS_RESTRICTIONS' == restriction_type.value) {
+			restriction_type_updated.background_class = "bg-drk";
+		}
+                */
 		restriction_type_updated.id = restriction_type.id;
 		restriction_type_updated.description = restriction_type.description;
 		restriction_type_updated.value = restriction_type.value;

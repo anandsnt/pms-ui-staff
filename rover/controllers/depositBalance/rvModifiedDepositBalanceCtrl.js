@@ -44,7 +44,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;
 	$scope.depositBalanceMakePaymentData = {};
-	$scope.depositBalanceMakePaymentData.amount = $filter('number') ($scope.depositBalanceData.data.outstanding_stay_total,2);
+	$scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.data.outstanding_stay_total).toFixed(2);
 	$scope.refundAmount = 0;
 	if($scope.depositBalanceMakePaymentData.amount < 0){
 		$scope.refundAmount = (-1)*parseFloat($scope.depositBalanceMakePaymentData.amount);
@@ -72,7 +72,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	
 	$scope.disableMakePayment = function(){
 		 if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.depositBalanceMakePaymentData.amount >=0) ? false :true;
+			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
 		}
 		else{
 			return true;
@@ -102,7 +102,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showMakePaymentButtonStatus = function(){
 		var buttonClass = "";
 		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.depositBalanceMakePaymentData.amount >=0) ? "green" :"grey";
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "green" :"grey";
 		}else {
 			buttonClass = "grey";
 		};

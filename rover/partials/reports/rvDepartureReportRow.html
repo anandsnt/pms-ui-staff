@@ -16,7 +16,7 @@
 			<span>{{ each.arrival_time }}</span>
 		</time>
 	</td>
-	<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_time}">
+	<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_time, 'guarantee': !!each.guarantee_type}">
 		<span class="guest-status check-out">check-out</span>
 		<time>
 			<span>{{ each.departure_date | date : dateFormat }}</span>

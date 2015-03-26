@@ -123,7 +123,7 @@
     "CANCEL": "Cancel",
     "SAVE_CHANGES": "Save Changes",
     "BACK": "Back",
-    "ADD_NEW":"ADD NEW",
+    "ADD_NEW":"Add New",
     "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
     "MANDATORY_FIELDS_MESSAGE2":"are mandatory!",
    
@@ -691,6 +691,7 @@
 "TEMPLATE_CONFIGURATION":"Template Configuration",
 "SEND_CHECKOUT_EMAIL":"Send Checkout Email",
 "SEND_CHECKOUT_NOTIFICATON_EMAIL":"Sent check out notification email to all DUE OUT guests at",
+"EMV_TERMINAL":"EMV Terminal",
 "EMV_TERMINALS":"EMV Terminals",
 "ADD_NEW_EMV_TERMINALS":"Add New EMV Terminals",
 "BACK_TO_EMV_TERMINALS":"Back To EMV Terminals",
