@@ -5,6 +5,10 @@ sntRover.controller('RVReservationDepositController',
 		RVReservationCardSrv, $state, $filter,ngDialog, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
+		$scope.pageloadingOver = false;
+		$timeout(function() {
+			$scope.pageloadingOver = true;
+		}, 3000);
 		$scope.errorMessage = '';
 		$scope.showCancelCardSelection =true;
 		$scope.addmode = false;

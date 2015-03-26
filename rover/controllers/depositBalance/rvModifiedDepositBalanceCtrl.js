@@ -18,6 +18,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$timeout, rvPermissionSrv){
 					
 	BaseCtrl.call(this, $scope);
+	$scope.pageloadingOver = false;
+	$timeout(function() {
+			$scope.pageloadingOver = true;
+		}, 3500);
+
+	$scope.shouldShowWaiting = false;
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
 	//console.log($scope.depositBalanceData.data.existing_payments)
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
@@ -54,13 +60,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.makePaymentButtonDisabled = true;
 	$scope.isDisplayReference = false;
 	$scope.referanceText = "";
-	$scope.shouldShowWaiting = false;
+	
 	//To show add to guest card checkbox
 	$scope.isAddToGuestCardVisible = false;
 	$scope.isSwipedCardSave = false;
 	$scope.isManual = false;
 	$scope.setScroller('cardsList');
 
+	
 
 	var refreshScroll = function() {
 		$timeout(function() {
