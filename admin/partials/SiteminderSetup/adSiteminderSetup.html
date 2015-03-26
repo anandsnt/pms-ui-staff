@@ -2,16 +2,17 @@
 	<header class="content-title float">
 		<h2 translate>SITEMINDER_SETUP_HEADER</h2>
 		<a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
-	</header>
+                
+        </header>
 	<section class="content-scroll">
-	    <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
-            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+                    <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
+                    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
 	<form class="form float" >	
 	    <fieldset class="holder left" ng-show="!isHotelAdmin">
 		
 	    	<ad-textbox value="data.data.product_cross_customer.tracker_user_name"  name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width" ></ad-textbox>
 			
-			<ad-textbox value="data.data.product_cross_customer.tracker_pass_word"  name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
+			<ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 			
                         <ad-textbox value="data.data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 
@@ -25,7 +26,7 @@
 		
 	    	<ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 			
-			<ad-textbox value="data.data.product_cross_customer.tracker_pass_word" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
+			<ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
  
                         <ad-textbox value="data.data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 
