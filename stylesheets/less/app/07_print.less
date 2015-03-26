@@ -987,7 +987,6 @@ table {
                 overflow-x: hidden;
                 display: table;
                 table-layout: fixed;
-                width: 100%;
 
                 .statistics-headings {
                     display: table-cell;
@@ -1031,7 +1030,10 @@ table {
                     display: table-cell;
                     vertical-align: top;
 
-                    > .wrapper { width: 100% !important; }
+                    > .wrapper {
+                        width: 100% !important;
+                        transform: none;
+                    }
                 }
             }
 
