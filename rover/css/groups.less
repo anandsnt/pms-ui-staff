@@ -1,7 +1,4 @@
 #group-summary{
-	.has-datepicker{
-		position: relative;
-	}
 	.ui-datepicker-trigger{
 		position: absolute;
 		top: 0;
@@ -11,7 +8,16 @@
 		width: 100%;
 		height: 100%;
 		opacity: 0;
-	}	
+	}
+	.has-datepicker{
+		position: relative;
+		&.full-width{
+			.ui-datepicker-trigger{
+				width: 50%;
+			}
+		}
+	}
+		
 }
 
 .group-card{

@@ -50,7 +50,7 @@
                 <label for="group-release-date">Room Release Date</label>
                 <!-- releaseDateOptions -->
                 <input class="datepicker" type="text" ui-date="releaseDateOptions" ui-date-format ng-model="groupSummaryData.releaseOnDate" readonly />
-                <button type="button" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode()}">Release Now</button>
+                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode()}">Release Now</button>
                 <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
             </div>
             <div class="entry clear">

@@ -305,7 +305,14 @@
     "TOTAL": "Total",
     "PICK_UP": "Pick-up",
     "AVAILABILITY_GROUP": "Availability: ",
+    "ROOM_TYPES_AND_RATES": "Room Types and Rates",
+    "SELECT_ROOM_TYPE": "Select Room Type",
+    "BAR_SINGLE": "BAR (Single)",
+    "SINGLE_OCCUPANCY": "Single Occ.",
+    "DOUBLE_OCCUPANCY": "Double Occ.",
+    "ONE_MORE_ADULT": "1+ Adult",
     "ADD_MORE_TO_THIS_GROUP": "ADD MORE TO THIS GROUP"
+
 
 ,	
 	"HK_GUESTS": "Guests",

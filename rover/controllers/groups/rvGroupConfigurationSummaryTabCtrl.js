@@ -103,6 +103,29 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		}
 
+		/**
+		 * Warn release the rooms
+		 * @return undefined 
+		 */
+		$scope.warnReleaseRooms = function(){
+			ngDialog.open({
+				template: '/assets/partials/groups/warnReleaseRoomsPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		}
+
+
+		/**
+		 * Handle release rooms
+		 * @return undefined
+		 */
+		$scope.releaseRooms = function(){
+			//TODO : HANDLE RELEASE ROOMS
+		}
+
 
 		/**
 		 * Method to show addons popup
