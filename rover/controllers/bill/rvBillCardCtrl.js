@@ -852,8 +852,7 @@ sntRover.controller('RVbillCardController',
 	
 	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
 		var inclLength=0;		
-		angular.forEach(expense_details,function(elem){
-			console.log(elem);
+		angular.forEach(expense_details,function(elem){			
 		if(elem.is_inclusive==true)
 		{
 			inclLength++;
@@ -1183,6 +1182,7 @@ sntRover.controller('RVbillCardController',
 		}
 		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType!="DB"){
 			// Show payment popup for stand-alone only.
+			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
 		else{

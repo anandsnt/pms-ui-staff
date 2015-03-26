@@ -53,6 +53,38 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		}, 0);
 	};
 
+        $scope.isRestrictTo = function(zoom, restrictions){
+            var z = ''+zoom;
+            if (typeof restrictions === typeof []){
+                var n = restrictions.length;
+                if (n === 0){
+                    return 3;
+                }
+                switch (z){
+                    case '3':
+                        if (n >= 1){return 3;}
+                        break;
+
+                    case '4':
+                        if (n >= 1){
+                            return 3;}
+                        break;
+
+                    case '5': 
+                        if (n >= 1){
+                            return 3;}
+                        break;
+
+                    case '6':
+                        if (n > 1){return 2;} else {return 3;}
+                        break;
+
+                    case '7': 
+                        if (n > 1){return 2;} else {return 3;}
+                        break;
+                }
+            }
+        }
 
 	/**
 	* @returns totalnumber of dates {Number} to be displayed
