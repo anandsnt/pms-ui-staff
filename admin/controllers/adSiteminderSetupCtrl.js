@@ -61,7 +61,11 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                 $scope.isLoading = false;
                 var msg = '';
                 if (typeof data[0] === typeof 'str'){
-                    msg = ': '+data[0];
+                    if (data[0].length > 1){
+                        msg = ': '+data[0];   
+                    } else if(typeof data === typeof 'str') {
+                        msg = ': data';
+                    }
                 }
                 console.log('Siteminder Test Failed');
                 $scope.errorMessage = 'Siteminder Test Failed'+msg;
