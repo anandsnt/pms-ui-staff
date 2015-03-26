@@ -14,7 +14,9 @@
                         <div class="room-type">
                             <label for="room-type-1-select" class="row-count">{{$index+1}}</label>
                             <div class="select">
-                                <select id="room-type-1-select" ng-model="row.selectedRoomType" iscroll-stop-propagation > <!-- Add class="placeholder" if value="" is selected -->
+                                <select id="room-type-1-select"  
+                                    ng-model="row.selectedRoomType" 
+                                    iscroll-stop-propagation > <!-- Add class="placeholder" if value="" is selected -->
                                     <option value="" translate>SELECT_ROOM_TYPE</option>
                                     <option value="roomType.id" ng-repeat="roomType in roomTypes">
                                         {{roomType.name}}
@@ -45,7 +47,7 @@
                         -
                     </span> <!-- Should have class "hidden" until 2nd row is added -->
                     <span class="add-type icons icon-add-60" 
-                        ng-class="{'hidden': !shouldShowAddNewButton()}"
+                        ng-class="{'hidden': !shouldShowAddNewButton(row)}"
                         ng-click="addNewRoomTypeAndRatesRow()">
                         +
                     </span> <!-- Hidden until room type is defined, then remove class "hidden". When pressed, and 2nd row and add class "hidden" again -->
@@ -54,8 +56,12 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="button blank">Cancel</button>
-            <button type="button" class="button green">Update</button>
+            <button type="button" class="button blank" ng-click="clickedOnCancelButton()">
+                Cancel
+            </button>
+            <button type="button" class="button green" ng-click="clickedOnUpdateButton()">
+                Update
+            </button>
         </div>
     </form>
 </div>

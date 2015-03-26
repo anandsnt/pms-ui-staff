@@ -29,7 +29,16 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				"rooms_pickup": null,
 				"rate": null,
 				"addons_count": null,
-				"notes": []
+				"notes": [],
+				"selected_room_types_rates": [
+					{
+						'selectedRoomType' 		: '',
+						'bestAvailableRate'		: '',
+						'singleOccupancyRate'	: '',
+						'doubleOccupancyRate'	: '',
+						'oneMoreAdultRate' 		: ''
+					}
+				]
 			}
 		};
 

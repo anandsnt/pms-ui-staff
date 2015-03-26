@@ -82,7 +82,7 @@
     <div class="wrapper" >
         <ul class="search-results">
             <li class="group" ng-repeat="group in groupList" ngrepeatend ngrepeatstarted>
-                <a ng-click="editGroupConfiguration(group.id)">
+                <a ng-click="gotoEditGroupConfiguration(group.id)">
                     <div class="data">
                         <h2 ng-bind-html="{{escapeNull(stringify(group.group_name))}}|highlight:query:false">
                         </h2>

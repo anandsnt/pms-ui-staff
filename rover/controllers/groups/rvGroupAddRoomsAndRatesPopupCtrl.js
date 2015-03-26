@@ -5,14 +5,16 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 	'rvPermissionSrv',
 	'ngDialog',
 	'$timeout',
+	'rvUtilSrv',
 	function($scope,
 			$rootScope,
 			$filter,
 			rvPermissionSrv,
 			ngDialog,
-			$timeout) {
+			$timeout,
+			util) {
 
-		
+
 		/**
 		 * to initialize rooms & rates popup
 		 * @return undefined
@@ -33,16 +35,21 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			};
 
 			//selected room types & its rates
-			$scope.selectedRoomTypeAndRates = [];
-			$scope.selectedRoomTypeAndRates.push ($scope.defaultRoomTypeDetails);
+			$scope.selectedRoomTypeAndRates = $scope.groupConfigData.summary.selected_room_types_rates;
+
+			//if Response coming from API is a blank array
+			if ($scope.selectedRoomTypeAndRates.length == 0){
+				$scope.selectedRoomTypeAndRates.push (util.deepCopy ($scope.defaultRoomTypeDetails) );
+			}
 		}();
 
 		/**
 		 * [shouldShowAddNewButton description]
-		 * @return {[type]} [description]
+		 * @param  {Object} 	obj - room type & rate details
+		 * @return {Boolean} 
 		 */
-		$scope.shouldShowAddNewButton = function(){
-			return true;
+		$scope.shouldShowAddNewButton = function(obj){
+			return (!util.isEmpty(obj.selectedRoomType));
 		};
 
 		/**
@@ -50,7 +57,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 * @return {[type]} [description]
 		 */
 		$scope.shouldShowDeleteButton = function(){
-			return ($scope.selectedRoomTypeAndRates.length > 2);
+			return ($scope.selectedRoomTypeAndRates.length >= 2);
 		};
 
 		/**
@@ -58,7 +65,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 * @return undefined
 		 */
 		$scope.addNewRoomTypeAndRatesRow = function(){
-			$scope.selectedRoomTypeAndRates.push ($scope.defaultRoomTypeDetails);
+			$scope.selectedRoomTypeAndRates.push (util.deepCopy ($scope.defaultRoomTypeDetails));
 			//refreshing the scroller
 			$scope.refreshScroller ('room_type_scroller');
 			scrollToEnd();
@@ -84,6 +91,24 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			$scope.selectedRoomTypeAndRates.splice ($index, 1);
 			//refreshing the scroller
 			$scope.refreshScroller ('room_type_scroller');			
+		};
+
+		/**
+		 * to close the popup
+		 * @return undefined
+		 */
+		$scope.clickedOnCancelButton = function() {
+			$scope.closeDialog();
+		};
+
+		/**
+		 * [clickedOnUpdateButton description]
+		 * @return {[type]} [description]
+		 */
+		$scope.clickedOnUpdateButton = function() {
+			$scope.updateRoomBlockDetails ($scope.selectedRoomTypeAndRates);
+			$scope.showRoomBlockDetails ();
+			$scope.closeDialog();
 		};
 
 	}]);
