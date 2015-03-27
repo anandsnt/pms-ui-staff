@@ -1,5 +1,5 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv',
-    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv) {
+sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv',rvPermissionSrv,
+    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv,rvPermissionSrv) {
     
     $scope.init = function(){
         $scope.showRestrictionDayUpdate = false;
@@ -71,13 +71,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         ngDialog.close();
     };
 
-    /** 14750
+    /** 13474
     * method to determine whether the user has permission to update Rate Mgr - Rate Prices
     * @return {Boolean}
     */
     $scope.hasPermissionToUpdateRates = function(){
-        //return (rvPermissionSrv.getPermissionValue ('RATE_MGR_PRICE_UPDATES')); 
-        return true;
+        return (rvPermissionSrv.getPermissionValue ('UPDATE_RATE_PRICE')); 
     };
     
     
@@ -86,28 +85,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
     * @return {Boolean}
     */
     $scope.hasPermissionToUpdateRestrictions = function(){
-        //return (rvPermissionSrv.getPermissionValue ('RATE_MGR_RESTRICTIONS_UPDATES')); 
-        return true;
+        return (rvPermissionSrv.getPermissionValue ('CHANGE_RESTRICTIONS')); 
     };
 
-    $scope.noPermissionAlert = function(permission){
-        switch (permission){
-            case "UPDATE_RESTRICTIONS":
-                alert('You do not have permission to update restrictions!');
-                break;
-                
-            case "UPDATE_RATES":
-                alert('You do not have permission to update rate prices!');
-                break;
-                
-            case "RATES_RESTRICTIONS":
-                alert('You do not have permission to update rate prices or restrictions!');
-                break;
-            
-            default:
-                break;
-        }
-    }
     /**
     * For displaying the price in expanded view
     * Fetch the price info and update the $scope data variable
