@@ -11,24 +11,24 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        factory.parseAPI = function ( reportName, apiResponse, isGroupedBy ) {
-            var emptyAry = [],
-                emptyObj = {};
+        factory.parseAPI = function ( reportName, apiResponse, options ) {
 
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
             if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') ) {
-                return apiResponse.length ? $_parseNumeralData( reportName, apiResponse ) : emptyObj;
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
             }
+
             // otherwise a super parser for reports that can be grouped by
-            else if ( !!isGroupedBy ) {
-                return apiResponse.length ? $_parseDataToSubArrays( reportName, apiResponse, isGroupedBy ) : emptyAry;
+            else if ( !!options['groupedByKey'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options['groupedByKey'] );
             }
+
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
             else {
-                return apiResponse.length ? $_parseDataToInfo( reportName, apiResponse ) : emptyAry;
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToInfo( reportName, apiResponse, options );
             };
         };
 
@@ -51,23 +51,32 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDataToInfo ( reportName, apiResponse ) {
+        function $_parseDataToInfo ( reportName, apiResponse, options ) {
             var returnAry  = [],
                 makeCopy   = {},
                 customData = [],
                 guestData  = {},
                 noteData   = {},
-                cancelData = {};
+                cancelData = {},
+                options    = options;
 
             var i, j;
 
             var checkGuest = function(item) {
+                if ( !options['checkGuest'] ) {
+                    return false;
+                };
+
 				var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
 				var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
 				return guests || compTravelGrp ? true : false;
 			};
 
 			var checkNote = function(item) {
+                if ( !options['checkNote'] ) {
+                    return false;
+                };
+
 				return !!item['notes'] && !!item['notes'].length;
 			};
 
@@ -78,6 +87,10 @@ sntRover.factory('RVReportParserFac', [
 			};
 
 			var checkCancel = function(item) {
+                if ( !options['checkCancel'] ) {
+                    return false;
+                };
+
 				return excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]) ? !!item['cancel_reason'] : false;
 			};
 
@@ -174,7 +187,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDataToSubArrays ( reportName, apiResponse, isGroupedBy ) {
+        function $_parseDataToSubArrays ( reportName, apiResponse, groupedByKey ) {
             /****
             * OUR AIM: is to transform the api response to this format
             * [
@@ -189,7 +202,7 @@ sntRover.factory('RVReportParserFac', [
 
             var returnObj         = {};
             var interMedArray     = [];
-            var groupByKey        = isGroupedBy;
+            var groupByKey        = groupedByKey;
             var currentGroupByVal = '';
             var makeCopy          = {};
 
@@ -249,7 +262,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseNumeralData ( reportName, apiResponse ) {
+        function $_parseNumeralData ( reportName, apiResponse, options ) {
             var returnAry = [],
                 makeCopy = {},
                 objKeyName = '',

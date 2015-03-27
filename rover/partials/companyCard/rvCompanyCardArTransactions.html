@@ -109,7 +109,7 @@
                                 </time>                                
                             </div>
                         </div>
-                        <div class="amount">{{currencySymbol}}{{transaction.amount}}</div>
+                        <div class="amount">{{currencySymbol}}{{transaction.amount | number:2 }}</div>
                         
                         <div class="switch-button" ng-class="{'on': transaction.paid}">
                             <input value="" type="checkbox" />

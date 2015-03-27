@@ -11,14 +11,14 @@
 		<span ng-if="each.addtional_guest_counts">&#8226; <span class="data">{{ each.addtional_children_counts }} Children</span></span>
 	</td>
 	<td ng-if="each.isReport" class="date">
-		<span class="guest-status check-in" ng-class="{ 'cancel': (each.status =='CANCELED' || each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
+		<span class="guest-status check-in" ng-class="{ 'cancel': (each.status =='CANCELED'), 'no-show': (each.status =='NO SHOW') }">{{ each.status }}</span>
 		<time>
 			<span>{{ each.arrival_date | date : dateFormat }}</span>
 			<span>{{ each.arrival_time }}</span>
 		</time>
 	</td>
-	<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_time}">
-		<span class="guest-status check-out" ng-class="{ 'cancel': (each.status =='CANCELED' || each.status =='Canceled'), 'no-show': (each.status =='No Show') }">{{ each.status }}</span>
+	<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_time, 'guarantee': !!each.guarantee_type}">
+		<span class="guest-status check-out" ng-class="{ 'cancel': (each.status =='CANCELED'), 'no-show': (each.status =='NO SHOW') }">{{ each.status }}</span>
 		<time>
 			<span>{{ each.departure_date | date : dateFormat }}</span>
 			<span>{{ each.departure_time }}</span>
@@ -29,6 +29,16 @@
 	<td ng-if="each.isReport">
 		<span class="data room">{{ each.room_type }}</span>
 		<span class="data rate">{{ each.rate }} / <strong>{{ each.adr | currency:currencySymbol:2 }} ADR</strong></span>
+	</td>
+
+	<!-- guest data - name, company, travel agent & group name -->
+	<td ng-if="each.isGuestData" class="secondary guest-names">
+		<span ng-repeat="name in each.guestNames">{{ name }}</span>
+	</td>
+	<td ng-if="each.isGuestData" class="secondary guest-info" colspan="4">
+		<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
+		<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
+		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
 	</td>
 
 	<!-- cancel reason -->

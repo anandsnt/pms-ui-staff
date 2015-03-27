@@ -113,18 +113,6 @@ table {
                 .show;
                 .box-shadow(none);
             }
-
-            &.page-locked {
-
-                .nested-view {
-                    position: static;
-                    top: 0 !important;
-                    left: 0 !important;
-                    height: auto !important;
-                    overflow: visible;
-                    background: transparent !important;
-                }
-            }
         }
 
         /* Page inner container ***/
@@ -189,13 +177,7 @@ table {
             .hotel,
             .user { font-size: 10pt; }
 
-            .user .date {
-                display: none;
-            }
-
-            .date {
-                .hide;
-            }
+            .date { .hide; }
         }
 
         .logo {
@@ -513,7 +495,49 @@ table {
         height: auto !important;
         overflow: auto !important;
 
-        .report-header { .hide; }
+        .report-header { 
+
+            .totals {
+                margin-bottom: 16pt;
+                clear: both;
+
+                li {
+                    display: inline-block;
+                    font-size: 10pt;
+                    line-height: 12pt;
+                    color: @grey3;
+                    text-transform: uppercase;
+                    margin: 0 8pt 0 0;
+                    padding-right: 8pt;
+                    border-right: 1px solid @grey2;
+
+                    span {
+                        font-size: 20pt;
+                        line-height: 1em;
+                        font-weight: 300;
+                        color: @textColor;
+                        .show;
+
+                        &.green,
+                        &.red,
+                        &.brand-colors { font-weight: 600; }
+                    }
+
+                    &.sub { 
+                        color: @grey3;
+                        border-right: 0;
+                    }
+
+                    &:last-child {
+                        margin-right: 0;
+                        padding-right: 0;
+                        border-right: 0;
+                    }
+                }
+            }
+
+            .actions { .hide; }
+        }
 
         .report-totals {
             margin-bottom: 1em;
@@ -985,12 +1009,13 @@ table {
 
             &.statistics {
                 overflow-x: hidden;
+                display: table;
+                table-layout: fixed;
 
                 .statistics-headings {
-
-                    .pull-left;
-                    .size(100%, 160px);
-                    .show;
+                    display: table-cell;
+                    vertical-align: top;
+                    .size(100, 160);
 
                     > .iScrollVerticalScrollbar { .hide; }
 
@@ -1025,10 +1050,14 @@ table {
                 }
 
                 .statistics-content {
-                    .calc-width(100, 160);
-                    .pull-left;
+                    width: auto;
+                    display: table-cell;
+                    vertical-align: top;
 
-                    > .wrapper { width: 100% !important; }
+                    > .wrapper {
+                        width: 100% !important;
+                        transform: none;
+                    }
                 }
             }
 

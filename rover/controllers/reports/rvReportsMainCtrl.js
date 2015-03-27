@@ -924,9 +924,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include include deposit paid
 			if (chosenReport.hasOwnProperty('hasIncludeDepositPaid')) {
 				key = chosenReport.hasIncludeDepositPaid.value.toLowerCase();
+
+				// additional overhead required by API
+				// we are to send either true or false anyway
+				// no mater if the flag is chosen or not
+				params[key] = chosenReport.chosenIncludeDepositPaid ? true : false;
+				/**/
 				if ( chosenReport.chosenIncludeDepositPaid ) {
-					params[key] = true;
-					/**/
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositPaid.description );
 				};
 			};
@@ -934,9 +938,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include include deposit due
 			if (chosenReport.hasOwnProperty('hasIncludeDepositDue')) {
 				key = chosenReport.hasIncludeDepositDue.value.toLowerCase();
+
+				// additional overhead required by API
+				// we are to send either true or false anyway
+				// no mater if the flag is chosen or not
+				params[key] = chosenReport.chosenIncludeDepositDue ? true : false;
+				/**/
 				if ( chosenReport.chosenIncludeDepositDue ) {
-					params[key] = true;
-					/**/
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositDue.description );
 				};
 			};
@@ -944,9 +952,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include include deposit past due
 			if (chosenReport.hasOwnProperty('hasIncludeDepositPastDue')) {
 				key = chosenReport.hasIncludeDepositPastDue.value.toLowerCase();
+
+				// additional overhead required by API
+				// we are to send either true or false anyway
+				// no mater if the flag is chosen or not
+				params[key] = chosenReport.chosenIncludeDepositPastDue ? true : false;
+				/**/
 				if ( chosenReport.chosenIncludeDepositPastDue ) {
-					params[key] = true;
-					/**/
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositPastDue.description );
 				};
 			};
@@ -1129,7 +1141,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					    continue;
 					};
 
-					if ( key == 'group_by_date' || key == 'group_by_user' ) {
+					if ( key == 'group_by_date' || key == 'group_by_user' || key == 'page' || key == 'per_page' ) {
 						continue;
 					} else if ( params[key] != $scope.oldParams[key] ) {
 						chosenReport.chosenGroupBy = 'BLANK';

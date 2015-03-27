@@ -3,7 +3,6 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 	$scope.hotelId = $stateParams.id;
 	$scope.isAdminSnt = false;
 	$scope.$emit("changedSelectedMenu", 0);
-	$s = $scope;
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */	

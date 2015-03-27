@@ -134,8 +134,10 @@
 											Add Charge
 										</a>
 									</li>
+
+									<!-- For checkin date -->
 									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
-										<!-- For checkin date -->
+										
 										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
 											<span class="day"> {{days.date | date:'EEE'}} </span> 
 											<span class="date"> {{days.date | date:'dd'}} </span> 
@@ -155,6 +157,16 @@
 											<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount | number: precisonZero}}</span> 
 										</a>
 									</li>
+									
+
+									<!-- For checkout date -->
+									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
+										<div class="no-expense" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'checkout')">
+											<span class="day"> {{days.date | date:'EEE'}} </span>
+											<span class="date"> {{days.date | date:'dd'}} </span>
+											<span class="guest-status check-out small-icon" ><span translate>CHECK_OUT</span></span>
+										</div>
+									</li>
 
 									<!-- Group items tab -->
 									<li class="active expense summarychargegroup" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
@@ -162,14 +174,6 @@
 											<span class="expense"> {{groupItems.title}} </span> 
 											<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
 										</a>
-									</li>
-									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
-										<!-- For checkout date -->
-										<div class="no-expense" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'checkout')">
-											<span class="day"> {{days.date | date:'EEE'}} </span>
-											<span class="date"> {{days.date | date:'dd'}} </span>
-											<span class="guest-status check-out small-icon" ><span translate>CHECK_OUT</span></span>
-										</div>
 									</li>
 								</ul>
 
@@ -223,7 +227,13 @@
 											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
 											<td> {{expense.quantity}} </td>
-											<td> PER {{expense.post_type}} </td>
+											<td ng-show ="expense.post_type=='Entire Stay'&&expense.amount_type=='Adult'">PER ADULT/PER NIGHT</td>
+											<td ng-show ="expense.post_type=='Entire Stay'&&expense.amount_type=='Child'">PER CHILD/PER NIGHT</td>
+											<td ng-show ="expense.post_type=='First Night'&&expense.amount_type=='Child'">PER CHILD/PER STAY</td>
+											<td ng-show ="expense.post_type=='First Night'&&expense.amount_type=='Adult'">PER ADULT/PER STAY</td>
+											<td ng-show ="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='First Night'">PER STAY</td>
+											<td ng-show ="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='Entire Stay'">PER NIGHT</td>
+
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
 											<td ng-show="!expense.is_inclusive"> {{expense.quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
