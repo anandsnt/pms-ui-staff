@@ -834,7 +834,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.hasAnySharerCheckedin = function(){
 		var isSharerCheckedin = false;
 		console.log($scope.reservationData.reservation_card.sharer_information);
-		angular.forEach($scope.reservationData.reservation_card.sharer_information, function(sharer, key){
+		console.log($scope.reservationBillData.sharer_information);
+		angular.forEach($scope.reservationBillData.sharer_information, function(sharer, key){
 			if(sharer.reservation_status == 'CHECKEDIN' || sharer.reservation_status == 'CHECKING_OUT'){
 				isSharerCheckedin = true;
 				return false;
