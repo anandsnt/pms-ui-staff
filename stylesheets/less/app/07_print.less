@@ -495,7 +495,7 @@ table {
         height: auto !important;
         overflow: auto !important;
 
-        .report-header { 
+        .report-header {
 
             .totals {
                 margin-bottom: 16pt;
@@ -523,7 +523,7 @@ table {
                         &.brand-colors { font-weight: 600; }
                     }
 
-                    &.sub { 
+                    &.sub {
                         color: @grey3;
                         border-right: 0;
                     }
@@ -1009,13 +1009,18 @@ table {
 
             &.statistics {
                 overflow-x: hidden;
-                display: table;
-                table-layout: fixed;
+                display: block;
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
 
                 .statistics-headings {
-                    display: table-cell;
-                    vertical-align: top;
-                    .size(100, 160);
+                    .size(100%, 160px);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
 
                     > .iScrollVerticalScrollbar { .hide; }
 
@@ -1051,12 +1056,16 @@ table {
 
                 .statistics-content {
                     width: auto;
-                    display: table-cell;
-                    vertical-align: top;
+                    display: block;
+                    overflow: hidden;
+                    margin-left: 160px;
 
                     > .wrapper {
                         width: 100% !important;
-                        transform: none;
+
+                        table {
+                            table-layout: fixed;
+                        }
                     }
                 }
             }
