@@ -49,7 +49,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                     view: "ROOM_RATE",
                     company_id: null,
                     travel_agent_id: null,
-                    fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
+                    fromState: 'rover.reservation.staycard.mainCard.addons'
                 }
             }
         }
