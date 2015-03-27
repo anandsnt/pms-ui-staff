@@ -14,7 +14,7 @@
 
 				<div class="form-title">
 					<h3 ng-show="!isAddMode"><span translate>EDIT</span> details </h3>
-					<h3 ng-show="isAddMode"><span translate>ADD</span> </h3>
+					<h3 ng-show="isAddMode"><span translate>Floor</span> Details</h3>
 					<em class="status"> <span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong> <span translate>MANDATORY_FIELDS_MESSAGE2</span> </em>
 				</div>
 
@@ -96,17 +96,27 @@
 			<div class="entry has-sortable">
 		        <h4 class="green" translate>ASSIGNED_ROOMS</h4>
 
-				<div class="boxes">						
+				<div class="boxes">	
+				    <div class="no-content" ng-show="shouldShowNoRooms()">
+		                    <div class="info">
+		                        <strong class="h1">No rooms</strong>
+		                        <span class="h2"> Search and select rooms from the left hand side first</span>
+		                    </div>
+		            </div>	
+		         <!--    <ul class="sortable empty" data-type="target" ng-show="shouldShowDropHere()">
+		                    <span class="placeholder ui-state-disabled">Drop room here to assign it to the floor</span>
+		            </ul>-->					
 					<ul class="sortable" data-type="target" 					
 						
 						data-drop="true" 
 
 						jqyoui-droppable="{multiple:true, onDrop: 'droppedOnAssignedRoomList'
 						, onOut: 'tryingToDropOnUnAssigned'}" 
-						data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms">
-
-						<li class="assigned-rooms" 
-							ng-repeat="room in assignedRooms"
+						data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms"
+						ng-class = "{'empty':shouldShowDropHere()}">
+                          <span class="placeholder ui-state-disabled" ng-show="shouldShowDropHere()">Drop room here to assign it to the floor</span>
+					    <li class="assigned-rooms" 
+							 ng-repeat="room in assignedRooms"
 
 							data-drag = "true"
 							jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem', onDrag: 'tryingToDropOnUnAssigned' }"
