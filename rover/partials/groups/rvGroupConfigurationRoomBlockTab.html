@@ -94,8 +94,8 @@
 		    <!-- Room block room types -->
 		    <div class="room-block-sidebar scrollable" ng-hide="shouldHideRoomBlockDetailsView()" >
 		        <div class="wrapper">
-		            <div class="row" ng-repeat="roomtype_rate in selected_room_types_rates"> <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
-		                <p class="line line-toggle">{{roomtype_rate.name}}</p> <!-- Toggle class "active" when clicked/tapped -->
+		            <div class="row" ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_rates"> <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
+		                <p class="line line-toggle">{{roomtype_rate.selectedRoomType}}</p> <!-- Toggle class "active" when clicked/tapped -->
 		                <ul class="hidden"> <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
 		                    <li class="line" translate>SINGLE</li>
 		                    <li class="line" translate>DOUBLE</li>

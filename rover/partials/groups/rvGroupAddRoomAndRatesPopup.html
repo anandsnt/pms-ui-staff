@@ -18,7 +18,7 @@
                                     ng-model="row.selectedRoomType" 
                                     iscroll-stop-propagation > <!-- Add class="placeholder" if value="" is selected -->
                                     <option value="" translate>SELECT_ROOM_TYPE</option>
-                                    <option value="roomType.id" ng-repeat="roomType in roomTypes">
+                                    <option ng-repeat="roomType in roomTypes" value="{{roomType}}">
                                         {{roomType.name}}
                                     </option>
                                 </select>

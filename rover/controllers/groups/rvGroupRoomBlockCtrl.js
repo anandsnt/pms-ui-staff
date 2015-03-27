@@ -148,7 +148,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 */
 		$scope.shouldHideRoomBlockDetailsView = function(){
 			return (hasPermissionToCreateRoomBlock() &&
-					$scope.displayGroupRoomBlockDetails);
+					!$scope.displayGroupRoomBlockDetails);
 		};
 		/**
 		 * to run angular digest loop,
@@ -300,6 +300,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 */
 		$scope.updateRoomBlockDetails = function(dataToUpdate){
 			$scope.groupConfigData.summary.selected_room_types_rates = dataToUpdate;
+			console.log (dataToUpdate)
 		};
 
 		/**

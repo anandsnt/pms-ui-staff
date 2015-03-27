@@ -107,6 +107,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 */
 		$scope.clickedOnUpdateButton = function() {
 			$scope.updateRoomBlockDetails ($scope.selectedRoomTypeAndRates);
+			console.log (($scope.selectedRoomTypeAndRates));
 			$scope.showRoomBlockDetails ();
 			$scope.closeDialog();
 		};
