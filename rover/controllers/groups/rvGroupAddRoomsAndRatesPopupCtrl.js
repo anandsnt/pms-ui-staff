@@ -49,7 +49,9 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 * @return {Boolean} 
 		 */
 		$scope.shouldShowAddNewButton = function(obj){
-			return (!util.isEmpty(obj.selectedRoomType));
+			console.log (obj.selectedRoomType);
+			return (!util.isEmpty(obj.selectedRoomType) && 
+				!util.isEmpty( JSON.parse(obj.selectedRoomType).name));
 		};
 
 		/**
@@ -106,8 +108,17 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 * @return {[type]} [description]
 		 */
 		$scope.clickedOnUpdateButton = function() {
-			$scope.updateRoomBlockDetails ($scope.selectedRoomTypeAndRates);
-			console.log (($scope.selectedRoomTypeAndRates));
+			console.log ($scope.selectedRoomTypeAndRates.length);
+			//we only want rows who have room type choosed
+			var selectedRoomTypeAndRates = _.filter($scope.selectedRoomTypeAndRates, function(obj){
+				return !util.isEmpty(obj.selectedRoomType);
+			});
+			console.log ($scope.selectedRoomTypeAndRates.length);
+			_.each (selectedRoomTypeAndRates, function(element, index){
+				element.selectedRoomType = JSON.parse (element.selectedRoomType);
+			});
+
+			$scope.updateRoomBlockDetails (selectedRoomTypeAndRates);
 			$scope.showRoomBlockDetails ();
 			$scope.closeDialog();
 		};
