@@ -52,13 +52,13 @@
                                     </div>
                                 </div>
                                 <span class="confirmation">{{ company.address.postalCode }}</span>
-                                <span class="icons icon-location" ng-if="{company.address.city != '' && icon-location != null}">
+                                <span class="icons icon-location" ng-if="company.address.city != '' && icon-location != null">
                                     <span ng-bind-html="'{{ company.address.city }}'|highlight:searchData.companyCard.companyCity:false"></span>
                                     <span ng-show="company.address.state">, </span>
                                     {{ company.address.state }}
                                 </span>
-                                <span class="icons icon-phone" ng-if="{company.phone != '' && company.phone != null}">{{ company.phone }}</span>
-                                <span class="icons icon-email-grey" ng-if="{company.email != '' && company.email != null}">{{ company.email }}</span>
+                                <span class="icons icon-phone" ng-if="company.phone != '' && company.phone != null">{{ company.phone }}</span>
+                                <span class="icons icon-email-grey" ng-if="company.email != '' && company.email != null">{{ company.email }}</span>
                             </div>
                         </a>
                     </li>

@@ -9,12 +9,19 @@ sntRover.controller('RVPrePrintPopupCtrl', [
 
 		$scope.occupancyMaxDate = 0;
 
+		// fromdate <- 5 days -> untildate, so including fromdate, diff should be 4 (5 - 1)
 		if ( chosenReport.chosenVariance && chosenReport.chosenLastYear ) {
-			$scope.occupancyMaxDate = 5;
-		} else if ( chosenReport.chosenVariance || chosenReport.chosenLastYear ) {
-			$scope.occupancyMaxDate = 10;
-		} else {
-			$scope.occupancyMaxDate = 15;
+			$scope.occupancyMaxDate = 4;
+		}
+
+		// fromdate <- 10 days -> untildate, so including fromdate, diff should be 9 (10 - 1)
+		else if ( chosenReport.chosenVariance || chosenReport.chosenLastYear ) {
+			$scope.occupancyMaxDate = 9;
+		}
+
+		// fromdate <- 15 days -> untildate, so including fromdate, diff should be 14 (15 - 1)
+		else {
+			$scope.occupancyMaxDate = 14;
 		};
 
 
@@ -69,7 +76,7 @@ sntRover.controller('RVPrePrintPopupCtrl', [
 				month = parseInt( value.substring(3, 5) );
 			};
 
-			year   = parseInt( value.substring(6, 10) );
+			year = parseInt( value.substring(6, 10) );
 			date = new Date( year, month - 1, day + dayOffset );
 
 			if ( effectObj ) {
