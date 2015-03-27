@@ -17,20 +17,8 @@
                         <ad-textbox value="data.data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 
 			<ad-textbox value="data.data.product_cross_customer.tracker_requestor_id" name="requestor-id" id="requestor-id" label="{{'SITEMINDER_REQUESTOR_ID_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
+                        <ad-dropdown ng-controller="ADOriginsCtrl" selected="name" property="name" list="data.booking_origins" name="default-booking-origin" id="default-booking-origin" styleclass="full-width"></ad-dropdown>		
                         
-				<div class="entry">
-					<div class="entry full-width">
-						<label for="booking-origin-id">
-							{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN' | translate}}
-							
-						</label><div class="select"><ad-dropdown ng-controller="ADOriginsCtrl"
-                                                                name="default-booking-origin"
-								id="booking-origin-id"
-                                                                property="name" 
-                                                                list="data.booking_origins"
-                                                                ></ad-dropdown></div>
-					</div>
-				</div>
             
             </fieldset>	
 		<fieldset class="holder left" ng-show="isHotelAdmin">
@@ -45,21 +33,8 @@
                         <ad-textbox value="data.data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 
 			<ad-textbox value="data.data.product_cross_customer.tracker_requestor_id" name="requestor-id" id="requestor-id" label="{{'SITEMINDER_REQUESTOR_ID_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
-                        
-				<div class="entry">
-					<div class="entry full-width">
-						<label for="booking-origin-id">
-							{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN' | translate}}
-							
-						</label><div class="select"><ad-dropdown ng-controller="ADOriginsCtrl"
-                                                                name="default-booking-origin"
-								id="booking-origin-id"
-                                                                property="name" 
-                                                                list="data.booking_origins"
-                                                                ></ad-dropdown></div>
-					</div>
-				</div>
-						
+                        <ad-dropdown ng-controller="ADOriginsCtrl" selected="name" property="name" list="data.booking_origins" name="default-booking-origin"  id="default-booking-origin" styleclass="full-width"></ad-dropdown>		
+			
 		</fieldset>
 
 		<div class="actions float">
