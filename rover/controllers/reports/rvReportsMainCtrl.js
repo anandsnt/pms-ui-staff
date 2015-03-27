@@ -1192,13 +1192,17 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.$emit('hideLoader');
 
 				if (!changeView && !loadPage) {
-					$rootScope.$emit('report.updated');
+					console.log('report.updated');
+					$scope.$broadcast('report.updated');
 				} else if (!!loadPage && !resultPerPageOverride) {
-					$rootScope.$emit('report.page.changed');
+					console.log('report.page.changed');
+					$scope.$broadcast('report.page.changed');
 				} else if (!!resultPerPageOverride) {
-					$rootScope.$emit('report.printing');
+					console.log('report.printing');
+					$scope.$broadcast('report.printing');
 				} else {
-					$rootScope.$emit('report.submit');
+					console.log('report.submit');
+					$scope.$broadcast('report.submit');
 				}
 			};
 
