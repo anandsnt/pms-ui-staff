@@ -175,7 +175,7 @@ sntRover.factory('RVReportParserFac', [
                 returnAry = apiResponse;
 
                 // dont remove yet
-                console.log( 'No API changes applied' );
+                // console.log( 'No API changes applied' );
             };
 
 
