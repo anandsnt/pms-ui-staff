@@ -833,26 +833,21 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	//CICO-13907
 	$scope.hasAnySharerCheckedin = function(){
 		var isSharerCheckedin = false;
-		console.log($scope.reservationData.reservation_card.sharer_information);
-		console.log($scope.reservationBillData.sharer_information);
 		angular.forEach($scope.reservationBillData.sharer_information, function(sharer, key){
 			if(sharer.reservation_status == 'CHECKEDIN' || sharer.reservation_status == 'CHECKING_OUT'){
 				isSharerCheckedin = true;
 				return false;
 			}
 		});
-		console.log("isSharerCheckedin"+isSharerCheckedin);
 		return isSharerCheckedin;
 	}
 
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(){
 		if($scope.hasAnySharerCheckedin()){
-			console.log("Keep going checkin process , it is a shared reservation..");
-			// Do nothing , Keep going checkin process , it is a shared reservation..
+			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
 		else if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
-			console.log("Move to Room Assgnmnt");
 			//TO DO:Go to room assignemt view
 			$state.go("rover.reservation.staycard.roomassignment", {
 				"reservation_id": $scope.reservationBillData.reservation_id,
