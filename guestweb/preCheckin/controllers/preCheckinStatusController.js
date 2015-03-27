@@ -7,6 +7,9 @@
 			if(response.status == 'failure'){
 				$scope.netWorkError = true;
 			}
+			else{
+				$scope.responseData =response.data;
+			};
 		},function(){
 			$scope.netWorkError = true;
 			$scope.isLoading = false;
