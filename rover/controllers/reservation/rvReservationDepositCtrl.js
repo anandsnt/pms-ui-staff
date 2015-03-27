@@ -5,6 +5,7 @@ sntRover.controller('RVReservationDepositController',
 		RVReservationCardSrv, $state, $filter,ngDialog, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
+		//adding a flag to be set after some timeout to remove flickering action in iPad
 		$scope.pageloadingOver = false;
 		$timeout(function() {
 			$scope.pageloadingOver = true;
