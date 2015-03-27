@@ -328,14 +328,16 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			params.travel_agent_id = $scope.reservationData.travelAgent.id;
 			$scope.invokeApi(RVReservationBaseSearchSrv.fetchAvailability, params, fetchSuccess);
 
-			// redo the staydays array as there is a possibility that the reservation days have changed!
-			$scope.reservationData.stayDays = [];
-			for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-				$scope.reservationData.stayDays.push({
-					date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
-					dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
-					day: dateFilter(new tzIndependentDate(ms), 'dd')
-				});
+			if (isfromCalendar) {
+				// redo the staydays array as there is a possibility that the reservation days have changed!
+				$scope.reservationData.stayDays = [];
+				for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+					$scope.reservationData.stayDays.push({
+						date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
+						dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
+						day: dateFilter(new tzIndependentDate(ms), 'dd')
+					});
+				}
 			}
 		}
 
