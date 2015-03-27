@@ -85,9 +85,10 @@
 			                	SELECT_ALL
 			                </button>
 
-			                <button type="button" class="button green" ng-class="{'hidden': !shouldShowAssignSelectedForUnAssigned()}" ng-click="moveSelectedUnAssignToAssignList()" translate>
+			                <button type="button" class="button green" ng-class="{'hidden': !shouldShowAssignSelectedForUnAssigned()}" ng-click="moveSelectedUnAssignToAssignList()" >
+			                	{{'ASSIGN_SELECTED'|translate}}
 			                	<span class="icons white-arrow-right"></span>
-			                	ASSIGN_SELECTED
+			                	
 			                </button> <!-- Remove class "hidden" when some/all rooms are selected -->
 			            </div> 					
 						
@@ -136,9 +137,9 @@
 						<button type="button" class="button white brand-text" ng-class="{'hidden': shouldDisableSelectAllForAssigned()}" ng-click="selectAllAssignedRooms()" translate>
 					    	SELECT ALL
 				        </button>
-				        <button type="button" class="button red" ng-click="moveSelectedAssignToUnAssignList()"  ng-class="{'hidden': !shouldShowAssignSelectedForAssigned()}" translate>
+				        <button type="button" class="button red" ng-click="moveSelectedAssignToUnAssignList()"  ng-class="{'hidden': !shouldShowAssignSelectedForAssigned()}">
+				        	{{'UNASSIGN SELECTED'|translate}}
 					    	<span class="icons white-arrow-left"></span>
-					    	UNASSIGN SELECTED
 				        </button>	
 				    </div>
 				</div>
