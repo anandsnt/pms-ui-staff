@@ -1,5 +1,5 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv',rvPermissionSrv,
-    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv,rvPermissionSrv) {
+sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv','rvPermissionSrv',
+    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv, rvPermissionSrv) {
     
     $scope.init = function(){
         $scope.showRestrictionDayUpdate = false;
