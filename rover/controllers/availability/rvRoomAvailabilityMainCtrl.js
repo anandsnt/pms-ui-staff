@@ -47,7 +47,7 @@ sntRover.controller('roomAvailabilityMainController', [
 		ngDialog.open({
 			template: '/assets/partials/common/rvDatePicker.html',
 			controller: 'rvRoomAvailabilityDatePickerController',
-			className: 'ngdialog-theme-default calendar-single1',
+			className: '',
 			scope: $scope,
 			closeByDocument: true
 		});
