@@ -11,31 +11,30 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/holdStatus/adHoldStatusAdd.html'"></div>		
 			<div id="new-form-holder"></div>
-			<table id="brands" class="grid">
+			<table id="brands"  class="grid datatable dataTable" ng-table="itemList" template-pagination="nil">
 				<tbody>
-
-					<tr ng-repeat="holdstatus in data.holdStatuses" ng-class="{'edit-data': currentClickedElement == $index}" ng-show="holdstatus.is_default"> 
-						<td >
-							<a data-item="3" data-colspan="2" class="edit-data-inline">{{holdstatus.name}}</a>
-						</td>
-						<td class="entry full-width radio-check">
-							<label class="checkbox">
-								<span class="icon-form icon-checkbox" ng-class="{ checked :holdstatus.is_enabled  }"></span>			
-								<input type="checkbox">
+					<tr ng-repeat="holdstatus in data.holdStatuses"  ng-show="holdstatus.is_system" > 
+						<td data-title="'Hold Status'" >
+							<strong class="ng-binding disable_hand_icon">{{holdstatus.name}}</strong>
+							<em class="ng-binding disable_hand_icon"> (system defined)</em>
+						</td>						
+						<td data-title="'Is taken from inventory'" class="entry full-width radio-check text-center-important">
+							<label class="checkbox disable_hand_icon "  >
+								<span class="icon-form icon-checkbox " ng-class="{ checked :holdstatus.is_take_from_inventory  }"></span>								
 							</label>
 						</td>
-						<td class="delete">
-							<a id="3" class="icons icon-delete large-icon delete_item"  ng-hide="holdstatus.is_default"></a>
+						<td data-title="'Delete'" class="delete" header-class="width-15 text-center-important">
+							<a id="3" class="icons icon-delete large-icon delete_item"  ng-hide="holdstatus.is_system" ></a>
 						</td>						
 					</tr>
-					<tr ng-repeat="holdstatus in data.holdStatuses" ng-class="{'edit-data': currentClickedElement == $index}" ng-hide="holdstatus.is_default"> 
+					<tr ng-repeat="holdstatus in data.holdStatuses" ng-class="{'edit-data': currentClickedElement == $index}" ng-hide="holdstatus.is_system"> 
 						<td ng-click="editHoldStatus($index,holdstatus.id)" ng-hide="currentClickedElement == $index" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{holdstatus.name}}</a>
 						</td>
 						<td class="entry full-width radio-check" ng-hide="currentClickedElement == $index" >
 							<label class="checkbox">
-								<span class="icon-form icon-checkbox" ng-class="{ checked :holdstatus.is_enabled  }"></span>						
-								<input type="checkbox" ng-click="editHoldStatus($index,holdstatus.id)" ng-model="holdstatus.is_enabled">
+								<span class="icon-form icon-checkbox text-center-important" ng-class="{ checked :holdstatus.is_take_from_inventory  }"></span>						
+								<input type="checkbox" ng-click="editHoldStatus($index,holdstatus.id)" ng-model="holdstatus.is_take_from_inventory">
 							</label>
 						</td>
 						<td class="delete" ng-hide="currentClickedElement == $index" >
