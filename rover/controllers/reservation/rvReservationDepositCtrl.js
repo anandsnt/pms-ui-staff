@@ -5,6 +5,11 @@ sntRover.controller('RVReservationDepositController',
 		RVReservationCardSrv, $state, $filter,ngDialog, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
+		//adding a flag to be set after some timeout to remove flickering action in iPad
+		$scope.pageloadingOver = false;
+		$timeout(function() {
+			$scope.pageloadingOver = true;
+		}, 3000);
 		$scope.errorMessage = '';
 		$scope.showCancelCardSelection =true;
 		$scope.addmode = false;
@@ -78,7 +83,7 @@ sntRover.controller('RVReservationDepositController',
       	$scope.shouldHidePayNowButtonInPopUp = function(){
       		var paymentType = $scope.depositData.paymentType,
       			resData = $scope.reservationData;
-      		return (paymentType === '' || paymentType === null || resData.depositAmount < 0 ||
+      		return (paymentType === '' || paymentType === null ||
       		 !$scope.hasPermissionToMakePayment());
       	};
 

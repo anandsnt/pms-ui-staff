@@ -156,6 +156,12 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 		};
 
 
+		$scope.getPercentage = function (dividend, divisor, percentage) {
+			var ret = dividend / divisor * percentage;
+			return Math.min(ret, 100) + '%';
+		};
+
+
 		var init = function() {
 			if ($scope.results.source) {
 				$scope.sources = _.keys($scope.results.source);

@@ -1,5 +1,7 @@
 {
-"ACTIVITY_LOG_TITLE" : "Activity Log",    
+"ACTIVITY_LOG_TITLE" : "Activity Log",
+"FROM_DATE":"From date",
+"TO_DATE":"To Date",    
     
     "STAY_CARD": "Stay Card",
     "ROOM_STATUS": "Room Status",

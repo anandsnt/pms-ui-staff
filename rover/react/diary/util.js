@@ -215,13 +215,13 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	}
 
 	Date.prototype.toComponents = function() {
-		var __DAYS = ['Monday', 
+		var __DAYS = ['Sunday',
+					  'Monday', 
 					  'Tuesday', 
 					  'Wednesday', 
 					  'Thursday', 
 					  'Friday', 
-					  'Saturday', 
-					  'Sunday'],
+					  'Saturday' ],
 			__MONTHS = ['January',
 						'February',
 						'March',

@@ -64,7 +64,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		}, 2000);
 		
 	};
-	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
+	var paymentParams = {"direct_bill":true};
+	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.successRender);
 
 	$scope.successPaymentList = function(data){
 		$scope.$emit("hideLoader");
@@ -543,6 +544,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.swipedCardDataToSave.cardType.toLowerCase()+".png";
 			$scope.paymentData.reservation_card.payment_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;	
+			$scope.paymentData.reservation_card.payment_details.is_swiped = true;
 		} else {
 			//CICO-13667 update the room charge button to green color if payment type is CC
 			if($scope.paymentData.bills[billNumber].bill_number === '1'){
@@ -552,6 +554,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
 			$scope.paymentData.bills[billNumber].credit_card_details.payment_type = "CC";
+			$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = true;
 		}
 		if($scope.dataToSave.addToGuestCard){
 				addToGuestCardOnSwipe(data);

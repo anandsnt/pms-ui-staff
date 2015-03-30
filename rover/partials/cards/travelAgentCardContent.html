@@ -60,13 +60,13 @@
                                 </div>
                             </div>
                             <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
-                            <span class="icons icon-location" ng-if="{travelAgent.address.city != '' && travelAgent.address.city != null}"> 
+                            <span class="icons icon-location" ng-if="travelAgent.address.city != '' && travelAgent.address.city != null"> 
                                 <span ng-bind-html="'{{ travelAgent.address.city }}'|highlight:searchData.travelAgentCard.travelAgentCity:false"></span>
                                 <span ng-show="travelAgent.address.state">, </span>
                                 {{ travelAgent.address.state }}
                             </span>
-                            <span class="icons icon-phone" ng-if="{travelAgent.phone != '' && travelAgent.phone != null}">{{ travelAgent.phone }}</span>
-                            <span class="icons icon-email-grey" ng-if="{travelAgent.email != '' && travelAgent.email != null}">{{ travelAgent.email }}</span>
+                            <span class="icons icon-phone" ng-if="travelAgent.phone != '' && travelAgent.phone != null">{{ travelAgent.phone }}</span>
+                            <span class="icons icon-email-grey" ng-if="travelAgent.email != '' && travelAgent.email != null">{{ travelAgent.email }}</span>
                         </div>
                     </a>
                 </li>
