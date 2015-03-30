@@ -33,7 +33,10 @@
 
 "BILLING_GROUPS": "Billing Groups",
 "BILLING_GROUP_NAME": "Name",
-"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name","CAMPAIGNS_LIST_TITLE": "Campaigns",
+"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name",
+"TAKE_FROM_INVENTORY": "Take from inventory",
+"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status"
+,"CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
 "NAME":"Name",
@@ -387,7 +390,6 @@
 
 
 "DEPARTMENTS":"Departments",
-"HOLD_STATUS_NAME_PLACEHOLDER":"Enter hold status",
 "DEPARTMENT_NAME_PLACEHOLDER": "Enter department",
 "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS"
 
@@ -460,7 +462,6 @@
 	"SYSTEM_DEFINED": "(System defined)",
 	"CC":"Credit Card",
 	"OFFLINE":"Offline",
-    "TAKE_FROM_INVENTORY":"Take from inventory",
 	"ROVER_ONLY":"Rover Payments Only",
 	"WEB_ONLY":"Web Payments Only",
 	"DISPLAY_REFERENCE":"Display Reference",
