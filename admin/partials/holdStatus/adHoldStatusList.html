@@ -18,9 +18,10 @@
 							<strong class="ng-binding disable_hand_icon">{{holdstatus.name}}</strong>
 							<em class="ng-binding disable_hand_icon"> (system defined)</em>
 						</td>						
-						<td data-title="'Is taken from inventory'" class="entry full-width radio-check text-center-important">
+						<td data-title="'Is taken from inventory'" class="entry full-width radio-check text-center-important" header-class="text-center-important">
 							<label class="checkbox disable_hand_icon "  >
-								<span class="icon-form icon-checkbox " ng-class="{ checked :holdstatus.is_take_from_inventory  }"></span>								
+								<span class="icon-form icon-checkbox " ng-class="{ checked :holdstatus.is_take_from_inventory  }">		
+								</span>							
 							</label>
 						</td>
 						<td data-title="'Delete'" class="delete" header-class="width-15 text-center-important">
@@ -31,8 +32,8 @@
 						<td ng-click="editHoldStatus($index,holdstatus.id)" ng-hide="currentClickedElement == $index" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{holdstatus.name}}</a>
 						</td>
-						<td class="entry full-width radio-check" ng-hide="currentClickedElement == $index" >
-							<label class="checkbox">
+						<td class="entry full-width radio-check text-center-important" ng-hide="currentClickedElement == $index" >
+							<label class="checkbox disable_hand_icon">
 								<span class="icon-form icon-checkbox text-center-important" ng-class="{ checked :holdstatus.is_take_from_inventory  }"></span>						
 								<input type="checkbox" ng-click="editHoldStatus($index,holdstatus.id)" ng-model="holdstatus.is_take_from_inventory">
 							</label>
