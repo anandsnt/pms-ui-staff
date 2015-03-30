@@ -1,10 +1,18 @@
 sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', 
-	'$stateParams', 'ngDialog',
+	'$stateParams', '$timeout', 'ngDialog',
 	'RVReservationCardSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, RVReservationCardSrv) {
+	function($scope, $rootScope, $stateParams, $timeout, ngDialog, RVReservationCardSrv) {
 		
 		//initially setting reason texbox as blank
 		$scope.adjustment_reason = "";
+
+		$scope.setScroller('rateDetails');
+		$scope.refreshRateDetails = function() {
+            $timeout(function() {
+    			$scope.refreshScroller('rateDetails');
+     		}, 2000);
+        }
+        $scope.refreshRateDetails();
 
 		/**
 		* utility function to get reservation ID

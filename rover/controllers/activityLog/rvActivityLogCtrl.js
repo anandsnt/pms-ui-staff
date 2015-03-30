@@ -196,10 +196,15 @@ sntRover.controller('RVActivityLogCtrl',[
     * Pagination
     */
     $scope.initPaginationParams = function() {
+        if($scope.activityLogData.total_count==0){           
+             $scope.start = 0;
+             $scope.end =0;
+        }else{
         $scope.start = 1;
-        $scope.page = 1;
-        $scope.perPage = 50;
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
+        }
+        $scope.page = 1;
+        $scope.perPage = 50;        
         $scope.nextAction = false;
         $scope.prevAction = false;
     }
@@ -334,6 +339,7 @@ sntRover.controller('RVActivityLogCtrl',[
         
         $scope.errorMessage = '';
         $scope.activityLogData = activityLogResponse.results;
+        $scope.activityLogData.total_count = activityLogResponse.total_count;
         $scope.activeUserList = activeUserList;
        
         //Filter
