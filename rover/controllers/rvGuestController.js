@@ -986,5 +986,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.updateContactInfo();
 		};
 
+
+		$scope.guestCardClicked = function  () {
+			//save contact info
+			$scope.$broadcast('saveContactInfo');
+		};
+
 	}
 ]);
