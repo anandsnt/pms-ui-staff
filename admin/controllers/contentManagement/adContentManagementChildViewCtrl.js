@@ -15,5 +15,13 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
    		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
    }   
 
+   $scope.sortableOptions = {
+ 
+     stop: function(e, ui){
+        console.log("new list------"+ $scope.contentList);
+   }
+
+   }
+
 }]);
 
