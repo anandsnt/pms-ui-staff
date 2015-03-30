@@ -280,6 +280,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				return false;
 			}
 			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
+				//save contact info
+				$scope.$broadcast('saveContactInfo');
 				if (parseInt($scope.eventTimestamp)) {
 					if (($event.timeStamp - $scope.eventTimestamp) < 100) {
 						return;
@@ -982,6 +984,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.vipToggleClicked = function(){
 			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
 			$scope.updateContactInfo();
+		};
+
+
+		$scope.guestCardClicked = function  () {
+			//save contact info
+			$scope.$broadcast('saveContactInfo');
 		};
 
 	}

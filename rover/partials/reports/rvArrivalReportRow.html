@@ -11,14 +11,14 @@
 		<span ng-if="each.addtional_guest_counts">&#8226; <span class="data">{{ each.addtional_children_counts }} Children</span></span>
 	</td>
 	<td ng-if="each.isReport" class="date">
-		<span class="guest-status check-in" ng-class="{ 'cancel': (each.status =='CANCELED'), 'no-show': (each.status =='NO SHOW') }">check-in</span>
+		<span class="guest-status" ng-class="{'check-in': (each.status != 'CANCELED' || each.status != 'NO SHOW'), 'cancel': (each.status =='CANCELED'), 'no-show': (each.status =='NO SHOW')}">check-in</span>
 		<time>
 			<span>{{ each.arrival_date | date : dateFormat }}</span>
 			<span>{{ each.arrival_time }}</span>
 		</time>
 	</td>
 	<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_time, 'guarantee': !!each.guarantee_type}">
-		<span class="guest-status check-out" ng-class="{ 'cancel': (each.status =='CANCELED'), 'no-show': (each.status =='NO SHOW') }">check-out</span>
+		<span class="guest-status" ng-class="{'check-out': (each.status != 'CANCELED' || each.status != 'NO SHOW'), 'cancel': (each.status =='CANCELED'), 'no-show': (each.status == 'NO SHOW')}">check-out</span>
 		<time>
 			<span>{{ each.departure_date | date : dateFormat }}</span>
 			<span>{{ each.departure_time }}</span>
