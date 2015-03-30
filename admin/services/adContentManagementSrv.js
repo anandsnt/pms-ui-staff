@@ -65,6 +65,25 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 		});	
 		return deferred.promise;
 	};
+
+
+    /*
+    * To update category/item order for a particular parent
+    * @param {object} data of the modified order for category/item, parent_id
+    * @return {object} status of updated section/category/item
+    */
+	this.saveComponentOrder = function(data){
+
+		var deferred = $q.defer();
+		var url = 'api/cms_components/assign_sequence';	
+		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
 	/*
     * To delete section data
     * @param {array} data of the section to be deleted
