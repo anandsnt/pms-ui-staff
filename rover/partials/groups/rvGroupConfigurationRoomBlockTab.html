@@ -92,10 +92,10 @@
 		    </div>  
 
 		    <!-- Room block room types -->
-		    <div class="room-block-sidebar scrollable" ng-hide="true">
+		    <div class="room-block-sidebar scrollable" ng-hide="shouldHideRoomBlockDetailsView()" >
 		        <div class="wrapper">
-		            <div class="row"> <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
-		                <p class="line line-toggle">{Room Type}</p> <!-- Toggle class "active" when clicked/tapped -->
+		            <div class="row" ng-repeat="roomtype_rate in selected_room_types_rates"> <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
+		                <p class="line line-toggle">{{roomtype_rate.name}}</p> <!-- Toggle class "active" when clicked/tapped -->
 		                <ul class="hidden"> <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
 		                    <li class="line" translate>SINGLE</li>
 		                    <li class="line" translate>DOUBLE</li>
@@ -104,7 +104,6 @@
 		                    <li class="line small add" translate>ADD_QUADRUPLE</li> // When clicked, add L115-118 -->
 		                </ul>
 		            </div>
-		            ... repeat for every room type
 		        </div>
 		    </div>
 

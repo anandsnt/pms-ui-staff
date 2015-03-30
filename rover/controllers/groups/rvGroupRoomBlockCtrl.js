@@ -78,7 +78,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 * @return {Boolean}
 		 */
 		$scope.shouldHideAddRoomsButton = function() {
-			return $scope.shouldHideUpdateButton();
+			return ($scope.shouldHideUpdateButton() && !$scope.shouldHideRoomBlockDetailsView());
 		};
 
 		/**
@@ -140,8 +140,16 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 */
 		$scope.shouldDisableAddRoomsAndRate = function(){
 			return !hasPermissionToCreateRoomBlock ();
-		}
+		};
 
+		/**
+		 * [shouldHideRoomBlockDetailsView description]
+		 * @return {[type]} [description]
+		 */
+		$scope.shouldHideRoomBlockDetailsView = function(){
+			return (hasPermissionToCreateRoomBlock() &&
+					$scope.displayGroupRoomBlockDetails);
+		};
 		/**
 		 * to run angular digest loop,
 		 * will check if it is not running
@@ -286,12 +294,32 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		};
 
 		/**
+		 * To update room block details from outside
+		 * @param  {Array} dataToUpdate [Array of room block details]
+		 * @return undefined
+		 */
+		$scope.updateRoomBlockDetails = function(dataToUpdate){
+			$scope.groupConfigData.summary.selected_room_types_rates = dataToUpdate;
+		};
+
+		/**
+		 * to show room block details area with data
+		 * @return undefined
+		 */
+		$scope.showRoomBlockDetails = function(){
+			$scope.displayGroupRoomBlockDetails = true;
+		};
+
+		/**
 		 * We have a list of variables to identify to initialize depending the mode (Add/Edit)
 		 * @return None
 		 */
 		var initializeAddOrEditModeVariables = function(){
 			//variable used to track Create Button
 			$scope.createButtonClicked = false;
+
+			//variable used to track group room block details view
+			$scope.displayGroupRoomBlockDetails = false;
 
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;

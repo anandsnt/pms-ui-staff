@@ -7,6 +7,7 @@ sntRover.controller('rvGroupSearchCtrl',	[
 	'$filter',
 	'$timeout',
 	'$state',
+	'rvUtilSrv',
 	function($scope, 
 			$rootScope, 
 			rvGroupSrv, 
@@ -14,18 +15,17 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			businessDate, 
 			$filter,
 			$timeout,
-			$state) {
+			$state, util) {
 			
 		BaseCtrl.call(this, $scope);
 
 		/**
 		* util function to check whether a string is empty
+		* we are assigning it as util's isEmpty function since it is using in html
 		* @param {String/Object}
 		* @return {boolean}
 		*/
-		$scope.isEmpty = function(string){
-			return ($scope.escapeNull(string).trim() === '');
-		};
+		$scope.isEmpty = util.isEmpty;
 
 		/**
 		* util function to get CSS class against diff. Hold status
@@ -140,9 +140,7 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		* @param {String}
 		* @return {String}
 		*/
-		$scope.stringify = function(string){
-			return JSON.stringify (string);
-		};
+		$scope.stringify = util.stringify;
 
 		/**
 		* to run angular digest loop,
@@ -417,7 +415,7 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		 * Navigate to the group configuration state for editing the group
 		 * @return undefined
 		 */
-		$scope.editGroupConfiguration = function(groupId){
+		$scope.gotoEditGroupConfiguration = function(groupId){
 			$state.go('rover.groups.config',{
 				id: groupId,
 				activeTab: 'SUMMARY'
