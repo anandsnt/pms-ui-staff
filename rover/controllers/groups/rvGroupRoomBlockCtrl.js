@@ -264,6 +264,18 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	    };
 
 	    /**
+	     * to get the room type name against a room id
+	     * @param  {Integer} id - of the room type
+	     * @return {String}    Room type name, will return blank string if room type not found
+	     */
+	    $scope.getRoomTypeName = function(id){
+	    	id = parseInt (id);
+	    	var roomType = _.findWhere($scope.roomTypes, {id: id});
+	    	if (roomType) return roomType.name;
+	    	return "";
+	    };
+
+	    /**
 	     * [successCallBackOfAllRoomTypeFetch description]
 	     * @param  {Objects} data of All Room Type
 	     * @return undefined
@@ -300,7 +312,6 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 */
 		$scope.updateRoomBlockDetails = function(dataToUpdate){
 			$scope.groupConfigData.summary.selected_room_types_rates = dataToUpdate;
-			console.log (dataToUpdate)
 		};
 
 		/**
@@ -311,6 +322,28 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 			$scope.displayGroupRoomBlockDetails = true;
 		};
 
+		/**
+		 * set up accordion
+		 * @return {undefined}
+		 */
+		var setUpAccordion = function(){
+	        //accordion options, will add/remove class on toggling
+	        $scope.accordionInitiallyNotCollapsedOptions = {
+	            header: 'p.line-toggle',
+	            heightStyle: 'content',
+	            collapsible: true,
+	            activate: function(event, ui) {
+	                if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
+	                    ui.oldHeader.removeClass('open');
+	                } else if (isEmpty(ui.oldHeader)) { //means activating..
+	                    ui.newHeader.addClass('open');
+	                }
+	                //we have to refresh scroller afetr that
+	               refreshScroller();
+	            }
+
+	        }; 
+		};
 		/**
 		 * We have a list of variables to identify to initialize depending the mode (Add/Edit)
 		 * @return None
@@ -325,11 +358,11 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
 
-			var isOnEditMode = !$scope.isInAddMode(),
+			var isInEditMode = !$scope.isInAddMode(),
 				refData 	= $scope.groupConfigData;
 
 
-			if (isOnEditMode){
+			if (isInEditMode){
 				$scope.createButtonClicked = true;
 				$scope.totalPickups = refData.summary.rooms_pickup;
 				$scope.totalRooms = refData.summary.rooms_total;
@@ -353,6 +386,14 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		};
 
 		/**
+		 * utiltiy function to refresh scroller
+		 * return - None	
+		 */
+		var refreshScroller = function(){
+			$scope.refreshScroller('room_block_scroller'); 
+		};
+
+		/**
 		 * Function to initialise room block details
 		 * @return - None
 		 */
@@ -367,6 +408,9 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 
 	    	//setting scrollers
 	    	setScroller();
+
+	    	// accoridion 
+	    	setUpAccordion();
 
 	    	//we have a list of scope varibales which we wanted to assign when it is in add/edit mode
 	    	initializeAddOrEditModeVariables();

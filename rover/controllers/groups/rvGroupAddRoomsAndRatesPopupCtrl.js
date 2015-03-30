@@ -35,7 +35,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			};
 
 			//selected room types & its rates
-			$scope.selectedRoomTypeAndRates = $scope.groupConfigData.summary.selected_room_types_rates;
+			$scope.selectedRoomTypeAndRates = util.deepCopy ($scope.groupConfigData.summary.selected_room_types_rates);
 
 			//if Response coming from API is a blank array
 			if ($scope.selectedRoomTypeAndRates.length == 0){
@@ -49,9 +49,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 * @return {Boolean} 
 		 */
 		$scope.shouldShowAddNewButton = function(obj){
-			console.log (obj.selectedRoomType);
-			return (!util.isEmpty(obj.selectedRoomType) && 
-				!util.isEmpty( JSON.parse(obj.selectedRoomType).name));
+			return (!util.isEmpty(obj.selectedRoomType));
 		};
 
 		/**
@@ -108,14 +106,9 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 * @return {[type]} [description]
 		 */
 		$scope.clickedOnUpdateButton = function() {
-			console.log ($scope.selectedRoomTypeAndRates.length);
 			//we only want rows who have room type choosed
 			var selectedRoomTypeAndRates = _.filter($scope.selectedRoomTypeAndRates, function(obj){
 				return !util.isEmpty(obj.selectedRoomType);
-			});
-			console.log ($scope.selectedRoomTypeAndRates.length);
-			_.each (selectedRoomTypeAndRates, function(element, index){
-				element.selectedRoomType = JSON.parse (element.selectedRoomType);
 			});
 
 			$scope.updateRoomBlockDetails (selectedRoomTypeAndRates);
