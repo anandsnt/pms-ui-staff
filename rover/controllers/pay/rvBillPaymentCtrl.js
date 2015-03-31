@@ -37,7 +37,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 
 	$scope.disableMakePayment = function(){
-		 if($scope.saveData.paymentType.length > 0 && $scope.renderData.defaultPaymentAmount >= 0){
+		 if($scope.saveData.paymentType.length > 0){
 			return false
 		}
 		else{

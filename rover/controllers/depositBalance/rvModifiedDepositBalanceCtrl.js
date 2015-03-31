@@ -18,6 +18,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$timeout, rvPermissionSrv){
 					
 	BaseCtrl.call(this, $scope);
+	//adding a flag to be set after some timeout to remove flickering action in iPad
+	$scope.pageloadingOver = false;
+	$timeout(function() {
+			$scope.pageloadingOver = true;
+		}, 3500);
+
+	$scope.shouldShowWaiting = false;
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
 	//console.log($scope.depositBalanceData.data.existing_payments)
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
@@ -54,13 +61,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.makePaymentButtonDisabled = true;
 	$scope.isDisplayReference = false;
 	$scope.referanceText = "";
-	$scope.shouldShowWaiting = false;
+	
 	//To show add to guest card checkbox
 	$scope.isAddToGuestCardVisible = false;
 	$scope.isSwipedCardSave = false;
 	$scope.isManual = false;
 	$scope.setScroller('cardsList');
 
+	
 
 	var refreshScroll = function() {
 		$timeout(function() {
@@ -72,7 +80,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	
 	$scope.disableMakePayment = function(){
 		 if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.depositBalanceMakePaymentData.amount >=0) ? false :true;
+			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
 		}
 		else{
 			return true;
@@ -102,7 +110,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showMakePaymentButtonStatus = function(){
 		var buttonClass = "";
 		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.depositBalanceMakePaymentData.amount >=0) ? "green" :"grey";
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "green" :"grey";
 		}else {
 			buttonClass = "grey";
 		};

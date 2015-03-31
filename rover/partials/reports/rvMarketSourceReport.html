@@ -52,17 +52,17 @@
                                 <span class="label" ng-class="{'undefined' : sourceName == 'Not Defined'}">{{sourceName}}</span>
                                 <!-- Add class "undefined" for Not Defined display -->
                                 <div class="fill-container">
-                                    <div class="fill blue" style="width:{{results.source[sourceName]/reportStatus.graph.sourceNumber.upperLimit * 100}}%;"></div>
-                                    <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.sourceNumber.ticks}}%;"></span>
+                                    <div class="fill blue" style="width: {{ getPercentage(results.source[sourceName], reportStatus.graph.sourceNumber.upperLimit, 100) }}"></div>
+                                    <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width: {{ getPercentage(100, reportStatus.graph.sourceNumber.ticks, 1) }}"></span>
                                     <!-- ... repeat this span.mark as needed, see comment on the bottom of the file. -->
                                 </div>
                             </li>
                             <!-- ... repeat for all sources -->
                             <li class="legend">
-                                <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.sourceNumber.ticks}}%;" ng-hide="$last">
+                                <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.sourceNumber.ticks) track by $index" style="width: {{ getPercentage(100, reportStatus.graph.sourceNumber.ticks, 1) }}" ng-hide="$last">
     							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span>
                                 <!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
-                                <span class="mark last" style="width:{{100/ reportStatus.graph.sourceNumber.ticks}}%;">
+                                <span class="mark last" style="width: {{ getPercentage(100, reportStatus.graph.sourceNumber.ticks, 1) }}">
     								<span class="left-num" ng-if="reportStatus.graph.sourceNumber.ticks > 0">{{(reportStatus.graph.sourceNumber.ticks-1) * reportStatus.graph.sourceNumber.breakingPoint}}</span>
                                 <span class="right-num">{{(reportStatus.graph.sourceNumber.ticks) * reportStatus.graph.sourceNumber.breakingPoint}}</span>
                                 </span>
@@ -76,7 +76,7 @@
                                 <span class="label" ng-class="{'undefined' : sourceName == 'Not Defined'}">{{sourceName}}</span>
                                 <!-- Add class "undefined" for Not Defined display -->
                                 <div class="fill-container">
-                                    <div class="fill purple" style="width:{{results.source[sourceName]/sourcesValuesTotal*100}}%;"></div>
+                                    <div class="fill purple" style="width: {{ getPercentage(results.source[sourceName], sourcesValuesTotal, 100) }}"></div>
                                     <span class="mark percentage"></span>
                                     <span class="mark percentage"></span>
                                     <span class="mark percentage"></span>
@@ -164,17 +164,17 @@
                                 <span class="label" ng-class="{'undefined' : marketName == 'Not Defined'}">{{marketName}}</span>
                                 <!-- Add class "undefined" for Not Defined display -->
                                 <div class="fill-container">
-                                    <div class="fill blue" style="width:{{results.market[marketName]/reportStatus.graph.marketNumber.upperLimit * 100}}%;"></div>
-                                    <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.marketNumber.ticks}}%;"></span>
+                                    <div class="fill blue" style="width: {{ getPercentage(results.market[marketName], reportStatus.graph.marketNumber.upperLimit, 100) }}"></div>
+                                    <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width: {{ getPercentage(100, reportStatus.graph.marketNumber.ticks, 1) }}"></span>
                                     <!-- ... repeat this span.mark as needed, see comment on the bottom of the file. -->
                                 </div>
                             </li>
                             <!-- ... repeat for all sources -->
                             <li class="legend">
-                                <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width:{{100/reportStatus.graph.marketNumber.ticks}}%;" ng-hide="$last">
+                                <span class="mark" ng-repeat="i in getTimes(reportStatus.graph.marketNumber.ticks) track by $index" style="width: {{ getPercentage(100, reportStatus.graph.marketNumber.ticks, 1) }}" ng-hide="$last">
     							{{$index * reportStatus.graph.sourceNumber.breakingPoint}}</span>
                                 <!-- ... repeat this span.mark as needed, see comment on the bottom of the file. For last mark add this insted: -->
-                                <span class="mark last" style="width:{{100/ reportStatus.graph.marketNumber.ticks}}%;">
+                                <span class="mark last" style="width: {{ getPercentage(100, reportStatus.graph.marketNumber.ticks, 1) }}">
     								<span class="left-num" ng-if="reportStatus.graph.marketNumber.ticks > 0">{{(reportStatus.graph.marketNumber.ticks-1) * reportStatus.graph.marketNumber.breakingPoint}}</span>
                                 <span class="right-num">{{(reportStatus.graph.marketNumber.ticks) * reportStatus.graph.marketNumber.breakingPoint}}</span>
                                 </span>
@@ -188,7 +188,7 @@
                                 <span class="label" ng-class="{'undefined' : marketName == 'Not Defined'}">{{marketName}}</span>
                                 <!-- Add class "undefined" for Not Defined display -->
                                 <div class="fill-container">
-                                    <div class="fill purple" style="width:{{results.market[marketName]/marketsValuesTotal*100}}%;"></div>
+                                    <div class="fill purple" style="width: {{ getPercentage(results.market[marketName], marketsValuesTotal, 100) }}"></div>
                                     <span class="mark percentage"></span>
                                     <span class="mark percentage"></span>
                                     <span class="mark percentage"></span>

@@ -358,12 +358,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.depositData.depositSuccess = true;
                     $scope.depositData.authorizationCode = data.authorization_code;
                     $scope.reservationData.selectedPaymentId = data.payment_method.id;
-                    //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
-                    if ($scope.reservationData.paymentType.type.value === "CC") {
-                        $scope.isNewCardAdded = true;
-                    } else {
-                        $scope.isNewCardAdded = false;
-                    }
+                    //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails - commenting the if else block below for CICO-14199
+                    // if ($scope.reservationData.paymentType.type.value === "CC") {
+                    //     $scope.isNewCardAdded = true;
+                    // } else {
+                    //     $scope.isNewCardAdded = false;
+                    // }
                     $scope.$emit('hideLoader');
                 },
                 onPaymentFailure = function(errorMessage) {

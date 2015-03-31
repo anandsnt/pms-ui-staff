@@ -131,8 +131,7 @@ sntRover.controller('RVActivityLogCtrl',[
                 params['user_id'] = $scope.user_id;
         }
         params['sort_order'] = $scope.sort_order;
-        params['sort_field'] = $scope.sort_field;
-        $scope.user_id ="";
+        params['sort_field'] = $scope.sort_field;       
         $scope.invokeApi(RVActivityLogSrv.filterActivityLog, params, callback);
     }
 
@@ -197,10 +196,15 @@ sntRover.controller('RVActivityLogCtrl',[
     * Pagination
     */
     $scope.initPaginationParams = function() {
+        if($scope.activityLogData.total_count==0){           
+             $scope.start = 0;
+             $scope.end =0;
+        }else{
         $scope.start = 1;
-        $scope.page = 1;
-        $scope.perPage = 50;
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
+        }
+        $scope.page = 1;
+        $scope.perPage = 50;        
         $scope.nextAction = false;
         $scope.prevAction = false;
     }
@@ -314,23 +318,37 @@ sntRover.controller('RVActivityLogCtrl',[
     var refreshScroller = function() {
         $scope.refreshScroller ('report-update');
     };
-
-
+    $scope.clearToDate = function()
+    {      
+        $scope.toDate ="";    
+     }
+    $scope.clearFromDate = function()
+    {       
+       $scope.fromDate = "";   
+      
+    }
+    $scope.userChanged = function(){        
+        if($scope.userEmail==''){
+           $scope.user_id=0;
+        }
+    }
+    $scope.userEmail='';
 	$scope.init = function(){
         //setting the header caption
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));
         
         $scope.errorMessage = '';
         $scope.activityLogData = activityLogResponse.results;
+        $scope.activityLogData.total_count = activityLogResponse.total_count;
         $scope.activeUserList = activeUserList;
        
         //Filter
         $scope.isUpdateReportFilter = false;
         $scope.reportUpdateVisible = false;
         $scope.reportUpdateWidth = resizableMinWidth;
-        $scope.fromDate = new Date($rootScope.businessDate);
-        $scope.toDate = new Date($rootScope.businessDate);
-        $scope.user_id = 0;
+        $scope.fromDate ='';
+        $scope.toDate ='';
+        $scope.user_id = 0;        
 
         //Paginaton
         $scope.totalResults = activityLogResponse.total_count;

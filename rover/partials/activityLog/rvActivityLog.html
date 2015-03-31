@@ -14,13 +14,14 @@
                         <div class="entry date-range">
                             <label for="activity-range-from">From</label>
                             <div class="has-datepicker">
-                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
-                                <input name="activity-range-from" id="activity-range-from" class="range-datepicker" ui-date="fromDateOptions" ng-model="fromDate"  readonly />
+                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search" ng-show='fromDate' ng-click="clearFromDate()">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
+                                <input name="activity-range-from" id="activity-range-from" class="range-datepicker" ui-date="fromDateOptions" ng-model="fromDate" placeholder ="{{'FROM_DATE' | translate }}" ui-date-format="yy-mm-dd"  readonly/>                               
                             </div>
                             <label for="activity-range-to">To</label>
                             <div class="has-datepicker">
-                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
-                                <input name="activity-range-to" id="activity-range-to" class="range-datepicker" ui-date="untilDateOptions" ng-model="toDate" readonly />
+                                <button class="clear-query" ng-class="{'visible': true}"><span class="icons icon-clear-search" ng-show='toDate' ng-click="clearToDate()">Clear query</span></button> <!-- Add class "visible" to show it (when date is selected) -->
+                                <input name="activity-range-to" id="activity-range-to" class="range-datepicker" ui-date="untilDateOptions" ng-model="toDate" ui-date-format="yy-mm-dd" placeholder="{{'TO_DATE' | translate }}" readonly />
+                                
                             </div>
                         </div>
                     </div>
@@ -33,7 +34,7 @@
                     </a>
                     <div id="sidebar-filter" class="settings-content">
                         <label for="activity-filter">User</label>
-                         <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" type="text" placeholder="Search by Email Id" value="" autocomplete="off">
+                         <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="userEmail" ng-change="userChanged()">
                     </div>
                 </div>
 
@@ -77,7 +78,7 @@
 
     <!-- Report content -->
     <div id="report-content" class="report-content scrollable" ng-iscroll="report_content" ng-iscroll-delay="1000"> <!-- Add class "with-pagination" if pagination is shown -->
-        <div class="wrapper">
+        <div class="wrapper ">
             <table class="log-reports">
                 <thead>
                     <tr>
@@ -107,7 +108,7 @@
                 <tbody>
                     <tr ng-repeat="log in activityLogData" ngrepeatend>
                         <td>{{log.user_name}}</td>
-                        <td>{{log.date}}, {{log.time}}</td>
+                        <td> {{log.date }}, {{log.time}}</td>
                         <td>{{log.action}}</td>
                         <td class="details">
                             <span ng-repeat="details in log.details">
@@ -126,14 +127,13 @@
 
     <!-- Report pagination // Shown when needed
     {../_shared/pagination.html} -->
-    <div class="search-pagination hk-pagination" ng-show="!isNextButtonDisabled || !isPrevButtonDisabled">
+    <div class="search-pagination hk-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
         <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResults}}</strong> items</p>
     </div>
     
 </section>
-
 
 <!-- 
     Most of details should output in a simple way: 
