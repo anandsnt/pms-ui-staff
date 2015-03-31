@@ -6,13 +6,17 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	'ngDialog',
 	'rvGroupConfigurationSrv',
 	'$timeout',
+	'rvUtilSrv',
+	'$q',
 	function($scope,
 			$rootScope,
 			$filter,
 			rvPermissionSrv,
 			ngDialog,
 			rvGroupConfigurationSrv,
-			$timeout) {
+			$timeout,
+			util,
+			$q) {
 		
 		/**
 		* util function to check whether a string is empty
@@ -62,6 +66,15 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 * @return {Boolean} 
 		 */
 		$scope.shouldDisableCreateBlockButton = function() {
+			return startDateOrEndDateIsEmpty ();
+		};
+
+		/**
+		 * Function to decide whether to disable Update block button
+		 * if from date & to date is not defined, will return true 
+		 * @return {Boolean} 
+		 */
+		$scope.shouldDisableUpdateBlockButton = function() {
 			return startDateOrEndDateIsEmpty ();
 		};
 
@@ -258,9 +271,6 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 */
 		$scope.clickedOnCreateButton = function(){
 			$scope.createButtonClicked = true;
-
-			//forming the dates between start & end
-			//$scope.datesBetweenStartAndEnd = util.getDatesBetweenTwoDates ()
 		};
 
 		/**
@@ -293,20 +303,63 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	     * @return undefined
 	     */
 	    var successCallBackOfAllRoomTypeFetch = function(data){
-	    	$scope.roomTypes = data.results;
+	    	$scope.roomTypes = data.results;	    	
+	    };
+
+	    /**
+	     * When availability and BAR fetch completed
+	     * @param  {Objects} data of All Room Type
+	     * @return undefined
+	     */
+	    var successCallBackOfAvailabilityAndBARfetch = function(data){
+	    	$scope.roomTypes = data.results;	    	
+	    };
+
+	    /**
+	     * When all things reqd to open popup is completed
+	     * @return undefined
+	     */
+	    var successFetchOfAllReqdForRoomAndRatesPopup = function(){
+	    	$scope.$emit('hideLoader');
 	    	openAddRoomsAndRatesPopup();
 	    };
 
+	    /**
+	     * When any of the things reqd to open popup is failed
+	     * @return undefined
+	     */
+	    var failedToFetchAllReqdForRoomAndRatesPopup = function(){
+	    	console.log('hey am failed');
+	    };
+
 		/**
-		 * when Add Room & Rates button clicked, we will fetch all room types,
+		 * when Add Room & Rates button clicked, we will fetch all room types, fetch BAR 
+		 * (BEST AVAILABLE RATE) & Availabiolity
 		 * then we will show the Add Room & Rates popup
 		 * @return None
 		 */
 		$scope.clickedOnAddRoomsAndRatesButton = function(){
-			var options = {
-				successCallBack: 	successCallBackOfAllRoomTypeFetch,	      		
-			};
-			$scope.callAPI(rvGroupConfigurationSrv.getAllRoomTypes, options);			
+			var promises	= [];
+			//we are not using our normal API calling since we have multiple API calls needed
+			$scope.$emit('showLoader');
+
+			//Room types
+			promises.push (rvGroupConfigurationSrv.getAllRoomTypes()
+				.then(successCallBackOfAllRoomTypeFetch));
+
+			//get BAR (best available rate) & availabilit count
+			var paramsForBARAndAvailability = {
+				from_date: $scope.startDate,
+				end_date: $scope.endDate,
+			}
+			promises.push (rvGroupConfigurationSrv
+				.getRoomTypeBestAvailableRateAndOccupancyCount(paramsForBARAndAvailability)
+				.then(successCallBackOfAvailabilityAndBARfetch)
+			);
+
+			//Lets start the processing
+			$q.all(promises)
+			.then(successFetchOfAllReqdForRoomAndRatesPopup, failedToFetchAllReqdForRoomAndRatesPopup);		
 		};
 		
 		/**
@@ -332,8 +385,26 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 */
 		$scope.showRoomBlockDetails = function(){
 			$scope.displayGroupRoomBlockDetails = true;
-
+			console.log ($scope.endDate);
+			//forming the dates between start & end
+			var startDate = tzIndependentDate ($scope.startDate);
+			var endDate = tzIndependentDate ($scope.endDate);
+			console.log(startDate);
+			console.log(endDate)
+			$scope.datesBetweenStartAndEnd = util.getDatesBetweenTwoDates (startDate, endDate);
 			runDigestCycle();
+			//we have to refresh scroller afetr that
+			console.log ($scope.datesBetweenStartAndEnd);
+	        refreshScroller();
+		};
+
+		/**
+		 * To get css width for grid timeline
+		 * For each column 190px is predefined
+		 * @return {String} [with px]
+		 */
+		$scope.getWidthForRoomBlockTimeLine = function(){
+			return ($scope.datesBetweenStartAndEnd.length*190) + 'px';
 		};
 
 		/**
@@ -354,9 +425,8 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	                }
 	                
 	                //we have to refresh scroller afetr that
-	                $timeout(function(){
-	                	refreshScroller();
-	                }, 350);
+	                refreshScroller();
+	                
 	               
 	            }
 
@@ -377,7 +447,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
 
-			//dates between start date & end date
+			//data for 
 			$scope.datesBetweenStartAndEnd = [];
 
 
@@ -405,15 +475,33 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 				tap 			: true,
 				preventDefault	: false,
 			};
-			$scope.setScroller('room_block_scroller', scrollerOptions); 
+			$scope.setScroller('room_block_scroller', scrollerOptions);
+			
+			var scrollerOptionsForRoomRatesTimeline = _.extend({
+				scrollX: false, 
+				scrollY: true, 
+				scrollbars: false,
+			}, util.deepCopy(scrollerOptions));
+
+			$scope.setScroller('room_rates_timeline_scroller', scrollerOptionsForRoomRatesTimeline);
+			
+			var scrollerOptionsForRoomRatesGrid = _.extend({
+				scrollY: true, 
+			}, util.deepCopy(scrollerOptions));
+
+			$scope.setScroller('room_rates_grid_scroller', scrollerOptionsForRoomRatesGrid);			
 		};
 
 		/**
 		 * utiltiy function to refresh scroller
 		 * return - None	
 		 */
-		var refreshScroller = function(){
-			$scope.refreshScroller('room_block_scroller'); 
+		var refreshScroller = function(){			
+	        $timeout(function(){
+				$scope.refreshScroller('room_block_scroller'); 
+				$scope.refreshScroller('room_rates_timeline_scroller'); 
+				$scope.refreshScroller('room_rates_grid_scroller'); 
+			}, 350);
 		};
 
 		/**

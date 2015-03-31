@@ -78,6 +78,26 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		/**
+		 * Function to get Room type availablity as well as best availbale rate
+		 * @return {Promise} [will get the details]
+		 */
+		this.getRoomTypeBestAvailableRateAndOccupancyCount = function(params){
+			var deferred = $q.defer(),
+				url = '/api/groups/availability';
+			
+			rvBaseWebSrvV2.getJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
 		this.getGroupSummary = function(params) {
 
 			var deferred = $q.defer();
