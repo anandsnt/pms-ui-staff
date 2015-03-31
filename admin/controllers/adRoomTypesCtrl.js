@@ -66,9 +66,11 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 			$scope.roomTypeData.is_suite = false;
 	 		}
 
-			if (true) {
+			if (false) {
+				$scope.roomTypeData.send_request_interface = true;
+			} else {
 				$scope.roomTypeData.send_request_interface = false;
-			}
+			};
 	 	};
 	 	var data = {"id":id };
 	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data , successCallbackRender);
@@ -166,8 +168,8 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		$scope.fileName = "Choose File....";
 
 		//reset data
-			$scope.roomTypeData = {
-				"room_type_id": "",
+		$scope.roomTypeData = {
+			"room_type_id": "",
 			"room_type_code": "",
 			"room_type_name": "",
 			"snt_description": "",
@@ -175,15 +177,14 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 			"is_pseudo_room_type": "",
 			"is_suite": "",
 			"image_of_room_type": "",
-			"send_request_interface": ""
+			"send_request_interface": false
 		};
 		$timeout(function() {
             $location.hash('new-form-holder');
             $anchorScroll();
     	});
-
-
 	};
+
 	$scope.sortByName = function(){
 		if($scope.currentClickedElement == -1)
 		$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
