@@ -1,5 +1,7 @@
 {
-"ACTIVITY_LOG_TITLE" : "Activity Log",    
+"ACTIVITY_LOG_TITLE" : "Activity Log",
+"FROM_DATE":"From date",
+"TO_DATE":"To Date",    
     
     "STAY_CARD": "Stay Card",
     "ROOM_STATUS": "Room Status",
@@ -21,8 +23,6 @@
 "REMOVE_CHARGE":"Remove charge",
 "SPLIT_CHARGE":"Split charge",
 "SPLITTING_FOR":"Splitting for",
-"FROM_DATE":"From date",
-"TO_DATE":"To Date",
 "ENTITY":"Entity",
 "NUMBER":"Number",
 "ROUTE_TO_BILL":"Route to Bill #",
@@ -862,6 +862,7 @@
     "COUNTRY":"Country",
     "CONFIRMATION_NO":"Confirmation No.",
     "ROOM_NO":"Room No.",
+    "TAX_NO":"Tax No.",
     "INVOICE_NO":"Invoice No.",
     "INVOICE_DATE":"Invoice date",
     "DATE_OF_CHARGE":"Date of Charge",
