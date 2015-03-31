@@ -13,16 +13,18 @@
 
         <!-- [<[< RESERVATION TYPES >]>] -->
         <div class="entry margin">
-            <!-- <label for="reservation-type">Reservation type<strong ng-show="">*</strong> -->
+            <label for="reservation-type">
+                Reservation type
+                <!-- <strong ng-show="">*</strong> -->
             </label>
             <div class="select">
                 <select iscroll-stop-propagation name="reservation-type" id="reservation-type" 
-                    ng-class="{'placeholder': !groupConfigState.summary.demographics.reservation_type_id}" 
-                    ng-model="groupConfigState.summary.demographics.reservation_type_id">
-                    <option value="" translate>RESERVATION_TYPE_PLACEHOLDER</option>
+                    ng-class="{'placeholder': !groupConfigData.summary.demographics.reservation_type_id}" 
+                    ng-model="groupConfigData.summary.demographics.reservation_type_id">
+                    <option value="null" selected translate>RESERVATION_TYPE_PLACEHOLDER</option>
                     <option ng-repeat="reservationType in groupSummaryData.demographics.reservationTypes" 
                         value="{{reservationType.value}}" 
-                        ng-selected="reservationType.value == groupConfigState.summary.demographics.reservation_type_id">
+                        ng-selected="reservationType.value == groupConfigData.summary.demographics.reservation_type_id">
                         {{reservationType.name}}
                     </option>
                 </select>
@@ -31,16 +33,18 @@
 
         <!-- [<[< MARKETS >]>] -->
         <div class="entry margin" ng-show="groupSummaryData.demographics.is_use_markets">
-            <!-- <label for="market">Market<strong ng-show="">*</strong> -->
+            <label for="market">
+                Market
+                <!-- <strong ng-show="">*</strong> -->
             </label>
             <div class="select">
                 <select iscroll-stop-propagation name="market" id="market" 
-                    ng-class="{'placeholder': !groupConfigState.summary.demographics.market_segment_id}" 
-                    ng-model="groupConfigState.summary.demographics.market_segment_id">
-                    <option value="" translate>MARKET_PLACEHOLDER</option>
+                    ng-class="{'placeholder': !groupConfigData.summary.demographics.market_segment_id}" 
+                    ng-model="groupConfigData.summary.demographics.market_segment_id">
+                    <option value="null" selected translate>MARKET_PLACEHOLDER</option>
                     <option ng-repeat="market in groupSummaryData.demographics.markets" 
                         value="{{market.value}}" 
-                        ng-selected="market.value == groupConfigState.summary.demographics.market_segment_id">
+                        ng-selected="market.value == groupConfigData.summary.demographics.market_segment_id">
                         {{market.name}}
                     </option>
                 </select>
@@ -49,16 +53,18 @@
 
         <!-- [<[< SOURCES >]>] -->
         <div class="entry margin" ng-show="groupSummaryData.demographics.is_use_sources">
-            <!-- <label for="source">Source<strong ng-show="">*</strong> -->
+            <label for="source">
+                Source
+                <!-- <strong ng-show="">*</strong> -->
             </label>
             <div class="select">
                 <select iscroll-stop-propagation name="source" id="source" 
-                    ng-class="{'placeholder': !groupConfigState.summary.demographics.source_id}" 
-                    ng-model="groupConfigState.summary.demographics.source_id">
-                    <option value="" translate>SOURCE_PLACEHOLDER</option>
+                    ng-class="{'placeholder': !groupConfigData.summary.demographics.source_id}" 
+                    ng-model="groupConfigData.summary.demographics.source_id">
+                    <option value="null" selected translate>SOURCE_PLACEHOLDER</option>
                     <option ng-repeat="source in groupSummaryData.demographics.sources" 
                         value="{{source.value}}" 
-                        ng-selected="source.value == groupConfigState.summary.demographics.source_id">
+                        ng-selected="source.value == groupConfigData.summary.demographics.source_id">
                         {{source.name}}
                     </option>
                 </select>
@@ -67,16 +73,18 @@
 
         <!-- [<[< ORIGINS >]>] -->
         <div class="entry margin" ng-show="groupSummaryData.demographics.is_use_origins">
-            <!-- <label for="origin">Origin of Booking<strong ng-show="">*</strong> -->
+            <label for="origin">
+                Origin of Booking
+                <!-- <strong ng-show="">*</strong> -->
             </label>
             <div class="select">
                 <select iscroll-stop-propagation name="origin" id="origin" 
-                    ng-class="{'placeholder': !groupConfigState.summary.demographics.booking_origin_id}" 
-                    ng-model="groupConfigState.summary.demographics.booking_origin_id">
-                    <option value="" translate>ORIGIN_BOOKING_PLACEHOLDER</option>
+                    ng-class="{'placeholder': !groupConfigData.summary.demographics.booking_origin_id}" 
+                    ng-model="groupConfigData.summary.demographics.booking_origin_id">
+                    <option value="null" selected translate>ORIGIN_BOOKING_PLACEHOLDER</option>
                     <option ng-repeat="origin in groupSummaryData.demographics.origins" 
                         value="{{origin.value}}" 
-                        ng-selected="origin.value == groupConfigState.summary.demographics.booking_origin_id">
+                        ng-selected="origin.value == groupConfigData.summary.demographics.booking_origin_id">
                         {{origin.name}}
                     </option>
                 </select>
@@ -85,14 +93,18 @@
 
 
         <div class="actions">
-            <button type="button" class="button blank" ng-hide="groupSummaryData.promptMandatoryDemographics" ng-click="closeDialog()">
+            <button type="button" 
+                class="button blank" 
+                ng-hide="groupSummaryData.promptMandatoryDemographics" 
+                ng-click="cancelDemographicChanges();closeDialog();">
                 Cancel
             </button>
 
             <button type="button" class="button"
                 ng-hide="groupSummaryData.promptMandatoryDemographics" 
                 ng-disabled="!isDemographicsFormValid(false)" 
-                ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'">
+                ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'",
+                ng-click="updateGroupSummary();closeDialog();">
                 Save
             </button>
 

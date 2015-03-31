@@ -66,7 +66,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		var ifMandatoryValuesEntered = function() {
 			var summary = $scope.groupConfigData.summary;
-			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
+			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date && !!summary.rate;
 		}
 
 		/**
@@ -79,7 +79,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				summary: summaryData,
 				holdStatusList: holdStatusList.hold_status_list,
 				selectAddons: false, // To be set to true while showing addons full view
-				addons: {}
+				addons: {},
+				selectedAddons: []
 			};
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
@@ -244,6 +245,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.company.name = ui.item.label;
 					$scope.groupConfigData.summary.company.id = ui.item.value;
+					if (!isInAddMode()) $scope.updateGroupSummary();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
@@ -272,6 +274,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
+					if (!isInAddMode()) $scope.updateGroupSummary();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
