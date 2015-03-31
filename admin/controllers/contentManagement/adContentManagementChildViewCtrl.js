@@ -27,7 +27,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
     var data = {};
     data.id = id;
     data.parent_id = $scope.parent_id;
-    data.position = position;
+    data.position = position +1;
     $scope.invokeApi(ADContentManagementSrv.saveComponentOrder, data , successCallbackSavePosition);
 
   }  
