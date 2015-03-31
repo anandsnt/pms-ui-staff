@@ -281,6 +281,22 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
+		 * method to set groupConfigData.summary.addons_count
+		 */
+		$scope.computeAddonsCount = function() {
+			var count = 0;
+			angular.forEach($scope.groupConfigData.selectedAddons, function(addon) {
+				count += parseInt(addon.addon_count);
+			})
+			if (count > 0) {
+				$scope.groupConfigData.summary.addons_count = count;
+			} else {
+				$scope.groupConfigData.summary.addons_count = null;
+			}
+
+		}
+
+		/**
 		 * function to initialize things for group config.
 		 * @return - None
 		 */

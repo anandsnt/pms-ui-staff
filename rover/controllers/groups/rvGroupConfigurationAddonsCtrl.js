@@ -128,6 +128,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 		$scope.selectAddon = function(addon, addonCount) {
 			var onEnhanceSuccess = function(data) {
 					$scope.groupConfigData.selectedAddons = data;
+					$scope.computeAddonsCount();
 					$scope.openAddonsPopup();
 				},
 				onEnhanceFailure = function(errorMessage) {
@@ -148,7 +149,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 		$scope.removeAddon = function(addon) {
 			var onRemoveAddonSuccess = function(data) {
 					$scope.groupConfigData.selectedAddons = data;
-					// $scope.openAddonsPopup();
+					$scope.computeAddonsCount();
 				},
 				onRemoveAddonFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;

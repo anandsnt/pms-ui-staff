@@ -8,7 +8,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			releaseOnDate: $rootScope.businessDate,
 			demographics: null,
 			promptMandatoryDemographics: false,
-			isDemographicsPopupOpen: false
+			isDemographicsPopupOpen: false,
+			newNote: ""
 		}
 
 		var summaryMemento = {};
@@ -229,7 +230,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.removeAddon = function(addon) {
 			var onRemoveAddonSuccess = function(data) {
 					$scope.groupConfigData.selectedAddons = data;
-					// $scope.openAddonsPopup();
+					$scope.computeAddonsCount();
 				},
 				onRemoveAddonFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -244,6 +245,45 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				}
 			});
 		}
+
+		$scope.saveGroupNote = function() {
+			var onSaveGroupNoteSuccess = function(data) {
+					$scope.groupConfigData.summary.notes = data.notes;
+					$scope.groupSummaryData.newNote = "";
+					$scope.refreshScroller("groupSummaryScroller");
+				},
+				onSaveGroupNoteFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+
+			$scope.callAPI(rvGroupConfigurationSrv.saveGroupNote, {
+				successCallBack: onSaveGroupNoteSuccess,
+				failureCallBack: onSaveGroupNoteFailure,
+				params: {
+					"notes": $scope.groupSummaryData.newNote,
+					"group_id": $scope.groupConfigData.summary.group_id
+				}
+			});
+		}
+
+		$scope.removeGroupNote = function(noteId) {
+			var onRemoveGroupNoteSuccess = function(data) {
+					$scope.groupConfigData.summary.notes = data.notes;
+					$scope.refreshScroller("groupSummaryScroller");
+				},
+				onRemoveGroupNoteFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+
+			$scope.callAPI(rvGroupConfigurationSrv.removeGroupNote, {
+				successCallBack: onRemoveGroupNoteSuccess,
+				successCallBack: onRemoveGroupNoteSuccess,
+				params: {
+					"note_id": noteId,
+				}
+			});
+		}
+
 		initGroupSummaryView();
 	}
 ]);
