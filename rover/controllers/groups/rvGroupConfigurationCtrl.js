@@ -145,7 +145,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 						$scope.errorMessage = errorMessage;
 					};
 
-				$scope.callAPI(rvGroupConfigurationSrv.addGroupEnhancement, {
+				$scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
 					successCallBack: onGroupSaveSuccess,
 					failureCallBack: onGroupSaveFailure,
 					params: {

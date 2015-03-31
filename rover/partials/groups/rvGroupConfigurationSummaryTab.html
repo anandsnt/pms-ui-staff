@@ -37,19 +37,22 @@
                 <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
                 <input id="group-block-from" ng-if="!isInAddMode()" type="text" value="{{groupConfigData.summary.block_from | date:dateFormat}}" readonly />
                 <!-- If new group, add class "datepicker" -->
-                <input id="group-block-from" ng-if="isInAddMode()" class="datepicker" type="text" ui-date="fromDateOptions" ui-date-format ng-model="groupConfigData.summary.block_from " readonly />
+                <input id="group-block-from" ng-if="isInAddMode()" class="datepicker" type="text" ui-date="fromDateOptions" ui-date-format ng-model="groupConfigData.summary.block_from " readonly 
+                    ng-class="{'not-selected': !groupConfigData.summary.block_from}"/>
             </div>
             <div class="entry has-datepicker">
                 <label for="group-block-to">To</label>
                 <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
                 <input ng-if="!isInAddMode()" id="group-block-to" type="text" value="{{groupConfigData.summary.block_to | date:dateFormat}}" readonly />
                 <!-- If new group, add class "datepicker" -->
-                <input id="group-block-to" ng-if="isInAddMode()" class="datepicker" type="text" ui-date="toDateOptions" ui-date-format ng-model="groupConfigData.summary.block_to" readonly />
+                <input id="group-block-to" ng-if="isInAddMode()" class="datepicker" type="text" ui-date="toDateOptions" ui-date-format ng-model="groupConfigData.summary.block_to" readonly 
+                    ng-class="{'not-selected': !groupConfigData.summary.block_to}"/>
             </div>
             <div class="entry full-width with-button has-datepicker">
                 <label for="group-release-date">Room Release Date</label>
                 <!-- releaseDateOptions -->
-                <input class="datepicker" type="text" ui-date="releaseDateOptions" ui-date-format ng-model="groupConfigData.summary.release_date" readonly />
+                <input class="datepicker" type="text" ui-date="releaseDateOptions" ui-date-format ng-model="groupConfigData.summary.release_date" readonly 
+                    ng-class="{'not-selected': !groupConfigData.summary.release_date}"/>
                 <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode()}">Release Now</button>
                 <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
             </div>
