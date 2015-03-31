@@ -65,15 +65,9 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 		else{
 	 			$scope.roomTypeData.is_suite = false;
 	 		}
-
-			if (false) {
-				$scope.roomTypeData.send_request_interface = true;
-			} else {
-				$scope.roomTypeData.send_request_interface = false;
-			};
 	 	};
 	 	var data = {"id":id };
-	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data , successCallbackRender);
+	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data, successCallbackRender);
 	};
 
    /*
@@ -177,7 +171,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 			"is_pseudo_room_type": "",
 			"is_suite": "",
 			"image_of_room_type": "",
-			"send_request_interface": false
+			"is_room_type_ows_request_per_status_type": false
 		};
 		$timeout(function() {
             $location.hash('new-form-holder');
