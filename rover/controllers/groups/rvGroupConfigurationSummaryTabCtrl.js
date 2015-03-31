@@ -7,8 +7,26 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.groupSummaryData = {
 			releaseOnDate: $rootScope.businessDate,
 			demographics: null,
-			promptMandatoryDemographics: false
+			promptMandatoryDemographics: false,
+			isDemographicsPopupOpen: false
 		}
+
+		var summaryMemento = {};
+
+		var initGroupSummaryView = function() {
+			// Have a handler to update the summary - IFF in edit mode
+			if (!$scope.isInAddMode()) {
+				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
+					if (!angular.equals(summaryMemento, $scope.groupConfigData.summary) && !$scope.groupSummaryData.isDemographicsPopupOpen) {
+						//data has changed
+						summaryMemento = angular.copy($scope.groupConfigData.summary);
+						//call the updateGroupSummary method from the parent controller
+						$scope.updateGroupSummary();
+					}
+				});
+			}
+		}
+
 
 
 		$scope.fromDateOptions = {
@@ -77,14 +95,20 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * Demographics Popup Handler
 		 * @return undefined
 		 */
+		var demographicsMemento = {};
 		$scope.openDemographicsPopup = function() {
 			var showDemographicsPopup = function() {
+					$scope.groupSummaryData.isDemographicsPopupOpen = true;
+					demographicsMemento = angular.copy($scope.groupConfigData.summary.demographics);
 					ngDialog.open({
 						template: '/assets/partials/groups/groupDemographicsPopup.html',
 						className: '',
 						scope: $scope,
 						closeByDocument: false,
-						closeByEscape: false
+						closeByEscape: false,
+						preCloseCallback: function() {
+							$scope.groupSummaryData.isDemographicsPopupOpen = false;
+						}
 					});
 				},
 				onFetchDemographicsSuccess = function(demographicsData) {
@@ -105,6 +129,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				showDemographicsPopup();
 			}
 
+		}
+
+
+		$scope.cancelDemographicChanges = function() {
+			$scope.groupConfigData.summary.demographics = demographicsMemento;
 		}
 
 		/**
@@ -172,7 +201,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				}
 			})
 		}
-
-
+		initGroupSummaryView();
 	}
 ]);

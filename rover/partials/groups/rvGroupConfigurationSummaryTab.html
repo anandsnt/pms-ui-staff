@@ -1,5 +1,5 @@
-<form id="group-summary" name="group-summary" class="form card-tab scrollable" ng-controller="rvGroupConfigurationSummaryTab" ng-iscroll="groupSummaryScroller" ng-iscroll-delay="500">
-    <div class="wrapper">
+<form id="group-summary" name="group-summary" class="form card-tab scrollable" ng-controller="rvGroupConfigurationSummaryTab" ng-iscroll="groupSummaryScroller" ng-iscroll-delay="500" outside-click-handler>
+    <div class="wrapper"> 
         <div class="holder left">
             <strong class="h3">Group Info</strong>
             <div class="entry full-width">
@@ -12,7 +12,7 @@
             </div>
             <div class="entry">
                 <label for="group-firstname">First Name</label>
-                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text" ng-change="updateGroupSummary()"/>
+                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text"/>
             </div>
             <div class="entry margin">
                 <label for="group-lastname">Last Name</label>
@@ -79,9 +79,9 @@
             <div class="entry full-width with-button">
                 <label for="group-rate">Rate</label>
                 <div class="select">
-                    <select id="group-rate">
+                    <select id="group-rate" ng-model="groupConfigData.summary.rate">
                         <option value="" selected>Select Rate</option>
-                        <option value="-1">Custom Rate</option>
+                        <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>
                         <!-- ... repeat for all rates -->
                     </select>
                 </div>

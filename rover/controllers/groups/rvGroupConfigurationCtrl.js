@@ -66,7 +66,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		var ifMandatoryValuesEntered = function() {
 			var summary = $scope.groupConfigData.summary;
-			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
+			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date && !!summary.rate;
 		}
 
 		/**
@@ -244,6 +244,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.company.name = ui.item.label;
 					$scope.groupConfigData.summary.company.id = ui.item.value;
+					if (!isInAddMode()) $scope.updateGroupSummary();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
@@ -272,6 +273,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
+					if (!isInAddMode()) $scope.updateGroupSummary();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
