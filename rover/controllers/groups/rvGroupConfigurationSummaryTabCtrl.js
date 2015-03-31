@@ -230,7 +230,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.removeAddon = function(addon) {
 			var onRemoveAddonSuccess = function(data) {
 					$scope.groupConfigData.selectedAddons = data;
-					// $scope.openAddonsPopup();
+					$scope.computeAddonsCount();
 				},
 				onRemoveAddonFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
