@@ -312,7 +312,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	     * @return undefined
 	     */
 	    var successCallBackOfAvailabilityAndBARfetch = function(data){
-	    	$scope.roomTypes = data.results;	    	
+	    	$scope.availabilityAndBAR = data.results;
 	    };
 
 	    /**
@@ -328,8 +328,9 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	     * When any of the things reqd to open popup is failed
 	     * @return undefined
 	     */
-	    var failedToFetchAllReqdForRoomAndRatesPopup = function(){
-	    	console.log('hey am failed');
+	    var failedToFetchAllReqdForRoomAndRatesPopup = function(errorMessage){
+	    	$scope.errorMessage = errorMessage;
+	    	$scope.$emit('hideLoader');
 	    };
 
 		/**

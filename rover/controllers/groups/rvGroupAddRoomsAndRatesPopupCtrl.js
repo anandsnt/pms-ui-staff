@@ -15,6 +15,20 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			util) {
 
 
+
+		/**
+		 * we have to form a object with roomtype and best available rate (BAR)
+		 * since in response, BAR is date wise and we have to get min. among them
+		 * key will be roomtype and value will be BAR (best available rate)
+		 * @return {undefined}
+		 */
+		var formBestAvailableRateAgainstRoomType = function(){
+			var roomTypeListInEachDay = _.pluck($scope.availabilityAndBAR, "room_types");
+
+			//_.each (roomTypeListInEachDay, );
+				
+		};
+
 		/**
 		 * to initialize rooms & rates popup
 		 * @return undefined
@@ -41,6 +55,9 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			if ($scope.selectedRoomTypeAndRates.length == 0){
 				$scope.selectedRoomTypeAndRates.push (util.deepCopy ($scope.defaultRoomTypeDetails) );
 			}
+
+			//form best available rate dictionary
+			formBestAvailableRateAgainstRoomType ();
 		}();
 
 		/**
