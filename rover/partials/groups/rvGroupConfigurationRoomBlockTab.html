@@ -1,4 +1,4 @@
-<form id="group-room-block" name="group-room-block" class="form card-tab rooms" ng-controller="rvGroupRoomBlockCtrl" ng-iscroll="room_block_scroller" ng-iscroll-delay="500">
+<form id="group-room-block" name="group-room-block" class="form card-tab rooms" ng-controller="rvGroupRoomBlockCtrl" ng-iscroll="room_block_scroller" >
 	<div class="wrapper" >
 		<div id="group-room-block-header" class="tab-header with-filters">
 		    <div class="entry date-range">
@@ -109,7 +109,7 @@
 		    </div>
 
 		    <!-- Room block days -->
-		    <div class="room-block-timeline scrollable" ng-hide="true">
+		    <div class="room-block-timeline scrollable" ng-hide="shouldHideRoomBlockDetailsView()">
 		        <ul class="wrapper" style="width:{number of days*190}px;">
 		            <li>
 		                <div class="inner">
@@ -122,7 +122,7 @@
 		    </div>
 
 		    <!-- Room block grid -->
-		    <div class="room-block-grid scrollable" ng-hide="true">
+		    <div class="room-block-grid scrollable" ng-hide="shouldHideRoomBlockDetailsView()">
 		        <div class="wrapper" style="width:{number of days*190}px;">
 		            <div class="row">
 		                <div class="column">

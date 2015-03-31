@@ -45,4 +45,21 @@ sntRover.service('rvUtilSrv', [function(){
 			return JSON.stringify (string);
 		};
 
+		/**
+		* function to get List of dates between two dates
+		* param1 {Date Object}
+		* param2 {Date Object}
+		* return Array of Date Objects
+		*/
+		this.getDatesBetweenTwoDates = function(fromDate, toDate){
+		    var datesBetween = [];
+
+		    while(fromDate <= toDate){
+		        datesBetween.push(new Date(fromDate));
+		        fromDate.setDate(fromDate.getDate() + 1);
+		    }
+
+		    return datesBetween;
+		}
+
 }]);

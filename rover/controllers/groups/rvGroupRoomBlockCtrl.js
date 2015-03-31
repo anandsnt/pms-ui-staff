@@ -5,12 +5,14 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	'rvPermissionSrv',
 	'ngDialog',
 	'rvGroupConfigurationSrv',
+	'$timeout',
 	function($scope,
 			$rootScope,
 			$filter,
 			rvPermissionSrv,
 			ngDialog,
-			rvGroupConfigurationSrv) {
+			rvGroupConfigurationSrv,
+			$timeout) {
 		
 		/**
 		* util function to check whether a string is empty
@@ -45,14 +47,22 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		};
 
 		/**
+		 * Function to get whethere from date & to date is filled or not
+		 * @return {Boolean} 
+		 */
+		var startDateOrEndDateIsEmpty = function() {
+			var isStartDateIsEmpty = $scope.isEmpty ($scope.startDate);
+			var isEndDateIsEmpty   = $scope.isEmpty ($scope.endDate);
+			return (isEndDateIsEmpty && isEndDateIsEmpty);
+		};
+
+		/**
 		 * Function to decide whether to disable Create block button
 		 * if from date & to date is not defined, will return true 
 		 * @return {Boolean} 
 		 */
 		$scope.shouldDisableCreateBlockButton = function() {
-			var isStartDateIsEmpty = $scope.isEmpty ($scope.startDate);
-			var isEndDateIsEmpty   = $scope.isEmpty ($scope.endDate);
-			return (isEndDateIsEmpty && isEndDateIsEmpty);
+			return startDateOrEndDateIsEmpty ();
 		};
 
 		/**
@@ -78,7 +88,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 * @return {Boolean}
 		 */
 		$scope.shouldHideAddRoomsButton = function() {
-			return ($scope.shouldHideUpdateButton() && !$scope.shouldHideRoomBlockDetailsView());
+			return (!$scope.shouldHideRoomBlockDetailsView());
 		};
 
 		/**
@@ -135,11 +145,11 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 
 		/**
 		 * Function to decide whether to disable Add Rooms & Rates button
-		 * for now we are checking only permission
+		 * for now we are checking only permission 
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableAddRoomsAndRate = function(){
-			return !hasPermissionToCreateRoomBlock ();
+			return startDateOrEndDateIsEmpty();
 		};
 
 		/**
@@ -147,8 +157,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 * @return {[type]} [description]
 		 */
 		$scope.shouldHideRoomBlockDetailsView = function(){
-			return (hasPermissionToCreateRoomBlock() &&
-					!$scope.displayGroupRoomBlockDetails);
+			return (!$scope.displayGroupRoomBlockDetails);
 		};
 		/**
 		 * to run angular digest loop,
@@ -178,7 +187,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 			$scope.endDateOptions.minDate = $scope.startDate;
 
 			//we have to show create button 
-			$scope.createButtonClicked = false;
+			//$scope.createButtonClicked = false;
 
 			runDigestCycle();
 		};
@@ -192,7 +201,7 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 			$scope.endDate = date;
 
 			//we have to show create button 
-			$scope.createButtonClicked = false;
+			//$scope.createButtonClicked = false;
 
 			runDigestCycle();
 		};
@@ -249,6 +258,9 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 */
 		$scope.clickedOnCreateButton = function(){
 			$scope.createButtonClicked = true;
+
+			//forming the dates between start & end
+			//$scope.datesBetweenStartAndEnd = util.getDatesBetweenTwoDates ()
 		};
 
 		/**
@@ -320,6 +332,8 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 */
 		$scope.showRoomBlockDetails = function(){
 			$scope.displayGroupRoomBlockDetails = true;
+
+			runDigestCycle();
 		};
 
 		/**
@@ -338,8 +352,12 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 	                } else if (isEmpty(ui.oldHeader)) { //means activating..
 	                    ui.newHeader.addClass('open');
 	                }
+	                
 	                //we have to refresh scroller afetr that
-	               refreshScroller();
+	                $timeout(function(){
+	                	refreshScroller();
+	                }, 350);
+	               
 	            }
 
 	        }; 
@@ -349,14 +367,19 @@ sntRover.controller('rvGroupRoomBlockCtrl',	[
 		 * @return None
 		 */
 		var initializeAddOrEditModeVariables = function(){
-			//variable used to track Create Button
-			$scope.createButtonClicked = false;
+			//variable used to track Create Button, as per sice we are only handling edit mode we are 
+			//proceeding with true TODO: Add reference here
+			$scope.createButtonClicked = true;
 
 			//variable used to track group room block details view
 			$scope.displayGroupRoomBlockDetails = false;
 
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
+
+			//dates between start date & end date
+			$scope.datesBetweenStartAndEnd = [];
+
 
 			var isInEditMode = !$scope.isInAddMode(),
 				refData 	= $scope.groupConfigData;
