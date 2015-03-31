@@ -22,6 +22,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			},
 			onClose: function(dateText, inst) {
 				$('#ui-datepicker-overlay').remove();
+			},
+			onSelect: function() {
+				$scope.groupConfigData.summary.block_from = dateFilter($scope.groupConfigData.summary.block_from, 'yyyy-MM-dd');
+				if (!$scope.groupConfigData.summary.release_date) {
+					$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+				}
 			}
 		};
 
@@ -36,6 +42,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			},
 			onClose: function(dateText, inst) {
 				$('#ui-datepicker-overlay').remove();
+			},
+			onSelect: function() {
+				$scope.groupConfigData.summary.block_to = dateFilter($scope.groupConfigData.summary.block_to, 'yyyy-MM-dd');
 			}
 		};
 
@@ -50,16 +59,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			},
 			onClose: function(dateText, inst) {
 				$('#ui-datepicker-overlay').remove();
+			},
+			onSelect: function() {
+				$scope.groupConfigData.summary.release_date = dateFilter($scope.groupConfigData.summary.release_date, 'yyyy-MM-dd');
 			}
 		};
-
-		$scope.fromDateChanged = function() {
-			$scope.groupConfigState.summary.block_from = dateFilter($scope.groupConfigState.summary.block_from, 'yyyy-MM-dd');
-		}
-
-		$scope.toDateChanged = function() {
-			$scope.groupConfigState.summary.block_to = dateFilter($scope.groupConfigState.summary.to_from, 'yyyy-MM-dd');
-		}
 
 		/**
 		 * Place holder method for future implementation of mandatory demographic data
@@ -105,9 +109,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		/**
 		 * Warn release the rooms
-		 * @return undefined 
+		 * @return undefined
 		 */
-		$scope.warnReleaseRooms = function(){
+		$scope.warnReleaseRooms = function() {
 			ngDialog.open({
 				template: '/assets/partials/groups/warnReleaseRoomsPopup.html',
 				className: '',
@@ -122,7 +126,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * Handle release rooms
 		 * @return undefined
 		 */
-		$scope.releaseRooms = function(){
+		$scope.releaseRooms = function() {
 			//TODO : HANDLE RELEASE ROOMS
 		}
 
@@ -146,7 +150,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * manage addons selection/ updates
 		 * @return undefined
 		 */
-		$scope.manageAddons = function() {			
+		$scope.manageAddons = function() {
 			// ADD ONS button: pop up standard Add On screen - same functionality as on Stay Card, select new or show small window and indicator for existing Add Ons
 			var onFetchAddonsSuccess = function(addonsData) {
 					console.log(addonsData);

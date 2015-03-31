@@ -12,7 +12,7 @@
             </div>
             <div class="entry">
                 <label for="group-firstname">First Name</label>
-                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text" />
+                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text" ng-change="updateGroupSummary()"/>
             </div>
             <div class="entry margin">
                 <label for="group-lastname">Last Name</label>
@@ -49,18 +49,18 @@
             <div class="entry full-width with-button has-datepicker">
                 <label for="group-release-date">Room Release Date</label>
                 <!-- releaseDateOptions -->
-                <input class="datepicker" type="text" ui-date="releaseDateOptions" ui-date-format ng-model="groupSummaryData.releaseOnDate" readonly />
+                <input class="datepicker" type="text" ui-date="releaseDateOptions" ui-date-format ng-model="groupConfigData.summary.release_date" readonly />
                 <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode()}">Release Now</button>
                 <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
             </div>
             <div class="entry clear">
                 <label for="group-hold-status">Hold Status</label>
                 <div class="select">
-                    <select id="group-hold-status">
-                        <option value="" selected>Set Status</option>
-                        <option value="tentative">Tentative</option>
-                        <option value="definite">Definite</option>
-                        <option value="cancel">Cancel</option>
+                    <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation>
+                        <option value="" selected translate>SET_STATUS</option>
+                        <option ng-repeat="holdstatus in groupConfigData.holdStatusList" value="{{holdstatus.value}}" ng-selected="holdstatus.value == groupConfigData.summary.hold_status">
+                            {{holdstatus.status_name}}
+                        </option>
                     </select>
                 </div>
             </div>

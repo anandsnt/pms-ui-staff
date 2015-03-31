@@ -30,15 +30,13 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				"rate": null,
 				"addons_count": null,
 				"notes": [],
-				"selected_room_types_rates": [
-					{
-						'selectedRoomType' 		: '',
-						'bestAvailableRate'		: '',
-						'singleOccupancyRate'	: '',
-						'doubleOccupancyRate'	: '',
-						'oneMoreAdultRate' 		: ''
-					}
-				]
+				"selected_room_types_rates": [{
+					'selectedRoomType': '',
+					'bestAvailableRate': '',
+					'singleOccupancyRate': '',
+					'doubleOccupancyRate': '',
+					'oneMoreAdultRate': ''
+				}]
 			}
 		};
 
@@ -46,15 +44,15 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 * Function to get list of Hold status to display
 		 * @return {Promise} - After resolving it will return the list of Hold status
 		 */
-		this.getHoldStatusList = function(){
+		this.getHoldStatusList = function() {
 			var deferred = $q.defer(),
 				url = '/ui/show?format=json&json_input=groups/hold_status_list.json';
 
 			rvBaseWebSrvV2.getJSON(url).then(
-				function(data){			
+				function(data) {
 					deferred.resolve(data);
 				},
-				function(errorMessage){
+				function(errorMessage) {
 					deferred.reject(errorMessage);
 				}
 			);
@@ -66,15 +64,15 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 * Function to get list of Room types
 		 * @return {Promise} - After resolving it will return the list of Hold Room types
 		 */
-		this.getAllRoomTypes = function(){
+		this.getAllRoomTypes = function() {
 			var deferred = $q.defer(),
 				url = '/api/room_types.json?is_exclude_pseudo=true';
 
 			rvBaseWebSrvV2.getJSON(url).then(
-				function(data){			
+				function(data) {
 					deferred.resolve(data);
 				},
-				function(errorMessage){
+				function(errorMessage) {
 					deferred.reject(errorMessage);
 				}
 			);
@@ -89,7 +87,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			if (params.groupId === "NEW_GROUP") {
 				deferred.resolve(self.baseConfigurationSummary);
 			} else {
-				url = '/ui/show?format=json&json_input=groups/1.json';
+				url = 'api/groups/' + params.groupId;
 				rvBaseWebSrvV2.getJSON(url, params).then(
 					function(data) {
 						deferred.resolve(data);
@@ -123,6 +121,34 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.accounts);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
+		this.updateGroupSummary = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/groups/' + data.summary.group_id;
+
+			rvBaseWebSrvV2.putJSON(url, data.summary)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
+		this.saveGroupSummary = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/groups';
+
+			rvBaseWebSrvV2.postJSON(url, data.summary)
+				.then(function(data) {
+					deferred.resolve(data);
 				}.bind(this), function(data) {
 					deferred.reject(data);
 				});

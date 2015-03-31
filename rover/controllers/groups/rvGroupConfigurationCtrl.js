@@ -33,7 +33,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return - None
 		 */
 		var setTitle = function() {
-			var title = $filter('translate')('GROUPS');
+			var title = $filter('translate')('GROUP_DETAILS');
 
 			// we are changing the title if we are in Add Mode
 			if ($scope.isInAddMode()) {
@@ -60,17 +60,29 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		}
 
 		/**
+		 * Function to check the mandatory values while saving the reservation
+		 * Handling in client side owing to alleged issues on import if handled in the server side
+		 * @return boolean [true if all the mandatory values are present]
+		 */
+		var ifMandatoryValuesEntered = function() {
+			var summary = $scope.groupConfigData.summary;
+			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
+		}
+
+		/**
 		 * function to form data model for add/edit mode
 		 * @return - None
 		 */
 		$scope.initializeDataModelForSummaryScreen = function() {
 			$scope.groupConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
-				summary: summaryData.summary,
+				summary: summaryData,
 				holdStatusList: holdStatusList.hold_status_list,
 				selectAddons: false, // To be set to true while showing addons full view
 				addons: {}
 			};
+
+			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
 		};
 
 		/**
@@ -119,7 +131,61 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return undefined
 		 */
 		$scope.saveNewGroup = function() {
-			console.log($scope.groupConfigData.summary);
+			$scope.errorMessage = "";
+			if (ifMandatoryValuesEntered()) {
+				var onGroupSaveSuccess = function(data) {
+						$scope.groupConfigData.summary.group_id = data.group_id;
+						$state.go('rover.groups.config', {
+							id: data.group_id
+						})
+						$stateParams.id = data.group_id;
+					},
+					onGroupSaveFailure = function(errorMessage) {
+						$scope.errorMessage = errorMessage;
+					};
+
+				$scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
+					successCallBack: onGroupSaveSuccess,
+					failureCallBack: onGroupSaveFailure,
+					params: {
+						summary: $scope.groupConfigData.summary
+					}
+				});
+			} else {
+				$scope.errorMessage = ["Group's name, from date, to date, release date and hold status are mandatory"];
+			}
+
+		}
+
+
+		/**
+		 * Update the group data
+		 * @return undefined
+		 */
+		$scope.updateGroupSummary = function() {
+			var onGroupUpdateSuccess = function(data) {
+					console.log(data);
+				},
+				onGroupUpdateFailure = function(errorMessage) {
+					console.log(errorMessage);
+				};
+
+			$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
+				successCallBack: onGroupUpdateSuccess,
+				failureCallBack: onGroupUpdateFailure,
+				params: {
+					summary: $scope.groupConfigData.summary
+				}
+			});
+		}
+
+		/**
+		 * Code to duplicate group
+		 * Future functionality
+		 * @return undefined
+		 */
+		$scope.duplicateGroup = function() {
+			//TODO: Duplicate Group - Future functionality
 		}
 
 		/**

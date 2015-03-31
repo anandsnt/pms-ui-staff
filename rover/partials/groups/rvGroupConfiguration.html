@@ -1,5 +1,6 @@
 <div class="group-card cards fullscreen" ng-class="{'new-card': isInAddMode()}">
     <div class="cards-wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Header -->
         <header class="cards-header">
             <div id="group-card-header" class="card-header">
@@ -19,10 +20,13 @@
                         <!-- Search only travel agents -->
                     </div>
                 </form>
-                <div class="card-actions">
+                <div class="card-actions" ng-hide="isInAddMode()">
+                    <button type="button" class="button blue" ng-click="duplicateGroup()">Duplicate</button>
+                </div>                
+                <div class="card-actions" ng-show="isInAddMode()">
                     <button type="button" class="button green" ng-click="saveNewGroup()">Save Group</button>
                     <button type="button" class="button blank" ng-click="discardNewGroup()">Discard</button>
-                </div>
+                </div>                
             </div>
         </header>
         <!-- Content -->
