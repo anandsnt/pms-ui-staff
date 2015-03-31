@@ -2,7 +2,9 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 	'$scope',
 	'$rootScope',
 	'RVReservationAddonsSrv',
-	function($scope, $rootScope, RVReservationAddonsSrv) {
+	'rvGroupConfigurationSrv',
+	'ngDialog',
+	function($scope, $rootScope, RVReservationAddonsSrv, rvGroupConfigurationSrv, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller("enhanceGroupStays");
@@ -107,6 +109,59 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 
 		if ($scope.isInAddonSelectionMode()) {
 			$scope.fetchAddons();
+		}
+
+		/**
+		 * Method used open the addons popup
+		 * @return undefined
+		 */
+		$scope.openAddonsPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/groups/groupAddonsPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		}
+
+		$scope.selectAddon = function(addon, addonCount) {
+			var onEnhanceSuccess = function(data) {
+					$scope.groupConfigData.selectedAddons = data;
+					$scope.openAddonsPopup();
+				},
+				onEnhanceFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+
+			$scope.callAPI(rvGroupConfigurationSrv.addGroupEnhancement, {
+				successCallBack: onEnhanceSuccess,
+				failureCallBack: onEnhanceFailure,
+				params: {
+					"addon_id": addon.id,
+					"addon_count": parseInt(addonCount),
+					"id": $scope.groupConfigData.summary.group_id
+				}
+			});
+		}
+
+		$scope.removeAddon = function(addon) {
+			var onRemoveAddonSuccess = function(data) {
+					$scope.groupConfigData.selectedAddons = data;
+					// $scope.openAddonsPopup();
+				},
+				onRemoveAddonFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+
+			$scope.callAPI(rvGroupConfigurationSrv.removeGroupEnhancement, {
+				successCallBack: onRemoveAddonSuccess,
+				failureCallBack: onRemoveAddonFailure,
+				params: {
+					"addon_id": addon.id,
+					"id": $scope.groupConfigData.summary.group_id
+				}
+			});
 		}
 	}
 ]);

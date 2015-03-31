@@ -156,6 +156,51 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.addGroupEnhancement = function(data) {
+			var deferred = $q.defer(),
+				url = '/api/groups/' + data.id + '/addons';
+
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+
+		}
+
+		this.removeGroupEnhancement = function(data) {
+			var deferred = $q.defer(),
+				url = '/api/groups/' + data.id + '/addons';
+
+			rvBaseWebSrvV2.deleteJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+
+		}
+
+
+		this.getGroupEnhancements = function(data) {
+			var deferred = $q.defer(),
+				url = '/api/groups/' + data.id + '/addons';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
 
 	}
 ]);

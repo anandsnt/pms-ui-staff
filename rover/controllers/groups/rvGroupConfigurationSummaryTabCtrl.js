@@ -159,12 +159,38 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//TODO : HANDLE RELEASE ROOMS
 		}
 
-
 		/**
 		 * Method to show addons popup
 		 * @return undefined
 		 */
 		$scope.viewAddons = function() {
+			var onFetchAddonSuccess = function(data) {
+					$scope.groupConfigData.selectedAddons = data;
+					if ($scope.groupConfigData.selectedAddons.length > 0) {
+						$scope.openAddonsPopup();
+					} else {
+						$scope.manageAddons();
+					}
+				},
+				onFetchAddonFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				}
+
+			$scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
+				successCallBack: onFetchAddonSuccess,
+				failureCallBack: onFetchAddonFailure,
+				params: {
+					"id": $scope.groupConfigData.summary.group_id
+				}
+			});
+		}
+
+
+		/**
+		 * Method used open the addons popup
+		 * @return undefined
+		 */
+		$scope.openAddonsPopup = function() {
 			ngDialog.open({
 				template: '/assets/partials/groups/groupAddonsPopup.html',
 				className: '',
@@ -174,7 +200,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			});
 		}
 
-
 		/**
 		 * manage addons selection/ updates
 		 * @return undefined
@@ -182,7 +207,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.manageAddons = function() {
 			// ADD ONS button: pop up standard Add On screen - same functionality as on Stay Card, select new or show small window and indicator for existing Add Ons
 			var onFetchAddonsSuccess = function(addonsData) {
-					console.log(addonsData);
 					$scope.groupConfigData.addons = addonsData;
 					$scope.openGroupAddonsScreen();
 				},
@@ -200,6 +224,25 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					is_not_rate_only: true
 				}
 			})
+		}
+
+		$scope.removeAddon = function(addon) {
+			var onRemoveAddonSuccess = function(data) {
+					$scope.groupConfigData.selectedAddons = data;
+					// $scope.openAddonsPopup();
+				},
+				onRemoveAddonFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+
+			$scope.callAPI(rvGroupConfigurationSrv.removeGroupEnhancement, {
+				successCallBack: onRemoveAddonSuccess,
+				failureCallBack: onRemoveAddonFailure,
+				params: {
+					"addon_id": addon.id,
+					"id": $scope.groupConfigData.summary.group_id
+				}
+			});
 		}
 		initGroupSummaryView();
 	}

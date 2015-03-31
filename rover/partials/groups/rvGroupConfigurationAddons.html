@@ -17,8 +17,8 @@
                     <div class="addon-items">
 
                         <div class="options">
-                            <button type="button" ng-click="showEnhancementsPopup()" class="button white"><span class="label" translate>ENHANCEMENTS</span>
-                            <span class="count">{{ existingAddonsLength }}</span></button>
+                            <button type="button" ng-click="openAddonsPopup()" class="button white"><span class="label" translate>ENHANCEMENTS</span>
+                            <span class="count">{{ groupConfigData.selectedAddons.length }}</span></button>
                         </div>
                         <!-- FIX style="margin-top:60px; width: 100%;" -->
                         <ul id="addon-best-sellers" class="addon-tab">

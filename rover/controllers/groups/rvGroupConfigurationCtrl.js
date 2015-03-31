@@ -79,7 +79,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				summary: summaryData,
 				holdStatusList: holdStatusList.hold_status_list,
 				selectAddons: false, // To be set to true while showing addons full view
-				addons: {}
+				addons: {},
+				selectedAddons: []
 			};
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
@@ -144,7 +145,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 						$scope.errorMessage = errorMessage;
 					};
 
-				$scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
+				$scope.callAPI(rvGroupConfigurationSrv.addGroupEnhancement, {
 					successCallBack: onGroupSaveSuccess,
 					failureCallBack: onGroupSaveFailure,
 					params: {
