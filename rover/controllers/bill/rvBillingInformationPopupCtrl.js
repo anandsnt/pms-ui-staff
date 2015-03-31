@@ -311,5 +311,29 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
 	};
+
+    /**
+    * CICO-14951 :function to delete routing info from default billing info
+    */
+    $scope.deleteRoute = function(){
+        var successCallback = function(data) {
+            $scope.$emit('hideLoader');
+        };
+        var errorCallback = function(errorMessage) {
+            $scope.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage',errorMessage);
+        };
+
+        var data = {};
+        data.id = $scope.reservationData.reservation_id;
+        
+        console.log(data);
+        $scope.invokeApi(RVBillinginfoSrv.deleteRoute, data, successCallback, errorCallback);
+    }
+    // CICO-14951
+    $scope.deleteBillingInfo = function(){
+        console.log("deleteBillingInfo");
+        $scope.deleteRoute();
+    };
 	
 }]);
