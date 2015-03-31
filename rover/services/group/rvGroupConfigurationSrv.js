@@ -86,7 +86,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.resolve(angular.copy(self.baseConfigurationSummary));
 			} else {
 				url = 'api/groups/' + params.groupId;
-				rvBaseWebSrvV2.getJSON(url, params).then(
+				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
 						deferred.resolve(data);
 					},
@@ -199,6 +199,31 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.saveGroupNote = function(data){
+			var deferred = $q.defer(),
+				url = 'api/groups/save_group_note';
+
+			rvBaseWebSrvV2.postJSON(url,data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;			
+		}
+
+		this.removeGroupNote = function(data){
+			var deferred = $q.defer(),
+				url = 'api/groups/delete_group_note';
+
+			rvBaseWebSrvV2.deleteJSON(url,data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;			
+		}
 
 	}
 ]);

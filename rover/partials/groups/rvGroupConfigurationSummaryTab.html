@@ -100,8 +100,8 @@
             <!-- Notes -->
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">
-                <textarea id="group-notes" placeholder="Write a note" rows="2"></textarea>
-                <button type="button" class="button brand-colors post">Post</button>
+                <textarea id="group-notes" ng-model="groupSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
+                <button type="button" class="button brand-colors post" ng-click="saveGroupNote()">Post</button>
             </div>
             <ul class="notes">
                 <li ng-repeat="note in groupConfigData.summary.notes">
@@ -109,14 +109,14 @@
                         <img src="{{note.image}}" alt="" />
                     </figure>
                     <div class="note-title">
-                        <h4>{{note.posted_by}}</h4>
-                        <time datetime="{timestamp}">
-                            <span class="time">{{note.time}}</span>
-                            <span class="date">{{note.date}}</span>
+                        <h4>{{note.username}}</h4>
+                        <time datetime="{{note.posted_date}}">
+                            <span class="time">{{note.posted_date}}</span>
+                            <span class="date">{{note.posted_time}}</span>
                         </time>
-                        <button type="button" class="icons icon-trash">Delete post</button>
+                        <button type="button" class="icons icon-trash" ng-click="removeGroupNote(note.note_id)">Delete post</button>
                     </div>
-                    <p>{{note.text}}</p>
+                    <p>{{note.description}}</p>
                 </li>
             </ul>
         </div>
