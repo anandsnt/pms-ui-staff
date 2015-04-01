@@ -31,8 +31,7 @@ sntRover.service('rvUtilSrv', [function(){
 		* @return {boolean}
 		*/
 		this.isEmpty = function(string){
-			console.log ('string: ' + string);
-			console.log (this.escapeNull(string));
+			if (typeof string === "number") string = string.toString();
 			return (this.escapeNull(string).trim() === '');
 		};
 
@@ -63,5 +62,13 @@ sntRover.service('rvUtilSrv', [function(){
 
 		    return datesBetween;
 		}
+
+		this.toMilliSecond = function(dateString){
+			return (new tzIndependentDate(dateString) * 1)
+		};
+
+		this.addOneDay = function(dateString){
+			return ((new tzIndependentDate(dateString) * 1) + (24 * 3600 * 1000))
+		};
 
 }]);

@@ -401,12 +401,24 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		$scope.showRoomBlockDetails = function() {
 			$scope.displayGroupRoomBlockDetails = true;
 			//forming the dates between start & end
-			$scope.datesBetweenStartAndEnd = [];
-			for (var d = [], ms = new tzIndependentDate($scope.groupConfigData.summary.block_from) * 1, last = new tzIndependentDate($scope.groupConfigData.summary.block_to) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-				$scope.datesBetweenStartAndEnd.push({
-					date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
-					columnHeader: dateFilter(new tzIndependentDate(ms), $rootScope.monthAndDate)
-				});
+			
+
+			var startDate 	= $scope.groupConfigData.summary.block_from,
+				lastDate 	= $scope.groupConfigData.summary.block_to;
+
+			startDate = util.toMilliSecond (startDate);
+			lastDate = util.toMilliSecond (lastDate);
+
+			$scope.roomBlockGridDetails = [];
+			//forming the main data model for room block details
+			//will be based on each day
+			for (;startDate <= lastDate; startDate = util.addOneDay(startDate)) {
+				$scope.roomBlockGridDetails.push(
+					{
+						date: dateFilter(new tzIndependentDate(startDate), 'yyyy-MM-dd'),
+						columnHeader: dateFilter(new tzIndependentDate(startDate), $rootScope.monthAndDate)
+					}
+				);
 			}
 			runDigestCycle();
 			//we have to refresh scroller afetr that			
@@ -419,7 +431,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForRoomBlockTimeLine = function() {
-			return ($scope.datesBetweenStartAndEnd.length * 190) + 'px';
+			return ($scope.roomBlockGridDetails.length * 190) + 'px';
 		};
 
 		/**
