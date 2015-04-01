@@ -33,6 +33,8 @@
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" label="{{ 'PSEUDO_ROOM_TYPE' | translate }}"></ad-checkbox>
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" label="{{ 'SUITE_ROOM_TYPE' | translate }}"></ad-checkbox>
 			<ad-checkbox ng-show="is_room_status_import_per_room_type_on && !isStandAlone" div-class="full-width" is-checked="roomTypeData.is_room_type_ows_request_per_status_type" label="{{ 'SEND_INTERFACE_REQUEST' | translate }}"></ad-checkbox>
+			<span>{{ is_room_status_import_per_room_type_on }}</span>
+			<span>{{ roomTypeData.is_room_type_ows_request_per_status_type }}</span>
 		</fieldset>
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
