@@ -148,7 +148,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 	// CICO-14951 to delete default routings
 	this.deleteDefaultRouting = function(data){
 		var deferred = $q.defer();
-		var url = 'api/default_routings/'+data.id;
+		var url = 'api/default_account_routings/'+data.id;
 			BaseWebSrvV2.deleteJSON(url).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){
