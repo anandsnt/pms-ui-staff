@@ -1,6 +1,8 @@
 admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
 	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate) {
 
+		console.log(ADAppSrv);
+
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
 
@@ -45,12 +47,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
 	    $rootScope.businessDate = businessDate;
-	
+
 	    var routeChange = function(event, newURL) {
 	      event.preventDefault();
 	      return;
 	    };
-	
+
 	    $rootScope.$on('$locationChangeStart', routeChange);
 	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
@@ -63,7 +65,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					menuIndex: "dashboard",
 					submenu: [],
 					iconClass: "icon-dashboard"
-				}, 
+				},
 				// {
 				// 	title: "MENU_AVAILABILITY",
 				// 	action: "",
@@ -75,7 +77,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				// 		title: "MENU_AVAILABILITY",
 				// 		action: ""
 				// 	}]
-				// }, 
+				// },
 				{
 					title: "MENU_FRONT_DESK",
 					//hidden: true,
@@ -186,7 +188,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				  submenu: [],
 				  iconClass: "icon-housekeeping"
 				}];
-				
+
 				if(!$rootScope.is_auto_change_bussiness_date){
 			          var eodSubMenu =  {
 						title: "MENU_END_OF_DAY",
@@ -197,7 +199,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			                menu.submenu.push(eodSubMenu)
 			              }
 			          });
-       			};  				
+       			};
 
 			} else {
 					$scope.menu = [{
@@ -239,14 +241,14 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				}];
 			}
 		};
-		
+
 		/**
 		* in case of we want to reinitialize left menu based on new $rootScope values or something
 		* which set during it's creation, we can use
-		*/		
+		*/
 		$scope.$on('refreshLeftMenu', function(event){
 			setupLeftMenu();
-		});	
+		});
 
 		$scope.$on("updateSubMenu", function(idx, item) {
 			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
@@ -329,7 +331,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 			if ($scope.bookMarks.length <= $scope.bookmarkIdList.length) {
 				for (var i = 0; i < $scope.bookmarkIdList.length; i++) {
-					//checking bookmarked id's in copiedBookark id's, if it is no, call web service	    		
+					//checking bookmarked id's in copiedBookark id's, if it is no, call web service
 					if (copiedBookMarkIds.indexOf($scope.bookmarkIdList[i]) == -1) {
 						index = i;
 						var data = {
@@ -425,7 +427,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 * @param {object} response
 		 */
 		$scope.fetchHotelDetailsSuccessCallback = function(data) {
-			
+
 			if (data.language) {
 		      $translate.use(data.language.value);
 		      $translate.fallbackLanguage('EN');
@@ -439,19 +441,21 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		      }, 1000); //Word around.
 		    } else {
 		      $translate.use('EN');
-		    };	
+		    };
 		    //to hide eod submenu conditionally
 			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
-				
+
 			//set flag if standalone PMS
 			if (data.pms_type === null)
-				$scope.isStandAlone = true;			
+				$scope.isStandAlone = true;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
+
+			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 
 			setupLeftMenu();
 
@@ -474,8 +478,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
         /*
          * Admin menu data
          */
-        
-        
+
+
 		$scope.data = adminMenuData;
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		$scope.bookMarks = $scope.data.bookmarks;
@@ -484,19 +488,19 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		for (var i = 0; i < $scope.data.bookmarks.length; i++) {
 			$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
 		}
-		
+
 		if ($scope.isHotelAdmin) {
 			$scope.getLanguage();
 		}else{
 			$translate.use('EN');
 		}
 
-	
 
-		
-		
 
-		// if there is any error occured 
+
+
+
+		// if there is any error occured
 		$scope.$on("showErrorMessage", function($event, errorMessage) {
 			$event.stopPropagation();
 			$scope.errorMessage = errorMessage;
@@ -547,13 +551,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			    else if($rootScope.previousState){
 			      $state.go($rootScope.previousState);
 			    }
-			    else 
+			    else
 			    {
 			      $state.go('admin.dashboard', {menu : 0});
 			    }
-			  
+
 		  	};
 	}
-	
-	
+
+
 ]);
