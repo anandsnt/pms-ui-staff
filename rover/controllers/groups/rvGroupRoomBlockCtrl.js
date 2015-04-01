@@ -101,7 +101,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldHideAddRoomsButton = function() {
-			return (!$scope.shouldHideRoomBlockDetailsView());
+			return (!$scope.shouldHideRoomBlockDetailsView() 
+				&& $scope.groupConfigData.summary.selected_room_types_rates.length >= 0);
 		};
 
 		/**
