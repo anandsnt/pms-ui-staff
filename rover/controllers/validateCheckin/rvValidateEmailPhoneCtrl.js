@@ -52,6 +52,9 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			//TO DO : gO TO ROOM UPGRAFED VIEW
 			  $state.go('rover.reservation.staycard.upgrades', {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 		}
+		else{
+			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		}
 	};
 	$scope.submitAndGoToCheckin = function(){
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
