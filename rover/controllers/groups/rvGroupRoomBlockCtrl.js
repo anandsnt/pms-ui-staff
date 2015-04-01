@@ -416,7 +416,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				$scope.roomBlockGridDetails.push(
 					{
 						date: dateFilter(new tzIndependentDate(startDate), 'yyyy-MM-dd'),
-						columnHeader: dateFilter(new tzIndependentDate(startDate), $rootScope.monthAndDate)
+						columnHeader: dateFilter(new tzIndependentDate(startDate), $rootScope.monthAndDate),
+						/*dateFilter(new tzIndependentDate(startDate), 'yyyy-MM-dd'): {
+
+						}*/
 					}
 				);
 			}
@@ -481,6 +484,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var isInEditMode = !$scope.isInAddMode(),
 				refData = $scope.groupConfigData;
 
+			//room block grid data
+			$scope.roomBlockGridDetails = [];
 
 			if (isInEditMode) {
 				$scope.createButtonClicked = true;
@@ -488,6 +493,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				$scope.totalRooms = refData.summary.rooms_total;
 
 				$scope.selectedHoldStatus = refData.summary.hold_status;
+
 			}
 
 			//list of holding status list
