@@ -315,7 +315,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     /**
     * CICO-14951 :function to delete routing info from default billing info
     */
-    $scope.deleteRoute = function(){
+    $scope.deleteDefaultRouting = function(){
         var successCallback = function(data) {
             $scope.$emit('hideLoader');
         };
@@ -325,15 +325,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         };
 
         var data = {};
-        data.id = $scope.reservationData.reservation_id;
-        
-        console.log(data);
-        $scope.invokeApi(RVBillinginfoSrv.deleteRoute, data, successCallback, errorCallback);
+        data.id = $scope.contactInformation.id;
+        $scope.invokeApi(RVBillinginfoSrv.deleteDefaultRouting, data, successCallback, errorCallback);
     }
     // CICO-14951
     $scope.deleteBillingInfo = function(){
         console.log("deleteBillingInfo");
-        $scope.deleteRoute();
+        $scope.deleteDefaultRouting();
     };
 	
 }]);
