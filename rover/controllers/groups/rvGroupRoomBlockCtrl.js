@@ -501,11 +501,13 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$timeout(function() {
 				$scope.$parent.myScroll['room_rates_timeline_scroller'].on('scroll', function() {
 					var xPos = this.x;
-					$scope.$parent.myScroll['room_rates_grid_scroller'].scrollTo(xPos, 0);
+					var block = $scope.$parent.myScroll['room_rates_grid_scroller'];
+					block.scrollTo(xPos, block.y);
 				});
 				$scope.$parent.myScroll['room_block_scroller'].on('scroll', function() {
 					var yPos = this.y;
-					$scope.$parent.myScroll['room_rates_grid_scroller'].scrollTo(0, yPos);
+					var block = $scope.$parent.myScroll['room_rates_grid_scroller'];
+					block.scrollTo(block.x, yPos);
 				});
 				$scope.$parent.myScroll['room_rates_grid_scroller'].on('scroll', function() {
 					var xPos = this.x;
