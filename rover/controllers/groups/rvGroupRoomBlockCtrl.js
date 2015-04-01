@@ -23,9 +23,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param {String/Object}
 		 * @return {boolean}
 		 */
-		$scope.isEmpty = function(string) {
-			return ($scope.escapeNull(string).trim() === '');
-		};
+		$scope.isEmpty = util.isEmpty;
 
 		/**
 		 * Function to decide whether to hide Hold status selection box
@@ -35,7 +33,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.shouldHideHoldStatus = function() {
 			var addModeCondition = (!$scope.shouldHideCreateBlockButton() && $scope.isInAddMode());
-			var editModeCondition = (!$scope.isInAddMode());
+			var editModeCondition = ($scope.isInAddMode());
 			return (addModeCondition || editModeCondition);
 		};
 
@@ -46,7 +44,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.shouldHideRoomsAndPickUpArea = function() {
 			var addModeCondition = (!$scope.shouldHideCreateBlockButton() && $scope.isInAddMode());
-			var editModeCondition = (!$scope.isInAddMode());
+			var editModeCondition = ($scope.isInAddMode());
 			return (addModeCondition || editModeCondition);
 		};
 
@@ -109,7 +107,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Booean}
 		 */
 		$scope.shouldChangeTotalPickUpToReadOnly = function() {
-			return ($scope.isInAddMode());
+			return !($scope.isInAddMode());
 		};
 
 		/**
@@ -117,7 +115,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Booean}
 		 */
 		$scope.shouldChangeTotalRoomsToReadOnly = function() {
-			return ($scope.isInAddMode());
+			return !($scope.isInAddMode());
 		};
 
 		/**
@@ -313,8 +311,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param  {Objects} data of All Room Type
 		 * @return undefined
 		 */
-		var successCallBackOfAvailabilityAndBARfetch = function(data) {
-			$scope.availabilityAndBAR = data.results;
+		var successCallBackOfRoomTypeAndRatesFetch = function(data) {
+			$scope.groupConfigData.summary.selected_room_types_rates = data.room_type_and_rates;
 		};
 
 		/**
@@ -350,14 +348,13 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			promises.push(rvGroupConfigurationSrv.getAllRoomTypes()
 				.then(successCallBackOfAllRoomTypeFetch));
 
-			//get BAR (best available rate) & availabilit count
-			var paramsForBARAndAvailability = {
-				from_date: $scope.startDate,
-				end_date: $scope.endDate,
+			//get Room type & rates for this group
+			var paramsForRoomTypeAndRates = {
+				id: $scope.groupConfigData.summary.group_id
 			}
 			promises.push(rvGroupConfigurationSrv
-				.getRoomTypeBestAvailableRateAndOccupancyCount(paramsForBARAndAvailability)
-				.then(successCallBackOfAvailabilityAndBARfetch)
+				.getSelectedRoomTypesAndRates(paramsForRoomTypeAndRates)
+				.then(successCallBackOfRoomTypeAndRatesFetch)
 			);
 
 			//Lets start the processing
@@ -370,7 +367,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnUpdateButton = function() {
+			//updating central model with newly formed data
+			_.extend
+			(
+				$scope.groupConfigData.summary,
+				{
+					block_from	: $scope.startDate,
+					block_to	: $scope.endDate,
+					hold_status	: $scope.selectedHoldStatus
+				}
+			);
 
+			//callinng the update API calling 
+			$scope.updateGroupSummary ();
 		};
 
 		/**
@@ -388,16 +397,13 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.showRoomBlockDetails = function() {
 			$scope.displayGroupRoomBlockDetails = true;
-			console.log($scope.endDate);
 			//forming the dates between start & end
 			var startDate = tzIndependentDate($scope.startDate);
 			var endDate = tzIndependentDate($scope.endDate);
-			console.log(startDate);
-			console.log(endDate)
+
 			$scope.datesBetweenStartAndEnd = util.getDatesBetweenTwoDates(startDate, endDate);
 			runDigestCycle();
-			//we have to refresh scroller afetr that
-			console.log($scope.datesBetweenStartAndEnd);
+
 			refreshScroller();
 		};
 
@@ -450,9 +456,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
 
-			//data for 
-			$scope.datesBetweenStartAndEnd = [];
 
+			//selected Hold status:
+			$scope.selectedHoldStatus = "";
 
 			var isInEditMode = !$scope.isInAddMode(),
 				refData = $scope.groupConfigData;
@@ -462,6 +468,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				$scope.createButtonClicked = true;
 				$scope.totalPickups = refData.summary.rooms_pickup;
 				$scope.totalRooms = refData.summary.rooms_total;
+
+				$scope.selectedHoldStatus = refData.summary.hold_status;
 			}
 
 			//list of holding status list

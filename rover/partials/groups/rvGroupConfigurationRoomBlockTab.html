@@ -33,9 +33,11 @@
 		    <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}"> <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
 		        <label for="group-hold-status" translate>HOLD_STATUS</label>
 		        <div class="select">
-		            <select id="group-hold-status" iscroll-stop-propagation>
-		                <option value="" selected translate>SET_STATUS</option>
-		                <option ng-repeat="holdstatus in holdStatusList" value="holdstatus.value">
+		            <select id="group-hold-status" ng-model="selectedHoldStatus" iscroll-stop-propagation>
+		                <option value="" ng-selected="isEmpty(selectedHoldStatus)" translate>SET_STATUS</option>
+		                <option ng-repeat="holdstatus in holdStatusList" 
+		                	value="{{holdstatus.value}}"
+		                	ng-selected="selectedHoldStatus === holdstatus.value">
 		                	{{holdstatus.status_name}}
 		                </option>
 		            </select>
@@ -98,7 +100,9 @@
 		    </div>  
 
 		    <!-- Room block room types -->
-		    <div class="room-block-sidebar scrollable" ng-hide="shouldHideRoomBlockDetailsView()" ng-iscroll="room_block_scroller" >
+		    <div class="room-block-sidebar scrollable" 
+		    	ng-hide="shouldHideRoomBlockDetailsView()" 
+		    	ng-iscroll="room_block_scroller">
 		        <div class="wrapper">
 		            <div class="row" ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_rates" 
 		            ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions"> <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
@@ -115,7 +119,9 @@
 		    </div>
 
 		    <!-- Room block days -->
-		    <div class="room-block-timeline scrollable" ng-iscroll="room_rates_timeline_scroller" ng-hide="shouldHideRoomBlockDetailsView()">
+		    <div class="room-block-timeline scrollable" 
+		    	ng-iscroll="room_rates_timeline_scroller" 
+		    	ng-hide="shouldHideRoomBlockDetailsView()">
 		        <ul class="wrapper" style="width:getWidthForRoomBlockTimeLine();">
 		            <li ng-repeat="blockData in datesBetweenStartAndEnd">
 		                <div class="inner">
@@ -127,7 +133,9 @@
 		    </div>
 
 		    <!-- Room block grid -->
-		    <div class="room-block-grid scrollable"  ng-iscroll="room_rates_grid_scroller" ng-hide="shouldHideRoomBlockDetailsView()">
+		    <div class="room-block-grid scrollable"  
+		    	ng-iscroll="room_rates_grid_scroller" 
+		    	ng-hide="shouldHideRoomBlockDetailsView()">
 		        <div class="wrapper" style="width:getWidthForRoomBlockTimeLine();">
 		            <div class="row" ng-repeat="blockData in datesBetweenStartAndEnd">
 		                <div class="column" >

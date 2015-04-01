@@ -15,20 +15,6 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			util) {
 
 
-
-		/**
-		 * we have to form a object with roomtype and best available rate (BAR)
-		 * since in response, BAR is date wise and we have to get min. among them
-		 * key will be roomtype and value will be BAR (best available rate)
-		 * @return {undefined}
-		 */
-		var formBestAvailableRateAgainstRoomType = function(){
-			var roomTypeListInEachDay = _.pluck($scope.availabilityAndBAR, "room_types");
-
-			//_.each (roomTypeListInEachDay, );
-				
-		};
-
 		/**
 		 * to initialize rooms & rates popup
 		 * @return undefined
@@ -38,26 +24,18 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			
 			//setting the scroller
 			$scope.setScroller ('room_type_scroller');
-
-			//default blank selected room type details
+			
+			
 			$scope.defaultRoomTypeDetails = {
-				'selectedRoomType' 		: '',
-				'bestAvailableRate'		: '',
-				'singleOccupancyRate'	: '',
-				'doubleOccupancyRate'	: '',
-				'oneMoreAdultRate' 		: ''
+				"best_available_rate"	: '',
+	            "single_occupancy_rate"	: '',
+	            "double_occupance_rate"	: '',
+	            "triple_occupance_rate"	: ''
 			};
 
 			//selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy ($scope.groupConfigData.summary.selected_room_types_rates);
 
-			//if Response coming from API is a blank array
-			if ($scope.selectedRoomTypeAndRates.length == 0){
-				$scope.selectedRoomTypeAndRates.push (util.deepCopy ($scope.defaultRoomTypeDetails) );
-			}
-
-			//form best available rate dictionary
-			formBestAvailableRateAgainstRoomType ();
 		}();
 
 		/**
@@ -66,7 +44,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 * @return {Boolean} 
 		 */
 		$scope.shouldShowAddNewButton = function(obj){
-			return (!util.isEmpty(obj.selectedRoomType));
+			return (!util.isEmpty(obj.room_type_id));
 		};
 
 		/**

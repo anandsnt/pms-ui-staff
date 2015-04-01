@@ -31,6 +31,8 @@ sntRover.service('rvUtilSrv', [function(){
 		* @return {boolean}
 		*/
 		this.isEmpty = function(string){
+			console.log ('string: ' + string);
+			console.log (this.escapeNull(string));
 			return (this.escapeNull(string).trim() === '');
 		};
 

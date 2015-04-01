@@ -165,9 +165,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		$scope.updateGroupSummary = function() {
 			var onGroupUpdateSuccess = function(data) {
+					//client controllers should get an infromation whether updation was success
+					$scope.$broadcast ("UPDATED_GROUP_INFO");
 					console.log(data);
 				},
 				onGroupUpdateFailure = function(errorMessage) {
+					//client controllers should get an infromation whether updation was a failure
+					$scope.$broadcast ("FAILED_TO_UPDATE_GROUP_INFO");
+
 					console.log(errorMessage);
 				};
 

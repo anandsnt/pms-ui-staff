@@ -28,14 +28,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			"rooms_pickup": null,
 			"rate": null,
 			"addons_count": null,
-			"notes": [],
-			"selected_room_types_rates": [{
-				'selectedRoomType': '',
-				'bestAvailableRate': '',
-				'singleOccupancyRate': '',
-				'doubleOccupancyRate': '',
-				'oneMoreAdultRate': ''
-			}]
+			"notes": []
 		};
 
 		/**
@@ -77,6 +70,29 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 
 			return deferred.promise;
 		};
+
+		/**
+		 * Function to get Room type availablity as well as best availbale rate
+		 * @return {Promise} [will get the details]
+		 */
+		this.getSelectedRoomTypesAndRates = function(params){
+			var deferred = $q.defer(),
+				group_id = params.id,
+				//url = '/api/groups/' + group_id + "/room_type_and_rates";
+				url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+			
+			rvBaseWebSrvV2.getJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
 
 		/**
 		 * Function to get Room type availablity as well as best availbale rate
