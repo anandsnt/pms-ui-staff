@@ -343,6 +343,14 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		};
 		
 		/**
+		* has there any search results?
+		* @return {Boolean}
+		*/
+		$scope.hasSomeSearchResults = function(){
+			return ($scope.groupList.length > 0);
+		};	
+
+		/**
 		* should we disable next button 
 		* @return {Boolean}
 		*/
@@ -358,6 +366,10 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			return ($scope.start === 1);	
 		};
 
+		//just redirecting to group creation page
+		$scope.gotoAddNewGroup = function(){
+			$state.go ('rover.groups.config', {'id': "NEW_GROUP"});
+		};
 
 		/**
 		* function to trgger on clicking the next button

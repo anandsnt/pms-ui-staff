@@ -78,10 +78,20 @@
 </div>
 
 <!-- Search panel - WITH RESULTS -->
-<section id="find-group" class="content scrollable" role="main" ng-iscroll="result_showing_area" ng-iscroll-delay="1000"> <!-- If no pagination, add class "no-pagination" -->
-    <div class="wrapper" >
+<section id="find-group" class="content scrollable" role="main" 
+    ng-class="{'no-pagination': !shouldShowPagination(), 'no-results': hasSomeSearchResults()}"
+    ng-iscroll="result_showing_area" ng-iscroll-delay="1000" > <!-- If no pagination, add class "no-pagination" -->
+    <div class="wrapper">
         <ul class="search-results">
-            <li class="group" ng-repeat="group in groupList" ngrepeatend ngrepeatstarted>
+            <!-- If no results, show this: -->
+            <li class="no-content" ng-show="!hasSomeSearchResults()">
+                <div class="info">
+                    <span class="icon-no-content icon-groups"></span>
+                    <strong class="h1">No Matches</strong>
+                    <span class="h2">Check that you didn't mispell the <strong>Group Name</strong> or <strong>Code</strong>.<a ng-click="gotoAddNewGroup()" class="inline-link">Or add a New Group</a>.</span>
+                </div>
+            </li>
+            <li class="group" ng-show="hasSomeSearchResults()" ng-repeat="group in groupList" ngrepeatend ngrepeatstarted>
                 <a ng-click="gotoEditGroupConfiguration(group.id)">
                     <div class="data">
                         <h2 ng-bind-html="{{escapeNull(stringify(group.group_name))}}|highlight:query:false">
