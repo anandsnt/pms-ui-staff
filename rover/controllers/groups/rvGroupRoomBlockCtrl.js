@@ -521,7 +521,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.onBlockRoomGrid = function() {
-			if (isOverBooked) {
+			if (isOverBooked()) {
 				// Show overbooking message
 				ngDialog.open({
 					template: '/assets/partials/groups/warnOverBookingPopup.html',

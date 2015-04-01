@@ -7,16 +7,14 @@
                 <form>
                     <div class="holder">
                         <div class="entry">
-                            <input id="group-name" placeholder="" ng-model="groupConfigData.summary.group_name" type="text" class="masked-input h1" />
+                            <input id="group-name" placeholder="" ng-model="groupConfigData.summary.group_name" type="text" class="masked-input h1" data-size="{{groupConfigData.summary.group_name.length}}" auto-grow-field/>
                         </div>
                     </div>
                     <div class="holder data">
                         <!-- These should not allow free text input, you should only be able to search and add -->
-                        <!-- <input class="icons icon-search" auto-complete auto-options="listCtgAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
-                            <input type="text" class="hidden" ng-model="item.chosenIncludeComapnyTaGroup"> -->
-                        <input class="masked-input icons icon-gc-company" auto-complete auto-options="companyAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onCompanyCardChange()" ng-model="groupConfigData.summary.company.name">
+                        <input placeholder="" class="masked-input icons icon-gc-company" auto-complete auto-options="companyAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onCompanyCardChange()" ng-model="groupConfigData.summary.company.name">
                         <!-- Search only companies -->
-                        <input class="masked-input icons icon-gc-ta" auto-complete auto-options="travelAgentAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onTravelAgentCardChange()" ng-model="groupConfigData.summary.travel_agent.name">
+                        <input placeholder="" class="masked-input icons icon-gc-ta" auto-complete auto-options="travelAgentAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onTravelAgentCardChange()" ng-model="groupConfigData.summary.travel_agent.name">
                         <!-- Search only travel agents -->
                     </div>
                 </form>
