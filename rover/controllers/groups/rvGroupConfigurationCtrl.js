@@ -245,7 +245,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.company.name = ui.item.label;
 					$scope.groupConfigData.summary.company.id = ui.item.value;
-					if (!isInAddMode()) $scope.updateGroupSummary();
+					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
@@ -274,7 +274,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
-					if (!isInAddMode()) $scope.updateGroupSummary();
+					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);

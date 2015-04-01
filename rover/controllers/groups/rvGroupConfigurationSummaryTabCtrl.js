@@ -28,8 +28,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			}
 		}
 
-
-
 		$scope.fromDateOptions = {
 			showOn: 'button',
 			dateFormat: $rootScope.jqDateFormat,
@@ -98,6 +96,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		var demographicsMemento = {};
 		$scope.openDemographicsPopup = function() {
+			$scope.errorMessage = "";
 			var showDemographicsPopup = function() {
 					$scope.groupSummaryData.isDemographicsPopupOpen = true;
 					demographicsMemento = angular.copy($scope.groupConfigData.summary.demographics);
@@ -131,6 +130,18 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			}
 
 		}
+
+		$scope.saveDemographicsData = function() {
+			if ($scope.isInAddMode()) {
+				// If the group has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the group to save Demographics"];
+				return;
+			}
+
+			$scope.updateGroupSummary();
+			$scope.closeDialog();
+		}
+
 
 
 		$scope.cancelDemographicChanges = function() {
@@ -187,6 +198,14 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 
+		$scope.getRevenue = function() {
+			if ($scope.isInAddMode()) {
+				return "";
+			}
+			return $rootScope.currencySymbol + $filter('number')($scope.groupConfigData.summary.revenue_actual, 2) + '/ ' + $rootScope.currencySymbol + $filter('number')($scope.groupConfigData.summary.revenue_potential, 2);
+		};
+
+
 		/**
 		 * Method used open the addons popup
 		 * @return undefined
@@ -206,6 +225,15 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.manageAddons = function() {
+
+			if ($scope.isInAddMode()) {
+				// If the group has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the group to manage Add-ons"];
+				return;
+			}
+
+			$scope.errorMessage = "";
+
 			// ADD ONS button: pop up standard Add On screen - same functionality as on Stay Card, select new or show small window and indicator for existing Add Ons
 			var onFetchAddonsSuccess = function(addonsData) {
 					$scope.groupConfigData.addons = addonsData;
@@ -246,7 +274,20 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			});
 		}
 
+
+		/**
+		 * Method to save a note
+		 * @return undefined
+		 */
 		$scope.saveGroupNote = function() {
+			if ($scope.isInAddMode()) {
+				// If the group has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the group to Post Note"];
+				return;
+			}
+
+			$scope.errorMessage = "";
+
 			var onSaveGroupNoteSuccess = function(data) {
 					$scope.groupConfigData.summary.notes = data.notes;
 					$scope.groupSummaryData.newNote = "";

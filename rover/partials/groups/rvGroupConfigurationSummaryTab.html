@@ -1,5 +1,7 @@
+
 <form id="group-summary" name="group-summary" class="form card-tab scrollable" ng-controller="rvGroupConfigurationSummaryTab" ng-iscroll="groupSummaryScroller" ng-iscroll-delay="500" outside-click-handler>
     <div class="wrapper"> 
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>    
         <div class="holder left">
             <strong class="h3">Group Info</strong>
             <div class="entry full-width">
@@ -69,7 +71,7 @@
             </div>
             <div class="entry margin">
                 <label for="group-revenue">Actual / Potential Revenue</label>
-                <input id="group-revenue" value="{Values}" type="text" readonly />
+                <input id="group-revenue" value="{{getRevenue()}}" type="text" readonly />
             </div>
             <div class="entry margin small">
                 <label for="group-rooms">Rooms</label>
@@ -106,7 +108,7 @@
             <ul class="notes">
                 <li ng-repeat="note in groupConfigData.summary.notes">
                     <figure class="guest-image">
-                        <img src="{{note.image}}" alt="" />
+                        <img src="{{note.user_image}}" alt="" />
                     </figure>
                     <div class="note-title">
                         <h4>{{note.username}}</h4>
