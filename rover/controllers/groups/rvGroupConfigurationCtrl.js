@@ -91,6 +91,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return - None
 		 */
 		$scope.switchTabTo = function(tab) {
+			//Save summary data on tab switch (UI)
+			if ($scope.groupConfigData.activeTab == "SUMMARY") {
+				$scope.updateGroupSummary();
+			}
 			$scope.groupConfigData.activeTab = tab;
 		};
 
