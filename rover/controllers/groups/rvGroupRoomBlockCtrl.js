@@ -8,6 +8,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 	'$timeout',
 	'rvUtilSrv',
 	'$q',
+	'dateFilter',
 	function($scope,
 		$rootScope,
 		$filter,
@@ -16,7 +17,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		rvGroupConfigurationSrv,
 		$timeout,
 		util,
-		$q) {
+		$q,
+		dateFilter) {
 
 		/**
 		 * util function to check whether a string is empty
@@ -398,12 +400,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		$scope.showRoomBlockDetails = function() {
 			$scope.displayGroupRoomBlockDetails = true;
 			//forming the dates between start & end
-			var startDate = tzIndependentDate($scope.startDate);
-			var endDate = tzIndependentDate($scope.endDate);
-
-			$scope.datesBetweenStartAndEnd = util.getDatesBetweenTwoDates(startDate, endDate);
+			$scope.datesBetweenStartAndEnd = [];
+			for (var d = [], ms = new tzIndependentDate($scope.groupConfigData.summary.block_from) * 1, last = new tzIndependentDate($scope.groupConfigData.summary.block_to) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+				$scope.datesBetweenStartAndEnd.push({
+					date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
+					columnHeader: dateFilter(new tzIndependentDate(ms), $rootScope.monthAndDate)
+				});
+			}
 			runDigestCycle();
-
+			//we have to refresh scroller afetr that			
 			refreshScroller();
 		};
 
@@ -485,22 +490,43 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var scrollerOptions = {
 				tap: true,
 				preventDefault: false,
+				probeType: 3
 			};
 			$scope.setScroller('room_block_scroller', scrollerOptions);
 
 			var scrollerOptionsForRoomRatesTimeline = _.extend({
-				scrollX: false,
-				scrollY: true,
-				scrollbars: false,
+				scrollX: true,
+				scrollY: false,
+				scrollbars: false
 			}, util.deepCopy(scrollerOptions));
 
 			$scope.setScroller('room_rates_timeline_scroller', scrollerOptionsForRoomRatesTimeline);
 
 			var scrollerOptionsForRoomRatesGrid = _.extend({
 				scrollY: true,
+				scrollX: true
 			}, util.deepCopy(scrollerOptions));
 
 			$scope.setScroller('room_rates_grid_scroller', scrollerOptionsForRoomRatesGrid);
+
+			$timeout(function() {
+				$scope.$parent.myScroll['room_rates_timeline_scroller'].on('scroll', function() {
+					var xPos = this.x;
+					var block = $scope.$parent.myScroll['room_rates_grid_scroller'];
+					block.scrollTo(xPos, block.y);
+				});
+				$scope.$parent.myScroll['room_block_scroller'].on('scroll', function() {
+					var yPos = this.y;
+					var block = $scope.$parent.myScroll['room_rates_grid_scroller'];
+					block.scrollTo(block.x, yPos);
+				});
+				$scope.$parent.myScroll['room_rates_grid_scroller'].on('scroll', function() {
+					var xPos = this.x;
+					var yPos = this.y;
+					$scope.$parent.myScroll['room_rates_timeline_scroller'].scrollTo(xPos, 0);
+					$scope.$parent.myScroll['room_block_scroller'].scrollTo(0, yPos);
+				});
+			}, 1000);
 		};
 
 		/**
@@ -538,7 +564,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					closeByDocument: false,
 					closeByEscape: false
 				});
-			}else{
+			} else {
 				$scope.saveRoomBlock();
 			}
 		}
@@ -551,7 +577,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * 	2. The warnReleaseRoomsPopup.html template
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function(){
+		$scope.saveRoomBlock = function() {
 			//TODO : Make API call to save the room block.
 		}
 

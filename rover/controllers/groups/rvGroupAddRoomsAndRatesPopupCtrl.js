@@ -103,7 +103,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		$scope.clickedOnUpdateButton = function() {
 			//we only want rows who have room type choosed
 			var selectedRoomTypeAndRates = _.filter($scope.selectedRoomTypeAndRates, function(obj){
-				return !util.isEmpty(obj.selectedRoomType);
+				return !util.isEmpty(obj.room_type_id.toString());
 			});
 
 			$scope.updateRoomBlockDetails (selectedRoomTypeAndRates);
