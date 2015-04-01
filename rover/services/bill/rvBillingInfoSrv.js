@@ -149,7 +149,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 	this.deleteDefaultRouting = function(data){
 		var deferred = $q.defer();
 		var url = 'api/default_routings/'+data.id;
-			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+			BaseWebSrvV2.deleteJSON(url).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
