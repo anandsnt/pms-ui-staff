@@ -70,22 +70,29 @@
             <!-- Room block room types -->
             <div class="room-block-sidebar scrollable" ng-hide="shouldHideRoomBlockDetailsView()" ng-iscroll="room_block_scroller">
                 <div class="wrapper">
-                    <div class="row" ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_rates" ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
-                    <!-- <div class="row" ng-repeat="roomtype in roomTypes" ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions"> -->
-                        <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
-                        <p class="line line-toggle">{{getRoomTypeName (roomtype_rate.selectedRoomType)}}</p>
+                    <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
+                    <div ng-class="{'open' : roomtype_rate.isCollapsed}" 
+                    	class="row" 
+                    	ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_rates" 
+                    	ui-jq="accordion" 
+                    	ui-options="accordionInitiallyNotCollapsedOptions" 
+                    	ng-init="roomtype_rate.isCollapsed = true">
                         <!-- Toggle class "active" when clicked/tapped -->
-                        <ul class="">
-                            <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
+                        <p class="line line-toggle" ng-class="{'active' : roomtype_rate.isCollapsed}" ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
+                            {{getRoomTypeName (roomtype_rate.selectedRoomType)}}
+                        </p>
+                        <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
+                        <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">                            
                             <li class="line" translate>SINGLE</li>
                             <li class="line" translate>DOUBLE</li>
                             <!-- <li class="line small add" translate>ADD_TRIPLE</li> -->
                             <li class="line" translate>TRIPLE</li>
-                            <li class="line" translate>QUADRUPLE</li>                            
+                            <li class="line" translate>QUADRUPLE</li>
                             <!-- When clicked, add L110-113 -->
                             <!-- When + Add Triple is clicked, show option to add quadruple:
 		                    <li class="line small add" translate>ADD_QUADRUPLE</li> // When clicked, add L115-118 -->
-		                    <li class="line small add"><li>
+                            <li class="line small add">
+                                <li>
                         </ul>
                     </div>
                 </div>
@@ -107,10 +114,11 @@
                     <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
                     <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_rates">
                         <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
+                        <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                         <div class="column" ng-repeat="blockData in datesBetweenStartAndEnd">
-                            <div class="line small hidden">
-                                <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+                            <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <em class="cell" translate>TOTAL</em>
+                                <em class="cell">{{}}</em>
                                 <em class="cell" translate>PICK_UP</em>
                             </div>
                             <!-- Room Type -->
@@ -120,32 +128,32 @@
                             </div>
                             <!-- Single -->
                             <!-- <div class="line hidden"> -->
-                            <div class="line">
+                            <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                                 <input type="text" value="{Count}" class="cell" />
                                 <input type="text" value="{Count}" class="cell" disabled />
                             </div>
                             <!-- Double -->
                             <!-- <div class="line hidden"> -->
-                            <div class="line">
+                            <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                                 <input type="text" value="{Count}" class="cell" />
                                 <input type="text" value="{Count}" class="cell" disabled />
                             </div>
                             <!-- If L63 is clicked, generate option to add triple: -->
                             <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-		                    <div class="line"> 
-		                        <input type="text" value="{Count}" class="cell" />
-		                        <input type="text" value="{Count}" class="cell" disabled />
-		                    </div>
+                            <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
+                                <input type="text" value="{Count}" class="cell" />
+                                <input type="text" value="{Count}" class="cell" disabled />
+                            </div>
                             <!-- If L65 is clicked, generate option to add quadruple: -->
                             <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-		                    <div class="line"> 
-		                        <input type="text" value="{Count}" class="cell" />
-		                        <input type="text" value="{Count}" class="cell" disabled />
-		                    </div>
+                            <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
+                                <input type="text" value="{Count}" class="cell" />
+                                <input type="text" value="{Count}" class="cell" disabled />
+                            </div>
                             <!-- <div class="line small cellspan hidden"> -->
-                            <div class="line small cellspan">
+                            <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <em class="cellspan" translate>MENU_AVAILABILITY<span class="{green or red}">{{blockData.availability}}</span></em>
                             </div>
                         </div>
