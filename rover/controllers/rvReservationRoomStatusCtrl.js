@@ -1,4 +1,5 @@
-sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv){
+sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv',
+	function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv, RVReservationCardSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.encoderTypes = [];
 	$scope.getRoomClass = function(reservationStatus){
@@ -165,7 +166,17 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
 	}
 
-
+	/**
+	 * utility method used to redirect to diary in edit mode
+	 * @return undefined
+	 */
+	var gotToDiaryInEditMode = function(){
+		RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
+		$state.go('rover.diary', {
+			reservation_id: $scope.reservationData.reservation_card.reservation_id,
+			checkin_date: $scope.reservationData.reservation_card.arrival_date,
+		});
+	}
 	/**
 	* function to trigger room assignment.
 	*/
@@ -174,8 +185,9 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		if($scope.hasAnySharerCheckedin()){
 			return false;
 		}
+
 		if($scope.reservationData.reservation_card.is_hourly_reservation){
-			$state.go('rover.diary', { reservation_id: $scope.reservationData.reservation_card.reservation_id });
+			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
 		}else if($scope.reservationData.reservation_card.reservation_status=="CHECKEDIN"){
