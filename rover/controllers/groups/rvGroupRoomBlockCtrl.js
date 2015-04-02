@@ -400,12 +400,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 *  
 		 */
 		 $scope.updateRoomBlockGridDetails = function(selected_group_id){
-		 	var param = selected_gruop_id ;
+		 	var param = selected_group_id ;
 		 	var successfullCallback = function(data){		 		
-		 		$scope.groupConfigData.summary.selected_room_types_rates= data.results;		 		
+		 		$scope.groupConfigData.summary.selected_room_types_rates= data.results;
+		 		console.log($scope.groupConfigData.summary.selected_room_types_rates);
 		 	}	 	 	
 
 		 	$scope.invokeApi(rvGroupConfigurationSrv.getRoomBlockGridDetails ,param ,successfullCallback);
+
 		 }
 
 		/**
