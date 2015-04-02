@@ -35,9 +35,9 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		$scope.getClassAgainstHoldStatus = function(group){
 			var classes = '';
 
-			if(group.hold_status === 'tentative')
+			if(group.hold_status === 'Tentative')
 				classes = 'tentative';			
-			if(group.hold_status === 'definitive')
+			if(group.hold_status === 'Definite')
 				classes += ' ';
 
 			return classes;
