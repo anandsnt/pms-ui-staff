@@ -74,7 +74,7 @@
                     <div ng-class="{'open' : roomtype_rate.isCollapsed}" class="row" ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_rates" ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions" ng-init="roomtype_rate.isCollapsed = true">
                         <!-- Toggle class "active" when clicked/tapped -->
                         <p class="line line-toggle" ng-class="{'active' : roomtype_rate.isCollapsed}" ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
-                            {{getRoomTypeName (roomtype_rate.room_type_id)}}
+                            {{roomtype_rate.room_type_name}}
                         </p>
                         <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
                         <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">

@@ -390,21 +390,36 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param  {Array} dataToUpdate [Array of room block details]
 		 * @return undefined
 		 */
-		$scope.updateRoomBlockDetails = function(dataToUpdate) {
+		$scope.updateRoomBlockDetails = function(dataToUpdate) {		
 			$scope.groupConfigData.summary.selected_room_types_rates = dataToUpdate;
+
 		};
+		/**
+		 * To update room block grid details to $scope.groupConfigData.summary.selected_room_types_rates
+		 * @param - 
+		 *  
+		 */
+		 $scope.updateRoomBlockGridDetails = function(selected_group_id){
+		 	var param = selected_gruop_id ;
+		 	var successfullCallback = function(data){		 		
+		 		$scope.groupConfigData.summary.selected_room_types_rates= data.results;		 		
+		 	}	 	 	
+
+		 	$scope.invokeApi(rvGroupConfigurationSrv.getRoomBlockGridDetails ,param ,successfullCallback);
+		 }
 
 		/**
 		 * to show room block details area with data
 		 * @return undefined
 		 */
-		$scope.showRoomBlockDetails = function() {
+		$scope.showRoomBlockDetails = function() {			
 			$scope.displayGroupRoomBlockDetails = true;
-			//forming the dates between start & end
-			
+			//forming the dates between start & end			
 
 			var startDate 	= $scope.groupConfigData.summary.block_from,
 				lastDate 	= $scope.groupConfigData.summary.block_to;
+			//fetch RoomBlockGrid Detail
+			$scope.updateRoomBlockGridDetails($scope.groupConfigData.summary.group_id);
 
 			startDate = util.toMilliSecond (startDate);
 			lastDate = util.toMilliSecond (lastDate);
