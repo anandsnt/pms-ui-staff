@@ -1,5 +1,6 @@
 <!-- Search form -->
-<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search">
+<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search" >
+
     <div class="entry search">
         
         <button id="groups-clear-query" 
@@ -30,9 +31,9 @@
             <label for="groups-date-from" translate>FROM</label>
 
             <button id="groups-date-from-clear" 
-                    class="clear-query"> <!-- To hide this, remove class "visible" -->
-                    <!-- ng-class="{'visible': !isEmpty(fromDate)}" 
-                        ng-click="clearFromDate()" -->                       
+                    class="clear-query" ng-class="{'visible': !isEmpty(fromDate)}" ng-click="clearFromDate()"> <!-- To hide this, remove class "visible" -->
+                    <!-- }" 
+                        " -->                       
                     <span class="icons icon-clear-search" translate>
                         CLEAR_QUERY
                     </span>
@@ -43,6 +44,8 @@
                     class="datepicker" 
                     readonly 
                     type="text" 
+                    rv-clear-text-box 
+                    listen-this="fromDate"
                     ui-date="fromDateOptions" 
                     value="{{fromDate}}"/>
         </div>
@@ -82,6 +85,7 @@
     ng-class="{'no-pagination': !shouldShowPagination(), 'no-results': hasSomeSearchResults()}"
     ng-iscroll="result_showing_area" ng-iscroll-delay="1000" > <!-- If no pagination, add class "no-pagination" -->
     <div class="wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <ul class="search-results">
             <!-- If no results, show this: -->
             <li class="no-content" ng-show="!hasSomeSearchResults()">
