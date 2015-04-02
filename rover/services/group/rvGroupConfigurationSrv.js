@@ -51,6 +51,26 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 
 			return deferred.promise;
 		};
+		/**
+		 * Function to get Room Block Grid Details
+		 * @param {param} -group id
+		 * @return {Promise} -
+		 */
+		this.getRoomBlockGridDetails = function(param) {
+			var deferred = $q.defer(),
+				//url = 'api/groups/'+param+'/inventories';
+				url = '/ui/show?format=json&json_input=groups/griddata.json';				
+			rvBaseWebSrvV2.getJSON(url).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
 
 		/**
 		 * Function to get list of Room types
