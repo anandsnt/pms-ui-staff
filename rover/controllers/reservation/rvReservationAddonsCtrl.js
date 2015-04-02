@@ -148,12 +148,21 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 var saveData = {};
                 saveData.addons = $scope.addonsData.existingAddons;
                 saveData.reservationId = $scope.reservationData.reservationId;
-                $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData)
-                $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                
+                var successCallBack = function(data){
+                    $scope.$emit('hideLoader');  
+                    $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                         id: $scope.reservationData.reservationId,
                         confirmationId: $scope.reservationData.confirmNum,
                         isrefresh: true
-                });
+                    });
+                };
+                var failureCallBack = function(errorMessage){
+                    $scope.$emit('hideLoader'); 
+                    $scope.errorMessage = errorMessage;
+                };
+                $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData , successCallBack, failureCallBack );
+
             } else {
 
 

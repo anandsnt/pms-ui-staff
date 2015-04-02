@@ -95,7 +95,7 @@
             <!-- Room block days -->
             <div class="room-block-timeline scrollable" ng-iscroll="room_rates_timeline_scroller" ng-hide="shouldHideRoomBlockDetailsView()">
                 <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
-                    <li ng-repeat="dateObj in roomBlockGridDetails">
+                    <li ng-repeat="dateObj in roomBlockGridTimeLine">
                         <div class="inner">
                             {{dateObj.columnHeader}}
                             <em>{{value}}% Occupancy</em>
@@ -110,7 +110,7 @@
                     <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_rates">
                         <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
                         <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                        <div class="column" ng-repeat="blockData in roomBlockGridDetails">
+                        <div class="column" ng-repeat="blockData in roomBlockGridTimeLine">
                             <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <em class="cell" translate>TOTAL</em>
                                 <em class="cell" translate>PICK_UP</em>

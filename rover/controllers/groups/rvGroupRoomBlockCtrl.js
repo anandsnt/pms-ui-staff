@@ -426,11 +426,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			startDate = util.toMilliSecond (startDate);
 			lastDate = util.toMilliSecond (lastDate);
 
-			$scope.roomBlockGridDetails = [];
+			$scope.roomBlockGridTimeLine = [];
 			//forming the main data model for room block details
 			//will be based on each day
 			for (;startDate <= lastDate; startDate = util.addOneDay(startDate)) {
-				$scope.roomBlockGridDetails.push(
+				$scope.roomBlockGridTimeLine.push(
 					{
 						date: dateFilter(new tzIndependentDate(startDate), 'yyyy-MM-dd'),
 						columnHeader: dateFilter(new tzIndependentDate(startDate), $rootScope.monthAndDate),
@@ -451,7 +451,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForRoomBlockTimeLine = function() {
-			return ($scope.roomBlockGridDetails.length * 190) + 'px';
+			return ($scope.roomBlockGridTimeLine.length * 190) + 'px';
 		};
 
 		/**
@@ -502,7 +502,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				refData = $scope.groupConfigData;
 
 			//room block grid data
-			$scope.roomBlockGridDetails = [];
+			$scope.roomBlockGridTimeLine = [];
 
 			if (isInEditMode) {
 				$scope.createButtonClicked = true;

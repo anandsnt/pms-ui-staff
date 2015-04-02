@@ -235,6 +235,9 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		* @return - None
 		*/
 		$scope.search = function(){
+			//am trying to search something, so we have to change the initial search helping screen if no rsults
+			$scope.amFirstTimeHere = false;
+
 			var params = formGroupSearchParams();
 			var options = {
 				params: 			params,
@@ -341,14 +344,30 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		$scope.shouldShowPagination = function(){
 			return ($scope.totalResultCount >= $scope.perPage);
 		};
-		
+
 		/**
 		* has there any search results?
 		* @return {Boolean}
 		*/
-		$scope.hasSomeSearchResults = function(){
+		var hasSomeSearchResults = function(){
 			return ($scope.groupList.length > 0);
 		};	
+
+		/**
+		 * [isFirstTimeWithNoResult description]
+		 * @return {Boolean} [description]
+		 */
+		$scope.isFirstTimeWithNoResult = function(){
+			return ($scope.amFirstTimeHere && !hasSomeSearchResults())
+		};
+
+		/**
+		 * [shouldShowNoResult description]
+		 * @return {[type]} [description]
+		 */
+		$scope.shouldShowNoResult = function(){			
+			return (!$scope.amFirstTimeHere && !hasSomeSearchResults())
+		};
 
 		/**
 		* should we disable next button 
@@ -454,6 +473,9 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			
 			//total result count
 			$scope.totalResultCount = initialGroupListing.total_count;
+
+			//Yes am first time here
+			$scope.amFirstTimeHere = true;
 
 			//scroller and related things
 			setScrollerForMe();
