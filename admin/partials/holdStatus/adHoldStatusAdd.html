@@ -1,0 +1,26 @@
+<div style="display: block;" id="add-new" class="edit-data" >
+		<div class="data-holder"> 
+			<!-- Edit Department -->
+			<form class="form inline-form float">
+				<div class="form-title">
+					<h3 translate><span></span> ADD</h3>
+					<em class="status" > {{'HOLD_STATUS_NAME_PLACEHOLDER' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+				</div>
+				<fieldset class="holder left float">
+						<ad-textbox inputtype="text" value="holdstatusData.name" 
+						label = "{{'NAME' | translate}}" placeholder = "{{'HOLD_STATUS_NAME_PLACEHOLDER' | translate}}"  
+						styleclass="full-width" required="yes"></ad-textbox>
+						<ad-checkbox is-checked="holdstatusData.is_enabled" label="{{ 'TAKE_FROM_INVENTORY' | translate}}" div-class="full-width">
+						</ad-checkbox>						
+				</fieldset>				
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
+						CANCEL
+					</button>
+					<button type="button" id="save" class="button green edit-data-inline" ng-click="saveHoldStatus()" translate>
+						SAVE_CHANGES
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>

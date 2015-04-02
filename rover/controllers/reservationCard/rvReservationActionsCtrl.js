@@ -217,6 +217,16 @@ sntRover.controller('reservationActionsController', [
 									});
 						
 						} else {
+							//CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
+							if($scope.hasAnySharerCheckedin()){
+								$state.go('rover.reservation.staycard.billcard', {
+									"reservationId": $scope.reservationData.reservation_card.reservation_id,
+									"clickedButton": "checkinButton",
+									"userId": $scope.guestCardData.userId
+								});
+								return false;
+							}
+
 							if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
 									//TO DO:Go to room assignemt view
 									$state.go("rover.reservation.staycard.roomassignment", {

@@ -72,7 +72,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 
-
+		// keep track of any errors
+		$scope.errorMessage = [];
 
 		$scope.showSidebar = false;
 		$scope.toggleSidebar = function(e) {
@@ -923,9 +924,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include include deposit paid
 			if (chosenReport.hasOwnProperty('hasIncludeDepositPaid')) {
 				key = chosenReport.hasIncludeDepositPaid.value.toLowerCase();
+
+				// additional overhead required by API
+				// we are to send either true or false anyway
+				// no mater if the flag is chosen or not
+				params[key] = chosenReport.chosenIncludeDepositPaid ? true : false;
+				/**/
 				if ( chosenReport.chosenIncludeDepositPaid ) {
-					params[key] = true;
-					/**/
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositPaid.description );
 				};
 			};
@@ -933,9 +938,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include include deposit due
 			if (chosenReport.hasOwnProperty('hasIncludeDepositDue')) {
 				key = chosenReport.hasIncludeDepositDue.value.toLowerCase();
+
+				// additional overhead required by API
+				// we are to send either true or false anyway
+				// no mater if the flag is chosen or not
+				params[key] = chosenReport.chosenIncludeDepositDue ? true : false;
+				/**/
 				if ( chosenReport.chosenIncludeDepositDue ) {
-					params[key] = true;
-					/**/
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositDue.description );
 				};
 			};
@@ -943,9 +952,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			// include include deposit past due
 			if (chosenReport.hasOwnProperty('hasIncludeDepositPastDue')) {
 				key = chosenReport.hasIncludeDepositPastDue.value.toLowerCase();
+
+				// additional overhead required by API
+				// we are to send either true or false anyway
+				// no mater if the flag is chosen or not
+				params[key] = chosenReport.chosenIncludeDepositPastDue ? true : false;
+				/**/
 				if ( chosenReport.chosenIncludeDepositPastDue ) {
-					params[key] = true;
-					/**/
 					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositPastDue.description );
 				};
 			};
@@ -1128,12 +1141,17 @@ sntRover.controller('RVReportsMainCtrl', [
 					    continue;
 					};
 
-					if ( key == 'group_by_date' || key == 'group_by_user' ) {
+					if ( key == 'group_by_date' || key == 'group_by_user' || key == 'page' || key == 'per_page' ) {
 						continue;
 					} else if ( params[key] != $scope.oldParams[key] ) {
 						chosenReport.chosenGroupBy = 'BLANK';
-						params['group_by_date'] = false;
-						params['group_by_user'] = false;
+						/**/
+						if ( params.hasOwnProperty('group_by_date') ) {
+							params['group_by_date'] = undefined;
+						};
+						if ( params.hasOwnProperty('group_by_user') ) {
+							params['group_by_user'] = undefined;
+						};
 						/**/
 						$scope.appliedFilter['groupBy'] = undefined;
 						break;
@@ -1146,43 +1164,68 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
+			var updateDS = function (response) {
 
+				// fill in data into seperate props
+				$scope.totals          = response.totals || [];
+				$scope.headers         = response.headers || [];
+				$scope.subHeaders      = response.sub_headers || [];
+				$scope.results         = response.results || [];
+				$scope.resultsTotalRow = response.results_total_row || 0;
+				$scope.summaryCounts   = response.summary_counts || [];
+				$scope.reportGroupedBy = response.group_by || '';
 
-			var callback = function(response) {
+				// track the total count
+				$scope.totalCount = response.total_count || 0;
+				$scope.currCount = response.results ? response.results.length : 0;
+			};
+
+			var sucssCallback = function(response) {
 				if (changeView) {
 					$rootScope.setPrevState.hide = false;
 					$scope.showReportDetails = true;
 				};
 
-				// fill in data into seperate props
-				$scope.totals          = response.totals;
-				$scope.headers         = response.headers;
-				$scope.subHeaders      = response.sub_headers;
-				$scope.results         = response.results;
-				$scope.resultsTotalRow = response.results_total_row;
-				$scope.summaryCounts   = response.summary_counts;
-				$scope.reportGroupedBy = response.group_by;
+				updateDS(response);
 
-				// track the total count
-				$scope.totalCount = response.total_count;
-				$scope.currCount = response.results.length;
-
+				$scope.errorMessage = [];
 				$scope.$emit('hideLoader');
 
 				if (!changeView && !loadPage) {
-					$rootScope.$emit('report.updated');
+					console.log('report.updated');
+					$scope.$broadcast('report.updated');
 				} else if (!!loadPage && !resultPerPageOverride) {
-					$rootScope.$emit('report.page.changed');
+					console.log('report.page.changed');
+					$scope.$broadcast('report.page.changed');
 				} else if (!!resultPerPageOverride) {
-					$rootScope.$emit('report.printing');
+					console.log('report.printing');
+					$scope.$broadcast('report.printing');
 				} else {
-					$rootScope.$emit('report.submit');
+					console.log('report.submit');
+					$scope.$broadcast('report.submit');
 				}
 			};
 
-			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, callback);
+			var errorCallback = function (response) {
+				if (changeView) {
+					$rootScope.setPrevState.hide = false;
+					$scope.showReportDetails = true;
+				};
+
+				updateDS(response);
+
+				$scope.errorMessage = response;
+				$scope.$emit('hideLoader');
+
+				$rootScope.$emit('report.API.failure');
+			};
+
+			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 
+		$scope.clearErrorMessage = function () {
+			$scope.errorMessage = [];
+		};
 
 
 

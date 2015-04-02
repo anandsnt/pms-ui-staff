@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()" ng-cloak>
+<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-click="clearErrorMessage()" ng-cloak>
     <form ng-show="!shouldShowWaiting" method="post" action="pay-bill" id="pay-bill" name="pay-bill" class="modal-content form pay-bill" ng-class="{'has-card':showCreditCardInfo && !showCCPage && saveData.paymentType ==='CC','select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
         <button id="modal-close" type="button" class="modal-close" ng-click="handleCloseDialog()"><span class="icons icon-close invert"></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -114,11 +114,9 @@
 
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
-                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
-                  <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" translate>MAKE PAYMENT</button>
-            <!-- the below functionality will be implemented later CICO-13435 -->
-              <!--   <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="shouldShowMakePaymentButton" translate>MAKE PAYMENT</button> -->
-               <!--   <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton" translate>REFUND {{currencySymbol}}{{defaultRefundAmount}}</button> -->
+                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="shouldShowMakePaymentButton" translate>MAKE PAYMENT</button> 
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton" translate>REFUND {{currencySymbol}}{{defaultRefundAmount}}</button> 
             </div>
              <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CLOSE</button>

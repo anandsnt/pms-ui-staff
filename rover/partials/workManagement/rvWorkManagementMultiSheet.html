@@ -1,8 +1,8 @@
 <!-- Worksheet content -->
 <section id="worksheet-content" class="content worksheets" role="main">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div class="worksheet-error-msg" ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- Worksheet header -->
-    <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">            
+    <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
         <div class="entry date">
             <label for="worksheet-date" translate>DATE</label>
             <div class="entry-data" ng-click="showCalendar('RVWorkManagementMultiDatePickerController')">
@@ -10,7 +10,7 @@
                 <strong id="worksheet-date-day" class="day">{{multiSheetState.selectedDate | date : 'dd'}}</strong>
                 <span id="worksheet-date-month" class="month">{{multiSheetState.selectedDate | date : 'MMMM'}}</span>
                 <span id="worksheet-date-year" class="year">{{multiSheetState.selectedDate | date : 'yyyy'}}</span>
-            </div>            
+            </div>
         </div>
         <div class="entry employees">
             <label for="worksheet-employees" translate>EMPLOYEES</label>
@@ -40,10 +40,10 @@
             <span class="icons icon-filter"></span>
             {{'FILTER_ROOMS' | translate}}
         </a>
-        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" 
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable"
             ng-iscroll="unAssignedRoomList"
-            data-drop="true" 
-            jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}" 
+            data-drop="true"
+            jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}"
             data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.assigned'}">
 
             <ul class="wrapper sortable" >
@@ -52,10 +52,10 @@
                         data-drag = "{{multiSheetState.dndEnabled}}"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
-                    <h3>{{room.room_no}}</h3> 
+                    <h3>{{room.room_no}}</h3>
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !room.checkout_time">DUE OUT</span>
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>
-                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Departed'">OUT</span>                        
+                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Departed'">OUT</span>
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Stayover'">STAYOVER</span>
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Arrival' && !room.checkin_time">ARRIVAL</span>
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Arrival' && !!room.checkin_time">{{ room.checkin_time}}</span>
@@ -63,9 +63,9 @@
                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Not Reserved'">UNASSIGNED</span>
                      |
                     <span class="room {{room.current_status}}">{{room.current_status}}</span>
-                </li>                
+                </li>
             </ul>
-        </div>  
+        </div>
     </div>
 
     <!-- Multiple worksheets - assigned rooms -->
@@ -74,9 +74,9 @@
         <div class="info">
             <span class="icon-no-content icon-housekeeping"></span>
             <strong class="h1" translate>NO_EMPLOYEES_SELECTED</strong>
-            <span class="h2" translate>SELECT_EMPLOYEES_TO_ASSIGN</span> 
+            <span class="h2" translate>SELECT_EMPLOYEES_TO_ASSIGN</span>
         </div>
-    </div> 
+    </div>
 
     <!-- When employees selected -->
     <div class="assigned-rooms multi-sheet" ng-if="multiSheetState.selectedEmployees.length > 0">
@@ -96,9 +96,9 @@
                     <span class="total">{{multiSheetState.assignments[employee.id].summary.stayovers.total}}</span>
                 </li>
             </ul>
-            <div id="{{employee.id}}" class="worksheet-content scrollable" 
-                data-drop="true" 
-                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" 
+            <div id="{{employee.id}}" class="worksheet-content scrollable"
+                data-drop="true"
+                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}"
                 data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.unassigned,.worksheet-room.multi-sheet.assigned'}"
                 ng-iscroll="assignedRoomList-{{$index}}">
 
@@ -112,7 +112,7 @@
                         <h3>{{room.room_no}}</h3>
                         <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !room.checkout_time">DUE OUT</span>
                         <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>
-                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Departed'">OUT</span>                        
+                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Departed'">OUT</span>
                         <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Stayover'">STAYOVER</span>
                         <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Arrival' && !room.checkin_time">ARRIVAL</span>
                         <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Arrival' && !!room.checkin_time">{{ room.checkin_time}}</span>
@@ -126,9 +126,9 @@
             </div>
         </div>
         <!-- ... repleat for all selected employees -->
-        <div class="sheet-placeholder" ng-repeat="placeholder in multiSheetState.placeHolders"></div> 
-        <!-- We can show up to 6 employees in here. When selected employee count is between 1 and 6, 
-        fill in the difference to 6 by adding: <div class="sheet-placeholder"></div> for each empty spot on the screen. 
-        For example, if you select 2 employees, you should have 4 '.sheet-placeholder' elements on the screen --> 
+        <div class="sheet-placeholder" ng-repeat="placeholder in multiSheetState.placeHolders"></div>
+        <!-- We can show up to 6 employees in here. When selected employee count is between 1 and 6,
+        fill in the difference to 6 by adding: <div class="sheet-placeholder"></div> for each empty spot on the screen.
+        For example, if you select 2 employees, you should have 4 '.sheet-placeholder' elements on the screen -->
     </div>
 </section>

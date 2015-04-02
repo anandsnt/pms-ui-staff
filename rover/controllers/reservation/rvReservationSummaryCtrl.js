@@ -358,12 +358,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.depositData.depositSuccess = true;
                     $scope.depositData.authorizationCode = data.authorization_code;
                     $scope.reservationData.selectedPaymentId = data.payment_method.id;
-                    //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
-                    if ($scope.reservationData.paymentType.type.value === "CC") {
-                        $scope.isNewCardAdded = true;
-                    } else {
-                        $scope.isNewCardAdded = false;
-                    }
+                    //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails - commenting the if else block below for CICO-14199
+                    // if ($scope.reservationData.paymentType.type.value === "CC") {
+                    //     $scope.isNewCardAdded = true;
+                    // } else {
+                    //     $scope.isNewCardAdded = false;
+                    // }
                     $scope.$emit('hideLoader');
                 },
                 onPaymentFailure = function(errorMessage) {
@@ -1112,14 +1112,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 // TO HANDLE OVERRIDE ALL SCENARIO
                 _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                     room.demographics = $scope.demographics;
-                    var postData = $scope.computeReservationDataforUpdate(true, false, currentRoomIndex);
+                    var postData = $scope.computeReservationDataforUpdate(true, true, currentRoomIndex);
                     postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 });
 
             } else {
                 $scope.reservationData.rooms[index].demographics = $scope.demographics;
-                var postData = $scope.computeReservationDataforUpdate(true, false, index);
+                var postData = $scope.computeReservationDataforUpdate(true, true, index);
                 postData.reservationId = reservationId;
                 $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
             }

@@ -153,11 +153,20 @@ sntRover.controller('RVbillCardController',
 	};
 
 	/**
+	* function to check whether the user has permission
+	* to Post Room Charge
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToPostRoomCharge = function() {
+		return rvPermissionSrv.getPermissionValue ('ENABLE_DISABLE_POST_CHARGES');
+	};
+
+	/**
 	* function to decide whether to show Move Charge Drop Down
 	* @return {Boolean}
 	*/
 	$scope.showMoveChargeDropDown = function(){
-		return ($scope.hasPermissionToMoveCharges());
+		return ($rootScope.isStandAlone && $scope.hasPermissionToMoveCharges());
 	};
 
 	/**
@@ -175,7 +184,8 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.showEditChargeButton = function(feesType){
-		return (feesType!== 'TAX' && 
+		return ($rootScope.isStandAlone && 
+				feesType!== 'TAX' && 
 				$scope.hasPermissionToChangeCharges());
 	};
 
@@ -189,7 +199,7 @@ sntRover.controller('RVbillCardController',
 
 	//Whatever permission of Make Payment we are assigning that
 	//removing standalone thing here
-	$scope.showPayButton = $scope.hasPermissionToMakePayment();
+	$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
 	
 	//Calculate the scroll width for bill tabs in all the cases
 	$scope.getWidthForBillTabsScroll = function(){
@@ -301,7 +311,7 @@ sntRover.controller('RVbillCardController',
 	};
 	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
-		if (!$scope.hasPermissionToMakePayment()){
+		if (!$scope.hasPermissionToPostRoomCharge()){
 			$scope.errorMessage = [ "You have no permission to enable or disbable this button!"];
 			return false;
 		}
@@ -842,8 +852,7 @@ sntRover.controller('RVbillCardController',
 	
 	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
 		var inclLength=0;		
-		angular.forEach(expense_details,function(elem){
-			console.log(elem);
+		angular.forEach(expense_details,function(elem){			
 		if(elem.is_inclusive==true)
 		{
 			inclLength++;
@@ -961,9 +970,25 @@ sntRover.controller('RVbillCardController',
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
 	};
+
+	//CICO-13907
+	$scope.hasAnySharerCheckedin = function(){
+		var isSharerCheckedin = false;
+		angular.forEach($scope.reservationBillData.sharer_information, function(sharer, key){
+			if(sharer.reservation_status == 'CHECKEDIN' || sharer.reservation_status == 'CHECKING_OUT'){
+				isSharerCheckedin = true;
+				return false;
+			}
+		});
+		return isSharerCheckedin;
+	}
+
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(){
-		if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
+		if($scope.hasAnySharerCheckedin()){
+			// Do nothing , Keep going checkin process , it is a sharer reservation..
+		}
+		else if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
 			//TO DO:Go to room assignemt view
 			$state.go("rover.reservation.staycard.roomassignment", {
 				"reservation_id": $scope.reservationBillData.reservation_id,
@@ -1173,6 +1198,7 @@ sntRover.controller('RVbillCardController',
 		}
 		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType!="DB"){
 			// Show payment popup for stand-alone only.
+			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
 		else{

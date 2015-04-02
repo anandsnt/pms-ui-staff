@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-cloak ng-click="clearErrorMessage()">
+<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-cloak ng-click="clearErrorMessage()">
 	
 	<form ng-show="!shouldShowWaiting" name="deposit-balance" method="post" id="deposit-balance" class="modal-content form deposit-balance" action="{action}">
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDepositModal()">
@@ -100,7 +100,7 @@
 				    <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
 
 				    <!-- CICO-12408 : Use only when fee exsists -->
-				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount"/>
+				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" value="{{ depositBalanceMakePaymentData.amount | number:2 }}"/>
 				    <span ng-show="isShowFees()" class="delimiter">+</span> 
 				    <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
 				    <span ng-show="isShowFees()" class="delimiter">fee</span>
@@ -138,11 +138,11 @@
 	                        Your Authorize code is: <span class="auth" >{{authorizedCode}}</span>
 	                    </li>
 	                    <li ng-if="isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount | number:2 }} + {{currencySymbol}}{{feeData.calculatedFee}} fee
                         </span>
 	                    </li>
 	                    <li ng-if="!isShowFees()">
-	                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount}}
+	                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount | number:2 }}
 	                        </span>
 	                    </li>
 	                </ul>
@@ -173,7 +173,7 @@
 			</div>
 		</fieldset>
 	</form>
-	<div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
+	<div ng-if="shouldShowWaiting && pageloadingOver" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
 			<div class="centeralign alert-box">
 				WAITING FOR PAYMENT COMPLETION 
 			</div>

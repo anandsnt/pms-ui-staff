@@ -1,5 +1,7 @@
 {
-"ACTIVITY_LOG_TITLE" : "Activity Log",    
+"ACTIVITY_LOG_TITLE" : "Activity Log",
+"FROM_DATE":"From date",
+"TO_DATE":"To Date",    
     
     "STAY_CARD": "Stay Card",
     "ROOM_STATUS": "Room Status",
@@ -685,7 +687,9 @@
     "ROOM_ASSIGNMENT_TITLE":"Room Assignment",
     "MAXIMUM_OCCUPANCY_LABEL": "Maximum occupancy of room is",
     "ASSIGN_LABEL": "Assign Room",
-    "CANCEL_LABEL":"Cancel",    
+    "CANCEL_LABEL":"Cancel",
+    "SHOW_ALL_FLOORS" : "Show All Floors",
+    "SELECT_FLOOR" : "Select floor",    
     
     "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
     "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",

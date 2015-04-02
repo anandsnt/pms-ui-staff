@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
     <form ng-show="!shouldShowWaiting" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -69,9 +69,9 @@
                     <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
                 </div>
                 <div class="actions">
-                    <button type="button" class="button blue"  ng-if="!depositDetails.isFromCheckin" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null || reservationData.depositAmount < 0" ng-click="closeDialog()">Pay deposit later</button>
+                    <button type="button" class="button blue"  ng-if="!depositDetails.isFromCheckin" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null" ng-click="closeDialog()">Pay deposit later</button>
                     <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin"  ng-hide="depositData.paymentType ==='' || depositData.paymentType === null"ng-click="proceedCheckin()">Pay deposit later</button>
-                    <button type="button" class="button green" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null || reservationData.depositAmount< 0" ng-click="payDeposit()">Pay deposit now</button>
+                    <button type="button" class="button green" ng-hide="shouldHidePayNowButtonInPopUp()" ng-click="payDeposit()">Pay deposit now</button>
                 </div>
             </div>
 
@@ -98,7 +98,7 @@
                 <div class="notice error">{{paymentErrorMessage}}</div>
             </div> 
 
-             <div class="entry full-width" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && !errorOccured">
+             <div class="entry full-width" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && !errorOccured && newCardAdded">
                 <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': depositData.addToGuestCard}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': depositData.addToGuestCard}"></span>
                     <input ng-model="depositData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
@@ -115,7 +115,7 @@
             </div>
         </div>
     </form>
-    <div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
+    <div ng-if="shouldShowWaiting && pageloadingOver" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
 		<div class="centeralign alert-box">
 			WAITING FOR PAYMENT COMPLETION 
 		</div>

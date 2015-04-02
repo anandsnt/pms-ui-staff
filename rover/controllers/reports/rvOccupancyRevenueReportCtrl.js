@@ -181,26 +181,43 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		function init() {
 			var chosenReport = RVreportsSrv.getChoosenReport();
+
+			var ms   = new tzIndependentDate(chosenReport.fromDate) * 1,
+				last = new tzIndependentDate(chosenReport.untilDate) * 1,
+				step = (24 * 3600 * 1000);
+
 			$scope.selectedDays = [];
-			for (var ms = new tzIndependentDate(chosenReport.fromDate) * 1, last = new tzIndependentDate(chosenReport.untilDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+			for (; ms <= last; ms += step) {
 				$scope.selectedDays.push(dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'));
 			}
+
 			$timeout(function() {
 				refreshScrollers();
 			}, 400)
-
 		};
 
 		init();
 
-		$rootScope.$on('report.updated', function() {
+		$scope.$on('report.filter.change', function() {
+			$timeout(function() {
+				refreshScrollers();
+			}, 400);
+		});
+
+		// re-render must be initiated before for taks like printing.
+		// thats why timeout time is set to min value 50ms
+		$scope.$on('report.submit', function() {
+			init();
+		});
+		$scope.$on('report.printing', function() {
+			init();
+		});
+		$scope.$on('report.updated', function() {
+			init();
+		});
+		$scope.$on('report.page.changed', function() {
 			init();
 		});
 
-		$rootScope.$on('report.filter.change', function() {
-			$timeout(function() {
-				refreshScrollers();
-			}, 400)
-		});
 	}
 ])

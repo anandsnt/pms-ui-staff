@@ -1,7 +1,15 @@
-sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter','ngDialog',
-	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter,ngDialog) {
+sntRover.controller('RVReservationDepositController', 
+	['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 
+	'RVReservationCardSrv', '$state', '$filter','ngDialog', 'rvPermissionSrv',
+	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, 
+		RVReservationCardSrv, $state, $filter,ngDialog, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
+		//adding a flag to be set after some timeout to remove flickering action in iPad
+		$scope.pageloadingOver = false;
+		$timeout(function() {
+			$scope.pageloadingOver = true;
+		}, 3000);
 		$scope.errorMessage = '';
 		$scope.showCancelCardSelection =true;
 		$scope.addmode = false;
@@ -50,7 +58,33 @@ sntRover.controller('RVReservationDepositController', ['$rootScope', '$scope', '
 
 		$scope.closeDialog = function(){
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
-      		ngDialog.close();
+			//to add stjepan's popup showing animation 
+      		$rootScope.modalOpened = false; 
+      		$timeout(function(){
+      			ngDialog.close();
+      		}, 250);
+      		
+      	};
+
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
+
+
+      	/**
+      	* function to decide visibility of Pay now button modal popup
+      	* @return {Boolean}
+      	*/
+      	$scope.shouldHidePayNowButtonInPopUp = function(){
+      		var paymentType = $scope.depositData.paymentType,
+      			resData = $scope.reservationData;
+      		return (paymentType === '' || paymentType === null ||
+      		 !$scope.hasPermissionToMakePayment());
       	};
 
 		$scope.setScroller('cardsList');		
