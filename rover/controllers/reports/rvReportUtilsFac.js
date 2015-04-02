@@ -105,6 +105,7 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['DAILY_TRANSACTIONS']:
+                case __reportNames['DAILY_PAYMENTS']:
                     reportItem['reportIconCls'] = 'icon-report icon-transactions';
                     break;
 
@@ -404,6 +405,8 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasByChargeGroup'] = filter;
                     reportItem['chargeGroups'] = angular.copy( data.chargeGroups );
                     _hasChargeGroupSelect = true;
+
+                    console.log(reportItem);
                 };
 
                 // check for "by charge group" and keep a ref to that item
