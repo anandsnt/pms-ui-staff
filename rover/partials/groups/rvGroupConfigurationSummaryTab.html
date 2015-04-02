@@ -63,8 +63,8 @@
                 <div class="select">
                     <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation>
                         <option value="" selected translate>SET_STATUS</option>
-                        <option ng-repeat="holdstatus in groupConfigData.holdStatusList" value="{{holdstatus.value}}" ng-selected="holdstatus.value == groupConfigData.summary.hold_status">
-                            {{holdstatus.status_name}}
+                        <option ng-repeat="holdstatus in groupConfigData.holdStatusList" value="{{holdstatus.id}}" ng-selected="holdstatus.value == groupConfigData.summary.hold_status">
+                            {{holdstatus.name}}
                         </option>
                     </select>
                 </div>
@@ -84,7 +84,7 @@
             <div class="entry full-width with-button">
                 <label for="group-rate">Rate</label>
                 <div class="select">
-                    <select id="group-rate" ng-model="groupConfigData.summary.rate">
+                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation>
                         <option value="" selected>Select Rate</option>
                         <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>
                         <!-- ... repeat for all rates -->
