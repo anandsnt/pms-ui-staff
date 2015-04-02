@@ -63,12 +63,54 @@ sntRover.service('rvUtilSrv', [function(){
 		    return datesBetween;
 		}
 
-		this.toMilliSecond = function(dateString){
-			return (new tzIndependentDate(dateString) * 1)
+		/**
+		 * to get the millisecond value against a date/date string
+		 * @param  {Object/String} Date Obejct Or dateString [description]
+		 * @return {String}            [millisecond]
+		 */
+		this.toMilliSecond = function(date_){
+			var type_ 	= typeof date_,
+				ms 		= '';
+
+			switch (type_){
+				case 'string':
+					ms = (new tzIndependentDate(date_));
+					break;
+				default:
+					ms = date_.getTime();
+					break;
+			}
+			return ms;
 		};
 
-		this.addOneDay = function(dateString){
-			return ((new tzIndependentDate(dateString) * 1) + (24 * 3600 * 1000))
+		/**
+		 * to add one day against a date
+		 * @param  {Object/String} Date Obejct Or dateString [description]
+		 * @return {String}            [millisecond]
+		 */
+		this.addOneDay = function(date_){
+			return (this.toMilliSecond (date_) + (24 * 3600 * 1000))
+		};
+		
+		/**
+		 * utility function to get key value from an array having number of other. key values
+		 * @param  {array} array      	[source array to process]
+		 * @param  {array} wantedKeys 	[array of keys that we wanted to extract from array]
+		 * @return {array}            	[array with key values we wanted]
+		 */
+		this.getListOfKeyValuesFromAnArray = function(array, wantedKeys){
+			var arrayToReturn = [], eachItemToAdd;
+
+			_.each(array, function(arrayIndexElement){
+				eachItemToAdd = {};
+				
+				_.each(wantedKeys, function(key){
+					eachItemToAdd[key] = arrayIndexElement[key];
+				});
+				arrayToReturn.push (eachItemToAdd);
+			});
+
+			return arrayToReturn;
 		};
 
 }]);

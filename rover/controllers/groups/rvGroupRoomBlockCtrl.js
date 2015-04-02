@@ -300,14 +300,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			return "";
 		};
 
-		/**
-		 * [successCallBackOfAllRoomTypeFetch description]
-		 * @param  {Objects} data of All Room Type
-		 * @return undefined
-		 */
-		var successCallBackOfAllRoomTypeFetch = function(data) {
-			$scope.roomTypes = data.results;
-		};
 
 		/**
 		 * When availability and BAR fetch completed
@@ -346,10 +338,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var promises = [];
 			//we are not using our normal API calling since we have multiple API calls needed
 			$scope.$emit('showLoader');
-
-			//Room types
-			promises.push(rvGroupConfigurationSrv.getAllRoomTypes()
-				.then(successCallBackOfAllRoomTypeFetch));
 
 			//get Room type & rates for this group
 			var paramsForRoomTypeAndRates = {

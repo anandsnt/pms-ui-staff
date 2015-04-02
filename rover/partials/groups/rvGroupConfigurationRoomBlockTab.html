@@ -18,8 +18,8 @@
                 <div class="select">
                     <select id="group-hold-status" ng-model="selectedHoldStatus" iscroll-stop-propagation>
                         <option value="" ng-selected="isEmpty(selectedHoldStatus)" translate>SET_STATUS</option>
-                        <option ng-repeat="holdstatus in holdStatusList" value="{{holdstatus.value}}" ng-selected="selectedHoldStatus === holdstatus.value">
-                            {{holdstatus.status_name}}
+                        <option ng-repeat="holdstatus in holdStatusList" value="{{holdstatus.id}}" ng-selected="selectedHoldStatus === holdstatus.id">
+                            {{holdstatus.name}}
                         </option>
                     </select>
                 </div>

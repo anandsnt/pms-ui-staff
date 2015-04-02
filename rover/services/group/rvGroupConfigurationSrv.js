@@ -37,7 +37,8 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.getHoldStatusList = function() {
 			var deferred = $q.defer(),
-				url = '/ui/show?format=json&json_input=groups/hold_status_list.json';
+				//url = '/ui/show?format=json&json_input=groups/hold_status_list.json';
+				url = '/api/group_hold_statuses';
 
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
@@ -78,8 +79,8 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		this.getSelectedRoomTypesAndRates = function(params){
 			var deferred = $q.defer(),
 				group_id = params.id,
-				//url = '/api/groups/' + group_id + "/room_type_and_rates";
-				url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+				url = '/api/groups/' + group_id + "/room_type_and_rates";
+				//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
 			
 			rvBaseWebSrvV2.getJSON(url, params).then(
 				function(data) {
@@ -93,6 +94,26 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		/**
+		 * To update the selected Room types and its rates
+		 * @return {Promise}
+		 */
+		this.updateSelectedRoomTypesAndRates = function(params){
+			var deferred = $q.defer(),
+				url = '/api/groups/update_room_type_and_rates';
+				//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+			
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
 
 		/**
 		 * Function to get Room type availablity as well as best availbale rate
