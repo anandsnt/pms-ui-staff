@@ -19,7 +19,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
 
    /* save new order*/
 
-  $scope.saveNewPosition = function(id, position){
+  $scope.saveNewPosition = function(id, position, prevPosition){
     var successCallbackSavePosition = function(data){
       
       $scope.$emit('hideLoader');
@@ -28,6 +28,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
     data.id = id;
     data.parent_id = $scope.parent_id;
     data.position = position +1;
+    data.previous_position = prevPosition +1;
     $scope.invokeApi(ADContentManagementSrv.saveComponentOrder, data , successCallbackSavePosition);
 
   }  
@@ -35,7 +36,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
    $scope.sortableOptions = {
  
      stop: function(e, ui){
-        $scope.saveNewPosition(ui.item.sortable.model.id, ui.item.sortable.dropindex);
+        $scope.saveNewPosition(ui.item.sortable.model.id, ui.item.sortable.dropindex, ui.item.sortable.index);
         console.log("Id--"+ ui.item.sortable.model.id + "---for parent----" + $scope.parent_id + "---position----" + ui.item.sortable.dropindex);
    }
 
