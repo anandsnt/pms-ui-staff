@@ -1,6 +1,6 @@
-<div class="entry radio-check {{divClass}}">
+<div class="entry radio-check {{divClass}}" ng-hide="ngHide">
 	<label class="checkbox {{parentLabelClass}}" ng-class="{'checked': isChecked}" >
-		
+
 		<span ng-if="spanClass == 'checkbox-background'" class="icon-form icon-checkbox" ng-class="{'checked': isChecked, 'checkbox-background': !isChecked}"></span>
 		<span ng-if="spanClass != 'checkbox-background'" class="icon-form icon-checkbox" ng-class="{'checked': isChecked}"></span>
 		<input type="checkbox" ng-disabled = "isDisabled" ng-model="isChecked"  ng-change='change(datagroup,index)'>
@@ -8,4 +8,3 @@
 		<strong ng-show = "required=='yes'">*</strong>
 	</label>
 </div>
-  

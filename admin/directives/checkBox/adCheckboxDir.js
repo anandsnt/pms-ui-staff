@@ -13,10 +13,11 @@ admin.directive('adCheckbox', function($timeout) {
             change: '=change',
             datagroup: '@datagroup',
             isDisabled: '=isDisabled',
-            index: '@index'
+            index: '@index',
+            ngHide: '@hide'
 	    },
-        
-    	templateUrl: '../../assets/directives/checkBox/adCheckbox.html' 
+
+    	templateUrl: '../../assets/directives/checkBox/adCheckbox.html'
     };
 
 });
