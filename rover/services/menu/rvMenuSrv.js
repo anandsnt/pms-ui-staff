@@ -167,6 +167,21 @@ sntRover.service('rvMenuSrv',
 	                menuIndex: "endOfDay"
             	}]
 		    }, {
+		        title: "MENU_GROUPS",
+		        //hidden: true,
+		        action: "",
+		        iconClass: "icon-groups",
+		        menuIndex: "menuGroups",
+		        submenu: [{
+		            title: "MENU_CREATE_GROUP",
+		            action: "rover.groups.config({id:'NEW_GROUP'})",
+		            menuIndex: "menuCreateGroup",
+		        }, {
+		            title: "MENU_MANAGE_GROUP",
+		            action: "rover.groups.search",
+		            menuIndex: "menuManageGroup",
+		        }]
+		    }, {
 		        title: "MENU_CONVERSATIONS",
 		        //hidden: true,
 		        action: "",
@@ -361,7 +376,11 @@ sntRover.service('rvMenuSrv',
 
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],		
 			'commisions': 			['ACCESS_COMMISSIONS'],	
-			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],					
+			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
+
+			'menuGroups': 			[],
+			'menuCreateGroup': 		[],
+			'menuManageGroup': 		[],
 
 		};
 

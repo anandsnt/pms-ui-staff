@@ -7,18 +7,18 @@
 				 {{roomTypeData.room_type_name}} </h3>
 			<em class="status"> {{ 'MANDATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }}</em>
 		</div>
-		
+
 		<fieldset class="holder left float">
-			
+
 			<ad-textbox styleclass="full-width" value="roomTypeData.room_type_name" name = "room-type-name" id = "room-type-name" label = "{{ 'ROOM_TYPE_NAME' | translate }}" placeholder = "{{ 'ROOM_TYPE_PLACE_HOLDER' | translate }}" required = "yes" ></ad-textbox>
-			
+
 			<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="roomTypeData.snt_description" name = "snt-desc" id = "snt-desc" label = "{{ 'SNT_DESCRIPTION' | translate }}" placeholder = "{{ 'SNT_DESCRIPTION_PLACE_HOLDER' | translate }}"></ad-textarea>
 
 		</fieldset>
 		<fieldset class="holder right float">
 			<ad-textbox value="roomTypeData.room_type_code" name = "room-type-code" id = "room-type-code" label = "{{ 'CODE' | translate }}" placeholder = "{{ 'ROOM_TYPE__CODE_PLACE_HOLDER' | translate }}" required = "yes" ></ad-textbox>
             <ad-textbox value="roomTypeData.max_occupancy" name = "max-occupancy" id = "max-occupancy" label = "{{ 'MAX_OCCUPANCY' | translate }} " placeholder = "{{ 'MAX_OCCUPANCY_PLACE_HOLDER' | translate }}" required = "" ></ad-textbox>
-			 
+
 			 <div class="entry full-width">
 				<label for="room-type-picture"> {{ 'CHOOSE_FILE' | translate }} </label>
 				<div class="file-upload with-preview">
@@ -26,12 +26,13 @@
 					<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
 						{{ 'PICTURE' | translate }}
-					</button> 
+					</button>
 				</div>
 				<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
-			</div> 
+			</div>
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" label="{{ 'PSEUDO_ROOM_TYPE' | translate }}"></ad-checkbox>
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" label="{{ 'SUITE_ROOM_TYPE' | translate }}"></ad-checkbox>
+			<ad-checkbox hide="{{ !isRoomStatusImportPerRoomTypeOn || isStandAlone }}" div-class="full-width" is-checked="roomTypeData.is_room_type_ows_request_per_status_type" label="{{ 'SEND_INTERFACE_REQUEST' | translate }}"></ad-checkbox>
 		</fieldset>
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">

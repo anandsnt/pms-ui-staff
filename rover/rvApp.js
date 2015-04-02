@@ -16,6 +16,7 @@ var sntRover = angular.module('sntRover',[
 		'housekeepingModule', 
 		'reportsModule', 
 		'diaryModule',
+		'groupModule',
 		'FinancialsModule',
 		'cacheVaultModule', 
 		'twoMonthscalendar',

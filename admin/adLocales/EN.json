@@ -601,7 +601,9 @@
 "ROOM_STATUS_UPDATE_CHECKOUT_LABEL":"Enable room status update at checkout",
 "MAINTENANCE_REASONS":"Maintenance Reasons",
 "MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",
-"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",    
+"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",
+"SEND_INTERFACE_REQUEST": "Send Interface Request per status type"
+,    
     
     "NAME":"Name",
     "DESCRIPTION":"Description",

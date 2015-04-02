@@ -10,9 +10,7 @@
         background-image: @iconMenu;
         background-repeat: no-repeat;
         background-size: 40px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        .nowrap();
         .size(50px, 100%);
         .show;
         
@@ -61,6 +59,11 @@
 			&.active { background-position: 0 -1385px;}
 		}
 
+		&.icon-groups {
+			background-position: 0 -1445px; 
+			&.active { background-position: 0 -1505px;}
+		}
+
 		@media only screen and (min-width: 600px) {
 			height: 60px;
 
@@ -107,6 +110,11 @@
 			&.icon-sign-out {
 				background-position: 0 -1320px; 
 				&.active { background-position: 0 -1380px;}
+			}
+
+			&.icon-groups {
+				background-position: 0 -1440px; 
+				&.active { background-position: 0 -1500px;}
 			}
 		}
 
@@ -164,7 +172,7 @@
 	.button {
 		display: inline-block;
 		font-weight: 600;
-		line-height: 38px;
+		line-height: 40px;
 		vertical-align: middle;
 		text-transform: uppercase;
 		text-align: center;
@@ -261,24 +269,10 @@
 
 		&.dark-grey {
 			.gradient (@grey3, @grey4);
+			
 			&:active { .gradient (@grey4, @grey3); }
 		}
 		
-		&.yellow-btn {
-			background-color: #F8E26E;
-			text-shadow: none;
-			.box-shadow();
-
-			&:hover,
-			&:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
-			&.red-text-btn {
-				color: @red;
-				&:hover,
-				&:active { color: darken(@red, 10); }
-			}
-
-		}
-
 		&.white {
 			color: @textColor;
 			background-color: @white;
@@ -372,6 +366,30 @@
 				}
 			}
 		}
+
+		/* Button with label ***/
+		&.with-label {
+			text-align: right;
+			.float;
+
+			em,
+			strong {
+				text-transform: none;
+				.pull-left;
+			}
+
+			em { 
+				font-weight: 400;
+				color: @grey3;
+			}
+
+			strong { 
+				font-weight: 600;
+				color: @textColor; 
+				max-width: 80%;
+				.nowrap();
+			}
+		}
 	}
 
 	.add-new-button {
@@ -385,7 +403,7 @@
 		color: @green;
 		padding: 0 10px;
 		border: 1px dashed rgba(0,0,0,.2);
-		#border-radius > .rounded(3px);
+		#border-radius > .rounded();
 
 		&:hover,
 		&:active {
