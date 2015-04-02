@@ -11,24 +11,22 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        factory.parseAPI = function ( reportName, apiResponse, options ) {
+        factory.parseAPI = function ( reportName, apiResponse, isGroupedBy ) {
 
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') ) {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
+            if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') || reportName == reportUtils.getName('DAILY_PAYMENTS') ) {
+                return $_parseNumeralData( reportName, apiResponse );
             }
-
             // otherwise a super parser for reports that can be grouped by
-            else if ( !!options['groupedByKey'] ) {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options['groupedByKey'] );
+            else if ( !!isGroupedBy ) {
+                return $_parseDataToSubArrays( reportName, apiResponse, isGroupedBy );
             }
-
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
             else {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToInfo( reportName, apiResponse, options );
+                return $_parseDataToInfo( reportName, apiResponse );
             };
         };
 
@@ -51,32 +49,23 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDataToInfo ( reportName, apiResponse, options ) {
+        function $_parseDataToInfo ( reportName, apiResponse ) {
             var returnAry  = [],
                 makeCopy   = {},
                 customData = [],
                 guestData  = {},
                 noteData   = {},
-                cancelData = {},
-                options    = options;
+                cancelData = {};
 
             var i, j;
 
             var checkGuest = function(item) {
-                if ( !options['checkGuest'] ) {
-                    return false;
-                };
-
 				var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
 				var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
 				return guests || compTravelGrp ? true : false;
 			};
 
 			var checkNote = function(item) {
-                if ( !options['checkNote'] ) {
-                    return false;
-                };
-
 				return !!item['notes'] && !!item['notes'].length;
 			};
 
@@ -87,10 +76,6 @@ sntRover.factory('RVReportParserFac', [
 			};
 
 			var checkCancel = function(item) {
-                if ( !options['checkCancel'] ) {
-                    return false;
-                };
-
 				return excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]) ? !!item['cancel_reason'] : false;
 			};
 
@@ -175,7 +160,7 @@ sntRover.factory('RVReportParserFac', [
                 returnAry = apiResponse;
 
                 // dont remove yet
-                // console.log( 'No API changes applied' );
+                console.log( 'No API changes applied' );
             };
 
 
@@ -187,7 +172,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDataToSubArrays ( reportName, apiResponse, groupedByKey ) {
+        function $_parseDataToSubArrays ( reportName, apiResponse, isGroupedBy ) {
             /****
             * OUR AIM: is to transform the api response to this format
             * [
@@ -202,7 +187,7 @@ sntRover.factory('RVReportParserFac', [
 
             var returnObj         = {};
             var interMedArray     = [];
-            var groupByKey        = groupedByKey;
+            var groupByKey        = isGroupedBy;
             var currentGroupByVal = '';
             var makeCopy          = {};
 
@@ -262,7 +247,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseNumeralData ( reportName, apiResponse, options ) {
+        function $_parseNumeralData ( reportName, apiResponse ) {
             var returnAry = [],
                 makeCopy = {},
                 objKeyName = '',
