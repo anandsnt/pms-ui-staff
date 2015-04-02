@@ -130,6 +130,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('DAILY_PAYMENTS'):
 					$scope.hasNoTotals = true;
 					$scope.isTransactionReport = true;
 					break;
@@ -167,6 +168,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('DAILY_PAYMENTS'):
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
@@ -369,6 +371,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('DAILY_PAYMENTS'):
 					template = '/assets/partials/reports/rvDailyTransactionsReportRow.html';
 					break;
 
@@ -605,6 +608,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 					orientation = 'landscape';
+					break;
+
+				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+					orientation = 'landscape';
+					margin: '2mm 2mm';
 					break;
 
 				default:

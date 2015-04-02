@@ -16,7 +16,7 @@ sntRover.factory('RVReportParserFac', [
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') ) {
+            if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') || reportName == reportUtils.getName('DAILY_PAYMENTS') ) {
                 return $_parseNumeralData( reportName, apiResponse );
             }
             // otherwise a super parser for reports that can be grouped by

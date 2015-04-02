@@ -26,7 +26,8 @@ sntRover.factory('RVReportUtilsFac', [
             'LOGIN_AND_OUT_ACTIVITY'       : 'Login and out Activity',
             'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
             'RESERVATIONS_BY_USER'         : 'Reservations By User',
-            'DAILY_TRANSACTIONS'           : 'Daily Transactions'
+            'DAILY_TRANSACTIONS'           : 'Daily Transactions',
+            'DAILY_PAYMENTS'               : 'Daily Payments'
         };
 
 
@@ -628,6 +629,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // date range must be yesterday - relative to current business date
                 case __reportNames['DAILY_TRANSACTIONS']:
+                case __reportNames['DAILY_PAYMENTS']:
                     reportItem['singleValueDate']  = _getDates.yesterday;
                     break;
 
