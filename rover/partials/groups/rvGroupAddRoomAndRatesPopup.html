@@ -5,11 +5,11 @@
         </button>
 
         <span class="message h2" translate>ROOM_TYPES_AND_RATES</span>
-
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div id="group-rooms-grid" class="rooms-grid scrollable" ng-iscroll="room_type_scroller" 
             ng-iscroll-delay="500">
             <div class="wrapper">
-                
+
                 <div class="row" ng-repeat="row in selectedRoomTypeAndRates track by $index">
                     <div class="entry-data">
                         <div class="room-type">

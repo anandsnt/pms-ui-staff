@@ -157,7 +157,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					}
 				});
 			} else {
-				$scope.errorMessage = ["Group's name, from date, to date, release date and hold status are mandatory"];
+				$scope.errorMessage = ["Group's name, from date, to date, release date, rate and hold status are mandatory"];
 			}
 
 		}
