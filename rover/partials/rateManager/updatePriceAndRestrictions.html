@@ -51,7 +51,7 @@
                         <button class="button blank edit-data-inline" id="cancel" ng-click="hideUpdatePriceAndRestrictionsDialog()" type="button">
                             Cancel
                         </button>
-                        <button class="button green edit-data-inline" id="save" type="button" ng-click="saveRestriction()" ng-class="{'grey' : data.showEditView}" ng-disabled="data.showEditView">
+                        <button ng-if="hasPermissionToUpdateRestrictions() || hasPermissionToUpdateRates()" class="button green edit-data-inline" id="save" type="button" ng-click="saveRestriction()" ng-class="{'grey' : data.showEditView}" ng-disabled="data.showEditView">
                             Set
                         </button>
                     </div>

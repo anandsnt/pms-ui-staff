@@ -12,8 +12,8 @@
 				<!-- {{options.daysEntered}} -->
 		    </div>
 			<div class="cancellationbuttonwrap">
-			    <button class="button  green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
-			    <button class="button  red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
+                            <button ng-if="hasPermissionToUpdateRestrictions()" class="button  green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
+                            <button class="button  red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
 				<button ng-show="restrictionType.showEdit" class="button blank cancel" type="button" ng-click="cancelButtonClicked(restrictionType.id)">Cancel</button>
 			</div>
 		</div>
@@ -23,8 +23,8 @@
 		        <em>Restrictions have been already been set for some of the selected room types or rates. This will override all previously set restrictions of this type.</em>
 		    </div>
 			<div class="cancellationbuttonwrap">
-			    <button class="button large green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
-			    <button class="button large red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
+                            <button ng-if="hasPermissionToUpdateRestrictions()" class="button large green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
+                            <button class="button large red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
 				<button ng-show="restrictionType.showEdit" class="button blank cancel" type="button" ng-click="cancelButtonClicked(restrictionType.id)">Cancel</button>
 
 			</div>
