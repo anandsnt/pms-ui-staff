@@ -6,6 +6,8 @@
     width:100%;  
     padding:0px; 
     overflow: hidden;
+    position:fixed;
+    margin-left:22%;
 
     .limit-width{
       width: 60%;
@@ -63,10 +65,11 @@
 
   #rateViewCalendar{
     width:100%; 
-    position: relative;  
+    position: fixed;  
     padding:0px; 
     overflow: hidden; 
     z-index: 10;
+    margin-left: 22%;
 
     table{
       table-layout:fixed; 
@@ -379,7 +382,23 @@
   height: 100%;
 }
 
+
+
+
+.scrollable {
+  float: right;
+  width: 69%;
+  overflow: scroll;
+  overflow-y: hidden;
+  position:absolute;
+  margin-left:210px;
+}
+
+
 .rate-calendar{
+    .content{
+        margin-left: 220px;
+    }
   table {
   }
 
@@ -390,8 +409,9 @@
       }
     }
     .first-row {
+      height: 60px;
       text-align: right;
-      padding: 0 20px;
+      padding: 20px;
       vertical-align: middle;  
       
       img {
@@ -660,12 +680,13 @@
 }
 
 .restriction-legends{
-  position: relative;
+  position: fixed;//fixed 
     padding: 5px 15px 0 15px;
     background: #fcfcfc;
     overflow: hidden;
     *zoom: 1;
-
+    z-index: 10;
+    bottom: 0;//fixed to bottom
     li {
       position: relative;
       font-size: 13px;
@@ -1689,4 +1710,22 @@ padding-top: 80px;
 }
 
 
+.pinned {
+  width: 22%;
+  float: left;
+}
 
+.pinned td {
+  position: relative;
+  font-weight: bold;
+  line-height: 18px;
+  text-align: left;
+  overflow: hidden;
+}
+.pinned td.wrap {
+  white-space: normal;
+}
+
+.pinned td .inner.wrap {
+  white-space: normal;
+}
