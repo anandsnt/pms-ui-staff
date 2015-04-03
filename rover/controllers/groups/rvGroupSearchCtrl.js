@@ -73,7 +73,7 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			if(group.status !== 'cancelled')
 				classes = 'check-in';			
 			//Add class "red" if cancelled
-			if(group.status === 'cancelled')
+			if(group.status === 'cancelled' || group.hold_status.toLowerCase() === 'cancel')
 				classes = 'cancel';
 
 			return classes;
@@ -91,7 +91,7 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			if(group.status !== 'cancelled')
 				classes = 'check-out';			
 			//Add class "red" if cancelled
-			if(group.status === 'cancelled')
+			if(group.status === 'cancelled' || group.hold_status.toLowerCase() === 'cancel')
 				classes = 'cancel';
 
 			return classes;
