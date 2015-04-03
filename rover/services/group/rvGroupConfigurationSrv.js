@@ -51,6 +51,29 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 
 			return deferred.promise;
 		};
+
+
+		/**
+		 * To save the selected Room types and its bookings
+		 * @return {Promise}
+		 */
+		this.saveRoomBlockBookings = function(params){
+			var deferred = $q.defer(),
+				url = '/api/groups/save_inventories';
+				//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+			
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
 		/**
 		 * Function to get Room Block Grid Details
 		 * @param {param} -group id
@@ -58,7 +81,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.getRoomBlockGridDetails = function(param) {
 			var deferred = $q.defer(),
-				//url = 'api/groups/'+param+'/inventories';
+				//url = '/api/groups/'+param.group_id+'/inventories';
 				url = '/ui/show?format=json&json_input=groups/griddata.json';				
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {

@@ -27,12 +27,12 @@
             <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
                 <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
                 <label for="group-total-rooms" translate>TOTAL_ROOMS</label>
-                <input id="group-total-rooms" placeholder="" ng-model="totalRooms" ng-readonly="shouldChangeTotalRoomsToReadOnly()" />
+                <input id="group-total-rooms" value="{{getMaxOfBookedRooms()}}"  ng-readonly="shouldChangeTotalRoomsToReadOnly()" />
             </div>
             <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
                 <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
                 <label for="group-total-rooms" translate>TOTAL_PICK_UP</label>
-                <input id="group-total-rooms" placeholder="" ng-model="totalPickups" ng-readonly="shouldChangeTotalPickUpToReadOnly()" />
+                <input id="group-total-rooms"  ng-model="totalPickups" ng-readonly="shouldChangeTotalPickUpToReadOnly()" />
             </div>
             <div class="actions">
                 <!-- If new group and/or start & end dates have not been defined:  -->
@@ -61,17 +61,31 @@
             </div>
             <!-- Room block actions -->
             <div class="room-block-actions" ng-hide="shouldHideRoomBlockDetailsView()">
-                <button type="button" class="button green hidden" translate ng-click="onBlockRoomGrid();">SAVE</button>
+                <button type="button" class="button green" 
+                    ng-click = "clickedOnSaveButton()"
+                    ng-class="{'hidden': !shouldShowSaveButton()}"
+                    translate>
+                    SAVE
+                </button>
                 <!-- Hidden until change is made in the grid -->
-                <button type="button" class="button red hidden" translate>DISCARD</button>
+                <button type="button" class="button red hidden" 
+                    ng-click = "clickedOnDiscardButton()"
+                    ng-class="{'hidden': !shouldShowDiscardButton()}"
+                    translate>
+                    DISCARD
+                </button>
                 <!-- Hidden until change is made in the grid -->
-                <button type="butotn" class="button blue" translate>ROOMS_AND_RATES</button>
+                <button type="butotn" class="button blue" 
+                    ng-click="clickedOnAddRoomsAndRatesButton()" 
+                    translate>
+                    ROOMS_AND_RATES
+                </button>
             </div>
             <!-- Room block room types -->
             <div class="room-block-sidebar scrollable" ng-hide="shouldHideRoomBlockDetailsView()" ng-iscroll="room_block_scroller">
                 <div class="wrapper">
                     <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
-                    <div ng-class="{'open' : roomtype_rate.isCollapsed}" class="row" ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_rates" ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions" ng-init="roomtype_rate.isCollapsed = true">
+                    <div ng-class="{'open' : roomtype_rate.isCollapsed}" class="row" ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_and_bookings" ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions" ng-init="roomtype_rate.isCollapsed = true">
                         <!-- Toggle class "active" when clicked/tapped -->
                         <p class="line line-toggle" ng-class="{'active' : roomtype_rate.isCollapsed}" ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
                             {{roomtype_rate.room_type_name}}
@@ -95,10 +109,10 @@
             <!-- Room block days -->
             <div class="room-block-timeline scrollable" ng-iscroll="room_rates_timeline_scroller" ng-hide="shouldHideRoomBlockDetailsView()">
                 <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
-                    <li ng-repeat="dateObj in roomBlockGridTimeLine">
+                    <li ng-repeat="occupancy in groupConfigData.summary.selected_room_types_and_occupanies">
                         <div class="inner">
-                            {{dateObj.columnHeader}}
-                            <em>{{value}}% Occupancy</em>
+                            {{formatDateForUI(occupancy.date, monthAndDate)}}
+                            <em>{{occupancy.occupancy}}% Occupancy</em>
                         </div>
                     </li>
                 </ul>
@@ -107,48 +121,58 @@
             <div class="room-block-grid scrollable" ng-iscroll="room_rates_grid_scroller" ng-hide="shouldHideRoomBlockDetailsView()">
                 <div class="wrapper" style="width:{{getWidthForRoomBlockTimeLine()}};">
                     <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
-                    <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_rates">
+                    <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_bookings">
                         <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
                         <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                        <div class="column" ng-repeat="blockData in roomBlockGridTimeLine">
+                        <div class="column" ng-repeat="dateData in roomType.dates">
                             <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <em class="cell" translate>TOTAL</em>
                                 <em class="cell" translate>PICK_UP</em>
                             </div>
                             <!-- Room Type -->
                             <div class="line">
-                                <input type="text" value="{Count}" class="cell" disabled />
-                                <input type="text" value="{Count}" class="cell" disabled />
+                                <input type="text" 
+                                value="{{getTotalBookedOfIndividualRoomType(dateData)}}"
+                                class="cell" disabled />
+                                <input type="text" 
+                                value="{{getTotalPickedUpOfIndividualRoomType(dateData)}}" class="cell" disabled />
                             </div>
                             <!-- Single -->
                             <!-- <div class="line hidden"> -->
                             <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                                <input type="text" value="{Count}" class="cell" />
-                                <input type="text" value="{Count}" class="cell" disabled />
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.single" class="cell" />
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.single_pickup" class="cell" disabled />
                             </div>
                             <!-- Double -->
                             <!-- <div class="line hidden"> -->
                             <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                                <input type="text" value="{Count}" class="cell" />
-                                <input type="text" value="{Count}" class="cell" disabled />
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.double" class="cell" />
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.double_pickup" class="cell" disabled />
                             </div>
                             <!-- If L63 is clicked, generate option to add triple: -->
                             <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                             <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
-                                <input type="text" value="{Count}" class="cell" />
-                                <input type="text" value="{Count}" class="cell" disabled />
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.triple" class="cell" />
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.triple_pickup" class="cell" disabled />
                             </div>
                             <!-- If L65 is clicked, generate option to add quadruple: -->
                             <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                             <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
-                                <input type="text" value="{Count}" class="cell" />
-                                <input type="text" value="{Count}" class="cell" disabled />
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.quadruple" class="cell" />
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.quadruple_pickup" class="cell" disabled />
                             </div>
                             <!-- <div class="line small cellspan hidden"> -->
                             <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
-                                <em class="cellspan" translate>MENU_AVAILABILITY<span class="{green or red}">{{blockData.availability}}</span></em>
+                                <em class="cellspan">
+                                    {{'AVAILABILITY_GROUP'|translate}}
+                                        <span 
+                                        ng-class="{'green': (dateData.availability>0), 
+                                        'red': (dateData.availability==0) }">
+                                            {{dateData.availability}}
+                                        </span>
+                                    </em>
                             </div>
                         </div>
                     </div>
