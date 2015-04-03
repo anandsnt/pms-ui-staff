@@ -336,6 +336,27 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			//what is page that we are requesting in the API
 			$scope.page = 1;
 		};
+		
+		/**
+		* we want to display date in what format set from hotel admin
+		* @param {String/DateObject}
+		* @return {String}
+		*/
+		$scope.formatDateForUI = function(date_){
+			var type_ = typeof date_, returnString = '';
+			switch (type_){
+				//if date string passed
+				case 'string':
+					returnString = $filter('date') (new tzIndependentDate (date_), $rootScope.dateFormat); 
+					break;
+				
+				//if date object passed
+				case 'object':
+					returnString = $filter('date') (date_, $rootScope.dateFormat); 
+					break;				
+			}
+			return (returnString);
+		};
 
 		/**
 		* should we show pagination area
