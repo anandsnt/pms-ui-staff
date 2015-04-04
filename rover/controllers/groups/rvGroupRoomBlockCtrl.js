@@ -181,6 +181,35 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			return startDateOrEndDateIsEmpty();
 		};
 
+		/**
+		 * well, do we wanted to show triple button
+		 * if there is any key 'triple' found in room type.dates (array of objects),
+		 * it means some entry is found
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowTripleEntryRow = function(roomType){
+			var list_of_triples = _.pluck (roomType.dates, 'triple');
+
+			list_of_triples =_.filter(list_of_triples, function(element){return (typeof element !== "undefined")});
+			
+			return (list_of_triples.length > 0)
+		};
+
+		/**
+		 * should we wanted to show quadruple button
+		 * if there is any key 'quadruple' found in room type.dates (array of objects),
+		 * it means some entry is found
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowQuadrupleEntryRow = function(roomType){
+			var list_of_quadruples = _.pluck (roomType.dates, 'quadruple');
+
+			list_of_quadruples =_.filter(list_of_quadruples, function(element){return (typeof element !== "undefined")});
+			
+			return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType))
+		};
 
 		/**
 		 * when the booking data changing
@@ -421,28 +450,47 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		* @return {Integer}
 		*/
 		$scope.getTotalBookedOfIndividualRoomType = function(roomType){
-			var pInt = parseInt;
+			var cInt = util.convertToInteger;
+			
+			//since user may have entered wrong input
+			roomType.single = cInt (roomType.single);
+			roomType.double = cInt (roomType.double);
+			
+			//the area of 'night watch man', they may be active or sleeping
+			var quadruple   = 0;
+			if (roomType.quadruple) { roomType.quadruple = cInt (roomType.quadruple); quadruple = roomType.quadruple;}
+			var triple   	= 0;
+			if (roomType.triple) { roomType.triple = cInt (roomType.triple); triple = roomType.triple;}			
 
-			roomType.quadruple = roomType.quadruple ? roomType.quadruple : 0;
-			return (pInt (roomType.single) 
-				+ pInt (roomType.double) 
-				+ pInt (roomType.triple) 
-				+ pInt (roomType.quadruple));
+			return ((roomType.single) 
+				+ (roomType.double) 
+				+ (triple) 
+				+ (quadruple));
 		};
 
 		/**
-		* to get the total booked agsint a indivual room type
+		* to get the total picked up agsint a indivual room type
 		* @param {Object} - room type
 		* @return {Integer}
 		*/
 		$scope.getTotalPickedUpOfIndividualRoomType = function(roomType){
-			var pInt = parseInt;
+			var cInt = util.convertToInteger;
+			
+			//since user may have entered wrong input
+			roomType.single_pickup = cInt (roomType.single_pickup);
+			roomType.double_pickup = cInt (roomType.double_pickup);
+			
+			//the area of 'night watch man', they may be active or sleeping
+			var quadruple_pickup   = 0;
+			if (roomType.quadruple_pickup) { roomType.quadruple_pickup = cInt (roomType.quadruple_pickup); quadruple_pickup = roomType.quadruple_pickup;}
+			var triple_pickup   	= 0;
+			if (roomType.triple_pickup) { roomType.triple_pickup = cInt (roomType.triple_pickup); triple_pickup = roomType.triple_pickup;}			
 
-			roomType.quadruple_pickup = roomType.quadruple_pickup ? roomType.quadruple_pickup : 0;
-			return (pInt (roomType.single_pickup)
-				+ pInt (roomType.double_pickup) 
-				+ pInt (roomType.triple_pickup)
-				+ pInt (roomType.quadruple_pickup));
+			return ((roomType.single_pickup) 
+				+ (roomType.double_pickup) 
+				+ (triple_pickup) 
+				+ (quadruple_pickup));
+
 		};
 
 		/**

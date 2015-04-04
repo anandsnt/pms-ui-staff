@@ -144,13 +144,30 @@
                         <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
                             <li class="line" translate>SINGLE</li>
                             <li class="line" translate>DOUBLE</li>
-                            <!-- <li class="line small add" translate>ADD_TRIPLE</li> -->
-                            <li class="line" translate>TRIPLE</li>
-                            <li class="line" translate>QUADRUPLE</li>
+                            <li class="line small add" 
+                                ng-if="!shouldShowTripleEntryRow(roomtype_rate)" 
+                                translate>
+                                ADD_TRIPLE
+                            </li>
+                            <li class="line" 
+                                ng-if="shouldShowTripleEntryRow(roomtype_rate)"
+                                translate>
+                                TRIPLE
+                            </li>
+                            <li class="line" 
+                                ng-if="shouldShowQuadrupleEntryRow(roomtype_rate)" 
+                                translate>
+                                QUADRUPLE
+                            </li>
+                            <li class="line small add" 
+                                ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate)" 
+                                translate>
+                                ADD_QUADRUPLE
+                            </li>                            
                             <!-- When clicked, add L110-113 -->
                             <!-- When + Add Triple is clicked, show option to add quadruple:
-		                    <li class="line small add" translate>ADD_QUADRUPLE</li> // When clicked, add L115-118 -->
-                            <li class="line small add"><li>
+		                    <li  translate></li> // When clicked, add L115-118 -->
+                            
                         </ul>
                     </div>
                 </div>
@@ -206,13 +223,13 @@
                             </div>
                             <!-- If L63 is clicked, generate option to add triple: -->
                             <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                            <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.triple" class="cell" />
+                            <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.triple" class="cell"  />
                                 <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.triple_pickup" class="cell" disabled />
                             </div>
                             <!-- If L65 is clicked, generate option to add quadruple: -->
                             <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                            <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
+                            <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.quadruple" class="cell" />
                                 <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.quadruple_pickup" class="cell" disabled />
                             </div>
