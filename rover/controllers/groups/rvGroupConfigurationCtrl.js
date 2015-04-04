@@ -100,7 +100,13 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			// we will restrict tab swithing if we are in add mode
 			var tryingFromSummaryToOther = isInSummaryTab && tab !== 'SUMMARY';
 			if($scope.isInAddMode() && tryingFromSummaryToOther) {
-				$scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab']
+				$scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
+				return;
+			}
+
+			//TODO: Remove once all tab implemented
+			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK'){
+				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
 				return;
 			}
 

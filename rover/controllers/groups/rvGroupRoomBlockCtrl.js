@@ -100,9 +100,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * Function to decide whether to hide 'Add Rooms Button'
 		 * @return {Boolean}
 		 */
-		$scope.shouldHideAddRoomsButton = function() {
-			return (!$scope.shouldHideRoomBlockDetailsView() 
-				&& $scope.groupConfigData.summary.selected_room_types_and_bookings.length >= 0);
+		$scope.shouldHideAddRoomsButton = function() {				
+			return ( $scope.groupConfigData.summary.selected_room_types_and_bookings.length > 0);
 		};
 
 		/**
@@ -182,13 +181,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			return startDateOrEndDateIsEmpty();
 		};
 
-		/**
-		 * [shouldHideRoomBlockDetailsView description]
-		 * @return {[type]} [description]
-		 */
-		$scope.shouldHideRoomBlockDetailsView = function() {
-			return (!$scope.displayGroupRoomBlockDetails);
-		};
 
 		/**
 		 * when the booking data changing
@@ -461,19 +453,30 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			var ref = $scope.groupConfigData.summary.selected_room_types_and_bookings,
 				totalBookedOfEachDate = [],
+				arrayOfDateData = [],
+				dateWiseGroupedData = {},
 				sum = 0;
 			
-			//if nothing selected, we will show zero
-			if (ref.length == 0) return 0;
+			//first of all, we need group by 'date' data as our current data is room type row based
+			// we need these 'datewisedata' in single array
+			_.each(ref, function(el){
+				_.each(el.dates, function(el1){arrayOfDateData.push(el1);});
+			});
 
-			_.each (ref, function(eachRoomType){
+			//now we have all 'tomatoes' in a single bag
+			//we are going to group by them on the basis of quality :D (date)
+			dateWiseGroupedData = _.groupBy(arrayOfDateData, 'date');
+
+			//forming sum of individual 
+			_.each (dateWiseGroupedData, function(el){
 				sum = 0;
-				_.each(eachRoomType.dates, function(dateData){
-					sum += $scope.getTotalBookedOfIndividualRoomType (dateData)
+				_.each(el, function(eachDateData){
+					sum += $scope.getTotalBookedOfIndividualRoomType (eachDateData)
 				});
 				totalBookedOfEachDate.push (sum);
 			});
 
+			//returning max among them, simple
 			return _.max (totalBookedOfEachDate);
 		};
 
@@ -559,7 +562,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 	 		//we need the copy of selected_room_type, we ned to use these to show save/discard button
 	 		$scope.copy_selected_room_types_and_bookings = util.deepCopy (data.results);
 
-	 		$scope.showRoomBlockDetails();
+			//we changed data, so
+			refreshScroller();
 	 	}
 
 		/**
@@ -601,17 +605,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			return (returnString);
 		};
 
-		/**
-		 * to show room block details area with data
-		 * @return undefined
-		 */
-		$scope.showRoomBlockDetails = function() {						
-			$scope.displayGroupRoomBlockDetails = true;
-
-			runDigestCycle();
-			//we have to refresh scroller afetr that			
-			refreshScroller();
-		};
 
 		/**
 		 * To get css width for grid timeline
@@ -655,9 +648,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//variable used to track Create Button, as per sice we are only handling edit mode we are 
 			//proceeding with true TODO: Add reference here
 			$scope.createButtonClicked = true;
-
-			//variable used to track group room block details view
-			$scope.displayGroupRoomBlockDetails = false;
 
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
@@ -717,7 +707,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			var scrollerOptionsForRoomRatesGrid = _.extend({
 				scrollY: true,
-				scrollX: true
+				scrollX: true,
+				scrollbars: true
 			}, util.deepCopy(scrollerOptions));
 
 			$scope.setScroller('room_rates_grid_scroller', scrollerOptionsForRoomRatesGrid);
