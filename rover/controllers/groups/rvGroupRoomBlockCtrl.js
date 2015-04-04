@@ -244,6 +244,70 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * to copy the single & single_pick up value entered in the column 
+		 * to the row
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+		$scope.copySingleValueToOtherBlocks = function(cellData, rowData){
+			_.each (rowData.dates, function(element){
+				element.single = cellData.single;
+				element.single_pickup = cellData.single_pickup;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		/**
+		 * to copy the double & double_pick up value entered in the column 
+		 * to the row
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+		$scope.copyDoubleValueToOtherBlocks = function(cellData, rowData){
+			_.each (rowData.dates, function(element){
+				element.double = cellData.double;
+				element.double_pickup = cellData.double_pickup;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		/**
+		 * to copy the triple & triple_pick up value entered in the column 
+		 * to the row
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+		$scope.copyTripleValueToOtherBlocks = function(cellData, rowData){
+			_.each (rowData.dates, function(element){
+				element.triple = cellData.triple;
+				element.triple_pickup = cellData.triple_pickup;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		/**
+		 * to copy the quadruple & quadruple_pick up value entered in the column 
+		 * to the row
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+		$scope.copyQuadrupleValueToOtherBlocks = function(cellData, rowData){
+			_.each (rowData.dates, function(element){
+				element.quadruple = cellData.quadruple;
+				element.quadruple_pickup = cellData.quadruple_pickup;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+				
+		/**
 		 * when the booking data changing
 		 * @return undefined
 		 */
@@ -617,6 +681,13 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnUpdateButton = function() {
+			//we dont wanted to show room block details for some time
+			$scope.groupConfigData.summary.selected_room_types_and_bookings = [];
+	 		$scope.groupConfigData.summary.selected_room_types_and_occupanies = [];
+
+	 		//unsetting the copied details
+	 		$scope.copy_selected_room_types_and_bookings = [];
+
 			//updating central model with newly formed data
 			_.extend
 			(
@@ -630,8 +701,17 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//callinng the update API calling 
 			$scope.updateGroupSummary ();
-		};
 
+			
+		};
+		
+		/**
+		 * after updating the room block start/end/hold status by calling
+		 * API, we will get this event, we are using this to fetch new room block deails		 
+		 */
+		$scope.$on("UPDATED_GROUP_INFO", function(){
+			$scope.fetchRoomBlockGridDetails();
+		});
 		/**
 		* Success callback of room block details API
 		*/
