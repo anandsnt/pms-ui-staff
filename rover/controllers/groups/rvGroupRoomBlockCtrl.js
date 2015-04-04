@@ -191,6 +191,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		$scope.shouldShowTripleEntryRow = function(roomType){
 			var list_of_triples = _.pluck (roomType.dates, 'triple');
 
+			//throwing undefined items
 			list_of_triples =_.filter(list_of_triples, function(element){return (typeof element !== "undefined")});
 			
 			return (list_of_triples.length > 0)
@@ -206,9 +207,40 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		$scope.shouldShowQuadrupleEntryRow = function(roomType){
 			var list_of_quadruples = _.pluck (roomType.dates, 'quadruple');
 
+			//throwing undefined items
 			list_of_quadruples =_.filter(list_of_quadruples, function(element){return (typeof element !== "undefined")});
 			
 			return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType))
+		};
+
+		/**
+		 * To add triple entry row to a room type
+		 * @return undefined
+		 */
+		$scope.addTripleEntryRow = function(roomType){
+			_.each (roomType.dates, function(element){
+				element.triple = 0;
+				element.triple_pickup = 0;
+			});
+
+			//we added something
+			$scope.bookingDataChanging();
+			refreshScroller();
+		};
+
+		/**
+		 * To add quadruple entry row to a room type
+		 * @return undefined
+		 */
+		$scope.addQuadrupleEntryRow = function(roomType){
+			_.each (roomType.dates, function(element){
+				element.quadruple = 0;
+				element.quadruple_pickup = 0;
+			});
+
+			//we added something
+			$scope.bookingDataChanging();
+			refreshScroller();
 		};
 
 		/**

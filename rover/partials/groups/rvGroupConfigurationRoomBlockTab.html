@@ -145,7 +145,8 @@
                             <li class="line" translate>SINGLE</li>
                             <li class="line" translate>DOUBLE</li>
                             <li class="line small add" 
-                                ng-if="!shouldShowTripleEntryRow(roomtype_rate)" 
+                                ng-if="!shouldShowTripleEntryRow(roomtype_rate)"
+                                ng-click="addTripleEntryRow(roomtype_rate)" 
                                 translate>
                                 ADD_TRIPLE
                             </li>
@@ -160,14 +161,15 @@
                                 QUADRUPLE
                             </li>
                             <li class="line small add" 
-                                ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate)" 
+                                ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate)" 
+                                ng-click="addQuadrupleEntryRow(roomtype_rate)"
                                 translate>
                                 ADD_QUADRUPLE
                             </li>                            
                             <!-- When clicked, add L110-113 -->
                             <!-- When + Add Triple is clicked, show option to add quadruple:
 		                    <li  translate></li> // When clicked, add L115-118 -->
-                            
+                            <li class="line small add" ng-if="shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate)"></li>
                         </ul>
                     </div>
                 </div>
