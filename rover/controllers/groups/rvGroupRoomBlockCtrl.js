@@ -559,8 +559,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var cInt = util.convertToInteger;
 			
 			//since user may have entered wrong input
-			roomType.single = cInt (roomType.single);
-			roomType.double = cInt (roomType.double);
+			roomType.single = (roomType.single !== '') ? cInt (roomType.single): '';
+			roomType.double = (roomType.double !== '') ? cInt (roomType.double): '';
 			
 			//the area of 'night watch man', they may be active or sleeping
 			var quadruple   = 0;
@@ -568,8 +568,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var triple   	= 0;
 			if (roomType.triple) { roomType.triple = cInt (roomType.triple); triple = roomType.triple;}			
 
-			return ((roomType.single) 
-				+ (roomType.double) 
+			return (cInt (roomType.single) 
+				+ cInt (roomType.double) 
 				+ (triple) 
 				+ (quadruple));
 		};
@@ -583,8 +583,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var cInt = util.convertToInteger;
 			
 			//since user may have entered wrong input
-			roomType.single_pickup = cInt (roomType.single_pickup);
-			roomType.double_pickup = cInt (roomType.double_pickup);
+			roomType.single_pickup = (roomType.single_pickup !== '') ? cInt (roomType.single_pickup): '';
+			roomType.double_pickup = (roomType.double_pickup !== '') ? cInt (roomType.double_pickup): '';
 			
 			//the area of 'night watch man', they may be active or sleeping
 			var quadruple_pickup   = 0;
@@ -592,8 +592,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var triple_pickup   	= 0;
 			if (roomType.triple_pickup) { roomType.triple_pickup = cInt (roomType.triple_pickup); triple_pickup = roomType.triple_pickup;}			
 
-			return ((roomType.single_pickup) 
-				+ (roomType.double_pickup) 
+			return (cInt (roomType.single_pickup) 
+				+ cInt (roomType.double_pickup) 
 				+ (triple_pickup) 
 				+ (quadruple_pickup));
 
@@ -605,6 +605,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.getMaxOfBookedRooms = function(){
 
+			$scope.$emit('showLoader');
 			var ref = $scope.groupConfigData.summary.selected_room_types_and_bookings,
 				totalBookedOfEachDate = [],
 				arrayOfDateData = [],
@@ -631,7 +632,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			});
 
 			//returning max among them, simple
-			return _.max (totalBookedOfEachDate);
+			var max = _.max (totalBookedOfEachDate);
+			$scope.$emit('hideLoader');
+			return max;
 		};
 
 		/**
