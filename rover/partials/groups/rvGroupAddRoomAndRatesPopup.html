@@ -9,8 +9,9 @@
         <div id="group-rooms-grid" class="rooms-grid scrollable" ng-iscroll="room_type_scroller" 
             ng-iscroll-delay="500">
             <div class="wrapper">
-
                 <div class="row" ng-repeat="row in selectedRoomTypeAndRates track by $index">
+
+
                     <div class="entry-data">
                         <div class="room-type">
                             <label for="room-type-1-select" class="row-count">{{$index+1}}</label>
@@ -27,19 +28,19 @@
                             </div>
                         </div>
                         <div class="entry">
-                            <label for="room-type-1-bar" translate>BAR_SINGLE</label>
+                            <label for="room-type-1-bar" translate ng-hide="$index>0">BAR_SINGLE</label>
                             <input id="room-type-1-bar" ng-model="row.best_available_rate" type="text" readonly />
                         </div>
                         <div class="entry">
-                            <label for="room-type-1-single" translate>SINGLE_OCCUPANCY</label>
+                            <label for="room-type-1-single" translate ng-hide="$index>0">SINGLE_OCCUPANCY</label>
                             <input id="room-type-1-single" ng-model="row.single_rate" type="text" />
                         </div>
                         <div class="entry">
-                            <label for="room-type-1-double" translate>DOUBLE_OCCUPANCY</label>
+                            <label for="room-type-1-double" translate ng-hide="$index>0">DOUBLE_OCCUPANCY</label>
                             <input id="room-type-1-double" ng-model="row.double_rate" type="text" />
                         </div>
                         <div class="entry">
-                            <label for="room-type-1-plus" translate>ONE_MORE_ADULT</label>
+                            <label for="room-type-1-plus" translate ng-hide="$index>0">ONE_MORE_ADULT</label>
                             <input id="room-type-1-plus" ng-model="row.extra_adult_rate" type="text" />
                         </div>
                     </div>

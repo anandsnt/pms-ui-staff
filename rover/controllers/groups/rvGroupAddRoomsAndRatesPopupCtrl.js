@@ -36,7 +36,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			};
 
 			//selected room types & its rates
-			$scope.selectedRoomTypeAndRates = util.deepCopy ($scope.groupConfigData.summary.selected_room_types_rates);
+			$scope.selectedRoomTypeAndRates = util.deepCopy ($scope.groupConfigData.summary.selected_room_types_and_rates);
 			
 			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate"];
 			$scope.roomTypes = util.getListOfKeyValuesFromAnArray ($scope.selectedRoomTypeAndRates, wanted_keys);
@@ -47,7 +47,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			//if nothing is configured, we have to add a new row
 			if ($scope.selectedRoomTypeAndRates.length == 0){
 				$scope.selectedRoomTypeAndRates = [];
-				$scope.selectedRoomTypeAndRates.push (util.deepCopy ($scope.groupConfigData.summary.selected_room_types_rates[0]));
+				$scope.selectedRoomTypeAndRates.push (util.deepCopy ($scope.groupConfigData.summary.selected_room_types_and_rates[0]));
 			}
 			 
 			
@@ -133,6 +133,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		var successCallBackOfSaveNewRoomTypesAndRates = function(data){
 			/*$scope.updateRoomBlockDetails (selectedRoomTypeAndRates);
 			$scope.showRoomBlockDetails ();*/
+			$scope.fetchRoomBlockGridDetails ();
 			$scope.closeDialog();
 		};
 

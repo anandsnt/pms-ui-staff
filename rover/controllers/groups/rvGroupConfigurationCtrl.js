@@ -91,10 +91,30 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return - None
 		 */
 		$scope.switchTabTo = function(tab) {
+			
+			//if there was any error message there, we are clearing
+			$scope.errorMessage = '';
+
+			var isInSummaryTab = $scope.groupConfigData.activeTab == "SUMMARY";
+			
+			// we will restrict tab swithing if we are in add mode
+			var tryingFromSummaryToOther = isInSummaryTab && tab !== 'SUMMARY';
+			if($scope.isInAddMode() && tryingFromSummaryToOther) {
+				$scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
+				return;
+			}
+
+			//TODO: Remove once all tab implemented
+			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK'){
+				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
+				return;
+			}
+
 			//Save summary data on tab switch (UI)
-			if ($scope.groupConfigData.activeTab == "SUMMARY") {
+			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
 			}
+
 			$scope.groupConfigData.activeTab = tab;
 		};
 

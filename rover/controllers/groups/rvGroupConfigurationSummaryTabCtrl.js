@@ -28,6 +28,17 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			}
 		}
 
+		/**
+		 * to run angular digest loop,
+		 * will check if it is not running
+		 * return - None
+		 */
+		var runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			}
+		};
+
 		$scope.fromDateOptions = {
 			showOn: 'button',
 			dateFormat: $rootScope.jqDateFormat,
@@ -40,11 +51,21 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			onClose: function(dateText, inst) {
 				$('#ui-datepicker-overlay').remove();
 			},
-			onSelect: function() {
-				$scope.groupConfigData.summary.block_from = dateFilter($scope.groupConfigData.summary.block_from, 'yyyy-MM-dd');
-				if (!$scope.groupConfigData.summary.release_date) {
+			onSelect: function(date, datePickerObj) {
+				$scope.groupConfigData.summary.block_from = date;
+				if ($scope.groupConfigData.summary.release_date.trim() == '') {
 					$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
 				}
+			
+				// we will clear end date if chosen start date is greater than end date
+				if ($scope.groupConfigData.summary.block_from > $scope.groupConfigData.summary.block_to) {
+					$scope.groupConfigData.summary.block_to = '';
+				}
+				//setting the min date for end Date
+				$scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
+
+				//we are in outside of angular world
+				runDigestCycle();
 			}
 		};
 
@@ -60,8 +81,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			onClose: function(dateText, inst) {
 				$('#ui-datepicker-overlay').remove();
 			},
-			onSelect: function() {
-				$scope.groupConfigData.summary.block_to = dateFilter($scope.groupConfigData.summary.block_to, 'yyyy-MM-dd');
+			onSelect: function(date, datePickerObj) {
+				$scope.groupConfigData.summary.block_to = date;
+
+				//we are in outside of angular world
+				runDigestCycle();				
 			}
 		};
 
@@ -77,9 +101,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			onClose: function(dateText, inst) {
 				$('#ui-datepicker-overlay').remove();
 			},
-			onSelect: function() {
-				$scope.groupConfigData.summary.release_date = dateFilter($scope.groupConfigData.summary.release_date, 'yyyy-MM-dd');
-			}
+			onSelect: function(date, datePickerObj) {
+				$scope.groupConfigData.summary.release_date = date;
+				
+				//we are in outside of angular world
+				runDigestCycle();
+			}				
 		};
 
 		/**

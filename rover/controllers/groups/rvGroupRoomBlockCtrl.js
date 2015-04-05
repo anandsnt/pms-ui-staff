@@ -100,9 +100,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * Function to decide whether to hide 'Add Rooms Button'
 		 * @return {Boolean}
 		 */
-		$scope.shouldHideAddRoomsButton = function() {
-			return (!$scope.shouldHideRoomBlockDetailsView() 
-				&& $scope.groupConfigData.summary.selected_room_types_rates.length >= 0);
+		$scope.shouldHideAddRoomsButton = function() {				
+			return ( $scope.groupConfigData.summary.selected_room_types_and_bookings.length > 0);
 		};
 
 		/**
@@ -140,6 +139,22 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * should we wanted to show the save button for room type booking change
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowSaveButton = function(){
+			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
+		};
+
+		/**
+		 * should we wanted to show the save button for room type booking change
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowDiscardButton = function(){
+			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
+		};
+
+		/**
 		 * Function to decide whether to disable end date
 		 * for now we are checking only permission
 		 * @return {Boolean}
@@ -149,12 +164,20 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * Has Permission To Create summary room block
+		 * Has Permission To Create group room block
 		 * @return {Boolean}
 		 */
 		var hasPermissionToCreateRoomBlock = function() {
-			return true;
 			return (rvPermissionSrv.getPermissionValue('CREATE_GROUP_ROOM_BLOCK'));
+		};
+
+
+		/**
+		 * Has Permission To Edit group room block
+		 * @return {Boolean}
+		 */
+		var hasPermissionToEditRoomBlock = function() {
+			return (rvPermissionSrv.getPermissionValue('EDIT_GROUP_ROOM_BLOCK'));
 		};
 
 		/**
@@ -163,16 +186,150 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableAddRoomsAndRate = function() {
-			return startDateOrEndDateIsEmpty();
+			return (startDateOrEndDateIsEmpty() && 
+				!hasPermissionToCreateRoomBlock() &&
+				!hasPermissionToEditRoomBlock());
 		};
 
 		/**
-		 * [shouldHideRoomBlockDetailsView description]
-		 * @return {[type]} [description]
+		 * well, do we wanted to show triple button
+		 * if there is any key 'triple' found in room type.dates (array of objects),
+		 * it means some entry is found
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
 		 */
-		$scope.shouldHideRoomBlockDetailsView = function() {
-			return (!$scope.displayGroupRoomBlockDetails);
+		$scope.shouldShowTripleEntryRow = function(roomType){
+			var list_of_triples = _.pluck (roomType.dates, 'triple');
+
+			//throwing undefined items
+			list_of_triples =_.filter(list_of_triples, function(element){return (typeof element !== "undefined")});
+			
+			return (list_of_triples.length > 0)
 		};
+
+		/**
+		 * should we wanted to show quadruple button
+		 * if there is any key 'quadruple' found in room type.dates (array of objects),
+		 * it means some entry is found
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowQuadrupleEntryRow = function(roomType){
+			var list_of_quadruples = _.pluck (roomType.dates, 'quadruple');
+
+			//throwing undefined items
+			list_of_quadruples =_.filter(list_of_quadruples, function(element){return (typeof element !== "undefined")});
+			
+			return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType))
+		};
+
+		/**
+		 * To add triple entry row to a room type
+		 * @return undefined
+		 */
+		$scope.addTripleEntryRow = function(roomType){
+			_.each (roomType.dates, function(element){
+				element.triple = 0;
+				element.triple_pickup = 0;
+			});
+
+			//we added something
+			$scope.bookingDataChanging();
+			refreshScroller();
+		};
+
+		/**
+		 * To add quadruple entry row to a room type
+		 * @return undefined
+		 */
+		$scope.addQuadrupleEntryRow = function(roomType){
+			_.each (roomType.dates, function(element){
+				element.quadruple = 0;
+				element.quadruple_pickup = 0;
+			});
+
+			//we added something
+			$scope.bookingDataChanging();
+			refreshScroller();
+		};
+
+		/**
+		 * to copy the single & single_pick up value entered in the column 
+		 * to the row
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+		$scope.copySingleValueToOtherBlocks = function(cellData, rowData){
+			_.each (rowData.dates, function(element){
+				element.single = cellData.single;
+				element.single_pickup = cellData.single_pickup;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		/**
+		 * to copy the double & double_pick up value entered in the column 
+		 * to the row
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+		$scope.copyDoubleValueToOtherBlocks = function(cellData, rowData){
+			_.each (rowData.dates, function(element){
+				element.double = cellData.double;
+				element.double_pickup = cellData.double_pickup;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		/**
+		 * to copy the triple & triple_pick up value entered in the column 
+		 * to the row
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+		$scope.copyTripleValueToOtherBlocks = function(cellData, rowData){
+			_.each (rowData.dates, function(element){
+				element.triple = cellData.triple;
+				element.triple_pickup = cellData.triple_pickup;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		/**
+		 * to copy the quadruple & quadruple_pick up value entered in the column 
+		 * to the row
+		 * @param {Object} - cell data
+		 * @param {Object} - row data
+		 * @return undefined
+		 */
+		$scope.copyQuadrupleValueToOtherBlocks = function(cellData, rowData){
+			_.each (rowData.dates, function(element){
+				element.quadruple = cellData.quadruple;
+				element.quadruple_pickup = cellData.quadruple_pickup;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+				
+		/**
+		 * when the booking data changing
+		 * @return undefined
+		 */
+		$scope.bookingDataChanging = function(){
+			//we are changing the model to 
+			$scope.hasBookingDataChanged = true;
+
+			if (isOverBooked()) {
+				showOverBookingPopup()
+			}
+		};
+
 		/**
 		 * to run angular digest loop,
 		 * will check if it is not running
@@ -261,7 +418,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//date picker options - End Date
 			$scope.endDateOptions = _.extend({
-				minDate: $scope.startDate,
+				minDate: new tzIndependentDate($scope.startDate),
 				onSelect: onEndDatePicked
 			}, commonDateOptions);
 		};
@@ -272,6 +429,99 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.clickedOnCreateButton = function() {
 			$scope.createButtonClicked = true;
+		};
+
+		
+		
+		/**
+		 * when save button clicked, 
+		 * we will first check whether the availability is not matching is the total booked
+		 * if it is available, we will call the save API
+		 * @return None
+		 */
+		$scope.clickedOnSaveButton = function() {
+			if (isOverBooked()) {
+				showOverBookingPopup()
+			} else {
+				$scope.saveRoomBlock();
+			}	
+		};
+
+		/**
+		 * when discard button clicked, we will set the booking data with old copy
+		 * @return None
+		 */
+		$scope.clickedOnDiscardButton = function() {
+			$scope.groupConfigData.summary.selected_room_types_and_bookings = 
+				util.deepCopy ($scope.copy_selected_room_types_and_bookings)
+			
+			//and our isn't changed
+			$scope.hasBookingDataChanged = false;			
+		};
+
+		var successCallBackOfSaveRoomBlock = function(date){
+			//we have save everything we have
+			//so our data is new
+			$scope.hasBookingDataChanged = false;
+			
+		};
+
+		/**
+		 * Method to make the API call to save the room block grid
+		 * Will be called from
+		 * 	1. The controller $scope.onBlockRoomGrid
+		 * 	2. The warnReleaseRoomsPopup.html template
+		 * @return undefined
+		 */
+		$scope.saveRoomBlock = function() {
+			//TODO : Make API call to save the room block.
+			var params = {
+				group_id: $scope.groupConfigData.summary.group_id,
+				results: $scope.groupConfigData.summary.selected_room_types_and_bookings
+			};
+
+		 	var options = {
+				params: 			params,
+				successCallBack: 	successCallBackOfSaveRoomBlock,	   
+			};
+			$scope.callAPI (rvGroupConfigurationSrv.saveRoomBlockBookings, options);	
+		};
+
+		/**
+		 * Method to validate overbooking - Returns true if overbooked
+		 * @return boolean
+		 */
+		var isOverBooked = function() {
+			// TODO write check here
+			var ref = $scope.groupConfigData.summary.selected_room_types_and_bookings,
+				is_over_booked = false,
+				indvdlSum = 0;
+
+			_.each (ref, function(eachRoomType){	
+				_.each(eachRoomType.dates, function(dateData){
+					indvdlSum = $scope.getTotalBookedOfIndividualRoomType (dateData);
+
+					if (indvdlSum > dateData.availability){
+						is_over_booked = true;
+					}
+				});
+			});
+			return is_over_booked;
+		}
+
+		/**
+		 * Method to show oerbooking popup
+		 * @return undefined
+		 */
+		var showOverBookingPopup = function(){
+			// Show overbooking message
+			ngDialog.open({
+				template: '/assets/partials/groups/rvGroupWarnOverBookingPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
 		};
 
 		/**
@@ -300,6 +550,93 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			return "";
 		};
 
+		/**
+		* to get the total booked agsint a indivual room type
+		* @param {Object} - room type data
+		* @return {Integer}
+		*/
+		$scope.getTotalBookedOfIndividualRoomType = function(roomType){
+			var cInt = util.convertToInteger;
+			
+			//since user may have entered wrong input
+			roomType.single = (roomType.single !== '') ? cInt (roomType.single): '';
+			roomType.double = (roomType.double !== '') ? cInt (roomType.double): '';
+			
+			//the area of 'night watch man', they may be active or sleeping
+			var quadruple   = 0;
+			if (roomType.quadruple) { roomType.quadruple = cInt (roomType.quadruple); quadruple = roomType.quadruple;}
+			var triple   	= 0;
+			if (roomType.triple) { roomType.triple = cInt (roomType.triple); triple = roomType.triple;}			
+
+			return (cInt (roomType.single) 
+				+ cInt (roomType.double) 
+				+ (triple) 
+				+ (quadruple));
+		};
+
+		/**
+		* to get the total picked up agsint a indivual room type
+		* @param {Object} - room type
+		* @return {Integer}
+		*/
+		$scope.getTotalPickedUpOfIndividualRoomType = function(roomType){
+			var cInt = util.convertToInteger;
+			
+			//since user may have entered wrong input
+			roomType.single_pickup = (roomType.single_pickup !== '') ? cInt (roomType.single_pickup): '';
+			roomType.double_pickup = (roomType.double_pickup !== '') ? cInt (roomType.double_pickup): '';
+			
+			//the area of 'night watch man', they may be active or sleeping
+			var quadruple_pickup   = 0;
+			if (roomType.quadruple_pickup) { roomType.quadruple_pickup = cInt (roomType.quadruple_pickup); quadruple_pickup = roomType.quadruple_pickup;}
+			var triple_pickup   	= 0;
+			if (roomType.triple_pickup) { roomType.triple_pickup = cInt (roomType.triple_pickup); triple_pickup = roomType.triple_pickup;}			
+
+			return (cInt (roomType.single_pickup) 
+				+ cInt (roomType.double_pickup) 
+				+ (triple_pickup) 
+				+ (quadruple_pickup));
+
+		};
+
+		/**
+		 * To get the max booked rooms among dates
+		 * @return {Integer}
+		 */
+		$scope.getMaxOfBookedRooms = function(){			
+			var ref = $scope.groupConfigData.summary.selected_room_types_and_bookings,
+				totalBookedOfEachDate = [],
+				arrayOfDateData = [],
+				dateWiseGroupedData = {},
+				sum = 0;
+			
+			if(!ref.length) { return 0; }
+
+			$scope.$emit('showLoader');
+			//first of all, we need group by 'date' data as our current data is room type row based
+			// we need these 'datewisedata' in single array
+			_.each(ref, function(el){
+				_.each(el.dates, function(el1){arrayOfDateData.push(el1);});
+			});
+
+			//now we have all 'tomatoes' in a single bag
+			//we are going to group by them on the basis of quality :D (date)
+			dateWiseGroupedData = _.groupBy(arrayOfDateData, 'date');
+
+			//forming sum of individual 
+			_.each (dateWiseGroupedData, function(el){
+				sum = 0;
+				_.each(el, function(eachDateData){
+					sum += $scope.getTotalBookedOfIndividualRoomType (eachDateData)
+				});
+				totalBookedOfEachDate.push (sum);
+			});
+
+			//returning max among them, simple
+			var max = _.max (totalBookedOfEachDate);
+			$scope.$emit('hideLoader');
+			return max;
+		};
 
 		/**
 		 * When availability and BAR fetch completed
@@ -307,7 +644,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		var successCallBackOfRoomTypeAndRatesFetch = function(data) {
-			$scope.groupConfigData.summary.selected_room_types_rates = data.room_type_and_rates;
+			$scope.groupConfigData.summary.selected_room_types_and_rates = data.room_type_and_rates;
 		};
 
 		/**
@@ -358,6 +695,13 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnUpdateButton = function() {
+			//we dont wanted to show room block details for some time
+			$scope.groupConfigData.summary.selected_room_types_and_bookings = [];
+	 		$scope.groupConfigData.summary.selected_room_types_and_occupanies = [];
+
+	 		//unsetting the copied details
+	 		$scope.copy_selected_room_types_and_bookings = [];
+
 			//updating central model with newly formed data
 			_.extend
 			(
@@ -371,67 +715,77 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//callinng the update API calling 
 			$scope.updateGroupSummary ();
+
+			
 		};
-
+		
 		/**
-		 * To update room block details from outside
-		 * @param  {Array} dataToUpdate [Array of room block details]
-		 * @return undefined
+		 * after updating the room block start/end/hold status by calling
+		 * API, we will get this event, we are using this to fetch new room block deails		 
 		 */
-		$scope.updateRoomBlockDetails = function(dataToUpdate) {		
-			$scope.groupConfigData.summary.selected_room_types_rates = dataToUpdate;
-
-		};
+		$scope.$on("UPDATED_GROUP_INFO", function(){
+			$scope.fetchRoomBlockGridDetails();
+		});
 		/**
-		 * To update room block grid details to $scope.groupConfigData.summary.selected_room_types_rates
-		 * @param - 
-		 *  
-		 */
-		 $scope.updateRoomBlockGridDetails = function(selected_group_id){
-		 	var param = selected_group_id ;
-		 	var successfullCallback = function(data){		 		
-		 		$scope.groupConfigData.summary.selected_room_types_rates= data.results;
-		 		console.log($scope.groupConfigData.summary.selected_room_types_rates);
-		 	}	 	 	
+		* Success callback of room block details API
+		*/
+	 	var successCallBackOfFetchRoomBlockGridDetails = function(data){		 		
+	 		$scope.groupConfigData.summary.selected_room_types_and_bookings = data.results;
+	 		$scope.groupConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
 
-		 	$scope.invokeApi(rvGroupConfigurationSrv.getRoomBlockGridDetails ,param ,successfullCallback);
+	 		//we need the copy of selected_room_type, we ned to use these to show save/discard button
+	 		$scope.copy_selected_room_types_and_bookings = util.deepCopy (data.results);
 
-		 }
-
-		/**
-		 * to show room block details area with data
-		 * @return undefined
-		 */
-		$scope.showRoomBlockDetails = function() {			
-			$scope.displayGroupRoomBlockDetails = true;
-			//forming the dates between start & end			
-
-			var startDate 	= $scope.groupConfigData.summary.block_from,
-				lastDate 	= $scope.groupConfigData.summary.block_to;
-			//fetch RoomBlockGrid Detail
-			$scope.updateRoomBlockGridDetails($scope.groupConfigData.summary.group_id);
-
-			startDate = util.toMilliSecond (startDate);
-			lastDate = util.toMilliSecond (lastDate);
-
-			$scope.roomBlockGridTimeLine = [];
-			//forming the main data model for room block details
-			//will be based on each day
-			for (;startDate <= lastDate; startDate = util.addOneDay(startDate)) {
-				$scope.roomBlockGridTimeLine.push(
-					{
-						date: dateFilter(new tzIndependentDate(startDate), 'yyyy-MM-dd'),
-						columnHeader: dateFilter(new tzIndependentDate(startDate), $rootScope.monthAndDate),
-						/*dateFilter(new tzIndependentDate(startDate), 'yyyy-MM-dd'): {
-
-						}*/
-					}
-				);
-			}
-			runDigestCycle();
-			//we have to refresh scroller afetr that			
+			//we changed data, so
 			refreshScroller();
+	 	}
+
+		/**
+		 * To fetch room block details
+		 * @return {undefined}  
+		 */
+		$scope.fetchRoomBlockGridDetails = function(){
+			var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
+				hasPermissionToEditRoomBlock());
+
+			if(!hasNeccessaryPermission) {
+				return;
+			}
+
+			var params = {
+				group_id: $scope.groupConfigData.summary.group_id
+			};
+
+		 	var options = {
+				params: 			params,
+				successCallBack: 	successCallBackOfFetchRoomBlockGridDetails,	   
+			};
+			$scope.callAPI (rvGroupConfigurationSrv.getRoomBlockGridDetails, options);		 	
+		}
+
+		/**
+		* we want to display date in what format set from hotel admin
+		* @param {String/DateObject}
+		* @return {String}
+		*/
+		$scope.formatDateForUI = function(date_, dateFormat){
+			var type_ = typeof date_, returnString = '',
+				dateFormat = (dateFormat ? dateFormat : $rootScope.dateFormat);
+
+			switch (type_){
+				//if date string passed
+				case 'string':
+					returnString = $filter('date') (new tzIndependentDate (date_), dateFormat); 
+					break;
+				
+				//if date object passed
+				case 'object':
+					returnString = $filter('date') (date_, dateFormat); 
+					break;				
+			}
+			return (returnString);
 		};
+
 
 		/**
 		 * To get css width for grid timeline
@@ -439,7 +793,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForRoomBlockTimeLine = function() {
-			return ($scope.roomBlockGridTimeLine.length * 190) + 'px';
+			return ($scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 190) + 'px';
 		};
 
 		/**
@@ -476,9 +830,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//proceeding with true TODO: Add reference here
 			$scope.createButtonClicked = true;
 
-			//variable used to track group room block details view
-			$scope.displayGroupRoomBlockDetails = false;
-
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
 
@@ -492,12 +843,21 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//room block grid data
 			$scope.roomBlockGridTimeLine = [];
 
+			//whether the booking data changed
+			$scope.hasBookingDataChanged = false;
+
 			if (isInEditMode) {
 				$scope.createButtonClicked = true;
 				$scope.totalPickups = refData.summary.rooms_pickup;
 				$scope.totalRooms = refData.summary.rooms_total;
 
 				$scope.selectedHoldStatus = refData.summary.hold_status;
+				
+				_.extend($scope.groupConfigData.summary, {
+					selected_room_types_and_bookings : [],
+					selected_room_types_and_occupanies: [],
+					selected_room_types_and_rates: [],
+				});
 
 			}
 
@@ -528,7 +888,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			var scrollerOptionsForRoomRatesGrid = _.extend({
 				scrollY: true,
-				scrollX: true
+				scrollX: true,
+				scrollbars: true
 			}, util.deepCopy(scrollerOptions));
 
 			$scope.setScroller('room_rates_grid_scroller', scrollerOptionsForRoomRatesGrid);
@@ -565,45 +926,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			}, 350);
 		};
 
-		/**
-		 * Method to validate overbooking - Returns true if overbooked
-		 * @return boolean
-		 */
-		var isOverBooked = function() {
-			// TODO write check here
-			return true;
-		}
-
-		/**
-		 * Method to save Room Block Grid
-		 * @return undefined
-		 */
-		$scope.onBlockRoomGrid = function() {
-			if (isOverBooked()) {
-				// Show overbooking message
-				ngDialog.open({
-					template: '/assets/partials/groups/warnOverBookingPopup.html',
-					className: '',
-					scope: $scope,
-					closeByDocument: false,
-					closeByEscape: false
-				});
-			} else {
-				$scope.saveRoomBlock();
-			}
-		}
-
-
-		/**
-		 * Method to make the API call to save the room block grid
-		 * Will be called from
-		 * 	1. The controller $scope.onBlockRoomGrid
-		 * 	2. The warnReleaseRoomsPopup.html template
-		 * @return undefined
-		 */
-		$scope.saveRoomBlock = function() {
-			//TODO : Make API call to save the room block.
-		}
 
 		/**
 		 * Function to initialise room block details
@@ -626,6 +948,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//we have a list of scope varibales which we wanted to assign when it is in add/edit mode
 			initializeAddOrEditModeVariables();
+
 		}();
 	}
 ]);

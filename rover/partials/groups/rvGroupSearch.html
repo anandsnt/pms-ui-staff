@@ -130,13 +130,17 @@
                         <span class="guest-status" ng-class="getGuestClassForArrival(group)">
                             <!--{arrival or cancel}-->
                         </span>
-                        <time datetime="group.arrival_date">{{group.arrival_date}}</time>
+                        <time datetime="group.arrival_date">
+                            {{formatDateForUI(group.arrival_date)}}
+                        </time>
                     </div>
                     <div class="departure">
                         <span class="guest-status" ng-class="getGuestClassForDeparture(group)">
                             <!--{departure or cancel} -->
                         </span>
-                        <time datetime="group.departure_date">{{group.departure_date}}</time>
+                        <time datetime="group.departure_date">
+                            {{formatDateForUI(group.departure_date)}}
+                        </time>
                     </div>
                     <div class="blocked" ng-class="getClassAgainstHoldStatus(group)"> <!-- If Status = Tentative, add class "tentative" -->
                         <strong>{{group.total_booked}}</strong>

@@ -1,5 +1,6 @@
 sntRover.service('rvUtilSrv', [function(){
 		
+		var self = this;
 		/**
 		 * utility function to take deep copy of an object
 		 * @param  {Object} 	obj - Source Object
@@ -71,12 +72,13 @@ sntRover.service('rvUtilSrv', [function(){
 		this.toMilliSecond = function(date_){
 			var type_ 	= typeof date_,
 				ms 		= '';
-
+			console.log('type_: ' + type_);
+			console.log('date_: ' + date_);
 			switch (type_){
 				case 'string':
 					ms = (new tzIndependentDate(date_));
 					break;
-				default:
+				case 'object':
 					ms = date_.getTime();
 					break;
 			}
@@ -112,5 +114,26 @@ sntRover.service('rvUtilSrv', [function(){
 
 			return arrayToReturn;
 		};
+
+		/**
+		 * to check whether a string is a number or not
+		 * @param {Integer/String}
+		 * @return {Boolean}
+		 */
+    	this.isNumeric = function(string){    		
+    		return !jQuery.isArray( string ) && (string - parseFloat( string ) + 1) >= 0;
+    	};
+
+    	/**
+    	* to convert a number to a string
+    	* @param {String} - string to be converted
+    	* @param {Integer} - if passed string is not a number, what should be retuned
+    	* @return {Integer}
+    	*/
+    	this.convertToInteger = function(string, withWhatToBeReplacedifNotANumber){
+    		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
+    		if (self.isNumeric (string)) { return parseInt (string)};
+    		return withWhatToBeReplacedifNotANumber;
+    	};
 
 }]);
