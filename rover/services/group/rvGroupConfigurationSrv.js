@@ -81,8 +81,8 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.getRoomBlockGridDetails = function(param) {
 			var deferred = $q.defer(),
-				//url = '/api/groups/'+param.group_id+'/inventories';
-				url = '/ui/show?format=json&json_input=groups/griddata.json';				
+				url = '/api/groups/'+param.group_id+'/inventories';
+				//url = '/ui/show?format=json&json_input=groups/griddata.json';				
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
 					deferred.resolve(data);
