@@ -164,12 +164,20 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * Has Permission To Create summary room block
+		 * Has Permission To Create group room block
 		 * @return {Boolean}
 		 */
 		var hasPermissionToCreateRoomBlock = function() {
-			return true;
 			return (rvPermissionSrv.getPermissionValue('CREATE_GROUP_ROOM_BLOCK'));
+		};
+
+
+		/**
+		 * Has Permission To Edit group room block
+		 * @return {Boolean}
+		 */
+		var hasPermissionToEditRoomBlock = function() {
+			return (rvPermissionSrv.getPermissionValue('EDIT_GROUP_ROOM_BLOCK'));
 		};
 
 		/**
@@ -178,7 +186,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableAddRoomsAndRate = function() {
-			return startDateOrEndDateIsEmpty();
+			return (startDateOrEndDateIsEmpty() && 
+				!hasPermissionToCreateRoomBlock() &&
+				!hasPermissionToEditRoomBlock());
 		};
 
 		/**
@@ -717,7 +727,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		*/
 	 	var successCallBackOfFetchRoomBlockGridDetails = function(data){		 		
 	 		$scope.groupConfigData.summary.selected_room_types_and_bookings = data.results;
-	 		$scope.groupConfigData.summary.selected_room_types_and_occupanies = data.occupancies;
+	 		$scope.groupConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
 
 	 		//we need the copy of selected_room_type, we ned to use these to show save/discard button
 	 		$scope.copy_selected_room_types_and_bookings = util.deepCopy (data.results);
