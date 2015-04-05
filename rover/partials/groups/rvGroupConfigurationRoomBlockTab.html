@@ -204,17 +204,27 @@
                             <!-- Room Type -->
                             <div class="line">
                                 <input type="text" 
-                                value="{{getTotalBookedOfIndividualRoomType(dateData)}}"
-                                class="cell" disabled />                                
+                                    value="{{getTotalBookedOfIndividualRoomType(dateData)}}"
+                                    class="cell" disabled />                                
                                 <input type="text" 
-                                value="{{getTotalPickedUpOfIndividualRoomType(dateData)}}" class="cell" disabled />
+                                    value="{{getTotalPickedUpOfIndividualRoomType(dateData)}}" class="cell" disabled />
                             </div>
                             <!-- Single -->
                             <!-- <div class="line hidden"> -->
                             <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.single" class="cell" />                              
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.single_pickup" class="cell" disabled />
+                                <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
+                                <input type="text" 
+                                    rv-delay-textbox 
+                                    delay="800" 
+                                    function-to-fire="bookingDataChanging" 
+                                    ng-model="dateData.single" class="cell" />                              
+                                <input type="text" 
+                                    rv-delay-textbox 
+                                    delay="800" 
+                                    function-to-fire="bookingDataChanging" 
+                                    ng-model="dateData.single_pickup" 
+                                    class="cell" disabled />
                                 <!-- we will show this quick arrow only in first column -->
                                 <a ng-if="!$index"
                                 ng-click="copySingleValueToOtherBlocks(dateData, roomType)"> 
@@ -225,8 +235,19 @@
                             <!-- <div class="line hidden"> -->
                             <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.double" class="cell" />
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.double_pickup" class="cell" disabled />
+                                <input type="text" 
+                                    rv-delay-textbox 
+                                    delay="800" 
+                                    function-to-fire="bookingDataChanging" 
+                                    ng-model="dateData.double" class="cell" />
+
+                                <input type="text" 
+                                    rv-delay-textbox 
+                                    delay="800" 
+                                    function-to-fire="bookingDataChanging" 
+                                    ng-model="dateData.double_pickup" 
+                                    class="cell" disabled />
+
                                 <!-- we will show this quick arrow only in first column -->
                                 <a ng-if="!$index"
                                 ng-click="copyDoubleValueToOtherBlocks(dateData, roomType)"> 
@@ -236,8 +257,20 @@
                             <!-- If L63 is clicked, generate option to add triple: -->
                             <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                             <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.triple" class="cell"  />
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.triple_pickup" class="cell" disabled />
+                                <input type="text" 
+                                    rv-delay-textbox 
+                                    delay="800" 
+                                    function-to-fire="bookingDataChanging" 
+                                    ng-model="dateData.triple" 
+                                    class="cell"  />
+
+                                <input type="text" 
+                                    rv-delay-textbox 
+                                    delay="800" 
+                                    function-to-fire="bookingDataChanging" 
+                                    ng-model="dateData.triple_pickup" 
+                                    class="cell" disabled />
+
                                 <!-- we will show this quick arrow only in first column -->
                                 <a ng-if="!$index"
                                 ng-click="copyTripleValueToOtherBlocks(dateData, roomType)"> 
@@ -247,8 +280,18 @@
                             <!-- If L65 is clicked, generate option to add quadruple: -->
                             <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                             <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.quadruple" class="cell" />
-                                <input type="text" ng-change="bookingDataChanging()" ng-model="dateData.quadruple_pickup" class="cell" disabled />
+                                <input type="text" 
+                                    rv-delay-textbox 
+                                    delay="800" 
+                                    function-to-fire="bookingDataChanging" 
+                                    ng-model="dateData.quadruple" class="cell" />
+
+                                <input type="text" 
+                                    rv-delay-textbox 
+                                    delay="800" 
+                                    function-to-fire="bookingDataChanging" 
+                                    ng-model="dateData.quadruple_pickup" 
+                                    class="cell" disabled />
                                 <!-- we will show this quick arrow only in first column -->
                                 <a ng-if="!$index"
                                 ng-click="copyQuadrupleValueToOtherBlocks(dateData, roomType)"> 
