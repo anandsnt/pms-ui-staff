@@ -460,10 +460,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		var successCallBackOfSaveRoomBlock = function(date){
-			$state.go('rover.groups.config', {
-					id: $scope.groupConfigData.summary.group_id,
-					activeTab: 'ROOM_BLOCK'
-			});
+			//we have save everything we have
+			//so our data is new
+			$scope.hasBookingDataChanged = false;
+			
 		};
 
 		/**
@@ -603,15 +603,16 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * To get the max booked rooms among dates
 		 * @return {Integer}
 		 */
-		$scope.getMaxOfBookedRooms = function(){
-
-			$scope.$emit('showLoader');
+		$scope.getMaxOfBookedRooms = function(){			
 			var ref = $scope.groupConfigData.summary.selected_room_types_and_bookings,
 				totalBookedOfEachDate = [],
 				arrayOfDateData = [],
 				dateWiseGroupedData = {},
 				sum = 0;
 			
+			if(!ref.length) { return 0; }
+
+			$scope.$emit('showLoader');
 			//first of all, we need group by 'date' data as our current data is room type row based
 			// we need these 'datewisedata' in single array
 			_.each(ref, function(el){
@@ -743,7 +744,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * To fetch room block details
 		 * @return {undefined}  
 		 */
-		$scope.fetchRoomBlockGridDetails = function(){	
+		$scope.fetchRoomBlockGridDetails = function(){
+			var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
+				hasPermissionToEditRoomBlock());
+
+			if(!hasNeccessaryPermission) {
+				return;
+			}
+
 			var params = {
 				group_id: $scope.groupConfigData.summary.group_id
 			};
@@ -940,11 +948,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//we have a list of scope varibales which we wanted to assign when it is in add/edit mode
 			initializeAddOrEditModeVariables();
-
-			var isInEditMode = !$scope.isInAddMode();
-			if (isInEditMode){
-				$scope.fetchRoomBlockGridDetails();
-			}
 
 		}();
 	}
