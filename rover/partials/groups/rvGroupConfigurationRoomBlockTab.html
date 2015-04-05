@@ -35,8 +35,10 @@
                 <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
                 <label for="group-hold-status" translate>HOLD_STATUS</label>
                 <div class="select">
-                    <select id="group-hold-status" ng-model="selectedHoldStatus" 
-                        iscroll-stop-propagation>
+                    <select id="group-hold-status" 
+                        ng-model="selectedHoldStatus" 
+                        iscroll-stop-propagation
+                        ng-disabled="shouldDisableHoldStatusChange()">
                         <option value="" 
                             ng-selected="isEmpty(selectedHoldStatus)" 
                             translate>

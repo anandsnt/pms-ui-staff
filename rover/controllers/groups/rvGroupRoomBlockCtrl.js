@@ -72,10 +72,12 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		/**
 		 * Function to decide whether to disable Update block button
 		 * if from date & to date is not defined, will return true
+		 * or if nopermission to update grp summary
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableUpdateBlockButton = function() {
-			return startDateOrEndDateIsEmpty();
+			return startDateOrEndDateIsEmpty() && 
+				!hasPermissionToEditSummaryGroup();
 		};
 
 		/**
@@ -125,7 +127,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		var hasPermissionToEditSummaryGroup = function() {
-			return true;
 			return (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY'));
 		};
 
@@ -135,6 +136,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableStartDate = function() {
+			return !hasPermissionToEditSummaryGroup();
+		};
+
+		/**
+		 * Function to decide whether to disable hold status change
+		 * if the permission is false will return true
+		 * @return {Boolean}
+		 */		
+		$scope.shouldDisableHoldStatusChange = function(){
 			return !hasPermissionToEditSummaryGroup();
 		};
 
