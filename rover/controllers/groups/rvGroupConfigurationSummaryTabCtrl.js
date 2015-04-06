@@ -56,7 +56,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				if ($scope.groupConfigData.summary.release_date.trim() == '') {
 					$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
 				}
-			
+
 				// we will clear end date if chosen start date is greater than end date
 				if ($scope.groupConfigData.summary.block_from > $scope.groupConfigData.summary.block_to) {
 					$scope.groupConfigData.summary.block_to = '';
@@ -85,7 +85,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.groupConfigData.summary.block_to = date;
 
 				//we are in outside of angular world
-				runDigestCycle();				
+				runDigestCycle();
 			}
 		};
 
@@ -103,10 +103,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			},
 			onSelect: function(date, datePickerObj) {
 				$scope.groupConfigData.summary.release_date = date;
-				
+
 				//we are in outside of angular world
 				runDigestCycle();
-			}				
+			}
 		};
 
 		/**
@@ -313,30 +313,39 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				return;
 			}
 
+
+
 			$scope.errorMessage = "";
 
-			var onSaveGroupNoteSuccess = function(data) {
-					$scope.groupConfigData.summary.notes = data.notes;
-					$scope.groupSummaryData.newNote = "";
-					$scope.refreshScroller("groupSummaryScroller");
-				},
-				onSaveGroupNoteFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
 
-			$scope.callAPI(rvGroupConfigurationSrv.saveGroupNote, {
-				successCallBack: onSaveGroupNoteSuccess,
-				failureCallBack: onSaveGroupNoteFailure,
-				params: {
-					"notes": $scope.groupSummaryData.newNote,
-					"group_id": $scope.groupConfigData.summary.group_id
-				}
-			});
+			if ($scope.groupSummaryData.newNote) {
+				var onSaveGroupNoteSuccess = function(data) {
+						$scope.groupConfigData.summary.notes = data.notes;
+						$scope.groupSummaryData.newNote = "";
+						$scope.refreshScroller("groupSummaryScroller");
+					},
+					onSaveGroupNoteFailure = function(errorMessage) {
+						$scope.errorMessage = errorMessage;
+					};
+
+				$scope.callAPI(rvGroupConfigurationSrv.saveGroupNote, {
+					successCallBack: onSaveGroupNoteSuccess,
+					failureCallBack: onSaveGroupNoteFailure,
+					params: {
+						"notes": $scope.groupSummaryData.newNote,
+						"group_id": $scope.groupConfigData.summary.group_id
+					}
+				});
+			} else {
+				console.warn("Trying to save empty Note!");
+			}
 		}
 
 		$scope.removeGroupNote = function(noteId) {
-			var onRemoveGroupNoteSuccess = function(data) {
-					$scope.groupConfigData.summary.notes = data.notes;
+			var onRemoveGroupNoteSuccess = function(data, params) {
+					$scope.groupConfigData.summary.notes = _.without($scope.groupConfigData.summary.notes, _.findWhere($scope.groupConfigData.summary.notes, {
+						note_id: params.noteId
+					}));
 					$scope.refreshScroller("groupSummaryScroller");
 				},
 				onRemoveGroupNoteFailure = function(errorMessage) {
@@ -345,9 +354,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			$scope.callAPI(rvGroupConfigurationSrv.removeGroupNote, {
 				successCallBack: onRemoveGroupNoteSuccess,
-				successCallBack: onRemoveGroupNoteSuccess,
+				failureCallBack: onRemoveGroupNoteFailure,
 				params: {
 					"note_id": noteId,
+				},
+				successCallBackParameters: {
+					"noteId": noteId,
 				}
 			});
 		}
