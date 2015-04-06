@@ -2844,7 +2844,6 @@
                                     }
 
                                     .room-block-sidebar {
-                                        
                                         left: 0;
                                         width: 180px;
                                         z-index: 1040;
@@ -2960,7 +2959,24 @@
                                                     .size(10px, 100%);
                                                 }
 
-                                                &:first-child { margin-left: 10px; }
+                                                &:first-child { 
+                                                    margin-left: 10px;
+                                                    width: 220px;
+
+                                                    .line {
+                                                        position: relative;
+                                                        padding-right: 40px;
+
+                                                        .icon-mover-right {
+                                                            position: absolute;
+                                                            top: 5px;
+                                                            right: 0;
+                                                            .hide-text;
+                                                            .square(40px);
+                                                            .show;
+                                                        }
+                                                    }
+                                                }
 
                                                 &:last-child {
                                                     padding-right: 0;
