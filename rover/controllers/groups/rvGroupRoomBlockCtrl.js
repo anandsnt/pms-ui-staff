@@ -805,7 +805,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForRoomBlockTimeLine = function() {
-			return ($scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 190) + 'px';
+			return ($scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
 		};
 
 		/**
@@ -900,8 +900,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			var scrollerOptionsForRoomRatesGrid = _.extend({
 				scrollY: true,
-				scrollX: true,
-				scrollbars: true
+				scrollX: true
 			}, util.deepCopy(scrollerOptions));
 
 			$scope.setScroller('room_rates_grid_scroller', scrollerOptionsForRoomRatesGrid);
