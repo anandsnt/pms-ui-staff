@@ -15,8 +15,6 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
   
    
 	this.testSetup = function(data){
-            console.log('testing with data:');
-            console.log(data);
 		var deferred = $q.defer();
 		var url = 'admin/test_ota_connection';	
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
