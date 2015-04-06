@@ -338,6 +338,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			// if (isOverBooked()) {
 			// 	showOverBookingPopup()
 			// }
+			runDigestCycle();
 		};
 
 		/**
