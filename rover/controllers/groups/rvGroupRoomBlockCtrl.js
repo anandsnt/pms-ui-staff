@@ -71,13 +71,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 		/**
 		 * Function to decide whether to disable Update block button
-		 * if from date & to date is not defined, will return true
-		 * or if nopermission to update grp summary
+		 * if nopermission to update grp summary
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableUpdateBlockButton = function() {
-			return startDateOrEndDateIsEmpty() && 
-				!hasPermissionToEditSummaryGroup();
+			return !hasPermissionToEditSummaryGroup();
 		};
 
 		/**
@@ -196,8 +194,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableAddRoomsAndRate = function() {
-			return (startDateOrEndDateIsEmpty() && 
-				!hasPermissionToCreateRoomBlock() &&
+			return (!hasPermissionToCreateRoomBlock() &&
 				!hasPermissionToEditRoomBlock());
 		};
 
@@ -683,6 +680,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnAddRoomsAndRatesButton = function() {
+			//if it has no permission to do this, we will not alloq
+			var hasNoPermissionToProceed = $scope.shouldDisableAddRoomsAndRate();
+			if (hasNoPermissionToProceed) { return; }
+
 			var promises = [];
 			//we are not using our normal API calling since we have multiple API calls needed
 			$scope.$emit('showLoader');

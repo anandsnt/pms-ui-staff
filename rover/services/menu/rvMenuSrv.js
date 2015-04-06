@@ -379,8 +379,8 @@ sntRover.service('rvMenuSrv',
 			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
 
 			'menuGroups': 			[],
-			'menuCreateGroup': 		[],
-			'menuManageGroup': 		[],
+			'menuCreateGroup': 		['GROUP_CREATE'],
+			'menuManageGroup': 		['GROUP_MANAGE'],
 
 		};
 

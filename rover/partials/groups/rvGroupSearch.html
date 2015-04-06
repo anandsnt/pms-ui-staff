@@ -108,7 +108,7 @@
                 <div class="info">
                     <span class="icon-no-content icon-groups"></span>
                     <strong class="h1">No Matches</strong>
-                    <span class="h2">Check that you didn't mispell the <strong>Group Name</strong> or <strong>Code</strong>.<a ng-click="gotoAddNewGroup()" class="inline-link">Or add a New Group</a>.</span>
+                    <span class="h2">Check that you didn't mispell the <strong>Group Name</strong> or <strong>Code</strong>.<a ng-click="gotoAddNewGroup()" ng-show="hasPermissionToAddNewGroup()" class="inline-link">Or add a New Group</a>.</span>
                 </div>
             </li>
             <li class="group" ng-show="!shouldShowNoResult()" ng-repeat="group in groupList" ngrepeatend ngrepeatstarted>
