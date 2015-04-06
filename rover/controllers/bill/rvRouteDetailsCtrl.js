@@ -548,6 +548,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.setReloadOption(true);
                 $scope.headerButtonClicked();
                 $scope.updateCardInfo();
+                $scope.$parent.$emit('BILLINGINFOADDED');
             };
             $scope.errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
@@ -637,8 +638,15 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         */
         $scope.savePayment = function(){
             
-           
-          
+            $scope.saveSuccessCallback = function(data) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.$parent.$emit('BILLINGINFOADDED');
+            };
+            $scope.errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.$emit('displayErrorMessage',errorMessage);
+            };
+
             if($scope.reservationData!=undefined){
             	if($scope.reservationData.reservation_id != null){
             		$scope.savePaymentToReservationOrAccount('reservation');
@@ -659,9 +667,19 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             
         };
         $scope.savePaymentToReservationOrAccount = function(toReservationOrAccount){
-        	  var defaultRoutingSaveSuccess = function(){
+        	  
+            $scope.saveSuccessCallback = function(data) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.$parent.$emit('BILLINGINFOADDED');
+            };
+            $scope.errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.$emit('displayErrorMessage',errorMessage);
+            };
+              var defaultRoutingSaveSuccess = function(){
                 $scope.$parent.$emit('hideLoader');
                 ngDialog.close();
+                $scope.$parent.$emit('BILLINGINFOADDED');
               };
         	 var successCallback = function(data) {
         	 	$scope.$parent.$emit('hideLoader');
