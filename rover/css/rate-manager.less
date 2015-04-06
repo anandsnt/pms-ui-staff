@@ -3,11 +3,7 @@
       background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
   }
   #roomTypeViewCalendar{
-    width:100%;  
-    padding:0px; 
-    overflow: hidden;
-    position:fixed;
-    margin-left:22%;
+   // margin-left:22%;
 
     .limit-width{
       width: 60%;
@@ -64,12 +60,7 @@
   }
 
   #rateViewCalendar{
-    width:100%; 
-    position: fixed;  
-    padding:0px; 
-    overflow: hidden; 
-    z-index: 10;
-    margin-left: 22%;
+    //overflow: hidden; //defined by overflow x/y in (pinnedTable/scrollTable)'s 
 
     table{
       table-layout:fixed; 
@@ -385,13 +376,11 @@
 
 
 
-.scrollable {
-  float: right;
-  width: 69%;
+.scrollTable {
   overflow: scroll;
-  overflow-y: hidden;
-  position:absolute;
-  margin-left:210px;
+  -webkit-scrollbar { width: 0 !important }//to hide the default scrollbar
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 
@@ -687,6 +676,8 @@
     *zoom: 1;
     z-index: 10;
     bottom: 0;//fixed to bottom
+    width:100%;
+    
     li {
       position: relative;
       font-size: 13px;
@@ -1710,22 +1701,29 @@ padding-top: 80px;
 }
 
 
-.pinned {
-  width: 22%;
+.pinnedTable {
   float: left;
+  height: 78%;
+  overflow: hidden;
 }
 
-.pinned td {
+.pinnedTable td {
   position: relative;
   font-weight: bold;
   line-height: 18px;
   text-align: left;
-  overflow: hidden;
 }
-.pinned td.wrap {
+.pinnedTable td.wrap {
   white-space: normal;
 }
 
-.pinned td .inner.wrap {
+.pinnedTable td .inner.wrap {
   white-space: normal;
+}
+
+.scrollBound{
+    margin: auto;
+}
+.pinLeft{
+    float:left;
 }

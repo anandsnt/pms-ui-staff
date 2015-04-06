@@ -1,6 +1,5 @@
-    
-
-<div class='pinned'>
+<div class="scrollBound">
+<div class='pinnedTable pinLeft' scroll-position="initScrollBind()">
     <table class='rate-calendar'>
         <thead>
             <tr>
@@ -20,7 +19,7 @@
                 </th>
             <tr>
         </thead>
-        <tbody>
+        <tbody class="firstcol" style="overflow: hidden;height:80px">
             <tr ng-if="calendarData.data.length > 1">
                 <td class="first-row">
                     <span class="bolder">All Rates</span><span>&nbsp;</span>
@@ -28,11 +27,11 @@
             </tr>
 
             <tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
-                <td class="first-row">
+                <td class="first-row tableFirstCol">
                     <div ng-click="goToRoomTypeCalendarView(rate)">
                         <span bindonce bo-html="rate.name"></span>
                         <span> 
-                            <img src="/assets/arrow-down.png" /> 
+                            <img src="/assets/arrow-down.png" />
                         </span>
                     </div>
                 </td>
@@ -40,7 +39,7 @@
         </tbody>
     </table>
 </div>
-<div id="rateViewCalendar" class='scrollable' style="height:{{uiOptions.tableHeight}}px;" ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
+<div scroll-position="initScrollBind()" id="rateViewCalendar" class='scrollTable' style="height:{{uiOptions.tableHeight}}px;" ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
     <table class="rate-calendar" style="width:{{uiOptions.tableWidth}}">
         <thead>
             <tr>
@@ -129,6 +128,7 @@
             
         </tbody>
     </table>
+</div>
 </div>
 <div class='pinned-bottom'>
 <ul class="restriction-legends" >

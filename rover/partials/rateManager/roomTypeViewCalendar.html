@@ -1,5 +1,5 @@
-
-<div class='pinned'>
+<div class="scrollBound">
+<div class='pinnedTable' scroll-position="initScrollBind()">
     <table class='rate-calendar'>
         <thead>
             <tr>
@@ -13,7 +13,6 @@
                             ng-class="{'open': calendarData.disableCloseAllBtn}" 
                             ng-disabled="calendarData.disableCloseAllBtn"> Close All</button>
                 </th>
-
             <tr>
         </thead>
         <tbody>
@@ -40,11 +39,7 @@
     </table>
 </div>
 
-
-
-
-
-<div id="roomTypeViewCalendar" style="height:{{uiOptions.tableHeight}}px;" ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
+<div scroll-position="initScrollBind()" class="scrollTable" id="roomTypeViewCalendar" style="height:{{uiOptions.tableHeight}}px; ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000"">
     <table class="rate-calendar" style="width:{{uiOptions.tableWidth}}px;">
         <thead>
             <tr>
@@ -191,7 +186,8 @@
             </tr>
         </tbody>
     </table> 
-</div>
+</div></div>
+<div class='pinned-bottom'>
 <ul class="restriction-legends" >
     <li bindonce ng-repeat="restrictionType in calendarData.restriction_types">
         <span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}"
@@ -199,3 +195,4 @@
         <span bo-html="restrictionType.description"></span>
     </li>
 </ul> 
+    </div>

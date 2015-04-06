@@ -29,6 +29,8 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
         restrict: 'A',
         link: function (scope, element, attr)
         {
+            var isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
+            if (isIpad){
             // default timeout
             var ngiScroll_timeout = 5;
 
@@ -47,9 +49,9 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
             if (scroll_key === '') {
                 scroll_key = attr.id;
             }
-
+            console.log('isIpad: '+isIpad);
             // if ng-iscroll-form='true' then the additional settings will be supported
-            if (attr.ngIscrollForm !== undefined && attr.ngIscrollForm == 'true') {
+            if (attr.ngIscrollForm !== undefined && attr.ngIscrollForm == 'true' && isIpad == 'true') {
                 ngiScroll_opts.useTransform = false;
                 ngiScroll_opts.onBeforeScrollStart = function (e)
                 {
@@ -57,7 +59,7 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                     while (target.nodeType != 1) target = target.parentNode;
 
                     if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
-                        e.preventDefault();
+                       e.preventDefault();
                 };
             }
 
@@ -113,6 +115,9 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                     delete scope.$parent.myScroll[scroll_key];
                 };
             });
+        } else {
+            console.log('not running on ipad');
         }
+    }
     };
 });
