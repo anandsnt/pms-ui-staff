@@ -87,10 +87,10 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                 console.log('checking call back...');
                 console.log(response);
                 $scope.$emit('hideLoader');
-                if (response.status.indexOf("fail") != -1) {
-                    testSiteminderSetupSuccessCallback(response);
-                } else {
+                if (response.status == 'failure') {
                     testSiteminderSetupFailureCallback(response);
+                } else {
+                    testSiteminderSetupSuccessCallback(response);
                 }
             }
 
