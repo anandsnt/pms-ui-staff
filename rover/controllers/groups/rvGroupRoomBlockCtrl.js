@@ -335,9 +335,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//we are changing the model to 
 			$scope.hasBookingDataChanged = true;
 
-			if (isOverBooked()) {
-				showOverBookingPopup()
-			}
+			// if (isOverBooked()) {
+			// 	showOverBookingPopup()
+			// }
 		};
 
 		/**

@@ -218,12 +218,12 @@
                                 <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
                                 <input type="text" 
                                     rv-delay-textbox 
-                                    delay="800" 
+                                    delay="100" 
                                     function-to-fire="bookingDataChanging" 
                                     ng-model="dateData.single" class="cell" />                              
                                 <input type="text" 
                                     rv-delay-textbox 
-                                    delay="800" 
+                                    delay="100" 
                                     function-to-fire="bookingDataChanging" 
                                     ng-model="dateData.single_pickup" 
                                     class="cell" disabled />
@@ -239,13 +239,13 @@
                                 <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                                 <input type="text" 
                                     rv-delay-textbox 
-                                    delay="800" 
+                                    delay="100" 
                                     function-to-fire="bookingDataChanging" 
                                     ng-model="dateData.double" class="cell" />
 
                                 <input type="text" 
                                     rv-delay-textbox 
-                                    delay="800" 
+                                    delay="100" 
                                     function-to-fire="bookingDataChanging" 
                                     ng-model="dateData.double_pickup" 
                                     class="cell" disabled />
@@ -261,14 +261,14 @@
                             <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <input type="text" 
                                     rv-delay-textbox 
-                                    delay="800" 
+                                    delay="100" 
                                     function-to-fire="bookingDataChanging" 
                                     ng-model="dateData.triple" 
                                     class="cell"  />
 
                                 <input type="text" 
                                     rv-delay-textbox 
-                                    delay="800" 
+                                    delay="100" 
                                     function-to-fire="bookingDataChanging" 
                                     ng-model="dateData.triple_pickup" 
                                     class="cell" disabled />
@@ -284,13 +284,13 @@
                             <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
                                 <input type="text" 
                                     rv-delay-textbox 
-                                    delay="800" 
+                                    delay="100" 
                                     function-to-fire="bookingDataChanging" 
                                     ng-model="dateData.quadruple" class="cell" />
 
                                 <input type="text" 
                                     rv-delay-textbox 
-                                    delay="800" 
+                                    delay="100" 
                                     function-to-fire="bookingDataChanging" 
                                     ng-model="dateData.quadruple_pickup" 
                                     class="cell" disabled />
