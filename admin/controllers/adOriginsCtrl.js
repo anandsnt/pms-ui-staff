@@ -27,6 +27,11 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 		$scope.currentClickedElement = index;
 		$scope.preveousItem = $scope.data.booking_origins[index].name;
 	};
+        
+        $scope.setDefaultOriginSiteminder = function(){
+            console.log('binding value from UI');
+            console.log(arguments);
+        }
 	/*
     * To get the template of edit screen
     * @param {int} index of the selected item
