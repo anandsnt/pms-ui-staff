@@ -471,6 +471,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//we have save everything we have
 			//so our data is new
 			$scope.hasBookingDataChanged = false;
+			$scope.groupConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
 			
 		};
 
