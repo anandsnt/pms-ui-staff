@@ -8,14 +8,17 @@ sntRover.controller('rvGroupSearchCtrl',	[
 	'$timeout',
 	'$state',
 	'rvUtilSrv',
+	'rvPermissionSrv',
 	function($scope, 
 			$rootScope, 
 			rvGroupSrv, 
 			initialGroupListing, 
 			businessDate, 
 			$filter,
-			$timeout,
-			$state, util) {
+			$timeout,			
+			$state, 
+			util,
+			rvPermissionSrv) {
 			
 		BaseCtrl.call(this, $scope);
 
@@ -205,6 +208,15 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			}, 300);
 			$scope.$emit('hideLoader');
 		});
+		
+		/**
+		* when there is any change in search query
+		* this function will execute
+		* @return {None}
+		*/
+		$scope.hasPermissionToAddNewGroup = function(){
+			return (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY'));
+		};
 
 		/**
 		* when there is any change in search query
