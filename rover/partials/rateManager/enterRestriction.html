@@ -8,8 +8,8 @@
 				<input id="restictionCount" ng-model="options.daysEntered"/>
 		    </div>
 			<div class="cancellationbuttonwrap">
-			    <button class="button  green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
-				<button ng-show="restrictionType.showEdit" class="button blank cancel" type="button" ng-click="cancelButtonClicked(restrictionType.id)">Cancel</button>
+                            <button ng-if="hasPermissionToUpdateRestrictions()" class="button green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
+                            <button ng-show="restrictionType.showEdit" class="button blank cancel" type="button" ng-click="cancelButtonClicked(restrictionType.id)">Cancel</button>
 			</div>
 		</div>
 	</div>
