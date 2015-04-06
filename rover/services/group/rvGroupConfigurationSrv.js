@@ -26,7 +26,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			"revenue_potential": null,
 			"rooms_total": null,
 			"rooms_pickup": null,
-			"rate": null,
+			"rate": "",
 			"addons_count": null,
 			"notes": []
 		};
