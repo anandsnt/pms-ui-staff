@@ -527,8 +527,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     * Listener for the save button click
     */
     $scope.$on('routeSaveClicked', function(event){
-            
-            $scope.saveRoute();
+        $scope.saveRoute();
     });
     /**
     * function to update the company and travel agent in stay card header
@@ -567,6 +566,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             var defaultRoutingSaveSuccess = function(){
                 $scope.$parent.$emit('hideLoader');
                 ngDialog.close();
+                $scope.$parent.$emit('BILLINGINFOADDED');
             };
            
            /*
