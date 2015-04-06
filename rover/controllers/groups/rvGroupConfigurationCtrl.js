@@ -232,7 +232,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return undefined
 		 */
 		$scope.discardNewGroup = function() {
-			//TODO : Clarify functionality with Nicole
+			$scope.groupConfigData.summary = angular.copy(rvGroupConfigurationSrv.baseConfigurationSummary);
 		}
 
 		$scope.onCompanyCardChange = function() {
