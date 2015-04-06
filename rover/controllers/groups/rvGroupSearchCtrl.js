@@ -34,12 +34,20 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		*/
 		$scope.getClassAgainstHoldStatus = function(group){
 			var classes = '';
+			var isSystemDefined = group.is_system_defined;
 
-			if(group.hold_status === 'Tentative')
-				classes = 'tentative';			
-			if(group.hold_status === 'Definite')
-				classes += ' ';
-
+			//According to Nicole's comment in CICO-13899 (Color coding)
+			if (isSystemDefined){
+				if(group.hold_status === 'Tentative')
+					classes = 'tentative';			
+				if(group.hold_status === 'Definite')
+					classes += ' ';
+			}
+			//for custom status
+			else {
+				if(!group.is_take_from_inventory)
+					classes = 'tentative';
+			}
 			return classes;
 		};
 
