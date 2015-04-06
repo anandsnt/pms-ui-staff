@@ -36,8 +36,8 @@
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
     "MENU_GROUPS": "Group",
-    "MENU_CREATE_GROUP": "Create Group",
-    "MENU_MANAGE_GROUP": "Manage Group",
+    "MENU_CREATE_GROUP": "New Group",
+    "MENU_MANAGE_GROUP": "Manage Groups",
     
     "DUEIN_TITLE": "Checking In",
     "IN_HOUSE_TITLE": "In House",
