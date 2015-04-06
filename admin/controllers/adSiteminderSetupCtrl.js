@@ -12,11 +12,9 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                 $scope.isLoading = false;
                 $scope.$emit('hideLoader');
                 $scope.data = data;
-
             };
             $scope.emailDatas = [];
             $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {}, fetchSiteminderSetupSuccessCallback);
-
         };
         $scope.fetchSiteminderSetup();
 
@@ -43,59 +41,63 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
             var saveData = dclone($scope.data, unwantedKeys);
 
             $scope.invokeApi(adSiteminderSetupSrv.saveSetup, saveData, saveSiteminderSetupSuccessCallback, saveSiteminderSetupFailureCallback);
-
         };
 
         $scope.testSiteminderSetup = function () {
 
             var testSiteminderSetupSuccessCallback = function (data) {
-                $scope.isLoading = false;
-                console.log('Siteminder Test Successful');
-
-                $scope.successMessage = 'Siteminder Test Success';
-                console.log(data);
+                //double check to see if it Actually failed..
+                    if (data.status == 'failure'){
+                        var msg = '';
+                        if (typeof data[0] === typeof 'str') {
+                        if (data[0].length > 1) {
+                            msg = ': ' + data[0];
+                        } else if (typeof data === typeof 'str') {
+                            msg = ': data';
+                        }
+                    }
+                    $scope.errorMessage = 'Siteminder Test Failed' + msg;
+                } else {
+                    $scope.isLoading = false;
+                    $scope.successMessage = 'Siteminder Test Success';
+                }
+                    console.log(data);
                 $scope.$emit('hideLoader');
-                $scope.showTestResults('Success', data);
+                //  $scope.showTestResults('Success', data);
             };
             var testSiteminderSetupFailureCallback = function (data) {
                 $scope.isLoading = false;
                 var msg = '';
-                if (typeof data[0] === typeof 'str'){
-                    if (data[0].length > 1){
-                        msg = ': '+data[0];   
-                    } else if(typeof data === typeof 'str') {
+                if (typeof data[0] === typeof 'str') {
+                    if (data[0].length > 1) {
+                        msg = ': ' + data[0];
+                    } else if (typeof data === typeof 'str') {
                         msg = ': data';
                     }
                 }
                 console.log('Siteminder Test Failed');
-                $scope.errorMessage = 'Siteminder Test Failed'+msg;
+                $scope.errorMessage = 'Siteminder Test Failed' + msg;
                 console.log(data);
                 $scope.$emit('hideLoader');
-                $scope.showTestResults('Failure', data);
+                // $scope.showTestResults('Failure', data);
             };
+
+
+            var checkCallback = function (response) {
+                console.log('checking call back...');
+                console.log(response);
+                $scope.$emit('hideLoader');
+                if (response.status.indexOf("fail") != -1) {
+                    testSiteminderSetupSuccessCallback(response);
+                } else {
+                    testSiteminderSetupFailureCallback(response);
+                }
+            }
+
+
             var unwantedKeys = ["available_trackers"];
             var testData = dclone($scope.data, unwantedKeys);
-
-            $scope.invokeApi(adSiteminderSetupSrv.testSetup, testData, testSiteminderSetupSuccessCallback, testSiteminderSetupFailureCallback);
-
-        };
-        $scope.showTestResults = function (s, data) {
-            console.log('show test results here: ');
-            console.log(arguments);
-            /*
-             var success = false;
-             if (s === 'Success'){
-             success = true;
-             }
-             ngDialog.open({
-             template: '/assets/partials/settings/siteminderSetupTest.html',
-             controller: 'RVEditRateFromDatepickerCtrl',
-             className: 'ngdialog-theme-default single-date-picker',
-             closeByDocument: true,
-             scope: $scope,
-             success:success
-             });
-             */
+            $scope.invokeApi(adSiteminderSetupSrv.testSetup, testData, checkCallback);
         };
 
     }]);
