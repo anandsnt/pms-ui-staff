@@ -8,7 +8,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'summaryData',
 	'holdStatusList',
 	'$state',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state) {
+	'rvPermissionSrv',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -91,21 +92,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return - None
 		 */
 		$scope.switchTabTo = function(tab) {
-			
+
 			//if there was any error message there, we are clearing
 			$scope.errorMessage = '';
 
 			var isInSummaryTab = $scope.groupConfigData.activeTab == "SUMMARY";
-			
+
 			// we will restrict tab swithing if we are in add mode
 			var tryingFromSummaryToOther = isInSummaryTab && tab !== 'SUMMARY';
-			if($scope.isInAddMode() && tryingFromSummaryToOther) {
+			if ($scope.isInAddMode() && tryingFromSummaryToOther) {
 				$scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
 				return;
 			}
 
 			//TODO: Remove once all tab implemented
-			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK'){
+			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK') {
 				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
 				return;
 			}
@@ -157,27 +158,31 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		$scope.saveNewGroup = function() {
 			$scope.errorMessage = "";
-			if (ifMandatoryValuesEntered()) {
-				var onGroupSaveSuccess = function(data) {
-						$scope.groupConfigData.summary.group_id = data.group_id;
-						$state.go('rover.groups.config', {
-							id: data.group_id
-						})
-						$stateParams.id = data.group_id;
-					},
-					onGroupSaveFailure = function(errorMessage) {
-						$scope.errorMessage = errorMessage;
-					};
+			if (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY')) {
+				if (ifMandatoryValuesEntered()) {
+					var onGroupSaveSuccess = function(data) {
+							$scope.groupConfigData.summary.group_id = data.group_id;
+							$state.go('rover.groups.config', {
+								id: data.group_id
+							})
+							$stateParams.id = data.group_id;
+						},
+						onGroupSaveFailure = function(errorMessage) {
+							$scope.errorMessage = errorMessage;
+						};
 
-				$scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
-					successCallBack: onGroupSaveSuccess,
-					failureCallBack: onGroupSaveFailure,
-					params: {
-						summary: $scope.groupConfigData.summary
-					}
-				});
+					$scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
+						successCallBack: onGroupSaveSuccess,
+						failureCallBack: onGroupSaveFailure,
+						params: {
+							summary: $scope.groupConfigData.summary
+						}
+					});
+				} else {
+					$scope.errorMessage = ["Group's name, from date, to date, release date, rate and hold status are mandatory"];
+				}
 			} else {
-				$scope.errorMessage = ["Group's name, from date, to date, release date, rate and hold status are mandatory"];
+				console.warn('No Permission for CREATE_GROUP_SUMMARY');
 			}
 
 		}
@@ -188,25 +193,29 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return undefined
 		 */
 		$scope.updateGroupSummary = function() {
-			var onGroupUpdateSuccess = function(data) {
-					//client controllers should get an infromation whether updation was success
-					$scope.$broadcast ("UPDATED_GROUP_INFO");
-					console.log(data);
-				},
-				onGroupUpdateFailure = function(errorMessage) {
-					//client controllers should get an infromation whether updation was a failure
-					$scope.$broadcast ("FAILED_TO_UPDATE_GROUP_INFO");
+			if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
+				var onGroupUpdateSuccess = function(data) {
+						//client controllers should get an infromation whether updation was success
+						$scope.$broadcast("UPDATED_GROUP_INFO");
+						console.log(data);
+					},
+					onGroupUpdateFailure = function(errorMessage) {
+						//client controllers should get an infromation whether updation was a failure
+						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO");
 
-					console.log(errorMessage);
-				};
+						console.log(errorMessage);
+					};
 
-			$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
-				successCallBack: onGroupUpdateSuccess,
-				failureCallBack: onGroupUpdateFailure,
-				params: {
-					summary: $scope.groupConfigData.summary
-				}
-			});
+				$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
+					successCallBack: onGroupUpdateSuccess,
+					failureCallBack: onGroupUpdateFailure,
+					params: {
+						summary: $scope.groupConfigData.summary
+					}
+				});
+			}else{
+				console.warn('No Permission for EDIT_GROUP_SUMMARY');
+			}
 		}
 
 		/**
