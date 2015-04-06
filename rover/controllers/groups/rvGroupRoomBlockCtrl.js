@@ -623,7 +623,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			
 			if(!ref.length) { return 0; }
 
-			$scope.$emit('showLoader');
+			//$scope.$emit('showLoader');
 			//first of all, we need group by 'date' data as our current data is room type row based
 			// we need these 'datewisedata' in single array
 			_.each(ref, function(el){
@@ -645,7 +645,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//returning max among them, simple
 			var max = _.max (totalBookedOfEachDate);
-			$scope.$emit('hideLoader');
+			//$scope.$emit('hideLoader');
 			return max;
 		};
 
