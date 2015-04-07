@@ -29,7 +29,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			
 			
 			$scope.defaultRoomTypeDetails = {
-				"best_available_rate"	: '',
+				"best_available_rate_amount"	: '',
 	            "single_rate"			: '',
 	            "double_rate"			: '',
 	            "extra_adult_rate"		: ''
@@ -38,7 +38,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			//selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy ($scope.groupConfigData.summary.selected_room_types_and_rates);
 			
-			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate"];
+			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount"];
 			$scope.roomTypes = util.getListOfKeyValuesFromAnArray ($scope.selectedRoomTypeAndRates, wanted_keys);
 
 			//we only showing if associated with that group
@@ -59,10 +59,10 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		$scope.changeBestAvailableRate = function(row){
 			var roomType = _.findWhere($scope.roomTypes, {"room_type_id": parseInt(row.room_type_id)});
 			if(roomType){
-				row.best_available_rate = roomType.best_available_rate;
+				row.best_available_rate_amount = roomType.best_available_rate_amount;
 			}
 			else{
-				row.best_available_rate = "";
+				row.best_available_rate_amount = "";
 			}
 		};
 
