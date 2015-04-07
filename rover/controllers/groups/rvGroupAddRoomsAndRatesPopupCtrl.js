@@ -49,12 +49,6 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 				$scope.selectedRoomTypeAndRates = [];
 				$scope.selectedRoomTypeAndRates.push (util.deepCopy ($scope.groupConfigData.summary.selected_room_types_and_rates[0]));
 			}
-			 
-			
-			
-			
-			
-
 		}();
 
 		/**
@@ -78,7 +72,8 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 		 * @return {Boolean} 
 		 */
 		$scope.shouldShowAddNewButton = function(obj){
-			return (!util.isEmpty(obj.room_type_id));
+			return (!util.isEmpty(obj.room_type_id) && 
+					(_.pluck($scope.selectedRoomTypeAndRates, "room_type_id").length < $scope.roomTypes.length));
 		};
 
 		/**
@@ -171,4 +166,23 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			$scope.callAPI (rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
 		};
 
+		/**
+		 * wanted to hide a particular room type from the list of room types we are showing
+		 * @param  {Integer} mySelectedID
+		 * @param  {Object} roomType     
+		 * @return {Boolean}              [Will decide whether to show/not]
+		 */
+		$scope.hideRoomType = function(mySelectedID, roomType){
+			//if it is mine room type, we will show that
+			if (parseInt(mySelectedID) == parseInt(roomType.room_type_id)) return false;
+
+			//we are removing other selected
+			//list of selecetd room types' ids
+			var selectedIdList = _.pluck($scope.selectedRoomTypeAndRates, "room_type_id");
+			//Converting to integer
+			selectedIdList = _.map(selectedIdList, function(element){ return parseInt(element);});
+
+			//yes final Boolean is on the way
+			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0)
+		}
 	}]);
