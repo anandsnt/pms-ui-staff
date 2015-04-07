@@ -54,7 +54,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	$scope.refreshScroller = function(){
             $scope.initScrollBind();
             
-		setTimeout( function(){
+		$timeout( function(){
 			$scope.$parent.myScroll.RateCalendarCtrl.refresh();
 		}, 0);
 	};

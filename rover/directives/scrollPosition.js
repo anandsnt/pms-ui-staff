@@ -1,12 +1,17 @@
-sntRover.directive('scrollPosition', function ($timeout, $parse) {
+sntRover.directive('scrollPosition', function ($window) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs, opt) {
-            console.log('init scroll bind via scope');
-            element.bind('scroll ng-iscroll iscroll ng-scroll', function (event) {
-               scope.initScrollBind();
-            });
+          var w = angular.element($window);
+            if (scope.initScrollBind && scope.initScrollBind()){
+                w.bind('ng-iscroll', function (event) {
+                        scope.initScrollBind();
+                });
+            }
 
+          scope.$on('$destroy', function() {
+               w.off('ng-iscroll');
+          });
 
         }
     };
