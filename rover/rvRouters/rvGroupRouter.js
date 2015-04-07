@@ -31,7 +31,7 @@ angular.module('groupModule', [])
                         var params = {
                             'query'     : '',
                             'from_date' : businessDate.business_date,
-                            'to_date'   : businessDate.business_date,
+                            'to_date'   : '',
                             'per_page'  : rvGroupSrv.DEFAULT_PER_PAGE,
                             'page'      : rvGroupSrv.DEFAULT_PAGE,
                         }
