@@ -160,8 +160,8 @@
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
     "MENU_GROUPS": "Group",
-    "MENU_CREATE_GROUP": "Create Group",
-    "MENU_MANAGE_GROUP": "Manage Group",    
+    "MENU_CREATE_GROUP": "New Group",
+    "MENU_MANAGE_GROUP": "Manage Groups",   
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",
 	"DELETE":"Delete",
@@ -397,7 +397,19 @@
     "DOUBLE_OCCUPANCY": "Double Occ.",
     "ONE_MORE_ADULT": "1+ Adult",
     "ADD_MORE_TO_THIS_GROUP": "ADD MORE TO THIS GROUP",
-    "GROUP_DETAILS": "Group Details"
+    "GROUP_DETAILS": "Group Details",
+    "GROUP_INFO" : "Group Info",
+    "GROUP_CODE" : "Group Code",
+    "CONTACT_FIRST_NAME" : "Contact First Name",
+    "CONTACT_LAST_NAME" : "Contact Last Name",
+    "CONTACT_PHONE" : "Contact Phone",
+    "CONTACT_EMAIL" : "Contact E-mail",
+    "ROOM_BLOCK_SUMMARY" : "Room Block Summary",
+    "ROOM_RELEASE_DATE" : "Room Release Date",
+    "RELEASE_NOW" : "Release Now",
+    "GROUP_APR" :"Actual / Potential Revenue"
+
+
 
 
 ,

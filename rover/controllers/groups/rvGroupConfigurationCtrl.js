@@ -14,6 +14,17 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		/**
+		 * to run angular digest loop,
+		 * will check if it is not running
+		 * return - None
+		 */
+		var runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			}
+		};
+
+		/**
 		 * whether current screen is in Add Mode
 		 * @return {Boolean}
 		 */
@@ -67,7 +78,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		var ifMandatoryValuesEntered = function() {
 			var summary = $scope.groupConfigData.summary;
-			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date && !!summary.rate;
+			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
 		}
 
 		/**
@@ -179,7 +190,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 						}
 					});
 				} else {
-					$scope.errorMessage = ["Group's name, from date, to date, release date, rate and hold status are mandatory"];
+					$scope.errorMessage = ["Group's name, from date, to date, room release date and hold status are mandatory"];
 				}
 			} else {
 				console.warn('No Permission for CREATE_GROUP_SUMMARY');
@@ -213,7 +224,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 						summary: $scope.groupConfigData.summary
 					}
 				});
-			}else{
+			} else {
 				console.warn('No Permission for EDIT_GROUP_SUMMARY');
 			}
 		}
@@ -284,6 +295,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					$scope.groupConfigData.summary.company.name = ui.item.label;
 					$scope.groupConfigData.summary.company.id = ui.item.value;
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
+					runDigestCycle();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
@@ -313,6 +325,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
+					runDigestCycle();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
