@@ -6,6 +6,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/departments'
 		});
 
+		$stateProvider.state('admin.holdStatus', {
+			templateUrl: '/assets/partials/holdStatus/adHoldStatusList.html',
+			controller: 'ADHoldStatusListCtrl',
+			url : '/holdStatus'
+		});
+
 		$stateProvider.state('admin.rates', {
 			templateUrl: '/assets/partials/rates/adRatesList.html',
 			controller: 'ADRatesListCtrl',

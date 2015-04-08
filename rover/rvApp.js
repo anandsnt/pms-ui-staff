@@ -16,6 +16,7 @@ var sntRover = angular.module('sntRover',[
 		'housekeepingModule', 
 		'reportsModule', 
 		'diaryModule',
+		'groupModule',
 		'FinancialsModule',
 		'cacheVaultModule', 
 		'twoMonthscalendar',
@@ -198,7 +199,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			name    = !!options.name ? options.name : $_prevStateName,
 			param   = !!options.name && !!options.param ? options.param : (!!$_prevStateParam ? $_prevStateParam : {}),
 			reverse = typeof options.reverse === 'boolean' ? true : false;
-
+                
 		// if currently disabled, return
 		if ( options.disable ) {
 			return;
@@ -223,7 +224,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		};
 	};
 
-
 	$rootScope.returnBack = false;
 	$rootScope.isReturning = function() {
 		return $rootScope.returnBack;
@@ -240,7 +240,10 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*	app/assets/rover/partials/staycard/rvStaycard.html
 	*/
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-
+                if (fromState.name == 'rover.reservation.staycard.roomassignment' && toState.name == 'rover.diary'){
+                    //cico-13697, fix until proper workflow routes are developed
+                    return;
+                }
 		// spiting state names so as to add them to '$_revAnimList', if needed
 		console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 
@@ -259,9 +262,11 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// reset this flag
 		$_mustRevAnim = false;
 
+                
 		// saving the prevState name and params
-		$_prevStateName  = fromState.name;
-		$_prevStateParam = fromParams;
+                    $_prevStateName  = fromState.name;
+                    $_prevStateParam = fromParams;
+                
 	});
 
 
@@ -282,8 +287,12 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		$rootScope.returnBack = false;
 
 		// capture the prev state document title;
-		$_savePrevStateTitle(document.title);
-
+		if (fromState.name == 'rover.reservation.staycard.roomassignment' && toState.name == 'rover.diary'){
+                    //cico-13697, fix until proper workflow routes are developed
+                    return;
+                }
+                $_savePrevStateTitle(document.title);
+               
 		if ( $rootScope.setNextState.data ) {
 			_.extend(toParams, $rootScope.setNextState.data);
 			$rootScope.setNextState = {};

@@ -231,11 +231,13 @@ body { overflow: hidden; }
 
 			/* With pagination **/
 			&#dashboard-search,
-			&#search {
+			&#search,
+			&#find-group {
 				top: 120px;
 				.calc-height(100, 180);
 
-				&.no-results, &.no-pagination { .calc-height(100, 120); }
+				&.no-results, 
+				&.no-pagination { .calc-height(100, 120); }
 			}
 
 			/* HK search ***/
@@ -252,10 +254,8 @@ body { overflow: hidden; }
 					top: 220px;
 					.calc-height(100, 280);
 				}
-			}
 
-			&.no-pagination#rooms {
-				.calc-height(100, 130);
+				&.no-pagination { .calc-height(100, 130); }
 			}
 
 			&#filter-rooms {

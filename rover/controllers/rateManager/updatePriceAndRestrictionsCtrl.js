@@ -1,5 +1,5 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv',
-    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv) {
+sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv','rvPermissionSrv',
+    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv, rvPermissionSrv) {
     
     $scope.init = function(){
         $scope.showRestrictionDayUpdate = false;
@@ -69,6 +69,23 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
 
     $scope.hideUpdatePriceAndRestrictionsDialog = function(){
         ngDialog.close();
+    };
+
+    /** 13474
+    * method to determine whether the user has permission to update Rate Mgr - Rate Prices
+    * @return {Boolean}
+    */
+    $scope.hasPermissionToUpdateRates = function(){
+        return (rvPermissionSrv.getPermissionValue ('UPDATE_RATE_PRICE')); 
+    };
+    
+    
+    /**
+    * method to determine whether the user has permission to update Rate Mgr - Restrictions
+    * @return {Boolean}
+    */
+    $scope.hasPermissionToUpdateRestrictions = function(){
+        return (rvPermissionSrv.getPermissionValue ('CHANGE_RESTRICTIONS')); 
     };
 
     /**
@@ -356,7 +373,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         if($scope.showExpandedView) {
             width = width + 270;
         }
-        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView && $scope.data.hasAmountConfigured) {
+        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView && $scope.data.hasAmountConfigured && $scope.hasPermissionToUpdateRates()) {
             width = width + 400;
         }
         if($scope.showExpandedView && !$scope.popupData.fromRoomTypeView && !$scope.popupData.all_data_selected) {

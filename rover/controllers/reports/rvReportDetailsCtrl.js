@@ -160,10 +160,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('ARRIVAL'):
 				case reportUtils.getName('IN_HOUSE_GUEST'):
 				case reportUtils.getName('DEPOSIT_REPORT'):
-				case reportUtils.getName('CANCELLATION_NO_SHOW'):
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
+					break;
+
+				case reportUtils.getName('CANCELLATION_NO_SHOW'):
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
@@ -298,8 +302,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
+
+			var parseAPIoptions = {
+				'groupedByKey' : $scope.$parent.reportGroupedBy,
+				'checkNote'    : $scope.chosenReport.chosenIncludeNotes ? true : false,
+				'checkGuest'   : $scope.chosenReport.chosenShowGuests ? true : false,
+				'checkCancel'  : $scope.chosenReport.chosenIncludeCancelled ? true : false
+			};
+
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
-			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, $scope.$parent.reportGroupedBy) );
+			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions) );
+
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty($scope.$parent.results);
 
@@ -565,21 +578,30 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		function $_preFetchFullReport () {
-			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
-				$scope.occupancyMaxDate = 0;
+			var occupancyMaxDate = 0;
 
+			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
+
+				// fromdate <- 5 days -> untildate, so including fromdate, diff should be 4 (5 - 1)
 				if ( $scope.chosenReport.chosenVariance && $scope.chosenReport.chosenLastYear ) {
-					$scope.occupancyMaxDate = 5;
-				} else if ( $scope.chosenReport.chosenVariance || $scope.chosenReport.chosenLastYear ) {
-					$scope.occupancyMaxDate = 10;
-				} else {
-					$scope.occupancyMaxDate = 15;
+					occupancyMaxDate = 4;
+				}
+
+				// fromdate <- 10 days -> untildate, so including fromdate, diff should be 9 (10 - 1)
+				else if ( $scope.chosenReport.chosenVariance || $scope.chosenReport.chosenLastYear ) {
+					occupancyMaxDate = 9;
+				}
+
+				// fromdate <- 15 days -> untildate, so including fromdate, diff should be 14 (15 - 1)
+				else {
+					occupancyMaxDate = 14;
 				};
 
 				// if the current chosen dates are within
-				// the $scope.occupancyMaxDate, dont show pop
+				// the occupancyMaxDate, dont show pop
 				// go straight to printing
-				return ($scope.chosenReport.untilDate.getDate() - $scope.chosenReport.fromDate.getDate()) > $scope.occupancyMaxDate ? true : false;
+				// (occupancyMaxDate + 1) -> since we reduced it above
+				return ($scope.chosenReport.untilDate.getDate() - $scope.chosenReport.fromDate.getDate()) > occupancyMaxDate ? true : false;
 			} else {
 				return false;
 			};
@@ -706,7 +728,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 
-		var reportSubmit = $rootScope.$on('report.submit', function() {
+		var reportSubmit = $scope.$on('report.submit', function() {
 			$_pageNo = 1;
 
 			afterFetch();
@@ -715,27 +737,27 @@ sntRover.controller('RVReportDetailsCtrl', [
 			refreshScroll();
 		});
 
-		var reportUpdated = $rootScope.$on('report.updated', function() {
+		var reportUpdated = $scope.$on('report.updated', function() {
 			afterFetch();
 			findBackNames();
 			calPagination();
 			refreshScroll();
 		});
 
-		var reportPageChanged = $rootScope.$on('report.page.changed', function() {
+		var reportPageChanged = $scope.$on('report.page.changed', function() {
 			afterFetch();
 			calPagination();
 			refreshScroll();
 		});
 
-		var reportPrinting = $rootScope.$on('report.printing', function() {
+		var reportPrinting = $scope.$on('report.printing', function() {
 			afterFetch();
 			findBackNames();
 			printReport();
 			refreshScroll();
 		});
 
-		var reportAPIfailure = $rootScope.$on('report.API.failure', function() {
+		var reportAPIfailure = $scope.$on('report.API.failure', function() {
 			$scope.errorMessage = $scope.$parent.errorMessage;
 			afterFetch();
 			calPagination();

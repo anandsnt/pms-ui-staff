@@ -1,4 +1,5 @@
-sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv){
+sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv',
+	function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv, RVReservationCardSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.encoderTypes = [];
 	$scope.getRoomClass = function(reservationStatus){
@@ -57,6 +58,9 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	
 	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable){
 		var showUpgrade = false;
+		if($scope.hasAnySharerCheckedin()){
+			return false;
+		}
 		if((isUpsellAvailable == 'true') && $scope.isFutureReservation(reservationStatus)){
 			showUpgrade = true;
 		}
@@ -157,12 +161,33 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	$scope.closeActivityIndication = function(){
 		$scope.$emit('hideLoader');
 	};
+
+	$scope.goToRoomUpgrades = function(){
+		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
+	}
+
+	/**
+	 * utility method used to redirect to diary in edit mode
+	 * @return undefined
+	 */
+	var gotToDiaryInEditMode = function(){
+		RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
+		$state.go('rover.diary', {
+			reservation_id: $scope.reservationData.reservation_card.reservation_id,
+			checkin_date: $scope.reservationData.reservation_card.arrival_date,
+		});
+	}
 	/**
 	* function to trigger room assignment.
 	*/
 	$scope.goToroomAssignment = function(){
+		//CICO-13907 Do not allow to go to room assignment screen if the resevation  any of its shred reservation is checked in.
+		if($scope.hasAnySharerCheckedin()){
+			return false;
+		}
+
 		if($scope.reservationData.reservation_card.is_hourly_reservation){
-			$state.go('rover.diary', { reservation_id: $scope.reservationData.reservation_card.reservation_id });
+			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
 		}else if($scope.reservationData.reservation_card.reservation_status=="CHECKEDIN"){

@@ -202,6 +202,26 @@ sntRover.controller('reservationActionsController', [
 			};				
 		};
 
+		/**
+		 * //CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
+		 * @return {Boolean}
+		 */
+		var shouldRedirectToDiary = function (){
+			var reservationData = $scope.reservationData.reservation_card;
+			if (reservationData.room_status === 'NOTREADY' && reservationData.is_hourly_reservation) {
+				return true;
+			}
+			return false;
+		};
+
+		var gotoDiaryInEditMode = function(){
+			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
+			$state.go('rover.diary', {
+				reservation_id: $scope.reservationData.reservation_card.reservation_id,
+				checkin_date: $scope.reservationData.reservation_card.arrival_date,
+			});
+		};
+
 		var startCheckin = function() {
 			
 			
@@ -217,6 +237,16 @@ sntRover.controller('reservationActionsController', [
 									});
 						
 						} else {
+							//CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
+							if($scope.hasAnySharerCheckedin()){
+								$state.go('rover.reservation.staycard.billcard', {
+									"reservationId": $scope.reservationData.reservation_card.reservation_id,
+									"clickedButton": "checkinButton",
+									"userId": $scope.guestCardData.userId
+								});
+								return false;
+							}
+
 							if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
 									//TO DO:Go to room assignemt view
 									$state.go("rover.reservation.staycard.roomassignment", {
@@ -253,7 +283,8 @@ sntRover.controller('reservationActionsController', [
 				};
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
-			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id
+			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
+
 			if (!!hasRoom) {
 				// Go fetch the room status again
 				// After fetch do the entire rest of it
@@ -263,11 +294,18 @@ sntRover.controller('reservationActionsController', [
 						// Rest of the things
 						$scope.$emit('hideLoader');
 						// update the room status to reservation card
-						$scope.reservationData.reservation_card.room_ready_status = data.current_hk_status;
+						$scope.reservationData.reservation_card.room_ready_status = data.current_hk_status;						
 						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
 						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
-
-						afterRoomUpdate();
+						//CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
+						if (shouldRedirectToDiary ()){
+							gotoDiaryInEditMode ();
+						}
+						else {
+							afterRoomUpdate();
+						}
+						
+						
 					}, function() {
 						$scope.$emit('hideLoader');
 					});

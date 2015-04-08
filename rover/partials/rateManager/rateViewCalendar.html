@@ -37,11 +37,25 @@
 							<div>
 								<div>
 									<div>
-										<span ng-repeat="restriction in calendarData.all_rates[date] track by $index" 
+                                                                            
+										<span ng-if="isRestrictTo(currentFilterData.zoom_level_selected,calendarData.all_rates[date]) == 3 && calendarData.all_rates[date].length <= 3" 
+                                                                                      ng-repeat="restriction in calendarData.all_rates[date] | limitTo: 3 track by $index" 
 											  ng-show="toggleRestrictionIconView()"
 											  class="restriction-icon right {{calendarData.restriction_types[restriction.type_id].background_class}} {{calendarData.restriction_types[restriction.type_id].icon}}"> {{restriction.days}} 
-										</span>											  
-									</div>
+										</span>	
+                                                                                <span ng-if="isRestrictTo(currentFilterData.zoom_level_selected,calendarData.all_rates[date]) == 3 && calendarData.all_rates[date].length > 3" 
+                                                                                      ng-repeat="restriction in calendarData.all_rates[date] | limitTo: 3 track by $index" 
+											  ng-show="toggleRestrictionIconView()"
+											  class="restriction-icon left-icons {{calendarData.restriction_types[restriction.type_id].background_class}} {{calendarData.restriction_types[restriction.type_id].icon}}"> {{restriction.days}} 
+										</span>	
+                                                                                <span ng-if="calendarData.all_rates[date].length > 3 && currentFilterData.zoom_level_selected < 6" class="restriction-icon left-icons ellipsis">...</span>
+                                                                                
+                                                                                <!-- if more than 1 restriction, depending on zoom, show Restrictions icon or first 3 restrictions -->
+										<span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, calendarData.all_rates[date]) == 2"
+                                                                                   class="restriction-icon right bg-drk"> R 
+                                                                                </span>	
+                                                                        
+                                                                        </div>
 								</div>
 							</div>
 
@@ -66,10 +80,24 @@
 							<div>
 								<div>
 									<div>
-										<span ng-repeat="restriction in rate[date] track by $index" 
+										<span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, rate[date]) == 3 && rate[date].length <= 3"
+                                                                                        ng-repeat="restriction in rate[date] | limitTo: 3 track by $index" 
 											  ng-show="toggleRestrictionIconView()"
-											  class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} </span>
-									</div>
+											  class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} 
+                                                                                </span>
+                                                                                <span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, rate[date]) == 3 && rate[date].length > 3"
+                                                                                        ng-repeat="restriction in rate[date] | limitTo: 3 track by $index" 
+											  ng-show="toggleRestrictionIconView()"
+											  class="restriction-icon left-icons {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} 
+                                                                                </span>
+                                                                                <span ng-if="rate[date].length > 3 && currentFilterData.zoom_level_selected < 6" class="restriction-icon left-icons ellipsis">...</span>
+                                                                                
+										<span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, rate[date]) == 2"
+                                                                                   class="restriction-icon right bg-drk"> R 
+                                                                                </span>	
+                                                                        
+                                                                        
+                                                                        </div>
 								</div>
 							</div>
 						</div>

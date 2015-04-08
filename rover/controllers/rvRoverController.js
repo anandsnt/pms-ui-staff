@@ -374,6 +374,8 @@ sntRover.controller('roverController',
 
       $scope.menuOpen = !$scope.menuOpen;
       $scope.showHotelSwitchList = false;
+      //save contact info in guestcard if any changes has been done -CICO-14273
+      $scope.$broadcast('saveContactInfo');
     };
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
@@ -455,6 +457,7 @@ sntRover.controller('roverController',
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       $scope.$emit('hideLoader');
+      console.log(error);
       //TODO: Log the error in proper way
     });
 

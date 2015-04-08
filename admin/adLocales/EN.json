@@ -33,7 +33,10 @@
 
 "BILLING_GROUPS": "Billing Groups",
 "BILLING_GROUP_NAME": "Name",
-"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name","CAMPAIGNS_LIST_TITLE": "Campaigns",
+"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name",
+"TAKE_FROM_INVENTORY": "Take from inventory",
+"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status"
+,"CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
 "NAME":"Name",
@@ -157,7 +160,9 @@
     "MENU_JOURNAL":"Journal",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
-    
+    "MENU_GROUPS": "Group",
+    "MENU_CREATE_GROUP": "New Group",
+    "MENU_MANAGE_GROUP": "Manage Groups",   
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",
 	"DELETE":"Delete",
@@ -274,6 +279,7 @@
 "POI_LABEL": "Point Of Interest",
 "GENERAL_LABEL": "General Information",
 "LINK_LABEL": "Link",
+"SCREEN_LABEL": "Screen",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
@@ -357,6 +363,55 @@
 "ASSIGNED_ROOMS": "Assigned Rooms",
 "SELECT_ALL": "Select All",
 "ASSIGN_SELECTED": "Assign Selected"
+
+,    
+    
+    "FROM": "From",
+    "TO": "To",
+    "GROUPS": "Groups",
+    "NEW_GROUP": "New Group",
+    "START_DATE": "Start Date",
+    "SELECT_START_DATE": "Select Start Date",
+    "END_DATE": "End Date",
+    "SELECT_END_DATE": "Select End Date",
+    "HOLD_STATUS": "Hold Status",
+    "SET_STATUS": "Set Status",
+    "TOTAL_ROOMS": "Total Rooms",
+    "TOTAL_PICK_UP": "Total Pick Up",
+    "CREATE_BLOCK": "Create Block",
+    "UPDATE": "Update",
+    "ADD_ROOMS_AND_RATE": "Add Rooms &amp; Rates",
+    "SAVE": "Save",
+    "DISCARD": "Discard",
+    "ROOMS_AND_RATES": "Rooms &amp; Rates",
+    "SINGLE": "Single",
+    "DOUBLE": "Double",
+    "ADD_TRIPLE": "+ Add Triple",
+    "ADD_QUADRUPLE": "+ Add Quadruple",
+    "TOTAL": "Total",
+    "PICK_UP": "Pick-up",
+    "AVAILABILITY_GROUP": "Availability: ",
+    "ROOM_TYPES_AND_RATES": "Room Types and Rates",
+    "SELECT_ROOM_TYPE": "Select Room Type",
+    "BAR_SINGLE": "BAR (Single)",
+    "SINGLE_OCCUPANCY": "Single Occ.",
+    "DOUBLE_OCCUPANCY": "Double Occ.",
+    "ONE_MORE_ADULT": "1+ Adult",
+    "ADD_MORE_TO_THIS_GROUP": "ADD MORE TO THIS GROUP",
+    "GROUP_DETAILS": "Group Details",
+    "GROUP_INFO" : "Group Info",
+    "GROUP_CODE" : "Group Code",
+    "CONTACT_FIRST_NAME" : "Contact First Name",
+    "CONTACT_LAST_NAME" : "Contact Last Name",
+    "CONTACT_PHONE" : "Contact Phone",
+    "CONTACT_EMAIL" : "Contact E-mail",
+    "ROOM_BLOCK_SUMMARY" : "Room Block Summary",
+    "ROOM_RELEASE_DATE" : "Room Release Date",
+    "RELEASE_NOW" : "Release Now",
+    "GROUP_APR" :"Actual / Potential Revenue"
+
+
+
 
 ,
 
@@ -598,7 +653,9 @@
 "ROOM_STATUS_UPDATE_CHECKOUT_LABEL":"Enable room status update at checkout",
 "MAINTENANCE_REASONS":"Maintenance Reasons",
 "MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",
-"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",    
+"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",
+"SEND_INTERFACE_REQUEST": "Send Interface Request per status type"
+,    
     
     "NAME":"Name",
     "DESCRIPTION":"Description",

@@ -12,21 +12,21 @@ sntRover.factory('RVReportParserFac', [
 
 
         factory.parseAPI = function ( reportName, apiResponse, isGroupedBy ) {
-            
+
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') ) {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse );
+            if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') || reportName == reportUtils.getName('DAILY_PAYMENTS') ) {
+                return $_parseNumeralData( reportName, apiResponse );
             }
             // otherwise a super parser for reports that can be grouped by
             else if ( !!isGroupedBy ) {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, isGroupedBy );
+                return $_parseDataToSubArrays( reportName, apiResponse, isGroupedBy );
             }
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
             else {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToInfo( reportName, apiResponse );
+                return $_parseDataToInfo( reportName, apiResponse );
             };
         };
 
