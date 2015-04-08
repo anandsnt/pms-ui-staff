@@ -739,7 +739,11 @@
 	"TITLE": "Title",
 	"ENTER_TITLE": "Enter Title",
 	"CANCELLATION_TEXT" : "Cancellation text",
-	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text"
+	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text",
+	"REGISTRATION_COMMUNICATION":"Registration Communications",
+	"REGISTRATION_TEMPLATE":"Registration Template",
+	"SELECT_REGISTRATION_TEMPLATE":" Select Registration Template",
+	"SHOW_VEHICLE_INFORMATION":"Show Vehicle Information"
 ,
 
 

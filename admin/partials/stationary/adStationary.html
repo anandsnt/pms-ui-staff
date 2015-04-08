@@ -91,21 +91,21 @@
 			<div class="form-title">
 				<h3>
 					<span>{{'CUSTOMIZE' | translate}}</span>
-					Registration Communications==translate
+					{{'REGISTRATION_COMMUNICATION' | translate}}					
 				</h3>
 			</div>
 			<div class="entry full-width">
-				<label translate>Registration Template==Translate</label>
+				<label translate>REGISTRATION_TEMPLATE</label>
 				<div class="select" >
 					<select ng-model="data.selected_guest_registration_template" name="guest-bill-template" class="placeholder">
-						<option value="" translate> template=trans </option>
+						<option value="" translate> SELECT_REGISTRATION_TEMPLATE </option>
 						<option ng-repeat="item in data.guest_registration_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_registration_template">{{item.name}}</option>
 					</select>
 				</div>
 			</div>
 
 			<div class="entry full-width">			
-					<ad-toggle-button label="Show Vehicle Information==translate" is-checked="data.isShowVehicleInformation"></ad-toggle-button>		
+					<ad-toggle-button label = "{{'SHOW_VEHICLE_INFORMATION'| translate}} " is-checked="data.isShowVehicleInformation"></ad-toggle-button>		
 			</div>
 
 		</fieldset>
