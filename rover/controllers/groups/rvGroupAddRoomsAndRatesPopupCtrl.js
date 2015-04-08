@@ -41,6 +41,15 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount"];
 			$scope.roomTypes = util.getListOfKeyValuesFromAnArray ($scope.selectedRoomTypeAndRates, wanted_keys);
 
+			//adding currency symbol to best available rate
+			$scope.roomTypes = _.map($scope.roomTypes, function(roomType){
+				roomType.best_available_rate_amount = ($rootScope.currencySymbol + 
+										roomType.best_available_rate_amount);
+				return roomType;
+			});
+			
+
+
 			//we only showing if associated with that group
 			$scope.selectedRoomTypeAndRates = _.where($scope.selectedRoomTypeAndRates, 
 											{is_configured_in_group: true});
@@ -48,7 +57,14 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			if ($scope.selectedRoomTypeAndRates.length == 0){
 				$scope.selectedRoomTypeAndRates = [];
 				$scope.selectedRoomTypeAndRates.push (util.deepCopy ($scope.groupConfigData.summary.selected_room_types_and_rates[0]));
-			}
+			};
+
+			//adding currency symbol to best available rate
+			$scope.selectedRoomTypeAndRates = _.map($scope.selectedRoomTypeAndRates, function(row){
+				row.best_available_rate_amount = ($rootScope.currencySymbol + 
+											row.best_available_rate_amount);
+				return row;
+			});			
 		}();
 
 		/**
