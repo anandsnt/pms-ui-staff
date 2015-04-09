@@ -428,6 +428,11 @@ sntRover.service('rvMenuSrv',
 				returnValue = isHourlyRateOn();
 				break;
 
+			//dont wanted to show on hourly enabled hotels
+			case 'menuGroups': 
+				returnValue = !isHourlyRateOn();
+				break;
+
 			//if auto change business is not enabled, we have to show EOD menu
 			// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
 			case 'endOfDay':

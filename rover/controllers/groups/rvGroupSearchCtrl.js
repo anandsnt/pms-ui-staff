@@ -318,8 +318,7 @@ sntRover.controller('rvGroupSearchCtrl',	[
 							$rootScope.dateFormat);
 
 			//default to date, as per CICO-13899 it will be business date	
-			$scope.toDate = $filter('date')(tzIndependentDate (businessDate.business_date), 
-							$rootScope.dateFormat);
+			$scope.toDate = '';
 		};
 
 		/**

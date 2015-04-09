@@ -4,6 +4,7 @@
     "ADD":"Add",
     "CANCEL": "Cancel",
     "SAVE_CHANGES": "Save Changes",
+    "TEST_CONNECTION": "Test Connection",
     "BACK": "Back",
     "ADD_NEW":"Add New",
     "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
