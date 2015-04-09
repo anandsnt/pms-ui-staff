@@ -61,6 +61,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			// we need to update any changes to the room
 			// before going back to search results
 			$scope.goBackSearch = function() {
+                            $scope.$emit('showLoader');
 				$scope.updateSearchCache();
 				$state.go('rover.search', backParam);
 			};
@@ -117,8 +118,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		BaseCtrl.call(this, $scope);
 
 		$scope.reservationCardSrv = RVReservationCardSrv;
-		console.log("------------------");
-		console.log(reservationDetails)
+		$scope.$emit('showLoader');
 			/*
 			 * success call back of fetch reservation details
 			 */
