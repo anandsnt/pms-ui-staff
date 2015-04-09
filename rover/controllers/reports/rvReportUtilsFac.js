@@ -33,7 +33,9 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-
+        // here we are trying to create CC CG objects
+        // with payments CC CG
+        // or without CC CG
         var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting) {
             var newChargeGroupsAry = [],
                 newChargeCodesAry  = [],
@@ -491,7 +493,6 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasByChargeCode'] = filter;
                     reportItem['chargeCodes'] = angular.copy( _processed_CG_CC.chargeCodes );
                     _hasChargeCodeSelect = true;
-                    console.log(_processed_CG_CC);
                 };
             });
 
