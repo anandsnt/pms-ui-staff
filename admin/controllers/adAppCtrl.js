@@ -110,6 +110,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			        action: "",
 			        iconClass: "icon-groups",
 			        menuIndex: "menuGroups",
+			        hidden: $rootScope.isHourlyRatesEnabled,
 			        submenu: [{
 			            title: "MENU_CREATE_GROUP",
 			            action: "staff#/staff/groups/config/NEW_GROUP/SUMMARY",
