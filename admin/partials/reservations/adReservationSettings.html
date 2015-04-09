@@ -53,6 +53,31 @@
 					<div style="height:20px;"></div>
 					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
+					<div class="entry full-width" >
+						<label translate> CC AUTHORIZATION AT CHECK IN-T</label>
+						<div class="select col1-2">
+						<select ng-model="reservationSettingsData.cc_authorization_at_checkin" class="styled">
+	                        	<option ng-repeat="sign in ['default','entire']" ng-selected="sign==prefetchData.selected_amount_sign" value="{{sign}}">{{sign}}</option>
+	                    </select>
+	                    </div>
+					</div>
+					<div ng-show="true" class="entry full-width" >
+						<label translate> </label>
+						
+						<div class="select select-col col1-3 ">
+							<select ng-model="reservationSettingsData.cc_authorization_at_checkin_type" class="styled">
+	                        	<option ng-repeat="sign in defaultSignDisplays" ng-selected="sign==prefetchData.cc_authorization_at_checkin_type" value="{{sign.value}}">{{sign.value}}</option>
+	                        </select>
+						</div>
+						<div class=" select-col col1-3 " >
+							<ad-textbox value="reservationSettingsData.cc_authorization_at_checkin_value" inputtype="text" value="" styleclass = "col1-3"	label = "" placeholder = "" style="  margin-top: 0; width: 100px;"></ad-textbox>
+						</div>
+						<div class="select select-col col1-3">
+							<select ng-model="reservationSettingsData.cc_authorization_at_checkin_value1" class="styled">
+	                            <option ng-repeat="sign in ['$','*']"  ng-selected="symbol.name===prefetchData.selected_amount_symbol" value="{{sign}}">{{sign}}</option>
+	                        </select>
+						</div>
+					</div>
 				</fieldset>
 				<fieldset class="holder left">
 					<div style="height:20px;"></div>

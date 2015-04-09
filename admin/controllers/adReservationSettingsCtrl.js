@@ -15,6 +15,13 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": 2,
       "name": "By Rate"
     }];
+    $scope.defaultSignDisplays = [{
+      "value": "+",
+      "name": "+"
+    }, {
+      "value": "-",
+      "name": "-"
+    }];    
     $scope.reservationSettingsData = reservationSettingsData;
 
 
