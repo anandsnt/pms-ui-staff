@@ -91,6 +91,7 @@ sntRover.controller('RVbillCardController',
 	var swipedTrackDataForCheckin = {};
 
 	$scope.reservationBillData.roomChargeEnabled = "";
+	$scope.billingData = {};
 
 	$scope.printData = {};
 	//This value changes when clicks on pay button
@@ -285,7 +286,7 @@ sntRover.controller('RVbillCardController',
 		$scope.setNoPostStatus();
      	$scope.calculateHeightAndRefreshScroll();
      	$scope.refreshScroller('bill-tab-scroller');
-     	$scope.reservationBillData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
+     	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 
 	/*
