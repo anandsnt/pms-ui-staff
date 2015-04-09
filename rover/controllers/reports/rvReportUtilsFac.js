@@ -34,6 +34,64 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
+        var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting) {
+            var newChargeGroupsAry = [],
+                newChargeCodesAry  = [],
+                paymentId          = null,
+                cgAssociated       = false,
+                paymentEntry       = {};
+
+            if ( setting == 'REMOVE_PAYMENTS' ) {
+                _.each(chargeGroupsAry, function (each) {
+                    if ( each.name !== 'Payments' ) {
+                        newChargeGroupsAry.push(each);
+                    } else {
+                        paymentId = each.id;
+                    };
+                });
+
+                _.each(chargeCodesAry, function (each) {
+                    cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
+                        return idObj.id == paymentId;
+                    });
+
+                    if ( !cgAssociated ) {
+                        newChargeCodesAry.push(each);
+                    };
+                });
+            }
+
+            if ( setting == 'ONLY_PAYMENTS' ) {
+                paymentEntry = _.find(chargeGroupsAry, function(each) {
+                    return each.name == 'Payments';
+                });
+
+                if ( !!paymentEntry ) {
+                    paymentId = paymentEntry.id;
+                    newChargeGroupsAry.push(paymentEntry);
+
+                    _.each(chargeCodesAry, function (each) {
+                        cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
+                            return idObj.id == paymentId;
+                        });
+
+                        if ( !!cgAssociated ) {
+                            newChargeCodesAry.push(each);
+                        };
+                    });
+                };
+            };
+
+            return {
+                'chargeGroups' : newChargeGroupsAry,
+                'chargeCodes'  : newChargeCodesAry
+            };
+        };
+
+
+
+
+
         // getter method to provide the required value from
         // private data store "__reportNames"
         factory.getName = function (name) {
@@ -176,6 +234,7 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['DAILY_TRANSACTIONS']:
+                case __reportNames['DAILY_PAYMENTS']:
                     reportItem['hasDateLimit'] = false;
                     break;
 
@@ -184,6 +243,14 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasDateLimit'] = true;
                     break;
             };
+        };
+
+
+
+
+
+        factory.cgcc = function () {
+
         };
 
 
@@ -200,8 +267,20 @@ sntRover.factory('RVReportUtilsFac', [
                 _hasChargeGroupSelect,
                 _hasChargeCodeSelect;
 
+            var _processed_CG_CC = {};
+
             // going around and taking a note on filters
             _.each(reportItem['filters'], function(filter) {
+
+                if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(_processed_CG_CC) ) {
+                    if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+                        _processed_CG_CC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
+                    };
+
+                    if ( reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
+                        _processed_CG_CC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                    };
+                };
 
                 // check for date filter and keep a ref to that item
                 if ( filter.value === 'DATE_RANGE' ) {
@@ -403,17 +482,16 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for "by charge group" and keep a ref to that item
                 if ( filter.value === 'INCLUDE_CHARGE_GROUP' ) {
                     reportItem['hasByChargeGroup'] = filter;
-                    reportItem['chargeGroups'] = angular.copy( data.chargeGroups );
+                    reportItem['chargeGroups'] = angular.copy( _processed_CG_CC.chargeGroups );
                     _hasChargeGroupSelect = true;
-
-                    console.log(reportItem);
                 };
 
                 // check for "by charge group" and keep a ref to that item
                 if ( filter.value === 'INCLUDE_CHARGE_CODE' ) {
                     reportItem['hasByChargeCode'] = filter;
-                    reportItem['chargeCodes'] = angular.copy( data.chargeCodes );
+                    reportItem['chargeCodes'] = angular.copy( _processed_CG_CC.chargeCodes );
                     _hasChargeCodeSelect = true;
+                    console.log(_processed_CG_CC);
                 };
             });
 
@@ -553,7 +631,7 @@ sntRover.factory('RVReportUtilsFac', [
 
             // need to reorder the sort_by options
             // for daily transactions in the following order
-            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] || reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
                 var chargeGroup = angular.copy( reportItem['sort_fields'][1] ),
                     chargeCode  = angular.copy( reportItem['sort_fields'][0] ),
                     revenue     = angular.copy( reportItem['sort_fields'][3] ),
