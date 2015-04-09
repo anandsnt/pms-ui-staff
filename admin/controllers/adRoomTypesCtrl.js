@@ -1,10 +1,10 @@
 admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.roomTypeData = {};
 	$scope.successMessage = "";
-	$scope.errorMessage ="";	
+	$scope.errorMessage ="";
 	$scope.fileName = "Choose File....";
 
    /*
@@ -29,28 +29,28 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.data.room_types, params.orderBy()) :
 		                                $scope.data.room_types;
-		                              
+
 		            $scope.orderedData =  orderedData;
-		                       
+
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
 		};
-		$scope.invokeApi(ADRoomTypesSrv.fetch, {} , successCallbackFetch);	
+		$scope.invokeApi(ADRoomTypesSrv.fetch, {} , successCallbackFetch);
 	};
 	//To list room types
-	$scope.listRoomTypes(); 
+	$scope.listRoomTypes();
    /*
     * To render edit room types screen
     * @param {index} index of selected room type
     * @param {id} id of the room type
-    */	
+    */
 	$scope.editRoomTypes = function(index, id)	{
 		$scope.isAddMode =false;
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
 		$scope.roomTypeData = {};
-	 	var successCallbackRender = function(data){	
+	 	var successCallbackRender = function(data){
 	 		$scope.$emit('hideLoader');
 	 		$scope.roomTypeData = data;
 	 		if($scope.roomTypeData.is_pseudo_room_type == "true" || $scope.roomTypeData.is_pseudo_room_type == true){
@@ -67,9 +67,9 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 		}
 	 	};
 	 	var data = {"id":id };
-	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data , successCallbackRender);    
+	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data, successCallbackRender);
 	};
-   
+
    /*
     * To get the template of edit screen
     * @param {int} index of the selected room type
@@ -77,7 +77,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     */
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement == index){
 			 	return "/assets/partials/roomTypes/adRoomTypesDetails.html";
 		}
 	};
@@ -85,14 +85,14 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
    * To save/update room type details
    */
    $scope.saveRoomTypes = function(){
-		
+
 		var unwantedKeys = [];
 		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!= -1){
 		} else {
 			unwantedKeys = ["image_of_room_type"];
 		}
 		 var data = dclone($scope.roomTypeData, unwantedKeys);
-		 
+
     	var editSuccessCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		//Since the list is ordered. Update the ordered data
@@ -106,7 +106,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name,'code':$scope.roomTypeData.room_type_code,'id':data.id});
     		$scope.tableParams.reload();
     	};
-    	
+
 
     	if($scope.isAddMode)
     		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
@@ -115,7 +115,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     };
    /*
     * To handle click event
-    */	
+    */
 	$scope.clickCancel = function(){
 		if($scope.isAddMode){
 			$scope.isAddMode =false;
@@ -123,17 +123,17 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
         }
 		else
 		    $scope.currentClickedElement = -1;
-	};	
+	};
    /*
     * To import form pms
-    * 
-    */		
+    *
+    */
 	$scope.importFromPms = function(event){
 		event.stopPropagation();
-		
+
 		$scope.successMessage = "Collecting rooms data from PMS and adding to Rover...";
-		
-		var successCallbackImport = function(data){	
+
+		var successCallbackImport = function(data){
 	 		$scope.$emit('hideLoader');
 	 		$scope.listRoomTypes();
 	 		$scope.successMessage = "Completed!";
@@ -145,41 +145,40 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 	var errorCallbackImport = function(data){
 	 		$scope.$emit('hideLoader');
 	 		$scope.successMessage ="";
-	 		$scope.errorMessage = data;	
+	 		$scope.errorMessage = data;
 	 	}
 
-	 	
+
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
 	};
 
   /*
     * To add new room type
-    * 
-    */		
+    *
+    */
 	$scope.addNewRoomType = function(){
 		$scope.currentClickedElement = -1;
 		$scope.isAddMode = $scope.isAddMode ? false : true;
 		$scope.fileName = "Choose File....";
 
 		//reset data
-			$scope.roomTypeData = {
-				"room_type_id": "",
+		$scope.roomTypeData = {
+			"room_type_id": "",
 			"room_type_code": "",
 			"room_type_name": "",
 			"snt_description": "",
 			"max_occupancy": "",
 			"is_pseudo_room_type": "",
 			"is_suite": "",
-			"image_of_room_type": ""
-
+			"image_of_room_type": "",
+			"is_room_type_ows_request_per_status_type": false
 		};
 		$timeout(function() {
             $location.hash('new-form-holder');
             $anchorScroll();
-    	});	
-    	
-
+    	});
 	};
+
 	$scope.sortByName = function(){
 		if($scope.currentClickedElement == -1)
 		$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
@@ -191,13 +190,12 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.deleteRoomTypes = function(roomtype_id){
 		var successCallBack = function(){
 			$scope.$emit('hideLoader');
-			//actualIndex holds the index of clicked element in $scope.data.room_types 
+			//actualIndex holds the index of clicked element in $scope.data.room_types
 			var actualIndex = $scope.data.room_types.map(function(x){return x.id }).indexOf(roomtype_id);
       		$scope.data.room_types.splice(actualIndex, 1);
 			$scope.tableParams.page(1);
-        	$scope.tableParams.reload();        	
-		}	
+        	$scope.tableParams.reload();
+		}
 	$scope.invokeApi(ADRoomTypesSrv.deleteRoomTypes, {'roomtype_id': roomtype_id}, successCallBack);
 	}
 }]);
-
