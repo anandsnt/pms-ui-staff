@@ -100,7 +100,12 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 	 		$scope.data.holdStatuses.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
 	 	};
-		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id , successCallbackDelete);
+	 	var failureCallbackDelete = function(data){	
+	 		$scope.$emit('hideLoader');	
+	 		$scope.errorMessage = data.errorMessage; 		
+	 		$scope.currentClickedElement = -1;
+	 	};
+		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id, successCallbackDelete, failureCallbackDelete );
 	};
 }]);
 
