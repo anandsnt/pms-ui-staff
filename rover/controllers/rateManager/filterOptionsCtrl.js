@@ -41,18 +41,28 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             }, 3000);
         });
 
-        $scope.refreshFilterScroll = function() {
-            $scope.isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
-            if ($scope.isIpad){
-                setTimeout(function() {
-                   filterData.rate_type_selected = '';
-                }, 300);
+        $scope.selFirst = function(){
+            //ensure the first child el is re-selected (chrome/chromium/ie9 fix for latest ipad:chrome:iOS version)
+            var el = $('#rmRateType');
+            if (el){
+                if (el && el.children){
+                    try { setTimeout(function() {
+                        if (!el.children()[0].selected){
+                            $('#rmRateType').children()[0].selected = true;
+                        }
+                    }, 100);
+                    } catch(err){
+
+                    }
+                }
             }
+        };
+
+        $scope.refreshFilterScroll = function() {
             setTimeout(function() {
                 $scope.$$childTail.$parent.myScroll['filter_details'].refresh();
             }, 300);
         };
-
         $scope.fetchFilterOptions = function() {
             var fetchRatesSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
