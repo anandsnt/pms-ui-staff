@@ -428,7 +428,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/analyticSetup'
 		});
                 
-		$stateProvider.state('admin.sitemindersSetup', {
+		$stateProvider.state('admin.siteminderSetup', {
 			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
 			controller: 'adSiteminderSetupCtrl',
 			url : '/siteminderSetup'
