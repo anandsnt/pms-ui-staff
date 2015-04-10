@@ -231,6 +231,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				},
 				blockCodeData : function(adCheckinSrv){
 					return adCheckinSrv.getBlockCodes();
+				},
+				roomTypes:function(ADRoomTypesSrv){
+					return ADRoomTypesSrv.fetch();
 				}
 			}
 		});
