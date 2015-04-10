@@ -28,9 +28,13 @@ admin.controller('ADFloorDetailsCtrl',
         
         //list of unassigned rooms
         $scope.unassignedRooms = [];
+        $scope.assignedRooms = [];
 
-        //list of assigned rooms
-        $scope.assignedRooms = floorDetails.rooms;         
+        //list of assigned rooms        
+        _.each(floorDetails.rooms, function(room){
+            room.isFromAssigned = true;
+            $scope.assignedRooms.push(room);
+        });          
 
     };
 
@@ -342,13 +346,16 @@ admin.controller('ADFloorDetailsCtrl',
     * will set unassignrooms with what we got from API
     * @return - None
     */
-    var successCallBackOfFetchAllUnAssignedRoom = function(data) {
+    var successCallBackOfFetchAllUnAssignedRoom = function(data) {   
 
+        // filtering asignedrooms.    
+        $scope.unassignedRooms = _.filter($scope.unassignedRooms, function(room){
+            return (room.isFromAssigned == true);
+        });
         //if there is already some unassigned there, we will just append 
         _.each(data.rooms, function(room){
             $scope.unassignedRooms.push(room);
-        });
-     
+        });        
         //creating unique room list after pushing new entries
         $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms);
 
