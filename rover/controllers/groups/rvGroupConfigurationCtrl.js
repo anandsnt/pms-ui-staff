@@ -153,11 +153,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		$scope.getCurrentTabUrl = function() {
 			var tabAndUrls = {
-				'SUMMARY': '/assets/partials/groups/rvGroupConfigurationSummaryTab.html',
-				'ROOM_BLOCK': '/assets/partials/groups/rvGroupConfigurationRoomBlockTab.html',
-				'ROOMING': '/assets/partials/groups/rvGroupConfigurationRoomingListTab.html',
-				'TRANSACTIONS': '/assets/partials/groups/rvGroupConfigurationTransactionsTab.html',
-				'ACTIVITY': '/assets/partials/groups/rvGroupConfigurationActivityTab.html'
+				'SUMMARY': '/assets/partials/groups/summary/rvGroupConfigurationSummaryTab.html',
+				'ROOM_BLOCK': '/assets/partials/groups/roomBlock/rvGroupConfigurationRoomBlockTab.html',
+				'ROOMING': '/assets/partials/groups/rooming/rvGroupRoomingListTab.html',
+				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
+				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
 
 			return tabAndUrls[$scope.groupConfigData.activeTab];
