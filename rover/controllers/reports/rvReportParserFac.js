@@ -67,106 +67,106 @@ sntRover.factory('RVReportParserFac', [
                     return false;
                 };
 
-				var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
-				var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
-				return guests || compTravelGrp ? true : false;
-			};
+                var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
+                var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
+                return guests || compTravelGrp ? true : false;
+            };
 
-			var checkNote = function(item) {
+            var checkNote = function(item) {
                 if ( !options['checkNote'] ) {
                     return false;
                 };
 
-				return !!item['notes'] && !!item['notes'].length;
-			};
+                return !!item['notes'] && !!item['notes'].length;
+            };
 
-			var excludeReports = function(names) {
-				return !!_.find(names, function(n) {
-					return n == reportName;
-				});
-			};
+            var excludeReports = function(names) {
+                return !!_.find(names, function(n) {
+                    return n == reportName;
+                });
+            };
 
-			var checkCancel = function(item) {
+            var checkCancel = function(item) {
                 if ( !options['checkCancel'] ) {
                     return false;
                 };
 
-				return excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]) ? !!item['cancel_reason'] : false;
-			};
+                return excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]) ? !!item['cancel_reason'] : false;
+            };
 
             if ( $_isForGenericReports(reportName) ) {
-				for (i = 0, j = apiResponse.length; i < j; i++) {
-					makeCopy   = angular.copy( apiResponse[i] );
-					customData = [];
-					guestData  = {};
-					noteData   = {};
-					cancelData = {};
+                for (i = 0, j = apiResponse.length; i < j; i++) {
+                    makeCopy   = angular.copy( apiResponse[i] );
+                    customData = [];
+                    guestData  = {};
+                    noteData   = {};
+                    cancelData = {};
 
-					if ( checkGuest(makeCopy) ) {
-						guestData = {
-							isGuestData : true,
-							guestNames  : angular.copy( makeCopy['accompanying_names'] ),
+                    if ( checkGuest(makeCopy) ) {
+                        guestData = {
+                            isGuestData : true,
+                            guestNames  : angular.copy( makeCopy['accompanying_names'] ),
 
-							company_name      : makeCopy.company_name,
-							travel_agent_name : makeCopy.travel_agent_name,
-							group_name        : makeCopy.group_name,
+                            company_name      : makeCopy.company_name,
+                            travel_agent_name : makeCopy.travel_agent_name,
+                            group_name        : makeCopy.group_name,
 
-							addOns : angular.copy( makeCopy['add_ons'] )
-						};
-						customData.push( guestData );
-					};
+                            addOns : angular.copy( makeCopy['add_ons'] )
+                        };
+                        customData.push( guestData );
+                    };
 
-					if ( checkCancel(makeCopy) ) {
-						cancelData = {
-							isCancelData : true,
-							reason       : angular.copy( makeCopy['cancel_reason'] )
-						};
-						customData.push( cancelData );
-					};
+                    if ( checkCancel(makeCopy) ) {
+                        cancelData = {
+                            isCancelData : true,
+                            reason       : angular.copy( makeCopy['cancel_reason'] )
+                        };
+                        customData.push( cancelData );
+                    };
 
-					if ( checkNote(makeCopy) ) {
-						noteData = {
-							isNoteData : true,
-							notes      : angular.copy( makeCopy['notes'] )
-						};
-						customData.push( noteData );
-					};
+                    if ( checkNote(makeCopy) ) {
+                        noteData = {
+                            isNoteData : true,
+                            notes      : angular.copy( makeCopy['notes'] )
+                        };
+                        customData.push( noteData );
+                    };
 
-					// IF: we found custom items
-						// set row span for the parent tr a rowspan
-						// mark the class that must be added to the last tr
-					// ELSE: since this tr won't have any childs, mark the class that must be added to the last tr
-					if ( !!customData.length ) {
-						makeCopy.rowspan = customData.length + 1;
-						customData[customData.length - 1]['trCls'] = 'row-break';
-					} else {
-						makeCopy.trCls = 'row-break';
-					};
+                    // IF: we found custom items
+                        // set row span for the parent tr a rowspan
+                        // mark the class that must be added to the last tr
+                    // ELSE: since this tr won't have any childs, mark the class that must be added to the last tr
+                    if ( !!customData.length ) {
+                        makeCopy.rowspan = customData.length + 1;
+                        customData[customData.length - 1]['trCls'] = 'row-break';
+                    } else {
+                        makeCopy.trCls = 'row-break';
+                    };
 
-					// do this only after the above code that adds
-					// 'row-break' class to the row
-					if ( reportName == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
-						if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] == 'INVALID_LOGIN' ) {
-							makeCopy['action_type'] = 'INVALID LOGIN';
-							makeCopy.trCls = 'row-break invalid';
-						};
+                    // do this only after the above code that adds
+                    // 'row-break' class to the row
+                    if ( reportName == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
+                        if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] == 'INVALID_LOGIN' ) {
+                            makeCopy['action_type'] = 'INVALID LOGIN';
+                            makeCopy.trCls = 'row-break invalid';
+                        };
 
-						if ( makeCopy.hasOwnProperty('date') ) {
-							makeCopy['uiDate'] = makeCopy['date'].split( ', ' )[0];
-							makeCopy['uiTime'] = makeCopy['date'].split( ', ' )[1];
-						};
-					};
+                        if ( makeCopy.hasOwnProperty('date') ) {
+                            makeCopy['uiDate'] = makeCopy['date'].split( ', ' )[0];
+                            makeCopy['uiTime'] = makeCopy['date'].split( ', ' )[1];
+                        };
+                    };
 
 
-					// push 'makeCopy' into 'returnAry'
-					makeCopy.isReport = true;
-					returnAry.push( makeCopy );
+                    // push 'makeCopy' into 'returnAry'
+                    makeCopy.isReport = true;
+                    returnAry.push( makeCopy );
 
-					// push each item in 'customData' in to 'returnAry'
-					for (m = 0, n = customData.length; m < n; m++) {
-						returnAry.push( customData[m] );
-					};
-				};
+                    // push each item in 'customData' in to 'returnAry'
+                    for (m = 0, n = customData.length; m < n; m++) {
+                        returnAry.push( customData[m] );
+                    };
+                };
 
                 // dont remove yet
                 // console.log( 'API reponse changed as follows: ');
@@ -191,9 +191,9 @@ sntRover.factory('RVReportParserFac', [
             /****
             * OUR AIM: is to transform the api response to this format
             * [
-            *	[{}, {}, {}, {}],
-            *	[{}, {}, {}, {}],
-            *	[{}, {}, {}, {}],
+            *   [{}, {}, {}, {}],
+            *   [{}, {}, {}, {}],
+            *   [{}, {}, {}, {}],
             * ]
             * lets call the outer array as 'endArray' and inner arrays as 'interMedArray'
             * the secondary parser will parse each inner array and will show up as multiple
@@ -280,9 +280,9 @@ sntRover.factory('RVReportParserFac', [
                 objKeyName = key;
 
                 for (key in makeCopy) {
-					if ( !makeCopy.hasOwnProperty(key) || key == '0' || key == 0 ) {
-					    continue;
-					};
+                    if ( !makeCopy.hasOwnProperty(key) || key == '0' || key == 0 ) {
+                        continue;
+                    };
                     objKeyName = key;
                     chargeGrpObj = makeCopy[key];
                 };

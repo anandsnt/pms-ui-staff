@@ -386,6 +386,7 @@
 
 
 "DEPARTMENTS":"Departments",
+"HOLD_STATUS_NAME_PLACEHOLDER":"Enter hold status",
 "DEPARTMENT_NAME_PLACEHOLDER": "Enter department",
 "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS"
 
@@ -458,6 +459,7 @@
 	"SYSTEM_DEFINED": "(System defined)",
 	"CC":"Credit Card",
 	"OFFLINE":"Offline",
+    "TAKE_FROM_INVENTORY":"Take from inventory",
 	"ROVER_ONLY":"Rover Payments Only",
 	"WEB_ONLY":"Web Payments Only",
 	"DISPLAY_REFERENCE":"Display Reference",
@@ -597,7 +599,9 @@
 "ROOM_STATUS_UPDATE_CHECKOUT_LABEL":"Enable room status update at checkout",
 "MAINTENANCE_REASONS":"Maintenance Reasons",
 "MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",
-"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",    
+"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",
+"SEND_INTERFACE_REQUEST": "Send Interface Request per status type"
+,    
     
     "NAME":"Name",
     "DESCRIPTION":"Description",

@@ -91,6 +91,7 @@ sntRover.controller('RVbillCardController',
 	var swipedTrackDataForCheckin = {};
 
 	$scope.reservationBillData.roomChargeEnabled = "";
+	$scope.billingData = {};
 
 	$scope.printData = {};
 	//This value changes when clicks on pay button
@@ -285,7 +286,7 @@ sntRover.controller('RVbillCardController',
 		$scope.setNoPostStatus();
      	$scope.calculateHeightAndRefreshScroll();
      	$scope.refreshScroller('bill-tab-scroller');
-     	$scope.reservationBillData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
+     	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 
 	/*
@@ -970,9 +971,25 @@ sntRover.controller('RVbillCardController',
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
 	};
+
+	//CICO-13907
+	$scope.hasAnySharerCheckedin = function(){
+		var isSharerCheckedin = false;
+		angular.forEach($scope.reservationBillData.sharer_information, function(sharer, key){
+			if(sharer.reservation_status == 'CHECKEDIN' || sharer.reservation_status == 'CHECKING_OUT'){
+				isSharerCheckedin = true;
+				return false;
+			}
+		});
+		return isSharerCheckedin;
+	}
+
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(){
-		if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
+		if($scope.hasAnySharerCheckedin()){
+			// Do nothing , Keep going checkin process , it is a sharer reservation..
+		}
+		else if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
 			//TO DO:Go to room assignemt view
 			$state.go("rover.reservation.staycard.roomassignment", {
 				"reservation_id": $scope.reservationBillData.reservation_id,

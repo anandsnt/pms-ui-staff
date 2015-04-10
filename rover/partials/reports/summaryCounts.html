@@ -29,7 +29,7 @@
 </ul>
 
 <!-- Daily Transactions -->
-<ul ng-if="isThisReport('DAILY_TRANSACTIONS')" class="totals">
+<ul ng-if="isThisReport('DAILY_TRANSACTIONS') || isThisReport('DAILY_PAYMENTS')" class="totals">
     <li>Date<span>{{ summaryCounts.date | date : dateFormat }}</span></li>
     <li>Transactions<span>{{ summaryCounts.grand_total_transactions }}</span></li>
     <li>Revenue<span class="green">{{ summaryCounts.grand_total_revenue | currency:currencySymbol:2 }}</span></li>
