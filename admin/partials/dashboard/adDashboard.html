@@ -10,7 +10,7 @@
          <ul class="dashboard-items float">
             <li ng-repeat="submenu in selectedMenu.components" >
                <a data-type="load-listing"  
-                  class="icon-admin-menu {{submenu.icon_class}}" 
+                  class="{{submenu.icon_class}}" 
 
                   data-drag="{{bookMarks.length<=7&&!submenu.is_bookmarked}}"
                   data-jqyoui-options="{revert: 'invalid', helper: 'clone',appendTo: 'body'}" 
