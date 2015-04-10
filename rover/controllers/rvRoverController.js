@@ -372,9 +372,14 @@ sntRover.controller('roverController',
         e.stopPropagation();
       };
 
-      $scope.menuOpen = !$scope.menuOpen;
+      $scope.menuOpen = !$scope.menuOpen;      
       $scope.showHotelSwitchList = false;
     };
+
+    $scope.toggleHotelList = function(e) {
+      $scope.showHotelSwitchList = !$scope.showHotelSwitchList;
+    }
+
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
     };

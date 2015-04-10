@@ -27,7 +27,8 @@ var sntRover = angular.module('sntRover',[
 		'multi-select', 		
 		'ngDragDrop',
 		'iscrollStopPropagation',
-		'ngReact']);
+		'ngReact',
+		'ngClassWithoutAnimation']);
 
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
