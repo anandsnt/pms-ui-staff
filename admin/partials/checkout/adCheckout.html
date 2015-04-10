@@ -114,6 +114,11 @@
 							</div>
 
 						</fieldset>
+						<fieldset class="holder left">
+							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
+							
+							<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
+						</fieldset>	
 						<fieldset class="holder full-width">
 							<div class="entry">
 								<label translate>EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE</label>
@@ -152,11 +157,7 @@
 							</div>
 						</fieldset>
 
-						<fieldset class="holder left">
-							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
-							
-							<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
-							
+						<fieldset class="holder left">							
 							<ad-toggle-button is-checked="is_send_checkout_staff_alert_flag" label="{{'WEB_CHEKOUT_ALERT_LABEL' | translate}}"></ad-toggle-button>
 
 							<div id="options" class="entry full-width" ng-show="is_send_checkout_staff_alert_flag">
