@@ -1,4 +1,4 @@
-admin.controller('ADCheckinCtrl',['$scope','$rootScope','adCheckinSrv','$state','rateCodeData','blockCodeData', function($scope,$rootScope,adCheckinSrv,$state,rateCodeData,blockCodeData){
+admin.controller('ADCheckinCtrl',['$scope','$rootScope','adCheckinSrv','$state','rateCodeData','blockCodeData','roomTypes', function($scope,$rootScope,adCheckinSrv,$state,rateCodeData,blockCodeData,roomTypes){
 
   $scope.errorMessage = '';
 
@@ -25,7 +25,8 @@ $scope.init = function(){
   $scope.excludedBlockCodes=[];
   $scope.rate_codes = rateCodeData.results;
   $scope.block_codes = blockCodeData.block_codes;
-
+  $scope.roomTypes = roomTypes.room_types;
+  $scope.excludedRoomTypes = [];
 };
 
 $scope.init();
@@ -56,6 +57,14 @@ var setUpData = function(){
         }
       });
      });
+    angular.forEach($scope.roomTypes,function(roomType, index) {
+            angular.forEach($scope.checkinData.excluded_room_types,function(excludedRoomType, index) {
+                if(roomType.id == excludedRoomType){
+                    $scope.excludedRoomTypes.push(roomType);
+                    roomType.ticked = true;// for the multi-select implementation
+                }
+            });
+    });
 
     $scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
       $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
@@ -120,6 +129,10 @@ $scope.saveCheckin = function(){
   angular.forEach($scope.excludedBlockCodes,function(excludedrate, index) {
       excluded_block_codes.push(excludedrate.id);
   });
+  var excluded_room_types = [];
+  angular.forEach($scope.excludedRoomTypes,function(excludedRoomType, index) {
+      excluded_room_types.push(excludedRoomType.id);
+  });
   //to reset time incase of an invalid time selection
   var checkinAlertTime = ($scope.checkinData.checkin_alert_time_hour !== "" && $scope.checkinData.checkin_alert_time_minute !== "" && $scope.checkinData.checkin_alert_time_hour && $scope.checkinData.checkin_alert_time_minute) ? $scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute :"";
   var startAutoCheckinFrom = ($scope.checkinData.auto_checkin_from_hour !== "" && $scope.checkinData.auto_checkin_from_minute !== "" && $scope.checkinData.auto_checkin_from_hour && $scope.checkinData.auto_checkin_from_minute) ? $scope.checkinData.auto_checkin_from_hour+":"+$scope.checkinData.auto_checkin_from_minute :"";
@@ -150,8 +163,8 @@ $scope.saveCheckin = function(){
     'start_auto_checkin_from' : startAutoCheckinFrom,
     'start_auto_checkin_from_prime_time': $scope.checkinData.start_auto_checkin_from_prime_time,
     'start_auto_checkin_to' : startAutoCheckinTo,
-    'start_auto_checkin_to_prime_time': $scope.checkinData.start_auto_checkin_to_prime_time
-    
+    'start_auto_checkin_to_prime_time': $scope.checkinData.start_auto_checkin_to_prime_time,
+    'excluded_room_types':excluded_room_types    
 
   };
 
@@ -219,5 +232,31 @@ $scope.deleteRateCode = function(id){
   });
 
 };
+// to add to excluded room types
+    $scope.clickExcludeRoomType = function(){
+      $scope.excludedRoomTypes = [];
+      angular.forEach($scope.roomTypes, function( value, key ) {
+        if ( (value.ticked === true) && ( $scope.excludedRoomTypes.indexOf(value) == -1)) {
+            $scope.excludedRoomTypes.push(value);
+        }
+      });
+    };
+
+    //remove exclude room type
+    $scope.deleteRoomType = function(id){
+      //remove from final array
+      angular.forEach($scope.excludedRoomTypes,function(item, index) {
+        if(item.id == id){
+          $scope.excludedRoomTypes.splice(index,1);
+        }
+      });
+      //untick from list
+       angular.forEach($scope.roomTypes,function(item, index) {
+        if(item.id == id){
+          item.ticked = false;
+        }
+      });
+
+    };
 
 }]);
