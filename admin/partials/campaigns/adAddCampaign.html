@@ -120,19 +120,19 @@
 	                  <label class="radio large">
 	                    <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.target_type == 'URL'}"></span>
 	                    <input name="delivery" id="delivery-onetime" value="URL" type="radio" ng-model="campaignData.target_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
-	                    {{'ONE_TIME'|translate}}
+	                    {{'URL_LABEL'|translate}}
 	                   </label>
 	            
 	            <!-- Lines 97-148 are For future use, not for CICO-11909  -->
 	                  <label class="radio small"> <!-- // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option. -->
 	                         <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.target_type == 'SCREEN'}"></span>
 	                        <input name="delivery-once" id="delivery-immediately" value="SCREEN" type="radio" ng-model="campaignData.target_type" />
-	                        Immediately
+	                        {{'SCREEN_LABEL'|translate}}
 	                  </label>
 
                        <input type="text" id="call-target" placeholder="Button link" ng-model="campaignData.call_to_action_target" value="campaignData.call_to_action_target" ng-disabled="campaignData.status == 'COMPLETED'" ng-show="campaignData.target_type == 'URL'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
 
-                      <ad-dropdown label-in-drop-down="{{'SCREEN_LABEL' | translate}}" list="charge_codes" selected-Id='campaignData.screen_type_id' selbox-class='placeholder'></ad-dropdown>
+                      <ad-dropdown label-in-drop-down="{{'SCREEN_LABEL' | translate}}" ng-show="campaignData.target_type == 'SCREEN'" ng-disabled="campaignData.status == 'COMPLETED'" list="campaignData.screen_types" selected-Id='campaignData.screen_type_id' selbox-class='placeholder'></ad-dropdown>
 	                </div>
 		            
 		        </div>

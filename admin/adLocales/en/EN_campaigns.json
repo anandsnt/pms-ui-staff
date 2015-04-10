@@ -62,7 +62,9 @@
 "SAVE_AS_DRAFT":"Save as Draft",
 "START_CAMPAIGN":"Start Campaign",
 "SAVE":"Save",
-"CLOSE":"Close"
+"CLOSE":"Close",
+"URL_LABEL": "URL",
+"SCREEN_LABEL": "LABEL"
 
 
 
