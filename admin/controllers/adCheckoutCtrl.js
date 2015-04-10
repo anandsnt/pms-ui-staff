@@ -18,15 +18,6 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
         $scope.isLoading = true;
         $scope.roomTypes = roomTypes.room_types;
         $scope.excludedRoomTypes = [];
-
-        angular.forEach($scope.roomTypes,function(roomType, index) {
-            angular.forEach($scope.checkoutData.excluded_room_types,function(excludedRoomType, index) {
-                if(roomType.id == excludedRoomType){
-                    $scope.excludedRoomTypes.push(roomType);
-                    roomType.ticked = true;// for the multi-select implementation
-                }
-            });
-        });
     };
 
     $scope.init();
@@ -103,7 +94,15 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
             $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true:false;       
 			$scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true:false;
 			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
-		};
+		    angular.forEach($scope.roomTypes,function(roomType, index) {
+                angular.forEach($scope.checkoutData.excluded_room_types,function(excludedRoomType, index) {
+                if(roomType.id == excludedRoomType){
+                    $scope.excludedRoomTypes.push(roomType);
+                    roomType.ticked = true;// for the multi-select implementation
+                }
+            });
+        });
+        };
 		$scope.invokeApi(adCheckoutSrv.fetch, {},fetchCheckoutDetailsSuccessCallback,fetchCheckoutDetailsFailureCallback);
 	};
 
