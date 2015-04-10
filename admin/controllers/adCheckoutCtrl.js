@@ -1,4 +1,4 @@
-admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state', function($scope,$rootScope,adCheckoutSrv,$state){
+admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state','roomTypes', function($scope,$rootScope,adCheckoutSrv,$state,roomTypes){
 
 	$scope.errorMessage = '';
 
@@ -16,9 +16,48 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
         $scope.minutes = ["MM","00","15","30","45"];
         $scope.primeTimes = ["AM","PM"];
         $scope.isLoading = true;
+        $scope.roomTypes = roomTypes.room_types;
+        $scope.excludedRoomTypes = [];
+
+        angular.forEach($scope.roomTypes,function(roomType, index) {
+            angular.forEach($scope.checkoutData.excluded_room_types,function(excludedRoomType, index) {
+                if(roomType.id == excludedRoomType){
+                    $scope.excludedRoomTypes.push(roomType);
+                    roomType.ticked = true;// for the multi-select implementation
+                }
+            });
+        });
     };
 
     $scope.init();
+
+
+    // to add to excluded room types
+    $scope.clickExcludeRoomType = function(){
+      $scope.excludedRoomTypes = [];
+      angular.forEach($scope.roomTypes, function( value, key ) {
+        if ( (value.ticked === true) && ( $scope.excludedRoomTypes.indexOf(value) == -1)) {
+            $scope.excludedRoomTypes.push(value);
+        }
+      });
+    };
+
+    //remove exclude room type
+    $scope.deleteRoomType = function(id){
+      //remove from final array
+      angular.forEach($scope.excludedRoomTypes,function(item, index) {
+        if(item.id == id){
+          $scope.excludedRoomTypes.splice(index,1);
+        }
+      });
+      //untick from list
+       angular.forEach($scope.roomTypes,function(item, index) {
+        if(item.id == id){
+          item.ticked = false;
+        }
+      });
+
+    };
 
     /*
     * To fetch array after slicing from the index of the given value
@@ -103,6 +142,10 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 			$scope.checkoutData.require_cc_for_checkout_email = ($scope.require_cc_for_checkout_email_flag) ? 'true':'false';
 			$scope.checkoutData.include_cash_reservations = ($scope.include_cash_reservationsy_flag) ?'true':'false';
 			$scope.validateAlertTimings();
+            var excluded_room_types = [];
+            angular.forEach($scope.excludedRoomTypes,function(excludedRoomType, index) {
+                excluded_room_types.push(excludedRoomType.id);
+            });
             var uploadData = {
 				'checkout_email_alert_time':$scope.checkoutData.checkout_email_alert_time_hour+":"+$scope.checkoutData.checkout_email_alert_time_minute,
                 'alternate_checkout_email_alert_time':$scope.checkoutData.alternate_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_checkout_email_alert_time_minute,
@@ -114,7 +157,8 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 				'is_send_checkout_staff_alert':$scope.checkoutData.is_send_checkout_staff_alert,
 				'require_cc_for_checkout_email':$scope.checkoutData.require_cc_for_checkout_email,
                 'staff_emails_for_late_checkouts':$scope.checkoutData.staff_emails_for_late_checkouts,
-                'room_verification_instruction':$scope.checkoutData.room_verification_instruction
+                'room_verification_instruction':$scope.checkoutData.room_verification_instruction,
+                'excluded_room_types':excluded_room_types
 			};
 
         var saveCheckoutDetailsFailureCallback = function(data) {

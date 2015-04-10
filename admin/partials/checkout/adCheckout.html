@@ -114,6 +114,43 @@
 							</div>
 
 						</fieldset>
+						<fieldset class="holder full-width">
+							<div class="entry">
+								<label translate>EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE</label>
+								<div     
+								multi-select
+								input-model="roomTypes"
+								button-label="name"
+								item-label="name"
+								tick-property="ticked"
+								max-labels="0"
+								default-label="None selected"
+								max-height="300px"
+								>
+							</div>
+							</div>
+							<div class="entry entry-padding-left"><label>&nbsp;&nbsp;</label>
+							<button translate="" ng-click="clickExcludeRoomType()"  class="button green" translate="">EXCLUDE_ROOM_TYPES</button>
+							</div>
+
+							<div class="entry full-width" ng-show="excludedRoomTypes.length>0">
+							<div class='entry' >
+								<label> <h4 translate>EXCLUDED_ROOM_TYPES</h4> </label>
+							</div>
+							<div id='room-type-details' ng-repeat="roomType in excludedRoomTypes">								
+								<div class="entry full-width room-type-details" >
+									<div class="entry">
+										<span class="align-text-center"> {{roomType.name}} </span>
+									</div>
+									<div class="entry">
+										<span class="entry">
+											<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRoomType(roomType.id)"></a>
+										</span>
+									</div>
+								</div>								
+							</div>
+							</div>
+						</fieldset>
 
 						<fieldset class="holder left">
 							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
@@ -145,8 +182,7 @@
 
 							<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.room_verification_instruction" label = "{{'ROOM_VERIFICATION_INSTRUCTIONS' | translate}}" placeholder = "" maxlength="200"></ad-textarea>
 
-						</fieldset>
-						
+						</fieldset>						
 						<div class="actions float">
 							<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>CANCEL</button>
 							<button type="button" ng-click="saveCheckout()" class="button green" translate>SAVE_CHANGES</button>
