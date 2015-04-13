@@ -19,19 +19,14 @@ angular.module('accountsModule', [])
             templateUrl: '/assets/partials/accounts/search/rvAccountsSearch.html',
             controller: 'rvAccountsSearchCtrl',
             resolve: {
-                //to tackle from coming admin app to rover, see the injection in next resolve function
-                businessDate: ['rvGroupSrv', function(rvGroupSrv) {
-                    return rvGroupSrv.fetchHotelBusinessDate();
-                }],
                 //to tackle from coming admin app to rover
-                initialGroupListing: ['rvGroupSrv', 'businessDate', 
-                    function(rvGroupSrv, businessDate) {
+                initialAccountsListing: ['rvAccountsSrv', 
+                    function(rvAccountsSrv) {
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
                         var params = {
                             'query'     : '',
-                            'from_date' : businessDate.business_date,
-                            'to_date'   : '',
+                            'status'    : '',
                             'per_page'  : rvGroupSrv.DEFAULT_PER_PAGE,
                             'page'      : rvGroupSrv.DEFAULT_PAGE,
                         }
