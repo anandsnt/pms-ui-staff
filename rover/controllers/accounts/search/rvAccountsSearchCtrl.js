@@ -37,7 +37,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			var classes = '';
 			
 			//Add class "red" if status OPEN
-			console.log (util.convertToDouble (group.balance)> 0)
 			if(util.convertToDouble (group.balance) > 0)
 				classes = 'red';			
 
