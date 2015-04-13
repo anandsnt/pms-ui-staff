@@ -6,7 +6,8 @@
 	</header>
 	<section class="content-scroll">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>		
-		<table class="grid datatable" ng-table="tableParams" template-pagination="">
+		<table class="grid datatable" ng-table="tableParams" template-pagination="" 
+		ng-show="showTableDetails">
 
 			<tbody> 
 				<tr ng-repeat="floor in $data"> 

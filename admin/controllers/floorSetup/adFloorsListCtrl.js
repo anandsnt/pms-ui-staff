@@ -28,6 +28,9 @@ admin.controller('ADFloorsListCtrl',
         $scope.errorMessage = '';
 		//To list room types
 		$scope.listFloorTypes(); 
+
+        //show Table
+        $scope.showTableDetails = false;
 	};	
 
     /**
@@ -65,6 +68,7 @@ admin.controller('ADFloorsListCtrl',
                 $scope.orderedData =  $scope.data.floors;
                                      
                 $defer.resolve(orderedData);
+                $scope.showTableDetails = true;
             }
         });
     };

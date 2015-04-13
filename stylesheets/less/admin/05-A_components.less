@@ -915,12 +915,32 @@
                 .float;
 
                 .button {
+                    position: relative;
                     font-size: 14px;
                     line-height: 35px;
                     padding: 0 10px;
+                    margin: 0;
                     .pull-right;
 
-                    &.red { .pull-left; }                    
+                    .icons {
+                        position: absolute;
+                        top: 0;
+                        .show;
+                        .square(35px);
+                    }                    
+
+                    &.green {
+                        padding-right: 35px;
+
+                        .icons { right: 0; }
+                    }
+
+                    &.red { 
+                        padding-left: 35px;
+                        .pull-left; 
+
+                        .icons { left: 0; }
+                    }                    
                 }
             }
 
