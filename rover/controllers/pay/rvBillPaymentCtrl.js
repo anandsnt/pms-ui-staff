@@ -21,7 +21,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.passData.details ={};
 		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
 		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
-		$scope.setScroller('cardsList');
+		$scope.setScroller('cardsList',{'click':true, 'tap':true});
 		$scope.showCancelCardSelection = true;
 		$scope.renderData.referanceText = "";
 		$scope.swipedCardDataToSave  = {};
