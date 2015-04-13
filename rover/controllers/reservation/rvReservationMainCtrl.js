@@ -215,6 +215,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.sourceIsForced = baseSearchData.settings.force_source_code;
             $scope.otherData.originIsForced = baseSearchData.settings.force_origin_of_booking;
             $scope.otherData.reservationTypeIsForced = baseSearchData.settings.force_reservation_type;
+            $scope.otherData.isAddonOn = baseSearchData.settings.is_addon_on;
 
             $scope.guestCardData = {};
             $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
