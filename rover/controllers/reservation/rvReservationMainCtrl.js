@@ -833,7 +833,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 //  CICO-9576
                 if (!addon.is_inclusive) {
-                    addOnCumulative += parseInt(finalRate);
+                    addOnCumulative += parseFloat(finalRate);
                 }
                 addon.effectivePrice = finalRate;
             });
