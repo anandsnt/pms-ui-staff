@@ -109,7 +109,7 @@ sntRover
 
 			/**
 			 * @type {Object} the default state which should be used if all checks fails
-			 * @const
+			 * @constant
 			 */
 			var DEFAULT_STATE = {
 				title : 'DASHBOARD',
@@ -149,7 +149,7 @@ sntRover
 
 			/**
 			 * check if the prev state is a flow state
-			 * @return {Boolean} is it flow state or not
+			 * @returns {Boolean} is it flow state or not
 			 */
 			function isFlowState() {
 				var found = _.find(flowStates, function (name) {
@@ -161,7 +161,7 @@ sntRover
 
 			/**
 			 * check if the prev state is an allowed state
-			 * @return {Boolean} is it allowed state or not
+			 * @returns {Boolean} is it allowed state or not
 			 */
 			function isAllowedState() {
 				var found = !!_.find(allowedStates, function (name) {
