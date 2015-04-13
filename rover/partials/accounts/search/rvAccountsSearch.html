@@ -1,0 +1,95 @@
+<!-- Search form -->
+<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search" >
+
+    <div class="entry search">
+        
+        <button id="groups-clear-query" 
+                class="clear-query"
+                ng-click="clearSearchQuery()" 
+                ng-class="{'visible': !isEmpty(query)}">
+            <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+        </button>
+
+        <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+        
+        <input  name="groups-query" 
+                id="groups-query" 
+                class="query" 
+
+                placeholder="Group Code, Group Name, Travel Agent or Company Name" 
+                type="search"  
+
+                autocomplete="off" 
+                ng-model="query"  
+
+                rv-delay-textbox
+                delay="1000" 
+                function-to-fire="searchQueryChanged"/>
+    </div>
+   
+</form>
+<!-- Pagination -->
+<div class="search-pagination" ng-show="shouldShowPagination()">
+    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResultCount}}</strong> items</p>
+</div>
+
+<!-- Search panel - WITH RESULTS -->
+<section id="find-group" class="content scrollable" role="main" 
+    ng-class="{'no-pagination': !shouldShowPagination(), 'no-results': shouldShowNoResult()}"
+    ng-iscroll="result_showing_area" ng-iscroll-delay="1000" > <!-- If no pagination, add class "no-pagination" -->
+    <div class="wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <ul class="search-results">
+            <!-- If no results, show this: -->
+            <li class="no-content" ng-show="isFirstTimeWithNoResult()">
+                <div class="info">
+                    <span class="icon-no-content icon-groups"></span>
+                    <strong class="h1">Find Accounts</strong>
+                    <span class="h2">                
+                            Search by
+                            <strong>Account Code</strong>,
+                            <strong>Account Name</strong>,
+                            <strong>Travel Agent</strong>
+                            or
+                            <strong>Company Name.</strong>
+                        </span>
+                </div>
+            </li>
+
+            <!-- If no results, show this: -->
+            <li class="no-content" ng-show="shouldShowNoResult()">
+                <div class="info">
+                    <span class="icon-no-content icon-groups"></span>
+                    <strong class="h1">No Matches</strong>
+                    <span class="h2">Check that you didn't mispell the <strong>Account Name</strong> or <strong>Code</strong>.</span>
+                </div>
+            </li>
+            <li class="group" ng-show="!shouldShowNoResult()" ng-repeat="account in accountList" ngrepeatend ngrepeatstarted>
+                <a ng-click="gotoEditAccount(account.id)">
+                    <div class="data">
+                        <h2 ng-bind-html="{{escapeNull(stringify(account.account_name))}}|highlight:query:false">
+                        </h2>
+                        <span class="confirmation" ng-bind-html="{{escapeNull(stringify(account.account_code))}}|highlight:query:false"></spanaccount                        <!-- If linked company exists: -->
+                        <span class="icons icon-guest-company" ng-hide="isEmpty(account.company)">
+                            {{account.company}}
+                        </span>
+                        <!-- If linked travel agent exists: -->
+                        <span class="icons icon-guest-travelagent" ng-hide="isEmpty(account.travel_agent)">
+                            {{account.travel_agent}}
+                        </span>
+                    </div>
+                    <div class="blocked" ng-class="getClassAgainstHoldStatus(account)"> <!-- If Status = Tentative, add class "tentative" -->
+                        <strong>{{account.total_booked}}</strong>
+                        <span>{{account.hold_status}}</span>
+                    </div>
+                    <div class="picked" ng-class="getClassAgainstPickedStatus(account)"> <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
+                        <strong>{{account.total_picked_count}}</strong>
+                        <span>Picked Up</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
