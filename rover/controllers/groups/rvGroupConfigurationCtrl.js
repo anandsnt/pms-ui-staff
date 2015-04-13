@@ -118,7 +118,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 			//TODO: Remove once all tab implemented
 			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' 
-				&& tab !== 'ROOMING') {
+				&& tab !== 'ROOMING'&& tab !=='ACTIVITY') {
 				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
 				return;
 			}
