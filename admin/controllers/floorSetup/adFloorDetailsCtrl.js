@@ -108,7 +108,9 @@ admin.controller('ADFloorDetailsCtrl',
         $scope.errorMessage = '';
 
         //if we have id in stateparams, we have to switch to edit mode
-        $scope.isAddMode = $stateParams.id ? false : true;        
+        $scope.isAddMode = $stateParams.id ? false : true;  
+
+        $scope.isSearchResult = false ;      
       
         //if it is in editMode
         if(!$scope.isAddMode) setUpForEditMode();
@@ -188,6 +190,8 @@ admin.controller('ADFloorDetailsCtrl',
     */
     $scope.clearQuery = function(){
         $scope.floorData.searchKey = '';
+        //Setting default message for assigned Rooms    	
+        $scope.isSearchResult = false;
     };
 
     /**
@@ -262,7 +266,8 @@ admin.controller('ADFloorDetailsCtrl',
     * will move the selected UnAssignItems to Selected Item List
     * @return - None
     */
-    $scope.moveSelectedUnAssignToAssignList = function(){
+    $scope.moveSelectedUnAssignToAssignList = function(){    	
+    	
         var roomIndex = -1;
         _.each($scope.selectedUnassignedRooms, function(room){
             $scope.assignedRooms.push (room);
@@ -280,7 +285,8 @@ admin.controller('ADFloorDetailsCtrl',
         //creating unique room list after pushing new entries
         $scope.assignedRooms = $scope.changeToUniqueRoomList ($scope.assignedRooms);
         $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms);
-
+        //Setting default message for assigned Rooms
+        $scope.isSearchResult = false;
     };
 
     /**
@@ -346,8 +352,9 @@ admin.controller('ADFloorDetailsCtrl',
     * will set unassignrooms with what we got from API
     * @return - None
     */
-    var successCallBackOfFetchAllUnAssignedRoom = function(data) {   
-
+    var successCallBackOfFetchAllUnAssignedRoom = function(data) {  
+    	
+    	$scope.isSearchResult = true ;
         // filtering asignedrooms.    
         $scope.unassignedRooms = _.filter($scope.unassignedRooms, function(room){
             return (room.isFromAssigned == true);
