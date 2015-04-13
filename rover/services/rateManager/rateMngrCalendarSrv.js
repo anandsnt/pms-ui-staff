@@ -181,6 +181,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'hideOnHourly': false,
                     'isOnRate': true,//hide when on adding/removing restrictions screen
                     'icon': "R",
+                    'days': "R",
                     'id': totalRestrictions,
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
@@ -266,6 +267,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'isOnRate': true,//hide when on adding/removing restrictions screen
                     'hideOnHourly': false,
                     'icon': "R",
+                    'days': "R",
                     'id': totalRestrictions,
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;

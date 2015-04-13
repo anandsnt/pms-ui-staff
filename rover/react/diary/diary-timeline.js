@@ -18,11 +18,11 @@ var Timeline = React.createClass({
 		return point_to_plot;
 	},
 
-	/*
-	* function to get TUESDAY - MAR 10
-	* @param {Date Object}
-	* @return {String}
-	*/
+	/**
+	 * function to get TUESDAY - MAR 10
+	 * @param {Date Object}
+	 * @return {String}
+	 */
 	__get_date_for_timeline_displaying: function(dateObj){
 		return (dateObj.toComponents().date.weekday + " - " + dateObj.toComponents().date.toShortDateString())
 	},

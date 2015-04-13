@@ -95,12 +95,19 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * @param {string} id of the selected HoldStatus
     */		
 	$scope.deleteHoldStatus = function(index, id){		
-		var successCallbackDelete = function(data){	
+		var successCallbackDelete = function(data){				
 	 		$scope.$emit('hideLoader');
-	 		$scope.data.holdStatuses.splice(index, 1);
+	 		//handling error case
+	 		if(data.status==='failure')
+	 		{
+	 			$scope.errorMessage = data.errors;	
+	 		}else{
+	 			//Handling success - removing deleted holdstatus
+	 			$scope.data.holdStatuses.splice(index, 1);
+	 		}	 		
 	 		$scope.currentClickedElement = -1;
-	 	};
-		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id , successCallbackDelete);
+	 	};	 	
+		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id, successCallbackDelete);
 	};
 }]);
 
