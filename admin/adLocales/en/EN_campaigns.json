@@ -19,6 +19,7 @@
 "IN_HOUSE_GUESTS":"In House Guests",
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
+"EXTERNAL_CHECKIN":"External Checkin",
 
 "MESSAGE":"Message",
 "IN_APP":"in App",
@@ -61,7 +62,9 @@
 "SAVE_AS_DRAFT":"Save as Draft",
 "START_CAMPAIGN":"Start Campaign",
 "SAVE":"Save",
-"CLOSE":"Close"
+"CLOSE":"Close",
+"URL_LABEL": "URL",
+"SCREEN_LABEL": "SCREEN"
 
 
 
