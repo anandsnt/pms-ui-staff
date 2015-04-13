@@ -3,7 +3,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 	'$rootScope',
 	'rvAccountsSrv',
 	'initialAccountsListing',
-	'businessDate',
 	'$filter',
 	'$timeout',
 	'$state',
@@ -13,7 +12,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			$rootScope, 
 			rvAccountsSrv, 
 			initialAccountsListing, 
-			businessDate, 
 			$filter,
 			$timeout,			
 			$state, 
@@ -507,13 +505,13 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 	    	$scope.$emit("updateRoverLeftMenu", "menuManageGroup");
 
 	    	//date related setups and things
-	    	setDatePickerOptions();
+	    	//setDatePickerOptions();
 
 			//groupList
-			$scope.groupList = initialGroupListing.groups; 
+			$scope.accountList = initialAccountsListing.accounts; 
 			
 			//total result count
-			$scope.totalResultCount = initialGroupListing.total_count;
+			$scope.totalResultCount = initialAccountsListing.total_count;
 
 			//Yes am first time here
 			$scope.amFirstTimeHere = true;

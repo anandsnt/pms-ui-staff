@@ -27,10 +27,10 @@ angular.module('accountsModule', [])
                         var params = {
                             'query'     : '',
                             'status'    : '',
-                            'per_page'  : rvGroupSrv.DEFAULT_PER_PAGE,
-                            'page'      : rvGroupSrv.DEFAULT_PAGE,
+                            'per_page'  : rvAccountsSrv.DEFAULT_PER_PAGE,
+                            'page'      : rvAccountsSrv.DEFAULT_PAGE,
                         }
-                        return rvGroupSrv.getGroupList(params);
+                        return rvAccountsSrv.getAccountsList(params);
                     }
                 ]
             }
