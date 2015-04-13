@@ -1,4 +1,4 @@
-<div class="block-item item-rate " ng-class="{'has-button':isStandAlone && otherData.isAddonOn}" >
+<div class="block-item item-rate " ng-class="{'has-button':isStandAlone && otherData.isAddonEnabled}" >
 	<h3 class="block-title"> Rates &amp; Add Ons</h3>
 	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="showEditReservationPrompt()"> 
 		<span class="number" ng-show="reservationData.reservation_card.is_rates_suppressed">
@@ -21,7 +21,7 @@
 	
 	</a>
 
-    <div class="actions" ng-if="isStandAlone && otherData.isAddonOn">
+    <div class="actions" ng-if="isStandAlone && otherData.isAddonEnabled">
         <a ng-click="handleAddonsOnReservation(reservationData.reservation_card.is_package_exist)" class="button with-icon brand-colors">
             <span class="count" ng-show="reservationData.reservation_card.is_package_exist">{{reservationData.reservation_card.package_count}}</span>
             <span class="icons icon-addons"></span>
