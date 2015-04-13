@@ -42,13 +42,26 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         });
 
         $scope.selFirst = function(){
-            //ensure the first child el is re-selected (chrome/chromium/ie9 fix for latest ipad:chrome:iOS version)
-            var el = $('#rmRateType');
-            if (el){
-                if (el && el.children){
+            //ensure the first child el is re-selected (chrome/chromium/ie9 fix for latest ipad:chrome:iOS version- 41.0.2272.58)
+            var rmRateType = $('#rmRateType');
+            if (rmRateType){
+                if (rmRateType && rmRateType.children){
                     try { setTimeout(function() {
-                        if (!el.children()[0].selected){
+                        if (!rmRateType.children()[0].selected){
                             $('#rmRateType').children()[0].selected = true;
+                        }
+                    }, 100);
+                    } catch(err){
+
+                    }
+                }
+            }
+            var rmRate = $('#rmRate');
+            if (rmRate){
+                if (rmRate && rmRate.children){
+                    try { setTimeout(function() {
+                        if (!rmRate.children()[0].selected){
+                            $('#rmRate').children()[0].selected = true;
                         }
                     }, 100);
                     } catch(err){
