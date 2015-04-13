@@ -1,4 +1,4 @@
-sntRover.controller('rvAccountRootCtrl',	[
+sntRover.controller('rvAccountsRootCtrl',	[
 	'$scope',
 	'$rootScope',
 	'$filter',
