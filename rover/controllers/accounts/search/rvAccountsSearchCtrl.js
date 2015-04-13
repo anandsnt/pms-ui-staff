@@ -33,39 +33,28 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @param {Object} - group
 		* @return {String}
 		*/
-		$scope.getClassAgainstHoldStatus = function(group){
+		$scope.getClassAgainstBalance = function(group){
 			var classes = '';
-			var isSystemDefined = group.is_system_defined;
+			
+			//Add class "red" if status OPEN
+			console.log (util.convertToDouble (group.balance)> 0)
+			if(util.convertToDouble (group.balance) > 0)
+				classes = 'red';			
 
-			//According to Nicole's comment in CICO-13899 (Color coding)
-			if (isSystemDefined){
-				if(group.hold_status === 'Tentative')
-					classes = 'tentative';			
-				if(group.hold_status === 'Definite')
-					classes += ' ';
-			}
-			//for custom status
-			else {
-				if(!group.is_take_from_inventory)
-					classes = 'tentative';
-			}
 			return classes;
 		};
 
 		/**
-		* util function to get CSS class against diff. Hold status
+		* util function to get CSS class against diff. account status
 		* @param {Object} - group
 		* @return {String}
 		*/
-		$scope.getClassAgainstPickedStatus = function(group){
+		$scope.getClassAgainstAccountStatus = function(group){
 			var classes = '';
 
-			//Add class "green" if No. > 0
-			if(group.total_picked_count > 0)
+			//Add class "green" if status OPEN
+			if(group.status.toLowerCase() === "open")
 				classes = 'green';			
-			//Add class "red" if cancelled
-			if(group.status === 'cancelled')
-				classes += ' red';
 
 			return classes;
 		};	
@@ -262,7 +251,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				successCallBack: 	successCallBackOfSearch,	 
 				failureCallBack: 	failureCallBackOfSearch,      		
 			};
-			$scope.callAPI(rvGroupSrv.getGroupList, options);			
+			$scope.callAPI(rvAccountsSrv.getGroupList, options);			
 		};
 
 		/**
@@ -287,36 +276,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		var failureCallBackOfSearch = function(error){
 			$scope.errorMessage = error;
-		};
-
-		/**
-		* utility function to set datepicker options
-		* return - None
-		*/
-		var setDatePickerOptions = function() {
-			//date picker options - Common
-			var commonDateOptions = {
-				showOn 			: 'button',
-				dateFormat 		: $rootScope.jqDateFormat,
-				numberOfMonths	: 1,
-			};	
-
-			//date picker options - From
-			$scope.fromDateOptions = _.extend ({
-				onSelect: fromDateChoosed
-			}, commonDateOptions);
-
-			//date picker options - Departute
-			$scope.toDateOptions = _.extend ({
-				onSelect: toDateChoosed            
-			}, commonDateOptions);
-
-			//default from date, as per CICO-13899 it will be business date	        
-			$scope.fromDate = $filter('date')(tzIndependentDate (businessDate.business_date), 
-							$rootScope.dateFormat);
-
-			//default to date, as per CICO-13899 it will be business date	
-			$scope.toDate = '';
 		};
 
 		/**
@@ -347,9 +306,9 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		var setInitialPaginationAndAPIThings = function(){
 			//pagination
-			$scope.perPage 	= rvGroupSrv.DEFAULT_PER_PAGE;
+			$scope.perPage 	= rvAccountsSrv.DEFAULT_PER_PAGE;
 			$scope.start 	= 1;
-			$scope.end 		= initialGroupListing.groups.length;
+			$scope.end 		= initialAccountsListing.accounts.length;
 
 			//what is page that we are requesting in the API
 			$scope.page = 1;
@@ -389,7 +348,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {Boolean}
 		*/
 		var hasSomeSearchResults = function(){
-			return ($scope.groupList.length > 0);
+			return ($scope.accountList.length > 0);
 		};	
 
 		/**
@@ -499,13 +458,11 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		var initializeMe = function(){
 			//chnaging the heading of the page
-			$scope.setHeadingTitle ('GROUPS');	
+			$scope.setHeadingTitle ('MENU_ACCOUNTS');	
 
 			//updating the left side menu
-	    	$scope.$emit("updateRoverLeftMenu", "menuManageGroup");
+	    	$scope.$emit("updateRoverLeftMenu", "accounts");
 
-	    	//date related setups and things
-	    	//setDatePickerOptions();
 
 			//groupList
 			$scope.accountList = initialAccountsListing.accounts; 
