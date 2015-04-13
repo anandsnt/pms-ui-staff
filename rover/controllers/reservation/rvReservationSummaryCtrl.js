@@ -610,8 +610,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.setScroller('reservationSummary', {
                 'click': true
             });
-            $scope.setScroller('paymentInfo');
-            $scope.setScroller('cardsList');
+            $scope.setScroller('paymentInfo',{'click':true, 'tap':true});
+            $scope.setScroller('cardsList',{'click':true, 'tap':true});
 
             fetchPaymentMethods();
             refreshScrolls();
