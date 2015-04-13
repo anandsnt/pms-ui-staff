@@ -29,7 +29,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.isManual        = false;
 	$scope.dataToSave      = {};
 	$scope.cardsList       = [];
-	$scope.setScroller('cardsList');
+	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 	$scope.showCCPage = false;
 	
 	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){

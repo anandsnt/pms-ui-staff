@@ -31,7 +31,7 @@
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
 			};
 
-			$scope.setScroller('cardsList');
+			$scope.setScroller('cardsList',{'click':true, 'tap':true});
 
 			var checkReferencetextAvailableForCC = function(){
 				if($scope.cancellationData.paymentType !=="CC"){
