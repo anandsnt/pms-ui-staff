@@ -55,6 +55,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
        	};
        	$scope.smartBands.push(that.newBandInfo);
        	$scope.smartBandLength = $scope.smartBands.length;
+       	$scope.reservationData.reservation_card.balance_amount = data.balance_amount;
+       	$scope.$apply();
        	$scope.writeBandType();
        
 	};
@@ -176,7 +178,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	 * Success call back on updating smart band
 	 * updating new amount to the band data
 	 */
-	$scope.updateSmartBandSuccess = function(){
+	$scope.updateSmartBandSuccess = function(data){
 		$scope.$emit( 'hideLoader' );
 		angular.forEach($scope.smartBands, function(value, key) {
 			if(value.id == $scope.bandEditId){
@@ -187,6 +189,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 				value.last_name = $scope.bandData.last_name;
 			}
 		});
+		$scope.reservationData.reservation_card.balance_amount = data.balance_amount;
+		$scope.$apply();
 		$scope.seeAllBands();
 	};
 	/*
