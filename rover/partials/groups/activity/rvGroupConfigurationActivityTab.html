@@ -1,5 +1,5 @@
 <!-- Group Card Tab - Activity Log -->
-<form id="group-transactions" name="group-transactions" class="form card-tab scrollable" >
+<form id="group-transactions" name="group-transactions" class="form card-tab scrollable" ng-controller = "rvGroupActivityCtrl" >
     <div class="wrapper">
         <!-- Keep in mind that some fields should be empty -->       
         <div id="group-activity-header" class="tab-header no-print">
@@ -7,7 +7,7 @@
 		        <li>
 		            <div class="data">
 		                <span class="label">Activities</span>
-		                <span class="value">{Count}</span>
+		                <span class="value">{{count}}</span>
 		            </div>
 		        </li>
 		        <li>
@@ -55,5 +55,10 @@
 			        </div>
 		    </div>
 		</div>
+    </div>
+    <div class="search-pagination hk-pagination" ng-show="true">
+        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+        <p>Showing <strong>1-1</strong> of <strong id="total-count">10</strong> items</p>
     </div>
 </form>
