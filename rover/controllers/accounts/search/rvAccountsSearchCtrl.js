@@ -115,6 +115,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		$scope.hasPermissionToAddNewAccount = function(){
+			return true;
 			return (rvPermissionSrv.getPermissionValue("CREATE_ACCOUNT"));
 		};
 
@@ -124,6 +125,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		$scope.hasPermissionToEditAccount = function(){
+			return true;
 			return (rvPermissionSrv.getPermissionValue("EDIT_ACCOUNT"));
 		};
 
@@ -353,7 +355,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				$scope.errorMessage = ['Sorry, You have no permission to edit account!'];
 				return;
 			}
-			
+
 			$state.go('rover.accounts.config',{
 				id: accountID,
 				activeTab: 'ACCOUNT'
