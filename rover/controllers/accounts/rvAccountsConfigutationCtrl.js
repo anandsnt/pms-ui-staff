@@ -98,7 +98,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			// we will restrict tab swithing if we are in add mode
 			var tryingFromAccountsToOther = isInAccountsTab && tab !== 'ACCOUNT';
-			if ($scope.isInAddMode() && tryingFromSummaryToOther) {
+			if ($scope.isInAddMode() && tryingFromAccountsToOther) {
 				$scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
 				return;
 			}
@@ -117,7 +117,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 */
 		$scope.getCurrentTabUrl = function() {
 			var tabAndUrls = {
-				'ACCOUNT': '/assets/partials/groups/rooming/rvGroupRoomingListTab.html',
+				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
 				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
 				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
