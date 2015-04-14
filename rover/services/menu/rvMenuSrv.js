@@ -386,6 +386,8 @@ sntRover.service('rvMenuSrv',
 			'menuCreateGroup': 		['GROUP_CREATE'],
 			'menuManageGroup': 		['GROUP_MANAGE'],
 
+			'accounts':        		['ACCESS_ACCOUNTS']
+
 		};
 
 		var permissions = null, collectivePermissionValue = true;
