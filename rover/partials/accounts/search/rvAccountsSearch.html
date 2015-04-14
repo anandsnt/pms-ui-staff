@@ -1,5 +1,5 @@
 <!-- Search form -->
-<form method="get" action="" name="accounts-search-form" id="accounts-search-form" class="search-form has-options single-option" role="search" ng-class="{'enable-adding': !amFirstTimeHere}">
+<form method="get" action="" name="accounts-search-form" id="accounts-search-form" class="search-form has-options single-option enable-adding" role="search">
     
     <div class="entry search">
         <button id="accounts-clear-query" class="clear-query" 
@@ -12,7 +12,7 @@
                 id="accounts-query" 
                 class="query" 
 
-                placeholder="Search by Account Name, Code or Company/TA" type="search" 
+                placeholder="Search by Account Name, Code" type="search" 
                 autocomplete="off" 
                 ng-model="query"  
 
@@ -31,7 +31,7 @@
             </select>
         </div>
     </div>
-    <a href="{../new.html}" class="add-new-button" >+ Add new</a>
+    <a ng-click="gotoAddNewGroup()" class="add-new-button" >+ Add new</a>
 </form>
 <!-- Pagination -->
 <div class="search-pagination" ng-show="shouldShowPagination()">
@@ -41,7 +41,7 @@
 </div>
 
 <!-- Search panel - WITH RESULTS -->
-<section style="position: absolute; margin-top: 130px;" section id="find-account" class="content scrollable" role="main" 
+<section id="find-account" class="content scrollable" role="main" 
     ng-class="{'no-pagination': !shouldShowPagination(), 'no-results': shouldShowNoResult()}"
     ng-iscroll="result_showing_area" ng-iscroll-delay="1000" > <!-- If no pagination, add class "no-pagination" -->
     <div class="wrapper">
@@ -69,11 +69,11 @@
                 </div>
             </li>
             <li class="account" ng-show="!shouldShowNoResult()" ng-repeat="account in accountList" ngrepeatend ngrepeatstarted>
-                <a ng-click="gotoEditAccount(account.id)">
+                <a ng-click="gotoEditAccountConfiguration(account.id)">
                     <div class="data">
-                        <h2 ng-bind-html="{{escapeNull(stringify(account.account_name))}}|highlight:query:false">
+                        <h2 ng-bind-html="{{escapeNull(stringify(account.posting_accounts_name))}}|highlight:query:false">
                         </h2>
-                        <span class="confirmation" ng-bind-html="{{escapeNull(stringify(account.account_code))}}|highlight:query:false"></span>
+                        <span class="confirmation" ng-bind-html="{{escapeNull(stringify(account.posting_accounts_number))}}|highlight:query:false"></span>
 
                     </div>
                     <div class="info">

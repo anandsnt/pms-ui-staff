@@ -59,66 +59,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		};	
 
 		/**
-		* util function to get CSS class against guest for arrival
-		* @param {Object} - group
-		* @return {String}
-		*/
-		$scope.getGuestClassForArrival = function(group){
-			var classes = '';
-
-			//Add class "check-in" if guest status is not cancelled
-			if(group.status !== 'cancelled')
-				classes = 'check-in';			
-			//Add class "red" if cancelled
-			if(group.status === 'cancelled' || group.hold_status.toLowerCase() === 'cancel')
-				classes = 'cancel';
-
-			return classes;
-		};
-
-		/**
-		* util function to get CSS class against guest for arrival
-		* @param {Object} - group
-		* @return {String}
-		*/
-		$scope.getGuestClassForDeparture = function(group){
-			var classes = '';
-
-			//Add class "check-out" if guest status is not cancelled
-			if(group.status !== 'cancelled')
-				classes = 'check-out';			
-			//Add class "red" if cancelled
-			if(group.status === 'cancelled' || group.hold_status.toLowerCase() === 'cancel')
-				classes = 'cancel';
-
-			return classes;
-		};
-
-		/**
-		* Function to clear from Date
-		* @return {None}
-		*/
-		$scope.clearFromDate = function(){
-			$scope.fromDate = '';			
-			runDigestCycle();
-			
-			//we have to search on changing the from date
-			$scope.search();			
-		};
-
-		/**
-		* Function to clear to Date
-		* @return {None}
-		*/
-		$scope.clearToDate = function(){
-			$scope.toDate = '';
-			runDigestCycle();
-			
-			//we have to search on changing the from date
-			$scope.search();			
-		};
-
-		/**
 		* Function to clear to search query
 		* @return {None}
 		*/
@@ -229,15 +169,15 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 		/**
 		* on success of search API
-		* @param {Array} - array of objects - groups
+		* @param {Array} - array of objects - accounts
 		* @return {None}
 		*/
 		var successCallBackOfSearch = function(data){			
 			//groupList
-			$scope.groupList = data.groups; 
-
+			$scope.accountList = initialAccountsListing.posting_accounts; 
+			
 			//total result count
-			$scope.totalResultCount = data.total_count;
+			$scope.totalResultCount = initialAccountsListing.total_count;
 
 			refreshScrollers ();
 		};
@@ -281,7 +221,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			//pagination
 			$scope.perPage 	= rvAccountsSrv.DEFAULT_PER_PAGE;
 			$scope.start 	= 1;
-			$scope.end 		= initialAccountsListing.accounts.length;
+			$scope.end 		= initialAccountsListing.posting_accounts.length;
 
 			//what is page that we are requesting in the API
 			$scope.page = 1;
@@ -337,7 +277,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 		//just redirecting to group creation page
 		$scope.gotoAddNewGroup = function(){
-			$state.go ('rover.groups.config', {'id': "NEW_GROUP"});
+			$state.go ('rover.accounts.config', {'id': "NEW_ACCOUNT"});
 		};
 
 		/**
@@ -393,13 +333,13 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		};
 
 		/**
-		 * Navigate to the group configuration state for editing the group
+		 * Navigate to the account configuration state for editing the account
 		 * @return undefined
 		 */
-		$scope.gotoEditGroupConfiguration = function(groupId){
+		$scope.gotoEditAccountConfiguration = function(accountID){
 			$state.go('rover.groups.config',{
-				id: groupId,
-				activeTab: 'SUMMARY'
+				id: accountID,
+				activeTab: 'ACCOUNT'
 			})
 		}
 
@@ -417,7 +357,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 
 			//groupList
-			$scope.accountList = initialAccountsListing.accounts; 
+			$scope.accountList = initialAccountsListing.posting_accounts; 
 			
 			//total result count
 			$scope.totalResultCount = initialAccountsListing.total_count;
