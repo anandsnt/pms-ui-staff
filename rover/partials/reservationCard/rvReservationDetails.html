@@ -5,14 +5,14 @@
         <div class="actions">
             <a ng-show="isStandAlone && !reservationData.reservation_card.is_hourly_reservation && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="showEditDates = !showEditDates">
                 <span class="date">
-                                <span class="guest-status small-icon check-in">check-in</span>
-                <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
-                <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span> {{reservationData.reservation_card.arrival_date|date:dateFormat}}
+                    <span class="guest-status small-icon check-in">&nbps;</span>
+                    <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
+                    <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span> {{reservationData.reservation_card.arrival_date|date:dateFormat}}
                 </span>
                 <span class="date">
-                                <span class="guest-status small-icon check-out">check-out</span>
-                <span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
-                <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> {{reservationData.reservation_card.departure_date|date:dateFormat}}
+                    <span class="guest-status small-icon check-out">&nbps;</span>
+                    <span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
+                    <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> {{reservationData.reservation_card.departure_date|date:dateFormat}}
                 </span>
             </a>
 
