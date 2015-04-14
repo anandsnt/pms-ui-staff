@@ -339,12 +339,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
    	};
         
         $scope.initScrollBind = function(){
-    //        var isIpad = navigator.userAgent.match(/iPad/i) != null;
-    //        console.log('using ipad: '+isIpad);
-            var scrollTable = $(".scrollTable");
-                scrollTable.scroll(function() {
-                    scrollTable.scrollTop($(this).scrollTop());
-            });
+                var scrollTable = $(".scrollTable");
+                    scrollTable.scroll(function() {
+                        scrollTable.scrollTop($(this).scrollTop());
+                });
         };
                                          
 	$scope.toggleRestrictionIconView = function() {

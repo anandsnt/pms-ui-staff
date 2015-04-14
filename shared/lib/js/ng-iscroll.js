@@ -113,6 +113,6 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                     delete scope.$parent.myScroll[scroll_key];
                 };
             });
-        }
+    }
     };
 });
