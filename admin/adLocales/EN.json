@@ -365,7 +365,10 @@
 "UNASSIGNED_ROOMS": "Unassigned Rooms",
 "ASSIGNED_ROOMS": "Assigned Rooms",
 "SELECT_ALL": "Select All",
-"ASSIGN_SELECTED": "Assign Selected"
+"ASSIGN_SELECTED": "Assign Selected",
+"FIND_ROOMS":"Find Rooms",
+"NO_RESULT_FOUND":"No Result Found",
+"NO_ROOMS":"No Rooms"
 
 ,    
     
