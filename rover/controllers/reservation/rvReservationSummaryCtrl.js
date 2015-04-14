@@ -1223,6 +1223,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 $scope.reservationData.paymentType.type.value = "CC";
                 $scope.showCC = true;
                 $scope.addmode = true;
+
+                $scope.newPaymentInfo = {
+                                            "tokenDetails":{
+                                                "isSixPayment":false
+                                            },
+                                            "cardDetails":{
+                                                "expiryMonth":swipedCardDataToRender.cardExpiryMonth,
+                                                "expiryYear":swipedCardDataToRender.cardExpiryYear,
+                                                "userName":swipedCardDataToRender.nameOnCard,
+                                                "cardNumber":swipedCardDataToRender.cardNumber,
+                                                "cardType":swipedCardDataToRender.cardType
+
+                                            }
+                                        };
                 $scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 
             };
@@ -1236,7 +1250,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.renderData.creditCardType = successParams.cardType.toLowerCase();
             $scope.renderData.endingWith = successParams.cardNumber.slice(-4);;
             $scope.renderData.cardExpiry = successParams.cardExpiryMonth + "/" + successParams.cardExpiryYear;
-
+            $scope.isNewCardAdded = true;
         };
         $scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave) {
             var data = swipedCardDataToSave;
@@ -1245,7 +1259,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             data.credit_card = swipedCardDataToSave.cardType;
             data.card_expiry = "20" + swipedCardDataToSave.cardExpiryYear + "-" + swipedCardDataToSave.cardExpiryMonth + "-01";
             data.add_to_guest_card = swipedCardDataToSave.addToGuestCard;
-
 
             var options = {
                 params: data,
