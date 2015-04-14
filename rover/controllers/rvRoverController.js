@@ -39,7 +39,7 @@ sntRover.controller('roverController',
     $scope.closeDrawer = function(event) {
       $scope.menuOpen = false;
     };
-  $scope.isAddToGuestCardEnabledDuringCheckin = false;
+   $scope.isAddToGuestCardEnabledDuringCheckin = false;
    $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value){
     $scope.isAddToGuestCardEnabledDuringCheckin = value;
    });
@@ -58,7 +58,7 @@ sntRover.controller('roverController',
           };
     });
 
-
+    $scope.activeSettingSubMenu = false;
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;
@@ -228,6 +228,7 @@ sntRover.controller('roverController',
             $scope.menu       = rvMenuSrv.getMainMenuForConnectedRover ();
             $scope.mobileMenu = rvMenuSrv.getMobileMenuForConnectedRover ();
         }
+        $scope.settingsSubmenu = rvMenuSrv.getSettingsSubmenu();
     };
 
     /**
@@ -251,22 +252,6 @@ sntRover.controller('roverController',
     };
 
     /**
-    * method to determine whether the user has permission to access admin
-    * @return {Boolean}
-    */
-    var hasPermissionToAccessAdmin = function(){
-        return (rvPermissionSrv.getPermissionValue ('SETTINGS_ACCESS_TO_HOTEL_ADMIN'));    
-    };
-
-    /**
-    * method to determine whether the user has permission to view the settings popup
-    * @return {Boolean}
-    */
-    var hasPermissionToViewUpdatePasswordPopup = function(){
-        return (rvPermissionSrv.getPermissionValue ('SETTINGS_CHANGE_PASSWORD_MENU'));    
-    };  
-
-    /**
     * utility method to openup the settings popup
     * @return - None
     */
@@ -276,26 +261,6 @@ sntRover.controller('roverController',
             controller: 'RVStaffsettingsModalController',
             className: 'calendar-modal'
         }); 
-    };
-
-    /**
-    * when settings clicked, we will either redirect to admin or show popup to change popup
-    * @return - None
-    */
-    $scope.settingsClicked = function() {
-        //if we have admin permission, we will redirect to admin app
-        if (hasPermissionToAccessAdmin()){
-            //CICO-9816 bug fix - Akhila
-            $('body').addClass('no-animation');
-            $window.location.href = "/admin";            
-        }
-
-        //if we have permission to view the change password popup
-        else {
-            if(hasPermissionToViewUpdatePasswordPopup()){
-                openUpdatePasswordPopup();
-            }
-        }
     };
 
 
@@ -311,11 +276,29 @@ sntRover.controller('roverController',
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
+      $scope.activeSettingSubMenu = false;
     };
 
     $scope.$on("updateSubMenu", function(idx, item) {
       $rootScope.updateSubMenu(idx, item);
     });
+
+    //as settings is seperate section,need to handle seperately
+    $rootScope.updateSettingsSubMenu = function(item) {
+      $scope.activeSettingSubMenu = true;
+      if (item && item.submenu && item.submenu.length > 0) {
+        $scope.showSubMenu = true;
+        $scope.activeSubMenu = item.submenu;
+      } else {
+        $scope.showSubMenu = false;
+        $scope.toggleDrawerMenu();
+      }
+    };
+    $scope.$on("updateSettingsSubMenu", function(e,item) {
+      $rootScope.updateSettingsSubMenu(item);
+    });
+
+
 
     $scope.$on("closeDrawer", function() {
       $scope.menuOpen = false;
@@ -396,18 +379,30 @@ sntRover.controller('roverController',
         scope: $scope
       });
     };
+
+    //subemenu actions 
+
     $scope.subMenuAction = function(subMenu) {
+     
       $scope.toggleDrawerMenu();
+
       if (subMenu === "postcharges") {
         $scope.invokeApi(RVChargeItems.fetchAllItems, '', $scope.fetchAllItemsSuccessCallback);
-
       }
-      if (subMenu === "endOfDay") {
+      else if (subMenu === "endOfDay") {
         ngDialog.open({
           template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
           controller: 'RVEndOfDayModalController',
           className: 'end-of-day-popup ngdialog-theme-plain'
         });
+      }
+      else if(subMenu === "adminSettings"){
+            //CICO-9816 bug fix - Akhila
+            $('body').addClass('no-animation');
+            $window.location.href = "/admin";            
+      }
+      else if(subMenu === "changePassword"){
+         openUpdatePasswordPopup();
       }
     };
 

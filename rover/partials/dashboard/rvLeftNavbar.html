@@ -31,8 +31,8 @@
 
 		</li>
 		<li id="settings">
-			<a ng-click="settingsClicked()" class="icon-menu icon-settings">Settings</a>
-		</li> 
+			<a ng-click="$emit('updateSettingsSubMenu', settingsSubmenu[0])" class="icon-menu icon-settings" ng-class="{'open':activeSettingSubMenu}">Settings</a>
+		</li>
 		<li id="sign-out">
 			<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
 		</li>

@@ -334,6 +334,33 @@ sntRover.service('rvMenuSrv',
 	};
 
 
+    /**
+	* method to get settings menu
+	* @return {array} - List of Menu
+	*/
+	this.getSettingsSubmenu = function() {
+		var defaultDashboardState 	= getDefaultDashboardState ();
+
+		var menu = [{
+				title: "SETTINGS",
+		        menuIndex: "settings",
+		        action: "",
+		        submenu: [{
+		            title: "CAHNGE_PASSWORD",
+		            action: "",
+		            menuIndex: "changePassword",
+		            actionPopup: true
+		        }, {
+		            title: "SETTINGS",
+		            action: "",
+		            menuIndex: "adminSettings",
+		            actionPopup: true
+		        }]
+		    }];
+		return processMenuList (menu);
+	};
+
+
 	/**
 	* function to check permissions against a menu
 	* @param {string}, menu index
@@ -361,7 +388,10 @@ sntRover.service('rvMenuSrv',
 
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],		
 			'commisions': 			['ACCESS_COMMISSIONS'],	
-			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],					
+			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
+
+			'changePassword':       ['SETTINGS_CHANGE_PASSWORD_MENU'],
+			'adminSettings':        ['SETTINGS_ACCESS_TO_HOTEL_ADMIN'] 
 
 		};
 
