@@ -16,24 +16,23 @@
                     <button type="button" class="button blue hidden" ng-click="duplicateGroup()">Duplicate</button>
                 </div>                
                 <div class="card-actions" ng-show="isInAddMode()">
-                    <button type="button" class="button green" ng-click="saveNewGroup()">Save Group</button>
+                    <button type="button" class="button green" ng-click="saveNewGroup()">Save Account</button>
                     <button type="button" class="button blank" ng-click="discardNewGroup()">Discard</button>
                 </div>                
             </div>
         </header>
         <!-- Content -->
         <div class="cards-content">
-            <div ng-if="isInAddonSelectionMode()" ng-include="'/assets/partials/groups/summary/rvGroupConfigurationAddons.html'"></div>
-            <div ng-if="!isInAddonSelectionMode()" id="group-card-content" class="card-tabs card-content">
+            <div id="account-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
-                <ul id="group-card-tabs-nav" class="card-tabs-nav">
-                    <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
+                <ul id="account-card-tabs-nav" class="card-tabs-nav">
+                    <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACCOUNT'}">
                         <a>Summary</a>
                     </li>
-                    <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
+                    <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'TRANSACTIONS'}">
                         <a>Transactions</a>
                     </li>
-                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACTIVITY'}">
+                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACTIVITY'}">
                         <a>Activity Log</a>
                     </li>
                 </ul>
