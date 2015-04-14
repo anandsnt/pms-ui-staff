@@ -13,10 +13,13 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             $scope.data.selectedChargeGroup = 'ALL';
             $scope.data.selectedChargeCode  = 'ALL';
 			$scope.data.revenueData = data;
-			$scope.$emit('hideLoader');
+            //CICO-14865 - Due to this bad architecture (calling API at diff. placed & gets the loader hidden with first API completion)
+            // and no time flexiblity, going for this BAD solution
+			$scope.$emit('I_COMPLTED_THE_API_CALL');
             $scope.errorMessage = "";
 			refreshRevenueScroller();
             $scope.$emit("ApplyEmpOrDeptFilter");
+
 		};
 		$scope.invokeApi(RVJournalSrv.fetchRevenueData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchRevenueData);
 	};
