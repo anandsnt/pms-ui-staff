@@ -588,7 +588,6 @@ body { overflow: hidden; }
 		padding: 10px;
 		background: rgba(0,0,0,.1);
 		overflow: hidden;
-		z-index: 3;
 		.hide; 
 
 		.entry {
@@ -646,7 +645,7 @@ body { overflow: hidden; }
 				&.visible { 
 					visibility: visible;
 
-					.icons {
+					.icons {	
 						.opacity(100); 
 						#fade > .in(); 
 					}
@@ -785,10 +784,6 @@ body { overflow: hidden; }
 			&.dashboard { .hide; }
 		}
 
-		#refresh-data {
-			display: none;
-		}
-
 		&.no-filter-no-options { .show; }
 	}
 
@@ -806,6 +801,7 @@ body { overflow: hidden; }
 
 				.entry {
 					&.search { 
+						margin-right: 10px;
 						.calc-width(50, 10);
 					}
 
@@ -854,26 +850,16 @@ body { overflow: hidden; }
 				&.has-options {
 					.entry {
 						&.search { .calc-width(45, 50); }
-						&.options {
-							float: left;
-							border-right: 1px solid rgba(0, 0, 0, 0.1);
-							padding-right: 10px;
-							.calc-width(55, 60);
-						}
+						&.options { .calc-width(55, 10); }
 					}
 				}
 
 				&.single-option {
 					.entry {
 						&.search { .calc-width(60, 50); }
-						&.options { .calc-width(40, 60); }
+						&.options { .calc-width(40, 10); }
 					}
 				}
-			}
-
-			#refresh-data {
-				display: block;
-				margin-left: 10px;
 			}
 		}
 	}
@@ -907,13 +893,13 @@ body { overflow: hidden; }
 				&.has-options {
 					.entry {
 						&.search { .calc-width(50, 50); }
-						&.options { .calc-width(50, 60); }
+						&.options { .calc-width(50, 10); }
 					}
 				}
 
 				&.single-option {
 					.entry {
-						&.search { .calc-width(75, 100); }
+						&.search { .calc-width(75, 50); }
 						&.options { .calc-width(25, 10); }
 					}
 				}
@@ -925,6 +911,18 @@ body { overflow: hidden; }
 				.entry { 
 					.calc-width(100, 120); 
 					.transition;
+				}
+
+				&.has-options {
+					&.single-option {
+						.entry {
+							&.search { .calc-width(75, 70); }
+							&.options { 
+								.pull-left;
+								.calc-width(25, 70); 
+							}
+						}
+					}
 				}
 
 				.add-new-button { .show; }
@@ -987,7 +985,7 @@ body { overflow: hidden; }
 						}
 					}
 				}
-			}
+			}			
 		}
 	}
 
