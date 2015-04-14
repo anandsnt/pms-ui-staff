@@ -35,5 +35,36 @@ angular.module('accountsModule', [])
                 ]
             }
         });
+
+        //group summary : CICO-6096
+        $stateProvider.state('rover.accounts.config', {
+            url: '/account/:id/:activeTab',
+            templateUrl: '/assets/partials/accounts/rvAccountsConfiguration.html',
+            controller: 'rvAccountsConfigurationCtrl',
+            onEnter: ['$stateParams', function($stateParams) {
+                if (typeof $stateParams.id == "undefined" || $stateParams.id == null) {
+                    $stateParams.id = "NEW_ACCOUNT";
+                }
+                if (typeof $stateParams.activeTab == "undefined" || $stateParams.activeTab == null) {
+                    $stateParams.activeTab = "ACCOUNT";
+                }
+            }],
+            resolve: {
+                accountData: ['rvAccountsConfigurationSrv', '$stateParams', 
+                    function(rvAccountsConfigurationSrv, $stateParams){
+                        var params = {
+                            accountId: $stateParams.id
+                        };
+                        return rvAccountsConfigurationSrv.getAccountSummaryData (params);
+                    }
+                ],
+                holdStatusList: ['rvGroupConfigurationSrv', 
+                    function (rvGroupConfigurationSrv) {
+                        return rvGroupConfigurationSrv.getHoldStatusList ();
+                    }
+                ]            
+            }
+
+        });
     
 }]);

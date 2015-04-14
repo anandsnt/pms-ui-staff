@@ -1,8 +1,8 @@
 <!-- Search form -->
 <form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search" >
 
-    <div class="entry search">
-        
+    <a ui-sref="rover.accounts.config({id:'NEW_ACCOUNT',activeTab:'ACCOUNTS'})">NEW_ACCOUNT</a>
+    <div class="entry search">        
         <button id="groups-clear-query" 
                 class="clear-query"
                 ng-click="clearSearchQuery()" 
@@ -26,6 +26,9 @@
                 delay="1000" 
                 function-to-fire="searchQueryChanged"/>
     </div>
+
+
+
    <div class="entry options">
         <div class="select">
             <select id="work-type" name="work-type" ng-model="topFilter" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()" class="ng-pristine ng-valid"><option value="" class="">All Work Types</option><option value="0">Daily Cleaning</option><option value="1">Daily Cleaning</option></select>
