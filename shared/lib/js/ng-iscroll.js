@@ -29,8 +29,6 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
         restrict: 'A',
         link: function (scope, element, attr)
         {
-            var isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
-            if (isIpad){
             // default timeout
             var ngiScroll_timeout = 5;
 
@@ -114,7 +112,6 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                     delete scope.$parent.myScroll[scroll_key];
                 };
             });
-        } 
     }
     };
 });
