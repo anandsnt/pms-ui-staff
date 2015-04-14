@@ -151,32 +151,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		};
 
 		/**
-		* when the from Date choosed,
-		* will assign fromDate to using the value got from date picker
-		* return - None
-		*/
-		var fromDateChoosed = function(date, datePickerObj){
-			$scope.fromDate = $filter('date') (date, $rootScope.dateFormat);
-			runDigestCycle();
-			
-			//we have to search on changing the from date
-			$scope.search();
-		};
-
-		/**
-		* when the from Date choosed,
-		* will assign fromDate to using the value got from date picker
-		* return - None
-		*/
-		var toDateChoosed = function(date, datePickerObj){
-			$scope.toDate = $filter('date') (date, $rootScope.dateFormat);
-			runDigestCycle();
-
-			//we have to search on changing the to date
-			$scope.search();
-		};
-
-		/**
 		 * Event propogated by ngrepeatstart directive
 		 * we used to show activity indicator
 		 */
@@ -200,7 +174,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* this function will execute
 		* @return {None}
 		*/
-		$scope.hasPermissionToAddNewGroup = function(){
+		$scope.hasPermissionToAddNewAccount = function(){
 			return (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY'));
 		};
 
@@ -228,7 +202,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		var formGroupSearchParams = function(){
 			var params = {
 				query		: $scope.query,
-				from_date	: $scope.fromDate,
+				status		: $scope.status,
 				to_date		: $scope.toDate,
 				per_page 	: $scope.perPage,
 				page  		: $scope.page
@@ -250,7 +224,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				successCallBack: 	successCallBackOfSearch,	 
 				failureCallBack: 	failureCallBackOfSearch,      		
 			};
-			$scope.callAPI(rvAccountsSrv.getGroupList, options);			
+			$scope.callAPI(rvAccountsSrv.getAccountsList, options);			
 		};
 
 		/**
@@ -311,27 +285,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 			//what is page that we are requesting in the API
 			$scope.page = 1;
-		};
-		
-		/**
-		* we want to display date in what format set from hotel admin
-		* @param {String/DateObject}
-		* @return {String}
-		*/
-		$scope.formatDateForUI = function(date_){
-			var type_ = typeof date_, returnString = '';
-			switch (type_){
-				//if date string passed
-				case 'string':
-					returnString = $filter('date') (new tzIndependentDate (date_), $rootScope.dateFormat); 
-					break;
-				
-				//if date object passed
-				case 'object':
-					returnString = $filter('date') (date_, $rootScope.dateFormat); 
-					break;				
-			}
-			return (returnString);
 		};
 
 		/**
