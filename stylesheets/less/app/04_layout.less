@@ -1668,10 +1668,8 @@ body { overflow: hidden; }
 			}
 
 			.room {
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				max-width: 320px;
+				max-width: 240px;
+				.nowrap();
 
 				.room-number {
 					font-size: 18px;
@@ -1684,8 +1682,26 @@ body { overflow: hidden; }
 			.inactive-nights {
 				font-size: 14px;
 				line-height: 30px;
-				padding: 0 10px;
 				height: 30px;
+				padding: 0 10px; 
+			}
+
+			.toggle {
+				font-size: 14px;
+				line-height: 30px;
+				color: @textColor;
+				padding-right: 30px;
+				text-transform: uppercase;
+			}
+
+			&.view-bill {
+				.button,
+				.toggle {
+					margin-right: 10px;
+					.pull-left;
+
+					&:last-child { margin-right: 0; }
+				}
 			}
 		}
 
