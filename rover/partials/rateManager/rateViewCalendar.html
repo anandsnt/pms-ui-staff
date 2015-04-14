@@ -1,9 +1,9 @@
 <div class="scrollBound">
-<div class='pinnedTable pinLeft' scroll-position="initScrollBind()">
-    <table class='rate-calendar'>
+<div class='scrollTable pinnedLeft' scroll-position="initScrollBind()" style="overflow:hidden;height:{{uiOptions.tableHeight}}px;">
+    <table class='rate-calendar' style="width: 220px;">
         <thead>
             <tr>
-                <th class="cell first-row">
+                <th class="cell first-row" style="height: 69px; padding: 0 20 0 0">
                     <button ng-click="openCloseAllRestrictions('remove')" 
                             class="button green" 
                             ng-class="{'grey': calendarData.disableOpenAllBtn}" 
@@ -19,17 +19,17 @@
                 </th>
             <tr>
         </thead>
-        <tbody class="firstcol" style="overflow: hidden;height:80px">
+        <tbody>
             <tr ng-if="calendarData.data.length > 1">
-                <td class="first-row">
+                <td class="first-row cell">
                     <span class="bolder">All Rates</span><span>&nbsp;</span>
                 </td>
             </tr>
 
-            <tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
-                <td class="first-row tableFirstCol">
+            <tr class="cell" style="height:67px" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
+                <td class="first-row">
                     <div ng-click="goToRoomTypeCalendarView(rate)">
-                        <span bindonce bo-html="rate.name"></span>
+                        <span bindonce bo-html="rate.name" title="{{rate.name}}"></span>
                         <span> 
                             <img src="/assets/arrow-down.png" />
                         </span>
@@ -39,12 +39,11 @@
         </tbody>
     </table>
 </div>
-<div scroll-position="initScrollBind()" id="rateViewCalendar" class='scrollTable' style="height:{{uiOptions.tableHeight}}px;" ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
-    <table class="rate-calendar" style="width:{{uiOptions.tableWidth}}">
+<div scroll-position="initScrollBind()" class="scrollTable" id="rateViewCalendar" style="height:{{uiOptions.tableHeight}}px;">
+    <table class="rate-calendar" style="width:{{uiOptions.tableWidth}}px;">
         <thead>
-            <tr>
+            <tr class="cell">
                 <th ng-repeat="date in calendarData.dates track by $index" 
-                    class="cell" 
                     style="width:{{uiOptions.columnWidth}}px;"> 
                     <div class="date-header">
                         <span class="week-day">{{date| date:'EEEE'}}</span>

@@ -1,5 +1,5 @@
 <div class="scrollBound">
-<div class='pinnedTable' scroll-position="initScrollBind()">
+<div class='scrollTable pinnedLeft' scroll-position="initScrollBind()" style="overflow:hidden; height:{{uiOptions.tableHeight}}px;">
     <table class='rate-calendar'>
         <thead>
             <tr>
@@ -17,13 +17,13 @@
         </thead>
         <tbody>
             <tr ng-if="calendarData.data.length > 1">
-                <td class="first-row">
+                <td class="first-row cell">
                     <span class="bolder">All room types</span>
                     <span>&nbsp;</span>
                 </td>
             </tr>
 
-            <tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}"> 
+            <tr class="cell" style="height:67px" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}"> 
                 <td class="first-row">    
                     <span ng-class="{'expanded': currentExpandedRow === $index}">{{rate.name}}</span>
                     <span style="float:right" ng-hide="currentExpandedRow === $index || !!rate.is_hourly">
@@ -39,20 +39,19 @@
     </table>
 </div>
 
-<div scroll-position="initScrollBind()" class="scrollTable" id="roomTypeViewCalendar" style="height:{{uiOptions.tableHeight}}px; ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000"">
+<div scroll-position="initScrollBind()" class="scrollTable" id="roomTypeViewCalendar" style="height:{{uiOptions.tableHeight}}px;">
     <table class="rate-calendar" style="width:{{uiOptions.tableWidth}}px;">
         <thead>
-            <tr>
+            <tr class="cell">
                 <th ng-repeat="date in calendarData.dates track by $index" 
-                    class="cell"
                     style="width:{{uiOptions.columnWidth}}px;">
-        <div class="date-header">
-            <span class="week-day">{{date| date:'EEEE'}}</span>
-            <span>{{date| date:'MMMM dd'}}</span>
-        </div>
-        <div class="cell-overlay" ng-if="isHistoryDate(date)"></div>
-        </th>
-        </tr>
+                    <div class="date-header">
+                        <span class="week-day">{{date| date:'EEEE'}}</span>
+                        <span>{{date| date:'MMMM dd'}}</span>
+                    </div>
+                    <div class="cell-overlay" ng-if="isHistoryDate(date)"></div>
+                </th>
+            </tr>
         </thead>
 
         <tbody>
@@ -98,7 +97,7 @@
                     <div class="cell-container">
                         <div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
                             <div>
-                                <span class="left rate-single">
+                                <span class="left rate-single" style='height:100%;width:100%;'>
                                     <span ng-if ="!rate[date].isHourly && rate[date].single === null">{{rate[date].single}}</span>
                                     <span ng-if ="!rate[date].isHourly && rate[date].single !== null">{{rate[date].single| number : 2}}</span>
                                     <span ng-if ="!rate[date].isHourly && rate[date].nightly === null">{{rate[date].nightly}}</span>

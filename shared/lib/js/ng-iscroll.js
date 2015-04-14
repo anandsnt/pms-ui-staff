@@ -50,7 +50,7 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                 scroll_key = attr.id;
             }
             // if ng-iscroll-form='true' then the additional settings will be supported
-            if (attr.ngIscrollForm !== undefined && attr.ngIscrollForm == 'true' && isIpad == 'true') {
+            if (attr.ngIscrollForm !== undefined && attr.ngIscrollForm == 'true') {
                 ngiScroll_opts.useTransform = false;
                 ngiScroll_opts.onBeforeScrollStart = function (e)
                 {
