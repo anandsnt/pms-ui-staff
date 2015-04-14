@@ -58,7 +58,7 @@ sntRover.controller('roverController',
           };
     });
 
-    $scope.activeSettingSubMenu = false;
+    $scope.isSettingSubMenuActive = false;
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;
@@ -276,7 +276,7 @@ sntRover.controller('roverController',
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
-      $scope.activeSettingSubMenu = false;
+      $scope.isSettingSubMenuActive = false;
     };
 
     $scope.$on("updateSubMenu", function(idx, item) {
@@ -285,7 +285,7 @@ sntRover.controller('roverController',
 
     //as settings is seperate section,need to handle seperately
     $rootScope.updateSettingsSubMenu = function(item) {
-      $scope.activeSettingSubMenu = true;
+      $scope.isSettingSubMenuActive = true;
       if (item && item.submenu && item.submenu.length > 0) {
         $scope.showSubMenu = true;
         $scope.activeSubMenu = item.submenu;
