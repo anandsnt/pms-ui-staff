@@ -44,8 +44,8 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.name = data.name;
 		$scope.campaignData.audience_type = data.audience_type;
 		$scope.campaignData.delivery_details = data.delivery_details;
-		$scope.campaignData.target_type = data.screen_type_id !=  ""? "SCREEN" : "URL";
-		$scope.campaignData.screen_type_id = data.screen_type_id !=  ""? data.screen_type_id : "";
+		$scope.campaignData.target_type = (data.screen_type_id !=  "" && data.screen_type_id !=  null)? "SCREEN" : "URL";
+		$scope.campaignData.screen_type_id = (data.screen_type_id !=  "" && data.screen_type_id !=  null)? data.screen_type_id : "";
 		$scope.campaignData.specific_users = data.specific_users;
 
 		$scope.campaignData.subject = data.subject;
@@ -96,7 +96,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		if($scope.campaignData.delivery_details){
 		campaign.delivery_details = $scope.campaignData.delivery_details;
 		}
-		if($scope.campaignData.screen_type_id){
+		if($scope.campaignData.screen_type_id && $scope.campaignData.target_type == 'SCREEN'){
 		campaign.screen_type_id = $scope.campaignData.screen_type_id;
 		}
 		if($scope.campaignData.audience_type=="SPECIFIC_USERS"){

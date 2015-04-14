@@ -66,7 +66,7 @@
 					<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
 						<label for="rmCurrentFilterData">RATE</label>
 						<div id="rmCurrentFilterData" class="select" >
-							<select iscroll-stop-propagation id = "rmRate" ng-model="currentFilterData.rate_selected" ng-change="refreshFilterScroll()">
+							<select iscroll-stop-propagation id = "rmRate" ng-model="currentFilterData.rate_selected" ng-change="refreshFilterScroll(); selFirst()">
 								<option value="">Select Rate</option>
 								<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
 							</select>

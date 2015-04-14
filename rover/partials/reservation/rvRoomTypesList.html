@@ -8,7 +8,8 @@
     <!-- Reservation header -->
     <div id="rooms-and-rates-header" class="reservation-header">
         <div class="switch-button" ng-click="toggleCalendar()">
-            <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" />
+            <!-- CICO-15042 we will be disabling calendar switch for now -->
+            <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" disabled="disabled"/>
             <label class="data-off" ng-class="{'calendar': stateCheck.activeMode=='CALENDAR'}">
                 <span class="value">Calendar</span>
                 <span class="switch-icon">Rooms &amp; Rates</span>

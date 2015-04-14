@@ -87,7 +87,7 @@ sntRover.controller('RVReservationDepositController',
       		 !$scope.hasPermissionToMakePayment());
       	};
 
-		$scope.setScroller('cardsList');		
+		$scope.setScroller('cardsList',{'click':true, 'tap':true});		
 		var refreshCardsList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
