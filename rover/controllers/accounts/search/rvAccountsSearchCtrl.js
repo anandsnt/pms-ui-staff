@@ -30,14 +30,14 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 		/**
 		* util function to get CSS class against diff. Hold status
-		* @param {Object} - group
+		* @param {Object} - account
 		* @return {String}
 		*/
-		$scope.getClassAgainstBalance = function(group){
+		$scope.getClassAgainstBalance = function(account){
 			var classes = '';
 			
 			//Add class "red" if status OPEN
-			if(util.convertToDouble (group.balance) > 0)
+			if(util.convertToDouble (account.balance) > 0)
 				classes = 'red';			
 
 			return classes;
@@ -45,14 +45,14 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 		/**
 		* util function to get CSS class against diff. account status
-		* @param {Object} - group
+		* @param {Object} - account
 		* @return {String}
 		*/
-		$scope.getClassAgainstAccountStatus = function(group){
+		$scope.getClassAgainstAccountStatus = function(account){
 			var classes = '';
 
 			//Add class "green" if status OPEN
-			if(group.status.toLowerCase() === "open")
+			if(account.status.toLowerCase() === "open")
 				classes = 'green';			
 
 			return classes;
@@ -115,7 +115,16 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		$scope.hasPermissionToAddNewAccount = function(){
-			return (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY'));
+			return (rvPermissionSrv.getPermissionValue("CREATE_ACCOUNT"));
+		};
+
+		/**
+		* when there is any change in search query
+		* this function will execute
+		* @return {None}
+		*/
+		$scope.hasPermissionToEditAccount = function(){
+			return (rvPermissionSrv.getPermissionValue("EDIT_ACCOUNT"));
 		};
 
 		/**
@@ -136,10 +145,10 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		};
 
 		/**
-		* utility function to form API params for group search
+		* utility function to form API params for account search
 		* return {Object}
 		*/
-		var formGroupSearchParams = function(){
+		var formAccountSearchParams = function(){
 			var params = {
 				query		: $scope.query,
 				status		: $scope.status,
@@ -151,14 +160,14 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		};
 
 		/**
-		* to Search for group
+		* to Search for accounts
 		* @return - None
 		*/
 		$scope.search = function(){
 			//am trying to search something, so we have to change the initial search helping screen if no rsults
 			$scope.amFirstTimeHere = false;
 
-			var params = formGroupSearchParams();
+			var params = formAccountSearchParams();
 			var options = {
 				params: 			params,
 				successCallBack: 	successCallBackOfSearch,	 
@@ -173,7 +182,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		var successCallBackOfSearch = function(data){			
-			//groupList
+			//accountList
 			$scope.accountList = initialAccountsListing.posting_accounts; 
 			
 			//total result count
@@ -275,10 +284,13 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			return ($scope.start === 1);	
 		};
 
-		//just redirecting to group creation page
-		$scope.gotoAddNewGroup = function(){
-			$state.go ('rover.accounts.config', {'id': "NEW_ACCOUNT"});
-		};
+		/**
+		* should show add new button
+		* @return {Boolean}
+		*/
+		$scope.shouldShowAddNewButton = function(){
+			return ($scope.hasPermissionToAddNewAccount());	
+		};		
 
 		/**
 		* function to trgger on clicking the next button
@@ -337,12 +349,24 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * @return undefined
 		 */
 		$scope.gotoEditAccountConfiguration = function(accountID){
-			$state.go('rover.groups.config',{
+			if (!$scope.hasPermissionToEditAccount()){
+				$scope.errorMessage = ['Sorry, You have no permission to edit account!'];
+				return;
+			}
+			
+			$state.go('rover.accounts.config',{
 				id: accountID,
 				activeTab: 'ACCOUNT'
 			})
-		}
-
+		};
+		
+		/**
+		 * Navigate to the account configuration state for adding the account
+		 * @return undefined
+		 */
+		$scope.gotoAddNewAccount = function(){
+			$state.go ('rover.accounts.config', {'id': "NEW_ACCOUNT"});
+		};
 
 		/**
 		* function used to set initlial set of values
@@ -356,7 +380,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 	    	$scope.$emit("updateRoverLeftMenu", "accounts");
 
 
-			//groupList
+			//accountList
 			$scope.accountList = initialAccountsListing.posting_accounts; 
 			
 			//total result count

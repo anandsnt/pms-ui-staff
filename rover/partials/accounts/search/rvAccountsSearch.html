@@ -1,5 +1,5 @@
 <!-- Search form -->
-<form method="get" action="" name="accounts-search-form" id="accounts-search-form" class="search-form has-options single-option enable-adding" role="search">
+<form method="get" action="" name="accounts-search-form" id="accounts-search-form" class="search-form has-options single-option" role="search" ng-class="{'enable-adding':shouldShowAddNewButton()}">
     
     <div class="entry search">
         <button id="accounts-clear-query" class="clear-query" 
@@ -31,7 +31,7 @@
             </select>
         </div>
     </div>
-    <a ng-click="gotoAddNewGroup()" class="add-new-button" >+ Add new</a>
+    <a ng-click="gotoAddNewAccount()" class="add-new-button" ng-show="shouldShowAddNewButton()">+ Add new</a>
 </form>
 <!-- Pagination -->
 <div class="search-pagination" ng-show="shouldShowPagination()">
@@ -65,7 +65,7 @@
                 <div class="info">
                     <span class="icon-no-content icon-groups"></span>
                     <strong class="h1">No Matches</strong>
-                    <span class="h2">Check that you didn't mispell the <strong>Account Name</strong>, <strong>Code</strong><a href="{new.html}" class="inline-link">Or add a New Account</a>.</span>
+                    <span class="h2">Check that you didn't mispell the <strong>Account Name</strong>, <strong>Code</strong><a ng-click="gotoAddNewAccount()" class="inline-link">Or add a New Account</a>.</span>
                 </div>
             </li>
             <li class="account" ng-show="!shouldShowNoResult()" ng-repeat="account in accountList" ngrepeatend ngrepeatstarted>
