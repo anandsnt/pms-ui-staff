@@ -16,7 +16,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 			$scope.data.paymentData = {};
             $scope.data.selectedPaymentType = 'ALL';
 			$scope.data.paymentData = data;
-			$scope.$emit('hideLoader');
+			$scope.$emit('I_COMPLTED_THE_API_CALL');
             $scope.errorMessage = "";
 			refreshPaymentScroll();
             $scope.$emit("ApplyEmpOrDeptFilter");
