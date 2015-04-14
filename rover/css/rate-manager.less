@@ -1,4 +1,20 @@
 #rate-manager {
+    ::-webkit-scrollbar
+    {
+      width: 6px;  /* for vertical scrollbars */
+      height: 6px; /* for horizontal scrollbars */
+    }
+
+    ::-webkit-scrollbar-track
+    {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb
+    {
+      background: linear-gradient(-90deg, #ff860d 0, #ffb319 100%) !important;
+      border-radius:9px;
+    }
   .iScrollIndicator{
       background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
   }
@@ -380,6 +396,14 @@
 }
 
 .rate-calendar{
+    .content{
+        margin-left: 220px;
+    }
+    span{
+          white-space: nowrap;   
+          overflow: hidden;   
+          text-overflow: ellipsis;
+      }
   table {
   }
 
@@ -451,10 +475,12 @@
     padding: 0 5px 0 5px;
   }
 
-  thead tr th:not(:first-child) {
+//  thead tr th:not(:first-child) {
+  //  padding: 5px 5px 0px 5px;
+ // }
+thead tr th {
     padding: 5px 5px 0px 5px;
   }
-
   .cell-container{
     /*CICO-8633 10/20/2014*/
     border-top: 3px solid rgba(0,0,0, 0.05);
@@ -480,6 +506,9 @@
   .cell {
     //width: 100%;
     position: relative;
+    border-style:solid;
+    border-width:1px;
+    border-color:transparent;//forces tables inline when multi-scrolling
   }
 
   .cell-overlay {
@@ -1688,5 +1717,12 @@ padding-top: 80px;
   z-index: -1;
 }
 
+.scrollBound{
+    margin: auto;
+}
+.pinnedLeft{
+    float: left; 
+    overflow: hidden;
+}
 
 
