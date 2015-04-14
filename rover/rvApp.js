@@ -1,30 +1,30 @@
 
 var sntRover = angular.module('sntRover',[
-		'ui.router', 
-		'ui.utils', 
-		'ng-iscroll', 
-		'highcharts-ng', 
+		'ui.router',
+		'ui.utils',
+		'ng-iscroll',
+		'highcharts-ng',
 		'ngDialog',
-		'ngAnimate', 
-		'ngSanitize', 
+		'ngAnimate',
+		'ngSanitize',
 		'pascalprecht.translate',
 		'ui.date',
-		'ui.calendar', 
-		'dashboardModule', 
-		'companyCardModule', 
-		'stayCardModule', 
-		'housekeepingModule', 
-		'reportsModule', 
+		'ui.calendar',
+		'dashboardModule',
+		'companyCardModule',
+		'stayCardModule',
+		'housekeepingModule',
+		'reportsModule',
 		'diaryModule',
 		'FinancialsModule',
-		'cacheVaultModule', 
+		'cacheVaultModule',
 		'twoMonthscalendar',
-		'documentTouchMovePrevent', 
-		'divTouchMoveStopPropogate', 
-		'pasvaz.bindonce', 
-		'sharedHttpInterceptor', 
-		'orientationInputBlurModule',  
-		'multi-select', 		
+		'documentTouchMovePrevent',
+		'divTouchMoveStopPropogate',
+		'pasvaz.bindonce',
+		'sharedHttpInterceptor',
+		'orientationInputBlurModule',
+		'multi-select',
 		'ngDragDrop',
 		'iscrollStopPropagation',
 		'ngReact',
@@ -46,7 +46,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	/**
 	*	if this is true animation will be revesed, no more checks
 	* 	keep track of the previous state and params
-	* 
+	*
 	*	@private
 	*/
 	var $_mustRevAnim = false,
@@ -127,12 +127,16 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		return $_prevStateTitle;
 	};
 
+	$rootScope.getPrevStateName = function() {
+		return $_prevStateName;
+	};
+
 
 	/**
 	*	revAnimList is an array of objects that holds
 	*	state name sets that when transitioning
-	*	the transition animation should be reversed 
-	*	
+	*	the transition animation should be reversed
+	*
 	*	@private
 	*/
 	var $_revAnimList = [{
@@ -178,14 +182,14 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 	/**
 	*	A very simple methods to go back to the previous state
-	*	
+	*
 	*	By default it will use the (saved) just previous state - '$_prevStateName', '$_prevStateParam'
 	*	and always do the slide animation in reverse, unless overridden by callee.
 	*
 	*	Default behaviour can be overridden in two ways, by setting values to '$rootScope.setPrevState' in ctrl`:
 	*	1. Pass in a callback with its scope - This callback will be responsible for the state change (total control)
 	*	2. Pass in the state name and param - This will load the passed in state with its param
-	* 
+	*
 	* 	@param {Object} $rootScope.setPrevState - Uses this object as param which is set by the current state contoller
 	*/
 	$rootScope.loadPrevState = function() {
@@ -199,7 +203,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			name    = !!options.name ? options.name : $_prevStateName,
 			param   = !!options.name && !!options.param ? options.param : (!!$_prevStateParam ? $_prevStateParam : {}),
 			reverse = typeof options.reverse === 'boolean' ? true : false;
-                
+
 		// if currently disabled, return
 		if ( options.disable ) {
 			return;
@@ -212,7 +216,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			// NOTE: if the controller explicitly says there is no actual state change
 			// $_mustRevAnim must be set false, else check further
 			$_mustRevAnim = options.noStateChange ? false : (reverse ? options.reverse : true);
-			
+
 			options.scope[options.callback]();
 			return;
 		};
@@ -248,7 +252,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 
 		// this must be reset with every state change
-		// invidual controllers can then set it  
+		// invidual controllers can then set it
 		// with its own desired values
 		$rootScope.setPrevState = {};
 
@@ -262,11 +266,11 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// reset this flag
 		$_mustRevAnim = false;
 
-                
+
 		// saving the prevState name and params
                     $_prevStateName  = fromState.name;
                     $_prevStateParam = fromParams;
-                
+
 	});
 
 
@@ -274,7 +278,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*	before the state can change, we need to inform the assiciated service that we are returning back
 	*	based on this info the service will return the previously cached data, rather than requesting the server
 
-	*	on such request the service will look for certain values in $vault, 
+	*	on such request the service will look for certain values in $vault,
 	*	if they are avaliable the cached data will be updated before returning the data
 	*/
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -292,12 +296,12 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
                     return;
                 }
                 $_savePrevStateTitle(document.title);
-               
+
 		if ( $rootScope.setNextState.data ) {
 			_.extend(toParams, $rootScope.setNextState.data);
 			$rootScope.setNextState = {};
 		};
-		
+
 		$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
 	});
 }]);
