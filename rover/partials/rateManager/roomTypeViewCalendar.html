@@ -188,9 +188,10 @@
 </div></div>
 <div class='pinned-bottom'>
 <ul class="restriction-legends" >
-	<li bindonce ng-repeat="restrictionType in calendarData.restriction_types">
-		<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}"
-			  bo-html="restrictionType.days"></span>
-		<span bo-html="restrictionType.description"></span>
-	</li>
+    <li bindonce ng-repeat="restrictionType in calendarData.restriction_types">
+        <span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}"
+              bo-html="restrictionType.days"></span>
+        <span bo-html="restrictionType.description"></span>
+    </li>
 </ul> 
+    </div>

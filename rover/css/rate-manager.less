@@ -19,9 +19,7 @@
       background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
   }
   #roomTypeViewCalendar{
-    width:100%;  
-    padding:0px; 
-    overflow: hidden;
+   // margin-left:22%;
 
     .limit-width{
       width: 60%;
@@ -78,11 +76,7 @@
   }
 
   #rateViewCalendar{
-    width:100%; 
-    position: relative;  
-    padding:0px; 
-    overflow: hidden; 
-    z-index: 10;
+    //overflow: hidden; //defined by overflow x/y in (pinnedTable/scrollTable)'s 
 
     table{
       table-layout:fixed; 
@@ -395,6 +389,17 @@
   height: 100%;
 }
 
+
+
+
+.scrollTable {
+  overflow: scroll;
+  -webkit-scrollbar { width: 0 !important }//to hide the default scrollbar
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+
 .rate-calendar{
     .content{
         margin-left: 220px;
@@ -414,8 +419,9 @@
       }
     }
     .first-row {
+      height: 60px;
       text-align: right;
-      padding: 0 20px;
+      padding: 20px;
       vertical-align: middle;  
       
       img {
@@ -689,12 +695,15 @@ thead tr th {
 }
 
 .restriction-legends{
-  position: relative;
+  position: fixed;//fixed 
     padding: 5px 15px 0 15px;
     background: #fcfcfc;
     overflow: hidden;
     *zoom: 1;
-
+    z-index: 10;
+    bottom: 0;//fixed to bottom
+    width:100%;
+    
     li {
       position: relative;
       font-size: 13px;
