@@ -57,6 +57,7 @@
 "IN_HOUSE_GUESTS":"In House Guests",
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
+"EXTERNAL_CHECKIN":"External Checkin",
 
 "MESSAGE":"Message",
 "IN_APP":"in App",
@@ -99,7 +100,9 @@
 "SAVE_AS_DRAFT":"Save as Draft",
 "START_CAMPAIGN":"Start Campaign",
 "SAVE":"Save",
-"CLOSE":"Close"
+"CLOSE":"Close",
+"URL_LABEL": "URL",
+"SCREEN_LABEL": "SCREEN"
 
 
 
@@ -362,7 +365,10 @@
 "UNASSIGNED_ROOMS": "Unassigned Rooms",
 "ASSIGNED_ROOMS": "Assigned Rooms",
 "SELECT_ALL": "Select All",
-"ASSIGN_SELECTED": "Assign Selected"
+"ASSIGN_SELECTED": "Assign Selected",
+"FIND_ROOMS":"Find Rooms",
+"NO_RESULT_FOUND":"No Result Found",
+"NO_ROOMS":"No Rooms"
 
 ,    
     
@@ -456,9 +462,11 @@
     "GUEST_CHECKIN_SETUP": "Guest Checkin Setup",
     "SEND_CHECKIN_EMAIL": "Send Checkin Email",
     "SEND_CHECKIN_ALERT": "Send Check In Alert",
+    "NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE": "Notify Guest When Room is not assigned",
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
     "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "ZEST_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app checkin ",
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
