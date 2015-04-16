@@ -115,7 +115,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		$scope.hasPermissionToAddNewAccount = function(){
-			return true;
 			return (rvPermissionSrv.getPermissionValue("CREATE_ACCOUNT"));
 		};
 
@@ -125,7 +124,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		$scope.hasPermissionToEditAccount = function(){
-			return true;
 			return (rvPermissionSrv.getPermissionValue("EDIT_ACCOUNT"));
 		};
 

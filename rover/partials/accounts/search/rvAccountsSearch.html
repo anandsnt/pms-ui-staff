@@ -65,7 +65,7 @@
                 <div class="info">
                     <span class="icon-no-content icon-groups"></span>
                     <strong class="h1">No Matches</strong>
-                    <span class="h2">Check that you didn't mispell the <strong>Account Name</strong>, <strong>Code</strong><a ng-click="gotoAddNewAccount()" class="inline-link">Or add a New Account</a>.</span>
+                    <span class="h2">Check that you didn't mispell the <strong>Account Name</strong>, <strong>Code</strong><a ng-show="shouldShowAddNewButton()" ng-click="gotoAddNewAccount()" class="inline-link">Or add a New Account</a>.</span>
                 </div>
             </li>
             <li class="account" ng-show="!shouldShowNoResult()" ng-repeat="account in accountList" ngrepeatend ngrepeatstarted>

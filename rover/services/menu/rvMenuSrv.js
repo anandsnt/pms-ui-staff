@@ -386,7 +386,7 @@ sntRover.service('rvMenuSrv',
 			'menuCreateGroup': 		['GROUP_CREATE'],
 			'menuManageGroup': 		['GROUP_MANAGE'],
 
-			//'accounts':        		['ACCESS_ACCOUNTS']
+			'accounts':        		['ACCESS_ACCOUNTS']
 
 		};
 
