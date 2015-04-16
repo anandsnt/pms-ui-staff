@@ -16,10 +16,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         
         $scope.showAddNew = function(){
             $scope.addFormView = true;
-        }
+        };
         $scope.hideAddNew = function(){
             $scope.addFormView = false;
-        }
+        };
 	
         $scope.openAddNew = function(){
             $scope.isAdd = true;
@@ -31,13 +31,19 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
-		
+                var debuggin = true;
+                console.log('data from fetch');
+		console.log($scope.data);
 		// Set Flag to disable Add new.
 		if($scope.data.disable_mappings) {
-                    //$scope.closeAddNew();
-                    $scope.openAddNew();// debugging
+                    if (debuggin){
+                        $scope.showAddNew();
+                    } else {
+                        $scope.closeAddNew();
+                        $scope.showAddNew();
+                    }
                 } else {
-                    $scope.openAddNew();
+                    $scope.showAddNew();
                 }
 	};
 	
@@ -86,7 +92,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
  		var addMappingSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.editData = data;
-			$scope.isAdd = true;
+			$scope.openAddNew();
 			$scope.isEdit = false;
 		};
 		$scope.invokeApi(ADMappingSrv.fetchAddMapping, { 'hotelId': $scope.data.hotel_id }, addMappingSuccessCallback );
@@ -106,7 +112,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 	$scope.clickedSave = function(){
 		
 		var successSaveCallback = function(data){
-			
 			$scope.$emit('hideLoader');
 			if($scope.isAdd) $scope.data.total_count ++ ;
 			// To update scope data with added item

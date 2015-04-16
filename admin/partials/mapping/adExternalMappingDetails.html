@@ -15,7 +15,7 @@
 					<label for="mapping-type"> Mapping type <strong>*</strong> </label>
 					<div class="select">
 						<select ng-model="editData.mapping_value" name="mapping-type" class="placeholder">
-							<option  value=""> Mapping type </option>
+							<option value=""> Mapping type </option>
 							<option ng-repeat="mapping in editData.mapping_type" value="{{mapping.name}}" ng-selected="mapping.name==editData.selected_mapping_type" >{{mapping.name}} </option>
 						</select>
 					</div>
