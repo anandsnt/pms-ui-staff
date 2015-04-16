@@ -45,7 +45,7 @@
                     <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
                         <a>Account</a>
                     </li>
-                    <li class="with-filters" ng-click="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
+                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" ng-click="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
                         <a>Rooming List</a>
                     </li>
                     <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
