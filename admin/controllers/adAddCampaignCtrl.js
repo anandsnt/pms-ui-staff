@@ -10,11 +10,13 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.messageSubjectMaxLength = 60;
 		$scope.campaignData.messageBodyMaxLength = 320;
 		$scope.campaignData.callToActionLabelMaxLength = 30;
-		$scope.campaignData.is_recurring = "false";
+		$scope.campaignData.delivery_details = "";
+		$scope.campaignData.target_type = "URL";
+		$scope.campaignData.screen_type_id = "";
 		$scope.campaignData.header_file = $scope.fileName;
 
 		$scope.mode = 'ADD';
-		fetchIOSAletLength();
+		fetchConfig();
 		if($stateParams.type == 'EDIT'){
 			$scope.mode = 'EDIT';
 			fetchCampaignDetails($stateParams.id);
@@ -25,13 +27,14 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 	}
 	//Get the alert length - set in admin settings
-	var fetchIOSAletLength = function(){
+	var fetchConfig = function(){
 		var fetchSuccessOfCampaignData = function(data){
 			$scope.campaignData.ios8_alert_length = data.ios8_alert_length;
 			$scope.campaignData.ios7_alert_length = data.ios7_alert_length;
+			$scope.campaignData.screen_types = data.screen_types;
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADCampaignSrv.fetchIOSAlertLength, {}, fetchSuccessOfCampaignData);
+		$scope.invokeApi(ADCampaignSrv.fetchCampaignConfig, {}, fetchSuccessOfCampaignData);
 
 	}
 
@@ -40,6 +43,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.id = data.id;
 		$scope.campaignData.name = data.name;
 		$scope.campaignData.audience_type = data.audience_type;
+		$scope.campaignData.delivery_details = data.delivery_details;
+		$scope.campaignData.target_type = (data.screen_type_id !=  "" && data.screen_type_id !=  null)? "SCREEN" : "URL";
+		$scope.campaignData.screen_type_id = (data.screen_type_id !=  "" && data.screen_type_id !=  null)? data.screen_type_id : "";
 		$scope.campaignData.specific_users = data.specific_users;
 
 		$scope.campaignData.subject = data.subject;
@@ -86,6 +92,12 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		campaign.name = $scope.campaignData.name;
 		if($scope.campaignData.audience_type){
 		campaign.audience_type = $scope.campaignData.audience_type;
+		}
+		if($scope.campaignData.delivery_details){
+		campaign.delivery_details = $scope.campaignData.delivery_details;
+		}
+		if($scope.campaignData.screen_type_id && $scope.campaignData.target_type == 'SCREEN'){
+		campaign.screen_type_id = $scope.campaignData.screen_type_id;
 		}
 		if($scope.campaignData.audience_type=="SPECIFIC_USERS"){
 		campaign.specific_users = $scope.campaignData.specific_users;
