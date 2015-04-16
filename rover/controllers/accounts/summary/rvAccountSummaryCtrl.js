@@ -7,7 +7,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		$scope.accountSummaryData = {
 			promptMandatoryDemographics: false,
 			isDemographicsPopupOpen: false,
-			newNote: ""
+			newNote: "",
+			demographics: null			
 		}
 
 		var summaryMemento = {};
@@ -161,7 +162,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			});
 		}
 
-		$scope.onCloseWarningPopup = function(){
+		$scope.onCloseWarningPopup = function() {
 			$scope.accountConfigData.summary.posting_account_status = "OPEN";
 			$scope.closeDialog();
 		}

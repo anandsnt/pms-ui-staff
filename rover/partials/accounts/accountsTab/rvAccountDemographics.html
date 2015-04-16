@@ -11,26 +11,6 @@
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-        <!-- [<[< RESERVATION TYPES >]>] -->
-        <div class="entry margin">
-            <label for="reservation-type">
-                Reservation type
-                <!-- <strong ng-show="">*</strong> -->
-            </label>
-            <div class="select">
-                <select iscroll-stop-propagation name="reservation-type" id="reservation-type" 
-                    ng-class="{'placeholder': !accountConfigData.summary.demographics.reservation_type_id}" 
-                    ng-model="accountConfigData.summary.demographics.reservation_type_id">
-                    <option value="null" selected translate>RESERVATION_TYPE_PLACEHOLDER</option>
-                    <option ng-repeat="reservationType in accountSummaryData.demographics.reservationTypes" 
-                        value="{{reservationType.value}}" 
-                        ng-selected="reservationType.value == accountConfigData.summary.demographics.reservation_type_id">
-                        {{reservationType.name}}
-                    </option>
-                </select>
-            </div>
-        </div>
-
         <!-- [<[< MARKETS >]>] -->
         <div class="entry margin" ng-show="accountSummaryData.demographics.is_use_markets">
             <label for="market">
@@ -41,7 +21,7 @@
                 <select iscroll-stop-propagation name="market" id="market" 
                     ng-class="{'placeholder': !accountConfigData.summary.demographics.market_segment_id}" 
                     ng-model="accountConfigData.summary.demographics.market_segment_id">
-                    <option value="null" selected translate>MARKET_PLACEHOLDER</option>
+                    <option value="" selected translate>MARKET_PLACEHOLDER</option>
                     <option ng-repeat="market in accountSummaryData.demographics.markets" 
                         value="{{market.value}}" 
                         ng-selected="market.value == accountConfigData.summary.demographics.market_segment_id">
@@ -61,7 +41,7 @@
                 <select iscroll-stop-propagation name="source" id="source" 
                     ng-class="{'placeholder': !accountConfigData.summary.demographics.source_id}" 
                     ng-model="accountConfigData.summary.demographics.source_id">
-                    <option value="null" selected translate>SOURCE_PLACEHOLDER</option>
+                    <option value="" selected translate>SOURCE_PLACEHOLDER</option>
                     <option ng-repeat="source in accountSummaryData.demographics.sources" 
                         value="{{source.value}}" 
                         ng-selected="source.value == accountConfigData.summary.demographics.source_id">
@@ -81,7 +61,7 @@
                 <select iscroll-stop-propagation name="origin" id="origin" 
                     ng-class="{'placeholder': !accountConfigData.summary.demographics.booking_origin_id}" 
                     ng-model="accountConfigData.summary.demographics.booking_origin_id">
-                    <option value="null" selected translate>ORIGIN_BOOKING_PLACEHOLDER</option>
+                    <option value="" selected translate>ORIGIN_BOOKING_PLACEHOLDER</option>
                     <option ng-repeat="origin in accountSummaryData.demographics.origins" 
                         value="{{origin.value}}" 
                         ng-selected="origin.value == accountConfigData.summary.demographics.booking_origin_id">
