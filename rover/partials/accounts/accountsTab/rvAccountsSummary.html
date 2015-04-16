@@ -17,7 +17,7 @@
             <div class="entry">
                 <label for="account-number">Account Type</label>
                 <div class="select">
-                    <select id="account-type" ng-model="accountConfigData.summary.posting_account_type">
+                    <select id="account-type" ng-model="accountConfigData.summary.posting_account_type" ng-change="onAccountTypeModification();">
                         <option value="HOUSE" selected>House</option>
                         <option value="GROUP">Group</option>
                     </select>

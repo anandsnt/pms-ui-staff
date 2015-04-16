@@ -1,7 +1,9 @@
 <div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
     <form method="post" action="" class="modal-content form demographics" ng-cloak>
 
-        <button ng-click="closeDialog()" ng-hide="accountSummaryData.promptMandatoryDemographics" id="modal-close" class="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+        <button 
+            ng-click="closeDemographicsPopup()" 
+            ng-hide="accountSummaryData.promptMandatoryDemographics" id="modal-close" class="modal-close" type="button"><span class="icons icon-close invert"></span></button>
 
         <strong class="h2 message" ng-hide="accountSummaryData.promptMandatoryDemographics">Demographics</strong>
         <!-- <span class="text" ng-hide="accountSummaryData.promptMandatoryDemographics">Fields marked with <strong>*</strong> are mandatory</span> -->
@@ -76,7 +78,7 @@
             <button type="button" 
                 class="button blank" 
                 ng-hide="accountSummaryData.promptMandatoryDemographics" 
-                ng-click="cancelDemographicChanges();closeDialog();">
+                ng-click="cancelDemographicChanges();closeDemographicsPopup();">
                 Cancel
             </button>
 

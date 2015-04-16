@@ -47,6 +47,11 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			return true;
 		}
 
+		$scope.closeDemographicsPopup = function(){
+			$scope.accountSummaryData.isDemographicsPopupOpen = false;
+			$scope.closeDialog();
+		}
+
 		/**
 		 * Demographics Popup Handler
 		 * @return undefined
@@ -62,10 +67,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 						className: '',
 						scope: $scope,
 						closeByDocument: false,
-						closeByEscape: false,
-						preCloseCallback: function() {
-							$scope.accountSummaryData.isDemographicsPopupOpen = false;
-						}
+						closeByEscape: false
 					});
 				},
 				onFetchDemographicsSuccess = function(demographicsData) {
@@ -96,7 +98,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 
 			$scope.updateAccountSummary();
-			$scope.closeDialog();
+			$scope.closeDemographicsPopup();
 		}
 
 		$scope.cancelDemographicChanges = function() {
@@ -165,6 +167,10 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		$scope.onCloseWarningPopup = function() {
 			$scope.accountConfigData.summary.posting_account_status = "OPEN";
 			$scope.closeDialog();
+		}
+
+		$scope.onAccountTypeModification = function(){
+			$scope.updateAccountSummary();
 		}
 
 		$scope.onAccountStatusModification = function() {
