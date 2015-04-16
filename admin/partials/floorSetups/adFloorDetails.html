@@ -48,12 +48,14 @@
 		                <!-- Default -->
 		                <div class="no-content" ng-show="shouldShowFindRooms()">
 		                    <div class="info">
-		                        <strong class="h1">Find Rooms</strong>
+		                        <strong class="h1" ng-hide ="isSearchResult" translate>FIND_ROOMS</strong>
+		                        <strong class="h1" ng-show ="isSearchResult" translate>NO_RESULT_FOUND</strong>
 		                        <span class="h2">Search by number or range, e.g. "<strong>10</strong>" or "<strong>40-60</strong>"</span>
 		                        <span class="h2">Search by multiple numbers or ranges, e.g. "<strong>10; 40-60</strong>"</span>
 		                        <button type="button" id="show-all-unassigned" ng-click="showAllUnassignedRooms()" class="button brand-colors">Show All Unassigned Rooms</button>
 		                    </div>
-		                </div>			            	
+		                </div>
+		                            	
 						<ul class="sortable" data-type="source" 
 							
 							data-drop="true" 
@@ -100,7 +102,7 @@
 				<div class="boxes">	
 				    <div class="no-content" ng-show="shouldShowNoRooms()">
 		                    <div class="info">
-		                        <strong class="h1">No rooms</strong>
+		                        <strong class="h1" translate>NO_ROOMS</strong>
 		                        <span class="h2"> Search and select rooms from the left hand side first</span>
 		                    </div>
 		            </div>	
