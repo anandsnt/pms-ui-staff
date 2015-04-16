@@ -161,8 +161,24 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			});
 		}
 
+		$scope.onCloseWarningPopup = function(){
+			$scope.accountConfigData.summary.posting_account_status = "OPEN";
+			$scope.closeDialog();
+		}
+
 		$scope.onAccountStatusModification = function() {
-			$scope.updateAccountSummary();
+			//  dont allow to close account with balance -gt 0
+			if ($scope.accountConfigData.summary.balance == 0 && "CLOSED" === $scope.accountConfigData.summary.posting_account_status) {
+				ngDialog.open({
+					template: '/assets/partials/accounts/accountsTab/rvAccountAlertCloseWithBalance.html',
+					className: '',
+					scope: $scope,
+					closeByDocument: false,
+					closeByEscape: false
+				});
+			} else {
+				$scope.updateAccountSummary();
+			}
 		}
 
 		initAccountSummaryView();
