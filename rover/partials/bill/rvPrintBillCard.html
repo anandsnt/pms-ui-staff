@@ -51,7 +51,7 @@
             <span ng-if="printData.show_hotel_address">
                {{printData.street}}&nbsp;&#9830;&nbsp;{{printData.city}},&nbsp;{{printData.state}}&nbsp; {{printData.zipcode}}&nbsp;&#9830;&nbsp;{{printData.country}}
                <br>
-               <a href="tel:{{ printData.phone }}">{{ printData.phone }}</a>&nbsp;&#9830;&nbsp;<a href="mailto:{{ printData.email }}">{{ printData.email }}</a>
+               {{ printData.phone }}&nbsp;&#9830;&nbsp;{{ printData.email }}
             </span>
         </caption>
         <thead>
