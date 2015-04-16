@@ -55,14 +55,9 @@ angular.module('accountsModule', [])
                         var params = {
                             accountId: $stateParams.id
                         };
-                        return rvAccountsConfigurationSrv.getAccountSummaryData (params);
+                        return rvAccountsConfigurationSrv.getAccountSummary (params);
                     }
-                ],
-                holdStatusList: ['rvGroupConfigurationSrv', 
-                    function (rvGroupConfigurationSrv) {
-                        return rvGroupConfigurationSrv.getHoldStatusList ();
-                    }
-                ]            
+                ]        
             }
 
         });

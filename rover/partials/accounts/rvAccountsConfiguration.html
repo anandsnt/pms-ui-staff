@@ -7,7 +7,11 @@
                 <form>
                     <div class="holder">
                         <div class="entry">
-                            <input id="group-name" placeholder="Account Name" ng-model="groupConfigData.summary.group_name" type="text" class="masked-input h1" data-size="{{groupConfigData.summary.group_name.length}}" auto-grow-field/>
+                            <input 
+                                placeholder="Account Name" 
+                                ng-model="accountConfigData.summary.posting_account_name" 
+                                type="text" class="masked-input h1" 
+                                data-size="{{accountConfigData.summary.posting_account_name.length}}" auto-grow-field/>
                         </div>
                     </div>
                 </form>
@@ -16,8 +20,8 @@
                     <button type="button" class="button blue hidden" ng-click="duplicateGroup()">Duplicate</button>
                 </div>                
                 <div class="card-actions" ng-show="isInAddMode()">
-                    <button type="button" class="button green" ng-click="saveNewGroup()">Save Account</button>
-                    <button type="button" class="button blank" ng-click="discardNewGroup()">Discard</button>
+                    <button type="button" class="button green" ng-click="saveNewAccount()">Save Account</button>
+                    <button type="button" class="button blank" ng-click="discardNewAccount()">Discard</button>
                 </div>                
             </div>
         </header>
