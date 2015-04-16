@@ -168,22 +168,22 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		$scope.updateAccountSummary = function() {
 			// rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')
 			if (true) {
-				var onGroupUpdateSuccess = function(data) {
+				var onAccountUpdateSuccess = function(data) {
 						//client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
 						console.log(data);
 					},
-					onGroupUpdateFailure = function(errorMessage) {
+					onAccountUpdateFailure = function(errorMessage) {
 						//client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
 						console.log(errorMessage);
 					};
 
 				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
-					successCallBack: onGroupUpdateSuccess,
-					failureCallBack: onGroupUpdateFailure,
+					successCallBack: onAccountUpdateSuccess,
+					failureCallBack: onAccountUpdateFailure,
 					params: {
-						summary: $scope.groupAccountData.summary
+						summary: $scope.accountConfigData.summary
 					}
 				});
 			} else {

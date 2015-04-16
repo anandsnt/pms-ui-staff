@@ -1,0 +1,121 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
+    <form method="post" action="" class="modal-content form demographics" ng-cloak>
+
+        <button ng-click="closeDialog()" ng-hide="accountSummaryData.promptMandatoryDemographics" id="modal-close" class="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+
+        <strong class="h2 message" ng-hide="accountSummaryData.promptMandatoryDemographics">Demographics</strong>
+        <!-- <span class="text" ng-hide="accountSummaryData.promptMandatoryDemographics">Fields marked with <strong>*</strong> are mandatory</span> -->
+        
+        <!-- <strong class="h2 message" ng-show="accountSummaryData.promptMandatoryDemographics">Demographics Missing!</strong> -->
+        <!-- <span class="text" ng-show="accountSummaryData.promptMandatoryDemographics">Set mandatory demographics to continue</span> -->
+
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <!-- [<[< RESERVATION TYPES >]>] -->
+        <div class="entry margin">
+            <label for="reservation-type">
+                Reservation type
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="reservation-type" id="reservation-type" 
+                    ng-class="{'placeholder': !accountConfigData.summary.demographics.reservation_type_id}" 
+                    ng-model="accountConfigData.summary.demographics.reservation_type_id">
+                    <option value="null" selected translate>RESERVATION_TYPE_PLACEHOLDER</option>
+                    <option ng-repeat="reservationType in accountSummaryData.demographics.reservationTypes" 
+                        value="{{reservationType.value}}" 
+                        ng-selected="reservationType.value == accountConfigData.summary.demographics.reservation_type_id">
+                        {{reservationType.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- [<[< MARKETS >]>] -->
+        <div class="entry margin" ng-show="accountSummaryData.demographics.is_use_markets">
+            <label for="market">
+                Market
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="market" id="market" 
+                    ng-class="{'placeholder': !accountConfigData.summary.demographics.market_segment_id}" 
+                    ng-model="accountConfigData.summary.demographics.market_segment_id">
+                    <option value="null" selected translate>MARKET_PLACEHOLDER</option>
+                    <option ng-repeat="market in accountSummaryData.demographics.markets" 
+                        value="{{market.value}}" 
+                        ng-selected="market.value == accountConfigData.summary.demographics.market_segment_id">
+                        {{market.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- [<[< SOURCES >]>] -->
+        <div class="entry margin" ng-show="accountSummaryData.demographics.is_use_sources">
+            <label for="source">
+                Source
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="source" id="source" 
+                    ng-class="{'placeholder': !accountConfigData.summary.demographics.source_id}" 
+                    ng-model="accountConfigData.summary.demographics.source_id">
+                    <option value="null" selected translate>SOURCE_PLACEHOLDER</option>
+                    <option ng-repeat="source in accountSummaryData.demographics.sources" 
+                        value="{{source.value}}" 
+                        ng-selected="source.value == accountConfigData.summary.demographics.source_id">
+                        {{source.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- [<[< ORIGINS >]>] -->
+        <div class="entry margin" ng-show="accountSummaryData.demographics.is_use_origins">
+            <label for="origin">
+                Origin of Booking
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="origin" id="origin" 
+                    ng-class="{'placeholder': !accountConfigData.summary.demographics.booking_origin_id}" 
+                    ng-model="accountConfigData.summary.demographics.booking_origin_id">
+                    <option value="null" selected translate>ORIGIN_BOOKING_PLACEHOLDER</option>
+                    <option ng-repeat="origin in accountSummaryData.demographics.origins" 
+                        value="{{origin.value}}" 
+                        ng-selected="origin.value == accountConfigData.summary.demographics.booking_origin_id">
+                        {{origin.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="actions">
+            <button type="button" 
+                class="button blank" 
+                ng-hide="accountSummaryData.promptMandatoryDemographics" 
+                ng-click="cancelDemographicChanges();closeDialog();">
+                Cancel
+            </button>
+
+            <button type="button" class="button"
+                ng-hide="accountSummaryData.promptMandatoryDemographics" 
+                ng-disabled="!isDemographicsFormValid(false)" 
+                ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'",
+                ng-click="saveDemographicsData();">
+                Save
+            </button>
+
+            <button ng-show="accountSummaryData.promptMandatoryDemographics" 
+                type="button" 
+                class="button" 
+                ng-disabled="!isDemographicsFormValid(false)" 
+                ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'">
+                Save & Continue
+            </button>
+            
+        </div>
+    </form>
+</div>

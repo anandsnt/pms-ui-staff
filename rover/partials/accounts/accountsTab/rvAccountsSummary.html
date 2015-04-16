@@ -1,4 +1,8 @@
-<form method="post" id="account-summary" name="account-summary" class="form card-tab scrollable">
+<form method="post" 
+    class="form card-tab scrollable" 
+    ng-controller="rvAccountSummaryCtrl" 
+    ng-iscroll="rvAccountSummaryScroller" ng-iscroll-delay="500" 
+    outside-click-handler>
     <div class="wrapper">
         <div class="holder left">
             <strong class="h3">Account Information</strong>
@@ -32,7 +36,7 @@
             </div> 
             -->
             <div class="entry break full-width">
-                <button class="button white brand-text">Demographics</button>
+                <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
                 <!-- opens {modals/demographics.html} -->
             </div>
         </div>
@@ -45,7 +49,7 @@
             <div class="entry">
                 <label for="account-status">Status</label>
                 <div class="select">
-                    <select id="account-status" ng-model="accountConfigData.summary.posting_account_status">
+                    <select id="account-status" ng-model="accountConfigData.summary.posting_account_status" ng-change="onAccountStatusModification();">
                         <!-- Disable closing and show {modals/alerts/closing-account.html} popup if balance not 0 -->
                         <option value="OPEN" selected>Open</option>
                         <option value="CLOSED">Closed</option>
