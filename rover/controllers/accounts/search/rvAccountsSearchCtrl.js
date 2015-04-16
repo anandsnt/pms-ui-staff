@@ -183,13 +183,14 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @param {Array} - array of objects - accounts
 		* @return {None}
 		*/
-		var successCallBackOfSearch = function(data){			
+		var successCallBackOfSearch = function(data){	
 			//accountList
-			$scope.accountList = initialAccountsListing.posting_accounts; 
+			$scope.accountList = data.posting_accounts; 
 			
 			//total result count
-			$scope.totalResultCount = initialAccountsListing.total_count;
+			$scope.totalResultCount = data.total_count;
 
+			//we have changed the data
 			refreshScrollers ();
 		};
 
