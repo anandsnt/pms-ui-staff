@@ -104,7 +104,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			//Save summary data on tab switch (UI)
 			if (isInAccountsTab && !$scope.isInAddMode()) {
-				$scope.updateGroupSummary();
+				$scope.updateAccountSummary();
 			}
 
 			$scope.accountConfigData.activeTab = tab;
@@ -165,9 +165,27 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 * Update the group data
 		 * @return undefined
 		 */
-		$scope.updateAccount = function() {
-			if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
-				// TODO: Update Account
+		$scope.updateAccountSummary = function() {
+			// rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')
+			if (true) {
+				var onGroupUpdateSuccess = function(data) {
+						//client controllers should get an infromation whether updation was success
+						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
+						console.log(data);
+					},
+					onGroupUpdateFailure = function(errorMessage) {
+						//client controllers should get an infromation whether updation was a failure
+						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
+						console.log(errorMessage);
+					};
+
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
+					successCallBack: onGroupUpdateSuccess,
+					failureCallBack: onGroupUpdateFailure,
+					params: {
+						summary: $scope.groupAccountData.summary
+					}
+				});
 			} else {
 				console.warn('No Permission for EDIT_GROUP_SUMMARY');
 			}

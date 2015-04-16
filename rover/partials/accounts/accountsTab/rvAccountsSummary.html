@@ -63,10 +63,25 @@
             <!-- Notes -->
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">
-                <textarea id="account-notes" placeholder="Write a note" rows="2"></textarea>
-                <button type="button" class="button brand-colors post">Post</button>
+                <textarea id="account-notes" ng-model="accountSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
+                <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveAccountNote()">Post</button>
             </div>
-            {see cards/company-card/content/tabs/ar-account.html, L14-30 for notes markup}
+            <ul class="notes">
+                <li ng-repeat="note in accountConfigData.summary.notes">
+                    <figure class="guest-image">
+                        <img src="{{note.user_image}}" alt="" />
+                    </figure>
+                    <div class="note-title">
+                        <h4>{{note.username}}</h4>
+                        <time datetime="{{note.posted_date}}">
+                            <span class="time">{{note.posted_date}}</span>
+                            <span class="date">{{note.posted_time}}</span>
+                        </time>
+                        <button type="button" class="icons icon-trash" ng-click="removeAccountNote(note.note_id)">Delete post</button>
+                    </div>
+                    <p>{{note.description}}</p>
+                </li>
+            </ul>
         </div>
     </div>
 </form>
