@@ -130,8 +130,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 */
 		$scope.saveNewAccount = function() {
 			$scope.errorMessage = "";
-			// rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY')
-			if (true) {
+			if (rvPermissionSrv.getPermissionValue('CREATE_ACCOUNT')) {
 				if (ifMandatoryValuesEntered()) {
 					var onAccountSaveSuccess = function(data) {
 							$scope.accountConfigData.summary.posting_account_id = data.posting_account_id;
@@ -166,8 +165,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 * @return undefined
 		 */
 		$scope.updateAccountSummary = function() {
-			// rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')
-			if (true) {
+			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
 						//client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
