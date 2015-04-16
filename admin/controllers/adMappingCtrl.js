@@ -1,7 +1,9 @@
-admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappingSrv', function($scope, $state, $stateParams, ADMappingSrv) {
+admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADMappingSrv', function($scope, $rootScope, $state, $stateParams, ADMappingSrv) {
 	
 	BaseCtrl.call(this, $scope);
-	$scope.hotelId = $stateParams.hotelId;
+        console.log($rootScope.hotelId);
+	$scope.hotelId = $rootScope.hotelId;
+	//$scope.hotelId = 1;
 	$scope.editData   = {};
 	$scope.editData.sntValues = [];
 	$scope.currentClickedElement = -1;
@@ -40,6 +42,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 			$scope.editData.mapping_value = data.selected_mapping_type;
 			$scope.editData.snt_value = data.selected_snt_value;
 			$scope.editData.external_value = data.external_value;
+			$scope.editData.source_code = data.source_code;
 			$scope.editData.value = data.value;
 			$scope.isEdit = true;
 			$scope.isAdd = false;
@@ -92,6 +95,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 			var newData = {
                     "value": data.value,
                     "snt_value": postData.snt_value,
+                    "source_code":postData.source_code,
                     "external_value": postData.external_value
             };
             
