@@ -17,11 +17,11 @@
                 </form>
                 <div class="card-actions" ng-hide="isInAddMode()">
                     <!--  HIDE BUTTON FOR NOW TILL DUPLICATE FUNCTIONALITY IS COMPLETE-->
-                    <button type="button" class="button blue hidden" ng-click="duplicateGroup()">Duplicate</button>
+                    <button type="button" class="button blue hidden" ng-click="duplicateGroup()" translate>DUPLICATE</button>
                 </div>                
                 <div class="card-actions" ng-show="isInAddMode()">
-                    <button type="button" class="button green" ng-click="saveNewAccount()">Save Account</button>
-                    <button type="button" class="button blank" ng-click="discardNewAccount()">Discard</button>
+                    <button type="button" class="button green" ng-click="saveNewAccount()" translate>SAVE_ACCOUNT</button>
+                    <button type="button" class="button blank" ng-click="discardNewAccount()" translate>DISCARD</button>
                 </div>                
             </div>
         </header>
@@ -31,18 +31,18 @@
                 <!-- Group tabs navigation -->
                 <ul id="account-card-tabs-nav" class="card-tabs-nav">
                     <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACCOUNT'}">
-                        <a>Summary</a>
+                        <a translate>SUMMARY</a>
                     </li>
                     <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'TRANSACTIONS'}">
-                        <a>Transactions</a>
+                        <a translate>TRANSACTIONS</a>
                     </li>
                     <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACTIVITY'}">
-                        <a>Activity Log</a>
+                        <a translate>ACTIVITY_LOG</a>
                     </li>
                 </ul>
-                <!-- Group Tab - Summary -->
-                <!-- SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY -->
-                <!-- Group Card Tab - Room Block Details -->
+                
+                <!--ACCOUNT, TRANSACTIONS, ACTIVITY -->
+                
                 <ng-include src="getCurrentTabUrl()">
                 </ng-include>
             </div>

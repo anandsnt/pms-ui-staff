@@ -78,16 +78,18 @@
             <button type="button" 
                 class="button blank" 
                 ng-hide="accountSummaryData.promptMandatoryDemographics" 
-                ng-click="cancelDemographicChanges();closeDemographicsPopup();">
-                Cancel
+                ng-click="cancelDemographicChanges();closeDemographicsPopup();"
+                translate>
+                CANCEL
             </button>
 
             <button type="button" class="button"
                 ng-hide="accountSummaryData.promptMandatoryDemographics" 
                 ng-disabled="!isDemographicsFormValid(false)" 
                 ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'",
-                ng-click="saveDemographicsData();">
-                Save
+                ng-click="saveDemographicsData();"
+                translate>
+                SAVE
             </button>
 
             <button ng-show="accountSummaryData.promptMandatoryDemographics" 

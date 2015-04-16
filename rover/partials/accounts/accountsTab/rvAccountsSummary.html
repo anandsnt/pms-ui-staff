@@ -5,17 +5,17 @@
     outside-click-handler>
     <div class="wrapper">
         <div class="holder left">
-            <strong class="h3">Account Information</strong>
+            <strong class="h3" translate>ACCOUNT_INFO</strong>
             <div class="entry full-width">
-                <label for="account-name">Name</label>
+                <label for="account-name" translate>NAME</label>
                 <input id="account-name" ng-model="accountConfigData.summary.posting_account_name" type="text" />
             </div>
             <div class="entry margin">
-                <label for="account-number">Account Number</label>
+                <label for="account-number" translate>ACCOUNT_NUMBER</label>
                 <input id="account-number" ng-model="accountConfigData.summary.posting_account_number" type="text" />
             </div>
             <div class="entry">
-                <label for="account-number">Account Type</label>
+                <label for="account-type">ACCOUNT_TYPE</label>
                 <div class="select">
                     <select id="account-type" ng-model="accountConfigData.summary.posting_account_type" ng-change="onAccountTypeModification();">
                         <option value="HOUSE" selected>House</option>
@@ -43,11 +43,11 @@
         <div class="holder right">
             <strong class="h3">Balance / Status</strong>
             <div class="entry margin">
-                <label for="account-balance">Balance</label>
+                <label for="account-balance" translate>BALANCE</label>
                 <input id="account-balance" class="balance-{red or green}" ng-model="accountConfigData.summary.balance" type="text" readonly />
             </div>
             <div class="entry">
-                <label for="account-status">Status</label>
+                <label for="account-status" translate>STATUS</label>
                 <div class="select">
                     <select id="account-status" ng-model="accountConfigData.summary.posting_account_status" ng-change="onAccountStatusModification();">
                         <!-- Disable closing and show {modals/alerts/closing-account.html} popup if balance not 0 -->
@@ -57,18 +57,18 @@
                 </div>
             </div>
             <div class="entry no-label only-button margin">
-                <button class="button white blue-text">Balance Details</button>
+                <button class="button white blue-text" translate>BALANCE_DETAILS</button>
                 <!-- opens {modals/post-deposit.html} -->
             </div>
             <div class="entry no-label only-button">
-                <button class="button white blue-text">Deposit Rules</button>
+                <button class="button white blue-text" translate>DEPOSIT_RULES</button>
                 <!-- opens {modals/group-deposit-rules.html} -->
             </div>
             <!-- Notes -->
-            <strong class="h3 margin">Notes</strong>
+            <strong class="h3 margin" translate>NOTES</strong>
             <div class="entry full-width no-label with-notes">
                 <textarea id="account-notes" ng-model="accountSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
-                <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveAccountNote()">Post</button>
+                <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveAccountNote()" translate>POST</button>
             </div>
             <ul class="notes">
                 <li ng-repeat="note in accountConfigData.summary.notes">
