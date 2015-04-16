@@ -72,7 +72,7 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.saveAccountNote = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/groups/save_group_note';
+				url = 'api/posting_accounts/save_posting_account_note';
 
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
@@ -85,7 +85,7 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.removeAccountNote = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/groups/delete_group_note';
+				url = 'api/posting_accounts/delete_posting_account_note';
 
 			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
@@ -95,7 +95,5 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				});
 			return deferred.promise;
 		}
-
-
 	}
 ]);
