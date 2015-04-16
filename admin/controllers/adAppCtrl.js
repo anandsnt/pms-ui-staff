@@ -412,6 +412,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 * if it is less than a predefined time, it will not fire click event, otherwise fire
 		 */
 		$scope.clickedMenuItem = function($event, stateToGo) {
+                    if (stateToGo == 'admin.dashboard({"menu":8})'){
+                        $state.go('admin.mapping');
+                    }
 			var currentTime = new Date();
 			if (lastDropedTime != '' && typeof lastDropedTime == 'object') {
 				var diff = currentTime - lastDropedTime;
