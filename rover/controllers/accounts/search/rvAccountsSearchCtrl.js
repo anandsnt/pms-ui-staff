@@ -167,6 +167,9 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			//am trying to search something, so we have to change the initial search helping screen if no rsults
 			$scope.amFirstTimeHere = false;
 
+			//resetting error message
+			$scope.errorMessage = '';
+			
 			var params = formAccountSearchParams();
 			var options = {
 				params: 			params,
