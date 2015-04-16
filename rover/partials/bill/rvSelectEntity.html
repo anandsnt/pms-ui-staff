@@ -80,6 +80,11 @@
                   <div class="status travel-agent" >{{attachedEntities.travel_agent.name}}</div>
                  </li>
 
+                <!-- If group added -->
+                <li class="entity group">
+                    <div class="group-info">G</div>
+                    <h2>{Group Name}</h2>
+                </li>
             </ul>
          </div>
          <!-- Search results, show instead of attached entities when searching -->
@@ -89,7 +94,7 @@
 				RESERVATIONS
 			</li>
 			<li ng-click="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
-				CARDS
+				GROUPS_AND_CARDS
 			</li>
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
