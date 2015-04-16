@@ -1,0 +1,93 @@
+<!-- Search form -->
+<form method="get" action="" name="accounts-search-form" id="accounts-search-form" class="search-form has-options single-option" role="search" ng-class="{'enable-adding':shouldShowAddNewButton()}">
+    
+    <div class="entry search">
+        <button id="accounts-clear-query" class="clear-query" 
+                ng-click="clearSearchQuery()" 
+                ng-class="{'visible': !isEmpty(query)}"> <!-- Add class "visible" to show -->
+            <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+        </button>
+        <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+        <input  name="accounts-query" 
+                id="accounts-query" 
+                class="query" 
+
+                placeholder="Search by Account Name, Code" type="search" 
+                autocomplete="off" 
+                ng-model="query"  
+
+                rv-delay-textbox
+                delay="1000" 
+                function-to-fire="searchQueryChanged"/>
+    </div>
+    <div class="entry options">
+        <div class="select">
+            <select id="account-status" ng-model="status" 
+                ng-change= "search()"
+                ng-class="{'placeholder': status == ''}"> <!-- Add class="placeholder" if val="" is selected -->
+                <option value="">All Accounts</option>
+                <option value="OPEN">Open</option>
+                <option value="CLOSED">Closed</option>
+            </select>
+        </div>
+    </div>
+    <a ng-click="gotoAddNewAccount()" class="add-new-button" ng-show="shouldShowAddNewButton()">+ Add new</a>
+</form>
+<!-- Pagination -->
+<div class="search-pagination" ng-show="shouldShowPagination()">
+    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResultCount}}</strong> items</p>
+</div>
+
+<!-- Search panel - WITH RESULTS -->
+<section id="find-account" class="content scrollable" role="main" 
+    ng-class="{'no-pagination': !shouldShowPagination(), 'no-results': shouldShowNoResult()}"
+    ng-iscroll="result_showing_area" ng-iscroll-delay="1000" > <!-- If no pagination, add class "no-pagination" -->
+    <div class="wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <ul class="search-results">
+            <!-- If no results, show this: -->
+            <li class="no-content" ng-show="isFirstTimeWithNoResult()">
+                <div class="info">
+                    <span class="icon-no-content icon-groups"></span>
+                    <strong class="h1">Find Accounts</strong>
+                    <span class="h2">                
+                            Search by
+                            <strong>Account Code</strong> or
+                            <strong>Account Name</strong>
+                        </span>
+                </div>                
+            </li>
+
+            <!-- If no results, show this: -->
+            <li class="no-content" ng-show="shouldShowNoResult()">
+                <div class="info">
+                    <span class="icon-no-content icon-groups"></span>
+                    <strong class="h1">No Matches</strong>
+                    <span class="h2">Check that you didn't mispell the <strong>Account Name</strong>, <strong>Code</strong><a ng-click="gotoAddNewAccount()" class="inline-link">Or add a New Account</a>.</span>
+                </div>
+            </li>
+            <li class="account" ng-show="!shouldShowNoResult()" ng-repeat="account in accountList" ngrepeatend ngrepeatstarted>
+                <a ng-click="gotoEditAccountConfiguration(account.id)">
+                    <div class="data">
+                        <h2 ng-bind-html="{{escapeNull(stringify(account.posting_accounts_name))}}|highlight:query:false">
+                        </h2>
+                        <span class="confirmation" ng-bind-html="{{escapeNull(stringify(account.posting_accounts_number))}}|highlight:query:false"></span>
+
+                    </div>
+                    <div class="info">
+                        <strong ng-class="getClassAgainstBalance(account)">{{account.balance}}</strong> <!-- Add class="red" if > 0 -->
+                        <span>Balance</span>
+                    </div>     
+                    
+                    <div class="info">
+                        <strong ng-class="getClassAgainstAccountStatus(account)">{{account.status}}</strong> <!-- Add class="green" if Open -->
+                        <span>Status</span>
+                    </div>
+                   
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>

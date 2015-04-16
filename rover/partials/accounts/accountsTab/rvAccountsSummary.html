@@ -1,0 +1,70 @@
+<form method="post" id="account-summary" name="account-summary" class="form card-tab scrollable">
+    <div class="wrapper">
+        <div class="holder left">
+            <strong class="h3">Account Information</strong>
+            <div class="entry full-width">
+                <label for="account-name">Name</label>
+                <input id="account-name" value="{Account Name}" type="text" />
+            </div>
+            <div class="entry margin">
+                <label for="account-number">Account Number</label>
+                <input id="account-number" value="{Account No.}" type="text" />
+            </div>
+            <div class="entry">
+                <label for="account-number">Account Type</label>
+                <div class="select">
+                    <select id="account-type">
+                        <option value="house" selected>House</option>
+                        <option value="group">Group</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry clear" ng-hide="true">
+                <label for="account-hold">Hold Status</label>
+                <div class="select">
+                    <select id="account-hold">
+                        <option value="" selected>Set Status</option>
+                        <option value="{status}">{status}</option>
+                        ... repeat
+                    </select>
+                </div>
+            </div>
+            <div class="entry break full-width">
+                <button class="button white brand-text">Demographics</button>
+                <!-- opens {modals/demographics.html} -->
+            </div>
+        </div>
+        <div class="holder right">
+            <strong class="h3">Balance / Status</strong>
+            <div class="entry margin">
+                <label for="account-balance">Balance</label>
+                <input id="account-balance" class="balance-{red or green}" value="{balance}" type="text" readonly />
+            </div>
+            <div class="entry">
+                <label for="account-status">Status</label>
+                <div class="select">
+                    <select id="account-status">
+                        <!-- Disable closing and show {modals/alerts/closing-account.html} popup if balance not 0 -->
+                        <option value="open" selected>Open</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry no-label only-button margin">
+                <button class="button white blue-text">Balance Details</button>
+                <!-- opens {modals/post-deposit.html} -->
+            </div>
+            <div class="entry no-label only-button">
+                <button class="button white blue-text">Deposit Rules</button>
+                <!-- opens {modals/group-deposit-rules.html} -->
+            </div>
+            <!-- Notes -->
+            <strong class="h3 margin">Notes</strong>
+            <div class="entry full-width no-label with-notes">
+                <textarea id="account-notes" placeholder="Write a note" rows="2"></textarea>
+                <button type="button" class="button brand-colors post">Post</button>
+            </div>
+            {see cards/company-card/content/tabs/ar-account.html, L14-30 for notes markup}
+        </div>
+    </div>
+</form>
