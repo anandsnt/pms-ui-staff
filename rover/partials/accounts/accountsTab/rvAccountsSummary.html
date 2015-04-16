@@ -4,21 +4,22 @@
             <strong class="h3">Account Information</strong>
             <div class="entry full-width">
                 <label for="account-name">Name</label>
-                <input id="account-name" value="{Account Name}" type="text" />
+                <input id="account-name" ng-model="accountConfigData.summary.posting_account_name" type="text" />
             </div>
             <div class="entry margin">
                 <label for="account-number">Account Number</label>
-                <input id="account-number" value="{Account No.}" type="text" />
+                <input id="account-number" ng-model="accountConfigData.summary.posting_account_number" type="text" />
             </div>
             <div class="entry">
                 <label for="account-number">Account Type</label>
                 <div class="select">
-                    <select id="account-type">
-                        <option value="house" selected>House</option>
-                        <option value="group">Group</option>
+                    <select id="account-type" ng-model="accountConfigData.summary.posting_account_type">
+                        <option value="HOUSE" selected>House</option>
+                        <option value="GROUP">Group</option>
                     </select>
                 </div>
             </div>
+            <!--
             <div class="entry clear" ng-hide="true">
                 <label for="account-hold">Hold Status</label>
                 <div class="select">
@@ -28,7 +29,8 @@
                         ... repeat
                     </select>
                 </div>
-            </div>
+            </div> 
+            -->
             <div class="entry break full-width">
                 <button class="button white brand-text">Demographics</button>
                 <!-- opens {modals/demographics.html} -->
@@ -38,15 +40,15 @@
             <strong class="h3">Balance / Status</strong>
             <div class="entry margin">
                 <label for="account-balance">Balance</label>
-                <input id="account-balance" class="balance-{red or green}" value="{balance}" type="text" readonly />
+                <input id="account-balance" class="balance-{red or green}" ng-model="accountConfigData.summary.balance" type="text" readonly />
             </div>
             <div class="entry">
                 <label for="account-status">Status</label>
                 <div class="select">
-                    <select id="account-status">
+                    <select id="account-status" ng-model="accountConfigData.summary.posting_account_status">
                         <!-- Disable closing and show {modals/alerts/closing-account.html} popup if balance not 0 -->
-                        <option value="open" selected>Open</option>
-                        <option value="closed">Closed</option>
+                        <option value="OPEN" selected>Open</option>
+                        <option value="CLOSED">Closed</option>
                     </select>
                 </div>
             </div>
