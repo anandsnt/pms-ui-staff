@@ -13,14 +13,32 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 	$scope.isEdit = false;
 	$scope.isAdd = false;
 	$scope.addFormView = false;
+        
+        $scope.showAddNew = function(){
+            $scope.addFormView = true;
+        }
+        $scope.hideAddNew = function(){
+            $scope.addFormView = false;
+        }
 	
+        $scope.openAddNew = function(){
+            $scope.isAdd = true;
+        };
+        $scope.closeAddNew = function(){
+            $scope.isAdd = false;
+        };
+        
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
 		
 		// Set Flag to disable Add new.
-		if($scope.data.disable_mappings) $scope.addFormView = false;
-		else $scope.addFormView = true;
+		if($scope.data.disable_mappings) {
+                    //$scope.closeAddNew();
+                    $scope.openAddNew();// debugging
+                } else {
+                    $scope.openAddNew();
+                }
 	};
 	
 	$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchSuccess);

@@ -5,9 +5,9 @@
 			<header class="content-title float">
 				<h2>External Mappings</h2>
 				<span class="count">({{data.total_count}})</span>
-				<a ng-click="addNew()" ng-show="addFormView" class="action add" >Add new</a>
-				<a class="action back" ui-sref="admin.snthoteldetails({action:'edit',id: hotelId})">Back</a>
 				
+				<a class="action back" ui-sref="admin.snthoteldetails({action:'edit',id: hotelId})">Back</a>
+				<button ng-click="addNew()" ng-show="addFormView" class="action add" >Add new</button>
 				<div class="filters">
 					<div class="filter hidden"></div>
 					<div class="filter hidden"></div>
