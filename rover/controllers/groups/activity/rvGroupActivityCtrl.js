@@ -2,18 +2,30 @@ sntRover.controller('rvGroupActivityCtrl', [
 	'$scope', 
 	'$rootScope', 
 	'$filter', 
-	'$stateParams', 
-	function($scope, $rootScope, $filter, $stateParams) {
+	'$stateParams',
+	'rvGroupActivitySrv',
+	function($scope, $rootScope, $filter, $stateParams,rvGroupActivitySrv) {
 		BaseCtrl.call(this, $scope);		
 
 		/**		
 		 * initialisation and basic configuration
 		 * @return {none}
 		 */
-		$scope.init = function(){
-			//TODO- remove $scope.count = 10 for test purpose
-			$scope.count = 10;			
-			$scope.errorMessage = '';			
+		$scope.init = function(){						
+			$scope.errorMessage = '';
+			$scope.page = 1;
+			//TODO - $scope.selectedGroupOrAccountId
+			$scope.selectedGroupOrAccountId = 11;
+			 var params = {
+			 	"id":$scope.selectedGroupOrAccountId,
+			 	"page":$scope.page
+			 }
+			var fetchCompleted = function(data){				
+				$scope.count = data.total_count;
+				$scope.$emit('hideLoader');
+				$scope.activityLogData = data.results
+			}
+			$scope.invokeApi(rvGroupActivitySrv.fetchActivityLog, params, fetchCompleted);
 		}
 		
 		/**		 
@@ -35,6 +47,19 @@ sntRover.controller('rvGroupActivityCtrl', [
 	        $scope.prevAction = true;
 	        $scope.updateReport();
 		}
+
+		/**
+		 * checking Whetheroldvalue of detail have any value
+		 *@return - Boolean		
+		 */
+		$scope.isOldValue = function(value){
+        if(value =="" || typeof value == "undefined" || value == null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    	}
 		
 		/**		 
 		 * for pagination

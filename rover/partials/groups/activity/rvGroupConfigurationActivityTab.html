@@ -1,6 +1,5 @@
 <!-- Group Card Tab - Activity Log -->
-<form id="group-transactions" name="group-transactions" class="form card-tab scrollable" ng-controller = "rvGroupActivityCtrl" >
-    <div class="wrapper">
+<form ng-controller = "rvGroupActivityCtrl"  class="form card-tab scrollable">
         <!-- Keep in mind that some fields should be empty -->       
         <div id="group-activity-header" class="tab-header no-print">
 		    <ul class="totals">
@@ -29,7 +28,13 @@
 
 		<div id="group-activity-content" class="tab-details">	    
 	    <!-- Search pagination, if applicable{_shared/pagination.html} -->
-		    <div id="report-content" class="report-content scrollable"> 
+		    <div class="search-pagination hk-pagination" ng-show="true">
+		        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+		        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+		        <p>Showing <strong>1-1</strong> of <strong id="total-count">10</strong> items</p>
+		    </div>	
+		        
+		    <div id="report-content" class="report-content scrollable with-pagination" ng-iscroll="report_content" ng-iscroll-delay="1000"> 
 		    <!-- Add class "with-pagination" if pagination is shown -->
 			        <div class="wrapper">
 			            <table class="log-reports">
@@ -38,28 +43,31 @@
 			                        <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
 			                        "sorting-asc" when ASC sorting
 			                        "sorting-desc" when DESC sorting -->
-			                        <th><span class="sort">User Name</span></th>
-			                        <th><span class="sort">Date &amp; Time</span></th>
-			                        <th><span class="sort">Action</span></th>
+			                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfUserASC,'sorting-desc':sortOrderOfUserDSC}" ng-click="sortByUserName()">User Name</span></th>
+			                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfDateASC,'sorting-desc':sortOrderOfDateDSC}" ng-click="sortByDate()">Date &amp; Time</span></th>
+			                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfActionASC,'sorting-desc':sortOrderOfActionDSC}" ng-click="sortByAction()">Action</span></th>
 			                        <th><span>Details</span></th>
 			                    </tr>
 			                </thead>   
 			                <tbody>
-			                    <tr>
-			                        <td>{User Name}</td>
-			                        <td>{Date}, {Time}</td>
-			                        <td>{Activity }</td>
-			                        <td class="details">{Details - stack required components, see bottom of template for code snippets}</td>
-			                    </tr>                   
-			                </tbody>
+			                 <tr ng-repeat="log in activityLogData" >
+			                    <td>{{log.user_name}}</td>
+		                        <td> {{log.date }}, {{log.time}}</td>
+		                        <td>{{log.action}}</td>
+		                        <td class="details">
+		                            <span ng-repeat="details in log.details">
+		                                <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
+		                                    <strong>{{ details.old_value }}</strong>
+		                                </span>
+		                                {{details.key}}
+		                                <strong>{{details.new_value}}</strong>
+		                            </span>
+		                        </td>
+		                        </tr>                
+			                </tbody>			                
 			            </table>         
 			        </div>
 		    </div>
 		</div>
-    </div>
-    <div class="search-pagination hk-pagination" ng-show="true">
-        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
-        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-        <p>Showing <strong>1-1</strong> of <strong id="total-count">10</strong> items</p>
-    </div>
+
 </form>
