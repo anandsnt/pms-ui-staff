@@ -5,8 +5,8 @@
             <strong class="h3" translate>GROUP_INFO</strong>
             <div class="entry full-width">
                 <label for="group-name">
-                    <strong>*</strong>
                     {{ 'NAME' | translate}}
+                    <strong>*</strong>
                 </label>
                 <input id="group-name" ng-model="groupConfigData.summary.group_name" type="text" />
             </div>
@@ -38,8 +38,8 @@
             <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
             <div class="entry margin has-datepicker">
                 <label for="group-block-from">
-                    <strong>*</strong>
                     {{'FROM' | translate}}
+                    <strong>*</strong>
                 </label>
                 <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
                 <!--<input id="group-block-from" ng-if="!isInAddMode()" type="text" value="{{groupConfigData.summary.block_from | date:dateFormat}}" readonly />-->
@@ -48,8 +48,8 @@
             </div>
             <div class="entry has-datepicker">
                 <label for="group-block-to">
-                    <strong>*</strong>
                     {{'TO' | translate}}
+                    <strong>*</strong>
                 </label>
                 <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
                 <!--!<input ng-if="!isInAddMode()" id="group-block-to" type="text" value="{{groupConfigData.summary.block_to | date:dateFormat}}" readonly />-->
@@ -58,8 +58,8 @@
             </div>
             <div class="entry full-width with-button has-datepicker">
                 <label for="group-release-date">
-                    <strong>*</strong>
                     {{'ROOM_RELEASE_DATE' | translate}}
+                    <strong>*</strong>
                 </label>
                 <!-- releaseDateOptions -->
                 <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{groupConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !groupConfigData.summary.release_date}" />
@@ -68,8 +68,8 @@
             </div>
             <div class="entry clear">
                 <label for="group-hold-status">
-                    <strong>*</strong>
                     {{'HOLD_STATUS' | translate}}
+                    <strong>*</strong>
                 </label>
                 <div class="select">
                     <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation>
