@@ -2184,6 +2184,11 @@
                                             .checkbox,
                                             .radio { width: 100%; }
                                         }
+
+                                        .check-block { 
+                                            margin-bottom: 10px; 
+                                            .float;
+                                        }
                                     }
 
                                     &.break {
@@ -2270,6 +2275,14 @@
                                         &.radio-check {
                                             .checkbox:nth-child(even),
                                             .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                            .check-block {
+                                                .checkbox:nth-child(even),
+                                                .radio:nth-child(even) { margin-right: 0; }
+
+                                                .checkbox:nth-child(odd),
+                                                .radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
+                                            }
                                         }
                                     }
                                 }
@@ -2279,6 +2292,14 @@
                                         &.radio-check {
                                             .checkbox:nth-child(odd),
                                             .radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                            .check-block {
+                                                .checkbox:nth-child(even),
+                                                .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                                .checkbox:nth-child(odd),
+                                                .radio:nth-child(odd) { margin-right: 0; }
+                                            }
                                         }
                                     }
                                 }
@@ -2314,6 +2335,7 @@
                                 overflow: hidden;
                                 text-overflow: ellipsis;
                                 .clickable;
+                                .no-transition();
 
                                 > .primary:not(.value) {
                                     position: absolute;

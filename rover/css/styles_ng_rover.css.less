@@ -1137,17 +1137,6 @@ Padding for the ows error popup
   height:220px;
 }
 
-/*  
-    CICO-7619  - Deleted payment and loyalty do not disappear from Guest card.
-    Adding correction class 'active-item-no-transition' here.
-    Overridding transition property on 'active-item' class used in these sections.
-    Since that makes the issue while deleting the respective items.
-*/
-.active-item-no-transition{
-  .transition (all, 0s, @easing: cubic-bezier(.10, .10, .25, .90)) !important;
-
-}
-
 /* CICO-10105 */
 #availability {
   z-index: 10000;

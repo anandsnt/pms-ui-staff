@@ -1,39 +1,33 @@
-<form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
-	<div id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='1000' class="scroll-guest-tab" style="height:{{guestCardHeight - dimensionsLookup.cardTabContentOffset}}px">
-		<div class="wrapper">
-					<!-- Credit cards on file -->
-					<div class="entry full-width">
-			 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			 		</div>
-					<a ng-click="openDeleteSetAsPrimaryModal(payment.id, $index)" class="active-item item-payment primary open-modal float active-item-no-transition" ng-repeat="payment in paymentData.data" ng-if="payment.payment_type == 'CC'">
-						<span>
-							<figure class="card-logo">
-								<img ng-src="/assets/{{payment.card_code}}.png" alt="" />
-							</figure> 
-							<span class="number">Ending with 
-								<span class="value number">{{payment.mli_token}}</span>
-							</span> 
-							<span class="date">Date 
-								<span class="value date">{{payment.card_expiry}}</span>
-							</span>
-							<span class="name">Name 
-								<span class="value name">{{payment.card_name}}</span>
-							</span> 
-							<span class="primary" ng-show="payment.is_primary">
-								<span class="value primary">Primary</span>
-							</span> 
-						</span>
-						<span class="value code" ng-show = "payment.payment_type_id != 1">
-							<span class="name">{{ payment.payment_type }}
-							</span> 
-							<span class="primary" ng-show="payment.is_primary">
-									<span class="value primary">Primary</span>
-							</span> 
-						</span>
-	  			
-					</a>
-					<a class="open-modal add-new-button" ng-click="openAddNewPaymentModel()">+ New Payment Method</a>
-		</div>
+<form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-iscroll='paymentList' ng-iscroll-delay='1000' ng-show="current == 'guest-credit'">
+	<div class="wrapper">
+		<!-- Credit cards on file -->
+		<div class="entry full-width">
+ 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+ 		</div>
+		<a ng-click="openDeleteSetAsPrimaryModal(payment.id, $index)" class="active-item item-payment primary open-modal float active-item-no-transition" ng-repeat="payment in paymentData.data" ng-if="payment.payment_type == 'CC'">
+			<figure class="card-logo">
+				<img ng-src="/assets/{{payment.card_code}}.png" alt="" />
+			</figure> 
+			<span class="number">Ending with 
+				<span class="value number">{{payment.mli_token}}</span>
+			</span> 
+			<span class="date">Date 
+				<span class="value date">{{payment.card_expiry}}</span>
+			</span>
+			<span class="name">Name 
+				<span class="value name">{{payment.card_name}}</span>
+			</span> 
+			<span class="primary" ng-show="payment.is_primary">
+				<span class="value primary">Primary</span>
+			</span> 
+			<span class="value code" ng-show = "payment.payment_type_id != 1">
+				<span class="name">{{ payment.payment_type }}
+				</span> 
+				<span class="primary" ng-show="payment.is_primary">
+					<span class="value primary">Primary</span>
+				</span> 
+			</span>
+		</a>
+		<a class="add-new-button" ng-click="openAddNewPaymentModel()">+ New Payment Method</a>
 	</div>
 </form>
-
