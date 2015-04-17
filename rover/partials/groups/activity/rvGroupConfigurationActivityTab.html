@@ -1,5 +1,6 @@
 <!-- Group Card Tab - Activity Log -->
-<form ng-controller = "rvGroupActivityCtrl"  class="form card-tab scrollable">
+<div ng-controller = "rvGroupActivityCtrl"> 
+<form method="post" action="{action}" id="group-transactions" name="group-transactions" class="form card-tab inner-header activity" ng-controller = "rvActivityCtrl">
         <!-- Keep in mind that some fields should be empty -->       
         <div id="group-activity-header" class="tab-header no-print">
 		    <ul class="totals">
@@ -28,7 +29,7 @@
 
 		<div id="group-activity-content" class="tab-details">	    
 	    <!-- Search pagination, if applicable{_shared/pagination.html} -->
-		    <div class="search-pagination hk-pagination" ng-show="true">
+		    <div class="search-pagination hk-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
 		        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
 		        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
 		        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{count}}</strong> items</p>
@@ -69,4 +70,5 @@
 			        </div>
 		    </div>
 		</div>
-		</form>
+</form>
+</div>
