@@ -100,7 +100,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			
         	console.log($scope.selectedEntity);
         }
-        else if(type === 'CARDS'){
+        else if(type === 'CARDS_OR_GROUPS'){
         	var data = $scope.results.cards[index];
         	$scope.selectedEntity = {
 			    "id": data.id,
@@ -119,8 +119,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			if(data.account_type === 'COMPANY'){
 				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
 			}
-			else{
-				$scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+            else if(data.account_type === 'TRAVELAGENT'){
+                $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+            }
+			else if(data.account_type === 'GROUP'){
+				$scope.selectedEntity.entity_type = 'GROUP';
 			}
         }
 	};

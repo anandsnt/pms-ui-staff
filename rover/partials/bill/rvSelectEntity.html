@@ -81,9 +81,9 @@
                  </li>
 
                 <!-- If group added -->
-                <li class="entity group">
+                <li class="entity group" ng-show="attachedEntities.hasOwnProperty('group_details')" ng-click="selectAttachedEntity(-1,'GROUP')">
                     <div class="group-info">G</div>
-                    <h2>{Group Name}</h2>
+                    <h2>{{attachedEntities.group_details.name}}</h2>
                 </li>
             </ul>
          </div>
@@ -99,7 +99,7 @@
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent' , 'group': row.account_type.toLowerCase()=='group'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS')">
+				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent' , 'group': row.account_type.toLowerCase()=='group'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS_OR_GROUPS')">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
 	                    <img ng-src="{{row.company_logo}}" alt="">
