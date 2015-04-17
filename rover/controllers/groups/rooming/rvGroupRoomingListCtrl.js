@@ -43,7 +43,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowNoReservations = function() {
-			return ($scope.reservations.length > 0);
+			return ($scope.reservations.length === 0);
 		};
 
 		/**
@@ -106,7 +106,8 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 	 	 * @return {[type]}      [description]
 	 	 */
 	 	var successCallBackOfAddReservations = function(data){
-	 		$scope.reservations = data.results;	 		
+	 		$scope.reservations = data.results;	 
+	 		console.log ($scope.reservations)		;
 	 	};
 
 	 	/**
