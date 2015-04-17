@@ -26,7 +26,7 @@
             <div ng-if="isInAddonSelectionMode()" ng-include="'/assets/partials/groups/summary/rvGroupConfigurationAddons.html'"></div>
             <div ng-if="!isInAddonSelectionMode()" id="group-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
-                <ul id="group-card-tabs-nav" class="card-tabs-nav">
+                <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
                     <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
                         <a>Account</a>
                     </li>
