@@ -18,14 +18,17 @@ sntRover.controller('rvGroupActivityCtrl', [
 			$scope.selectedGroupOrAccountId = 11;
 			 var params = {
 			 	"id":$scope.selectedGroupOrAccountId,
-			 	"page":$scope.page
+			 	"page":$scope.page,
+			 	"perPage":50
 			 }
 			var fetchCompleted = function(data){				
 				$scope.count = data.total_count;
 				$scope.$emit('hideLoader');
-				$scope.activityLogData = data.results
+				$scope.activityLogData = data.results;
+				$scope.initPaginationParams();
 			}
 			$scope.invokeApi(rvGroupActivitySrv.fetchActivityLog, params, fetchCompleted);
+
 		}
 		
 		/**		 
@@ -55,10 +58,9 @@ sntRover.controller('rvGroupActivityCtrl', [
 		$scope.isOldValue = function(value){
         if(value =="" || typeof value == "undefined" || value == null){
             return false;
-        }
-        else{
+        	}else{
             return true;
-        }
+        	}
     	}
 		
 		/**		 
@@ -78,8 +80,8 @@ sntRover.controller('rvGroupActivityCtrl', [
 		 * @return {boolean}		
 		 */
 		$scope.isNextButtonDisabled = function(){
-			var isDisabled = false;
-	        if ($scope.end >= $scope.totalResults) {
+			var isDisabled = false;			
+	        if ($scope.end >= $scope.count) {
 	            isDisabled = true;
 	        }
 	        return isDisabled;
@@ -161,18 +163,17 @@ sntRover.controller('rvGroupActivityCtrl', [
 		 * @return {none}		
 		 */
 	    $scope.initPaginationParams = function() {
-	        if($scope.activityLogData.total_count==0){           
+	        if($scope.count==0){           
 	             $scope.start = 0;
 	             $scope.end =0;
 	        }else{
-		        $scope.start = 1;
-		        //TODO -Logdata update
-		        $scope.end = $scope.start + $scope.activityLogData.length - 1;//
+		        $scope.start = 1;		        
+		        $scope.end = $scope.start + $scope.count - 1;//
 		        }
 	        $scope.page = 1;
 	        $scope.perPage = 50;        
 	        $scope.nextAction = false;
-	        $scope.prevAction = false;
+	        $scope.prevAction = false;	        
 	    }
 
 		/**	@param {none}	 
@@ -180,10 +181,31 @@ sntRover.controller('rvGroupActivityCtrl', [
 		 * @return {none}		
 		 */
 		$scope.updateReport = function(){
-			//fetch log data with params ie page, sortorder and sortfield
-			//Please refer rvActivityLogCtrl.js for referance. Line No.105 onwards
-
-		}
+	        var fetchCompleted = function(data) {
+	                $scope.count = data.total_count;
+	                $scope.activityLogData = data.results;
+	                if ($scope.nextAction) {
+	                    $scope.start = $scope.start + $scope.perPage;
+	                    $scope.nextAction = false;
+	                    $scope.initSort();
+	                }
+	                if ($scope.prevAction) {
+	                    $scope.start = $scope.start - $scope.perPage;
+	                    $scope.prevAction = false;
+	                    $scope.initSort();
+	                }
+	                $scope.end = $scope.start + $scope.count - 1;
+	                $scope.$emit('hideLoader');
+	        	}
+	        var params = {
+	        		id:$scope.selectedGroupOrAccountId,
+	                page: $scope.page,
+	                per_page: $scope.perPage
+	        	};     
+	        params['sort_order'] = $scope.sort_order;
+	        params['sort_field'] = $scope.sort_field;       
+	        $scope.invokeApi(rvGroupActivitySrv.fetchActivityLog, params, fetchCompleted);
+    	}
 
 
 		/**
