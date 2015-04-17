@@ -1,0 +1,33 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+    <div id="selected_hotel" data-view="HotelExternalMappingsView">
+        <section ng-init="fetchSubComponents()">
+            <header class="content-title float">
+                <h2>External Mappings</h2>
+                <span class="count">({{extMappingSubComponents.length}})</span>
+                <!--a class="action back" ui-sref="admin.mapping">Back</a-->
+            </header>
+        </section>
+    </div>
+      <section class="content-scroll">
+         <ul class="dashboard-items float">
+            <li ng-repeat="submenu in extMappingSubComponents" >
+               <a data-type="load-listing"  
+                  class="{{submenu.icon_class}}" 
+
+                  data-drag="{{bookMarks.length<=7&&!submenu.is_bookmarked}}"
+                  data-jqyoui-options="{revert: 'invalid', helper: 'clone',appendTo: 'body'}" 
+
+                  jqyoui-draggable="{index: {{$index}}, placeholder:'keep', animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}" 
+
+                  ng-model="selectedMenu.components" 
+                  ng-click="clickedMenuItem($event, submenu.state)" 
+                  ng-class="{'moved': submenu.is_bookmarked}">
+                  {{submenu.name}}
+               </a>
+
+               <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state)">{{submenu.name}}</a>
+            </li>
+         </ul>  
+      </section>  
+    
+</section>

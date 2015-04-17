@@ -1,7 +1,6 @@
-admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADMappingSrv', function($scope, $rootScope, $state, $stateParams, ADMappingSrv) {
+admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADMappingSrv', 'ADInterfaceMappingSrv', function($scope, $rootScope, $state, $stateParams, ADMappingSrv, ADInterfaceMappingSrv) {
 	
 	BaseCtrl.call(this, $scope);
-        console.log($rootScope.hotelId);
 	$scope.hotelId = $rootScope.hotelId;
 	//$scope.hotelId = 1;
 	$scope.editData   = {};
@@ -13,6 +12,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 	$scope.isEdit = false;
 	$scope.isAdd = false;
 	$scope.addFormView = false;
+        
         
         $scope.showAddNew = function(){
             $scope.addFormView = true;
@@ -28,12 +28,12 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.isAdd = false;
         };
         
+        $scope.componentData = {};
+        
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
                 var debuggin = true;
-                console.log('data from fetch');
-		console.log($scope.data);
 		// Set Flag to disable Add new.
 		if($scope.data.disable_mappings) {
                     if (debuggin){
@@ -45,10 +45,37 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 } else {
                     $scope.showAddNew();
                 }
+                
+                //then save the sub-components by the component name
+                //ie. Component -External Mappings- [subcomponents: [SiteMinder Mappings]];
+                
 	};
+        $scope.extMappingSubComponents = [];
+        var fetchSubMenuSuccess = function(data){
+            var comp, iMenu, cMenu;
+            for (var menu in data.menus){
+                iMenu = data.menus[menu];
+                if (iMenu.menu_name === 'Interfaces'){
+                    for (var i in iMenu.components){
+                         comp = iMenu.components[i];
+                        if (comp.name === 'External Mappings'){
+                            $scope.extMappingSubComponents = comp.sub_components;
+                            $scope.$emit('hideLoader');
+                            return;
+                        }
+                        
+                    }
+                }
+            }
+            $scope.$emit('hideLoader');
+        };
 	
 	$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchSuccess);
 	
+        $scope.fetchSubComponents = function(){
+            $scope.invokeApi(ADInterfaceMappingSrv.fetchSubMenu, {'id':$scope.hotelId}, fetchSubMenuSuccess);
+        };
+        
 	/*
     * Function to render edit screen with mapping data.
     * @param {id} id of the mapping item.
@@ -164,13 +191,13 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
     * Function to handle data change in 'Mapping type'.
     * Data is injected to sntValues based on 'Mapping type' values.
     */
-	$scope.$watch('editData.mapping_value', function() {
-       $scope.editData.sntValues = [];
-       angular.forEach($scope.editData.mapping_type,function(item, index) {
-       		if (item.name == $scope.editData.mapping_value) {
-       			$scope.editData.sntValues = item.sntvalues;
-		 	}
-       });
+        $scope.$watch('editData.mapping_value', function() {
+        $scope.editData.sntValues = [];
+        angular.forEach($scope.editData.mapping_type,function(item, index) {
+                 if (item.name == $scope.editData.mapping_value) {
+                     $scope.editData.sntValues = item.sntvalues;
+                 }
+        });
    	});
    	
 }]);
