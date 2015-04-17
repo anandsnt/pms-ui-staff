@@ -13,8 +13,9 @@ sntRover.controller('rvGroupActivityCtrl', [
 		 */
 		$scope.init = function(){						
 			$scope.errorMessage = '';
-			$scope.page = 1;			
-			$scope.selectedGroupOrAccountId = $scope.$parent.groupConfigData.summary.group_id;
+			$scope.page = 1;
+			//TODO- remove comment line		
+			//$scope.selectedGroupOrAccountId = $scope.$parent.groupConfigData.summary.group_id;
 			 var params = {
 			 	"group_id":$scope.selectedGroupOrAccountId,
 			 	"page":$scope.page,
@@ -27,7 +28,6 @@ sntRover.controller('rvGroupActivityCtrl', [
 				$scope.initPaginationParams();
 			}
 			$scope.invokeApi(rvGroupActivitySrv.fetchActivityLog, params, fetchCompleted);
-
 		}
 		
 		/**		 
@@ -51,7 +51,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 		}
 
 		/**
-		 * checking Whetheroldvalue of detail have any value
+		 * checking Whether oldvalue of detail have any value
 		 *@return - Boolean		
 		 */
 		$scope.isOldValue = function(value){
