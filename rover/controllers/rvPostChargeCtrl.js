@@ -24,7 +24,7 @@ sntRover.controller('RVPostChargeController',
 			var scrollerOptions = {preventDefault: false};
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
-
+  			var isFromAccounts = (typeof $scope.account_id !=="undefined" && $scope.account_id !=="")? true:false;
   			/**
   			* function to check whether the user has permission to Post charge
   			* @return {Boolean}
@@ -509,14 +509,15 @@ sntRover.controller('RVPostChargeController',
 						items.push( each );
 					};
 				}
-
 				var data = {
-					reservation_id: $scope.reservation_id,
-					fetch_total_balance: $scope.fetchTotalBal,
-					bill_no: $scope.passActiveBillNo || $scope.billNumber,
-					total: $scope.net_total_price,
-					items: items
-				};
+								fetch_total_balance: $scope.fetchTotalBal,
+								bill_no: $scope.passActiveBillNo || $scope.billNumber,
+								total: $scope.net_total_price,
+								items: items
+						   };
+			    //accounts or reservation bill screen check
+				isFromAccounts ? (data.account_id = $scope.account_id) :  (data.reservation_id = $scope.reservation_id);
+
 				/****    CICO-6094    **/
 				var needToCreateNewBill = false;
 				if($scope.billNumber > $scope.fetchedData.bill_numbers.length){
@@ -531,6 +532,7 @@ sntRover.controller('RVPostChargeController',
 						ngDialog.close();
 					}
 					else{
+						console.log("innnnn")
 						$scope.$emit( 'CHARGEPOSTED' );
 					}
 				};
@@ -541,9 +543,10 @@ sntRover.controller('RVPostChargeController',
 				}
 				else{
 						var billData ={
-						"reservation_id" : $scope.reservation_id,
-						"bill_number" : $scope.billNumber
+							"bill_number" : $scope.billNumber
 						};
+						//accounts or reservation bill screen check
+						isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
 					/*
 					 * Success Callback of create bill action
 					 */
