@@ -86,7 +86,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * shouldShowRoomingListTab whether to show rooming list tab
 		 * @return {Boolean} [description]
 		 */
-		$scope.shouldShowRoomingListTab = function(){
+		$scope.shouldShowRoomingListTab = function() {
 			//we will not show it in add mode
 			return (!$scope.isInAddMode());
 		};
@@ -98,12 +98,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		$scope.initializeDataModelForSummaryScreen = function() {
 			$scope.groupConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
-				summary: summaryData,
+				summary: summaryData.groupSummary,
 				holdStatusList: holdStatusList.data.hold_status,
 				selectAddons: false, // To be set to true while showing addons full view
 				addons: {},
 				selectedAddons: []
 			};
+
+			$scope.accountConfigData = {
+				summary: summaryData.accountSummary
+			}
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
 		};
@@ -127,11 +131,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			//TODO: Remove once all tab implemented
-			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' 
-				&& tab !== 'ROOMING') {
-				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
-				return;
-			}
+			// if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' && tab !== 'ROOMING') {
+			// 	$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
+			// 	return;
+			// }
 
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
@@ -139,12 +142,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			$scope.groupConfigData.activeTab = tab;
-			console.log ('oh my man');
+			console.log('oh my man');
 			//propogating an event that next clients are
-			$timeout(function(){
-				$scope.$broadcast ('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
+			$timeout(function() {
+				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
 			}, 100);
-			
+
 		};
 
 		/**

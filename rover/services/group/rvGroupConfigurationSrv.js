@@ -1,5 +1,5 @@
-sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
-	function($q, rvBaseWebSrvV2) {
+sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv',
+	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv) {
 
 		var self = this;
 
@@ -57,11 +57,11 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 * To save the selected Room types and its bookings
 		 * @return {Promise}
 		 */
-		this.saveRoomBlockBookings = function(params){
+		this.saveRoomBlockBookings = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/groups/save_inventories';
-				//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
-			
+			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -81,8 +81,8 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.getRoomBlockGridDetails = function(param) {
 			var deferred = $q.defer(),
-				url = '/api/groups/'+param.group_id+'/inventories';
-				//url = '/ui/show?format=json&json_input=groups/griddata.json';				
+				url = '/api/groups/' + param.group_id + '/inventories';
+			//url = '/ui/show?format=json&json_input=groups/griddata.json';				
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
 					deferred.resolve(data);
@@ -119,12 +119,12 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 * Function to get Room type configured against group
 		 * @return {Promise} [will get the details]
 		 */
-		this.getRoomTypesConfiguredAgainstGroup = function(params){
+		this.getRoomTypesConfiguredAgainstGroup = function(params) {
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = 'api/group_rooms/' + group_id;
-				//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
-			
+			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
 					deferred.resolve(data);
@@ -134,19 +134,19 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				}
 			);
 
-			return deferred.promise;			
+			return deferred.promise;
 		};
 
 		/**
 		 * Function to get Room type availablity as well as best availbale rate
 		 * @return {Promise} [will get the details]
 		 */
-		this.getSelectedRoomTypesAndRates = function(params){
+		this.getSelectedRoomTypesAndRates = function(params) {
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = '/api/groups/' + group_id + "/room_type_and_rates";
-				//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
-			
+			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+
 			rvBaseWebSrvV2.getJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -163,11 +163,11 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 * To update the selected Room types and its rates
 		 * @return {Promise}
 		 */
-		this.updateSelectedRoomTypesAndRates = function(params){
+		this.updateSelectedRoomTypesAndRates = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/groups/update_room_type_and_rates';
-				//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
-			
+			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -184,10 +184,10 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		 * Function to get Room type availablity as well as best availbale rate
 		 * @return {Promise} [will get the details]
 		 */
-		this.getRoomTypeBestAvailableRateAndOccupancyCount = function(params){
+		this.getRoomTypeBestAvailableRateAndOccupancyCount = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/groups/availability';
-			
+
 			rvBaseWebSrvV2.getJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -200,17 +200,42 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.getGroupSummary = function(params) {
+		var summaryHolder = {},
+			getAccountSummary = function(deferred, params) {
+				if (params.accountId === "NEW_ACCOUNT") {
+					deferred.resolve({
+						"accountSummary": angular.copy(rvAccountsConfigurationSrv.baseAccountSummaryData)
+					});
+				} else {
+					url = 'api/posting_accounts/' + params.accountId;
+					rvBaseWebSrvV2.getJSON(url).then(
+						function(data) {
+							summaryHolder.accountSummary = data;
+							deferred.resolve(summaryHolder);
+						},
+						function(errorMessage) {
+							deferred.reject(errorMessage);
+						}
+					);
+				}
+				return deferred.promise;
+			};
 
+		this.getGroupSummary = function(params) {
 			var deferred = $q.defer();
 
 			if (params.groupId === "NEW_GROUP") {
-				deferred.resolve(angular.copy(self.baseConfigurationSummary));
+				deferred.resolve(angular.copy({
+					"groupSummary": self.baseConfigurationSummary
+				}));
 			} else {
 				url = 'api/groups/' + params.groupId;
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
-						deferred.resolve(data);
+						summaryHolder.groupSummary = data;
+						getAccountSummary(deferred, {
+							accountId: data.posting_account_id
+						});
 					},
 					function(errorMessage) {
 						deferred.reject(errorMessage);
@@ -219,6 +244,8 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			}
 			return deferred.promise;
 		};
+
+
 
 		this.searchCompanyCards = function(query) {
 			var deferred = $q.defer(),
@@ -321,30 +348,30 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
-		this.saveGroupNote = function(data){
+		this.saveGroupNote = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/groups/save_group_note';
 
-			rvBaseWebSrvV2.postJSON(url,data)
+			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
-			return deferred.promise;			
+			return deferred.promise;
 		}
 
-		this.removeGroupNote = function(data){
+		this.removeGroupNote = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/groups/delete_group_note';
 
-			rvBaseWebSrvV2.deleteJSON(url,data)
+			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
-			return deferred.promise;			
+			return deferred.promise;
 		}
 
 	}
