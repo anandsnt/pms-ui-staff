@@ -58,6 +58,8 @@
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
 
+"EXTERNAL_CHECKIN":"External Checkin",
+
 "MESSAGE":"Message",
 "IN_APP":"in App",
 "MESSAGE_SUBJECT":"Message Subject",
@@ -99,7 +101,9 @@
 "SAVE_AS_DRAFT":"Save as Draft",
 "START_CAMPAIGN":"Start Campaign",
 "SAVE":"Save",
-"CLOSE":"Close"
+"CLOSE":"Close",
+"URL_LABEL": "URL",
+"SCREEN_LABEL": "SCREEN"
 
 
 
@@ -125,6 +129,7 @@
     "ADD":"Add",
     "CANCEL": "Cancel",
     "SAVE_CHANGES": "Save Changes",
+    "TEST_CONNECTION": "Test Connection",
     "BACK": "Back",
     "ADD_NEW":"Add New",
     "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
@@ -159,7 +164,9 @@
     "MENU_JOURNAL":"Journal",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
-    
+    "MENU_GROUPS": "Groups",
+    "MENU_CREATE_GROUP": "New Group",
+    "MENU_MANAGE_GROUP": "Manage Groups",   
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",
 	"DELETE":"Delete",
@@ -276,6 +283,7 @@
 "POI_LABEL": "Point Of Interest",
 "GENERAL_LABEL": "General Information",
 "LINK_LABEL": "Link",
+"SCREEN_LABEL": "Screen",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
@@ -361,9 +369,51 @@
 "ASSIGN_SELECTED": "Assign Selected",
 "FIND_ROOMS":"Find Rooms",
 "NO_RESULT_FOUND":"No Result Found",
-"NO_ROOMS":"No Rooms"
-
-,
+"NO_ROOMS":"No Rooms",    
+    
+    "FROM": "From",
+    "TO": "To",
+    "GROUPS": "Groups",
+    "NEW_GROUP": "New Group",
+    "START_DATE": "Start Date",
+    "SELECT_START_DATE": "Select Start Date",
+    "END_DATE": "End Date",
+    "SELECT_END_DATE": "Select End Date",
+    "HOLD_STATUS": "Hold Status",
+    "SET_STATUS": "Set Status",
+    "TOTAL_ROOMS": "Total Rooms",
+    "TOTAL_PICK_UP": "Total Pick Up",
+    "CREATE_BLOCK": "Create Block",
+    "UPDATE": "Update",
+    "ADD_ROOMS_AND_RATE": "Add Rooms &amp; Rates",
+    "SAVE": "Save",
+    "DISCARD": "Discard",
+    "ROOMS_AND_RATES": "Rooms &amp; Rates",
+    "SINGLE": "Single",
+    "DOUBLE": "Double",
+    "ADD_TRIPLE": "+ Add Triple",
+    "ADD_QUADRUPLE": "+ Add Quadruple",
+    "TOTAL": "Total",
+    "PICK_UP": "Pick-up",
+    "AVAILABILITY_GROUP": "Availability: ",
+    "ROOM_TYPES_AND_RATES": "Room Types and Rates",
+    "SELECT_ROOM_TYPE": "Select Room Type",
+    "BAR_SINGLE": "BAR (Single)",
+    "SINGLE_OCCUPANCY": "Single Occ.",
+    "DOUBLE_OCCUPANCY": "Double Occ.",
+    "ONE_MORE_ADULT": "1+ Adult",
+    "ADD_MORE_TO_THIS_GROUP": "ADD MORE TO THIS GROUP",
+    "GROUP_DETAILS": "Group Details",
+    "GROUP_INFO" : "Group Info",
+    "GROUP_CODE" : "Group Code",
+    "CONTACT_FIRST_NAME" : "Contact First Name",
+    "CONTACT_LAST_NAME" : "Contact Last Name",
+    "CONTACT_PHONE" : "Contact Phone",
+    "CONTACT_EMAIL" : "Contact E-mail",
+    "ROOM_BLOCK_SUMMARY" : "Room Block Summary",
+    "ROOM_RELEASE_DATE" : "Room Release Date",
+    "RELEASE_NOW" : "Release Now",
+    "GROUP_APR" :"Actual / Potential Revenue",
 
 
 "LIKES":"Likes",
@@ -393,9 +443,7 @@
 
 "DEPARTMENTS":"Departments",
 "DEPARTMENT_NAME_PLACEHOLDER": "Enter department",
-"TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS"
-
-,
+"TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
  
  
     "HOTEL_ANNOUNCEMENTS": "Hotel Announcements",
@@ -409,6 +457,11 @@
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
     "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE": "Notify Guest When Room is not assigned",
+    "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
+    "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
+    "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "ZEST_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app checkin ",
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
@@ -671,6 +724,17 @@
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
 
+
+
+"SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
+"SITEMINDER_SUB_TITLE": "SiteMinder API Access Configuration",
+"SITEMINDER_USERNAME_LABEL": "User Name",
+"SITEMINDER_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
+"SITEMINDER_PASSWORD_LABEL": "Password",
+"SITEMINDER_ACCESS_URL_LABEL": "Access URL",
+"SITEMINDER_REQUESTOR_ID_LABEL": "Requester ID"
+,
+
 	"STATIONARY":"Stationary",
 	"CUSTOMIZE":"Customize",
 	"GUEST_BILL_TITLE": "Guest Bill",
@@ -741,5 +805,4 @@
 "EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE":"EXCLUDE FOLLOWING ROOM TYPES FROM EMAIL INVITE",
 "EXCLUDE_ROOM_TYPES":"EXCLUDE ROOM TYPES",
 "EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES"
-
 }

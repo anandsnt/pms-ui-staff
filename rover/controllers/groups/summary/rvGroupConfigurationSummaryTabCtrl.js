@@ -128,7 +128,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					$scope.groupSummaryData.isDemographicsPopupOpen = true;
 					demographicsMemento = angular.copy($scope.groupConfigData.summary.demographics);
 					ngDialog.open({
-						template: '/assets/partials/groups/groupDemographicsPopup.html',
+						template: '/assets/partials/groups/summary/groupDemographicsPopup.html',
 						className: '',
 						scope: $scope,
 						closeByDocument: false,
@@ -181,7 +181,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		$scope.warnReleaseRooms = function() {
 			ngDialog.open({
-				template: '/assets/partials/groups/warnReleaseRoomsPopup.html',
+				template: '/assets/partials/groups/summary/warnReleaseRoomsPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
@@ -239,7 +239,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		$scope.openAddonsPopup = function() {
 			ngDialog.open({
-				template: '/assets/partials/groups/groupAddonsPopup.html',
+				template: '/assets/partials/groups/summary/groupAddonsPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,

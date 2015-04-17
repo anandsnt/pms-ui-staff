@@ -525,7 +525,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		var showOverBookingPopup = function(){
 			// Show overbooking message
 			ngDialog.open({
-				template: '/assets/partials/groups/rvGroupWarnOverBookingPopup.html',
+				template: '/assets/partials/groups/roomBlock/rvGroupWarnOverBookingPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
@@ -539,7 +539,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		var openAddRoomsAndRatesPopup = function() {
 			ngDialog.open({
-				template: '/assets/partials/groups/rvGroupAddRoomAndRatesPopup.html',
+				template: '/assets/partials/groups/roomBlock/rvGroupAddRoomAndRatesPopup.html',
 				scope: $scope,
 				controller: 'rvGroupAddRoomsAndRatesPopupCtrl'
 			});
