@@ -1,0 +1,279 @@
+<form ng-controller="rvAccountTransactionsCtrl" id="group-transactions" name="group-transactions" class="form card-tab inner-header bills">
+    <div id="account-transactions-header" class="tab-header no-print">
+    <ul class="totals">
+        <li>
+            <div class="data">
+                <span class="label">Total Fees</span>
+                <span class="value">{{currencySymbol}}{{transactionsDetails.total_fees}}</span>
+            </div>
+        </li>
+        <li>
+            <div class="data">
+                <span class="label">Total Balance</span>
+                <span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}">{{currencySymbol}}{{transactionsDetails.total_balance}}</span> <!-- Green if 0, otherwise red -->
+            </div>
+        </li>
+        <li>
+            <button type="button" class="button blue">
+                Billing Information
+            </button>
+        </li>
+    </ul>
+</div>
+
+<div id="account-transactions-content" class="tab-details">
+    <!-- If no transactions: -->
+    <div class="no-content" ng-show="transactionsDetails.bills.length === 0">
+        <div class="info">
+            <span class="icon-no-content icon-groups"></span>
+            <strong class="h1">0 Transactions Found</strong>
+        </div>
+    </div>
+
+    <div class="registration-content scrollable">
+        <div class="wrapper">
+            <div class="registration-summary">
+
+                <!-- Bills Nav-->
+                <div class="bill-tabs scrollable">
+                    <ul class="wrapper" style="width: {{getWidthForBillTabsScroll()}}px">
+
+                    	<li ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
+								<div class="bill-toggle">
+									<div class="price" ng-hide="billTab.total_amount=='SR'">
+										<span translate>BILL #{{billTab.bill_number}}</span>
+										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
+									</div>
+									<div class="price" ng-show="billTab.total_amount=='SR'">
+										<span translate>BILL #{{billTab.bill_number}}</span>
+										{{billTab.total_amount}}
+									</div>
+									<div class="payment" ng-show="billTab.credit_card_details.payment_type !== 'CC'">
+										{{billTab.credit_card_details.payment_type_description}}
+									</div>
+									<figure class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC'">
+										<img ng-src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
+										<span class="number"> {{billTab.credit_card_details.card_number}}</span>
+									</figure>
+								</div>
+							</li>
+							<li class="new-bill" ng-show="reservationBillData.bills.length<10 && isStandAlone">
+								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
+									<span class="icons icon-plus"></span>
+								</button>
+							</li>
+                        <!-- <li>
+                            <a href="#account-bill-{id}" class="bill-toggle">
+                                <div class="price"><span>Bill #1</span>${Fees}</div>
+                            </a>
+                        </li>
+                        ... repeat for each bill
+                        Add new bill
+                        <li class="new-bill">
+                            <button type="button" class="button with-icon only-icon brand-colors">
+                                <span class="icons icon-plus"></span>
+                            </button>
+                        </li> -->
+                    </ul>
+                </div>
+
+                <!-- Bill 1 -->
+                <div id="account-bill-{bill-id}" class="bill-summary">
+                    
+                    <!-- Bill Summary -->
+                    <div class="bill-summary-wrapper">  
+                        <div class="scrollable">
+                            <ul class="wrapper" style="width{Outer lenght of all li items}px">
+                                <li class="add-new">
+                                    <a href="{modals/post-charge/specific.html}" class="button with-icon brand-colors">
+                                        <span class="icons icon-charge"></span>
+                                        Add Charge
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a href="#account-bill{bill-id}-expense-{day}" class="toggle">
+                                        <span class="day">{Date, like Feb 12}</span>
+                                        <span class="price">${Fees for the day}</span>
+                                    </a>
+                                </li>
+                                ... repeat for each day
+                            </ul>
+                        </div>
+                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded hidden"> <!-- Remove class "hidden" when item in summary selected -->
+                            <table class="expense-details">
+                                <thead>
+                                    <tr>
+                                        <th class="price">Expense</th>
+                                        <th>Details</th>
+                                        <th class="price">Charge Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="price">${Value}</td>
+                                        <td>{Expense Details}</td>
+                                        <td>{Charge Type}</td>
+                                    </tr>
+                                    ... repeat for each expense
+                                </tbody>
+                            </table>
+                        </div>
+                        ... repeat for each day
+                    </div>
+
+                    <!-- Invoice -->
+                    <div id="account-bill{bill-id}-invoice" class="invoice">
+                        {see invoice.html}
+                    </div>
+
+                    <!-- Balance / Signature / Card -->
+                    <div id="account-bill{bill-id}-total-fees" class="total-stay-fees">
+
+                        <!-- Fees & Balance Overview -->
+                        <ul class="account-overview">
+                            <li>
+                                <span class="title">Fees</span>
+                                <span class="value">${Bill fees}</span>
+                            </li>
+                            <li class="break">
+                                <button type="button" class="button with-icon only-icon blue">
+                                    <span class="icons icon-email"></span> 
+                                    Email
+                                </button>
+                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue">
+                                    <span class="icons icon-print"></span> 
+                                    Print
+                                </button>
+                            </li>
+                            <li>
+                                <span class="title">Balance</span>
+                                <span class="value {green or red}">${Bill Balance}</span> <!-- Green when 0, otherwise red -->
+                            </li>
+                            <!-- Only if balance > 0:
+                            <li>
+                                <button class="button green with-icon only-icon">
+                                    <span class="icons icon-wallet"></span>
+                                    Pay
+                                </button>
+                            </li>
+                            <li>
+                                <span class="title">{Payment Method}</span>
+                            </li> -->
+                            <!-- Only when fees selected in table below:
+                            <li>
+                                <button type="button" class="button with-icon only-icon brand-colors">
+                                    <span class="icons icon-move"></span> 
+                                    Move selected
+                                </button>
+                            </li>-->
+                        </ul>
+
+                        <!-- Total Stay Fees -->
+                        <div id="bill{bill-id}-fees" class="details">
+                            <table class="total-fees">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Charge Code</th>
+                                        <th>Description</th>
+                                        <th>Fees</th>
+                                        <th>Credits</th>
+                                        <th class="form">Bill #</th>
+                                        <th class="action">Edit</th>
+                                        <th class="action">
+                                            <label class="checkbox inline" for="bill-{bill-id}-all"> 
+                                                <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked or all bill charges are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all bill charges are selected -->
+                                                <input id="bill-{bill-id}-all" value="{value}" type="checkbox" />
+                                            </label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr class="active edit">
+                                        <td colspan="3" class="total-label">
+                                            <button type="button" class="button with-icon only-icon blue">
+                                                <span class="icons icon-email"></span> 
+                                                Email
+                                            </button>
+                                            <button type="button" class="button with-icon only-icon blue">
+                                                <span class="icons icon-print"></span> 
+                                                Print
+                                            </button>
+                                            Stay Fees (As of {Date}):
+                                        </td>
+                                        <td colspan="3" class="total-value">
+                                             <strong>${Bill Fees}</strong>
+                                        </td>
+                                        <td>
+                                            <button class="button purple with-icon only-icon">
+                                                <span class="icons icon-pencil"></span>
+                                                Edit
+                                            </button>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="active edit">
+                                        <td colspan="3" class="total-label">
+                                            Balance (As of {Date}):
+                                        </td>
+                                        <td colspan="3" class="total-value {red or green}"> <!-- Green when 0, otherwise red -->
+                                             <strong>${Bill Balance}</strong>
+                                        </td>
+                                        <td>
+                                            <!-- Only if balance > 0, otherwise leave blank cell 
+                                            <button class="button green with-icon only-icon">
+                                                <span class="icons icon-wallet"></span>
+                                                Pay
+                                            </button>-->
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr class="active edit">
+                                        <td>{Date}</td>
+                                        <td>{Chage Code}</td>
+                                        <td class="description"> 
+                                            <span>{Details}</span> 
+                                            <span class="reference">{Reference, if applicable}</span>
+                                        </td>
+                                        <td><strong>{Fees}</strong></td>
+                                        <td><strong>{Credits}</strong></td>
+                                        <td>
+                                            <div class="select">
+                                                <select>
+                                                    <option value="" disabled>Move to bill</option>
+                                                    <option value="{bill no.}">{bill no.}</option>
+                                                    ... repeat for each existing bill
+                                                    <option value="{bills count + 1}">{bills count + 1} (Will create new bill)</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="button purple with-icon only-icon">
+                                                <span class="icons icon-pencil"></span>
+                                                Edit
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox inline" for="bill-{bill-id}-charge-{charge-id}"> 
+                                                <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked -->
+                                                <input id="bill-{bill-id}-charge-{charge-id}" value="{charge}" type="checkbox" />
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    ... repeat for all charges in the bill
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                ... repeat for each bill
+            </div>
+        </div>
+    </div>
+
+</div>
+   
+
+</form>
