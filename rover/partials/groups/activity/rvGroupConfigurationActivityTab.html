@@ -31,7 +31,7 @@
 		    <div class="search-pagination hk-pagination" ng-show="true">
 		        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
 		        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-		        <p>Showing <strong>1-1</strong> of <strong id="total-count">10</strong> items</p>
+		        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{count}}</strong> items</p>
 		    </div>	
 		        
 		    <div id="report-content" class="report-content scrollable with-pagination" ng-iscroll="report_content" ng-iscroll-delay="1000"> 

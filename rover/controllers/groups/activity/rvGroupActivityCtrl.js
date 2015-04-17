@@ -13,11 +13,10 @@ sntRover.controller('rvGroupActivityCtrl', [
 		 */
 		$scope.init = function(){						
 			$scope.errorMessage = '';
-			$scope.page = 1;
-			//TODO - $scope.selectedGroupOrAccountId
-			$scope.selectedGroupOrAccountId = 11;
+			$scope.page = 1;			
+			$scope.selectedGroupOrAccountId = $scope.$parent.groupConfigData.summary.group_id;
 			 var params = {
-			 	"id":$scope.selectedGroupOrAccountId,
+			 	"group_id":$scope.selectedGroupOrAccountId,
 			 	"page":$scope.page,
 			 	"perPage":50
 			 }
@@ -198,7 +197,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 	                $scope.$emit('hideLoader');
 	        	}
 	        var params = {
-	        		id:$scope.selectedGroupOrAccountId,
+	        		group_id:$scope.selectedGroupOrAccountId,
 	                page: $scope.page,
 	                per_page: $scope.perPage
 	        	};     
