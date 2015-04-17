@@ -40,20 +40,17 @@
 
                     	<li ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<div class="bill-toggle">
-									<div class="price" ng-hide="billTab.total_amount=='SR'">
+									<div class="price">
 										<span translate>BILL #{{billTab.bill_number}}</span>
 										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
 									</div>
-									<div class="price" ng-show="billTab.total_amount=='SR'">
-										<span translate>BILL #{{billTab.bill_number}}</span>
-										{{billTab.total_amount}}
+									
+									<div class="payment" ng-show="billTab.payment_details.payment_type !== 'CC'">
+										{{billTab.payment_details.payment_type_description}}
 									</div>
-									<div class="payment" ng-show="billTab.credit_card_details.payment_type !== 'CC'">
-										{{billTab.credit_card_details.payment_type_description}}
-									</div>
-									<figure class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC'">
-										<img ng-src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
-										<span class="number"> {{billTab.credit_card_details.card_number}}</span>
+									<figure class="card-logo" ng-show="billTab.payment_details.payment_type == 'CC'">
+										<img ng-src="/assets/{{billTab.payment_details.card_code}}.png" alt="" class="credit-card-image">
+										<span class="number"> {{billTab.payment_details.card_number}}</span>
 									</figure>
 								</div>
 							</li>
@@ -77,13 +74,52 @@
                     </ul>
                 </div>
 
-                <!-- Bill 1 -->
-                <div id="account-bill-{bill-id}" class="bill-summary">
+                <!-- Bill -->
+                <div class="bill-summary">
                     
                     <!-- Bill Summary -->
                     <div class="bill-summary-wrapper">  
-                        <div class="scrollable">
-                            <ul class="wrapper" style="width{Outer lenght of all li items}px">
+                        <div class="scrollable" ng-iscroll="billDays">
+                        	<ul class="wrapper" style="width: {{billData.billDaysWidth}}px;">
+                        		<li class="add-new">
+                        			<button type="button" class="button with-icon brand-colors">
+                        				<span class="icons icon-charge"></span>
+                        				Add Charge
+                        			</button>
+                        		</li>
+
+                        		
+                        		<!-- TODO: showDays function seems to be non relevant-->
+                        		<li ng-click="showDayRates($index, days.date)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, businessDate)">
+                        			<div class="toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
+                        				<span class="day"> {{days.date | date:'EEE'}} </span> 
+                        				<span class="date"> {{days.date | date:'dd'}} </span> 
+                        				<span class="price" ng-hide="days.amount == 'SR'">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>  
+                        			</div>
+                        		</li>
+
+                        		<!-- packages -->
+                        		<!-- show addons -->
+                        		<!-- <li class="package active" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
+                        			<div class="toggle" ng-class="{'active': $index == showAddonIndex}"> 
+                        				<span class="expense"> {{addons.title}}</span> 
+                        				<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
+                        				<span class="price" ng-show="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{currencySymbol}}{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span> 
+                        				<span class="price" ng-hide="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span> 
+                        				<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount | number: precisonZero}}</span> 
+                        			</div>
+                        		</li> -->
+
+                        		<!-- Group items tab -->
+                        		<li class="package active" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
+                        			<div class="toggle" ng-class="{'active': $index == showGroupItemIndex}"> 
+                        				<span class="expense"> {{groupItems.title}} </span> 
+                        				<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
+                        			</div>
+                        		</li>
+                        	</ul>
+
+                            <!-- <ul class="wrapper" style="width{Outer lenght of all li items}px">
                                 <li class="add-new">
                                     <a href="{modals/post-charge/specific.html}" class="button with-icon brand-colors">
                                         <span class="icons icon-charge"></span>
@@ -97,9 +133,10 @@
                                     </a>
                                 </li>
                                 ... repeat for each day
-                            </ul>
+                            </ul> -->
                         </div>
-                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded hidden"> <!-- Remove class "hidden" when item in summary selected -->
+                        <!-- 
+                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded hidden"> Remove class "hidden" when item in summary selected
                             <table class="expense-details">
                                 <thead>
                                     <tr>
@@ -118,8 +155,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        ... repeat for each day
-                    </div>
+                        ... repeat for each day-->
+                    </div> 
 
                     <!-- Invoice -->
                     <div id="account-bill{bill-id}-invoice" class="invoice">

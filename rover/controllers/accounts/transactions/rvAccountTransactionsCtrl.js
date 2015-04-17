@@ -3,7 +3,9 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		BaseCtrl.call(this, $scope);
 		
 		var initAccountTransactionsView = function(){
-
+			//Scope variable to set active bill
+			$scope.currentActiveBill = 0;
+			$scope.dayRates = -1;
 			console.log("init accoutn transactions");
 			getTransactionDetails();
 			//TODO: Fetch accoutn transactions
@@ -18,6 +20,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				$scope.$emit('hideloader');
 				$scope.transactionsDetails = data;
 				$scope.setScroller ('transaction-bill-tab-scroller', {scrollX: true});
+				$scope.setScroller('billDays', {scrollX: true});
+				$scope.setScroller('registration-content');
 
 
 			}
@@ -42,27 +46,81 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			return width;*/
 			return 2200;
 		};
-		/*$scope.accountSummaryData = {
-			promptMandatoryDemographics: false,
-			isDemographicsPopupOpen: false,
-			newNote: "",
-			demographics: null			
-		}*/
+		
 
+		/* TODO : verify unwanted params
+		 * Remove class hidden for day rates
+		 * @param {int} index of calender days
+		 * @param {string} clickedDate
+		 * @param {string} checkoutDate
+		 */
+		$scope.showDayRates = function(dayIndex, clickedDate){
+			//In this condition show the last clicked days item
+			//OR if checkout date clicked first do not show anything
+			//TODO: verify with krishobh
 
-		/*var initAccountSummaryView = function() {
-			// Have a handler to update the summary - IFF in edit mode
-			if (!$scope.isInAddMode()) {
-				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-					if (!angular.equals(summaryMemento, $scope.accountConfigData.summary) && !$scope.accountSummaryData.isDemographicsPopupOpen) {
-						//data has changed
-						summaryMemento = angular.copy($scope.accountConfigData.summary);
-						//call the updateGroupSummary method from the parent controller
-						$scope.updateAccountSummary();
-					}
-				});
+			/*if(clickedDate == checkoutDate){
+				if(numberOfNights == 0){
+					$scope.dayRates = dayIndex;
+				} else {
+					$scope.dayRates = $scope.dayRates;
+				}
+
+			} else if($scope.dayRates != dayIndex) {
+				$scope.dayRates = dayIndex;
+
+			}else{
+				$scope.dayRates = -1;
+			}*/
+			$scope.showAddonIndex = -1;
+			$scope.showGroupItemIndex = -1;
+			$scope.calculateHeightAndRefreshScroll();
+
+		};
+
+		/*$state
+		 * Show Addons
+		 * @param {int} addon index
+		 */
+		$scope.showAddons = function(addonIndex){
+			$scope.showAddonIndex = ($scope.showAddonIndex != addonIndex)?addonIndex:-1;
+			$scope.dayRates = -1;
+			$scope.showGroupItemIndex = -1;
+			$scope.calculateHeightAndRefreshScroll();
+		};
+
+		// Refresh registration-content scroller.
+		$scope.calculateHeightAndRefreshScroll = function() {
+			$timeout(function(){
+				$scope.refreshScroller('registration-content');
+			}, 500);
+		};
+		//TODO: verify the commented code
+		$scope.getDaysClass = function(index, dayDate, businessDate){
+			var dayClass = "";
+			//TODO: y?
+			if(index!=0){
+				dayClass = "hidden";
 			}
-		}*/
+			/*if(dayDate == checkinDate){
+				dayClass = "check-in active";
+			} */
+			//if(dayDate != checkoutDate){
+				if(dayDate <= businessDate){
+					dayClass = "active";
+				}
+			//}
+			/*if(dayDate == checkoutDate && dayDate != checkinDate){
+				if(reservationBillData.bills[$scope.currentActiveBill]){
+					if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined && reservationBillData.bills[$scope.currentActiveBill].addons.length >0){
+						dayClass = "check-out last";
+					} else {
+						dayClass = "check-out";
+					}
+				}
+			}*/
+			return dayClass;
+		};
 
 		
 
