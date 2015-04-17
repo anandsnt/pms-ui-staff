@@ -352,15 +352,20 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.hasSourceMarketFilter" ng-class="{'hidden': !filterItemsToggle.item_12}">
             <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
-                <label class="checkbox">
+                <label class="checkbox" ng-if="chosenReport.hasSource">
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showSource}"></span>
                     <input type="checkbox" ng-model="chosenReport.showSource">
                     {{ chosenReport.hasSource.description }}
                 </label>
-                <label class="checkbox">
+                <label class="checkbox" ng-if="chosenReport.hasMarket">
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showMarket}"></span>
                     <input type="checkbox" ng-model="chosenReport.showMarket">
                     {{ chosenReport.hasMarket.description }}
+                </label>
+                <label class="checkbox" ng-if="chosenReport.hasOrigin">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showOrigin}"></span>
+                    <input type="checkbox" ng-model="chosenReport.showOrigin">
+                    {{ chosenReport.hasOrigin.description }}
                 </label>
             </div>
         </div>
