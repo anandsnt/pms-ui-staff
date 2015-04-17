@@ -69,6 +69,7 @@
 "ADD_PAYMENT_METHOD":"Add Payment Method",
 "ATTACHED_ENTITIES":"Attached Entities",
 "CARDS":"Cards",
+"GROUPS_AND_CARDS":"Groups & Cards",
 "NO_MATCH_FOUND_MSG":"No matches have been found",
 "ENTITY_NOT_SELECTED":"Entity not selected",
 "SELECT_ENTITY_TO_CONFIGURE":"Select Entity to configure bill routing",
