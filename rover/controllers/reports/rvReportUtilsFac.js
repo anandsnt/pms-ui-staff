@@ -632,7 +632,8 @@ sntRover.factory('RVReportUtilsFac', [
 
             // need to reorder the sort_by options
             // for daily transactions in the following order
-            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] || reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
+            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ||
+                    reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
                 var chargeGroup = angular.copy( reportItem['sort_fields'][1] ),
                     chargeCode  = angular.copy( reportItem['sort_fields'][0] ),
                     revenue     = angular.copy( reportItem['sort_fields'][3] ),

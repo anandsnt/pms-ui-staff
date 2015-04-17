@@ -285,9 +285,11 @@
                     </div>
 
                     <!-- Deposit payment failed -->
-                    <div class="feedback" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted &&depositData.depositAttemptFailure">
+                    <div class="feedback deposit-failed" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted &&depositData.depositAttemptFailure">
                         <!-- <div class="notice error">Payment failed. Try again or change payment method.</div> -->
                         <div class="notice error">{{paymentErrorMessage}}</div>
+                         <!-- Show when deposit payment fails  -->
+                        <button type="button" class="button blue" ng-show="depositData.depositAttemptFailure" ng-click="tryAgain()">Try Again</button>
                     </div>
 
                     <div class="actions" ng-hide="showCC">
@@ -295,9 +297,6 @@
                         <!-- Show when deposit paid succesfully. If deposit not required, then show when payment method added  -->
                         <!-- <button type="button" class="button" ng-class="{'grey':isContinueDisabled(),'green':!isContinueDisabled()}" ng-disabled="isContinueDisabled()" ng-click="proceedCreatingReservation()">Continue</button> -->
                         <button type="button" class="button" ng-class="{'grey':isContinueDisabled(),'green':!isContinueDisabled()}" ng-disabled="isContinueDisabled()" ng-click="clickedContinueButton()">Continue</button>
-
-                        <!-- Show when deposit payment fails  -->
-                        <button type="button" class="button blue" ng-show="depositData.depositAttemptFailure" ng-click="tryAgain()">Try Again</button>
                     </div>
                 </div>
 

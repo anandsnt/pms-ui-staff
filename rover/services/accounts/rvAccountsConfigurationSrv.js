@@ -4,43 +4,28 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		var self = this;
 
 		this.baseAccountSummaryData = {
-			"group_id": null,
-			"group_name": "",
-			"group_code": "",
-			"first_name": "",
-			"last_name": "",
-			"contact_phone": "",
-			"contact_email": "",
+			"posting_account_id" : "",
+			"posting_account_name": "",
+			"posting_account_number": "",
+			"posting_account_type": "HOUSE",
+			"posting_account_status": "OPEN",
 			"demographics": {
-				"reservation_type_id": null,
-				"market_segment_id": null,
-				"source_id": null,
-				"booking_origin_id": null
+				market_segment_id: "",
+				source_id: "",
+				booking_origin_id: "",
 			},
-			"travel_agent": null,
-			"company": null,
-			"hold_status": "",
-			"block_from": "",
-			"block_to": "",
-			"revenue_actual": null,
-			"revenue_potential": null,
-			"rooms_total": null,
-			"rooms_pickup": null,
-			"rate": "",
-			"addons_count": null,
-			"notes": []
+			notes: []
 		};
 
+		// AccountSummary
 
 
-		this.getAccountSummaryData = function(params) {
-
+		this.getAccountSummary = function(params) {
 			var deferred = $q.defer();
-
 			if (params.accountId === "NEW_ACCOUNT") {
 				deferred.resolve(angular.copy(self.baseAccountSummaryData));
 			} else {
-				url = 'api/groups/' + params.accountId;
+				url = 'api/posting_accounts/' + params.accountId;
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
 						deferred.resolve(data);
@@ -53,5 +38,62 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		this.updateAccountSummary = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/posting_accounts/' + data.summary.posting_account_id;
+
+			rvBaseWebSrvV2.putJSON(url, data.summary)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
+		this.saveAccountSummary = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/posting_accounts';
+
+			rvBaseWebSrvV2.postJSON(url, data.summary)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
+
+
+		// Account Notes
+
+		this.saveAccountNote = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/posting_accounts/save_posting_account_note';
+
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
+
+		this.removeAccountNote = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/posting_accounts/delete_posting_account_note';
+
+			rvBaseWebSrvV2.deleteJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
 	}
 ]);

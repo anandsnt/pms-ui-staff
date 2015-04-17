@@ -82,6 +82,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		}
 
 		/**
+		 * shouldShowRoomingListTab whether to show rooming list tab
+		 * @return {Boolean} [description]
+		 */
+		$scope.shouldShowRoomingListTab = function(){
+			//we will not show it in add mode
+			return (!$scope.isInAddMode());
+		};
+
+		/**
 		 * function to form data model for add/edit mode
 		 * @return - None
 		 */

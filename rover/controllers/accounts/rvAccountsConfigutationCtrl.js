@@ -4,12 +4,11 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'rvGroupSrv',
 	'$filter',
 	'$stateParams',
-	'rvGroupConfigurationSrv',
+	'rvAccountsConfigurationSrv',
 	'accountData',
-	'holdStatusList',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, accountData, holdStatusList, $state, rvPermissionSrv) {
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, accountData, $state, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -32,7 +31,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			return ($stateParams.id === "NEW_ACCOUNT");
 		};
 
-		
+
 		/**
 		 * function to set title and things
 		 * @return - None
@@ -70,8 +69,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 * @return boolean [true if all the mandatory values are present]
 		 */
 		var ifMandatoryValuesEntered = function() {
-			var summary = $scope.groupConfigData.summary;
-			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
+			var summary = $scope.accountConfigData.summary;
+			return !!summary.posting_account_name;
 		}
 
 		/**
@@ -81,7 +80,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		$scope.initializeDataModelForSummaryScreen = function() {
 			$scope.accountConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are ACCOUNT, TRANSACTIONS, ACTIVITY
-				account: accountData
+				summary: accountData
 			};
 		};
 
@@ -105,7 +104,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			//Save summary data on tab switch (UI)
 			if (isInAccountsTab && !$scope.isInAddMode()) {
-				$scope.updateGroupSummary();
+				$scope.updateAccountSummary();
 			}
 
 			$scope.accountConfigData.activeTab = tab;
@@ -131,8 +130,29 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 */
 		$scope.saveNewAccount = function() {
 			$scope.errorMessage = "";
-			if (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY')) {
-				// TODO : Save New Account
+			if (rvPermissionSrv.getPermissionValue('CREATE_ACCOUNT')) {
+				if (ifMandatoryValuesEntered()) {
+					var onAccountSaveSuccess = function(data) {
+							$scope.accountConfigData.summary.posting_account_id = data.posting_account_id;
+							$state.go('rover.accounts.config', {
+								id: data.posting_account_id
+							})
+							$stateParams.id = data.posting_account_id;
+						},
+						onAccountSaveFailure = function(errorMessage) {
+							$scope.errorMessage = errorMessage;
+						};
+
+					$scope.callAPI(rvAccountsConfigurationSrv.saveAccountSummary, {
+						successCallBack: onAccountSaveSuccess,
+						failureCallBack: onAccountSaveFailure,
+						params: {
+							summary: $scope.accountConfigData.summary
+						}
+					});
+				} else {
+					$scope.errorMessage = ["Account's name is mandatory"];
+				}
 			} else {
 				console.warn('No Permission for CREATE_GROUP_SUMMARY');
 			}
@@ -144,9 +164,26 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 * Update the group data
 		 * @return undefined
 		 */
-		$scope.updateAccount = function() {
-			if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
-				// TODO: Update Account
+		$scope.updateAccountSummary = function() {
+			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
+				var onAccountUpdateSuccess = function(data) {
+						//client controllers should get an infromation whether updation was success
+						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
+						console.log(data);
+					},
+					onAccountUpdateFailure = function(errorMessage) {
+						//client controllers should get an infromation whether updation was a failure
+						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
+						console.log(errorMessage);
+					};
+
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
+					successCallBack: onAccountUpdateSuccess,
+					failureCallBack: onAccountUpdateFailure,
+					params: {
+						summary: $scope.accountConfigData.summary
+					}
+				});
 			} else {
 				console.warn('No Permission for EDIT_GROUP_SUMMARY');
 			}

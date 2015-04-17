@@ -47,7 +47,6 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
             if (scroll_key === '') {
                 scroll_key = attr.id;
             }
-
             // if ng-iscroll-form='true' then the additional settings will be supported
             if (attr.ngIscrollForm !== undefined && attr.ngIscrollForm == 'true') {
                 ngiScroll_opts.useTransform = false;
@@ -57,7 +56,7 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                     while (target.nodeType != 1) target = target.parentNode;
 
                     if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
-                        e.preventDefault();
+                       e.preventDefault();
                 };
             }
 
@@ -113,6 +112,6 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                     delete scope.$parent.myScroll[scroll_key];
                 };
             });
-        }
+    }
     };
 });

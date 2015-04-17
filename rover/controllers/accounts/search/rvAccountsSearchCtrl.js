@@ -115,7 +115,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		$scope.hasPermissionToAddNewAccount = function(){
-			return true;
 			return (rvPermissionSrv.getPermissionValue("CREATE_ACCOUNT"));
 		};
 
@@ -125,7 +124,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @return {None}
 		*/
 		$scope.hasPermissionToEditAccount = function(){
-			return true;
 			return (rvPermissionSrv.getPermissionValue("EDIT_ACCOUNT"));
 		};
 
@@ -169,6 +167,9 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			//am trying to search something, so we have to change the initial search helping screen if no rsults
 			$scope.amFirstTimeHere = false;
 
+			//resetting error message
+			$scope.errorMessage = '';
+			
 			var params = formAccountSearchParams();
 			var options = {
 				params: 			params,
@@ -183,13 +184,14 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* @param {Array} - array of objects - accounts
 		* @return {None}
 		*/
-		var successCallBackOfSearch = function(data){			
+		var successCallBackOfSearch = function(data){	
 			//accountList
-			$scope.accountList = initialAccountsListing.posting_accounts; 
+			$scope.accountList = data.posting_accounts; 
 			
 			//total result count
-			$scope.totalResultCount = initialAccountsListing.total_count;
+			$scope.totalResultCount = data.total_count;
 
+			//we have changed the data
 			refreshScrollers ();
 		};
 
