@@ -177,7 +177,10 @@
     "ROOM_UPGRADES_TITLE": "Room Upgrades",
     "RESERVATION_TITLE": "Reservation",
     "RATE_MANAGER_TITLE": "Rate Manager",
-    "CHANGE_STAY_DATES_TITLE": "Change Stay Dates"
+    "CHANGE_STAY_DATES_TITLE": "Change Stay Dates",
+    "SETTINGS":"Settings",
+    "CAHNGE_PASSWORD":"Change Password"
+
 ,
 	
 	"CONTRACTED_NIGHTS": "Contracted Nights",

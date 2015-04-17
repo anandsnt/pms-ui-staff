@@ -1756,6 +1756,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                  */
 
                 var postData = $scope.computeReservationDataforUpdate(true, true);
+               
                 var saveSuccess = function(data) {
                     var totalDeposit = 0;
                     //calculate sum of each reservation deposits
@@ -1910,7 +1911,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
                     if (typeof index !== 'undefined') {
-                        postData.reservationId = $scope.reservationData.reservationId;
+
+                        //CICO-15795 : Fix by Shiju, UI team to review.
+                        //postData.reservationId = $scope.reservationData.reservationId;
+                        postData.reservationId = $scope.reservationsListArray.reservations[index].id;
+
+
                         var roomId = postData.room_id[index];
                         postData.room_id = [];
                         postData.room_id.push(roomId);
