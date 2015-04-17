@@ -72,8 +72,7 @@ sntRover.service('rvUtilSrv', [function(){
 		this.toMilliSecond = function(date_){
 			var type_ 	= typeof date_,
 				ms 		= '';
-			console.log('type_: ' + type_);
-			console.log('date_: ' + date_);
+
 			switch (type_){
 				case 'string':
 					ms = (new tzIndependentDate(date_));

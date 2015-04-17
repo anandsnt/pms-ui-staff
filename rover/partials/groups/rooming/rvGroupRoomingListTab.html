@@ -1,5 +1,6 @@
+<form  class="form card-tab rooms" ng-controller="rvGroupRoomingListCtrl">
 <div id="group-room-list-header" class="tab-header">
-    <div class="search-form has-dates"> <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
+    <div class="search-form has-dates open"> <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
         <div class="entry filter">
             <button type="button" class="button icons icon-add-60"> <!-- Remove class "icon-add-60" with "icon-remove-60" when clicked -->
                 Add Reservations
@@ -10,7 +11,7 @@
             <div class="select">
                 <select id="rooming-no-of-rooms">
                     <option value="1" selected>1</option>
-                    ... repeat for whataver number of rooms can be selected
+                    
                 </select>
             </div>
         </div>
@@ -18,8 +19,8 @@
             <label for="rooming-room-type">Room Type</label>
             <div class="select">
                 <select id="rooming-room-type">
-                    <option value="{Room Type}">{Room Type} ({Roomms Available Count})</option>
-                    ... repeat
+                    <option value="{Room Type}" ng-repeat="roomTypeData in roomTypesAndData">
+                    {{roomTypeData.room_type_name}} ({{roomTypeData.availableRoomCount}})</option>
                 </select>
             </div>
         </div>
@@ -54,7 +55,7 @@
             <button type="button" class="button green">Add</button>
         </div>
     </div>
-    <ul class="totals" ng-hide="true">
+    <ul class="totals" >
         <li>
             <div class="data">
                 <span class="label">Picked Up</span>
@@ -85,7 +86,7 @@
     </ul>
 </div>
 
-<div id="group-room-list-content" class="tab-details" ng-hide="true">
+<div id="group-room-list-content" class="tab-details">
     <!-- When no rooms in list
     <div class="no-content">
         <div class="info">
@@ -114,6 +115,13 @@
     <!-- Pagination, if applicable
     see {_shared/pagination.html}
     -->
+
+    <!-- Pagination -->
+    <div class="search-pagination" ng-show="shouldShowPagination()">
+        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
+        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>ACCOUNTS_PREVIOUS</button>
+        <p translate>ACCOUNTS_SHOWING <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
+    </div>
 
     <!-- Rooming List Content -->
     <div id="rooming-grid" class="rooming-grid scrollable"> <!-- Add class "with-pagination" if pagination is used -->
