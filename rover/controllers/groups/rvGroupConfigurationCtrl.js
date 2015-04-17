@@ -9,7 +9,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'holdStatusList',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv) {
+	'$timeout',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -138,6 +139,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			$scope.groupConfigData.activeTab = tab;
+			console.log ('oh my man');
+			//propogating an event that next clients are
+			$timeout(function(){
+				$scope.$broadcast ('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
+			}, 100);
+			
 		};
 
 		/**
