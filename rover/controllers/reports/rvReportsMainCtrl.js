@@ -352,7 +352,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			'chosenIncludeZestWebUsers',
 			'chosenVariance',
 			'chosenLastYear',
-			'chosenIncludeComapnyTaGroup',
 			'chosenGuaranteeType',
 			'chosenIncludeDepositPaid',
 			'chosenIncludeDepositDue',
@@ -374,7 +373,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			'hasIncludeZestWebUsers',
 			'hasVariance',
 			'hasLastYear',
-			'hasIncludeComapnyTaGroup',
 			'hasGuaranteeType',
 			'hasIncludeDepositPaid',
 			'hasIncludeDepositDue',
@@ -671,7 +669,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			return _.find(hasList, function(has) {
-				return item.hasOwnProperty(has)
+				return has != 'hasIncludeComapnyTaGroup' && item.hasOwnProperty(has);
 			}) ? true : false;
 		};
 
@@ -1023,6 +1021,18 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// include origin
+			if (chosenReport.hasOwnProperty('hasOrigin')) {
+				key = chosenReport.hasOrigin.value.toLowerCase();
+				if ( chosenReport.showOrigin ) {
+					params[key] = true;
+					/**/
+					$scope.appliedFilter.display.push( chosenReport.hasOrigin.description );
+				};
+			};
+
+
+
 			// include variance
 			if (chosenReport.hasOwnProperty('hasVariance')) {
 				key = chosenReport.hasVariance.value.toLowerCase();
@@ -1042,6 +1052,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					$scope.appliedFilter.options.push( chosenReport.hasLastYear.description );
 				};
 			};
+
 
 
 			// include company/ta/group

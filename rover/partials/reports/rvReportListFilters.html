@@ -275,13 +275,17 @@
     <div class="faux-select placeholder" ng-click="selectDisplayClicked($event, item)">{{ item.displayTitle }}</div>
     <!-- Remove class "hidden" when ".faux-select" clicked -->
     <div class="faux-select-options" ng-class="{ 'hidden': !item.selectDisplayOpen }" ng-click="fauxOptionClicked($event, item)">
-        <label class="checkbox inline">
+        <label class="checkbox inline" ng-if="item.hasSource">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showSource}"></span>
             <input type="checkbox" ng-model="item.showSource"> {{ item.hasSource.description }}
         </label>
-        <label class="checkbox inline">
+        <label class="checkbox inline" ng-if="item.hasMarket">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showMarket}"></span>
             <input type="checkbox" ng-model="item.showMarket"> {{ item.hasMarket.description }}
+        </label>
+        <label class="checkbox inline" ng-if="item.hasOrigin">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showOrigin}"></span>
+            <input type="checkbox" ng-model="item.showOrigin"> {{ item.hasOrigin.description }}
         </label>
     </div>
 </div>

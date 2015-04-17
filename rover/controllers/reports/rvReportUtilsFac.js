@@ -27,7 +27,8 @@ sntRover.factory('RVReportUtilsFac', [
             'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
             'RESERVATIONS_BY_USER'         : 'Reservations By User',
             'DAILY_TRANSACTIONS'           : 'Daily Transactions',
-            'DAILY_PAYMENTS'               : 'Daily Payments'
+            'DAILY_PAYMENTS'               : 'Daily Payments',
+            'FORECAST_BY_DATE'             : 'Forecast'
         };
 
 
@@ -169,6 +170,10 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-transactions';
                     break;
 
+                case __reportNames['FORECAST_BY_DATE']:
+                    reportItem['reportIconCls'] = 'icon-report ';
+                    break;
+
                 default:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
@@ -240,19 +245,16 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasDateLimit'] = false;
                     break;
 
+                case __reportNames['FORECAST_BY_DATE']:
+                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasSourceMarketFilter'] = true;
+                    break;
+
                 default:
                     reportItem['show_filter'] = false;
                     reportItem['hasDateLimit'] = true;
                     break;
             };
-        };
-
-
-
-
-
-        factory.cgcc = function () {
-
         };
 
 
@@ -385,6 +387,13 @@ sntRover.factory('RVReportUtilsFac', [
                     _hasMarketSelect = true;
                 };
 
+                // INCLUDE_VARIANCE
+                if ( filter.value === 'INCLUDE_ORIGIN' ) {
+                    reportItem['hasOrigin'] = filter;
+                    _hasFauxSelect = true;
+                    _hasMarketSelect = true;
+                };
+
                 // check for include cancelled filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_CANCELLED' || filter.value === 'INCLUDE_CANCELED' ) {
                     reportItem['hasIncludeCancelled'] = filter;
@@ -425,7 +434,7 @@ sntRover.factory('RVReportUtilsFac', [
                 };
 
                 // check for include company/ta/group filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' ) {
+                if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     reportItem['hasIncludeComapnyTaGroup'] = filter;
                 };
 
