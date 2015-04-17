@@ -1,19 +1,36 @@
-{    
+{"ALL_ACCOUNTS" : "All Accounts",
+"ACCOUNTS_OPEN":"Open",
+"ACCOUNTS_CLOSED":"Closed",
+"ACCOUNTS_ADD_NEW":"+ Add new",
+"ACCOUNTS_NEXT":"Next",
+"ACCOUNTS_PREVIOUS":"Previous",
+"ACCOUNTS_SHOWING":"Showing",
+"ACCOUNTS_SHOWING_OF":"of",
+"ACCOUNTS_ITEMS":"items",
+"FIND_ACCOUNTS":"Find Accounts",
+"ACCOUNTS_SEARCH_BY":"Search by",
+"ACCOUNT_CODE":"Account Code",
+"OR":"or",
+"ACCOUNT_NAME" :"Account Name",
+"NO_MATCHES":"No Matches",
+"CHECK_THAT_YOU_DIDNT_MISPELL_THE_":"Check that you didn't mispell the ",
+"CODE":"Code",
+"OR_ADD_A_NEW_ACCOUNT": " Or add a New Account",
+"BALANCE": "Balance",
+"STATUS": "Status",
 
-
-    "NEW_ACCOUNT": "New Account",
-    "ACCOUNT_DETAILS": "Account Details",
-    "DISCARD": "Discard",
-    "SAVE_ACCOUNT": "Save Account",
-    "TRANSACTIONS": "Transactions",
-    "ACTIVITY_LOG": "Activity Log",
-    "ACCOUNT_INFO": "Account Information",
-    "ACCOUNT_NUMBER": "Account Number",
-    "ACCOUNT_TYPE": "Account Type",
-    "STATUS": "Status",
-    "BALANCE_DETAILS":"Balance Details",
-    "DEPOSIT_RULES":"Deposit Rules",
-    "CANNOT_CLOSE_ACCOUNT":"Unable to close account with outstanding balance."
+"NEW_ACCOUNT": "New Account",
+"ACCOUNT_DETAILS": "Account Details",
+"DISCARD": "Discard",
+"SAVE_ACCOUNT": "Save Account",
+"TRANSACTIONS": "Transactions",
+"ACTIVITY_LOG": "Activity Log",
+"ACCOUNT_INFO": "Account Information",
+"ACCOUNT_NUMBER": "Account Number",
+"ACCOUNT_TYPE": "Account Type",
+"BALANCE_DETAILS":"Balance Details",
+"DEPOSIT_RULES":"Deposit Rules",
+"CANNOT_CLOSE_ACCOUNT":"Unable to close account with outstanding balance."
 
 ,
 "ACTIVITY_LOG_TITLE" : "Activity Log",
@@ -160,7 +177,10 @@
     "ROOM_UPGRADES_TITLE": "Room Upgrades",
     "RESERVATION_TITLE": "Reservation",
     "RATE_MANAGER_TITLE": "Rate Manager",
-    "CHANGE_STAY_DATES_TITLE": "Change Stay Dates"
+    "CHANGE_STAY_DATES_TITLE": "Change Stay Dates",
+    "SETTINGS":"Settings",
+    "CAHNGE_PASSWORD":"Change Password"
+
 ,
 	
 	"CONTRACTED_NIGHTS": "Contracted Nights",
