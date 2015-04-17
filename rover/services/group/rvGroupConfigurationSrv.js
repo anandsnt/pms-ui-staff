@@ -116,28 +116,6 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		};
 
 		/**
-		 * Function to get Room type configured against group
-		 * @return {Promise} [will get the details]
-		 */
-		this.getRoomTypesConfiguredAgainstGroup = function(params) {
-			var deferred = $q.defer(),
-				group_id = params.id,
-				url = 'api/group_rooms/' + group_id;
-			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
-
-			rvBaseWebSrvV2.getJSON(url).then(
-				function(data) {
-					deferred.resolve(data);
-				},
-				function(errorMessage) {
-					deferred.reject(errorMessage);
-				}
-			);
-
-			return deferred.promise;
-		};
-
-		/**
 		 * Function to get Room type availablity as well as best availbale rate
 		 * @return {Promise} [will get the details]
 		 */
