@@ -7,17 +7,8 @@
                 <form>
                     <div class="holder">
                         <div class="entry">
-                            <input id="group-name" placeholder="Group Name" ng-model="groupConfigData.summary.group_name" type="text" class="masked-input h1" data-size="{{groupConfigData.summary.group_name.length}}" auto-grow-field/>
+                            <input id="group-name" placeholder="Account Name" ng-model="groupConfigData.summary.group_name" type="text" class="masked-input h1" data-size="{{groupConfigData.summary.group_name.length}}" auto-grow-field/>
                         </div>
-                    </div>
-                    <div class="holder data">
-                        <!-- These should not allow free text input, you should only be able to search and add -->
-                        <!-- Search only companies -->
-                        <input placeholder="" class="masked-input icons icon-gc-company" auto-complete auto-options="companyAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onCompanyCardChange()" ng-model="groupConfigData.summary.company.name" style="width:{{groupConfigData.summary.company.name.length * 10 + 40}}px">
-                        
-                        <!-- Search only companies -->
-                        <input placeholder="" class="masked-input icons icon-gc-ta" auto-complete auto-options="travelAgentAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onTravelAgentCardChange()" ng-model="groupConfigData.summary.travel_agent.name" style="width:{{groupConfigData.summary.travel_agent.name.length * 10 + 40}}px">
-                        <!-- Search only travel agents -->
                     </div>
                 </form>
                 <div class="card-actions" ng-hide="isInAddMode()">
@@ -36,17 +27,8 @@
             <div ng-if="!isInAddonSelectionMode()" id="group-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
                 <ul id="group-card-tabs-nav" class="card-tabs-nav">
-                    <li ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
-                        <a>Summary</a>
-                    </li>
-                    <li class="with-filters" ng-click="switchTabTo('ROOM_BLOCK')"  ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOM_BLOCK'}">
-                        <a>Room Block Details</a>
-                    </li>
                     <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
                         <a>Account</a>
-                    </li>
-                    <li class="with-filters" ng-click="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
-                        <a>Rooming List</a>
                     </li>
                     <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
                         <a>Transactions</a>

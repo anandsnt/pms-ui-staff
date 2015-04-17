@@ -117,7 +117,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 		 */
 		$scope.openAddonsPopup = function() {
 			ngDialog.open({
-				template: '/assets/partials/groups/groupAddonsPopup.html',
+				template: '/assets/partials/groups/summary/groupAddonsPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
