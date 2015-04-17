@@ -407,11 +407,11 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			}
 		});
 		
-        $stateProvider.state('admin.dailyWorkAssignment', {
-        	templateUrl: '/assets/partials/housekeeping/adDailyWorkAssignment.html',
-        	controller: 'ADDailyWorkAssignmentCtrl',
-        	url: '/daily_work_assignment'
-        });
+                $stateProvider.state('admin.dailyWorkAssignment', {
+                        templateUrl: '/assets/partials/housekeeping/adDailyWorkAssignment.html',
+                        controller: 'ADDailyWorkAssignmentCtrl',
+                        url: '/daily_work_assignment'
+                });
 		$stateProvider.state('admin.checkoutEmail', {
 			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
 			controller: 'ADCheckoutEmailCtrl',
@@ -422,6 +422,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/deviceMapping/adDeviceMappingList.html',
 			controller: 'ADDeviceMappingsCtrl',
 			url : '/deviceMappingsList'
+		});
+		
+		$stateProvider.state('admin.interfaceMapping', {
+			templateUrl: '/assets/partials/interfaceMapping/adInterfaceMappingList.html',
+			controller: 'ADInterfaceMappingsCtrl',
+			url : '/intefaceMappingsList'
 		});
 
 		$stateProvider.state('admin.stationary', {

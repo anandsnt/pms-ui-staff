@@ -316,6 +316,16 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
                     "state":"admin.hoteldetails"
                 },
                 {
+                    "id": 61,
+                    "name": "Interface Mappings",
+                    "action_path": "/admin/interface_mapping",
+                    "is_group": false,
+                    "icon_class": "icon-admin-menu icon-external",
+                    "sub_components": [],
+                    "is_bookmarked": true,
+                    "state":"admin.interfaceMapping"
+                },
+                {
                     "id": 26,
                     "name": "External PMS Web Services",
                     "action_path": "/admin/get_pms_connection_config",
