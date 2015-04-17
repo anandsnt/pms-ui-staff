@@ -105,6 +105,22 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/financials/journal/2"
 					}]
 				}, {
+			        title: "MENU_GROUPS",
+			        //hidden: true,
+			        action: "",
+			        iconClass: "icon-groups",
+			        menuIndex: "menuGroups",
+			        hidden: $rootScope.isHourlyRatesEnabled,
+			        submenu: [{
+			            title: "MENU_CREATE_GROUP",
+			            action: "staff#/staff/groups/config/NEW_GROUP/SUMMARY",
+			            menuIndex: "menuCreateGroup",
+			        }, {
+			            title: "MENU_MANAGE_GROUP",
+			            action: "staff#/staff/groups/search",
+			            menuIndex: "menuManageGroup",
+			        }]
+		    	},{
 					title: "MENU_CONVERSATIONS",
 					hidden: true,
 					action: "",

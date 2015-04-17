@@ -1,5 +1,7 @@
+
 var admin = angular.module('admin', 
-	['ui.router', 
+	['ui.sortable',
+	'ui.router', 
 	'ng-iscroll', 
 	'ngDragDrop', 
 	'ngTable',

@@ -435,6 +435,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'adAnalyticSetupCtrl',
 			url : '/analyticSetup'
 		});
+                
+		$stateProvider.state('admin.siteminderSetup', {
+			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
+			controller: 'adSiteminderSetupCtrl',
+			url : '/siteminderSetup'
+		});
 
 		$stateProvider.state('admin.emailBlacklist', {
 			templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',

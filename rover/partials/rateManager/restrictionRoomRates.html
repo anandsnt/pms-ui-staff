@@ -1,4 +1,4 @@
-<div id="restrictionPriceContainer" class="price-div">
+<div id="restrictionPriceContainer" class="price-div" ng-if="hasPermissionToUpdateRates()">
 	<div class="restriction_text" >
 		<h4> PRICE </h4>
 		<em ng-if="!data.isHourly">Adjust price for all room types</em>

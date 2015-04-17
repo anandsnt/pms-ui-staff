@@ -78,7 +78,7 @@
 
     <!-- Report content -->
     <div id="report-content" class="report-content scrollable" ng-iscroll="report_content" ng-iscroll-delay="1000"> <!-- Add class "with-pagination" if pagination is shown -->
-        <div class="wrapper">
+        <div class="wrapper ">
             <table class="log-reports">
                 <thead>
                     <tr>
@@ -108,7 +108,7 @@
                 <tbody>
                     <tr ng-repeat="log in activityLogData" ngrepeatend>
                         <td>{{log.user_name}}</td>
-                        <td class="date"> {{log.date  | date:dateFormat}}, {{log.time}}</td>
+                        <td> {{log.date }}, {{log.time}}</td>
                         <td>{{log.action}}</td>
                         <td class="details">
                             <span ng-repeat="details in log.details">
@@ -127,7 +127,7 @@
 
     <!-- Report pagination // Shown when needed
     {../_shared/pagination.html} -->
-    <div class="search-pagination hk-pagination">
+    <div class="search-pagination hk-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
         <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResults}}</strong> items</p>

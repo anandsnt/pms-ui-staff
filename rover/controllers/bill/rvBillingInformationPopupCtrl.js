@@ -296,7 +296,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to save the new route
     */
     $scope.saveRoute = function(){
-            $rootScope.$broadcast('routeSaveClicked');
+        $rootScope.$broadcast('routeSaveClicked');
     };
     /**
     * Listener to show error messages for child views
@@ -312,5 +312,29 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		$scope.closeDialog();         
         $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
+
+    /**
+    * CICO-14951 :function to delete routing info from default billing info
+    */
+    $scope.deleteDefaultRouting = function(){
+        var successCallback = function(data) {
+            $scope.$emit('hideLoader');
+            $scope.closeDialog();
+            $scope.$emit('BILLINGINFODELETED');
+        };
+        var errorCallback = function(errorMessage) {
+            $scope.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage',errorMessage);
+        };
+
+        var data = {};
+        data.id = $scope.contactInformation.id;
+        $scope.invokeApi(RVBillinginfoSrv.deleteDefaultRouting, data, successCallback, errorCallback);
+    };
+    
+    // CICO-14951
+    $scope.deleteBillingInfo = function(){
+        $scope.deleteDefaultRouting();
+    };
 	
 }]);
