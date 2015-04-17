@@ -184,6 +184,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 }];             
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";                
             }
+            else if(type == 'GROUP'){
+                $scope.selectedEntity.id = $scope.attachedEntities.group_details.id;
+                $scope.selectedEntity.name = $scope.attachedEntities.group_details.name;
+                $scope.selectedEntity.entity_type = "GROUP";            
+            }
     };
 
     /*

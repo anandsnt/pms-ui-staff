@@ -99,10 +99,10 @@
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS')">
+				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent' , 'group': row.account_type.toLowerCase()=='group'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS')">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
-	                        <img ng-src="{{row.company_logo}}" alt="">
+	                    <img ng-src="{{row.company_logo}}" alt="">
 	                </figure>
 	
 	                <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
