@@ -1,5 +1,5 @@
-sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems',
-	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems) {
+sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems', '$timeout',
+	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems, $timeout) {
 		BaseCtrl.call(this, $scope);
 		
 		var initAccountTransactionsView = function(){
@@ -57,7 +57,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		 * @param {string} clickedDate
 		 * @param {string} checkoutDate
 		 */
-		$scope.showDayRates = function(dayIndex, clickedDate){
+		$scope.showDayRates = function(dayIndex){
 			//In this condition show the last clicked days item
 			//OR if checkout date clicked first do not show anything
 			//TODO: verify with krishobh
@@ -75,9 +75,15 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			}else{
 				$scope.dayRates = -1;
 			}*/
-			$scope.showAddonIndex = -1;
-			$scope.showGroupItemIndex = -1;
-			$scope.calculateHeightAndRefreshScroll();
+
+			if($scope.dayRates != dayIndex) {
+				$scope.dayRates = dayIndex;
+
+			}else{
+				$scope.dayRates = -1;
+			}
+			
+			//$scope.calculateHeightAndRefreshScroll();
 
 		};
 
@@ -90,6 +96,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			return activeBillClass;
 		};
 
+
 		/*
 		 * Set clicked bill active and show corresponding days/packages/addons calender
 		 * @param {int} index of bill
@@ -101,17 +108,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.calculateHeightAndRefreshScroll();*/
 		};
 
-		/*$state
-		 * Show Addons
-		 * @param {int} addon index
-		 */
-		$scope.showAddons = function(addonIndex){
-			$scope.showAddonIndex = ($scope.showAddonIndex != addonIndex)?addonIndex:-1;
-			$scope.dayRates = -1;
-			$scope.showGroupItemIndex = -1;
-			$scope.calculateHeightAndRefreshScroll();
-		};
-
+		
 		// Refresh registration-content scroller.
 		$scope.calculateHeightAndRefreshScroll = function() {
 			$timeout(function(){
