@@ -1,5 +1,5 @@
-sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems','RVPaymentSrv',
-	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems,RVPaymentSrv) {
+sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems','RVPaymentSrv','RVReservationCardSrv',
+	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems,RVPaymentSrv,RVReservationCardSrv) {
 		BaseCtrl.call(this, $scope);
 		
 		var initAccountTransactionsView = function(){
@@ -8,6 +8,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			getTransactionDetails();
 			$scope.renderData =  {}; //payment modal data - naming so as to reuse HTML
 			//TODO: Fetch accoutn transactions
+			$scope.paymentModalOpened = false;
 
 		}
 
@@ -144,30 +145,89 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 	 		return passData;
 		};
 
-		$scope.addPaymentMethod = function(){
+		var addPaymentMethod = function(passData){
 		   
-	 		$scope.passData = getPassData();
+	 		$scope.passData = passData;
 	 		fetchPaymentMethods("directBillNeeded"); 
 
 		    ngDialog.open({
 		        template: '/assets/partials/roverPayment/rvAddPayment.html',
-		        controller: 'RVTransactionsAddPaymentCtrl',
+		        controller: 'RVAccountsTransactionsAddPaymentTypeCtrl',
 		        scope: $scope
 		    });
+		};
+
+
+		$scope.openAddPaymentPopup = function(){
+		    var passData = getPassData();
+			addPaymentMethod(passData);
 		};
 
 
 
 		$scope.showPayemntModal = function(){
 			$scope.passData = getPassData();
-		 	ngDialog.open({
-	              template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
-	              className: '',
-	              controller: 'RVTransactionsPaymentCtrl',
-	              closeByDocument: false,
-	              scope: $scope
-	          });
+				 	ngDialog.open({
+			              template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
+			              className: '',
+			              controller: 'RVAccountsTransactionsPaymentCtrl',
+			              closeByDocument: false,
+			              scope: $scope
+			          });
+			$scope.paymentModalOpened = true;
 		};
+
+
+
+		//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
+		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
+			$scope.paymentModalOpened = false;
+			//$scope.billingInfoModalOpened = false;
+		});
+	/*
+	 *	SWIPE actions
+	 */
+		var processSwipedData = function(swipedCardData){
+
+	 			//Current active bill is index - adding 1 to get billnumber
+	 			var billNumber = "1";
+	 			var passData = getPassData();
+  	 			var swipeOperationObj = new SwipeOperation();
+				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+				if(swipedCardDataToRender.swipeFrom !== "payButton" && swipedCardDataToRender.swipeFrom !== 'billingInfo'){
+					addPaymentMethod(passData);					
+				} else if(swipedCardDataToRender.swipeFrom === "payButton") {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
+				}
+				// else if(swipedCardDataToRender.swipeFrom === "billingInfo") {
+				// 	$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
+				// }
+
+		};
+
+		/*
+		  * Handle swipe action in bill card
+		  */
+
+		 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+		 	
+		 	    if($scope.paymentModalOpened){
+					swipedCardData.swipeFrom = "payButton";
+				// } else if ($scope.billingInfoModalOpened) {
+				// 	swipedCardData.swipeFrom = "billingInfo";
+				} else {
+					swipedCardData.swipeFrom = "viewBill";
+				}
+				var swipeOperationObj = new SwipeOperation();
+				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+				var tokenizeSuccessCallback = function(tokenValue){
+					$scope.$emit('hideLoader');
+					swipedCardData.token = tokenValue;
+					processSwipedData(swipedCardData);
+				};
+				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+		});
 
 	}
 ]);

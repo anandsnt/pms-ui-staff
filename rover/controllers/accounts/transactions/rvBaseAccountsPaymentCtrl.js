@@ -1,10 +1,6 @@
 var BasePaymentCtrl = function($scope){
 	BaseCtrl.call(this, $scope);
 
-	var isSixPayment  = false;
-	var tokenDetails  = {};
-	var cardDetails   = {};
-
 	var init = function(){
 
 		$scope.isFromAccounts = true;
@@ -29,7 +25,6 @@ var BasePaymentCtrl = function($scope){
 		if($scope.paymentGateway !== 'sixpayments'){
 			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
 			$scope.addmode = true;
-			refreshCardsList();
 		}else{
 			$scope.isNewCardAdded = ($scope.dataToSave.paymentType == "CC" && !$scope.isManual) ? true : false;
 			return;
