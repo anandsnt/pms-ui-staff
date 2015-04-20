@@ -40,6 +40,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.queryEntered = function(){
 		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 			$scope.results.cards = [];
+			$scope.results.accounts = [];
 			$scope.results.reservations = [];
 		}
 		else{
@@ -114,6 +115,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	        }
 	              
 	      }
+	      
 	      // last hope, we are looking in webservice.      
 	     if(visibleElementsCount == 0){    
 	        var dataDict = {'query': $scope.textInQueryBox.trim()};

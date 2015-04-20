@@ -115,11 +115,9 @@
                   	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
                  </div>
 
-                 <div class="entity group" ng-repeat="row in results.accounts" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNTS')">
-	                
-                 	<div class="group-info">G</div>
+                 <div class="entity" ng-repeat="row in results.accounts" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNTS')">
+                 	<div class="group-info">A</div>
                     <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-
                  </div>
 
 			</ul>
