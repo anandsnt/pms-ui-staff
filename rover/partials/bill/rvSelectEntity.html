@@ -82,7 +82,7 @@
 
                 <!-- If group added -->
                 <li class="entity group" ng-show="attachedEntities.hasOwnProperty('group_details')" ng-click="selectAttachedEntity(-1,'GROUP')">
-                    <div class="group-info">G</div>
+                    <div class="group-info">A</div>
                     <h2>{{attachedEntities.group_details.name}}</h2>
                 </li>
             </ul>
@@ -94,12 +94,12 @@
 				RESERVATIONS
 			</li>
 			<li ng-click="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
-				GROUPS_AND_CARDS
+				ACCOUNTS_AND_CARDS
 			</li>
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent' , 'group': row.account_type.toLowerCase()=='group'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS_OR_GROUPS')">
+				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS')">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
 	                    <img ng-src="{{row.company_logo}}" alt="">
@@ -114,6 +114,14 @@
 	                <!-- icon -->
                   	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
                  </div>
+
+                 <div class="entity group" ng-repeat="row in results.accounts" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNTS')">
+	                
+                 	<div class="group-info">G</div>
+                    <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+
+                 </div>
+
 			</ul>
 			<!-- No results / no content when searched query not found-->
         	<div class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && !isReservationActive">
