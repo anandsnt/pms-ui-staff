@@ -43,12 +43,12 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 	 	var successCallBackOfFetchRoomingDetails = function(data){		 		
 	 		
 	 		//adding available room count over the data we got
-	 		$scope.roomTypesAndData = _.map(data.results, function(data){
+	 		$scope.roomTypesAndData = _.map(data.result, function(data){
 				data.availableRoomCount = util.convertToInteger (data.total_rooms) - util.convertToInteger (data.total_pickedup_rooms);
-	 		});
-
+				return data;
+	 		});	 		
 			//we changed data, so
-			refreshScroller();
+			//refreshScroller();
 	 	}
 
 		/**
@@ -65,7 +65,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			}
 
 			var params = {
-				group_id: $scope.groupConfigData.summary.group_id
+				id: $scope.groupConfigData.summary.group_id
 			};
 
 		 	var options = {
