@@ -36,107 +36,70 @@
 
                 <!-- Bills Nav-->
                 <div class="bill-tabs scrollable">
-                    <ul class="wrapper" style="width: {{getWidthForBillTabsScroll()}}px">
-
-                    	<li ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
-								<div class="bill-toggle">
-									<div class="price">
-										<span translate>BILL #{{billTab.bill_number}}</span>
-										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
-									</div>
-									
-									<div class="payment" ng-show="billTab.payment_details.payment_type !== 'CC'">
-										{{billTab.payment_details.payment_type_description}}
-									</div>
-									<figure class="card-logo" ng-show="billTab.payment_details.payment_type == 'CC'">
-										<img ng-src="/assets/{{billTab.payment_details.card_code}}.png" alt="" class="credit-card-image">
-										<span class="number"> {{billTab.payment_details.card_number}}</span>
-									</figure>
-								</div>
-							</li>
-							<li class="new-bill" ng-show="reservationBillData.bills.length<10 && isStandAlone">
-								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
-									<span class="icons icon-plus"></span>
-								</button>
-							</li>
-                        <!-- <li>
+                	<ul class="wrapper" style="width{Outer lenght of all li items}px">
+                        <li ng-class="showActiveBill($index)" ng-click="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
                             <a href="#account-bill-{id}" class="bill-toggle">
-                                <div class="price"><span>Bill #1</span>${Fees}</div>
+                                <div class="price"><span>Bill ##{{billTab.bill_number}}</span>
+                                	{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
+                                </div>
                             </a>
                         </li>
-                        ... repeat for each bill
-                        Add new bill
-                        <li class="new-bill">
+                        <!-- Add new bill-->
+                        <li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
                             <button type="button" class="button with-icon only-icon brand-colors">
                                 <span class="icons icon-plus"></span>
                             </button>
-                        </li> -->
+                        </li>
                     </ul>
+                    <!-- <ul class="wrapper" style="width: {{getWidthForBillTabsScroll()}}px">
+                    
+                    	<li ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
+                    								<div class="bill-toggle">
+                    									<div class="price">
+                    										<span translate>BILL #{{billTab.bill_number}}</span>
+                    										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
+                    									</div>
+                    									
+                    									<div class="payment" ng-show="billTab.payment_details.payment_type !== 'CC'">
+                    										{{billTab.payment_details.payment_type_description}}
+                    									</div>
+                    									<figure class="card-logo" ng-show="billTab.payment_details.payment_type == 'CC'">
+                    										<img ng-src="/assets/{{billTab.payment_details.card_code}}.png" alt="" class="credit-card-image">
+                    										<span class="number"> {{billTab.payment_details.card_number}}</span>
+                    									</figure>
+                    								</div>
+                    							</li>
+                    							<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
+                    								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
+                    									<span class="icons icon-plus"></span>
+                    								</button>
+                    							</li>
+                    </ul> -->
                 </div>
 
                 <!-- Bill -->
-                <div class="bill-summary">
+                <div class="bill-summary" ng-repeat="billData in transactionsDetails.bills">
                     
                     <!-- Bill Summary -->
                     <div class="bill-summary-wrapper">  
-                        <div class="scrollable" ng-iscroll="billDays">
-                        	<ul class="wrapper" style="width: {{billData.billDaysWidth}}px;">
-                        		<li class="add-new">
-                        			<button type="button" class="button with-icon brand-colors">
-                        				<span class="icons icon-charge"></span>
-                        				Add Charge
-                        			</button>
-                        		</li>
-
-                        		
-                        		<!-- TODO: showDays function seems to be non relevant-->
-                        		<li ng-click="showDayRates($index, days.date)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, businessDate)">
-                        			<div class="toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
-                        				<span class="day"> {{days.date | date:'EEE'}} </span> 
-                        				<span class="date"> {{days.date | date:'dd'}} </span> 
-                        				<span class="price" ng-hide="days.amount == 'SR'">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>  
-                        			</div>
-                        		</li>
-
-                        		<!-- packages -->
-                        		<!-- show addons -->
-                        		<!-- <li class="package active" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
-                        			<div class="toggle" ng-class="{'active': $index == showAddonIndex}"> 
-                        				<span class="expense"> {{addons.title}}</span> 
-                        				<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
-                        				<span class="price" ng-show="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{currencySymbol}}{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span> 
-                        				<span class="price" ng-hide="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span> 
-                        				<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount | number: precisonZero}}</span> 
-                        			</div>
-                        		</li> -->
-
-                        		<!-- Group items tab -->
-                        		<li class="package active" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
-                        			<div class="toggle" ng-class="{'active': $index == showGroupItemIndex}"> 
-                        				<span class="expense"> {{groupItems.title}} </span> 
-                        				<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
-                        			</div>
-                        		</li>
-                        	</ul>
-
-                            <!-- <ul class="wrapper" style="width{Outer lenght of all li items}px">
+                        <div class="scrollable">
+                            <ul class="wrapper" style="width{Outer lenght of all li items}px">
                                 <li class="add-new">
                                     <a href="{modals/post-charge/specific.html}" class="button with-icon brand-colors">
                                         <span class="icons icon-charge"></span>
                                         Add Charge
                                     </a>
                                 </li>
-                                <li class="active">
+                                <!-- TODO: active class logic -->
+                                <li class="active" ng-repeat="days in billData.days">
                                     <a href="#account-bill{bill-id}-expense-{day}" class="toggle">
-                                        <span class="day">{Date, like Feb 12}</span>
-                                        <span class="price">${Fees for the day}</span>
+                                        <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
+                                        <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
                                     </a>
                                 </li>
-                                ... repeat for each day
-                            </ul> -->
+                            </ul>
                         </div>
-                        <!-- 
-                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded hidden"> Remove class "hidden" when item in summary selected
+                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded hidden" ng-repeat="billItem in billData.days"> <!-- Remove class "hidden" when item in summary selected -->
                             <table class="expense-details">
                                 <thead>
                                     <tr>
@@ -146,17 +109,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="price">${Value}</td>
-                                        <td>{Expense Details}</td>
-                                        <td>{Charge Type}</td>
+                                    <tr ng-repeat="expense in billItem.expense_details">
+                                        <td class="price">{{currencySymbol}}{{expense.amount | number: precisonZero}}</td>
+                                        <td>{{billItem.details}}</td>
+                                        <td>{{billItem.charge_type}}</td>
                                     </tr>
-                                    ... repeat for each expense
                                 </tbody>
                             </table>
                         </div>
-                        ... repeat for each day-->
-                    </div> 
+                    </div>
 
                     <!-- Invoice -->
                     <div id="account-bill{bill-id}-invoice" class="invoice">

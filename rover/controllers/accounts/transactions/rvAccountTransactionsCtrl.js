@@ -78,6 +78,26 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		};
 
+		$scope.showActiveBill = function(index){
+
+			var activeBillClass = "";
+			if(index == $scope.currentActiveBill){
+				activeBillClass = "ui-tabs-active ui-state-active";
+			}
+			return activeBillClass;
+		};
+
+		/*
+		 * Set clicked bill active and show corresponding days/packages/addons calender
+		 * @param {int} index of bill
+		 */
+		$scope.setActiveBill = function(billIndex){
+
+			$scope.currentActiveBill = billIndex;
+			/*$scope.showActiveBillFeesDetails = billIndex;
+			$scope.calculateHeightAndRefreshScroll();*/
+		};
+
 		/*$state
 		 * Show Addons
 		 * @param {int} addon index
@@ -95,34 +115,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				$scope.refreshScroller('registration-content');
 			}, 500);
 		};
-		//TODO: verify the commented code
-		$scope.getDaysClass = function(index, dayDate, businessDate){
-			var dayClass = "";
-			//TODO: y?
-			if(index!=0){
-				dayClass = "hidden";
-			}
-			/*if(dayDate == checkinDate){
-				dayClass = "check-in active";
-			} */
-			//if(dayDate != checkoutDate){
-				if(dayDate <= businessDate){
-					dayClass = "active";
-				}
-			//}
-			/*if(dayDate == checkoutDate && dayDate != checkinDate){
-				if(reservationBillData.bills[$scope.currentActiveBill]){
-					if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined && reservationBillData.bills[$scope.currentActiveBill].addons.length >0){
-						dayClass = "check-out last";
-					} else {
-						dayClass = "check-out";
-					}
-				}
-			}*/
-			return dayClass;
-		};
-
-		
+			
 
 		initAccountTransactionsView();
 	}
