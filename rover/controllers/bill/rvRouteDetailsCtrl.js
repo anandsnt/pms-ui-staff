@@ -280,7 +280,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     $scope.showPayment = true;
                     $scope.attachedPaymentTypes = [];
                     $scope.$parent.$emit('hideLoader');
-                }else{
+                }
+                else if($scope.selectedEntity.has_accompanying_guests){
+                    $scope.showPayment = true;
+                    $scope.$parent.$emit('hideLoader');
+                }
+                else {
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
                 }

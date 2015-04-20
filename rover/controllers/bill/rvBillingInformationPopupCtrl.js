@@ -98,7 +98,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 "credit_card_details": {}
 			};
 			
-        	console.log($scope.selectedEntity);
         }
         else if(type === 'CARDS'){
         	var data = $scope.results.cards[index];

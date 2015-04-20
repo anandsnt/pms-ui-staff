@@ -33,11 +33,13 @@
                   <!-- image -->
                   
                   <figure class="guest-image accompany" >
+							<img src="{{entity.primary_avatar}}" alt="" />
 							<img src="{{entity.avatar}}" alt="" />
 					</figure>
 
-                  <!-- heading -->
-                  <h2>{{entity.name}}</h2>
+					<div class="data">
+                        <h2>{{entity.name}}</h2>
+                    </div>
                   <!-- icon -->
                   <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(reservationData.reservation_status, reservationData.is_opted_late_checkout)"   >{{entity.name}}</span>
                  </li>
