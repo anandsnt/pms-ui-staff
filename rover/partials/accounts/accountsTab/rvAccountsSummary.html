@@ -1,8 +1,4 @@
-<form method="post" 
-    class="form card-tab scrollable" 
-    ng-controller="rvAccountSummaryCtrl" 
-    ng-iscroll="rvAccountSummaryScroller" ng-iscroll-delay="500" 
-    outside-click-handler>
+<form method="post" class="form card-tab scrollable" ng-controller="rvAccountSummaryCtrl" ng-iscroll="rvAccountSummaryScroller" ng-iscroll-delay="500" outside-click-handler>
     <div class="wrapper">
         <div class="holder left">
             <strong class="h3" translate>ACCOUNT_INFO</strong>
@@ -35,7 +31,7 @@
                 </div>
             </div> 
             -->
-            <div class="entry break full-width">
+            <div class="entry break full-width" ng-if="!!groupConfigData">
                 <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
                 <!-- opens {modals/demographics.html} -->
             </div>
@@ -44,7 +40,7 @@
             <strong class="h3">Balance / Status</strong>
             <div class="entry margin">
                 <label for="account-balance" translate>BALANCE</label>
-                <input id="account-balance" class="balance-{red or green}" ng-model="accountConfigData.summary.balance" type="text" readonly />
+                <input id="account-balance" ng-class="{'balance-red' : accountConfigData.summary.balance > 0, 'balance-green' : accountConfigData.summary.balance <= 0}" ng-model="accountConfigData.summary.balance" type="text" readonly />
             </div>
             <div class="entry">
                 <label for="account-status" translate>STATUS</label>
