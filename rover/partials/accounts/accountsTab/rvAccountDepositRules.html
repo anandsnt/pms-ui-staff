@@ -1,0 +1,37 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
+    <form method="post" id="group-deposit-rules" name="group-deposit-rules" class="modal-content form group-deposit">
+        <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></button>
+
+    <span class="message h2">Deposit Rules</span>
+            <!-- On / Off -->
+            <div class="switch-button">
+                <!-- Add class "on" when L8 is checked -->
+                <input name="deposit-rules" id="deposit-rules" type="checkbox" />
+                <span class="switch-icon"></span>
+            </div>
+            <div class="holder">
+                <label>Rule Set</label>
+                <div class="rules scrollable">
+                    <ul class="wrapper">
+                        <li>
+                            <button type="button" class="button white open-modal">
+                                <!-- Opens {modals/group-deposit-details.html} -->
+                                <strong>{Policy Name}</strong>
+                                <em>{Policy Description}</em>
+                            </button>
+                            <span class="icons icon-remove-40">-</span>
+                        </li>
+                        ... repeat for all deposit rules
+                    </ul>
+                </div>
+                <button type="button" class="add-new-button open-modal">+ Add Deposit Rule</button>
+                <!-- Opens {modals/group-deposit-details.html} -->
+            </div>
+            <div class="actions">
+                <button type="button" class="button blank">Close</button>
+                <!-- Change text to "Cancel" when deposit is removed or added (so when a change is made in deposit rules) -->
+                <!-- When deposit is removed or added (so when a change is made in deposit rules), show:
+        <button type="button" class="button green">Save</button> -->
+            </div>
+    </form>
+</div>

@@ -210,7 +210,8 @@ sntRover.controller('RVPostChargeController',
 			*	3. update the net total price
 			*/
 			var newCount = 0;
-			$scope.addItem = function(item) {
+			$scope.addItem = function(item,type) {
+				$scope.calToggle = (type === "isItem") ? 'QTY' :'PR';
 				// it is already added
 				if ( item.isChosen ) {
 					item.count++;
