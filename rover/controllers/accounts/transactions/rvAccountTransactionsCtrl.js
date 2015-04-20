@@ -1,5 +1,5 @@
-sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems',
-	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems) {
+sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems','RVBillCardSrv',
+	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems,RVBillCardSrv) {
 		BaseCtrl.call(this, $scope);
 		
 		var initAccountTransactionsView = function(){
@@ -163,5 +163,120 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 		};
+
+
+
+
+
+		/*------------- edit/remove/split starts here --------------*/
+
+		$scope.splitTypeisAmount = true;
+		$scope.chargeCodeActive = false;
+		$scope.selectedChargeCode = {};
+		
+        var fetchChargeCodesSuccess =  function(data){
+        	$scope.chargeCodeData = data.results;
+			$scope.availableChargeCodes = data.results;
+        };
+
+        $scope.invokeApi(RVBillCardSrv.fetchChargeCodes,{}, fetchChargeCodesSuccess);
+
+		$scope.getAllchargeCodes = function (callback) {
+			callback($scope.chargeCodeData);
+		};
+
+		$scope.setchargeCodeActive = function(bool){
+			$scope.chargeCodeActive = bool;
+		};
+
+		/*
+		 * open popup for edit/split/remove transaction
+		 */
+		$scope.openActionsPopup = function(id,desc,amount,type,credits){
+
+			$scope.errorMessage = "";
+			//hide edit and remove options in case type is  payment
+			$scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
+			$scope.selectedTransaction = {};
+			$scope.selectedTransaction.id = id;
+			$scope.selectedTransaction.desc = desc;
+
+			if(amount){
+				$scope.selectedTransaction.amount = amount;
+			}
+			else if(credits){
+				$scope.selectedTransaction.amount = credits;
+			};
+
+			ngDialog.open({
+				template: '/assets/partials/bill/rvBillActionsPopup.html',
+				className: '',
+				scope: $scope
+			});
+		};
+
+		/*
+		 * open popup for remove transaction
+		 */
+
+		$scope.openRemoveChargePopup = function(){
+			ngDialog.open({
+				template: '/assets/partials/bill/rvRemoveChargePopup.html',
+				controller:'RVAccountTransactionsPopupCtrl',
+				className: '',
+				scope: $scope
+			});
+		};
+
+		/*
+		 * open popup for split transaction
+		 */
+
+		$scope.openSplitChargePopup = function(){
+			ngDialog.open({
+				template: '/assets/partials/bill/rvSplitChargePopup.html',
+				controller:'RVAccountTransactionsPopupCtrl',
+				className: '',
+				scope: $scope
+			});
+		};
+
+		/*
+		 * open popup for edit transaction
+		 */
+
+		$scope.openEditChargePopup = function(){
+			$scope.selectedChargeCode = {
+				"id": "",
+				"name": "",
+				"description": "",
+				"associcated_charge_groups": []
+			};
+			ngDialog.open({
+				template: '/assets/partials/bill/rvEditPostingPopup.html',
+				className: '',
+				controller:'RVAccountTransactionsPopupCtrl',
+				scope: $scope
+			});
+			$scope.setScroller('chargeCodesList');
+		};
+
+
+		$scope.callActionsPopupAction = function(action){
+
+			ngDialog.close();
+			if(action ==="remove"){
+				$scope.openRemoveChargePopup();
+			}
+			else if(action ==="split"){
+				$scope.openSplitChargePopup();
+			}else if(action === "edit"){
+				$scope.openEditChargePopup();
+			};
+
+		};
+
+
+		/*----------- edit/remove/split ends here ---------------*/
 	}
 ]);
