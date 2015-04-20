@@ -132,8 +132,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			});
 		};
 
-		$scope.addPaymentMethod = function(){
-		    var passData = {
+		var getPassData = function(){
+			 var passData = {
 	 		"account_id": "797",
 	 		"is_swiped": false ,
 	 		"details":{
@@ -141,7 +141,12 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 	 			"lastName":""
 	 			}
 	 		};
-	 		$scope.passData = passData;
+	 		return passData;
+		};
+
+		$scope.addPaymentMethod = function(){
+		   
+	 		$scope.passData = getPassData();
 	 		fetchPaymentMethods("directBillNeeded"); 
 
 		    ngDialog.open({
@@ -149,6 +154,19 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		        controller: 'RVTransactionsAddPaymentCtrl',
 		        scope: $scope
 		    });
+		};
+
+
+
+		$scope.showPayemntModal = function(){
+			$scope.passData = getPassData();
+		 	ngDialog.open({
+	              template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
+	              className: '',
+	              controller: 'RVTransactionsPaymentCtrl',
+	              closeByDocument: false,
+	              scope: $scope
+	          });
 		};
 
 	}

@@ -493,3 +493,12 @@ var retrieveCardNumber = function(isSixPayment,tokenDetails,cardDetails){
             cardDetails.cardNumber.slice(-4);
     return cardNumber;
 };
+
+//retrieve card type based on paymnet gateway
+var retrieveCardtype = function(isSixPayment,tokenDetails,cardDetails){
+    var cardType = isSixPayment?
+                getSixCreditCardType(tokenDetails.card_type).toLowerCase():
+                getCreditCardType(cardDetails.cardType).toLowerCase()
+                ;
+    return cardType;
+};
