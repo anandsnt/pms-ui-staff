@@ -14,7 +14,7 @@ sntRover.controller('rvActivityCtrl', [
 			$scope.errorMessage = '';
 			$scope.page = 1;			
 		}
-		$scope.$on('PopulateLogDataForGroup',function(e,data){				
+		$scope.$on('PopulateLogData',function(e,data){				
 				$scope.count = data.total_count;
 				$scope.$emit('hideLoader');
 				$scope.activityLogData = data.results;
@@ -186,14 +186,13 @@ sntRover.controller('rvActivityCtrl', [
 	                $scope.end = $scope.start + $scope.count - 1;
 	                $scope.$emit('hideLoader');
 	        	}
-	        var params = {
-	        		group_id:$scope.selectedGroupOrAccountId,
+	        var params = {	        		
 	                page: $scope.page,
 	                per_page: $scope.perPage
 	        	};     
 	        params['sort_order'] = $scope.sort_order;
 	        params['sort_field'] = $scope.sort_field; 	       
-	        $scope.$emit("update",params);
+	        $scope.$emit("updateLogdata",params);
     	}
 
 

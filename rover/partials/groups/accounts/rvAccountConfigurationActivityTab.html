@@ -1,0 +1,74 @@
+<!-- Group Card table - Activity Log -->
+<div ng-controller = "rvAccountActivityCtrl"> 
+<form method="post" action="{action}" id="group-transactions" name="group-transactions" class="form card-tab inner-header activity" ng-controller = "rvActivityCtrl">
+        <!-- Keep in mind that some fields should be empty -->       
+        <div id="group-activity-header" class="tab-header no-print">
+		    <ul class="totals">
+		        <li>
+		            <div class="data">
+		                <span class="label">Activities</span>
+		                <span class="value">{{count}}</span>
+		            </div>
+		        </li>
+		        <li>
+		            <button type="button" class="button with-icon only-icon blue">
+		                <span class="icons icon-email"></span>
+		                Email
+		            </button>
+		            <button type="button" class="button blue with-icon only-icon">
+		                <span class="icons icon-print"></span>
+		                Print
+		            </button>
+		            <button type="button" class="button with-icon only-icon purple">
+		                <span class="icons icon-save"></span>
+		                Download
+		            </button>
+		        </li>
+		    </ul>
+		</div>
+
+		<div id="group-activity-content" class="tab-details">	    
+	    <!-- Search pagination, if applicable{_shared/pagination.html} -->
+		    <div class="search-pagination hk-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
+		        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+		        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+		        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{count}}</strong> items</p>
+		    </div>	
+		        
+		    <div id="report-content" class="report-content scrollable with-pagination" ng-iscroll="report_content" ng-iscroll-delay="1000"> 
+		    <!-- Add class "with-pagination" if pagination is shown -->
+			        <div class="wrapper">
+			            <table class="log-reports">
+			                <thead>
+			                    <tr>
+			                        <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+			                        "sorting-asc" when ASC sorting
+			                        "sorting-desc" when DESC sorting -->
+			                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfUserASC,'sorting-desc':sortOrderOfUserDSC}" ng-click="sortByUserName()">User Name</span></th>
+			                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfDateASC,'sorting-desc':sortOrderOfDateDSC}" ng-click="sortByDate()">Date &amp; Time</span></th>
+			                        <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfActionASC,'sorting-desc':sortOrderOfActionDSC}" ng-click="sortByAction()">Action</span></th>
+			                        <th><span>Details</span></th>
+			                    </tr>
+			                </thead>   
+			                <tbody>
+			                 <tr ng-repeat="log in activityLogData" >
+			                    <td>{{log.user_name}}</td>
+		                        <td> {{log.date }}, {{log.time}}</td>
+		                        <td>{{log.action}}</td>
+		                        <td class="details">
+		                            <span ng-repeat="details in log.details">
+		                                <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
+		                                    <strong>{{ details.old_value }}</strong>
+		                                </span>
+		                                {{details.key}}
+		                                <strong>{{details.new_value}}</strong>
+		                            </span>
+		                        </td>
+		                        </tr>                
+			                </tbody>			                
+			            </table>         
+			        </div>
+		    </div>
+		</div>
+</form>
+</div>
