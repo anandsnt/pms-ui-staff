@@ -102,6 +102,9 @@ sntRover.controller('RVAccountsTransactionsAddPaymentTypeCtrl',	[
 			});
 		};
 
+		/*
+		* There are 3 means of add payment a.six payment swipe b.MLI swipe and c.manual (CC and non CC)
+		*/
 		$scope.addNewPayment = function(){
 			if(!$scope.isManual && $rootScope.paymentGateway == "sixpayments" && $scope.dataToSave.paymentType ==='CC'){
 				sixPaymentSwipe();
@@ -109,8 +112,7 @@ sntRover.controller('RVAccountsTransactionsAddPaymentTypeCtrl',	[
 				saveDataFromSwipe();
 			} else if(typeof $scope.dataToSave !== "undefined"){
 				($scope.dataToSave.paymentType ==='CC') ? saveNewCard():saveNewPayment();
-			}
-			   
+			}			   
 		};
 
 
