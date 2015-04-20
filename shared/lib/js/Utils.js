@@ -477,3 +477,19 @@ var tConvertToAPIFormat = function(hh, mm, ampm){
 	return time;
 
 }
+//retrieve card expiry based on paymnet gateway
+var retrieveCardExpiryDate = function(isSixPayment,tokenDetails,cardDetails){
+    var expiryDate = isSixPayment?
+                    tokenDetails.expiry.substring(2, 4)+" / "+tokenDetails.expiry.substring(0, 2):
+                    cardDetails.expiryMonth+" / "+cardDetails.expiryYear
+                    ;
+    return expiryDate;
+};
+
+//retrieve card number based on paymnet gateway
+var retrieveCardNumber = function(isSixPayment,tokenDetails,cardDetails){
+    var cardNumber = isSixPayment?
+            tokenDetails.token_no.substr(tokenDetails.token_no.length - 4):
+            cardDetails.cardNumber.slice(-4);
+    return cardNumber;
+};

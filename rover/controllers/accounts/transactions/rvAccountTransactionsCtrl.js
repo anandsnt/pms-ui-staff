@@ -1,11 +1,12 @@
-sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems',
-	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems) {
+sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems','RVPaymentSrv',
+	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems,RVPaymentSrv) {
 		BaseCtrl.call(this, $scope);
 		
 		var initAccountTransactionsView = function(){
 
 			console.log("init accoutn transactions");
 			getTransactionDetails();
+			$scope.renderData =  {}; //payment modal data - naming so as to reuse HTML
 			//TODO: Fetch accoutn transactions
 
 		}
@@ -84,9 +85,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			//$scope.passActiveBillNo = activeBillNo;
 
 			$scope.billNumber = activeBillNo;
-
-			// translating this logic as such from old Rover
-			// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
 			// Also passing the available bills to the post charge modal
 			$scope.fetchTotalBal = false;
 			var callback = function(data) {
@@ -109,5 +107,49 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 		};
+
+		var fetchPaymentMethods = function(directBillNeeded){
+			
+			var directBillNeeded = directBillNeeded ==="directBillNeeded" ? true:false;
+			var onPaymnentFetchSuccess = function(data) {
+				$scope.renderData =  data; 
+				$scope.creditCardTypes = [];
+				angular.forEach($scope.renderData, function(item, key) {
+					if(item.name === 'CC'){
+						$scope.creditCardTypes = item.values;
+					};					
+				});	
+			},
+			onPaymnentFetchFailure = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+			};
+			$scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
+				successCallBack: onPaymnentFetchSuccess,
+				failureCallBack: onPaymnentFetchFailure,
+				params: {
+					direct_bill: directBillNeeded
+				}
+			});
+		};
+
+		$scope.addPaymentMethod = function(){
+		    var passData = {
+	 		"account_id": "797",
+	 		"is_swiped": false ,
+	 		"details":{
+	 			"firstName":"",
+	 			"lastName":""
+	 			}
+	 		};
+	 		$scope.passData = passData;
+	 		fetchPaymentMethods("directBillNeeded"); 
+
+		    ngDialog.open({
+		        template: '/assets/partials/roverPayment/rvAddPayment.html',
+		        controller: 'RVTransactionsAddPaymentCtrl',
+		        scope: $scope
+		    });
+		};
+
 	}
 ]);
