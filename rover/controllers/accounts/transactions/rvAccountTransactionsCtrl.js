@@ -12,7 +12,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			getTransactionDetails();
 			//TODO: Fetch accoutn transactions
 
-		}
+		};
 
 		var getTransactionDetails = function(){
 
@@ -24,15 +24,29 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				$scope.setScroller ('transaction-bill-tab-scroller', {scrollX: true});
 				$scope.setScroller('billDays', {scrollX: true});
 				$scope.refreshScroller('registration-content');
-
-
-
 			}
+			var params = {"account_id" : $scope.accountConfigData.summary.posting_account_id}
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
 				successCallBack: onTransactionFetchSuccess,
-				params: {}
+				params: params
 			});
-		}
+		};
+
+		$scope.createNewBill = function(){
+			var billData ={
+				"account_id" : $scope.accountConfigData.summary.posting_account_id,
+				"bill_number" : $scope.transactionsDetails.bills.length + 1
+			};
+			var createBillSuccessCallback = function(data){
+				$scope.$emit('hideLoader');
+				//Fetch data again to refresh the screen with new data
+				getTransactionDetails();
+			};
+
+			$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
+		};
+
+
 
 		//Calculate the scroll width for bill tabs in all the cases
 		$scope.getWidthForBillTabsScroll = function(){
@@ -51,40 +65,14 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		};
 		
 
-		/* TODO : verify unwanted params
-		 * Remove class hidden for day rates
-		 * @param {int} index of calender days
-		 * @param {string} clickedDate
-		 * @param {string} checkoutDate
-		 */
 		$scope.showDayRates = function(dayIndex){
-			//In this condition show the last clicked days item
-			//OR if checkout date clicked first do not show anything
-			//TODO: verify with krishobh
-
-			/*if(clickedDate == checkoutDate){
-				if(numberOfNights == 0){
-					$scope.dayRates = dayIndex;
-				} else {
-					$scope.dayRates = $scope.dayRates;
-				}
-
-			} else if($scope.dayRates != dayIndex) {
-				$scope.dayRates = dayIndex;
-
-			}else{
-				$scope.dayRates = -1;
-			}*/
-
+			
 			if($scope.dayRates != dayIndex) {
 				$scope.dayRates = dayIndex;
 
 			}else{
 				$scope.dayRates = -1;
 			}
-			
-			//$scope.calculateHeightAndRefreshScroll();
-
 		};
 
 		$scope.showActiveBill = function(index){
@@ -104,8 +92,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		$scope.setActiveBill = function(billIndex){
 
 			$scope.currentActiveBill = billIndex;
-			/*$scope.showActiveBillFeesDetails = billIndex;
-			$scope.calculateHeightAndRefreshScroll();*/
+			
 		};
 
 		
