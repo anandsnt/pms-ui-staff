@@ -27,7 +27,8 @@ sntRover.factory('RVReportUtilsFac', [
             'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
             'RESERVATIONS_BY_USER'         : 'Reservations By User',
             'DAILY_TRANSACTIONS'           : 'Daily Transactions',
-            'DAILY_PAYMENTS'               : 'Daily Payments'
+            'DAILY_PAYMENTS'               : 'Daily Payments',
+            'ROOMS_QUEUED'                 : 'Rooms Queued'
         };
 
 
@@ -167,6 +168,10 @@ sntRover.factory('RVReportUtilsFac', [
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
                     reportItem['reportIconCls'] = 'icon-report icon-transactions';
+                    break;
+
+                case __reportNames['ROOMS_QUEUED']:
+                    reportItem['reportIconCls'] = 'icons icon-queued';
                     break;
 
                 default:
