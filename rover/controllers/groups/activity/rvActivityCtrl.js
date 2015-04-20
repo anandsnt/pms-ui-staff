@@ -15,10 +15,10 @@ sntRover.controller('rvActivityCtrl', [
 			$scope.page = 1;			
 		}
 		$scope.$on('PopulateLogData',function(e,data){				
-				$scope.count = data.total_count;
-				$scope.$emit('hideLoader');
-				$scope.activityLogData = data.results;
-				$scope.initPaginationParams();
+			$scope.count = data.total_count;
+			$scope.$emit('hideLoader');
+			$scope.activityLogData = data.results;
+			$scope.initPaginationParams();
 		})
 		/**		 
 		 * load next page		
@@ -45,11 +45,11 @@ sntRover.controller('rvActivityCtrl', [
 		 *@return - Boolean		
 		 */
 		$scope.isOldValue = function(value){
-        if(value =="" || typeof value == "undefined" || value == null){
-            return false;
-        	}else{
-            return true;
-        	}
+	        if(value =="" || typeof value == "undefined" || value == null){
+	            return false;
+	        	}else{
+	            return true;
+	        	}
     	}
 		
 		/**		 
@@ -114,18 +114,18 @@ sntRover.controller('rvActivityCtrl', [
 		 * @return {none}		
 		 */
     	$scope.sortByDate = function(){
-        $scope.sort_field ="DATE";
-        if($scope.sortOrderOfDateASC){
-            $scope.initSort();
-            $scope.sortOrderOfDateDSC = true;
-            $scope.sort_order="desc";
-        }
-        else{
-            $scope.initSort();
-            $scope.sortOrderOfDateASC = true;
-            $scope.sort_order="asc";
-        }
-        $scope.updateReport();
+	        $scope.sort_field ="DATE";
+	        if($scope.sortOrderOfDateASC){
+	            $scope.initSort();
+	            $scope.sortOrderOfDateDSC = true;
+	            $scope.sort_order="desc";
+	        }
+	        else{
+	            $scope.initSort();
+	            $scope.sortOrderOfDateASC = true;
+	            $scope.sort_order="asc";
+	        }
+	        $scope.updateReport();
     	}
 
     	/**	@param {none}	 
@@ -171,24 +171,24 @@ sntRover.controller('rvActivityCtrl', [
 		 */
 		$scope.updateReport = function(){
 	        var fetchCompleted = function(data) {
-	                $scope.count = data.total_count;
-	                $scope.activityLogData = data.results;
-	                if ($scope.nextAction) {
-	                    $scope.start = $scope.start + $scope.perPage;
-	                    $scope.nextAction = false;
-	                    $scope.initSort();
+	            $scope.count = data.total_count;
+	            $scope.activityLogData = data.results;
+	            if ($scope.nextAction) {
+	                $scope.start = $scope.start + $scope.perPage;
+	                $scope.nextAction = false;
+	                $scope.initSort();
 	                }
-	                if ($scope.prevAction) {
-	                    $scope.start = $scope.start - $scope.perPage;
-	                    $scope.prevAction = false;
-	                    $scope.initSort();
+	            if ($scope.prevAction) {
+	                $scope.start = $scope.start - $scope.perPage;
+	                $scope.prevAction = false;
+	                $scope.initSort();
 	                }
-	                $scope.end = $scope.start + $scope.count - 1;
-	                $scope.$emit('hideLoader');
+	            $scope.end = $scope.start + $scope.count - 1;
+	            $scope.$emit('hideLoader');
 	        	}
 	        var params = {	        		
-	                page: $scope.page,
-	                per_page: $scope.perPage
+	            page: $scope.page,
+	            per_page: $scope.perPage
 	        	};     
 	        params['sort_order'] = $scope.sort_order;
 	        params['sort_field'] = $scope.sort_field; 	       
