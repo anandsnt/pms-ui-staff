@@ -1389,6 +1389,8 @@
                             span {
                                 font-size: 14px;
                                 text-transform: uppercase;
+                                .show;
+                                .nowrap();
                             }
                         }
 
@@ -7197,12 +7199,10 @@
                     }
                 }
 
-                &.occupancy-footer {
-                    display: none;
-                }
+                &.occupancy-footer { .hide; }
             }
 
-            &.with-pagination { .calc-height(100, 230); }
+            &.with-pagination { .calc-height(100, 100); }
 
             &.no-totals,
             &.no-content {
