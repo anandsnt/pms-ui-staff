@@ -8,9 +8,12 @@ sntRover.controller('RVReportsMainCtrl', [
 	'guaranteeTypes',
 	'chargeGroups',
 	'chargeCodes',
+	'markets',
+	'sources',
+	'origins',
 	'$timeout',
 	'RVReportUtilsFac',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes, chargeGroups, chargeCodes, $timeout, reportUtils) {
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes, chargeGroups, chargeCodes, markets, sources, origins, $timeout, reportUtils) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -42,19 +45,19 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.chargeCodes = chargeCodes;
 
 		// make all the guarantee type unselected
-		_.each($scope.guaranteeTypes, function (item) {
-			item.selected = false;
-		});
-
 		// make all the charge groups selected by default
-		_.each($scope.chargeGroups, function (item) {
-			item.selected = true;
+		// make all the charge codes selected by default
+		_.each([$scope.guaranteeTypes, $scope.chargeGroups, $scope.chargeCodes], function (dataArry) {
+			_.each(dataArry, function(item) {
+				item.selected = true;
+			});
 		});
 
-		// make all the charge codes selected by default
-		_.each($scope.chargeCodes, function (item) {
-			item.selected = true;
-		});
+		$scope.markets = markets;
+		$scope.sources = sources;
+		$scope.origins = origins;
+
+
 
 
 		$scope.showReportDetails = false;
@@ -188,7 +191,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		};
 
-		// CICO-10202
 		$scope.reportsState = {
 			markets: []
 		};

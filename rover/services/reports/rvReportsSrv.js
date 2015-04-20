@@ -134,5 +134,35 @@ sntRover.service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
+
+		// value, name, description & is_active
+		this.fetchSources = function() {
+			var deferred = $q.defer(),
+				url = 'api/sources?is_active=true';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.sources);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		// value, name, description & is_active
+		this.fetchBookingOrigins = function() {
+			var deferred = $q.defer(),
+				url = 'api/booking_origins?is_active=true';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.booking_origins);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);
