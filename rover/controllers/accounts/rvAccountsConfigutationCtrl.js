@@ -104,7 +104,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			//Save summary data on tab switch (UI)
 			if (isInAccountsTab && !$scope.isInAddMode()) {
-				$scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
+				// $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
 			}
 
 			$scope.accountConfigData.activeTab = tab;
