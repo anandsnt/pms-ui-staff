@@ -18,7 +18,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 			 	"id":$scope.selectedGroupOrAccountId,
 			 	"page":1,
 			 	"type":"group",
-			 	"perPage":50
+			 	"per_page":50
 			 }
 			var fetchCompleted = function(data){			
 				$scope.$broadcast('PopulateLogData',data)
