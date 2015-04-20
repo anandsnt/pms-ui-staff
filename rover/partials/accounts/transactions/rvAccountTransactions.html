@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div class="registration-content scrollable">
+    <div class="registration-content scrollable" ng-iscroll="registration-content">
         <div class="wrapper">
             <div class="registration-summary">
 
@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- Bill -->
-                <div class="bill-summary" ng-repeat="billData in transactionsDetails.bills">
+                <div class="bill-summary" ng-repeat="billData in transactionsDetails.bills" ng-class="{'hidden': $index!=currentActiveBill}">
                     
                     <!-- Bill Summary -->
                     <div class="bill-summary-wrapper">  
@@ -99,7 +99,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded hidden" ng-repeat="billItem in billData.days"> <!-- Remove class "hidden" when item in summary selected -->
+                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded" ng-repeat="billItem in billData.days"> <!-- Remove class "hidden" when item in summary selected -->
                             <table class="expense-details">
                                 <thead>
                                     <tr>
@@ -111,8 +111,8 @@
                                 <tbody>
                                     <tr ng-repeat="expense in billItem.expense_details">
                                         <td class="price">{{currencySymbol}}{{expense.amount | number: precisonZero}}</td>
-                                        <td>{{billItem.details}}</td>
-                                        <td>{{billItem.charge_type}}</td>
+                                        <td>{{expense.details}}</td>
+                                        <td>{{expense.charge_type}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -120,9 +120,9 @@
                     </div>
 
                     <!-- Invoice -->
-                    <div id="account-bill{bill-id}-invoice" class="invoice">
+                    <!-- <div id="account-bill{bill-id}-invoice" class="invoice">
                         {see invoice.html}
-                    </div>
+                    </div> -->
 
                     <!-- Balance / Signature / Card -->
                     <div id="account-bill{bill-id}-total-fees" class="total-stay-fees">
@@ -131,7 +131,7 @@
                         <ul class="account-overview">
                             <li>
                                 <span class="title">Fees</span>
-                                <span class="value">${Bill fees}</span>
+                                <span class="value">{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</span>
                             </li>
                             <li class="break">
                                 <button type="button" class="button with-icon only-icon blue">
@@ -145,7 +145,7 @@
                             </li>
                             <li>
                                 <span class="title">Balance</span>
-                                <span class="value {green or red}">${Bill Balance}</span> <!-- Green when 0, otherwise red -->
+                                <span class="value {green or red}">{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
                             </li>
                             <!-- Only if balance > 0:
                             <li>
@@ -197,10 +197,10 @@
                                                 <span class="icons icon-print"></span> 
                                                 Print
                                             </button>
-                                            Stay Fees (As of {Date}):
+                                            Stay Fees (As of {{billData.total_fees.fees_date | date:dateFormat}}):
                                         </td>
                                         <td colspan="3" class="total-value">
-                                             <strong>${Bill Fees}</strong>
+                                             <strong>{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</strong>
                                         </td>
                                         <td>
                                             <button class="button purple with-icon only-icon">
@@ -212,10 +212,10 @@
                                     </tr>
                                     <tr class="active edit">
                                         <td colspan="3" class="total-label">
-                                            Balance (As of {Date}):
+                                            Balance (As of {{billData.total_fees.fees_date | date:dateFormat}}):
                                         </td>
                                         <td colspan="3" class="total-value {red or green}"> <!-- Green when 0, otherwise red -->
-                                             <strong>${Bill Balance}</strong>
+                                             <strong>{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</strong>
                                         </td>
                                         <td>
                                             <!-- Only if balance > 0, otherwise leave blank cell 
@@ -228,22 +228,42 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr class="active edit">
-                                        <td>{Date}</td>
-                                        <td>{Chage Code}</td>
-                                        <td class="description"> 
-                                            <span>{Details}</span> 
-                                            <span class="reference">{Reference, if applicable}</span>
+                                    <tr class="active edit" ng-repeat="feesData in billData.total_fees.fees_details" >
+                                        <td>{{feesData.date |date:dateFormat}}</td>
+                                    	<td> 
+                                    		<span ng-repeat="description in feesData.description">
+                                    			{{description.charge_code}}
+                                    			<br />
+                                    		</span> 
+                                    	</td>
+                                    	<td class="description"> 
+                                    		<span ng-repeat="description in feesData.description">
+                                    			{{description.fees_desc}}
+                                    			<br />
+                                    		</span>
+                                    		<span ng-show="feesData.reference_text != ''" class="reference">
+                                    			{{feesData.reference_text}}
+                                    		</span>
+                                    	</td>
+                                        <td>
+                                        	<strong>
+                                        		<span ng-show= "description.fees_amount!=NIL">{{currencySymbol}}{{description.fees_amount | number: precisonTwo}}
+												</span>
+											</strong>
+										</td>
+                                        <td>
+                                        	<strong ng-show="feesData.credits!=''"> 
+												{{currencySymbol}}{{feesData.credits| number: precisonTwo}}
+                                        	</strong>
                                         </td>
-                                        <td><strong>{Fees}</strong></td>
-                                        <td><strong>{Credits}</strong></td>
                                         <td>
                                             <div class="select">
                                                 <select>
+                                                	<!--ng-hide="isStandAlone" - verify-->
                                                     <option value="" disabled>Move to bill</option>
-                                                    <option value="{bill no.}">{bill no.}</option>
-                                                    ... repeat for each existing bill
-                                                    <option value="{bills count + 1}">{bills count + 1} (Will create new bill)</option>
+                                                    <option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
+                                                    <!--TODO - implement -- >
+                                                    <!-- <option value="{bills count + 1}">{bills count + 1} (Will create new bill)</option> -->
                                                 </select>
                                             </div>
                                         </td>
@@ -260,13 +280,13 @@
                                             </label>
                                         </td>
                                     </tr>
-                                    ... repeat for all charges in the bill
+                                    <!-- ... repeat for all charges in the bill -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                ... repeat for each bill
+                <!-- ... repeat for each bill -->
             </div>
         </div>
     </div>

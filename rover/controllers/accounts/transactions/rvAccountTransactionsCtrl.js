@@ -6,6 +6,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			//Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
+			$scope.setScroller('registration-content');
+
 			console.log("init accoutn transactions");
 			getTransactionDetails();
 			//TODO: Fetch accoutn transactions
@@ -21,7 +23,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				$scope.transactionsDetails = data;
 				$scope.setScroller ('transaction-bill-tab-scroller', {scrollX: true});
 				$scope.setScroller('billDays', {scrollX: true});
-				$scope.setScroller('registration-content');
+				$scope.refreshScroller('registration-content');
+
 
 
 			}
