@@ -17,7 +17,7 @@
             <div class="entry">
                 <label for="account-type" translate>ACCOUNT_TYPE</label>
                 <div class="select">
-                    <select id="account-type" ng-model="accountConfigData.summary.posting_account_type" ng-change="onAccountTypeModification();">
+                    <select id="account-type" ng-model="accountConfigData.summary.posting_account_type" ng-change="onAccountTypeModification();" ng-disabled="!!groupConfigData">
                         <option value="HOUSE" selected>House</option>
                         <option value="GROUP">Group</option>
                     </select>
