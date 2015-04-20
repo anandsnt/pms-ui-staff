@@ -7,10 +7,10 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
 			$scope.setScroller('registration-content');
+			$scope.setScroller ('transaction-bill-tab-scroller', {scrollX: true});
+			$scope.setScroller('billDays', {scrollX: true});
 
-			console.log("init accoutn transactions");
 			getTransactionDetails();
-			//TODO: Fetch accoutn transactions
 
 		};
 
@@ -18,12 +18,12 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 			var onTransactionFetchSuccess = function(data){
 
-				console.log("successCallBack");
 				$scope.$emit('hideloader');
 				$scope.transactionsDetails = data;
-				$scope.setScroller ('transaction-bill-tab-scroller', {scrollX: true});
-				$scope.setScroller('billDays', {scrollX: true});
 				$scope.refreshScroller('registration-content');
+				$scope.refreshScroller('transaction-bill-tab-scroller');
+				$scope.refreshScroller('billDays');
+
 			}
 			var params = {"account_id" : $scope.accountConfigData.summary.posting_account_id}
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
