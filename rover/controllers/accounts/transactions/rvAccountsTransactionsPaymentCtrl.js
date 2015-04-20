@@ -126,4 +126,48 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	});
 
 
+	/*
+	* Success call back of success payment
+	*/
+	var successPayment = function(data){
+		$scope.$emit("hideLoader");
+		$scope.depositPaidSuccesFully = true;
+		$scope.authorizedCode = data.authorization_code;		
+		//$scope.handleCloseDialog();
+		//To refresh the view bill screen 
+		// data.billNumber = $scope.renderData.billNumberSelected;
+		$scope.$emit('PAYMENT_SUCCESS',data);
+		
+	};
+
+
+	/*
+	* Action - On click submit payment button
+	*/
+	$scope.submitPayment = function(){		
+			
+			$scope.errorMessage = "";
+			var dataToSrv = {
+			};
+	
+			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.saveData.paymentType == "CC"){
+				dataToSrv.postData.is_emv_request = true;
+				$scope.shouldShowWaiting = true;
+				//Six payment SWIPE actions
+				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					$scope.shouldShowWaiting = false;
+					successPayment(response);
+				},function(error){
+					$scope.errorMessage = error;
+					$scope.shouldShowWaiting = false;
+				});
+				
+			} else {
+				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
+			}		
+
+	};
+
+
+
 }]);

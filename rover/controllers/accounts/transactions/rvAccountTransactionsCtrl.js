@@ -185,7 +185,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			//$scope.billingInfoModalOpened = false;
 		});
 	/*
-	 *	SWIPE actions
+	 *	MLI SWIPE actions
 	 */
 		var processSwipedData = function(swipedCardData){
 

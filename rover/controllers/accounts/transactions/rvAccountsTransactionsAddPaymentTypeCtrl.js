@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsAddPaymentTypeCtrl',	[
 	'$scope',
-	'$rootScope',
-	function($scope, $rootScope) {
+	'$rootScope','RVPaymentSrv',
+	function($scope, $rootScope,RVPaymentSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		/**
@@ -48,8 +48,8 @@ sntRover.controller('RVAccountsTransactionsAddPaymentTypeCtrl',	[
 			cardDetails   = angular.copy($scope.cardData.cardDetails);
 			//call utils functions to retrieve data		
 			$scope.renderData.creditCardType = (!isSixPayment)?
-			getCreditCardType(cardDetails.cardType).toLowerCase() : 
-			getSixCreditCardType(tokenDetails.card_type).toLowerCase();
+												getCreditCardType(cardDetails.cardType).toLowerCase() : 
+												getSixCreditCardType(tokenDetails.card_type).toLowerCase();
 			$scope.renderData.cardExpiry = retrieveCardExpiryDate(isSixPayment,tokenDetails,cardDetails); 
 			$scope.renderData.endingWith = retrieveCardNumber(isSixPayment,tokenDetails,cardDetails); 		
 		};
@@ -73,6 +73,45 @@ sntRover.controller('RVAccountsTransactionsAddPaymentTypeCtrl',	[
 			$scope.dataToSave.paymentType = "";
 			$scope.isManual = false;
 		});
+
+		/*
+		 *	Six payment SWIPE actions
+		 */
+		var successSixSwipe = function(response){
+			$scope.$emit("hideLoader");
+			var cardType = getSixCreditCardType(response.card_type).toLowerCase();
+			var endingWith = response.ending_with;
+			var expiryDate = response.expiry_date.slice(-2)+"/"+response.expiry_date.substring(0, 2);
+			$scope.closeDialog();
+			//TODO : update bill screen
+		
+		};
+
+		var sixPaymentSwipe = function(){
+			
+			var data = {};
+			data.account_id = "";
+			
+			$scope.shouldShowWaiting = true;
+			RVPaymentSrv.chipAndPinGetToken(data).then(function(response) {
+				$scope.shouldShowWaiting = false;
+				successSixSwipe(response);
+			},function(error){
+				$scope.errorMessage = error;
+				$scope.shouldShowWaiting = false;
+			});
+		};
+
+		$scope.addNewPayment = function(){
+			if(!$scope.isManual && $rootScope.paymentGateway == "sixpayments" && $scope.dataToSave.paymentType ==='CC'){
+				sixPaymentSwipe();
+			} else if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+				saveDataFromSwipe();
+			} else if(typeof $scope.dataToSave !== "undefined"){
+				($scope.dataToSave.paymentType ==='CC') ? saveNewCard():saveNewPayment();
+			}
+			   
+		};
 
 
 }]);
