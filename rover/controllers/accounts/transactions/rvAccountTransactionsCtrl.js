@@ -1,5 +1,5 @@
-sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv',
-	function($scope, $rootScope, $filter, $stateParams, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv) {
+sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems',
+	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems) {
 		BaseCtrl.call(this, $scope);
 		
 		var initAccountTransactionsView = function(){
@@ -118,5 +118,47 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			
 
 		initAccountTransactionsView();
+
+
+
+
+		$scope.openPostCharge = function(activeBillNo) {
+
+			// pass on the reservation id
+			$scope.account_id = "797";
+			$scope.reservationBillData = {};
+			$scope.reservationBillData.bills = ["1","2","3"];
+			// $scope.passActiveBillNo = "2";
+
+			// pass down active bill no
+			activeBillNo = "2";
+			//$scope.passActiveBillNo = activeBillNo;
+
+			$scope.billNumber = activeBillNo;
+
+			// translating this logic as such from old Rover
+			// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
+			// Also passing the available bills to the post charge modal
+			$scope.fetchTotalBal = false;
+			var callback = function(data) {
+			    $scope.$emit( 'hideLoader' );
+
+			    $scope.fetchedData = data;
+			    var bills = [];
+			    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ )
+			    	bills.push(i+1);
+
+			    $scope.fetchedData.bill_numbers = bills;
+
+	    		ngDialog.open({
+	        		template: '/assets/partials/postCharge/postCharge.html',
+	        		controller: 'RVPostChargeController',
+	        		className: '',
+	        		scope: $scope
+	        	});
+			};
+
+			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
+		};
 	}
 ]);
