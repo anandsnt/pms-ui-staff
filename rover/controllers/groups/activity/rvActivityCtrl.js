@@ -8,16 +8,14 @@ sntRover.controller('rvActivityCtrl', [
 
 		/**		
 		 * initialisation and basic configuration
-		 * @return {none}
+		 *
 		 */
-		$scope.init = function(){						
-			$scope.errorMessage = '';
-			$scope.page = 1;			
-		}
+		
 		$scope.$on('PopulateLogData',function(e,data){				
 			$scope.count = data.total_count;
 			$scope.$emit('hideLoader');
 			$scope.activityLogData = data.results;
+			$scope.errorMessage = '';
 			$scope.initPaginationParams();
 		})
 		/**		 
@@ -185,7 +183,7 @@ sntRover.controller('rvActivityCtrl', [
 	                }
 	            $scope.end = $scope.start + $scope.count - 1;
 	            $scope.$emit('hideLoader');
-	        	}
+	        }
 	        var params = {	        		
 	            page: $scope.page,
 	            per_page: $scope.perPage
@@ -193,13 +191,6 @@ sntRover.controller('rvActivityCtrl', [
 	        params['sort_order'] = $scope.sort_order;
 	        params['sort_field'] = $scope.sort_field; 	       
 	        $scope.$emit("updateLogdata",params);
-    	}
-
-
-		/**
-		 *Show starts here!!!!
-		 */
-		 $scope.init();
-		
+    	}		
 	}
 ]);

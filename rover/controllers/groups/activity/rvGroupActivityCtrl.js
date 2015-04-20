@@ -3,8 +3,8 @@ sntRover.controller('rvGroupActivityCtrl', [
 	'$rootScope', 
 	'$filter', 
 	'$stateParams',
-	'rvGroupActivitySrv',
-	function($scope, $rootScope, $filter, $stateParams,rvGroupActivitySrv) {
+	'rvGroupAccountActivitySrv',
+	function($scope, $rootScope, $filter, $stateParams,rvGroupAccountActivitySrv) {
 		BaseCtrl.call(this, $scope);		
 
 		/**		
@@ -23,7 +23,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 			var fetchCompleted = function(data){			
 				$scope.$broadcast('PopulateLogData',data)
 			}
-			$scope.invokeApi(rvGroupActivitySrv.fetchActivityLog, params, fetchCompleted);
+			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 		}
 		$scope.$on('updateLogdata',function(e,params){
 			params["id"]=$scope.selectedGroupOrAccountId;
@@ -31,7 +31,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 			var fetchCompleted = function(data){
 				$scope.$broadcast('PopulateLogData',data)
 			}
-			$scope.invokeApi(rvGroupActivitySrv.fetchActivityLog1, params, fetchCompleted);
+			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 				
 		})		
 		/**
