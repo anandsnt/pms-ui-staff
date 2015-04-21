@@ -1,5 +1,5 @@
-sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog',
-	function($scope, $rootScope, $filter, $stateParams, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog) {
+sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv',
+	function($scope, $rootScope, $filter, $stateParams, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller("rvAccountSummaryScroller");
@@ -8,24 +8,12 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			promptMandatoryDemographics: false,
 			isDemographicsPopupOpen: false,
 			newNote: "",
-			demographics: null			
+			demographics: null
 		}
 
 		var summaryMemento = {};
 
-		var initAccountSummaryView = function() {
-			// Have a handler to update the summary - IFF in edit mode
-			if (!$scope.isInAddMode()) {
-				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-					if (!angular.equals(summaryMemento, $scope.accountConfigData.summary) && !$scope.accountSummaryData.isDemographicsPopupOpen) {
-						//data has changed
-						summaryMemento = angular.copy($scope.accountConfigData.summary);
-						//call the updateGroupSummary method from the parent controller
-						$scope.updateAccountSummary();
-					}
-				});
-			}
-		}
+
 
 		/**
 		 * to run angular digest loop,
@@ -38,6 +26,56 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 		};
 
+		/**
+		 * Update the group data
+		 * @return undefined
+		 */
+		$scope.updateAccountSummary = function() {
+			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
+				var onAccountUpdateSuccess = function(data) {
+						//client controllers should get an infromation whether updation was success
+						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
+						$scope.$emit('hideloader');
+					},
+					onAccountUpdateFailure = function(errorMessage) {
+						//client controllers should get an infromation whether updation was a failure
+						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
+						$scope.$emit('hideloader');
+					};
+
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
+					successCallBack: onAccountUpdateSuccess,
+					failureCallBack: onAccountUpdateFailure,
+					params: {
+						summary: $scope.accountConfigData.summary
+					}
+				});
+			} else {
+				console.warn('No Permission for EDIT_GROUP_SUMMARY');
+			}
+		}
+
+		var initAccountSummaryView = function() {
+			// Have a handler to update the summary - IFF in edit mode
+			var callUpdate = function() {
+				if (!angular.equals(summaryMemento, $scope.accountConfigData.summary) && !$scope.accountSummaryData.isDemographicsPopupOpen) {
+					//data has changed
+					summaryMemento = angular.copy($scope.accountConfigData.summary);
+					//call the updateGroupSummary method from the parent controller
+					$scope.updateAccountSummary();
+				}
+			}
+
+			if (!$scope.isInAddMode()) {
+				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
+					callUpdate();
+				});
+				$scope.$on("UPDATE_ACCOUNT_SUMMARY", function(event, targetElement) {
+					callUpdate();
+				});
+			}
+		}
+
 
 		/**
 		 * Place holder method for future implementation of mandatory demographic data
@@ -47,7 +85,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			return true;
 		}
 
-		$scope.closeDemographicsPopup = function(){
+		$scope.closeDemographicsPopup = function() {
 			$scope.accountSummaryData.isDemographicsPopupOpen = false;
 			$scope.closeDialog();
 		}
@@ -169,7 +207,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			$scope.closeDialog();
 		}
 
-		$scope.onAccountTypeModification = function(){
+		$scope.onAccountTypeModification = function() {
 			$scope.updateAccountSummary();
 		}
 
