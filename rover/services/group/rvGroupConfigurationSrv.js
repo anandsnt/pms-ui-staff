@@ -6,7 +6,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		this.baseConfigurationSummary = {
 			"group_id": null,
 			"group_name": "",
-			"group_code": "",
+			"group_code": null,
 			"first_name": "",
 			"last_name": "",
 			"contact_phone": "",
