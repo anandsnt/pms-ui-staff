@@ -408,22 +408,73 @@
 
 
         <!-- item_15: Market(s) -->
-        <!-- CICO-10202 Report & Summary Markets filter -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasMarketsList" ng-class="{'active': filterItemsToggle.item_15}" ng-click="toggleFilterItems('item_15')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasMarketsList" ng-class="{ 'active': filterItemsToggle.item_15 }" ng-click="toggleFilterItems('item_15')">
             <span class="title">Market(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasMarketsList" ng-class="{'hidden': !filterItemsToggle.item_15}">
-            <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
-                <label class="checkbox" ng-show="reportsState.markets.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.allMarketsSelected}"></span>
-                        <input type="checkbox" ng-model="chosenReport.allMarketsSelected" ng-change="fauxMarketOptionClicked(chosenReport,true)" name="room-filters"> Select All
+        <div class="settings-content" ng-if="chosenReport.hasMarketsList" ng-class="{ 'hidden': !filterItemsToggle.item_15 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasMarketsList.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasMarketsList.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasMarketsList.selectAll" ng-change="fauxSelectChange(chosenReport.hasMarketsList, true)" name="room-filters"> Select All
                 </label>
-                <label class="checkbox" ng-repeat="market in reportsState.markets">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
-                    <input type="checkbox" ng-model="market.selected" ng-change="fauxMarketOptionClicked(chosenReport)" name="room-filters"> {{ market.name }}
-                </label>
+                <div class="nested-options" ng-class="{ 'hidden': chosenReport.hasMarketsList.selectAll }">
+                    <label class="checkbox" ng-repeat="market in chosenReport.hasMarketsList.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : market.selected }"></span>
+                        <input type="checkbox" ng-model="market.selected" ng-change="fauxSelectChange(chosenReport.hasMarketsList)" name="room-filters"> {{ market.name }}
+                    </label>
+                </div>
             </div>
         </div>
+
+
+
+
+
+
+        <!-- item_19: Sources(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasSourceList" ng-class="{ 'active': filterItemsToggle.item_19 }" ng-click="toggleFilterItems('item_19')">
+            <span class="title">Sources(s)</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasSourceList" ng-class="{ 'hidden': !filterItemsToggle.item_19 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasSourceList.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasSourceList.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasSourceList.selectAll" ng-change="fauxSelectChange(chosenReport.hasSourceList, true)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': chosenReport.hasSourceList.selectAll }">
+                    <label class="checkbox" ng-repeat="source in chosenReport.hasSourceList.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : source.selected }"></span>
+                        <input type="checkbox" ng-model="source.selected" ng-change="fauxSelectChange(chosenReport.hasSourceList)" name="room-filters"> {{ source.name }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <!-- item_20: Sources(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasOriginsList" ng-class="{'active': filterItemsToggle.item_20}" ng-click="toggleFilterItems('item_20')">
+            <span class="title">Origin(s)</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasOriginsList" ng-class="{'hidden': !filterItemsToggle.item_20}">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasOriginsList.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasOriginsList.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasOriginsList.selectAll" ng-change="fauxSelectChange(chosenReport.hasOriginsList, true)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': chosenReport.hasOriginsList.selectAll }">
+                    <label class="checkbox" ng-repeat="origin in chosenReport.hasOriginsList.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : origin.selected }"></span>
+                        <input type="checkbox" ng-model="origin.selected" ng-change="fauxSelectChange(chosenReport.hasOriginsList)" name="room-filters"> {{ origin.name }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
 
 
 

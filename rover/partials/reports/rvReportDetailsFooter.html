@@ -117,6 +117,20 @@
 
 
 
+		<!-- chosen sources -->
+		<div ng-if="appliedFilter.sources.length">
+			Sources: <span>{{ appliedFilter.sources.join(', ') }}</span>
+		</div>
+
+
+
+		<!-- chosen origins -->
+		<div ng-if="appliedFilter.origins.length">
+			Origins: <span>{{ appliedFilter.origins.join(', ') }}</span>
+		</div>
+
+
+
 		<!-- chosen guarantees -->
 		<div ng-if="appliedFilter.guarantees.length">
 			Guarantee Types: <span>{{ appliedFilter.guarantees.join(', ') }}</span>

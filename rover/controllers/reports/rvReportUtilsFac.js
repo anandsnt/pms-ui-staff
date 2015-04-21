@@ -227,7 +227,6 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                    reportItem['hasMarketsList'] = true;
                     reportItem['hasDateLimit'] = false;
                     break;
 
@@ -266,12 +265,17 @@ sntRover.factory('RVReportUtilsFac', [
         factory.processFilters = function ( reportItem, data ) {
             var _hasFauxSelect,
                 _hasDisplaySelect,
-                _hasMarketSelect,
                 _hasGuaranteeSelect,
                 _hasChargeGroupSelect,
-                _hasChargeCodeSelect;
+                _hasChargeCodeSelect,
+                _hasMarketSelect,
+                _hasSourceSelect,
+                _hasOriginSelect;
 
             var _processed_CG_CC = {};
+
+            // create a new single point of data source for faux selects
+            reportItem['fauxSelect'] = {};
 
             // going around and taking a note on filters
             _.each(reportItem['filters'], function(filter) {
@@ -377,21 +381,18 @@ sntRover.factory('RVReportUtilsFac', [
                 if ( filter.value === 'INCLUDE_VARIANCE' ) {
                     reportItem['hasVariance'] = filter;
                     _hasFauxSelect = true;
-                    _hasMarketSelect = true;
                 };
 
                 // INCLUDE_LASTYEAR
                 if ( filter.value === 'INCLUDE_LAST_YEAR' ) {
                     reportItem['hasLastYear'] = filter;
                     _hasFauxSelect = true;
-                    _hasMarketSelect = true;
                 };
 
                 // INCLUDE_VARIANCE
                 if ( filter.value === 'INCLUDE_ORIGIN' ) {
                     reportItem['hasOrigin'] = filter;
                     _hasFauxSelect = true;
-                    _hasMarketSelect = true;
                 };
 
                 // check for include cancelled filter and keep a ref to that item
@@ -512,21 +513,39 @@ sntRover.factory('RVReportUtilsFac', [
                 };
 
                 // check for "show markets" and keep a ref to that item
-                if ( filter.value === 'SHOW_MARKETS' ) {
-                    reportItem['hasMarketsList'] = filter;
-                    reportItem['markets'] = angular.copy( data.markets );
+                if ( filter.value === 'SHOW_MARKET' ) {
+                    reportItem['hasMarketsList'] = {
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Markets',
+                        title        : 'Select Markets',
+                        data         : angular.copy( data.markets )
+                    };
                 };
 
                 // check for "show sources" and keep a ref to that item
-                if ( filter.value === 'SHOW_SOURCES' ) {
-                    reportItem['hasSourceList'] = filter;
-                    reportItem['sources'] = angular.copy( data.sources );
+                if ( filter.value === 'SHOW_SOURCE' ) {
+                    reportItem['hasSourceList'] = {
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Sources',
+                        title        : 'Select Sources',
+                        data         : angular.copy( data.sources )
+                    };
                 };
 
                 // check for "show origins" and keep a ref to that item
-                if ( filter.value === 'SHOW_ORIGINS' ) {
-                    reportItem['hasOriginsList'] = filter;
-                    reportItem['origins'] = angular.copy( data.origins );
+                if ( filter.value === 'SHOW_ORIGIN' ) {
+                    reportItem['hasOriginsList'] = {
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Origins',
+                        title        : 'Select Origins',
+                        data         : angular.copy( data.origins )
+                    };
                 };
             });
 
@@ -539,12 +558,6 @@ sntRover.factory('RVReportUtilsFac', [
             if ( _hasDisplaySelect ) {
                 reportItem['selectDisplayOpen'] = false;
                 reportItem['displayTitle'] = 'Select';
-            };
-
-            if ( _hasMarketSelect ) {
-                reportItem['selectMarketsOpen'] = false;
-                reportItem['displayTitle'] = 'Select';
-                reportItem['marketTitle'] = 'Select';
             };
 
             if ( _hasGuaranteeSelect ) {
@@ -562,6 +575,22 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['selectChargeCodeOpen'] = false;
                 reportItem['chargeCodeTitle'] = 'All Selected';
                 reportItem['allChargeCodeSelected'] = true;
+            };
+
+            if ( _hasMarketSelect ) {
+                reportItem['fauxSelect']['marketSelect'] = {
+                    show: false,
+                    selectAll: false,
+                    defaultTitle: 'Select Markets'
+                };
+            };
+
+            if ( _hasSourceSelect ) {
+                reportItem['fauxSelect']['sourceSelect'] = {
+                    show: false,
+                    selectAll: false,
+                    defaultTitle: 'Select Sources'
+                };
             };
         };
 

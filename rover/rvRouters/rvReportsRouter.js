@@ -26,8 +26,8 @@ angular.module('reportsModule', [])
                 return RVreportsSrv.fetchChargeCodes();
             },
             markets: function(RVreportsSrv) {
-                RVreportsSrv.fetchDemographicMarketSegments();
-            };
+                return RVreportsSrv.fetchDemographicMarketSegments();
+            },
             sources: function(RVreportsSrv) {
                 return RVreportsSrv.fetchSources();
             },

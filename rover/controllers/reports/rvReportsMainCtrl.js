@@ -108,7 +108,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_15: false,
 			item_16: false,
 			item_17: false,
-			item_18: false
+			item_18: false,
+			item_19: false,
+			item_20: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -665,6 +667,81 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 		};
 
+		var closeOtherFauxSelect = function(ignore) {
+			var avaiable = [
+				'hasMarketsList',
+				'hasSourceList',
+				'hasOriginsList'
+			];
+
+			_.each($scope.reportList, function(each) {
+				_.each(avaiable, function(prop) {
+					if ( each.hasOwnProperty(prop) && each[prop].title != ignore ) {
+						each[prop].show = false;
+					};
+				});
+			});
+		};
+
+		$scope.toggleFauxSelect = function(e, list) {
+			$timeout(function(){
+				$scope.refreshScroller('report-list-scroll');
+				$scope.myScroll['report-list-scroll'].refresh();
+			}, 100);
+
+			if ( !e ) {
+				closeAllMultiSelects();
+				closeOtherFauxSelect();
+				return;
+			};
+
+			if ( !list ) {
+				return;
+			};
+
+			e.stopPropagation();
+
+			list.show = !list.show;
+
+			closeOtherFauxSelect(list.title);
+		};
+		$scope.fauxSelectChange = function(list, allTapped) {
+			var selectedItems;
+
+			if ( allTapped ) {
+				if ( list.selectAll ) {
+					list.title = 'All Selected';
+				} else {
+					list.title = list.defaultTitle;
+				};
+
+				_.each(list.data, function(each) {
+					each.selected = list.selectAll;
+				});
+			} else {
+				selectedItems = _.where(list.data, { selected: true });
+
+				if ( selectedItems.length == 0 ) {
+					list.title = list.defaultTitle;
+				} else if ( selectedItems.length == 1 ) {
+					list.title = selectedItems[0].name || selectedItems[0].description;
+				} else if ( selectedItems.length == list.data.length ) {
+					list.selectAll = true;
+					list.title = 'All Selected';
+				} else {
+					list.selectAll = false;
+					list.title = selectedItems.length + ' Selected';
+				};
+
+				// CICO-10202
+				$scope.$emit( 'report.filter.change' );
+			};
+		};
+
+
+
+
+
 		$scope.showFauxSelect = function(item) {
 			if (!item) {
 				return false;
@@ -701,6 +778,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.appliedFilter.options = [];
 			$scope.appliedFilter.display = [];
 			$scope.appliedFilter.markets = [];
+			$scope.appliedFilter.sources = [];
+			$scope.appliedFilter.origins = [];
 			$scope.appliedFilter.guarantees = [];
 			$scope.appliedFilter.chargeGroups = [];
 			$scope.appliedFilter.chargeCode = [];
@@ -1067,18 +1146,50 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 
-			//selected markets for CICO-10202
+			// selected markets
 			if (chosenReport.hasOwnProperty('hasMarketsList')) {
-				var selectedMarkets = _.where($scope.reportsState.markets, {
+				var selected = _.where(chosenReport['hasMarketsList']['data'], {
 					selected: true
 				});
-				if (selectedMarkets.length > 0) {
+				if (selected.length > 0) {
 					key = 'market_ids[]';
 					params[key] = [];
-					_.each(selectedMarkets, function(market) {
+					_.each(selected, function(market) {
 						params[key].push( market.value );
 						/**/
 						$scope.appliedFilter.markets.push( market.name );
+					});
+				};
+			};
+
+			// selected source
+			if (chosenReport.hasOwnProperty('hasSourceList')) {
+				var selected = _.where(chosenReport['hasSourceList']['data'], {
+					selected: true
+				});
+				if (selected.length > 0) {
+					key = 'source_ids[]';
+					params[key] = [];
+					_.each(selected, function(source) {
+						params[key].push( source.value );
+						/**/
+						$scope.appliedFilter.sources.push( source.name );
+					});
+				};
+			};
+
+			// selected origin
+			if (chosenReport.hasOwnProperty('hasOriginsList')) {
+				var selected = _.where(chosenReport['hasOriginsList']['data'], {
+					selected: true
+				});
+				if (selected.length > 0) {
+					key = 'booking_origin_ids[]';
+					params[key] = [];
+					_.each(selected, function(origin) {
+						params[key].push( origin.value );
+						/**/
+						$scope.appliedFilter.origins.push( origin.name );
 					});
 				};
 			};

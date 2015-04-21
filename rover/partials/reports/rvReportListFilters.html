@@ -307,18 +307,47 @@
     </div>
 </div>
 
-<!-- CICO-10202 Report & Summary Markets filter -->
 <div class="options long-list" ng-if="item.hasMarketsList">
     <label for="report-options">Market(s)</label>
-    <div class="faux-select placeholder" ng-click="selectMarketsClicked($event, item)">{{ item.marketTitle }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectMarketsOpen }" ng-click="fauxOptionClicked($event, item)">
-        <label class="checkbox inline" ng-show="reportsState.markets.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.allMarketsSelected}"></span>
-            <input type="checkbox" ng-model="item.allMarketsSelected" ng-change="fauxMarketOptionClicked(item,true)" name="room-filters"> Select All
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasMarketsList)">{{ item.hasMarketsList.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasMarketsList.show }">
+        <label class="checkbox inline" ng-show="item.hasMarketsList.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasMarketsList.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasMarketsList.selectAll" ng-change="fauxSelectChange(item.hasMarketsList, true)" name="room-filters"> Select All
         </label>
-        <label class="checkbox inline" ng-repeat="market in reportsState.markets">
+        <label class="checkbox inline" ng-repeat="market in item.hasMarketsList.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
-            <input type="checkbox" ng-model="market.selected" ng-change="fauxMarketOptionClicked(item)" name="room-filters"> {{ market.name }}
+            <input type="checkbox" ng-model="market.selected" ng-change="fauxSelectChange(item.hasMarketsList)" name="room-filters"> {{ market.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasSourceList">
+    <label for="report-options">Source(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasSourceList)">{{ item.hasSourceList.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasSourceList.show }">
+        <label class="checkbox inline" ng-show="item.hasSourceList.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasSourceList.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasSourceList.selectAll" ng-change="fauxSelectChange(item.hasSourceList, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="source in item.hasSourceList.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : source.selected}"></span>
+            <input type="checkbox" ng-model="source.selected" ng-change="fauxSelectChange(item.hasSourceList)" name="room-filters"> {{ source.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasOriginsList">
+    <label for="report-options">Origin(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasOriginsList)">{{ item.hasOriginsList.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasOriginsList.show }">
+        <label class="checkbox inline" ng-show="item.hasOriginsList.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasOriginsList.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasOriginsList.selectAll" ng-change="fauxSelectChange(item.hasOriginsList, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="origin in item.hasOriginsList.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : origin.selected}"></span>
+            <input type="checkbox" ng-model="origin.selected" ng-change="fauxSelectChange(item.hasOriginsList)" name="room-filters"> {{ origin.name }}
         </label>
     </div>
 </div>
