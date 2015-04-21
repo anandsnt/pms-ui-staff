@@ -178,7 +178,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				'ROOM_BLOCK': '/assets/partials/groups/roomBlock/rvGroupConfigurationRoomBlockTab.html',
 				'ROOMING': '/assets/partials/groups/rooming/rvGroupRoomingListTab.html',
 				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
-				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
+				'TRANSACTIONS': '/assets/partials/accounts/transactions/rvAccountTransactions.html',
 				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
 

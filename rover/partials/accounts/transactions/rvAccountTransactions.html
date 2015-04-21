@@ -38,15 +38,15 @@
                 <div class="bill-tabs scrollable">
                 	<ul class="wrapper" style="width{Outer lenght of all li items}px">
                         <li ng-class="showActiveBill($index)" ng-click="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
-                            <a href="#account-bill-{id}" class="bill-toggle">
-                                <div class="price"><span>Bill ##{{billTab.bill_number}}</span>
-                                	{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
+                            <a class="bill-toggle">
+                                <div class="price"><span>Bill #{{billTab.bill_number}}</span>
+                                	{{currencySymbol}}{{billTab.total_fees.total_amount | number: precisonZero}}
                                 </div>
                             </a>
                         </li>
                         <!-- Add new bill-->
                         <li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
-                            <button type="button" class="button with-icon only-icon brand-colors">
+                            <button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
                                 <span class="icons icon-plus"></span>
                             </button>
                         </li>
@@ -91,15 +91,15 @@
                                     </a>
                                 </li>
                                 <!-- TODO: active class logic -->
-                                <li class="active" ng-repeat="days in billData.days">
-                                    <a href="#account-bill{bill-id}-expense-{day}" class="toggle">
+                                <li class="active" ng-repeat="days in billData.days" ng-click="showDayRates($index)">
+                                    <a class="toggle">
                                         <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
                                         <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded" ng-repeat="billItem in billData.days"> <!-- Remove class "hidden" when item in summary selected -->
+                        <div class="summary-expanded" ng-repeat="billItem in billData.days" ng-class="{'hidden': $index != dayRates}"> <!-- Remove class "hidden" when item in summary selected -->
                             <table class="expense-details">
                                 <thead>
                                     <tr>
@@ -119,13 +119,14 @@
                         </div>
                     </div>
 
+
                     <!-- Invoice -->
                     <div id="account-bill{bill-id}-invoice" class="invoice">
                         <ng-include src="'assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
                     </div> 
 
                     <!-- Balance / Signature / Card -->
-                    <div id="account-bill{bill-id}-total-fees" class="total-stay-fees">
+                    <div class="total-stay-fees">
 
                         <!-- Fees & Balance Overview -->
                         <ul class="account-overview">
@@ -145,7 +146,7 @@
                             </li>
                             <li>
                                 <span class="title">Balance</span>
-                                <span class="value {green or red}">{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
+                                <span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}">{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
                             </li>
                             <!-- Only if balance > 0:
                             <li>
@@ -167,7 +168,7 @@
                         </ul>
 
                         <!-- Total Stay Fees -->
-                        <div id="bill{bill-id}-fees" class="details">
+                        <div class="details">
                             <table class="total-fees">
                                 <thead>
                                     <tr>
@@ -179,7 +180,7 @@
                                         <th class="form">Bill #</th>
                                         <th class="action">Edit</th>
                                         <th class="action">
-                                            <label class="checkbox inline" for="bill-{bill-id}-all"> 
+                                            <label class="checkbox inline"> 
                                                 <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked or all bill charges are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all bill charges are selected -->
                                                 <input id="bill-{bill-id}-all" value="{value}" type="checkbox" />
                                             </label>
@@ -214,17 +215,17 @@
                                         <td colspan="3" class="total-label">
                                             Balance (As of {{billData.total_fees.fees_date | date:dateFormat}}):
                                         </td>
-                                        <td colspan="3" class="total-value {red or green}"> <!-- Green when 0, otherwise red -->
+                                        <td colspan="3" class="total-value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"> <!-- Green when 0, otherwise red -->
                                              <strong>{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</strong>
                                         </td>
                                         <td>
-                                            <!-- Only if balance > 0, otherwise leave blank cell 
-                                            <button class="button green with-icon only-icon">
+                                            <!-- Only if balance > 0, otherwise leave blank cell -->
+                                            <button class="button green with-icon only-icon" ng-show = "billData.total_fees.balance_amount > 0">
                                                 <span class="icons icon-wallet"></span>
                                                 Pay
-                                            </button>-->
+                                            </button>
                                         </td>
-                                        <td></td>
+                                        <td ng-hide = "billData.total_fees.balance_amount > 0"></td>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -263,7 +264,7 @@
                                                     <option value="" disabled>Move to bill</option>
                                                     <option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
                                                     <!--TODO - implement -- >
-                                                    <!-- <option value="{bills count + 1}">{bills count + 1} (Will create new bill)</option> -->
+                                                    <option value="{{transactionsDetails.bills.length + 1}}">{{transactionsDetails.bills.length + 1}} (Will create new bill)</option>
                                                 </select>
                                             </div>
                                         </td>
@@ -274,19 +275,17 @@
                                             </button>
                                         </td>
                                         <td>
-                                            <label class="checkbox inline" for="bill-{bill-id}-charge-{charge-id}"> 
+                                            <label class="checkbox inline"> 
                                                 <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked -->
-                                                <input id="bill-{bill-id}-charge-{charge-id}" value="{charge}" type="checkbox" />
+                                                <input value="{charge}" type="checkbox" />
                                             </label>
                                         </td>
                                     </tr>
-                                    <!-- ... repeat for all charges in the bill -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                <!-- ... repeat for each bill -->
             </div>
         </div>
     </div>
