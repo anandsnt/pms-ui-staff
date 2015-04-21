@@ -502,3 +502,29 @@ var retrieveCardtype = function(isSixPayment,tokenDetails,cardDetails){
                 ;
     return cardType;
 };
+
+
+var checkIfReferencetextAvailable = function(paymentTypes,selectedPaymentType){
+    var displayReferance = false;
+    angular.forEach(paymentTypes, function(value, key) {
+        if(value.name == selectedPaymentType){
+            displayReferance = (value.is_display_reference)? true:false;
+        };
+    });
+    return displayReferance;
+};
+
+
+var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTypeCard){
+    var displayReferance = false;
+    angular.forEach(paymentTypes, function(paymentType, key) {
+        if(paymentType.name == 'CC'){
+            angular.forEach(paymentType.values, function(value, key) {
+                if(selectedPaymentTypeCard.toUpperCase() === value.cardcode){
+                    displayReferance = (value.is_display_reference)? true:false;
+                };                  
+            });             
+        }
+    });
+    return displayReferance;
+};

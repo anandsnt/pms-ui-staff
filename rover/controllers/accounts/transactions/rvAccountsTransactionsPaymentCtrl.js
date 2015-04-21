@@ -4,33 +4,92 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	function($scope, $rootScope,RVPaymentSrv,ngDialog) {
 
 		BasePaymentCtrl.call(this, $scope);
-
-		var init = function(){
-			$scope.renderData = {};
-
-		};
-		init();
-
+		$scope.renderData = {};
 		var isSixPayment  = false;
 		var tokenDetails  = {};
 		var cardDetails   = {};
 
+		/*
+		* to check if reference is present for payment type
+		*/
+		var checkReferencetextAvailable = function(){
+			//call utils fn	
+			$scope.referenceTextAvailable = checkIfReferencetextAvailable($scope.renderData.paymentTypes,$scope.saveData.paymentType);
+		};
+		var checkReferencetextAvailableForCC = function(){
+			//call utils fn	
+			$scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes,$scope.defaultPaymentTypeCard);
+		}
 
+		var init = function(){
+
+			$scope.saveData = {};
+			
+			$scope.defaultPaymentTypeOfBill = "CC";
+			$scope.saveData.paymentType  = "CC";
+			if($scope.defaultPaymentTypeOfBill === "CC"){
+				$scope.showCreditCardInfo = true;
+				
+
+				//to delete and add actual
+				$scope.defaultPaymentTypeCard = "MA";
+				$scope.defaultPaymentTypeCardNumberEndingWith = "5556";
+		 		$scope.defaultPaymentTypeCardExpiry = "22/12";
+
+		 		///
+		 		checkReferencetextAvailableForCC();
+
+			}
+			else{
+				checkReferencetextAvailable();
+
+				$scope.defaultPaymentTypeCard = "";
+				$scope.defaultPaymentTypeCardNumberEndingWith = "";
+		 		$scope.defaultPaymentTypeCardExpiry = "";
+			}
+			
+		};
+
+
+		/*
+		 * Show guest credit card list
+		 */
+		$scope.showCardAddmode = function(){
+			$scope.showCCPage = true;	
+		};
+		
+
+		/**
+		 * change payment type action - override parent's method so as to deal with referance and fees
+		 */
+		$scope.changePaymentType = function(){
+			if($scope.saveData.paymentType == "CC"&& $scope.paymentGateway !== 'sixpayments'){
+				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showCardAddmode();		
+			} else {
+				$scope.showCreditCardInfo = false;
+			};
+			checkReferencetextAvailable();
+		};
+
+   	  /*
+	 	* Close dialog and update the parent
+	 	*/
 		$scope.closeDialog = function(){
 			$scope.paymentModalOpened = false;
 			$scope.$emit('HANDLE_MODAL_OPENED');
 			ngDialog.close();
 		};
 
-		/**
-		 * Retrive data to be displayed in the payment screen - payment types and credit card types
-		 *
-		 */
+	  /*
+		* Retrive data to be displayed in the payment screen - payment types and credit card types
+		*
+		*/
 
 		var fetchPaymentMethods = function(directBillNeeded){
 			
 			var onPaymnentFetchSuccess = function(data) {
 				$scope.renderData.paymentTypes =  data; 
+				init();
 				$scope.creditCardTypes = [];
 				angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 					if(item.name === 'CC'){
@@ -55,6 +114,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 * Success call back of save new card
 		 */
 		 var successNewPayment = function(data){
+
 		 	$scope.$emit("hideLoader");
 
 		 	var cardType = retrieveCardtype(isSixPayment,tokenDetails,cardDetails);		
@@ -64,6 +124,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 	$scope.defaultPaymentTypeCard = cardType;
 		 	$scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
 		 	$scope.defaultPaymentTypeCardExpiry = cardExpiry;
+
+
+		 	checkReferencetextAvailableForCC();
 
 
 		 	$scope.saveData.payment_type_id = data.id;
@@ -76,7 +139,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 * To save new card
 		 */
 		 var savePayment = function(data){
-			//set variable defined in BasePaymentCtrl
+
 			isSixPayment  = angular.copy($scope.newPaymentInfo.tokenDetails.isSixPayment);
 			tokenDetails  = angular.copy($scope.newPaymentInfo.tokenDetails);
 			cardDetails   = angular.copy($scope.newPaymentInfo.cardDetails);
@@ -85,9 +148,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			var expiryMonth = isSixPayment ? tokenDetails.expiry.substring(2, 4) :cardDetails.expiryMonth;
 			var expiryYear  = isSixPayment ? tokenDetails.expiry.substring(0, 2) :cardDetails.expiryYear;
 			var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
-			var cardCode = isSixPayment?
-			getSixCreditCardType(tokenDetails.card_type).toLowerCase():
-			cardDetails.cardType;
+			var cardCode = 	isSixPayment?
+							getSixCreditCardType(tokenDetails.card_type).toLowerCase():
+							cardDetails.cardType;
 
 
 			$scope.callAPI(RVPaymentSrv.savePaymentDetails, {
@@ -103,7 +166,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		};
 
 		/**
-		 * retrieve token from paymnet gateway
+		 * retrieve token from paymnet gateway - from cards ctrl
 		 */
 		$scope.$on("TOKEN_CREATED", function(e, data){
 		 	$scope.newPaymentInfo = data;
@@ -114,11 +177,16 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 	runDigestCycle();
 		 });
 
+		/**
+		 * MLI error - from cards ctrl
+		 */
 		$scope.$on("MLI_ERROR", function(e,data){
 		 	$scope.errorMessage = data;
 		});
 
-
+		/**
+		 * card selection cancelled - from cards ctrl
+		 */
 		$scope.$on('cancelCardSelection',function(e,data){
 			$scope.showCCPage = false;
 			$scope.isManual = false;
@@ -126,7 +194,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		});
 
 		/*
-		* Success call back of MLI swipe
+		* Success call back of MLI swipe - from cards ctrl
 		*/
 		$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
 			//set variables to display the add mode

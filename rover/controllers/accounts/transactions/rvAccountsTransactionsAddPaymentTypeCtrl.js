@@ -4,6 +4,10 @@ sntRover.controller('RVAccountsTransactionsAddPaymentTypeCtrl',	[
 	function($scope, $rootScope,RVPaymentSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
+		var isSixPayment  = false;
+		var tokenDetails  = {};
+		var cardDetails   = {};
+
 		/**
 		 * to run angular digest loop,
 		 * will check if it is not running
@@ -26,26 +30,20 @@ sntRover.controller('RVAccountsTransactionsAddPaymentTypeCtrl',	[
 		};	
 		init();
 
-
-		var isSixPayment  = false;
-		var tokenDetails  = {};
-		var cardDetails   = {};
-
-
-
-
 		/**
 		 * Retrive data to be displayed in the initial screen 
 		 *
 		 */
 		 var renderScreen = function(){
+
 		 	$scope.showCCPage = false;
 		 	$scope.showSelectedCreditCard  = true;
 		 	$scope.addmode                 = false;	
-			//set variable defined in BasePaymentCtrl
+
 			isSixPayment  = angular.copy($scope.cardData.tokenDetails.isSixPayment);
 			tokenDetails  = angular.copy($scope.cardData.tokenDetails);
 			cardDetails   = angular.copy($scope.cardData.cardDetails);
+
 			//call utils functions to retrieve data		
 			$scope.renderData.creditCardType = (!isSixPayment)?
 												getCreditCardType(cardDetails.cardType).toLowerCase() : 
@@ -65,9 +63,17 @@ sntRover.controller('RVAccountsTransactionsAddPaymentTypeCtrl',	[
 		 	runDigestCycle();
 		 });
 
+		/**
+		 * MLI error - from cards ctrl
+		 */
+
 		$scope.$on("MLI_ERROR", function(e,data){
 		 	$scope.errorMessage = data;
 		});
+
+		/**
+		 * card selection cancelled - from cards ctrl
+		 */
 		$scope.$on('cancelCardSelection',function(e,data){
 			$scope.showCCPage = false;
 			$scope.dataToSave.paymentType = "";
