@@ -2186,6 +2186,11 @@
                                             .checkbox,
                                             .radio { width: 100%; }
                                         }
+
+                                        .check-block { 
+                                            margin-bottom: 10px; 
+                                            .float;
+                                        }
                                     }
 
                                     &.break {
@@ -2272,6 +2277,14 @@
                                         &.radio-check {
                                             .checkbox:nth-child(even),
                                             .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                            .check-block {
+                                                .checkbox:nth-child(even),
+                                                .radio:nth-child(even) { margin-right: 0; }
+
+                                                .checkbox:nth-child(odd),
+                                                .radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
+                                            }
                                         }
                                     }
                                 }
@@ -2281,13 +2294,21 @@
                                         &.radio-check {
                                             .checkbox:nth-child(odd),
                                             .radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                            .check-block {
+                                                .checkbox:nth-child(even),
+                                                .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                                .checkbox:nth-child(odd),
+                                                .radio:nth-child(odd) { margin-right: 0; }
+                                            }
                                         }
                                     }
                                 }
                             }
 
                             /* Occupancy graph ***/
-                            .occupancy {
+                            .occupancy-graph {
                                 clear: both;
                                 background-color: @white;
                                 padding: 20px;
@@ -2316,6 +2337,7 @@
                                 overflow: hidden;
                                 text-overflow: ellipsis;
                                 .clickable;
+                                .no-transition();
 
                                 > .primary:not(.value) {
                                     position: absolute;
@@ -2419,6 +2441,14 @@
                                         padding: 20px; 
                                         position: relative;
                                         .float;
+                                    }
+
+                                    .notice {
+                                        position: absolute;
+                                        top: 10px;
+                                        left: 10px;
+                                        z-index: 9990;
+                                        .calc-width(100, 20);
                                     }
 
                                     .iScrollVerticalScrollbar { bottom: 20px; }
@@ -4383,9 +4413,13 @@
 /* Registration             ==============================*/
     .registration-content {
         position: relative;
-        .calc-height(100, 40);
+        .calc-height(100, 50);
 
-        > .wrapper { padding: 20px; .float; }
+        > .wrapper { 
+            padding: 20px 20px 10px 20px; 
+            .float; 
+        }
+        
         > .iScrollVerticalScrollbar { bottom: 20px; }
 
         /* Billing information ***/
@@ -4404,7 +4438,6 @@
                 margin: 0;
 
                 tr {
-
                     th,
                     td { padding: 5px 10px; }
 
@@ -4412,11 +4445,13 @@
                         font-weight: 600;
                         background: rgba(0,0,0,.05);
 
-                        &:first-child {
+                       &:first-child {
                             width: 120px;
                             #border-radius > .left-top();
                         }
+
                         &:nth-child(2) { width: 120px; }
+
                         &:last-child { #border-radius > .right-top(); }
                     }
                 }
@@ -4428,116 +4463,116 @@
             position: relative;
 
             /* Registration summary tabs navigation ***/
-            #bills-tabs-nav {
+            .bill-tabs {
                 position: relative;
-                .size(50px, 100%);
+                height: 50px;
+                .calc-width(100, 280);
 
-                .scrollable {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    .size(50px, auto);
-                    .calc-max-width(100, 0);
+                .wrapper {
+                    li {
+                        margin: 5px 0 0 0;
+                        line-height: 1em;
+                        vertical-align: middle;
+                        min-width: 95px;
+                        height: 45px;
+                        background: rgba(0,0,0,.05);
+                        .show;
+                        .pull-left;
+                        .box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
+                        #border-radius > .top();
 
-                    .wrapper {
-                        li {
-                            margin: 5px 0 0 0;
-                            line-height: 1em;
-                            vertical-align: middle;
-                            min-width: 95px;
-                            height: 45px;
-                            background: rgba(0,0,0,.05);
+                        .bill-toggle {
+                            color: @grey4;
+                            text-transform: uppercase;
+                            padding: 10px;
+                            cursor: pointer;
+                            .float;
                             .show;
-                            .pull-left;
-                            .box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
-                            #border-radius > .top();
+                            .no-transition;
 
-                            a {
-                                color: @grey4;
-                                text-transform: uppercase;
-                                padding: 10px;
-                                .float;
-                                .show;
-                                .no-transition;
+                            .price {
+                                font-weight: 600;
+                                .pull-left;
 
-                                .price {
-                                    font-weight: 600;
-                                    .pull-left;
-
-                                    span { 
-                                        font-size: 14px;
-                                        font-weight: 400;
-                                        .show;
-                                    }
-                                }
-
-                                .card-logo,
-                                .payment {
-                                    font-size: 12px;
-                                    line-height: 12px;
-                                    margin-left: 30px;
-                                    text-align: right;
-                                    .pull-left;
-                                    .size(20px,40px);
-                                    .opacity(50);
-
-                                    img {
-                                        width: 100%;
-                                        height: auto;
-                                        margin-top: 2px;
-                                    }
+                                span { 
+                                    font-size: 14px;
+                                    font-weight: 400;
+                                    .show;
                                 }
                             }
 
-                            &.new-bill {
-                                min-width: 45px; 
-                                background: transparent;
-                                padding: 5px 0 0 5px;
-                                .box-shadow(none);
+                            .card-logo,
+                            .payment {
+                                font-size: 12px;
+                                line-height: 12px;
+                                margin-left: 20px;
+                                text-align: right;
+                                .pull-left;
+                                .size(20px, 50px);
+                                .opacity(50);
 
-                                .button {
-                                    .square(45px);
-                                    #border-radius > .bottom(0);
-                                    .box-shadow(none);
-
-                                    .icons { margin-top: -8px; }
-
-                                    &:hover,
-                                    &:active { 
-                                        .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
-                                    }
-                                }
+                                img { .size(auto, 40px); }
                             }
+                        }
 
-                            &.ui-tabs-active,
-                            &.active {
-                                line-height: 1em;
-                                margin-top: 0;
-                                height: 50px;
-                                background: rgba(0,0,0,.1);
+                        &.new-bill {
+                            min-width: 45px; 
+                            background: transparent;
+                            padding: 5px 0 0 5px;
+                            .box-shadow(none);
+
+                            .button {
+                                .square(45px);
+                                #border-radius > .bottom(0);
                                 .box-shadow(none);
 
-                                a {
-                                    color: @textColor;
+                                .icons { margin-top: -8px; }
 
-                                    .card-logo,
-                                    .payment { .opacity(100); }
+                                &:hover,
+                                &:active { 
+                                    .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
                                 }
                             }
                         }
-                    }
 
-                    .iScrollHorizontalScrollbar { .hide; }
+                        &.ui-tabs-active,
+                        &.active {
+                            line-height: 1em;
+                            margin-top: 0;
+                            height: 50px;
+                            background: rgba(0,0,0,.1);
+                            .box-shadow(none);
+
+                            a {
+                                color: @textColor;
+
+                                .card-logo,
+                                .payment { .opacity(100); }
+                            }
+                        }
+                    }
                 }
+
+                .iScrollHorizontalScrollbar { .hide; }
+            }
+
+            .incoming-billing {
+                position: absolute;
+                top: 10px;
+                right: 0;
+                font-size: 15px;
+                line-height: 40px;
+                text-transform: uppercase;
+                padding-right: 15px;
+                background: @arrowUp no-repeat 100% 45%;
+
+                &.active { background-image: @arrowDown; }
             }
 
             /* Registration summary tabs ***/
             .bill-summary {
-                position: absolute;
-                top: 50px;
-                left: 0;
-                width: 100%;
-
+                position: relative;
+                
                 /* Short bill summary ***/
                 .bill-summary-wrapper {
                     width: 100%;
@@ -4545,10 +4580,7 @@
                     background: rgba(0,0,0,.1);
                     #border-radius > .rounded();
 
-                    > .iScrollHorizontalScrollbar {
-                        bottom: auto;
-                        top: 10px;
-                    }
+                    .iScrollHorizontalScrollbar { .hide; }
 
                     .wrapper {
                         padding: 0;
@@ -4565,46 +4597,52 @@
                             .no-expense {
                                 position: relative;
                                 color: @grey3;
+                                font-size: 11px;
+                                line-height: 16px;
                                 text-transform: uppercase;
                                 font-weight: 600;
                                 height: 50px;
                                 min-width: 60px;
                                 max-width: 120px;
                                 padding: 0 5px;
+                                cursor: pointer;
                                 .clickable;
                                 .show;
 
-                                span { 
+                                .date { 
                                     position: absolute;
-                                    line-height: 1em;
+                                    top: 5px;
+                                    right: 5px; 
+                                }
 
-                                    &.day,
-                                    &.expense { top: 5px; left: 5px; }
-                                    &.date { top: 5px; right: 5px; }
-                                    &.guest-status { bottom: 5px; left: 5px; }
-                                    &.price { 
-                                        position: static;
-                                        bottom: auto;
-                                        right: auto;
-                                        text-align: right;
-                                        margin-top: 30px;
-                                        width: 100%;
-                                        .show;
-                                    }
+                                .guest-status {
+                                    position: absolute;
+                                    top: 30px;
+                                    left: 5px;
+                                    float: none;
+                                    .square(15px);
 
-                                    &.day,
-                                    &.expense,
-                                    &.date { 
-                                        font-size: 11px; 
-                                    }
+                                    &.check-in { background-position: 3px -77px; }
+                                    &.check-out { background-position: 3px -103px; }
+                                }
 
-                                    &.guest-status {
-                                        float: none;
-                                        .square(15px);
+                                .day,
+                                .expense {
+                                    text-align: left;
+                                    margin-top: 5px;
+                                    .nowrap();
+                                    .show;
+                                }
 
-                                        &.check-in { background-position: 3px -77px; }
-                                        &.check-out { background-position: 3px -103px; }
-                                    }
+                                .price {
+                                    font-size: 16px;
+                                    text-align: right;
+                                    margin-top: 10px;
+                                    .show;
+                                }
+
+                                .expense {
+
                                 }
 
                                 &.active {
@@ -4612,9 +4650,6 @@
                                     height: 60px;
                                     #border-radius > .bottom(0);
                                     .box-shadow(1px 0 0 rgba(0,0,0,.15));
-
-                                    .guest-status,
-                                    .price { bottom: 15px; }
                                 }
                             }
 
@@ -4650,6 +4685,9 @@
                                 .toggle,
                                 .no-expense {
                                     padding-left: 30px;
+
+                                    .day,
+                                    .expense { margin-left: -25px; }
                                 }
                             }
 
@@ -4725,15 +4763,18 @@
                             }
 
                             &.rate { #pixel-to-percent > .width(645, 1926); }
-                            &.room { #pixel-to-percent > .width(1020, 1926); }
+                            &.room { 
+                                padding-left: 20px;
+                                #pixel-to-percent > .width(1020, 1926); 
+                            }
                         }
                     }
 
                     /* Stay details ***/
                     .stay-details {
+                        position: relative;
                         clear: both;
-                        padding: 10px 10px 20px 10px;
-                        border-right: 1px solid rgba(0,0,0,.1);
+                        padding: 10px 0;
                         .show;
                         .float;
 
@@ -4742,33 +4783,34 @@
                             color: @grey4;
                             font-size: 14px;
                             line-height: 21px;
-                            height: 100%;
                             .show;
                             .pull-left;
 
-                            ul,
-                            ol {
-                                height: auto;
-                                padding-left: 20px;
-                            }
-
                             li {
-                                line-height: 21px;
                                 margin-bottom: 0;
-                                float: none;
-                                .show;
+                                line-height: 21px;
                             }
+                        }
 
-                            &.rate-details {
-                                padding-right: 20px;
-                                #pixel-to-percent > .width(885, 1926);
-                            }
+                        .rate-details {
+                            padding-right: 20px;
+                            #pixel-to-percent > .width(885, 1926);
+                        }
 
-                            &.room-details { 
-                                padding-left: 20px; 
-                                border-left: 1px solid rgba(0,0,0,.1);
-                                #pixel-to-percent > .width(1020, 1926);
-                            }
+                        .room-details { 
+                            padding-left: 30px; 
+                            #pixel-to-percent > .width(1020, 1926);
+                        }
+
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            top: 10px;
+                            background-color: rgba(0,0,0,.1);
+                            width: 1px;
+                            #pixel-to-percent > .left(885, 1926);
+                            .calc-height(100, 20);
+                            .show;
                         }
                     }
 
@@ -4808,7 +4850,7 @@
                         }
                     }
                 }
-            }
+            }           
         }
 
         /* Invoice ***/
@@ -4820,58 +4862,57 @@
             .float;
 
             .overview {
-                text-transform: uppercase;
                 .pull-left;
 
-                .title {
-                    display: inline-block;
-                    text-align: right;
-                    line-height: 14px;
-                    margin-right: 5px;
+                .toggle {
+                    text-align: left;
+                    margin-right: 20px;
+                    padding-right: 20px;
+                    background-position: 100% 65%;
+                    max-width: 240px;
+                    .show;
+                    .pull-left;
 
-                    .label {
-                        width: 100%;
-                        float: none;
+                    .title {
+                        font-size: 14px;
+                        line-height: 14px;
+                        text-transform: uppercase;
                         .show;
                     }
-                }
-
-                .toggle,
-                p {
-                    display: inline-block;
-                    color: @textColor;
-                    margin-right: 10px;
-                    padding-right: 25px;
-                    background-position: 100% 50%;
-                    max-width: 360px;
-                    .nowrap();
 
                     .value {
                         font-size: 36px;
+                        line-height: 46px;
                         font-weight: 400;
-                        color: @logoPrimary;
+                        .show;
+                        .nowrap();
 
                         &.red { color: @red; }
                         &.green { color: @green; }
                     }
+                }
 
-                    &.with-rate {
-                        margin-top: 10px;
-                        padding-top: 4px;
-                        line-height: 36px;
-                        vertical-align: top;
+                .button { 
+                    margin-right: 10px;
+                    .pull-left;
+                    .show;
+
+                    &.green {
+                        position: relative;
+                        margin-right: 20px;
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: -10px;
+                            background-color: rgba(0,0,0,.1);
+                            .show;
+                            .size(100%, 1px);
+                        }
                     }
                 }
-
-                p {
-                    margin: 10px 10px 0 0;
-                    padding-top: 4px;
-                    line-height: 36px;
-                    vertical-align: top;
-
-                    .value { color: @textColor; }
-                }
-            }
+            } 
 
             .group-overview {
                 width: 100%;
@@ -4916,15 +4957,13 @@
             }
 
             .signature {
-                margin: 0 20px;
                 .pull-left;
 
                 .toggle {
                     color: @textColor;
                     text-transform: uppercase;
-                    height: 60px;
-                    padding: 10px 45px;
                     position: relative;
+                    .size(60px, 80px);
                     .clickable;
 
                     .icons {
@@ -4934,17 +4973,17 @@
                         .size(24px, 30px);
                     }
 
-                    .label {
+                    .label { 
                         width: 100%;
                         float: none;
                         line-height: 14px;
-                        .show;
+                        .show; 
                     }
 
                     &.has-arrow { background-position: 90% 50%; }
 
-                    &.active {
-                        height: 70px;
+                    &.active { 
+                        height: 70px; 
                         #border-radius > .bottom(0);
                         .box-shadow(1px 0 0 rgba(0,0,0,.15));
                     }
@@ -4955,38 +4994,64 @@
                 .pull-right;
                 .float;
 
-                h3 {
-                    font-size: 21px;
-                    font-weight: 600;
-                    line-height: 60px;
-                }
-
                 .next-view {
-                    color: @textColor;
-                    line-height: 48px;
-                    padding: 5px 20px;
                     position: relative;
-                    padding-right: 60px;
-                    min-width: 300px;
-                    .clickable;
+                    line-height: 14px;
+                    height: 60px;
+                    padding: 10px 15px;
                     .pull-left;
+                    .clickable;
 
-                    .card-logo { margin-right: 20px; }
-                    .number { margin-right: 10px; }
-                    .date { margin-right: 0; }
+                    span { color: @textColor; }
 
-                    .icon-swiped {
+                    .card-logo {
+                        margin: 0 20px 0 0;
+                        .size(40px, 50px);
+
+                        img { .size(25px, 50px); }
+
+                        .number {
+                            text-align: right;
+                            margin-right: 0;
+                            float: none;
+                            align-items: none;
+                            .show;
+                        }
+                    }
+
+                    .type,
+                    .name {
+                        font-size: 18px;
+                        font-weight: 600;
+                        line-height: 40px;
+                        text-transform: none;
+                        .show;
+                        .nowrap();
+                    }
+
+                    .name { max-width: 240px; }
+                    .type { max-width: 160px; }
+
+                    .icon-swiped { margin-top: 3px; }
+
+                    &:after {
+                        content: "";
                         position: absolute;
-                        top: 15px;
-                        right: 10px;
-                        margin: 0;
+                        top: 28px;
+                        right: 14px;
+                        border-left: 4px solid transparent;
+                        border-right: 4px solid transparent;
+                        border-top: 4px solid @textColor;
+                        .square(0px);
                     }
                 }
 
+                .add-new-button { padding: 0 40px; }
+
                 .button {
-                    margin-left: 10px;
+                    margin: 10px;
+                    .square(40px);
                     .pull-left;
-                    .size(60px, 65px);
                 }
             }
 
@@ -5001,7 +5066,7 @@
                     line-height: 21px;
                     text-transform: uppercase;
                     table-layout: auto;
-                    border-collapse: separate;
+                    border-collapse: separate; 
                     border-spacing: 0 10px;
                     margin: 0;
 
@@ -5030,6 +5095,12 @@
                             padding: 0 10px;
                             font-weight: 600;
 
+                            &.form,
+                            &.action { 
+                                padding: 0;
+                                text-align: center;
+                            }
+
                             &.form { width: 80px; }
                             &.action { width: 60px; }
                         }
@@ -5038,6 +5109,8 @@
                             color: @grey4;
                             background: rgba(0,0,0,.05);
                             padding: 10px;
+
+                            .select { width: 60px; }
 
                             &.description {
                                 padding: 0 10px;
@@ -5114,7 +5187,7 @@
                         overflow: hidden;
                         .size(200px, 100%);
 
-                        img {
+                        img { 
                             max-width: 100%;
                             max-height: 100%;
                             height: auto;

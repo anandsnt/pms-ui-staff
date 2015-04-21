@@ -106,7 +106,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}, {
 		            	title: "MENU_ACCOUNTS",
 		            	action: "staff#/staff/accounts/search",
-		            	menuIndex: "accounts"
+		            	menuIndex: "accounts",
+		            	hidden: $rootScope.isHourlyRatesEnabled
 		       	 	}]
 				}, {
 			        title: "MENU_GROUPS",
