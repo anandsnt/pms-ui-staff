@@ -9,16 +9,15 @@
         <div class="entry number">
             <label for="rooming-no-of-rooms">No. of Rooms</label>
             <div class="select">
-                <select id="rooming-no-of-rooms" ng-model="numberOfReservations">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
+                <select id="rooming-no-of-rooms" ng-model="numberOfRooms">
+                    <option ng-repeat="occupancy in possibleNumberOfRooms" value="occupancy">{{occupancy}}</option>
                 </select>
             </div>
         </div>
         <div class="entry type">
             <label for="rooming-room-type">Room Type</label>
             <div class="select">
-                <select id="rooming-room-type" ng-model="selectedRoomType">
+                <select id="rooming-room-type" ng-model="selectedRoomType" ng-change="changedSelectedRoomType()">
                     <option value="{{roomTypeData.room_type_id}}" ng-repeat="roomTypeData in roomTypesAndData">
                     {{roomTypeData.room_type_name}} ({{roomTypeData.availableRoomCount}})</option>
                 </select>

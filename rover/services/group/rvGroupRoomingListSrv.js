@@ -46,11 +46,13 @@ sntRover.service('rvGroupRoomingListSrv',
 		 */
 		this.fetchReservations = function(params){
 			var deferred = $q.defer(),
-				group_id = params.id,
-				//url = '/api/group_reservations/' + group_id;
-				url = '/ui/show?format=json&json_input=groups/create_reservations.json';
+				group_id = params.group_id,
+				url = '/api/group_reservations/' + group_id+ "/list";
+				//url = '/ui/show?format=json&json_input=groups/create_reservations.json';
 			
 			var data = {
+				'sort_field': 'room_no',
+				'sort_dir'  : 'ASC',
 				'per_page' 	: params.per_page,
 				'page'  	: params.page,
 			};
