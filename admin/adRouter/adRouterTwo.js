@@ -426,15 +426,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 		
 		$stateProvider.state('admin.interfaceMapping', {
-			templateUrl: '/assets/partials/interfaceMapping/adExternalMappingItems.html',
-			controller: 'ADInterfaceMappingsCtrl',
+			templateUrl: '/assets/partials/mapping/adExternalMappingItems.html',
+			controller: 'ADMappingCtrl',
 			url : '/intefaceMappingsList'
 		});
-		/*$stateProvider.state('admin.mapping', {
-			templateUrl: '/assets/partials/interfaceMapping/adExternalMappingItems.html',
-			controller: 'ADInterfaceMappingsCtrl',
-			url : '/intefaceMappingsList'
-		});*/
 
 		$stateProvider.state('admin.stationary', {
 			templateUrl: '/assets/partials/stationary/adStationary.html',
