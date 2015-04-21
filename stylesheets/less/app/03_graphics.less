@@ -236,12 +236,6 @@
 		&.icon-addons { background-position: 0 -6280px; }	
 		&.icon-charge { background-position: 4px -6340px; }
 
-		&.icon-swiped {
-			.square(30px);
-			.hide-text;
-			background-position: 0px -3332px; 
-		}
-
 		&.icon-trash { 
 			.square(20px);
 			.hide-text;
@@ -294,6 +288,30 @@
 		&.icon-time {
 			&.time-in { background-position: 10px -4050px; }
 			&.time-out { background-position: 10px -4110px; }
+		}
+
+		/* CC icons ***/
+		&.icon-swiped,
+		&.icon-authenticated {
+			.square(30px);
+			.hide-text;
+		}
+
+		&.icon-swiped {
+			background-position: 0px -3335px;
+
+			&.icon-authenticated { background-position: 0px -6695px; }
+		}
+
+		&.icon-authenticated { background-position: 5px -6753px; }
+
+		&.icon-cc-authorization {
+			background-position: 5px -6510px;
+			.square(50px);
+			.show;
+
+			&.success { background-position: 5px -6570px; }
+			&.failure { background-position: 5px -6630px; }
 		}
 
 		/* Housekeeping icons ***/

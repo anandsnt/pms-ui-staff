@@ -3836,20 +3836,33 @@
                 /* Block item - Credit card **/
                 &.item-payment {
                     .next-view,
-                    .no-view {
+                    .no-view { 
                         position: relative;
 
-                        .icon-swiped {
+                        .icons {
                             position: absolute;
                             top: 15px;
-                            right: 20px;
+                            right: 40px;
                             margin: 0;
+                        }
+                    }
+
+                    .next-view {
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 28px;
+                            right: 14px;
+                            border-left: 4px solid transparent;
+                            border-right: 4px solid transparent;
+                            border-top: 4px solid @textColor;
+                            .square(0px);
                         }
                     }
 
                     .actions {
                         .button,
-                        .add-new-button {
+                        .add-new-button { 
                             margin-right: 10px;
                             .size(60px, 65px);
                             .pull-left;
@@ -3861,23 +3874,19 @@
 
                     &.has-buttons {
                         .next-view,
-                        .no-view {
-                            .calc-width(100, 150);
+                        .no-view { 
+                            .calc-width(100, 150); 
 
                             .card-logo,
                             span { margin-right: 10px; }
 
-                            .icon-swiped { right: 0; }
+                            .icon-swiped { right: 20px; }
                         }
-                    }
+                    }   
 
                     &.has-button {
                         .next-view,
-                        .no-view {
-                            .calc-width(100, 75);
-
-                            .icon-swiped { right: 10px; }
-                        }
+                        .no-view { .calc-width(100, 75); }
                     }
                 }
 
