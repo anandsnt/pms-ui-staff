@@ -77,7 +77,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		  */
 		$scope.moveToBillAction = function(oldBillValue, feesIndex){
 
-			console.log("move to bill actopm");
 		 	var parseOldBillValue = parseInt(oldBillValue)-1;
 			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].billValue;
 			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].transaction_id;
@@ -86,21 +85,18 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				"to_bill" : newBillValue,
 				"from_bill" : oldBillValue,
 				"transaction_id" : transactionId,
-				"id":id
+				"account_id" : $scope.accountConfigData.summary.posting_account_id
 			};
 
-			console.log(dataToMove);
 			/*
 			 * Success Callback of move action
 			 */
-			// var moveToBillSuccessCallback = function(data){
-			// 	$scope.$emit('hideLoader');
-			// 	$scope.movedIndex =parseInt(newBillValue)-1;
-
-			// 	//Fetch data again to refresh the screen with new data
-			// 	$scope.invokeApi(RVBillCardSrv.fetch, $scope.transactionsDetails.reservation_id, $scope.moveToBillActionfetchSuccessCallback);
-			// };
-			// $scope.invokeApi(RVBillCardSrv.movetToAnotherBill, dataToMove, moveToBillSuccessCallback);
+			var moveToBillSuccessCallback = function(data){
+				$scope.$emit('hideLoader');
+				//Fetch data again to refresh the screen with new data
+				getTransactionDetails();
+			};
+			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback);
 		};
 
 

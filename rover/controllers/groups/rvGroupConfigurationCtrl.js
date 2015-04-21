@@ -118,7 +118,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		* @return {Boolean}
 		*/
 		$scope.hasPermissionToViewAccountsTab = function() {
-			return rvPermissionSrv.getPermissionValue ('ACCESS_GROUP_ACCOUNT_TRANSACTIONS');
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
 		};
 
 		/**

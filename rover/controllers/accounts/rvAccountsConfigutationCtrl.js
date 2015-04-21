@@ -90,7 +90,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		* @return {Boolean}
 		*/
 		$scope.hasPermissionToViewAccountsTab = function() {
-			return rvPermissionSrv.getPermissionValue ('ACCESS_GROUP_ACCOUNT_TRANSACTIONS');
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+			//TODO: use appropriate key
 		};
 
 		/**

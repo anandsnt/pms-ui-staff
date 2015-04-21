@@ -31,6 +31,20 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.moveToAnotherBill = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/posting_accounts/transactions';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
 	   /*
 		 * Service function to edit transaction
 		 * @method PUT
