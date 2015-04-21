@@ -231,6 +231,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				},
 				blockCodeData : function(adCheckinSrv){
 					return adCheckinSrv.getBlockCodes();
+				},
+				roomTypes:function(ADRoomTypesSrv){
+					return ADRoomTypesSrv.fetch();
 				}
 			}
 		});
@@ -238,7 +241,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.checkout', {
 			templateUrl: '/assets/partials/checkout/adCheckout.html',
 			controller: 'ADCheckoutCtrl',
-			url : '/checkout'
+			url : '/checkout',
+			resolve:{
+				roomTypes:function(ADRoomTypesSrv){
+					return ADRoomTypesSrv.fetch();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.cmscomponentSettings', {
@@ -426,6 +434,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
 			controller: 'adAnalyticSetupCtrl',
 			url : '/analyticSetup'
+		});
+                
+		$stateProvider.state('admin.siteminderSetup', {
+			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
+			controller: 'adSiteminderSetupCtrl',
+			url : '/siteminderSetup'
 		});
 
 		$stateProvider.state('admin.emailBlacklist', {

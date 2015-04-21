@@ -4,7 +4,7 @@
 
 	<!-- Property switch -->
 	<div class="change-hotel" ng-show="shouldShowMultiPropertySwitch()">
-		<h5 ng-click="showHotelSwitchList = !showHotelSwitchList">{{currentHotelData.name}}</h5>
+		<h5 ng-click="toggleHotelList()">{{currentHotelData.name}}</h5>
 		<dl class="dropdown">
 			<dt>Change hotel:</dt>
 			<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list"><a ng-click="redirectToHotel(hotel.hotel_id)">{{ hotel.hotel_name}}</a></dd>
@@ -31,8 +31,8 @@
 
 		</li>
 		<li id="settings">
-			<a ng-click="settingsClicked()" class="icon-menu icon-settings">Settings</a>
-		</li> 
+			<a ng-click="$emit('updateSettingsSubMenu', settingsSubmenu[0])" class="icon-menu icon-settings" ng-class="{'open':isSettingSubMenuActive}">Settings</a>
+		</li>
 		<li id="sign-out">
 			<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
 		</li>

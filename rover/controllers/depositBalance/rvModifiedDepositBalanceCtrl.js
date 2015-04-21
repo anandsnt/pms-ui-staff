@@ -66,7 +66,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.isAddToGuestCardVisible = false;
 	$scope.isSwipedCardSave = false;
 	$scope.isManual = false;
-	$scope.setScroller('cardsList');
+	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 
 	
 

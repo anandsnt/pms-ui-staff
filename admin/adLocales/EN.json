@@ -58,6 +58,8 @@
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
 
+"EXTERNAL_CHECKIN":"External Checkin",
+
 "MESSAGE":"Message",
 "IN_APP":"in App",
 "MESSAGE_SUBJECT":"Message Subject",
@@ -99,7 +101,9 @@
 "SAVE_AS_DRAFT":"Save as Draft",
 "START_CAMPAIGN":"Start Campaign",
 "SAVE":"Save",
-"CLOSE":"Close"
+"CLOSE":"Close",
+"URL_LABEL": "URL",
+"SCREEN_LABEL": "SCREEN"
 
 
 
@@ -125,6 +129,7 @@
     "ADD":"Add",
     "CANCEL": "Cancel",
     "SAVE_CHANGES": "Save Changes",
+    "TEST_CONNECTION": "Test Connection",
     "BACK": "Back",
     "ADD_NEW":"Add New",
     "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
@@ -159,7 +164,7 @@
     "MENU_JOURNAL":"Journal",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
-    "MENU_GROUPS": "Group",
+    "MENU_GROUPS": "Groups",
     "MENU_CREATE_GROUP": "New Group",
     "MENU_MANAGE_GROUP": "Manage Groups",   
 	"ICARE_SERVICES": "iCare Services",
@@ -361,9 +366,10 @@
 "UNASSIGNED_ROOMS": "Unassigned Rooms",
 "ASSIGNED_ROOMS": "Assigned Rooms",
 "SELECT_ALL": "Select All",
-"ASSIGN_SELECTED": "Assign Selected"
-
-,    
+"ASSIGN_SELECTED": "Assign Selected",
+"FIND_ROOMS":"Find Rooms",
+"NO_RESULT_FOUND":"No Result Found",
+"NO_ROOMS":"No Rooms",    
     
     "FROM": "From",
     "TO": "To",
@@ -407,12 +413,7 @@
     "ROOM_BLOCK_SUMMARY" : "Room Block Summary",
     "ROOM_RELEASE_DATE" : "Room Release Date",
     "RELEASE_NOW" : "Release Now",
-    "GROUP_APR" :"Actual / Potential Revenue"
-
-
-
-
-,
+    "GROUP_APR" :"Actual / Potential Revenue",
 
 
 "LIKES":"Likes",
@@ -442,9 +443,7 @@
 
 "DEPARTMENTS":"Departments",
 "DEPARTMENT_NAME_PLACEHOLDER": "Enter department",
-"TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS"
-
-,
+"TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
  
  
     "HOTEL_ANNOUNCEMENTS": "Hotel Announcements",
@@ -458,6 +457,11 @@
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
     "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE": "Notify Guest When Room is not assigned",
+    "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
+    "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
+    "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "ZEST_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app checkin ",
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
@@ -640,6 +644,7 @@
 "KEY_SYSTEM_ACCESS_PORT":"Key System Access Port",
 "KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER":"Enter Key System Access Port",
 "KEY_SYSTEM_USENAME":"Key System Username",
+"REMOVE_LEADING_ZEROS" : "Remove leading zeros",
 "KEY_SYSTEM_USENAME_PLACEHOLDER":"Enter Key System Username",
 "KEY_SYSTEM_PASSWORD":"Key System Password",
 "KEY_SYSTEM_PASSWORD_PLACEHOLDER":"Enter Key System Password",
@@ -719,6 +724,17 @@
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
 
+
+
+"SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
+"SITEMINDER_SUB_TITLE": "SiteMinder API Access Configuration",
+"SITEMINDER_USERNAME_LABEL": "User Name",
+"SITEMINDER_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
+"SITEMINDER_PASSWORD_LABEL": "Password",
+"SITEMINDER_ACCESS_URL_LABEL": "Access URL",
+"SITEMINDER_REQUESTOR_ID_LABEL": "Requester ID"
+,
+
 	"STATIONARY":"Stationary",
 	"CUSTOMIZE":"Customize",
 	"GUEST_BILL_TITLE": "Guest Bill",
@@ -789,5 +805,8 @@
 "STOP_AUTO_CHECK_IN_AT": "STOP AUTO CHECK IN AT",
 "START_AUTO_CHECK_IN_FROM": "START AUTO CHECK IN FROM",
 "SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY": "SENT NONE CC RESERVATIONS TO FRONT DESK ONLY",
-"CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT": "CHECK IN COMPLETE CONFIRMATION SCREEN TEXT"
+"CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT": "CHECK IN COMPLETE CONFIRMATION SCREEN TEXT",
+"EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE":"EXCLUDE FOLLOWING ROOM TYPES FROM EMAIL INVITE",
+"EXCLUDE_ROOM_TYPES":"EXCLUDE ROOM TYPES",
+"EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES"
 }

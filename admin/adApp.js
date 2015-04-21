@@ -1,4 +1,23 @@
-var admin = angular.module('admin', ['ui.sortable','ui.router', 'ng-iscroll', 'ngDragDrop', 'ngTable','ngDialog', 'ngSanitize', 'pascalprecht.translate', 'adminModuleOne', 'adminModuleTwo','ui.date', 'qtip2', 'sharedHttpInterceptor', 'orientationInputBlurModule', 'multi-select', 'fauxMultiSelectModule', 'eventReachedRootModule']);
+
+var admin = angular.module('admin', 
+	['ui.sortable',
+	'ui.router', 
+	'ng-iscroll', 
+	'ngDragDrop', 
+	'ngTable',
+	'ngDialog', 
+	'ngSanitize', 
+	'pascalprecht.translate', 
+	'adminModuleOne', 
+	'adminModuleTwo',
+	'ui.date', 
+	'qtip2', 
+	'sharedHttpInterceptor', 
+	'orientationInputBlurModule', 
+	'multi-select', 
+	'fauxMultiSelectModule', 
+	'eventReachedRootModule',
+	'ngClassWithoutAnimation']);
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config(function ($httpProvider) {

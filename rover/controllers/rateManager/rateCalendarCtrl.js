@@ -1,6 +1,5 @@
 sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalendarSrv', 'dateFilter', 'ngDialog', 
 	function($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog){
-	
 	$scope.$parent.myScrollOptions = {
             RateCalendarCtrl: {
                 scrollX: true,
@@ -31,6 +30,11 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
         if($scope.currentFilterData.filterConfigured){
         	loadTable();
         }
+        
+        
+        
+        
+        
 	};
 
 	/**
@@ -48,6 +52,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	};
 
 	$scope.refreshScroller = function(){
+            $scope.initScrollBind();
+            
 		setTimeout( function(){
 			$scope.$parent.myScroll.RateCalendarCtrl.refresh();
 		}, 0);
@@ -140,6 +146,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	};
 
 	function finalizeCapture() {
+            $scope.initScrollBind();
 		$scope.loading = false;
 		$scope.currentFilterData.filterConfigured = true;
 		
@@ -337,7 +344,14 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
    		}
    		return ret;
    	};
-	
+        
+        $scope.initScrollBind = function(){
+                var scrollTable = $(".scrollTable");
+                    scrollTable.scroll(function() {
+                        scrollTable.scrollTop($(this).scrollTop());
+                });
+        };
+
 	$scope.toggleRestrictionIconView = function() {
 		return !$scope.loading;
 	};
