@@ -1,22 +1,24 @@
 <div ng-controller="RVGuestCardCtrl" >
-    <div id="guest-card-content" class="card-tabs card-search card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-if="!searchMode" ng-class="UICardContentCls('guest-card')">
+    
+    <!-- Guest Card Content -->
+    <div id="guest-card-content" class="card-tabs card-content" ng-if="!searchMode" ng-class="UICardContentCls('guest-card')">
+        
         <!-- Guest Card tabs navigation -->
-
-
-        <ul role="tablist" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all card-tabs-nav" id="guest-card-tabs-nav" class="card-tabs-nav">
-            <li aria-selected="true" aria-labelledby="guest-contact" aria-controls="contact-info" tabindex="0" role="tab" class="ui-state-default ui-corner-top ui-tabs-active" ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
-                <a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information </a>
+        <ul class="card-tabs-nav" id="guest-card-tabs-nav">
+            <li ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
+                <a id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information</a>
             </li>
-            <li aria-selected="false" aria-labelledby="guest-like" aria-controls="likes" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
-                <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-like" ng-class="{'error':likesInfoError}">Likes</a>
+            <li ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
+                <a id="guest-like" ng-class="{'error':likesInfoError}">Likes</a>
             </li>
-            <li aria-selected="false" aria-labelledby="guest-credit" aria-controls="cc-payment" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-credit'}" ng-click="guestCardTabSwitch('guest-credit')">
-                <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-credit">Credit Cards &amp; Payment</a>
+            <li ng-class="{'ui-tabs-active': current == 'guest-credit'}" ng-click="guestCardTabSwitch('guest-credit')">
+                <a id="guest-credit">Credit Cards &amp; Payment</a>
             </li>
-            <li aria-selected="false" aria-labelledby="guest-loyalty" aria-controls="loyalty" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" ng-click="guestCardTabSwitch('guest-loyalty')">
-                <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-loyalty">Loyalty</a>
+            <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" ng-click="guestCardTabSwitch('guest-loyalty')">
+                <a id="guest-loyalty">Loyalty</a>
             </li>
         </ul>
+
         <!-- Guest Card Tab 1 -->
         <span ng-include="'/assets/partials/guestCard/guestCardContactInfo.html'"></span> 
         <!-- Guest Card Tab 2 likes -->
@@ -26,14 +28,18 @@
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
     </div>
-    <div id="guest-card-content" class="card-tabs card-search card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-if="searchMode" ng-class="UICardContentCls('guest-card')">
+
+    <!-- Guest Search -->
+    <div id="guest-card-content" class="card-search card-content" ng-if="searchMode" ng-class="UICardContentCls('guest-card')">
+        
         <strong class="results-count" ng-show="guests.length > 0">
             {{ guests.length }} 
             possible match<span ng-if="guests.length > 1">es</span>
         </strong>
         <button id="new-guest" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
+        
+        <!-- Guest Card Results listing -->
         <div id="search-guests-content" class="search-cards scrollable">
-            <!-- Guest Card Results listing -->
             <div class="wrapper" ng-controller="guestResults" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
                 <ul id="search-guests-results" class="search-results">
                     <li class="reservation identify-guest" ng-repeat="guest in guests">

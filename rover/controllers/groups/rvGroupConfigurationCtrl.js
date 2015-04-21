@@ -9,7 +9,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'holdStatusList',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv) {
+	'$timeout',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -82,18 +83,31 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		}
 
 		/**
+		 * shouldShowRoomingListTab whether to show rooming list tab
+		 * @return {Boolean} [description]
+		 */
+		$scope.shouldShowRoomingListTab = function() {
+			//we will not show it in add mode
+			return (!$scope.isInAddMode());
+		};
+
+		/**
 		 * function to form data model for add/edit mode
 		 * @return - None
 		 */
 		$scope.initializeDataModelForSummaryScreen = function() {
 			$scope.groupConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
-				summary: summaryData,
+				summary: summaryData.groupSummary,
 				holdStatusList: holdStatusList.data.hold_status,
 				selectAddons: false, // To be set to true while showing addons full view
 				addons: {},
 				selectedAddons: []
 			};
+
+			$scope.accountConfigData = {
+				summary: summaryData.accountSummary
+			}
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
 		};
@@ -117,18 +131,24 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			//TODO: Remove once all tab implemented
+
 			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' 
-				&& tab !== 'ROOMING') {
+				&& tab !== 'ROOMING' && tab !=='ACTIVITY' && tab!= "ACCOUNT") {
 				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
 				return;
 			}
-
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
 			}
 
 			$scope.groupConfigData.activeTab = tab;
+			console.log('oh my man');
+			//propogating an event that next clients are
+			$timeout(function() {
+				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
+			}, 100);
+
 		};
 
 		/**
@@ -157,6 +177,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				'SUMMARY': '/assets/partials/groups/summary/rvGroupConfigurationSummaryTab.html',
 				'ROOM_BLOCK': '/assets/partials/groups/roomBlock/rvGroupConfigurationRoomBlockTab.html',
 				'ROOMING': '/assets/partials/groups/rooming/rvGroupRoomingListTab.html',
+				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
 				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
 				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
