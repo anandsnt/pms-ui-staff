@@ -1,11 +1,12 @@
-sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems','RVBillCardSrv',
-	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems,RVBillCardSrv) {
+sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams','ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv','RVChargeItems','RVBillCardSrv','rvPermissionSrv',
+	function($scope, $rootScope, $filter, $stateParams,ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv,RVChargeItems,RVBillCardSrv,rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		
 		var initAccountTransactionsView = function(){
 			//Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
+			$scope.showPayButton = false;
 			$scope.setScroller('registration-content');
 
 			console.log("init accoutn transactions");
@@ -164,12 +165,41 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 		};
 
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
 
-
-
+		//Whatever permission of Make Payment we are assigning that
+		//removing standalone thing here
+		$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
 
 		/*------------- edit/remove/split starts here --------------*/
 
+		/**
+		* function to check whether the user has permission
+		* to Edit/Split/Move/Delete charges
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToChangeCharges = function() {
+			return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
+		};
+
+		/**
+		* function to decide whether to show Edit charge button
+		* @param {String} - Fees type value
+		* @return {Boolean}
+		*/
+		$scope.showEditChargeButton = function(feesType){
+			return ($rootScope.isStandAlone && 
+					feesType!== 'TAX' && 
+					$scope.hasPermissionToChangeCharges());
+		};
+	
 		/*
 		*  set default values for split/edit/remove popups
 		*  We reuse the HTMLs used in reservation bill screen

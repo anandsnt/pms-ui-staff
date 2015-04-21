@@ -203,10 +203,10 @@
                                              <strong>{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</strong>
                                         </td>
                                         <td>
-                                            <button ng-click="openActionsPopup()" class="button purple with-icon only-icon">
+                                            <!-- <button ng-click="openActionsPopup()" class="button purple with-icon only-icon">
                                                 <span class="icons icon-pencil"></span>
                                                 Edit
-                                            </button>
+                                            </button> -->
                                         </td>
                                         <td></td>
                                     </tr>
@@ -268,7 +268,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button type="button" class="button purple with-icon only-icon" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)">
+                                            <button type="button" class="button purple with-icon only-icon" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="showEditChargeButton(feesData.type.value)">
                                                 <span class="icons icon-pencil"></span>
                                                 Edit
                                             </button>
