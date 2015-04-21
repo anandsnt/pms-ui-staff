@@ -246,7 +246,6 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case __reportNames['FORECAST_BY_DATE']:
                     reportItem['hasDateLimit'] = false;
-                    reportItem['hasSourceMarketFilter'] = true;
                     break;
 
                 default:
