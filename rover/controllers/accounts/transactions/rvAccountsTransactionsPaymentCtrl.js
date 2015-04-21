@@ -34,6 +34,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			//We are passing $scope from bill to this modal
 			$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 			$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
+			$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 			$scope.billsArray = $scope.transactionsDetails.bills;
 			//common payment model items
 			$scope.passData = {};
@@ -120,7 +121,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 									$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : zeroAmount;
 				$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 				$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
-				$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 			};
 
 		};
