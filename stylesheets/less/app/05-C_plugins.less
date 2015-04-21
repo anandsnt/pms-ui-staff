@@ -246,15 +246,17 @@
 			/* Alert ***/
 			&.alert {
 				padding: 30px 20px;
-				width: 380px;
+				width: 320px;
 
-				.icon-popup-alert {
-					margin: 10px auto;
-				}
+				.icon-popup-alert,
+				.icon-cc-authorization { margin: 10px auto; }
 
 				.message { 
 					text-transform: none;
 					margin: 20px 0;
+
+					&.green { color: @green; }
+					&.red { color: @red; }
 				}
 
 				.entry {
@@ -268,8 +270,6 @@
 
 				.button { 
 					margin: 10px auto;
-					width: auto;
-					min-width: 160px;
 
 					&:last-child { margin-bottom: 0; }
 				}
@@ -1134,7 +1134,7 @@
 
 			/* Pay bill ***/
 			&.pay-bill {
-				width: 420px;
+				width: 440px;
 
 				.actions {
 					.button {
