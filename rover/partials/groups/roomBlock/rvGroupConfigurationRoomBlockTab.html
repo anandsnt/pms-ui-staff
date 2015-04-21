@@ -1,5 +1,5 @@
-<form id="group-room-block" name="group-room-block" class="form card-tab rooms" ng-controller="rvGroupRoomBlockCtrl">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+<form id="group-room-block" name="group-room-block" class="form card-tab inner-header rooms" ng-controller="rvGroupRoomBlockCtrl">
+    
     <div id="group-room-block-header" class="tab-header with-filters">
         <div class="entry date-range">
             <div class="has-datepicker">
@@ -87,6 +87,7 @@
         </div>
     </div>
     <div id="group-room-block-content" class="tab-details">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- If new group and/or room block have not been set: -->
         <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
             <div class="info">

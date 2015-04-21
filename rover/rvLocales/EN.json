@@ -627,6 +627,8 @@
     "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
 
     "RESV_ALL_ROOMS" : "All Room Types",
+    "NO_ROOM_RATE_MSG": "No Availability. Please select to show Closed Rates or change Room Type selection.",
+    "NO_AVAILABILITY": "No Availability",
     "RESV_RECOMMENDED" : "Recommended",
     "RESV_ROOM" : "Room Type",
     "RESV_RATE" : "Rate",
