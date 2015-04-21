@@ -35,7 +35,7 @@
             <div ng-if="isInAddonSelectionMode()" ng-include="'/assets/partials/groups/summary/rvGroupConfigurationAddons.html'"></div>
             <div ng-if="!isInAddonSelectionMode()" id="group-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
-                <ul id="group-card-tabs-nav" class="card-tabs-nav">
+                <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
                     <li ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
                         <a>Summary</a>
                     </li>
@@ -45,7 +45,7 @@
                     <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
                         <a>Account</a>
                     </li>
-                    <li class="with-filters" ng-click="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
+                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" ng-click="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
                         <a>Rooming List</a>
                     </li>
                     <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">

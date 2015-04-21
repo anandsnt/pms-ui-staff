@@ -104,7 +104,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			//Save summary data on tab switch (UI)
 			if (isInAccountsTab && !$scope.isInAddMode()) {
-				$scope.updateAccountSummary();
+				// $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
 			}
 
 			$scope.accountConfigData.activeTab = tab;
@@ -118,7 +118,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			var tabAndUrls = {
 				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
 				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
-				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
+				'ACTIVITY': '/assets/partials/groups/accounts/rvAccountConfigurationActivityTab.html'
 			};
 
 			return tabAndUrls[$scope.accountConfigData.activeTab];
@@ -156,38 +156,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			} else {
 				console.warn('No Permission for CREATE_GROUP_SUMMARY');
 			}
-
-		}
-
-
-		/**
-		 * Update the group data
-		 * @return undefined
-		 */
-		$scope.updateAccountSummary = function() {
-			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
-				var onAccountUpdateSuccess = function(data) {
-						//client controllers should get an infromation whether updation was success
-						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
-						console.log(data);
-					},
-					onAccountUpdateFailure = function(errorMessage) {
-						//client controllers should get an infromation whether updation was a failure
-						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
-						console.log(errorMessage);
-					};
-
-				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
-					successCallBack: onAccountUpdateSuccess,
-					failureCallBack: onAccountUpdateFailure,
-					params: {
-						summary: $scope.accountConfigData.summary
-					}
-				});
-			} else {
-				console.warn('No Permission for EDIT_GROUP_SUMMARY');
-			}
-		}
+		}	
 
 
 		/**
