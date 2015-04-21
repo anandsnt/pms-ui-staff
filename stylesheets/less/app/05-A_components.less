@@ -2308,7 +2308,7 @@
                             }
 
                             /* Occupancy graph ***/
-                            .occupancy {
+                            .occupancy-graph {
                                 clear: both;
                                 background-color: @white;
                                 padding: 20px;
@@ -7272,12 +7272,10 @@
                     }
                 }
 
-                &.occupancy-footer {
-                    display: none;
-                }
+                &.occupancy-footer { .hide; }
             }
 
-            &.with-pagination { .calc-height(100, 230); }
+            &.with-pagination { .calc-height(100, 100); }
 
             &.no-totals,
             &.no-content {

@@ -6,7 +6,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		this.baseConfigurationSummary = {
 			"group_id": null,
 			"group_name": "",
-			"group_code": "",
+			"group_code": null,
 			"first_name": "",
 			"last_name": "",
 			"contact_phone": "",
@@ -102,28 +102,6 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		this.getAllRoomTypes = function() {
 			var deferred = $q.defer(),
 				url = '/api/room_types.json?is_exclude_pseudo=true';
-
-			rvBaseWebSrvV2.getJSON(url).then(
-				function(data) {
-					deferred.resolve(data);
-				},
-				function(errorMessage) {
-					deferred.reject(errorMessage);
-				}
-			);
-
-			return deferred.promise;
-		};
-
-		/**
-		 * Function to get Room type configured against group
-		 * @return {Promise} [will get the details]
-		 */
-		this.getRoomTypesConfiguredAgainstGroup = function(params) {
-			var deferred = $q.defer(),
-				group_id = params.id,
-				url = 'api/group_rooms/' + group_id;
-			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
 
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
