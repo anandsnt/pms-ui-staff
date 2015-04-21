@@ -133,6 +133,9 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 
 	 		//initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
 	 		$scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
+
+	 		//we have to populate possible number of rooms & occupancy against a 
+			$scope.changedSelectedRoomType ();
 	 	}
 
 	 	/**
@@ -334,7 +337,11 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			var selectedRoomType = _.findWhere($scope.roomTypesAndData, 
 									{room_type_id: parseInt($scope.selectedRoomType)});
 
+			//forming [1,2,3,4]
 			$scope.possibleNumberOfRooms = _.range (1, util.convertToInteger(selectedRoomType.availableRoomCount) + 1);
+
+			//changing the default selected number of rooms
+			$scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
 		};
 
 	 	/**
@@ -353,9 +360,6 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			runDigestCycle();
 	 		//we changed data, so
 			refreshScrollers();
-
-			//we have to populate possible number of rooms & occupancy against a 
-			$scope.changedSelectedRoomType ();
 	 	};
 
 
