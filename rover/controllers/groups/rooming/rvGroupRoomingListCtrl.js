@@ -129,7 +129,10 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 	 		$scope.roomTypesAndData = _.map(data.result, function(data){
 				data.availableRoomCount = util.convertToInteger (data.total_rooms) - util.convertToInteger (data.total_pickedup_rooms);
 				return data;
-	 		});	 		
+	 		});	
+
+	 		//initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
+	 		$scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 	 	}
 
 	 	/**
@@ -159,7 +162,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 	 			from_date: 		$scope.fromDate,
 	 			to_date: 		$scope.toDate,
 	 			occupancy: 		$scope.selectedOccupancy,
-	 			no_of_reservations: $scope.numberOfReservations
+	 			no_of_reservations: $scope.numberOfRooms
 	 		};
 
 		 	//
@@ -227,8 +230,9 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$scope.totalResultCount = 0;
 
 			//some default selected values
-			$scope.numberOfReservations = '1';
+			$scope.numberOfRooms = '1';
 			$scope.selectedOccupancy = '1';
+			$scope.possibleNumberOfRooms = [];
 			
 		};
 		
@@ -321,6 +325,18 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$scope.page = 1;
 		};
 
+		/**
+		 * [changedSelectedRoomType description]
+		 * @return {[type]} [description]
+		 */
+		$scope.changedSelectedRoomType = function(){			
+			//finding the max occupancy available forming array of possible occupancy list [1,2,3,4]
+			var selectedRoomType = _.findWhere($scope.roomTypesAndData, 
+									{room_type_id: parseInt($scope.selectedRoomType)});
+
+			$scope.possibleNumberOfRooms = _.range (1, util.convertToInteger(selectedRoomType.availableRoomCount) + 1);
+		};
+
 	 	/**
 	 	 * [successCallBackOfFetchReservations description]
 	 	 * @param  {[type]} data [description]
@@ -333,9 +349,13 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$scope.totalResultCount = data.total_count;
 			//if pagination end is undefined
 			if ($scope.end == undefined) { $scope.end = $scope.reservations.length; }
+			
 			runDigestCycle();
 	 		//we changed data, so
 			refreshScrollers();
+
+			//we have to populate possible number of rooms & occupancy against a 
+			$scope.changedSelectedRoomType ();
 	 	};
 
 
@@ -445,10 +465,11 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			//we have a list of scope varibales which we wanted to initialize
 			initializeVariables();
 
+			//pagination
+			initialisePagination();
+
 			//get reservation list
 			$scope.fetchReservations();
 
-			//pagination
-			initialisePagination();
 		}();		
 	}]);
