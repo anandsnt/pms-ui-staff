@@ -170,6 +170,11 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		/*------------- edit/remove/split starts here --------------*/
 
+		/*
+		*  set default values for split/edit/remove popups
+		*  We reuse the HTMLs used in reservation bill screen
+		*  However here the postings are against the <account_id> we use seperate controllers 
+		*/
 		$scope.splitTypeisAmount = true;
 		$scope.chargeCodeActive = false;
 		$scope.selectedChargeCode = {};
@@ -179,7 +184,10 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.availableChargeCodes = data.results;
         };
 
-        $scope.invokeApi(RVBillCardSrv.fetchChargeCodes,{}, fetchChargeCodesSuccess);
+        $scope.callAPI(RVBillCardSrv.fetchChargeCodes, {
+				successCallBack: fetchChargeCodesSuccess,
+				params: {}
+		});
 
 		$scope.getAllchargeCodes = function (callback) {
 			callback($scope.chargeCodeData);
@@ -190,13 +198,13 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		};
 
 		/*
-		 * open popup for edit/split/remove transaction
+		 * open popup for selecting edit/split/remove transaction
 		 */
 		$scope.openActionsPopup = function(id,desc,amount,type,credits){
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-			$scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
+			// $scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;
@@ -216,7 +224,27 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		};
 
 		/*
+		 * popup individual popups based on selection
+		 */
+
+		$scope.callActionsPopupAction = function(action){
+
+			ngDialog.close();
+			if(action ==="remove"){
+				$scope.openRemoveChargePopup();
+			}
+			else if(action ==="split"){
+				$scope.openSplitChargePopup();
+			}else if(action === "edit"){
+				$scope.openEditChargePopup();
+			};
+
+		};
+
+		/*
 		 * open popup for remove transaction
+		 * We are using same controller for split/edit and remove as those needs just one function each
+		 *
 		 */
 
 		$scope.openRemoveChargePopup = function(){
@@ -261,20 +289,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.setScroller('chargeCodesList');
 		};
 
-
-		$scope.callActionsPopupAction = function(action){
-
-			ngDialog.close();
-			if(action ==="remove"){
-				$scope.openRemoveChargePopup();
-			}
-			else if(action ==="split"){
-				$scope.openSplitChargePopup();
-			}else if(action === "edit"){
-				$scope.openEditChargePopup();
-			};
-
-		};
+		
 
 
 		/*----------- edit/remove/split ends here ---------------*/
