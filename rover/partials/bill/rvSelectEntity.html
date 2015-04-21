@@ -134,7 +134,7 @@
 		
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<div class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
+				<div class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0 || row.images.length >1" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
 							
 					<!-- image -->
 					<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
