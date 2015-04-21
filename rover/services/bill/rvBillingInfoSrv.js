@@ -82,9 +82,9 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 
 	};
 
-	this.fetchBillsForReservation = function(reservationId){
+	this.fetchBillsForReservation = function(data){
 		var deferred = $q.defer();
-		var url = 'api/bill_routings/' + reservationId + '/bills.json';
+		var url = 'api/bill_routings/' + data.id + '/bills.json?entity_type='+data.entity_type;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				
 			   	 deferred.resolve(data);

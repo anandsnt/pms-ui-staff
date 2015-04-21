@@ -374,11 +374,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage',errorMessage);
             };
-            var id = $scope.selectedEntity.id;
-            if($scope.selectedEntity.entity_type != 'RESERVATION')
-                id = $scope.reservationData.reservation_id;
-           
-            $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, id, successCallback, errorCallback);
+
+            var id = $scope.reservationData.reservation_id;
+            if($scope.selectedEntity.entity_type == 'GROUP') id = $scope.selectedEntity.id;
+            var sendData = { "id" : id , "entity_type" : $scope.selectedEntity.entity_type };
+            
+            $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, sendData, successCallback, errorCallback);
     };
 
     $scope.fetchDefaultAccountRouting = function(){
