@@ -503,6 +503,31 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['chargeCodes'] = angular.copy( _processed_CG_CC.chargeCodes );
                     _hasChargeCodeSelect = true;
                 };
+
+                // check for "by charge group" and keep a ref to that item
+                if ( filter.value === 'INCLUDE_CHARGE_CODE' ) {
+                    reportItem['hasByChargeCode'] = filter;
+                    reportItem['chargeCodes'] = angular.copy( _processed_CG_CC.chargeCodes );
+                    _hasChargeCodeSelect = true;
+                };
+
+                // check for "show markets" and keep a ref to that item
+                if ( filter.value === 'SHOW_MARKETS' ) {
+                    reportItem['hasMarketsList'] = filter;
+                    reportItem['markets'] = angular.copy( data.markets );
+                };
+
+                // check for "show sources" and keep a ref to that item
+                if ( filter.value === 'SHOW_SOURCES' ) {
+                    reportItem['hasSourceList'] = filter;
+                    reportItem['sources'] = angular.copy( data.sources );
+                };
+
+                // check for "show origins" and keep a ref to that item
+                if ( filter.value === 'SHOW_ORIGINS' ) {
+                    reportItem['hasOriginsList'] = filter;
+                    reportItem['origins'] = angular.copy( data.origins );
+                };
             });
 
             // NEW! faux select DS and logic
