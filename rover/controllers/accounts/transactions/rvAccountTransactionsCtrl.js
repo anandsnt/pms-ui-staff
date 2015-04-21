@@ -185,24 +185,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 	 		return passData;
 		};
 
-		var addPaymentMethod = function(passData){
-		   
-	 		$scope.passData = passData;
-	 		fetchPaymentMethods("directBillNeeded"); 
-
-		    ngDialog.open({
-		        template: '/assets/partials/roverPayment/rvAddPayment.html',
-		        controller: 'RVAccountsTransactionsAddPaymentTypeCtrl',
-		        scope: $scope
-		    });
-		};
-
-
-		$scope.openAddPaymentPopup = function(){
-		    var passData = getPassData();
-			addPaymentMethod(passData);
-		};
-
 
 
 		$scope.showPayemntModal = function(){
@@ -235,9 +217,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
   	 			var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if(swipedCardDataToRender.swipeFrom !== "payButton" && swipedCardDataToRender.swipeFrom !== 'billingInfo'){
-					addPaymentMethod(passData);					
-				} else if(swipedCardDataToRender.swipeFrom === "payButton") {
+				if(swipedCardDataToRender.swipeFrom === "payButton") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
 				}
 				// else if(swipedCardDataToRender.swipeFrom === "billingInfo") {
