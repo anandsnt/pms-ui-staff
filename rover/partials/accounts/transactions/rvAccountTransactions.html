@@ -21,9 +21,6 @@
             <button type="button" class="button blue" ng-click="openAddPaymentPopup()">
                add payment test
             </button>
-             <button type="button" class="button blue" ng-click="showPayemntModal()">
-               add pay test
-            </button>
         </li>
     </ul>
 </div>
@@ -133,7 +130,7 @@
                             </li>
                             <!-- Only if balance > 0:-->
                             <li ng-show="billData.total_fees.balance_amount > 0">
-                                <button class="button green with-icon only-icon">
+                                <button class="button green with-icon only-icon" ng-click="showPayemntModal()">
                                     <span class="icons icon-wallet"></span>
                                     Pay
                                 </button>
@@ -203,7 +200,7 @@
                                         </td>
                                         <td>
                                             <!-- Only if balance > 0, otherwise leave blank cell -->
-                                            <button class="button green with-icon only-icon" ng-show = "billData.total_fees.balance_amount > 0">
+                                            <button class="button green with-icon only-icon" ng-show = "billData.total_fees.balance_amount > 0" ng-click="showPayemntModal()">
                                                 <span class="icons icon-wallet"></span>
                                                 Pay
                                             </button>

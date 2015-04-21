@@ -8,6 +8,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var isSixPayment  = false;
 		var tokenDetails  = {};
 		var cardDetails   = {};
+		var zeroAmount = parseFloat("0.00");
 
 		/*
 		* to check if reference is present for payment type
@@ -22,33 +23,31 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		}
 
 		var init = function(){
-
-			$scope.saveData = {};
-			
-			$scope.defaultPaymentTypeOfBill = "CC";
-			$scope.saveData.paymentType  = "CC";
-			if($scope.defaultPaymentTypeOfBill === "CC"){
-				$scope.showCreditCardInfo = true;
-				
-
-				//to delete and add actual
-				$scope.defaultPaymentTypeCard = "MA";
-				$scope.defaultPaymentTypeCardNumberEndingWith = "5556";
-		 		$scope.defaultPaymentTypeCardExpiry = "22/12";
-
-		 		///
-		 		checkReferencetextAvailableForCC();
-
-			}
-			else{
-				checkReferencetextAvailable();
-
-				$scope.defaultPaymentTypeCard = "";
-				$scope.defaultPaymentTypeCardNumberEndingWith = "";
-		 		$scope.defaultPaymentTypeCardExpiry = "";
-			}
-			
+			$scope.saveData = {};	
+			$scope.renderData = {};
+			$scope.errorMessage = '';
+			$scope.saveData.payment_type_id = '';
+			$scope.newPaymentInfo = {};
+			$scope.renderData.billNumberSelected = '';
+			$scope.renderData.defaultPaymentAmount = '';
+			$scope.defaultRefundAmount = 0;
+			//We are passing $scope from bill to this modal
+			$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
+			$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
+			$scope.billsArray = $scope.transactionsDetails.bills;
+			//common payment model items
+			$scope.passData = {};
+			$scope.passData.details = {};							  
+			$scope.renderData.referanceText = "";
+			$scope.swipedCardDataToSave  = {};
+			$scope.cardData = {};
+			$scope.newCardAdded = false;
+			$scope.shouldShowWaiting = false;
+			$scope.depositPaidSuccesFully = false;		
+			$scope.saveData.paymentType = '';
+			$scope.defaultPaymentTypeOfBill = '';	
 		};
+		init();
 
 
 		/*
@@ -80,6 +79,60 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			ngDialog.close();
 		};
 
+
+	  /*
+		* Initial screen - filled with deafult amount on bill
+		* If any payment type attached to that bill then that credit card can be viewed in initial screen
+		* Default payment method attached to that bill can be viewed in initial screen
+		*/
+		var renderDefaultValues = function(){
+			var ccExist = false;
+			if($scope.renderData.paymentTypes.length > 0){
+
+				var paymentData = $scope.transactionsDetails.bills[$scope.currentActiveBill].payment_details;
+				if(!isEmptyObject(paymentData)){
+					$scope.defaultPaymentTypeOfBill = paymentData.payment_type.toUpperCase();
+					$scope.saveData.payment_type_id = paymentData.payment_id;
+					angular.forEach($scope.renderData.paymentTypes, function(value, key) {
+						if(value.name == "CC"){
+							ccExist = true;
+						}
+					});
+					$scope.saveData.paymentType = $scope.defaultPaymentTypeOfBill;
+					if($scope.defaultPaymentTypeOfBill == 'CC'){
+						if(!ccExist){
+							$scope.saveData.paymentType = '';
+						}
+						$scope.isExistPaymentType = true;
+						$scope.showCreditCardInfo = true;
+						$scope.isfromBill = true;
+						$scope.defaultPaymentTypeCard = paymentData.card_code.toLowerCase();
+						$scope.defaultPaymentTypeCardNumberEndingWith = paymentData.card_number;
+						$scope.defaultPaymentTypeCardExpiry = paymentData.card_expiry;
+						if($rootScope.paymentGateway == "sixpayments"){
+							$scope.isManual = true;
+						}
+					}
+				}
+			   ($scope.defaultPaymentTypeOfBill === "CC") ? checkReferencetextAvailableForCC():checkReferencetextAvailable();
+			   
+			    var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.length >0 ?
+									$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : zeroAmount;
+				$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
+				$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+				$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
+			};
+
+		};
+		/*
+		* Action - On bill selection 
+		*/
+		$scope.billNumberChanged = function(){
+			$scope.currentActiveBill = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
+			renderDefaultValues();
+		};
+
+
 	  /*
 		* Retrive data to be displayed in the payment screen - payment types and credit card types
 		*
@@ -89,13 +142,13 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			
 			var onPaymnentFetchSuccess = function(data) {
 				$scope.renderData.paymentTypes =  data; 
-				init();
 				$scope.creditCardTypes = [];
 				angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 					if(item.name === 'CC'){
 						$scope.creditCardTypes = item.values;
 					};					
 				});	
+				renderDefaultValues();
 			},
 			onPaymnentFetchFailure = function(errorMessage) {
 				$scope.errorMessage = errorMessage;
