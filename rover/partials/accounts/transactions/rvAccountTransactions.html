@@ -51,30 +51,6 @@
                             </button>
                         </li>
                     </ul>
-                    <!-- <ul class="wrapper" style="width: {{getWidthForBillTabsScroll()}}px">
-                    
-                    	<li ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
-                    								<div class="bill-toggle">
-                    									<div class="price">
-                    										<span translate>BILL #{{billTab.bill_number}}</span>
-                    										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
-                    									</div>
-                    									
-                    									<div class="payment" ng-show="billTab.payment_details.payment_type !== 'CC'">
-                    										{{billTab.payment_details.payment_type_description}}
-                    									</div>
-                    									<figure class="card-logo" ng-show="billTab.payment_details.payment_type == 'CC'">
-                    										<img ng-src="/assets/{{billTab.payment_details.card_code}}.png" alt="" class="credit-card-image">
-                    										<span class="number"> {{billTab.payment_details.card_number}}</span>
-                    									</figure>
-                    								</div>
-                    							</li>
-                    							<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
-                    								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
-                    									<span class="icons icon-plus"></span>
-                    								</button>
-                    							</li>
-                    </ul> -->
                 </div>
 
                 <!-- Bill -->
