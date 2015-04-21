@@ -3,6 +3,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		BaseCtrl.call(this, $scope);
 
+		$s = $scope;
+
 		var initAccountTransactionsView = function() {
 			//Scope variable to set active bill
 			$scope.currentActiveBill = 0;
@@ -11,6 +13,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.setScroller('registration-content');
 			$scope.setScroller ('transaction-bill-tab-scroller', {scrollX: true});
 			$scope.setScroller('billDays', {scrollX: true});
+			$scope.showMoveCharges = $scope.hasPermissionToMoveCharges();
 
 			getTransactionDetails();
 
@@ -25,6 +28,20 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				$scope.refreshScroller('registration-content');
 				$scope.refreshScroller('transaction-bill-tab-scroller');
 				$scope.refreshScroller('billDays');
+
+				/*
+				 * Adding billValue and oldBillValue with data. Adding with each bills fees details
+				 * To handle move to bill action
+				 * Added same value to two different key because angular is two way binding
+				 * Check in HTML moveToBillAction
+				 */
+				angular.forEach($scope.transactionsDetails.bills, function(value, key) {			
+					angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
+
+			        	feesValue.billValue = value.bill_number;//Bill value append with bill details
+			        	feesValue.oldBillValue = value.bill_number;// oldBillValue used to identify the old billnumber
+			     	});
+			    });
 
 			}
 			var params = {"account_id" : $scope.accountConfigData.summary.posting_account_id}
@@ -46,6 +63,44 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			};
 
 			$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
+		};
+		
+		$scope.moveToBillActionfetchSuccessCallback = function(data){
+	 		$scope.fetchSuccessCallback(data);
+	 	};
+
+
+		 /*
+		  * MOve fees item from one bill to another
+		  * @param {int} old Bill Value
+		  * @param {int} fees index
+		  */
+		$scope.moveToBillAction = function(oldBillValue, feesIndex){
+
+			console.log("move to bill actopm");
+		 	var parseOldBillValue = parseInt(oldBillValue)-1;
+			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].billValue;
+			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].transaction_id;
+			var id  = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].id;
+			var dataToMove = {
+				"to_bill" : newBillValue,
+				"from_bill" : oldBillValue,
+				"transaction_id" : transactionId,
+				"id":id
+			};
+
+			console.log(dataToMove);
+			/*
+			 * Success Callback of move action
+			 */
+			// var moveToBillSuccessCallback = function(data){
+			// 	$scope.$emit('hideLoader');
+			// 	$scope.movedIndex =parseInt(newBillValue)-1;
+
+			// 	//Fetch data again to refresh the screen with new data
+			// 	$scope.invokeApi(RVBillCardSrv.fetch, $scope.transactionsDetails.reservation_id, $scope.moveToBillActionfetchSuccessCallback);
+			// };
+			// $scope.invokeApi(RVBillCardSrv.movetToAnotherBill, dataToMove, moveToBillSuccessCallback);
 		};
 
 
@@ -104,7 +159,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		};
 
 
-		initAccountTransactionsView();
 
 
 
@@ -154,6 +208,15 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		*/
 		$scope.hasPermissionToMakePayment = function() {
 			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to make move charges from one bill to another
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMoveCharges = function() {
+			return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
 		};
 
 		//Whatever permission of Make Payment we are assigning that
@@ -330,5 +393,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 			}, 100);
 		}
+
+		initAccountTransactionsView();
+
 	}
 ]);

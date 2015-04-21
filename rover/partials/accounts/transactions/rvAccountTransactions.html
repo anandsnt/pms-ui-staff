@@ -13,11 +13,11 @@
                 <span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}">{{currencySymbol}}{{transactionsDetails.total_balance}}</span> <!-- Green if 0, otherwise red -->
             </div>
         </li>
-        <li>
+        <!-- <li>
             <button type="button" class="button blue">
                 Billing Information
             </button>
-        </li>
+        </li> -->
     </ul>
 </div>
 
@@ -153,7 +153,7 @@
                                         <th>Description</th>
                                         <th>Fees</th>
                                         <th>Credits</th>
-                                        <th class="form">Bill #</th>
+                                        <th class="form" ng-show="showMoveCharges">Bill #</th>
                                         <th class="action">Edit</th>
                                         <th class="action">
                                             <label class="checkbox inline"> 
@@ -233,14 +233,12 @@
 												{{currencySymbol}}{{feesData.credits| number: precisonTwo}}
                                         	</strong>
                                         </td>
-                                        <td>
+                                        <td ng-show="showMoveCharges">
                                             <div class="select">
-                                                <select>
-                                                	<!--ng-hide="isStandAlone" - verify-->
+                                                <select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue">
                                                     <option value="" disabled>Move to bill</option>
                                                     <option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
-                                                    <!--TODO - implement -- >
-                                                    <option value="{{transactionsDetails.bills.length + 1}}">{{transactionsDetails.bills.length + 1}} (Will create new bill)</option>
+                                                    <option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
                                                 </select>
                                             </div>
                                         </td>
