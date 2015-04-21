@@ -430,11 +430,11 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADInterfaceMappingsCtrl',
 			url : '/intefaceMappingsList'
 		});
-		$stateProvider.state('admin.mapping', {
-			templateUrl: '/assets/partials/interfaceMapping/adExternalMapping.html',
+		/*$stateProvider.state('admin.mapping', {
+			templateUrl: '/assets/partials/interfaceMapping/adExternalMappingItems.html',
 			controller: 'ADInterfaceMappingsCtrl',
 			url : '/intefaceMappingsList'
-		});
+		});*/
 
 		$stateProvider.state('admin.stationary', {
 			templateUrl: '/assets/partials/stationary/adStationary.html',

@@ -70,7 +70,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/mapping/:hotelId'
 		});*/
 		$stateProvider.state('admin.mapping', {
-			templateUrl: '/assets/partials/mapping/adExternalMappingItems.html',
+			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
 			controller: 'ADMappingCtrl',
 			url : '/mapping/:hotelId'
 		});
