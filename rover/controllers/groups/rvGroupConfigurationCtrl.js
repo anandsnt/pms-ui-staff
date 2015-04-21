@@ -131,11 +131,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			//TODO: Remove once all tab implemented
-			// if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' && tab !== 'ROOMING') {
-			// 	$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
-			// 	return;
-			// }
 
+			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' 
+				&& tab !== 'ROOMING' && tab !=='ACTIVITY' && tab!= "ACCOUNT") {
+				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
+				return;
+			}
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
@@ -177,7 +178,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				'ROOM_BLOCK': '/assets/partials/groups/roomBlock/rvGroupConfigurationRoomBlockTab.html',
 				'ROOMING': '/assets/partials/groups/rooming/rvGroupRoomingListTab.html',
 				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
-				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
+				'TRANSACTIONS': '/assets/partials/accounts/transactions/rvAccountTransactions.html',
 				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
 

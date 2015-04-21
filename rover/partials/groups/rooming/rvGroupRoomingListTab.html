@@ -129,20 +129,25 @@
     <div class="search-pagination" ng-show="shouldShowPagination()">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>ACCOUNTS_PREVIOUS</button>
-        <p translate>ACCOUNTS_SHOWING <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
+        <p>{{'ACCOUNTS_SHOWING'|translate}}  <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
     </div>
 
     <!-- Rooming List Content -->
-    <div id="rooming-grid" class="rooming-grid scrollable" ng-show="!shouldShowNoReservations()"> <!-- Add class "with-pagination" if pagination is used -->
+    <div id="rooming-grid" class="rooming-grid scrollable" 
+        ng-show="!shouldShowNoReservations()"
+        ng-class="{'with-pagination': shouldShowPagination()}"
+        ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
+
         <ul id="rooming-grid-list" class="search-results wrapper">
             <li class="reservation rooming-list" ng-repeat="reservation in reservations">
+
                 <div class="check">
                     <label class="checkbox inline" for="{guest-id}"> 
                         <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked -->
                         <input id="{guest-id}" value="{Guest}" type="checkbox">
                     </label>
                 </div>
-                <a href="{modals/group-rooming-guest.html}">
+                <a ng-click="showEditReservationPopup()">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
                             {{reservation.lastname}}, {{reservation.firstname}}
@@ -153,7 +158,7 @@
                             <span class="highlight">Pending</span>
                         </h2>  
 
-                        <span class="room" ng-show="!isGuestBlank(reservation)"> <!-- Add class "unassigned" if new room -->
+                        <span class="room" ng-show="!isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
                             Room {{reservation.room_no}}
                             <!-- If new room, show this instead: Unassigned -->
                         </span> 
@@ -179,11 +184,10 @@
                         <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
                     </div>
                     <div class="reservation-status"> <!-- No status if it's a new room -->
-                        <span class="guest-status {reservation-status}">{{reservation.reservation_status}}</span>
+                        <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>
                     </div>
                 </a>
             </li>
-            .... repeat
         </ul>
     </div>
 </div>

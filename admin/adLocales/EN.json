@@ -57,6 +57,7 @@
 "IN_HOUSE_GUESTS":"In House Guests",
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
+
 "EXTERNAL_CHECKIN":"External Checkin",
 
 "MESSAGE":"Message",
@@ -368,9 +369,7 @@
 "ASSIGN_SELECTED": "Assign Selected",
 "FIND_ROOMS":"Find Rooms",
 "NO_RESULT_FOUND":"No Result Found",
-"NO_ROOMS":"No Rooms"
-
-,    
+"NO_ROOMS":"No Rooms",    
     
     "FROM": "From",
     "TO": "To",
@@ -414,12 +413,7 @@
     "ROOM_BLOCK_SUMMARY" : "Room Block Summary",
     "ROOM_RELEASE_DATE" : "Room Release Date",
     "RELEASE_NOW" : "Release Now",
-    "GROUP_APR" :"Actual / Potential Revenue"
-
-
-
-
-,
+    "GROUP_APR" :"Actual / Potential Revenue",
 
 
 "LIKES":"Likes",
@@ -449,9 +443,7 @@
 
 "DEPARTMENTS":"Departments",
 "DEPARTMENT_NAME_PLACEHOLDER": "Enter department",
-"TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS"
-
-,
+"TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
  
  
     "HOTEL_ANNOUNCEMENTS": "Hotel Announcements",
@@ -462,6 +454,9 @@
     "GUEST_CHECKIN_SETUP": "Guest Checkin Setup",
     "SEND_CHECKIN_EMAIL": "Send Checkin Email",
     "SEND_CHECKIN_ALERT": "Send Check In Alert",
+    "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
+    "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
+    "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
     "NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE": "Notify Guest When Room is not assigned",
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
@@ -730,6 +725,7 @@
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
 
 
+
 "SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
 "SITEMINDER_SUB_TITLE": "SiteMinder API Access Configuration",
 "SITEMINDER_USERNAME_LABEL": "User Name",
@@ -809,5 +805,4 @@
 "EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE":"EXCLUDE FOLLOWING ROOM TYPES FROM EMAIL INVITE",
 "EXCLUDE_ROOM_TYPES":"EXCLUDE ROOM TYPES",
 "EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES"
-
 }
