@@ -264,17 +264,10 @@ sntRover.factory('RVReportUtilsFac', [
         factory.processFilters = function ( reportItem, data ) {
             var _hasFauxSelect,
                 _hasDisplaySelect,
-                _hasGuaranteeSelect,
-                _hasChargeGroupSelect,
-                _hasChargeCodeSelect,
-                _hasMarketSelect,
-                _hasSourceSelect,
-                _hasOriginSelect;
+                _hasGuaranteeSelect;
 
+            // pre-process charge groups and charge codes
             var _processed_CG_CC = {};
-
-            // create a new single point of data source for faux selects
-            reportItem['fauxSelect'] = {};
 
             // going around and taking a note on filters
             _.each(reportItem['filters'], function(filter) {
@@ -485,65 +478,115 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // check for include guarantee type filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
-                    reportItem['hasGuaranteeType'] = filter;
-                    reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
-                    _hasGuaranteeSelect = true;
+                    // reportItem['hasGuaranteeType'] = filter;
+                    // reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
+                    // _hasGuaranteeSelect = true;
+
+                    if ( data.guaranteeTypes.length ) {
+                        reportItem['hasGuaranteeType'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Guarantees',
+                            title        : 'All Selected',
+                            data         : angular.copy( data.guaranteeTypes )
+                        };
+
+                        // since select all is true
+                        _.each(reportItem['hasGuaranteeType']['data'], function(each) {
+                            each.selected = true;
+                        });
+                    };
                 };
 
                 // check for "by charge group" and keep a ref to that item
+                // create the filter option only when there is any data
                 if ( filter.value === 'INCLUDE_CHARGE_GROUP' ) {
-                    reportItem['hasByChargeGroup'] = filter;
-                    reportItem['chargeGroups'] = angular.copy( _processed_CG_CC.chargeGroups );
-                    _hasChargeGroupSelect = true;
+                    if ( _processed_CG_CC.chargeGroups.length ) {
+                        reportItem['hasByChargeGroup'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Groups',
+                            title        : 'All Selected',
+                            data         : angular.copy( _processed_CG_CC.chargeGroups )
+                        };
+
+                        // since select all is true
+                        _.each(reportItem['hasByChargeGroup']['data'], function(each) {
+                            each.selected = true;
+                        });
+                    };
                 };
 
                 // check for "by charge group" and keep a ref to that item
+                // create the filter option only when there is any data
                 if ( filter.value === 'INCLUDE_CHARGE_CODE' ) {
-                    reportItem['hasByChargeCode'] = filter;
-                    reportItem['chargeCodes'] = angular.copy( _processed_CG_CC.chargeCodes );
-                    _hasChargeCodeSelect = true;
-                };
+                    if ( _processed_CG_CC.chargeCodes.length ) {
+                        reportItem['hasByChargeCode'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Codes',
+                            title        : 'All Selected',
+                            data         : angular.copy( _processed_CG_CC.chargeCodes )
+                        };
 
-                // check for "by charge group" and keep a ref to that item
-                if ( filter.value === 'INCLUDE_CHARGE_CODE' ) {
-                    reportItem['hasByChargeCode'] = filter;
-                    reportItem['chargeCodes'] = angular.copy( _processed_CG_CC.chargeCodes );
-                    _hasChargeCodeSelect = true;
+                        // since select all is true
+                        _.each(reportItem['hasByChargeCode']['data'], function(each) {
+                            each.selected = true;
+                        });
+                    };
                 };
 
                 // check for "show markets" and keep a ref to that item
+                // create the filter option only when there is any data
                 if ( filter.value === 'SHOW_MARKET' ) {
-                    reportItem['hasMarketsList'] = {
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Markets',
-                        title        : 'Select Markets',
-                        data         : angular.copy( data.markets )
+                    if ( data.markets.length ) {
+                        reportItem['hasMarketsList'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Markets',
+                            title        : 'Select Markets',
+                            data         : angular.copy( data.markets )
+                        };
                     };
                 };
 
                 // check for "show sources" and keep a ref to that item
+                // create the filter option only when there is any data
                 if ( filter.value === 'SHOW_SOURCE' ) {
-                    reportItem['hasSourceList'] = {
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Sources',
-                        title        : 'Select Sources',
-                        data         : angular.copy( data.sources )
+                    if ( data.sources.length ) {
+                        reportItem['hasSourcesList'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Sources',
+                            title        : 'Select Sources',
+                            data         : angular.copy( data.sources )
+                        };
                     };
                 };
 
                 // check for "show origins" and keep a ref to that item
+                // create the filter option only when there is any data
                 if ( filter.value === 'SHOW_ORIGIN' ) {
-                    reportItem['hasOriginsList'] = {
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Origins',
-                        title        : 'Select Origins',
-                        data         : angular.copy( data.origins )
+                    if ( data.origins.length ) {
+                        reportItem['hasOriginsList'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Origins',
+                            title        : 'Select Origins',
+                            data         : angular.copy( data.origins )
+                        };
                     };
                 };
             });
@@ -562,34 +605,6 @@ sntRover.factory('RVReportUtilsFac', [
             if ( _hasGuaranteeSelect ) {
                 reportItem['selectGuaranteeOpen'] = false;
                 reportItem['guaranteeTitle'] = 'Select';
-            };
-
-            if ( _hasChargeGroupSelect ) {
-                reportItem['selectChargeGroupOpen'] = false;
-                reportItem['chargeGroupTitle'] = 'All Selected';
-                reportItem['allChargeGroupSelected'] = true;
-            };
-
-            if ( _hasChargeCodeSelect ) {
-                reportItem['selectChargeCodeOpen'] = false;
-                reportItem['chargeCodeTitle'] = 'All Selected';
-                reportItem['allChargeCodeSelected'] = true;
-            };
-
-            if ( _hasMarketSelect ) {
-                reportItem['fauxSelect']['marketSelect'] = {
-                    show: false,
-                    selectAll: false,
-                    defaultTitle: 'Select Markets'
-                };
-            };
-
-            if ( _hasSourceSelect ) {
-                reportItem['fauxSelect']['sourceSelect'] = {
-                    show: false,
-                    selectAll: false,
-                    defaultTitle: 'Select Sources'
-                };
             };
         };
 

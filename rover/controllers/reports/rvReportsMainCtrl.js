@@ -47,7 +47,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		// make all the guarantee type unselected
 		// make all the charge groups selected by default
 		// make all the charge codes selected by default
-		_.each([$scope.guaranteeTypes, $scope.chargeGroups, $scope.chargeCodes], function (dataArry) {
+		_.each([$scope.guaranteeTypes, $scope.chargeGroups], function (dataArry) {
 			_.each(dataArry, function(item) {
 				item.selected = true;
 			});
@@ -503,186 +503,67 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.fauxOptionClicked(e, item);
 		};
 
-		//specific for markets
-		$scope.selectMarketsClicked = function(e, item) {
-			var selectCount = 0;
-			$timeout(function(){
-				$scope.refreshScroller('report-list-scroll');
-				$scope.myScroll['report-list-scroll'].refresh();
-			},300);
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-			if (!item) {
-				return;
-			};
+		// //specific for markets
+		// $scope.selectMarketsClicked = function(e, item) {
+		// 	var selectCount = 0;
+		// 	$timeout(function(){
+		// 		$scope.refreshScroller('report-list-scroll');
+		// 		$scope.myScroll['report-list-scroll'].refresh();
+		// 	},300);
+		// 	// if clicked outside, close the open dropdowns
+		// 	if (!e) {
+		// 		closeAllMultiSelects();
+		// 		return;
+		// 	};
+		// 	if (!item) {
+		// 		return;
+		// 	};
 
-			e.stopPropagation();
-			item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
+		// 	e.stopPropagation();
+		// 	item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
 
-			if (!item) {
-				return;
-			};
-			e.stopPropagation();
+		// 	if (!item) {
+		// 		return;
+		// 	};
+		// 	e.stopPropagation();
 
-		};
-		$scope.fauxMarketOptionClicked = function(item,allMarkets) {
-			if(allMarkets){
-				_.each($scope.reportsState.markets, function(market){
-					market.selected = !!item.allMarketsSelected;
-				});
-			} else {
-				var selectedData = _.where($scope.reportsState.markets, {
-					selected: true
-				});
+		// };
+		// $scope.fauxMarketOptionClicked = function(item,allMarkets) {
+		// 	if(allMarkets){
+		// 		_.each($scope.reportsState.markets, function(market){
+		// 			market.selected = !!item.allMarketsSelected;
+		// 		});
+		// 	} else {
+		// 		var selectedData = _.where($scope.reportsState.markets, {
+		// 			selected: true
+		// 		});
 
-				item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
+		// 		item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
 
-				if (selectedData.length == 0) {
-					item.marketTitle = "Select";
-				} else if (selectedData.length == 1) {
-					item.marketTitle = selectedData[0].name;
-				} else if (selectedData.length > 1) {
-					item.marketTitle = selectedData.length + "Selected";
-				}
-			}
-			// CICO-10202
-			$scope.$emit('report.filter.change');
-		};
+		// 		if (selectedData.length == 0) {
+		// 			item.marketTitle = "Select";
+		// 		} else if (selectedData.length == 1) {
+		// 			item.marketTitle = selectedData[0].name;
+		// 		} else if (selectedData.length > 1) {
+		// 			item.marketTitle = selectedData.length + "Selected";
+		// 		}
+		// 	}
+		// 	// CICO-10202
+		// 	$scope.$emit('report.filter.change');
+		// };
 
-		// specific for Source and Markets reports
-		$scope.guranteeTypeClicked = function(e, item) {
-			var selectCount = 0;
 
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
+		$scope.catchFauxSelectClick = function(e, currentFaux) {
+			e && e.stopPropagation();
 
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectGuaranteeOpen = item.selectGuaranteeOpen ? false : true;
-
-			$scope.fauxOptionClicked(e, item);
-		};
-		$scope.fauxGuaranteeOptionClicked = function(item) {
-			var selectedData = _.where(item.guaranteeTypes, {
-				selected: true
-			});
-
-			if (selectedData.length == 0) {
-				item.guaranteeTitle = "Show All";
-			} else if (selectedData.length == 1) {
-				item.guaranteeTitle = selectedData[0].name;
-			} else if (selectedData.length > 1) {
-				item.guaranteeTitle = selectedData.length + " Selected";
-			}
-		};
-
-		// charge group faux select method
-		$scope.chargeGroupClicked = function(e, item) {
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectChargeGroupOpen = item.selectChargeGroupOpen ? false : true;
-
-			$scope.fauxOptionClicked(e, item);
-		};
-		$scope.fauxChargeGroupOptionClicked = function(e, item, allChargeGroup) {
-			if (e) {
-				e.stopPropagation();
-			};
-
-			if( allChargeGroup ){
-				_.each(item.chargeGroups, function(group){
-					group.selected = !!item.allChargeGroupSelected;
-				});
-			} else {
-				var selectedData = _.where(item.chargeGroups, {
-					selected: true
-				});
-
-				if (selectedData.length == 0) {
-					item.chargeGroupTitle = "Show All";
-				} else if (selectedData.length == 1) {
-					item.chargeGroupTitle = selectedData[0].description;
-				} else if (selectedData.length > 1) {
-					item.chargeGroupTitle = selectedData.length + " Selected";
-				};
-			};
-		};
-
-		// charge code faux select method
-		$scope.chargeCodeClicked = function(e, item) {
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectChargeCodeOpen = item.selectChargeCodeOpen ? false : true;
-
-			$scope.fauxOptionClicked(e, item);
-		};
-		$scope.fauxChargeCodeOptionClicked = function(e, item, allChargeCode) {
-			if (e) {
-				e.stopPropagation();
-			};
-
-			if( allChargeCode ){
-				_.each(item.chargeCodes, function(code){
-					code.selected = !!item.allChargeCodeSelected;
-				});
-			} else {
-				var selectedData = _.where(item.chargeCodes, {
-					selected: true
-				});
-
-				if (selectedData.length == 0) {
-					item.chargeCodeTitle = "Show All";
-				} else if (selectedData.length == 1) {
-					item.chargeCodeTitle = selectedData[0].description;
-				} else if (selectedData.length > 1) {
-					item.chargeCodeTitle = selectedData.length + " Selected";
-				}
-			};
-		};
-
-		var closeOtherFauxSelect = function(ignore) {
-			var avaiable = [
-				'hasMarketsList',
-				'hasSourceList',
-				'hasOriginsList'
-			];
-
-			_.each($scope.reportList, function(each) {
-				_.each(avaiable, function(prop) {
-					if ( each.hasOwnProperty(prop) && each[prop].title != ignore ) {
-						each[prop].show = false;
+			_.each($scope.reportList, function(element, index) {
+				_.each(element, function(value, key) {
+					if ( key != currentFaux && (!!value && value.type == 'FAUX_SELECT') ) {
+						value.show = false;
 					};
 				});
 			});
 		};
-
 		$scope.toggleFauxSelect = function(e, list) {
 			$timeout(function(){
 				$scope.refreshScroller('report-list-scroll');
@@ -691,7 +572,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			if ( !e ) {
 				closeAllMultiSelects();
-				closeOtherFauxSelect();
 				return;
 			};
 
@@ -699,11 +579,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				return;
 			};
 
-			e.stopPropagation();
-
 			list.show = !list.show;
-
-			closeOtherFauxSelect(list.title);
 		};
 		$scope.fauxSelectChange = function(list, allTapped) {
 			var selectedItems;
@@ -724,7 +600,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( selectedItems.length == 0 ) {
 					list.title = list.defaultTitle;
 				} else if ( selectedItems.length == 1 ) {
-					list.title = selectedItems[0].name || selectedItems[0].description;
+					list.title = selectedItems[0].description || selectedItems[0].name;
 				} else if ( selectedItems.length == list.data.length ) {
 					list.selectAll = true;
 					list.title = 'All Selected';
@@ -771,6 +647,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			var key = '';
 			var ary = [];
+			var selected = [];
 
 			// capturing the filters applied to be
 			// shown on the report details footer
@@ -1142,16 +1019,14 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[key] = chosenReport.chosenIncludeComapnyTaGroup;
 				/* Note using the ui value here */
 				$scope.appliedFilter['companyTaGroup'] = chosenReport.uiChosenIncludeComapnyTaGroup;
-
 			};
 
 
 			// selected markets
 			if (chosenReport.hasOwnProperty('hasMarketsList')) {
-				var selected = _.where(chosenReport['hasMarketsList']['data'], {
-					selected: true
-				});
-				if (selected.length > 0) {
+				selected = _.where(chosenReport['hasMarketsList']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
 					key = 'market_ids[]';
 					params[key] = [];
 					_.each(selected, function(market) {
@@ -1159,15 +1034,20 @@ sntRover.controller('RVReportsMainCtrl', [
 						/**/
 						$scope.appliedFilter.markets.push( market.name );
 					});
+
+					// in case if all markets are selected
+					if ( chosenReport['hasMarketsList']['data'].length == selected.length ) {
+						$scope.appliedFilter.markets = [];
+						$scope.appliedFilter.markets.push( 'All Codes' );
+					};
 				};
 			};
 
 			// selected source
-			if (chosenReport.hasOwnProperty('hasSourceList')) {
-				var selected = _.where(chosenReport['hasSourceList']['data'], {
-					selected: true
-				});
-				if (selected.length > 0) {
+			if (chosenReport.hasOwnProperty('hasSourcesList')) {
+				selected = _.where(chosenReport['hasSourcesList']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
 					key = 'source_ids[]';
 					params[key] = [];
 					_.each(selected, function(source) {
@@ -1175,15 +1055,20 @@ sntRover.controller('RVReportsMainCtrl', [
 						/**/
 						$scope.appliedFilter.sources.push( source.name );
 					});
+
+					// in case if all sources are selected
+					if ( chosenReport['hasSourcesList']['data'].length == selected.length ) {
+						$scope.appliedFilter.sources = [];
+						$scope.appliedFilter.sources.push( 'All Sources' );
+					};
 				};
 			};
 
 			// selected origin
 			if (chosenReport.hasOwnProperty('hasOriginsList')) {
-				var selected = _.where(chosenReport['hasOriginsList']['data'], {
-					selected: true
-				});
-				if (selected.length > 0) {
+				selected = _.where(chosenReport['hasOriginsList']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
 					key = 'booking_origin_ids[]';
 					params[key] = [];
 					_.each(selected, function(origin) {
@@ -1191,41 +1076,51 @@ sntRover.controller('RVReportsMainCtrl', [
 						/**/
 						$scope.appliedFilter.origins.push( origin.name );
 					});
+
+					// in case if all origins are selected
+					if ( chosenReport['hasOriginsList']['data'].length == selected.length ) {
+						$scope.appliedFilter.origins = [];
+						$scope.appliedFilter.origins.push( 'All Codes' );
+					};
 				};
 			};
 
 			// include guarantee type
 			if (chosenReport.hasOwnProperty('hasGuaranteeType')) {
-				var selectedGuarantees = _.where(chosenReport.guaranteeTypes, {
-					selected: true
-				});
-				if (selectedGuarantees.length > 0) {
+				selected = _.where(chosenReport['hasGuaranteeType']['data'], { selected: true });
+
+				if ( selected.length > 0) {
 					key = 'include_guarantee_type[]';
 					params[key] = [];
-					_.each(selectedGuarantees, function(guarantee) {
+					_.each(selected, function(guarantee) {
 						params[key].push( guarantee.name );
 						/**/
 						$scope.appliedFilter.guarantees.push( guarantee.name );
 					});
+
+					// in case if all guarantee type is selected
+					if ( chosenReport['hasGuaranteeType']['data'].length == selected.length ) {
+						$scope.appliedFilter.guarantees = [];
+						$scope.appliedFilter.guarantees.push( 'All Guarantees' );
+					};
 				};
 			};
 
 			// include charge groups
 			if (chosenReport.hasOwnProperty('hasByChargeGroup')) {
-				var selectedChargeGroups = _.where(chosenReport.chargeGroups, {
-					selected: true
-				});
-				if (selectedChargeGroups.length > 0) {
+				selected = _.where(chosenReport['hasByChargeGroup']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
 					key = 'charge_group_ids[]';
 					params[key] = [];
-					_.each(selectedChargeGroups, function(cg) {
+					_.each(selected, function(cg) {
 						params[key].push( cg.id );
 						/**/
 						$scope.appliedFilter.chargeGroups.push( cg.description );
 					});
 
 					// in case if all charge groups is selected
-					if ( chosenReport.chargeGroups.length == selectedChargeGroups.length ) {
+					if ( chosenReport['hasByChargeGroup']['data'].length == selected.length ) {
 						$scope.appliedFilter.chargeGroups = [];
 						$scope.appliedFilter.chargeGroups.push( 'All Groups' );
 					};
@@ -1234,20 +1129,19 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include charge code
 			if (chosenReport.hasOwnProperty('hasByChargeCode')) {
-				var selectedChargeCodes = _.where(chosenReport.chargeCodes, {
-					selected: true
-				});
-				if (selectedChargeCodes.length > 0) {
+				selected = _.where(chosenReport['hasByChargeCode']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
 					key = 'charge_code_ids[]';
 					params[key] = [];
-					_.each(selectedChargeCodes, function(cc) {
+					_.each(selected, function(cc) {
 						params[key].push( cc.id );
 						/**/
 						$scope.appliedFilter.chargeCode.push( cc.description );
 					});
 
 					// in case if all charge code is selected
-					if ( chosenReport.chargeCodes.length == selectedChargeCodes.length ) {
+					if ( chosenReport['hasByChargeCode']['data'].length == selected.length ) {
 						$scope.appliedFilter.chargeCode = [];
 						$scope.appliedFilter.chargeCode.push( 'All Codes' );
 					};
