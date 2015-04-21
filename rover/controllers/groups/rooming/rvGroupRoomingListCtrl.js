@@ -47,6 +47,21 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		};
 
 		/**
+		 * Function to decide whether to show a particular occupancy
+		 * based on the key that we getting from the function we are deciding
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowThisOccupancyAgainstRoomType = function(keyToCheck) {
+			//finding the selected room type data
+			var selectedRoomType = _.findWhere($scope.roomTypesAndData, 
+									{room_type_id: parseInt($scope.selectedRoomType)});	
+			//we are hiding the occupancy if selected room type is undefined
+			if (typeof selectedRoomType === "undefined") return false;
+			
+			return selectedRoomType[keyToCheck];
+		};
+
+		/**
 		 * Function to decide whether to show 'no guest one'
 		 * if guest card id is empty, will return true
 		 * @return {Boolean}
@@ -333,7 +348,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		 * @return {[type]} [description]
 		 */
 		$scope.changedSelectedRoomType = function(){			
-			//finding the max occupancy available forming array of possible occupancy list [1,2,3,4]
+			//finding roomTypeData from list of roomTypesData, will form the possible room number list [1,2,3,4]
 			var selectedRoomType = _.findWhere($scope.roomTypesAndData, 
 									{room_type_id: parseInt($scope.selectedRoomType)});
 

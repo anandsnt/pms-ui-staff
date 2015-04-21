@@ -27,10 +27,22 @@
             <label for="rooming-occupancy">Occupancy</label>
             <div class="select">
                 <select id="rooming-occupancy" ng-model="selectedOccupancy">
-                    <option value="1" selected>Single</option>
-                    <option value="2">Double</option>
-                    <option value="3">Triple</option>
-                    <option value="4">Quadruple</option>
+                    <option value="1" 
+                        ng-show="shouldShowThisOccupancyAgainstRoomType('single_occupancy')">
+                        Single
+                    </option>
+                    <option value="2" 
+                        ng-show="shouldShowThisOccupancyAgainstRoomType('double_occupancy')">
+                        Double
+                    </option>
+                    <option value="3" 
+                        ng-show="shouldShowThisOccupancyAgainstRoomType('triple_occupancy')">
+                        Triple
+                    </option>
+                    <option value="4" 
+                        ng-show="shouldShowThisOccupancyAgainstRoomType('quadruple_occupancy')">   
+                        Quadruple
+                    </option>
                 </select>
             </div>
         </div>
