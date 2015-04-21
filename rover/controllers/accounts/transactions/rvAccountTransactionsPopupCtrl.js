@@ -1,25 +1,20 @@
 sntRover.controller('RVAccountTransactionsPopupCtrl',
-	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog',function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog){
+	['$scope','$rootScope','$filter','rvAccountTransactionsSrv', 'ngDialog',function($scope, $rootScope,$filter, rvAccountTransactionsSrv, ngDialog){
 	
+
 	BaseCtrl.call(this, $scope);
 
-	var refreshListWithData = function(data){
-		$scope.init(data);
-		//expand list
-		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
-		$scope.calculateHeightAndRefreshScroll();
-	};
+	var reloadBillScreen =  function(){
+		//TO DO
+	}
+
 
 	var hideLoaderAndClosePopup = function(){
 		$scope.$emit("hideLoader");
+		reloadBillScreen();
 		ngDialog.close();
 	};
 
-	var failureCallBack = function(data){
-		//hideLoaderAndClosePopup();
-		$scope.$emit("hideLoader");
-		$scope.errorMessage = data;
-	};
 
    /*
 	 * API call remove transaction
@@ -27,20 +22,21 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	$scope.removeCharge = function(reason){
 		
-		var deleteData = 
-		{
+
+		var params ={
 			data:{
 				"reason":reason,
 				"process":"delete"
 			},
 			"id" :$scope.selectedTransaction.id
 		};
-		var transactionDeleteSuccessCallback = function(data){		
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-			
+
+	 	var options = {
+			params: 			params,
+			successCallBack: 	hideLoaderAndClosePopup,	   
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
+		$scope.callAPI (rvAccountTransactionsSrv.transactionDelete, options);		 	
+
 	};
 
    /*
@@ -58,11 +54,12 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			}
 			 
 		};
-		var transactionSplitSuccessCallback = function(data){		
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
+		var options = {
+			params: 			splitData,
+			successCallBack: 	hideLoaderAndClosePopup,	   
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback,failureCallBack);
+		$scope.callAPI (rvAccountTransactionsSrv.transactionSplit, options);
+		
 	};
 
    /*
@@ -70,7 +67,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	 */
 	$scope.editCharge = function(newAmount,chargeCode){
 		
-		var newData = 
+		var editData = 
 		{
 			"updatedDate":
 						{
@@ -80,16 +77,17 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 					"id" :$scope.selectedTransaction.id
 		};
 
-		var transactionEditSuccessCallback = function(data){
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
+		var options = {
+			params: 			editData,
+			successCallBack: 	hideLoaderAndClosePopup,	   
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback,failureCallBack);
-	
+		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
+
 	};
 
 
 /*----------------------------edit charge drop down implementation--------------------------------------*/
+	
 	$scope.chargecodeData = {};
 	$scope.chargecodeData.chargeCodeSearchText = "";
 	var scrollerOptionsForSearch = {click: true, preventDefault: false};

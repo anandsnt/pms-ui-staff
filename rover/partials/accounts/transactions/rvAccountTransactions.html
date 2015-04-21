@@ -119,6 +119,12 @@
                         </div>
                     </div>
 
+
+                    <!-- Invoice -->
+                    <div id="account-bill{bill-id}-invoice" class="invoice">
+                        <ng-include src="'assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
+                    </div> 
+
                     <!-- Balance / Signature / Card -->
                     <div class="total-stay-fees">
 
@@ -133,7 +139,7 @@
                                     <span class="icons icon-email"></span> 
                                     Email
                                 </button>
-                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue">
+                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue" ng-click="printInvoice()">
                                     <span class="icons icon-print"></span> 
                                     Print
                                 </button>
@@ -263,7 +269,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button type="button" class="button purple with-icon only-icon" ng-click="openActionsPopup()">
+                                            <button type="button" class="button purple with-icon only-icon" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)">
                                                 <span class="icons icon-pencil"></span>
                                                 Edit
                                             </button>
