@@ -148,16 +148,16 @@
                                 <span class="title">Balance</span>
                                 <span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}">{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
                             </li>
-                            <!-- Only if balance > 0:
-                            <li>
+                            <!-- Only if balance > 0:-->
+                            <li ng-show="billData.total_fees.balance_amount > 0">
                                 <button class="button green with-icon only-icon">
                                     <span class="icons icon-wallet"></span>
                                     Pay
                                 </button>
                             </li>
-                            <li>
-                                <span class="title">{Payment Method}</span>
-                            </li> -->
+                            <li ng-show="billData.total_fees.balance_amount > 0">
+                                <span class="title">{{billData.payment_details.payment_type_description}}</span>
+                            </li> 
                             <!-- Only when fees selected in table below:
                             <li>
                                 <button type="button" class="button with-icon only-icon brand-colors">
