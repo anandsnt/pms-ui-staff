@@ -1,6 +1,6 @@
 <div class="invoice-logo">
     <h1>Invoice</h1>
-    <img src="{logo}" alt="" />
+    <img ng-src= "{{userInfo.logo}}" alt="" />
 </div>
 <table class="guest-info">
     <tbody>
@@ -42,8 +42,8 @@
     <p class="date"><strong>Invoice date</strong>{Invoice date}</p>
     <table class="invoice-details">
         <caption>
-            {Hotel Name}
-            <span>{Hotel Address}</span>
+            {{currentHotelData.name}}
+            <span>{{currentHotelData.address}}</span>
         </caption>
         <thead>
             <tr>

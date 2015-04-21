@@ -1,4 +1,3 @@
-
 sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv', 'RVChargeItems', 'RVBillCardSrv', '$timeout', '$window',
 	function($scope, $rootScope, $filter, $stateParams, ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv, RVChargeItems, RVBillCardSrv, $timeout, $window) {
 		BaseCtrl.call(this, $scope);
@@ -8,8 +7,12 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
 			$scope.setScroller('registration-content');
-			$scope.setScroller ('transaction-bill-tab-scroller', {scrollX: true});
-			$scope.setScroller('billDays', {scrollX: true});
+			$scope.setScroller('transaction-bill-tab-scroller', {
+				scrollX: true
+			});
+			$scope.setScroller('billDays', {
+				scrollX: true
+			});
 
 			getTransactionDetails();
 
@@ -26,19 +29,21 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				$scope.refreshScroller('billDays');
 
 			}
-			var params = {"account_id" : $scope.accountConfigData.summary.posting_account_id}
+			var params = {
+				"account_id": $scope.accountConfigData.summary.posting_account_id
+			}
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
 				successCallBack: onTransactionFetchSuccess,
 				params: params
 			});
 		};
 
-		$scope.createNewBill = function(){
-			var billData ={
-				"account_id" : $scope.accountConfigData.summary.posting_account_id,
-				"bill_number" : $scope.transactionsDetails.bills.length + 1
+		$scope.createNewBill = function() {
+			var billData = {
+				"account_id": $scope.accountConfigData.summary.posting_account_id,
+				"bill_number": $scope.transactionsDetails.bills.length + 1
 			};
-			var createBillSuccessCallback = function(data){
+			var createBillSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				//Fetch data again to refresh the screen with new data
 				getTransactionDetails();
@@ -66,11 +71,11 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		};
 
 
-		$scope.showDayRates = function(dayIndex){
-			
-			if($scope.dayRates != dayIndex) {
+		$scope.showDayRates = function(dayIndex) {
+
+			if ($scope.dayRates != dayIndex) {
 				$scope.dayRates = dayIndex;
-			}else{
+			} else {
 				$scope.dayRates = -1;
 			}
 		};
@@ -94,7 +99,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.currentActiveBill = billIndex;
 		};
 
-		
+
 		// Refresh registration-content scroller.
 		$scope.calculateHeightAndRefreshScroll = function() {
 			$timeout(function() {
@@ -271,7 +276,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		/*----------- edit/remove/split ends here ---------------*/
 		//CICO-13903
-		$scope.printInvoice = function() {			
+		$scope.printInvoice = function() {
 			$('.nav-bar').addClass('no-print');
 			$('.cards-header').addClass('no-print');
 			$('.card-tabs-nav').addClass('no-print');
@@ -295,8 +300,24 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			}, 100);
 		}
 
-		$scope.mailInvoice = function(){
-			// TODO CICO-13903 Email API Call
+		$scope.sendEmail = function(mailTo) {
+			console.log({
+				mailTo: mailTo				
+			});
+		}
+
+		$scope.mailInvoice = function(mailTo) {
+			if (($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) || !!mailTo) {
+				$scope.sendEmail(mailTo);
+			} else {
+				ngDialog.open({
+					template: '/assets/partials/accounts/transactions/rvAccountInvoicePromptEmail.html',
+					className: '',
+					scope: $scope,
+					closeByDocument: false,
+					closeByEscape: false
+				});
+			}
 		}
 	}
 ]);
