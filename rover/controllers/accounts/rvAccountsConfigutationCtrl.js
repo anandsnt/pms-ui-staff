@@ -118,7 +118,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			var tabAndUrls = {
 				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
 				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
-				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
+				'ACTIVITY': '/assets/partials/groups/accounts/rvAccountConfigurationActivityTab.html'
 			};
 
 			return tabAndUrls[$scope.accountConfigData.activeTab];
