@@ -55,6 +55,15 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 			$scope.refreshScroller('companyCardDetailsContactCtrl');
 		};
 		
+		$scope.$on("BILLINGINFODELETED", function() {
+			$scope.contactInformation.account_details.routes_count = 0;
+		});
+
+		$scope.$on("BILLINGINFOADDED", function() {
+			$scope.contactInformation.account_details.routes_count = 1;
+		});
+
+		
 		
 		
 

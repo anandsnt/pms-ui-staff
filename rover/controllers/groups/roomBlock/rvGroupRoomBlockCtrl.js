@@ -71,13 +71,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 		/**
 		 * Function to decide whether to disable Update block button
-		 * if from date & to date is not defined, will return true
-		 * or if nopermission to update grp summary
+		 * if nopermission to update grp summary
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableUpdateBlockButton = function() {
-			return startDateOrEndDateIsEmpty() && 
-				!hasPermissionToEditSummaryGroup();
+			return !hasPermissionToEditSummaryGroup();
 		};
 
 		/**
@@ -196,8 +194,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableAddRoomsAndRate = function() {
-			return (startDateOrEndDateIsEmpty() && 
-				!hasPermissionToCreateRoomBlock() &&
+			return (!hasPermissionToCreateRoomBlock() &&
 				!hasPermissionToEditRoomBlock());
 		};
 
@@ -335,9 +332,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//we are changing the model to 
 			$scope.hasBookingDataChanged = true;
 
-			if (isOverBooked()) {
-				showOverBookingPopup()
-			}
+			// if (isOverBooked()) {
+			// 	showOverBookingPopup()
+			// }
+			runDigestCycle();
 		};
 
 		/**
@@ -473,6 +471,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//we have save everything we have
 			//so our data is new
 			$scope.hasBookingDataChanged = false;
+			$scope.groupConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
 			
 		};
 
@@ -526,7 +525,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		var showOverBookingPopup = function(){
 			// Show overbooking message
 			ngDialog.open({
-				template: '/assets/partials/groups/rvGroupWarnOverBookingPopup.html',
+				template: '/assets/partials/groups/roomBlock/rvGroupWarnOverBookingPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
@@ -540,7 +539,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		var openAddRoomsAndRatesPopup = function() {
 			ngDialog.open({
-				template: '/assets/partials/groups/rvGroupAddRoomAndRatesPopup.html',
+				template: '/assets/partials/groups/roomBlock/rvGroupAddRoomAndRatesPopup.html',
 				scope: $scope,
 				controller: 'rvGroupAddRoomsAndRatesPopupCtrl'
 			});
@@ -622,7 +621,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			
 			if(!ref.length) { return 0; }
 
-			$scope.$emit('showLoader');
+			//$scope.$emit('showLoader');
 			//first of all, we need group by 'date' data as our current data is room type row based
 			// we need these 'datewisedata' in single array
 			_.each(ref, function(el){
@@ -644,7 +643,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//returning max among them, simple
 			var max = _.max (totalBookedOfEachDate);
-			$scope.$emit('hideLoader');
+			//$scope.$emit('hideLoader');
 			return max;
 		};
 
@@ -682,6 +681,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnAddRoomsAndRatesButton = function() {
+			//if it has no permission to do this, we will not alloq
+			var hasNoPermissionToProceed = $scope.shouldDisableAddRoomsAndRate();
+			if (hasNoPermissionToProceed) { return; }
+
 			var promises = [];
 			//we are not using our normal API calling since we have multiple API calls needed
 			$scope.$emit('showLoader');
@@ -730,12 +733,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 		
 		/**
-		 * after updating the room block start/end/hold status by calling
+		 * when a tab switch is there, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails		 
 		 */
-		$scope.$on("UPDATED_GROUP_INFO", function(){
+		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
+			if (activeTab !== 'ROOM_BLOCK') return;
 			$scope.fetchRoomBlockGridDetails();
 		});
+
+
 		/**
 		* Success callback of room block details API
 		*/
@@ -803,7 +809,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForRoomBlockTimeLine = function() {
-			return ($scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 190) + 'px';
+			return ($scope.groupConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
 		};
 
 		/**
@@ -898,8 +904,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			var scrollerOptionsForRoomRatesGrid = _.extend({
 				scrollY: true,
-				scrollX: true,
-				scrollbars: true
+				scrollX: true
 			}, util.deepCopy(scrollerOptions));
 
 			$scope.setScroller('room_rates_grid_scroller', scrollerOptionsForRoomRatesGrid);
@@ -947,6 +952,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//updating the left side menu
 			$scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
 
+			//IF you are looking for where the hell the API is CALLING
+			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
+			
 			//date related setups and things
 			setDatePickers();
 

@@ -1,0 +1,8 @@
+<div ng-show="errorMessage!=''" ng-class="{notice: errorMessage!=''}" class='error error_message' ng-switch on="errorMessage.length" ng-click="clearErrorMessage()">
+	
+	<span class="close-btn" ng-click="clearErrorMessage()"></span>
+	<span>
+			{{errorMessage}}
+	</span>
+
+</div>

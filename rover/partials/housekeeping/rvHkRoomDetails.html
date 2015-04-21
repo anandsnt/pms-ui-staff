@@ -10,9 +10,9 @@
             <span ng-if="isStandAlone">{{ roomDetails.room_type.name }}</span>
           </div>
           <ul id="room-detail-options" class="display">
-            <li ng-class="{ 'active': openTab === 'Guest' }" ng-click="tabSwitch('Guest')"><span class="icons icon-navbar icon-hk-guest">Guest</span></li>
-            <li ng-class="{ 'active': openTab === 'Work' }" ng-click="tabSwitch('Work')"><span class="icons icon-navbar icon-hk-work">Work</span></li>
-            <li ng-if="isStandAlone" ng-class="{ 'active': openTab === 'Room' }" ng-click="tabSwitch('Room')"><span class="icons icon-navbar icon-hk-room">Room</span></li>
+            <li ng-class="{ 'active': openTab === 'Guest' }" click-touch="tabSwitch('Guest')"><span class="icons icon-navbar icon-hk-guest">Guest</span></li>
+            <li ng-class="{ 'active': openTab === 'Work' }" click-touch="tabSwitch('Work')"><span class="icons icon-navbar icon-hk-work">Work</span></li>
+            <li ng-if="isStandAlone" ng-class="{ 'active': openTab === 'Room' }" click-touch="tabSwitch('Room')"><span class="icons icon-navbar icon-hk-room">Room</span></li>
           </ul>
         </header>
         

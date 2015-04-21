@@ -8,9 +8,22 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'summaryData',
 	'holdStatusList',
 	'$state',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state) {
+	'rvPermissionSrv',
+	'$timeout',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout) {
 
 		BaseCtrl.call(this, $scope);
+
+		/**
+		 * to run angular digest loop,
+		 * will check if it is not running
+		 * return - None
+		 */
+		var runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			}
+		};
 
 		/**
 		 * whether current screen is in Add Mode
@@ -66,8 +79,17 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		var ifMandatoryValuesEntered = function() {
 			var summary = $scope.groupConfigData.summary;
-			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date && !!summary.rate;
+			return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
 		}
+
+		/**
+		 * shouldShowRoomingListTab whether to show rooming list tab
+		 * @return {Boolean} [description]
+		 */
+		$scope.shouldShowRoomingListTab = function() {
+			//we will not show it in add mode
+			return (!$scope.isInAddMode());
+		};
 
 		/**
 		 * function to form data model for add/edit mode
@@ -76,12 +98,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		$scope.initializeDataModelForSummaryScreen = function() {
 			$scope.groupConfigData = {
 				activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
-				summary: summaryData,
+				summary: summaryData.groupSummary,
 				holdStatusList: holdStatusList.data.hold_status,
 				selectAddons: false, // To be set to true while showing addons full view
 				addons: {},
 				selectedAddons: []
 			};
+
+			$scope.accountConfigData = {
+				summary: summaryData.accountSummary
+			}
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
 		};
@@ -91,31 +117,38 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return - None
 		 */
 		$scope.switchTabTo = function(tab) {
-			
+
 			//if there was any error message there, we are clearing
 			$scope.errorMessage = '';
 
 			var isInSummaryTab = $scope.groupConfigData.activeTab == "SUMMARY";
-			
+
 			// we will restrict tab swithing if we are in add mode
 			var tryingFromSummaryToOther = isInSummaryTab && tab !== 'SUMMARY';
-			if($scope.isInAddMode() && tryingFromSummaryToOther) {
+			if ($scope.isInAddMode() && tryingFromSummaryToOther) {
 				$scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
 				return;
 			}
 
 			//TODO: Remove once all tab implemented
-			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK'){
+
+			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' 
+				&& tab !== 'ROOMING' && tab !=='ACTIVITY' && tab!= "ACCOUNT") {
 				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
 				return;
 			}
-
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
 			}
 
 			$scope.groupConfigData.activeTab = tab;
+			console.log('oh my man');
+			//propogating an event that next clients are
+			$timeout(function() {
+				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
+			}, 100);
+
 		};
 
 		/**
@@ -141,11 +174,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		$scope.getCurrentTabUrl = function() {
 			var tabAndUrls = {
-				'SUMMARY': '/assets/partials/groups/rvGroupConfigurationSummaryTab.html',
-				'ROOM_BLOCK': '/assets/partials/groups/rvGroupConfigurationRoomBlockTab.html',
-				'ROOMING': '/assets/partials/groups/rvGroupConfigurationRoomingListTab.html',
-				'TRANSACTIONS': '/assets/partials/groups/rvGroupConfigurationTransactionsTab.html',
-				'ACTIVITY': '/assets/partials/groups/rvGroupConfigurationActivityTab.html'
+				'SUMMARY': '/assets/partials/groups/summary/rvGroupConfigurationSummaryTab.html',
+				'ROOM_BLOCK': '/assets/partials/groups/roomBlock/rvGroupConfigurationRoomBlockTab.html',
+				'ROOMING': '/assets/partials/groups/rooming/rvGroupRoomingListTab.html',
+				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
+				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
+				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
 
 			return tabAndUrls[$scope.groupConfigData.activeTab];
@@ -157,27 +191,31 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		$scope.saveNewGroup = function() {
 			$scope.errorMessage = "";
-			if (ifMandatoryValuesEntered()) {
-				var onGroupSaveSuccess = function(data) {
-						$scope.groupConfigData.summary.group_id = data.group_id;
-						$state.go('rover.groups.config', {
-							id: data.group_id
-						})
-						$stateParams.id = data.group_id;
-					},
-					onGroupSaveFailure = function(errorMessage) {
-						$scope.errorMessage = errorMessage;
-					};
+			if (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY')) {
+				if (ifMandatoryValuesEntered()) {
+					var onGroupSaveSuccess = function(data) {
+							$scope.groupConfigData.summary.group_id = data.group_id;
+							$state.go('rover.groups.config', {
+								id: data.group_id
+							})
+							$stateParams.id = data.group_id;
+						},
+						onGroupSaveFailure = function(errorMessage) {
+							$scope.errorMessage = errorMessage;
+						};
 
-				$scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
-					successCallBack: onGroupSaveSuccess,
-					failureCallBack: onGroupSaveFailure,
-					params: {
-						summary: $scope.groupConfigData.summary
-					}
-				});
+					$scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
+						successCallBack: onGroupSaveSuccess,
+						failureCallBack: onGroupSaveFailure,
+						params: {
+							summary: $scope.groupConfigData.summary
+						}
+					});
+				} else {
+					$scope.errorMessage = ["Group's name, from date, to date, room release date and hold status are mandatory"];
+				}
 			} else {
-				$scope.errorMessage = ["Group's name, from date, to date, release date, rate and hold status are mandatory"];
+				console.warn('No Permission for CREATE_GROUP_SUMMARY');
 			}
 
 		}
@@ -188,25 +226,29 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return undefined
 		 */
 		$scope.updateGroupSummary = function() {
-			var onGroupUpdateSuccess = function(data) {
-					//client controllers should get an infromation whether updation was success
-					$scope.$broadcast ("UPDATED_GROUP_INFO");
-					console.log(data);
-				},
-				onGroupUpdateFailure = function(errorMessage) {
-					//client controllers should get an infromation whether updation was a failure
-					$scope.$broadcast ("FAILED_TO_UPDATE_GROUP_INFO");
+			if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
+				var onGroupUpdateSuccess = function(data) {
+						//client controllers should get an infromation whether updation was success
+						$scope.$broadcast("UPDATED_GROUP_INFO");
+						console.log(data);
+					},
+					onGroupUpdateFailure = function(errorMessage) {
+						//client controllers should get an infromation whether updation was a failure
+						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO");
 
-					console.log(errorMessage);
-				};
+						console.log(errorMessage);
+					};
 
-			$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
-				successCallBack: onGroupUpdateSuccess,
-				failureCallBack: onGroupUpdateFailure,
-				params: {
-					summary: $scope.groupConfigData.summary
-				}
-			});
+				$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
+					successCallBack: onGroupUpdateSuccess,
+					failureCallBack: onGroupUpdateFailure,
+					params: {
+						summary: $scope.groupConfigData.summary
+					}
+				});
+			} else {
+				console.warn('No Permission for EDIT_GROUP_SUMMARY');
+			}
 		}
 
 		/**
@@ -223,7 +265,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 * @return undefined
 		 */
 		$scope.discardNewGroup = function() {
-			//TODO : Clarify functionality with Nicole
+			$scope.groupConfigData.summary = angular.copy(rvGroupConfigurationSrv.baseConfigurationSummary);
 		}
 
 		$scope.onCompanyCardChange = function() {
@@ -275,6 +317,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					$scope.groupConfigData.summary.company.name = ui.item.label;
 					$scope.groupConfigData.summary.company.id = ui.item.value;
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
+					runDigestCycle();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);
@@ -304,6 +347,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
+					runDigestCycle();
 					return false;
 				}
 			}, cardsAutoCompleteCommon);

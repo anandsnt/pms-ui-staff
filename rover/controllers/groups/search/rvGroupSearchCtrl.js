@@ -8,14 +8,17 @@ sntRover.controller('rvGroupSearchCtrl',	[
 	'$timeout',
 	'$state',
 	'rvUtilSrv',
+	'rvPermissionSrv',
 	function($scope, 
 			$rootScope, 
 			rvGroupSrv, 
 			initialGroupListing, 
 			businessDate, 
 			$filter,
-			$timeout,
-			$state, util) {
+			$timeout,			
+			$state, 
+			util,
+			rvPermissionSrv) {
 			
 		BaseCtrl.call(this, $scope);
 
@@ -34,12 +37,20 @@ sntRover.controller('rvGroupSearchCtrl',	[
 		*/
 		$scope.getClassAgainstHoldStatus = function(group){
 			var classes = '';
+			var isSystemDefined = group.is_system_defined;
 
-			if(group.hold_status === 'Tentative')
-				classes = 'tentative';			
-			if(group.hold_status === 'Definite')
-				classes += ' ';
-
+			//According to Nicole's comment in CICO-13899 (Color coding)
+			if (isSystemDefined){
+				if(group.hold_status === 'Tentative')
+					classes = 'tentative';			
+				if(group.hold_status === 'Definite')
+					classes += ' ';
+			}
+			//for custom status
+			else {
+				if(!group.is_take_from_inventory)
+					classes = 'tentative';
+			}
 			return classes;
 		};
 
@@ -197,6 +208,15 @@ sntRover.controller('rvGroupSearchCtrl',	[
 			}, 300);
 			$scope.$emit('hideLoader');
 		});
+		
+		/**
+		* when there is any change in search query
+		* this function will execute
+		* @return {None}
+		*/
+		$scope.hasPermissionToAddNewGroup = function(){
+			return (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY'));
+		};
 
 		/**
 		* when there is any change in search query
@@ -298,8 +318,7 @@ sntRover.controller('rvGroupSearchCtrl',	[
 							$rootScope.dateFormat);
 
 			//default to date, as per CICO-13899 it will be business date	
-			$scope.toDate = $filter('date')(tzIndependentDate (businessDate.business_date), 
-							$rootScope.dateFormat);
+			$scope.toDate = '';
 		};
 
 		/**

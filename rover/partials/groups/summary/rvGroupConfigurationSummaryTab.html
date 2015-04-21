@@ -1,73 +1,76 @@
-
 <form id="group-summary" name="group-summary" ng-click="clearErrorMessage()" class="form card-tab scrollable" ng-controller="rvGroupConfigurationSummaryTab" ng-iscroll="groupSummaryScroller" ng-iscroll-delay="500" outside-click-handler>
-    <div class="wrapper"> 
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>    
+    <div class="wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="holder left">
-            <strong class="h3">Group Info</strong>
+            <strong class="h3" translate>GROUP_INFO</strong>
             <div class="entry full-width">
-                <label for="group-name">Name</label>
+                <label for="group-name">
+                    {{ 'NAME' | translate}}
+                    <strong>*</strong>
+                </label>
                 <input id="group-name" ng-model="groupConfigData.summary.group_name" type="text" />
             </div>
             <div class="entry margin">
-                <label for="group-code">Group Code</label>
+                <label for="group-code" translate>GROUP_CODE</label>
                 <input id="group-code" ng-model="groupConfigData.summary.group_code" type="text" />
             </div>
             <div class="entry">
-                <label for="group-firstname">First Name</label>
-                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text"/>
+                <label for="group-firstname" translate>CONTACT_FIRST_NAME</label>
+                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text" />
             </div>
             <div class="entry margin">
-                <label for="group-lastname">Last Name</label>
+                <label for="group-lastname" translate>CONTACT_LAST_NAME</label>
                 <input id="group-lastname" ng-model="groupConfigData.summary.last_name" type="text" />
             </div>
             <div class="entry">
-                <label for="group-phone">Contact Phone</label>
+                <label for="group-phone" translate>CONTACT_PHONE</label>
                 <input id="group-phone" ng-model="groupConfigData.summary.contact_phone" type="text" />
             </div>
             <div class="entry full-width">
-                <label for="group-email">Contact E-mail</label>
+                <label for="group-email" translate>CONTACT_EMAIL</label>
                 <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" />
             </div>
             <div class="entry break full-width">
-                <a ng-click="openDemographicsPopup();" class="button white brand-text">Demographics</a>
+                <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
             </div>
         </div>
         <div class="holder right">
-            <strong class="h3">Room Block Summary</strong>
+            <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
             <div class="entry margin has-datepicker">
-                <label for="group-block-from">From</label>
+                <label for="group-block-from">
+                    {{'FROM' | translate}}
+                    <strong>*</strong>
+                </label>
                 <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
                 <!--<input id="group-block-from" ng-if="!isInAddMode()" type="text" value="{{groupConfigData.summary.block_from | date:dateFormat}}" readonly />-->
                 <!-- If new group, add class "datepicker" -->
-                <input id="group-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{groupConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box 
-                listen-this="groupConfigData.summary.block_from"
-                readonly ng-class="{'not-selected': !groupConfigData.summary.block_from}"/>
+                <input id="group-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{groupConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_from" readonly ng-class="{'not-selected': !groupConfigData.summary.block_from}" />
             </div>
             <div class="entry has-datepicker">
-                <label for="group-block-to">To</label>
+                <label for="group-block-to">
+                    {{'TO' | translate}}
+                    <strong>*</strong>
+                </label>
                 <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
                 <!--!<input ng-if="!isInAddMode()" id="group-block-to" type="text" value="{{groupConfigData.summary.block_to | date:dateFormat}}" readonly />-->
                 <!-- If new group, add class "datepicker" -->
-                <input id="group-block-to" class="datepicker" type="text" 
-                ui-date="toDateOptions"  
-                value="{{groupConfigData.summary.block_to|date:dateFormat}}" rv-clear-text-box 
-                listen-this="groupConfigData.summary.block_to" 
-                readonly 
-                ng-class="{'not-selected': !groupConfigData.summary.block_to}"/>
+                <input id="group-block-to" class="datepicker" type="text" ui-date="toDateOptions" value="{{groupConfigData.summary.block_to|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_to" readonly ng-class="{'not-selected': !groupConfigData.summary.block_to}" />
             </div>
             <div class="entry full-width with-button has-datepicker">
-                <label for="group-release-date">Room Release Date</label>
+                <label for="group-release-date">
+                    {{'ROOM_RELEASE_DATE' | translate}}
+                    <strong>*</strong>
+                </label>
                 <!-- releaseDateOptions -->
-                <input class="datepicker" type="text" ui-date="releaseDateOptions" 
-                value="{{groupConfigData.summary.release_date|date:dateFormat}}"  
-                readonly 
-                ng-class="{'not-selected': !groupConfigData.summary.release_date}"/>
-
-                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode()}">Release Now</button>
+                <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{groupConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !groupConfigData.summary.release_date}" />
+                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode()}" translate>RELEASE_NOW</button>
                 <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
             </div>
             <div class="entry clear">
-                <label for="group-hold-status">Hold Status</label>
+                <label for="group-hold-status">
+                    {{'HOLD_STATUS' | translate}}
+                    <strong>*</strong>
+                </label>
                 <div class="select">
                     <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation>
                         <option value="" selected translate>SET_STATUS</option>
@@ -78,19 +81,19 @@
                 </div>
             </div>
             <div class="entry margin">
-                <label for="group-revenue">Actual / Potential Revenue</label>
+                <label for="group-revenue" translate>GROUP_APR</label>
                 <input id="group-revenue" value="{{getRevenue()}}" type="text" readonly />
             </div>
             <div class="entry margin small">
-                <label for="group-rooms">Rooms</label>
+                <label for="group-rooms" translate>ROOMS</label>
                 <input id="group-rooms" ng-model="groupConfigData.summary.rooms_total" type="text" readonly />
             </div>
             <div class="entry small">
-                <label for="group-pickup">Pick Up</label>
+                <label for="group-pickup" TRANSLATE>PICK_UP</label>
                 <input id="group-pickup" ng-model="groupConfigData.summary.rooms_pickup" type="text" readonly />
             </div>
             <div class="entry full-width with-button">
-                <label for="group-rate">Rate</label>
+                <label for="group-rate" translate>RATE</label>
                 <div class="select">
                     <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation>
                         <option value="" selected>Select Rate</option>
@@ -98,7 +101,7 @@
                         <!-- ... repeat for all rates -->
                     </select>
                 </div>
-                <a ng-click="isInAddMode() ? manageAddons() : viewAddons()" class="button with-icon brand-colors">
+                <a ng-click="isInAddMode() ? manageAddons() : viewAddons()" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}">
                     <!-- {addons-link} can either be for a popup (existing group) or an addons screne (new group) -->
                     <!-- If addons already exist, show:  -->
                     <span ng-show="groupConfigData.summary.addons_count > 0" class="count">
@@ -111,7 +114,7 @@
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">
                 <textarea id="group-notes" ng-model="groupSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
-                <button type="button" class="button brand-colors post" ng-click="saveGroupNote()">Post</button>
+                <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveGroupNote()">Post</button>
             </div>
             <ul class="notes">
                 <li ng-repeat="note in groupConfigData.summary.notes">

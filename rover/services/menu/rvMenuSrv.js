@@ -160,7 +160,11 @@ sntRover.service('rvMenuSrv',
 		            title: "MENU_CASHIER",
 		            action: "rover.financials.journal({ id: 2 })",
 		            menuIndex: "cashier"
-		        },{
+		        }, {
+		            title: "MENU_ACCOUNTS",
+		            action: "rover.accounts.search",
+		            menuIndex: "accounts"
+		        }, {
 	                title: "MENU_END_OF_DAY",
 	                action: "",
 	                actionPopup: true,
@@ -349,6 +353,33 @@ sntRover.service('rvMenuSrv',
 	};
 
 
+    /**
+	* method to get settings menu
+	* @return {array} - List of Menu
+	*/
+	this.getSettingsSubmenu = function() {
+		var defaultDashboardState 	= getDefaultDashboardState ();
+
+		var menu = [{
+				title: "SETTINGS",
+		        menuIndex: "settings",
+		        action: "",
+		        submenu: [{
+		            title: "CAHNGE_PASSWORD",
+		            action: "",
+		            menuIndex: "changePassword",
+		            actionPopup: true
+		        }, {
+		            title: "SETTINGS",
+		            action: "",
+		            menuIndex: "adminSettings",
+		            actionPopup: true
+		        }]
+		    }];
+		return processMenuList (menu);
+	};
+
+
 	/**
 	* function to check permissions against a menu
 	* @param {string}, menu index
@@ -378,9 +409,16 @@ sntRover.service('rvMenuSrv',
 			'commisions': 			['ACCESS_COMMISSIONS'],	
 			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
 
+
 			'menuGroups': 			[],
-			'menuCreateGroup': 		[],
-			'menuManageGroup': 		[],
+			'menuCreateGroup': 		['GROUP_CREATE'],
+			'menuManageGroup': 		['GROUP_MANAGE'],
+
+			'accounts':        		['ACCESS_ACCOUNTS'],
+
+			'changePassword':       ['SETTINGS_CHANGE_PASSWORD_MENU'],
+			'adminSettings':        ['SETTINGS_ACCESS_TO_HOTEL_ADMIN'] 
+
 
 		};
 
@@ -428,6 +466,16 @@ sntRover.service('rvMenuSrv',
 				returnValue = isHourlyRateOn();
 				break;
 
+			//dont wanted to show on hourly enabled hotels
+			case 'menuGroups': 
+				returnValue = !isHourlyRateOn();
+				break;
+
+			//we will show accounts on non hourly mode
+			case 'accounts':
+				returnValue = !isHourlyRateOn();
+				break;
+							
 			//if auto change business is not enabled, we have to show EOD menu
 			// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
 			case 'endOfDay':

@@ -85,6 +85,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DEPARTURE'):
 				case reportUtils.getName('ARRIVAL'):
 				case reportUtils.getName('DEPOSIT_REPORT'):
+				case reportUtils.getName('ROOMS_QUEUED'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
@@ -130,6 +131,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('DAILY_PAYMENTS'):
 					$scope.hasNoTotals = true;
 					$scope.isTransactionReport = true;
 					break;
@@ -171,6 +173,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('DAILY_PAYMENTS'):
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
@@ -179,6 +182,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 8;
+					break;
+
+				case reportUtils.getName('ROOMS_QUEUED'):
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 2;
 					break;
 
 				default:
@@ -387,7 +395,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('DAILY_PAYMENTS'):
 					template = '/assets/partials/reports/rvDailyTransactionsReportRow.html';
+					break;
+
+				case reportUtils.getName('ROOMS_QUEUED'):
+					template = '/assets/partials/reports/rvRoomQueuedReportRow.html';
 					break;
 
 				default:
@@ -633,11 +646,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('CANCELLATION_NO_SHOW'):
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
-				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('DAILY_PAYMENTS'):
 					orientation = 'landscape';
 					break;
 
-				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
 					orientation = 'landscape';
 					margin: '2mm 2mm';
 					break;

@@ -1,6 +1,6 @@
 <div class="invoice-logo">
     <h1 translate>INVOICE</h1>
-    <img ng-src="{{printData.hotel_logo}}" alt="Logo of hotel" />
+    <img ng-src="{{printData.hotel_logo}}" alt="" />
 </div>
 <table class="guest-info">
     <tbody>
@@ -50,6 +50,8 @@
             {{printData.hotel_name}}
             <span ng-if="printData.show_hotel_address">
                {{printData.street}}&nbsp;&#9830;&nbsp;{{printData.city}},&nbsp;{{printData.state}}&nbsp; {{printData.zipcode}}&nbsp;&#9830;&nbsp;{{printData.country}}
+               <br>
+               {{ printData.phone }}&nbsp;&#9830;&nbsp;{{ printData.email }}
             </span>
         </caption>
         <thead>
@@ -78,12 +80,12 @@
                 <td colspan="3" translate>NET_AMOUNT</td>
                 <td>{{currencySymbol}}{{printData.net_amount}}</td>
             </tr>
-           
+
             <tr ng-repeat="item in printData.tax_details">
-                <td colspan="3"> 
+                <td colspan="3">
                     {{item.description}}
                 </td>
-                <td>           
+                <td>
                     {{currencySymbol}}{{item.amount | number: precisonTwo}}
                 </td>
             </tr>

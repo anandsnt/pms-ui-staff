@@ -215,6 +215,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.sourceIsForced = baseSearchData.settings.force_source_code;
             $scope.otherData.originIsForced = baseSearchData.settings.force_origin_of_booking;
             $scope.otherData.reservationTypeIsForced = baseSearchData.settings.force_reservation_type;
+            $scope.otherData.isAddonEnabled = baseSearchData.settings.is_addon_on;
 
             $scope.guestCardData = {};
             $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
@@ -832,7 +833,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 //  CICO-9576
                 if (!addon.is_inclusive) {
-                    addOnCumulative += parseInt(finalRate);
+                    addOnCumulative += parseFloat(finalRate);
                 }
                 addon.effectivePrice = finalRate;
             });
@@ -1405,12 +1406,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             // DEMOGRAPHICS
             var demographicsData = $scope.reservationData.demographics;
-            if(typeof roomIndex != 'undefined') {
+            if (typeof roomIndex != 'undefined') {
                 demographicsData = $scope.reservationData.rooms[roomIndex].demographics;
             }
 
             // CICO-11755
-            if(typeof demographicsData!= undefined){
+            if (typeof demographicsData != undefined) {
                 data.reservation_type_id = parseInt(demographicsData.reservationType);
                 data.source_id = parseInt(demographicsData.source);
                 data.market_segment_id = parseInt(demographicsData.market);
@@ -1755,6 +1756,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                  */
 
                 var postData = $scope.computeReservationDataforUpdate(true, true);
+
                 var saveSuccess = function(data) {
                     var totalDeposit = 0;
                     //calculate sum of each reservation deposits
@@ -1909,7 +1911,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
                     if (typeof index !== 'undefined') {
-                        postData.reservationId = $scope.reservationData.reservationId;
+
+                        //CICO-15795 : Fix by Shiju, UI team to review.
+                        //postData.reservationId = $scope.reservationData.reservationId;
+                        if ($scope.reservationsListArray) {
+                            postData.reservationId = $scope.reservationsListArray.reservations[index].id;
+                        } else {
+                            postData.reservationId = $scope.reservationData.reservationId;
+                        }
+
+
                         var roomId = postData.room_id[index];
                         postData.room_id = [];
                         postData.room_id.push(roomId);

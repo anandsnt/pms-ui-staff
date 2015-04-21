@@ -296,7 +296,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to save the new route
     */
     $scope.saveRoute = function(){
-            $rootScope.$broadcast('routeSaveClicked');
+        $rootScope.$broadcast('routeSaveClicked');
     };
     /**
     * Listener to show error messages for child views
@@ -309,7 +309,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     
 	$scope.handleCloseDialog = function(){
 		$scope.$emit('HANDLE_MODAL_OPENED');
-		$scope.closeDialog();
+		$scope.closeDialog();         
+        $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 
     /**
@@ -319,6 +320,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         var successCallback = function(data) {
             $scope.$emit('hideLoader');
             $scope.closeDialog();
+            $scope.$emit('BILLINGINFODELETED');
         };
         var errorCallback = function(errorMessage) {
             $scope.$emit('hideLoader');

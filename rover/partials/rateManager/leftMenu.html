@@ -43,7 +43,7 @@
 					<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
 						<label for="rmRateType">RATE TYPE</label>
 						<div class="select">
-							<select iscroll-stop-propagation id="rmRateType" name="rate-type" ng-model="currentFilterData.rate_type_selected" ng-change="refreshFilterScroll()">
+							<select iscroll-stop-propagation id="rmRateType" name="rate-type" ng-model="currentFilterData.rate_type_selected" ng-change="refreshFilterScroll(); selFirst()">
 								<option value="">Select Rate Type</option>
 								<option  ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
 							</select>
@@ -66,7 +66,7 @@
 					<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
 						<label for="rmCurrentFilterData">RATE</label>
 						<div id="rmCurrentFilterData" class="select" >
-							<select iscroll-stop-propagation id = "rmRate" ng-model="currentFilterData.rate_selected" ng-change="refreshFilterScroll()">
+							<select iscroll-stop-propagation id = "rmRate" ng-model="currentFilterData.rate_selected" ng-change="refreshFilterScroll(); selFirst()">
 								<option value="">Select Rate</option>
 								<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
 							</select>

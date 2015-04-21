@@ -16,7 +16,7 @@ angular.module('groupModule', [])
         //company card details
         $stateProvider.state('rover.groups.search', {
             url: '/search',
-            templateUrl: '/assets/partials/groups/rvGroupSearch.html',
+            templateUrl: '/assets/partials/groups/search/rvGroupSearch.html',
             controller: 'rvGroupSearchCtrl',
             resolve: {
                 //to tackle from coming admin app to rover, see the injection in next resolve function
@@ -31,7 +31,7 @@ angular.module('groupModule', [])
                         var params = {
                             'query'     : '',
                             'from_date' : businessDate.business_date,
-                            'to_date'   : businessDate.business_date,
+                            'to_date'   : '',
                             'per_page'  : rvGroupSrv.DEFAULT_PER_PAGE,
                             'page'      : rvGroupSrv.DEFAULT_PAGE,
                         }

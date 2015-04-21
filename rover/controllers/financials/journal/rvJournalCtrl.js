@@ -33,6 +33,20 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.setScroller('employee-content');
     $scope.setScroller('department-content');
 
+    //CICO-14865 - Due to this bad architecture (calling API at diff. placed & gets the loader hidden with first API completion)
+    // and no time flexiblity, going for this BAD solution
+    $scope.howManyAPIgotCompleted = 0;
+    
+    //CICO-14865 - Due to this bad architecture (calling API at diff. placed & gets the loader hidden with first API completion)
+    // and no time flexiblity, going for this BAD solution
+    $scope.$on ('I_COMPLTED_THE_API_CALL', function(){
+        $scope.howManyAPIgotCompleted++;
+
+        if ($scope.howManyAPIgotCompleted == 2){
+            $scope.$emit('hideLoader');
+            $scope.howManyAPIgotCompleted = 0;
+        }
+    });
     var retrieveCashierName = function(){
         if($scope.data.filterData.selectedCashier !== ""){
             angular.forEach($scope.data.filterData.cashiers,function(item, index) {

@@ -163,9 +163,11 @@
         cursor: default;
         z-index: 99999;
         .faux-clickable;
-        height: 240px;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        min-height: 40px;
+		max-height: 240px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
 
         li {
             margin: 0;
@@ -246,15 +248,19 @@
 			/* Alert ***/
 			&.alert {
 				padding: 30px 20px;
-				width: 380px;
+				width: 320px;
 
-				.icon-popup-alert {
-					margin: 10px auto;
+				.icon-popup-alert,
+				.icon-cc-authorization { margin: 10px auto; }
+
+				.h2 {
+					&.green { color: @green; }
+					&.red { color: @red; }
 				}
 
 				.message { 
 					text-transform: none;
-					margin: 20px 0;
+					margin: 20px 0 40px;
 				}
 
 				.entry {
@@ -268,8 +274,6 @@
 
 				.button { 
 					margin: 10px auto;
-					width: auto;
-					min-width: 160px;
 
 					&:last-child { margin-bottom: 0; }
 				}
@@ -310,14 +314,19 @@
 			&.new-content {
 				width: 320px;
 
-				.entry { 
-					&.margin { width: 100%; }
+				.holder {
+					.entry { 
+						float: none;
+						width: 100%;
+
+						&.margin { margin-bottom: 0; }
+					}
 				}
 
 				.actions {
 					text-align: center;
 					margin-top: 20px;
-					padding-top: 20px;
+					padding-top: 19px;
 					border-top: 1px solid rgba(0,0,0,.1);
 
 					.button {
@@ -817,9 +826,11 @@
 					}
 
 					&.notice {
-						font-weight: 400;
+						font-size: 14px;
+						line-height: 21px;
 						text-align: left;
 						margin: 20px 0;
+						min-height: 90px;
 
 						.h4 { 
 							font-size: 16px;
@@ -998,7 +1009,7 @@
 						}
 
 						#print-keys {
-							margin-top: 20px;
+							padding-top: 20px;
 
 							label:not(.only-number) { text-align: left; }
 
@@ -1042,7 +1053,6 @@
 						&.connected { 
 							.info { color: @green; }
 						}
-
 					}
 				}
 
@@ -1083,7 +1093,7 @@
 
 			/* CC modal ***/
 			&.card-content {
-				width: 840px; 
+				width: 920px;
 
 				.active-item {
 					position: relative;
@@ -1321,13 +1331,6 @@
 										cursor: pointer;
 										.hide-text;
 										.square(40px);
-									}
-
-									.admin-icons {
-									    background-image: url("/assets/admin/admin-icons.png");
-									    background-repeat: no-repeat;
-									    border: 0;
-									    display: block;
 									}
 								}
 
@@ -1747,6 +1750,7 @@
 						&.blank {
 							margin: 0 auto;
 							float: none;
+							clear: both;
 							.show;							
 						}
 					}
@@ -2134,7 +2138,10 @@
 							}
 
 							&.accompany { 
-								h2 { color: @grey3; }
+								h2 { 
+									color: @grey3;
+									line-height: 30px; 
+								}
 							}
 
 							&.company { 
@@ -2143,6 +2150,22 @@
 
 							&.travel-agent { 
 								h2 { color: @tacard; }
+							}
+
+							&.group {
+								.group-info {
+									font-size: 18px;
+									line-height: 30px;
+									text-transform: uppercase;
+									font-weight: 600;
+									text-align: center;
+									color: @grey3;
+									width: 30px;
+									background-color: @grey1;
+									.pull-left;
+								}
+
+								h2 { width: 240px; }
 							}
 						}
 
@@ -2754,24 +2777,6 @@
 					margin-bottom: 20px;
 
 					label { margin-bottom: 0; }
-
-					input {
-	                    width: 100%;
-	                    cursor: pointer;
-	                    background: @white @calendar no-repeat 98% 11px;
-	                    background-size: 20px;
-	                    .no-transition();
-
-	                    &:nth-of-type(1) { margin-bottom: 10px; }
-
-	                    &:hover,
-	                    &:active { background-position: 98% -39px; }
-
-	                    @media @highdpi {
-	                        background-image: @calendar2x;
-	                    }
-	                }
-
 				}
 
 				.actions {
@@ -3093,7 +3098,7 @@
 			/* Group Deposit Rules ***/
 			&.group-deposit {
 				padding: 30px 0 0 0;
-				width: 520px;
+				width: 620px;
 
 				.h2 { margin: 0; }
 
@@ -3156,6 +3161,7 @@
 
 			    .holder {
 			    	padding: 20px;
+			    	.float;
 
 			    	label {
 				    	font-size: 14px;
@@ -3163,8 +3169,80 @@
 				    	margin: 0;
 				    }
 
-				    .add-new-button { .show; }
-			    }
+				    .rules {
+				    	position: relative;
+				    	max-height: 320px;
+				    	padding-bottom: 10px;
+				    	margin-bottom: 10px;
+				    	border-bottom: 1px solid rgba(0,0,0,.1);
+
+				    	> .wrapper { padding: 0; }
+
+				    	> .iScrollVerticalScrollbar { 
+				    		top: 0;
+				    		bottom: 10px; 
+				    		right: 0;
+				    	}
+
+				    	li {
+				    		position: relative;
+				    		padding-right: 50px;
+				    		margin-bottom: 10px;
+
+				    		.button {
+				    			font-size: 14px;
+				    			line-height: 40px;
+				    			font-weight: 400;
+				    			text-align: left;
+				    			padding: 0;
+				    			height: 40px;
+
+				    			strong,
+				    			em {
+				    				padding: 0 10px;
+				    				.nowrap();
+				    				.pull-left;
+				    			}
+
+				    			strong { 
+				    				font-weight: 600; 
+				    				width: 35%;
+				    			}
+
+				    			em { width: 65%; }
+				    		}
+
+				    		.icons {
+				    			position: absolute;
+				    			top: 0;
+				    			right: 0;
+				    			cursor: pointer;
+			                    .square(40px);
+			                    .faux-clickable;
+				    		}
+
+				    		&:last-child { margin-bottom: 0; }
+				    	}
+				    }
+
+				    .add-new-button { 
+				    	.size(50px, 100%);
+				    	.show; 
+				    }
+
+				    .content-left { 
+				    	.calc-width(60, 20);
+				    	.pull-left;
+				    }
+
+				    .content-right { 
+				    	margin-left: 20px;
+				    	padding-left: 20px;
+				    	border-left: 1px solid rgba(0,0,0,.1);
+				    	.calc-width(40, 20);
+				    	.pull-left;
+				    }
+			    }			    
 
 				.actions {
 					text-align: center;
@@ -3177,6 +3255,52 @@
 						display: inline-block;
 						width: auto;
 						padding: 0 20px;
+					}
+				}
+			}
+
+			/* Group Edit guest ***/
+			&.group-guest {
+				padding: 30px 0 0 0;
+				width: 560px;
+
+				.h2 { margin: 0; }
+
+				.holder {
+					padding: 20px;
+					.float;
+
+					.entry {
+						.calc-width(50, 10);
+
+						label { margin: 0; }
+
+						&.margin { margin-right: 20px; }
+
+						&.type { .calc-width(65, 10); }
+						&.occupancy { .calc-width(35, 10); }
+						&.date { .calc-width(40, 20); }
+						&.room { width: 20%; }
+					}
+				}
+
+				.actions {
+					text-align: center;
+					padding: 20px;
+					background-color: rgba(0,0,0,.05);
+					.box-shadow(0 -2px 2px rgba(0,0,0,.15));
+					.size(150px, 100%);
+
+					.button {
+						display: inline-block;
+						width: auto;
+						margin-right: 10px;
+
+						&.blank { 
+							margin: 10px auto 0 auto;
+							clear: both;
+							.show;
+						}
 					}
 				}
 			}
