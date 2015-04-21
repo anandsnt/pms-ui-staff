@@ -9,7 +9,10 @@
                     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
 	<form class="form float" >	
 	    <fieldset class="holder left" ng-show="!isHotelAdmin">
-		
+		<div class="switch-button single" ng-class="{ on : data.data.product_cross_customer.siteminder_active == 'true' }" ng-click="toggleClicked(hotel)">
+                    <input type="checkbox" name="siteminder-setup-active" id="siteminder-setup-active">
+                    <span class="switch-icon"></span>
+                </div>
 	    	<ad-textbox value="data.data.product_cross_customer.tracker_user_name"  name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width" ></ad-textbox>
 			
 			<ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>

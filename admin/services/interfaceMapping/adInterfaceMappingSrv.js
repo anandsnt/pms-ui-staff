@@ -94,5 +94,21 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 		});
 		return deferred.promise;
 	};
+        /*
+         * toggle mapping interface on/off
+         */
+        
+	this.switchToggle = function(data){
+
+		var deferred = $q.defer();
+		var url = '/admin/interface_mappings/'+data.value+'/update_active';//placeholder
+		
+		ADBaseWebSrv.deleteJSON(url,data).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
 }]);

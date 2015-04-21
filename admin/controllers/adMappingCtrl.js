@@ -52,20 +52,26 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 	};
         $scope.extMappingSubComponents = [];
         var fetchSubMenuSuccess = function(data){
-            var comp, iMenu, cMenu;
-            for (var menu in data.menus){
-                iMenu = data.menus[menu];
-                if (iMenu.menu_name === 'Interfaces'){
-                    for (var i in iMenu.components){
-                         comp = iMenu.components[i];
-                        if (comp.name === 'External Mappings'){
-                            $scope.extMappingSubComponents = comp.sub_components;
-                            $scope.$emit('hideLoader');
-                            return;
+            var comp, iMenu;
+            try {
+                for (var menu in data.menus){
+                    iMenu = data.menus[menu];
+                    if (iMenu.menu_name === 'Interfaces'){
+                        $scope.menuIndex = menu;
+                        for (var i in iMenu.components){
+                             comp = iMenu.components[i];
+                            if (comp.name === 'External Mappings'){
+                                $scope.extMappingSubComponents = comp.sub_components;
+                                $scope.$emit('hideLoader');
+                                return;
+                            }
+
                         }
-                        
                     }
                 }
+            } catch(err){
+              //  $scope.errorMessage = "Unexpected Error";
+                console.warn(err);
             }
             $scope.$emit('hideLoader');
         };
@@ -143,16 +149,16 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 			if($scope.isAdd) $scope.data.total_count ++ ;
 			// To update scope data with added item
 			var newData = {
-                    "value": data.value,
-                    "snt_value": postData.snt_value,
-                    "source_code":postData.source_code,
-                    "external_value": postData.external_value
-            };
+                            "value": data.value,
+                            "snt_value": postData.snt_value,
+                            "source_code":postData.source_code,
+                            "external_value": postData.external_value
+                        };
             
 			angular.forEach($scope.data.mapping,function(item, index) {
 	       		if (item.mapping_type == postData.mapping_value) {
-	       			$scope.data.mapping[index].mapping_values.push(newData);
-			 	}
+                            $scope.data.mapping[index].mapping_values.push(newData);
+                        }
 	       	});
 			$scope.closeInlineTab();
 			$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchSuccess);
@@ -166,6 +172,30 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 		
 		$scope.invokeApi(ADMappingSrv.saveMapping, postData, successSaveCallback);
 	};
+        
+        $scope.setActiveItem = function(itemObj){
+            this.activeItem = itemObj.id;
+        };
+	/**
+	 *   A post method to update Active/Inactive status for an interface mapping type
+	 */
+
+	$scope.toggleClicked = function() {
+		var item = this.activeItem;
+
+		var data = {
+			'id' : item.id,
+			'set_active' : item.is_active ? false : true
+		};
+
+		var postSuccess = function() {
+			$scope.$emit('hideLoader');
+			item.is_active = item.is_active ? false : true;
+		};
+
+		$scope.invokeApi(ADInterfaceMappingSrv.switchToggle, data, postSuccess);
+	};
+        
    	/*
     * Function to handle delete button click.
     * @param {mappingId} mappingId of the mapping item.
