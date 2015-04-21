@@ -606,9 +606,18 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         * function to create new bill
         */
         $scope.createNewBill = function(){
-            var billData ={
-                        "reservation_id" : $scope.reservationData.reservation_id
-                        };
+
+            if($scope.selectedEntity.entity_type == "GROUP"){
+                var data = {
+                    "entity_type" : "GROUP",
+                    "entity_id"   : $scope.selectedEntity.id
+                };
+            }
+            else{
+                var data ={
+                    "reservation_id" : $scope.reservationData.reservation_id
+                };
+            }
                     /*
                      * Success Callback of create bill action
                      */
@@ -623,7 +632,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         }
                         
                     };
-                    $scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback, $scope.errorCallback);
+                    $scope.invokeApi(RVBillCardSrv.createAnotherBill,data,createBillSuccessCallback, $scope.errorCallback);
         };
 
 		var retrieveCardName = function(){
