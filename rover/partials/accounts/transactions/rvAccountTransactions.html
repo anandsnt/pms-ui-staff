@@ -134,7 +134,7 @@
                                 <span class="value">{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</span>
                             </li>
                             <li class="break">
-                                <button type="button" class="button with-icon only-icon blue">
+                                <button type="button" class="button with-icon only-icon blue" ng-click="mailInvoice()">
                                     <span class="icons icon-email"></span> 
                                     Email
                                 </button>

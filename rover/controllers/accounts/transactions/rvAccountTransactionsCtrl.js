@@ -292,10 +292,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		/*----------- edit/remove/split ends here ---------------*/
 		//CICO-13903
-		$scope.printInvoice = function() {
-
-
-
+		$scope.printInvoice = function() {			
 			$('.nav-bar').addClass('no-print');
 			$('.cards-header').addClass('no-print');
 			$('.card-tabs-nav').addClass('no-print');
@@ -317,6 +314,10 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				$('.card-tabs-nav').removeClass('no-print');
 
 			}, 100);
+		}
+
+		$scope.mailInvoice = function(){
+			// TODO CICO-13903 Email API Call
 		}
 	}
 ]);
