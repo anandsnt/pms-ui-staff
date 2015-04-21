@@ -42,7 +42,17 @@
     "ROOM_BLOCK_SUMMARY" : "Room Block Summary",
     "ROOM_RELEASE_DATE" : "Room Release Date",
     "RELEASE_NOW" : "Release Now",
-    "GROUP_APR" :"Actual / Potential Revenue"
+    "GROUP_APR" :"Actual / Potential Revenue",
+    "GROUP_ADD_RESERVATIONS": "Add Reservations",
+    "GROUP_NO__OF_ROOMS": "No. of Rooms",
+    "GROUP_ROOM_TYPE": "Room Type",
+    "GROUP_OCCUPANCY": "Occupancy",
+    "GROUP_SINGLE": "Single",
+    "GROUP_DOUBLE": "Double",
+    "GROUP_TRIPLE": "Triple",
+    "GROUP_QUADRUPLE": "Quadruple"
+
+
 
 
 

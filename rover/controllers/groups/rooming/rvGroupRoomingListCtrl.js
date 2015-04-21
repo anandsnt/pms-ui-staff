@@ -7,6 +7,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 	'$state',
 	'rvUtilSrv',
 	'rvPermissionSrv',
+	'$q',
 	function($scope, 
 			$rootScope, 
 			rvGroupRoomingListSrv, 
@@ -14,7 +15,8 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$timeout,			
 			$state, 
 			util,
-			rvPermissionSrv) {
+			rvPermissionSrv,
+			$q) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -57,7 +59,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 									{room_type_id: parseInt($scope.selectedRoomType)});	
 			//we are hiding the occupancy if selected room type is undefined
 			if (typeof selectedRoomType === "undefined") return false;
-			
+
 			return selectedRoomType[keyToCheck];
 		};
 
@@ -77,6 +79,13 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		 */
 		$scope.isRoomUnAssigned = function(reservation) {
 			return util.isEmpty(reservation.room_no);
+		};
+
+		/**
+		 * Function to toggle between display and add mode
+		 */
+		$scope.toggleDisplayingMode = function() {
+			$scope.isAddingMode = !$scope.isAddingMode;
 		};
 
 		/**
@@ -166,6 +175,9 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 
 	 		//we changed data, so
 			refreshScrollers();
+
+			//rooming data will change after adding some reservation
+			$scope.fetchRoomingDetails ();
 	 	};
 
 	 	/**
@@ -220,10 +232,10 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		 * when a tab switch is there, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails		 
 		 */
-		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
+		/*$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
 			if (activeTab !== 'ROOMING') return;
 			$scope.fetchRoomingDetails();
-		});
+		});*/
 		
 		/**
 		 * [initializeVariables description]
@@ -251,7 +263,13 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$scope.numberOfRooms = '1';
 			$scope.selectedOccupancy = '1';
 			$scope.possibleNumberOfRooms = [];
+
+			//varibale used to track addmode/display mode, default add mode
+			$scope.isAddingMode = true;
 			
+			//default sorting fields & directions
+			$scope.sorting_field 	= 'room_no';
+			$scope.sort_dir 		= 'ASC';
 		};
 		
 		/**
@@ -344,6 +362,37 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		};
 
 		/**
+		 * to sort by a field
+		 * @param  {String} sorting_field [description]
+		 */
+		$scope.sortBy = function(sorting_field){
+			//if we are trying from the same tab, we have to switch between Asc/Desc
+			if ($scope.sorting_field == sorting_field){				
+				$scope.sort_dir = ($scope.sort_dir === 'ASC') ? 'DESC': 'ASC';	
+			}
+			else {
+				$scope.sorting_field = sorting_field;
+				$scope.sort_dir = 'ASC';
+			}
+			
+			//calling the reservation fetch API			
+			$scope.fetchReservations();		
+		};
+
+		/**
+		 * to get the sorting field class
+		 * @param  {String} sorting_field
+		 * @return {[type]}               [description]
+		 */
+		$scope.getSortClass = function(sorting_field){
+			var classes = '';
+			//if we are trying from the same tab, we have to switch between Asc/Desc
+			if ($scope.sorting_field == sorting_field){				
+				classes = ($scope.sort_dir === 'ASC') ? 'sorting-asc': 'sorting-desc';	
+			}
+			return classes;	
+		};
+		/**
 		 * [changedSelectedRoomType description]
 		 * @return {[type]} [description]
 		 */
@@ -386,7 +435,9 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			var params = {
 				group_id 	: $scope.groupConfigData.summary.group_id,
 				per_page 	: $scope.perPage,
-				page  		: $scope.page
+				page  		: $scope.page,
+				sorting_field: $scope.sorting_field,
+				sort_dir 	: $scope.sort_dir
 			};
 			return params;
 		};
@@ -403,7 +454,40 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			};
 			$scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);			
 		};
-		
+
+		/**
+		 * when the start Date choosed,
+		 * will assign fromDate to using the value got from date picker
+		 * will change the min Date of end Date
+		 * return - None
+		 */
+		var fromDateChoosed = function(date, datePickerObj) {
+			$scope.fromDate = date;
+
+			// we will clear end date if chosen start date is greater than end date
+			if ($scope.fromDate > $scope.toDate) {
+				$scope.toDate = '';
+			}
+
+			runDigestCycle();
+		};
+
+		/**
+		 * when the end Date choosed,
+		 * will assign endDate to using the value got from date picker
+		 * return - None
+		 */
+		var toDateChoosed = function(date, datePickerObj) {
+			$scope.toDate = date;
+			
+			// we will clear end date if chosen start date is greater than end date
+			if ($scope.fromDate > $scope.toDate) {
+				$scope.fromDate = '';
+			}
+
+			runDigestCycle();
+		};	
+
 		/**
 		 * utility function to set datepicker options
 		 * return - None
@@ -422,14 +506,14 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$scope.fromDateOptions = _.extend ({
 				minDate: new tzIndependentDate(refData.block_from),
 				maxDate: new tzIndependentDate(refData.block_to),
-				//onSelect: fromDateChoosed
+				onSelect: fromDateChoosed
 			}, commonDateOptions);
 
 			//date picker options - Departute
 			$scope.toDateOptions = _.extend ({
 				minDate: new tzIndependentDate(refData.block_from),
 				maxDate: new tzIndependentDate(refData.block_to),
-				//onSelect: toDateChoosed            
+				onSelect: toDateChoosed            
 			}, commonDateOptions);
 
 			//default from date, as per CICO-13900 it will be block_from date       
@@ -465,6 +549,66 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		};
 
 		/**
+		 * [successFetchOfAllReqdForRoomingList description]
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var successFetchOfAllReqdForRoomingList = function(data){
+			$scope.$emit('hideLoader');
+		};
+
+		/**
+		 * [successFetchOfAllReqdForRoomingList description]
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var failedToFetchOfAllReqdForRoomingList = function(errorMessage){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorMessage;
+		};
+		
+		/**
+		 * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
+		 * depending upon the API fetch completion, loader may disappear.
+		 * @return {[type]} [description]
+		 */
+		var callInitialAPIs = function(){
+			var hasNeccessaryPermission = (hasPermissionToCreateRoomingList() &&
+				hasPermissionToEditRoomingList());
+
+			if(!hasNeccessaryPermission) {
+				$scope.errorMessage = ['Sorry, You dont have enough permission to proceed!!'];
+				return;
+			}
+
+			var promises = [];
+			//we are not using our normal API calling since we have multiple API calls needed
+			$scope.$emit('showLoader');
+			
+			//rooming details fetch
+			var paramsForRoomingDetails = {
+				id: $scope.groupConfigData.summary.group_id
+			};
+			promises.push(rvGroupRoomingListSrv
+				.getRoomTypesConfiguredAgainstGroup (paramsForRoomingDetails)
+				.then(successCallBackOfFetchRoomingDetails)
+			);
+
+			
+			//reservation list fetch
+			var paramsForReservationFetch = formFetchReservationsParams();
+			promises.push(rvGroupRoomingListSrv
+				.fetchReservations (paramsForReservationFetch)
+				.then(successCallBackOfFetchReservations)
+			);
+
+
+			//Lets start the processing
+			$q.all(promises)
+				.then(successFetchOfAllReqdForRoomingList, failedToFetchOfAllReqdForRoomingList);
+		}
+		
+		/**
 		 * Function to initialise room block details
 		 * @return - None
 		 */
@@ -487,8 +631,9 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			//pagination
 			initialisePagination();
 
-			//get reservation list
-			$scope.fetchReservations();
+
+			//calling initially required APIs
+			callInitialAPIs();
 
 		}();		
 	}]);
