@@ -1,0 +1,297 @@
+<form ng-controller="rvAccountTransactionsCtrl" id="group-transactions" name="group-transactions" class="form card-tab inner-header bills">
+    <div id="account-transactions-header" class="tab-header no-print">
+    <ul class="totals">
+        <li>
+            <div class="data">
+                <span class="label">Total Fees</span>
+                <span class="value">{{currencySymbol}}{{transactionsDetails.total_fees}}</span>
+            </div>
+        </li>
+        <li>
+            <div class="data">
+                <span class="label">Total Balance</span>
+                <span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}">{{currencySymbol}}{{transactionsDetails.total_balance}}</span> <!-- Green if 0, otherwise red -->
+            </div>
+        </li>
+        <li>
+            <button type="button" class="button blue">
+                Billing Information
+            </button>
+        </li>
+    </ul>
+</div>
+
+<div id="account-transactions-content" class="tab-details">
+    <!-- If no transactions: -->
+    <div class="no-content" ng-show="transactionsDetails.bills.length === 0">
+        <div class="info">
+            <span class="icon-no-content icon-groups"></span>
+            <strong class="h1">0 Transactions Found</strong>
+        </div>
+    </div>
+
+    <div class="registration-content scrollable" ng-iscroll="registration-content">
+        <div class="wrapper">
+            <div class="registration-summary">
+
+                <!-- Bills Nav-->
+                <div class="bill-tabs scrollable">
+                	<ul class="wrapper" style="width{Outer lenght of all li items}px">
+                        <li ng-class="showActiveBill($index)" ng-click="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
+                            <a href="#account-bill-{id}" class="bill-toggle">
+                                <div class="price"><span>Bill ##{{billTab.bill_number}}</span>
+                                	{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
+                                </div>
+                            </a>
+                        </li>
+                        <!-- Add new bill-->
+                        <li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
+                            <button type="button" class="button with-icon only-icon brand-colors">
+                                <span class="icons icon-plus"></span>
+                            </button>
+                        </li>
+                    </ul>
+                    <!-- <ul class="wrapper" style="width: {{getWidthForBillTabsScroll()}}px">
+                    
+                    	<li ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
+                    								<div class="bill-toggle">
+                    									<div class="price">
+                    										<span translate>BILL #{{billTab.bill_number}}</span>
+                    										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
+                    									</div>
+                    									
+                    									<div class="payment" ng-show="billTab.payment_details.payment_type !== 'CC'">
+                    										{{billTab.payment_details.payment_type_description}}
+                    									</div>
+                    									<figure class="card-logo" ng-show="billTab.payment_details.payment_type == 'CC'">
+                    										<img ng-src="/assets/{{billTab.payment_details.card_code}}.png" alt="" class="credit-card-image">
+                    										<span class="number"> {{billTab.payment_details.card_number}}</span>
+                    									</figure>
+                    								</div>
+                    							</li>
+                    							<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
+                    								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
+                    									<span class="icons icon-plus"></span>
+                    								</button>
+                    							</li>
+                    </ul> -->
+                </div>
+
+                <!-- Bill -->
+                <div class="bill-summary" ng-repeat="billData in transactionsDetails.bills" ng-class="{'hidden': $index!=currentActiveBill}">
+                    
+                    <!-- Bill Summary -->
+                    <div class="bill-summary-wrapper">  
+                        <div class="scrollable">
+                            <ul class="wrapper" style="width{Outer lenght of all li items}px">
+                                <li class="add-new">
+                                    <a ng-click="openPostCharge()" class="button with-icon brand-colors">
+                                        <span class="icons icon-charge"></span>
+                                        Add Charge
+                                    </a>
+                                </li>
+                                <!-- TODO: active class logic -->
+                                <li class="active" ng-repeat="days in billData.days">
+                                    <a href="#account-bill{bill-id}-expense-{day}" class="toggle">
+                                        <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
+                                        <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="account-bill{bill-id}-expense-{day}" class="summary-expanded" ng-repeat="billItem in billData.days"> <!-- Remove class "hidden" when item in summary selected -->
+                            <table class="expense-details">
+                                <thead>
+                                    <tr>
+                                        <th class="price">Expense</th>
+                                        <th>Details</th>
+                                        <th class="price">Charge Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="expense in billItem.expense_details">
+                                        <td class="price">{{currencySymbol}}{{expense.amount | number: precisonZero}}</td>
+                                        <td>{{expense.details}}</td>
+                                        <td>{{expense.charge_type}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Invoice -->
+                    <div id="account-bill{bill-id}-invoice" class="invoice">
+                        <ng-include src="'assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
+                    </div> 
+
+                    <!-- Balance / Signature / Card -->
+                    <div id="account-bill{bill-id}-total-fees" class="total-stay-fees">
+
+                        <!-- Fees & Balance Overview -->
+                        <ul class="account-overview">
+                            <li>
+                                <span class="title">Fees</span>
+                                <span class="value">{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</span>
+                            </li>
+                            <li class="break">
+                                <button type="button" class="button with-icon only-icon blue">
+                                    <span class="icons icon-email"></span> 
+                                    Email
+                                </button>
+                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue" ng-click="printInvoice()">
+                                    <span class="icons icon-print"></span> 
+                                    Print
+                                </button>
+                            </li>
+                            <li>
+                                <span class="title">Balance</span>
+                                <span class="value {green or red}">{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
+                            </li>
+                            <!-- Only if balance > 0:
+                            <li>
+                                <button class="button green with-icon only-icon">
+                                    <span class="icons icon-wallet"></span>
+                                    Pay
+                                </button>
+                            </li>
+                            <li>
+                                <span class="title">{Payment Method}</span>
+                            </li> -->
+                            <!-- Only when fees selected in table below:
+                            <li>
+                                <button type="button" class="button with-icon only-icon brand-colors">
+                                    <span class="icons icon-move"></span> 
+                                    Move selected
+                                </button>
+                            </li>-->
+                        </ul>
+
+                        <!-- Total Stay Fees -->
+                        <div id="bill{bill-id}-fees" class="details">
+                            <table class="total-fees">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Charge Code</th>
+                                        <th>Description</th>
+                                        <th>Fees</th>
+                                        <th>Credits</th>
+                                        <th class="form">Bill #</th>
+                                        <th class="action">Edit</th>
+                                        <th class="action">
+                                            <label class="checkbox inline" for="bill-{bill-id}-all"> 
+                                                <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked or all bill charges are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all bill charges are selected -->
+                                                <input id="bill-{bill-id}-all" value="{value}" type="checkbox" />
+                                            </label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr class="active edit">
+                                        <td colspan="3" class="total-label">
+                                            <button type="button" class="button with-icon only-icon blue">
+                                                <span class="icons icon-email"></span> 
+                                                Email
+                                            </button>
+                                            <button type="button" class="button with-icon only-icon blue">
+                                                <span class="icons icon-print"></span> 
+                                                Print
+                                            </button>
+                                            Stay Fees (As of {{billData.total_fees.fees_date | date:dateFormat}}):
+                                        </td>
+                                        <td colspan="3" class="total-value">
+                                             <strong>{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</strong>
+                                        </td>
+                                        <td>
+                                            <button ng-click="openActionsPopup()" class="button purple with-icon only-icon">
+                                                <span class="icons icon-pencil"></span>
+                                                Edit
+                                            </button>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="active edit">
+                                        <td colspan="3" class="total-label">
+                                            Balance (As of {{billData.total_fees.fees_date | date:dateFormat}}):
+                                        </td>
+                                        <td colspan="3" class="total-value {red or green}"> <!-- Green when 0, otherwise red -->
+                                             <strong>{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</strong>
+                                        </td>
+                                        <td>
+                                            <!-- Only if balance > 0, otherwise leave blank cell 
+                                            <button class="button green with-icon only-icon">
+                                                <span class="icons icon-wallet"></span>
+                                                Pay
+                                            </button>-->
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr class="active edit" ng-repeat="feesData in billData.total_fees.fees_details" >
+                                        <td>{{feesData.date |date:dateFormat}}</td>
+                                    	<td> 
+                                    		<span ng-repeat="description in feesData.description">
+                                    			{{description.charge_code}}
+                                    			<br />
+                                    		</span> 
+                                    	</td>
+                                    	<td class="description"> 
+                                    		<span ng-repeat="description in feesData.description">
+                                    			{{description.fees_desc}}
+                                    			<br />
+                                    		</span>
+                                    		<span ng-show="feesData.reference_text != ''" class="reference">
+                                    			{{feesData.reference_text}}
+                                    		</span>
+                                    	</td>
+                                        <td>
+                                        	<strong>
+                                        		<span ng-show= "description.fees_amount!=NIL">{{currencySymbol}}{{description.fees_amount | number: precisonTwo}}
+												</span>
+											</strong>
+										</td>
+                                        <td>
+                                        	<strong ng-show="feesData.credits!=''"> 
+												{{currencySymbol}}{{feesData.credits| number: precisonTwo}}
+                                        	</strong>
+                                        </td>
+                                        <td>
+                                            <div class="select">
+                                                <select>
+                                                	<!--ng-hide="isStandAlone" - verify-->
+                                                    <option value="" disabled>Move to bill</option>
+                                                    <option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
+                                                    <!--TODO - implement -- >
+                                                    <!-- <option value="{bills count + 1}">{bills count + 1} (Will create new bill)</option> -->
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="button purple with-icon only-icon" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)">
+                                                <span class="icons icon-pencil"></span>
+                                                Edit
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox inline" for="bill-{bill-id}-charge-{charge-id}"> 
+                                                <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked -->
+                                                <input id="bill-{bill-id}-charge-{charge-id}" value="{charge}" type="checkbox" />
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <!-- ... repeat for all charges in the bill -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- ... repeat for each bill -->
+            </div>
+        </div>
+    </div>
+
+</div>
+   
+
+</form>
