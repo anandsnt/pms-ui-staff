@@ -376,8 +376,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
 
             var id = $scope.reservationData.reservation_id;
-            if($scope.selectedEntity.entity_type == 'GROUP') id = $scope.selectedEntity.id;
-            var sendData = { "id" : id , "entity_type" : $scope.selectedEntity.entity_type };
+            var entity_type = "";
+            if($scope.selectedEntity.entity_type == 'GROUP') {
+                id = $scope.selectedEntity.id;
+                entity_type = 'GROUP';
+            }
+            var sendData = { "id" : id , "entity_type" : entity_type };
             
             $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, sendData, successCallback, errorCallback);
     };
