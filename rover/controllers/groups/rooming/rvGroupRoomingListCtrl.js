@@ -47,6 +47,21 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		};
 
 		/**
+		 * Function to decide whether to show a particular occupancy
+		 * based on the key that we getting from the function we are deciding
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowThisOccupancyAgainstRoomType = function(keyToCheck) {
+			//finding the selected room type data
+			var selectedRoomType = _.findWhere($scope.roomTypesAndData, 
+									{room_type_id: parseInt($scope.selectedRoomType)});	
+			//we are hiding the occupancy if selected room type is undefined
+			if (typeof selectedRoomType === "undefined") return false;
+			
+			return selectedRoomType[keyToCheck];
+		};
+
+		/**
 		 * Function to decide whether to show 'no guest one'
 		 * if guest card id is empty, will return true
 		 * @return {Boolean}
@@ -129,7 +144,13 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 	 		$scope.roomTypesAndData = _.map(data.result, function(data){
 				data.availableRoomCount = util.convertToInteger (data.total_rooms) - util.convertToInteger (data.total_pickedup_rooms);
 				return data;
-	 		});	 		
+	 		});	
+
+	 		//initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
+	 		$scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
+
+	 		//we have to populate possible number of rooms & occupancy against a 
+			$scope.changedSelectedRoomType ();
 	 	}
 
 	 	/**
@@ -159,7 +180,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 	 			from_date: 		$scope.fromDate,
 	 			to_date: 		$scope.toDate,
 	 			occupancy: 		$scope.selectedOccupancy,
-	 			no_of_reservations: $scope.numberOfReservations
+	 			no_of_reservations: $scope.numberOfRooms
 	 		};
 
 		 	//
@@ -227,8 +248,9 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$scope.totalResultCount = 0;
 
 			//some default selected values
-			$scope.numberOfReservations = '1';
+			$scope.numberOfRooms = '1';
 			$scope.selectedOccupancy = '1';
+			$scope.possibleNumberOfRooms = [];
 			
 		};
 		
@@ -321,6 +343,22 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$scope.page = 1;
 		};
 
+		/**
+		 * [changedSelectedRoomType description]
+		 * @return {[type]} [description]
+		 */
+		$scope.changedSelectedRoomType = function(){			
+			//finding roomTypeData from list of roomTypesData, will form the possible room number list [1,2,3,4]
+			var selectedRoomType = _.findWhere($scope.roomTypesAndData, 
+									{room_type_id: parseInt($scope.selectedRoomType)});
+
+			//forming [1,2,3,4]
+			$scope.possibleNumberOfRooms = _.range (1, util.convertToInteger(selectedRoomType.availableRoomCount) + 1);
+
+			//changing the default selected number of rooms
+			$scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
+		};
+
 	 	/**
 	 	 * [successCallBackOfFetchReservations description]
 	 	 * @param  {[type]} data [description]
@@ -333,6 +371,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			$scope.totalResultCount = data.total_count;
 			//if pagination end is undefined
 			if ($scope.end == undefined) { $scope.end = $scope.reservations.length; }
+			
 			runDigestCycle();
 	 		//we changed data, so
 			refreshScrollers();
@@ -445,10 +484,11 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			//we have a list of scope varibales which we wanted to initialize
 			initializeVariables();
 
+			//pagination
+			initialisePagination();
+
 			//get reservation list
 			$scope.fetchReservations();
 
-			//pagination
-			initialisePagination();
 		}();		
 	}]);
