@@ -7272,6 +7272,102 @@
                     }
                 }
 
+                &.forecast-reports {
+                    table-layout: fixed;
+
+                    .red { color: @red; }
+
+                    thead {
+                        tr {
+                            th {
+                                padding: 0;
+                                vertical-align: top;
+                                line-height: 35px;
+
+                                span {
+                                    color: @white;
+                                    padding: 0 10px;
+                                    margin-right: 5px;
+                                    background-color: darken(@grey2, 10);
+                                    height: 35px;
+                                    .calc-width(100, 5);
+                                    .show;
+                                    .nowrap();
+                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3)); 
+                                }
+                            }
+
+                            &.top-row {
+                                [colspan] { 
+                                    width: 30%;
+
+                                    span {
+                                        font-size: 16px;
+                                        text-align: center;
+                                        color: @white;
+                                        background-color: @gcard; 
+                                        .box-shadow(none); 
+                                    }    
+
+                                    &.break { width: 70%; }
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            &.weekend {
+                                td { 
+                                    color: @darkBlue;
+                                    background-color: rgba(0,0,0,.05); 
+
+                                    &.red { color: @red; }
+                                }
+                            }
+
+                            &.total {
+                                td { 
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    background-color: transparent;
+                                    vertical-align: top;
+                                    padding-top: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    .break { 
+                        position: relative;
+                        padding-right: 10px;
+
+                        span { 
+                            margin-right: 0;
+                            width: 100%;
+                        }
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            width: 10px;
+                            .extend-height(100, 10);
+                            .background(@white);
+                        }
+                    }
+
+                    .date { 
+                        width: 100px;
+                        
+                        span { 
+                            vertical-align: middle;
+                            .show;
+                        }
+                    }                
+                }
+
                 &.occupancy-footer { .hide; }
             }
 

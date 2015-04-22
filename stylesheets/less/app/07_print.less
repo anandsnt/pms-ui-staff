@@ -1050,6 +1050,58 @@ table {
                         }
                     }
                 }
+
+                &.forecast-reports {
+                    thead {
+                        th { 
+                            text-align: center; 
+
+                            &.date { background-color: transparent; }
+
+                            &.break { 
+                                position: relative;
+                                padding-right: 16pt;
+
+                                &:after {
+                                    content: "";
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    background: #fff;
+                                    .size(100%, 16pt);
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            td { 
+                                padding-bottom: 4pt;
+
+                                &.date {
+                                    span { .show; }
+                                }
+                            }
+                            
+
+                            &.weekend {
+                                td { 
+                                    color: @grey3;
+                                    font-style: italic;
+                                }
+                            }
+
+                            &.total {
+                                td { 
+                                    font-size: 11pt;
+                                    font-weight: 600;
+                                    border: 0;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             &.with-graphs {
