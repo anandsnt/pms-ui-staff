@@ -35,7 +35,7 @@
             <div class="registration-summary">
 
                 <!-- Bills Nav-->
-                <div class="bill-tabs scrollable">
+                <div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
                 	<ul class="wrapper" style="width{Outer lenght of all li items}px">
                         <li ng-class="showActiveBill($index)" ng-click="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
                             <a class="bill-toggle">
@@ -58,7 +58,7 @@
                     
                     <!-- Bill Summary -->
                     <div class="bill-summary-wrapper">  
-                        <div class="scrollable">
+                        <div class="scrollable" ng-iscroll="billDays">
                             <ul class="wrapper" style="width{Outer lenght of all li items}px">
                                 <li class="add-new">
                                     <a ng-click="openPostCharge()" class="button with-icon brand-colors">

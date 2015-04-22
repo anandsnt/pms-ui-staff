@@ -3,15 +3,13 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		BaseCtrl.call(this, $scope);
 
-		$s = $scope;
-
 		var initAccountTransactionsView = function() {
 			//Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
 			$scope.showPayButton = false;
 			$scope.setScroller('registration-content');
-			$scope.setScroller ('transaction-bill-tab-scroller', {scrollX: true});
+			$scope.setScroller ('bill-tab-scroller', {scrollX: true});
 			$scope.setScroller('billDays', {scrollX: true});
 			$scope.showMoveCharges = $scope.hasPermissionToMoveCharges();
 
@@ -26,7 +24,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				$scope.$emit('hideloader');
 				$scope.transactionsDetails = data;
 				$scope.refreshScroller('registration-content');
-				$scope.refreshScroller('transaction-bill-tab-scroller');
+				$scope.refreshScroller('bill-tab-scroller');
 				$scope.refreshScroller('billDays');
 
 				/*
