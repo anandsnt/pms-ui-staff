@@ -161,7 +161,7 @@
                         <input id="{guest-id}" value="{Guest}" type="checkbox">
                     </label>
                 </div>
-                <a ng-click="showEditReservationPopup()">
+                <a ng-click="showEditReservationPopup(reservation)">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
                             {{reservation.lastname}}, {{reservation.firstname}}
