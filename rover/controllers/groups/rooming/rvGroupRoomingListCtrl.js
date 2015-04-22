@@ -167,7 +167,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
             $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
-
+            console.log ($scope.selectedRoomType);
             //we have to populate possible number of rooms & occupancy against a 
             $scope.changedSelectedRoomType();
         }
@@ -178,7 +178,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
-            $scope.reservations = data.results;
+            _.each(data.results, function(reservation){
+                $scope.reservations.push (reservation);
+            });
 
             //total result count
             $scope.totalResultCount = data.total_count;
