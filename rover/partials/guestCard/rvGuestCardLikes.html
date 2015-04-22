@@ -1,16 +1,11 @@
-<form outside-click-handler  ng-controller="RVLikesController" name="likes" method="post" id="likes"   class="form card-tab scrollable" ng-show="current == 'guest-like'"   >
-
-    <div id="guest_likes"  ng-iscroll='likes_info' ng-iscroll-delay="1000" class="guest-likes-scroll" ng-iscroll-form='true' style="height:{{guestCardHeight - dimensionsLookup.cardTabContentOffset}}px">      
-    <div class="wrapper" >
-        <div style="display: table;width:100%;border-collapse: collapse;">
-        <div style="display: table-cell; vertical-align: top;">
+<form outside-click-handler ng-controller="RVLikesController" name="likes" method="post" id="likes" class="form card-tab scrollable" ng-show="current == 'guest-like'" ng-iscroll='likes_info' ng-iscroll-delay="1000" ng-iscroll-form="true">
+    <div class="wrapper">
         <div class="entry full-width">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         </div>
 
         <div class="holder left">
             <strong class="h3" ng-show="guestCardData.likes.newspapers.length >0 || guestCardData.likes.roomtype.length >0 || guestCardData.likes.preferences.length >0" translate>PREFERENCES </strong>
-            
             
             <div class="entry full-width" ng-show="guestCardData.likes.newspapers.length >0">
                 <label for="newspaper" translate>NEWSPAPER</label>
@@ -33,62 +28,42 @@
                 </select>
             </div>
             
-            <div class="entry radio-check float" ng-show="guestCardData.likes.preferences.length >0" ng-repeat="preferences in guestCardData.likes.preferences">
+            <div class="entry radio-check" ng-show="guestCardData.likes.preferences.length >0" ng-repeat="preferences in guestCardData.likes.preferences">
                 <label for="floor1">{{preferences.name}}</label>
-                <!-- <label class="checkbox" ng-repeat="preferenceValues in preferences.values" ng-class="{'checked': preferenceValues.isChecked}">
-                    <span class="icon-form icon-checkbox"  ng-class="{'checked': preferenceValues.isChecked}"></span>
-                    <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference($parent.$index, $index)" ng-model="preferenceValues.isChecked"/>
-                    {{preferenceValues.details}}
-                </label> -->
-                
-                
-                <div class="entry radio-check" ng-repeat="x in getHalfArrayPref(preferences.values) track by $index">
-	                 <label class="checkbox preference-div"  ng-class="{'checked': preferences.values[$index*2].isChecked}">
-	                    <span class="icon-form icon-checkbox"  ng-class="{'checked': preferences.values[$index*2].isChecked}"></span>
-	                    <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference($parent.$index, $index*2)" ng-model="preferences.values[$index*2].isChecked"/>
-	                    <!-- {{preferenceValues.details}} -->
-	                     {{preferences.values[$index*2].details}}
-	                </label>
-	                
-	                <label class="checkbox preference-div"  ng-class="{'checked': preferences.values[$index*2+1].isChecked}">
-	                    <span class="icon-form icon-checkbox"  ng-class="{'checked': preferences.values[$index*2+1].isChecked}"></span>
-	                    <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference($parent.$index, $index*2+1)" ng-model="preferences.values[$index*2+1].isChecked"/>
-	                    <!-- {{preferenceValues.details}} -->
-	                     {{preferences.values[$index*2+1].details}}
-	                </label>
-	                <br /> <br />
-               </div>
+                <div class="check-block" ng-repeat="x in getHalfArrayPref(preferences.values) track by $index">
+                    <label class="checkbox"  ng-class="{'checked': preferences.values[$index*2].isChecked}">
+                        <span class="icon-form icon-checkbox"  ng-class="{'checked': preferences.values[$index*2].isChecked}"></span>
+                        <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference($parent.$index, $index*2)" ng-model="preferences.values[$index*2].isChecked"/>
+                        <!-- {{preferenceValues.details}} -->
+                        {{preferences.values[$index*2].details}}
+                    </label>
+                    <label class="checkbox" ng-class="{'checked': preferences.values[$index*2+1].isChecked}">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': preferences.values[$index*2+1].isChecked}"></span>
+                        <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference($parent.$index, $index*2+1)" ng-model="preferences.values[$index*2+1].isChecked"/>
+                        <!-- {{preferenceValues.details}} -->
+                        {{preferences.values[$index*2+1].details}}
+                    </label>
+                </div>
             </div>
-
         </div>
         
-
         <div class="holder right" ng-show="shouldShowRoomFeatures(guestCardData.likes.room_features)">
             <strong class="h3" translate>ROOM_FEATURES</strong>
-            <span ng-repeat="roomFeatures in guestCardData.likes.room_features" >
+            <span ng-repeat="roomFeatures in guestCardData.likes.room_features">
 
                <div class="entry radio-check" ng-repeat="x in getHalfArray(roomFeatures.values) track by $index">
-
                    <label class="checkbox" ng-class="{'checked': roomFeatures.values[$index*2].isSelected}">
                        <span class="icon-form icon-checkbox"  ng-class="{'checked': roomFeatures.values[$index*2].isSelected}"></span>
                        <input ng-model="roomFeatures.values[$index*2].isSelected" type="checkbox" />
                        {{roomFeatures.values[$index*2].details}}
                    </label >
-
                    <label class="checkbox" ng-if="showLabel(roomFeatures.values[$index*2+1].details)" ng-class="{'checked': roomFeatures.values[$index*2 +1].isSelected}">
                        <span class="icon-form icon-checkbox"  ng-class="{'checked': roomFeatures.values[$index*2 + 1].isSelected}"></span>
                        <input ng-model="roomFeatures.values[$index*2+1].isSelected" type="checkbox" />
                        {{roomFeatures.values[$index*2+1].details}}
                    </label >
-
-
                </div>
            </span>
        </div>
-     </div>
    </div>
-   </div>
-</div>
 </form>
-
-

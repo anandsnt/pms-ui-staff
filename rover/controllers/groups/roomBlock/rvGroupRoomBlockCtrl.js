@@ -525,7 +525,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		var showOverBookingPopup = function(){
 			// Show overbooking message
 			ngDialog.open({
-				template: '/assets/partials/groups/rvGroupWarnOverBookingPopup.html',
+				template: '/assets/partials/groups/roomBlock/rvGroupWarnOverBookingPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
@@ -539,7 +539,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		var openAddRoomsAndRatesPopup = function() {
 			ngDialog.open({
-				template: '/assets/partials/groups/rvGroupAddRoomAndRatesPopup.html',
+				template: '/assets/partials/groups/roomBlock/rvGroupAddRoomAndRatesPopup.html',
 				scope: $scope,
 				controller: 'rvGroupAddRoomsAndRatesPopupCtrl'
 			});
@@ -733,12 +733,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 		
 		/**
-		 * after updating the room block start/end/hold status by calling
+		 * when a tab switch is there, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails		 
 		 */
-		$scope.$on("UPDATED_GROUP_INFO", function(){
+		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
+			if (activeTab !== 'ROOM_BLOCK') return;
 			$scope.fetchRoomBlockGridDetails();
 		});
+
+
 		/**
 		* Success callback of room block details API
 		*/
@@ -949,6 +952,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//updating the left side menu
 			$scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
 
+			//IF you are looking for where the hell the API is CALLING
+			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
+			
 			//date related setups and things
 			setDatePickers();
 

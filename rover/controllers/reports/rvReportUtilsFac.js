@@ -27,7 +27,69 @@ sntRover.factory('RVReportUtilsFac', [
             'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
             'RESERVATIONS_BY_USER'         : 'Reservations By User',
             'DAILY_TRANSACTIONS'           : 'Daily Transactions',
-            'DAILY_PAYMENTS'               : 'Daily Payments'
+            'DAILY_PAYMENTS'               : 'Daily Payments',
+            'FORECAST_BY_DATE'             : 'Forecast',
+            'ROOMS_QUEUED'                 : 'Rooms Queued'
+        };
+
+
+
+
+        // here we are trying to create CC CG objects
+        // with payments CC CG
+        // or without CC CG
+        var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting) {
+            var newChargeGroupsAry = [],
+                newChargeCodesAry  = [],
+                paymentId          = null,
+                cgAssociated       = false,
+                paymentEntry       = {};
+
+            if ( setting == 'REMOVE_PAYMENTS' ) {
+                _.each(chargeGroupsAry, function (each) {
+                    if ( each.name !== 'Payments' ) {
+                        newChargeGroupsAry.push(each);
+                    } else {
+                        paymentId = each.id;
+                    };
+                });
+
+                _.each(chargeCodesAry, function (each) {
+                    cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
+                        return idObj.id == paymentId;
+                    });
+
+                    if ( !cgAssociated ) {
+                        newChargeCodesAry.push(each);
+                    };
+                });
+            }
+
+            if ( setting == 'ONLY_PAYMENTS' ) {
+                paymentEntry = _.find(chargeGroupsAry, function(each) {
+                    return each.name == 'Payments';
+                });
+
+                if ( !!paymentEntry ) {
+                    paymentId = paymentEntry.id;
+                    newChargeGroupsAry.push(paymentEntry);
+
+                    _.each(chargeCodesAry, function (each) {
+                        cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
+                            return idObj.id == paymentId;
+                        });
+
+                        if ( !!cgAssociated ) {
+                            newChargeCodesAry.push(each);
+                        };
+                    });
+                };
+            };
+
+            return {
+                'chargeGroups' : newChargeGroupsAry,
+                'chargeCodes'  : newChargeCodesAry
+            };
         };
 
 
@@ -109,6 +171,14 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-transactions';
                     break;
 
+                case __reportNames['FORECAST_BY_DATE']:
+                    reportItem['reportIconCls'] = 'icon-report ';
+                    break;
+
+                case __reportNames['ROOMS_QUEUED']:
+                    reportItem['reportIconCls'] = 'icons icon-queued';
+                    break;
+
                 default:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
@@ -162,7 +232,6 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                    reportItem['hasMarketsList'] = true;
                     reportItem['hasDateLimit'] = false;
                     break;
 
@@ -176,6 +245,11 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['DAILY_TRANSACTIONS']:
+                case __reportNames['DAILY_PAYMENTS']:
+                    reportItem['hasDateLimit'] = false;
+                    break;
+
+                case __reportNames['FORECAST_BY_DATE']:
                     reportItem['hasDateLimit'] = false;
                     break;
 
@@ -195,13 +269,23 @@ sntRover.factory('RVReportUtilsFac', [
         factory.processFilters = function ( reportItem, data ) {
             var _hasFauxSelect,
                 _hasDisplaySelect,
-                _hasMarketSelect,
-                _hasGuaranteeSelect,
-                _hasChargeGroupSelect,
-                _hasChargeCodeSelect;
+                _hasGuaranteeSelect;
+
+            // pre-process charge groups and charge codes
+            var _processed_CG_CC = {};
 
             // going around and taking a note on filters
             _.each(reportItem['filters'], function(filter) {
+
+                if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(_processed_CG_CC) ) {
+                    if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+                        _processed_CG_CC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
+                    };
+
+                    if ( reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
+                        _processed_CG_CC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                    };
+                };
 
                 // check for date filter and keep a ref to that item
                 if ( filter.value === 'DATE_RANGE' ) {
@@ -294,14 +378,18 @@ sntRover.factory('RVReportUtilsFac', [
                 if ( filter.value === 'INCLUDE_VARIANCE' ) {
                     reportItem['hasVariance'] = filter;
                     _hasFauxSelect = true;
-                    _hasMarketSelect = true;
                 };
 
                 // INCLUDE_LASTYEAR
                 if ( filter.value === 'INCLUDE_LAST_YEAR' ) {
                     reportItem['hasLastYear'] = filter;
                     _hasFauxSelect = true;
-                    _hasMarketSelect = true;
+                };
+
+                // INCLUDE_VARIANCE
+                if ( filter.value === 'INCLUDE_ORIGIN' ) {
+                    reportItem['hasOrigin'] = filter;
+                    _hasFauxSelect = true;
                 };
 
                 // check for include cancelled filter and keep a ref to that item
@@ -344,7 +432,7 @@ sntRover.factory('RVReportUtilsFac', [
                 };
 
                 // check for include company/ta/group filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' ) {
+                if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     reportItem['hasIncludeComapnyTaGroup'] = filter;
                 };
 
@@ -395,25 +483,116 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // check for include guarantee type filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
-                    reportItem['hasGuaranteeType'] = filter;
-                    reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
-                    _hasGuaranteeSelect = true;
+                    // reportItem['hasGuaranteeType'] = filter;
+                    // reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
+                    // _hasGuaranteeSelect = true;
+
+                    if ( data.guaranteeTypes.length ) {
+                        reportItem['hasGuaranteeType'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Guarantees',
+                            title        : 'All Selected',
+                            data         : angular.copy( data.guaranteeTypes )
+                        };
+
+                        // since select all is true
+                        _.each(reportItem['hasGuaranteeType']['data'], function(each) {
+                            each.selected = true;
+                        });
+                    };
                 };
 
                 // check for "by charge group" and keep a ref to that item
+                // create the filter option only when there is any data
                 if ( filter.value === 'INCLUDE_CHARGE_GROUP' ) {
-                    reportItem['hasByChargeGroup'] = filter;
-                    reportItem['chargeGroups'] = angular.copy( data.chargeGroups );
-                    _hasChargeGroupSelect = true;
+                    if ( _processed_CG_CC.chargeGroups.length ) {
+                        reportItem['hasByChargeGroup'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Groups',
+                            title        : 'All Selected',
+                            data         : angular.copy( _processed_CG_CC.chargeGroups )
+                        };
 
-                    console.log(reportItem);
+                        // since select all is true
+                        _.each(reportItem['hasByChargeGroup']['data'], function(each) {
+                            each.selected = true;
+                        });
+                    };
                 };
 
                 // check for "by charge group" and keep a ref to that item
+                // create the filter option only when there is any data
                 if ( filter.value === 'INCLUDE_CHARGE_CODE' ) {
-                    reportItem['hasByChargeCode'] = filter;
-                    reportItem['chargeCodes'] = angular.copy( data.chargeCodes );
-                    _hasChargeCodeSelect = true;
+                    if ( _processed_CG_CC.chargeCodes.length ) {
+                        reportItem['hasByChargeCode'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Codes',
+                            title        : 'All Selected',
+                            data         : angular.copy( _processed_CG_CC.chargeCodes )
+                        };
+
+                        // since select all is true
+                        _.each(reportItem['hasByChargeCode']['data'], function(each) {
+                            each.selected = true;
+                        });
+                    };
+                };
+
+                // check for "show markets" and keep a ref to that item
+                // create the filter option only when there is any data
+                if ( filter.value === 'CHOOSE_MARKET' ) {
+                    if ( data.markets.length ) {
+                        reportItem['hasMarketsList'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Markets',
+                            title        : 'Select Markets',
+                            data         : angular.copy( data.markets )
+                        };
+                    };
+                };
+
+                // check for "show sources" and keep a ref to that item
+                // create the filter option only when there is any data
+                if ( filter.value === 'CHOOSE_SOURCE' ) {
+                    if ( data.sources.length ) {
+                        reportItem['hasSourcesList'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Sources',
+                            title        : 'Select Sources',
+                            data         : angular.copy( data.sources )
+                        };
+                    };
+                };
+
+                // check for "show origins" and keep a ref to that item
+                // create the filter option only when there is any data
+                if ( filter.value === 'CHOOSE_BOOKING_ORIGIN' ) {
+                    if ( data.origins.length ) {
+                        reportItem['hasOriginsList'] = {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Origins',
+                            title        : 'Select Origins',
+                            data         : angular.copy( data.origins )
+                        };
+                    };
                 };
             });
 
@@ -428,27 +607,9 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['displayTitle'] = 'Select';
             };
 
-            if ( _hasMarketSelect ) {
-                reportItem['selectMarketsOpen'] = false;
-                reportItem['displayTitle'] = 'Select';
-                reportItem['marketTitle'] = 'Select';
-            };
-
             if ( _hasGuaranteeSelect ) {
                 reportItem['selectGuaranteeOpen'] = false;
                 reportItem['guaranteeTitle'] = 'Select';
-            };
-
-            if ( _hasChargeGroupSelect ) {
-                reportItem['selectChargeGroupOpen'] = false;
-                reportItem['chargeGroupTitle'] = 'All Selected';
-                reportItem['allChargeGroupSelected'] = true;
-            };
-
-            if ( _hasChargeCodeSelect ) {
-                reportItem['selectChargeCodeOpen'] = false;
-                reportItem['chargeCodeTitle'] = 'All Selected';
-                reportItem['allChargeCodeSelected'] = true;
             };
         };
 
@@ -553,7 +714,8 @@ sntRover.factory('RVReportUtilsFac', [
 
             // need to reorder the sort_by options
             // for daily transactions in the following order
-            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ||
+                    reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
                 var chargeGroup = angular.copy( reportItem['sort_fields'][1] ),
                     chargeCode  = angular.copy( reportItem['sort_fields'][0] ),
                     revenue     = angular.copy( reportItem['sort_fields'][3] ),

@@ -309,7 +309,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     
 	$scope.handleCloseDialog = function(){
 		$scope.$emit('HANDLE_MODAL_OPENED');
-		$scope.closeDialog();
+		$scope.closeDialog();         
+        $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 
     /**
