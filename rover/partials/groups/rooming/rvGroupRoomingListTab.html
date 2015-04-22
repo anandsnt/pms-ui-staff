@@ -124,8 +124,9 @@
     <ul class="rooming-list-header" ng-show="!shouldShowNoReservations()">
         <li class="check">
             <label class="checkbox inline" for="rooming-list-all"> 
-                <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
-                <input id="rooming-list-all" value="{value}" type="checkbox" />
+                <span class="icon-form icon-checkbox" 
+                    ng-class="{'checked': whetherAllReservationsSelected(), 'semi-checked': whetherReservationsArePartiallySelected()}"></span> <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
+                <input id="rooming-list-all" value="{value}" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
             </label>
         </li>
         <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'GROUP_ROOM'|translate}}</li>
@@ -157,9 +158,9 @@
             <li class="reservation rooming-list" ng-repeat="reservation in reservations">
 
                 <div class="check">
-                    <label class="checkbox inline" for="{guest-id}"> 
-                        <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked -->
-                        <input id="{guest-id}" value="{Guest}" type="checkbox">
+                    <label class="checkbox inline" for="guest-id"> 
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span> <!-- Add class "checked" if checked -->
+                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)">
                     </label>
                 </div>
                 <a ng-click="showEditReservationPopup()">

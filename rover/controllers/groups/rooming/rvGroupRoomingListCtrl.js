@@ -278,8 +278,11 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			//default sorting fields & directions
 			$scope.sorting_field 	= 'room_no';
 			$scope.sort_dir 		= 'ASC';
+
+			//selected reservation list
+			$scope.selected_reservations = [];
 		};
-		
+
 		/**
 		 * should we show pagination area
 		 * @return {Boolean}
@@ -355,6 +358,7 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 			//yes we are calling the API
 			$scope.fetchReservations();			
 		};
+
 		/**
 		 * Pagination things
 		 * @return {undefined}
@@ -367,6 +371,67 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 
 			//what is page that we are requesting in the API
 			$scope.page = 1;
+		};
+
+		/**
+		 * to add or remove from selected reservation
+		 * used to do show button enabling/disabling
+		 * @param {Object} reservation [description]
+		 */
+		$scope.addOrRemoveFromSelectedReservation = function(reservation){
+			var isReservaionInSelectedReservation = _.findWhere($scope.selected_reservations, 
+									{id: (reservation.id)});
+
+			if (isReservaionInSelectedReservation) {
+				var index = _.indexOf(_.pluck($scope.selected_reservations, "id"), reservation.id);
+				$scope.selected_reservations.splice (index, 1);
+			}
+			else {
+				$scope.selected_reservations.push (reservation);
+			}
+		};
+
+		/**
+		 * whether the reservation in selected reservation
+		 * @param  {Object}  reservation [description]
+		 * @return {Boolean}             [description]
+		 */
+		$scope.isReservationInSelectedReservation = function(reservation){
+			var isReservaionInSelectedReservation = _.findWhere($scope.selected_reservations, 
+									{id: (reservation.id)});
+			return (typeof isReservaionInSelectedReservation !== "undefined");
+		};
+
+		/**
+		 * whether all reservations are selected or not
+		 * @return {Boolean} [description]
+		 */
+		$scope.whetherAllReservationsSelected = function(){
+			return ($scope.selected_reservations.length === $scope.reservations.length);
+		};
+
+		/**
+		 * to select all reservation or unselect all reservation
+		 */
+		$scope.selectOrUnSelectAllReservation = function(){
+			var allSelected = $scope.whetherAllReservationsSelected();
+			
+			//un selecting all reservations
+			if (allSelected) {
+				$scope.selected_reservations = [];
+			}
+			else {
+				$scope.selected_reservations = _.extend ([], $scope.reservations);
+			}
+		};
+
+		/**
+		 * whether all reservations are selected or not
+		 * @return {Boolean} [description]
+		 */
+		$scope.whetherReservationsArePartiallySelected = function(){
+			return ($scope.selected_reservations.length < $scope.reservations.length &&
+				$scope.selected_reservations.length > 0);
 		};
 
 		/**
@@ -656,7 +721,6 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 
 			//pagination
 			initialisePagination();
-
 
 			//calling initially required APIs
 			callInitialAPIs();
