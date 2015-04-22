@@ -24,6 +24,14 @@ sntRover.service('RVreportsSrv', [
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						this.cacheReportList = data;
+
+						// Support for Occupany from UI for now..
+						// This filter will be provided by the API in future
+						var occupanyReport = _.where(this.cacheReportList.results, { title: 'Occupancy & Revenue Summary' });
+						occupanyReport[0].filters.push({
+							value: "CHOOSE_MARKET", description: "Choose Market"
+						});
+
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {
 						deferred.reject(data);

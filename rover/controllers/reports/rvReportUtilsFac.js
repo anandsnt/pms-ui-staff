@@ -28,7 +28,8 @@ sntRover.factory('RVReportUtilsFac', [
             'RESERVATIONS_BY_USER'         : 'Reservations By User',
             'DAILY_TRANSACTIONS'           : 'Daily Transactions',
             'DAILY_PAYMENTS'               : 'Daily Payments',
-            'FORECAST_BY_DATE'             : 'Forecast'
+            'FORECAST_BY_DATE'             : 'Forecast',
+            'ROOMS_QUEUED'                 : 'Rooms Queued'
         };
 
 
@@ -172,6 +173,10 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case __reportNames['FORECAST_BY_DATE']:
                     reportItem['reportIconCls'] = 'icon-report ';
+                    break;
+
+                case __reportNames['ROOMS_QUEUED']:
+                    reportItem['reportIconCls'] = 'icons icon-queued';
                     break;
 
                 default:
@@ -544,7 +549,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // check for "show markets" and keep a ref to that item
                 // create the filter option only when there is any data
-                if ( filter.value === 'SHOW_MARKET' ) {
+                if ( filter.value === 'CHOOSE_MARKET' ) {
                     if ( data.markets.length ) {
                         reportItem['hasMarketsList'] = {
                             type         : 'FAUX_SELECT',
@@ -560,7 +565,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // check for "show sources" and keep a ref to that item
                 // create the filter option only when there is any data
-                if ( filter.value === 'SHOW_SOURCE' ) {
+                if ( filter.value === 'CHOOSE_SOURCE' ) {
                     if ( data.sources.length ) {
                         reportItem['hasSourcesList'] = {
                             type         : 'FAUX_SELECT',
@@ -576,7 +581,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // check for "show origins" and keep a ref to that item
                 // create the filter option only when there is any data
-                if ( filter.value === 'SHOW_ORIGIN' ) {
+                if ( filter.value === 'CHOOSE_BOOKING_ORIGIN' ) {
                     if ( data.origins.length ) {
                         reportItem['hasOriginsList'] = {
                             type         : 'FAUX_SELECT',

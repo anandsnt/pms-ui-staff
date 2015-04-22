@@ -103,7 +103,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}, {
 						title: "MENU_CASHIER",
 						action: "staff#/staff/financials/journal/2"
-					}]
+					}, {
+		            	title: "MENU_ACCOUNTS",
+		            	action: "staff#/staff/accounts/search",
+		            	menuIndex: "accounts",
+		            	hidden: $rootScope.isHourlyRatesEnabled
+		       	 	}]
 				}, {
 			        title: "MENU_GROUPS",
 			        //hidden: true,
