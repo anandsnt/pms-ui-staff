@@ -5,9 +5,10 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchTransactionDetails = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/posting_accounts/transactions';
+			//url = '/api/posting_accounts/' + params.account_id + '/bill_card'
+			url = '/api/posting_accounts/transactions';
 
-			rvBaseWebSrvV2.getJSON(url, params)
+			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
