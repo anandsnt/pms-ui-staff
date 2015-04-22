@@ -4911,6 +4911,15 @@
                             .size(100%, 1px);
                         }
                     }
+
+                    &.brand-colors { 
+                        position: relative;
+                        font-size: 11px;
+                        line-height: 1em;
+                        width: 80px;
+
+                        .icons { top: 8px; }
+                    }
                 }
             } 
 
@@ -5021,16 +5030,23 @@
 
                     .type,
                     .name {
-                        font-size: 18px;
-                        font-weight: 600;
                         line-height: 40px;
                         text-transform: none;
                         .show;
                         .nowrap();
                     }
 
-                    .name { max-width: 240px; }
-                    .type { max-width: 160px; }
+                    .name { 
+                        font-size: 14px;
+                        color: @grey4;
+                        max-width: 240px; 
+                    }
+
+                    .type { 
+                        font-size: 18px;
+                        font-weight: 600;
+                        max-width: 160px; 
+                    }
 
                     .icon-swiped { margin-top: 3px; }
 
