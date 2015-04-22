@@ -362,7 +362,36 @@
     "ROOM_BLOCK_SUMMARY" : "Room Block Summary",
     "ROOM_RELEASE_DATE" : "Room Release Date",
     "RELEASE_NOW" : "Release Now",
-    "GROUP_APR" :"Actual / Potential Revenue"
+    "GROUP_APR" :"Actual / Potential Revenue",
+    "GROUP_ADD_RESERVATIONS": "Add Reservations",
+    "GROUP_NO__OF_ROOMS": "No. of Rooms",
+    "GROUP_ROOM_TYPE": "Room Type",
+    "GROUP_OCCUPANCY": "Occupancy",
+    "GROUP_SINGLE": "Single",
+    "GROUP_DOUBLE": "Double",
+    "GROUP_TRIPLE": "Triple",
+    "GROUP_QUADRUPLE": "Quadruple",
+    "GROUP_NO_RESERVATIONS":"No Reservations",
+    "GROUP_ADD_RESERVATIONS_TO_ROOMING_LIST":"Add reservations to Rooming List",
+    "GROUP_ROOM":"Room",
+    "GROUP_PENDING":"Pending",
+    "GROUP_UNASSIGNED":"Unassigned",
+    "GROUP_CHECK-IN":"check-in",
+    "GROUP_CHECK-OUT":"check-out",
+    "GROUP_GUEST_NAME":"Guest Name",
+    "GROUP_ARRIVAL":"Arrival",
+    "GROUP_DEPARTURE":"Departure",
+    "GROUP_ROOM_TYPE":"Room Type",
+    "GROUP_STATUS":"Status",
+    "GROUP_PICKED_UP":"Picked Up",
+    "GROUP_CHECK_IN":"Check In",
+    "GROUP_CHECK_OUT":"Check Out",
+    "GROUP_AUTO_ASSIGN_ROOMS":"Auto-Assign Rooms",
+    "GROUP_EMAIL":"Email",
+    "GROUP_PRINT":"Print",
+    "GROUP_DOWNLOAD":"Download"
+
+
 
 
 
