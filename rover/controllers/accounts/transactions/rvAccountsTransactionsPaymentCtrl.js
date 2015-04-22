@@ -127,7 +127,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				successCallBack: onPaymnentFetchSuccess,
 				failureCallBack: onPaymnentFetchFailure,
 				params: {
-					direct_bill: false
+					direct_bill: $scope.isFromGroups
 				}
 			});
 		};

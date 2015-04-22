@@ -3,7 +3,9 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 
 		BaseCtrl.call(this, $scope);
-
+		
+		//check if transactions is from groups or not
+		$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab ==="TRANSACTIONS");
 
 		/**
 		* function to check whether the user has permission
