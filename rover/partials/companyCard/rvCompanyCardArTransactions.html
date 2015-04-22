@@ -1,8 +1,7 @@
 <!-- Company Card Tab - AR Transactions -->
-<form method="post" action="{action}" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab transactions" ng-click="clearErrorMessage()">
+<form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions" ng-click="clearErrorMessage()">
     
     <div class="tab-header">
-
         <div class="search-form has-dates" ng-class="{'open':filterData.filterActive}">
             <div class="entry filter">
                 <button ng-click="clickedFilter()" type="button" class="filter button with-icon only-icon" ng-class="{'active':filterData.filterActive}">
@@ -43,7 +42,6 @@
                 </div>
             </div>
         </div>
-        
         <ul class="totals">
             <li>
                 <div class="data">
@@ -76,13 +74,12 @@
                 </button>
             </li>
         </ul>
-
     </div>
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    
     <!-- If there are open bills: -->
     <div class="tab-details scrollable" ng-class="{ 'with-pagination': ( arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0 )}" ng-show="arTransactionDetails.ar_transactions.length > 0" ng-iscroll="ar-transaction-list">
         <div class="wrapper">
-            
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <ul class="search-results">
                 <li class="reservation transaction" ng-click="goToReservationDetails($index, $event)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
                     
@@ -125,7 +122,6 @@
                     </div>
                 </li>
             </ul>
-
          </div>
     </div>
 
@@ -137,6 +133,7 @@
             <span class="h2" translate>OUTSTANDING_GUEST_BILLS_PAID</span>
         </div>
     </div>
+
     <div class="search-pagination" ng-show="arTransactionDetails.total_count > filterData.perPage && arTransactionDetails.ar_transactions.length > 0">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>

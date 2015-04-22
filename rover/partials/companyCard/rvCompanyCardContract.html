@@ -1,8 +1,8 @@
-<form id="cc-contracts" name="cc-contracts" class="form card-tab contracts"  ng-show="currentSelectedTab == 'cc-contracts'">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+<form id="cc-contracts" name="cc-contracts" class="form card-tab inner-header contracts" ng-show="currentSelectedTab == 'cc-contracts'">
+    
     <div id="cc-contracts-header" class="tab-header with-filters">
-        <div class="entry">
-            <div class="select" ng-hide="contractList.isAddMode">
+        <div class="entry" ng-hide="contractList.isAddMode">
+            <div class="select" >
                 <select iscroll-stop-propagation name="company-contract" ng-model="contractList.contractSelected">
                     <option value="" class="placeholder" disabled="" translate>SELECT_CONTRACT</option>
                     <optgroup label="Current">
@@ -16,9 +16,9 @@
                 	</optgroup>
                 </select>
             </div>
-            <div class="" ng-show="contractList.isAddMode" >
-                <input ng-model="addData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{addData.contract_name}}" type="text" />
-            </div>
+        </div>
+        <div class="entry" ng-show="contractList.isAddMode">
+            <input ng-model="addData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{addData.contract_name}}" type="text" />
         </div>
         <div class="actions" ng-hide="contractList.isAddMode">
             <button id="company-new-contract" type="button" class="button green" ng-click="AddNewButtonClicked()" translate>NEW_CONTRACT</button>
@@ -30,7 +30,9 @@
     </div>
     
     <div id="cc-contracts-content" class="tab-details scrollable" ng-iscroll="cardContractsScroll" ng-iscroll-delay="1000">    	
-    	<div class="wrapper" ng-class="{'overlay':hasOverlay==true}">
+    	
+        <div class="wrapper" ng-class="{'overlay':hasOverlay==true}">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="holder left" ng-hide="contractList.isAddMode">
                 <strong class="h3" translate>DETAILS</strong>
                 <div class="entry margin">
@@ -186,7 +188,7 @@
                 </ul>
             </div>
             
-            <div id="company-cards-occupancy" class="occupancy" ng-hide="contractList.isAddMode">
+            <div id="company-cards-occupancy" class="occupancy-graph" ng-hide="contractList.isAddMode">
 		        <strong class="h3" translate>OCCUPANCY</strong>
 		        <div class="occgraph-outer" style='width: 100%'>
 		            <highchart id="occGraphContainer" config="highchartsNG"></highchart>
