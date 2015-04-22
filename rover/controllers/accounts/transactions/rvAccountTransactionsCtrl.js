@@ -246,7 +246,9 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 					swipedCardData.token = tokenValue;
 					processSwipedData(swipedCardData);
 				};
-				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+				if($scope.paymentModalOpened){
+					$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+				};
 		});
 
 
