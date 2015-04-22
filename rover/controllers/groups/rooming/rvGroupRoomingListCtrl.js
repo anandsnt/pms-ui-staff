@@ -89,6 +89,14 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 		};
 
 		/**
+		* util function to check whether a string is empty
+		* we are assigning it as util's isEmpty function since it is using in html
+		* @param {String/Object}
+		* @return {boolean}
+		*/
+		$scope.isEmpty = util.isEmpty;
+
+		/**
 		* we want to display date in what format set from hotel admin
 		* @param {String/DateObject}
 		* @return {String}
@@ -453,6 +461,24 @@ sntRover.controller('rvGroupRoomingListCtrl',	[
 				successCallBack: 	successCallBackOfFetchReservations     		
 			};
 			$scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);			
+		};
+
+		/**
+		* Function to clear from Date
+		* @return {None}
+		*/
+		$scope.clearFromDate = function(){
+			$scope.fromDate = '';			
+			runDigestCycle();			
+		};
+
+		/**
+		* Function to clear to Date
+		* @return {None}
+		*/
+		$scope.clearToDate = function(){
+			$scope.toDate = '';
+			runDigestCycle();			
 		};
 
 		/**

@@ -51,7 +51,8 @@
         <div class="entry date-range">
             <div class="has-datepicker">
                 <label for="rooming-date-from" translate>FROM</label>
-                <button class="clear-query" ng-class="{'visible': !isEmpty(fromDate)}"> <!-- Add class "visible" when date is selected -->
+                <button class="clear-query" ng-class="{'visible': !isEmpty(fromDate)}" 
+                    ng-click="clearFromDate()"> <!-- Add class "visible" when date is selected -->
                     <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
                 </button>
                 <input id="rooming-date-from" type="text" 
@@ -63,7 +64,7 @@
             </div>
             <div class="has-datepicker">
                 <label for="rooming-date-to" translate>TO</label>
-                <button class="clear-query" ng-class="{'visible': !isEmpty(toDate)}"> <!-- Add class "visible" when date is selected -->
+                <button class="clear-query" ng-class="{'visible': !isEmpty(toDate)}" ng-click="clearToDate()"> <!-- Add class "visible" when date is selected -->
                     <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
                 </button>
                 <input id="rooming-date-to" type="text" class="range-datepicker red" readonly 
