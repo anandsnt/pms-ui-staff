@@ -18,14 +18,14 @@
                   data-jqyoui-options="{revert: 'invalid', helper: 'clone',appendTo: 'body'}" 
 
                   jqyoui-draggable="{index: {{submenu.id}}, placeholder:'keep', animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}" 
-
+                  
                   ng-model="selectedMenu.components" 
                   ng-click="clickedMenuItem($event, submenu.state)" 
                   ng-class="{'moved': submenu.is_bookmarked}">
                   {{submenu.name}}
                </a>
 
-               <a class="text" data-type="load-listing" ng-click="clickedMenuItem($event, submenu.state)">{{submenu.name}}</a>
+               <a class="text" data-type="load-listing" ng-click="clickedMenuItem($event, submenu.state); cacheInterfaceId({{submenu.interfaceTypeId}})">{{submenu.name}}</a>
             </li>
          </ul>  
       </section>  

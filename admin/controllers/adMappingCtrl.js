@@ -51,6 +51,9 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 
 	};
         $scope.extMappingSubComponents = [];
+        $scope.cacheInterfaceId = function(interface_id){
+            $scope.lastClickedInterfaceId = interface_id;
+        };
         var fetchSubMenuSuccess = function(data){
             var comp, iMenu;
             try {
@@ -167,6 +170,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 		var unwantedKeys = ["mapping_type","sntValues","selected_mapping_type","selected_snt_value" ];
 		var postData = dclone($scope.editData, unwantedKeys);
 		postData.hotel_id = $scope.data.hotel_id;
+                postData.interface_id = $scope.lastClickedInterfaceId;
 		
 		if($scope.isEdit) postData.value = $scope.editId;
 		
