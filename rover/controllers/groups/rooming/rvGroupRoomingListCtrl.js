@@ -464,6 +464,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             }
             return classes;
         };
+
         /**
          * [changedSelectedRoomType description]
          * @return {[type]} [description]
@@ -475,14 +476,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             });
 
             //forming [1,2,3,4]
-            $scope.possibleNumberOfRooms = _.range(1, util.convertToInteger(selectedRoomType.availableRoomCount) + 1);
+            $scope.possibleNumberOfRooms = _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1);
 
             //changing the default selected number of rooms
             $scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
         };
 
         /**
-         * [successCallBackOfFetchReservations description]
+         * successcallback of fetch reservation
          * @param  {[type]} data [description]
          * @return {[type]}      [description]
          */
