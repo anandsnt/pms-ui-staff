@@ -702,7 +702,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 		}
 
 		/**
-		 *Function to edit a reservation from the rooming list
+		 * Function to edit a reservation from the rooming list
 		 */
 		$scope.showEditReservationPopup = function(reservation) {
 			ngDialog.open({
