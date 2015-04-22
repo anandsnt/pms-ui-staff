@@ -9,16 +9,15 @@
         <div class="entry number">
             <label for="rooming-no-of-rooms">No. of Rooms</label>
             <div class="select">
-                <select id="rooming-no-of-rooms" ng-model="numberOfReservations">
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
+                <select id="rooming-no-of-rooms" ng-model="numberOfRooms">
+                    <option ng-repeat="roomcount in possibleNumberOfRooms" value="{{roomcount}}">{{roomcount}}</option>
                 </select>
             </div>
         </div>
         <div class="entry type">
             <label for="rooming-room-type">Room Type</label>
             <div class="select">
-                <select id="rooming-room-type" ng-model="selectedRoomType">
+                <select id="rooming-room-type" ng-model="selectedRoomType" ng-change="changedSelectedRoomType()">
                     <option value="{{roomTypeData.room_type_id}}" ng-repeat="roomTypeData in roomTypesAndData">
                     {{roomTypeData.room_type_name}} ({{roomTypeData.availableRoomCount}})</option>
                 </select>
@@ -28,10 +27,22 @@
             <label for="rooming-occupancy">Occupancy</label>
             <div class="select">
                 <select id="rooming-occupancy" ng-model="selectedOccupancy">
-                    <option value="1" selected>Single</option>
-                    <option value="2">Double</option>
-                    <option value="3">Triple</option>
-                    <option value="4">Quadruple</option>
+                    <option value="1" 
+                        ng-show="shouldShowThisOccupancyAgainstRoomType('single_occupancy')">
+                        Single
+                    </option>
+                    <option value="2" 
+                        ng-show="shouldShowThisOccupancyAgainstRoomType('double_occupancy')">
+                        Double
+                    </option>
+                    <option value="3" 
+                        ng-show="shouldShowThisOccupancyAgainstRoomType('triple_occupancy')">
+                        Triple
+                    </option>
+                    <option value="4" 
+                        ng-show="shouldShowThisOccupancyAgainstRoomType('quadruple_occupancy')">   
+                        Quadruple
+                    </option>
                 </select>
             </div>
         </div>
