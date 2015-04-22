@@ -145,13 +145,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				return;
 			}
 
-			//TODO: Remove once all tab implemented
-
-			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' 
-				&& tab !== 'ROOMING' && tab !=='ACTIVITY' && tab!= "ACCOUNT") {
-				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
-				return;
-			}
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
