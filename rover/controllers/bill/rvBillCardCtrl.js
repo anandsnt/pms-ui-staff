@@ -280,6 +280,7 @@ sntRover.controller('RVbillCardController',
 	        }, 200);
 	    };
 		$scope.reservationBillData = reservationBillData;
+		console.log($scope.reservationBillData);
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
 		/*
@@ -900,9 +901,42 @@ sntRover.controller('RVbillCardController',
 	/*
 	 * success callback ofcomplete checkin
 	 */
-	$scope.completeCheckinSuccessCallback = function(){
 
+	$scope.continueWithoutCC = function(){
+		$scope.reservationBillData.is_cc_authorize_at_checkin_enabled = false;
+		$scope.clickedCompleteCheckin();
+	};
+
+	// Normal checkin process success.
+	$scope.completeCheckinSuccessCallback = function(data){
+		// CICO-6109 : Without Authorization flow ..
 		$scope.$emit('hideLoader');
+	 	$scope.triggerKeyCreationProcess()
+	};
+
+	// Success after autherization
+	$scope.completeCheckinAuthSuccessCallback = function(data){
+		
+		$scope.$emit('hideLoader');
+
+		// CICO-6109 : With Authorization flow .: Auth Success
+		if(data.check_in_status == "Success"){
+		 	$scope.isInProgressScreen = false;
+	    	$scope.isSuccessScreen = true;
+	    	$scope.isFailureScreen = false;
+	    	$scope.cc_auth_amount = data.cc_auth_amount;
+	    	$scope.cc_auth_code = data.cc_auth_code;
+	    }
+	    else{
+	    	// CICO-6109 : With Authorization flow .: Auth declined
+	    	$scope.isInProgressScreen = false;
+	    	$scope.isSuccessScreen = false;
+	    	$scope.isFailureScreen = true;
+	    	$scope.cc_auth_amount = data.cc_auth_amount;
+	    }
+	};
+
+	$scope.triggerKeyCreationProcess = function(){
 
 		var keySettings = $scope.reservationBillData.key_settings;
 		$scope.viewFromBillScreen = true;
@@ -970,9 +1004,10 @@ sntRover.controller('RVbillCardController',
 
 
 	$scope.completeCheckinFailureCallback = function(data){
-
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
+		// Some error in checkin process - auth popup closing..
+		$scope.closeDialog();
 	};
 
 	//CICO-13907
@@ -1065,8 +1100,26 @@ sntRover.controller('RVbillCardController',
 					};
 	 		    }
 
-				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
-
+	 		    // Performing cc autherization process..
+	 		    if($scope.reservationBillData.is_cc_authorize_at_checkin_enabled && $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type == "CC"){
+	 		    	
+	 		    	$scope.isInProgressScreen = true;
+	 		    	$scope.isSuccessScreen = false;
+	 		    	$scope.isFailureScreen = false;
+	 		    	
+	 		    	ngDialog.open({
+						template: '/assets/partials/bill/ccAuthorization.html',
+						className: '',
+						closeByDocument: true,
+						scope: $scope
+					});
+					data.authorize_credit_card = true;
+					$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinAuthSuccessCallback, $scope.completeCheckinFailureCallback);
+	 		    }
+	 		    else{
+	 		    	data.authorize_credit_card = false;
+					$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
+				}
 			}
 		}
 	};
@@ -1733,4 +1786,5 @@ sntRover.controller('RVbillCardController',
 	$scope.setupReviewStatusArray();
 
 	$scope.calculateBillDaysWidth();
+	
 }]);
