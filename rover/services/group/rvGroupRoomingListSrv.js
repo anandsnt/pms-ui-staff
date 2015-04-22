@@ -13,13 +13,13 @@ sntRover.service('rvGroupRoomingListSrv',
 		this.addReservations = function(params){
 			var deferred = $q.defer(),
 				group_id = params.id,
-				//url = '/api/group_reservations/',
-				url = '/ui/show?format=json&json_input=groups/create_reservations.json',
+				url = '/api/group_reservations/',
+				//url = '/ui/show?format=json&json_input=groups/create_reservations.json',
 				params = {
 				    "group_id": params.group_id,
 				    "reservations_data": 
 				    {
-				        "room_type_id": params.group_id,
+				        "room_type_id": params.room_type_id,
 				        "from_date"	: params.from_date,
 				        "to_date"	: params.to_date,
 				        "occupancy"	: params.occupancy,
@@ -46,11 +46,14 @@ sntRover.service('rvGroupRoomingListSrv',
 		 */
 		this.fetchReservations = function(params){
 			var deferred = $q.defer(),
-				group_id = params.id,
-				//url = '/api/group_reservations/' + group_id;
-				url = '/ui/show?format=json&json_input=groups/create_reservations.json';
+
+				group_id = params.group_id,
+				url = '/api/group_reservations/' + group_id+ "/list";
+				//url = '/ui/show?format=json&json_input=groups/create_reservations.json';
 			
 			var data = {
+				'sort_field': params.sorting_field,
+				'sort_dir'  : params.sort_dir,
 				'per_page' 	: params.per_page,
 				'page'  	: params.page,
 			};

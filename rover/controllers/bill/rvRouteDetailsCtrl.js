@@ -280,7 +280,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     $scope.showPayment = true;
                     $scope.attachedPaymentTypes = [];
                     $scope.$parent.$emit('hideLoader');
-                }else{
+                }
+                else if($scope.selectedEntity.has_accompanying_guests){
+                    $scope.showPayment = true;
+                    $scope.$parent.$emit('hideLoader');
+                }
+                else {
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
                 }
@@ -369,11 +374,16 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage',errorMessage);
             };
-            var id = $scope.selectedEntity.id;
-            if($scope.selectedEntity.entity_type != 'RESERVATION')
-                id = $scope.reservationData.reservation_id;
-           
-            $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, id, successCallback, errorCallback);
+
+            var id = $scope.reservationData.reservation_id;
+            var entity_type = "";
+            if($scope.selectedEntity.entity_type == 'GROUP') {
+                id = $scope.selectedEntity.id;
+                entity_type = 'GROUP';
+            }
+            var sendData = { "id" : id , "entity_type" : entity_type };
+            
+            $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, sendData, successCallback, errorCallback);
     };
 
     $scope.fetchDefaultAccountRouting = function(){
@@ -600,9 +610,18 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         * function to create new bill
         */
         $scope.createNewBill = function(){
-            var billData ={
-                        "reservation_id" : $scope.reservationData.reservation_id
-                        };
+
+            if($scope.selectedEntity.entity_type == "GROUP"){
+                var data = {
+                    "entity_type" : "GROUP",
+                    "entity_id"   : $scope.selectedEntity.id
+                };
+            }
+            else{
+                var data ={
+                    "reservation_id" : $scope.reservationData.reservation_id
+                };
+            }
                     /*
                      * Success Callback of create bill action
                      */
@@ -617,7 +636,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         }
                         
                     };
-                    $scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback, $scope.errorCallback);
+                    $scope.invokeApi(RVBillCardSrv.createAnotherBill,data,createBillSuccessCallback, $scope.errorCallback);
         };
 
 		var retrieveCardName = function(){
