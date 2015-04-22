@@ -292,11 +292,19 @@
 		}
 
 		/* CC icons ***/
-		&.icon-swiped {
+		&.icon-swiped,
+		&.icon-authenticated {
 			.square(30px);
 			.hide-text;
-			background-position: 0px -3332px; 
 		}
+
+		&.icon-swiped {
+			background-position: 0px -3335px;
+
+			&.icon-authenticated { background-position: 0px -6695px; }
+		}
+
+		&.icon-authenticated { background-position: 5px -6753px; }
 
 		&.icon-cc-authorization {
 			background-position: 5px -6510px;
