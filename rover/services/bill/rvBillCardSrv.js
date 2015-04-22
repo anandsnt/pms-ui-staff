@@ -1,4 +1,4 @@
-sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function($http, $q, BaseWebSrvV2, RVBaseWebSrv){
+sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2){
    
 	
 	this.fetch = function(reservationId){
@@ -31,6 +31,18 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 						data.credit_details_list.push(credit);
 					});
 				});
+		   	 	deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
+
+	this.fetchRegistrationCardPrintData = function(params){
+		var deferred = $q.defer();
+		var url = '/api/reservations/' + params.reservation_id + '/print_registration_card';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 		   	 	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
