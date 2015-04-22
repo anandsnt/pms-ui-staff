@@ -20,7 +20,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.createAnotherBill = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/posting_accounts/transactions';
+				url = 'api/bills/create_bill';
 
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
@@ -34,7 +34,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.moveToAnotherBill = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/posting_accounts/transactions';
+				url = 'api/bills/transfer_transaction';
 
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
