@@ -649,6 +649,7 @@
 "KEY_SYSTEM_ACCESS_PORT":"Key System Access Port",
 "KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER":"Enter Key System Access Port",
 "KEY_SYSTEM_USENAME":"Key System Username",
+"REMOVE_LEADING_ZEROS" : "Remove leading zeros",
 "KEY_SYSTEM_USENAME_PLACEHOLDER":"Enter Key System Username",
 "KEY_SYSTEM_PASSWORD":"Key System Password",
 "KEY_SYSTEM_PASSWORD_PLACEHOLDER":"Enter Key System Password",
@@ -758,7 +759,11 @@
 	"TITLE": "Title",
 	"ENTER_TITLE": "Enter Title",
 	"CANCELLATION_TEXT" : "Cancellation text",
-	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text"
+	"CANCELLATION_TEXT_PLACEHOLDER": "Enter Cancellation text",
+	"REGISTRATION_COMMUNICATION":"Registration Communications",
+	"REGISTRATION_TEMPLATE":"Registration Template",
+	"SELECT_REGISTRATION_TEMPLATE":" Select Registration Template",
+	"SHOW_VEHICLE_INFORMATION":"Show Vehicle Information"
 ,
 
 

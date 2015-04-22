@@ -103,8 +103,7 @@ sntRover
 				'rover.financials.journal',
 				'rover.ratemanager',
 				'rover.companycardsearch',
-				'rover.housekeeping.roomStatus',
-				'rover.reports'
+				'rover.housekeeping.roomStatus'
 			];
 
 			/**

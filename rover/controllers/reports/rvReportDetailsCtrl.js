@@ -85,6 +85,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DEPARTURE'):
 				case reportUtils.getName('ARRIVAL'):
 				case reportUtils.getName('DEPOSIT_REPORT'):
+				case reportUtils.getName('ROOMS_QUEUED'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
@@ -135,6 +136,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isTransactionReport = true;
 					break;
 
+				case reportUtils.getName('FORECAST_BY_DATE'):
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.hasNoSorting = true;
+					break;
+
 				default:
 					break;
 			};
@@ -173,6 +180,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportUtils.getName('FORECAST_BY_DATE'):
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
@@ -181,6 +189,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 8;
+					break;
+
+				case reportUtils.getName('ROOMS_QUEUED'):
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 2;
 					break;
 
 				default:
@@ -391,6 +404,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
 					template = '/assets/partials/reports/rvDailyTransactionsReportRow.html';
+					break;
+
+				case reportUtils.getName('FORECAST_BY_DATE'):
+					template = '/assets/partials/reports/rvForecastByDateReportRow.html';
+					break;
+
+				case reportUtils.getName('ROOMS_QUEUED'):
+					template = '/assets/partials/reports/rvRoomQueuedReportRow.html';
 					break;
 
 				default:

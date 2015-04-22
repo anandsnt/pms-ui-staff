@@ -16,7 +16,7 @@ angular.module('groupModule', [])
         //company card details
         $stateProvider.state('rover.groups.search', {
             url: '/search',
-            templateUrl: '/assets/partials/groups/rvGroupSearch.html',
+            templateUrl: '/assets/partials/groups/search/rvGroupSearch.html',
             controller: 'rvGroupSearchCtrl',
             resolve: {
                 //to tackle from coming admin app to rover, see the injection in next resolve function

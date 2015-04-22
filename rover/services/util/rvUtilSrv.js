@@ -72,8 +72,7 @@ sntRover.service('rvUtilSrv', [function(){
 		this.toMilliSecond = function(date_){
 			var type_ 	= typeof date_,
 				ms 		= '';
-			console.log('type_: ' + type_);
-			console.log('date_: ' + date_);
+
 			switch (type_){
 				case 'string':
 					ms = (new tzIndependentDate(date_));
@@ -136,4 +135,15 @@ sntRover.service('rvUtilSrv', [function(){
     		return withWhatToBeReplacedifNotANumber;
     	};
 
+    	/**
+    	* to convert a number to a string
+    	* @param {String} - string to be converted
+    	* @param {Double} - if passed string is not a number, what should be retuned
+    	* @return {Double}
+    	*/
+    	this.convertToDouble = function(string, withWhatToBeReplacedifNotANumber){
+    		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
+    		if (self.isNumeric (string)) { return parseFloat (string)};
+    		return withWhatToBeReplacedifNotANumber;
+    	};
 }]);
