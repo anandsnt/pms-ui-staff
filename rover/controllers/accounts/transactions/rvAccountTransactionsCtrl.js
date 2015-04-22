@@ -4,11 +4,32 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		BaseCtrl.call(this, $scope);
 
+
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to make move charges from one bill to another
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMoveCharges = function() {
+			return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
+		};
+
+		
+
+
 		var initAccountTransactionsView = function() {
 			//Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
-			$scope.showPayButton = false;
 			$scope.setScroller('registration-content');
 			$scope.setScroller ('bill-tab-scroller', {scrollX: true});
 			$scope.setScroller('billDays', {scrollX: true});
@@ -19,6 +40,9 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.renderData =  {}; //payment modal data - naming so as to reuse HTML
 			//TODO: Fetch accoutn transactions
 			$scope.paymentModalOpened = false;
+			//Whatever permission of Make Payment we are assigning that
+			//removing standalone thing here
+			$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
 
 		};
 
@@ -300,28 +324,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		});
 
 
-		/**
-		* function to check whether the user has permission
-		* to make payment
-		* @return {Boolean}
-		*/
-		$scope.hasPermissionToMakePayment = function() {
-			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
-		};
-
-		/**
-		* function to check whether the user has permission
-		* to make move charges from one bill to another
-		* @return {Boolean}
-		*/
-		$scope.hasPermissionToMoveCharges = function() {
-			return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
-		};
-
-		//Whatever permission of Make Payment we are assigning that
-		//removing standalone thing here
-		$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
-
+	
 
 		/*------------- edit/remove/split starts here --------------*/
 
