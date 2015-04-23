@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	'$scope',
-	'$rootScope','RVPaymentSrv','ngDialog',
-	function($scope, $rootScope,RVPaymentSrv,ngDialog) {
+	'$rootScope','RVPaymentSrv','ngDialog','rvAccountTransactionsSrv',
+	function($scope, $rootScope,RVPaymentSrv,ngDialog,rvAccountTransactionsSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
@@ -302,6 +302,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 	$scope.newCardAdded = true;
 		 };
 
+
+
+
 		/*
 		 * To save new card
 		 */
@@ -320,14 +323,17 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 							cardDetails.cardType;
 
 
-			$scope.callAPI(RVPaymentSrv.savePaymentDetails, {
+			$scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
 				successCallBack: successNewPayment,
 				params: {
-					"card_expiry": expiryDate,
-					"name_on_card": $scope.newPaymentInfo.cardDetails.userName,
-					"payment_type": "CC",
-					"token": cardToken,
-					"card_code": cardCode
+					"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id,
+					"data_to_pass":{
+						"card_expiry": expiryDate,
+						"name_on_card": $scope.newPaymentInfo.cardDetails.userName,
+						"payment_type": "CC",
+						"token": cardToken,
+						"card_code": cardCode
+					}
 				}
 			});
 		};
@@ -392,8 +398,16 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		$scope.submitPayment = function(){		
 				
 				$scope.errorMessage = "";
-				var dataToSrv = {
+				var params = {
+					"data_to_pass": {
+						"bill_number": $scope.renderData.billNumberSelected,
+						"payment_type": $scope.saveData.paymentType,
+						"amount": $scope.renderData.defaultPaymentAmount,
+						"payment_method_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null
+						},
+					"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id
 				};
+
 		
 				if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.saveData.paymentType == "CC"){
 					dataToSrv.postData.is_emv_request = true;
@@ -408,8 +422,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					});
 					
 				} else {
-					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
-				}		
+
+					$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
+						successCallBack: successPayment,
+						params: params
+					});
+				};		
 
 		};
 
