@@ -98,7 +98,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 "credit_card_details": {}
 			};
 			
-        	console.log($scope.selectedEntity);
         }
         else if(type === 'CARDS'){
         	var data = $scope.results.cards[index];
@@ -119,9 +118,23 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			if(data.account_type === 'COMPANY'){
 				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
 			}
-			else{
-				$scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
-			}
+            else if(data.account_type === 'TRAVELAGENT'){
+                $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+            }
+        }
+        else if(type === 'ACCOUNTS'){
+            var data = $scope.results.accounts[index];
+            $scope.selectedEntity = {
+                "id": data.id,
+                "name": data.account_name,
+                "bill_no": "",
+                "attached_charge_codes": [],
+                "attached_billing_groups": [],
+                "is_new" : true,
+                "selected_payment" : "",
+                "credit_card_details": {},
+                "entity_type": 'GROUP'
+            };
         }
 	};
 
@@ -183,6 +196,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "guest_image": $scope.attachedEntities.travel_agent.logo
                 }];             
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";                
+            }
+            else if(type == 'GROUP'){
+                $scope.selectedEntity.id = $scope.attachedEntities.group_details.id;
+                $scope.selectedEntity.name = $scope.attachedEntities.group_details.name;
+                $scope.selectedEntity.entity_type = "GROUP";            
             }
     };
 

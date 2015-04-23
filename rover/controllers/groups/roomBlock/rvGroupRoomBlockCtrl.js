@@ -728,7 +728,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//callinng the update API calling 
 			$scope.updateGroupSummary ();
-
 			
 		};
 		
@@ -741,6 +740,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.fetchRoomBlockGridDetails();
 		});
 
+		/**
+		 * when a tab switch is there, parant controller will propogate
+		 * API, we will get this event, we are using this to fetch new room block deails		 
+		 */
+		$scope.$on("UPDATED_GROUP_INFO", function(event, activeTab){
+			if (activeTab !== 'ROOM_BLOCK') return;
+			$scope.fetchRoomBlockGridDetails();
+		});
 
 		/**
 		* Success callback of room block details API

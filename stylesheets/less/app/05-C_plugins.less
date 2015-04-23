@@ -253,14 +253,12 @@
 				.icon-popup-alert,
 				.icon-cc-authorization { margin: 10px auto; }
 
-				.h2 {
-					&.green { color: @green; }
-					&.red { color: @red; }
-				}
-
 				.message { 
 					text-transform: none;
-					margin: 20px 0 40px;
+					margin: 20px 0;
+
+					&.green { color: @green; }
+					&.red { color: @red; }
 				}
 
 				.entry {
@@ -1144,7 +1142,7 @@
 
 			/* Pay bill ***/
 			&.pay-bill {
-				width: 420px;
+				width: 440px;
 
 				.actions {
 					.button {
@@ -1958,6 +1956,18 @@
 									}
 								}
 
+								.group-info {
+									font-size: 18px;
+									line-height: 30px;
+									text-transform: uppercase;
+									font-weight: 600;
+									text-align: center;
+									color: @grey3;
+									width: 30px;
+									background-color: @grey1;
+									.pull-left;
+								}
+
 								h2 {
 									font-size: 21px;
 									line-height: 30px;
@@ -1989,7 +1999,8 @@
 									&.bill { width: 70px; }
 								}
 
-								&.guest { 
+								&.guest,
+								&.group { 
 									h2 { color: @textColor; }
 								}
 								&.accompany { 
@@ -2085,6 +2096,18 @@
 								}
 							}
 
+							.group-info {
+								font-size: 18px;
+								line-height: 30px;
+								text-transform: uppercase;
+								font-weight: 600;
+								text-align: center;
+								color: @grey3;
+								width: 30px;
+								background-color: @grey1;
+								.pull-left;
+							}
+
 							h2 {
 								font-size: 18px;
 								line-height: 30px;
@@ -2133,8 +2156,13 @@
                					&.travel-agent { background: @tacard @tacardTexture; }
 							}
 
-							&.guest { 
+							&.guest,
+							&.group { 
 								h2 { color: @textColor; }
+							}
+
+							&.group {
+								h2 { width: 240px; }
 							}
 
 							&.accompany { 

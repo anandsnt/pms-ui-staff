@@ -143,7 +143,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			$scope.groupConfigData.activeTab = tab;
-			console.log('oh my man');
 			//propogating an event that next clients are
 			$timeout(function() {
 				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
