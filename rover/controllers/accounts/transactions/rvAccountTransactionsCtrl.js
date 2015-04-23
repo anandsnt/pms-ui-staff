@@ -189,26 +189,20 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		$scope.openPostCharge = function(activeBillNo) {
 
 			// pass on the reservation id
-			$scope.account_id = "797";
-			$scope.reservationBillData = {};
-			$scope.reservationBillData.bills = ["1", "2", "3"];
-			// $scope.passActiveBillNo = "2";
-
-			// pass down active bill no
-			activeBillNo = "2";
-			//$scope.passActiveBillNo = activeBillNo;
-
+			$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
 			$scope.billNumber = activeBillNo;
-			// Also passing the available bills to the post charge modal
-			$scope.fetchTotalBal = false;
+
+
 			var callback = function(data) {
+				//hide loader
 				$scope.$emit('hideLoader');
 
 				$scope.fetchedData = data;
-				var bills = [];
-				for (var i = 0; i < $scope.reservationBillData.bills.length; i++)
-					bills.push(i + 1);
 
+				//set bill array
+				var bills = [];
+				for (var i = 0; i < $scope.transactionsDetails.bills.length; i++)
+					bills.push(i + 1);
 				$scope.fetchedData.bill_numbers = bills;
 
 				ngDialog.open({
@@ -248,7 +242,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		var getPassData = function(){
 			 var passData = {
-	 		"account_id": "797",
+	 		"account_id": $scope.accountConfigData.summary.posting_account_id,
 	 		"is_swiped": false ,
 	 		"details":{
 	 			"firstName":"",
