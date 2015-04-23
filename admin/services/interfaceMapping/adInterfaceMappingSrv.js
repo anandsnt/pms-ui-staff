@@ -50,9 +50,9 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     * @return {object} mapping type,snt values to render its dropdowns.
     */
 	this.fetchEditMapping = function(data){
-
+            var hotelId = data.hotel_id, interfaceId = data.interface_type_id;
 		var deferred = $q.defer();
-		var url = '/admin/external_mappings/'+data.editId+'/edit_mapping.json';
+		var url = '/admin/external_mappings/'+hotelId+'/edit_mapping/'+interfaceId+'.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -82,9 +82,9 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     * @return {object} status of deletion
     */
 	this.deleteMapping = function(data){
-
+            var hotelId = data.hotel_id, interfaceId = data.interface_type_id;
 		var deferred = $q.defer();
-		var url = '/admin/interface_mappings/'+data.value+'/delete_mapping';
+		var url = "/admin/external_mappings/"+hotelId+"/new_mappings/"+interfaceId +".json";
 		
 		ADBaseWebSrv.deleteJSON(url,data).then(function(data) {
 			deferred.resolve(data);

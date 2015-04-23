@@ -118,32 +118,34 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             if (typeof $scope.editData.mapping_type !== typeof []){
                 $scope.editData.mapping_type = [];
             }
-            var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv;
-            for (var types in data.mapping){
-                mapType = data.mapping[types];
+            var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj;
+            for (var n in data.mapping){
+                mapType = data.mapping[n];
+                
                 mappingTypeName = mapType.mapping_type;
                 mappingTypeId = mapType.id;
                 $scope.availableMappingTypes.push({
-                    "mapping_type":mappingTypeName,
-                    "id": mappingTypeId
+                    "mapping_type":mappingTypeName
                 });
                 $scope.editData.mapping_type.push({
-                    "name":mappingTypeName,
-                    "id": mappingTypeId
+                    "name":mappingTypeName
                 });
                 for (var v in mapType.mapping_values){
-                    mv = mapType.mapping_type[v];
+                    mv = mapType.mapping_values[v];
+                    
                     sntVal = mv.snt_value;
                     extVal = mv.external_value;
-                    $scope.mappingInterface.mappings.push({
+                    value = mv.value;
+                    dataObj = {
                         "mapping_type":mappingTypeName,
                         "snt_value":sntVal,
-                        "external_value":extVal
-                    });
+                        "external_value":extVal,
+                        "mapping_type_id":value
+                    };
+                    $scope.mappingInterface.mappings.push(dataObj);
                 }
             
             }
-            
             
             $scope.$emit('hideLoader');
         };
@@ -170,12 +172,18 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
     * Function to render edit screen with mapping data.
     * @param {id} id of the mapping item.
     */
-	$scope.editSelected = function(id)	{
-		
-		$scope.errorMessage ="";
-		$scope.currentClickedElement = id;
+	$scope.editSelected = function(id){
+		$scope.errorMessage ="";	
+        	$scope.currentClickedElement = id;
 		$scope.editId = id;
-		var data = { 'editId' : id };
+                var lastInterface = getLastInterface();
+                $scope.clickedInterfaceName = lastInterface.name;
+		var data = {
+                    'hotel_id':lastInterface.hotelId, 
+                    interface_type_id: lastInterface.id, 
+                    interface_name: lastInterface.name,
+                    interface_hotel_id: lastInterface.hotelId
+                };
 
 		var editInterfaceMappingSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
