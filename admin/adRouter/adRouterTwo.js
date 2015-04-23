@@ -425,7 +425,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/deviceMappingsList'
 		});
 		
-		$stateProvider.state('admin.dashboard({"menu":8})', {
+		$stateProvider.state('admin.externalMappings', {
 			templateUrl: '/assets/partials/mapping/adExternalMappingItems.html',
 			controller: 'ADMappingCtrl',
 			url : '/intefaceMappingsList'

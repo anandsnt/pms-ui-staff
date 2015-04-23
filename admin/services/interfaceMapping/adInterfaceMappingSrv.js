@@ -3,10 +3,12 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     * Service function to fetch the mapping list
     * @return {object} mapping list
     */ 
-	this.fetchMappingList = function(data) {
-		
+        
+	this.fetchExternalMappingList = function(data) {
+            var hotelId = data.hotel_id, interfaceId = data.interface_type_id;
+		 hotelId = 41;//debugging
 		var deferred = $q.defer();
-		var url = "/admin/external_mappings/" + data.id + "/list_mappings.json";
+		var url = "/admin/external_mappings/" + hotelId + "/list_mappings.json";
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -15,10 +17,16 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 		});
 		return deferred.promise;
 	};
-	this.fetchMappings = function(data) {
-		
+	this.fetchInterfaceMappingsList = function(data) {
+            console.log('fetching interface mappings!!!!><><><><><');
+            var hotelId = data.hotel_id, 
+                    interfaceId = data.interface_type_id;
+		 hotelId = 41;//debugging
+                 console.log('doing defer...');
 		var deferred = $q.defer();
-		var url = "/admin/external_mappings/" + data.id + "/list_mappings.json";
+                console.log('done with defer');
+		var url = "/admin/external_mappings/"+hotelId+"/interface_mappings.json?hotel_id="+hotelId+"&interface_type_id="+interfaceId;
+                console.log('@ url: '+url);
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -32,12 +40,11 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     * @return {object} mapping type,snt values to render its dropdowns
     */
 	this.fetchAddMapping = function(data){
-
-            var hotelId = data.hotel_id, interfaceId = data.interface_mappings.id;
+            var hotelId = data.hotel_id, interfaceId = data.interface_type_id;
 		var deferred = $q.defer();
-		var url = '/admin/interface_mappings/'+hotelId+'/'+interfaceId+'/new_mappings.json';
+		var url = "/admin/external_mappings/"+hotelId+"/interface_mappings.json?hotel_id="+hotelId+"&interface_type_id="+interfaceId;
 		
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrv.postJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

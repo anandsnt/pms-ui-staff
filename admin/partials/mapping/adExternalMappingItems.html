@@ -4,7 +4,7 @@
             <header class="content-title float">
                 <h2>External Mappings</h2>
                 <span class="count">({{extMappingSubComponents.length}})</span>
-                <!--a class="action back" ui-sref="admin.dashboard({menu:menuIndex})">Back</a-->
+                <a class="action back" ui-sref='admin.externalMappings'>Back</a>
             </header>
         </section>
     </div>
@@ -12,7 +12,7 @@
          <ul class="dashboard-items float">
             <li ng-repeat="submenu in extMappingSubComponents" >
                <a data-type="load-listing"  
-                  class="{{submenu.icon_class}}" 
+                  class="icon-admin-menu" 
 
                   data-drag="{{bookMarks.length<=7&&!submenu.is_bookmarked}}"
                   data-jqyoui-options="{revert: 'invalid', helper: 'clone',appendTo: 'body'}" 
@@ -20,12 +20,12 @@
                   jqyoui-draggable="{index: {{submenu.id}}, placeholder:'keep', animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}" 
                   
                   ng-model="selectedMenu.components" 
-                  ng-click="clickedMenuItem($event, submenu.state)" 
+                  
                   ng-class="{'moved': submenu.is_bookmarked}">
                   {{submenu.name}}
                </a>
 
-               <a class="text" data-type="load-listing" ng-click="clickedMenuItem($event, 'admin.mapping'); cacheInterfaceId(submenu)">{{submenu.name}}</a>
+               <a ng-controller="ADMappingCtrl" class="text" data-type="load-listing" ng-click="clickedInterfaceMenuItem($event, 'admin.mapping',submenu)">{{submenu.name}}</a>
             </li>
          </ul>  
       </section>  
