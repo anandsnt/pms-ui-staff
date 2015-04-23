@@ -1,19 +1,49 @@
-sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv', 'RVChargeItems', 'RVBillCardSrv', 'rvPermissionSrv','$timeout', '$window',
-	function($scope, $rootScope, $filter, $stateParams, ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv, RVChargeItems, RVBillCardSrv,rvPermissionSrv, $timeout, $window) {
+sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv', 'RVChargeItems','RVPaymentSrv','RVReservationCardSrv', 'RVBillCardSrv', 'rvPermissionSrv','$timeout', '$window',
+	function($scope, $rootScope, $filter, $stateParams, ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv, RVChargeItems,RVPaymentSrv,RVReservationCardSrv, RVBillCardSrv,rvPermissionSrv, $timeout, $window) {
+
 
 		BaseCtrl.call(this, $scope);
+
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to make move charges from one bill to another
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMoveCharges = function() {
+			return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
+		};
+
+		
+
 
 		var initAccountTransactionsView = function() {
 			//Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
-			$scope.showPayButton = false;
 			$scope.setScroller('registration-content');
 			$scope.setScroller ('bill-tab-scroller', {scrollX: true});
 			$scope.setScroller('billDays', {scrollX: true});
 			$scope.showMoveCharges = $scope.hasPermissionToMoveCharges();
 
 			getTransactionDetails();
+
+			$scope.renderData =  {}; //payment modal data - naming so as to reuse HTML
+			//TODO: Fetch accoutn transactions
+			$scope.paymentModalOpened = false;
+			//Whatever permission of Make Payment we are assigning that
+			//removing standalone thing here
+			$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
+			//check if transactions is from groups or not
+			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab ==="TRANSACTIONS");
 
 		};
 
@@ -169,9 +199,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			//$scope.passActiveBillNo = activeBillNo;
 
 			$scope.billNumber = activeBillNo;
-
-			// translating this logic as such from old Rover
-			// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
 			// Also passing the available bills to the post charge modal
 			$scope.fetchTotalBal = false;
 			var callback = function(data) {
@@ -195,28 +222,110 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 		};
 
-		/**
-		* function to check whether the user has permission
-		* to make payment
-		* @return {Boolean}
-		*/
-		$scope.hasPermissionToMakePayment = function() {
-			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		var fetchPaymentMethods = function(directBillNeeded){
+			
+			var directBillNeeded = directBillNeeded ==="directBillNeeded" ? true:false;
+			var onPaymnentFetchSuccess = function(data) {
+				$scope.renderData =  data; 
+				$scope.creditCardTypes = [];
+				angular.forEach($scope.renderData, function(item, key) {
+					if(item.name === 'CC'){
+						$scope.creditCardTypes = item.values;
+					};					
+				});	
+			},
+			onPaymnentFetchFailure = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+			};
+			$scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
+				successCallBack: onPaymnentFetchSuccess,
+				failureCallBack: onPaymnentFetchFailure,
+				params: {
+					direct_bill: directBillNeeded
+				}
+			});
 		};
 
-		/**
-		* function to check whether the user has permission
-		* to make move charges from one bill to another
-		* @return {Boolean}
-		*/
-		$scope.hasPermissionToMoveCharges = function() {
-			return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
+		var getPassData = function(){
+			 var passData = {
+	 		"account_id": "797",
+	 		"is_swiped": false ,
+	 		"details":{
+	 			"firstName":"",
+	 			"lastName":""
+	 			}
+	 		};
+	 		return passData;
 		};
 
-		//Whatever permission of Make Payment we are assigning that
-		//removing standalone thing here
-		$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
 
+
+		$scope.showPayemntModal = function(){
+			$scope.passData = getPassData();
+				 	ngDialog.open({
+			              template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
+			              className: '',
+			              controller: 'RVAccountsTransactionsPaymentCtrl',
+			              closeByDocument: false,
+			              scope: $scope
+			          });
+			$scope.paymentModalOpened = true;
+		};
+
+
+
+		//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
+		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
+			$scope.paymentModalOpened = false;
+			//$scope.billingInfoModalOpened = false;
+		});
+	/*
+	 *	MLI SWIPE actions
+	 */
+		var processSwipedData = function(swipedCardData){
+
+	 			//Current active bill is index - adding 1 to get billnumber
+	 			var billNumber = "1";
+	 			var passData = getPassData();
+  	 			var swipeOperationObj = new SwipeOperation();
+				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+				if(swipedCardDataToRender.swipeFrom === "payButton") {
+					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
+				}
+				// else if(swipedCardDataToRender.swipeFrom === "billingInfo") {
+				// 	$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
+				// }
+
+		};
+
+		/*
+		  * Handle swipe action in bill card
+		  */
+
+		 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+		 	
+		 	    if($scope.paymentModalOpened){
+					swipedCardData.swipeFrom = "payButton";
+				// } else if ($scope.billingInfoModalOpened) {
+				// 	swipedCardData.swipeFrom = "billingInfo";
+				} else {
+					swipedCardData.swipeFrom = "viewBill";
+				}
+				var swipeOperationObj = new SwipeOperation();
+				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+				var tokenizeSuccessCallback = function(tokenValue){
+					$scope.$emit('hideLoader');
+					swipedCardData.token = tokenValue;
+					processSwipedData(swipedCardData);
+				};
+				if($scope.paymentModalOpened){
+					$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+				};
+		});
+
+
+	
 
 		/*------------- edit/remove/split starts here --------------*/
 
