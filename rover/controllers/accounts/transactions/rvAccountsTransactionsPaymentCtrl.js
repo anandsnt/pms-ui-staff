@@ -408,12 +408,18 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id
 				};
 
+				if($scope.isShowFees()){
+					if($scope.feeData.calculatedFee)
+						params.data_to_pass.fees_amount = $scope.feeData.calculatedFee;
+					if($scope.feeData.feesInfo)
+						params.data_to_pass.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+				};
 		
 				if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.saveData.paymentType == "CC"){
-					dataToSrv.postData.is_emv_request = true;
+					params.data_to_pass.is_emv_request = true;
 					$scope.shouldShowWaiting = true;
 					//Six payment SWIPE actions
-					RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					rvAccountTransactionsSrv.submitPaymentOnBill(params).then(function(response) {
 						$scope.shouldShowWaiting = false;
 						successPayment(response);
 					},function(error){

@@ -89,7 +89,7 @@
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
                     <li ng-if="isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee |number:2}} fee
                         </span>
                     </li>
                     <li ng-if="!isShowFees()">
