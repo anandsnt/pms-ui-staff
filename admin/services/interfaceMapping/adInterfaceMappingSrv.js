@@ -33,8 +33,9 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     */
 	this.fetchAddMapping = function(data){
 
+            var hotelId = data.hotel_id, interfaceId = data.interface_mappings.id;
 		var deferred = $q.defer();
-		var url = '/admin/interface_mappings/'+data.hotelId+'/new_mappings.json';
+		var url = '/admin/interface_mappings/'+hotelId+'/'+interfaceId+'/new_mappings.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);

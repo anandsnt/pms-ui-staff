@@ -51,10 +51,13 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 
 	};
         $scope.extMappingSubComponents = [];
+        $scope.mappingInterface = {};
         $scope.cacheInterfaceId = function(data){
-            $scope.lastClickedInterfaceId = data.id;
-            $scope.lastClickedIterfaceName = data.name;
+            $scope.lastInterface = {};
+            $scope.lastInterface.id = data.id;
+            $scope.lastInterface.name = data.name;
             console.log('pulling out the interface id:');
+            console.log('interface id: '+data.id+', interface name: '+data.name);
             console.log(arguments);
         };
         var fetchMappingItemsSuccess = function(data){
@@ -63,9 +66,11 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.$emit('hideLoader');
         };
         var fetchMappingsSuccess = function(data){
-            console.log('fetch mappings success');
-            $scope.extMappingSubComponents.push(data.interface_mappings);
             console.log(data);
+            data.interface = $scope.lastInterface;
+            console.log(data);
+            $scope.mappingInterface = {};
+            $scope.mappingInterface = data;
             $scope.$emit('hideLoader');
         };
 	
@@ -77,7 +82,9 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         };
         $scope.fetchInterfaceMappings = function(){
             console.log('fetching mapping items');
-            $scope.invokeApi(ADInterfaceMappingSrv.fetchMappings, {'id':$scope.hotelId}, fetchMappingSuccess);
+            console.log('last interface');
+            console.log($scope.lastInterface);
+            $scope.invokeApi(ADInterfaceMappingSrv.fetchMappings, {'id':$scope.hotelId, interface_type_id:$scope.lastClickedInterfaceId}, fetchMappingsSuccess);
         };
         
 	/*
