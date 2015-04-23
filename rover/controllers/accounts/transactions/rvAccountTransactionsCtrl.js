@@ -481,5 +481,11 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		initAccountTransactionsView();
 
+
+		$scope.$on('PAYMENT_SUCCESS', function(event,data) {
+		 	getTransactionDetails();
+		});
+
+
 	}
 ]);

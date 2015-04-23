@@ -109,5 +109,28 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
 
+		this.savePaymentDetails = function(data){
+			var deferred = $q.defer();
+			var url = '/api/bills/'+data.bill_id+'/add_payment_method';
+			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
+				    deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});	
+			return deferred.promise;
+		};
+
+		this.submitPaymentOnBill = function(data){
+			var deferred = $q.defer();
+			var url = '/api/bills/'+data.bill_id+'/submit_payment';
+			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
+				    deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});	
+			return deferred.promise;
+		};
+
+
 	}
 ]);
