@@ -52,37 +52,22 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 	};
         $scope.extMappingSubComponents = [];
         $scope.cacheInterfaceId = function(interface_id){
+            
+            console.log('pulling out the interface id:');
+            console.log(arguments);
             $scope.lastClickedInterfaceId = interface_id;
         };
-        var fetchSubMenuSuccess = function(data){
-            var comp, iMenu;
-            try {
-                for (var menu in data.menus){
-                    iMenu = data.menus[menu];
-                    if (iMenu.menu_name === 'Interfaces'){
-                        $scope.menuIndex = menu;
-                        for (var i in iMenu.components){
-                             comp = iMenu.components[i];
-                            if (comp.name === 'External Mappings'){
-                                $scope.extMappingSubComponents = comp.sub_components;
-                                $scope.$emit('hideLoader');
-                                return;
-                            }
-
-                        }
-                    }
-                }
-            } catch(err){
-              //  $scope.errorMessage = "Unexpected Error";
-                console.warn(err);
-            }
+        var fetchMappingItemsSuccess = function(data){
+            $scope.extMappingSubComponents.push(data.interface_mappings);
+            console.log(data);
             $scope.$emit('hideLoader');
         };
 	
-	$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchSuccess);
+	//$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchSuccess);
 	
-        $scope.fetchSubComponents = function(){
-            $scope.invokeApi(ADInterfaceMappingSrv.fetchSubMenu, {'id':$scope.hotelId}, fetchSubMenuSuccess);
+        $scope.fetchExternalMappingItems = function(){
+            console.log('fetching mapping items');
+            $scope.invokeApi(ADInterfaceMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchMappingItemsSuccess);
         };
         
 	/*

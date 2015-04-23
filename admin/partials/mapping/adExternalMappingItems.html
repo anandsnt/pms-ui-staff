@@ -1,10 +1,10 @@
 <section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
     <div id="selected_hotel" data-view="HotelExternalMappingsView">
-        <section ng-init="fetchSubComponents()">
+        <section ng-init="fetchExternalMappingItems()">
             <header class="content-title float">
                 <h2>External Mappings</h2>
                 <span class="count">({{extMappingSubComponents.length}})</span>
-                <a class="action back" ui-sref="admin.dashboard({menu:menuIndex})">Back</a>
+                <!--a class="action back" ui-sref="admin.dashboard({menu:menuIndex})">Back</a-->
             </header>
         </section>
     </div>
@@ -25,7 +25,7 @@
                   {{submenu.name}}
                </a>
 
-               <a class="text" data-type="load-listing" ng-click="clickedMenuItem($event, submenu.state); cacheInterfaceId({{submenu.interfaceTypeId}})">{{submenu.name}}</a>
+               <a class="text" data-type="load-listing" ng-click="clickedMenuItem($event, submenu.state)">{{submenu.name}}</a>
             </li>
          </ul>  
       </section>  
