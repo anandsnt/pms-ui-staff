@@ -30,8 +30,29 @@
 "ACCOUNT_TYPE": "Account Type",
 "BALANCE_DETAILS":"Balance Details",
 "DEPOSIT_RULES":"Deposit Rules",
-"CANNOT_CLOSE_ACCOUNT":"Unable to close account with outstanding balance."
+"CANNOT_CLOSE_ACCOUNT":"Unable to close account with outstanding balance.",
 
+
+"TOTAL_FEES": "Total Fees",
+"TOTAL_BALANCE": "Total Balance",
+"NO_TRANSACTIONS_MESSAGE": "0 Transactions Found",
+"BILL": "Bill",
+"ADD_CHARGE": "Add Charge",
+"EXPENSE": "Expense",
+"DETAILS": "Details",
+"CHARGE_TYPE": "Charge Type",
+"FEES": "Fees",
+"EMAIL":"Email",
+"BALANCE":"Balance",
+"PAY":"Pay",
+
+"DATE": "Date",
+"CHARGE_CODE": "Charge Code",
+"DESCRIPTION": "Description",
+"CREDITS": "Credits",
+"EDIT": "Edit",
+"STAY_FEES": "Stay Fees",
+"AS_OF":"As of"
 ,
 "ACTIVITY_LOG_TITLE" : "Activity Log",
 "FROM_DATE":"From date",
@@ -69,6 +90,7 @@
 "ADD_PAYMENT_METHOD":"Add Payment Method",
 "ATTACHED_ENTITIES":"Attached Entities",
 "CARDS":"Cards",
+"ACCOUNTS_AND_CARDS":"Accounts & Cards",
 "NO_MATCH_FOUND_MSG":"No matches have been found",
 "ENTITY_NOT_SELECTED":"Entity not selected",
 "SELECT_ENTITY_TO_CONFIGURE":"Select Entity to configure bill routing",
@@ -362,7 +384,36 @@
     "ROOM_BLOCK_SUMMARY" : "Room Block Summary",
     "ROOM_RELEASE_DATE" : "Room Release Date",
     "RELEASE_NOW" : "Release Now",
-    "GROUP_APR" :"Actual / Potential Revenue"
+    "GROUP_APR" :"Actual / Potential Revenue",
+    "GROUP_ADD_RESERVATIONS": "Add Reservations",
+    "GROUP_NO__OF_ROOMS": "No. of Rooms",
+    "GROUP_ROOM_TYPE": "Room Type",
+    "GROUP_OCCUPANCY": "Occupancy",
+    "GROUP_SINGLE": "Single",
+    "GROUP_DOUBLE": "Double",
+    "GROUP_TRIPLE": "Triple",
+    "GROUP_QUADRUPLE": "Quadruple",
+    "GROUP_NO_RESERVATIONS":"No Reservations",
+    "GROUP_ADD_RESERVATIONS_TO_ROOMING_LIST":"Add reservations to Rooming List",
+    "GROUP_ROOM":"Room",
+    "GROUP_PENDING":"Pending",
+    "GROUP_UNASSIGNED":"Unassigned",
+    "GROUP_CHECK-IN":"check-in",
+    "GROUP_CHECK-OUT":"check-out",
+    "GROUP_GUEST_NAME":"Guest Name",
+    "GROUP_ARRIVAL":"Arrival",
+    "GROUP_DEPARTURE":"Departure",
+    "GROUP_ROOM_TYPE":"Room Type",
+    "GROUP_STATUS":"Status",
+    "GROUP_PICKED_UP":"Picked Up",
+    "GROUP_CHECK_IN":"Check In",
+    "GROUP_CHECK_OUT":"Check Out",
+    "GROUP_AUTO_ASSIGN_ROOMS":"Auto-Assign Rooms",
+    "GROUP_EMAIL":"Email",
+    "GROUP_PRINT":"Print",
+    "GROUP_DOWNLOAD":"Download"
+
+
 
 
 

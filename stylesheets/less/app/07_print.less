@@ -2040,6 +2040,139 @@ table {
                     padding-top: 16pt;
                 }
             }
+
+            .registration-card {
+                margin: 1cm 2cm 0;
+
+                table {
+                    tr {
+                        page-break-after: avoid;
+
+                        th,
+                        td {
+                            font-size: 9pt;
+                            padding: 0 4pt 0 0;
+                            page-break-after: avoid;
+                        }
+
+                        th { font-weight: 600; }
+                        td {
+                            border-bottom: 0;
+                            padding-bottom: 10pt;
+                        }
+                    }
+                }
+
+                .hotel-guest-info {
+                    margin-bottom: 10pt;
+
+                    .hotel-info {
+                        width: 25%;
+                        text-transform: none;
+                        padding-right: 10pt;
+                    }
+
+                    .guest-info {
+                        background: #ebebeb;
+                        padding: 10pt;
+
+                        td strong {
+                            display: block;
+                            padding-top: 2pt;
+                        }
+
+                        .name-addr {
+                            margin-bottom: 15pt;
+                            td {
+                                padding-bottom: 10pt;
+                                border-bottom: 2pt solid #fff;
+                            }
+                        }
+
+                        .rate-initial {
+                            td {
+                                padding: 10pt;
+                                background: #fff;
+                            }
+                        }
+                    }
+                }
+
+                .bill-details {
+                    margin-bottom: 10pt;
+
+                    td, th {
+                        padding: 5px 10pt;
+                    }
+
+                    th {
+                        background: #fff;
+                    }
+
+                    tr td {
+                        font-weight: bold;
+                        background: #ebebeb;
+                        border-bottom: 2pt solid #fff;
+                    }
+
+                    .addon-price {
+                        text-align: center;
+                    }
+
+                    .addons {
+                        padding: 0;
+                        td {
+                            border-bottom: none;
+                            text-transform: none;
+                        }
+                    }
+                }
+
+                .guest-data-enter {
+                    margin-bottom: 10pt;
+
+                    td {
+                        padding: 10pt;
+                        border: 2pt solid #ebebeb;
+                        height: 50pt;
+                        font-weight: bold;
+                        text-transform: none;
+                    }
+
+                    .details {
+                        border: 0;
+                        padding: 0 0 0 10pt;
+                    }
+                }
+
+                .terms-signature {
+                    td {
+                        text-transform: none;
+                        padding: 0;
+                    }
+
+                    .terms {
+                        padding-bottom: 50pt;
+                    }
+
+                    .signature {
+                        padding: 5pt;
+                        border-top: 1pt solid #000;
+                        display: block;
+                        width: 50%;
+                    }
+                }
+            }
+        }
+
+        &.print-registration-card {
+            .registration-summary .invoice {
+                display: none;
+            }
+
+            .registration-summary .registration-card {
+                display: block;
+            }
         }
     }
 

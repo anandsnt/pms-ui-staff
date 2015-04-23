@@ -19,7 +19,12 @@
 	</button>
 	<button type="button" ng-click="clickedPrint()" class="button with-icon blue"> 
 		<span class="icons icon-print"></span> 
-		Print
+		Invoice
+	</button>
+	<!-- Button to print registration card, show only for check ins  -->
+	<button type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
+		<span class="icons icon-print"></span> 
+		Registration Card
 	</button>
 </div>
 <div class="overview" ng-click="toggleFeesDetails($parent.$index)" ng-show="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">

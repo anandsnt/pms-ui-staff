@@ -113,6 +113,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
+		* function to check whether the user has permission
+		* to make view the transactions tab
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToViewAccountsTab = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
+
+		/**
 		 * TAB - to swicth tab
 		 * @return - None
 		 */
@@ -120,6 +129,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 			//if there was any error message there, we are clearing
 			$scope.errorMessage = '';
+
+			//allow to swith to "transactions" tab only if the user has its permission
+			if(tab == "TRANSACTIONS" && !$scope.hasPermissionToViewAccountsTab()){
+				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
+				return;
+			}
 
 			var isInSummaryTab = $scope.groupConfigData.activeTab == "SUMMARY";
 
@@ -130,20 +145,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				return;
 			}
 
-			//TODO: Remove once all tab implemented
-
-			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' 
-				&& tab !== 'ROOMING' && tab !=='ACTIVITY' && tab!= "ACCOUNT") {
-				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
-				return;
-			}
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
 			}
 
 			$scope.groupConfigData.activeTab = tab;
-			console.log('oh my man');
 			//propogating an event that next clients are
 			$timeout(function() {
 				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
@@ -178,7 +185,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				'ROOM_BLOCK': '/assets/partials/groups/roomBlock/rvGroupConfigurationRoomBlockTab.html',
 				'ROOMING': '/assets/partials/groups/rooming/rvGroupRoomingListTab.html',
 				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
-				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
+				'TRANSACTIONS': '/assets/partials/accounts/transactions/rvAccountTransactions.html',
 				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
 
