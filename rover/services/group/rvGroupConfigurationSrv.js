@@ -339,10 +339,36 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 			return deferred.promise;
 		}
 
+
+
 		this.removeGroupNote = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/groups/delete_group_note';
 
+			rvBaseWebSrvV2.deleteJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
+
+		this.updateRoomingListItem = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/group_reservations/' + data.id;
+			rvBaseWebSrvV2.putJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
+
+		this.removeRoomingListItem = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/group_reservations/' + data.id;
 			rvBaseWebSrvV2.deleteJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
