@@ -20,7 +20,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
             var hotelId = data.hotel_id, 
                     interfaceId = data.interface_type_id;
 		var deferred = $q.defer();
-		var url = "/admin/external_mappings/"+hotelId+"/interface_mappings.json?hotel_id="+hotelId+"&interface_type_id="+interfaceId;
+		var url = "/admin/external_mappings/"+hotelId+"/interface_mappings/"+interfaceId +".json";
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -36,7 +36,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 	this.fetchAddMapping = function(data){
             var hotelId = data.hotel_id, interfaceId = data.interface_type_id;
 		var deferred = $q.defer();
-		var url = "/admin/external_mappings/"+hotelId+"/interface_mappings.json?hotel_id="+hotelId+"&interface_type_id="+interfaceId;
+		var url = "/admin/external_mappings/"+hotelId+"/new_mappings/"+interfaceId +".json";
 		
 		ADBaseWebSrv.postJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -52,7 +52,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 	this.fetchEditMapping = function(data){
 
 		var deferred = $q.defer();
-		var url = '/admin/interface_mappings/'+data.editId+'/edit_mapping.json';
+		var url = '/admin/external_mappings/'+data.editId+'/edit_mapping.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
