@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv) {
+sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv','RVReservationCardSrv',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv,RVReservationCardSrv){
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller("groupSummaryScroller");
@@ -14,6 +14,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$s = $scope;
 
 		var summaryMemento = {};
+		$scope.billingInfoModalOpened = false;
 
 		var initGroupSummaryView = function() {
 			// Have a handler to update the summary - IFF in edit mode
@@ -166,7 +167,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.attachedEntities.group_details.logo = "GROUP_DEFAULT";
 			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
 
-
+			$scope.billingInfoModalOpened = true;
 			//$scope.isFromAccounts = true;
 			ngDialog.open({
 			    template: '/assets/partials/bill/rvBillingInformationPopup.html',
@@ -385,5 +386,40 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 		initGroupSummaryView();
+
+
+		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
+			$scope.billingInfoModalOpened = false;
+		});
+
+		/*
+		  *	MLI SWIPE actions
+		  */
+		var processSwipedData = function(swipedCardData){
+
+ 			var passData = getPassData();
+	 		var swipeOperationObj = new SwipeOperation();
+			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
+		};
+
+		/*
+		  * Handle swipe action in billing info
+		  */
+
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+
+			if($scope.billingInfoModalOpened){
+				var swipeOperationObj = new SwipeOperation();
+				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+				var tokenizeSuccessCallback = function(tokenValue){
+					$scope.$emit('hideLoader');
+					swipedCardData.token = tokenValue;
+					processSwipedData(swipedCardData);
+				};
+				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+			};
+		});
 	}
 ]);
