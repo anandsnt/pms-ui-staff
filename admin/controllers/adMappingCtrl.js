@@ -51,13 +51,19 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 
 	};
         $scope.extMappingSubComponents = [];
-        $scope.cacheInterfaceId = function(interface_id){
-            
+        $scope.cacheInterfaceId = function(data){
+            $scope.lastClickedInterfaceId = data.id;
+            $scope.lastClickedIterfaceName = data.name;
             console.log('pulling out the interface id:');
             console.log(arguments);
-            $scope.lastClickedInterfaceId = interface_id;
         };
         var fetchMappingItemsSuccess = function(data){
+            $scope.extMappingSubComponents.push(data.interface_mappings);
+            console.log(data);
+            $scope.$emit('hideLoader');
+        };
+        var fetchMappingsSuccess = function(data){
+            console.log('fetch mappings success');
             $scope.extMappingSubComponents.push(data.interface_mappings);
             console.log(data);
             $scope.$emit('hideLoader');
@@ -68,6 +74,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.fetchExternalMappingItems = function(){
             console.log('fetching mapping items');
             $scope.invokeApi(ADInterfaceMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchMappingItemsSuccess);
+        };
+        $scope.fetchInterfaceMappings = function(){
+            console.log('fetching mapping items');
+            $scope.invokeApi(ADInterfaceMappingSrv.fetchMappings, {'id':$scope.hotelId}, fetchMappingSuccess);
         };
         
 	/*

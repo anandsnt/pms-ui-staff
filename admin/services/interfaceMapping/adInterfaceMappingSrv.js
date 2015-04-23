@@ -6,7 +6,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 	this.fetchMappingList = function(data) {
 		
 		var deferred = $q.defer();
-		var url = "/admin/interface_mappings/" + data.id + "/list_mappings.json";
+		var url = "/admin/external_mappings/" + data.id + "/list_mappings.json";
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -15,19 +15,16 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 		});
 		return deferred.promise;
 	};
-        this.fetchSubMenu = function(menu_name){
+	this.fetchMappings = function(data) {
+		
 		var deferred = $q.defer();
-		var url = '/admin/settings/menu_items.json';	
+		var url = "/admin/external_mappings/" + data.id + "/list_mappings.json";
 		
-		var fetchSuccess = function(data){
-                    console.log(data);
+		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		};
-		var fetchFailed = function(data){
+		}, function(data) {
 			deferred.reject(data);
-		};
-		
-		ADBaseWebSrv.getJSON(url).then(fetchSuccess, fetchFailed);
+		});
 		return deferred.promise;
 	};
 	/*
@@ -53,7 +50,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 	this.fetchEditMapping = function(data){
 
 		var deferred = $q.defer();
-		var url = '/admin/interface_mappings/'+data.editId+'/edit_mapping.json'
+		var url = '/admin/interface_mappings/'+data.editId+'/edit_mapping.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
