@@ -418,10 +418,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				};
 		
 				if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.saveData.paymentType == "CC"){
-					dataToSrv.postData.is_emv_request = true;
+					params.data_to_pass.is_emv_request = true;
 					$scope.shouldShowWaiting = true;
 					//Six payment SWIPE actions
-					RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					rvAccountTransactionsSrv.submitPaymentOnBill(params).then(function(response) {
 						$scope.shouldShowWaiting = false;
 						successPayment(response);
 					},function(error){
