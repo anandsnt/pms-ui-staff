@@ -11,6 +11,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			isDemographicsPopupOpen: false,
 			newNote: ""
 		}
+			$s = $scope;
 
 		var summaryMemento = {};
 
@@ -156,7 +157,26 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				showDemographicsPopup();
 			}
 
-		}
+		};
+		$scope.openBillingInformation = function(){
+			$scope.attachedEntities = {};
+			$scope.attachedEntities.group_details = {};
+			$scope.attachedEntities.group_details.id = $scope.groupConfigData.summary.group_id;
+			$scope.attachedEntities.group_details.name = $scope.groupConfigData.summary.group_name;
+			$scope.attachedEntities.group_details.logo = "GROUP_DEFAULT";
+			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
+
+
+			//$scope.isFromAccounts = true;
+			ngDialog.open({
+			    template: '/assets/partials/bill/rvBillingInformationPopup.html',
+			    controller: 'rvBillingInformationPopupCtrl',
+			    className: '',
+			    closeByDocument: true,
+			    scope: $scope
+			});
+
+		};
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {

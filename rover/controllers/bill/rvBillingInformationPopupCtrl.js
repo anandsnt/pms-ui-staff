@@ -156,7 +156,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 "credit_card_details": {}
             };
             if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
-                $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING"){
+                $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
+                $scope.billingEntity !== "GROUP_DEFAULT_BILLING"){
                 $scope.selectedEntity.reservation_status = $scope.reservationData.reservation_status;
                 $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
             }
@@ -302,6 +303,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
         } else if($scope.billingEntity == "COMPANY_CARD_DEFAULT_BILLING") {
             $scope.selectAttachedEntity('', 'COMPANY_CARD');
+        } else if($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
+            $scope.selectAttachedEntity('', 'GROUP');
         } else {
             $scope.isInitialPage = true;
             $scope.fetchRoutes();

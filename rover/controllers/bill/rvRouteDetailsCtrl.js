@@ -454,13 +454,15 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     };
 
     if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
-        $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING"){
+        $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING"&&
+                $scope.billingEntity !== "GROUP_DEFAULT_BILLING"){
         $scope.fetchBillsForReservation();
     }else {
         $scope.fetchAllChargeCodes();
     }
      if($scope.billingEntity == "TRAVEL_AGENT_DEFAULT_BILLING" ||
-        $scope.billingEntity == "COMPANY_CARD_DEFAULT_BILLING"){
+        $scope.billingEntity == "COMPANY_CARD_DEFAULT_BILLING" ||
+                $scope.billingEntity === "GROUP_DEFAULT_BILLING"){
         	$scope.showPayment = true;
      }
     /**
@@ -570,7 +572,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 return;
             }
             if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
-                $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING"){
+                $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING"&&
+                $scope.billingEntity !== "GROUP_DEFAULT_BILLING"){
                 $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
             }
 
@@ -597,7 +600,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             
             else{
                 if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
-                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"){
+                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
+                	$scope.billingEntity === "GROUP_DEFAULT_BILLING"){
                     $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess, $scope.errorCallback);
                 }else {
                     $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
@@ -670,14 +674,16 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             	if($scope.reservationData.reservation_id != null){
             		$scope.savePaymentToReservationOrAccount('reservation');
             	} else if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
-                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
+                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
+                $scope.billingEntity === "GROUP_DEFAULT_BILLING") {
                     	$scope.savePaymentToReservationOrAccount('account');
 	            } else {
 	                $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
 	            }
 	                
             } else if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
-                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
+                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
+                $scope.billingEntity === "GROUP_DEFAULT_BILLING") {
                     	$scope.savePaymentToReservationOrAccount('account');
             	
             } else {
@@ -703,7 +709,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         	 var successCallback = function(data) {
         	 	$scope.$parent.$emit('hideLoader');
         	 	if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
-                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
+                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
+                $scope.billingEntity === "GROUP_DEFAULT_BILLING") {
                 		$scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess, $scope.errorCallback);
                 } else {
                 	$scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
