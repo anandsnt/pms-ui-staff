@@ -1,0 +1,105 @@
+<div class="invoice-logo">
+    <h1>Invoice</h1>
+    <img src="{logo}" alt="" />
+</div>
+<table class="guest-info">
+    <tbody>
+        <tr ng-if="!!groupConfigData">
+            <th>Group Name</th>
+            <th>Group Code</th>
+            <th>Arrival Date</th>
+            <th>Departure Date</th>
+        </tr>
+        <tr ng-if="!!groupConfigData">
+            <td>{{groupConfigData.summary.group_name}}</td>
+            <td>{{groupConfigData.summary.group_code}}</td>
+            <td>{{groupConfigData.summary.block_from}}</td>
+            <td>{{groupConfigData.summary.block_to}}</td>
+        </tr>
+        <tr ng-if="!groupConfigData">
+            <th>Account Name</th>
+        </tr>
+        <tr ng-if="!groupConfigData">
+            <td>{{accountConfigData.summary.posting_account_name}}</td>
+        </tr>
+        <tr>
+            <th ng-if="!!groupConfigData">Company</th>
+            <th ng-if="!!groupConfigData">Travel Agent</th>
+            <th>Invoice No.</th>
+        </tr>
+        <tr>
+            <td ng-if="!!groupConfigData">{{groupConfigData.summary.company.name}}</td>
+            <td ng-if="!!groupConfigData">{{groupConfigData.summary.travel_agent.name}}</td>
+            <td>{Invoice No.}</td>
+        </tr>
+    </tbody>
+</table>
+<div class="invoice-header">
+    <!-- Don't ouput if header is not defined -->
+    {header text}
+</div>
+<div class="invoice-body">
+    <p class="date"><strong>Invoice date</strong>{Invoice date}</p>
+    <table class="invoice-details">
+        <caption>
+            {Hotel Name}
+            <span>{Hotel Address}</span>
+        </caption>
+        <thead>
+            <tr>
+                <th>Date of Charge</th>
+                <th>Charge Code</th>
+                <th>Charge description</th>
+                <th class="align-right">Charge amount</th>
+                <th class="align-right">Credit amount</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="4"><strong>Total Charge</strong></td>
+                <td><strong>${value}</strong></td>
+            </tr>
+            <tr>
+                <td colspan="4"><strong>Total Credits</strong></td>
+                <td><strong>${value}</strong></td>
+            </tr>
+            <tr>
+                <td colspan="4"><strong>Balance</strong></td>
+                <td><strong>${value}</strong></td>
+            </tr>
+            <tr>
+                <td colspan="4">Net Amount</td>
+                <td>${value}</td>
+            </tr>
+            <tr>
+                <td colspan="4">GST 12.5%</td>
+                <td>${value}</td>
+            </tr>
+            <tr>
+                <td colspan="4">City Tax 2%</td>
+                <td>${value}</td>
+            </tr>
+            <tr>
+                <td colspan="4">Total Incl Tax</td>
+                <td>${value}</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>{Date of Charge}</td>
+                <td>{Charge Code}</td>
+                <td class="description">
+                    <span>{Description - Room or Charge type}</span>
+                    <span class="reference">{Reference}</span>
+                </td>
+                <td class="align-right">{Charge amount}</td>
+                <td class="align-right">{Credit amount}</td>
+            </tr>
+            ... repeat for all charges
+        </tbody>
+    </table>
+</div>
+<div class="invoice-footer">
+    <!-- Don't ouput if footer is not defined -->
+    {footer text}
+</div>

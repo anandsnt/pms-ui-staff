@@ -65,7 +65,7 @@
 			
 
         <!-- Payment method options -->
-        <div class="holder" ng-show="!showCCPage && dataToSave.paymentType === 'CC' && isNewCardAdded && !isFromGuestCard">
+        <div class="holder" ng-show="!showCCPage && dataToSave.paymentType === 'CC' && isNewCardAdded && !isFromGuestCard && !isFromAccounts">
         	<div class="entry full-width" >
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
         			<span class="icon-form icon-checkbox" ng-class="{'checked': dataToSave.addToGuestCard}"></span>
