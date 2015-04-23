@@ -268,18 +268,15 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 
 
-		//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
-			//$scope.billingInfoModalOpened = false;
 		});
-	/*
-	 *	MLI SWIPE actions
-	 */
+
+		/*
+		  *	MLI SWIPE actions
+		  */
 		var processSwipedData = function(swipedCardData){
 
-	 			//Current active bill is index - adding 1 to get billnumber
-	 			var billNumber = "1";
 	 			var passData = getPassData();
   	 			var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
@@ -287,9 +284,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				if(swipedCardDataToRender.swipeFrom === "payButton") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
 				}
-				// else if(swipedCardDataToRender.swipeFrom === "billingInfo") {
-				// 	$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
-				// }
 
 		};
 
@@ -297,15 +291,11 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		  * Handle swipe action in bill card
 		  */
 
-		 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 		 	
 		 	    if($scope.paymentModalOpened){
 					swipedCardData.swipeFrom = "payButton";
-				// } else if ($scope.billingInfoModalOpened) {
-				// 	swipedCardData.swipeFrom = "billingInfo";
-				} else {
-					swipedCardData.swipeFrom = "viewBill";
-				}
+				} 
 				var swipeOperationObj = new SwipeOperation();
 				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 				var tokenizeSuccessCallback = function(tokenValue){
