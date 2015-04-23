@@ -87,6 +87,9 @@ sntRover.controller('RVbillCardController',
 	$scope.showIncomingBillingInfo = false;
 	$scope.reservationBillData = reservationBillData;
 
+	// flag to keep track of - if printing registration card and not bill card
+	$scope.isPrintRegistrationCard = false;
+
 	//To send track details on checkin button;
 	var swipedTrackDataForCheckin = {};
 
@@ -1562,6 +1565,63 @@ sntRover.controller('RVbillCardController',
 		};
 
 		$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
+	};
+
+	$scope.printRegistrationCard = function() {
+		scrollToTop();
+
+		var sucessCallback = function(data) {
+			$scope.isPrintRegistrationCard = true;
+
+			$scope.$emit('hideLoader');
+			$scope.printRegCardData = data;
+			$scope.errorMessage = "";
+
+			// CICO-9569 to solve the hotel logo issue
+			$("header .logo").addClass('logo-hide');
+			$("header .h2").addClass('text-hide');
+
+		    // add the orientation
+		    addPrintOrientation();
+
+		    /*
+		    *	=====[ READY TO PRINT ]=====
+		    */
+		    // this will show the popup with full bill
+		    $timeout(function() {
+
+		    	/*
+		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	*/
+		    	$window.print();
+		    	if ( sntapp.cordovaLoaded ) {
+		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		    	};
+		    }, 100);
+
+		    /*
+		    *	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+		    */
+		    $timeout(function() {
+		    	$scope.isPrintRegistrationCard = false;
+
+				// CICO-9569 to solve the hotel logo issue
+				$("header .logo").removeClass('logo-hide');
+				$("header .h2").addClass('text-hide');
+
+				// remove the orientation after similar delay
+		    	removePrintOrientation();
+		    }, 100);
+
+		};
+
+		var failureCallback = function(errorData){
+			$scope.isPrintRegistrationCard = false;
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorData;
+		};
+
+		$scope.invokeApi(RVBillCardSrv.fetchRegistrationCardPrintData, { 'reservation_id': $scope.reservationBillData.reservation_id }, sucessCallback, failureCallback);
 	};
 
 

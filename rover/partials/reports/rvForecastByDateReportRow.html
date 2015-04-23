@@ -1,0 +1,14 @@
+<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
+	<td>{{ each.date | date : dateFormat }}, {{ each.week_day }}</td>
+	<td>{{ each.arrival_rooms }}</td>
+	<td>{{ each.departure_rooms }}</td>
+	<td>{{ each.occupied_rooms }}</td>
+    <td>{{ each.occupancy }}</td>
+	<td>{{ each.adults }}</td>
+    <td>{{ each.children }}</td>
+	<td>{{ each.total_revenue | currency:currencySymbol:2 }}</td>
+	<td>{{ each.adr | currency:currencySymbol:2 }} ADR</td>
+    <td>{{ each.last_year_occupied_rooms }}</td>
+	<td>{{ each.last_year_adr | currency:currencySymbol:2 }} ADR</td>
+    <td>{{ each.variance }}</td>
+</tr>

@@ -176,7 +176,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	}
 
 	$scope.getTimeConverted = function(time) {
-		if (time == null || time == undefined) {
+		if (time == null || time == undefined || time.indexOf("undefined") > -1) {
 			return "";
 		}
 		var timeDict = tConvert(time);

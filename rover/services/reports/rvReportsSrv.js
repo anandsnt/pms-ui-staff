@@ -24,6 +24,14 @@ sntRover.service('RVreportsSrv', [
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						this.cacheReportList = data;
+
+						// Support for Occupany from UI for now..
+						// This filter will be provided by the API in future
+						var occupanyReport = _.where(this.cacheReportList.results, { title: 'Occupancy & Revenue Summary' });
+						occupanyReport[0].filters.push({
+							value: "CHOOSE_MARKET", description: "Choose Market"
+						});
+
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {
 						deferred.reject(data);
@@ -128,6 +136,36 @@ sntRover.service('RVreportsSrv', [
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.results);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		// value, name, description & is_active
+		this.fetchSources = function() {
+			var deferred = $q.defer(),
+				url = 'api/sources?is_active=true';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.sources);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		// value, name, description & is_active
+		this.fetchBookingOrigins = function() {
+			var deferred = $q.defer(),
+				url = 'api/booking_origins?is_active=true';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.booking_origins);
 				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
