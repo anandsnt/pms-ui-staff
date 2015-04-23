@@ -387,6 +387,17 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		initGroupSummaryView();
 
+		var getPassData = function(){
+			 var passData = {
+	 		"is_swiped": false ,
+	 		"details":{
+	 			"firstName":"",
+	 			"lastName":""
+	 			}
+	 		};
+	 		return passData;
+		};
+
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.billingInfoModalOpened = false;
