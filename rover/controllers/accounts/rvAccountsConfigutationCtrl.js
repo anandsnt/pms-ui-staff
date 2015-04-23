@@ -85,13 +85,28 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		};
 
 		/**
+		* function to check whether the user has permission
+		* to make view the transactions tab
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToViewAccountsTab = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+			//TODO: use appropriate key
+		};
+
+		/**
 		 * TAB - to swicth tab
 		 * @return - None
 		 */
 		$scope.switchTabTo = function(tab) {
-
 			//if there was any error message there, we are clearing
 			$scope.errorMessage = '';
+
+			//allow to swith to "transactions" tab only if the user has its permission
+			if(tab == "TRANSACTIONS" && !$scope.hasPermissionToViewAccountsTab()){
+				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
+				return;
+			}
 
 			var isInAccountsTab = $scope.accountConfigData.activeTab == "ACCOUNT";
 
@@ -117,8 +132,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		$scope.getCurrentTabUrl = function() {
 			var tabAndUrls = {
 				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
-				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
-				'ACTIVITY': '/assets/partials/groups/accounts/rvAccountConfigurationActivityTab.html'
+				'TRANSACTIONS': '/assets/partials/accounts/transactions/rvAccountTransactions.html',
+				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
 
 			return tabAndUrls[$scope.accountConfigData.activeTab];
