@@ -317,7 +317,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		* @return {Boolean}
 		*/
 		$scope.hasPermissionToChangeCharges = function() {
-			return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
+			return rvPermissionSrv.getPermissionValue ('GROUP_EDIT_SPLIT_DELETE_CHARGE');
 		};
 
 		/**
