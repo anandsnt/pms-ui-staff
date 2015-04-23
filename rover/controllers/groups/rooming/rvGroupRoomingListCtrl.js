@@ -159,15 +159,27 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var successCallBackOfFetchRoomingDetails = function(data) {
 
-            //adding available room count over the data we got
-            $scope.roomTypesAndData = _.map(data.result, function(data) {
-                data.availableRoomCount = util.convertToInteger(data.total_rooms) - util.convertToInteger(data.total_pickedup_rooms);
-                return data;
-            });
+            //if we dont have any data in our hand
+            if ($scope.roomTypesAndData.length === 0) {
+                //adding available room count over the data we got
+                $scope.roomTypesAndData = _.map(data.result, function(data) {
+                    data.availableRoomCount = util.convertToInteger(data.total_rooms) - util.convertToInteger(data.total_pickedup_rooms);
+                    return data;
+                });
 
-            //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
-            $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
-            console.log($scope.selectedRoomType);
+                //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
+                $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
+            } 
+            //if we have any data in our hand, just updating the available room count
+            else {
+                _.each($scope.roomTypesAndData, function(roomTypeData) {
+                    var correspondingActualData = _.findWhere(data.result, {
+                        room_type_id: roomTypeData.room_type_id
+                    });
+                    roomTypeData.availableRoomCount = util.convertToInteger(correspondingActualData.total_rooms) - util.convertToInteger(correspondingActualData.total_pickedup_rooms);
+                });
+            }
+
             //we have to populate possible number of rooms & occupancy against a 
             $scope.changedSelectedRoomType();
         }
@@ -481,7 +493,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.possibleNumberOfRooms = _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1);
 
             //changing the default selected number of rooms
-            $scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
+            if (_.max($scope.possibleNumberOfRooms) < $scope.numberOfRooms) {
+                $scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
+            }
+
         };
 
         /**
