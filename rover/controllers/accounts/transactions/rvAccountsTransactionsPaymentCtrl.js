@@ -9,18 +9,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var tokenDetails  = {};
 		var cardDetails   = {};
 		var zeroAmount = parseFloat("0.00");
-
-		/*
-		* to check if reference is present for payment type
-		*/
-		var checkReferencetextAvailable = function(){
-			//call utils fn	
-			$scope.referenceTextAvailable = checkIfReferencetextAvailable($scope.renderData.paymentTypes,$scope.saveData.paymentType);
-		};
-		var checkReferencetextAvailableForCC = function(){
-			//call utils fn	
-			$scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes,$scope.defaultPaymentTypeCard);
-		}
+		$scope.feeData = {};
 
 		var init = function(){
 			$scope.saveData = {};	
@@ -47,8 +36,148 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.depositPaidSuccesFully = false;		
 			$scope.saveData.paymentType = '';
 			$scope.defaultPaymentTypeOfBill = '';	
+			$scope.shouldShowMakePaymentButton = true;
 		};
 		init();
+
+
+		/**
+		 * to run angular digest loop,
+		 * will check if it is not running
+		 * return - None
+		 */
+		var runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			}
+		};
+
+		/*
+		* Fee processing starts here
+		*
+		*/
+
+		
+		$scope.isShowFees = function(){
+
+			// the fees is not shown if feeData is undefined or 
+			// default amount < min fees or no fee amount
+
+			var isShowFees = false;
+			var feesData = $scope.feeData;
+			if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
+				isShowFees = false;
+			}
+			else if((feesData.defaultAmount  >= feesData.minFees) && feesData.feesInfo.amount){
+				if($scope.renderData.defaultPaymentAmount >= 0){
+					isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.saveData.paymentType !=='CC') && $scope.saveData.paymentType !=="") ? true :false;
+				}				
+			}
+			return isShowFees;
+		};
+
+		/*
+		* Fee calculation (based on payment type selection)
+		*
+		*/
+		
+		$scope.calculateFee = function(){
+
+				var feesInfo = $scope.feeData.feesInfo;
+				var amountSymbol = "";
+				var feePercent  = zeroAmount;
+				var minFees = zeroAmount;
+
+				if (typeof feesInfo != 'undefined' && feesInfo != null){
+					amountSymbol = feesInfo.amount_symbol;
+					feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+					minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+				}
+
+				var totalAmount = ($scope.renderData.defaultPaymentAmount == "") ? zeroAmount :
+								parseFloat($scope.renderData.defaultPaymentAmount);
+
+				$scope.feeData.minFees = minFees;
+				$scope.feeData.defaultAmount = totalAmount;
+				
+				if($scope.isShowFees()){
+					if(amountSymbol == "percent"){
+						//calculation in case fee is percentage
+						var calculatedFee = parseFloat(totalAmount * (feePercent/100));
+						$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
+						$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
+					}
+					else{
+						//calculation in case fee is amount
+						$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
+						$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
+					}
+				}
+				//set button as refund in case of -ve amount
+				if($scope.renderData.defaultPaymentAmount < 0){					
+					$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+					$scope.shouldShowMakePaymentButton = false;
+				} else {
+
+					$scope.shouldShowMakePaymentButton = true;
+				}
+		};
+
+		var setupFeeData = function(){
+
+				var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
+				var defaultAmount = $scope.renderData ?
+				 	parseFloat($scope.renderData.defaultPaymentAmount) : zeroAmount;
+				
+				var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+				$scope.feeData.minFees = minFees;
+				$scope.feeData.defaultAmount = defaultAmount;
+
+				if($scope.isShowFees()){
+					if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+						
+						var amountSymbol = feesInfo.amount_symbol;
+						var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+						$scope.feeData.actualFees = feesAmount;
+						
+						if(amountSymbol == "percent") $scope.calculateFee();
+						else{
+							$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
+							$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
+						}
+					}
+				}
+		};
+
+		$scope.calculateTotalAmount = function(amount) {
+			
+			var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
+			var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
+			
+			$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
+		};
+
+		var checkforFee = function(){
+			_.each($scope.renderData.paymentTypes, function(value) {
+				  if(value.name != "CC" 	&& value.name == $scope.saveData.paymentType){
+						$scope.feeData.feesInfo = value.charge_code.fees_information;
+						setupFeeData();
+				  };					
+			});
+		};
+
+		/*
+		* to check if reference is present for payment type
+		*/
+		var checkReferencetextAvailable = function(){
+			//call utils fn	
+			$scope.referenceTextAvailable = checkIfReferencetextAvailable($scope.renderData.paymentTypes,$scope.saveData.paymentType);
+
+		};
+		var checkReferencetextAvailableForCC = function(){
+			//call utils fn	
+			$scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes,$scope.defaultPaymentTypeCard);
+		}
 
 
 		/*
@@ -69,6 +198,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				$scope.showCreditCardInfo = false;
 			};
 			checkReferencetextAvailable();
+			checkforFee();
 		};
 
    	  /*
@@ -148,8 +278,22 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 	$scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
 		 	$scope.defaultPaymentTypeCardExpiry = cardExpiry;
 
-
+		 	//check if the selected card has reference
 		 	checkReferencetextAvailableForCC();
+
+		 	//check if the selected card has fees
+		 	_.each($scope.renderData.paymentTypes, function(paymentType) {
+				  if(paymentType.name === "CC" ){
+				  	_.each(paymentType.values, function(paymentType) {
+				  		if(cardType.toUpperCase() === paymentType.cardcode)
+						{
+							$scope.feeData.feesInfo = paymentType.charge_code.fees_information;
+							setupFeeData();
+						}
+						
+					});
+				  };					
+			});
 
 
 		 	$scope.saveData.payment_type_id = data.id;
@@ -268,7 +412,5 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				}		
 
 		};
-
-
 
 }]);

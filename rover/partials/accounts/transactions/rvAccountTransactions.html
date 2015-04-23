@@ -125,7 +125,7 @@
                                 <span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}">{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
                             </li>
                             <!-- Only if balance > 0:-->
-                            <li ng-show="billData.total_fees.balance_amount > 0">
+                            <li>
                                 <button class="button green with-icon only-icon" ng-click="showPayemntModal()" ng-show="showPayButton">
                                     <span class="icons icon-wallet"></span>
                                     {{'PAY' |translate}}
@@ -197,7 +197,7 @@
                                         </td>
                                         <td>
                                             <!-- Only if balance > 0, otherwise leave blank cell -->
-                                            <button class="button green with-icon only-icon" ng-show = "billData.total_fees.balance_amount > 0 && showPayButton" ng-click="showPayemntModal()">
+                                            <button class="button green with-icon only-icon" ng-show = "showPayButton" ng-click="showPayemntModal()">
                                                 <span class="icons icon-wallet"></span>
                                                 {{'PAY' |translate}}
                                             </button>
