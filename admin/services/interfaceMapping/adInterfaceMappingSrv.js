@@ -5,7 +5,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     */ 
         
 	this.fetchExternalMappingList = function(data) {
-            var hotelId = data.id;
+            var hotelId = data.hotel_id;
 		var deferred = $q.defer();
 		var url = "/admin/external_mappings/" + hotelId + "/list_mappings.json";
 		
@@ -17,14 +17,10 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 		return deferred.promise;
 	};
 	this.fetchInterfaceMappingsList = function(data) {
-            console.log('fetching interface mappings!!!!><><><><><');
             var hotelId = data.hotel_id, 
                     interfaceId = data.interface_type_id;
-                 console.log('doing defer...');
 		var deferred = $q.defer();
-                console.log('done with defer');
 		var url = "/admin/external_mappings/"+hotelId+"/interface_mappings.json?hotel_id="+hotelId+"&interface_type_id="+interfaceId;
-                console.log('@ url: '+url);
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
