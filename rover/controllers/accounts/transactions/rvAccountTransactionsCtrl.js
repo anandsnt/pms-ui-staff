@@ -19,7 +19,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		* @return {Boolean}
 		*/
 		$scope.hasPermissionToMoveCharges = function() {
-			return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
+			return rvPermissionSrv.getPermissionValue ('GROUP_MOVE_CHARGES_BILL');
 		};
 
 		
