@@ -403,13 +403,11 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 						"bill_number": $scope.renderData.billNumberSelected,
 						"payment_type": $scope.saveData.paymentType,
 						"amount": $scope.renderData.defaultPaymentAmount,
-						"payment_method_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null,
-						"fees_charge_code_id":12,
-   						"fees_amount":11
+						"payment_method_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null
 						},
 					"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id
 				};
-				
+
 				if($scope.isShowFees()){
 					if($scope.feeData.calculatedFee)
 						params.data_to_pass.fees_amount = $scope.feeData.calculatedFee;
