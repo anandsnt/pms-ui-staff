@@ -90,8 +90,9 @@
                 ng-click="removeReservation(ngDialogData)">
                 Remove
             </button>
-            <button type="button" class="button brand-colors"
-                ng-click="navigateStayCard(reservation)">
+            <button type="button" class="button"
+                ng-class="{'grey' : !ngDialogData.reservationStatusFlags.isGuestAttached, 'brand-colors' : ngDialogData.reservationStatusFlags.isGuestAttached}" 
+                ng-click="navigateStayCard(ngDialogData)">
                 Stay Card
             </button>
             <button type="button" 

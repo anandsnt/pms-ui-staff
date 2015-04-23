@@ -10,6 +10,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     '$q',
     'ngDialog',
     'rvGroupConfigurationSrv',
+    '$state',
     function($scope,
         $rootScope,
         rvGroupRoomingListSrv,
@@ -20,7 +21,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         rvPermissionSrv,
         $q,
         ngDialog,
-        rvGroupConfigurationSrv) {
+        rvGroupConfigurationSrv,
+        $state) {
 
         BaseCtrl.call(this, $scope);
 
@@ -757,7 +759,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 isUneditable: reservation.reservation_status == "CANCELED",
                 isExpected: reservation.reservation_status == "RESERVED" || reservation.reservation_status == "CHECKING_IN",
                 isStaying: reservation.reservation_status == "CHECKEDIN" || reservation.reservation_status == "CHECKING_OUT",
-                canChekin: !!reservation.room_no && new tzIndependentDate(reservation.arrival_date) == new tzIndependentDate($rootScope.businessDate)
+                canChekin: !!reservation.room_no && new tzIndependentDate(reservation.arrival_date) == new tzIndependentDate($rootScope.businessDate),
+                isGuestAttached: !!reservation.lastname
             }
         }
 
@@ -795,13 +798,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         $scope.navigateStayCard = function(reservation) {
             // Navigate to StayCard
-            console.log(reservation);
-
-            $scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
-                "id": reservation.id,
-                "confirmationId": reservation.confirm_no,
-                "isrefresh": false
-            });
+            if (reservation.reservationStatusFlags.isGuestAttached) {
+                $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+                    "id": reservation.id,
+                    "confirmationId": reservation.confirm_no,
+                    "isrefresh": false
+                });
+                $scope.closeDialog();
+            }
         }
 
         /**
