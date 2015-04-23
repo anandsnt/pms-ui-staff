@@ -8,6 +8,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     'rvUtilSrv',
     'rvPermissionSrv',
     '$q',
+    'ngDialog',
     function($scope,
         $rootScope,
         rvGroupRoomingListSrv,
@@ -16,7 +17,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $state,
         util,
         rvPermissionSrv,
-        $q) {
+        $q,
+        ngDialog) {
 
         BaseCtrl.call(this, $scope);
 
@@ -242,7 +244,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * when a tab switch is there, parant controller will propogate
-         * API, we will get this event, we are using this to fetch new room block deails         
+         * API, we will get this event, we are using this to fetch new room block deails
          */
         /*$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
             if (activeTab !== 'ROOMING') return;
@@ -702,6 +704,20 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForRoomingList, failedToFetchOfAllReqdForRoomingList);
+        }
+
+        /**
+         * Function to edit a reservation from the rooming list
+         */
+        $scope.showEditReservationPopup = function(reservation) {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/rvGroupEditRoomingListItem.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(angular.copy(reservation))
+            });
         }
 
         /**
