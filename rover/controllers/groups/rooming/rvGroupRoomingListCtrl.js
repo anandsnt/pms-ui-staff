@@ -167,7 +167,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
             $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
-            console.log ($scope.selectedRoomType);
+            console.log($scope.selectedRoomType);
             //we have to populate possible number of rooms & occupancy against a 
             $scope.changedSelectedRoomType();
         }
@@ -178,8 +178,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
-            _.each(data.results, function(reservation){
-                $scope.reservations.push (reservation);
+            _.each(data.results, function(reservation) {
+                $scope.reservations.push(reservation);
             });
 
             //total result count
@@ -242,12 +242,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * when a tab switch is there, parant controller will propogate
-         * API, we will get this event, we are using this to fetch new room block deails		 
+         * API, we will get this event, we are using this to fetch new room block deails         
          */
         /*$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
-			if (activeTab !== 'ROOMING') return;
-			$scope.fetchRoomingDetails();
-		});*/
+            if (activeTab !== 'ROOMING') return;
+            $scope.fetchRoomingDetails();
+        });*/
 
         /**
          * [initializeVariables description]
@@ -296,7 +296,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
-         * should we disable next button 
+         * should we disable next button
          * @return {Boolean}
          */
         $scope.isNextButtonDisabled = function() {
@@ -304,7 +304,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
-         * should we disable prev button 
+         * should we disable prev button
          * @return {Boolean}
          */
         $scope.isPrevButtonDisabled = function() {
@@ -449,7 +449,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 $scope.sort_dir = 'ASC';
             }
 
-            //calling the reservation fetch API			
+            //calling the reservation fetch API         
             $scope.fetchReservations();
         };
 
@@ -623,7 +623,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * utiltiy function for setting scroller and things
-         * return - None		
+         * return - None
          */
         var setScroller = function() {
             //setting scroller things
@@ -638,7 +638,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * utiltiy function for setting scroller and things
-         * return - None		
+         * return - None
          */
         var refreshScrollers = function() {
             $scope.refreshScroller('rooming_list');
@@ -702,6 +702,20 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForRoomingList, failedToFetchOfAllReqdForRoomingList);
+        }
+
+        /**
+         * Function to edit a reservation from the rooming list
+         */
+        $scope.showEditReservationPopup = function(reservation) {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/rvGroupEditRoomingListItem.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(angular.copy(reservation))
+            });
         }
 
         /**
