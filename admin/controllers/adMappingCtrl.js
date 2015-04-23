@@ -127,6 +127,34 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         var fetchInterfaceMappingsSuccess = function(data){
             $scope.mappingInterface = {};
             $scope.mappingInterface = data;
+            
+            if (typeof $scope.mappingInterface.types !== typeof []){
+                $scope.mappingInterface.types = [];
+            }
+            if (typeof $scope.mappingInterface.mappings !== typeof []){
+                $scope.mappingInterface.mappings = [];
+            }
+            var mapType, mappingTypeName, sntVal, extVal, mv;
+            for (var types in data.mapping){
+                mapType = data.mapping[types];
+                mappingTypeName = mapType.mapping_type;
+                for (var v in mapType.mapping_values){
+                    mv = mapType.mapping_type[v];
+                    sntVal = mv.snt_value;
+                    extVal = mv.external_value;
+                    $scope.mappingInterface.mappings.push({
+                        "mapping_type":mappingTypeName,
+                        "snt_value":sntVal,
+                        "external_value":extVal
+                    });
+                }
+            
+            }
+            
+            console.log('mapping interface data: with mappings');
+            console.log(data);
+            
+            
             $scope.$emit('hideLoader');
         };
         var getLastInterface = function(){
@@ -137,6 +165,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 	
 	//$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchSuccess);
         $scope.fetchExternalMappingItems = function(){
+            console.log('fetch mapping list');
             $scope.invokeApi(ADInterfaceMappingSrv.fetchExternalMappingList, {'id':$scope.hotelId}, fetchExternalMappingItemsSuccess);
         };
         $scope.fetchInterfaceMappings = function(){

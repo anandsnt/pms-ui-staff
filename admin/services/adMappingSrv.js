@@ -6,7 +6,7 @@ admin.service('ADMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q
 	this.fetchMappingList = function(data) {
 		
 		var deferred = $q.defer();
-		var url = "/admin/external_mappings/" + data.id + "/list_mappings.json";
+		var url = "/admin/external_mappings/" + data.hotelId + "/list_mappings.json";
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);

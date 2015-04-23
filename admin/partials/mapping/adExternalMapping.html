@@ -3,7 +3,7 @@
                 <section ng-init="fetchInterfaceMappings()">
 			<header class="content-title float">
 				<h2>{{clickedInterfaceName}}</h2>
-				<span class="count">({{mappingInterface.mapping.length}})</span>
+				<span class="count">({{mappingInterface.mappings.length}})</span>
 				
 				<a class="action back" ui-sref='admin.externalMappings'>Back</a>
 				<button ng-click="openAddNew()" class="action add">Add new</button>
@@ -42,17 +42,17 @@
 					</thead>
 					
 					<tbody>
-						<tr ng-repeat="mapping_value in mappingInterface.mapping">
-							<td width="30%" ng-click="editSelected(mapping_value.mapping_type)">
+						<tr ng-repeat="mapping in mappingInterface.mappings">
+							<td width="30%" ng-click="editSelected(mapping.mapping_type)">
 								<a  data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a>
 							</td>
 							<td width="25%">
-								<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.snt_value}}</a>
+								<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.snt_value}}</a>
 							</td>
 							<td width="25%">
-								<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.external_value}}</a>
+								<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.external_value}}</a>
 							</td>
-							<td class="delete" ng-click="clickedDelete(mapping_value.mapping_type)" width="20%">
+							<td class="delete" ng-click="clickedDelete(mapping.mapping_type)" width="20%">
 								<a class="icons icon-delete large-icon delete_item"></a>
 							</td>
 						</tr>
