@@ -61,17 +61,17 @@
                         <div class="scrollable" ng-iscroll="billDays">
                             <ul class="wrapper" style="width{Outer lenght of all li items}px">
                                 <li class="add-new">
-                                    <a ng-click="openPostCharge(billData.bill_number)" class="button with-icon brand-colors">
+                                    <button type="button" ng-click="openPostCharge(billData.bill_number)" class="button with-icon brand-colors">
                                         <span class="icons icon-charge"></span>
                                         {{'ADD_CHARGE' |translate}}
-                                    </a>
+                                    </button>
                                 </li>
                                 <!-- TODO: active class logic -->
                                 <li class="active" ng-repeat="days in billData.days" ng-click="showDayRates($index)">
-                                    <a class="toggle">
+                                    <button class="toggle" type ="button" ng-class="{'active' : dayRates == $index}">
                                         <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
                                         <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </div>

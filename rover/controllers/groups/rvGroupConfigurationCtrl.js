@@ -117,8 +117,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		* to make view the transactions tab
 		* @return {Boolean}
 		*/
-		$scope.hasPermissionToViewAccountsTab = function() {
-			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		$scope.hasPermissionToViewTransactionsTab = function() {
+			return rvPermissionSrv.getPermissionValue ('ACCESS_GROUP_ACCOUNT_TRANSACTIONS');
 		};
 
 		/**
@@ -131,7 +131,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			$scope.errorMessage = '';
 
 			//allow to swith to "transactions" tab only if the user has its permission
-			if(tab == "TRANSACTIONS" && !$scope.hasPermissionToViewAccountsTab()){
+			if(tab == "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()){
 				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
 				return;
 			}
