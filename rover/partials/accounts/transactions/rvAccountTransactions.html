@@ -239,7 +239,7 @@
                                                 <select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue">
                                                     <option value="" disabled>Move to bill</option>
                                                     <option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
-                                                    <option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+                                                    <option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
                                                 </select>
                                             </div>
                                         </td>
