@@ -131,6 +131,20 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		this.postCharges = function(params) {
+				var deferred = $q.defer();
+				var url = '/staff/items/post_items_to_bill';
+
+				rvBaseWebSrvV2.postJSON(url, params)
+					.then(function(data) {
+						deferred.resolve(data);
+					}, function(data) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
+		};
+
 
 	}
 ]);
