@@ -10,9 +10,9 @@
 	<td>{{ each.adults }}</td>
     <td>{{ each.children }}</td>
 	<td>{{ each.total_revenue | currency:currencySymbol:2 }}</td>
-	<td class="break">{{ each.adr | currency:currencySymbol:2 }} ADR</td>
+	<td class="break">{{ each.adr | currency:currencySymbol:2 }}</td>
     <td>{{ each.last_year_occupied_rooms }}</td>
-	<td>{{ each.last_year_adr | currency:currencySymbol:2 }} ADR</td>
+	<td>{{ each.last_year_adr | currency:currencySymbol:2 }}</td>
     <td>{{ each.variance }}</td>
 </tr>
 <tr class="total" ng-if="resultsTotalRow">
