@@ -359,7 +359,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('FORECAST_BY_DATE'):
 					$scope.hasReportTotals    = false;
-					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? true : false;
+					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastReport.html';
 					break;
 
