@@ -57,20 +57,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			$scope.setHeadingTitle(title);
 		};
 
-		/**
-		 * function to set Back Navigation params
-		 */
-		var setBackNavigation = function() {
-			// TODO : Currently hardcoded to go to groups search.. 
-			// Change the same according to the requirements
-			$rootScope.setPrevState = {
-				title: $filter('translate')('GROUPS'),
-				name: 'rover.groups.search'
-			};
 
-			//setting title and things
-			setTitle();
-		}
 
 		/**
 		 * Function to check the mandatory values while saving the reservation
@@ -113,12 +100,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		};
 
 		/**
-		* function to check whether the user has permission
-		* to make view the transactions tab
-		* @return {Boolean}
-		*/
+		 * function to check whether the user has permission
+		 * to make view the transactions tab
+		 * @return {Boolean}
+		 */
 		$scope.hasPermissionToViewTransactionsTab = function() {
-			return rvPermissionSrv.getPermissionValue ('ACCESS_GROUP_ACCOUNT_TRANSACTIONS');
+			return rvPermissionSrv.getPermissionValue('ACCESS_GROUP_ACCOUNT_TRANSACTIONS');
 		};
 
 		/**
@@ -131,7 +118,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			$scope.errorMessage = '';
 
 			//allow to swith to "transactions" tab only if the user has its permission
-			if(tab == "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()){
+			if (tab == "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
 				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
 				return;
 			}
@@ -374,6 +361,27 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				$scope.groupConfigData.summary.addons_count = null;
 			}
 
+		}
+
+		$scope.updateAndBack = function() {
+			$scope.updateGroupSummary();
+			$state.go('rover.groups.search');
+		}
+
+		/**
+		 * function to set Back Navigation params
+		 */
+		var setBackNavigation = function() {
+			// TODO : Currently hardcoded to go to groups search.. 
+			// Change the same according to the requirements
+			$rootScope.setPrevState = {
+				title: $filter('translate')('GROUPS'),
+				callback: 'updateAndBack',
+				scope: $scope
+			};
+
+			//setting title and things
+			setTitle();
 		}
 
 		/**
