@@ -126,7 +126,7 @@
                             </li>
                             <!-- Only if balance > 0:-->
                             <li>
-                                <button class="button green with-icon only-icon" ng-click="showPayemntModal()" ng-show="showPayButton">
+                                <button class="button green with-icon only-icon" ng-click="showPayemntModal()" >
                                     <span class="icons icon-wallet"></span>
                                     {{'PAY' |translate}}
                                 </button>
@@ -197,7 +197,7 @@
                                         </td>
                                         <td>
                                             <!-- Only if balance > 0, otherwise leave blank cell -->
-                                            <button class="button green with-icon only-icon" ng-show = "showPayButton" ng-click="showPayemntModal()">
+                                            <button class="button green with-icon only-icon" ng-click="showPayemntModal()">
                                                 <span class="icons icon-wallet"></span>
                                                 {{'PAY' |translate}}
                                             </button>

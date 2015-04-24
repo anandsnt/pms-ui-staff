@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	'$scope',
-	'$rootScope','RVPaymentSrv','ngDialog','rvAccountTransactionsSrv',
-	function($scope, $rootScope,RVPaymentSrv,ngDialog,rvAccountTransactionsSrv) {
+	'$rootScope','RVPaymentSrv','ngDialog','rvAccountTransactionsSrv','rvPermissionSrv',
+	function($scope, $rootScope,RVPaymentSrv,ngDialog,rvAccountTransactionsSrv,rvPermissionSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
@@ -10,6 +10,24 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var cardDetails   = {};
 		var zeroAmount = parseFloat("0.00");
 		$scope.feeData = {};
+
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		var hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('POST_PAYMENT');
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to refund payment
+		* @return {Boolean}
+		*/
+		var hasPermissionToRefundPayment = function() {
+			return rvPermissionSrv.getPermissionValue ('POST_REFUND');
+		};
 
 		var init = function(){
 			$scope.saveData = {};	
@@ -37,6 +55,8 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.saveData.paymentType = '';
 			$scope.defaultPaymentTypeOfBill = '';	
 			$scope.shouldShowMakePaymentButton = true;
+			$scope.hasPermissionToMakePayment = hasPermissionToMakePayment();
+			$scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
 		};
 		init();
 
