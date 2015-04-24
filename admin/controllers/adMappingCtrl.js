@@ -1,26 +1,33 @@
-admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADMappingSrv', 'ADInterfaceMappingSrv', function($scope, $rootScope, $state, $stateParams, ADMappingSrv, ADInterfaceMappingSrv) {
+admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADInterfaceMappingSrv', function($scope, $rootScope, $state, $stateParams, ADInterfaceMappingSrv) {
 	
 	BaseCtrl.call(this, $scope);
-	$scope.hotelId = $rootScope.hotelId;
-	//$scope.hotelId = 1;
+	$scope.hotel_id = $rootScope.hotelId;
 	$scope.editData = {};
 	$scope.editData.sntValues = [];
 	$scope.editData.mapping_type = [];
 	$scope.currentClickedElement = -1;
         
-	/*
-    * Variables set to show/hide forms.
-    */
+        //properties being used to/from the service:
+        /*
+         *  hotel_id, mapping_type, mapping_type_id, 
+         *  interface_id, external_value, snt_value
+         * 
+         * Variables set to show/hide forms.
+        */
 	$scope.isEdit = false;
 	$scope.isAdd = false;
 	$scope.addFormView = false;
         
+	/*
+        * To close inline tabs on cancel/save clicks
+        */
+	$scope.closeInlineTab = function (){
+            $scope.isAdd = false;
+            $scope.isEdit = false;
+	};
         
         $scope.showAddNew = function(){
             $scope.addFormView = true;
-        };
-        $scope.hideAddNew = function(){
-            $scope.addFormView = false;
         };
 	
         $scope.openAddNew = function(){
