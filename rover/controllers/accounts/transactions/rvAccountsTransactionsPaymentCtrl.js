@@ -387,7 +387,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			//$scope.handleCloseDialog();
 			//To refresh the view bill screen 
 			// data.billNumber = $scope.renderData.billNumberSelected;
-			$scope.$emit('PAYMENT_SUCCESS',data);
+			$scope.$emit('UPDATE_TRANSACTION_DATA',data);
 			
 		};
 

@@ -79,6 +79,15 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			});
 		};
 
+		/*
+		 *  Bill data need to be updated after success action of 
+		 *  payment, post charges, split/edit etc...
+		 * 
+		 */
+		$scope.$on('UPDATE_TRANSACTION_DATA', function(event,data) {
+		 	getTransactionDetails();
+		});
+
 		$scope.createNewBill = function(){
 			var billData ={
 				"account_id" : $scope.accountConfigData.summary.posting_account_id,
@@ -480,12 +489,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		}
 
 		initAccountTransactionsView();
-
-
-		$scope.$on('PAYMENT_SUCCESS', function(event,data) {
-		 	getTransactionDetails();
-		});
-
 
 	}
 ]);
