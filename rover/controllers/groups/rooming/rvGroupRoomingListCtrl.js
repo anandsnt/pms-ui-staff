@@ -31,7 +31,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         var hasPermissionToCreateRoomingList = function() {
-            return true;
             return (rvPermissionSrv.getPermissionValue('CREATE_ROOMING_LIST'));
         };
 
@@ -41,7 +40,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         var hasPermissionToEditRoomingList = function() {
-            return true;
             return (rvPermissionSrv.getPermissionValue('EDIT_ROOMING_LIST'));
         };
 

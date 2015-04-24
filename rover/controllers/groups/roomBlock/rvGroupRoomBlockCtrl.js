@@ -129,6 +129,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * Has Permission To Over book
+		 * @return {Boolean}
+		 */
+		var hasPermissionToOverBook = function() {
+			return (rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY'));
+		};
+
+		/**
 		 * Function to decide whether to disable start date
 		 * for now we are checking only permission
 		 * @return {Boolean}
@@ -448,6 +456,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnSaveButton = function() {
+			if (!hasPermissionToOverBook() && isOverBooked()){
+				showNoPermissionOverBookingPopup();
+				return false;
+			}
 			if (isOverBooked()) {
 				showOverBookingPopup()
 			} else {
@@ -483,6 +495,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.saveRoomBlock = function() {
+			if (!hasPermissionToOverBook() && isOverBooked()){
+				showNoPermissionOverBookingPopup();
+				return false;
+			}
+
 			//TODO : Make API call to save the room block.
 			var params = {
 				group_id: $scope.groupConfigData.summary.group_id,
@@ -517,6 +534,21 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			});
 			return is_over_booked;
 		}
+
+		/**
+		 * Method to show oerbooking popup - No permission popup
+		 * @return undefined
+		 */
+		var showNoPermissionOverBookingPopup = function(){
+			// Show overbooking message
+			ngDialog.open({
+				template: '/assets/partials/groups/roomBlock/rvGroupNoPermissionOverBookingPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
 
 		/**
 		 * Method to show oerbooking popup
