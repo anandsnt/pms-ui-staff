@@ -172,11 +172,11 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['FORECAST_BY_DATE']:
-                    reportItem['reportIconCls'] = 'icon-report ';
+                    reportItem['reportIconCls'] = 'icon-report';
                     break;
 
                 case __reportNames['ROOMS_QUEUED']:
-                    reportItem['reportIconCls'] = 'icons icon-queued';
+                    reportItem['reportIconCls'] = 'icons guest-status icon-queued';
                     break;
 
                 default:
