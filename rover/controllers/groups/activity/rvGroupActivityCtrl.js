@@ -27,7 +27,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 		}
 		$scope.$on('updateLogdata', function(e, params) {
 				params["id"] = $scope.selectedGroupOrAccountId;
-				params["type"] = "group";
+				params["type"] = !!$scope.groupConfigData ? "group" : "account";
 				var fetchCompleted = function(data) {
 					$scope.$broadcast('PopulateLogData', data)
 				}
