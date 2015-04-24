@@ -67,8 +67,9 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     */
 	this.saveMapping = function(data){
             //interface_id will be a property in the data file
+            var hotelId = data.hotel_id, interfaceId = data.interface_type_id, mappingTypeId = data.mapping_type_id;
 		var deferred = $q.defer();
-		var url = '/admin/interface_mappings/save_mapping';
+		var url = '/admin/external_mappings/'+hotelId+'/save_mapping/'+interfaceId+'.json?value='+mappingTypeId;
 		
 		ADBaseWebSrv.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
@@ -82,9 +83,11 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     * @return {object} status of deletion
     */
 	this.deleteMapping = function(data){
-            var hotelId = data.hotel_id, interfaceId = data.interface_type_id;
+            var hotelId = data.hotel_id, interfaceId = data.interface_type_id, mappingTypeId = data.mapping_type_id;
+            console.log('del mapping data');
+            console.log(data);
 		var deferred = $q.defer();
-		var url = "/admin/external_mappings/"+hotelId+"/new_mappings/"+interfaceId +".json";
+		var url = "/admin/external_mappings/"+hotelId+"/delete_mappings/"+interfaceId +".json?value="+mappingTypeId;
 		
 		ADBaseWebSrv.deleteJSON(url,data).then(function(data) {
 			deferred.resolve(data);

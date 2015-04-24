@@ -7,6 +7,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 	$scope.editData.sntValues = [];
 	$scope.editData.mapping_type = [];
 	$scope.currentClickedElement = -1;
+        
 	/*
     * Variables set to show/hide forms.
     */
@@ -95,6 +96,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         
         $scope.extMappingSubComponents = [];
         $scope.mappingInterface = {};
+        $scope.mappingInterface.mappingTypeRefs = [];
         var cacheInterfaceId = function(data){  
             this.lastInterface = data;
             this.lastInterface.hotelId = $scope.hotelId;
@@ -109,6 +111,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.$emit('hideLoader');
         };
         var fetchInterfaceMappingsSuccess = function(data){
+            var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj, mTypeName, val;
             $scope.mappingInterface = {};
             $scope.mappingInterface = data;
             
@@ -118,7 +121,21 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             if (typeof $scope.editData.mapping_type !== typeof []){
                 $scope.editData.mapping_type = [];
             }
-            var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj;
+            if (typeof $scope.mappingInterface.mappingTypeRefs !== typeof []){
+                $scope.mappingInterface.mappingTypeRefs = [];
+            }
+            
+            for (var x in data.mapping_type){//save off this
+                mTypeName = data.mapping_type[x].name;
+                for (var vals in data.mapping_type[x].sntvalues){
+                    val = data.mapping_type[x].sntvalues[vals].name;
+                    if (typeof $scope.mappingInterface.mappingTypeRefs[mTypeName] !== typeof []){
+                        $scope.mappingInterface.mappingTypeRefs[mTypeName] = [];
+                    }
+                    $scope.mappingInterface.mappingTypeRefs[mTypeName].push({"name":val});
+                }
+            }
+            
             for (var n in data.mapping){
                 mapType = data.mapping[n];
                 
@@ -146,7 +163,8 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 }
             
             }
-            
+                console.log('$scope.mappingInterface.mappingTypeRefs');
+                console.log($scope.mappingInterface.mappingTypeRefs);
             $scope.$emit('hideLoader');
         };
         var getLastInterface = function(){
@@ -188,15 +206,15 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 		var editInterfaceMappingSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.editData = data;
-			$scope.editData.mapping_value = data.selected_mapping_type;
+			$scope.editData.mapping_type_id = data.selected_mapping_type_id;
 			$scope.editData.snt_value = data.selected_snt_value;
 			$scope.editData.external_value = data.external_value;
-			$scope.editData.source_code = data.source_code;
+			$scope.editData.mapping_type = data.mapping_type;
 			$scope.editData.value = data.value;
 			$scope.isEdit = true;
 			$scope.isAdd = false;
 			// Initial loading data to SNT VALUES dropdown.
-			angular.forEach($scope.editData.mapping_type,function(item, index) {
+			angular.forEach($scope.editData.mapping_type_id,function(item, index) {
 	       		if (item.name == $scope.editData.selected_mapping_type) {
 	       			$scope.editData.sntValues = item.sntvalues;
 			 	}
@@ -213,6 +231,11 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
  	/*
     * Function to render Add screen with mapping data.
     */
+    $scope.mappingTypeSelected = function(){
+        var name = $('[name=mapping-type]').val();
+        $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[name];
+      
+    };
  	$scope.addNew = function(){
             var lastInterface = getLastInterface();
             $scope.clickedInterfaceName = lastInterface.name;
@@ -265,7 +288,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 		
 		if($scope.isEdit) postData.value = $scope.editId;
 		
-		$scope.invokeApi(ADMappingSrv.saveMapping, postData, successSaveCallback);
+		$scope.invokeApi(ADInterfaceMappingSrv.saveMapping, postData, successSaveCallback);
 	};
         
         $scope.setActiveItem = function(itemObj){
@@ -296,6 +319,18 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
     * @param {mappingId} mappingId of the mapping item.
     */
 	$scope.clickedDelete = function(mappingId){
+            
+            var lastInterface = getLastInterface();
+            $scope.clickedInterfaceName = lastInterface.name;
+        var del_mapping_data = {
+                'hotel_id':lastInterface.hotelId, 
+                interface_type_id: lastInterface.id, 
+                interface_name: lastInterface.name,
+                interface_hotel_id: lastInterface.hotelId,
+                mapping_type_id: mappingId
+            };    
+        
+            
 		
 		var successDeletionCallback = function(){
 			$scope.$emit('hideLoader');
@@ -310,7 +345,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
  			});
 		};
 		
-		$scope.invokeApi(ADMappingSrv.deleteMapping, {'value':mappingId }, successDeletionCallback);
+		$scope.invokeApi(ADInterfaceMappingSrv.deleteMapping, del_mapping_data, successDeletionCallback);
 	};
 	/*
     * Function to handle data change in 'Mapping type'.

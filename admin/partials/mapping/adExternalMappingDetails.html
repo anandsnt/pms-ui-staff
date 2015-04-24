@@ -14,10 +14,10 @@
 				<div class="entry">
 					<label for="mapping-type"> Mapping type <strong>*</strong> </label>
 					<div class="select">
-						<select ng-model="editData.mapping_value" name="mapping-type" class="placeholder">
-							<option value=""> Mapping type </option>
-							<option ng-repeat="mapping in editData.mapping_type" value="{{mapping.name}}" ng-selected="mapping.name==editData.selected_mapping_type" >{{mapping.name}} </option>
-						</select>
+                                            <select ng-model="editData.mapping_value" name="mapping-type" class="placeholder" ng-change="mappingTypeSelected()">
+                                                <option value="" ng-selected="selected"> Mapping type </option>
+                                                        <option ng-repeat="mapping in editData.mapping_type" value="{{mapping.name}}" >{{mapping.name}} </option>
+                                            </select>
 					</div>
 				</div>
 				
@@ -26,9 +26,8 @@
 					<label for="snt-value"> Snt Value <strong>*</strong> </label>
 					<div class="select">
 						<select ng-model="editData.snt_value" name="snt-value" class="placeholder">
-							<option value=""> Snt Value </option>
-							<option ng-repeat="sntVal in editData.sntValues" value="{{sntVal.name}}" ng-selected="sntVal.name==editData.selected_snt_value" >{{sntVal.name}} </option>
-
+							<option value="" ng-selected="selected"> Snt Value </option>
+							<option ng-repeat="sntVal in editData.sntValues" value="{{sntVal.name}}" >{{sntVal.name}} </option>
 						</select>
 					</div>
 				</div>
@@ -38,11 +37,6 @@
 					<input type="text" ng-model="editData.external_value" value="editData.external_value" required="yes" placeholder="Enter value" name="external-value">
 				</div>
                                 
-				<div class="entry">
-					<label for="external-value"> Source Code <strong>*</strong> </label>
-					<input type="text" ng-model="editData.source_code" value="editData.source_code" required="yes" placeholder="Enter value" name="source-code">
-				</div>
-
 			</fieldset>
 
 			<div class="actions float">
