@@ -19,7 +19,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		* @return {Boolean}
 		*/
 		$scope.hasPermissionToMoveCharges = function() {
-			return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
+			return rvPermissionSrv.getPermissionValue ('GROUP_MOVE_CHARGES_BILL');
 		};
 
 		
@@ -326,7 +326,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		* @return {Boolean}
 		*/
 		$scope.hasPermissionToChangeCharges = function() {
-			return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
+			return rvPermissionSrv.getPermissionValue ('GROUP_EDIT_SPLIT_DELETE_CHARGE');
 		};
 
 		/**

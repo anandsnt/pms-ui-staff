@@ -3483,8 +3483,6 @@
                         }
                     }
                 }
-
-                @media @highdpi { background-size: 40px; }
             }
 
             /* Reservation tabs nav ***/
@@ -3507,7 +3505,7 @@
                             margin: 10px 10px 0 0;
                             .square(20px);
                         }
-                    }
+                    }   
 
                     &.ui-tabs-active {
                         a {
@@ -4913,6 +4911,15 @@
                             .size(100%, 1px);
                         }
                     }
+
+                    &.brand-colors { 
+                        position: relative;
+                        font-size: 11px;
+                        line-height: 1em;
+                        width: 80px;
+
+                        .icons { top: 8px; }
+                    }
                 }
             } 
 
@@ -5023,16 +5030,23 @@
 
                     .type,
                     .name {
-                        font-size: 18px;
-                        font-weight: 600;
                         line-height: 40px;
                         text-transform: none;
                         .show;
                         .nowrap();
                     }
 
-                    .name { max-width: 240px; }
-                    .type { max-width: 160px; }
+                    .name { 
+                        font-size: 14px;
+                        color: @grey4;
+                        max-width: 240px; 
+                    }
+
+                    .type { 
+                        font-size: 18px;
+                        font-weight: 600;
+                        max-width: 160px; 
+                    }
 
                     .icon-swiped { margin-top: 3px; }
 
@@ -7272,6 +7286,98 @@
                             }
                         }
                     }
+                }
+
+                &.forecast-reports {
+                    table-layout: fixed;
+
+                    .red { color: @red; }
+
+                    thead {
+                        tr {
+                            th {
+                                padding: 0;
+                                vertical-align: top;
+                                line-height: 35px;
+
+                                span {
+                                    color: @white;
+                                    padding: 0 10px;
+                                    margin-right: 5px;
+                                    background-color: darken(@grey2, 10);
+                                    height: 35px;
+                                    .calc-width(100, 5);
+                                    .show;
+                                    .nowrap();
+                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3)); 
+                                }
+                            }
+
+                            &.top-row {
+                                [colspan] { 
+                                    font-size: 16px;
+                                    text-align: center;
+                                    color: @white;
+                                    background-color: @gcard; 
+                                    width: 30%;
+
+                                    &.break { width: 70%; }
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            &.weekend {
+                                td { 
+                                    color: @darkBlue;
+                                    background-color: rgba(0,0,0,.05); 
+
+                                    &.red { color: @red; }
+                                }
+                            }
+
+                            &.total {
+                                td { 
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    background-color: transparent;
+                                    vertical-align: top;
+                                    padding-top: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    .break { 
+                        position: relative;
+                        padding-right: 10px;
+
+                        span { 
+                            margin-right: 0;
+                            width: 100%;
+                        }
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            width: 10px;
+                            .extend-height(100, 10);
+                            .background(@white);
+                        }
+                    }
+
+                    .date { 
+                        width: 100px;
+                        
+                        span { 
+                            vertical-align: middle;
+                            .show;
+                        }
+                    }                
                 }
 
                 &.occupancy-footer { .hide; }
