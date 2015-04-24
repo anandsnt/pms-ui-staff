@@ -225,7 +225,7 @@
                                     	</td>
                                         <td>
                                         	<strong>
-                                        		<span ng-show= "description.fees_amount!=NIL">{{currencySymbol}}{{description.fees_amount | number: precisonTwo}}
+                                        		<span ng-repeat="description in feesData.description" ng-show= "description.fees_amount!=NIL">{{currencySymbol}}{{description.fees_amount | number: precisonTwo}}
 												</span>
 											</strong>
 										</td>
