@@ -212,7 +212,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 var lastInterface = getLastInterface();
                 $scope.clickedInterfaceName = lastInterface.name;
                 var editData = {
-                    'id':$scope.hotel_id, 
+                    'hotel_id':$scope.hotel_id, 
                     interface_type_id:lastInterface.id, 
                     interface_name:lastInterface.name,
                     mapping_type_id: mappingId
