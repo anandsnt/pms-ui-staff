@@ -200,7 +200,8 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     'hotel_id':lastInterface.hotelId, 
                     interface_type_id: lastInterface.id, 
                     interface_name: lastInterface.name,
-                    interface_hotel_id: lastInterface.hotelId
+                    interface_hotel_id: lastInterface.hotelId,
+                    mapping_type_id: id
                 };
 
 		var editInterfaceMappingSuccessCallback = function(data) {
