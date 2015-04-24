@@ -1307,13 +1307,19 @@ body { overflow: hidden; }
             .clickable;
 
             .card-logo { margin-right: 20px; }
-            .number,
-            .date { .calc-width(50, 60); }
+            
+            > .number,
+            > .date { .calc-width(50, 60); }
 
-            .icon-ok-10 {
+            .icons {
             	position: absolute;
-                top: 20px;
-                right: 0;
+            	top: 10px;
+            	right: 0;
+
+            	&.icon-ok-10 { 
+            		top: 20px;
+            		right: 40px;
+            	}
             }
         }
 
