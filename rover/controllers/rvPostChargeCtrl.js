@@ -30,7 +30,7 @@ sntRover.controller('RVPostChargeController',
   			* @return {Boolean}
   			*/
   			$scope.hasPostChargePermission = function (){
-  				return rvPermissionSrv.getPermissionValue ('ADD_CHARGE');
+  				return isFromAccounts ? rvPermissionSrv.getPermissionValue ('POST_TRANSACTION') : rvPermissionSrv.getPermissionValue ('ADD_CHARGE');
   			};
 
   			/*
