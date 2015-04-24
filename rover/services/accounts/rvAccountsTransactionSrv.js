@@ -5,9 +5,10 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchTransactionDetails = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/posting_accounts/transactions';
+			url = '/api/posting_accounts/' + params.account_id + '/bill_card'
+			//url = '/api/posting_accounts/transactions';
 
-			rvBaseWebSrvV2.getJSON(url, params)
+			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
@@ -19,7 +20,21 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.createAnotherBill = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/posting_accounts/transactions';
+				url = 'api/bills/create_bill';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		}
+
+		this.moveToAnotherBill = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/bills/transfer_transaction';
 
 			rvBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
@@ -91,6 +106,64 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 			    deferred.reject(data);
 			});	
 			return deferred.promise;
+		};
+
+	  /*
+		* Service function to add new card 
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
+
+		this.savePaymentDetails = function(data){
+			var deferred = $q.defer();
+			var url = '/api/bills/'+data.bill_id+'/add_payment_method';
+			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
+				    deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});	
+			return deferred.promise;
+		};
+
+	  /*
+		* Service function to submit payment
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
+
+		this.submitPaymentOnBill = function(data){
+			var deferred = $q.defer();
+			var url = '/api/bills/'+data.bill_id+'/submit_payment';
+			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
+				    deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});	
+			return deferred.promise;
+		};
+
+
+	  /*
+		* Service function to post charge
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
+
+		this.postCharges = function(params) {
+				var deferred = $q.defer();
+				var url = '/staff/items/post_items_to_bill';
+
+				rvBaseWebSrvV2.postJSON(url, params)
+					.then(function(data) {
+						deferred.resolve(data);
+					}, function(data) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
 		};
 
 
