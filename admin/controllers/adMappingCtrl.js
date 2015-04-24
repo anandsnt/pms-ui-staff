@@ -191,42 +191,33 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
     * Function to render edit screen with mapping data.
     * @param {id} id of the mapping item.
     */
-	$scope.editSelected = function(id){
+	$scope.editSelected = function(mappingId){
 		$scope.errorMessage ="";	
-        	$scope.currentClickedElement = id;
-		$scope.editId = id;
-                var lastInterface = getLastInterface();
-                $scope.clickedInterfaceName = lastInterface.name;
-		var data = {
-                    'hotel_id':lastInterface.hotelId, 
-                    interface_type_id: lastInterface.id, 
-                    interface_name: lastInterface.name,
-                    interface_hotel_id: lastInterface.hotelId,
-                    mapping_type_id: id
-                };
+		$scope.editId = mappingId;
 
 		var editInterfaceMappingSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.editData = data;
-			$scope.editData.mapping_type_id = data.selected_mapping_type_id;
-			$scope.editData.snt_value = data.selected_snt_value;
-                        
-                        
-			$scope.editData.external_value = data.external_value;
-			$scope.editData.mapping_type = data.mapping_type;
-			
-                        $scope.editData.value = data.value;//ref mapping_type_id, hotel_id, interface_id ??
-			
                         $scope.isEdit = true;
 			$scope.isAdd = false;
 			// Initial loading data to SNT VALUES dropdown.
-			angular.forEach($scope.editData.mapping_type_id,function(item, index) {
-	       		if (item.name == $scope.editData.selected_mapping_type) {
+                        /*	
+                        angular.forEach($scope.editData.mapping_type_id,function(item, index) {
+                            if (item.name == $scope.editData.selected_mapping_type) {
 	       			$scope.editData.sntValues = item.sntvalues;
 			 	}
                         });
+                        */
 		};
-		$scope.invokeApi(ADInterfaceMappingSrv.fetchEditMapping, $scope.editData, editInterfaceMappingSuccessCallback );
+                        
+                var lastInterface = getLastInterface();
+                $scope.clickedInterfaceName = lastInterface.name;
+                var editData = {
+                    'id':$scope.hotel_id, 
+                    interface_type_id:lastInterface.id, 
+                    interface_name:lastInterface.name,
+                    mapping_type_id: mappingId
+                };
+		$scope.invokeApi(ADInterfaceMappingSrv.fetchEditMapping, editData, editInterfaceMappingSuccessCallback );
 	};
 	/*
     * Function to render template for add/edit screens.
