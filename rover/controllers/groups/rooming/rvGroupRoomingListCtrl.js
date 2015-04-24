@@ -173,7 +173,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
                 //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
                 $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
-            } 
+            }
             //if we have any data in our hand, just updating the available room count
             else {
                 _.each($scope.roomTypesAndData, function(roomTypeData) {
@@ -812,12 +812,15 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $scope.navigateStayCard = function(reservation) {
             // Navigate to StayCard
             if (reservation.reservationStatusFlags.isGuestAttached) {
-                $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-                    "id": reservation.id,
-                    "confirmationId": reservation.confirm_no,
-                    "isrefresh": false
-                });
+                $scope.$emit('showLoader');
                 $scope.closeDialog();
+                $timeout(function() {
+                    $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+                        "id": reservation.id,
+                        "confirmationId": reservation.confirm_no,
+                        "isrefresh": false
+                    });
+                }, 150)
             }
         }
 
