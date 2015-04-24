@@ -81,6 +81,9 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * @return {undefined}
 		 */
 		$scope.getBalanceAmount = function(amount) {
+			if (typeof amount === 'undefined') {
+				return "";
+			}
 			return $rootScope.currencySymbol + $filter('number')(amount, 2)
 		}
 
