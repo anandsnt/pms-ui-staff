@@ -5,8 +5,8 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	BaseCtrl.call(this, $scope);
 
 	var reloadBillScreen =  function(){
-		//TO DO
-	}
+		$scope.$emit('UPDATE_TRANSACTION_DATA');
+	};
 
 
 	var hideLoaderAndClosePopup = function(){

@@ -108,6 +108,12 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+	  /*
+		* Service function to add new card 
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
 
 		this.savePaymentDetails = function(data){
 			var deferred = $q.defer();
@@ -120,6 +126,13 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+	  /*
+		* Service function to submit payment
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
+
 		this.submitPaymentOnBill = function(data){
 			var deferred = $q.defer();
 			var url = '/api/bills/'+data.bill_id+'/submit_payment';
@@ -130,6 +143,14 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 				});	
 			return deferred.promise;
 		};
+
+
+	  /*
+		* Service function to post charge
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
 
 		this.postCharges = function(params) {
 				var deferred = $q.defer();
