@@ -1221,7 +1221,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				} else {
 					console.log('report.submit');
 					$scope.$broadcast('report.submit');
-				}
+				};
 			};
 
 			var errorCallback = function (response) {
@@ -1235,7 +1235,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.errorMessage = response;
 				$scope.$emit('hideLoader');
 
-				$rootScope.$emit('report.API.failure');
+				console.log('report.API.failure');
+				$rootScope.$broadcast('report.API.failure');
 			};
 
 			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, sucssCallback, errorCallback);

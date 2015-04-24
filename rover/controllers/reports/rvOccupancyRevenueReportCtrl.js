@@ -180,6 +180,12 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		}
 
 		function init() {
+
+			// dont init if there is an API error
+			if ( $scope.$parent.errorMessage.length ) {
+				return;
+			};
+
 			var chosenReport = RVreportsSrv.getChoosenReport();
 
 			var ms   = new tzIndependentDate(chosenReport.fromDate) * 1,
