@@ -760,7 +760,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//callinng the update API calling 
 			$scope.updateGroupSummary ();
-			
+			//has data updated from this view, block from date or to date
+			$scope.hasBlockDataUpdated = true;
 		};
 		
 		/**
@@ -776,9 +777,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * when a tab switch is there, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails		 
 		 */
-		$scope.$on("UPDATED_GROUP_INFO", function(event, activeTab){
-			if (activeTab !== 'ROOM_BLOCK') return;
-			$scope.fetchRoomBlockGridDetails();
+		$scope.$on("UPDATED_GROUP_INFO", function(event){
+			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
+			if ($scope.hasBlockDataUpdated){
+				$scope.fetchRoomBlockGridDetails();
+			}
 		});
 
 		/**
@@ -888,6 +891,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
 
+			//has data updated from this view, block from date or to date
+			$scope.hasBlockDataUpdated = false;
 
 			//selected Hold status:
 			$scope.selectedHoldStatus = "";
