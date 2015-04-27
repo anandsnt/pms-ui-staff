@@ -70,13 +70,13 @@
             <li class="account" ng-show="!shouldShowNoResult()" ng-repeat="account in accountList" ngrepeatend ngrepeatstarted>
                 <a ng-click="gotoEditAccountConfiguration(account.id)">
                     <div class="data">
-                        <h2 ng-bind-html="{{escapeNull(stringify(account.posting_accounts_name))}}|highlight:query:false">
+                        <h2 ng-bind-html="{{stringify(escapeNull(account.posting_accounts_name))}}|highlight:query:false">
                         </h2>
-                        <span class="confirmation" ng-bind-html="{{escapeNull(stringify(account.posting_accounts_number))}}|highlight:query:false"></span>
+                        <span class="confirmation" ng-bind-html="{{stringify(escapeNull(account.posting_accounts_number))}}|highlight:query:false"></span>
 
                     </div>
                     <div class="info">
-                        <strong ng-class="getClassAgainstBalance(account)">{{account.balance}}</strong> <!-- Add class="red" if > 0 -->
+                        <strong ng-class="getClassAgainstBalance(account)">{{currencySymbol}}{{account.balance | number: precisonTwo}}</strong> <!-- Add class="red" if > 0 -->
                         <span translate>BALANCE</span>
                     </div>     
                     

@@ -11,7 +11,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.showCreditCardDropDown = false;
     $scope.isShownExistingCCPayment = false;
    
-    if($scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
+    if($scope.selectedEntity.credit_card_details != undefined && $scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
     	
         $scope.renderAddedPayment = $scope.selectedEntity.credit_card_details;
         $scope.renderAddedPayment.cardExpiry = $scope.selectedEntity.credit_card_details.card_expiry;
@@ -377,9 +377,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
             var id = $scope.reservationData.reservation_id;
             var entity_type = "";
-            if($scope.selectedEntity.entity_type == 'GROUP') {
+            if($scope.selectedEntity.entity_type == 'POSTING_ACCOUNT') {
                 id = $scope.selectedEntity.id;
-                entity_type = 'GROUP';
+                entity_type = 'POSTING_ACCOUNT';
             }
             var sendData = { "id" : id , "entity_type" : entity_type };
             
@@ -521,7 +521,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	      //$scope.refreshScroller('cards_search_scroller');    
 	      $scope.refreshScroller('chargeCodesList');              
 	    }
-  	};	
+  	};
+
+  	$scope.escapeNull = function(value, replaceWith){
+		return escapeNull(value, replaceWith);
+    }	
   	/**
     * function to know if the charge code is selected, to adjust in UI
     */
