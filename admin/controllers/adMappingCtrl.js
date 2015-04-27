@@ -27,13 +27,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.isEdit = false;
         };
 
-        $scope.showAddNew = function () {
-            $scope.addFormView = true;
-        };
-
         $scope.openAddNew = function () {
             $location.hash('top');
             $scope.isAdd = true;
+            $scope.isEdit = false;
             //scroll to top
 
             if ($('[name=snt-value]')) {
@@ -66,7 +63,12 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             }, 1000);
 
         };
-
+            
+        $scope.onFailureSetMessage = function(data){
+          console.log(data);
+          $scope.errorMessage = data.responseText;
+        };
+        
         $scope.toggleSMClicked = function () {
             console.log('$scope.siteminder.active');
             var active = !$scope.siteminder.active;
@@ -80,9 +82,9 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             console.log('toggle siteminder setup active/inactive');
             $scope.invokeApi(ADInterfaceMappingSrv.switchToggle, {
                 'hotel_id': $scope.hotel_id,
-                'interface_id': $scope.interface_type_id,
+                'interface_id': 2,
                 'active': active
-            }, toggleSMActiveSuccess);
+            }, toggleSMActiveSuccess, $scope.onFailureSetMessage);
 
         };
 
