@@ -160,10 +160,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		};
 		$scope.openBillingInformation = function(){
+			console.log($scope.accountConfigData.summary.posting_account_name);
 			$scope.attachedEntities = {};
 			$scope.attachedEntities.group_details = {};
 			$scope.attachedEntities.group_details.id = $scope.groupConfigData.summary.group_id;
-			$scope.attachedEntities.group_details.name = $scope.groupConfigData.summary.group_name;
+			$scope.attachedEntities.group_details.name = $scope.accountConfigData.summary.posting_account_name;
 			$scope.attachedEntities.group_details.logo = "GROUP_DEFAULT";
 			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
 
