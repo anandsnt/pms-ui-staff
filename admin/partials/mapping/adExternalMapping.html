@@ -4,26 +4,8 @@
 			<header class="content-title float">
 				<h2>{{clickedInterfaceName}}</h2>
 				<span class="count">({{mappingInterface.mappings.length}})</span>
-				
-				<a class="action back" ui-sref='admin.externalMappings'>Back</a>
+                                <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
 				<button ng-click="openAddNew()" class="action add">Add new</button>
-				<!--div class="filters">
-					<div class="filter hidden"></div>
-					<div class="filter hidden"></div>
-					<div id="filter-brand" class="filter select">
-						<div class="entry">
-							<label for="hotel-chain"> </label>
-							<div class="select">
-								<select ng-model="data.mapping" name="hotel-chain" id="hotel-chain" class="placeholder">
-									<option value=""> Filter By Chain </option>
-									<option ng-selected="mapping === data.mapping_type" ng-repeat="mapping in data.mapping">{{mapping.mapping_type}}</option>
-								</select>
-							</div>
-						</div>
-
-					</div>
-				</div-->
-
 			</header>
                 </section>	</div>
 
