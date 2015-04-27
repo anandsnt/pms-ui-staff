@@ -61,17 +61,17 @@
                         <div class="scrollable" ng-iscroll="billDays">
                             <ul class="wrapper" style="width{Outer lenght of all li items}px">
                                 <li class="add-new">
-                                    <a ng-click="openPostCharge()" class="button with-icon brand-colors">
+                                    <button type="button" ng-click="openPostCharge(billData.bill_number)" class="button with-icon brand-colors">
                                         <span class="icons icon-charge"></span>
                                         {{'ADD_CHARGE' |translate}}
-                                    </a>
+                                    </button>
                                 </li>
                                 <!-- TODO: active class logic -->
                                 <li class="active" ng-repeat="days in billData.days" ng-click="showDayRates($index)">
-                                    <a class="toggle">
+                                    <button class="toggle" type ="button" ng-class="{'active' : dayRates == $index}">
                                         <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
                                         <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </div>
@@ -125,8 +125,8 @@
                                 <span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}">{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
                             </li>
                             <!-- Only if balance > 0:-->
-                            <li ng-show="billData.total_fees.balance_amount > 0">
-                                <button class="button green with-icon only-icon">
+                            <li>
+                                <button class="button green with-icon only-icon" ng-click="showPayemntModal()" >
                                     <span class="icons icon-wallet"></span>
                                     {{'PAY' |translate}}
                                 </button>
@@ -197,7 +197,7 @@
                                         </td>
                                         <td>
                                             <!-- Only if balance > 0, otherwise leave blank cell -->
-                                            <button class="button green with-icon only-icon" ng-show = "billData.total_fees.balance_amount > 0">
+                                            <button class="button green with-icon only-icon" ng-click="showPayemntModal()">
                                                 <span class="icons icon-wallet"></span>
                                                 {{'PAY' |translate}}
                                             </button>
@@ -225,7 +225,7 @@
                                     	</td>
                                         <td>
                                         	<strong>
-                                        		<span ng-show= "description.fees_amount!=NIL">{{currencySymbol}}{{description.fees_amount | number: precisonTwo}}
+                                        		<span ng-repeat="description in feesData.description" ng-show= "description.fees_amount!=NIL">{{currencySymbol}}{{description.fees_amount | number: precisonTwo}}
 												</span>
 											</strong>
 										</td>
@@ -239,7 +239,7 @@
                                                 <select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue">
                                                     <option value="" disabled>Move to bill</option>
                                                     <option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
-                                                    <option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+                                                    <option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
                                                 </select>
                                             </div>
                                         </td>

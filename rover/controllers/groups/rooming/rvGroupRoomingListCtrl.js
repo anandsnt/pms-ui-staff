@@ -8,6 +8,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     'rvUtilSrv',
     'rvPermissionSrv',
     '$q',
+    'ngDialog',
+    'rvGroupConfigurationSrv',
+    '$state',
     function($scope,
         $rootScope,
         rvGroupRoomingListSrv,
@@ -16,7 +19,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $state,
         util,
         rvPermissionSrv,
-        $q) {
+        $q,
+        ngDialog,
+        rvGroupConfigurationSrv,
+        $state) {
 
         BaseCtrl.call(this, $scope);
 
@@ -25,7 +31,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         var hasPermissionToCreateRoomingList = function() {
-            return true;
             return (rvPermissionSrv.getPermissionValue('CREATE_ROOMING_LIST'));
         };
 
@@ -35,7 +40,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         var hasPermissionToEditRoomingList = function() {
-            return true;
             return (rvPermissionSrv.getPermissionValue('EDIT_ROOMING_LIST'));
         };
 
@@ -159,14 +163,26 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var successCallBackOfFetchRoomingDetails = function(data) {
 
-            //adding available room count over the data we got
-            $scope.roomTypesAndData = _.map(data.result, function(data) {
-                data.availableRoomCount = util.convertToInteger(data.total_rooms) - util.convertToInteger(data.total_pickedup_rooms);
-                return data;
-            });
+            //if we dont have any data in our hand
+            if ($scope.roomTypesAndData.length === 0) {
+                //adding available room count over the data we got
+                $scope.roomTypesAndData = _.map(data.result, function(data) {
+                    data.availableRoomCount = util.convertToInteger(data.total_rooms) - util.convertToInteger(data.total_pickedup_rooms);
+                    return data;
+                });
 
-            //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
-            $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
+                //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
+                $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
+            }
+            //if we have any data in our hand, just updating the available room count
+            else {
+                _.each($scope.roomTypesAndData, function(roomTypeData) {
+                    var correspondingActualData = _.findWhere(data.result, {
+                        room_type_id: roomTypeData.room_type_id
+                    });
+                    roomTypeData.availableRoomCount = util.convertToInteger(correspondingActualData.total_rooms) - util.convertToInteger(correspondingActualData.total_pickedup_rooms);
+                });
+            }
 
             //we have to populate possible number of rooms & occupancy against a 
             $scope.changedSelectedRoomType();
@@ -178,7 +194,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
-            $scope.reservations = data.results;
+            _.each(data.results, function(reservation) {
+                $scope.reservations.push(reservation);
+            });
 
             //total result count
             $scope.totalResultCount = data.total_count;
@@ -240,12 +258,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * when a tab switch is there, parant controller will propogate
-         * API, we will get this event, we are using this to fetch new room block deails		 
+         * API, we will get this event, we are using this to fetch new room block deails
          */
         /*$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
-			if (activeTab !== 'ROOMING') return;
-			$scope.fetchRoomingDetails();
-		});*/
+            if (activeTab !== 'ROOMING') return;
+            $scope.fetchRoomingDetails();
+        });*/
 
         /**
          * [initializeVariables description]
@@ -294,7 +312,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
-         * should we disable next button 
+         * should we disable next button
          * @return {Boolean}
          */
         $scope.isNextButtonDisabled = function() {
@@ -302,7 +320,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
-         * should we disable prev button 
+         * should we disable prev button
          * @return {Boolean}
          */
         $scope.isPrevButtonDisabled = function() {
@@ -447,7 +465,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 $scope.sort_dir = 'ASC';
             }
 
-            //calling the reservation fetch API			
+            //calling the reservation fetch API         
             $scope.fetchReservations();
         };
 
@@ -479,7 +497,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.possibleNumberOfRooms = _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1);
 
             //changing the default selected number of rooms
-            $scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
+            if (_.max($scope.possibleNumberOfRooms) < $scope.numberOfRooms) {
+                $scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
+            }
+
         };
 
         /**
@@ -621,7 +642,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * utiltiy function for setting scroller and things
-         * return - None		
+         * return - None
          */
         var setScroller = function() {
             //setting scroller things
@@ -636,7 +657,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * utiltiy function for setting scroller and things
-         * return - None		
+         * return - None
          */
         var refreshScrollers = function() {
             $scope.refreshScroller('rooming_list');
@@ -648,6 +669,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successFetchOfAllReqdForRoomingList = function(data) {
+            $scope.closeDialog();
             $scope.$emit('hideLoader');
         };
 
@@ -700,6 +722,106 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForRoomingList, failedToFetchOfAllReqdForRoomingList);
+        }
+
+        /**
+         * Function to edit a reservation from the rooming list
+         */
+        $scope.showEditReservationPopup = function(reservation) {
+            var reservationData = angular.copy(reservation);
+            reservationData.reservationStatusFlags = getReservationStatusFlags(reservation);
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/rvGroupEditRoomingListItem.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(reservationData)
+            });
+        }
+
+        /**
+         * Method to update the reservation
+         * @param  {object} reservation
+         * @return {undefined}
+         */
+        $scope.updateReservation = function(reservation) {
+            if (reservation.reservation_status == "CANCELED") {
+                return false;
+            } else {
+                reservation.group_id = $scope.groupConfigData.summary.group_id;
+
+                var onUpdateReservationSuccess = function(data) {
+                        //calling initially required APIs
+                        callInitialAPIs();
+                    },
+                    onUpdateReservationFailure = function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                    }
+
+                $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, {
+                    successCallBack: onUpdateReservationSuccess,
+                    failureCallBack: onUpdateReservationFailure,
+                    params: reservation
+                });
+            }
+        }
+
+        var getReservationStatusFlags = function(reservation) {
+            return {
+                isUneditable: reservation.reservation_status == "CANCELED",
+                isExpected: reservation.reservation_status == "RESERVED" || reservation.reservation_status == "CHECKING_IN",
+                isStaying: reservation.reservation_status == "CHECKEDIN" || reservation.reservation_status == "CHECKING_OUT",
+                canChekin: !!reservation.room_no && new tzIndependentDate(reservation.arrival_date) == new tzIndependentDate($rootScope.businessDate),
+                isGuestAttached: !!reservation.lastname
+            }
+        }
+
+        /**
+         * Method to remove the reservation
+         * @param  {object} reservation
+         * @return {undefined}
+         */
+        $scope.removeReservation = function(reservation) {
+            if (reservation.reservationStatusFlags.isUneditable || reservation.reservationStatusFlags.isStaying) {
+                return false;
+            } else {
+                var onRemoveReservationSuccess = function(data) {
+                        //calling initially required APIs
+                        callInitialAPIs();
+                    },
+                    onRemoveReservationFailure = function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                    }
+
+                $scope.callAPI(rvGroupConfigurationSrv.removeRoomingListItem, {
+                    successCallBack: onRemoveReservationSuccess,
+                    failureCallBack: onRemoveReservationFailure,
+                    params: {
+                        id: reservation.id,
+                        group_id: $scope.groupConfigData.summary.group_id
+                    }
+                });
+            }
+        }
+
+        $scope.checkoutReservation = function(reservation) {
+            //  It navigates to the Guest Bill for the selected record.
+        }
+
+        $scope.navigateStayCard = function(reservation) {
+            // Navigate to StayCard
+            if (reservation.reservationStatusFlags.isGuestAttached) {
+                $scope.$emit('showLoader');
+                $scope.closeDialog();
+                $timeout(function() {
+                    $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+                        "id": reservation.id,
+                        "confirmationId": reservation.confirm_no,
+                        "isrefresh": false
+                    });
+                }, 150)
+            }
         }
 
         /**

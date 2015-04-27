@@ -51,7 +51,7 @@
 								<span ng-bind-html="escapeNull(row.firstname)|highlight:textInQueryBox:false"></span>
 							</h2>
 							<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
-							<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
+							<span class="icons icon-location" ng-hide="escapeNullStr(row.location)==''" >{{escapeNullStr(row.location)}}
 							</span>
 						</div>	
 
