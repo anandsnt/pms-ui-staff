@@ -563,17 +563,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     * function to save the new route
     */
     $scope.saveRoute = function(){
-            $scope.saveSuccessCallback = function(data) {
-                $scope.$parent.$emit('hideLoader');
-                $scope.setReloadOption(true);
-                $scope.headerButtonClicked();
-                $scope.updateCardInfo();
-                $scope.$parent.$emit('BILLINGINFOADDED');
-            };
-            $scope.errorCallback = function(errorMessage) {
-                $scope.$parent.$emit('hideLoader');
-                $scope.$emit('displayErrorMessage',errorMessage);
-            };
+            
             
             if($scope.selectedEntity.attached_charge_codes.length == 0 && $scope.selectedEntity.attached_billing_groups.length==0){
                 $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
@@ -585,11 +575,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
             }
 
-            var defaultRoutingSaveSuccess = function(){
-                $scope.$parent.$emit('hideLoader');
-                ngDialog.close();
-                $scope.$parent.$emit('BILLINGINFOADDED');
-            };
+            
            
            /*
              * If user selects the new bill option,
@@ -607,20 +593,40 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             // }
             
             else{
-                if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
-                    $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
-                	$scope.billingEntity === "GROUP_DEFAULT_BILLING"){
-
-                	if($scope.billingEntity === "GROUP_DEFAULT_BILLING"){
-						$scope.selectedEntity.account_type="POSTING_ACCOUNT";
-                	}
-                    $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess, $scope.errorCallback);
-                }else {
-                    $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
-                }
+            	saveRouteAPICall();
             }
             
-    };
+    	};
+
+	    var saveRouteAPICall = function(){
+
+	    	$scope.saveSuccessCallback = function(data) {
+	    	    $scope.$parent.$emit('hideLoader');
+	    	    $scope.setReloadOption(true);
+	    	    $scope.headerButtonClicked();
+	    	    $scope.updateCardInfo();
+	    	    $scope.$parent.$emit('BILLINGINFOADDED');
+	    	};
+
+	    	var defaultRoutingSaveSuccess = function(){
+	    	    $scope.$parent.$emit('hideLoader');
+	    	    ngDialog.close();
+	    	    $scope.$parent.$emit('BILLINGINFOADDED');
+	    	};
+
+	    	if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
+	            $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
+	        	$scope.billingEntity === "GROUP_DEFAULT_BILLING"){
+
+	        	if($scope.billingEntity === "GROUP_DEFAULT_BILLING"){
+					$scope.selectedEntity.account_type="POSTING_ACCOUNT";
+	        	}
+	            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess);
+	        }else {
+	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback);
+	        }
+
+	    }
 
         /**
         * function to create new bill
@@ -648,7 +654,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         if($scope.saveData.payment_type != null && $scope.saveData.payment_type != "" ){
                             $scope.savePayment();
                         }else{
-                            $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+                            saveRouteAPICall();
                         }
                         
                     };
@@ -690,7 +696,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.billingEntity === "GROUP_DEFAULT_BILLING") {
                     	$scope.savePaymentToReservationOrAccount('account');
 	            } else {
-	                $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+	            	saveRouteAPICall();
+	                //$scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
 	            }
 	                
             } else if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
@@ -699,7 +706,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     	$scope.savePaymentToReservationOrAccount('account');
             	
             } else {
-                $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+            	saveRouteAPICall();
+                //$scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
             }
             
         };
