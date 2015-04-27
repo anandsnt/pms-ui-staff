@@ -200,13 +200,26 @@
 
                     .highlight { color: @logoPrimary; }
 
-                    img {
-                        position: absolute;
-                        top: 10px;
-                        left: 10px;
-                        .square(30px);
-                        #border-radius > .rounded();
-                    }
+                    img,
+					.icons {
+						position: absolute;
+						top: 10px;
+						left: 10px;
+						.square(30px);
+						#border-radius > .rounded();
+					}
+
+					.icons {
+						&.icon-company { 
+							background-position: 4px -3458px;
+							background-color: @ccard; 
+						}
+
+						&.icon-travel-agent { 
+							background-position: 4px -3576px;
+							background-color: @tacard; 
+						}
+					}
                 }
             }
         }
@@ -226,12 +239,25 @@
 
 					.highlight { color: @logoPrimary; }
 
-					img {
+					img,
+					.icons {
 						position: absolute;
 						top: 10px;
 						left: 10px;
 						.square(30px);
 						#border-radius > .rounded();
+					}
+
+					.icons {
+						&.icon-company { 
+							background-position: 4px -3458px;
+							background-color: @ccard; 
+						}
+
+						&.icon-travel-agent { 
+							background-position: 4px -3576px;
+							background-color: @tacard; 
+						}
 					}
 				}
 			}

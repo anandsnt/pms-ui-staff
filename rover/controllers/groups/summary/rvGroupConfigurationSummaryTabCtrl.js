@@ -217,7 +217,25 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.releaseRooms = function() {
-			//TODO : HANDLE RELEASE ROOMS
+			var onReleaseRoomsSuccess = function(data) {
+					//: Handle successful release
+					$scope.groupConfigData.summary.release_date = $rootScope.businessDate;
+					$scope.closeDialog();
+				},
+				onReleaseRoomsFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage
+				}
+			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, {
+				successCallBack: onReleaseRoomsSuccess,
+				failureCallBack: onReleaseRoomsFailure,
+				params: {
+					groupId: $scope.groupConfigData.summary.group_id
+				}
+			});
+		}
+
+		$scope.onHoldStatusChange = function() {
+			$scope.updateGroupSummary();
 		}
 
 		/**
