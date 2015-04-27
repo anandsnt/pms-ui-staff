@@ -2,10 +2,16 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         BaseCtrl.call(this, $scope);
         $scope.hotel_id = $rootScope.hotelId;
+        
         $scope.editData = {};
         $scope.editData.sntValues = [];
         $scope.editData.mapping_type = [];
-        $scope.currentClickedElement = -1;
+        
+        $scope.editData.mapping_type = '';
+        $scope.editData.snt_value= '';
+        $scope.editData.external_value= '';
+        
+        
         $scope.siteminder = {};
         $scope.siteminder.active = "true";
 
@@ -361,7 +367,8 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
              */
 
             //if($scope.isEdit) postData.value = $scope.editId;
-
+            console.log('isAdd: '+$scope.isAdd);
+            console.log('isEdit: '+$scope.isEdit);
             if ($scope.isAdd) {
                 $scope.invokeApi(ADInterfaceMappingSrv.saveMapping, newData, successSaveCallback);
             } else {
