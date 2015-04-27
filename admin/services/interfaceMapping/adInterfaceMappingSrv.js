@@ -50,11 +50,24 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     * @return {object} mapping type,snt values to render its dropdowns.
     */
 	this.fetchEditMapping = function(data){
-    var hotelId = data.hotel_id, interfaceId = data.interface_type_id, mappingTypeId = data.mapping_type_id;
+        var hotelId = data.hotel_id, interfaceId = data.interface_type_id, mappingTypeId = data.mapping_type_id;
 		var deferred = $q.defer();
 		var url = '/admin/external_mappings/'+hotelId+'/'+interfaceId+'/edit_mapping/'+mappingTypeId+'.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	this.saveEditMapping = function(data){
+        var hotelId = data.hotel_id, interfaceId = data.interface_type_id, mappingTypeId = data.mapping_type_id;
+		var deferred = $q.defer();
+		var url = '/admin/external_mappings/'+hotelId+'/'+interfaceId+'/update_mapping/'+mappingTypeId+'.json';
+		console.log('save edit mapping;;');
+                console.log(url);
+		ADBaseWebSrv.postJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

@@ -30,8 +30,18 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.addFormView = true;
         };
 
+        $scope.clearNewOptions = function(){
+            
+        };
         $scope.openAddNew = function () {
+           // $location.hash('top');
             $scope.isAdd = true;
+            //scroll to top
+            
+            if ($('[name=snt-value]')) {$('[name=snt-value]').val(' Snt Value ');};
+            if ($('[name=mapping-type]')){$('[name=mapping-type]').val('');};
+            if ($('[name=mapping-type]')){$('[name=external-value]').val('');};
+            
         };
         $scope.closeAddNew = function () {
             $scope.isAdd = false;
@@ -174,23 +184,23 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         var getLastInterface = function () {
             return this.lastInterface;
         };
-
+        var setLastInterfaceValue = function (prop, val) {
+             this.lastInterface[prop] = val;
+        };
 
 
         $scope.fetchExternalMappingItems = function () {
             $scope.invokeApi(ADInterfaceMappingSrv.fetchExternalMappingList, {'hotel_id': $scope.hotel_id}, fetchExternalMappingItemsSuccess);
         };
 
-
-
         $scope.fetchInterfaceMappings = function () {
             var lastInterface = getLastInterface();
             $scope.clickedInterfaceName = lastInterface.name;
             $scope.invokeApi(ADInterfaceMappingSrv.fetchInterfaceMappingsList, {
                 'hotel_id': lastInterface.hotelId,
-                interface_type_id: lastInterface.id,
-                interface_name: lastInterface.name,
-                interface_hotel_id: lastInterface.hotelId
+                'interface_type_id': lastInterface.id,
+                'interface_name': lastInterface.name,
+                'interface_hotel_id': lastInterface.hotelId
             }, fetchInterfaceMappingsSuccess);
         };
 
@@ -206,6 +216,19 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 $scope.$emit('hideLoader');
                 $scope.isEdit = true;
                 $scope.isAdd = false;
+                console.log('edit selected');
+                
+                var external_value = data.external_value,
+                        selected_mapping_type = data.selected_mapping_type,
+                        selected_snt_value  = data.selected_snt_value,
+                        mapping_type_id = data.value;
+                
+                setLastInterfaceValue('mapping_type_id', mapping_type_id);
+                if ($('[name=snt-value]')) {$('[name=snt-value]').val(selected_snt_value);};
+                if ($('[name=mapping-type]')){$('[name=mapping-type]').val(selected_mapping_type);};
+                if ($('[name=mapping-type]')){$('[name=external-value]').val(external_value);};
+            
+                
                 // Initial loading data to SNT VALUES dropdown.
                 /*	
                  angular.forEach($scope.editData.mapping_type_id,function(item, index) {
@@ -220,9 +243,9 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.clickedInterfaceName = lastInterface.name;
             var editData = {
                 'hotel_id': $scope.hotel_id,
-                interface_type_id: lastInterface.id,
-                interface_name: lastInterface.name,
-                mapping_type_id: mappingId
+                'interface_type_id': lastInterface.id,
+                'interface_name': lastInterface.name,
+                'mapping_type_id': mappingId
             };
             $scope.invokeApi(ADInterfaceMappingSrv.fetchEditMapping, editData, editInterfaceMappingSuccessCallback);
         };
@@ -238,7 +261,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.mappingTypeSelected = function () {
             var name = $('[name=mapping-type]').val();
             $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[name];
-            console.log($scope.editData.sntValues);
+            $('[name=snt-value]');//forces dropdown to work
         };
         /*
         $scope.addNew = function () {
@@ -261,6 +284,37 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         
          * To handle save button click.
          */
+        $scope.refreshView = function(){
+            var lastInterface = getLastInterface();
+            var mappingData = {
+                'hotel_id': lastInterface.hotelId,
+               'interface_type_id': lastInterface.id,
+               'interface_name': lastInterface.name
+            };
+            
+            if (typeof $scope.mappingInterface.mappings !== typeof []) {
+                $scope.mappingInterface.mappings = [];
+            } else {
+                $scope.mappingInterface.mappings = [];
+            }
+            if (typeof $scope.editData.mapping_type !== typeof []) {
+                $scope.editData.mapping_type = [];
+            } else {
+                $scope.editData.mapping_type = [];
+            }
+            if (typeof $scope.mappingInterface.mappingTypeRefs !== typeof []) {
+                $scope.mappingInterface.mappingTypeRefs = [];
+            } else {
+                $scope.mappingInterface.mappingTypeRefs = [];
+            }
+            $scope.invokeApi(ADInterfaceMappingSrv.fetchInterfaceMappingsList, mappingData, fetchInterfaceMappingsSuccess);
+            //clear the add-new fields
+            
+            if ($('[name=snt-value]')) {$('[name=snt-value]').val(' Snt Value ');};
+            if ($('[name=mapping-type]')){$('[name=mapping-type]').val('');};
+            if ($('[name=mapping-type]')){$('[name=external-value]').val('');};
+        };
+        
         $scope.clickedSave = function () {
             var lastInterface = getLastInterface();
             $scope.clickedInterfaceName = lastInterface.name;
@@ -275,21 +329,19 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 "interface_name": lastInterface.name,
                 "snt_value": snt_value,
                 "external_value": external_value,
-                "mapping_type":mapping_type
+                "mapping_type": mapping_type,
+                "mapping_type_id": lastInterface.mapping_type_id
             };
-            
-            console.log('clicked save!');
-            console.log('new data:');
+            console.log('save data');
             console.log(newData);
+            
             $scope.$emit('showLoader');
             
             var successSaveCallback = function (data) {
-                console.log('save success');
                 $scope.$emit('hideLoader');
-                console.log(data);
-
-                if ($scope.isAdd)
+                if ($scope.isAdd){
                     $scope.data.total_count++;
+                }
                 // To update scope data with added item
 
                 /*
@@ -300,7 +352,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                  });
                  */
                 $scope.closeInlineTab();
-                $scope.invokeApi(ADInterfaceMappingSrv.fetchExternalMappingList, newData, successSaveCallback);
+               $scope.refreshView();
             };
             
             /*
@@ -311,8 +363,18 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
              */
 
             //if($scope.isEdit) postData.value = $scope.editId;
-
+            console.log('is edit: '+$scope.isEdit);
+            console.log('is add: '+$scope.isAdd);
+            
+            if ($scope.isAdd){
+                console.log('doing add new')
             $scope.invokeApi(ADInterfaceMappingSrv.saveMapping, newData, successSaveCallback);
+            } else {
+                console.log('doing edit save');
+                //isEdit
+                $scope.invokeApi(ADInterfaceMappingSrv.saveEditMapping, newData, successSaveCallback);
+            }
+            
         };
 
         $scope.setActiveItem = function (itemObj) {
@@ -348,10 +410,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.clickedInterfaceName = lastInterface.name;
             var del_mapping_data = {
                 'hotel_id': lastInterface.hotelId,
-                interface_type_id: lastInterface.id,
-                interface_name: lastInterface.name,
-                interface_hotel_id: lastInterface.hotelId,
-                mapping_type_id: mappingId
+                'interface_type_id': lastInterface.id,
+                'interface_name': lastInterface.name,
+                'interface_hotel_id': lastInterface.hotelId,
+                'mapping_type_id': mappingId
             };
 
 
