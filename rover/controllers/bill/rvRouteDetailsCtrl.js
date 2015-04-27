@@ -384,7 +384,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             var entity_type = "";
             if($scope.selectedEntity.entity_type == 'POSTING_ACCOUNT') {
                 id = $scope.selectedEntity.id;
-                entity_type = 'POSTING_ACCOUNT';
+                entity_type = 'GROUP';
             }
             var sendData = { "id" : id , "entity_type" : entity_type };
             
