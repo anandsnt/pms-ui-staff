@@ -4,14 +4,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		BaseCtrl.call(this, $scope);
 
-		/**
-		* function to check whether the user has permission
-		* to make payment
-		* @return {Boolean}
-		*/
-		$scope.hasPermissionToMakePayment = function() {
-			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
-		};
+	
 
 		/**
 		* function to check whether the user has permission
@@ -39,9 +32,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.renderData =  {}; //payment modal data - naming so as to reuse HTML
 			//TODO: Fetch accoutn transactions
 			$scope.paymentModalOpened = false;
-			//Whatever permission of Make Payment we are assigning that
-			//removing standalone thing here
-			$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
 			//check if transactions is from groups or not
 			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab ==="TRANSACTIONS");
 
@@ -78,6 +68,15 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				params: params
 			});
 		};
+
+		/*
+		 *  Bill data need to be updated after success action of 
+		 *  payment, post charges, split/edit etc...
+		 * 
+		 */
+		$scope.$on('UPDATE_TRANSACTION_DATA', function(event,data) {
+		 	getTransactionDetails();
+		});
 
 		$scope.createNewBill = function(){
 			var billData ={
@@ -480,12 +479,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		}
 
 		initAccountTransactionsView();
-
-
-		$scope.$on('PAYMENT_SUCCESS', function(event,data) {
-		 	getTransactionDetails();
-		});
-
 
 	}
 ]);

@@ -40,7 +40,7 @@
                                     <th scope="col" translate>DETAILS</th>
                                     <th scope="col" translate>TIME</th>
                                     <th scope="col" translate>DEBIT</th>
-                                    <th scope="col" translate>CREDIT</th>
+                                   
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,7 +52,7 @@
                                     <td ng-bind-html="level3.details"></td>
                                     <td>{{getTimeString(level3.date, level3.time)}}</td>
                                     <td>{{currencySymbol}}{{level3.debit | number: precisonTwo}}</td>
-                                    <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td> 
+                                   
                                 </tr>
                                 
                             </tbody>
