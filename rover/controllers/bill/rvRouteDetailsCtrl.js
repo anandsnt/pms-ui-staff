@@ -343,13 +343,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     * function to fetch available bills for the reservation from the server
     */
     $scope.fetchBillsForReservation = function(){
-        
             var successCallback = function(data) {
                 $scope.bills = [];
                 $scope.$parent.bills = [];
-                
-               if(data.length > 0){
-                    $scope.first_bill_id = data[0].id;
+                //TODO: commented to fix the issue
+               	//if(data.length > 0){
+                    $scope.first_bill_id = typeof data[0] !== "undefined"? data[0].id: "";
                     $scope.newBillNumber = data.length + 1;
                     if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                         $scope.bills.push(data[0]);
@@ -368,7 +367,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     }
                     $scope.selectedEntity.to_bill = $scope.selectedEntity.is_new? $scope.bills[0].id : $scope.selectedEntity.to_bill;
                     $scope.fetchAvailableChargeCodes();
-                }
+                  //}
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
