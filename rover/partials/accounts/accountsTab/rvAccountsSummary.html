@@ -40,7 +40,8 @@
             <strong class="h3">Balance / Status</strong>
             <div class="entry margin">
                 <label for="account-balance" translate>BALANCE</label>
-                <input id="account-balance" ng-class="{'balance-red' : accountConfigData.summary.balance > 0, 'balance-green' : accountConfigData.summary.balance <= 0}" ng-model="accountConfigData.summary.balance" type="text" readonly />
+                <input id="account-balance" ng-class="{'balance-red' : accountConfigData.summary.balance > 0, 'balance-green' : accountConfigData.summary.balance <= 0}" 
+                value="{{getBalanceAmount(accountConfigData.summary.balance)}}" type="text" readonly />
             </div>
             <div class="entry">
                 <label for="account-status" translate>STATUS</label>
