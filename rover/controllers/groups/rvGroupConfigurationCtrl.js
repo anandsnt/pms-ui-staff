@@ -364,7 +364,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		}
 
 		$scope.updateAndBack = function() {
-			$scope.updateGroupSummary();
+			if($scope.groupConfigData.activeTab == "SUMMARY"){
+				$scope.updateGroupSummary();	
+			}else if($scope.groupConfigData.activeTab == "ACCOUNT"){
+				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+			}			
 			$state.go('rover.groups.search');
 		}
 
