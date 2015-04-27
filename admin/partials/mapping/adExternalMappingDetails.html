@@ -16,7 +16,7 @@
 					<div class="select">
                                             <select ng-model="editData.mapping_value" name="mapping-type" class="placeholder" ng-change="mappingTypeSelected()">
                                                 <option value="" ng-selected="selected"> Mapping type </option>
-                                                        <option ng-repeat="mapping in editData.mapping_type" value="{{mapping.name}}" >{{mapping.name}} </option>
+                                                        <option ng-repeat="mapping in editData.mapping_type" value="{{mapping.name}}" ng-selected="mappingTypeSelected()" >{{mapping.name}} </option>
                                             </select>
 					</div>
 				</div>

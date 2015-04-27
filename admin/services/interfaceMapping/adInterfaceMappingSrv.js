@@ -67,16 +67,16 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
     */
 	this.saveMapping = function(data){
     //interface_id will be a property in the data file
-    var hotelId = data.hotel_id, interfaceId = data.interface_type_id, mappingTypeId = data.mapping_type_id;
-		var deferred = $q.defer();
-		var url = '/admin/external_mappings/'+hotelId+'/'+interfaceId+'/save_mapping/'+mappingTypeId+'.json';
-		
-		ADBaseWebSrv.postJSON(url,data).then(function(data) {
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
-		});
-		return deferred.promise;
+            var hotelId = data.hotel_id, interfaceId = data.interface_type_id, mappingTypeId = data.mapping_type_id;
+            var deferred = $q.defer();
+            var url = '/admin/external_mappings/'+hotelId+'/'+interfaceId+'/new_mapping/';
+
+            ADBaseWebSrv.postJSON(url,data).then(function(data) {
+                    deferred.resolve(data);
+            },function(data){
+                    deferred.reject(data);
+            });
+            return deferred.promise;
 	};
 	/*
     * Service function to delete mapping
