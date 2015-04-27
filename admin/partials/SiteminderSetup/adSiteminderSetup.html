@@ -9,25 +9,29 @@
                     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
 	<form class="form float" >	
 	    <fieldset class="holder left" ng-show="!isHotelAdmin">
-		<div class="switch-button single" ng-class="{ on : data.data.product_cross_customer.siteminder_active == 'true' }" ng-click="toggleClicked(hotel)">
-                    <input type="checkbox" name="siteminder-setup-active" id="siteminder-setup-active">
-                    <span class="switch-icon"></span>
-                </div>
+		
 	    	<ad-textbox value="data.data.product_cross_customer.tracker_user_name"  name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width" ></ad-textbox>
 			
-			<ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
-			
-                         <!--ad-textbox value="data.data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox-->
+                <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 
-			<!--ad-textbox value="data.data.product_cross_customer.tracker_requestor_id" name="requestor-id" id="requestor-id" label="{{'SITEMINDER_REQUESTOR_ID_LABEL' | translate}}" styleclass="full-width"></ad-textbox-->
-                        <ad-dropdown-name value="data.data.product_cross_customer.tracker_default_origin" name="default-origin" id="default-origin" ng-controller="ADOriginsCtrl" property="name" list="data.booking_origins" label="{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN' | translate}}" styleclass="full-width"></ad-dropdown-name>		
-                        
+                 <!--ad-textbox value="data.data.product_cross_customer.tracker_access_url"  name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL' | translate}}" styleclass="full-width"></ad-textbox-->
+
+                <!--ad-textbox value="data.data.product_cross_customer.tracker_requestor_id" name="requestor-id" id="requestor-id" label="{{'SITEMINDER_REQUESTOR_ID_LABEL' | translate}}" styleclass="full-width"></ad-textbox-->
+                <ad-dropdown-name value="data.data.product_cross_customer.tracker_default_origin" name="default-origin" id="default-origin" ng-controller="ADOriginsCtrl" property="name" list="data.booking_origins" label="{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN' | translate}}" styleclass="full-width"></ad-dropdown-name>		
             
             </fieldset>	
 		<fieldset class="holder left" ng-show="isHotelAdmin">
 			<div class="form-title full-width">
 						<h3><span translate>SITEMINDER_SUB_TITLE</span> </h3>
 					</div>
+                    
+                    <div> <label>Active/Inactive</label> <br>   
+                <div class="switch-button single" ng-class="{ on : siteminder.active == 'true' }" 
+                     ng-controller="ADMappingCtrl" ng-click="toggleSMClicked()">
+                    <input type="checkbox" name="siteminder-setup-active" id="siteminder-setup-active">
+                    <span class="switch-icon"></span>
+                </div>
+                    </div><br>
 		
 	    	<ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL' | translate}}" styleclass="full-width"></ad-textbox>
 			

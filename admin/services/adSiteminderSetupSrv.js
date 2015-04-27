@@ -26,11 +26,19 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	};
         
 	this.saveSetup = function(data){
-            console.log('saving data:');
-            console.log(data);
-
 		var deferred = $q.defer();
 		var url = 'admin/save_ota_connection_config';	
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+        
+	this.toggleActive = function(data){
+		var deferred = $q.defer();
+		var url = 'admin/ota/update_active/'+data.interface_id;	
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){

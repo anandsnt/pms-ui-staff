@@ -67,7 +67,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
 		var url = '/admin/external_mappings/'+hotelId+'/'+interfaceId+'/update_mapping/'+mappingTypeId+'.json';
 		console.log('save edit mapping;;');
                 console.log(url);
-		ADBaseWebSrv.postJSON(url).then(function(data) {
+		ADBaseWebSrv.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -114,11 +114,13 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
          */
         
 	this.switchToggle = function(data){
-
+            console.log('switch toggled');
+                console.log(data);
 		var deferred = $q.defer();
-		var url = '/admin/interface_mappings/'+data.value+'/update_active';//placeholder
-		
-		ADBaseWebSrv.deleteJSON(url,data).then(function(data) {
+		var url = '/admin/external_mappings/'+data.hotel_id+"/"+data.interface_id+'/update_active';
+		console.log('switch toggled');
+                console.log(data);
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

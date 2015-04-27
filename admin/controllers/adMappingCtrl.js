@@ -6,6 +6,8 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.editData.sntValues = [];
         $scope.editData.mapping_type = [];
         $scope.currentClickedElement = -1;
+        $scope.siteminder = {};
+        $scope.siteminder.active = "true";
 
         //properties being used to/from the service:
         /*
@@ -80,6 +82,20 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 $scope.clickedMenuItem(event, state);
             }, 1000);
 
+        };
+        
+        $scope.toggleSMClicked = function(){
+        
+            $scope.siteminder.active = !$scope.siteminder.active;
+        var toggleSMActiveSuccess = function(){
+            $scope.siteminder.active = !$scope.siteminder.active;
+        };
+            console.log('toggle siteminder setup active/inactive');
+            $scope.invokeApi(ADInterfaceMappingSrv.switchToggle, {
+                'hotel_id': $scope.hotel_id,
+                'interface_id':$scope.interface_type_id
+            }, toggleSMActiveSuccess);
+        
         };
 
         $scope.clickedMenuItem = function ($event, stateToGo) {
@@ -332,6 +348,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 "mapping_type": mapping_type,
                 "mapping_type_id": lastInterface.mapping_type_id
             };
+            
             console.log('save data');
             console.log(newData);
             
@@ -363,14 +380,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
              */
 
             //if($scope.isEdit) postData.value = $scope.editId;
-            console.log('is edit: '+$scope.isEdit);
-            console.log('is add: '+$scope.isAdd);
             
             if ($scope.isAdd){
-                console.log('doing add new')
             $scope.invokeApi(ADInterfaceMappingSrv.saveMapping, newData, successSaveCallback);
             } else {
-                console.log('doing edit save');
                 //isEdit
                 $scope.invokeApi(ADInterfaceMappingSrv.saveEditMapping, newData, successSaveCallback);
             }
@@ -420,15 +433,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
             var successDeletionCallback = function () {
                 $scope.$emit('hideLoader');
-                $scope.data.total_count--;
-                // delete data from scope
-                angular.forEach($scope.data.mapping, function (item1, index1) {
-                    angular.forEach(item1.mapping_values, function (item2, index2) {
-                        if (item2.value == mappingId) {
-                            item1.mapping_values.splice(index2, 1);
-                        }
-                    });
-                });
+                $scope.refreshView();
             };
 
             $scope.invokeApi(ADInterfaceMappingSrv.deleteMapping, del_mapping_data, successDeletionCallback);
