@@ -1053,7 +1053,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all markets are selected
 					if ( chosenReport['hasMarketsList']['data'].length == selected.length ) {
 						$scope.appliedFilter.markets = [];
-						$scope.appliedFilter.markets.push( 'All Codes' );
+						$scope.appliedFilter.markets.push( 'All Markets' );
 					};
 				};
 			};
@@ -1095,7 +1095,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all origins are selected
 					if ( chosenReport['hasOriginsList']['data'].length == selected.length ) {
 						$scope.appliedFilter.origins = [];
-						$scope.appliedFilter.origins.push( 'All Codes' );
+						$scope.appliedFilter.origins.push( 'All Origins' );
 					};
 				};
 			};
