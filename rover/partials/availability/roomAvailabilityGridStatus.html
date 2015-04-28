@@ -5,14 +5,14 @@
 		<table class="dates-grid" ng-class="{'grid-7': data.dates.length<=7, 'grid-14': data.dates.length<=14, 'grid-30': data.dates.length<=30}"  id="dates-grid">
 			<colgroup>
 				<col>
-				<col class="grid-col" bindonce ng-repeat="eachDate in data.dates" bo-class="{'weekend': eachDate.isWeekend}">		
+				<col class="grid-col"  ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
 			</colgroup>
 			<thead>
 				<tr>
 					<th class="heading"></th>
-					<th bindonce ng-repeat="eachDate in data.dates track by $index">
-						<div class="inner"  bo-class="{'weekend': eachDate.isWeekend}">
-							<span bo-bind="eachDate.date|date:dayInWeek"></span>
+					<th  ng-repeat="eachDate in data.dates track by $index">
+						<div class="inner"  ng-class="{'weekend': eachDate.isWeekend}">
+							<span ng-bind="eachDate.date|date:dayInWeek"></span>
 							{{eachDate.date|date:shortMonthAndDate}}
 						</div>
 					</th>
@@ -21,49 +21,49 @@
 			<tbody>
 				<tr>
 					<th class="heading">Occupancy %</th>
-					<td bindonce ng-repeat="occupancy in data.occupancies track by $index">
+					<td  ng-repeat="occupancy in data.occupancies track by $index">
 						<div class="inner">{{occupancy | number : 2 }}%</div>
 					</td>
 				</tr>
 				<tr>
 					<th class="heading">Total Bookable Rooms</th>
-					<td bindonce ng-repeat="bookableRoom in data.bookableRooms track by $index">
-						<div class="inner" bo-text="bookableRoom"></div>
+					<td  ng-repeat="bookableRoom in data.bookableRooms track by $index">
+						<div class="inner" ng-bind="bookableRoom"></div>
 					</td>
 				</tr>
 				<tr class="room-details main">
 					<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseAvailableRooms()">Available Rooms</th>
-					<td bindonce ng-repeat="availableRoom in data.availableRooms track by $index">
-						<div class="inner" bo-text="availableRoom"></div>
+					<td  ng-repeat="availableRoom in data.availableRooms track by $index">
+						<div class="inner" ng-bind="availableRoom"></div>
 					</td>
 				</tr>
-				<tr class="room-details" ng-class="{'hidden': !showRoomTypeWiseAvailableRooms}" bindonce ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
+				<tr class="room-details" ng-class="{'hidden': !showRoomTypeWiseAvailableRooms}"  ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
 					<th class="" bo-text="individualAvailableRoomList.name" ></th>
-					<td bindonce ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
-						<div class="inner" bo-text="individualAvailableRoom"></div>
+					<td  ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
+						<div class="inner" ng-bind="individualAvailableRoom"></div>
 					</td>
 				</tr>				
 				<tr>
 					<th class="">Out of Order rooms</th>
-					<td bindonce ng-repeat="outOfOrderRoom in data.outOfOrderRooms track by $index">
-						<div class="inner" bo-text="outOfOrderRoom"></div>
+					<td  ng-repeat="outOfOrderRoom in data.outOfOrderRooms track by $index">
+						<div class="inner" ng-bind="outOfOrderRoom"></div>
 					</td>
 				</tr>
 				<tr>
 					<th class="">Total Reserved Rooms</th>
-					<td bindonce ng-repeat="reservedRoom in data.reservedRooms track by $index">
-						<div class="inner" bo-text="reservedRoom"></div>
+					<td  ng-repeat="reservedRoom in data.reservedRooms track by $index">
+						<div class="inner" ng-bind="reservedRoom"></div>
 					</td>
 				</tr>	
 				<tr ng-hide="true">
 					<th class="">[Overbooking]</th>
-					<td bindonce ng-repeat="overBookableRoom in data.overBookableRooms track by $index">
-						<div class="inner" bo-text="[overBookableRoom]"></div>
+					<td  ng-repeat="overBookableRoom in data.overBookableRooms track by $index">
+						<div class="inner" >[{{overBookableRoom}}]</div>
 					</td>
 				</tr>																		<tr ng-hide="true">
 					<th class="">[Available rooms with overbooking]</th>
-					<td bindonce ng-repeat="availableRoomsWithBookableRoom in data.availableRoomsWithBookableRooms track by $index">
-						<div class="inner" bo-text="[availableRoomsWithBookableRoom]"> </div>
+					<td  ng-repeat="availableRoomsWithBookableRoom in data.availableRoomsWithBookableRooms track by $index">
+						<div class="inner"> [{{availableRoomsWithBookableRoom}}]</div>
 					</td>
 				</tr>													
 			</tbody>
