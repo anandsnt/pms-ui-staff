@@ -67,6 +67,29 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             }, 1000);
 
         };
+            
+        $scope.onFailureSetMessage = function(data){
+          console.log(data);
+          $scope.errorMessage = data.responseText;
+        };
+        
+        $scope.toggleSMClicked = function () {
+            console.log('$scope.siteminder.active');
+            var active = !$scope.siteminder.active;
+            console.log('changing to: ' + active);
+
+            var toggleSMActiveSuccess = function () {
+                $scope.siteminder.active = !$scope.siteminder.active;
+                console.log('toggle complete, now: ' + $scope.siteminder.active);
+                $scope.$emit('hideLoader');
+            };
+
+            console.log('toggle siteminder setup active/inactive');
+            $scope.invokeApi(ADInterfaceMappingSrv.switchToggle, {
+                'hotel_id': $scope.hotel_id,
+                'interface_id': 2,
+                'active': active
+            }, toggleSMActiveSuccess, $scope.onFailureSetMessage);
 
         $scope.onFailureSetMessage = function (data) {
             console.log(data);
