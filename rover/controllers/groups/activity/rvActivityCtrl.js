@@ -26,23 +26,25 @@ sntRover.controller('rvActivityCtrl', [
 			$scope.activityLogData = data.results;
 			$scope.dataLength = $scope.activityLogData.length;
 			if ($scope.nextAction) {
+					$scope.page++;
 	                $scope.start = $scope.start + $scope.perPage;
 	                $scope.nextAction = false;
 	                $scope.initSort();
 	                }
 	            if ($scope.prevAction) {
+	            	$scope.page--;	
 	                $scope.start = $scope.start - $scope.perPage;
 	                $scope.prevAction = false;
 	                $scope.initSort();
 	                }
-	        $scope.end = $scope.start + $scope.dataLength - 1;
+	        $scope.end = $scope.start + $scope.dataLength - 1;	        
 	        $scope.$emit('hideLoader');
+	        $scope.refreshScroller('report_content');
 		})
 		/**		 
 		 * load next page		
 		 */
-		$scope.loadNextSet = function(){
-			$scope.page++;
+		$scope.loadNextSet = function(){			
 	        $scope.nextAction = true;
 	        $scope.prevAction = false;
 	        $scope.updateReport();
@@ -51,8 +53,7 @@ sntRover.controller('rvActivityCtrl', [
 		/**
 		 * load Previous page		
 		 */
-		$scope.loadPrevSet = function(){
-			$scope.page--;
+		$scope.loadPrevSet = function(){			
 	        $scope.nextAction = false;
 	        $scope.prevAction = true;
 	        $scope.updateReport();
@@ -166,7 +167,7 @@ sntRover.controller('rvActivityCtrl', [
 	    }
 		$scope.updateReport = function(){	        
 	        var params = {	        		
-	            page: $scope.page,
+	            page: $scope.prevAction?$scope.page - 1:$scope.page + 1,
 	            per_page: $scope.perPage
 	        	};     
 	        params['sort_order'] = $scope.sort_order;
