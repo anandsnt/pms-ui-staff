@@ -382,7 +382,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
             var id = typeof $scope.reservationData !== "undefined" ? $scope.reservationData.reservation_id: "";
             var entity_type = "";
-            if($scope.selectedEntity.entity_type == 'POSTING_ACCOUNT') {
+            if($scope.selectedEntity.entity_type == 'GROUP') {
                 id = $scope.selectedEntity.id;
                 entity_type = 'GROUP';
             }
