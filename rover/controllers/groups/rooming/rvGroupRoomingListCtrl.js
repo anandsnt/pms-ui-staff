@@ -392,6 +392,20 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * to get the total picked up count
+         * will be minusing the reservation with CANCELED status reservations
+         * and will return the total count after that
+         * @return {integer} 
+         */
+        $scope.getTotalPickedUpCount = function() {
+            var totalCanceledReservations = _.where ($scope.reservations, 
+                {reservation_status: "CANCELED"}).length;
+            totalCanceledReservations += _.where ($scope.reservations, 
+                {reservation_status: "NOSHOW"}).length
+            return ($scope.reservations.length - totalCanceledReservations);
+        };
+
+        /**
          * to add or remove from selected reservation
          * used to do show button enabling/disabling
          * @param {Object} reservation [description]
