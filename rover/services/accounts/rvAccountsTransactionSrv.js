@@ -166,6 +166,27 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 				return deferred.promise;
 		};
 
+	  /*
+		* Service function to check if AR account is attached or not
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
 
-	}
-]);
+
+		this.checkForArAccount = function(params) {
+			var deferred = $q.defer();
+			var url = '/api/posting_accounts/' + params.account_id + '/is_ar_account_attached';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+
+}]);

@@ -131,8 +131,10 @@
                                     {{'PAY' |translate}}
                                 </button>
                             </li>
-                            <li ng-show="billData.total_fees.balance_amount > 0">
-                                <span class="title">{{billData.payment_details.payment_type_description}}</span>
+                            <li ng-show="billData.is_routed === 'true'">
+                                <span class="title" ng-show="billData.payment_details.payment_type != 'CC'">{{billData.guest_or_company_name}}&nbsp;{{billData.payment_details.payment_type_description}}</span>
+                                <!-- Credit Card -->
+                                <span class="title" ng-show="billData.payment_details.payment_type === 'CC' && billData.payment_details.payment_type.length >0">{{billData.guest_or_company_name}}&nbsp;{{billData.payment_details.card_number}}</span>
                             </li> 
                             
                             <li>
