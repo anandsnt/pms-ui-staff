@@ -174,6 +174,21 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
+		// from and untill date picker options
+		// with added limits to system (today) date
+		$scope.fromDateOptionsSysLimit = angular.extend({
+			maxDate: new Date(),
+			onSelect: function(value) {
+				$scope.untilDateOptions.minDate = value;
+			}
+		}, datePickerCommon);
+		$scope.untilDateOptionsSysLimit = angular.extend({
+			maxDate: new Date(),
+			onSelect: function(value) {
+				$scope.fromDateOptions.maxDate = value;
+			}
+		}, datePickerCommon);
+
 		// custom from and untill date picker options
 		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
