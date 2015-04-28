@@ -658,6 +658,12 @@
             li:not(.no-content) {
                 margin: 0;
 
+                .on-hold {
+                    h2, span, div {
+                        text-decoration: line-through;
+                    }
+                }
+
                 a,
                 .faux-anchor {
                     color: @textColor;
@@ -9994,6 +10000,12 @@
             &.check-out { background: @red; }
 
             &.inhouse { background: @blue; }
+
+            &.on-hold {
+                h1, span {
+                    text-decoration: line-through;
+                }
+            }
         }
 
         .room-info {
