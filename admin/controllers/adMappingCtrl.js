@@ -11,7 +11,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.editData.snt_value = '';
         $scope.editData.external_value = '';
 
-
         $scope.siteminder = {};
         $scope.siteminder.active = "true";
 
@@ -69,7 +68,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         };
             
         $scope.onFailureSetMessage = function(data){
-          console.log(data);
           $scope.errorMessage = data.responseText;
         };
         
@@ -78,11 +76,9 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
             var toggleSMActiveSuccess = function () {
                 $scope.siteminder.active = !$scope.siteminder.active;
-                console.log('toggle complete, now: ' + $scope.siteminder.active);
                 $scope.$emit('hideLoader');
             };
 
-            console.log('toggle siteminder setup active/inactive');
             $scope.invokeApi(ADInterfaceMappingSrv.switchToggle, {
                 'hotel_id': $scope.hotel_id,
                 'interface_id': 2,
@@ -91,7 +87,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         };
 
         $scope.onFailureSetMessage = function (data) {
-            console.log(data);
             $scope.errorMessage = data.responseText;
             $scope.$emit('hideLoader');
         };
@@ -138,8 +133,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.$emit('hideLoader');
         };
         $scope.fetchInterfaceMappingsSuccess = function (data) {
-            console.log('fetch interface mapping success');
-            console.log(data);
             var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj, mTypeName, val, mappingTypeDesc;
             $scope.mappingInterface = {};
             $scope.mappingInterface = data;
@@ -154,7 +147,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 $scope.mappingInterface.mappingTypeRefs = [];
             }
 
-            for (var x in data.mapping_type) {//save off this
+            for (var x in data.mapping_type) {//cache this off
                 mTypeName = data.mapping_type[x].name;
                 for (var vals in data.mapping_type[x].sntvalues) {
                     val = data.mapping_type[x].sntvalues[vals].name;
@@ -208,10 +201,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     $('[name=external-value]').val('');
                 }
             }, 1000);
-            console.log('$scope.mappingInterface.mappingTypeRefs');
-            console.log($scope.mappingInterface.mappingTypeRefs);
         };
-
 
         var getLastInterface = function () {
             return this.lastInterface;
@@ -219,7 +209,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         var setLastInterfaceValue = function (prop, val) {
             this.lastInterface[prop] = val;
         };
-
 
         $scope.fetchExternalMappingItems = function () {
             $scope.invokeApi(ADInterfaceMappingSrv.fetchExternalMappingList, {'hotel_id': $scope.hotel_id}, fetchExternalMappingItemsSuccess);
@@ -270,17 +259,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                         $('[name=external-value]').val(external_value);
                     }
                 }, 1000);
-
-
-
-                // Initial loading data to SNT VALUES dropdown.
-                /*	
-                 angular.forEach($scope.editData.mapping_type_id,function(item, index) {
-                 if (item.name == $scope.editData.selected_mapping_type) {
-                 $scope.editData.sntValues = item.sntvalues;
-                 }
-                 });
-                 */
             };
 
             var lastInterface = getLastInterface();
@@ -305,7 +283,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.mappingTypeSelected = function () {
             var name = $('[name=mapping-type]').val();
             $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[name];
-            $('[name=snt-value]');//forces dropdown to work
+            $('[name=snt-value]');//forces dropdown render/load
         };
 
         $scope.refreshView = function () {
@@ -353,9 +331,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 "mapping_type_id": lastInterface.mapping_type_id
             };
 
-            console.log('save data');
-            console.log(newData);
-
             $scope.$emit('showLoader');
 
             var successSaveCallback = function (data) {
@@ -363,15 +338,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 if ($scope.isAdd) {
                     $scope.data.total_count++;
                 }
-                // To update scope data with added item
-
-                /*
-                 angular.forEach($scope.data.mapping,function(item, index) {
-                 if (item.mapping_type == postData.mapping_value) {
-                 $scope.data.mapping[index].mapping_values.push(newData);
-                 }
-                 });
-                 */
+                
                 $scope.closeInlineTab();
                 $scope.refreshView();
             };
@@ -382,7 +349,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 //isEdit
                 $scope.invokeApi(ADInterfaceMappingSrv.saveEditMapping, newData, successSaveCallback);
             }
-
         };
 
         $scope.setActiveItem = function (itemObj) {
@@ -391,7 +357,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         /**
          *   A post method to update Active/Inactive status for an interface mapping type
          */
-
         $scope.toggleClicked = function () {
             var item = this.activeItem;
 

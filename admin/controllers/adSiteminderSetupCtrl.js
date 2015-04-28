@@ -3,7 +3,6 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
         $scope.errorMessage = '';
         $scope.successMessage = '';
         $scope.isLoading = true;
-        
 
         BaseCtrl.call(this, $scope);
 
@@ -16,7 +15,6 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
         $scope.fetchSiteminderSetup = function () {
             $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {}, $scope.fetchSiteminderSetupSuccessCallback);
         };
-
 
         $scope.toggleSMActiveSuccess = function () {
            $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
@@ -38,7 +36,6 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                 'active': active
             }, $scope.toggleSMActiveSuccess);
         };
-                        
                         
         $scope.toggleSMClicked = function () {
            var active = $scope.data.data.product_cross_customer.active,
@@ -89,7 +86,6 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                     $scope.isLoading = false;
                     $scope.successMessage = 'Siteminder Test Success';
                 }
-                console.log(data);
                 $scope.$emit('hideLoader');
                 //  $scope.showTestResults('Success', data);
             };
@@ -103,25 +99,18 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                         msg = ': data';
                     }
                 }
-                console.log('Siteminder Test Failed');
                 $scope.errorMessage = 'Siteminder Test Failed' + msg;
-                console.log(data);
                 $scope.$emit('hideLoader');
-                // $scope.showTestResults('Failure', data);
             };
 
-
             var checkCallback = function (response) {
-                console.log('checking call back...');
-                console.log(response);
                 $scope.$emit('hideLoader');
                 if (response.status == 'failure') {
                     testSiteminderSetupFailureCallback(response);
                 } else {
                     testSiteminderSetupSuccessCallback(response);
                 }
-            }
-
+            };
 
             var unwantedKeys = ["available_trackers"];
             var testData = dclone($scope.data, unwantedKeys);
