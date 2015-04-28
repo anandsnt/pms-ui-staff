@@ -73,7 +73,14 @@
                         <h2 ng-bind-html="{{stringify(escapeNull(account.posting_accounts_name))}}|highlight:query:false">
                         </h2>
                         <span class="confirmation" ng-bind-html="{{stringify(escapeNull(account.posting_accounts_number))}}|highlight:query:false"></span>
-
+                        <!-- If linked company exists: -->
+                        <span class="icons icon-guest-company" ng-hide="isEmpty(account.company)">
+                            {{account.company}}
+                        </span>
+                        <!-- If linked travel agent exists: -->
+                        <span class="icons icon-guest-travelagent" ng-hide="isEmpty(account.travel_agent)">
+                            {{account.travel_agent}}
+                        </span>
                     </div>
                     <div class="info">
                         <strong ng-class="getClassAgainstBalance(account)">{{currencySymbol}}{{account.balance | number: precisonTwo}}</strong> <!-- Add class="red" if > 0 -->

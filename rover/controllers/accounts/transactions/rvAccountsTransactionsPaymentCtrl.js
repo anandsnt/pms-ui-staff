@@ -73,6 +73,15 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		};
 
 		/*
+		* Disable payment button if no payment type is selected
+		*
+		*/
+
+		$scope.disableMakePayment = function(){
+			return ($scope.saveData.paymentType.length > 0) ? false : true;
+		};
+
+		/*
 		* Fee processing starts here
 		*
 		*/
@@ -238,10 +247,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		*/
 		var renderDefaultValues = function(){
 			   
-			    var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount ?
-									$scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount : zeroAmount;
-				$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
-				$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+		    var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount ?
+								$scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount : zeroAmount;
+			$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
+			$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 
 		};
 		/*

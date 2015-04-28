@@ -57,15 +57,15 @@
         <tfoot>
             <tr>
                 <td colspan="4"><strong>Total Charge</strong></td>
-                <td><strong>${value}</strong></td>
+                <td><strong>{{currencySymbol}}{{bilLTab.total_amount}}</strong></td>
             </tr>
             <tr>
                 <td colspan="4"><strong>Total Credits</strong></td>
-                <td><strong>${value}</strong></td>
+                <td><strong>{{currencySymbol}}{{billTab.total_payments}}</strong></td>
             </tr>
             <tr>
                 <td colspan="4"><strong>Balance</strong></td>
-                <td><strong>${value}</strong></td>
+                <td><strong>{{currencySymbol}}{{billTab.total_amount - billTab.total_payments}}</strong></td>
             </tr>
             <tr>
                 <td colspan="4">Net Amount</td>
