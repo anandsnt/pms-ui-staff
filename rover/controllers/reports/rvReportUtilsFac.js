@@ -253,6 +253,10 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasDateLimit'] = false;
                     break;
 
+                case __reportNames['ROOMS_QUEUED']:
+                    reportItem['hasSysDateLimit'] = true;
+                    break;
+
                 default:
                     reportItem['show_filter'] = false;
                     reportItem['hasDateLimit'] = true;
