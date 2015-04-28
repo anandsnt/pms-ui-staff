@@ -14,7 +14,7 @@ admin.controller('adAnalyticSetupCtrl',['$scope','adAnalyticSetupSrv','$state','
   $scope.fetchAnalyticSetup = function(){
   	
     var fetchAnalyticSetupSuccessCallback = function(data) {
-         $scope.isLoading = false;
+        $scope.isLoading = false;
         $scope.$emit('hideLoader');
         $scope.data = data;
         

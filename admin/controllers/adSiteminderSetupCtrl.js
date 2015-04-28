@@ -6,16 +6,39 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
 
         BaseCtrl.call(this, $scope);
 
-        $scope.fetchSiteminderSetup = function () {
-
-            var fetchSiteminderSetupSuccessCallback = function (data) {
-                $scope.isLoading = false;
-                $scope.$emit('hideLoader');
-                $scope.data = data;
-            };
-            $scope.emailDatas = [];
-            $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {}, fetchSiteminderSetupSuccessCallback);
+        $scope.fetchSiteminderSetupSuccessCallback = function(data){
+            $scope.isLoading = false;
+            $scope.$emit('hideLoader');
+            $scope.data = data;
         };
+
+        $scope.fetchSiteminderSetup = function () {
+            $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {}, $scope.fetchSiteminderSetupSuccessCallback);
+        };
+        
+        
+        $scope.toggleSMClicked = function () {
+            console.log('scope,data');
+            console.log($scope.data);
+            console.log('changing to: ' + !$scope.data.product_cross_customer.active);
+
+            var toggleSMActiveSuccess = function () {
+                $scope.data.product_cross_customer.active = !$scope.data.product_cross_customer.active;
+                console.log('toggle complete, now: ' + $scope.data.product_cross_customer.active);
+                
+                $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {
+                    'interface_id': 2,
+                    'active': $scope.data.product_cross_customer.active
+                }, $scope.fetchSiteminderSetupSuccessCallback);
+            };
+
+            $scope.invokeApi(adSiteminderSetupSrv.toggleActive, {
+                'interface_id': 2,
+                'active': $scope.data.product_cross_customer.active
+            }, toggleSMActiveSuccess);
+
+        };
+        
         $scope.fetchSiteminderSetup();
 
         $scope.saveSiteminderSetup = function () {

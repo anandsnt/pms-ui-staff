@@ -2,16 +2,16 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         BaseCtrl.call(this, $scope);
         $scope.hotel_id = $rootScope.hotelId;
-        
+
         $scope.editData = {};
         $scope.editData.sntValues = [];
         $scope.editData.mapping_type = [];
-        
+
         $scope.editData.mapping_type = '';
-        $scope.editData.snt_value= '';
-        $scope.editData.external_value= '';
-        
-        
+        $scope.editData.snt_value = '';
+        $scope.editData.external_value = '';
+
+
         $scope.siteminder = {};
         $scope.siteminder.active = "true";
 
@@ -25,6 +25,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.closeInlineTab = function () {
             $scope.isAdd = false;
             $scope.isEdit = false;
+        };
+
+        $scope.isActiveClass = function(){
+            return $scope.siteminder.active;
         };
 
         $scope.openAddNew = function () {
@@ -63,30 +67,13 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             }, 1000);
 
         };
-            
-        $scope.onFailureSetMessage = function(data){
-          console.log(data);
-          $scope.errorMessage = data.responseText;
+
+        $scope.onFailureSetMessage = function (data) {
+            console.log(data);
+            $scope.errorMessage = data.responseText;
+            $scope.$emit('hideLoader');
         };
-        
-        $scope.toggleSMClicked = function () {
-            console.log('$scope.siteminder.active');
-            var active = !$scope.siteminder.active;
-            console.log('changing to: ' + active);
 
-            var toggleSMActiveSuccess = function () {
-                $scope.siteminder.active = !$scope.siteminder.active;
-                console.log('toggle complete, now: ' + $scope.siteminder.active);
-            };
-
-            console.log('toggle siteminder setup active/inactive');
-            $scope.invokeApi(ADInterfaceMappingSrv.switchToggle, {
-                'hotel_id': $scope.hotel_id,
-                'interface_id': 2,
-                'active': active
-            }, toggleSMActiveSuccess, $scope.onFailureSetMessage);
-
-        };
 
         $scope.clickedMenuItem = function ($event, stateToGo) {
             var currentTime = new Date();
@@ -247,9 +234,11 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 setTimeout(function () {
                     if ($('[name=snt-value]')) {
                         $('[name=snt-value]').val(selected_snt_value);
+                        editData.snt_value = selected_snt_value;
                     }
                     if ($('[name=mapping-type]')) {
                         $('[name=mapping-type]').val(selected_mapping_type);
+                        editData.mapping_value = selected_mapping_type;
                     }
                     if ($('[name=mapping-type]')) {
                         $('[name=external-value]').val(external_value);
@@ -361,16 +350,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 $scope.refreshView();
             };
 
-            /*
-             var unwantedKeys = ["mapping_type","sntValues","selected_mapping_type","selected_snt_value" ];
-             var postData = dclone($scope.editData, unwantedKeys);
-             postData.hotel_id = $scope.data.hotel_id;
-             postData.interface_id = $scope.lastClickedInterfaceId;
-             */
-
-            //if($scope.isEdit) postData.value = $scope.editId;
-            console.log('isAdd: '+$scope.isAdd);
-            console.log('isEdit: '+$scope.isEdit);
             if ($scope.isAdd) {
                 $scope.invokeApi(ADInterfaceMappingSrv.saveMapping, newData, successSaveCallback);
             } else {
@@ -418,8 +397,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 'interface_hotel_id': lastInterface.hotelId,
                 'mapping_type_id': mappingId
             };
-
-
 
             var successDeletionCallback = function () {
                 $scope.$emit('hideLoader');

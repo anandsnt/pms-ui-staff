@@ -1,4 +1,4 @@
-<div id="wrapper" class="content current" ng-click="clearErrorMessage()">
+<div id="wrapper" class="content current" ng-click="clearErrorMessage()" ng-init="fetchSMID()">
 	<header class="content-title float">
 		<h2 translate>SITEMINDER_SETUP_HEADER</h2>
 		<a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
@@ -25,9 +25,8 @@
 						<h3><span translate>SITEMINDER_SUB_TITLE</span> </h3>
 					</div>
                     
-                    <div> <label>Mappings - Activate/Inactive</label> <br>   
-                <div class="switch-button single" ng-class="{ on : siteminder.active == 'true' }" 
-                     ng-controller="ADMappingCtrl" ng-click="toggleSMClicked()">
+                    <div> <label>Mappings - Activate</label> <br>   
+                <div class="switch-button single" ng-click="toggleSMClicked()">
                     <input type="checkbox" name="siteminder-setup-active" id="siteminder-setup-active">
                     <span class="switch-icon"></span>
                 </div>

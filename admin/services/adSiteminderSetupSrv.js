@@ -1,7 +1,6 @@
 admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
    
 	this.fetchSetup = function(data){
-            console.log(data);
 		var deferred = $q.defer();
 		var url = 'admin/get_ota_connection_config.json';
 
