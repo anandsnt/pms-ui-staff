@@ -18,6 +18,7 @@ sntRover.controller('rvActivityCtrl', [
 	        $scope.errorMessage = '';
 	        $scope.start = 1;
 	        $scope.end = 0;
+	        $scope.setScroller('report_content');
 
 		}
 		$scope.$on('PopulateLogData',function(e,data){					   		
