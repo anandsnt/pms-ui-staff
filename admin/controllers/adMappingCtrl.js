@@ -90,6 +90,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 'interface_id': 2,
                 'active': active
             }, toggleSMActiveSuccess, $scope.onFailureSetMessage);
+        };
 
         $scope.onFailureSetMessage = function (data) {
             console.log(data);
