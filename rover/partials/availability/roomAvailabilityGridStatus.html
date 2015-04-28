@@ -38,7 +38,7 @@
 					</td>
 				</tr>
 				<tr class="room-details" ng-class="{'hidden': !showRoomTypeWiseAvailableRooms}"  ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
-					<th class="" bo-text="individualAvailableRoomList.name" ></th>
+					<th class="" ng-bind="individualAvailableRoomList.name" ></th>
 					<td  ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
 						<div class="inner" ng-bind="individualAvailableRoom"></div>
 					</td>
