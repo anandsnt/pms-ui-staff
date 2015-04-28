@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	'$scope',
-	'$rootScope','RVPaymentSrv','ngDialog','rvAccountTransactionsSrv',
-	function($scope, $rootScope,RVPaymentSrv,ngDialog,rvAccountTransactionsSrv) {
+	'$rootScope','RVPaymentSrv','ngDialog','rvAccountTransactionsSrv','rvPermissionSrv',
+	function($scope, $rootScope,RVPaymentSrv,ngDialog,rvAccountTransactionsSrv,rvPermissionSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
@@ -10,6 +10,24 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var cardDetails   = {};
 		var zeroAmount = parseFloat("0.00");
 		$scope.feeData = {};
+
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		var hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('POST_PAYMENT');
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to refund payment
+		* @return {Boolean}
+		*/
+		var hasPermissionToRefundPayment = function() {
+			return rvPermissionSrv.getPermissionValue ('POST_REFUND');
+		};
 
 		var init = function(){
 			$scope.saveData = {};	
@@ -37,6 +55,8 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.saveData.paymentType = '';
 			$scope.defaultPaymentTypeOfBill = '';	
 			$scope.shouldShowMakePaymentButton = true;
+			$scope.hasPermissionToMakePayment = hasPermissionToMakePayment();
+			$scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
 		};
 		init();
 
@@ -50,6 +70,15 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			if (!$scope.$$phase) {
 				$scope.$digest();
 			}
+		};
+
+		/*
+		* Disable payment button if no payment type is selected
+		*
+		*/
+
+		$scope.disableMakePayment = function(){
+			return ($scope.saveData.paymentType.length > 0) ? false : true;
 		};
 
 		/*
@@ -218,10 +247,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		*/
 		var renderDefaultValues = function(){
 			   
-			    var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.length >0 ?
-									$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : zeroAmount;
-				$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
-				$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+		    var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount ?
+								$scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount : zeroAmount;
+			$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
+			$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 
 		};
 		/*
@@ -387,7 +416,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			//$scope.handleCloseDialog();
 			//To refresh the view bill screen 
 			// data.billNumber = $scope.renderData.billNumberSelected;
-			$scope.$emit('PAYMENT_SUCCESS',data);
+			$scope.$emit('UPDATE_TRANSACTION_DATA',data);
 			
 		};
 

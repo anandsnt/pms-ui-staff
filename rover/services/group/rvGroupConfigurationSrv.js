@@ -378,5 +378,16 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 			return deferred.promise;
 		}
 
+		this.releaseRooms = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/groups/' + data.groupId + '/release_now';
+			rvBaseWebSrvV2.getJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
 	}
 ]);
