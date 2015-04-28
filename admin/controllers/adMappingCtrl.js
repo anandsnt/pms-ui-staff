@@ -140,7 +140,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.fetchInterfaceMappingsSuccess = function (data) {
             console.log('fetch interface mapping success');
             console.log(data);
-            var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj, mTypeName, val;
+            var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj, mTypeName, val, mappingTypeDesc;
             $scope.mappingInterface = {};
             $scope.mappingInterface = data;
 
@@ -169,12 +169,15 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 mapType = data.mapping[n];
 
                 mappingTypeName = mapType.mapping_type;
+                mappingTypeDesc = mapType.mapping_description;
                 mappingTypeId = mapType.id;
                 $scope.availableMappingTypes.push({
-                    "mapping_type": mappingTypeName
+                    "mapping_type": mappingTypeName,
+                    "mapping_description":mappingTypeDesc
                 });
                 $scope.editData.mapping_type.push({
-                    "name": mappingTypeName
+                    "name": mappingTypeName,
+                    "description":mappingTypeDesc
                 });
                 for (var v in mapType.mapping_values) {
                     mv = mapType.mapping_values[v];
@@ -184,6 +187,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     value = mv.value;
                     dataObj = {
                         "mapping_type": mappingTypeName,
+                        "description":mappingTypeDesc,
                         "snt_value": sntVal,
                         "external_value": extVal,
                         "mapping_type_id": value
