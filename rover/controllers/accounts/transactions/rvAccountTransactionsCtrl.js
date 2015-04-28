@@ -34,8 +34,9 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			$scope.paymentModalOpened = false;
 			//check if transactions is from groups or not
 			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab ==="TRANSACTIONS");
-
 		};
+
+		
 
 		var getTransactionDetails = function() {
 

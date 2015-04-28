@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	'$scope',
-	'$rootScope','RVPaymentSrv','ngDialog','rvAccountTransactionsSrv','rvPermissionSrv',
-	function($scope, $rootScope,RVPaymentSrv,ngDialog,rvAccountTransactionsSrv,rvPermissionSrv) {
+	'$rootScope','RVPaymentSrv','ngDialog','$filter','rvAccountTransactionsSrv','rvPermissionSrv',
+	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter,rvAccountTransactionsSrv,rvPermissionSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
@@ -413,57 +413,97 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.$emit("hideLoader");
 			$scope.depositPaidSuccesFully = true;
 			$scope.authorizedCode = data.authorization_code;		
-			//$scope.handleCloseDialog();
-			//To refresh the view bill screen 
-			// data.billNumber = $scope.renderData.billNumberSelected;
-			$scope.$emit('UPDATE_TRANSACTION_DATA',data);
+			$scope.$emit('UPDATE_TRANSACTION_DATA',data);			
+		};
+
+		/*
+		* Payment actions 
+		*/
+
+		var proceedPayment = function(){
+
+			$scope.errorMessage = "";
+			var params = {
+				"data_to_pass": {
+					"bill_number": $scope.renderData.billNumberSelected,
+					"payment_type": $scope.saveData.paymentType,
+					"amount": $scope.renderData.defaultPaymentAmount,
+					"payment_method_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null
+					},
+				"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id
+			};
+
+			if($scope.isShowFees()){
+				if($scope.feeData.calculatedFee)
+					params.data_to_pass.fees_amount = $scope.feeData.calculatedFee;
+				if($scope.feeData.feesInfo)
+					params.data_to_pass.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+			};
+	
+			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.saveData.paymentType == "CC"){
+				params.data_to_pass.is_emv_request = true;
+				$scope.shouldShowWaiting = true;
+				//Six payment SWIPE actions
+				rvAccountTransactionsSrv.submitPaymentOnBill(params).then(function(response) {
+					$scope.shouldShowWaiting = false;
+					successPayment(response);
+				},function(error){
+					$scope.errorMessage = error;
+					$scope.shouldShowWaiting = false;
+				});
+				
+			} else {
+
+				$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
+					successCallBack: successPayment,
+					params: params
+				});
+			};		
+		};
+
+
+		var checkIfARAccountisPresent = function(){
 			
+			var successArCheck = function(data){
+				//if AR account is present proceed payment
+				if(!!data.value){
+					proceedPayment();
+				}
+				else{
+					//close payment popup
+					ngDialog.close();
+					//notify user that AR account is not attached
+					$scope.showErrorPopup = function(errorMessage){
+						$scope.status = "error";
+						$scope.popupMessage = errorMessage;
+						ngDialog.open({
+				    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
+				    		controller: 'RVShowValidationErrorCtrl',
+				    		className: '',
+				    		scope: $scope
+				    	});
+					};
+					$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE'));
+				};
+			};
+            var params = {
+                            account_id: $scope.accountConfigData.summary.posting_account_id
+                         };  
+            $scope.callAPI(rvAccountTransactionsSrv.checkForArAccount, {
+						successCallBack: successArCheck,
+						params: params
+					});
 		};
 
 
 		/*
 		* Action - On click submit payment button
 		*/
-		$scope.submitPayment = function(){		
-				
-				$scope.errorMessage = "";
-				var params = {
-					"data_to_pass": {
-						"bill_number": $scope.renderData.billNumberSelected,
-						"payment_type": $scope.saveData.paymentType,
-						"amount": $scope.renderData.defaultPaymentAmount,
-						"payment_method_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null
-						},
-					"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id
-				};
-
-				if($scope.isShowFees()){
-					if($scope.feeData.calculatedFee)
-						params.data_to_pass.fees_amount = $scope.feeData.calculatedFee;
-					if($scope.feeData.feesInfo)
-						params.data_to_pass.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
-				};
-		
-				if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.saveData.paymentType == "CC"){
-					params.data_to_pass.is_emv_request = true;
-					$scope.shouldShowWaiting = true;
-					//Six payment SWIPE actions
-					rvAccountTransactionsSrv.submitPaymentOnBill(params).then(function(response) {
-						$scope.shouldShowWaiting = false;
-						successPayment(response);
-					},function(error){
-						$scope.errorMessage = error;
-						$scope.shouldShowWaiting = false;
-					});
-					
-				} else {
-
-					$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
-						successCallBack: successPayment,
-						params: params
-					});
-				};		
-
+		$scope.submitPayment = function(){	
+		    // if payment is from groups and payment type is direct bill
+		    // we check if AR account is present or not
+		    // if not present we inform the user with a popup	
+			($scope.isFromGroups && $scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
 		};
 
 }]);
