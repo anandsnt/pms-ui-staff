@@ -4,7 +4,7 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		var self = this;
 
 		this.baseAccountSummaryData = {
-			"posting_account_id" : "",
+			"posting_account_id": "",
 			"posting_account_name": "",
 			"posting_account_number": "",
 			"posting_account_type": "HOUSE",
@@ -14,7 +14,9 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				source_id: "",
 				booking_origin_id: "",
 			},
-			notes: []
+			notes: [],
+			"travel_agent": null,
+			"company": null,
 		};
 
 		// AccountSummary
