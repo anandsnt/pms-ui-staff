@@ -77,6 +77,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             var toggleSMActiveSuccess = function () {
                 $scope.siteminder.active = !$scope.siteminder.active;
                 console.log('toggle complete, now: ' + $scope.siteminder.active);
+                $scope.$emit('hideLoader');
             };
 
             console.log('toggle siteminder setup active/inactive');

@@ -117,7 +117,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', function(
             console.log('switch toggled');
                 console.log(data);
 		var deferred = $q.defer();
-		var url = '/admin/external_mappings/'+data.hotel_id+"/"+data.interface_id+'/update_active';
+		var url = '/admin/ota/update_active/'+data.interface_id+".json";
 		console.log('switch toggled');
                 console.log(data);
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
