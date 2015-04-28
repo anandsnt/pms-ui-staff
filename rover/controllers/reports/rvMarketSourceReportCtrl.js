@@ -163,41 +163,48 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 
 
 		var init = function() {
-			if ($scope.results.source) {
-				$scope.sources = _.keys($scope.results.source);
-				var sourcesValues = _.values($scope.results.source);
-				$scope.sourcesValuesTotal = sourcesValues.reduce(function(a, b) {
-					return a + b
-				});
-				var sourcesValuesPercentage = [];
-				_.each(sourcesValues, function(sourceValue) {
-					sourcesValuesPercentage.push(sourceValue / $scope.sourcesValuesTotal);
-				})
-			}
+			
+			if ( _.isEmpty($scope.results.source) && _.isEmpty($scope.results.market) ) {
+				$scope.hasNoData = true;
+			} else {
+				$scope.hasNoData = false;
 
-			if ($scope.results.market) {
-				$scope.markets = _.keys($scope.results.market);
-				var marketsValues = _.values($scope.results.market);
-				$scope.marketsValuesTotal = marketsValues.reduce(function(a, b) {
-					return a + b
-				});
-				var marketsValuesPercentage = [];
-				_.each(marketsValues, function(marketValue) {
-					marketsValuesPercentage.push(marketValue / $scope.marketsValuesTotal);
-				})
-			}
+				if ( ! _.isEmpty($scope.results.source) ) {
+					$scope.sources = _.keys($scope.results.source);
+					var sourcesValues = _.values($scope.results.source);
+					$scope.sourcesValuesTotal = sourcesValues.reduce(function(a, b) {
+						return a + b
+					});
+					var sourcesValuesPercentage = [];
+					_.each(sourcesValues, function(sourceValue) {
+						sourcesValuesPercentage.push(sourceValue / $scope.sourcesValuesTotal);
+					})
+				};
 
-			$scope.reportStatus.graph = {
-				sourceNumber: getRange(sourcesValues),
-				marketNumber: getRange(marketsValues)
-			}
+				if ( ! _.isEmpty($scope.results.market)  ) {
+					$scope.markets = _.keys($scope.results.market);
+					var marketsValues = _.values($scope.results.market);
+					$scope.marketsValuesTotal = marketsValues.reduce(function(a, b) {
+						return a + b
+					});
+					var marketsValuesPercentage = [];
+					_.each(marketsValues, function(marketValue) {
+						marketsValuesPercentage.push(marketValue / $scope.marketsValuesTotal);
+					})
+				};
+
+				$scope.reportStatus.graph = {
+					sourceNumber: getRange(sourcesValues),
+					marketNumber: getRange(marketsValues)
+				};
+			};
 
 			$timeout(function() {
 				$scope.refreshScroller('report-details-scroll');
 			}, 1000);
 		}
 
-		$rootScope.$on('report.updated', function() {
+		$scope.$on('report.updated', function() {
 			init();
 		});
 
