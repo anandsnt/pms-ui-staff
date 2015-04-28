@@ -74,9 +74,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         };
         
         $scope.toggleSMClicked = function () {
-            console.log('$scope.siteminder.active');
             var active = !$scope.siteminder.active;
-            console.log('changing to: ' + active);
 
             var toggleSMActiveSuccess = function () {
                 $scope.siteminder.active = !$scope.siteminder.active;

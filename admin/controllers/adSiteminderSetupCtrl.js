@@ -3,10 +3,11 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
         $scope.errorMessage = '';
         $scope.successMessage = '';
         $scope.isLoading = true;
+        
 
         BaseCtrl.call(this, $scope);
 
-        $scope.fetchSiteminderSetupSuccessCallback = function(data){
+        $scope.fetchSiteminderSetupSuccessCallback = function (data) {
             $scope.isLoading = false;
             $scope.$emit('hideLoader');
             $scope.data = data;
@@ -15,38 +16,44 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
         $scope.fetchSiteminderSetup = function () {
             $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {}, $scope.fetchSiteminderSetupSuccessCallback);
         };
-        
-        
-        $scope.toggleSMClicked = function () {
-            console.log('scope,data');
-            console.log($scope.data);
-            console.log('changing to: ' + !$scope.data.product_cross_customer.active);
 
-            var toggleSMActiveSuccess = function () {
-                $scope.data.product_cross_customer.active = !$scope.data.product_cross_customer.active;
-                console.log('toggle complete, now: ' + $scope.data.product_cross_customer.active);
-                
-                $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {
-                    'interface_id': 2,
-                    'active': $scope.data.product_cross_customer.active
-                }, $scope.fetchSiteminderSetupSuccessCallback);
-            };
 
+        $scope.toggleSMActiveSuccess = function () {
+           $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
+           $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {
+               'interface_id': $scope.data.data.product_cross_customer.interface_id,
+               'active': $scope.data.data.product_cross_customer.active
+           }, $scope.fetchSiteminderSetupSuccessCallback);
+       };
+                        
+        $scope.toggleInterface = function(active, id){
+            if (active){
+                active=false;
+            } else {
+                active=true;
+            }
+            $('[name=active-inactive-toggle]').attr('ng-class', active);
             $scope.invokeApi(adSiteminderSetupSrv.toggleActive, {
-                'interface_id': 2,
-                'active': $scope.data.product_cross_customer.active
-            }, toggleSMActiveSuccess);
-
+                'interface_id': id,
+                'active': active
+            }, $scope.toggleSMActiveSuccess);
         };
-        
+                        
+                        
+        $scope.toggleSMClicked = function () {
+           var active = $scope.data.data.product_cross_customer.active,
+                   id = $scope.data.data.product_cross_customer.interface_id;
+            $scope.toggleInterface(active,id);
+            
+            
+        };
+
         $scope.fetchSiteminderSetup();
 
         $scope.saveSiteminderSetup = function () {
 
             var saveSiteminderSetupSuccessCallback = function (data) {
-                console.log('Siteminder Save Success');
                 $scope.successMessage = 'Siteminder Save Success';
-                console.log(data);
                 $scope.isLoading = false;
                 $scope.$emit('hideLoader');
             };
@@ -55,8 +62,6 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                 $scope.isLoading = false;
 
                 $scope.errorMessage = 'Siteminder Save Failed';
-                console.log('Siteminder Save Failed');
-                console.log(data);
                 $scope.$emit('hideLoader');
             };
 
@@ -70,9 +75,9 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
 
             var testSiteminderSetupSuccessCallback = function (data) {
                 //double check to see if it Actually failed..
-                    if (data.status == 'failure'){
-                        var msg = '';
-                        if (typeof data[0] === typeof 'str') {
+                if (data.status == 'failure') {
+                    var msg = '';
+                    if (typeof data[0] === typeof 'str') {
                         if (data[0].length > 1) {
                             msg = ': ' + data[0];
                         } else if (typeof data === typeof 'str') {
@@ -84,7 +89,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                     $scope.isLoading = false;
                     $scope.successMessage = 'Siteminder Test Success';
                 }
-                    console.log(data);
+                console.log(data);
                 $scope.$emit('hideLoader');
                 //  $scope.showTestResults('Success', data);
             };
