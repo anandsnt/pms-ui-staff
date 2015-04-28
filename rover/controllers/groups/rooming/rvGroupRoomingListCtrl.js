@@ -393,16 +393,19 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * to get the total picked up count
-         * will be minusing the reservation with CANCELED status reservations
+         * will be minusing the reservation with CANCELED, NO SHOW status reservations
          * and will return the total count after that
          * @return {integer} 
          */
         $scope.getTotalPickedUpCount = function() {
-            var totalCanceledReservations = _.where ($scope.reservations, 
-                {reservation_status: "CANCELED"}).length;
-            totalCanceledReservations += _.where ($scope.reservations, 
-                {reservation_status: "NOSHOW"}).length
-            return ($scope.reservations.length - totalCanceledReservations);
+            //list of invalid reservation statuses
+            var inValidReservationStatus = ["CANCELED", "NOSHOW"];
+            
+            //we are forming invalid reservation list
+            var inValidReservations = _.filter ($scope.reservations, function(reservation) {
+                return (inValidReservationStatus.indexOf(reservation.reservation_status) >= 0);
+            });
+            return ($scope.reservations.length - inValidReservations.length);
         };
 
         /**
