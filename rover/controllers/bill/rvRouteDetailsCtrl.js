@@ -623,6 +623,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	        	}
 	            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess);
 	        }else {
+	        	//CICO-12797 workaround to meet the API expected params
+	        	if($scope.selectedEntity.entity_type === "POSTING_ACCOUNT"){
+					$scope.selectedEntity.entity_type = "GROUP";
+	        	}
 	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback);
 	        }
 
