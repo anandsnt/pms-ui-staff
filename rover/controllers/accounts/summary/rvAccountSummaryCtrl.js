@@ -27,7 +27,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		};
 
 		/**
-		 * Update the group data
+		 * Update the account data
 		 * @return undefined
 		 */
 		$scope.updateAccountSummary = function() {
@@ -51,7 +51,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					}
 				});
 			} else {
-				console.warn('No Permission for EDIT_GROUP_SUMMARY');
+				console.warn('No Permission for EDIT_ACCOUNT');
 			}
 		}
 
@@ -61,7 +61,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				if (!angular.equals(summaryMemento, $scope.accountConfigData.summary) && !$scope.accountSummaryData.isDemographicsPopupOpen) {
 					//data has changed
 					summaryMemento = angular.copy($scope.accountConfigData.summary);
-					//call the updateGroupSummary method from the parent controller
+					//call the updateAccountSummary method from the parent controller
 					$scope.updateAccountSummary();
 				}
 			}
@@ -74,6 +74,17 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					callUpdate();
 				});
 			}
+		}
+
+		/**
+		 * get Balance Amount in format
+		 * @return {undefined}
+		 */
+		$scope.getBalanceAmount = function(amount) {
+			if (typeof amount === 'undefined') {
+				return "";
+			}
+			return $rootScope.currencySymbol + $filter('number')(amount, 2)
 		}
 
 
@@ -130,8 +141,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {
-				// If the group has not been saved yet, prompt user for the same
-				$scope.errorMessage = ["Please save the group to save Demographics"];
+				// If the account has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Account needs to be saved first"];
 				return;
 			}
 
@@ -149,26 +160,26 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 */
 		$scope.saveAccountNote = function() {
 			if ($scope.isInAddMode()) {
-				// If the group has not been saved yet, prompt user for the same
-				$scope.errorMessage = ["Please save the group to Post Note"];
+				// If the account has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Account needs to be saved first'"];
 				return;
 			}
 
 			$scope.errorMessage = "";
 
 			if ($scope.accountSummaryData.newNote) {
-				var onSaveGroupNoteSuccess = function(data) {
+				var onSaveAccountNoteSuccess = function(data) {
 						$scope.accountConfigData.summary.notes = data.notes;
 						$scope.accountSummaryData.newNote = "";
 						$scope.refreshScroller("rvAccountSummaryScroller");
 					},
-					onSaveGroupNoteFailure = function(errorMessage) {
+					onSaveAccountNoteFailure = function(errorMessage) {
 						$scope.errorMessage = errorMessage;
 					};
 
 				$scope.callAPI(rvAccountsConfigurationSrv.saveAccountNote, {
-					successCallBack: onSaveGroupNoteSuccess,
-					failureCallBack: onSaveGroupNoteFailure,
+					successCallBack: onSaveAccountNoteSuccess,
+					failureCallBack: onSaveAccountNoteFailure,
 					params: {
 						"notes": $scope.accountSummaryData.newNote,
 						"posting_account_id": $scope.accountConfigData.summary.posting_account_id
@@ -180,19 +191,19 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		}
 
 		$scope.removeAccountNote = function(noteId) {
-			var onRemoveGroupNoteSuccess = function(data, params) {
+			var onRemoveAccountNoteSuccess = function(data, params) {
 					$scope.accountConfigData.summary.notes = _.without($scope.accountConfigData.summary.notes, _.findWhere($scope.accountConfigData.summary.notes, {
 						note_id: params.noteId
 					}));
 					$scope.refreshScroller("rvAccountSummaryScroller");
 				},
-				onRemoveGroupNoteFailure = function(errorMessage) {
+				onRemoveAccountNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
 
 			$scope.callAPI(rvAccountsConfigurationSrv.removeAccountNote, {
-				successCallBack: onRemoveGroupNoteSuccess,
-				failureCallBack: onRemoveGroupNoteFailure,
+				successCallBack: onRemoveAccountNoteSuccess,
+				failureCallBack: onRemoveAccountNoteFailure,
 				params: {
 					"note_id": noteId,
 				},
@@ -213,7 +224,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 		$scope.onAccountStatusModification = function() {
 			//  dont allow to close account with balance -gt 0
-			if (!!$scope.accountConfigData.summary.balance && "CLOSED" === $scope.accountConfigData.summary.posting_account_status) {
+			if (!!parseFloat($scope.accountConfigData.summary.balance) && "CLOSED" === $scope.accountConfigData.summary.posting_account_status) {
 				ngDialog.open({
 					template: '/assets/partials/accounts/accountsTab/rvAccountAlertCloseWithBalance.html',
 					className: '',

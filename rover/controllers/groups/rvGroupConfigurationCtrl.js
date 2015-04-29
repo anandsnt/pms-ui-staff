@@ -57,20 +57,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			$scope.setHeadingTitle(title);
 		};
 
-		/**
-		 * function to set Back Navigation params
-		 */
-		var setBackNavigation = function() {
-			// TODO : Currently hardcoded to go to groups search.. 
-			// Change the same according to the requirements
-			$rootScope.setPrevState = {
-				title: $filter('translate')('GROUPS'),
-				name: 'rover.groups.search'
-			};
 
-			//setting title and things
-			setTitle();
-		}
 
 		/**
 		 * Function to check the mandatory values while saving the reservation
@@ -104,12 +91,25 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				addons: {},
 				selectedAddons: []
 			};
+			$timeout(function() {
+				$scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
+			}, 500);
+
 
 			$scope.accountConfigData = {
 				summary: summaryData.accountSummary
 			}
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+		};
+
+		/**
+		 * function to check whether the user has permission
+		 * to make view the transactions tab
+		 * @return {Boolean}
+		 */
+		$scope.hasPermissionToViewTransactionsTab = function() {
+			return rvPermissionSrv.getPermissionValue('ACCESS_GROUP_ACCOUNT_TRANSACTIONS');
 		};
 
 		/**
@@ -121,6 +121,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//if there was any error message there, we are clearing
 			$scope.errorMessage = '';
 
+			//allow to swith to "transactions" tab only if the user has its permission
+			if (tab == "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
+				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
+				return;
+			}
+
 			var isInSummaryTab = $scope.groupConfigData.activeTab == "SUMMARY";
 
 			// we will restrict tab swithing if we are in add mode
@@ -130,20 +136,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				return;
 			}
 
-			//TODO: Remove once all tab implemented
-
-			if (tab !== 'SUMMARY' && tab !== 'ROOM_BLOCK' 
-				&& tab !== 'ROOMING' && tab !=='ACTIVITY' && tab!= "ACCOUNT") {
-				$scope.errorMessage = ['Sorry, that is feature is not implemented yet'];
-				return;
-			}
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
 			}
 
 			$scope.groupConfigData.activeTab = tab;
-			console.log('oh my man');
 			//propogating an event that next clients are
 			$timeout(function() {
 				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
@@ -178,7 +176,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				'ROOM_BLOCK': '/assets/partials/groups/roomBlock/rvGroupConfigurationRoomBlockTab.html',
 				'ROOMING': '/assets/partials/groups/rooming/rvGroupRoomingListTab.html',
 				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
-				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
+				'TRANSACTIONS': '/assets/partials/accounts/transactions/rvAccountTransactions.html',
 				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
 			};
 
@@ -223,20 +221,24 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		/**
 		 * Update the group data
-		 * @return undefined
+		 * @return boolean
 		 */
 		$scope.updateGroupSummary = function() {
+
 			if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
+				if (angular.equals($scope.groupSummaryMemento, $scope.groupConfigData.summary)) {
+					return false;
+				}
 				var onGroupUpdateSuccess = function(data) {
 						//client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_GROUP_INFO");
-						console.log(data);
+						$scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
+						return true;
 					},
 					onGroupUpdateFailure = function(errorMessage) {
 						//client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO");
-
-						console.log(errorMessage);
+						return false;
 					};
 
 				$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
@@ -367,6 +369,31 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				$scope.groupConfigData.summary.addons_count = null;
 			}
 
+		}
+
+		$scope.updateAndBack = function() {
+			if ($scope.groupConfigData.activeTab == "SUMMARY") {
+				$scope.updateGroupSummary();
+			} else if ($scope.groupConfigData.activeTab == "ACCOUNT") {
+				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+			}
+			$state.go('rover.groups.search');
+		}
+
+		/**
+		 * function to set Back Navigation params
+		 */
+		var setBackNavigation = function() {
+			// TODO : Currently hardcoded to go to groups search.. 
+			// Change the same according to the requirements
+			$rootScope.setPrevState = {
+				title: $filter('translate')('GROUPS'),
+				callback: 'updateAndBack',
+				scope: $scope
+			};
+
+			//setting title and things
+			setTitle();
 		}
 
 		/**

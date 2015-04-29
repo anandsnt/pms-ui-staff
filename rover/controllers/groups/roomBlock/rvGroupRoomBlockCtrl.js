@@ -129,6 +129,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * Has Permission To Over book
+		 * @return {Boolean}
+		 */
+		var hasPermissionToOverBook = function() {
+			return (rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY'));
+		};
+
+		/**
 		 * Function to decide whether to disable start date
 		 * for now we are checking only permission
 		 * @return {Boolean}
@@ -448,6 +456,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnSaveButton = function() {
+			if (!hasPermissionToOverBook() && isOverBooked()){
+				showNoPermissionOverBookingPopup();
+				return false;
+			}
 			if (isOverBooked()) {
 				showOverBookingPopup()
 			} else {
@@ -483,6 +495,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.saveRoomBlock = function() {
+			if (!hasPermissionToOverBook() && isOverBooked()){
+				showNoPermissionOverBookingPopup();
+				return false;
+			}
+
 			//TODO : Make API call to save the room block.
 			var params = {
 				group_id: $scope.groupConfigData.summary.group_id,
@@ -517,6 +534,21 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			});
 			return is_over_booked;
 		}
+
+		/**
+		 * Method to show oerbooking popup - No permission popup
+		 * @return undefined
+		 */
+		var showNoPermissionOverBookingPopup = function(){
+			// Show overbooking message
+			ngDialog.open({
+				template: '/assets/partials/groups/roomBlock/rvGroupNoPermissionOverBookingPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
 
 		/**
 		 * Method to show oerbooking popup
@@ -728,8 +760,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//callinng the update API calling 
 			$scope.updateGroupSummary ();
-
-			
+			//has data updated from this view, block from date or to date
+			$scope.hasBlockDataUpdated = true;
 		};
 		
 		/**
@@ -741,6 +773,16 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.fetchRoomBlockGridDetails();
 		});
 
+		/**
+		 * when a tab switch is there, parant controller will propogate
+		 * API, we will get this event, we are using this to fetch new room block deails		 
+		 */
+		$scope.$on("UPDATED_GROUP_INFO", function(event){
+			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
+			if ($scope.hasBlockDataUpdated){
+				$scope.fetchRoomBlockGridDetails();
+			}
+		});
 
 		/**
 		* Success callback of room block details API
@@ -849,6 +891,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//total pickup & rooms
 			$scope.totalPickups = $scope.totalRooms = 0;
 
+			//has data updated from this view, block from date or to date
+			$scope.hasBlockDataUpdated = false;
 
 			//selected Hold status:
 			$scope.selectedHoldStatus = "";
