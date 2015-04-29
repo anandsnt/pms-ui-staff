@@ -621,16 +621,19 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	            $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
 	        	$scope.billingEntity === "GROUP_DEFAULT_BILLING"){
 
-	        	if($scope.billingEntity === "GROUP_DEFAULT_BILLING"){
-					$scope.selectedEntity.account_type="GROUP";
-	        	}
-	            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess);
+                var params =  angular.copy($scope.selectedEntity);
+                if($scope.billingEntity === "GROUP_DEFAULT_BILLING" && $scope.selectedEntity.entity_type ==="POSTING_ACCOUNT"){
+                    params.entity_type  = 'GROUP';
+                }
+
+	            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess);
 	        }else {
 	        	//CICO-12797 workaround to meet the API expected params
+                var params =  angular.copy($scope.selectedEntity);
 	        	if($scope.selectedEntity.entity_type === "POSTING_ACCOUNT"){
-					$scope.selectedEntity.entity_type = "GROUP";
+					 params.entity_type  = 'GROUP';
 	        	}
-	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback);
+	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback);
 	        }
 
 	    }
