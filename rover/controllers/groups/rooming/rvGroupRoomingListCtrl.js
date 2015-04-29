@@ -222,7 +222,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             });
 
             //total result count
-            $scope.totalResultCount = data.total_count;
+            $scope.totalResultCount += (data.results.length);
+
+            //pickup
+            $scope.totalPickUpCount = data.total_pickup_count;
 
             //we changed data, so
             refreshScrollers();
@@ -317,6 +320,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //total result count
             $scope.totalResultCount = 0;
+
+            //total pick up count
+            $scope.totalPickUpCount = 0;
 
             //some default selected values
             $scope.numberOfRooms = '1';
@@ -422,22 +428,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.page = 1;
         };
 
-        /**
-         * to get the total picked up count
-         * will be minusing the reservation with CANCELED, NO SHOW status reservations
-         * and will return the total count after that
-         * @return {integer}
-         */
-        $scope.getTotalPickedUpCount = function() {
-            //list of invalid reservation statuses
-            var inValidReservationStatus = ["CANCELED", "NOSHOW"];
-
-            //we are forming invalid reservation list
-            var inValidReservations = _.filter($scope.reservations, function(reservation) {
-                return (inValidReservationStatus.indexOf(reservation.reservation_status) >= 0);
-            });
-            return ($scope.reservations.length - inValidReservations.length);
-        };
 
         /**
          * to add or remove from selected reservation
@@ -571,6 +561,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //total result count
             $scope.totalResultCount = data.total_count;
+
+            //pickup
+            $scope.totalPickUpCount = data.total_pickup_count;
+
             //if pagination end is undefined
             if ($scope.end == undefined) {
                 $scope.end = $scope.reservations.length;
