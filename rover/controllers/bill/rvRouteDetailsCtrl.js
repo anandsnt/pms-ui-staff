@@ -741,7 +741,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         	 	if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
                     $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
                 $scope.billingEntity === "GROUP_DEFAULT_BILLING") {
-                		$scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess, $scope.errorCallback);
+            		var params = angular.copy( $scope.selectedEntity);
+                        if($scope.billingEntity === "GROUP_DEFAULT_BILLING" && $scope.selectedEntity.entity_type ==="POSTING_ACCOUNT"){
+                            params.entity_type  = 'GROUP';
+                        }
+            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, $scope.errorCallback);
                 } else {
                 	$scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
                 }
