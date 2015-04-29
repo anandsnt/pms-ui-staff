@@ -136,12 +136,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isTransactionReport = true;
 					break;
 
-				case reportUtils.getName('FORECAST_BY_DATE'):
-					$scope.hasNoTotals = true;
-					$scope.isGuestReport = true;
-					$scope.hasNoSorting = true;
-					break;
-
 				default:
 					break;
 			};
@@ -180,7 +174,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
-				case reportUtils.getName('FORECAST_BY_DATE'):
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
@@ -194,6 +187,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('ROOMS_QUEUED'):
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 2;
+					break;
+
+				case reportUtils.getName('FORECAST_BY_DATE'):
+					$scope.leftColSpan = 8;
+					$scope.rightColSpan = 4;
 					break;
 
 				default:
@@ -352,13 +350,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/rvReservationByUserReport.html';
-						break;
 					} else {
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
-						break;
 					};
+					break;
+
+				case reportUtils.getName('FORECAST_BY_DATE'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastReport.html';
+					break;
 
 				default:
 					$scope.hasReportTotals    = true;

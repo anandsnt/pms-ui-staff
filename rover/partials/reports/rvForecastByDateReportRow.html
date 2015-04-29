@@ -1,5 +1,8 @@
-<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
-	<td>{{ each.date | date : dateFormat }}, {{ each.week_day }}</td>
+<tr ng-repeat="each in results track by $index">
+	<td class="date">
+		<span>{{ each.date | date : dateFormat }}</span>
+		<span>{{ each.week_day }}</span>
+	</td>
 	<td>{{ each.arrival_rooms }}</td>
 	<td>{{ each.departure_rooms }}</td>
 	<td>{{ each.occupied_rooms }}</td>
@@ -7,8 +10,22 @@
 	<td>{{ each.adults }}</td>
     <td>{{ each.children }}</td>
 	<td>{{ each.total_revenue | currency:currencySymbol:2 }}</td>
-	<td>{{ each.adr | currency:currencySymbol:2 }} ADR</td>
+	<td class="break">{{ each.adr | currency:currencySymbol:2 }}</td>
     <td>{{ each.last_year_occupied_rooms }}</td>
-	<td>{{ each.last_year_adr | currency:currencySymbol:2 }} ADR</td>
-    <td>{{ each.variance }}</td>
+	<td>{{ each.last_year_adr | currency:currencySymbol:2 }}</td>
+    <td ng-class="{ 'red': (each.variance * 1) < 0 }">{{ each.variance }}</td>
+</tr>
+<tr class="total" ng-if="resultsTotalRow">
+	<td class="date">Totals</td>
+	<td>{{ resultsTotalRow.total_arrival_rooms }}</td>
+	<td>{{ resultsTotalRow.total_departure_rooms }}</td>
+	<td>{{ resultsTotalRow.total_occupied_rooms }}</td>
+	<td>{{ resultsTotalRow.total_occupancy }}</td>
+	<td>{{ resultsTotalRow.total_adults }}</td>
+	<td>{{ resultsTotalRow.total_children }}</td>
+	<td>{{ resultsTotalRow.total_revenue | currency:currencySymbol:2 }}</td>
+	<td class="break">{{ resultsTotalRow.total_adr | currency:currencySymbol:2 }}</td>
+	<td>{{ resultsTotalRow.total_last_year_occupied_rooms }}</td>
+	<td>{{ resultsTotalRow.total_last_year_adr }}</td>
+	<td ng-class="{ 'red': (each.variance * 1) < 0 }">{{ resultsTotalRow.total_variance }}</td>
 </tr>

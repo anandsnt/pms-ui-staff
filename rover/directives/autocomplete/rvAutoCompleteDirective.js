@@ -18,13 +18,32 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                         var $content = highlightFilter(item.label, scope.ngModel),
                             $result = $("<a></a>").html($content),
-                            defIcon = item.type === 'COMPANY' ? 'icon-company' : item.type === 'TRAVELAGENT' ? 'icon-travel-agent' : 'icon-group',
+                            defIcon = '',
+                            defIconText = '',
                             $image = '';
+
+                        switch ( item.type ) {
+                            case 'COMPANY':
+                                defIcon = 'icon-company';
+                                break;
+
+                            case 'TRAVELAGENT':
+                                defIcon = 'icon-travel-agent';
+                                break;
+
+                            case 'GROUP':
+                                defIcon = 'icon-group-large';
+                                defIconText = 'G';
+                                break;
+
+                            default:
+                                break;
+                        };
 
                         if (item.image) {
                             $image = '<img src="' + item.image + '">';
                         } else {
-                            $image = '<span class="icons ' + defIcon + '"></span>';
+                            $image = '<span class="icons ' + defIcon + '">' + defIconText + '</span>';
                         }
 
                         if (item.type)

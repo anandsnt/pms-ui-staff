@@ -4,7 +4,7 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 		var self = this;
 
 		this.baseAccountSummaryData = {
-			"posting_account_id" : "",
+			"posting_account_id": "",
 			"posting_account_name": "",
 			"posting_account_number": "",
 			"posting_account_type": "HOUSE",
@@ -14,7 +14,9 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				source_id: "",
 				booking_origin_id: "",
 			},
-			notes: []
+			notes: [],
+			"travel_agent": null,
+			"company": null,
 		};
 
 		// AccountSummary
@@ -88,6 +90,18 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				url = 'api/posting_accounts/delete_posting_account_note';
 
 			rvBaseWebSrvV2.deleteJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
+
+		this.emailInvoice = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/posting_accounts/email_bill_card';
+			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {

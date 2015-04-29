@@ -51,7 +51,7 @@
 
                 <div class="report-header" ng-show="errorMessage.length" ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-                <div ng-include="detailsTemplateUrl"></div>
+                <div ng-hide="errorMessage.length" ng-include="detailsTemplateUrl"></div>
             </section>
 
         </div>
