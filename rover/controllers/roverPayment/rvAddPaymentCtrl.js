@@ -252,6 +252,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.paymentData.bills[billNumber].credit_card_details.card_code = $scope.renderData.creditCardType;
 		$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.renderData.endingWith;
 		$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.renderData.cardExpiry;
+		$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = $scope.renderData.cardExpiry.is_swiped ;
+		$scope.paymentData.bills[billNumber].credit_card_details.auth_color_code = $scope.renderData.auth_color_code;
 		billScreenCommonActions(data);
 	};
 
@@ -275,6 +277,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.renderData.creditCardType+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = $scope.renderData.endingWith;
 		$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.renderData.cardExpiry;
+		$scope.paymentData.reservation_card.payment_details.is_swiped = $scope.renderData.cardExpiry.is_swiped ;
+		$scope.paymentData.reservation_card.payment_details.auth_color_code = $scope.renderData.auth_color_code;
 	};
 
 	var addToGuestCard = function(data){
@@ -588,6 +592,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
 		$scope.renderData.endingWith = $scope.cardsList[index].mli_token;
 		$scope.renderData.value = $scope.cardsList[index].value;
+		$scope.renderData.is_swiped = $scope.cardsList[index].is_swiped;
+		$scope.renderData.auth_color_code = $scope.cardsList[index].auth_color_code;
 		$scope.showCCPage = false;
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;	

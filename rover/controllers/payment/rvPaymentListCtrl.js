@@ -28,7 +28,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	}
 	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, $scope.paymentListSuccess);  
 	
-	$scope.clickPaymentItem = function(paymentId, cardCode, cardNumberEndingWith, expiryDate){
+	$scope.clickPaymentItem = function(paymentId, cardCode, cardNumberEndingWith, expiryDate,isSwiped,colorCode){
 		var data = {
 			"reservation_id":	reservationId,
 			"user_payment_type_id":	paymentId
@@ -52,6 +52,9 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_number = cardNumberEndingWith;
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_expiry = expiryDate;
+
+				$scope.dataToPaymentList.bills[billIndex].credit_card_details.is_swiped = isSwiped;
+				$scope.dataToPaymentList.bills[billIndex].credit_card_details.auth_color_code = colorCode;
 				// CICO-9739 : To update on reservation card payment section while updating from bill#1 credit card type.
 				if(billIndex === 0){
 					$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.dataToPaymentList.bills[billIndex].credit_card_details );
@@ -62,6 +65,9 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 				$scope.dataToPaymentList.reservation_card.payment_details.card_expiry = expiryDate;
 				$scope.dataToPaymentList.reservation_card.payment_method_used = "CC";
 				$scope.dataToPaymentList.reservation_card.payment_method_description = "Credit Card";
+
+				$scope.dataToPaymentList.reservation_card.payment_details.is_swiped = isSwiped ;
+				$scope.dataToPaymentList.reservation_card.payment_details.auth_color_code = colorCode;
 			}
 		};
 		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);  
