@@ -224,7 +224,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 		$scope.onAccountStatusModification = function() {
 			//  dont allow to close account with balance -gt 0
-			if (!!$scope.accountConfigData.summary.balance && "CLOSED" === $scope.accountConfigData.summary.posting_account_status) {
+			if (!!parseFloat($scope.accountConfigData.summary.balance) && "CLOSED" === $scope.accountConfigData.summary.posting_account_status) {
 				ngDialog.open({
 					template: '/assets/partials/accounts/accountsTab/rvAccountAlertCloseWithBalance.html',
 					className: '',
