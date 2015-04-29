@@ -1,22 +1,22 @@
 
 <div class='entry {{divClass}}'  ng-style="{{divStyle}}">
-  <label class='{{labelClass}}' for='{{id}}' ng-hide="label.length==0">
-        {{labelClass}}{{label}}<strong ng-show = "required=='no'"> * </strong>
-  </label>
-  
-  <div class='select'>
+    <label class='{{labelClass}}' for='{{id}}' ng-hide="label.length == 0">
+        {{labelClass}}{{label}}<strong ng-show = "required == 'no'"> * </strong>
+    </label>
 
-    <select id="{{id}}" name="{{name}}" class="{{selboxClass}}" ng-style="{{sel-style}}" valfor="value-{{valfor}}">
-      
-        <option value="" ng-hide="labelInDropDown.length===0 || !labelInDropDown">
-        {{labelInDropDown}}
-        </option>
-      
-      <option ng-repeat='row in list' value='{{row[valueproperty]}}' ng-show = "showOptionsIf($index)">
-        {{row[prop]}}
-      </option>
-      
-    </select>
-      
-  </div>
+    <div class='select'>
+
+        <select id="{{id}}" name="{{name}}" class="{{selboxClass}}" ng-style="{{sel - style}}" valfor="value-{{valfor}}">
+
+            <option value="" ng-hide="labelInDropDown.length === 0 || !labelInDropDown">
+                {{labelInDropDown}}
+            </option>
+
+            <option ng-repeat='row in list' value='{{row[valueproperty]}}' ng-show = "showOptionsIf($index)">
+                {{row[prop]}}
+            </option>
+
+        </select>
+
+    </div>
 </div>
