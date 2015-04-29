@@ -211,6 +211,58 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.changedSelectedRoomType();
         }
 
+
+        /**
+         * [attachBillingInfoToReservations description]
+         * @return {[type]} [description]
+         */
+        var attachBillingInfoToReservations = function() {
+            
+            // we need to attach billing info of group to all the  corresponding reservations
+            var reservationIds = _.pluck($scope.reservations, "id")
+            var params = {
+                group_id: $scope.groupConfigData.summary.group_id,
+                reservation_ids :reservationIds
+            };
+
+            var options = {
+                params: params
+            };
+            $scope.callAPI(rvGroupRoomingListSrv.attachBillingInfoToReservations, options);
+        };
+        
+        /**
+         * [successCallBackOfcheckDefaultChargeRoutings description]
+         * @param  {[type]} data [description]
+         * @return {[type]}      [description]
+         */
+        var successCallBackOfcheckDefaultChargeRoutings = function(data) {
+            
+            if(data.default_route){
+                attachBillingInfoToReservations();
+            }
+            else{
+                return;
+            };
+        };
+
+        /**
+         * [checkDefaultChargeRoutings description]
+         * @return {[type]} [description]
+         */
+        var checkDefaultChargeRoutings = function() {
+          
+            var params = {
+                id: $scope.groupConfigData.summary.group_id
+            };
+
+            var options = {
+                params: params,
+                successCallBack: successCallBackOfcheckDefaultChargeRoutings,
+            };
+            $scope.callAPI(rvGroupRoomingListSrv.checkDefaultChargeRoutings, options);
+        };
+
         /**
          * [successCallBackOfAddReservations description]
          * @param  {[type]} data [description]
@@ -229,6 +281,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //rooming data will change after adding some reservation
             $scope.fetchRoomingDetails();
+            //check for default charge routings
+            checkDefaultChargeRoutings();
         };
 
         /**
