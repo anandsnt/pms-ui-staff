@@ -13,7 +13,7 @@
             <div class="entry">
                 <label for="account-type" translate>ACCOUNT_TYPE</label>
                 <div class="select">
-                    <select iscroll-stop-propagation id="account-type" ng-model="accountConfigData.summary.posting_account_type" ng-change="onAccountTypeModification();" ng-disabled="!!groupConfigData">
+                    <select id="account-type" ng-model="accountConfigData.summary.posting_account_type" ng-change="onAccountTypeModification();" ng-disabled="!!groupConfigData">
                         <option value="HOUSE" selected>House</option>
                         <option value="GROUP">Group</option>
                     </select>
@@ -40,13 +40,12 @@
             <strong class="h3">Balance / Status</strong>
             <div class="entry margin">
                 <label for="account-balance" translate>BALANCE</label>
-                <input id="account-balance" ng-class="{'balance-red' : accountConfigData.summary.balance > 0, 'balance-green' : accountConfigData.summary.balance <= 0}" 
-                value="{{getBalanceAmount(accountConfigData.summary.balance)}}" type="text" readonly />
+                <input id="account-balance" ng-class="{'balance-red' : accountConfigData.summary.balance > 0, 'balance-green' : accountConfigData.summary.balance <= 0}" ng-model="accountConfigData.summary.balance" type="text" readonly />
             </div>
             <div class="entry">
                 <label for="account-status" translate>STATUS</label>
                 <div class="select">
-                    <select iscroll-stop-propagation id="account-status" ng-model="accountConfigData.summary.posting_account_status" ng-change="onAccountStatusModification();">
+                    <select id="account-status" ng-model="accountConfigData.summary.posting_account_status" ng-change="onAccountStatusModification();">
                         <!-- Disable closing and show {modals/alerts/closing-account.html} popup if balance not 0 -->
                         <option value="OPEN" selected>Open</option>
                         <option value="CLOSED">Closed</option>

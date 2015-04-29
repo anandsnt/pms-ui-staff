@@ -40,7 +40,6 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.queryEntered = function(){
 		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 			$scope.results.cards = [];
-			$scope.results.accounts = [];
 			$scope.results.reservations = [];
 		}
 		else{
@@ -61,8 +60,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		$scope.$emit("hideLoader");
 		$scope.results.cards = [];
 		$scope.results.cards = data.accounts;
-		$scope.results.accounts = [];
-		$scope.results.accounts = data.groups;
+		console.log(data);
 		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
 	};
   	/**
@@ -75,10 +73,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	      //based on 'is_row_visible' parameter we are showing the data in the template      
 	      for(var i = 0; i < $scope.results.cards.length; i++){
 	          $scope.results.cards[i].is_row_visible = true;
-	      }
-	      for(var i = 0; i < $scope.results.accounts.length; i++){
-	          $scope.results.accounts[i].is_row_visible = true;
-	      }   
+	      }     
 	      
 	      // we have changed data, so we are refreshing the scrollerbar
 	      $scope.refreshScroller('cards_search_scroller');      
@@ -101,20 +96,6 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	        }
 	              
 	      }
-
-	      for(var i = 0; i < $scope.results.accounts.length; i++){
-	        value = $scope.results.accounts[i];
-	        if (($scope.escapeNull(value.account_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
-	            {
-	               $scope.results.accounts[i].is_row_visible = true;
-	               visibleElementsCount++;
-	            }
-	        else {
-	          $scope.results.accounts[i].is_row_visible = false;
-	        }
-	              
-	      }
-	      
 	      // last hope, we are looking in webservice.      
 	     if(visibleElementsCount == 0){    
 	        var dataDict = {'query': $scope.textInQueryBox.trim()};

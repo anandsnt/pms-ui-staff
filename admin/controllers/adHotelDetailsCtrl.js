@@ -41,9 +41,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.data = data.data;
 				$scope.data.brands = [];
 				$scope.data.is_external_references_import_on = false;
-				$scope.data.external_references_import_freq = undefined;
-				$scope.data.is_hold_room_import_on = false;
-				$scope.data.hold_room_import_freq = undefined;
+				$scope.data.external_references_import_freq = "";
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 					$scope.data.check_in_primetime ="AM";
@@ -156,7 +154,6 @@ admin.controller('ADHotelDetailsCtrl', [
 			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo", "languages", "hotel_template_logo"];
 			var data = dclone($scope.data, unwantedKeys);
 			data.mli_certificate = $scope.certificate;
-
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');
 				$state.go("admin.hotels");
@@ -174,9 +171,9 @@ admin.controller('ADHotelDetailsCtrl', [
 		/********************************************************************/		
 			if($scope.data.payment_gateway === "MLI"){
 				
-				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq"];
+				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq"];
 			 } else {
-			 	var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq"];
+			 	var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code", "is_external_references_import_on", "external_references_import_freq"];
 			 }
 			
 			

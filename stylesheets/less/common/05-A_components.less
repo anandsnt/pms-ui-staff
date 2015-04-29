@@ -12,60 +12,89 @@
 /* Login page 				==============================*/
 	#login-page {
 		.container {
-			overflow-x: hidden;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			
+			/* emulating native scroll */
+			overflow: hidden;
 			overflow-y: auto;
 			-webkit-overflow-scrolling: touch;
+			/**/
+			&::-webkit-scrollbar {
+			  -webkit-appearance: scrollbarthumb-vertical;
+			  width: 4px;
+			}
+			/**/
+			&::-webkit-scrollbar-track {
+			  background: transparent none;
+			}
+			/**/
+			&::-webkit-scrollbar-thumb {
+			  border-radius: 4px;
+			  background-color: rgba(0, 0, 0, .3);
+			}
+			/**/
+			&::-webkit-scrollbar-thumb:hover {
+			  background-color: rgba(0, 0, 0, .5);
+			}
 
 			#login {
-				position: static;
 				text-align: left;
 		  		vertical-align: middle;
 				padding: 20px;
-				height: 100%;
-				overflow: auto;
+				height: auto;
+				min-height: 100%;
 				.background(@white);
 				.show;
 
 				.logo {
 					margin: 0 auto;
-					max-width: 158px;
+					max-width: 125px;
 					width: 50%;
 					height: auto;
 					.show;
 				}
 
-				.notice { margin: 20px 0 0 0; }
+				.notice {
+					margin: 20px 0 0 0;
+					// #.hide;
+				}
 
 				.form {
-					border-bottom: 1px solid rgba(0,0,0,.1);
+					border-bottom: 2px solid rgba(0,0,0,.1);
 					margin: 30px 0 10px 0;
 
 					.entry { 
 						float: none;
 						margin-bottom: 20px;
 
-						label,
+						label:not(.inline),
 						input {
 							margin-bottom: 0;
 							width: 100%;
 							.show; 
 						}
-					}
 
-					.action {
-						margin-bottom: 20px;
+						.inline { 
+							width: 100%; 
+							margin-top: 10px;
+						}
 
 						.button { 
 							font-size: 18px;
 							line-height: 50px;
 							width: 100%;							
 						}
+
+						&:last-child { margin-bottom: 0; }
 					}
 				}
 
 				.support {
 					font-size: 14px;
-					line-height: 1.33em;
 					color: @grey3;
 					text-align: center;
 					font-style: italic;
@@ -92,24 +121,37 @@
 					width: 540px;
 					margin: -220px 0 0 -270px;
 					height: auto;
+					min-height: initial;
 					overflow: hidden;
 					.box-shadow(0 0 5px rgba(0,0,0,.2));
 					#border-radius > .rounded();
 	                				
-					.logo { .size(35px,158px); }
+					.logo { .size(28px,125px); }
 
 					.form {
 						margin: 20px 0;
 
-						.action {
-							text-align: center;
+						.entry { 
+							label:not(.inline),
+							input { margin-bottom: 5px; }
+
+							.inline {
+								width: auto;
+								line-height: 50px;
+								.icon-form { top: 15px; }
+							}
 
 							.button { 
 								width: auto;
 								padding: 0 40px;
-							}
-						}
+								.pull-right; 
+							}	
+
+							&:last-child { margin-bottom: 20px; }						
+						}		
 					}
+
+					.support { text-align: left; }
 				}
 			}	
 		}

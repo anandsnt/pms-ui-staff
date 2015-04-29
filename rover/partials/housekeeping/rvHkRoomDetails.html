@@ -4,7 +4,7 @@
     <section id="room-details" class="content">
       
       <!-- {room-status} can be clean, dirty, pickup, inspected or out -->
-      <header id="room-header" class="room-header {{ getHeaderColor() }}" role="banner" ng-class="{ 'on-hold': roomDetails.is_on_hold }"> 
+      <header id="room-header" class="room-header {{ getHeaderColor() }}" role="banner"> 
           <div class="icons icon-room">
             <h1>{{ roomDetails.current_room_no }}</h1>
             <span ng-if="isStandAlone">{{ roomDetails.room_type.name }}</span>

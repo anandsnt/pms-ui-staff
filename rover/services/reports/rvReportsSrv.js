@@ -28,11 +28,9 @@ sntRover.service('RVreportsSrv', [
 						// Support for Occupany from UI for now..
 						// This filter will be provided by the API in future
 						var occupanyReport = _.where(this.cacheReportList.results, { title: 'Occupancy & Revenue Summary' });
-						if ( !!occupanyReport && !!occupanyReport.length ) {
-							occupanyReport[0].filters.push({
-								value: "CHOOSE_MARKET", description: "Choose Market"
-							});
-						};
+						occupanyReport[0].filters.push({
+							value: "CHOOSE_MARKET", description: "Choose Market"
+						});
 
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {

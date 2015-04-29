@@ -8,8 +8,7 @@
     
     "GUEST_CHECKIN_SETUP": "Guest Checkin Setup",
     "SEND_CHECKIN_EMAIL": "Send Checkin Email",
-    "SEND_CHECKIN_ALERT": "Send Email Check In Alert",
-    "SEND_ZEST_CHECKIN_ALERT": "Send Alert And Enable Zest App Checkin",
+    "SEND_CHECKIN_ALERT": "Send Check In Alert",
     "NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE": "Notify Guest When Room is not assigned",
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",

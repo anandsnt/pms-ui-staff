@@ -33,7 +33,7 @@
 		        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{count}}</strong> items</p>
 		    </div>	
 		        
-		    <div id="report-content" class="report-content scrollable" ng-iscroll="report_content" ng-iscroll-delay="1000" ng-class="{'with-pagination' : !isPrevButtonDisabled()||!isNextButtonDisabled()}"> 
+		    <div id="report-content" class="report-content scrollable with-pagination" ng-iscroll="report_content" ng-iscroll-delay="1000"> 
 		    <!-- Add class "with-pagination" if pagination is shown -->
 			        <div class="wrapper">
 			            <table class="log-reports">

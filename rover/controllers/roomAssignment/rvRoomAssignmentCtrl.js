@@ -387,19 +387,13 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.getRoomStatusClassForRoom = function(room){
-
-		
 		if(room.is_oos){
 			return "room-grey";
 		}
 
 		var reservationRoomStatusClass = "";
-
-		//CICO-9063 no need to show the color coding if future reservation
-		if($scope.reservationData.reservation_card.reservation_status === 'RESERVED'){
-			return reservationRoomStatusClass;
-		}
-
+		
+			
 		var roomReadyStatus = room.room_ready_status;
 		var foStatus = room.fo_status;
 		var checkinInspectedOnly = room.checkin_inspected_only;
@@ -461,18 +455,14 @@ sntRover.controller('RVroomAssignmentController',[
 		group.group_name = "predefined";
 		group.multiple_allowed = true;
 		group.items = [];
-		//CICO-9063 we should not show Not Ready and Due Out filter if future reservation
-		if($scope.reservationData.reservation_card.reservation_status !== 'RESERVED'){
-			var item1 = {};
-			item1.id = -100;
-			item1.name = $filter('translate')('INCLUDE_NOTREADY_LABEL');
-			item1.selected = false;
-			var item2 = {};
-			item2.id = -101;
-			item2.name = $filter('translate')('INCLUDE_DUEOUT_LABEL');
-			item2.selected = false;
-		}
-		
+		var item1 = {};
+		item1.id = -100;
+		item1.name = $filter('translate')('INCLUDE_NOTREADY_LABEL');
+		item1.selected = false;
+		var item2 = {};
+		item2.id = -101;
+		item2.name = $filter('translate')('INCLUDE_DUEOUT_LABEL');
+		item2.selected = false;
 		var item3 = {};
 		item3.id = -102;
 		item3.name = $filter('translate')('INCLUDE_PREASSIGNED_LABEL');
@@ -481,11 +471,8 @@ sntRover.controller('RVroomAssignmentController',[
 		item4.id = -103;
 		item4.name = $filter('translate')('INCLUDE_CLEAN_LABEL');
 		item4.selected = false;
-		//CICO-9063 we should not show Not Ready and Due Out filter if future reservation
-		if($scope.reservationData.reservation_card.reservation_status !== 'RESERVED'){
-			group.items.push(item1);
-			group.items.push(item2);
-		}
+		group.items.push(item1);
+		group.items.push(item2);
 		group.items.push(item3);
 		if($scope.rooms.length > 0 && $scope.rooms[0].checkin_inspected_only == "true"){
 			group.items.push(item4);
@@ -555,16 +542,6 @@ sntRover.controller('RVroomAssignmentController',[
 
 	$scope.getRoomsWithInitialFilters = function(){	
 		var roomsWithInitialFilters = [];
-
-		//CICO-9063 we will display all vacant rooms for a future reservation
-		if($scope.reservationData.reservation_card.reservation_status === 'RESERVED'){
-			for (var i = 0; i < $scope.rooms.length; i++) {
-				if($scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].is_preassigned){
-					roomsWithInitialFilters.push($scope.rooms[i]);
-				}
-			};
-			return roomsWithInitialFilters;
-		}
 		for (var i = 0; i < $scope.rooms.length; i++) {
 			if($scope.rooms[i].room_status == "READY" && $scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].is_preassigned){
 				if($scope.rooms[i].checkin_inspected_only == "true" && $scope.rooms[i].room_ready_status == "INSPECTED"){
@@ -679,12 +656,10 @@ sntRover.controller('RVroomAssignmentController',[
 		}
 	};
 	$scope.init = function(){
-
 		$scope.roomTypes = roomPreferences.room_types;
 		$scope.roomFeatures = roomPreferences.room_features;
 		$scope.rooms = roomsList.rooms;
 		$scope.floors = roomPreferences.floors.floor_details;
-		$scope.reservationData = $scope.$parent.reservation;
 		$scope.addPredefinedFilters();
 		$scope.setSelectedFiltersList();
 		$scope.reservation_occupancy = roomsList.reservation_occupancy;
@@ -692,7 +667,7 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.applyFilterToRooms();
 		$scope.clickedButton = $stateParams.clickedButton;
 		$scope.assignedRoom = "";
-		
+		$scope.reservationData = $scope.$parent.reservation;
 		oldRoomType = $scope.roomType = $stateParams.room_type; 
 		$scope.isStandAlone = $rootScope.isStandAlone;
 		$scope.isFiltersVisible = false;

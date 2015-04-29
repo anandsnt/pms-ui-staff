@@ -39,18 +39,16 @@
 <div class="date-range" ng-if="item.hasDateFilter">
     <label>{{ item.hasDateFilter.description }}</label>
     <div class="has-datepicker">
-        <input ng-if="item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'fromDate')" readonly>
-        <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'fromDate')" readonly>
-        <input ng-if="!item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'fromDate')" readonly>
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'fromDate')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'fromDate')" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDate', 'untilDate')">Clear query</span>
         </button>
     </div>
     <span class="span-to"> To </span>
     <div class="has-datepicker">
-        <input ng-if="item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" ng-change="dateChanged(item, 'untilDate')" readonly>
-        <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'untilDate')" readonly>
-        <input ng-if="!item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'untilDate')" readonly>
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" ng-change="dateChanged(item, 'untilDate')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'untilDate')" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromDate', 'untilDate')">Clear query</span>
         </button>
@@ -95,7 +93,7 @@
     </div>
 </div>
 
-<div class="single-date" ng-if="item.hasSingleDateFilter">
+<div class="date-range single-date" ng-if="item.hasSingleDateFilter">
     <label>Date</label>
     <div class="has-datepicker">
         <input type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate">
@@ -227,8 +225,19 @@
     <input type="text" class="hidden" ng-model="item.chosenIncludeComapnyTaGroup">
 </div>
 
-<div class="options long-list" ng-if="item.hasGuaranteeType" ng-click="catchFauxSelectClick($event, 'hasGuaranteeType')">
-    <label for="report-options">Guarantee Type(s)</label>
+<!-- <div class="options" ng-if="item.hasGuaranteeType && item.guaranteeTypes.length">
+    <label>Guarantee Type</label>
+    <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, item)">{{ item.guaranteeTitle }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, item)">
+        <label class="checkbox inline" ng-repeat="each in item.guaranteeTypes">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxGuaranteeOptionClicked(item)">
+            {{ each.name }}
+        </label>
+    </div>
+</div>
+ --><div class="options long-list" ng-if="item.hasGuaranteeType" ng-click="catchFauxSelectClick($event, 'hasGuaranteeType')">
+    <label for="report-options">Charge Group(s)</label>
     <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasGuaranteeType)">{{ item.hasGuaranteeType.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGuaranteeType.show }">
         <label class="checkbox inline" ng-show="item.hasGuaranteeType.data.length > 1">

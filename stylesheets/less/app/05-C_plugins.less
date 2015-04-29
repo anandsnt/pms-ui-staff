@@ -200,26 +200,13 @@
 
                     .highlight { color: @logoPrimary; }
 
-                    img,
-					.icons {
-						position: absolute;
-						top: 10px;
-						left: 10px;
-						.square(30px);
-						#border-radius > .rounded();
-					}
-
-					.icons {
-						&.icon-company { 
-							background-position: 4px -3458px;
-							background-color: @ccard; 
-						}
-
-						&.icon-travel-agent { 
-							background-position: 4px -3576px;
-							background-color: @tacard; 
-						}
-					}
+                    img {
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        .square(30px);
+                        #border-radius > .rounded();
+                    }
                 }
             }
         }
@@ -239,25 +226,12 @@
 
 					.highlight { color: @logoPrimary; }
 
-					img,
-					.icons {
+					img {
 						position: absolute;
 						top: 10px;
 						left: 10px;
 						.square(30px);
 						#border-radius > .rounded();
-					}
-
-					.icons {
-						&.icon-company { 
-							background-position: 4px -3458px;
-							background-color: @ccard; 
-						}
-
-						&.icon-travel-agent { 
-							background-position: 4px -3576px;
-							background-color: @tacard; 
-						}
 					}
 				}
 			}
@@ -1982,18 +1956,6 @@
 									}
 								}
 
-								.group-info {
-									font-size: 18px;
-									line-height: 30px;
-									text-transform: uppercase;
-									font-weight: 600;
-									text-align: center;
-									color: @grey3;
-									width: 30px;
-									background-color: @grey1;
-									.pull-left;
-								}
-
 								h2 {
 									font-size: 21px;
 									line-height: 30px;
@@ -2025,8 +1987,7 @@
 									&.bill { width: 70px; }
 								}
 
-								&.guest,
-								&.group { 
+								&.guest { 
 									h2 { color: @textColor; }
 								}
 								&.accompany { 
@@ -2122,18 +2083,6 @@
 								}
 							}
 
-							.group-info {
-								font-size: 18px;
-								line-height: 30px;
-								text-transform: uppercase;
-								font-weight: 600;
-								text-align: center;
-								color: @grey3;
-								width: 30px;
-								background-color: @grey1;
-								.pull-left;
-							}
-
 							h2 {
 								font-size: 18px;
 								line-height: 30px;
@@ -2182,13 +2131,8 @@
                					&.travel-agent { background: @tacard @tacardTexture; }
 							}
 
-							&.guest,
-							&.group { 
+							&.guest { 
 								h2 { color: @textColor; }
-							}
-
-							&.group {
-								h2 { width: 240px; }
 							}
 
 							&.accompany { 

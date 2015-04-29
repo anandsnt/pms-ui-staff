@@ -33,13 +33,11 @@
                   <!-- image -->
                   
                   <figure class="guest-image accompany" >
-							<img src="{{entity.primary_avatar}}" alt="" />
 							<img src="{{entity.avatar}}" alt="" />
 					</figure>
 
-					<div class="data">
-                        <h2>{{entity.name}}</h2>
-                    </div>
+                  <!-- heading -->
+                  <h2>{{entity.name}}</h2>
                   <!-- icon -->
                   <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(reservationData.reservation_status, reservationData.is_opted_late_checkout)"   >{{entity.name}}</span>
                  </li>
@@ -82,11 +80,6 @@
                   <div class="status travel-agent" >{{attachedEntities.travel_agent.name}}</div>
                  </li>
 
-                <!-- If group added -->
-                <li class="entity group" ng-show="attachedEntities.hasOwnProperty('group_details')" ng-click="selectAttachedEntity(-1,'GROUP')">
-                    <div class="group-info">G</div>
-                    <h2>{{attachedEntities.group_details.name}}</h2>
-                </li>
             </ul>
          </div>
          <!-- Search results, show instead of attached entities when searching -->
@@ -96,7 +89,7 @@
 				RESERVATIONS
 			</li>
 			<li ng-click="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
-				GROUPS_AND_CARDS
+				CARDS
 			</li>
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
@@ -104,7 +97,7 @@
 				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS')">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
-	                    <img ng-src="{{row.company_logo}}" alt="">
+	                        <img ng-src="{{row.company_logo}}" alt="">
 	                </figure>
 	
 	                <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
@@ -116,12 +109,6 @@
 	                <!-- icon -->
                   	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
                  </div>
-
-                 <div class="entity" ng-repeat="row in results.accounts" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNTS')">
-                 	<div class="group-info">G</div>
-                    <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-                 </div>
-
 			</ul>
 			<!-- No results / no content when searched query not found-->
         	<div class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && !isReservationActive">
@@ -134,7 +121,7 @@
 		
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<div class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0 || row.images.length >1" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
+				<div class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
 							
 					<!-- image -->
 					<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	

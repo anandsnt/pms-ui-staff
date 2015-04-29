@@ -174,21 +174,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
-		// from and untill date picker options
-		// with added limits to system (today) date
-		$scope.fromDateOptionsSysLimit = angular.extend({
-			maxDate: new Date(),
-			onSelect: function(value) {
-				$scope.untilDateOptions.minDate = value;
-			}
-		}, datePickerCommon);
-		$scope.untilDateOptionsSysLimit = angular.extend({
-			maxDate: new Date(),
-			onSelect: function(value) {
-				$scope.fromDateOptions.maxDate = value;
-			}
-		}, datePickerCommon);
-
 		// custom from and untill date picker options
 		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
@@ -1053,7 +1038,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all markets are selected
 					if ( chosenReport['hasMarketsList']['data'].length == selected.length ) {
 						$scope.appliedFilter.markets = [];
-						$scope.appliedFilter.markets.push( 'All Markets' );
+						$scope.appliedFilter.markets.push( 'All Codes' );
 					};
 				};
 			};
@@ -1095,7 +1080,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all origins are selected
 					if ( chosenReport['hasOriginsList']['data'].length == selected.length ) {
 						$scope.appliedFilter.origins = [];
-						$scope.appliedFilter.origins.push( 'All Origins' );
+						$scope.appliedFilter.origins.push( 'All Codes' );
 					};
 				};
 			};
@@ -1236,7 +1221,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				} else {
 					console.log('report.submit');
 					$scope.$broadcast('report.submit');
-				};
+				}
 			};
 
 			var errorCallback = function (response) {
@@ -1250,8 +1235,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.errorMessage = response;
 				$scope.$emit('hideLoader');
 
-				console.log('report.API.failure');
-				$rootScope.$broadcast('report.API.failure');
+				$rootScope.$emit('report.API.failure');
 			};
 
 			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, sucssCallback, errorCallback);

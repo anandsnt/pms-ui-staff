@@ -93,7 +93,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     if (selectedRestriction.value == 'MIN_ADV_BOOKING') {
                   $scope.minAdvancedBookingActivated =  true;
               }
-                    if (selectedRestriction.value == 'MIN_STAY_LENGTH') {
+                    if (selectedRestriction.value == 'MIN_ADV_BOOKING') {
                  $scope.minStayLengthActivated =  true;
              }
         }

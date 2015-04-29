@@ -8,7 +8,7 @@
 		<br>
 		<div class="scrollable scroll-payment-list"  id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='300' >
 			<div ng-show="paymentListLength>0">
-				<a class="active-item existing_payments float item-payment" ng-click="clickPaymentItem(paymentlist.value, paymentlist.card_code, paymentlist.ending_with, paymentlist.expiry_date, paymentlist.is_swiped, paymentlist.auth_color_code)" ng-repeat="paymentlist in paymentListData.existing_payments" >
+				<a class="active-item existing_payments float item-payment" ng-click="clickPaymentItem(paymentlist.value, paymentlist.card_code, paymentlist.ending_with, paymentlist.expiry_date)" ng-repeat="paymentlist in paymentListData.existing_payments" >
 					<figure class="card-logo">
 						<img src="/assets/{{paymentlist.card_code}}.png" alt="">
 					</figure> 

@@ -52,8 +52,8 @@ sntRover.service('rvGroupRoomingListSrv',
 				//url = '/ui/show?format=json&json_input=groups/create_reservations.json';
 			
 			var data = {
-				'sort_field': params.sorting_field,
-				'sort_dir'  : params.sort_dir,
+				'sort_field': 'room_no',
+				'sort_dir'  : 'ASC',
 				'per_page' 	: params.per_page,
 				'page'  	: params.page,
 			};

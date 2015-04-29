@@ -1,9 +1,9 @@
 
-<div class="content" id="login">
+<div class='content' id='login'>
 	<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
 	<img alt="" class="logo" src="/assets/logo.png" />
 
-	<span class="notice error" ng-show="errorMessage!=''" >
+	<span class='notice error' ng-show="errorMessage!=''" >
 		<ul>
 			<li ng-repeat="message in errorMessage">
 				{{message}}
@@ -12,26 +12,27 @@
 	</span>
 
 	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form" novalidate>
-		<input name="utf8" type="hidden" value="" />
-		<input name="authenticity_token" type="hidden" value="" />
-
-		<div class="entry">
-			<label for="email">E-mail</label>
-			<input id="email" name="email" ng-model="data.email" placeholder="Enter your e-mail address" type="email" value="" />
+		<div style="margin:0;padding:0;display:inline">
+			<input name="utf8" type="hidden" value="" />
+			<input name="authenticity_token" type="hidden" value="" />
 		</div>
-		<div class="entry">
-			<label for="password">Password </label>
-			<input autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" />
+		<div class='entry float'>
+			<label for='email'>E-mail</label>
+			<input id='email' name='email' ng-model="data.email" placeholder='Enter your e-mail address' type='email' value=''>
 		</div>
-		<div class="action">
-			<button class="button green" id="loginbutton" name="commit" type="submit" value="login">
+		<div class='entry float'>
+			<label for='password'>Password </label>
+			<input autocomplete='off' id='password' ng-model="data.password" name='password' placeholder='Enter your password' type='password' value='{{data.password}}'>
+		</div>
+		<div class='entry float'>
+			<button class='button green' id='loginbutton' name='commit' type='submit' value='login'>
 				Login
 			</button>
 		</div>
 	</form>
 
-	<div class="support">
+	<div class='support'>
 		For questions or support please contact your hotel administrator or the StayNTouch service team at
-		<a href="mailto:support@stayntouch.com">support@stayntouch.com</a>
+		<a href='mailto:support@stayntouch.com'>support@stayntouch.com</a>
 	</div>
 </div>

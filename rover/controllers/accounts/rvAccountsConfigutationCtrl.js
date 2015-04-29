@@ -5,11 +5,10 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'$filter',
 	'$stateParams',
 	'rvAccountsConfigurationSrv',
-	'rvGroupConfigurationSrv',
 	'accountData',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv) {
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, accountData, $state, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -49,12 +48,6 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			$scope.setHeadingTitle(title);
 		};
 
-		$scope.updateAndBack = function() {
-			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');			
-			$state.go('rover.accounts.search');
-		}
-
-
 		/**
 		 * function to set Back Navigation params
 		 */
@@ -63,8 +56,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			// Change the same according to the requirements
 			$rootScope.setPrevState = {
 				title: $filter('translate')('ACCOUNTS'),
-				callback: 'updateAndBack',
-				scope: $scope				
+				name: 'rover.accounts.search'
 			};
 
 			//setting title and things
@@ -93,27 +85,13 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		};
 
 		/**
-		 * function to check whether the user has permission
-		 * to make view the transactions tab
-		 * @return {Boolean}
-		 */
-		$scope.hasPermissionToViewTransactionsTab = function() {
-			return rvPermissionSrv.getPermissionValue('ACCESS_GROUP_ACCOUNT_TRANSACTIONS');
-		};
-
-		/**
 		 * TAB - to swicth tab
 		 * @return - None
 		 */
 		$scope.switchTabTo = function(tab) {
+
 			//if there was any error message there, we are clearing
 			$scope.errorMessage = '';
-
-			//allow to swith to "transactions" tab only if the user has its permission
-			if (tab == "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
-				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
-				return;
-			}
 
 			var isInAccountsTab = $scope.accountConfigData.activeTab == "ACCOUNT";
 
@@ -139,8 +117,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		$scope.getCurrentTabUrl = function() {
 			var tabAndUrls = {
 				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
-				'TRANSACTIONS': '/assets/partials/accounts/transactions/rvAccountTransactions.html',
-				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
+				'TRANSACTIONS': '/assets/partials/groups/transactions/rvGroupConfigurationTransactionsTab.html',
+				'ACTIVITY': '/assets/partials/groups/accounts/rvAccountConfigurationActivityTab.html'
 			};
 
 			return tabAndUrls[$scope.accountConfigData.activeTab];
@@ -178,7 +156,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			} else {
 				console.warn('No Permission for CREATE_GROUP_SUMMARY');
 			}
-		}
+		}	
 
 
 		/**
@@ -189,78 +167,6 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			$scope.accountConfigData.summary = angular.copy(rvAccountsConfigurationSrv.baseAccountSummaryData);
 		}
 
-		/**
-		 * Autocompletions for company/travel agent
-		 * @return {None}
-		 */
-		var initializeAutoCompletions = function() {
-			//this will be common for both company card & travel agent
-			var cardsAutoCompleteCommon = {
-
-				focus: function(event, ui) {
-					return false;
-				}
-			}
-
-			//merging auto complete setting for company card with common auto cmplt options
-			$scope.companyAutoCompleteOptions = angular.extend({
-				source: function(request, response) {
-					rvGroupConfigurationSrv.searchCompanyCards(request.term)
-						.then(function(data) {
-							var list = [];
-							var entry = {}
-							$.map(data, function(each) {
-								entry = {
-									label: each.account_name,
-									value: each.id,
-									type: each.account_type
-								};
-								list.push(entry);
-							});
-
-							response(list);
-						});
-				},
-				select: function(event, ui) {
-					this.value = ui.item.label;
-					$scope.accountConfigData.summary.company.name = ui.item.label;
-					$scope.accountConfigData.summary.company.id = ui.item.value;
-					if (!$scope.isInAddMode()) $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");;
-					runDigestCycle();
-					return false;
-				}
-			}, cardsAutoCompleteCommon);
-
-			//merging auto complete setting for travel agent with common auto cmplt options
-			$scope.travelAgentAutoCompleteOptions = angular.extend({
-				source: function(request, response) {
-					rvGroupConfigurationSrv.searchTravelAgentCards(request.term)
-						.then(function(data) {
-							var list = [];
-							var entry = {}
-							$.map(data, function(each) {
-								entry = {
-									label: each.account_name,
-									value: each.id,
-									type: each.account_type
-								};
-								list.push(entry);
-							});
-
-							response(list);
-						});
-				},
-				select: function(event, ui) {
-					this.value = ui.item.label;
-					$scope.accountConfigData.summary.travel_agent.name = ui.item.label;
-					$scope.accountConfigData.summary.travel_agent.id = ui.item.value;
-					if (!$scope.isInAddMode()) $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
-					runDigestCycle();
-					return false;
-				}
-			}, cardsAutoCompleteCommon);
-		};
-
 
 		/**
 		 * function to initialize things for group config.
@@ -270,8 +176,6 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			//forming the data model if it is in add mode or populating the data if it is in edit mode
 			$scope.initializeDataModelForSummaryScreen();
-
-			initializeAutoCompletions();
 
 			//back navigation
 			setBackNavigation();

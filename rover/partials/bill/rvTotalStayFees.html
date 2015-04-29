@@ -67,10 +67,7 @@
 			<span class="number">{{billData.credit_card_details.card_number}}</span>
 		</figure> 
 		<span class="name">{{billData.guest_or_company_name}}</span>
-	 	 <!-- CC display option 1 - Swiped, not authenticated: and  CC display option 2 - Swiped and authenticated:   -->
-	    <span ng-show="billData.credit_card_details.is_swiped && isStandAlone" class="icons icon-swiped" ng-class="{'icon-authenticated':billData.credit_card_details.auth_color_code === 'green'}">Credit card swiped</span> 
-	    <!--  CC display option 3 - Not swiped, authenticated:  -->
-	     <span ng-hide="billData.credit_card_details.is_swiped || billData.credit_card_details.auth_color_code !=='green' || !isStandAlone" class="icons icon-authenticated"></span>
+		<span ng-show="billData.credit_card_details.is_swiped" class="icons icon-swiped">Credit card swiped</span>
 	</button>
 
 	<!-- Other Payment methods -->

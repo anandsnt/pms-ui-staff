@@ -1136,12 +1136,6 @@ sntRover.controller('RVbillCardController',
 
 	// To handle ar account details in case of direct bills
 	$scope.isArAccountNeeded = function(index){
-
-		//CICO-15493: A reservation being linked to a Group Account should be sufficient to be able to check out to Direct Bill; no need to check for AR account
-		if($scope.reservationBillData.is_linked_to_group_account){
-			return false;
-		}
-		//Prompt for AR account 
 		if($scope.reservationBillData.bills[index].credit_card_details.payment_type == "DB" && $scope.reservationBillData.ar_number == null && $rootScope.isStandAlone){
 
 			if($scope.reservationBillData.account_id == null || typeof $scope.reservationBillData.account_id == 'undefined'){

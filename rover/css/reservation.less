@@ -115,6 +115,48 @@
   }
 }
 
+.ui-autocomplete {
+  &.find-cards {
+    li {
+      a {
+        img,
+        span.icons {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 30px;
+          height: 30px;
+          -webkit-border-radius: 2px;
+          -moz-border-radius: 2px;
+          border-radius: 2px;
+        }
+
+        span.icons {
+          margin: 0;
+          padding: 0;
+          font-size: 10px;
+        }
+
+        .icons.icon-company {
+          background-color: #566083;
+          background-position: 2px -3458px;;
+        }
+
+        .icons.icon-travel-agent {
+          background-color: #80546d;
+          background-position: 5px -3576px;
+        }
+
+        &.ui-state-focus,
+        &.ui-state-active {
+          background-color: rgba(0, 0, 0, 0.05);
+          color: #000;
+        }
+      }
+    }
+  }
+}
+
 /* some common style - used mainly in workmanagement */
   .clear-both{
     clear:both;

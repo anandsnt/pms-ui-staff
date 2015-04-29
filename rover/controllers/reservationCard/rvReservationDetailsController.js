@@ -13,16 +13,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		if($scope.previousState.name === "rover.groups.config"){
-			$rootScope.setPrevState = {
-				title: 'GROUP DETAILS',
-				name: 'rover.groups.config',
-				param: {
-					id: $scope.previousStateParams.id, 
-					activeTab: "ROOMING"
-				},
-			};
-		}else if ($stateParams.isFromCards) {
+		if ($stateParams.isFromCards) {
 			$rootScope.setPrevState = {
 				title: 'AR Transactions',
 				name: 'rover.companycarddetails',
