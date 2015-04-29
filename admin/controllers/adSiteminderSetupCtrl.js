@@ -1,4 +1,4 @@
-admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$state', '$filter', '$stateParams', function ($scope, adSiteminderSetupSrv, $state, $filter, $stateParams) {
+admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminderSetupSrv', '$state', '$filter', '$stateParams', function ($scope, $controller, adSiteminderSetupSrv, $state, $filter, $stateParams) {
 
         $scope.errorMessage = '';
         $scope.successMessage = '';
@@ -17,18 +17,18 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
         };
 
         $scope.toggleSMActiveSuccess = function () {
-           $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
-           $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {
-               'interface_id': $scope.data.data.product_cross_customer.interface_id,
-               'active': $scope.data.data.product_cross_customer.active
-           }, $scope.fetchSiteminderSetupSuccessCallback);
-       };
-                        
-        $scope.toggleInterface = function(active, id){
-            if (active){
-                active=false;
+            $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
+            $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {
+                'interface_id': $scope.data.data.product_cross_customer.interface_id,
+                'active': $scope.data.data.product_cross_customer.active
+            }, $scope.fetchSiteminderSetupSuccessCallback);
+        };
+
+        $scope.toggleInterface = function (active, id) {
+            if (active) {
+                active = false;
             } else {
-                active=true;
+                active = true;
             }
             $('[name=active-inactive-toggle]').attr('ng-class', active);
             $scope.invokeApi(adSiteminderSetupSrv.toggleActive, {
@@ -36,13 +36,11 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
                 'active': active
             }, $scope.toggleSMActiveSuccess);
         };
-                        
+
         $scope.toggleSMClicked = function () {
-           var active = $scope.data.data.product_cross_customer.active,
-                   id = $scope.data.data.product_cross_customer.interface_id;
-            $scope.toggleInterface(active,id);
-            
-            
+            var active = $scope.data.data.product_cross_customer.active,
+                    id = $scope.data.data.product_cross_customer.interface_id;
+            $scope.toggleInterface(active, id);
         };
 
         $scope.fetchSiteminderSetup();
@@ -57,13 +55,35 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', 'adSiteminderSetupSrv', '$s
 
             var saveSiteminderSetupFailureCallback = function (data) {
                 $scope.isLoading = false;
-
-                $scope.errorMessage = 'Siteminder Save Failed';
+                // var msg = data;
+                $scope.errorMessage = 'Siteminder Save Failed ';
                 $scope.$emit('hideLoader');
             };
 
+
+
             var unwantedKeys = ["available_trackers"];
             var saveData = dclone($scope.data, unwantedKeys);
+            /*
+             var ADOriginsCtrl = $controller('ADOriginsCtrl');
+             console.log(ADOriginsCtrl);
+             console.log(ADOriginsCtrl.data);
+             console.log(ADOriginsCtrl.data.data.product_cross_customer.tracker_default_origin);
+             */
+            //for now fetch directly from the view
+            //move this to a controller call later
+            var origin = $('[valfor=value-default-origin]')[1],
+                    payment = $('[valfor=value-default-payment]')[1];
+            var originVal = $(origin).val(),
+                    paymentVal = $(payment).val();
+            if (originVal.length > 0) {
+                originVal = parseInt(originVal);
+                saveData.data.product_cross_customer.default_origin = originVal;
+            }
+            if (paymentVal.length > 0) {
+                paymentVal = parseInt(paymentVal);
+                saveData.data.product_cross_customer.payment_type_id = paymentVal;
+            }
 
             $scope.invokeApi(adSiteminderSetupSrv.saveSetup, saveData, saveSiteminderSetupSuccessCallback, saveSiteminderSetupFailureCallback);
         };
