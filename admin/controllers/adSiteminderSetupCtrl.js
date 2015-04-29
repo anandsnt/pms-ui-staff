@@ -82,7 +82,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
             }
             if (paymentVal.length > 0) {
                 paymentVal = parseInt(paymentVal);
-                saveData.data.product_cross_customer.payment_type_id = paymentVal;
+                saveData.data.product_cross_customer.default_payment_id = paymentVal;
             }
 
             $scope.invokeApi(adSiteminderSetupSrv.saveSetup, saveData, saveSiteminderSetupSuccessCallback, saveSiteminderSetupFailureCallback);
