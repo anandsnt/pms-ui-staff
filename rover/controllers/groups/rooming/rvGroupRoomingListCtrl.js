@@ -241,6 +241,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 return showNoRoomTypesAttachedPopUp ();
             }   
 
+            //wiping the weepy
+            $scope.errorMessage = '';
+
             //API params
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
