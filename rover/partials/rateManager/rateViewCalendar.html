@@ -3,15 +3,16 @@
     <table class='rate-calendar' style="width: 220px;">
         <thead>
             <tr>
-                <th class="cell first-row" style="height: 69px; padding: 0 20 0 0">
+                <th class="cell" style="height: 53px; padding: 0 20 0 0;">
                     <button ng-click="openCloseAllRestrictions('remove')" 
-                            class="button green" 
+                            class="button green rm-buttonOpenClose"
+                            style=" margin-left:50px;"
                             ng-class="{'grey': calendarData.disableOpenAllBtn}" 
                             ng-disabled="calendarData.disableOpenAllBtn">
                         Open All
                     </button>
                     <button ng-click="openCloseAllRestrictions('add')" 
-                            class="button red" 
+                            class="button red rm-buttonOpenClose" 
                             ng-class="{'grey': calendarData.disableCloseAllBtn}" 
                             ng-disabled="calendarData.disableCloseAllBtn">
                         Close All
@@ -27,6 +28,16 @@
             </tr>
 
             <tr class="cell first-row-cell" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
+                <td class="cell" style="padding: 20px; padding-right: 5px; overflow:visible;">
+                    <div class="bolder buttonToggleContainer">
+                        <button class="button orange rm-buttonToggle" style="margin-bottom:4px; margin-top:-5px;">All Rates</button><br>
+                    <button class="button rm-buttonToggle clear" style="margin-bottom: -5px;">All Rooms</button>
+                    </div>
+                    
+                </td>
+            </tr>
+
+            <tr class="cell" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
                 <td class="first-row">
                     <div ng-click="goToRoomTypeCalendarView(rate)">
                         <span bindonce bo-html="rate.name" title="{{rate.name}}"></span>

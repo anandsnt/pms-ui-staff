@@ -71,9 +71,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
                             
-                            if (fetchingRooms){
+                            //if (fetchingRooms){
                                 //convert the data to act like rates, to update the view
-                            }
+                           // }
                             
                             
                             
@@ -273,6 +273,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	
 		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup 
+                var fetchingRooms = false;
                  if (fetchingRooms){
                     console.log('fetching rooms to calculate view cal data');
                     that.dailyRates.results = [];

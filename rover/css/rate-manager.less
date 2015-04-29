@@ -419,7 +419,7 @@
       }
     }
     .first-row {
-      height: 60px;
+      height: 67px !important;
       text-align: right;
       padding: 20px;
       vertical-align: middle;  
@@ -1780,6 +1780,48 @@ padding-top: 80px;
     float: left; 
     overflow: hidden;
 }
+.rm-buttonOpenClose{
+    color: #fcfcfc;
+    padding: 0 5px;
+    margin-left: 7px;
+    margin-top: 11px;
+    padding: 0px 5px 0px 5px !important;
+    margin-bottom: 10px;
+    vertical-align: top;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 1px;
+    font-weight: normal !important;
+    font-size: 14px;
+}
+.rm-buttonToggle{
+    height: 53px;
+    width: 95%;
+    padding: 4;
+    color: #fcfcfc;
+    padding: 5px;
+    margin-bottom: 12px;
+    margin-left: 10px;
+    vertical-align: top;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 1px;
+    font-weight: normal !important;
+    font-size: 14px;
+}
+.buttonToggleContainer{
+    background: rgba(221,221,221,0.75);
+    padding: 9px;
+    margin-top:-25px;
+    margin-left: 15px;
+    padding-left: 0px;
+    margin-bottom: -31px;
+}
+.clear{
+    background-color:transparent !important;
+    color:black !important;
+    box-shadow: 0px transparent inset;
+    -moz-box-shadow:   0px transparent inset;
+    -webkit-box-shadow:   0px transparent inset;
+}
 
 .apply-all-div{
     height: 35px;
@@ -1820,4 +1862,38 @@ padding-top: 80px;
 }
 .expandedFirstRow{
     height: 170px !important;
+}
+.semifold
+{
+  position: relative;
+}
+.semifold:before, .semifold:after
+{
+  z-index: -1;
+  position: absolute;
+  content: "";
+  bottom: 15px;
+  left: 10px;
+  width: 50%;
+  top: 80%;
+  max-width:300px;
+  background: #777;
+  -webkit-box-shadow: 0 15px 10px #777;
+  -moz-box-shadow: 0 15px 10px #777;
+  box-shadow: 0 15px 10px #777;
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -o-transform: rotate(-3deg);
+  -ms-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+}
+.semifold:after
+{
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  -ms-transform: rotate(3deg);
+  transform: rotate(3deg);
+  right: 10px;
+  left: auto;
 }
