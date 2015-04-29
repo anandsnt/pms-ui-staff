@@ -159,6 +159,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			} else {
 				$scope.dayRates = -1;
 			}
+			$scope.refreshScroller('registration-content');
+			
 		};
 
 		$scope.showActiveBill = function(index) {
@@ -176,8 +178,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		 * @param {int} index of bill
 		 */
 		$scope.setActiveBill = function(billIndex) {
-
 			$scope.currentActiveBill = billIndex;
+			$scope.refreshScroller('registration-content');
 		};
 
 
