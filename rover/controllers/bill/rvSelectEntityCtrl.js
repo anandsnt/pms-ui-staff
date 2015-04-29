@@ -62,8 +62,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		$scope.results.cards = [];
 		$scope.results.cards = data.accounts;
 		$scope.results.accounts = [];
-		$scope.results.accounts = data.posting_accounts;
-		console.log(data);
+		$scope.results.accounts = data.groups;
 		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
 	};
   	/**
