@@ -235,7 +235,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 		$scope.onHoldStatusChange = function() {
-			$scope.updateGroupSummary();
+			if(!$scope.isInAddMode()){
+				$scope.updateGroupSummary();	
+			}			
 		}
 
 		/**

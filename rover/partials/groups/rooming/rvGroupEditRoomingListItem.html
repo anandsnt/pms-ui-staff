@@ -50,8 +50,9 @@
                     ng-disabled="ngDialogData.reservationStatusFlags.isUneditable"
                     class="datepicker" 
                     type="text" 
-                    ui-date="fromDateOptions" 
-                    value="{{ngDialogData.arrival_date|date:dateFormat}}" rv-clear-text-box 
+                    ui-date="reservationFromDateOptions"
+                    ui-date-format
+                    ng-model = "ngDialogData.arrival_date"                    
                     listen-this="ngDialogData.arrival_date" 
                     readonly ng-class="{'not-selected': !ngDialogData.arrival_date}" />
             </div>
@@ -63,9 +64,9 @@
                     ng-disabled="ngDialogData.reservationStatusFlags.isUneditable"
                     class="datepicker" 
                     type="text" 
-                    ui-date="toDateOptions" 
-                    value="{{ngDialogData.departure_date|date:dateFormat}}" 
-                    rv-clear-text-box 
+                    ui-date-format
+                    ui-date="reservationToDateOptions"
+                    ng-model = "ngDialogData.departure_date"
                     listen-this="ngDialogData.departure_date" 
                     readonly ng-class="{'not-selected': !ngDialogData.departure_date}" />
             </div>
