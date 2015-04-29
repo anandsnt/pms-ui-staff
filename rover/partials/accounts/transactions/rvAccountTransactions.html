@@ -3,14 +3,14 @@
     <ul class="totals">
         <li>
             <div class="data">
-                <span class="label" translate>TOTAL_FEES</span>
-                <span class="value">{{currencySymbol}}{{transactionsDetails.total_fees}}</span>
+                <span class="label" translate>TOTAL_FEES</span> 
+                <span class="value">{{currencySymbol}}{{transactionsDetails.total_fees | number: precisonTwo}}</span>
             </div>
         </li>
         <li>
             <div class="data">
                 <span class="label" translate>TOTAL_BALANCE</span>
-                <span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}">{{currencySymbol}}{{transactionsDetails.total_balance}}</span> <!-- Green if 0, otherwise red -->
+                <span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}">{{currencySymbol}}{{transactionsDetails.total_balance | number: precisonTwo}}</span> <!-- Green if 0, otherwise red -->
             </div>
         </li>
         <li>
@@ -192,7 +192,7 @@
                                     </tr>
                                     <tr class="active edit">
                                         <td colspan="3" class="total-label">
-                                            {{'BALANCE' |translate}}({{'AS_OF' |translate}}{{billData.total_fees.fees_date | date:dateFormat}}):
+                                            {{'BALANCE' |translate}} ({{'AS_OF' |translate}} {{billData.total_fees.fees_date | date:dateFormat}}):
                                         </td>
                                         <td colspan="3" class="total-value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"> <!-- Green when 0, otherwise red -->
                                              <strong>{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</strong>
