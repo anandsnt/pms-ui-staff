@@ -32,13 +32,14 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 				"best_available_rate_amount"	: '',
 	            "single_rate"			: '',
 	            "double_rate"			: '',
-	            "extra_adult_rate"		: ''
+	            "extra_adult_rate"		: '',
+	            "rate_id": ''
 			};
 
 			//selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy ($scope.groupConfigData.summary.selected_room_types_and_rates);
 			
-			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount"];
+			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount", "rate_id"];
 			$scope.roomTypes = util.getListOfKeyValuesFromAnArray ($scope.selectedRoomTypeAndRates, wanted_keys);
 
 			//adding currency symbol to best available rate
@@ -76,6 +77,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 			var roomType = _.findWhere($scope.roomTypes, {"room_type_id": parseInt(row.room_type_id)});
 			if(roomType){
 				row.best_available_rate_amount = roomType.best_available_rate_amount;
+				row.rate_id = roomType.rate_id;
 			}
 			else{
 				row.best_available_rate_amount = "";
@@ -158,7 +160,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl',	[
 				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id != '');
 			});
 			//since selectedRoomTypeAndRates containst some unwanted keys
-			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate"];
+			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id"];
 			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray (selectedRoomTypeAndRates, wanted_keys);
 
 			var params = {

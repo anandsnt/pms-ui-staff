@@ -658,6 +658,12 @@
             li:not(.no-content) {
                 margin: 0;
 
+                .on-hold {
+                    h2, span, div {
+                        text-decoration: line-through;
+                    }
+                }
+
                 a,
                 .faux-anchor {
                     color: @textColor;
@@ -732,12 +738,14 @@
                             .calc-width(28, 20);
                             .pull-left;
 
-                            span {
-                                font-size: 15px;
-                                line-height: 20px;
-                                padding-left: 24px;
+                            span { 
+                                font-size: 14px;
+                                line-height: 18px;
+                                padding-left: 25px;
+                                .nowrap();
 
-                                &.highlight { padding-left: 0; }
+                                &.highlight,
+                                &.ui-match { padding-left: 0; }
                             }
                         }
 
@@ -776,25 +784,24 @@
                                 .size(50px, 40%);
                                 .pull-left;
                             }
+
+                            .room-number {
+                                .show;
+
+                                &.ready { color: @green; }
+                                &.not-ready { color: @red; }
+
+                                &.not-ready,
+                                &.room-red {
+                                    margin-top: -10px;
+                                    line-height: 1em;
+                                }
+                            }
                         }
 
                         &.accompany {
                             .data {
                                 h2 { color: @grey3; }
-                            }
-                        }
-
-                        &.guest-check-in {
-                            .room-number {
-
-                                &.ready { color: @green; }
-
-                                &.not-ready {
-                                    color: @red;
-                                    margin-top: -10px;
-                                    line-height: 1em;
-                                    .show;
-                                }
                             }
                         }
                     }
@@ -1401,11 +1408,6 @@
                         }
 
                         .picked { 
-                            strong { 
-                                font-size: 24px;
-                                margin-top: -4px;
-                            }
-
                             &.green { color: @green; }
                             &.red { color: @red; }
                         }
@@ -7288,6 +7290,98 @@
                     }
                 }
 
+                &.forecast-reports {
+                    table-layout: fixed;
+
+                    .red { color: @red; }
+
+                    thead {
+                        tr {
+                            th {
+                                padding: 0;
+                                vertical-align: top;
+                                line-height: 35px;
+
+                                span {
+                                    color: @white;
+                                    padding: 0 10px;
+                                    margin-right: 5px;
+                                    background-color: darken(@grey2, 10);
+                                    height: 35px;
+                                    .calc-width(100, 5);
+                                    .show;
+                                    .nowrap();
+                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3)); 
+                                }
+                            }
+
+                            &.top-row {
+                                [colspan] { 
+                                    font-size: 16px;
+                                    text-align: center;
+                                    color: @white;
+                                    background-color: @gcard; 
+                                    width: 30%;
+
+                                    &.break { width: 70%; }
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            &.weekend {
+                                td { 
+                                    color: @darkBlue;
+                                    background-color: rgba(0,0,0,.05); 
+
+                                    &.red { color: @red; }
+                                }
+                            }
+
+                            &.total {
+                                td { 
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    background-color: transparent;
+                                    vertical-align: top;
+                                    padding-top: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    .break { 
+                        position: relative;
+                        padding-right: 10px;
+
+                        span { 
+                            margin-right: 0;
+                            width: 100%;
+                        }
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            width: 10px;
+                            .extend-height(100, 10);
+                            .background(@white);
+                        }
+                    }
+
+                    .date { 
+                        width: 100px;
+                        
+                        span { 
+                            vertical-align: middle;
+                            .show;
+                        }
+                    }                
+                }
+
                 &.occupancy-footer { .hide; }
             }
 
@@ -9902,6 +9996,12 @@
             &.check-out { background: @red; }
 
             &.inhouse { background: @blue; }
+
+            &.on-hold {
+                h1, span {
+                    text-decoration: line-through;
+                }
+            }
         }
 
         .room-info {

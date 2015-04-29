@@ -30,9 +30,15 @@
                 <label for="group-email" translate>CONTACT_EMAIL</label>
                 <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" />
             </div>
-            <div class="entry break full-width">
+            <div class="entry break">
                 <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
             </div>
+            <!-- Hiding for now..will be functional once transactions billing info is ready -->
+           <!--  <div class="entry break">
+                <button type="button" class="button blue" ng-click ="openBillingInformation();">
+                		Billing Information
+            	</button>
+            </div> -->
         </div>
         <div class="holder right">
             <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
@@ -72,7 +78,7 @@
                     <strong>*</strong>
                 </label>
                 <div class="select">
-                    <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation>
+                    <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();">
                         <option value="" selected translate>SET_STATUS</option>
                         <option ng-repeat="holdstatus in groupConfigData.holdStatusList" value="{{holdstatus.id}}" ng-selected="holdstatus.id == groupConfigData.summary.hold_status">
                             {{holdstatus.name}}

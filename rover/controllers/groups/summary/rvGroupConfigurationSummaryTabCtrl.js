@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv) {
+sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv','RVReservationCardSrv',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv,RVReservationCardSrv){
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller("groupSummaryScroller");
@@ -11,8 +11,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			isDemographicsPopupOpen: false,
 			newNote: ""
 		}
+			$s = $scope;
 
 		var summaryMemento = {};
+		$scope.billingInfoModalOpened = false;
 
 		var initGroupSummaryView = function() {
 			// Have a handler to update the summary - IFF in edit mode
@@ -156,7 +158,27 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				showDemographicsPopup();
 			}
 
-		}
+		};
+		$scope.openBillingInformation = function(){
+			console.log($scope.accountConfigData.summary.posting_account_name);
+			$scope.attachedEntities = {};
+			$scope.attachedEntities.group_details = {};
+			$scope.attachedEntities.group_details.id = $scope.groupConfigData.summary.group_id;
+			$scope.attachedEntities.group_details.name = $scope.accountConfigData.summary.posting_account_name;
+			$scope.attachedEntities.group_details.logo = "GROUP_DEFAULT";
+			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
+
+			$scope.billingInfoModalOpened = true;
+			//$scope.isFromAccounts = true;
+			ngDialog.open({
+			    template: '/assets/partials/bill/rvBillingInformationPopup.html',
+			    controller: 'rvBillingInformationPopupCtrl',
+			    className: '',
+			    closeByDocument: true,
+			    scope: $scope
+			});
+
+		};
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {
@@ -195,7 +217,27 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.releaseRooms = function() {
-			//TODO : HANDLE RELEASE ROOMS
+			var onReleaseRoomsSuccess = function(data) {
+					//: Handle successful release
+					$scope.groupConfigData.summary.release_date = $rootScope.businessDate;
+					$scope.closeDialog();
+				},
+				onReleaseRoomsFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage
+				}
+			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, {
+				successCallBack: onReleaseRoomsSuccess,
+				failureCallBack: onReleaseRoomsFailure,
+				params: {
+					groupId: $scope.groupConfigData.summary.group_id
+				}
+			});
+		}
+
+		$scope.onHoldStatusChange = function() {
+			if(!$scope.isInAddMode()){
+				$scope.updateGroupSummary();	
+			}			
 		}
 
 		/**
@@ -365,5 +407,51 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 		initGroupSummaryView();
+
+		var getPassData = function(){
+			 var passData = {
+	 		"is_swiped": false ,
+	 		"details":{
+	 			"firstName":"",
+	 			"lastName":""
+	 			}
+	 		};
+	 		return passData;
+		};
+
+
+		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
+			$scope.billingInfoModalOpened = false;
+		});
+
+		/*
+		  *	MLI SWIPE actions
+		  */
+		var processSwipedData = function(swipedCardData){
+
+ 			var passData = getPassData();
+	 		var swipeOperationObj = new SwipeOperation();
+			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
+		};
+
+		/*
+		  * Handle swipe action in billing info
+		  */
+
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+
+			if($scope.billingInfoModalOpened){
+				var swipeOperationObj = new SwipeOperation();
+				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+				var tokenizeSuccessCallback = function(tokenValue){
+					$scope.$emit('hideLoader');
+					swipedCardData.token = tokenValue;
+					processSwipedData(swipedCardData);
+				};
+				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+			};
+		});
 	}
 ]);
