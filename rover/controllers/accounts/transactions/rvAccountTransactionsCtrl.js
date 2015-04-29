@@ -452,51 +452,78 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		/*----------- edit/remove/split ends here ---------------*/
 		//CICO-13903
-		
-		$scope.sendEmail = function(mailTo) {
-			console.log({
-				mailTo: mailTo
+
+		$scope.sendEmail = function(mailTo, billNumber) {
+			var mailSent = function(data) {
+					// Handle mail Sent Success
+					$scope.closeDialog();
+				},
+				mailFailed = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+					$scope.closeDialog();
+				}
+
+			var params = {
+				"bill_number": billNumber,
+				"to_address": mailTo,
+				"is_group": !!$scope.groupConfigData,
+			}
+
+			if (!!$scope.groupConfigData) {
+				params.group_id = $scope.groupConfigData.summary.group_id;
+			} else {
+				params.account_id = $scope.accountConfigData.summary.posting_account_id;
+			}
+
+			$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
+				successCallBack: mailSent,
+				failureCallBack: mailFailed,
+				params: params
 			});
+
 		}
 
-		$scope.mailInvoice = function(mailTo) {
-			if (($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) || !!mailTo) {
-				$scope.sendEmail(mailTo);
+		$scope.mailInvoice = function(billNumber) {
+			if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
+				$scope.sendEmail($scope.groupConfigData.summary.contact_email, billNumber);
 			} else {
 				ngDialog.open({
 					template: '/assets/partials/accounts/transactions/rvAccountInvoicePromptEmail.html',
 					className: '',
 					scope: $scope,
 					closeByDocument: false,
-					closeByEscape: false
+					closeByEscape: false,
+					data: JSON.stringify({
+						billNumber: billNumber
+					})
 				});
 			}
 		}
 
 		$scope.printInvoice = function() {
-			$('.nav-bar').addClass('no-print');
-			$('.cards-header').addClass('no-print');
-			$('.card-tabs-nav').addClass('no-print');
+				$('.nav-bar').addClass('no-print');
+				$('.cards-header').addClass('no-print');
+				$('.card-tabs-nav').addClass('no-print');
 
-			// this will show the popup with full report
-			$timeout(function() {
+				// this will show the popup with full report
+				$timeout(function() {
 
-				/*
-				 *	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
-				 */
+					/*
+					 *	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+					 */
 
-				$window.print();
-				if (sntapp.cordovaLoaded) {
-					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				};
+					$window.print();
+					if (sntapp.cordovaLoaded) {
+						cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+					};
 
-				$('.nav-bar').removeClass('no-print');
-				$('.cards-header').removeClass('no-print');
-				$('.card-tabs-nav').removeClass('no-print');
+					$('.nav-bar').removeClass('no-print');
+					$('.cards-header').removeClass('no-print');
+					$('.card-tabs-nav').removeClass('no-print');
 
-			}, 100);
-		}
-		//CICO-13903 End
+				}, 100);
+			}
+			//CICO-13903 End
 
 		initAccountTransactionsView();
 

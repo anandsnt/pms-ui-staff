@@ -97,5 +97,17 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				});
 			return deferred.promise;
 		}
+
+		this.emailInvoice = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/posting_accounts/email_bill_card';
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
 	}
 ]);
