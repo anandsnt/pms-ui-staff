@@ -138,10 +138,9 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 	};
 
 	this.fetchDefaultAccountRouting = function(params){
-		console.log(params);
 
 		var deferred = $q.defer();
-			var url = (params.entity_type != "") ?  
+			var url = (typeof params.entity_type !=="undefined" && params.entity_type != "") ?  
 			 '/api/default_account_routings/' + params.id+'?entity_type='+params.entity_type:
 			 '/api/default_account_routings/' + params.id;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
