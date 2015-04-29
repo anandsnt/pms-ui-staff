@@ -760,7 +760,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
              	if(toReservationOrAccount == "reservation"){
 					data.reservation_id = $scope.reservationData.reservation_id;
 				} else {
-					data.account_id = $scope.selectedEntity.id;
+					data.group_id = $scope.selectedEntity.id;
 				}
              	$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
             	//$scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
@@ -772,7 +772,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 							if(toReservationOrAccount == "reservation"){
 								data.reservation_id = $scope.reservationData.reservation_id;
 							} else {
-								data.account_id = $scope.selectedEntity.id;
+								data.group_id = $scope.selectedEntity.id;
 							}
 							
 							data.add_to_guest_card = false;
@@ -799,7 +799,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						if(toReservationOrAccount == "reservation"){
 							data.reservation_id = $scope.reservationData.reservation_id;
 						} else {
-							data.account_id = $scope.selectedEntity.id;
+							data.group_id = $scope.selectedEntity.id;
 						}
 						data.bill_number = $scope.getSelectedBillNumber();	
 						data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
@@ -814,7 +814,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						if(toReservationOrAccount == "reservation"){
 							data.reservation_id = $scope.reservationData.reservation_id;
 						} else {
-							data.account_id = $scope.selectedEntity.id;
+							data.group_id = $scope.selectedEntity.id;
 						}
 						data.payment_type = $scope.saveData.payment_type;
 						creditCardType = (!$scope.cardData.tokenDetails.isSixPayment)? 
@@ -840,7 +840,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						if(toReservationOrAccount == "reservation"){
 							data.reservation_id = $scope.reservationData.reservation_id;
 						} else {
-							data.account_id = $scope.selectedEntity.id;
+							data.group_id = $scope.selectedEntity.id;
 						}
                     data.bill_number = $scope.getSelectedBillNumber();
 					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
