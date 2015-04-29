@@ -622,7 +622,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	        	$scope.billingEntity === "GROUP_DEFAULT_BILLING"){
 
 	        	if($scope.billingEntity === "GROUP_DEFAULT_BILLING"){
-					$scope.selectedEntity.account_type="POSTING_ACCOUNT";
+					$scope.selectedEntity.account_type="GROUP";
 	        	}
 	            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, $scope.selectedEntity, defaultRoutingSaveSuccess);
 	        }else {
