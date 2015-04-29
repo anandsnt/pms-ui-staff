@@ -423,14 +423,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * to get the total picked up count
          * will be minusing the reservation with CANCELED, NO SHOW status reservations
          * and will return the total count after that
-         * @return {integer} 
+         * @return {integer}
          */
         $scope.getTotalPickedUpCount = function() {
             //list of invalid reservation statuses
             var inValidReservationStatus = ["CANCELED", "NOSHOW"];
-            
+
             //we are forming invalid reservation list
-            var inValidReservations = _.filter ($scope.reservations, function(reservation) {
+            var inValidReservations = _.filter($scope.reservations, function(reservation) {
                 return (inValidReservationStatus.indexOf(reservation.reservation_status) >= 0);
             });
             return ($scope.reservations.length - inValidReservations.length);
@@ -658,6 +658,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             runDigestCycle();
         };
 
+        var reservationFromDateChoosed = function(date, datePickerObj) {
+            runDigestCycle();
+        }
+
+        var reservationToDateChoosed = function(date, datePickerObj) {
+            runDigestCycle();
+        }
+
         /**
          * utility function to set datepicker options
          * return - None
@@ -672,6 +680,26 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 numberOfMonths: 1,
             };
 
+            var commonDateOptionsForRelease = _.extend({
+                beforeShow: function(input, inst) {
+                    $('#ui-datepicker-div').addClass('reservation hide-arrow');
+                    $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+
+                    setTimeout(function() {
+                        $('body').find('#ui-datepicker-overlay')
+                            .on('click', function() {
+                                console.log('hey clicked');
+                                $('#room-out-from').blur();
+                                $('#room-out-to').blur();
+                            });
+                    }, 100);
+                },
+                onClose: function(value) {
+                    $('#ui-datepicker-div').removeClass('reservation hide-arrow');
+                    $('#ui-datepicker-overlay').off('click').remove();
+                }
+            }, commonDateOptions);
+
             //date picker options - From
             $scope.fromDateOptions = _.extend({
                 minDate: new tzIndependentDate(refData.block_from),
@@ -685,6 +713,21 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: toDateChoosed
             }, commonDateOptions);
+
+
+            //date picker options - From
+            $scope.reservationFromDateOptions = _.extend({
+                minDate: new tzIndependentDate(refData.block_from),
+                maxDate: new tzIndependentDate(refData.block_to),
+                onSelect: reservationFromDateChoosed
+            }, commonDateOptionsForRelease);
+
+            //date picker options - Departute
+            $scope.reservationToDateOptions = _.extend({
+                minDate: new tzIndependentDate(refData.block_from),
+                maxDate: new tzIndependentDate(refData.block_to),
+                onSelect: reservationToDateChoosed
+            }, commonDateOptionsForRelease);
 
             //default from date, as per CICO-13900 it will be block_from date       
             $scope.fromDate = $filter('date')(tzIndependentDate(refData.block_from),
@@ -790,8 +833,11 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * Function to edit a reservation from the rooming list
          */
         $scope.showEditReservationPopup = function(reservation) {
-            var reservationData = angular.copy(reservation);
+            reservationData = angular.copy(reservation);
             reservationData.reservationStatusFlags = getReservationStatusFlags(reservation);
+            reservationData.arrival_date = new tzIndependentDate(reservationData.arrival_date);
+            reservationData.departure_date = new tzIndependentDate(reservationData.departure_date);
+
             ngDialog.open({
                 template: '/assets/partials/groups/rooming/rvGroupEditRoomingListItem.html',
                 className: '',
@@ -812,6 +858,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 return false;
             } else {
                 reservation.group_id = $scope.groupConfigData.summary.group_id;
+                reservation.arrival_date = $filter('date')(tzIndependentDate(reservation.arrival_date), 'yyyy-MM-dd');
+                reservation.departure_date = $filter('date')(tzIndependentDate(reservation.departure_date), 'yyyy-MM-dd');
 
                 var onUpdateReservationSuccess = function(data) {
                         //calling initially required APIs

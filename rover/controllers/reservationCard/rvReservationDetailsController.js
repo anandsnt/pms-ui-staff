@@ -18,7 +18,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				title: 'GROUP DETAILS',
 				name: 'rover.groups.config',
 				param: {
-					id: "42777", 
+					id: $scope.previousStateParams.id, 
 					activeTab: "ROOMING"
 				},
 			};
