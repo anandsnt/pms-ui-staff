@@ -6836,6 +6836,19 @@
                             font-weight: 400;
                         }
                     }
+
+                    &.totals {
+                        td {
+                            padding: 10px;
+                            background: rgba(0,0,0,.05);
+                            color: @textColor;
+                            font-size: 16px;
+                            line-height: 1em;
+                            font-weight: 600;
+
+                            &:last-child { text-align: left; }
+                        }
+                    }
                 }
 
                 tfoot {
@@ -6874,6 +6887,13 @@
                     tr {
                         th { padding: 0 5px; }
                         td { padding: 10px 5px; }
+
+                        &.totals {
+                            td {
+                                padding: 10px 5px;
+                                font-size: 14px;
+                            }
+                        }
                     }
 
                     tfoot {
