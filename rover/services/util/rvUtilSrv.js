@@ -146,4 +146,18 @@ sntRover.service('rvUtilSrv', [function(){
     		if (self.isNumeric (string)) { return parseFloat (string)};
     		return withWhatToBeReplacedifNotANumber;
     	};
+
+    	/**
+    	 * to get date string from a date picker object
+    	 * @param  {Object} date_picker_object
+    	 * @param  {String} seperator   default will be /
+    	 * @return {String}             date string
+    	 */
+    	this.get_date_from_date_picker = function (date_picker, seperator){
+    		if (typeof seperator === "undefined") { 
+    			seperator = "/";
+    		}
+    		return (date_picker.selectedYear + seperator + (date_picker.selectedMonth + 1) + seperator 
+    				+ date_picker.selectedDay);
+    	};
 }]);
