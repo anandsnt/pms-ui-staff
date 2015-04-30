@@ -91,6 +91,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				addons: {},
 				selectedAddons: []
 			};
+			$timeout(function() {
+				$scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
+			}, 500);
+
 
 			$scope.accountConfigData = {
 				summary: summaryData.accountSummary
@@ -217,20 +221,24 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		/**
 		 * Update the group data
-		 * @return undefined
+		 * @return boolean
 		 */
 		$scope.updateGroupSummary = function() {
+
 			if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
+				if (angular.equals($scope.groupSummaryMemento, $scope.groupConfigData.summary)) {
+					return false;
+				}
 				var onGroupUpdateSuccess = function(data) {
 						//client controllers should get an infromation whether updation was success
 						$scope.$broadcast("UPDATED_GROUP_INFO");
-						console.log(data);
+						$scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
+						return true;
 					},
 					onGroupUpdateFailure = function(errorMessage) {
 						//client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO");
-
-						console.log(errorMessage);
+						return false;
 					};
 
 				$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
@@ -364,11 +372,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		}
 
 		$scope.updateAndBack = function() {
-			if($scope.groupConfigData.activeTab == "SUMMARY"){
-				$scope.updateGroupSummary();	
-			}else if($scope.groupConfigData.activeTab == "ACCOUNT"){
+			if ($scope.groupConfigData.activeTab == "SUMMARY") {
+				$scope.updateGroupSummary();
+			} else if ($scope.groupConfigData.activeTab == "ACCOUNT") {
 				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
-			}			
+			}
 			$state.go('rover.groups.search');
 		}
 

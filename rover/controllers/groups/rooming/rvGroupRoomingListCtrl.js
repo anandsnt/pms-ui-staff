@@ -157,12 +157,34 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * to switch to rooming list tab
+         * @return {undefined} [description]
+         */
+        $scope.gotoRoomBlockTab = function () {
+            $scope.closeDialog ();
+            $scope.switchTabTo ('ROOM_BLOCK');
+        };
+
+        /**
+         * Method to show No Room Types Attached PopUp
+         * @return undefined
+         */
+        var showNoRoomTypesAttachedPopUp = function(argument) {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/rvGroupRoomingNoRoomTypeAttachedPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };            
+
+        /**
          * [successCallBackOfFetchRoomBlockGridDetails description]
          * @param  {[type]} data [description]
          * @return {[type]}      [description]
          */
         var successCallBackOfFetchRoomingDetails = function(data) {
-
             //if we dont have any data in our hand
             if ($scope.roomTypesAndData.length === 0) {
                 //adding available room count over the data we got
@@ -173,6 +195,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
                 //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
                 $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
+
             }
             //if we have any data in our hand, just updating the available room count
             else {
@@ -199,7 +222,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             });
 
             //total result count
-            $scope.totalResultCount = data.total_count;
+            $scope.totalResultCount += (data.results.length);
+
+            //pickup
+            $scope.totalPickUpCount = data.total_pickup_count;
 
             //we changed data, so
             refreshScrollers();
@@ -213,6 +239,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.addReservations = function() {
+            //if there is no room type attached, we have to show some message
+            if ($scope.roomTypesAndData.length == 0) {
+                return showNoRoomTypesAttachedPopUp ();
+            }   
+
+            //wiping the weepy
+            $scope.errorMessage = '';
+
             //API params
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
@@ -286,6 +320,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //total result count
             $scope.totalResultCount = 0;
+
+            //total pick up count
+            $scope.totalPickUpCount = 0;
 
             //some default selected values
             $scope.numberOfRooms = '1';
@@ -391,22 +428,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.page = 1;
         };
 
-        /**
-         * to get the total picked up count
-         * will be minusing the reservation with CANCELED, NO SHOW status reservations
-         * and will return the total count after that
-         * @return {integer}
-         */
-        $scope.getTotalPickedUpCount = function() {
-            //list of invalid reservation statuses
-            var inValidReservationStatus = ["CANCELED", "NOSHOW"];
-
-            //we are forming invalid reservation list
-            var inValidReservations = _.filter($scope.reservations, function(reservation) {
-                return (inValidReservationStatus.indexOf(reservation.reservation_status) >= 0);
-            });
-            return ($scope.reservations.length - inValidReservations.length);
-        };
 
         /**
          * to add or remove from selected reservation
@@ -510,14 +531,24 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 room_type_id: parseInt($scope.selectedRoomType)
             });
 
+            var isValidSelectedRoomType = (typeof selectedRoomType !== "undefined");
+
             //forming [1,2,3,4]
-            $scope.possibleNumberOfRooms = _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1);
+            $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1) : [];
+
+            //we are unselecting the selected occupancy incase of invalid roomt type
+            if (!isValidSelectedRoomType) {
+                $scope.selectedOccupancy = '-1';
+            }
 
             //changing the default selected number of rooms
+            if (typeof $scope.numberOfRooms === "undefined" && $scope.possibleNumberOfRooms.length > 0) {
+               $scope.numberOfRooms = $scope.possibleNumberOfRooms[0]; 
+            }
+
             if (_.max($scope.possibleNumberOfRooms) < $scope.numberOfRooms) {
                 $scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
             }
-
         };
 
         /**
@@ -530,6 +561,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //total result count
             $scope.totalResultCount = data.total_count;
+
+            //pickup
+            $scope.totalPickUpCount = data.total_pickup_count;
+
             //if pagination end is undefined
             if ($scope.end == undefined) {
                 $scope.end = $scope.reservations.length;
@@ -731,6 +766,13 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var successFetchOfAllReqdForRoomingList = function(data) {
             $scope.closeDialog();
             $scope.$emit('hideLoader');
+
+            //if there is no room type attached, we have to show some message
+            if ($scope.roomTypesAndData.length == 0) {
+                $timeout(function(){
+                    showNoRoomTypesAttachedPopUp ();
+                }, 800);
+            }            
         };
 
         /**
