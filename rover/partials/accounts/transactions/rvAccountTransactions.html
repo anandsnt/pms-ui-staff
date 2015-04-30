@@ -3,14 +3,14 @@
     <ul class="totals">
         <li>
             <div class="data">
-                <span class="label" translate>TOTAL_FEES</span>
-                <span class="value">{{currencySymbol}}{{transactionsDetails.total_fees}}</span>
+                <span class="label" translate>TOTAL_FEES</span> 
+                <span class="value">{{currencySymbol}}{{transactionsDetails.total_fees | number: precisonTwo}}</span>
             </div>
         </li>
         <li>
             <div class="data">
                 <span class="label" translate>TOTAL_BALANCE</span>
-                <span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}">{{currencySymbol}}{{transactionsDetails.total_balance}}</span> <!-- Green if 0, otherwise red -->
+                <span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}">{{currencySymbol}}{{transactionsDetails.total_balance | number: precisonTwo}}</span> <!-- Green if 0, otherwise red -->
             </div>
         </li>
         <li>
@@ -32,11 +32,11 @@
 
     <div class="registration-content scrollable" ng-iscroll="registration-content">
         <div class="wrapper">
-            <div class="registration-summary">
+            <div class="registration-summary" id ="registration-summary">
 
                 <!-- Bills Nav-->
                 <div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
-                	<ul class="wrapper" style="width{Outer lenght of all li items}px">
+                	<ul class="wrapper" style="width:{{getWidthForBillTabsScroll();}}px;">
                         <li ng-class="showActiveBill($index)" ng-click="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
                             <a class="bill-toggle">
                                 <div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
@@ -192,7 +192,7 @@
                                     </tr>
                                     <tr class="active edit">
                                         <td colspan="3" class="total-label">
-                                            {{'BALANCE' |translate}}({{'AS_OF' |translate}}{{billData.total_fees.fees_date | date:dateFormat}}):
+                                            {{'BALANCE' |translate}} ({{'AS_OF' |translate}} {{billData.total_fees.fees_date | date:dateFormat}}):
                                         </td>
                                         <td colspan="3" class="total-value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"> <!-- Green when 0, otherwise red -->
                                              <strong>{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</strong>
@@ -238,7 +238,7 @@
                                         </td>
                                         <td ng-show="showMoveCharges">
                                             <div class="select">
-                                                <select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue">
+                                                <select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue" iscroll-stop-propagation>
                                                     <option value="" disabled>Move to bill</option>
                                                     <option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
                                                     <option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
