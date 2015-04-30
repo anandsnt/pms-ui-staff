@@ -38,9 +38,11 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab === "TRANSACTIONS");
 
+			$scope.invoiceDate = $rootScope.businessDate;
+
 		};
 
-		
+
 
 		var getTransactionDetails = function() {
 
@@ -149,7 +151,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			width =  133 * $scope.reservationBillData.bills.length + 10 + width;
 			return width;*/
 			var width = 0;
-			if($scope.transactionsDetails !== undefined){
+			if ($scope.transactionsDetails !== undefined) {
 				var width = $('#registration-summary ul li').width() * $scope.transactionsDetails.bills.length;
 			}
 			return width;
