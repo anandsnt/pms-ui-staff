@@ -150,7 +150,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			return width;*/
 			var width = 0;
 			if($scope.transactionsDetails !== undefined){
-				var width = $('#registration-summary ul li').width() * $scope.transactionsDetails.bills.length;
+				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
 			}
 			return width;
 
