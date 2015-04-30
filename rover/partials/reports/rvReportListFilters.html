@@ -227,19 +227,8 @@
     <input type="text" class="hidden" ng-model="item.chosenIncludeComapnyTaGroup">
 </div>
 
-<!-- <div class="options" ng-if="item.hasGuaranteeType && item.guaranteeTypes.length">
-    <label>Guarantee Type</label>
-    <div class="faux-select placeholder" ng-click="guranteeTypeClicked($event, item)">{{ item.guaranteeTitle }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !item.selectGuaranteeOpen }" ng-click="fauxOptionClicked($event, item)">
-        <label class="checkbox inline" ng-repeat="each in item.guaranteeTypes">
-            <span class="icon-form icon-checkbox" ng-class="{'checked': each.selected}"></span>
-            <input type="checkbox" ng-model="each.selected" ng-change="fauxGuaranteeOptionClicked(item)">
-            {{ each.name }}
-        </label>
-    </div>
-</div>
- --><div class="options long-list" ng-if="item.hasGuaranteeType" ng-click="catchFauxSelectClick($event, 'hasGuaranteeType')">
-    <label for="report-options">Charge Group(s)</label>
+<div class="options long-list" ng-if="item.hasGuaranteeType" ng-click="catchFauxSelectClick($event, 'hasGuaranteeType')">
+    <label for="report-options">Guarantee Type(s)</label>
     <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasGuaranteeType)">{{ item.hasGuaranteeType.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGuaranteeType.show }">
         <label class="checkbox inline" ng-show="item.hasGuaranteeType.data.length > 1">
