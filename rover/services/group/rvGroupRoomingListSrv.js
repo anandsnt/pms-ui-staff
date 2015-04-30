@@ -91,5 +91,48 @@ sntRover.service('rvGroupRoomingListSrv',
 			);
 
 			return deferred.promise;
-		};		
+		};	
+
+		/**
+		 * Function to check if default charge routing is present or not
+		 * @return {Promise} [will get the details]
+		 */
+		this.checkDefaultChargeRoutings = function(params) {
+			var deferred = $q.defer(),
+				group_id = params.id,
+				url = '/api/groups/'+group_id+'/check_default_charge_routings';
+
+			rvBaseWebSrvV2.getJSON(url).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};	
+
+		/**
+		 * Function to attach BillingInfo to Reservations
+		 * @return {Promise} [will get the details]
+		 */
+		this.attachBillingInfoToReservations = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/default_account_routings/attach_reservation';
+
+			rvBaseWebSrvV2.postJSON(url,params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};	
+
+			
 	}]);

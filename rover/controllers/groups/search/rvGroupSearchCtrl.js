@@ -104,6 +104,8 @@ sntRover.controller('rvGroupSearchCtrl', [
          */
         $scope.clearFromDate = function() {
             $scope.fromDate = '';
+            $scope.fromDateForAPI = '';
+
             runDigestCycle();
 
             //we have to search on changing the from date
@@ -116,6 +118,8 @@ sntRover.controller('rvGroupSearchCtrl', [
          */
         $scope.clearToDate = function() {
             $scope.toDate = '';
+            $scope.toDateForAPI = '';
+
             runDigestCycle();
 
             //we have to search on changing the from date
@@ -160,7 +164,9 @@ sntRover.controller('rvGroupSearchCtrl', [
          * return - None
          */
         var fromDateChoosed = function(date, datePickerObj) {
-            $scope.fromDate = $filter('date')(date, $rootScope.dateFormat);
+            $scope.fromDate = date;
+            $scope.fromDateForAPI = tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
             runDigestCycle();
 
             //we have to search on changing the from date
@@ -173,7 +179,9 @@ sntRover.controller('rvGroupSearchCtrl', [
          * return - None
          */
         var toDateChoosed = function(date, datePickerObj) {
-            $scope.toDate = $filter('date')(date, $rootScope.dateFormat);
+            $scope.toDate = date;
+            $scope.toDateForAPI = tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
             runDigestCycle();
 
             //we have to search on changing the to date
@@ -232,8 +240,8 @@ sntRover.controller('rvGroupSearchCtrl', [
         var formGroupSearchParams = function() {
             var params = {
                 query: $scope.query,
-                from_date: $scope.fromDate,
-                to_date: $scope.toDate,
+                from_date: $scope.fromDateForAPI !== '' ? $filter('date')($scope.fromDateForAPI, $rootScope.dateFormatForAPI) : '',
+                to_date: $scope.toDateForAPI !== '' ? $filter('date')($scope.toDateForAPI, $rootScope.dateFormatForAPI) : '',
                 per_page: $scope.perPage,
                 page: $scope.page
             };
@@ -306,9 +314,11 @@ sntRover.controller('rvGroupSearchCtrl', [
             //default from date, as per CICO-13899 it will be business date	        
             $scope.fromDate = $filter('date')(tzIndependentDate(businessDate.business_date),
                 $rootScope.dateFormat);
+            $scope.fromDateForAPI = tzIndependentDate(businessDate.business_date);
 
-            //default to date, as per CICO-13899 it will be business date	
+            //default to date, as per CICO-13899 it will be blank
             $scope.toDate = '';
+            $scope.toDateForAPI = '';
         };
 
         /**
