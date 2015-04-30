@@ -85,7 +85,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DEPARTURE'):
 				case reportUtils.getName('ARRIVAL'):
 				case reportUtils.getName('DEPOSIT_REPORT'):
-				case reportUtils.getName('ROOMS_QUEUED'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
@@ -186,7 +185,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('ROOMS_QUEUED'):
 					$scope.leftColSpan = 3;
-					$scope.rightColSpan = 2;
+					$scope.rightColSpan = 3;
 					break;
 
 				case reportUtils.getName('FORECAST_BY_DATE'):
