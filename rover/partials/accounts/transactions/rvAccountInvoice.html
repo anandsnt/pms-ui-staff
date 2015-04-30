@@ -23,13 +23,15 @@
             <td>{{accountConfigData.summary.posting_account_name}}</td>
         </tr>
         <tr>
-            <th ng-if="!!groupConfigData">Company</th>
-            <th ng-if="!!groupConfigData">Travel Agent</th>
+            <th>Company</th>
+            <th>Travel Agent</th>
             <th>Invoice No.</th>
         </tr>
         <tr>
             <td ng-if="!!groupConfigData">{{groupConfigData.summary.company.name}}</td>
             <td ng-if="!!groupConfigData">{{groupConfigData.summary.travel_agent.name}}</td>
+            <td ng-if="!groupConfigData">{{accountConfigData.summary.company.name}}</td>
+            <td ng-if="!groupConfigData">{{accountConfigData.summary.travel_agent.name}}</td>
             <td>{{billData.bill_number}}</td>
         </tr>
     </tbody>
