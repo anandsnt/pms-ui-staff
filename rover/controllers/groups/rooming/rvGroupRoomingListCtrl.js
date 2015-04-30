@@ -251,8 +251,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 room_type_id: $scope.selectedRoomType,
-                from_date: $scope.fromDate,
-                to_date: $scope.toDate,
+                from_date: $scope.fromDate !== '' ? $filter('date')($scope.fromDate, $rootScope.dateFormatForAPI) : '',
+                to_date: $scope.toDate !== '' ? $filter('date')($scope.toDate, $rootScope.dateFormatForAPI) : '',
                 occupancy: $scope.selectedOccupancy,
                 no_of_reservations: $scope.numberOfRooms
             };
@@ -629,7 +629,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * return - None
          */
         var fromDateChoosed = function(date, datePickerObj) {
-            $scope.fromDate = date;
+            $scope.fromDate = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
 
             // we will clear end date if chosen start date is greater than end date
             if ($scope.fromDate > $scope.toDate) {
@@ -645,7 +645,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * return - None
          */
         var toDateChoosed = function(date, datePickerObj) {
-            $scope.toDate = date;
+            $scope.toDate = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
 
             // we will clear end date if chosen start date is greater than end date
             if ($scope.fromDate > $scope.toDate) {
@@ -727,12 +727,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             }, commonDateOptionsForRelease);
 
             //default from date, as per CICO-13900 it will be block_from date       
-            $scope.fromDate = $filter('date')(tzIndependentDate(refData.block_from),
-                $rootScope.dateFormat);
+            $scope.fromDate = refData.block_from;
 
             //default to date, as per CICO-13900 it will be block_to date    
-            $scope.toDate = $filter('date')(tzIndependentDate(refData.block_to),
-                $rootScope.dateFormat);
+            $scope.toDate = refData.block_to;
         };
 
         /**

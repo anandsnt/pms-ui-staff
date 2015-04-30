@@ -101,6 +101,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+			
+			if (!$scope.isInAddMode()) {
+				$scope.groupConfigData.summary.block_from = new tzIndependentDate($scope.groupConfigData.summary.block_from);
+				$scope.groupConfigData.summary.block_to = new tzIndependentDate($scope.groupConfigData.summary.block_to);
+			}
+			
 		};
 
 		/**
@@ -237,15 +243,18 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					},
 					onGroupUpdateFailure = function(errorMessage) {
 						//client controllers should get an infromation whether updation was a failure
-						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO");
+						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", errorMessage);
 						return false;
 					};
 
+				var summaryData = _.extend({}, $scope.groupConfigData.summary);
+				summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
+				summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
 				$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
 					successCallBack: onGroupUpdateSuccess,
 					failureCallBack: onGroupUpdateFailure,
 					params: {
-						summary: $scope.groupConfigData.summary
+						summary: summaryData
 					}
 				});
 			} else {

@@ -55,8 +55,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		var startDateOrEndDateIsEmpty = function() {
-			var isStartDateIsEmpty = $scope.isEmpty($scope.startDate);
-			var isEndDateIsEmpty = $scope.isEmpty($scope.endDate);
+			var isStartDateIsEmpty = $scope.isEmpty($scope.startDate.toString());
+			var isEndDateIsEmpty = $scope.isEmpty($scope.endDate.toString());
 			return (isEndDateIsEmpty && isEndDateIsEmpty);
 		};
 
@@ -364,7 +364,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * return - None
 		 */
 		var onStartDatePicked = function(date, datePickerObj) {
-			$scope.startDate = date;
+			$scope.startDate = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
 
 			// we will clear end date if chosen start date is greater than end date
 			if ($scope.startDate > $scope.endDate) {
@@ -385,7 +385,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * return - None
 		 */
 		var onEndDatePicked = function(date, datePickerObj) {
-			$scope.endDate = date;
+			$scope.endDate = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
 
 			//we have to show create button 
 			//$scope.createButtonClicked = false;
@@ -410,12 +410,12 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var refData = $scope.groupConfigData.summary;
 
 			//if from date is not null from summary screen, we are setting it as busines date
-			if (!$scope.isEmpty(refData.block_from)) {
+			if (!$scope.isEmpty(refData.block_from.toString())) {
 				$scope.startDate = refData.block_from;
 			}
 
 			//if to date is null from summary screen, we are setting it from date
-			if (!$scope.isEmpty(refData.block_to)) {
+			if (!$scope.isEmpty(refData.block_to.toString())) {
 				$scope.endDate = refData.block_to;
 			}
 
@@ -782,6 +782,13 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			if ($scope.hasBlockDataUpdated){
 				$scope.fetchRoomBlockGridDetails();
 			}
+		});
+
+		/**
+		 * when failed to update data		 
+		 */
+		$scope.$on("FAILED_TO_UPDATE_GROUP_INFO", function(event, errorMessage){
+			$scope.errorMessage = errorMessage;
 		});
 
 		/**

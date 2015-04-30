@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv','RVReservationCardSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv,RVReservationCardSrv){
+sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv','RVReservationCardSrv', 'rvUtilSrv',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv,RVReservationCardSrv, util){
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller("groupSummaryScroller");
@@ -54,7 +54,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$('#ui-datepicker-overlay').remove();
 			},
 			onSelect: function(date, datePickerObj) {
-				$scope.groupConfigData.summary.block_from = date;
+				$scope.groupConfigData.summary.block_from = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
 				if ($scope.groupConfigData.summary.release_date.trim() == '') {
 					$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
 				}
@@ -84,7 +84,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$('#ui-datepicker-overlay').remove();
 			},
 			onSelect: function(date, datePickerObj) {
-				$scope.groupConfigData.summary.block_to = date;
+				$scope.groupConfigData.summary.block_to = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
 
 				//we are in outside of angular world
 				runDigestCycle();
@@ -104,7 +104,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$('#ui-datepicker-overlay').remove();
 			},
 			onSelect: function(date, datePickerObj) {
-				$scope.groupConfigData.summary.release_date = date;
+				$scope.groupConfigData.summary.release_date = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
 
 				//we are in outside of angular world
 				runDigestCycle();
