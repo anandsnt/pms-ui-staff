@@ -219,7 +219,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var attachBillingInfoToReservations = function() {
             
             // we need to attach billing info of group to all the  corresponding reservations
-            var reservationIds = _.pluck($scope.reservations, "id")
+            var reservationIds = _.pluck($scope.newReservations, "id")
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 reservation_ids :reservationIds
@@ -269,7 +269,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
+             $scope.newReservations = [];
             _.each(data.results, function(reservation) {
+                $scope.newReservations.push(reservation);
                 $scope.reservations.push(reservation);
             });
 
