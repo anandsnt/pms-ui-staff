@@ -38,9 +38,11 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab === "TRANSACTIONS");
 
+			$scope.invoiceDate = $rootScope.businessDate;
+
 		};
 
-		
+
 
 		var getTransactionDetails = function() {
 
@@ -148,7 +150,12 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				width = width + 50;
 			width =  133 * $scope.reservationBillData.bills.length + 10 + width;
 			return width;*/
-			return 2200;
+			var width = 0;
+			if ($scope.transactionsDetails !== undefined) {
+				var width = $('#registration-summary ul li').width() * $scope.transactionsDetails.bills.length;
+			}
+			return width;
+
 		};
 
 
@@ -159,6 +166,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			} else {
 				$scope.dayRates = -1;
 			}
+			$scope.refreshScroller('registration-content');
+
 		};
 
 		$scope.showActiveBill = function(index) {
@@ -176,8 +185,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		 * @param {int} index of bill
 		 */
 		$scope.setActiveBill = function(billIndex) {
-
 			$scope.currentActiveBill = billIndex;
+			$scope.refreshScroller('registration-content');
 		};
 
 
