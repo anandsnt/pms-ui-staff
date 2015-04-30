@@ -151,8 +151,8 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			width =  133 * $scope.reservationBillData.bills.length + 10 + width;
 			return width;*/
 			var width = 0;
-			if ($scope.transactionsDetails !== undefined) {
-				var width = $('#registration-summary ul li').width() * $scope.transactionsDetails.bills.length;
+			if($scope.transactionsDetails !== undefined){
+				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
 			}
 			return width;
 
