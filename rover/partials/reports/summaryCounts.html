@@ -36,3 +36,10 @@
     <li>MTD<span>{{ summaryCounts.grand_total_mtd | currency:currencySymbol:2 }}</span></li>
     <li>YTD<span>{{ summaryCounts.grand_total_ytd | currency:currencySymbol:2 }}</span></li>
 </ul>
+
+<!-- Reservations By User -->
+<ul ng-if="isThisReport('ROOMS_QUEUED')" class="totals">
+    <li>User<span>{{ summaryCounts.total_users }}</span></li>
+    <li>New<span>{{ summaryCounts.total_new }}</span></li>
+    <li>Cancel<span>{{ summaryCounts.total_cancel }}</span></li>
+</ul>

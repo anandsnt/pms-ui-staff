@@ -118,7 +118,7 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-upsell';
                     break;
 
-                case __reportNames['UPSWEB_CHECK_OUT_CONVERSIONELL']:
+                case __reportNames['WEB_CHECK_OUT_CONVERSION']:
                     reportItem['reportIconCls'] = 'icon-report icon-check-out';
                     break;
 
