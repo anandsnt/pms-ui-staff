@@ -38,9 +38,11 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 			$scope.isFromGroups = (typeof $scope.groupConfigData !== "undefined" && $scope.groupConfigData.activeTab === "TRANSACTIONS");
 
+			$scope.invoiceDate = $rootScope.businessDate;
+
 		};
 
-		
+
 
 		var getTransactionDetails = function() {
 

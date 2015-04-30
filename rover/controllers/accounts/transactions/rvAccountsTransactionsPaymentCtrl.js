@@ -251,7 +251,13 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 								$scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount : zeroAmount;
 			$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 			$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+			if($scope.renderData.defaultPaymentAmount < 0){					
+					$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+					$scope.shouldShowMakePaymentButton = false;
+			} else {
 
+					$scope.shouldShowMakePaymentButton = true;
+			};
 		};
 		/*
 		* Action - On bill selection 
