@@ -669,6 +669,19 @@ thead tr th {
          -webkit-border-radius: 3px;
         -moz-border-radius: 3px;   
       }
+      &:weekend {
+        content: ' ';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        bottom: 3px;
+        z-index: 0; //-100; /*Fix for disappearing date header*/
+        border-radius: 3px;
+        background: rgba(175,208,238,0.5);
+         -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;  
+      }
 
       &:after {
         content: ' ';
@@ -1734,4 +1747,10 @@ padding-top: 80px;
     overflow: hidden;
 }
 
-
+.weekend_day{
+  background: rgba(175,208,238,0.5);
+  padding: 3px 5px;
+  margin: -3px -5px;
+  line-height: 1.7;
+  border-radius: 3px;
+}

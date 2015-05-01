@@ -43,7 +43,7 @@
     <table class="rate-calendar" style="width:{{uiOptions.tableWidth}}px;">
         <thead>
             <tr class="cell">
-                <th ng-repeat="date in calendarData.dates track by $index" 
+                <th ng-repeat="date in calendarData.dates track by $index" ng-class="date.isWeekend ? 'weekend_day' : ''"
                     style="width:{{uiOptions.columnWidth}}px;"> 
                     <div ng-if="!isHistoryDate(date)" class="date-header">
                         <span class="week-day">{{date| date:'EEEE'}}</span>
@@ -60,7 +60,7 @@
         <tbody>
             <tr ng-if="calendarData.data.length > 1">
 
-                <td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" >
+                <td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" ng-class="date.isWeekend ? 'weekend_day' : ''">
                     <div class="cell-container" >
                         <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
                             <div>
@@ -121,7 +121,7 @@
 
             <tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
 
-                <td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" >
+                <td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" ng-class="date.isWeekend ? 'weekend_day' : ''">
                     <div class="cell-container" >
                         <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
                             <div>
@@ -185,7 +185,7 @@
         <thead>
             <tr class="cell">
                 <th ng-repeat="date in calendarData.dates track by $index" 
-                    style="width:{{uiOptions.columnWidth}}px;"> 
+                    style="width:{{uiOptions.columnWidth}}px;" ng-class="date.isWeekend ? 'weekend_day' : ''"> 
                     <div ng-if="!isHistoryDate(date)" class="date-header">
                         <span class="week-day">{{date| date:'EEEE'}}</span>
                         <span>{{date| date:'MMMM dd'}}</span>
@@ -201,7 +201,7 @@
         <tbody>
             <tr ng-if="calendarData.data.length > 1">
 
-                <td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" >
+                <td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" ng-class="date.isWeekend ? 'weekend_day' : ''">
                     <div class="cell-container" >
                         <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
                             <div>
@@ -262,7 +262,7 @@
 
             <tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
 
-                <td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" >
+                <td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" ng-class="date.isWeekend ? 'weekend_day' : ''">
                     <div class="cell-container" >
                         <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
                             <div>
