@@ -15,6 +15,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
     * Note: If a subscope requires another iScroll, this approach may not work.
     */
    $scope.$parent.myScroll =[];
+   $scope.isWeekend = function(date){
+       //get the 'day' format, sat/sun and return true if its considered a weekend
+       var day = new Date(date).getDay();
+       //sat=5, sun=6
+       if (day === 6 || day === 5){
+           return true;
+       } else {
+           return false;
+       }
+   };
 
    BaseCtrl.call(this, $scope);
    
@@ -128,7 +138,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			}
 
 			$scope.calendarData = data;
-
 			$scope.$emit('hideLoader');		
 		};
 
