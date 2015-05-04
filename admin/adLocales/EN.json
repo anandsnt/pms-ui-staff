@@ -392,6 +392,8 @@
     "ROOMS_AND_RATES": "Rooms &amp; Rates",
     "SINGLE": "Single",
     "DOUBLE": "Double",
+    "TRIPLE": "Triple",
+    "QUADRUPLE": "Quadruple",
     "ADD_TRIPLE": "+ Add Triple",
     "ADD_QUADRUPLE": "+ Add Quadruple",
     "TOTAL": "Total",
