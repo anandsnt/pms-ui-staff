@@ -37,9 +37,10 @@
 	
 	<section ng-if="!data.isHourly">
 		<div class="price-fields">
-			<label>SINGLE</label>			
+			<label ng-if="!hasOverride(data.roomRateOverrides,'SINGLE')">SINGLE</label>			
+			<label ng-if="hasOverride(data.roomRateOverrides,'SINGLE')" class="hasOverride-label">SINGLE*</label>		
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" ng-model="data.single" ng-class="{'strike-through': data.single_extra_amnt != ''}" ng-disabled="data.single_extra_amnt != '' || data.single == undefined" force-decimal-zero-dir>
+					<input type="text" size="7" ng-model="data.single" ng-class="{'strike-through': data.single_extra_amnt != '', 'hasOverride-label': hasOverride(data.roomRateOverrides,'SINGLE') != false}" ng-disabled="data.single_extra_amnt != '' || data.single == undefined" force-decimal-zero-dir>
 				</span> <span class="or-class"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.single_sign" ng-disabled="data.single == undefined">
@@ -59,9 +60,11 @@
 		</div>
 
 		<div class="price-fields">
-			<label>DOUBLE</label>			
+			<label ng-if="!hasOverride(data.roomRateOverrides,'DOUBLE')">DOUBLE</label>			
+			<label ng-if="hasOverride(data.roomRateOverrides,'DOUBLE')" class="hasOverride-label">DOUBLE*</label>
+                        
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" ng-class="{'strike-through': data.double_extra_amnt != ''}" ng-model="data.double" ng-disabled="data.double_extra_amnt!='' || data.double == undefined" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.double_extra_amnt != '', 'hasOverride-label': hasOverride(data.roomRateOverrides,'DOUBLE') != false}" ng-model="data.double" ng-disabled="data.double_extra_amnt!='' || data.double == undefined" force-decimal-zero-dir>
 				</span> <span class="or-class"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.double_sign" ng-disabled="data.double == undefined">
@@ -80,9 +83,11 @@
 		</div>
 
 		<div class="price-fields">
-			<label> EXTRA ADULT (+{{currencySymbol}})</label>
+			<label ng-if="!hasOverride(data.roomRateOverrides,'EXTRA ADULT')">EXTRA ADULT (+{{currencySymbol}})</label>			
+			<label ng-if="hasOverride(data.roomRateOverrides,'EXTRA ADULT')" class="hasOverride-label">EXTRA ADULT (+{{currencySymbol}})*</label>
+                        
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" ng-class="{'strike-through': data.extra_adult_extra_amnt != ''}" ng-model="data.extra_adult" ng-disabled="data.extra_adult_extra_amnt!='' || 'data.extra_adult == undefined'" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.extra_adult_extra_amnt != '', 'hasOverride-label': hasOverride(data.roomRateOverrides,'EXTRA ADULT') != false}" ng-model="data.extra_adult" ng-disabled="data.extra_adult_extra_amnt!='' || 'data.extra_adult == undefined'" force-decimal-zero-dir>
 				</span> <span class="or-class"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.extra_adult_sign" ng-disabled = 'data.extra_adult == undefined'>
@@ -101,9 +106,11 @@
 		</div>
 
 		<div class="price-fields last-price-fields">
-			<label> CHILD (+{{currencySymbol}})</label>
+			<label ng-if="!hasOverride(data.roomRateOverrides,'CHILD')">CHILD (+{{currencySymbol}})</label>			
+			<label ng-if="hasOverride(data.roomRateOverrides,'CHILD')" class="hasOverride-label">CHILD (+{{currencySymbol}})*</label>
+                        
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" ng-class="{'strike-through': data.child_extra_amnt != ''}" ng-model="data.child" ng-disabled="data.child_extra_amnt!='' || 'data.child == undefined'" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.child_extra_amnt != '', 'hasOverride-label': hasOverride(data.roomRateOverrides,'CHILD') != false}" ng-model="data.child" ng-disabled="data.child_extra_amnt!='' || 'data.child == undefined'" force-decimal-zero-dir>
 				</span> <span class="or-class"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.child_sign" ng-disabled = 'data.child == undefined'>
