@@ -30,8 +30,8 @@
             <tr class="cell first-row-cell" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
                 <td class="cell" style="padding: 20px; padding-right: 5px; overflow:visible;">
                     <div class="bolder buttonToggleContainer">
-                        <button class="button orange rm-buttonToggle" style="margin-bottom:4px; margin-top:-5px;">All Rates</button><br>
-                    <button class="button rm-buttonToggle clear" style="margin-bottom: -5px;">All Rooms</button>
+                        <button class="button rm-buttonToggle" ng-class="activeToggleButton == 'Rates' ? 'orange' : 'grey'" style="margin-bottom:4px; margin-top:-5px;" ng-click="toggleAllRates()">All Rates</button><br>
+                    <button class="button rm-buttonToggle " ng-class="activeToggleButton == 'Rooms' ? 'orange' : 'grey'"  style="margin-bottom: -5px;" ng-click="toggleAllRooms()">All Rooms</button>
                     </div>
                     
                 </td>

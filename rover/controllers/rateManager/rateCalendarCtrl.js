@@ -269,7 +269,30 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }, 200);
         };
 
-        function finalizeCapture() {
+        
+        $scope.$on('showRatesBtnClicked',function(){
+            $scope.ratesRoomsToggle = 'RATES';
+            $scope.activeToggleButton = 'Rates';
+        });
+        
+        $scope.toggleAllRates = function(){
+            if ($scope.ratesRoomsToggle !== 'RATES'){
+                $scope.ratesRoomsToggle = 'RATES';
+                $scope.activeToggleButton = 'Rates';
+                loadTable();
+            }
+        };
+        
+        $scope.toggleAllRooms = function(){
+            if ($scope.ratesRoomsToggle !== 'ROOMS'){
+                $scope.ratesRoomsToggle = 'ROOMS';
+                $scope.activeToggleButton = 'Rooms';
+                loadTable();
+            }
+        };
+
+
+	function finalizeCapture() {
             $scope.initScrollBind();
             $scope.loading = false;
             $scope.currentFilterData.filterConfigured = true;
