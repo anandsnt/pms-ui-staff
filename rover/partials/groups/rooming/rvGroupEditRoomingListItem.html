@@ -27,7 +27,7 @@
             <div class="entry occupancy">
                 <label for="rooming-occupancy">{{'GROUP_OCCUPANCY'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-occupancy" ng-model="selectedOccupancy" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable">
+                    <select id="rooming-occupancy" ng-model="ngDialogData.occupancy" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable">
                         <option value="1" ng-show="shouldShowThisOccupancyAgainstRoomType('single_occupancy')">
                             {{'GROUP_SINGLE'|translate}}
                         </option>
