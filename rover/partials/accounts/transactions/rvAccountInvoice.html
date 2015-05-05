@@ -90,8 +90,8 @@
                     <span>{{charge.description[0].fees_desc}}</span>
                     <span class="reference">{{charge.reference_text}}</span>
                 </td>
-                <td class="align-right" ng-show="!!charge.description[0].fees_amount">{{currencySymbol}}{{charge.description[0].fees_amount | number: 2}}</td>
-                <td class="align-right" ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</td>
+                <td class="align-right"><span ng-show="!!charge.description[0].fees_amount">{{currencySymbol}}{{charge.description[0].fees_amount | number: 2}}</span></td>
+                <td class="align-right"><span ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</span></td>
             </tr>
         </tbody>
     </table>
