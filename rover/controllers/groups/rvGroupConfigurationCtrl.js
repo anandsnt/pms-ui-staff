@@ -101,12 +101,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
-			
+
 			if (!$scope.isInAddMode()) {
 				$scope.groupConfigData.summary.block_from = new tzIndependentDate($scope.groupConfigData.summary.block_from);
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate($scope.groupConfigData.summary.block_to);
 			}
-			
+
 		};
 
 		/**
@@ -349,6 +349,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.company || !$scope.groupConfigData.summary.company.name)) {
+						$scope.groupConfigData.summary.company = {
+							id: ""
+						}
+						$scope.updateGroupSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 
@@ -372,13 +380,20 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 						});
 				},
 				select: function(event, ui) {
-
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.travel_agent || !$scope.groupConfigData.summary.travel_agent.name)) {
+						$scope.groupConfigData.summary.travel_agent = {
+							id: ""
+						}
+						$scope.updateGroupSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 		};
