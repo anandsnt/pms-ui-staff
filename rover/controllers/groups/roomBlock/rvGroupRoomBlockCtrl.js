@@ -500,17 +500,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				return false;
 			}
 
-			//TODO : Make API call to save the room block.
-			var params = {
-				group_id: $scope.groupConfigData.summary.group_id,
-				results: $scope.groupConfigData.summary.selected_room_types_and_bookings
-			};
+			$timeout(function(){
+				//TODO : Make API call to save the room block.
+				var params = {
+					group_id: $scope.groupConfigData.summary.group_id,
+					results: $scope.groupConfigData.summary.selected_room_types_and_bookings
+				};
 
-		 	var options = {
-				params: 			params,
-				successCallBack: 	successCallBackOfSaveRoomBlock,	   
-			};
-			$scope.callAPI (rvGroupConfigurationSrv.saveRoomBlockBookings, options);	
+			 	var options = {
+					params: 			params,
+					successCallBack: 	successCallBackOfSaveRoomBlock,	   
+				};
+				$scope.callAPI (rvGroupConfigurationSrv.saveRoomBlockBookings, options);	
+			}, 0);
 		};
 
 		/**
