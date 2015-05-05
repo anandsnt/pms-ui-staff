@@ -128,8 +128,30 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			if (isInAccountsTab && !$scope.isInAddMode()) {
 				// $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
 			}
+			
+			//Reload the summary tab contents before switching
+			if(tab === "ACCOUNT"){
+				refreshSummaryTab();
+			}
 
 			$scope.accountConfigData.activeTab = tab;
+		};
+
+		var refreshSummaryTab = function() {
+
+			var onAccountFetchSuccess = function(data) {
+				$scope.$emit('hideloader');
+				$scope.accountConfigData.summary = data;
+				$scope.accountConfigData.activeTab = "ACCOUNT";
+
+			}
+			var params = {
+				"accountId": $scope.accountConfigData.summary.posting_account_id
+			}
+			$scope.callAPI(rvAccountsConfigurationSrv.getAccountSummary, {
+				successCallBack: onAccountFetchSuccess,
+				params: params
+			});
 		};
 
 		/**

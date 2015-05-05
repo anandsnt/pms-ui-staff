@@ -145,7 +145,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
-			}
+			};
+			//Reload the summary tab contents before switching
+			if(tab === "SUMMARY"){
+				refreshSummaryTab();
+			};
 
 			$scope.groupConfigData.activeTab = tab;
 			//propogating an event that next clients are
@@ -153,6 +157,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
 			}, 100);
 
+		};
+
+		var refreshSummaryTab = function() {
+			var onAccountFetchSuccess = function(data) {
+				$scope.$emit('hideloader');
+				$scope.groupConfigData.summary = data.groupSummary;
+				$scope.groupConfigData.activeTab = "SUMMARY";
+			}
+			var params = {
+				"groupId": $scope.groupConfigData.summary.group_id
+			}
+			$scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, {
+				successCallBack: onAccountFetchSuccess,
+				params: params
+			});
 		};
 
 		/**
