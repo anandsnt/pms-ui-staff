@@ -153,30 +153,23 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         selectedDateInfo = {};
         
         $scope.$on('apply-all-price-adjust',function(evt, data){
-            var d = data, setVia = data.setFromValue,
-                o = ['single','double','extra_adult','child'];
-            for (var i in o){
-                if ($scope.data[o[i]+'_sign']){
-                    $scope.data[o[i]+'_sign']        = d[setVia+'_sign'];
-                }
-                if ($scope.data[o[i]+'_amnt_diff']){
-                    $scope.data[o[i]+'_amnt_diff']   = d[setVia+'_amnt_diff'];
-                }
-                if ($scope.data[o[i]+'_extra_amnt']){
-                    $scope.data[o[i]+'_extra_amnt']  = d[setVia+'_extra_amnt'];
-                }
-            }
-            for (var i in o){
-                    $('[name=input-'+o[i]+']').val(d[setVia+'_extra_amnt']);
-                    $('[name=input-'+o[i]+']').removeClass('ng-pristine');
-                    $('[name=input-'+o[i]+']').addClass('ng-animate');
-                    $('[name=total-'+o[i]+']').addClass('strike-through-add');
-                    $('[name=total-'+o[i]+']').addClass('strike-through-add-active');
-                    $('[name=total-'+o[i]+']').addClass('strike-through');
-                    $('[name=total-'+o[i]+']').attr('disabled','disabled');
-            }
-            
-            
+            var d = data, setVia = data.setFromValue;
+                
+                    $scope.data.single_sign = d[setVia+'_sign'];
+                    $scope.data.single_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.single_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.double_sign = d[setVia+'_sign'];
+                    $scope.data.double_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.double_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.extra_adult_sign = d[setVia+'_sign'];
+                    $scope.data.extra_adult_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.extra_adult_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.child_sign = d[setVia+'_sign'];
+                    $scope.data.child_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.child_extra_amnt = d[setVia+'_extra_amnt'];
             
         });
 
