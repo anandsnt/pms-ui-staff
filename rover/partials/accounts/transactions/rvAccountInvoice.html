@@ -13,8 +13,8 @@
         <tr ng-if="!!groupConfigData">
             <td>{{groupConfigData.summary.group_name}}</td>
             <td>{{groupConfigData.summary.group_code}}</td>
-            <td>{{groupConfigData.summary.block_from}}</td>
-            <td>{{groupConfigData.summary.block_to}}</td>
+            <td>{{groupConfigData.summary.block_from | date:dateFormat}}</td>
+            <td>{{groupConfigData.summary.block_to | date:dateFormat}}</td>
         </tr>
         <tr ng-if="!groupConfigData">
             <th>Account Name</th>

@@ -101,12 +101,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
-			
+
 			if (!$scope.isInAddMode()) {
 				$scope.groupConfigData.summary.block_from = new tzIndependentDate($scope.groupConfigData.summary.block_from);
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate($scope.groupConfigData.summary.block_to);
 			}
-			
+
 		};
 
 		/**
@@ -145,7 +145,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
-			}
+			};
+			//Reload the summary tab contents before switching
+			if(tab === "SUMMARY"){
+				refreshSummaryTab();
+			};
 
 			$scope.groupConfigData.activeTab = tab;
 			//propogating an event that next clients are
@@ -153,6 +157,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
 			}, 100);
 
+		};
+
+		var refreshSummaryTab = function() {
+			var onAccountFetchSuccess = function(data) {
+				$scope.$emit('hideloader');
+				$scope.groupConfigData.summary = data.groupSummary;
+				$scope.groupConfigData.activeTab = "SUMMARY";
+			}
+			var params = {
+				"groupId": $scope.groupConfigData.summary.group_id
+			}
+			$scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, {
+				successCallBack: onAccountFetchSuccess,
+				params: params
+			});
 		};
 
 		/**
@@ -330,6 +349,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.company || !$scope.groupConfigData.summary.company.name)) {
+						$scope.groupConfigData.summary.company = {
+							id: ""
+						}
+						$scope.updateGroupSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 
@@ -353,13 +380,20 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 						});
 				},
 				select: function(event, ui) {
-
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.travel_agent || !$scope.groupConfigData.summary.travel_agent.name)) {
+						$scope.groupConfigData.summary.travel_agent = {
+							id: ""
+						}
+						$scope.updateGroupSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 		};
