@@ -372,6 +372,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						$scope.fetchAllChargeCodes();
 						return;
                     } 
+                    //default to last item
+                    $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
+
                     $scope.fetchAvailableChargeCodes();
                   //}
             };
