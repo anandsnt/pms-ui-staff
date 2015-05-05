@@ -50,7 +50,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		};
 
 		$scope.updateAndBack = function() {
-			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');			
+			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+			$scope.updateAccountSummary();
 			$state.go('rover.accounts.search');
 		}
 
@@ -64,7 +65,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			$rootScope.setPrevState = {
 				title: $filter('translate')('ACCOUNTS'),
 				callback: 'updateAndBack',
-				scope: $scope				
+				scope: $scope
 			};
 
 			//setting title and things
@@ -225,9 +226,15 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.accountConfigData.summary.company.name = ui.item.label;
 					$scope.accountConfigData.summary.company.id = ui.item.value;
-					if (!$scope.isInAddMode()) $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");;
+					if (!$scope.isInAddMode()) $scope.updateAccountSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && !$scope.accountConfigData.summary.company.name) {
+						$scope.accountConfigData.summary.company.id = "";
+						$scope.updateAccountSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 
@@ -254,12 +261,47 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.accountConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.accountConfigData.summary.travel_agent.id = ui.item.value;
-					if (!$scope.isInAddMode()) $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
+					if (!$scope.isInAddMode()) $scope.updateAccountSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && !$scope.accountConfigData.summary.travel_agent.name) {
+						$scope.accountConfigData.summary.travel_agent.id = "";
+						$scope.updateAccountSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 		};
+
+		/**
+		 * Update the account data
+		 * @return undefined
+		 */
+		$scope.updateAccountSummary = function() {
+			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
+				var onAccountUpdateSuccess = function(data) {
+						//client controllers should get an infromation whether updation was success
+						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
+						$scope.$emit('hideloader');
+					},
+					onAccountUpdateFailure = function(errorMessage) {
+						//client controllers should get an infromation whether updation was a failure
+						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
+						$scope.$emit('hideloader');
+					};
+
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
+					successCallBack: onAccountUpdateSuccess,
+					failureCallBack: onAccountUpdateFailure,
+					params: {
+						summary: $scope.accountConfigData.summary
+					}
+				});
+			} else {
+				console.warn('No Permission for EDIT_ACCOUNT');
+			}
+		}
 
 
 		/**
