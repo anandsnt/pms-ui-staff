@@ -5,6 +5,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
+		$scope.swipedCardDataToSave  = {};
 		var isSixPayment  = false;
 		var tokenDetails  = {};
 		var cardDetails   = {};
@@ -304,11 +305,23 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 var successNewPayment = function(data){
 
 		 	$scope.$emit("hideLoader");
+		 	var cardType = "";
+			var cardNumberEndingWith = "";
+			var cardExpiry = "";
+			var swipedData = angular.copy($scope.swipedCardDataToSave);
+			if(!isEmptyObject(swipedData)){
+				cardType =  swipedData.cardType.toLowerCase();		
+				cardNumberEndingWith = swipedData.cardNumber.slice(-4);
+				cardExpiry = swipedData.cardExpiryMonth+"/"+swipedData.cardExpiryYear;
+				$scope.saveData.paymentType = "CC";
+			}
+			else{
+				cardType = retrieveCardtype(isSixPayment,tokenDetails,cardDetails);		
+				cardNumberEndingWith = retrieveCardNumber(isSixPayment,tokenDetails,cardDetails);	
+		 		cardExpiry = retrieveCardExpiryDate(isSixPayment,tokenDetails,cardDetails);	
 
-		 	var cardType = retrieveCardtype(isSixPayment,tokenDetails,cardDetails);		
-		 	var cardNumberEndingWith = retrieveCardNumber(isSixPayment,tokenDetails,cardDetails);	
-		 	var cardExpiry = retrieveCardExpiryDate(isSixPayment,tokenDetails,cardDetails);	
-
+			}
+		 
 		 	$scope.defaultPaymentTypeCard = cardType;
 		 	$scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
 		 	$scope.defaultPaymentTypeCardExpiry = cardExpiry;
@@ -335,6 +348,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 	$scope.showCCPage = false;
 		 	$scope.showCreditCardInfo = true;
 		 	$scope.newCardAdded = true;
+		 	$scope.swipedCardDataToSave = {};
 		 };
 
 
@@ -409,6 +423,24 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.showCCPage 						 = true;
 			$scope.addmode                 			 = true;
 			$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+		});
+
+
+		$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+		
+			$scope.swipedCardDataToSave = swipedCardDataToSave;
+			var data 			= swipedCardDataToSave;		
+			data.payment_credit_type = swipedCardDataToSave.cardType;
+			data.credit_card = swipedCardDataToSave.cardType;
+			data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";		
+		    $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
+				successCallBack: successNewPayment,
+				params: {
+					"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id,
+					"data_to_pass":data
+				}
+			});
+	
 		});
 
 
