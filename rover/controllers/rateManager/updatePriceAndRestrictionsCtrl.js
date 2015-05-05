@@ -148,14 +148,37 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         $scope.data.child_extra_amnt = '';
         $scope.data.child_amnt_diff = $rootScope.currencySymbol;
 
-        
-
         //Flag to check if the rate set amounts are configured for the selected date
         $scope.data.hasAmountConfigured = true;
-
-                
-               
         selectedDateInfo = {};
+        
+        $scope.$on('apply-all-price-adjust',function(evt, data){
+            var d = data, setVia = data.setFromValue,
+                o = ['single','double','extra_adult','child'];
+            for (var i in o){
+                if ($scope.data[o[i]+'_sign']){
+                    $scope.data[o[i]+'_sign']        = d[setVia+'_sign'];
+                }
+                if ($scope.data[o[i]+'_amnt_diff']){
+                    $scope.data[o[i]+'_amnt_diff']   = d[setVia+'_amnt_diff'];
+                }
+                if ($scope.data[o[i]+'_extra_amnt']){
+                    $scope.data[o[i]+'_extra_amnt']  = d[setVia+'_extra_amnt'];
+                }
+            }
+            for (var i in o){
+                    $('[name=input-'+o[i]+']').val(d[setVia+'_extra_amnt']);
+                    $('[name=input-'+o[i]+']').removeClass('ng-pristine');
+                    $('[name=input-'+o[i]+']').addClass('ng-animate');
+                    $('[name=total-'+o[i]+']').addClass('strike-through-add');
+                    $('[name=total-'+o[i]+']').addClass('strike-through-add-active');
+                    $('[name=total-'+o[i]+']').addClass('strike-through');
+                    $('[name=total-'+o[i]+']').attr('disabled','disabled');
+            }
+            
+            
+            
+        });
 
         //Get the rate/restriction details for the selected cell
         if($scope.popupData.all_data_selected) {

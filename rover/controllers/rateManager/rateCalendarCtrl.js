@@ -37,6 +37,13 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
         
 	};
 
+        $scope.applyToAll = function(d, s){
+            d.setFromValue = s;
+            $scope.$broadcast('apply-all-price-adjust',d);
+        };
+
+
+
 	/**
 	* Click handler for expand button in room type calendar
 	*/
@@ -90,7 +97,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
                         break;
                 }
             }
-        }
+        };
 
 	/**
 	* @returns totalnumber of dates {Number} to be displayed
