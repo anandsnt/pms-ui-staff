@@ -55,7 +55,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			},
 			onSelect: function(date, datePickerObj) {
 				$scope.groupConfigData.summary.block_from = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
-				if ($scope.groupConfigData.summary.release_date.trim() == '') {
+				if ($scope.groupConfigData.summary.release_date.toString().trim() == '') {
 					$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
 				}
 

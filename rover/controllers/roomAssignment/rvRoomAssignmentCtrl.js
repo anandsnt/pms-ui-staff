@@ -379,10 +379,14 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.getNotReadyRoomTag = function(room){
-		if(room.room_ready_status == "PICKUP" || room.room_ready_status == "CLEAN"){
-			return room.room_ready_status;
-		}else{
-			return room.fo_status;
+		if(!room.is_in_future) {
+			if(room.room_ready_status == "PICKUP" || room.room_ready_status == "CLEAN"){
+				return room.room_ready_status;
+			}else{
+				return room.fo_status;
+			}
+		} else {
+			return "";
 		}
 	};
 
