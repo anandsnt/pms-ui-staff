@@ -5,7 +5,7 @@
 		<em ng-if="data.isHourly">Price adjustment for all Occupancies</em>
 	</div>
 
-	<section ng-if="!data.isHourly">
+	<section ng-if="data.isHourly">
 		<div class="price-fields">
 			<label>ALL OCCUPANCIES</label>		
 			<span ng-if = "!popupData.all_data_selected">
@@ -35,11 +35,11 @@
 		</div>
 	</section>
 	
-	<section ng-if="data.isHourly">
+	<section ng-if="!data.isHourly">
 		<div class="price-fields">
 			<label>SINGLE</label>			
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" name="total-single" ng-model="data.single" ng-class="{'strike-through': data.single_extra_amnt != ''}" ng-disabled="data.single_extra_amnt != '' || data.single == undefined" force-decimal-zero-dir>
+					<input type="text" size="7" ng-model="data.single" ng-class="{'strike-through': data.single_extra_amnt != ''}" ng-disabled="data.single_extra_amnt != '' || data.single == undefined" force-decimal-zero-dir>
 				</span> <span class="or"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.single_sign" ng-disabled="data.single == undefined">
@@ -47,7 +47,7 @@
 					<option ng-selected="data.single_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
-				<input type="text"  size="7" name="input-single" ng-model="data.single_extra_amnt" ng-disabled="data.single == undefined">
+				<input type="text"  size="7" ng-model="data.single_extra_amnt" ng-disabled="data.single == undefined">
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.single_amnt_diff" ng-disabled="data.single == undefined">
@@ -63,7 +63,7 @@
 		<div class="price-fields">
 			<label>DOUBLE</label>			
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" name="total-double" ng-class="{'strike-through': data.double_extra_amnt != ''}" ng-model="data.double" ng-disabled="data.double_extra_amnt!='' || data.double == undefined" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.double_extra_amnt != ''}" ng-model="data.double" ng-disabled="data.double_extra_amnt!='' || data.double == undefined" force-decimal-zero-dir>
 				</span> <span class="or"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.double_sign" ng-disabled="data.double == undefined">
@@ -71,7 +71,7 @@
 					<option ng-selected="data.double_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field" >
-				<input type="text" name="input-double" ng-model="data.double_extra_amnt" size="7" ng-disabled="data.double == undefined">
+				<input type="text" ng-model="data.double_extra_amnt" size="7" ng-disabled="data.double == undefined">
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.double_amnt_diff" ng-disabled="data.double == undefined">
@@ -86,7 +86,7 @@
 		<div class="price-fields">
 			<label> EXTRA ADULT (+{{currencySymbol}})</label>
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" name="total-extra_adult" size="7" ng-class="{'strike-through': data.extra_adult_extra_amnt != ''}" ng-model="data.extra_adult" ng-disabled="data.extra_adult_extra_amnt!='' || 'data.extra_adult == undefined'" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.extra_adult_extra_amnt != ''}" ng-model="data.extra_adult" ng-disabled="data.extra_adult_extra_amnt!='' || 'data.extra_adult == undefined'" force-decimal-zero-dir>
 				</span> <span class="or"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.extra_adult_sign" ng-disabled = 'data.extra_adult == undefined'>
@@ -94,7 +94,7 @@
 					<option ng-selected="data.extra_adult_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
-				<input type="text"  size="7" name="input-extra_adult" ng-model="data.extra_adult_extra_amnt" ng-disabled = 'data.extra_adult == undefined'>
+				<input type="text"  size="7" ng-model="data.extra_adult_extra_amnt" ng-disabled = 'data.extra_adult == undefined'>
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.extra_adult_amnt_diff" ng-disabled = 'data.extra_adult == undefined'>
@@ -109,7 +109,7 @@
 		<div class="price-fields last-price-fields">
 			<label> CHILD (+{{currencySymbol}})</label>
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" name="total-child" ng-class="{'strike-through': data.child_extra_amnt != ''}" ng-model="data.child" ng-disabled="data.child_extra_amnt!='' || 'data.child == undefined'" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.child_extra_amnt != ''}" ng-model="data.child" ng-disabled="data.child_extra_amnt!='' || 'data.child == undefined'" force-decimal-zero-dir>
 				</span> <span class="or"> OR</span> </span>
 			<span class="inp-field-after-or select">
 				<select style="width:70px;" ng-model="data.child_sign" ng-disabled = 'data.child == undefined'>
@@ -117,7 +117,7 @@
 					<option ng-selected="data.child_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
-				<input type="text"  size="7" name="input-child" ng-model="data.child_extra_amnt"  ng-disabled = 'data.child == undefined'>
+				<input type="text"  size="7" ng-model="data.child_extra_amnt"  ng-disabled = 'data.child == undefined'>
 			</span>
 			<span class="inp-field select">
 				<select style="width:70px;" ng-model="data.child_amnt_diff" ng-disabled = 'data.child == undefined'>
