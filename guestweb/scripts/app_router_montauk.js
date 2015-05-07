@@ -6,34 +6,34 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
  //    // checkout now states
     
-	// $stateProvider.state('checkoutBalance', {
- //        url: '/checkoutBalance',
- //        controller: 'checkOutBalanceController',
- //       	templateUrl: '/assets/checkoutnow/partials/Galleria/checkoutBalance.html',
-	//     title: 'Balance - Check-out Now'
- //    })
- //    .state('checkOutStatus', {
- //        url: '/checkOutStatus',
- //       	controller: 'checkOutStatusController',
- //       	templateUrl: '/assets/checkoutnow/partials/Galleria/checkOutStatus.html',
-	// 	title: 'Status - Check-out Now'
- //    }).state('checkOutConfirmation', {
- //        url: '/checkOutConfirmation',
- //       	controller: 'checkOutConfirmationController',
- //       	templateUrl: '/assets/checkoutnow/partials/Galleria/checkoutConfirmation.html',
-	// 	title: 'Confirm - Check-out Now'
- //    });
+	$stateProvider.state('checkoutBalance', {
+        url: '/checkoutBalance',
+        controller: 'checkOutBalanceController',
+       	templateUrl: '/assets/checkoutnow/partials/Montauk/checkoutBalance.html',
+	    title: 'Balance - Check-out Now'
+    })
+    .state('checkOutStatus', {
+        url: '/checkOutStatus',
+       	controller: 'checkOutStatusController',
+       	templateUrl: '/assets/checkoutnow/partials/Galleria/checkOutStatus.html',
+		title: 'Status - Check-out Now'
+    }).state('checkOutConfirmation', {
+        url: '/checkOutConfirmation',
+       	controller: 'checkOutConfirmationController',
+       	templateUrl: '/assets/checkoutnow/partials/Montauk/checkoutConfirmation.html',
+		title: 'Confirm - Check-out Now'
+    });
 
     // late checkout states
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/landing/Galleria/landing.html',
+	 	templateUrl: '/assets/landing/Montauk/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/Galleria/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Montauk/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
@@ -86,7 +86,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Montauk/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
