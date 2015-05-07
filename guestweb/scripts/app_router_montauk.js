@@ -15,7 +15,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Galleria/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Montauk/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
@@ -38,7 +38,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/Galleria/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Montauk/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
