@@ -167,7 +167,7 @@ sntRover.controller('rvActivityCtrl', [
 	    }
 		$scope.updateReport = function(){	        
 	        var params = {	        		
-	            page: $scope.prevAction?$scope.page - 1:$scope.page + 1,
+	            page: $scope.prevAction?$scope.page - 1:($scope.nextAction?$scope.page + 1:$scope.page),
 	            per_page: $scope.perPage
 	        	};     
 	        params['sort_order'] = $scope.sort_order;
