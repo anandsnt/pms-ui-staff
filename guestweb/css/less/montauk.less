@@ -1,0 +1,206 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#000;
+@blue:#171f60;
+@pink:#a60330;
+@brown:#7e6e3b;
+@light-black:#010101;
+@light-blue:#4d517d;
+
+
+
+.light-green-bg{
+	background:#d6c559 !important;
+}
+.pink-bg{
+	background:@pink !important;
+}
+
+.blue-text, .loading-text{
+	color:@light-blue  !important;
+}
+.blue-bg{
+	background:@blue !important;
+}
+.white-text{
+	color:@white !important;
+}
+.black-text{
+	color:@black !important;
+}
+.light-black-text{
+	color: @light-black !important;
+}
+
+
+body{
+	background-color: #f7f5e9 !important; 
+	background-image: none;
+}
+
+.jumbotron .container{
+	width:100%;
+	.container-fluid{
+		padding:0 !important;
+	}
+}
+
+
+.jumbotron .check-inout-wrapper{
+	border:none !important;
+}
+
+.room-number-text{
+	text-align:left;
+}
+
+.checkout-status{
+	border-top:none !important;
+	border-bottom:none !important;
+}
+
+.headtext{
+	font-size:44px !important;
+}
+.chekout-time{
+	font-size:24px !important;
+}
+
+.container-top-padding{
+	padding-top:50px !important;
+}
+.room_container{
+	form{
+		.room-number-text{
+			font-size:16px  !important;
+		}
+	}
+}
+.shadow {
+	background: none repeat scroll 0 0 #efefef;
+   -moz-box-shadow:    inset 2px 2px 3px #d1d1d1;
+   -webkit-box-shadow: inset 2px 2px 3px #d1d1d1;
+    box-shadow:         inset 2px 2px 3px #d1d1d1;
+    border: medium none !important;
+}
+
+.room-input{
+	height:50px !important;
+}
+
+.img-responsive.img-center{
+	max-width:auto !important;
+	max-height:auto !important;
+	padding:0 !important;
+}
+.logoImage {
+    height: auto !important;
+    width: auto !important;
+}
+
+.margin-10{
+	margin-top:10px;
+}
+
+.verti-ruler {
+    background: none repeat scroll 0 0 #D3D3D3;
+}
+
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #D4C357;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 #ff0000;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #a68f01;
+}
+.checkout-later-back-button,.no-thanks a{
+	color: #bbb !important;
+}
+
+/* responsive starts here */
+@media (min-width: 992px) {
+	.jumbotron .check-inout-wrapper{
+  		padding: 40px 0 !important;
+  	}
+  	.now-later-options.cabin-number{
+  		max-width:280px !important;
+  	}
+  	.leadtext {
+    	padding: 21px 140px;
+	}
+	.checkin-button-padding{
+		padding-top:20%;
+	}
+	.checkin-key-padding{
+		padding-top:10px !important;
+	}
+	.chekin-heading{
+		font-size:44px !important;
+	}
+	.chekin-heading{
+		font-size:44px !important;
+	}
+
+}
+
+@media (max-width: 992px) {
+	.padding-10{
+  		padding: 0px 10px !important;
+  	}
+  	.jumbotron .checkin-wrapper{
+  		padding: 25px 0 !important;
+  	}
+
+}
+
+@media (max-width: 480px) {
+	
+
+	.chekin-heading{
+		font-size:24px !important;
+	}
+
+	.foot-text.second-in {
+	    padding: 0 40px !important;
+	}
+	.checkout-time-container{
+		span{
+			font-size:16px !important;
+		}
+	}
+	.chekout-time{
+		font-size:16px !important;
+	}
+
+	.headtext{
+		.main-heading{
+			font-size:30px !important;
+		}		
+		font-size:30px !important;
+	}
+	.headtext{
+		font-size:30px !important;
+	}
+	.cabin_number_field{
+		padding-top:20px;
+	}
+	.now-later-options.cabin-number{
+  		max-width:280px !important;
+  		margin:0 auto;
+  	}
+  	.container-top-padding{
+		padding-top:20px !important;
+	}
+}
+
+.row.checkin-wrapper.line-top.checkin-details.no-bottom-padding {
+    padding-bottom: 0 !important;
+}
+a, a:hover {
+   color: @brown !important;
+}
+
