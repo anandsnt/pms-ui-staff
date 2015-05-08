@@ -817,14 +817,11 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successFetchOfAllReqdForRoomingList = function(data) {
-            $scope.closeDialog();
             $scope.$emit('hideLoader');
 
             //if there is no room type attached, we have to show some message
-            if ($scope.roomTypesAndData.length == 0) {
-                $timeout(function() {
+            if ($scope.roomTypesAndData.length == 0) {            
                     showNoRoomTypesAttachedPopUp();
-                }, 800);
             }
         };
 
@@ -916,6 +913,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                         //calling initially required APIs
                         callInitialAPIs();
                         $scope.errorMessage = [];
+                        $scope.closeDialog();
                     },
                     onUpdateReservationFailure = function(errorMessage) {
                         $scope.errorMessage = errorMessage;
@@ -951,6 +949,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 var onRemoveReservationSuccess = function(data) {
                         //calling initially required APIs
                         callInitialAPIs();
+                        $scope.closeDialog();
                     },
                     onRemoveReservationFailure = function(errorMessage) {
                         $scope.errorMessage = errorMessage;
