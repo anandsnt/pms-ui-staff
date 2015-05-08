@@ -4,10 +4,11 @@
 @black:#000;
 @blue:#171f60;
 @pink:#a60330;
-@brown:#7e6e3b;
 @light-black:#010101;
 @light-blue:#4d517d;
 @light-pink:#cc4065;
+@grey:#AEACAD;
+
 
 
 .pink-bg{
@@ -31,6 +32,12 @@
 }
 .light-black-text{
 	color: @light-black !important;
+}
+.grey-text{
+	color:@grey !important;
+}
+.pink-text{
+	color:@pink !important;
 }
 
 
@@ -130,7 +137,7 @@ body{
 }
 
 
-.no-thanks 
+.no-thanks,.questions
 {
 	a,a:hover{
 		text-decoration:underline  !important;
@@ -187,6 +194,88 @@ a, a:hover {
 }
 
 /* ------------checkout later page------------------- */
+
+/*------------ date picker starts here--------------*/
+.date-picker-header{
+  background-color: @blue;
+}
+.pickadate-cell li {
+ border: 1px solid #fff;
+}
+
+.date-picker-back,.date-picker-ok{
+	color:@white !important;
+}
+.date-picker-wrap{
+  background-color: @white !important;
+  background-image: linear-gradient(to bottom, @white, @white);
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #959595 !important;
+}
+
+.date-picker-ok{
+  padding-top: 0px;
+  background:  none !important;
+  color:#fff;
+}
+
+.departure-date{
+   p:first-child{
+       color:@white;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#DEDCD0 !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:@pink !important;
+    color:@white !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#18171c !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
+
+.pickadate-cell{
+	.pickadate-active{
+		color:#fff !important;
+	}
+}
+
+
+/*-------------------------*/
+
+
+/*---- checkin reservation details ---*/
+.checkin-button{
+	color:@white;
+	background:@pink;
+}
+.room_details,.dateContent{
+	color:@black;
+}
+.bottom-border{
+	border-bottom: 1px solid @grey !important;
+}
+.stay-details{
+	font-size:44px !important;
+	font-family: 'Source Sans Pro';
+	font-weight: lighter;
+}
+
+
 /* responsive starts here */
 @media (min-width: 992px) {
 	.jumbotron .check-inout-wrapper{
@@ -271,6 +360,9 @@ a, a:hover {
 	}
 	.backbtn{
 		visibility:hidden;	
+	}
+	.stay-details{
+		font-size:26px !important;
 	}
 }
 

@@ -45,36 +45,36 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	// checkin states
 
-	// $stateProvider.state('checkinConfirmation', {
-	//  	url: '/checkinConfirmation',
-	//  	templateUrl: '/assets/checkin/partials/Galleria/checkInConfirmation.html',
-	//  	controller : 'checkInConfirmationViewController',
-	//  	title: 'Check-in'
-	//  }).state('checkinReservationDetails', {
-	//  	url: '/checkinReservationDetails',
-	//  	templateUrl: '/assets/checkin/partials/Galleria/checkInReservationDetails.html',
-	//  	controller : 'checkInReservationDetails',
-	//  	title: 'Details - Check-in'
-	//  }).state('checkinUpgrade', {
-	//  	url: '/checkinUpgrade',
-	//  	templateUrl: '/assets/checkin/partials/Galleria/checkinUpgradeRoom.html',
-	//  	controller : 'checkinUpgradeRoomController',
-	//     title: 'Upgrade - Check-in'
-	//  }).state('checkinKeys', {
-	//  	url: '/checkinKeys',
-	//  	templateUrl: '/assets/checkin/partials/Galleria/checkInKeys.html',
-	//  	controller : 'checkInKeysController',
-	//  	title: 'Keys - Check-in'
-	//  }).state('checkinSuccess', {
-	//  	url: '/checkinSuccess',
-	//  	templateUrl: '/assets/checkin/partials/Galleria/checkinSuccess.html',
-	//  	title: 'Status - Check-in'
-	//  }).state('checkinArrival', {
-	//  	url: '/checkinArrival',	 	
-	//  	controller:'checkinArrivalDetailsController',
-	//  	templateUrl: '/assets/checkin/partials/Galleria/arrivalDetails.html',
-	//  	title: 'Arrival Details - Check-in'
-	//  });
+	$stateProvider.state('checkinConfirmation', {
+	 	url: '/checkinConfirmation',
+	 	templateUrl: '/assets/checkin/partials/Montauk/checkInConfirmation.html',
+	 	controller : 'checkInConfirmationViewController',
+	 	title: 'Check-in'
+	 }).state('checkinReservationDetails', {
+	 	url: '/checkinReservationDetails',
+	 	templateUrl: '/assets/checkin/partials/Montauk/checkInReservationDetails.html',
+	 	controller : 'checkInReservationDetails',
+	 	title: 'Details - Check-in'
+	 }).state('checkinUpgrade', {
+	 	url: '/checkinUpgrade',
+	 	templateUrl: '/assets/checkin/partials/Montauk/checkinUpgradeRoom.html',
+	 	controller : 'checkinUpgradeRoomController',
+	    title: 'Upgrade - Check-in'
+	 }).state('checkinKeys', {
+	 	url: '/checkinKeys',
+	 	templateUrl: '/assets/checkin/partials/Montauk/checkInKeys.html',
+	 	controller : 'checkInKeysController',
+	 	title: 'Keys - Check-in'
+	 }).state('checkinSuccess', {
+	 	url: '/checkinSuccess',
+	 	templateUrl: '/assets/checkin/partials/Galleria/checkinSuccess.html',
+	 	title: 'Status - Check-in'
+	 }).state('checkinArrival', {
+	 	url: '/checkinArrival',	 	
+	 	controller:'checkinArrivalDetailsController',
+	 	templateUrl: '/assets/checkin/partials/Galleria/arrivalDetails.html',
+	 	title: 'Arrival Details - Check-in'
+	 });
 
 
 	 //room verification
@@ -92,15 +92,15 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 });
 	  // pre checkin states
 
- //    $stateProvider.state('preCheckinTripDetails', {
- //    	url: '/tripDetails',
-	//  	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	//  	title: 'Pre Check-in'
-	// }).state('preCheckinStatus', {
-	// 	url: '/preCheckinStatus',
-	// 	templateUrl: '/assets/preCheckin/partials/GALLERIA/preCheckinStatus.html',
-	// 	controller : 'preCheckinStatusController',
-	// 	title: 'Status - Pre Check-In'
-	//  });
+    $stateProvider.state('preCheckinTripDetails', {
+    	url: '/tripDetails',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Pre Check-in'
+	}).state('preCheckinStatus', {
+		url: '/preCheckinStatus',
+		templateUrl: '/assets/preCheckin/partials/GALLERIA/preCheckinStatus.html',
+		controller : 'preCheckinStatusController',
+		title: 'Status - Pre Check-In'
+	 });
 
 }]);
