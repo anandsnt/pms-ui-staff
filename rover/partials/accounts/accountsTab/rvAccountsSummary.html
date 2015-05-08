@@ -1,0 +1,88 @@
+<form method="post" class="form card-tab scrollable" ng-controller="rvAccountSummaryCtrl" ng-iscroll="rvAccountSummaryScroller" ng-iscroll-delay="500" outside-click-handler>
+    <div class="wrapper">
+        <div class="holder left">
+            <strong class="h3" translate>ACCOUNT_INFO</strong>
+            <div class="entry full-width">
+                <label for="account-name" translate>NAME</label>
+                <input id="account-name" ng-model="accountConfigData.summary.posting_account_name" type="text" />
+            </div>
+            <div class="entry margin">
+                <label for="account-number" translate>ACCOUNT_NUMBER</label>
+                <input id="account-number" ng-model="accountConfigData.summary.posting_account_number" type="text" />
+            </div>
+            <div class="entry">
+                <label for="account-type" translate>ACCOUNT_TYPE</label>
+                <div class="select">
+                    <select iscroll-stop-propagation id="account-type" ng-model="accountConfigData.summary.posting_account_type" ng-change="onAccountTypeModification();" ng-disabled="!!groupConfigData">
+                        <option value="HOUSE" selected>House</option>
+                        <option value="GROUP">Group</option>
+                    </select>
+                </div>
+            </div>
+            <!--
+            <div class="entry clear" ng-hide="true">
+                <label for="account-hold">Hold Status</label>
+                <div class="select">
+                    <select id="account-hold">
+                        <option value="" selected>Set Status</option>
+                        <option value="{status}">{status}</option>
+                        ... repeat
+                    </select>
+                </div>
+            </div> 
+            -->
+            <div class="entry break full-width" ng-if="!groupConfigData">
+                <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
+                <!-- opens {modals/demographics.html} -->
+            </div>
+        </div>
+        <div class="holder right">
+            <strong class="h3">Balance / Status</strong>
+            <div class="entry margin">
+                <label for="account-balance" translate>BALANCE</label>
+                <input id="account-balance" ng-class="{'balance-red' : accountConfigData.summary.balance > 0, 'balance-green' : accountConfigData.summary.balance <= 0}" 
+                value="{{getBalanceAmount(accountConfigData.summary.balance)}}" type="text" readonly />
+            </div>
+            <div class="entry">
+                <label for="account-status" translate>STATUS</label>
+                <div class="select">
+                    <select iscroll-stop-propagation id="account-status" ng-model="accountConfigData.summary.posting_account_status" ng-change="onAccountStatusModification();">
+                        <!-- Disable closing and show {modals/alerts/closing-account.html} popup if balance not 0 -->
+                        <option value="OPEN" selected>Open</option>
+                        <option value="CLOSED">Closed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry no-label only-button margin">
+                <button class="button white blue-text" translate>BALANCE_DETAILS</button>
+                <!-- opens {modals/post-deposit.html} -->
+            </div>
+            <div class="entry no-label only-button">
+                <button class="button white blue-text" translate>DEPOSIT_RULES</button>
+                <!-- opens {modals/group-deposit-rules.html} -->
+            </div>
+            <!-- Notes -->
+            <strong class="h3 margin" translate>NOTES</strong>
+            <div class="entry full-width no-label with-notes">
+                <textarea id="account-notes" ng-model="accountSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
+                <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveAccountNote()" translate>POST</button>
+            </div>
+            <ul class="notes">
+                <li ng-repeat="note in accountConfigData.summary.notes">
+                    <figure class="guest-image">
+                        <img src="{{note.user_image}}" alt="" />
+                    </figure>
+                    <div class="note-title">
+                        <h4>{{note.username}}</h4>
+                        <time datetime="{{note.posted_date}}">
+                            <span class="time">{{note.posted_date}}</span>
+                            <span class="date">{{note.posted_time}}</span>
+                        </time>
+                        <button type="button" class="icons icon-trash" ng-click="removeAccountNote(note.note_id)">Delete post</button>
+                    </div>
+                    <p>{{note.description}}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</form>

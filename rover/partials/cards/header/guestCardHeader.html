@@ -1,4 +1,4 @@
-<div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')" ng-controller="RVGuestCardCtrl">
+<div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')" ng-controller="RVGuestCardCtrl" ng-click="guestCardClicked()">
     <section ng-if="!searchMode">
         <figure class="guest-image" ng-click="switchCard('guest-card')"> 
             <img ng-src="{{guestCardData.contactInfo.avatar}}" />

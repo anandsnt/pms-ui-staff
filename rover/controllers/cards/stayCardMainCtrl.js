@@ -728,5 +728,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$rootScope.$broadcast("OUTSIDECLICKED");
 		};
 
+		$scope.staycardClicked = function  () {
+			//save contact info
+			$scope.$broadcast('saveContactInfo');
+		};
+
 	}
 ]);

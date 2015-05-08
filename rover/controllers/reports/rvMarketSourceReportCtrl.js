@@ -163,6 +163,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 
 
 		var init = function() {
+
 			if ( _.isEmpty($scope.results.source) && _.isEmpty($scope.results.market) ) {
 				$scope.hasNoData = true;
 			} else {

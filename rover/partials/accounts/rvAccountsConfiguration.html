@@ -1,0 +1,59 @@
+<div class="group-card cards fullscreen" ng-class="{'new-card': isInAddMode()}" >
+    <div class="cards-wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <!-- Header -->
+        <header class="cards-header">
+            <div id="group-card-header" class="card-header">
+                <form>
+                    <div class="holder">
+                        <div class="entry">
+                            <input 
+                                placeholder="Account Name" 
+                                ng-model="accountConfigData.summary.posting_account_name" 
+                                type="text" class="masked-input h1" 
+                                data-size="{{accountConfigData.summary.posting_account_name.length}}" auto-grow-field/>
+                        </div>
+                    </div>
+                     <div class="holder data">
+                        <!-- These should not allow free text input, you should only be able to search and add -->
+                        <!-- Search only companies -->
+                        <input placeholder="" ng-init="focusedCompanyCard = false" ng-focus="focusedCompanyCard = true" ng-blur="focusedCompanyCard = false" ng-class="{'active': focusedCompanyCard}" class="masked-input icons icon-gc-company" auto-complete auto-options="companyAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onCompanyCardChange()" ng-model="accountConfigData.summary.company.name" style="width:{{ ((accountConfigData.summary.company && accountConfigData.summary.company.name && accountConfigData.summary.company.name.length) || 2) * 9 + 45}}px">
+                        <!-- Search only companies -->
+                        <input placeholder="" ng-init="focusedTravelAgent = false" ng-focus="focusedTravelAgent = true" ng-blur="focusedTravelAgent = false" ng-class="{'active': focusedTravelAgent}" class="masked-input icons icon-gc-ta" auto-complete auto-options="travelAgentAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onTravelAgentCardChange()" ng-model="accountConfigData.summary.travel_agent.name" style="width:{{ ((accountConfigData.summary.travel_agent && accountConfigData.summary.travel_agent.name && accountConfigData.summary.travel_agent.name.length) || 2) * 9 + 45}}px">
+                        <!-- Search only travel agents -->
+                    </div>
+                </form>
+                <div class="card-actions" ng-hide="isInAddMode()">
+                    <!--  HIDE BUTTON FOR NOW TILL DUPLICATE FUNCTIONALITY IS COMPLETE-->
+                    <button type="button" class="button blue hidden" ng-click="duplicateGroup()" translate>DUPLICATE</button>
+                </div>                
+                <div class="card-actions" ng-show="isInAddMode()">
+                    <button type="button" class="button green" ng-click="saveNewAccount()" translate>SAVE_ACCOUNT</button>
+                    <button type="button" class="button blank" ng-click="discardNewAccount()" translate>DISCARD</button>
+                </div>                
+            </div>
+        </header>
+        <!-- Content -->
+        <div class="cards-content">
+            <div id="account-card-content" class="card-tabs card-content">
+                <!-- Group tabs navigation -->
+                <ul id="account-card-tabs-nav" class="card-tabs-nav no-print">
+                    <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACCOUNT'}">
+                        <a translate>SUMMARY</a>
+                    </li>
+                    <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'TRANSACTIONS'}">
+                        <a translate>TRANSACTIONS</a>
+                    </li>
+                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACTIVITY'}">
+                        <a translate>ACTIVITY_LOG</a>
+                    </li>
+                </ul>
+                
+                <!--ACCOUNT, TRANSACTIONS, ACTIVITY -->
+                
+                <ng-include src="getCurrentTabUrl()">
+                </ng-include>
+            </div>
+        </div>
+    </div>
+</div>

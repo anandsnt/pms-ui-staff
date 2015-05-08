@@ -1,4 +1,4 @@
-<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }" ng-click="fauxSelectClicked();">
+<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }" ng-click="fauxSelectClicked(); catchFauxSelectClick();">
     <div ng-include="'/assets/partials/common/header.html'"></div>
 
     <!-- the listing page where all the available reports are listed -->
@@ -51,7 +51,7 @@
 
                 <div class="report-header" ng-show="errorMessage.length" ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-                <div ng-include="detailsTemplateUrl"></div>
+                <div ng-hide="errorMessage.length" ng-include="detailsTemplateUrl"></div>
             </section>
 
         </div>

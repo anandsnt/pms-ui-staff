@@ -4,6 +4,7 @@
     "ADD":"Add",
     "CANCEL": "Cancel",
     "SAVE_CHANGES": "Save Changes",
+    "TEST_CONNECTION": "Test Connection",
     "BACK": "Back",
     "ADD_NEW":"Add New",
     "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
@@ -38,6 +39,10 @@
     "MENU_JOURNAL":"Journal",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
+    "MENU_GROUPS": "Group",
+    "MENU_CREATE_GROUP": "Create Group",
+    "MENU_MANAGE_GROUP": "Manage Group",
+    "MENU_ACCOUNTS": "Accounts",
     
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",

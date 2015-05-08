@@ -1,0 +1,65 @@
+<div class="group-card cards" ng-class="{'new-card': isInAddMode() , 'fullscreen' : !isInAddonSelectionMode()}">
+    <div class="cards-wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <!-- Header -->
+        <header class="cards-header">
+            <div id="group-card-header" class="card-header">
+                <form>
+                    <div class="holder">
+                        <div class="entry">
+                            <input id="group-name" placeholder="Group Name" ng-model="groupConfigData.summary.group_name" type="text" class="masked-input h1" data-size="{{groupConfigData.summary.group_name.length}}" auto-grow-field/>
+                        </div>
+                    </div>
+                    <div class="holder data">
+                        <!-- These should not allow free text input, you should only be able to search and add -->
+                        <!-- Search only companies -->
+                        <input placeholder="" ng-init="focusedCompanyCard = false" ng-focus="focusedCompanyCard = true" ng-blur="focusedCompanyCard = false" ng-class="{'active': focusedCompanyCard}" class="masked-input icons icon-gc-company" auto-complete auto-options="companyAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onCompanyCardChange()" ng-model="groupConfigData.summary.company.name" style="width:{{ ((groupConfigData.summary.company && groupConfigData.summary.company.name && groupConfigData.summary.company.name.length) || 2) * 9 + 45}}px">
+                        <!-- Search only companies -->
+                        <input placeholder="" ng-init="focusedTravelAgent = false" ng-focus="focusedTravelAgent = true" ng-blur="focusedTravelAgent = false" ng-class="{'active': focusedTravelAgent}" class="masked-input icons icon-gc-ta" auto-complete auto-options="travelAgentAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onTravelAgentCardChange()" ng-model="groupConfigData.summary.travel_agent.name" style="width:{{ ((groupConfigData.summary.travel_agent && groupConfigData.summary.travel_agent.name && groupConfigData.summary.travel_agent.name.length) || 2) * 9 + 45}}px">
+                        <!-- Search only travel agents -->
+                    </div>
+                </form>
+                <div class="card-actions" ng-hide="isInAddMode()">
+                    <!--  HIDE BUTTON FOR NOW TILL DUPLICATE FUNCTIONALITY IS COMPLETE-->
+                    <button type="button" class="button blue hidden" ng-click="duplicateGroup()">Duplicate</button>
+                </div>
+                <div class="card-actions" ng-show="isInAddMode()">
+                    <button type="button" class="button green" ng-click="saveNewGroup()">Save Group</button>
+                    <button type="button" class="button blank" ng-click="discardNewGroup()">Discard</button>
+                </div>
+            </div>
+        </header>
+        <!-- Content -->        
+        <div class="cards-content" ng-if="!isInAddonSelectionMode()">            
+            <div  id="group-card-content" class="card-tabs card-content">
+                <!-- Group tabs navigation -->
+                <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
+                    <li ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
+                        <a>Summary</a>
+                    </li>
+                    <li class="with-filters" ng-click="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOM_BLOCK'}">
+                        <a>Room Block Details</a>
+                    </li>
+                    <li ng-click="switchTabTo('ACCOUNT')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
+                        <a>Account</a>
+                    </li>
+                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" ng-click="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
+                        <a>Rooming List</a>
+                    </li>
+                    <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
+                        <a>Transactions</a>
+                    </li>
+                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACTIVITY'}">
+                        <a>Activity Log</a>
+                    </li>
+                </ul>
+                <!-- Group Tab - Summary -->
+                <!-- SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY -->
+                <!-- Group Card Tab - Room Block Details -->
+                <ng-include src="getCurrentTabUrl()">
+                </ng-include>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="isInAddonSelectionMode()" ng-include="'/assets/partials/groups/summary/rvGroupConfigurationAddons.html'"></div>
