@@ -119,6 +119,9 @@ body{
 .balancevalue{
 	color:@black !important;
 }
+.key-delivery-message {
+	text-align:center;
+}
 
 
 /* ----------------late checkout options page----------------- */
@@ -144,9 +147,9 @@ body{
 		color:@pink  !important;
 	}
 }
-/* ----------------late checkout options page----------------- */
+/* ------------------------------------------------------------------- */
 
-/* ------------checkout confirmation page------------------- */
+/* --------------------checkout confirmation page---------------------- */
 
 .jumbotron .headtext{
 	color:@blue;
@@ -157,9 +160,9 @@ body{
 .col-xs-12.checkoutnow.single,.link-btn.with-bg{
 	background:@pink;
 }
-/* ------------checkout confirmation page------------------- */
+/* -------------------------------------------------------------------- */
 
-/* ------------checkout balance page------------------- */
+/* -------------------------checkout balance page----------------------- */
 .accept-charges-button.single{
 	background:@pink;
 	color:@white;
@@ -179,9 +182,9 @@ body{
 a, a:hover {
     color: @blue !important;
 }
-/* ------------checkout balance page------------------- */
+/* --------------------------------------------------------------------------- */
 
-/* ------------checkout later page------------------- */
+/* ----------------------------checkout later page--------------------------- */
 .back-to-checkout{
 	padding:5% !important;
 }
@@ -193,9 +196,9 @@ a, a:hover {
 	color:#fff;
 }
 
-/* ------------checkout later page------------------- */
+/* --------------------------------------------------------------------------- */
 
-/*------------ date picker starts here--------------*/
+/*------------------------------- date picker starts here---------------------*/
 .date-picker-header{
   background-color: @blue;
 }
@@ -255,7 +258,7 @@ a, a:hover {
 }
 
 
-/*-------------------------*/
+/*-------------------------------------------------------------------------*/
 
 
 /*---- checkin reservation details ---*/
@@ -274,7 +277,14 @@ a, a:hover {
 	font-family: 'Source Sans Pro';
 	font-weight: lighter;
 }
-
+.cabin_number_field{
+	.eta-text{
+		font-size:18px !important;
+	}
+}
+.upgrade-details .upgrades-btn{
+	background-color: @pink;
+}
 
 /* responsive starts here */
 @media (min-width: 992px) {
@@ -298,6 +308,13 @@ a, a:hover {
 	}
 	.chekin-heading{
 		font-size:44px !important;
+	}
+
+	.row.checkin-wrapper.pre-checkin-final {
+    	max-width: 80%;
+	}
+	.key-delivery-message{
+		font-size:18px !important;
 	}
 
 }
@@ -363,6 +380,25 @@ a, a:hover {
 	}
 	.stay-details{
 		font-size:26px !important;
+	}
+	.cabin_number_field{
+		.eta-text{
+			font-size:12px !important;
+		}
+	}
+	.room-upgrade-reject{
+		font-size:14px;
+	}
+	.row.checkin-wrapper.pre-checkin-final {
+    	.conf-num{
+    		border-bottom:1px grey solid;
+    		padding-bottom:10px;
+    		margin:10px;
+    	}
+	}
+	.key-delivery-message {
+	    font-size: 16px;
+	    padding: 0 10% !important;
 	}
 }
 

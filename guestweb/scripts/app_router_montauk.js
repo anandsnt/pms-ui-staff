@@ -62,17 +62,16 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/Montauk/checkInKeys.html',
-	 	controller : 'checkInKeysController',
-	 	title: 'Keys - Check-in'
+	 	templateUrl: '/assets/preCheckin/partials/Montauk/noOption.html',
+	 	title: 'Status - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/Galleria/checkinSuccess.html',
+	 	templateUrl: '/assets/preCheckin/partials/Montauk/noOption.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',	 	
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/checkin/partials/Galleria/arrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Montauk/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 
@@ -98,7 +97,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Pre Check-in'
 	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/preCheckin/partials/GALLERIA/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/Montauk/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
