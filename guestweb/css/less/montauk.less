@@ -18,7 +18,7 @@
 }
 
 .blue-text, .loading-text{
-	color:@light-blue;
+	color:@blue !important;
 }
 .blue-bg{
 	background:@blue !important;
@@ -128,9 +128,7 @@ body{
 .checkout-later-back-button,.no-thanks a{
 	color: #bbb !important;
 }
-.backbtn{
-	visibility:hidden;	
-}
+
 
 .no-thanks 
 {
@@ -171,12 +169,24 @@ body{
 		color:@white !important;
 	}
 }
-
-.back-to-checkout{
-	padding:5% !important;
+a, a:hover {
+    color: @blue !important;
 }
 /* ------------checkout balance page------------------- */
 
+/* ------------checkout later page------------------- */
+.back-to-checkout{
+	padding:5% !important;
+}
+
+.backbtn {
+    left: 10%;    
+}
+.checkout-later-back-button{
+	color:#fff;
+}
+
+/* ------------checkout later page------------------- */
 /* responsive starts here */
 @media (min-width: 992px) {
 	.jumbotron .check-inout-wrapper{
@@ -259,12 +269,12 @@ body{
 		font-size:28px !important;
 		padding:5% !important;
 	}
+	.backbtn{
+		visibility:hidden;	
+	}
 }
 
 .row.checkin-wrapper.line-top.checkin-details.no-bottom-padding {
     padding-bottom: 0 !important;
-}
-a, a:hover {
-   color: @brown !important;
 }
 
