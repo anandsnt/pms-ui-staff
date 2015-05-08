@@ -1,42 +1,37 @@
-<div class="jumbotron" id="check-in-out">
-
-	<div class="container backgroundbg">
+<div class="jumbotron">
+	<div class="container">
 	<!-- contentarea starts here-->
-
+		<div class="container">
 			<div class="container-fluid">
 				<div class="row headerrow blue-bg">
 					<logo-image></logo-image>
 				</div>
 			</div>
-
 			<!-- show posting message -->
 			<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head">Your request is being processed.</p>
-				<p class="msg-body">This may take a few seconds..... please wait!</p>
+				<p class="msg-head blue-text">Your request is being processed.</p>
+				<p class="msg-body blue-text">This may take a few seconds..... please wait!</p>
 			</div>
-
 			<!-- show error message -->
-
 			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-				<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
-				<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="blue-text">{{hotelPhone}}.</a></p>
+				<p class="msg-head blue-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+				<p class="msg-body blue-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="blue-text">{{hotelPhone}}.</a></p>
 			</div>
 			<!-- top section starts here-->
-
-			<div class="row check-inout-wrapper" ng-show="optionsAvailable && !isFetching && !netWorkError">
-				<div class="col-md-6 centeralign headtext margin-10">
-					Check-Out
+			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
+				<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel ">
+					<span class="blue-text">Check-Out</span>
 					<p class="leadtext balance-container">
-						<span class="lightcontent chekout-time">Your balance is:</span>
-						<span class="balancevalue">{{currencySymbol}}{{billData.balance}}</span>
+						<span class="lightcontent chekout-time">
+							<span class="light-black-text">Your balance is:</span>
+						</span>
+						<span class="balancevalue black-text">{{currencySymbol}}{{billData.balance}}</span>
 					</p>
 
-					<div class="viewbill-toggle">
+					<div class="viewbill-toggle blue-text">
 						<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/Montauk/rightarrow.png" alt="" />&nbsp;&nbsp;VIEW BILL</a>
 						<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/Montauk/downarrow.png" alt=""  />&nbsp;&nbsp;VIEW BILL</a>
 					</div>
-
-
 					<div class="showbill-wrap" ng-show="showBill" >
 						<div class="trans-rel-wrap">
 							<div class="showbill">
@@ -46,7 +41,7 @@
 									
 									<div class="bill-contain">
 										<div class="bill-hotel-logo">
-											<img class="img-responsive img-center nikko-logo" src="{{hotelLogo}}" alt="" >
+											<img class="img-responsive img-center" src="{{hotelLogo}}" alt="Responsive image">
 										</div>
 
 										<div class="guest-details leftalign">
@@ -109,18 +104,14 @@
 
 							</div>
 						</div>
-					</div>
-
-					
-
+					</div>			
 				</div>
-
 				<div class="col-md-6 no-padding now-later-options no-screen-attach">
 					<div class="row">
-						<div class="col-xs-12 accept-charges-button single">
+						<div class="col-xs-12 accept-charges-button single green-bg">
 							<div class="rel-wrapper">
 								<a ng-click="gotToNextStep()"></a>
-								<div class="row checkout-later-text ">
+								<div class="row checkout-later-text white-text">
 									Accept charges and check-out
 								</div>
 								<div class="row  icontop">
@@ -130,14 +121,15 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="row clearboth">
-					<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable && !netWorkError">
-						<em class = "base-text"> The credit card on record will be charged.</em>
+				<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable && !netWorkError">
+						<em class = "base-text black-text"> The credit card on record will be charged.</em>
 					</p>
+					
 				</div>
 			</div>
-		<!-- top section ends here-->
+			<!-- top section ends here-->
 		</div>
+	</div>
 </div>
 
