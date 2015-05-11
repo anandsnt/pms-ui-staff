@@ -385,6 +385,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 if (isOccupancyConfigured(roomIndex)) {
                     $scope.reservationData.rooms[roomIndex].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(roomIndex);
                     $scope.computeTotalStayCost(reset);
+                    if(reset){
+                        $scope.saveReservation(false,false,0);
+                    }
                     var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
                     var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
                         parseInt($scope.reservationData.rooms[roomIndex].numAdults);
@@ -429,6 +432,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         // CICO-9575: The occupancy warning should pop up only once during the reservation process if no changes are being made to the room type.
                         $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted = activeRoom;
                     }
+
                     return true;
                 } else {
                     // TODO: 7641
@@ -612,8 +616,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
 
                     if (reset) {
-                        $scope.reservationData.rooms[roomIndex].stayDates[date].rateDetails.actual_amount = roomAmount;
-                        $scope.reservationData.rooms[roomIndex].stayDates[date].rateDetails.modified_amount = roomAmount;
+                        $scope.reservationData.rooms[roomIndex].stayDates[date].rateDetails.actual_amount = $filter('number')(roomAmount, 2);
+                        $scope.reservationData.rooms[roomIndex].stayDates[date].rateDetails.modified_amount = $filter('number')(roomAmount, 2);
                     }
 
                     //CICO-6079
