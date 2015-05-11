@@ -339,7 +339,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     "contact_phone": null,
                     "contact_email": null
                 },
-                "future_reservation_count": 0
+                 "future_reservation_count": 0
             };
         };
 
@@ -376,17 +376,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             return rateConfigured;
         };
 
-        $scope.checkOccupancyLimit = function(date, reset) {
+        $scope.checkOccupancyLimit = function(date, reset, index) {
             //CICO-11716
             if ($scope.reservationData.isHourly) {
                 return false;
             } else {
-                var roomIndex = 0;
+                var roomIndex = index || 0;
                 if (isOccupancyConfigured(roomIndex)) {
                     $scope.reservationData.rooms[roomIndex].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(roomIndex);
                     $scope.computeTotalStayCost(reset);
                     if(reset){
-                        $scope.saveReservation(false,false,0);
+                        $scope.saveReservation(false,false,roomIndex);
                     }
                     var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
                     var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
@@ -2066,7 +2066,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.updateOccupancy(idx);
             if (!$scope.reservationData.isHourly) {
                 $scope.validateOccupant(room, occupantType);
-                $scope.checkOccupancyLimit(null, true);
+                $scope.checkOccupancyLimit(null, true, idx);
             }
         };
     }
