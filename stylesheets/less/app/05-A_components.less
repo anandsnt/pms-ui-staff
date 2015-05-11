@@ -5753,11 +5753,11 @@
                         .room {
                             line-height: 40px;
                             border-bottom: 1px solid rgba(0,0,0,.1);
+                            .nowrap();
 
                             .room-number {
-                                display: inline;
                                 line-height: 40px;
-                                margin-right: 10px;
+                                padding-right: 10px;
 
                                 &.ready { color: @green; }
                                 &.not-ready { color: @red; }
@@ -5774,6 +5774,7 @@
                                 line-height: 30px;
                                 margin: 0;
                                 width: 39%;
+                                .nowrap();
                                 .pull-left;
 
                                 .guest-status {
