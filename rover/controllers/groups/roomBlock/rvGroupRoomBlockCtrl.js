@@ -485,6 +485,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.hasBookingDataChanged = false;
 			$scope.groupConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
 			
+			//as per CICO-16087, we have to refetch the occupancy and availability after saving
+			//so, callinng the API again 
+			$scope.fetchRoomBlockGridDetails();
 		};
 
 		/**
