@@ -1,11 +1,12 @@
-admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
- function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv', 
+ function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ADRatesAddonsSrv){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
 	 $scope.fileName = "Choose file...";
 	 $scope.initialIcon = '';
+	 $scope.addons = [];
 	 /*Initializing data, for adding a new item.
     */
 	$scope.data = {	            
@@ -18,8 +19,51 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "page_template": "POI",
 	            "website_url": "",
 	            "description": "",
+	            "addon_id":"",
 	            "parent_category": []
             }
+
+    $scope.fetchAddons = function(){
+    var fetchSuccessOfAddons = function(data) {
+       
+       $scope.addons = $scope.getAddonsWithNameValues(data.results);
+       $scope.$emit('hideLoader');
+   };
+   $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true}, fetchSuccessOfAddons);
+};
+
+    $scope.getAddonsWithNameValues = function(addons){
+        angular.forEach(addons,function(item, index) {
+       item.value = item.id;
+    
+  });
+        return addons;
+};
+
+    $scope.itemTypeSelected = function(){
+
+	if($scope.data.page_template == "ADDON" && $scope.addons.length == 0){
+		$scope.fetchAddons();
+	}
+}
+
+$scope.getSelectedAddonDescription = function(){
+     angular.forEach($scope.addons,function(item, index) {
+       if(item.value == $scope.data.addon_id)
+       	return item.description;
+    
+  });
+     return "";
+}
+
+$scope.getSelectedAddonPrice = function(){
+	angular.forEach($scope.addons,function(item, index) {
+       if(item.value == $scope.data.addon_id)
+       	return item.price;
+    
+  });
+     return "";
+}
 
     
 	/*Function to fetch the item details

@@ -50,6 +50,12 @@
                            <span translate>SCREEN_LABEL</span> 
                         </label>
 
+                        <label class="radio" ng-class = "{'checked': data.page_template=='ADDON'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.page_template=='ADDON'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.page_template" id="link" value="ADDON" ng-change = "itemTypeSelected()"/>
+                           <span translate>ADDON_LABEL</span> 
+                        </label>
+
                     </div>
                 </div>
                 <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
@@ -68,19 +74,34 @@
                     <label for="item-description" ><span translate>DESCRIPTION_LABEL</span> <strong ng-show="data.page_template=='SCREEN'">*</strong></label>
                     <textarea name="item-description" ng-model="data.description" id="item-description" rows="4" placeholder="Item description ..."></textarea>
                 </div>
-                <div class="entry" ng-hide="data.page_template=='SCREEN'">
+                <div class="entry" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
                     <label for="item-phone" translate>PHONE_LABEL</label>
                     <input type="text" name="item-phone" ng-model="data.phone" id="item-phone" placeholder="Enter Phone number" value="" />
                 </div>
-                <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
+                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
                     <label for="item-address"><span translate>ADDRESS_LABEL</span> <strong ng-show="data.page_template=='POI'">*</strong></label>
                     <input type="text" name="aitem-ddress" ng-model="data.address" id="item-address" placeholder="Enter Address" value=""  />
                 </div>
                 
-                <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
+                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
                     <label for="item-url"><span translate>URL_LABEL </span><strong ng-show="data.page_template=='LINK'">*</strong></label>
                     <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
-                </div>        
+                </div>  
+                <div ng-show="data.page_template=='ADDON'">
+                     <ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='data.addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" ng-show="data.page_template=='ADDON'"></ad-dropdown>  
+
+                    <div class="entry full-width" ng-show="data.page_template=='ADDON'">
+                       <label for="addon-description"><span translate>ADDON_DESCRIPTION_LABEL </span></label>
+                       <input type="text" name="addon-description" id="addon-description" ng-disabled = "true" />
+                    </div> 
+
+                    <div class="entry full-width" ng-show="data.page_template=='ADDON'">
+                        <label for="addon-price"><span translate>ADDON_PRICE_LABEL </span></label>
+                        <input type="text" name="addon-price" id="addon-price"  ng-disabled = "true" />
+                    </div>
+                </div>
+                
+
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title">
