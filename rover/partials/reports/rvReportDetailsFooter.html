@@ -1,8 +1,3 @@
-<tr class="totals" ng-if="resultsTotalRow">
-	<td>Total</td>
-	<td ng-repeat="item in resultsTotalRow track by $index">{{ item }}</td>
-</tr>
-
 <tr>
 	<!-- chosenReport -->
 	<td colspan="{{ leftColSpan }}">
@@ -113,6 +108,20 @@
 		<!-- chosen markets -->
 		<div ng-if="appliedFilter.markets.length">
 			Markets: <span>{{ appliedFilter.markets.join(', ') }}</span>
+		</div>
+
+
+
+		<!-- chosen Booking sources -->
+		<div ng-if="appliedFilter.sources.length">
+			Booking Sources: <span>{{ appliedFilter.sources.join(', ') }}</span>
+		</div>
+
+
+
+		<!-- chosen origins -->
+		<div ng-if="appliedFilter.origins.length">
+			Origins: <span>{{ appliedFilter.origins.join(', ') }}</span>
 		</div>
 
 

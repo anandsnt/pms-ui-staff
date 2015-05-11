@@ -521,6 +521,17 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			var valueToReturn = ((value == null || typeof value == 'undefined') ? newValue : value);
 			return valueToReturn;
 		};
+		$scope.escapeNullStr = function(value, replaceWith) {
+			var newValue = "";
+			if ((typeof replaceWith != "undefined") && (replaceWith != null)) {
+				newValue = replaceWith;
+			}
+			var valueToReturn = ((value == null || typeof value == 'undefined') ? newValue : value);
+                        if (valueToReturn.indexOf('null') !== -1){
+                            valueToReturn = '';//removes unwanted ", null" type of values
+                        }
+			return valueToReturn;
+		};
 
 		/*
 		 * function to get reservation class against reservation status

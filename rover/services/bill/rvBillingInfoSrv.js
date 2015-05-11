@@ -82,15 +82,19 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 
 	};
 
-	this.fetchBillsForReservation = function(reservationId){
+	this.fetchBillsForReservation = function(data){
 		var deferred = $q.defer();
-		var url = 'api/bill_routings/' + reservationId + '/bills.json';
-			BaseWebSrvV2.getJSON(url).then(function(data) {
-				
-			   	 deferred.resolve(data);
-			},function(data){
-			    deferred.reject(data);
-			});	
+
+		var url = 'api/bill_routings/' + data.id + '/bills.json';
+		if(data.entity_type != "")
+			url = 'api/bill_routings/' + data.id + '/bills.json?entity_type='+data.entity_type;
+		
+		BaseWebSrvV2.getJSON(url).then(function(data) {
+			
+		   	 deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
 
 		return deferred.promise;
 	};
@@ -134,8 +138,11 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 	};
 
 	this.fetchDefaultAccountRouting = function(params){
+
 		var deferred = $q.defer();
-		var url = '/api/default_account_routings/' + params.id;
+			var url = (typeof params.entity_type !=="undefined" && params.entity_type != "") ?  
+			 '/api/default_account_routings/' + params.id+'?entity_type='+params.entity_type:
+			 '/api/default_account_routings/' + params.id;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				
 			   	 deferred.resolve(data);
@@ -145,6 +152,17 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 
 		return deferred.promise;
 	};
+	// CICO-14951 to delete default routings
+	this.deleteDefaultRouting = function(data){
+		var deferred = $q.defer();
+		var url = 'api/default_account_routings/'+data.id;
+			BaseWebSrvV2.deleteJSON(url).then(function(data) {
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
 
+		return deferred.promise;
+	};
    
 }]);

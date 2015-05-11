@@ -26,6 +26,7 @@
 		&.icon-ok { background-position: 0 -520px; }
 		&.icon-housekeeping { background-position: 0 -575px; }
 		&.icon-rates { background-position: 0 -630px; }
+		&.icon-groups { background-position: 0 -690px; }
 
 		@media only screen and (min-width: 600px) { 
 			background-size: 125px;
@@ -78,6 +79,10 @@
 			&.icon-rates {
 				background-position: 0 -1320px;
 			}
+
+			&.icon-groups { 
+				background-position: 0 -1440px; 
+			}
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -115,6 +120,12 @@
 			.hide-text;
 
 			&.invert { background-position: 0 -3100px; }
+		}
+
+		&.icon-popup-alert {
+			background-position: 2px -6395px;
+			.square(50px);
+			.show;
 		}
 
 		/* Search icons ***/
@@ -181,7 +192,7 @@
 			}
 		}
 
-		/* Guest icons ***/
+		/* Reservation search / Guest Status Icons ***/
 		&.icon-location {  background-position: 0px -36px; }
 		&.icon-group { background-position: 0 -77px; }
 		&.icon-guest-company { background-position: 0 -758px; }
@@ -202,16 +213,31 @@
 		&.icon-gc-location { background-position: 10px -269px; }
 		&.icon-gc-phone { background-position: 10px -308px; }
 		&.icon-gc-email { background-position: 10px -345px; }
+		&.icon-gc-company { background-position: 10px -2588px; background-size: 90px; }
+		&.icon-gc-ta { background-position: 10px -2675px; background-size: 90px; }
 
 		&.icon-queued { 
-			background-position: 10px -4170px; 
+			background-position: 0px -4179px;
+			background-color: transparent;
 			.hide-text;
             .square(40px);
 		}
 
-		/* Stay Card Icons ***/
+		/* Reservation Icons ***/
 		&.icon-company { background-position: 15px -3448px; }
 		&.icon-travel-agent { background-position: 15px -3566px; }
+		&.icon-group-large {
+			font-size: 18px;
+			line-height: 30px;
+			text-transform: uppercase;
+			font-weight: 600;
+			text-align: center;
+			color: @grey3;
+			background-color: @grey1;
+			background-image: none;
+			.square(30px);
+		}
+
 		&.icon-upgrade { background-position: 3px -440px; }
 		&.icon-key { background-position: 0 -500px; }
 		&.icon-plus { background-position: 3px -1000px; }
@@ -222,12 +248,7 @@
 		&.icon-save { background-position: 0 -3280px; }	
 		&.icon-addons { background-position: 0 -6280px; }	
 		&.icon-charge { background-position: 4px -6340px; }
-
-		&.icon-swiped {
-			.square(30px);
-			.hide-text;
-			background-position: 0px -3332px; 
-		}
+		&.icon-move { background-position: -1px -6459px; }
 
 		&.icon-trash { 
 			.square(20px);
@@ -281,6 +302,30 @@
 		&.icon-time {
 			&.time-in { background-position: 10px -4050px; }
 			&.time-out { background-position: 10px -4110px; }
+		}
+
+		/* CC icons ***/
+		&.icon-swiped,
+		&.icon-authenticated {
+			.square(30px);
+			.hide-text;
+		}
+
+		&.icon-swiped {
+			background-position: 0px -3335px;
+
+			&.icon-authenticated { background-position: 0px -6695px; }
+		}
+
+		&.icon-authenticated { background-position: 5px -6753px; }
+
+		&.icon-cc-authorization {
+			background-position: 5px -6510px;
+			.square(50px);
+			.show;
+
+			&.success { background-position: 5px -6570px; }
+			&.failure { background-position: 5px -6630px; }
 		}
 
 		/* Housekeeping icons ***/
@@ -731,22 +776,22 @@
 	}
 
 /* StayCard icons 		==================================*/
-.staycard-button {
-	background-image: @iconStayCard;
-	background-repeat: no-repeat;
+	.staycard-button {
+		background-image: @iconStayCard;
+		background-repeat: no-repeat;
 
-	&.icon-deposit { background-position: 0 0; }
-	&.icon-bill { background-position: 0 -50px; }
-	&.icon-smartband { background-position: 0 -100px; }
-	&.icon-confirmation { background-position: 0 -150px; }
-	&.icon-queue { background-position: 0 -200px; }
-	&.icon-queue.in { background-position: 0 -250px; }
+		&.icon-deposit { background-position: 0 0; }
+		&.icon-bill { background-position: 0 -50px; }
+		&.icon-smartband { background-position: 0 -100px; }
+		&.icon-confirmation { background-position: 0 -150px; }
+		&.icon-queue { background-position: 0 -200px; }
+		&.icon-queue.in { background-position: 0 -250px; }
 
-	@media @highdpi {
-		background-image: @iconStayCard2x;
-		background-size: 40px;
+		@media @highdpi {
+			background-image: @iconStayCard2x;
+			background-size: 40px;
+		}
 	}
-}
 
 /* 4. LAYOUT
 ==========================================================*/

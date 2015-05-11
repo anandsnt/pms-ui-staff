@@ -1,66 +1,46 @@
+<a name="top-div"></a>
 <section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
-	<div id="selected_hotel" data-view="HotelExternalMappingsView">
-		<!-- Hotels list -->
-		<section>
-			<header class="content-title float">
-				<h2>External Mappings</h2>
-				<span class="count">({{data.total_count}})</span>
-				<a ng-click="addNew()" ng-show="addFormView" class="action add" >Add new</a>
-				<a class="action back" ui-sref="admin.snthoteldetails({action:'edit',id: hotelId})">Back</a>
-				
-				<div class="filters">
-					<div class="filter hidden"></div>
-					<div class="filter hidden"></div>
-					<div id="filter-brand" class="filter select">
-						<div class="entry">
-							<label for="hotel-chain"> </label>
-							<div class="select">
-								<select ng-model="data.mapping_type" name="hotel-chain" id="hotel-chain" class="placeholder">
-									<option value=""> Filter By Chain </option>
-									<option ng-selected="mapping === data.mapping_type" ng-repeat="mapping in data.mapping">{{mapping.mapping_type}}</option>
-								</select>
-							</div>
-						</div>
+    <div id="selected_hotel" data-view="HotelExternalMappingsView">
+        <section ng-init="fetchInterfaceMappings()">
+            <header class="content-title float">
+                <h2>{{clickedInterfaceName}}</h2>
+                <span class="count">({{mappingInterface.mappings.length}})</span>
+                <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
+                <button ng-click="openAddNew()" class="action add" scrollup="replacing-div-first">Add new</button>
+            </header>
+        </section>	</div>
 
-					</div>
-				</div>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div> 
+        <div id="new-form-holder" ng-show="isAdd" ng-include="getTemplateUrl()"></div>
+        <div id="new-form-holder" ng-show="isEdit" ng-include="getTemplateUrl()"></div>
+        <table class="grid ">
 
-			</header>
-			<section class="content-scroll">
-				<div ng-include="'/assets/partials/common/notification_message.html'"></div> 
-				<div id="new-form-holder" ng-show="isAdd" ng-include="getTemplateUrl()"></div>
-				<table class="grid ">
-					
-					<thead>
-						<tr role="row">
-							<th width="30%" class="sorting"> Mapping Type </th>
-							<th width="25%" class="sorting"> SNT Value </th>
-							<th width="25%" class="sorting"> External Value </th>
-							<th width="10%" class="activate long"> Delete </th>
-						</tr>
-					</thead>
-					
-					<tbody ng-repeat="mapping in data.mapping">
+            <thead>
+                <tr role="row">
+                    <th width="30%" class="sorting"> Mapping Type </th>
+                    <th width="25%" class="sorting"> SNT Value </th>
+                    <th width="25%" class="sorting"> External Value </th>
+                    <th width="20%" class="activate long"> Delete </th>
+                </tr>
+            </thead>
 
-						<tr ng-repeat="mapping_value in mapping.mapping_values">
-							<td width="30%" ng-click="editSelected(mapping_value.value)" ng-hide="currentClickedElement == mapping_value.value && isEdit" name="{{$index}}">
-								<a  data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a>
-							</td>
-							<td width="25%" ng-hide="currentClickedElement == mapping_value.value && isEdit">
-								<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.snt_value}}</a>
-							</td>
-							<td width="25%" ng-hide="currentClickedElement == mapping_value.value && isEdit">
-								<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.external_value}}</a>
-							</td>
-							<td class="delete" ng-click="clickedDelete(mapping_value.value)" ng-hide="currentClickedElement == mapping_value.value && isEdit" width="10%">
-								<a class="icons icon-delete large-icon delete_item"></a>
-							</td>
-							<td colspan="4" ng-include="getTemplateUrl()" ng-show="currentClickedElement == mapping_value.value && isEdit"></td>
-						</tr>
-
-					</tbody>
-				</table>
-			</section>
-		</section>
-	</div>
+            <tbody>
+                <tr ng-repeat="mapping in mappingInterface.mappings">
+                    <td width="30%" ng-click="editSelected(mapping.mapping_type_id)" scrollup="replacing-div-first">
+                        <a  data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.description}}</a>
+                    </td>
+                    <td width="25%" ng-click="editSelected(mapping.mapping_type_id)" scrollup="replacing-div-first">
+                        <a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.snt_value}}</a>
+                    </td>
+                    <td width="25%" ng-click="editSelected(mapping.mapping_type_id)" scrollup="replacing-div-first">
+                        <a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.external_value}}</a>
+                    </td>
+                    <td class="delete" ng-click="clickedDelete(mapping.mapping_type_id)" width="20%">
+                        <a class="icons icon-delete large-icon delete_item"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </section>

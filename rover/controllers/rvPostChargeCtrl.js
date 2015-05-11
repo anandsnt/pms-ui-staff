@@ -5,10 +5,10 @@ sntRover.controller('RVPostChargeController',
 		'RVChargeItems',
 		'RVSearchSrv',
 		'$timeout',
-		'RVBillCardSrv','ngDialog', 'rvPermissionSrv',
+		'RVBillCardSrv','ngDialog', 'rvPermissionSrv','rvAccountTransactionsSrv',
 		function($rootScope, $scope, 
 			RVChargeItems, RVSearchSrv, 
-			$timeout,RVBillCardSrv,ngDialog, rvPermissionSrv) {
+			$timeout,RVBillCardSrv,ngDialog, rvPermissionSrv,rvAccountTransactionsSrv) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
@@ -24,13 +24,13 @@ sntRover.controller('RVPostChargeController',
 			var scrollerOptions = {preventDefault: false};
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
-
+  			var isFromAccounts = (typeof $scope.account_id !=="undefined" && $scope.account_id !=="")? true:false;
   			/**
   			* function to check whether the user has permission to Post charge
   			* @return {Boolean}
   			*/
   			$scope.hasPostChargePermission = function (){
-  				return rvPermissionSrv.getPermissionValue ('ADD_CHARGE');
+  				return isFromAccounts ? rvPermissionSrv.getPermissionValue ('POST_TRANSACTION') : rvPermissionSrv.getPermissionValue ('ADD_CHARGE');
   			};
 
   			/*
@@ -210,7 +210,8 @@ sntRover.controller('RVPostChargeController',
 			*	3. update the net total price
 			*/
 			var newCount = 0;
-			$scope.addItem = function(item) {
+			$scope.addItem = function(item,type) {
+				$scope.calToggle = (type === "isItem") ? 'QTY' :'PR';
 				// it is already added
 				if ( item.isChosen ) {
 					item.count++;
@@ -509,14 +510,15 @@ sntRover.controller('RVPostChargeController',
 						items.push( each );
 					};
 				}
-
 				var data = {
-					reservation_id: $scope.reservation_id,
-					fetch_total_balance: $scope.fetchTotalBal,
-					bill_no: $scope.passActiveBillNo || $scope.billNumber,
-					total: $scope.net_total_price,
-					items: items
-				};
+								fetch_total_balance: $scope.fetchTotalBal,
+								bill_no: $scope.passActiveBillNo || $scope.billNumber,
+								total: $scope.net_total_price,
+								items: items
+						   };
+			    //accounts or reservation bill screen check
+				isFromAccounts ? (data.account_id = $scope.account_id) :  (data.reservation_id = $scope.reservation_id);
+
 				/****    CICO-6094    **/
 				var needToCreateNewBill = false;
 				if($scope.billNumber > $scope.fetchedData.bill_numbers.length){
@@ -534,34 +536,64 @@ sntRover.controller('RVPostChargeController',
 						$scope.$emit( 'CHARGEPOSTED' );
 					}
 				};
+				var accountsPostcallback = function(){
+					$scope.$emit( 'hideLoader' );
+					ngDialog.close();
+					$scope.$emit('UPDATE_TRANSACTION_DATA',data);
+				};
+
 				var updateParam = data;
 				/****    CICO-6094    **/
 				if(!needToCreateNewBill){
-					$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
+					if(isFromAccounts){
+						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback);
+					}
+					else{
+						$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
+					};
 				}
 				else{
-						var billData ={
-						"reservation_id" : $scope.reservation_id,
+
+					var billData ={
 						"bill_number" : $scope.billNumber
-						};
-					/*
-					 * Success Callback of create bill action
-					 */
-					var createBillSuccessCallback = function(){
-						$scope.$emit('hideLoader');			
-						//Fetch data again to refresh the screen with new data
-						$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
-						// Update Review status array.
-						if(!$scope.isOutsidePostCharge){
-							var data = {};
-							data.reviewStatus = false;
-							data.billNumber = $scope.billNumber;
-							data.billIndex = $scope.reservationBillData.bills.length;
-							$scope.isAllBillsReviewed = false;
-							$scope.reviewStatusArray.push(data);
-						}
 					};
-					$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
+					//accounts or reservation bill screen check
+					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
+					
+					if(isFromAccounts){
+						/*
+						 * Success Callback of create bill action
+						 */
+						var createBillSuccessCallback = function(){
+							$scope.$emit('hideLoader');			
+							//Fetch data again to refresh the screen with new data
+							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback);
+	
+						};
+						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
+					}
+					else{
+						/*
+						 * Success Callback of create bill action
+						 */
+						var createBillSuccessCallback = function(){
+							$scope.$emit('hideLoader');			
+							//Fetch data again to refresh the screen with new data
+							$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
+							// Update Review status array.
+							if(!$scope.isOutsidePostCharge){
+								var data = {};
+								data.reviewStatus = false;
+								data.billNumber = $scope.billNumber;
+								data.billIndex = $scope.reservationBillData.bills.length;
+								$scope.isAllBillsReviewed = false;
+								$scope.reviewStatusArray.push(data);
+							}
+						};
+						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
+
+					}
+					
 				}
 				/****    CICO-6094    **/
 			};

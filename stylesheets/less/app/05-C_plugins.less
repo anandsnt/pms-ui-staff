@@ -154,11 +154,6 @@
 			.ui-datepicker-trigger { top: 28px; }
 		}
 	}
-
-	/*Highlight color for today's date on rover ui-date calendars*/
-	.ui-datepicker-today a {
-		color: #66CCFF !important;
-	}
 	
 /* jQuery UI autocomplete	==============================*/
 	.ui-autocomplete {
@@ -168,9 +163,11 @@
         cursor: default;
         z-index: 99999;
         .faux-clickable;
-        height: 240px;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        min-height: 40px;
+		max-height: 240px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
 
         li {
             margin: 0;
@@ -203,13 +200,26 @@
 
                     .highlight { color: @logoPrimary; }
 
-                    img {
-                        position: absolute;
-                        top: 10px;
-                        left: 10px;
-                        .square(30px);
-                        #border-radius > .rounded();
-                    }
+                    img,
+					.icons {
+						position: absolute;
+						top: 10px;
+						left: 10px;
+						.square(30px);
+						#border-radius > .rounded();
+					}
+
+					.icons {
+						&.icon-company { 
+							background-position: 4px -3458px;
+							background-color: @ccard; 
+						}
+
+						&.icon-travel-agent { 
+							background-position: 4px -3576px;
+							background-color: @tacard; 
+						}
+					}
                 }
             }
         }
@@ -229,12 +239,25 @@
 
 					.highlight { color: @logoPrimary; }
 
-					img {
+					img,
+					.icons {
 						position: absolute;
 						top: 10px;
 						left: 10px;
 						.square(30px);
 						#border-radius > .rounded();
+					}
+
+					.icons {
+						&.icon-company { 
+							background-position: 4px -3458px;
+							background-color: @ccard; 
+						}
+
+						&.icon-travel-agent { 
+							background-position: 4px -3576px;
+							background-color: @tacard; 
+						}
 					}
 				}
 			}
@@ -247,6 +270,38 @@
 	#modal,
 	.inline-modal {
 		.modal-content {
+
+			/* Alert ***/
+			&.alert {
+				padding: 30px 20px;
+				width: 320px;
+
+				.icon-popup-alert,
+				.icon-cc-authorization { margin: 10px auto; }
+
+				.message { 
+					text-transform: none;
+					margin: 20px 0;
+
+					&.green { color: @green; }
+					&.red { color: @red; }
+				}
+
+				.entry {
+					input[type="text"] {
+						font-size: 18px;
+						font-weight: 600;
+					}
+				}
+
+				.actions { margin-top: 20px; }
+
+				.button { 
+					margin: 10px auto;
+
+					&:last-child { margin-bottom: 0; }
+				}
+			}
 
 			/* Confirmation modal window ***/
 			&.confirmation {
@@ -283,14 +338,19 @@
 			&.new-content {
 				width: 320px;
 
-				.entry { 
-					&.margin { width: 100%; }
+				.holder {
+					.entry { 
+						float: none;
+						width: 100%;
+
+						&.margin { margin-bottom: 0; }
+					}
 				}
 
 				.actions {
 					text-align: center;
 					margin-top: 20px;
-					padding-top: 20px;
+					padding-top: 19px;
 					border-top: 1px solid rgba(0,0,0,.1);
 
 					.button {
@@ -790,9 +850,11 @@
 					}
 
 					&.notice {
-						font-weight: 400;
+						font-size: 14px;
+						line-height: 21px;
 						text-align: left;
 						margin: 20px 0;
+						min-height: 90px;
 
 						.h4 { 
 							font-size: 16px;
@@ -971,7 +1033,7 @@
 						}
 
 						#print-keys {
-							margin-top: 20px;
+							padding-top: 20px;
 
 							label:not(.only-number) { text-align: left; }
 
@@ -1015,7 +1077,6 @@
 						&.connected { 
 							.info { color: @green; }
 						}
-
 					}
 				}
 
@@ -1056,7 +1117,7 @@
 
 			/* CC modal ***/
 			&.card-content {
-				width: 840px; 
+				width: 920px;
 
 				.active-item {
 					position: relative;
@@ -1107,7 +1168,7 @@
 
 			/* Pay bill ***/
 			&.pay-bill {
-				width: 420px;
+				width: 440px;
 
 				.actions {
 					.button {
@@ -1294,13 +1355,6 @@
 										cursor: pointer;
 										.hide-text;
 										.square(40px);
-									}
-
-									.admin-icons {
-									    background-image: url("/assets/admin/admin-icons.png");
-									    background-repeat: no-repeat;
-									    border: 0;
-									    display: block;
 									}
 								}
 
@@ -1720,6 +1774,7 @@
 						&.blank {
 							margin: 0 auto;
 							float: none;
+							clear: both;
 							.show;							
 						}
 					}
@@ -1927,6 +1982,18 @@
 									}
 								}
 
+								.group-info {
+									font-size: 18px;
+									line-height: 30px;
+									text-transform: uppercase;
+									font-weight: 600;
+									text-align: center;
+									color: @grey3;
+									width: 30px;
+									background-color: @grey1;
+									.pull-left;
+								}
+
 								h2 {
 									font-size: 21px;
 									line-height: 30px;
@@ -1958,7 +2025,8 @@
 									&.bill { width: 70px; }
 								}
 
-								&.guest { 
+								&.guest,
+								&.group { 
 									h2 { color: @textColor; }
 								}
 								&.accompany { 
@@ -2054,6 +2122,18 @@
 								}
 							}
 
+							.group-info {
+								font-size: 18px;
+								line-height: 30px;
+								text-transform: uppercase;
+								font-weight: 600;
+								text-align: center;
+								color: @grey3;
+								width: 30px;
+								background-color: @grey1;
+								.pull-left;
+							}
+
 							h2 {
 								font-size: 18px;
 								line-height: 30px;
@@ -2102,12 +2182,20 @@
                					&.travel-agent { background: @tacard @tacardTexture; }
 							}
 
-							&.guest { 
+							&.guest,
+							&.group { 
 								h2 { color: @textColor; }
 							}
 
+							&.group {
+								h2 { width: 240px; }
+							}
+
 							&.accompany { 
-								h2 { color: @grey3; }
+								h2 { 
+									color: @grey3;
+									line-height: 30px; 
+								}
 							}
 
 							&.company { 
@@ -2116,6 +2204,22 @@
 
 							&.travel-agent { 
 								h2 { color: @tacard; }
+							}
+
+							&.group {
+								.group-info {
+									font-size: 18px;
+									line-height: 30px;
+									text-transform: uppercase;
+									font-weight: 600;
+									text-align: center;
+									color: @grey3;
+									width: 30px;
+									background-color: @grey1;
+									.pull-left;
+								}
+
+								h2 { width: 240px; }
 							}
 						}
 
@@ -2732,6 +2836,526 @@
 				.actions {
 					padding-top: 19px;
 					border-top: 1px solid rgba(0,0,0,.1);
+				}
+			}
+
+			/* Group Room Types and Rates ***/
+			&.group-rooms {
+				padding: 20px 0 0 0;
+				width: 820px;
+
+				.rooms-grid {
+					position: relative;
+					margin-top: 40px;
+					max-height: 480px;
+
+					.wrapper { padding: 0 20px 20px 20px; }
+
+					.row {
+						position: relative;
+						margin-bottom: 20px;
+
+						.entry-data {
+							.float;
+							.calc-width(100, 70);
+
+							label {
+								color: @grey3;
+								font-size: 14px;
+								line-height: 18px;
+								font-style: italic;
+								.show;
+					        }
+
+					        .room-type {
+					        	position: relative;
+					        	margin-right: 20px;
+					        	.calc-width(100, 400);
+					        	.pull-left;
+
+					        	label {
+					        		font-size: 18px;
+									line-height: 50px;
+									color: @textColor;
+									font-style: normal;
+									text-align: center;
+									font-weight: 600;
+									background-color: rgba(0,0,0,.05);
+									margin: 0;
+									.square(50px);
+									#border-radius > .left();
+					        	}
+
+					        	.select {
+					        		position: absolute;
+					        		top: 0;
+					        		left: 50px;
+					        		.calc-width(100, 50);
+
+					        		select {
+					        			text-transform: uppercase;
+					        			font-weight: 600;
+					        			min-height: 50px;
+					        			padding: 13px 10px;
+
+					        			&[disabled] { color: @textColor; }
+
+					        			&.placeholder,
+					        			option[value=""] { 
+					        				font-weight: 400;
+					        				text-transform: none;
+					        			}
+
+					        			&.placeholder {
+					        				option:not([value=""]) { 
+						        				font-weight: 600;
+						        				text-transform: uppercase;
+						        			}
+					        			}
+					        		}
+					        	}
+					        }
+
+					        .entry {
+					        	width: 80px;
+					        	margin-right: 20px;
+					        	.pull-left;
+
+					        	input { 
+					        		width: 100%; 
+					        		line-height: 50px;
+					        	}
+
+					        	&:last-child { margin-right: 0; }
+					        }
+						}					
+
+				        .add-type,
+				        .remove-type {
+		                    position: absolute;
+		                    top: 0;
+		                    right: 0;
+		                    cursor: pointer;
+		                    .square(50px);
+		                    .faux-clickable;
+		                }
+
+		                .add-type { 
+		                	background-position: 15px -3685px;
+		                	.hide; 
+		                }
+
+		                .remove-type { background-position: 15px -3745px; }
+
+		                &:first-of-type {
+		                	.entry-data {
+		                		.room-type { margin-top: 24px; }
+		                	}
+
+		                	.add-type,
+					        .remove-type { top: 24px; }
+		                }
+
+		                &:last-of-type {
+		                	margin-bottom: 0;
+
+		                	.add-type { .show; }
+		                	.remove-type { .hide; }
+
+		                	&.end {
+		                		.add-type { .hide; }
+		                		.remove-type { .show; }
+		                	}
+		                }
+					}
+				}
+
+				.actions {
+					text-align: center;
+					padding: 20px;
+					background-color: rgba(0,0,0,.05);
+					.box-shadow(0 -2px 2px rgba(0,0,0,.15));
+					.size(90px, 100%);
+
+					.button {
+						display: inline-block;
+						width: auto;
+						padding: 0 20px;
+					}
+				}
+			}
+
+			/* Group Account ***/
+			&.group-account {
+				padding: 20px 0 0 0;
+				width: 480px;
+
+				.account-type {
+					margin: 40px auto 0;
+		            display: table;
+		            .float;
+
+		            li {
+		            	font-size: 14px;
+		                line-height: 40px;
+		                text-align: center;
+		                color: @textColor;
+		                font-weight: 600;
+		                text-transform: uppercase;
+		                margin: 0;
+		                padding: 0 20px;
+		                width: 160px;
+		                cursor: pointer;
+		            	.show;
+		            	.pull-left;
+		            	.clickable;
+		                #border-radius > .rounded(0);
+
+		                &:hover { 
+		                    color: @logoPrimary; 
+		                    .box-shadow();
+		                }
+
+		                &.active {
+		                    cursor: default;
+		                    color: @white;
+		                    text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+		                    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.3)");
+		                    .gradient (@logoGradientEnd, @logoGradientStart);
+		                }
+
+		                &:first-child { #border-radius > .left(); }
+		                &:last-child { #border-radius > .right(); }
+		            }
+				}
+
+				.holder {
+					padding: 20px;
+					.float;
+
+					.entry {
+						position: relative;
+
+						label { margin-bottom: 0; }
+
+						input {
+							&.search {
+								padding-left: 30px;
+								background: @white @icons 10px 12px no-repeat;
+							}
+
+							&[disabled],
+							&[readonly] { 
+								color: @textColor; 
+								padding-left: 10px;
+							}
+						}
+
+						.clear-query {
+							position: absolute;
+							top: 24px;
+							right: 0;
+							z-index: 99;
+							visibility: hidden;
+							.square(40px);
+
+							.icons {
+								position: absolute;
+								top: 12.5px;
+								right: 12.5px;
+								background-color: @grey2;
+								.hide-text;
+								.square(15px);
+								.opacity(0);
+								.show;
+								#fade > .out();
+								#border-radius > .rounded(15px);
+							}
+
+							&.visible { 
+								visibility: visible;
+
+								.icons {	
+									.opacity(100); 
+									#fade > .in(); 
+								}
+							}
+
+							&:hover,
+							&.active { 
+								.icons { background-color: @logoPrimary; }
+							}
+						}
+						
+						&:not(.full-width) { .calc-width(100, 160); }
+
+						&.margin {
+							margin-right: 20px;
+							width: 140px;
+						}
+
+						&.account-set {
+							padding-right: 60px;
+
+							.icons {
+								position: absolute;
+			                    top: 24px;
+			                    right: 0;
+			                    cursor: pointer;
+			                    .square(40px);
+			                    .faux-clickable;
+							}
+						}
+					}
+				}
+
+				.scrollable {
+					position: relative;
+					background-color: rgba(0,0,0,.05);
+					#border-radius > .bottom();
+					.calc-height(100, 228);
+					.box-shadow(0 -2px 2px rgba(0,0,0,.15));
+
+					.wrapper { padding: 20px; }
+
+					.no-content {
+						.h1 { 
+                            font-size: 24px;
+                            line-height: 26px;
+                            margin-bottom: 12px 0;
+                        }
+
+                        .h2 {
+                            font-size: 20px;
+                            line-height: 24px;
+                        }
+					}
+				}
+
+				.actions {
+					text-align: center;
+					padding: 20px;
+					background-color: rgba(0,0,0,.05);
+					.box-shadow(0 -2px 2px rgba(0,0,0,.15));
+					.size(90px, 100%);
+
+					.button {
+						display: inline-block;
+						width: auto;
+						padding: 0 20px;
+					}
+				}
+
+				&.searching { height: 600px; }
+			}
+
+			/* Group Deposit Rules ***/
+			&.group-deposit {
+				padding: 30px 0 0 0;
+				width: 620px;
+
+				.h2 { margin: 0; }
+
+				.switch-button {
+			        position: absolute;
+			        top: 30px;
+			        right: 20px;
+			        cursor: pointer;
+			        text-shadow: 1px 1px 0 rgba(255,255,255,.7);
+			        background: @grey2;
+			        margin: 0 auto;
+			        .size(26px, 60px);
+			        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+			        #border-radius > .rounded(20px);
+			        .show;
+			        
+			        .switch-icon {
+			            position: absolute;
+			            top: 2px;
+			            left: 2px;
+			            z-index: 9;
+			            .gradient-with-image(@onOffLines, @grey1, @white);
+			            background-position: 50% 50%, 0 0;
+			            background-repeat: no-repeat, repeat;
+			            background-size: 6px 7px, auto;
+			            .hide-text;
+			            .show;
+			            .square(22px);
+			            .transition;
+			            #border-radius > .rounded(22px);
+
+			            @media @highdpi {
+			                .gradient-with-image(@onOffLines2x, @grey1, @white);
+			                background-position: 50% 50%, 0 0;
+			                background-repeat: no-repeat, repeat;
+			                background-size: 6px 7px, auto;
+			            }
+			        }
+
+			        input[type="checkbox"] { 
+			            cursor: pointer;
+			            position: absolute;
+			            top: 0;
+			            left: 0;
+			            width: 100%;
+			            line-height: 26px;
+			            min-height: 26px;
+			            z-index: 20;
+			            .opacity(0);
+			            .show;
+			        }   
+
+			        &.on {
+			            .gradient(@greenEnd, @greenStart);
+			            .switch-icon { left: 34px; }
+			        }
+
+			        &.single { margin-top: 5px; }
+			    }
+
+			    .holder {
+			    	padding: 20px;
+			    	.float;
+
+			    	label {
+				    	font-size: 14px;
+				    	text-transform: uppercase;
+				    	margin: 0;
+				    }
+
+				    .rules {
+				    	position: relative;
+				    	max-height: 320px;
+				    	padding-bottom: 10px;
+				    	margin-bottom: 10px;
+				    	border-bottom: 1px solid rgba(0,0,0,.1);
+
+				    	> .wrapper { padding: 0; }
+
+				    	> .iScrollVerticalScrollbar { 
+				    		top: 0;
+				    		bottom: 10px; 
+				    		right: 0;
+				    	}
+
+				    	li {
+				    		position: relative;
+				    		padding-right: 50px;
+				    		margin-bottom: 10px;
+
+				    		.button {
+				    			font-size: 14px;
+				    			line-height: 40px;
+				    			font-weight: 400;
+				    			text-align: left;
+				    			padding: 0;
+				    			height: 40px;
+
+				    			strong,
+				    			em {
+				    				padding: 0 10px;
+				    				.nowrap();
+				    				.pull-left;
+				    			}
+
+				    			strong { 
+				    				font-weight: 600; 
+				    				width: 35%;
+				    			}
+
+				    			em { width: 65%; }
+				    		}
+
+				    		.icons {
+				    			position: absolute;
+				    			top: 0;
+				    			right: 0;
+				    			cursor: pointer;
+			                    .square(40px);
+			                    .faux-clickable;
+				    		}
+
+				    		&:last-child { margin-bottom: 0; }
+				    	}
+				    }
+
+				    .add-new-button { 
+				    	.size(50px, 100%);
+				    	.show; 
+				    }
+
+				    .content-left { 
+				    	.calc-width(60, 20);
+				    	.pull-left;
+				    }
+
+				    .content-right { 
+				    	margin-left: 20px;
+				    	padding-left: 20px;
+				    	border-left: 1px solid rgba(0,0,0,.1);
+				    	.calc-width(40, 20);
+				    	.pull-left;
+				    }
+			    }			    
+
+				.actions {
+					text-align: center;
+					padding: 20px;
+					background-color: rgba(0,0,0,.05);
+					.box-shadow(0 -2px 2px rgba(0,0,0,.15));
+					.size(90px, 100%);
+
+					.button {
+						display: inline-block;
+						width: auto;
+						padding: 0 20px;
+					}
+				}
+			}
+
+			/* Group Edit guest ***/
+			&.group-guest {
+				padding: 30px 0 0 0;
+				width: 560px;
+
+				.h2 { margin: 0; }
+
+				.holder {
+					padding: 20px;
+					.float;
+
+					.entry {
+						.calc-width(50, 10);
+
+						label { margin: 0; }
+
+						&.margin { margin-right: 20px; }
+
+						&.type { .calc-width(65, 10); }
+						&.occupancy { .calc-width(35, 10); }
+						&.date { .calc-width(40, 20); }
+						&.room { width: 20%; }
+					}
+				}
+
+				.actions {
+					text-align: center;
+					padding: 20px;
+					background-color: rgba(0,0,0,.05);
+					.box-shadow(0 -2px 2px rgba(0,0,0,.15));
+					.size(150px, 100%);
+
+					.button {
+						display: inline-block;
+						width: auto;
+						margin-right: 10px;
+
+						&.blank { 
+							margin: 10px auto 0 auto;
+							clear: both;
+							.show;
+						}
+					}
 				}
 			}
 		}

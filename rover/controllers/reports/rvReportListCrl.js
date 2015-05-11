@@ -49,7 +49,10 @@ sntRover.controller('RVReportListCrl', [
                 reportUtils.processFilters(reportList[i], {
                     'guaranteeTypes' : $scope.$parent.guaranteeTypes,
                     'chargeGroups'   : $scope.$parent.chargeGroups,
-                    'chargeCodes'    : $scope.$parent.chargeCodes
+                    'chargeCodes'    : $scope.$parent.chargeCodes,
+                    'markets'        : $scope.$parent.markets,
+                    'sources'        : $scope.$parent.sources,
+                    'origins'        : $scope.$parent.origins
                 });
 
 

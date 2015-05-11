@@ -27,6 +27,8 @@
 					}
 				}
 
+				strong { color: @red; }
+
 				&.checkbox,
 				&.radio {
 					font-size: 16px;
@@ -73,6 +75,7 @@
 					top: 35px;
 					right: 10px;
 					width: 140px;
+					.show;
 
 					.data-off,
 					.data-on {
@@ -333,6 +336,10 @@
 
 		&:hover,
 		&:active { background-position: 95% -38px; }
+
+		&[disabled] {
+			background: rgba(0,0,0,.01) @calendar no-repeat 95% 12px !important;
+		}
 
 		@media @highdpi {
 			background-image: @calendar2x;

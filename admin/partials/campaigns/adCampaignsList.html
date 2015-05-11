@@ -14,11 +14,11 @@
 			<table id="" class="grid datatable campaign-grid" ng-table="tableParams" template-pagination="custom/pager">
 				<tbody>
 					<tr ng-repeat="campaign in $data"> 
-						<td data-title="'ID'"  header-class="id" >
+						<td data-title="'ID'" class="campaign_id"  header-class="id campaign_id" >
 							<span> {{campaign.id}}</span>
 						</td>
 											
-						<td data-title="'Name'"  sortable="'name'" header-class="name" >
+						<td data-title="'Name'"  sortable="'name'" header-class="name campaign_name" >
 							<a class="edit-data" ng-click="editCampaign(campaign.id, $index)" >
 								<span>
 									{{campaign.name}}

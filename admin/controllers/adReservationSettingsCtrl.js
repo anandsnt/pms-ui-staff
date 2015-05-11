@@ -15,6 +15,27 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": 2,
       "name": "By Rate"
     }];
+    $scope.defaultSignDisplays = [{
+      "value": "+",
+      "name": "+"
+    }, {
+      "value": "-",
+      "name": "-"
+    }];    
+     $scope.checkin_values = [{
+      "value": "%",
+      "name": "%"
+    }, {
+      "value": "$",
+      "name": "$"
+    }];   
+    $scope.checkin_types = [{
+      "value": "perStay",
+      "name": "Per Stay"
+    }, {
+      "value": "perNight",
+      "name": "Per Night"
+    }];     
     $scope.reservationSettingsData = reservationSettingsData;
 
 

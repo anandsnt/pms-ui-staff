@@ -33,7 +33,9 @@ $scope.init();
 
 var setUpData = function(){
    $scope.checkinData.is_send_alert_flag = ($scope.checkinData.is_send_alert === 'true') ? true:false;
+   $scope.checkinData.is_send_zest_alert_flag = ($scope.checkinData.is_zest_checkin_alert_on  === 'true') ? true:false;
     $scope.checkinData.is_send_checkin_staff_alert_flag = ($scope.checkinData.is_send_checkin_staff_alert === 'true') ? true:false;
+    $scope.checkinData.is_notify_on_room_not_assigned_flag = ($scope.checkinData.is_notify_on_room_not_assigned === 'true') ? true:false;
     $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_notify_on_room_ready === 'true') ? true:false;
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
     
@@ -115,7 +117,9 @@ $scope.fetchCheckinDetails();
 $scope.saveCheckin = function(){
 
   $scope.checkinData.is_send_alert = ($scope.checkinData.is_send_alert_flag) ? 'true':'false';
+  $scope.checkinData.is_send_zest_alert = ($scope.checkinData.is_send_zest_alert_flag) ? 'true':'false';
   $scope.checkinData.is_send_checkin_staff_alert = ($scope.checkinData.is_send_checkin_staff_alert_flag) ? 'true':'false';
+  $scope.checkinData.is_notify_on_room_not_assigned = ($scope.checkinData.is_notify_on_room_not_assigned_flag) ?'true':'false';
   $scope.checkinData.is_notify_on_room_ready = ($scope.checkinData.is_notify_on_room_ready_flag) ?'true':'false';
   $scope.checkinData.require_cc_for_checkin_email = ($scope.checkinData.require_cc_for_checkin_email_flag) ? 'true':'false';
 
@@ -135,17 +139,22 @@ $scope.saveCheckin = function(){
   });
   //to reset time incase of an invalid time selection
   var checkinAlertTime = ($scope.checkinData.checkin_alert_time_hour !== "" && $scope.checkinData.checkin_alert_time_minute !== "" && $scope.checkinData.checkin_alert_time_hour && $scope.checkinData.checkin_alert_time_minute) ? $scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute :"";
+  var zestCheckinAlertTime = ($scope.checkinData.zest_checkin_alert_time_hour !== "" && $scope.checkinData.zest_checkin_alert_time_min !== "" && $scope.checkinData.zest_checkin_alert_time_hour && $scope.checkinData.zest_checkin_alert_time_min) ? $scope.checkinData.zest_checkin_alert_time_hour+":"+$scope.checkinData.zest_checkin_alert_time_min :"";
   var startAutoCheckinFrom = ($scope.checkinData.auto_checkin_from_hour !== "" && $scope.checkinData.auto_checkin_from_minute !== "" && $scope.checkinData.auto_checkin_from_hour && $scope.checkinData.auto_checkin_from_minute) ? $scope.checkinData.auto_checkin_from_hour+":"+$scope.checkinData.auto_checkin_from_minute :"";
   var startAutoCheckinTo = ($scope.checkinData.auto_checkin_to_hour !== "" && $scope.checkinData.auto_checkin_to_minute !== "" && $scope.checkinData.auto_checkin_to_hour && $scope.checkinData.auto_checkin_to_minute) ? $scope.checkinData.auto_checkin_to_hour+":"+$scope.checkinData.auto_checkin_to_minute :"";
   var uploadData = {
     'checkin_alert_message': $scope.checkinData.checkin_alert_message,
     'checkin_staff_alert_option':$scope.checkinData.checkin_staff_alert_option,
     'emails':$scope.checkinData.emails,
+    'is_notify_on_room_not_assigned':$scope.checkinData.is_notify_on_room_not_assigned,
     'is_notify_on_room_ready':$scope.checkinData.is_notify_on_room_ready,
     'is_send_alert':$scope.checkinData.is_send_alert,
+    'is_zest_checkin_alert_on':$scope.checkinData.is_send_zest_alert,
     'is_send_checkin_staff_alert':$scope.checkinData.is_send_checkin_staff_alert,
     'prime_time':$scope.checkinData.checkin_alert_primetime,
+    'zest_alert_prime_time':$scope.checkinData.zest_checkin_alert_primetime,
     'checkin_alert_time':checkinAlertTime,
+    'zest_app_checkin_alert_time':zestCheckinAlertTime,
     'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
     'is_precheckin_only':$scope.checkinData.is_precheckin_only? 'true':'false',
     //'is_sent_to_queue':$scope.checkinData.is_sent_to_queue ==='yes'? 'true':'false',

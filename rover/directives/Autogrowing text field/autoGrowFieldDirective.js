@@ -33,6 +33,11 @@ sntRover.directive("autoGrowField", function($window) {
         // update the text of the tester span
         tester.text(element.val());
 
+        // Fix it for placeholders
+        if (!element.val() && !!element.attr('placeholder')) {
+          tester.text(element.attr('placeholder'));
+        }
+
         // measure!
         var r = tester[0].getBoundingClientRect();
 

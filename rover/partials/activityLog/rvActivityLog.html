@@ -108,7 +108,7 @@
                 <tbody>
                     <tr ng-repeat="log in activityLogData" ngrepeatend>
                         <td>{{log.user_name}}</td>
-                        <td class="date"> {{log.date  | date:dateFormat}}, {{log.time}}</td>
+                        <td> {{log.date }}, {{log.time}}</td>
                         <td>{{log.action}}</td>
                         <td class="details">
                             <span ng-repeat="details in log.details">

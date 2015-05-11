@@ -9,7 +9,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		var url =  '/api/restriction_types';	
 		var deferred = $q.defer();
 		if(that.allRestrictionTypes.length > 0){
-			deferred.resolve(that.allRestrictionTypes)
+			deferred.resolve(that.allRestrictionTypes);
 		} else{
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				//Only the editable restrictions should be shown in the UI
@@ -23,6 +23,17 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				deferred.reject(data);
 			});
 		}
+		return deferred.promise;
+	};
+
+	this.updateRoomTypeOverride = function(data){
+		var url =  '/api/daily_rates';	//change
+		var deferred = $q.defer();
+			BaseWebSrvV2.postJSON(url).then(function(data) {
+				deferred.resolve(data);
+			},function(data){
+				deferred.reject(data);
+			});
 		return deferred.promise;
 	};
 
@@ -181,6 +192,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'hideOnHourly': false,
                     'isOnRate': true,//hide when on adding/removing restrictions screen
                     'icon': "R",
+                    'days': "R",
                     'id': totalRestrictions,
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
@@ -266,6 +278,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'isOnRate': true,//hide when on adding/removing restrictions screen
                     'hideOnHourly': false,
                     'icon': "R",
+                    'days': "R",
                     'id': totalRestrictions,
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;

@@ -1,11 +1,25 @@
 #rate-manager {
+    ::-webkit-scrollbar
+    {
+      width: 6px;  /* for vertical scrollbars */
+      height: 6px; /* for horizontal scrollbars */
+    }
+
+    ::-webkit-scrollbar-track
+    {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb
+    {
+      background: linear-gradient(-90deg, #ff860d 0, #ffb319 100%) !important;
+      border-radius:9px;
+    }
   .iScrollIndicator{
       background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
   }
   #roomTypeViewCalendar{
-    width:100%;  
-    padding:0px; 
-    overflow: hidden;
+   // margin-left:22%;
 
     .limit-width{
       width: 60%;
@@ -62,11 +76,7 @@
   }
 
   #rateViewCalendar{
-    width:100%; 
-    position: relative;  
-    padding:0px; 
-    overflow: hidden; 
-    z-index: 10;
+    //overflow: hidden; //defined by overflow x/y in (pinnedTable/scrollTable)'s 
 
     table{
       table-layout:fixed; 
@@ -379,19 +389,39 @@
   height: 100%;
 }
 
+
+
+
+.scrollTable {
+  overflow: scroll;
+  -webkit-scrollbar { width: 0 !important }//to hide the default scrollbar
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+
 .rate-calendar{
+    .content{
+        margin-left: 220px;
+    }
+    span{
+          white-space: nowrap;   
+          overflow: hidden;   
+          text-overflow: ellipsis;
+      }
   table {
   }
 
   tr {
     &.last{
       .cell-content{
-        border-bottom : 3px solid rgba(0,0,0, 0.05);  //6px solid rgba(0,0,0, 0.05); 
+      //  border-bottom : 3px solid rgba(0,0,0, 0.05);  //6px solid rgba(0,0,0, 0.05); 
       }
     }
     .first-row {
+      height: 60px;
       text-align: right;
-      padding: 0 20px;
+      padding: 20px;
       vertical-align: middle;  
       
       img {
@@ -451,17 +481,32 @@
     padding: 0 5px 0 5px;
   }
 
-  thead tr th:not(:first-child) {
-    padding: 5px 5px 0px 5px;
+//  thead tr th:not(:first-child) {
+  //  padding: 5px 5px 0px 5px;
+ // }
+thead tr th {
+   // padding: 5px 5px 0px 5px;
   }
-
   .cell-container{
     /*CICO-8633 10/20/2014*/
-    border-top: 3px solid rgba(0,0,0, 0.05);
-    border-bottom: 3px solid rgba(0,0,0, 0.05);
-    border-left: 6px solid rgba(0,0,0, 0.05);
-    border-right: 6px solid rgba(0,0,0,0.05);
-
+    border-top: 5px solid rgba(0,0,0, 0.2);
+    border-left: 10px solid rgba(0,0,0, 0.2);
+    border-right: 10px solid rgba(0,0,0,0.2);
+    border-bottom: 5px solid rgba(0,0,0, 0.2);
+    border-radius: 0px 0px 0px 0px;
+    &.weekend_day{
+        border-top: 5px solid rgba(0,0,0, 0.05);
+        border-left: 10px solid rgba(0,0,0, 0.05);
+        border-right: 10px solid rgba(0,0,0,0.05);
+        border-bottom: 5px solid rgba(0,0,0, 0.05);
+    }
+    &.history_cell_container{
+        border-top: 5px solid rgba(0,0,0, 0.1);
+        border-left: 10px solid rgba(0,0,0, 0.1);
+        border-right: 10px solid rgba(0,0,0,0.1);
+        border-bottom: 5px solid rgba(0,0,0, 0.1);
+    }
+    
     .cell-content {
         cursor: pointer;
         border: none;
@@ -470,16 +515,24 @@
 
         > div {
           border: none;
-          border-radius: 3px;
+          border-radius: 0px;
           padding: 0px;
           margin: 0px;
         }
     }
   }
 
+    .isHistory-cell-content{
+        opacity:0.4 !important; 
+        cursor: default !important; 
+        //background-color:rgba(0,0,0,1);
+    }
   .cell {
     //width: 100%;
     position: relative;
+    border-style:solid;
+    border-width:0px;
+    border-color:transparent;//forces tables inline when multi-scrolling
   }
 
   .cell-overlay {
@@ -590,7 +643,7 @@
   th { 
     height: 60px;
     background-color: transparent;
-
+    
     > .date-header {
       position: relative;
       font-weight: 600;
@@ -603,7 +656,8 @@
       width: 100%;
       color: #fcfcfc;
       text-transform: uppercase;
-
+      margin-bottom: 5px;
+      
       > span {
         position: relative;
         font-size: 14px;   
@@ -629,10 +683,10 @@
         right: 6px;
         bottom: 3px;
         z-index: 0; //-100; /*Fix for disappearing date header*/
-        border-radius: 3px;
+        //border-radius: 3px;
         background-color: #393c41;
-         -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;   
+        // -webkit-border-radius: 3px;
+        //-moz-border-radius: 3px; 
       }
 
       &:after {
@@ -643,9 +697,24 @@
         bottom: 0;
         right: 0;
         z-index: -120;
-        background-color: rgba(0,0,0,0.05);
-       
+        background-color: rgba(0,0,0,0.03);
       }
+      
+       &.weekend_day{
+            &:before {
+                content: ' ';
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                right: 6px;
+                bottom: 3px;
+                z-index: 0; //-100; /*Fix for disappearing date header*/
+               // border-radius: 3px;
+                background-color: rgba(91,127,141, 0.8);
+                // -webkit-border-radius: 3px;
+               // -moz-border-radius: 3px; 
+          }
+        }
     }
   }
 
@@ -660,12 +729,15 @@
 }
 
 .restriction-legends{
-  position: relative;
+  position: fixed;//fixed 
     padding: 5px 15px 0 15px;
     background: #fcfcfc;
     overflow: hidden;
     *zoom: 1;
-
+    z-index: 10;
+    bottom: 0;//fixed to bottom
+    width:100%;
+    
     li {
       position: relative;
       font-size: 13px;
@@ -1004,7 +1076,7 @@
 
   }
 
-  .or{
+  .or-class{
     color:#9D9D9D;
     font-style:italic;
     margin-left:2px;
@@ -1229,7 +1301,11 @@ padding-top: 80px;
     // padding-top: 10px;
     button{
       height: 45px;
-      width: 100px;
+      white-space:nowrap;
+      margin-right:10px;
+      width:auto;
+      min-width: 140px;
+      
       &.blank{
         color: #000;
       }
@@ -1450,7 +1526,7 @@ padding-top: 80px;
     overflow: hidden;
     color: #9D9D9D;
 
-    > .or{
+    > .or-class{
       margin: 22px; /*12px;*/
       font-size:12px;
     }
@@ -1688,5 +1764,28 @@ padding-top: 80px;
   z-index: -1;
 }
 
-
-
+.scrollBound{
+    margin: auto;
+}
+.pinnedLeft{
+    float: left; 
+    overflow: hidden;
+}
+.first-row-cell{
+    border-top: 10px solid rgba(0, 0, 0, 0.0) !important;
+    border-bottom: 10px solid rgba(0, 0, 0, 0.0) !important;
+}
+.weekend_day{
+    & > div {
+        &.cell-container{
+            border-top: 5px solid rgba(0,0,0, 0.1) !important;
+            border-left: 10px solid rgba(0,0,0, 0.1) !important;
+            border-right: 10px solid rgba(0,0,0,0.1) !important;
+            border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+        }
+    }
+}
+.hasOverride-label{
+    color:#F69312;
+    
+}

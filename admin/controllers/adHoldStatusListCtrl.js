@@ -32,8 +32,8 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 				{					
 				$scope.holdstatusData.name =x.name;
 				$scope.holdstatusData.id =x.id;
-				$scope.holdstatusData.is_enabled =x.is_enabled;
-				$scope.holdstatusData.is_default=x.is_default;				
+				$scope.holdstatusData.is_take_from_inventory =x.is_take_from_inventory;
+				$scope.holdstatusData.is_system=x.is_system;				
 				}
 		});		
 	};
@@ -72,8 +72,8 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 	    	} else {
 	    		//To update data with new value
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
-	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_enabled = $scope.holdstatusData.is_enabled;
-	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_default=$scope.holdstatusData.is_default;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_take_from_inventory = $scope.holdstatusData.is_take_from_inventory;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system=$scope.holdstatusData.is_system;
 	    	}
     		$scope.currentClickedElement = -1;
     	};
@@ -95,12 +95,19 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * @param {string} id of the selected HoldStatus
     */		
 	$scope.deleteHoldStatus = function(index, id){		
-		var successCallbackDelete = function(data){	
+		var successCallbackDelete = function(data){				
 	 		$scope.$emit('hideLoader');
-	 		$scope.data.holdStatuses.splice(index, 1);
+	 		//handling error case
+	 		if(data.status==='failure')
+	 		{
+	 			$scope.errorMessage = data.errors;	
+	 		}else{
+	 			//Handling success - removing deleted holdstatus
+	 			$scope.data.holdStatuses.splice(index, 1);
+	 		}	 		
 	 		$scope.currentClickedElement = -1;
-	 	};
-		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id , successCallbackDelete);
+	 	};	 	
+		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id, successCallbackDelete);
 	};
 }]);
 

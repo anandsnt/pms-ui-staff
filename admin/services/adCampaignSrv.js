@@ -77,12 +77,12 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         	return deferred.promise;
         };
 
-        this.fetchIOSAlertLength = function(){
+        this.fetchCampaignConfig = function(){
         	console.log("in servie");
 
         	var deferred = $q.defer();
         	//var url = "/sample_json/campaign/alertLength.json";
-            var url = "api/campaigns/alert_length";
+            var url = "api/campaigns/configurations";
 
         	ADBaseWebSrvV2.getJSON(url).then(function (data) {
         	    deferred.resolve(data);
