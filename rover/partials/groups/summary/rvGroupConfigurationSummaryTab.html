@@ -30,14 +30,10 @@
                 <label for="group-email" translate>CONTACT_EMAIL</label>
                 <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" />
             </div>
-            <div class="entry break">
+            <div class="entry break full-width">
                 <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
-            </div>
-            <div class="entry">
-                <button type="button" class="button blue" ng-click ="openBillingInformation();">
-                		Billing Information
-            	</button>
-            </div>
+                <a ng-click ="openBillingInformation();" class="button blue" translate>Billing Information</a>  
+            </div>            
         </div>
         <div class="holder right">
             <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
