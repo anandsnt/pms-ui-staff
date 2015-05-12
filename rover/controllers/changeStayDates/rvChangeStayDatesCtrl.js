@@ -487,7 +487,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		$scope.getEventSourceObject = function(checkinDate, checkoutDate) {
 			var events = [];
-			var currencyCode = $scope.stayDetails.calendarDetails.currency_code;
+			//var currencyCode = $scope.stayDetails.calendarDetails.currency_code;
 			var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
 
 			var thisDate;
@@ -499,7 +499,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				if (this.is_sr == "true") {
 					calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
 				} else {
-					calEvt.title = getCurrencySymbol(currencyCode) + Math.round(this.rate);
+					calEvt.title = $rootScope.currencySymbol + Math.round(this.rate);
 				}
 				calEvt.start = thisDate;
 				calEvt.end = thisDate;
@@ -523,7 +523,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 						if (this.is_sr == "true") {
 							calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
 						} else {
-							calEvt.title = getCurrencySymbol(currencyCode) + Math.round(this.rate);
+							calEvt.title = $rootScope.currencySymbol + Math.round(this.rate);
 						}
 						calEvt.start = thisDate;
 						calEvt.end = thisDate;
