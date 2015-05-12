@@ -51,7 +51,13 @@ angular.module('stayCardModule', [])
             abstract: true,
             url: '/reservation',
             templateUrl: '/assets/partials/reservation/rvMain.html',
-            controller: 'staycardController'
+            controller: 'staycardController',
+            onExit: function($rootScope) {
+                $rootScope.stayCardStateBookMark = {
+                    previousState: '',
+                    previousStateParams: {}
+                }
+            }
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard', {
@@ -158,11 +164,11 @@ angular.module('stayCardModule', [])
                 baseData: function(RVReservationSummarySrv) {
                     return RVReservationSummarySrv.fetchInitialData();
                 },
-                paymentTypes: function(RVPaymentSrv){
+                paymentTypes: function(RVPaymentSrv) {
                     return RVPaymentSrv.renderPaymentScreen();
                 },
-                reseravationDepositData: function(RVReservationCardSrv,$stateParams,$rootScope){
-                    return $rootScope.isStandAlone? RVReservationCardSrv.fetchDepositDetails($stateParams.id) : {};
+                reseravationDepositData: function(RVReservationCardSrv, $stateParams, $rootScope) {
+                    return $rootScope.isStandAlone ? RVReservationCardSrv.fetchDepositDetails($stateParams.id) : {};
                 }
             }
         });
@@ -234,7 +240,7 @@ angular.module('stayCardModule', [])
             controller: 'RVActivityLogCtrl',
             resolve: {
                 activityLogResponse: function(RVActivityLogSrv, $stateParams) {
-                    if ( !!RVActivityLogSrv ) {
+                    if (!!RVActivityLogSrv) {
                         return RVActivityLogSrv.fetchActivityLog($stateParams.id);
                     } else {
                         return {};
@@ -244,5 +250,5 @@ angular.module('stayCardModule', [])
                     return RVActivityLogSrv.fetchActiveUsers();
                 }
             }
-        });        
+        });
     });
