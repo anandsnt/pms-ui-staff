@@ -191,8 +191,10 @@ a, a:hover {
 /* --------------------------------------------------------------------------- */
 
 /*------------------------------- date picker starts here---------------------*/
-.date-picker-header{
-  background-color: @black;
+
+.date-picker-header-bg{
+  background: linear-gradient(to bottom, #52320b 0%,#825212 100%) !important;
+  padding: 2%;
 }
 .pickadate-cell li {
  border: 1px solid #fff;
@@ -202,12 +204,12 @@ a, a:hover {
 	color:@white !important;
 }
 .date-picker-wrap{
-  background-color: @white !important;
-  background-image: linear-gradient(to bottom, @white, @white);
+  background-color: #faeed4 !important;
+  background-image: none;
 }
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-disabled a {
-  color: #959595 !important;
+  color: @grey !important;
 }
 
 .date-picker-ok{
@@ -227,7 +229,7 @@ a, a:hover {
 }
 
 .pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
-    background-color:#DEDCD0 !important;
+    background-color:#e1d7be !important;
 }
 .pickadate-cell .pickadate-active{
     background-color:@red !important;

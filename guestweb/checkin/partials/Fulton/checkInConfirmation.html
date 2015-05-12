@@ -3,7 +3,7 @@
 <div class="jumbotron">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
-			<div class="row headerrow blue-bg">
+			<div class="row headerrow header-bg">
 				<logo-image></logo-image>
 			</div>
 		</div>
@@ -15,7 +15,7 @@
 		<!--	show error message -->
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 			<p class="msg-head">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="blue-text">{{hotelPhone}}.</a></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}">{{hotelPhone}}.</a></p>
 		</div>
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isPosting || netWorkError || isResponseSuccess">
@@ -53,7 +53,7 @@
 		</div>
 		<div class="date-picker-bg" ng-show="isCalender">
 			<div class="date-picker-wrap">
-				<div class="col-xs-12 date-picker-header">
+				<div class="col-xs-12 date-picker-header-bg">
 					<div class="col-xs-2 date-picker-back" ng-click = "closeCalender()">
 						 <img src="/assets/img/back_icon_white.png" width="25" height="20" alt=""/>
 						<div >BACK</div>
