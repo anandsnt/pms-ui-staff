@@ -1,6 +1,7 @@
 <div id="billing-content" class="content-wrapper" ng-controller="rvRouteDetailsCtrl">
 	<fieldset class="content-left">
 		<div id="entity-details" class="entity-details scrollable">
+			SELECTED ENTITY TYPE: {{selectedEntity.entity_type}}
 			<div class="wrapper">
 				<div class="title">
 					{{'ENTITY' | translate}}
@@ -26,7 +27,7 @@
 					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
                   <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
 				</div>
-				<div class="title" ng-show= "showPayment" ng-hide="selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING'">Payment
+				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING')">Payment
 					<button type="button" id="edit-entity" ng-click="renderAddedPayment = null; isAddPayment = false" class="button with-icon only-icon purple edit" ng-show= "renderAddedPayment != null">
 						<span class="icons icon-pencil" ></span>
 					</button>
@@ -63,10 +64,10 @@
 				</div>
 				
 				<!-- Add new credit card button - remove it when new card is added -->
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && paymentDetails == null" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING')">+ New Payment Method</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && paymentDetails == null" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING')">+ New Payment Method</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
-				<div ng-hide="selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING'" id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
+				<div ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING')" id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
 				  <!-- <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-controller="RVCardOptionsCtrl" ng-if = "isAddPayment && showPayment && paymentDetails == null"></div> -->
 			</div>
 		</div>
