@@ -88,7 +88,7 @@
                     <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
                 </div>  
                 <div ng-show="data.page_template=='ADDON'">
-                     <ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='data.addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" ng-show="data.page_template=='ADDON'"></ad-dropdown>  
+                     <ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='data.addon_id' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
 
                     <div class="entry full-width" ng-show="data.page_template=='ADDON'">
                        <label for="addon-description"><span translate>ADDON_DESCRIPTION_LABEL </span></label>
