@@ -9,7 +9,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Montauk/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Fulton/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
@@ -37,8 +37,8 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
-		url: '/checkOutLaterSuccess',
-		templateUrl: '/assets/checkoutlater/partials/Montauk/checkOutLaterSuccess.html',
+		url: '/checkOutLaterOptions/:id',
+		templateUrl: '/assets/checkoutlater/partials/Fulton/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -85,7 +85,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Montauk/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Fulton/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });

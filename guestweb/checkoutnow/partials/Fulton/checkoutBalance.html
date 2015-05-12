@@ -3,24 +3,24 @@
 	<!-- contentarea starts here-->
 		<div class="container">
 			<div class="container-fluid">
-				<div class="row headerrow blue-bg">
+				<div class="row headerrow header-bg">
 					<logo-image></logo-image>
 				</div>
 			</div>
 			<!-- show posting message -->
 			<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head blue-text">Your request is being processed.</p>
-				<p class="msg-body blue-text">This may take a few seconds..... please wait!</p>
+				<p class="msg-head">Your request is being processed.</p>
+				<p class="msg-body">This may take a few seconds..... please wait!</p>
 			</div>
 			<!-- show error message -->
 			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-				<p class="msg-head blue-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
-				<p class="msg-body blue-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="blue-text">{{hotelPhone}}.</a></p>
+				<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+				<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="blue-text">{{hotelPhone}}.</a></p>
 			</div>
 			<!-- top section starts here-->
 			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
 				<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel ">
-					<span class="blue-text">Check-Out</span>
+					<span>Check-Out</span>
 					<p class="leadtext balance-container">
 						<span class="lightcontent chekout-time">
 							<span class="light-black-text">Your balance is:</span>
