@@ -306,7 +306,8 @@
 
 		/* CC icons ***/
 		&.icon-swiped,
-		&.icon-authenticated {
+		&.icon-authenticated,
+		&.icon-authentication-failed {
 			.square(30px);
 			.hide-text;
 		}
@@ -315,10 +316,12 @@
 			background-position: 0px -3335px;
 
 			&.icon-authenticated { background-position: 0px -6695px; }
+			&.icon-authentication-failed { background-position: 0px -6815px; }
 		}
 
 		&.icon-authenticated { background-position: 5px -6753px; }
-
+		&.icon-authentication-failed { background-position: 5px -6873px; }
+		
 		&.icon-cc-authorization {
 			background-position: 5px -6510px;
 			.square(50px);

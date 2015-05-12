@@ -12,8 +12,8 @@
 		<!-- Show balance -->
 		<div class="balance break">
 			<span class="label">Balance</span>
-			<!-- In connected PMS, we should indicate if it is having suppressed rate -->
-			<span ng-if="isStandAlone == true">
+			<!-- According to CICO-15833, we need SR in both connected & stanalone -->
+			<span>
 				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)" ng-if ="!reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
 					{{currencySymbol}} 
 					{{ reservationData.reservation_card.balance_amount | number:2 }}
@@ -23,13 +23,6 @@
 				</span>
 			</span>
 			
-			<span ng-if="isStandAlone == false">
-				<!-- if balance is zero, show balance in green color -->
-				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"> 
-					{{currencySymbol}} 
-					{{ reservationData.reservation_card.balance_amount | number:2 }}
-				</span>
-			</span>
 			
 		</div>
 		
