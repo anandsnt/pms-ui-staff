@@ -254,7 +254,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		//Update the balance amount in staycard
 		$scope.$on('UPDATE_DEPOSIT_BALANCE', function(e, data){
-			$scope.reservationData.reservation_card.balance_amount = data.balance_amount;
+			$scope.reservationData.reservation_card.balance_amount = data.reservation_balance;
 		});
 
 
