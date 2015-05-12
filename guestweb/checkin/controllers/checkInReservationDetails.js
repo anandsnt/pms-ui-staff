@@ -33,15 +33,11 @@
 	$scope.agreeClicked = function(){
 		$rootScope.checkedApplyCharges = $scope.checked =  true;
 		$scope.showTermsPopup = false;
-		// $scope.closeDialog();
-		// console.log("fgrvhjfkvgb4rjk")
 	};
 
 	$scope.cancel = function(){
 		$rootScope.checkedApplyCharges = $scope.checked = false;
 		$scope.showTermsPopup = false;
-		// $scope.closeDialog();
-		// console.log("fgrvhjfdwdgwdgkvgb4rjk")
 	};
 
 	$scope.checkInButtonClicked = function(){

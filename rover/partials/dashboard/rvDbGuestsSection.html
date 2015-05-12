@@ -52,7 +52,7 @@
         </li>
         <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">Queued <strong class="green" bo-text="userInfo.queue_rooms_count"></strong></li>
         <li>Departures <strong class="red" bo-text="statisticsData.guests.checking_out"></strong></li>
-        <li ng-if="isLateCheckoutTurnedOn && shouldShowLateCheckout">Late Check Out <strong class="green" bo-text="userInfo.late_checkout_count"></strong></li>
+        <li ng-if="isLateCheckoutTurnedOn && shouldShowLateCheckout">Late Check Out <strong class="red" bo-text="userInfo.late_checkout_count"></strong></li>
         <li>In-house <strong class="blue" bo-text="statisticsData.guests.in_house"></strong></li>
         <li>VIPs <strong class="yellow" bo-text="statisticsData.guests.vip"></strong></li>
     </ul>
