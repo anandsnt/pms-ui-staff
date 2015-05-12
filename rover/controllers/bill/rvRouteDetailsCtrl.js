@@ -380,7 +380,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     //default to last item when there is no bill no.
                     var billNo = $scope.selectedEntity.bill_no
                     if(billNo == "") $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
-                    else $scope.selectedEntity.to_bill = billNo;
+                    else $scope.selectedEntity.to_bill = $scope.selectedEntity.to_bill;
 
                     $scope.fetchAvailableChargeCodes();
                   //}
