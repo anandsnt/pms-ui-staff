@@ -37,7 +37,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
-		url: '/checkOutLaterSuccess',
+		url: '/checkOutLaterOptions/:id',
 		templateUrl: '/assets/checkoutlater/partials/Montauk/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
@@ -62,11 +62,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/preCheckin/partials/Montauk/noOption.html',
+	 	templateUrl: '/assets/checkin/partials/Montauk/checkInKeys.html',
+	 	controller : 'checkInKeysController',
 	 	title: 'Status - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/preCheckin/partials/Montauk/noOption.html',
+	 	templateUrl: '/assets/checkin/partials/Montauk/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',	 	
@@ -74,6 +75,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/checkin/partials/Montauk/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
+
 
 
 	 //room verification
@@ -93,7 +95,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('preCheckinTripDetails', {
     	url: '/tripDetails',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/Montauk/noOption.html',
 	 	title: 'Pre Check-in'
 	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
