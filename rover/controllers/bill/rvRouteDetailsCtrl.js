@@ -274,7 +274,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.availableBillingGroups = data;
                 if(data.length == 0)
                     $scope.isBillingGroup = false;
-                if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                if($scope.selectedEntity.entity_type == 'POSTING_ACCOUNT'){
+                    $scope.showPayment = false;
+                    $scope.$parent.$emit('hideLoader');
+                }
+                else if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                     $scope.$parent.$emit('hideLoader');                    
                 }else if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type != 'RESERVATION'){
                     $scope.showPayment = true;
@@ -285,7 +289,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     $scope.showPayment = true;
                     $scope.$parent.$emit('hideLoader');
                 }
-                else {
+                else{
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
                 }
