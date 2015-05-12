@@ -134,6 +134,11 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			if(tab === "ACCOUNT"){
 				refreshSummaryTab();
 			}
+			else{
+				// Switching from SUMMARY tab - 
+				// Check for any updation => lets save it.
+				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+			}
 
 			$scope.accountConfigData.activeTab = tab;
 		};
