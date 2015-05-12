@@ -340,14 +340,8 @@ sntRover.controller('reservationActionsController', [
 			
 		};
 
-		var checkforDeposit = function(){
-			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,checkinDepositDetailsSuccess);
-		};
-		//only show deposit popup once
-		var checkinAttemptCount = 0;
 		$scope.goToCheckin = function(){
-			(checkinAttemptCount ===0) ?  checkforDeposit() :startCheckin();
-			checkinAttemptCount ++;
+			startCheckin();
 		};
 
 		/******************************************/
