@@ -376,8 +376,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						$scope.fetchAllChargeCodes();
 						return;
                     } 
-                    //default to last item
-                    $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
+
+                    //default to last item when there is no bill no.
+                    var billNo = $scope.selectedEntity.bill_no
+                    if(billNo == "") $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
+                    else $scope.selectedEntity.to_bill = billNo;
 
                     $scope.fetchAvailableChargeCodes();
                   //}
@@ -735,7 +738,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             $scope.saveSuccessCallback = function(data) {
                 $scope.$parent.$emit('hideLoader');
                 $scope.$parent.$emit('BILLINGINFOADDED');
-                ngDialog.close();
+                $scope.headerButtonClicked();
             };
             $scope.errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
