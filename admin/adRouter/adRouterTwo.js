@@ -444,7 +444,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 
 		$stateProvider.state('admin.zestAddons', {
-			templateUrl: '/assets/partials/AnalyticSetup/adZestAddonSetup.html',
+			templateUrl: '/assets/partials/zestAddonSetup/adZestAddonSetup.html',
 			controller: 'adZestAddonSetupCtrl',
 			url : '/zestAddonSetup'
 		});

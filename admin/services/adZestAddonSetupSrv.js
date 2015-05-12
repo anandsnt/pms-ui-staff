@@ -1,9 +1,9 @@
-admin.service('adZestAddonSetupCtrl',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
+admin.service('adZestAddonSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
    
 	this.fetchSetup = function(){
 		
 		var deferred = $q.defer();
-		var url = 'api/analytics_setups.json';
+		var url = 'api/zest_addon_settings.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -17,7 +17,7 @@ admin.service('adZestAddonSetupCtrl',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	this.saveSetup = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/analytics_setups/save_setup';	
+		var url = 'api/zest_addon_settings';	
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){

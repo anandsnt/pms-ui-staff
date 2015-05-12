@@ -19,13 +19,7 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
         $scope.addonSetup = data;
         
   };
-  $scope.addonSetup = {};
-  $scope.addonSetup.is_guest_actions_enabled = true;
-  $scope.addonSetup.is_display_purchased_enabled = true;
-  $scope.addonSetup.is_cancel_purchased_enabled = true;
-  $scope.addonSetup.is_purchase_enabled = true;
-
-  // $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {},fetchAnalyticSetupSuccessCallback);
+  $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {},fetchAnalyticSetupSuccessCallback);
 
   };
   $scope.fetchAddonSetup();
@@ -38,9 +32,7 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
         
         
   };
-  // var unwantedKeys = ["available_trackers"];
-  // var saveData = dclone($scope.data, unwantedKeys);
-  
+    
   $scope.invokeApi(adZestAddonSetupSrv.saveSetup, $scope.addonSetup,saveAddonSetupSuccessCallback);
 
   };
