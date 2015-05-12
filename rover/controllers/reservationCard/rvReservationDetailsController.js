@@ -251,6 +251,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
 			}
 		});
+
+		//Update the balance amount in staycard
+		$scope.$on('UPDATE_DEPOSIT_BALANCE', function(e, data){
+			$scope.reservationData.reservation_card.balance_amount = data.reservation_balance;
+		});
+
+
 		$scope.$on("updateWakeUpTime", function(e, data) {
 
 			$scope.reservationData.reservation_card.wake_up_time = data;
