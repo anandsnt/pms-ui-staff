@@ -1,11 +1,12 @@
-admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
- function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv', 
+ function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ADRatesAddonsSrv){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
 	 $scope.fileName = "Choose file...";
 	 $scope.initialIcon = '';
+	 $scope.addons = [];
 	 /*Initializing data, for adding a new item.
     */
 	$scope.data = {	            
@@ -18,17 +19,64 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "page_template": "POI",
 	            "website_url": "",
 	            "description": "",
+	            "addon_id":"",
 	            "parent_category": []
             }
+
+    $scope.fetchAddons = function(){
+    var fetchSuccessOfAddons = function(data) {
+       
+       $scope.addons = $scope.getAddonsWithNameValues(data.results);
+       $scope.$emit('hideLoader');
+   };
+   $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true}, fetchSuccessOfAddons);
+};
+
+    $scope.getAddonsWithNameValues = function(addons){
+        angular.forEach(addons,function(item, index) {
+       item.value = item.id;
+    
+  });
+        return addons;
+};
+
+    $scope.itemTypeSelected = function(){
+
+	if($scope.data.page_template == "ADDON" && $scope.addons.length == 0){
+		$scope.fetchAddons();
+	}
+}
+
+$scope.getSelectedAddonDescription = function(){
+	var description = "";
+     angular.forEach($scope.addons,function(item, index) {
+       if(item.value == $scope.data.addon_id)
+       	description = item.description;
+    
+  });
+     return description;
+}
+
+$scope.getSelectedAddonPrice = function(){
+	var price = "";
+	angular.forEach($scope.addons,function(item, index) {
+       if(item.value == $scope.data.addon_id)
+       	price = item.amount;
+    
+  });
+     return price;
+}
 
     
 	/*Function to fetch the item details
     */
 	$scope.fetchItem = function(){
 		var fetchItemSuccessCallback = function(data){
-			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.initialIcon =  $scope.data.image;
+			if(data.page_template == 'ADDON'){
+				$scope.fetchAddons();
+			}
 		}
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
 	}
