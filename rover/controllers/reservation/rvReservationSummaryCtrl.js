@@ -358,6 +358,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.depositData.depositSuccess = true;
                     $scope.depositData.authorizationCode = data.authorization_code;
                     $scope.reservationData.selectedPaymentId = data.payment_method.id;
+
+                    $scope.reservationData.depositData = angular.copy($scope.depositData);
+
                     //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails - commenting the if else block below for CICO-14199
                     // if ($scope.reservationData.paymentType.type.value === "CC") {
                     //     $scope.isNewCardAdded = true;
@@ -369,6 +372,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 onPaymentFailure = function(errorMessage) {
                     $scope.depositData.attempted = true;
                     $scope.depositData.depositAttemptFailure = true;
+                    $scope.reservationData.depositData = angular.copy($scope.depositData);
+
                     $scope.paymentErrorMessage = errorMessage[0];
                     $scope.$emit('hideLoader');
                 };
@@ -589,13 +594,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 }
                 $scope.fetchDemoGraphics();
             } else {
-                $scope.depositData = {};
-                var arrivalRate = $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id;
-                $scope.depositData.isDepositRequired = !!$scope.reservationData.ratesMeta[arrivalRate].deposit_policy.id;
-                $scope.depositData.description = $scope.reservationData.ratesMeta[arrivalRate].deposit_policy.description;
-                $scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
-                $scope.depositData.attempted = false;
-                $scope.depositData.depositAttemptFailure = false;
+                if (!$scope.reservationData.depositData) {
+                    $scope.depositData = {};
+                    var arrivalRate = $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id;
+                    $scope.depositData.isDepositRequired = !!$scope.reservationData.ratesMeta[arrivalRate].deposit_policy.id;
+                    $scope.depositData.description = $scope.reservationData.ratesMeta[arrivalRate].deposit_policy.description;
+                    $scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
+                    $scope.depositData.attempted = false;
+                    $scope.depositData.depositAttemptFailure = false;
+                }else{
+                    $scope.depositData = $scope.reservationData.depositData;   
+                }
                 createReservation();
             }
 
