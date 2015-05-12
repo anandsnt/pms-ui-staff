@@ -13,16 +13,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		if($scope.previousState.name === "rover.groups.config"){
+		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.			
+		var setNavigationBookMark = function() {
+			$rootScope.stayCardStateBookMark = {
+				previousState: $scope.previousState.name,
+				previousStateParams: $scope.previousStateParams
+			}
+		}
+
+		if ($scope.previousState.name === "rover.groups.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.groups.config') {
+			if ($scope.previousState.name === "rover.groups.config") {
+				setNavigationBookMark();
+			}
 			$rootScope.setPrevState = {
 				title: 'GROUP DETAILS',
 				name: 'rover.groups.config',
 				param: {
-					id: $scope.previousStateParams.id, 
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
 					activeTab: "ROOMING"
 				},
 			};
-		}else if ($stateParams.isFromCards) {
+		} else if ($stateParams.isFromCards) {
+			setNavigationBookMark();
 			$rootScope.setPrevState = {
 				title: 'AR Transactions',
 				name: 'rover.companycarddetails',
@@ -35,10 +47,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			};
 
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
+			setNavigationBookMark();
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
 			};
 		} else {
+			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
 			// we should show the back button with the default text "Find Reservations"	
 			if ($stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
@@ -70,7 +84,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			// we need to update any changes to the room
 			// before going back to search results
 			$scope.goBackSearch = function() {
-                            $scope.$emit('showLoader');
+				$scope.$emit('showLoader');
 				$scope.updateSearchCache();
 				$state.go('rover.search', backParam);
 			};
@@ -128,10 +142,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.reservationCardSrv = RVReservationCardSrv;
 		$scope.$emit('showLoader');
-			/*
-			 * success call back of fetch reservation details
-			 */
-			//Data fetched using resolve in router
+		/*
+		 * success call back of fetch reservation details
+		 */
+		//Data fetched using resolve in router
 		var reservationMainData = $scope.$parent.reservationData;
 
 		$scope.reservationParentData = $scope.$parent.reservationData;
@@ -612,10 +626,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 		};
 		//CICO-13907
-		$scope.hasAnySharerCheckedin = function(){
+		$scope.hasAnySharerCheckedin = function() {
 			var isSharerCheckedin = false;
-			angular.forEach($scope.reservationData.reservation_card.sharer_information, function(sharer, key){
-				if(sharer.reservation_status == 'CHECKEDIN' || sharer.reservation_status == 'CHECKING_OUT'){
+			angular.forEach($scope.reservationData.reservation_card.sharer_information, function(sharer, key) {
+				if (sharer.reservation_status == 'CHECKEDIN' || sharer.reservation_status == 'CHECKING_OUT') {
 					isSharerCheckedin = true;
 					return false;
 				}
