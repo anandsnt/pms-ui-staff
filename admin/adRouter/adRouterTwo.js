@@ -442,6 +442,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'adAnalyticSetupCtrl',
 			url : '/analyticSetup'
 		});
+
+		$stateProvider.state('admin.zestAddons', {
+			templateUrl: '/assets/partials/AnalyticSetup/adZestAddonSetup.html',
+			controller: 'adZestAddonSetupCtrl',
+			url : '/zestAddonSetup'
+		});
                 
 		$stateProvider.state('admin.sitemindersSetup', {
 			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
