@@ -92,12 +92,13 @@
 
                     <div class="entry full-width" ng-show="data.page_template=='ADDON'">
                        <label for="addon-description"><span translate>ADDON_DESCRIPTION_LABEL </span></label>
-                       <input type="text" name="addon-description" id="addon-description" ng-disabled = "true" />
+                       <input type="text" name="addon-description" id="addon-description" ng-disabled = "true" readonly="true"
+                       value="{{getSelectedAddonDescription()}}" />
                     </div> 
 
                     <div class="entry full-width" ng-show="data.page_template=='ADDON'">
                         <label for="addon-price"><span translate>ADDON_PRICE_LABEL </span></label>
-                        <input type="text" name="addon-price" id="addon-price"  ng-disabled = "true" />
+                        <input type="text" name="addon-price" id="addon-price"  ng-disabled = "true" readonly="true" value="{{getSelectedAddonPrice()}}" />
                     </div>
                 </div>
                 

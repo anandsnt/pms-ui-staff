@@ -48,21 +48,23 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 }
 
 $scope.getSelectedAddonDescription = function(){
+	var description = "";
      angular.forEach($scope.addons,function(item, index) {
        if(item.value == $scope.data.addon_id)
-       	return item.description;
+       	description = item.description;
     
   });
-     return "";
+     return description;
 }
 
 $scope.getSelectedAddonPrice = function(){
+	var price = "";
 	angular.forEach($scope.addons,function(item, index) {
        if(item.value == $scope.data.addon_id)
-       	return item.price;
+       	price = item.amount;
     
   });
-     return "";
+     return price;
 }
 
     
@@ -70,9 +72,11 @@ $scope.getSelectedAddonPrice = function(){
     */
 	$scope.fetchItem = function(){
 		var fetchItemSuccessCallback = function(data){
-			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.initialIcon =  $scope.data.image;
+			if(data.page_template == 'ADDON'){
+				$scope.fetchAddons();
+			}
 		}
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
 	}
