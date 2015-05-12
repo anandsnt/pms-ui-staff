@@ -10,6 +10,16 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
 
   BaseCtrl.call(this, $scope);
 
+  var startWatching = function(){
+    $scope.$watch('addonSetup.is_zest_addon_actions_enabled', function(newValue, oldValue){
+        if(!$scope.addonSetup.is_zest_addon_actions_enabled){
+           $scope.addonSetup.is_zest_display_purchased_addons = false;
+           $scope.addonSetup.is_zest_allow_cancellation_of_addons = false;
+           $scope.addonSetup.is_zest_enable_purchase = false;
+        }
+   });
+  }
+
   
   $scope.fetchAddonSetup = function(){
   	
@@ -17,9 +27,9 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
         $scope.addonSetup = data;
-        
+        startWatching();
   };
-  $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {},fetchAnalyticSetupSuccessCallback);
+  $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {},fetchAddonSetupSuccessCallback);
 
   };
   $scope.fetchAddonSetup();

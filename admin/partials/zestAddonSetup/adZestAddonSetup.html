@@ -12,11 +12,11 @@
 		
 	    	<ad-toggle-button is-checked="addonSetup.is_zest_addon_actions_enabled" label="{{ 'GUEST_ACTIONS_SWITCH_LABEL' | translate}}" div-class="full-width" ></ad-toggle-button>
 
-	    	<ad-toggle-button is-checked="addonSetup.is_zest_display_purchased_addons" label="{{ 'DISPLAY_ADDONS_SWITCH_LABEL' | translate}}" div-class="full-width" ></ad-toggle-button>
+	    	<ad-toggle-button is-checked="addonSetup.is_zest_display_purchased_addons" label="{{ 'DISPLAY_ADDONS_SWITCH_LABEL' | translate}}" is-disabled = "!addonSetup.is_zest_addon_actions_enabled" div-class="full-width" ></ad-toggle-button>
 
-	    	<ad-toggle-button is-checked="addonSetup.is_zest_allow_cancellation_of_addons" label="{{ 'ALLOW_CANCELLATION_SWITCH_LABEL' | translate}}" div-class="full-width" ></ad-toggle-button>
+	    	<ad-toggle-button is-checked="addonSetup.is_zest_allow_cancellation_of_addons" label="{{ 'ALLOW_CANCELLATION_SWITCH_LABEL' | translate}}" div-class="full-width" is-disabled = "!addonSetup.is_zest_addon_actions_enabled"></ad-toggle-button>
 
-	    	<ad-toggle-button is-checked="addonSetup.is_zest_enable_purchase" label="{{ 'AVAILABLE_ADDONS_SWITCH_LABEL' | translate}}" div-class="full-width" ></ad-toggle-button>	
+	    	<ad-toggle-button is-checked="addonSetup.is_zest_enable_purchase" label="{{ 'AVAILABLE_ADDONS_SWITCH_LABEL' | translate}}" div-class="full-width" is-disabled = "!addonSetup.is_zest_addon_actions_enabled"></ad-toggle-button>	
 			
 		</fieldset>		
 			
