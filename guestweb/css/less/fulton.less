@@ -31,6 +31,9 @@
 .brown-text{
 	color:@brown !important;
 }
+.red-text{
+	color:@red !important;
+}
 
 
 body{
@@ -132,11 +135,18 @@ body{
 }
 
 
-.no-thanks,.questions
+.no-thanks
 {
 	a,a:hover{
 		text-decoration:underline  !important;
 		color:@black  !important;
+	}
+}
+.questions
+{
+	a,a:hover{
+		text-decoration:underline  !important;
+		color:@red  !important;
 	}
 }
 /* ------------------------------------------------------------------- */
@@ -385,7 +395,6 @@ a, a:hover {
 	}
 	.row.checkin-wrapper.pre-checkin-final {
     	.conf-num{
-    		border-bottom:1px grey solid;
     		padding-bottom:10px;
     		margin:10px;
     	}

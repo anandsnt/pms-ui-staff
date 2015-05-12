@@ -52,28 +52,30 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/Montauk/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Fulton/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/Montauk/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/Fulton/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/preCheckin/partials/Montauk/noOption.html',
+	 	templateUrl: '/assets/checkin/partials/Fulton/checkInKeys.html',
+	 	controller : 'checkInKeysController',
 	 	title: 'Status - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/preCheckin/partials/Montauk/noOption.html',
+	 	templateUrl: '/assets/checkin/partials/Fulton/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',	 	
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/checkin/partials/Montauk/arrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Fulton/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
+
 
 
 	 //room verification
@@ -93,11 +95,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('preCheckinTripDetails', {
     	url: '/tripDetails',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/Fulton/noOption.html',
 	 	title: 'Pre Check-in'
 	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/preCheckin/partials/Montauk/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/Fulton/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
