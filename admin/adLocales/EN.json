@@ -58,6 +58,7 @@
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
 "EXTERNAL_CHECKIN":"External Checkin",
+"EXTERNAL_CHECKOUT":"External Checkout",
 
 "MESSAGE":"Message",
 "IN_APP":"in App",
@@ -789,7 +790,8 @@
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
 "SEND_CHECKOUT_EMAIL":"Send Checkout Email",
-"SEND_CHECKOUT_NOTIFICATON_EMAIL":"Sent check out notification email to all DUE OUT guests at",
+"SEND_CHECKOUT_NOTIFICATON_EMAIL":"Send check out notification email to all DUE OUT guests at",
+"SEND_ZEST_CHECKOUT_ALERT_LABEL":"Send zest app alert to all DUE OUT guests at",
 "SEND_ZEST_CHECKOUT_NOTIFICATION_ALERT" : "SEND APP ALERT TO ALL DUE OUT GUESTS",
 "CC_GUARENTEED_LABEL":"Only if Reservation is CC guaranteed",
 "CASH_PAYMENT_LABEL":"Only if Reservation is CASH payment",
