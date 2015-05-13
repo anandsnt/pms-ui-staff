@@ -61,7 +61,7 @@
 						<span class="value code" ng-show = "paymentDetails.payment_type != 'CC'">{{ paymentDetails.payment_type_description }}</span>
 						<span class="icons icon-ok-10" ></span>
 				</div>
-				isAddPayment{{isAddPayment}}
+				
 				<!-- Add new credit card button - remove it when new card is added -->
 				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && paymentDetails == null" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING')">+ New Payment Method</button>
 
