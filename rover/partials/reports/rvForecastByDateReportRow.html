@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index">
+<tr ng-repeat="each in results track by $index" ng-class="{'weekend' : each.week_day == 'Saturday' || each.week_day == 'Sunday'}">
 	<td class="date">
 		<span>{{ each.date | date : dateFormat }}</span>
 		<span>{{ each.week_day }}</span>
