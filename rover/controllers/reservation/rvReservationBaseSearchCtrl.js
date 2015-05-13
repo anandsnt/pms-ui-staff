@@ -13,7 +13,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
-        $scope.setScroller('search_reservation');
+        $scope.setScroller('search_reservation', { preventDefault: false });
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
@@ -459,12 +459,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             yearRange: '-0:',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
-                $('#ui-datepicker-div').addClass('reservation arriving');
-                $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
+                $('#ui-datepicker-div').addClass('reservation arriving');                
             },
             onClose: function(dateText, inst) {
-                $('#ui-datepicker-div').removeClass('reservation arriving');
-                $('#ui-datepicker-overlay').remove();
+                //in order to remove the that flickering effect while closing
+                $timeout(function(){
+                    $('#ui-datepicker-div').removeClass('reservation arriving');                    
+                }, 200);
+
             }
         };
 
@@ -475,12 +477,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             yearRange: '-0:',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
-                $('#ui-datepicker-div').addClass('reservation departing');
-                $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
+                $('#ui-datepicker-div').addClass('reservation departing');                
             },
             onClose: function(dateText, inst) {
-                $('#ui-datepicker-div').removeClass('reservation departing');
-                $('#ui-datepicker-overlay').remove();
+                //in order to remove the that flickering effect while closing
+                $timeout(function(){
+                    $('#ui-datepicker-div').removeClass('reservation arriving');                    
+                }, 200);               
             }
         };
 
