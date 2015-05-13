@@ -148,7 +148,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			};
 			//Reload the summary tab contents before switching
 			if(tab === "SUMMARY"){
-				refreshSummaryTab();
+				$scope.refreshSummaryTab();
 			};
 
 			$scope.groupConfigData.activeTab = tab;
@@ -159,7 +159,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		};
 
-		var refreshSummaryTab = function() {
+		$scope.refreshSummaryTab = function() {
 			var onAccountFetchSuccess = function(data) {
 				$scope.$emit('hideloader');
 				$scope.groupConfigData.summary = data.groupSummary;
