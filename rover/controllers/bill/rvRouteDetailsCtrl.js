@@ -17,7 +17,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.renderAddedPayment.cardExpiry = $scope.selectedEntity.credit_card_details.card_expiry;
         $scope.renderAddedPayment.endingWith = $scope.selectedEntity.credit_card_details.card_number;
         $scope.renderAddedPayment.creditCardType = $scope.selectedEntity.credit_card_details.card_code;
-        $scope.isAddPayment = true;
+        $scope.showPayment = true;
         $scope.showCreditCardDropDown = false;
         
         $scope.isShownExistingCCPayment = true;
