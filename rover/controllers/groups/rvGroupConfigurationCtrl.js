@@ -10,7 +10,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'$state',
 	'rvPermissionSrv',
 	'$timeout',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout) {
+	'rvAccountTransactionsSrv',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -147,11 +148,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				$scope.updateGroupSummary();
 			};
 			//Reload the summary tab contents before switching
-			if(tab === "SUMMARY"){
+			if(tab === "SUMMARY" || tab === "ACCOUNT"){
 				$scope.refreshSummaryTab();
 			};
+			//Preload the transaction data when we switch to transactions tab
+			if(tab === "TRANSACTIONS"){
+				preLoadTransactionsData();
+			} else {
+				$scope.groupConfigData.activeTab = tab;
+			}
 
-			$scope.groupConfigData.activeTab = tab;
 			//propogating an event that next clients are
 			$timeout(function() {
 				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
@@ -159,11 +165,43 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		};
 
+		var preLoadTransactionsData = function(){
+			var onTransactionFetchSuccess = function(data) {
+
+				$scope.$emit('hideloader');
+				$scope.transactionsDetails = data;
+				$scope.groupConfigData.activeTab = 'TRANSACTIONS';
+
+				/*
+				 * Adding billValue and oldBillValue with data. Adding with each bills fees details
+				 * To handle move to bill action
+				 * Added same value to two different key because angular is two way binding
+				 * Check in HTML moveToBillAction
+				 */
+				angular.forEach($scope.transactionsDetails.bills, function(value, key) {
+					angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
+
+						feesValue.billValue = value.bill_number; //Bill value append with bill details
+						feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
+					});
+				});
+
+			}
+			var params = {
+				"account_id": $scope.accountConfigData.summary.posting_account_id
+			}
+			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
+				successCallBack: onTransactionFetchSuccess,
+				params: params
+			});
+
+		};
+
 		$scope.refreshSummaryTab = function() {
 			var onAccountFetchSuccess = function(data) {
 				$scope.$emit('hideloader');
 				$scope.groupConfigData.summary = data.groupSummary;
-				$scope.groupConfigData.activeTab = "SUMMARY";
+				$scope.accountConfigData.summary = data.accountSummary;
 			}
 			var params = {
 				"groupId": $scope.groupConfigData.summary.group_id
