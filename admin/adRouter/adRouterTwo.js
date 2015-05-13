@@ -407,11 +407,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			}
 		});
 		
-        $stateProvider.state('admin.dailyWorkAssignment', {
-        	templateUrl: '/assets/partials/housekeeping/adDailyWorkAssignment.html',
-        	controller: 'ADDailyWorkAssignmentCtrl',
-        	url: '/daily_work_assignment'
-        });
+                $stateProvider.state('admin.dailyWorkAssignment', {
+                        templateUrl: '/assets/partials/housekeeping/adDailyWorkAssignment.html',
+                        controller: 'ADDailyWorkAssignmentCtrl',
+                        url: '/daily_work_assignment'
+                });
+                
 		$stateProvider.state('admin.checkoutEmail', {
 			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
 			controller: 'ADCheckoutEmailCtrl',
@@ -422,6 +423,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/deviceMapping/adDeviceMappingList.html',
 			controller: 'ADDeviceMappingsCtrl',
 			url : '/deviceMappingsList'
+		});
+		
+		$stateProvider.state('admin.externalMappings', {
+			templateUrl: '/assets/partials/mapping/adExternalMappingItems.html',
+			controller: 'ADMappingCtrl',
+			url : '/intefaceMappingsList'
 		});
 
 		$stateProvider.state('admin.stationary', {
@@ -436,7 +443,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/analyticSetup'
 		});
                 
-		$stateProvider.state('admin.siteminderSetup', {
+		$stateProvider.state('admin.sitemindersSetup', {
 			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
 			controller: 'adSiteminderSetupCtrl',
 			url : '/siteminderSetup'

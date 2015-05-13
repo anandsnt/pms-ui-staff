@@ -169,7 +169,7 @@
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",
 	"DELETE":"Delete",
-
+    "MENU_ACCOUNTS": "Accounts",
 
 	"CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
@@ -392,6 +392,8 @@
     "ROOMS_AND_RATES": "Rooms &amp; Rates",
     "SINGLE": "Single",
     "DOUBLE": "Double",
+    "TRIPLE": "Triple",
+    "QUADRUPLE": "Quadruple",
     "ADD_TRIPLE": "+ Add Triple",
     "ADD_QUADRUPLE": "+ Add Quadruple",
     "TOTAL": "Total",
@@ -654,6 +656,12 @@
 "KEY_SYSTEM_USENAME_PLACEHOLDER":"Enter Key System Username",
 "KEY_SYSTEM_PASSWORD":"Key System Password",
 "KEY_SYSTEM_PASSWORD_PLACEHOLDER":"Enter Key System Password",
+"NUMBER_OF_RETRIES":"Number Of Retries",
+"NUMBER_OF_RETRIES_PLACEHOLDER":"Enter Number Of Retries",
+"PRIMARY_KEY_DETAILS_TITLE":"PRIMARY KEY SERVER CONFIGURATION",
+"SECONDARY_KEY_DETAILS_TITLE":"SECONDARY KEY SERVER CONFIGURATION",
+"REVERT_TIME":"Revert Time [MINUTES]",
+"REVERT_TIME_PLACEHOLDER":"Enter Revert Time",
 "HOUSEKEEPING_SETTINGS":"Housekeeping Settings",
 "USE_INSPECTED_ROOM_STATUS":"Use Inspected room status",
 "USE_PICKUP_ROOM_STATUS":"Use Pick-up room status",
@@ -728,13 +736,11 @@
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
-    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
-
-
-"SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
+    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date","SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
 "SITEMINDER_SUB_TITLE": "SiteMinder API Access Configuration",
 "SITEMINDER_USERNAME_LABEL": "User Name",
 "SITEMINDER_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
+"SITEMINDER_DEFAULT_PAYMENT_METHOD": "Default Payment Method",
 "SITEMINDER_PASSWORD_LABEL": "Password",
 "SITEMINDER_ACCESS_URL_LABEL": "Access URL",
 "SITEMINDER_REQUESTOR_ID_LABEL": "Requester ID"

@@ -17,16 +17,17 @@
             <div class="entry margin type">
                 <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-room-type" ng-model="selectedRoomType" ng-change="changedSelectedRoomType()" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable">
-                        <option value="{{roomTypeData.room_type_id}}" ng-repeat="roomTypeData in roomTypesAndData">
-                            {{roomTypeData.room_type_name}}</option>
+                    <select id="rooming-room-type" ng-model="ngDialogData.room_type_id" ng-change="changedSelectedRoomType()" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable">
+                        <option value="{{roomTypeData.room_type_id}}" ng-repeat="roomTypeData in roomTypesAndData" ng-selected="roomTypeData.room_type_id == ngDialogData.room_type_id">
+                            {{roomTypeData.room_type_name}}
+                        </option>
                     </select>
                 </div>
             </div>
             <div class="entry occupancy">
                 <label for="rooming-occupancy">{{'GROUP_OCCUPANCY'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-occupancy" ng-model="selectedOccupancy" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable">
+                    <select id="rooming-occupancy" ng-model="ngDialogData.occupancy" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable">
                         <option value="1" ng-show="shouldShowThisOccupancyAgainstRoomType('single_occupancy')">
                             {{'GROUP_SINGLE'|translate}}
                         </option>
@@ -73,7 +74,8 @@
 
             <div class="entry room" ng-disabled="true">
                 <label for="room">Room</label>
-                <div class="select">
+                <input ng-model="ngDialogData.room_no" ng-disabled="true"></input>
+                <div class="select" ng-hide="true">
                     <select id="room" ng-disabled="true">
                         <!-- Add class "placeholder" if "N/A" set as option -->
                         <option value="">N/A</option>

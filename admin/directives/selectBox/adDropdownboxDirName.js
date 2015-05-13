@@ -14,8 +14,11 @@ admin.directive('adDropdownName', function($timeout) {
             labelInDropDown: '@labelInDropDown',
             list:'=list',
             name:'@name',
+            prop:'@property',
             selectedId:'=selectedId',
             labelClass:'@labelClass',
+            valfor: '@valfor',
+            valueproperty:'@valueproperty',
             options: '='
 	    },
         link: function ($scope, $element, $attr)

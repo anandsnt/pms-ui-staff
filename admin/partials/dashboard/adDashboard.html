@@ -23,7 +23,7 @@
                   {{submenu.name}}
                </a>
 
-               <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state)">{{submenu.name}}</a>
+               <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state); setActiveItem(submenu)">{{submenu.name}}</a>
             </li>
          </ul>  
       </section>    

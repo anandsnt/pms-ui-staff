@@ -170,6 +170,27 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                 
                
         selectedDateInfo = {};
+        
+        $scope.$on('apply-all-price-adjust',function(evt, data){
+            var d = data, setVia = data.setFromValue;
+                
+                    $scope.data.single_sign = d[setVia+'_sign'];
+                    $scope.data.single_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.single_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.double_sign = d[setVia+'_sign'];
+                    $scope.data.double_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.double_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.extra_adult_sign = d[setVia+'_sign'];
+                    $scope.data.extra_adult_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.extra_adult_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.child_sign = d[setVia+'_sign'];
+                    $scope.data.child_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.child_extra_amnt = d[setVia+'_extra_amnt'];
+            
+        });
 
         //Get the rate/restriction details for the selected cell
         if($scope.popupData.all_data_selected) {

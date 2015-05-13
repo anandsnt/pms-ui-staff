@@ -13,8 +13,8 @@
         <tr ng-if="!!groupConfigData">
             <td>{{groupConfigData.summary.group_name}}</td>
             <td>{{groupConfigData.summary.group_code}}</td>
-            <td>{{groupConfigData.summary.block_from}}</td>
-            <td>{{groupConfigData.summary.block_to}}</td>
+            <td>{{groupConfigData.summary.block_from | date:dateFormat}}</td>
+            <td>{{groupConfigData.summary.block_to | date:dateFormat}}</td>
         </tr>
         <tr ng-if="!groupConfigData">
             <th>Account Name</th>
@@ -23,13 +23,15 @@
             <td>{{accountConfigData.summary.posting_account_name}}</td>
         </tr>
         <tr>
-            <th ng-if="!!groupConfigData">Company</th>
-            <th ng-if="!!groupConfigData">Travel Agent</th>
+            <th>Company</th>
+            <th>Travel Agent</th>
             <th>Invoice No.</th>
         </tr>
         <tr>
             <td ng-if="!!groupConfigData">{{groupConfigData.summary.company.name}}</td>
             <td ng-if="!!groupConfigData">{{groupConfigData.summary.travel_agent.name}}</td>
+            <td ng-if="!groupConfigData">{{accountConfigData.summary.company.name}}</td>
+            <td ng-if="!groupConfigData">{{accountConfigData.summary.travel_agent.name}}</td>
             <td>{{billData.bill_number}}</td>
         </tr>
     </tbody>
@@ -39,7 +41,7 @@
     <!-- Header text hidden for now as not applicable -->
 </div>
 <div class="invoice-body">
-    <p class="date"><strong>Invoice date</strong>{{ businessDate | date : dateFormat}}</p>
+    <p class="date"><strong>Invoice date</strong>{{invoiceDate | date:dateFormat}}</p>
     <table class="invoice-details">
         <caption>
             {{currentHotelData.name}}
@@ -82,14 +84,14 @@
         </tfoot>
         <tbody>
             <tr ng-repeat="charge in billData.total_fees.fees_details">
-                <td>{{charge.date}}</td>
+                <td>{{charge.date | date:dateFormat}}</td>
                 <td>{{charge.description[0].charge_code}}</td>
                 <td class="description">
                     <span>{{charge.description[0].fees_desc}}</span>
                     <span class="reference">{{charge.reference_text}}</span>
                 </td>
-                <td class="align-right">{{currencySymbol}}{{charge.description[0].fees_amount}}</td>
-                <td class="align-right">{{currencySymbol}}{{charge.credits | number: 2}}</td>
+                <td class="align-right"><span ng-show="!!charge.description[0].fees_amount">{{currencySymbol}}{{charge.description[0].fees_amount | number: 2}}</span></td>
+                <td class="align-right"><span ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</span></td>
             </tr>
         </tbody>
     </table>

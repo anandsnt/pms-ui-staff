@@ -379,10 +379,14 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.getNotReadyRoomTag = function(room){
-		if(room.room_ready_status == "PICKUP" || room.room_ready_status == "CLEAN"){
-			return room.room_ready_status;
-		}else{
-			return room.fo_status;
+		if(!room.is_in_future) {
+			if(room.room_ready_status == "PICKUP" || room.room_ready_status == "CLEAN"){
+				return room.room_ready_status;
+			}else{
+				return room.fo_status;
+			}
+		} else {
+			return "";
 		}
 	};
 
@@ -555,6 +559,16 @@ sntRover.controller('RVroomAssignmentController',[
 
 	$scope.getRoomsWithInitialFilters = function(){	
 		var roomsWithInitialFilters = [];
+
+		//CICO-9063 we will display all vacant rooms for a future reservation
+		if($scope.reservationData.reservation_card.reservation_status === 'RESERVED'){
+			for (var i = 0; i < $scope.rooms.length; i++) {
+				if($scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].is_preassigned){
+					roomsWithInitialFilters.push($scope.rooms[i]);
+				}
+			};
+			return roomsWithInitialFilters;
+		}
 		for (var i = 0; i < $scope.rooms.length; i++) {
 			if($scope.rooms[i].room_status == "READY" && $scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].is_preassigned){
 				if($scope.rooms[i].checkin_inspected_only == "true" && $scope.rooms[i].room_ready_status == "INSPECTED"){

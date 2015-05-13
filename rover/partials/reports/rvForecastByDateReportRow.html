@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index">
+<tr ng-repeat="each in results track by $index" ng-class="{'weekend' : each.week_day == 'Saturday' || each.week_day == 'Sunday'}">
 	<td class="date">
 		<span>{{ each.date | date : dateFormat }}</span>
 		<span>{{ each.week_day }}</span>
@@ -26,6 +26,6 @@
 	<td>{{ resultsTotalRow.total_revenue | currency:currencySymbol:2 }}</td>
 	<td class="break">{{ resultsTotalRow.total_adr | currency:currencySymbol:2 }}</td>
 	<td>{{ resultsTotalRow.total_last_year_occupied_rooms }}</td>
-	<td>{{ resultsTotalRow.total_last_year_adr }}</td>
+	<td>{{ resultsTotalRow.total_last_year_adr | currency:currencySymbol:2 }}</td>
 	<td ng-class="{ 'red': (each.variance * 1) < 0 }">{{ resultsTotalRow.total_variance }}</td>
 </tr>

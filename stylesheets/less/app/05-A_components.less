@@ -3620,7 +3620,7 @@
 
                     &.times {
                         position: relative;
-                        padding-left: 35px;
+                        padding: 0 10px 0 35px;
 
                         .time {
                             position: absolute;
@@ -3704,26 +3704,28 @@
                         .show;
                         .pull-left;
 
-                        span {
+                        .label {
                             width: 60px;
-                            .pull-left;
-
-                            &.guest-icon {
-                                font-size: 12px;
-                                line-height: 30px;
-                                text-transform: uppercase;
-                                text-align: center;
-                                font-weight: 600;
-                                color: @white;
-                                background: @grey2;
-                                margin: 5px 10px 0 0;
-                                .square(30px);
-                            }
+                            overflow: hidden;
                         }
 
-                        input {
-                            width: 40px;
+                        .guest-icon {
+                            font-size: 12px;
+                            line-height: 30px;
+                            text-transform: uppercase;
                             text-align: center;
+                            font-weight: 600;
+                            color: @white;
+                            background: @grey2;
+                            margin: 5px 10px 0 0;
+                            .square(30px);
+                            .pull-left;
+                        }
+
+                        .select,
+                        input {
+                            text-align: center;
+                            .size(40px, 50px);
                             .pull-left;
 
                             &[disabled],
@@ -3732,14 +3734,13 @@
 
                         &:first-child {
                             padding-right: 40px;
-                            .calc-width(100, 340);
+                            .calc-width(100, 360);
                         }
 
-                        &:nth-child(2) { width: 150px; }
-
-                        &:last-child {
+                        &:nth-child(2) { width: 160px; }
+                        &:last-child { 
                             padding-left: 40px;
-                            width: 190px;
+                            width: 200px;
                         }
                     }
                 }
@@ -3747,7 +3748,7 @@
                 .form {
                     margin-top: 10px;
                     max-width: 400px;
-                    .calc-width(100, 340);
+                    .calc-width(100, 360);
                     .float;
 
                     label {
@@ -5091,7 +5092,7 @@
                     .checkbox {
                         margin: 0;
                         padding: 0;
-                        .size(35px, 50px);
+                        .size(35px, 60px);
 
                         .icon-form { 
                             top: 7px; 
@@ -5162,6 +5163,8 @@
                                 &.green,
                                 &.green strong { color: @green; }
                             }
+
+                            &.action { padding: 10px 0; }
                         }
 
                         &.active {
@@ -5703,11 +5706,10 @@
                     #fade > .in;
 
                     .button {
-                        width: 100%;
                         line-height: 50px;
+                        margin: 10px auto;
                         .show;
-
-                        &.blank { margin-top: 10px; }
+                        .size(50px, 50%);
                     }
 
                     .available-title {
@@ -5724,16 +5726,17 @@
                         }
                     }
 
-                    .subheading {
+                    .subheading { 
                         font-weight: 600;
-                        text-transform: uppercase;
+                        text-transform: uppercase; 
 
-                        .button.blank {
-                            display: inline-block;
-                            line-height: 22px;
+                        .button {
+                            display: inline;
+                            line-height: 24px;
+                            margin: 0;
                             padding: 0;
-                            margin: -3px 0 0 3px;
-                            width: auto;
+                            vertical-align: baseline;
+                            .size(24px, auto);
                         }
                     }
 
@@ -5752,10 +5755,11 @@
                         .room {
                             line-height: 40px;
                             border-bottom: 1px solid rgba(0,0,0,.1);
+                            .nowrap();
 
                             .room-number {
                                 line-height: 40px;
-                                margin-right: 10px;
+                                padding-right: 10px;
 
                                 &.ready { color: @green; }
                                 &.not-ready { color: @red; }
@@ -5768,9 +5772,17 @@
                             .float;
 
                             li {
+                                font-size: 14px;
+                                line-height: 30px;
                                 margin: 0;
                                 width: 39%;
+                                .nowrap();
                                 .pull-left;
+
+                                .guest-status {
+                                    margin: 5px 5px 5px 0;
+                                    .square(20px);
+                                }
 
                                 &:first-child { width: 22%; }
                             }
@@ -5778,26 +5790,20 @@
 
                         .rate {
                             color: @textColor;
-                            line-height: 40px;
-                            padding: 10px 0;
+                            vertical-align: middle;
+                            line-height: 60px;
                             border-bottom: 1px solid rgba(0,0,0,.1);
+                            .nowrap();
                             .float;
 
                             .number {
                                 font-size: 30px;
-                                line-height: 35px;
-                                vertical-align: middle;
+                                line-height: 60px;
                                 font-weight: 300;
                                 margin-right: 20px;
                                 .pull-left;
 
                                 strong { font-weight: 400; }
-                            }
-
-                            #rate-desc {
-                                margin-top: 8px;
-                                line-height: 1.2em;
-                                .pull-left;
                             }
                         }
 
@@ -5816,6 +5822,11 @@
                                     }
                                 }
                             }
+                        }
+
+                        .button {
+                            width: 100%;
+                            margin-top: 0;
                         }
 
                         /* Room is available / Unassign room from antoher guest ***/
@@ -5867,6 +5878,14 @@
                             line-height: 24px;
                         }
                     }
+                }
+
+                #find-rooms-and-rates {
+                    position: absolute;
+                    bottom: 20px;
+                    left: 50%;
+                    margin-left: -120px;
+                    .size(50px, 240px);
                 }
             }
         }
@@ -6836,6 +6855,19 @@
                             font-weight: 400;
                         }
                     }
+
+                    &.totals {
+                        td {
+                            padding: 10px;
+                            background: rgba(0,0,0,.05);
+                            color: @textColor;
+                            font-size: 16px;
+                            line-height: 1em;
+                            font-weight: 600;
+
+                            &:last-child { text-align: left; }
+                        }
+                    }
                 }
 
                 tfoot {
@@ -6874,6 +6906,13 @@
                     tr {
                         th { padding: 0 5px; }
                         td { padding: 10px 5px; }
+
+                        &.totals {
+                            td {
+                                padding: 10px 5px;
+                                font-size: 14px;
+                            }
+                        }
                     }
 
                     tfoot {
@@ -8276,7 +8315,7 @@
             .reservation-header {
                 position: relative;
                 height: 50px;
-                padding: 0;
+                padding: 0 10px;
                 background: rgba(0,0,0,.03);
                 overflow: visible;
                 z-index: 40;
