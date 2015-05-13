@@ -17,7 +17,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.renderAddedPayment.cardExpiry = $scope.selectedEntity.credit_card_details.card_expiry;
         $scope.renderAddedPayment.endingWith = $scope.selectedEntity.credit_card_details.card_number;
         $scope.renderAddedPayment.creditCardType = $scope.selectedEntity.credit_card_details.card_code;
-        $scope.isAddPayment = true;
+        $scope.showPayment = true;
         $scope.showCreditCardDropDown = false;
         
         $scope.isShownExistingCCPayment = true;
@@ -274,7 +274,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.availableBillingGroups = data;
                 if(data.length == 0)
                     $scope.isBillingGroup = false;
-                if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                if($scope.selectedEntity.entity_type == 'POSTING_ACCOUNT'){
+                    $scope.showPayment = false;
+                    $scope.$parent.$emit('hideLoader');
+                }
+                else if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                     $scope.$parent.$emit('hideLoader');                    
                 }else if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type != 'RESERVATION'){
                     $scope.showPayment = true;
@@ -285,7 +289,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     $scope.showPayment = true;
                     $scope.$parent.$emit('hideLoader');
                 }
-                else {
+                else{
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
                 }
@@ -372,8 +376,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						$scope.fetchAllChargeCodes();
 						return;
                     } 
-                    //default to last item
-                    $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
+
+                    //default to last item when there is no bill no.
+                    var billNo = $scope.selectedEntity.bill_no
+                    if(billNo == "") $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
+                    else $scope.selectedEntity.to_bill = $scope.selectedEntity.to_bill;
 
                     $scope.fetchAvailableChargeCodes();
                   //}
@@ -730,6 +737,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         	  
             $scope.saveSuccessCallback = function(data) {
                 $scope.$parent.$emit('hideLoader');
+                $scope.setReloadOption(true);
+                $scope.headerButtonClicked();
                 $scope.$parent.$emit('BILLINGINFOADDED');
             };
             $scope.errorCallback = function(errorMessage) {
