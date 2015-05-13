@@ -696,6 +696,11 @@ sntRover.controller('RVbillCardController',
 	 	$scope.$emit('SHOWPAYMENTLIST', $scope.reservationBillData);
 	 };
 
+	 $scope.$on('paymentChangedToCC', function(){
+	 	$scope.reservationBillData.no_post = "false";
+	 	$scope.reservationBillData.roomChargeEnabled = true;
+	 });
+
 
 	$scope.openPostCharge = function(activeBillNo) {
 
