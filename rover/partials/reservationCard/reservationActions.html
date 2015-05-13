@@ -37,9 +37,6 @@
 		<a id="deposit_balance" ng-show="showDepositBalance(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
 			Deposit/Balance
 		</a>
-		<a id="deposit_balance" ng-show="showDepositBalanceWithSr(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
-			Deposit/Balance&nbsp;{{reservationData.reservation_card.text_rates_suppressed}}
-		</a>
 		
 		
 		<!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
