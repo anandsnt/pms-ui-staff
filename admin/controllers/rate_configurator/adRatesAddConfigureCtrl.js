@@ -395,6 +395,21 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
         };
 
+
+
+        /*
+         * delete set
+         */
+        $scope.deleteSet = function() {
+            
+            var deleteSetSuccessCallback = function(){
+                $scope.$emit('hideLoader');
+                $scope.data.sets.splice($scope.deleteSetIndex, 1);
+                ngDialog.close();                
+            };
+            $scope.invokeApi(ADRatesConfigureSrv.deleteSet, $scope.deleteSetId, deleteSetSuccessCallback);
+        };
+
         $scope.confirmDeleteSet = function(id, index, setName) {
 
             //if set id is null, then it is a new set - not saved, so delete directly
@@ -410,7 +425,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             $scope.deleteSetName = setName;
             ngDialog.open({
                 template: '/assets/partials/rates/confirmDeleteSetDialog.html',
-                controller: 'ADRatesAddConfigureCtrl',
                 className: 'ngdialog-theme-default',
                 scope: $scope
             });

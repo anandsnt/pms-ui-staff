@@ -52,14 +52,21 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
 
       // update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
       var updateSearchCache = function(avatarImage) {
+        var dataSource = $scope.guestCardData.contactInfo;
         var data = {
-          'firstname': $scope.guestCardData.contactInfo.first_name,
-          'lastname': $scope.guestCardData.contactInfo.last_name,
-          'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city + ', ' + $scope.guestCardData.contactInfo.address.state : false,
-          'vip': $scope.guestCardData.contactInfo.vip,
+          'firstname': dataSource.first_name,
+          'lastname': dataSource.last_name,          
+          'vip': dataSource.vip,
           'avatar': avatarImage
-        };
-
+        };        
+        if (dataSource.address) {
+          if (dataSource.address.city.trim() !== '' || dataSource.address.state.trim() !== '') {
+            data.location = (dataSource.address.city + ', ' + dataSource.address.state);
+          }
+          else {
+            data.location = false;
+          }
+        }
         RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
       };
 

@@ -15,6 +15,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
     * Note: If a subscope requires another iScroll, this approach may not work.
     */
    $scope.$parent.myScroll =[];
+   $scope.isWeekend = function(date){
+       //get the 'day' format, sat/sun and return true if its considered a weekend
+       var day = new Date(date).getDay();
+       //sat=5, sun=6
+       if (day === 6 || day === 5){
+           return true;
+       } else {
+           return false;
+       }
+   };
 
    BaseCtrl.call(this, $scope);
    
@@ -65,7 +75,22 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			$scope.$parent.myScroll.RateCalendarCtrl.refresh();
 		}, 0);
 	};
-
+        
+        $scope.hasOverride = function(a,label){
+            var L = label.toLowerCase();
+            if (a && a.length > 0){
+                for (var i in a){
+                    if (a[i].toLowerCase() === L){
+                        return true;
+                    }
+                }
+            } else {
+                return false;
+            }
+            return false;
+            
+        };
+        
         $scope.isRestrictTo = function(zoom, restrictions){
             var z = ''+zoom;
             if (typeof restrictions === typeof []){
@@ -135,7 +160,21 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			}
 
 			$scope.calendarData = data;
-
+                    /*    
+                if ($scope.calendarMode === 'ROOM_TYPE_VIEW'){
+                    var dates = data.dates;
+                    if (typeof data.data === typeof []){
+                        if (data.data.length > 0){
+                            data.data.isHourly = true;
+                            if (data.data.length > 1){
+                                //this is an override on the default rate
+                             //   data.data[1][dates[0]].overrides = [];
+                             //   data.data[1][dates[0]].overrides.push('single');
+                            }
+                        }
+                    }
+                }
+                */
 			$scope.$emit('hideLoader');		
 		};
 
@@ -222,6 +261,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	* Click handler for up-arrows in rate_view_calendar
 	*/
 	$scope.goToRoomTypeCalendarView = function(rate){
+            $scope.$emit('showLoader');
 		$scope.ratesDisplayed.length = 0;
 		$scope.ratesDisplayed.push(rate);
 		$scope.currentSelectedRate = rate;

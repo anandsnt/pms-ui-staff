@@ -64,6 +64,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/brands'
 		});
 		
+		/*$stateProvider.state('admin.mapping', {
+			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
+			controller: 'ADMappingCtrl',
+			url : '/mapping/:hotelId'
+		});*/
 		$stateProvider.state('admin.mapping', {
 			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
 			controller: 'ADMappingCtrl',

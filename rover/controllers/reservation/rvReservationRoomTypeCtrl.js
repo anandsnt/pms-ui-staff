@@ -682,7 +682,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 				//TODO : 7641 - Update the rateDetails array in the reservationData
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
-				$scope.checkOccupancyLimit();
+				$scope.checkOccupancyLimit(null, false, $scope.activeRoom);
 
 				if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
 					populateStayDates(rateId, roomId);

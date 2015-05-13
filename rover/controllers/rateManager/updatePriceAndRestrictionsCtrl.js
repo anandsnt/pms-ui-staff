@@ -6,6 +6,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         $scope.showExpandedView = false;
 
         $scope.data = {};
+        $scope.data.roomRateOverrides = [];
         $scope.data.showEditView = false;
 
         if($scope.popupData.fromRoomTypeView){
@@ -46,7 +47,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             if(typeof $scope.myScroll['restictionWeekDaysScroll'] != 'undefined')
             $scope.myScroll['restictionWeekDaysScroll'].refresh();
         },1000);
-    }
+    };
 
     $scope.restrictionsList = {
         selectedIndex : -1
@@ -77,6 +78,19 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
     */
     $scope.hasPermissionToUpdateRates = function(){
         return (rvPermissionSrv.getPermissionValue ('UPDATE_RATE_PRICE')); 
+    };
+    
+    /**
+    * method to determine whether the user has permission to update Rate Mgr - Rate Prices
+    * @return {Boolean}
+    */
+    $scope.clearOverrides = function(data){
+        $scope.$emit('showLoader');
+        var onsuccess = function(successData){
+            $scope.$emit('hideLoader');
+        };
+        data.room_type_id = data.selectedRoomType;
+        $scope.invokeApi(RateMngrCalendarSrv.updateRoomTypeOverride, data, onsuccess);
     };
     
     
@@ -179,6 +193,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             $scope.data.isHourly= $scope.calendarData.data[0][$scope.popupData.selectedDate].isHourly;                        
         } else {
             for(var i in $scope.calendarData.data){
+                
                 if($scope.calendarData.data[i].id == $scope.popupData.selectedRoomType){
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                     $scope.data.id = $scope.calendarData.data[i].id;
@@ -200,6 +215,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                             //(CICO-9555                            
                             $scope.data.nightly= selectedDateInfo.nightly;
                             //CICO-9555)
+                            
+                            //CICO-15561
+                            $scope.data.roomRateOverrides = selectedDateInfo.overrides;
+                            //CICO-15561
                         }
                     }
                 }
@@ -306,7 +325,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             ret = true;
         }
         return ret;
-    }
+    };
 
     /* This does not handle the case of "Selected for all Rates", as this can be deduced from allData
     */
@@ -326,7 +345,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             }
         }
         return mixed;
-    }
+    };
     /**
     * Click handler for restriction on/off buttons
     * Enable disable restriction. 

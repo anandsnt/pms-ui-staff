@@ -9,7 +9,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'accountData',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv) {
+	'rvAccountTransactionsSrv',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv, rvAccountTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -50,7 +51,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		};
 
 		$scope.updateAndBack = function() {
-			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');			
+			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+			$scope.updateAccountSummary();
 			$state.go('rover.accounts.search');
 		}
 
@@ -64,7 +66,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			$rootScope.setPrevState = {
 				title: $filter('translate')('ACCOUNTS'),
 				callback: 'updateAndBack',
-				scope: $scope				
+				scope: $scope
 			};
 
 			//setting title and things
@@ -128,8 +130,69 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			if (isInAccountsTab && !$scope.isInAddMode()) {
 				// $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
 			}
+			
+			//Reload the summary tab contents before switching to it
+			if(tab === "ACCOUNT"){
+				refreshSummaryTab();
+			} else if(tab === "TRANSACTIONS"){ //Preload the transaction data when we switch to transactions tab
+				preLoadTransactionsData();
+				return false;
+			} else{
+				// Switching from SUMMARY tab - 
+				// Check for any updation => lets save it.
+				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
+			}
 
 			$scope.accountConfigData.activeTab = tab;
+		};
+
+		var preLoadTransactionsData = function(){
+			var onTransactionFetchSuccess = function(data) {
+
+				$scope.$emit('hideloader');
+				$scope.transactionsDetails = data;
+				$scope.accountConfigData.activeTab = 'TRANSACTIONS';
+
+				/*
+				 * Adding billValue and oldBillValue with data. Adding with each bills fees details
+				 * To handle move to bill action
+				 * Added same value to two different key because angular is two way binding
+				 * Check in HTML moveToBillAction
+				 */
+				angular.forEach($scope.transactionsDetails.bills, function(value, key) {
+					angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
+
+						feesValue.billValue = value.bill_number; //Bill value append with bill details
+						feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
+					});
+				});
+
+			}
+			var params = {
+				"account_id": $scope.accountConfigData.summary.posting_account_id
+			}
+			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
+				successCallBack: onTransactionFetchSuccess,
+				params: params
+			});
+
+		};
+
+		var refreshSummaryTab = function() {
+
+			var onAccountFetchSuccess = function(data) {
+				$scope.$emit('hideloader');
+				$scope.accountConfigData.summary = data;
+				$scope.accountConfigData.activeTab = "ACCOUNT";
+
+			}
+			var params = {
+				"accountId": $scope.accountConfigData.summary.posting_account_id
+			}
+			$scope.callAPI(rvAccountsConfigurationSrv.getAccountSummary, {
+				successCallBack: onAccountFetchSuccess,
+				params: params
+			});
 		};
 
 		/**
@@ -225,9 +288,15 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.accountConfigData.summary.company.name = ui.item.label;
 					$scope.accountConfigData.summary.company.id = ui.item.value;
-					if (!$scope.isInAddMode()) $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");;
+					if (!$scope.isInAddMode()) $scope.updateAccountSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && !$scope.accountConfigData.summary.company.name) {
+						$scope.accountConfigData.summary.company.id = "";
+						$scope.updateAccountSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 
@@ -254,12 +323,47 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.accountConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.accountConfigData.summary.travel_agent.id = ui.item.value;
-					if (!$scope.isInAddMode()) $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
+					if (!$scope.isInAddMode()) $scope.updateAccountSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && !$scope.accountConfigData.summary.travel_agent.name) {
+						$scope.accountConfigData.summary.travel_agent.id = "";
+						$scope.updateAccountSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 		};
+
+		/**
+		 * Update the account data
+		 * @return undefined
+		 */
+		$scope.updateAccountSummary = function() {
+			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
+				var onAccountUpdateSuccess = function(data) {
+						//client controllers should get an infromation whether updation was success
+						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
+						$scope.$emit('hideloader');
+					},
+					onAccountUpdateFailure = function(errorMessage) {
+						//client controllers should get an infromation whether updation was a failure
+						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
+						$scope.$emit('hideloader');
+					};
+
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
+					successCallBack: onAccountUpdateSuccess,
+					failureCallBack: onAccountUpdateFailure,
+					params: {
+						summary: $scope.accountConfigData.summary
+					}
+				});
+			} else {
+				console.warn('No Permission for EDIT_ACCOUNT');
+			}
+		}
 
 
 		/**

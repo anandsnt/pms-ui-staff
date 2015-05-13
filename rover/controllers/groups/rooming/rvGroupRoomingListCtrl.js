@@ -160,9 +160,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * to switch to rooming list tab
          * @return {undefined} [description]
          */
-        $scope.gotoRoomBlockTab = function () {
-            $scope.closeDialog ();
-            $scope.switchTabTo ('ROOM_BLOCK');
+        $scope.gotoRoomBlockTab = function() {
+            $scope.closeDialog();
+            $scope.switchTabTo('ROOM_BLOCK');
         };
 
         /**
@@ -177,7 +177,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 closeByDocument: false,
                 closeByEscape: false
             });
-        };            
+        };
 
         /**
          * [successCallBackOfFetchRoomBlockGridDetails description]
@@ -217,12 +217,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]} [description]
          */
         var attachBillingInfoToReservations = function() {
-            
+
             // we need to attach billing info of group to all the  corresponding reservations
             var reservationIds = _.pluck($scope.newReservations, "id")
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
-                reservation_ids :reservationIds
+                reservation_ids: reservationIds
             };
 
             var options = {
@@ -230,18 +230,17 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             };
             $scope.callAPI(rvGroupRoomingListSrv.attachBillingInfoToReservations, options);
         };
-        
+
         /**
          * [successCallBackOfcheckDefaultChargeRoutings description]
          * @param  {[type]} data [description]
          * @return {[type]}      [description]
          */
         var successCallBackOfcheckDefaultChargeRoutings = function(data) {
-            
-            if(data.default_route){
+
+            if (data.default_route) {
                 attachBillingInfoToReservations();
-            }
-            else{
+            } else {
                 return;
             };
         };
@@ -251,7 +250,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]} [description]
          */
         var checkDefaultChargeRoutings = function() {
-          
+
             var params = {
                 id: $scope.groupConfigData.summary.group_id
             };
@@ -269,7 +268,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
-             $scope.newReservations = [];
+            $scope.newReservations = [];
             _.each(data.results, function(reservation) {
                 $scope.newReservations.push(reservation);
                 $scope.reservations.push(reservation);
@@ -297,8 +296,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $scope.addReservations = function() {
             //if there is no room type attached, we have to show some message
             if ($scope.roomTypesAndData.length == 0) {
-                return showNoRoomTypesAttachedPopUp ();
-            }   
+                return showNoRoomTypesAttachedPopUp();
+            }
 
             //wiping the weepy
             $scope.errorMessage = '';
@@ -599,7 +598,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //changing the default selected number of rooms
             if (typeof $scope.numberOfRooms === "undefined" && $scope.possibleNumberOfRooms.length > 0) {
-               $scope.numberOfRooms = $scope.possibleNumberOfRooms[0]; 
+                $scope.numberOfRooms = $scope.possibleNumberOfRooms[0];
             }
 
             if (_.max($scope.possibleNumberOfRooms) < $scope.numberOfRooms) {
@@ -685,7 +684,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * return - None
          */
         var fromDateChoosed = function(date, datePickerObj) {
-            $scope.fromDate = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
+            $scope.fromDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
             // we will clear end date if chosen start date is greater than end date
             if ($scope.fromDate > $scope.toDate) {
@@ -701,7 +700,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * return - None
          */
         var toDateChoosed = function(date, datePickerObj) {
-            $scope.toDate = new tzIndependentDate (util.get_date_from_date_picker (datePickerObj));
+            $scope.toDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
             // we will clear end date if chosen start date is greater than end date
             if ($scope.fromDate > $scope.toDate) {
@@ -818,15 +817,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successFetchOfAllReqdForRoomingList = function(data) {
-            $scope.closeDialog();
             $scope.$emit('hideLoader');
 
             //if there is no room type attached, we have to show some message
             if ($scope.roomTypesAndData.length == 0) {
-                $timeout(function(){
-                    showNoRoomTypesAttachedPopUp ();
-                }, 800);
-            }            
+                showNoRoomTypesAttachedPopUp();
+            }
         };
 
         /**
@@ -911,10 +907,13 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 reservation.group_id = $scope.groupConfigData.summary.group_id;
                 reservation.arrival_date = $filter('date')(tzIndependentDate(reservation.arrival_date), 'yyyy-MM-dd');
                 reservation.departure_date = $filter('date')(tzIndependentDate(reservation.departure_date), 'yyyy-MM-dd');
+                reservation.room_type_id = parseInt(reservation.room_type_id);
 
                 var onUpdateReservationSuccess = function(data) {
                         //calling initially required APIs
                         callInitialAPIs();
+                        $scope.errorMessage = [];
+                        $scope.closeDialog();
                     },
                     onUpdateReservationFailure = function(errorMessage) {
                         $scope.errorMessage = errorMessage;
@@ -950,6 +949,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 var onRemoveReservationSuccess = function(data) {
                         //calling initially required APIs
                         callInitialAPIs();
+                        $timeout(function() {
+                            $scope.closeDialog();
+                        }, 700);
+
                     },
                     onRemoveReservationFailure = function(errorMessage) {
                         $scope.errorMessage = errorMessage;
