@@ -613,17 +613,19 @@ sntRover.controller('reservationActionsController', [
 				});
 			
 		};
-		$scope.showDepositBalance = function(reservationStatus, isRatesSuppressed){
-			var showDepositBalanceButtonWithoutSR = false;
-			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
 
-				if(isRatesSuppressed == "false"){
-					showDepositBalanceButtonWithoutSR = true;
-				}
-				
-			}
-			return showDepositBalanceButtonWithoutSR;
+		/**
+		 * wanted to show deposit & blance button?
+		 * @param  {String}  reservationStatus 
+		 * @return {Boolean}                  
+		 */
+		$scope.showDepositBalance = function(reservationStatus){
+			//As per CICO-15833
+			//we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
+			reservationStatus = reservationStatus.toUpperCase();
+			return (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN')
 		};
+
 		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithSR = false;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){

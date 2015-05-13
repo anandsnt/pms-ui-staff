@@ -18,7 +18,11 @@
                     <th colspan="3">Last Year</th>
                 </tr>
                 <tr class="bottom-row">
-                    <th ng-repeat="item in subHeaders track by $index" ng-class="{ 'date': $index == 0, 'break': $index == 8 }">{{ item }}</th>
+                    <th ng-repeat="item in subHeaders track by $index" ng-class="{ 'date': $index == 0, 'break': $index == 8 }">
+                        <span>
+                            {{ item }}
+                        </span>
+                    </th>
                 </tr>
             </thead>
             

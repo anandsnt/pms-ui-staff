@@ -482,9 +482,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		var successCallBackOfSaveRoomBlock = function(date){
 			//we have save everything we have
 			//so our data is new
+			$scope.copy_selected_room_types_and_bookings = 
+				angular.copy($scope.groupConfigData.summary.selected_room_types_and_bookings);
+			
 			$scope.hasBookingDataChanged = false;
 			$scope.groupConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
 			
+			//as per CICO-16087, we have to refetch the occupancy and availability after saving
+			//so, callinng the API again 
+			$scope.fetchRoomBlockGridDetails();
 		};
 
 		/**
