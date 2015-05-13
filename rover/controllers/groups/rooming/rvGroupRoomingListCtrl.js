@@ -820,8 +820,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.$emit('hideLoader');
 
             //if there is no room type attached, we have to show some message
-            if ($scope.roomTypesAndData.length == 0) {            
-                    showNoRoomTypesAttachedPopUp();
+            if ($scope.roomTypesAndData.length == 0) {
+                showNoRoomTypesAttachedPopUp();
             }
         };
 
@@ -949,7 +949,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 var onRemoveReservationSuccess = function(data) {
                         //calling initially required APIs
                         callInitialAPIs();
-                        $scope.closeDialog();
+                        $timeout(function() {
+                            $scope.closeDialog();
+                        }, 700);
+
                     },
                     onRemoveReservationFailure = function(errorMessage) {
                         $scope.errorMessage = errorMessage;

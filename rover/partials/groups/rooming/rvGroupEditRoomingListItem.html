@@ -74,7 +74,8 @@
 
             <div class="entry room" ng-disabled="true">
                 <label for="room">Room</label>
-                <div class="select">
+                <input ng-model="ngDialogData.room_no" ng-disabled="true"></input>
+                <div class="select" ng-hide="true">
                     <select id="room" ng-disabled="true">
                         <!-- Add class "placeholder" if "N/A" set as option -->
                         <option value="">N/A</option>

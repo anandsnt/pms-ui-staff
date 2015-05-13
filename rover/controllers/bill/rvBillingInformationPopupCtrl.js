@@ -80,7 +80,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.selectedEntity.images[0] = {};
             $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
             if($scope.selectedEntity.entity_type !='RESERVATION')  
-                   $scope.selectedEntity.guest_id = null;       
+                   $scope.selectedEntity.guest_id = null; 
+            if($scope.selectedEntity.entity_type == "GROUP"){
+                $scope.selectedEntity.entity_type = "POSTING_ACCOUNT";
+            }
         }
         else if(type === 'RESERVATIONS'){
         	var data = $scope.results.reservations[index];

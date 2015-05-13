@@ -31,7 +31,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.cardsList       = [];
 	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 	$scope.showCCPage = false;
-	
 	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 		$scope.showManualEntryDisabledPopup = false;
 		$scope.showCCPage = true;
@@ -550,6 +549,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.reservation_card.payment_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;	
 			$scope.paymentData.reservation_card.payment_details.is_swiped = true;
 		} else {
+			//As per CICO-13762, we need to update the room charge enabled flag if the payment type is changed to cc from cash
+			if($scope.paymentData.bills[billNumber].credit_card_details.payment_type !== "CC"){
+				$rootScope.$broadcast("paymentChangedToCC");
+			}
 			//CICO-13667 update the room charge button to green color if payment type is CC
 			if($scope.paymentData.bills[billNumber].bill_number === '1'){
 				$scope.paymentData.roomChargeEnabled = true;
@@ -559,6 +562,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
 			$scope.paymentData.bills[billNumber].credit_card_details.payment_type = "CC";
 			$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = true;
+
+			
 		}
 		if($scope.dataToSave.addToGuestCard){
 				addToGuestCardOnSwipe(data);
