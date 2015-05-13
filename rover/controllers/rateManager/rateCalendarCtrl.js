@@ -258,7 +258,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		$scope.ratesDisplayed.length = 0;
 		$scope.ratesDisplayed.push(rate);
 		$scope.currentSelectedRate = rate;
-        $scope.$emit("enableBackbutton");
+                $scope.$emit("enableBackbutton");
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
 		loadTable(rate.id);
 	};
