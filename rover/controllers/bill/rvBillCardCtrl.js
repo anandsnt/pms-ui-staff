@@ -298,6 +298,16 @@ sntRover.controller('RVbillCardController',
 		 * on the basis of payment type
 		 */
 	$scope.setNoPostStatus = function(){
+		
+		$scope.reservationBillData.roomChargeEnabled = "";
+
+		if($scope.reservationBillData.no_post == "true"){
+			$scope.reservationBillData.roomChargeEnabled = false;
+		}else if($scope.reservationBillData.no_post == "false"){
+			$scope.reservationBillData.roomChargeEnabled = true;
+		}
+
+		/*
 
 		if($scope.reservationData.paymentType.type.value === 'CC'){
 			$scope.reservationBillData.roomChargeEnabled = true;
@@ -307,7 +317,7 @@ sntRover.controller('RVbillCardController',
 			$scope.reservationBillData.roomChargeEnabled = true;
 		}else {
 			$scope.reservationBillData.roomChargeEnabled = "";
-		}
+		}*/
 
 	};
 
