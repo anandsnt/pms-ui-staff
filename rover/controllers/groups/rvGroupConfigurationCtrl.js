@@ -148,12 +148,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				$scope.updateGroupSummary();
 			};
 			//Reload the summary tab contents before switching
-			if(tab === "SUMMARY"){
+			if(tab === "SUMMARY" || tab === "ACCOUNT"){
 				$scope.refreshSummaryTab();
 			};
-
+			//Preload the transaction data when we switch to transactions tab
 			if(tab === "TRANSACTIONS"){
-				loadTransactionsData();
+				preLoadTransactionsData();
 			} else {
 				$scope.groupConfigData.activeTab = tab;
 			}
@@ -165,7 +165,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		};
 
-		var loadTransactionsData = function(){
+		var preLoadTransactionsData = function(){
 			var onTransactionFetchSuccess = function(data) {
 
 				$scope.$emit('hideloader');
@@ -201,7 +201,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			var onAccountFetchSuccess = function(data) {
 				$scope.$emit('hideloader');
 				$scope.groupConfigData.summary = data.groupSummary;
-				$scope.groupConfigData.activeTab = "SUMMARY";
+				$scope.accountConfigData.summary = data.accountSummary;
 			}
 			var params = {
 				"groupId": $scope.groupConfigData.summary.group_id

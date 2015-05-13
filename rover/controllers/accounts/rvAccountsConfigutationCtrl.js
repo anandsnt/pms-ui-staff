@@ -134,8 +134,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			//Reload the summary tab contents before switching to it
 			if(tab === "ACCOUNT"){
 				refreshSummaryTab();
-			} else if(tab === "TRANSACTIONS"){
-				loadTransactionsData();
+			} else if(tab === "TRANSACTIONS"){ //Preload the transaction data when we switch to transactions tab
+				preLoadTransactionsData();
 				return false;
 			} else{
 				// Switching from SUMMARY tab - 
@@ -146,7 +146,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			$scope.accountConfigData.activeTab = tab;
 		};
 
-		var loadTransactionsData = function(){
+		var preLoadTransactionsData = function(){
 			var onTransactionFetchSuccess = function(data) {
 
 				$scope.$emit('hideloader');
