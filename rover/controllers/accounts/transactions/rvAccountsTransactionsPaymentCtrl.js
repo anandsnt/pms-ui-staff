@@ -6,6 +6,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
 		$scope.swipedCardDataToSave  = {};
+		$scope.showArSelection = false;
 		var isSixPayment  = false;
 		var tokenDetails  = {};
 		var cardDetails   = {};
@@ -349,6 +350,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 	$scope.showCreditCardInfo = true;
 		 	$scope.newCardAdded = true;
 		 	$scope.swipedCardDataToSave = {};
+
 		 };
 
 
@@ -451,14 +453,20 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.$emit("hideLoader");
 			$scope.depositPaidSuccesFully = true;
 			$scope.authorizedCode = data.authorization_code;		
-			$scope.$emit('UPDATE_TRANSACTION_DATA',data);			
+			$scope.$emit('UPDATE_TRANSACTION_DATA',data);
+			$scope.showArSelection = false;			
+		};
+		var failurePayment = function(error){
+			$scope.$emit("hideLoader");
+			$scope.errorMessage = error;
+			$scope.showArSelection = false;	 
 		};
 
 		/*
 		* Payment actions 
 		*/
 
-		var proceedPayment = function(){
+		var proceedPayment = function(arType){
 
 			$scope.errorMessage = "";
 			var params = {
@@ -469,6 +477,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					"payment_method_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null
 					},
 				"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id
+			};
+
+			if(typeof arType !=="undefined"  && arType !==""){
+				params.data_to_pass.ar_type = arType;
 			};
 
 			if($scope.isShowFees()){
@@ -494,18 +506,35 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 
 				$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
 					successCallBack: successPayment,
+					failureCallBack: failurePayment,
 					params: params
 				});
 			};		
+		};
+
+		// select to which AR account payment has to be done
+		$scope.selectArAccount = function(type){
+			if(type === "company"){
+				proceedPayment("company"); 
+			}
+			else{
+				proceedPayment("travel_agent"); 
+			};
 		};
 
 
 		var checkIfARAccountisPresent = function(){
 			
 			var successArCheck = function(data){
-				//if AR account is present proceed payment
-				if(!!data.value){
-					proceedPayment();
+
+				//if both company and travel agent AR accounts are present
+				if(data.company_attached && data.travel_agent_attached){
+					$scope.showArSelection = true;
+				}else if(data.company_attached){
+					proceedPayment("company"); 
+				}
+				else if(data.travel_agent_attached){
+					proceedPayment("travel_agent");
 				}
 				else{
 					//close payment popup
