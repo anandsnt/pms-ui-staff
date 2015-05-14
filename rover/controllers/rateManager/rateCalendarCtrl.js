@@ -40,6 +40,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	/**
 	* Click handler for expand button in room type calendar
 	*/
+       
+       $scope.isExpandedHeight = 0;
+       
 	$scope.expandRow = function(index){
 		if($scope.currentExpandedRow === index){
 			$scope.currentExpandedRow = -1;
@@ -50,14 +53,30 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		$scope.currentExpandedRow = index;
 		$scope.refreshScroller();
 	};
+        $scope.isExpandedRow = function(idx){
+                if (idx == $scope.currentExpandedRow){
+                    return true;
+                } else {
+                    return false;
+                }
+        };
+        $scope.getLimitRow = function(rowIndex){
+            if (rowIndex){
+                if (rowIndex == $scope.currentExpandedRow){
+                    return 8;
+                } else {
+                    return 3;
+                }
+            } else return 8;
+        };
 
 	$scope.refreshScroller = function(){
             $scope.initScrollBind();
-            
-		setTimeout( function(){
-			$scope.$parent.myScroll.RateCalendarCtrl.refresh();
-		}, 0);
-	};
+            if ( $scope.$parent.myScroll.RateCalendarCtrl ){
+                $scope.$parent.myScroll.RateCalendarCtrl.refresh();
+            }
+        };
+        
 
         $scope.isRestrictTo = function(zoom, restrictions){
             var z = ''+zoom;
