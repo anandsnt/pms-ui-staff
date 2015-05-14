@@ -63,10 +63,11 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 
 	$scope.refreshScroller = function(){
             $scope.initScrollBind();
-            
+            if ($scope.$parent.myScroll.RateCalendarCtrl){
 		setTimeout( function(){
 			$scope.$parent.myScroll.RateCalendarCtrl.refresh();
 		}, 0);
+            }
 	};
         
         $scope.hasOverride = function(a,label){
