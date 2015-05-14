@@ -925,8 +925,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				$scope.createButtonClicked = true;
 				$scope.totalPickups = refData.summary.rooms_pickup;
 				$scope.totalRooms = refData.summary.rooms_total;
-
-				$scope.selectedHoldStatus = refData.summary.hold_status;
+				$scope.selectedHoldStatus = util.convertToInteger (refData.summary.hold_status);
 				
 				_.extend($scope.groupConfigData.summary, {
 					selected_room_types_and_bookings : [],
