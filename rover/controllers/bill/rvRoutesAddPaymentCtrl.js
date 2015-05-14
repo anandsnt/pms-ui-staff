@@ -49,8 +49,6 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
                 		$scope.creditCardTypes = data[i].values;
                 	}
                 }
-
-                console.log($scope.ccPaymentDetails);
                 $scope.$parent.$emit('hideLoader');
                 $scope.refreshScroller('newpaymentview');
             };

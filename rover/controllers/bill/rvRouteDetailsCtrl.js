@@ -381,7 +381,6 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                      //default to last item when there is no bill no.
                     var billNo = $scope.selectedEntity.bill_no;
                     if($scope.selectedEntity.entity_type == 'POSTING_ACCOUNT'){
-                        console.log(firstBillId);
                         $scope.selectedEntity.to_bill = firstBillId;
                     }
                     else if(billNo == "") $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
