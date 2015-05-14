@@ -3,7 +3,6 @@ sntRover.directive('scrollPosition', function ($window) {
         restrict: 'A',
         link: function (scope, element, attrs, opt) {
             var isIpad = navigator.userAgent.match(/iPad/i) != null;
-            console.log('isIpad: '+isIpad);
             if (isIpad){
                 try {
                    /* $(element)[0].addEventListener('touchmove', function(){

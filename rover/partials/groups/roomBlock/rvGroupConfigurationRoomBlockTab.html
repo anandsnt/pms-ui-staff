@@ -37,11 +37,6 @@
                     ng-model="selectedHoldStatus" 
                     iscroll-stop-propagation
                     ng-disabled="shouldDisableHoldStatusChange()">
-                    <option value="" 
-                        ng-selected="isEmpty(selectedHoldStatus)" 
-                        translate>
-                        SET_STATUS
-                    </option>
                     <option ng-repeat="holdstatus in holdStatusList" 
                         value="{{holdstatus.id}}" 
                         ng-selected="selectedHoldStatus === holdstatus.id">

@@ -412,6 +412,8 @@ sntRover.controller('RVReservationDepositController',
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
+
+		$rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
 	};
 
 	var paymentFailed = function(data){
