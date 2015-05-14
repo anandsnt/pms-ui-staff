@@ -806,6 +806,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 	 		$scope.groupConfigData.summary.selected_room_types_and_bookings = data.results;
 	 		$scope.groupConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
 
+	 		//our total pickup count may change on coming from other tab (CICO-16835)
+	 		$scope.totalPickups = data.total_picked_count;
+	 		
 	 		//we need the copy of selected_room_type, we ned to use these to show save/discard button
 	 		$scope.copy_selected_room_types_and_bookings = util.deepCopy (data.results);
 
