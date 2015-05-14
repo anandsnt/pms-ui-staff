@@ -148,7 +148,6 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.results.reservations = [];
 		$scope.results.reservations = data;
 		$scope.excludeActivereservationFromsSearch();
-		console.log(data);
 		setTimeout(function(){$scope.refreshScroller('res_search_scroller');}, 750);
 	};
 
