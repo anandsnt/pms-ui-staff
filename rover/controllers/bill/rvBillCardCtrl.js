@@ -1791,6 +1791,16 @@ sntRover.controller('RVbillCardController',
 		});
 	};
 
+	// Checks whether the user has signed or not
+	$scope.isSigned = function() {
+		return ($scope.reservationBillData.signature_details.is_signed == "true");
+	};
+
+	//Checks whether the user has accepted the charges during web check-in
+	$scope.isChargeAccepted = function() {
+		return $scope.reservationBillData.is_charges_accepted_from_mobile_web;
+	};
+
 	$scope.setupReviewStatusArray();
 
 	$scope.calculateBillDaysWidth();
