@@ -23,7 +23,7 @@
                     </td>
                 </tr>
 
-                <tr class="cell" style="height:67px" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}"> 
+                <tr class="cell" style="height:67px" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'expandedFirstRow': currentExpandedRow === $index}" ng-class="{'last': $last}"> 
                     <td class="first-row">    
                         <span ng-class="{'expanded': currentExpandedRow === $index}">{{rate.name}}</span>
                         <span style="float:right" ng-hide="currentExpandedRow === $index || !!rate.is_hourly">
@@ -49,7 +49,7 @@
                             <span class="week-day">{{date| date:'EEEE'}}</span>
                             <span>{{date| date:'MMMM dd'}}</span>
                         </div>
-                        <div ng-if="isHistoryDate(date)" class="date-header" style="opacity:0.7;">
+                        <div ng-if="isHistoryDate(date)" class="date-header isHistory-cell-content" style="opacity:0.7;">
                             <span class="week-day">{{date| date:'EEEE'}}</span>
                             <span>{{date| date:'MMMM dd'}}</span>
                         </div>
@@ -61,7 +61,7 @@
                 <tr ng-if="calendarData.data.length > 1"> <!-- && loading===false && calendarMode.substr(0,4) === 'ROOM'">-->
 
                     <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell"> 
-                        <div ng-class="(!isHistoryDate(date) && currentExpandedRow === $parent.$index && !rate.is_hourly && {{isWeekend(date)}}) ? 'expandedContainerWeekend' : ''" class="cell-container" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''">
+                        <div ng-class="(!isHistoryDate(date) && currentExpandedRow === $parent.$index && !rate.is_hourly && {{isWeekend(date)}}) ? 'expandedContainerWeekend' : ''" class="cell-container" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''">
                             <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ROOM_TYPE', true)">
                                 <div>
                                     <div>
@@ -78,7 +78,7 @@
                                                                   restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" >
                                             {{restriction.days}}
                                         </span>		
-                                        <span ng-if="calendarData.rate_restrictions[date].length > 3 && currentFilterData.zoom_level_selected < 6" class="restriction-icon left-icons ellipsis">...</span>
+                                        <span ng-if="calendarData.rate_restrictions[date].length > 3 && currentFilterData.zoom_level_selected < 6  && getLimitRow($parent.$parent.$index) == 3" class="restriction-icon left-icons ellipsis">...</span>
 
                                         <!-- if more than 1 restriction, depending on zoom, show Restrictions icon or first 3 restrictions -->
                                         <span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, calendarData.rate_restrictions[date]) == 2"
@@ -88,7 +88,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div ng-if="isHistoryDate(date)" class="cell-content isHistory-cell-content"  >
+                            <div ng-if="isHistoryDate(date)" class="cell-content isHistory-cell-content "  >
                                 <div>
                                     <div>
 
@@ -104,7 +104,7 @@
                                                                   restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" >
                                             {{restriction.days}}
                                         </span>		
-                                        <span ng-if="calendarData.rate_restrictions[date].length > 3 && currentFilterData.zoom_level_selected < 6" class="restriction-icon left-icons ellipsis">...</span>
+                                         <span ng-if="calendarData.rate_restrictions[date].length > 3 &&  currentFilterData.zoom_level_selected < 6 && getLimitRow($parent.$parent.$index) == 3" class="restriction-icon left-icons ellipsis">...</span>
 
                                         <!-- if more than 1 restriction, depending on zoom, show Restrictions icon or first 3 restrictions -->
                                         <span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, calendarData.rate_restrictions[date]) == 2"
@@ -145,7 +145,7 @@
                                               {{calendarData.restriction_types[restriction.restriction_type_id].icon}}">
                                             {{restriction.days}}
                                         </span>		
-                                        <span ng-if="rate[date].restrictions.length > 3 && currentFilterData.zoom_level_selected < 6" class="restriction-icon left-icons ellipsis">...</span>
+                                     <span ng-if="rate[date].restrictions.length > 3 &&  currentFilterData.zoom_level_selected < 6 && getLimitRow($parent.$parent.$index) == 3" class="restriction-icon left-icons ellipsis">...</span>
 
                                         <!-- if more than 1 restriction, depending on zoom, show Restrictions icon or first 3 restrictions -->
                                         <span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 2"
@@ -178,7 +178,7 @@
                                               {{calendarData.restriction_types[restriction.restriction_type_id].icon}}">
                                             {{restriction.days}}
                                         </span>		
-                                        <span ng-if="rate[date].restrictions.length > 3 && currentFilterData.zoom_level_selected < 6" class="restriction-icon left-icons ellipsis">...</span>
+                                    <span ng-if="rate[date].restrictions.length > 3 &&  currentFilterData.zoom_level_selected < 6 && getLimitRow($parent.$parent.$index) == 3" class="restriction-icon left-icons ellipsis">...</span>
 
                                         <!-- if more than 1 restriction, depending on zoom, show Restrictions icon or first 3 restrictions -->
                                         <span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 2"
@@ -252,7 +252,7 @@
                                                   class="restriction-icon left-icons {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}">
                                                 {{restriction.days}}
                                             </span>
-                                            <span ng-if="rate[date].restrictions.length > 3 && currentFilterData.zoom_level_selected < 6" class="restriction-icon left-icons ellipsis">...</span>
+                                           <span ng-if="rate[date].restrictions.length > 3 &&  currentFilterData.zoom_level_selected < 6 && getLimitRow($parent.$parent.$index) == 3" class="restriction-icon left-icons ellipsis">...</span>
 
                                             <!-- if more than 1 restriction, depending on zoom, show Restrictions icon or first 3 restrictions -->
                                             <span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 2"
