@@ -66,6 +66,7 @@
                             <div>
                                 <div>
                                     <div>
+
                                         <span ng-if="isRestrictTo(currentFilterData.zoom_level_selected, calendarData.all_rates[date]) == 3 && calendarData.all_rates[date].length <= 3" 
                                               ng-repeat="restriction in calendarData.all_rates[date]| limitTo: 3 track by $index" 
                                               ng-show="toggleRestrictionIconView()"
