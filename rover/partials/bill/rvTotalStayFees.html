@@ -13,11 +13,11 @@
 		<span class="icons icon-wallet"></span> 
 		{{ 'PAY' | translate }}
 	</button>
-	<button type="button" ng-click="clickedEmail()" class="button with-icon blue">
+	<button type="button" ng-click="clickedEmail()" class="button with-icon blue" ng-show="isStandAlone">
 		 <span class="icons icon-email"></span> 
 		 E-mail
 	</button>
-	<button type="button" ng-click="clickedPrint()" class="button with-icon blue"> 
+	<button type="button" ng-click="clickedPrint()" class="button with-icon blue" ng-show="isStandAlone"> 
 		<span class="icons icon-print"></span> 
 		Invoice
 	</button>
@@ -40,11 +40,11 @@
 			<span class="icons icon-wallet"></span> 
 			{{ 'PAY' | translate }}  
 		</button>
-		<button type="button" ng-click="clickedEmail()" class="button with-icon blue">
+		<button type="button" ng-click="clickedEmail()" class="button with-icon blue" ng-show="isStandAlone">
 			 <span class="icons icon-email"></span> 
 			 E-mail
 		</button>
-		<button type="button" ng-click="clickedPrint()" class="button with-icon blue"> 
+		<button type="button" ng-click="clickedPrint()" class="button with-icon blue" ng-show="isStandAlone"> 
 			<span class="icons icon-print"></span> 
 			Print
 		</button>
@@ -123,10 +123,10 @@
 			<tr class="active edit">
 				<td colspan="3" class="total-label">
 					<!-- Show email and print buttons -->
-					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue">
+					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue" ng-show="isStandAlone">
 						 <span class="icons icon-email"></span> 
 					</button>
-					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue"> 
+					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue" ng-show="isStandAlone"> 
 						<span class="icons icon-print"></span> 
 					</button> 
 					<span translate>STAY_FEES_AS_OF</span>
