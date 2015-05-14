@@ -339,7 +339,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     "contact_phone": null,
                     "contact_email": null
                 },
-                 "future_reservation_count": 0
+                "future_reservation_count": 0
             };
         };
 
@@ -385,8 +385,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 if (isOccupancyConfigured(roomIndex)) {
                     $scope.reservationData.rooms[roomIndex].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(roomIndex);
                     $scope.computeTotalStayCost(reset);
-                    if(reset){
-                        $scope.saveReservation(false,false,roomIndex);
+                    if (reset) {
+                        $scope.saveReservation(false, false, roomIndex);
                     }
                     var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
                     var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
@@ -1875,7 +1875,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     if ($scope.reservationsListArray) {
                         angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                            if (key == index) {
+                            if (!index || key == index) {
                                 reservation.deposit_amount = data.deposit_amount;
                                 totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
                             } else {
@@ -1934,9 +1934,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     }
 
                     postData.addons = $scope.viewState.existingAddons;
-
-
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
