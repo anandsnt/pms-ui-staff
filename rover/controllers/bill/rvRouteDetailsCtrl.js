@@ -353,6 +353,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 //TODO: commented to fix the issue
                	//if(data.length > 0){
                     $scope.first_bill_id = typeof data[0] !== "undefined"? data[0].id: "";
+                    var firstBillId = typeof data[0] !== "undefined"? data[0].id: "";
                     $scope.newBillNumber = data.length + 1;
                     if(typeof $scope.reservationData !== "undefined" && $scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                         $scope.bills.push(data[0]);
@@ -377,9 +378,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						return;
                     } 
 
-                    //default to last item when there is no bill no.
-                    var billNo = $scope.selectedEntity.bill_no
-                    if(billNo == "") $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
+                     //default to last item when there is no bill no.
+                    var billNo = $scope.selectedEntity.bill_no;
+                    if($scope.selectedEntity.entity_type == 'POSTING_ACCOUNT'){
+                        $scope.selectedEntity.to_bill = firstBillId;
+                    }
+                    else if(billNo == "") $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
                     else $scope.selectedEntity.to_bill = $scope.selectedEntity.to_bill;
 
                     $scope.fetchAvailableChargeCodes();
@@ -642,6 +646,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	        }else {
 	        	//CICO-12797 workaround to meet the API expected params
                 var params =  angular.copy($scope.selectedEntity);
+                console.log(params);
 	        	if($scope.selectedEntity.entity_type === "POSTING_ACCOUNT"){
 					 params.entity_type  = 'GROUP';
 	        	}
