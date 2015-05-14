@@ -31,8 +31,9 @@
 						<span class="icons icon-pencil" ></span>
 					</button>
 				</div>
+				
 				<!-- Available credit card -->
-				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && paymentDetails == null" ng-hide="(selectedEntity.entity_type == 'POSTING_ACCOUNT' || selectedEntity.has_accompanying_guests)&& billingEntity !== 'GROUP_DEFAULT_BILLING'">
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="((selectedEntity.entity_type == 'POSTING_ACCOUNT' || selectedEntity.has_accompanying_guests || renderAddedPayment != null))">
 					<div class="wrapper">
 						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
 							<!-- add class active when selected -->
@@ -48,8 +49,8 @@
 						</div>
 					</div>
 				</div>
-
-				<div class="payment active"  ng-show = "isAddPayment && showPayment && renderAddedPayment.payment_type == 'CC' && !saveData.newPaymentFormVisible && (selectedEntity.entity_type !== 'POSTING_ACCOUNT' || billingEntity == 'GROUP_DEFAULT_BILLING')">
+				
+				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment && showPayment && !saveData.newPaymentFormVisible && (selectedEntity.entity_type !== 'POSTING_ACCOUNT' || billingEntity == 'GROUP_DEFAULT_BILLING')">
 						<!-- add class active when selected -->
 						<span ng-show = "renderAddedPayment.payment_type == 'CC'">
 							<figure class="card-logo">
@@ -58,12 +59,12 @@
 							<span class="number">{{'NUMBER' | translate}} <span class="value number">{{renderAddedPayment.endingWith}}</span></span>
 							<span class="date">{{'DATE' | translate}} <span class="value date">{{renderAddedPayment.cardExpiry}}</span></span>							
 						</span>
-						<span class="value code" ng-show = "paymentDetails.payment_type != 'CC'">{{ paymentDetails.payment_type_description }}</span>
+						<span class="value code" ng-show = "renderAddedPayment.payment_type != 'CC'">{{ renderAddedPayment.payment_type_description }}</span>
 						<span class="icons icon-ok-10" ></span>
 				</div>
 				
 				<!-- Add new credit card button - remove it when new card is added -->
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && paymentDetails == null" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING')">+ New Payment Method</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING')">+ New Payment Method</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
