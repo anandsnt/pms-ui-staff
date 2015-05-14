@@ -32,8 +32,8 @@
             </div>
             <div class="entry break full-width">
                 <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
-                <a ng-click ="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.has_billing_info" translate>BILLING_INFORMATION</a>
-                <a ng-click ="openBillingInformation();" class="button blue" ng-if="!groupConfigData.summary.has_billing_info" translate>ADD_BILLING_INFO</a>                               
+                <a ng-click ="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
+                <a ng-click ="openBillingInformation();" class="button blue" ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>                               
             </div>
 
         </div>
