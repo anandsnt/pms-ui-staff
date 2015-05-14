@@ -159,6 +159,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
     * Fetches the calendar data and update the scope variables 
     */
 	var loadTable = function(){
+                $scope.currentExpandedRow = -1;//reset the expanded row
 		$scope.loading = true;
 
 		// If only one rate is selected in the filter section, the defult view is room type calendar 
