@@ -642,6 +642,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	        }else {
 	        	//CICO-12797 workaround to meet the API expected params
                 var params =  angular.copy($scope.selectedEntity);
+                console.log(params);
 	        	if($scope.selectedEntity.entity_type === "POSTING_ACCOUNT"){
 					 params.entity_type  = 'GROUP';
 	        	}
