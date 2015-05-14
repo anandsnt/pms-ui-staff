@@ -89,8 +89,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 
 	$scope.refreshScroller = function(){
             $scope.initScrollBind();
-            
-            if ( $scope.$parent.myScroll.RateCalendarCtrl ){
+            if ($scope.$parent.myScroll.RateCalendarCtrl){
 		setTimeout( function(){
 			$scope.$parent.myScroll.RateCalendarCtrl.refresh();
 		}, 0);
@@ -143,7 +142,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
                         break;
                 }
             }
-        };
+        }
 
 	/**
 	* @returns totalnumber of dates {Number} to be displayed
@@ -161,7 +160,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	var loadTable = function(){
                 $scope.currentExpandedRow = -1;//reset the expanded row
 		$scope.loading = true;
-
+                $scope.$emit('showLoader');
+		setTimeout( function(){
 		// If only one rate is selected in the filter section, the defult view is room type calendar 
 		if($scope.currentFilterData.rates_selected_list.length === 1){
 			$scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -211,6 +211,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, calculateRoomTypeViewCalGetParams(), calenderDataFetchSuccess)
 			.then(finalizeCapture);
 		}
+            }, 200);
 	};
 
 	function finalizeCapture() {
@@ -283,13 +284,17 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	* Click handler for up-arrows in rate_view_calendar
 	*/
 	$scope.goToRoomTypeCalendarView = function(rate){
-            $scope.$emit('showLoader');
-		$scope.ratesDisplayed.length = 0;
-		$scope.ratesDisplayed.push(rate);
-		$scope.currentSelectedRate = rate;
-        $scope.$emit("enableBackbutton");
-		$scope.calendarMode = "ROOM_TYPE_VIEW";
-		loadTable(rate.id);
+                $scope.$emit('showLoader');
+		$scope.loading = true;
+		setTimeout( function(){
+                    $scope.ratesDisplayed.length = 0;
+                    $scope.ratesDisplayed.push(rate);
+                    $scope.currentSelectedRate = rate;
+                    $scope.$emit("enableBackbutton");
+                    $scope.calendarMode = "ROOM_TYPE_VIEW";
+                    loadTable(rate.id);
+		}, 200);
+                
 	};
 	/**
 	* Handle openall/closeall button clicks
@@ -298,7 +303,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	$scope.openCloseAllRestrictions = function(action){
 
 		var restrictionUpdateSuccess = function(){
-			$scope.$emit('hideLoader');
+			//$scope.$emit('hideLoader');
 			loadTable();
 		};
 
@@ -335,6 +340,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	* Update the calendar to the 'Rate view' and refresh the calendar
 	*/
 	$scope.$on("updateRateCalendar", function(){
+            $scope.$emit('showLoader');
 		var rates_selected = $scope.currentFilterData.rates_selected_list,
 			rates_displayed = $scope.ratesDisplayed;
 
@@ -353,11 +359,14 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	* Calendar mode set as rate type calendar
 	*/
 	$scope.$on("setCalendarModeRateType", function(){
+            $scope.$emit('showLoader');
 		$scope.calendarMode = "RATE_VIEW";
 		$scope.currentSelectedRate = {};
 		loadTable();
 
 	});
+        
+        
 
 	/**
 	* Click handler for calendar cell. Creates an ng-dialog and pass the scope parameters
@@ -426,6 +435,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	};
 
 	$scope.refreshCalendar = function(){
+            $scope.$emit('showLoader');
 		loadTable();
 	};
 
