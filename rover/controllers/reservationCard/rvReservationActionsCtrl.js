@@ -29,7 +29,10 @@ sntRover.controller('reservationActionsController', [
 		
 		//Since API is returning "true"/"false"
 		//TODO: Ask Rashila to to it from the API itself
-		$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates = ($scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === "true")
+		if (typeof $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates !== "boolean") {
+			$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates = 
+				($scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === "true")
+		}
 
 		$scope.actionsCheck = {
 			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
