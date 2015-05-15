@@ -260,6 +260,8 @@ sntRover.factory('RVReportUtilsFac', [
                 default:
                     reportItem['show_filter'] = false;
                     reportItem['hasDateLimit'] = true;
+                    // -- https://stayntouch.atlassian.net/browse/CICO-16820
+                    reportItem['hasDateLimit'] = false;
                     break;
             };
         };
