@@ -46,11 +46,137 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
         
         
 	};
+        $scope.applyAllShow = '';
+        $scope.lastClickedApply = '';
+        $scope.firstrun = true;
+        $scope.initDefault = true;
+        
+        $scope.activityObj = {};
+        $scope.activityObj.changedField = '';
+        
+        
+	$scope.$on("applyAllActivity", function(){
+                if (typeof arguments[1].via !== typeof undefined){
+                $scope.viaSection = arguments[1].via;
+            }
+	});
+        
+        $scope.ready = {};
+        $scope.ready.single = true;
+        $scope.ready.double = true;
+        $scope.ready.extra_adult = true;
+        $scope.ready.child = true;
+        
+	$scope.$on("setReadyButton", function(){
+                var obj = arguments[1].via;
+                switch(obj){
+                    case 'single':
+                                $scope.ready.single = true;
 
+                                $scope.ready.double = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.child = false;
+                            break;
+                            
+                    case 'extra_adult':
+                                $scope.ready.extra_adult = true;
+
+                                $scope.ready.double = false;
+                                $scope.ready.single = false;
+                                $scope.ready.child = false;
+                            break;
+                            
+                    case 'child':
+                                $scope.ready.child = true;
+
+                                $scope.ready.double = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.single = false;
+                            break;
+                            
+                    case 'double':
+                                $scope.ready.double = true;
+
+                                $scope.ready.single = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.child = false;
+                            break;
+                }
+	});
+        
+	$scope.$on("setReadyButton", function(){
+                var obj = arguments[1].via;
+                switch(obj){
+                    case 'single':
+                                $scope.ready.single = true;
+
+                                $scope.ready.double = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.child = false;
+                            break;
+                            
+                    case 'extra_adult':
+                                $scope.ready.extra_adult = true;
+
+                                $scope.ready.double = false;
+                                $scope.ready.single = false;
+                                $scope.ready.child = false;
+                            break;
+                            
+                    case 'child':
+                                $scope.ready.child = true;
+
+                                $scope.ready.double = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.single = false;
+                            break;
+                            
+                    case 'double':
+                                $scope.ready.double = true;
+
+                                $scope.ready.single = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.child = false;
+                            break;
+                }
+	});
+        
+        $scope.showButtonReady = true;
+        $scope.showButton = function(a, s){
+            if ($scope.showButtonReady === true || typeof $scope.showButtonReady === typeof undefined){
+                if (s !== $scope.viaSection){
+                    return true;
+                } else if (a !== '' && s !== ''){
+                    return false;
+                } else {
+                	if ($scope.ready[$scope.viaSection]){
+                		return false;
+                	}
+                        if ($scope.lastClickedApply !== s){
+                            return true;
+                        } else return false;
+                }
+            } else if ($scope.viaSection !== ''){
+                	return true;
+                } else return false;
+        };
+        
         $scope.applyToAll = function(d, s){
             d.setFromValue = s;
+            $scope.lastClickedApply = s;
+            $scope.applyAllShow = 'none';
+            $scope.viaSection = 'none';
             $scope.$broadcast('apply-all-price-adjust',d);
+            $scope.showButtonReady = false;
+            setTimeout(function(){
+                d.setFromValue = '';
+                $scope.applyAllShow = '';
+				$scope.ready.child = false;
+            $scope.showButtonReady = true;
+            },300);
         };
+
+
 
 
 
