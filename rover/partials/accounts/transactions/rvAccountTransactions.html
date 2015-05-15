@@ -86,8 +86,8 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="expense in billItem.expense_details">
-                                        <td class="price">{{currencySymbol}}{{expense.amount | number: precisonZero}}</td>
-                                        <td>{{expense.details}}</td>
+                                        <td class="price">{{currencySymbol}}{{expense.amount | number: precisonTwo}}</td>
+                                        <td ng-bind-html="expense.details"></td>
                                         <td>{{expense.charge_type}}</td>
                                     </tr>
                                 </tbody>

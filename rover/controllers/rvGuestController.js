@@ -87,7 +87,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			};
 			
 			if (dataSource.address) {
-				if (dataSource.address.city.trim() !== '' || dataSource.address.state.trim() !== '') {
+				if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
 					data.location = (dataSource.address.city + ', ' + dataSource.address.state);
 				}
 				else {
