@@ -71,7 +71,8 @@
     "GROUP_AUTO_ASSIGN_ROOMS":"Auto-Assign Rooms",
     "GROUP_EMAIL":"Email",
     "GROUP_PRINT":"Print",
-    "GROUP_DOWNLOAD":"Download"
+    "GROUP_DOWNLOAD":"Download",
+    "ADD_BILLING_INFO":"Add billing information"
 
 
 
