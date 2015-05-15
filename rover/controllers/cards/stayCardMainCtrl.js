@@ -264,7 +264,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit("hideLoader");
 				ngDialog.close();
 				that.reloadStaycard();
-				$scope.$broadcast('paymentTypeUpdated');// to update bill screen data
+				$scope.$broadcast('paymentTypeUpdated'); // to update bill screen data
 			};
 
 			var params = {};
@@ -676,13 +676,47 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 				room.rateId = tData.rooms[index].rateId;
 				room.roomAmount = tData.rooms[index].amount;
+				// CICO-16850
+				//  In case of updating a reservation from Diary
+				// the reservation's already attached demographics
+				// information must be preserved. 
+				room.demographics = {
+					market: !tData.rooms[index].demographics.market_segment_id ? '' : tData.rooms[index].demographics.market_segment_id,
+					source: !tData.rooms[index].demographics.source_id ? '' : tData.rooms[index].demographics.source_id,
+					reservationType: !tData.rooms[index].demographics.reservation_type_id ? '' : tData.rooms[index].demographics.reservation_type_id,
+					origin: !tData.rooms[index].demographics.booking_origin_id ? '' : tData.rooms[index].demographics.booking_origin_id
+				}
 
+				// put the same stuff in the reservationData obj as well
+
+				self.demographics.market = !tData.rooms[index].demographics.market_segment_id ? '' : tData.rooms[index].demographics.market_segment_id;
+				self.demographics.source = !tData.rooms[index].demographics.source_id ? '' : tData.rooms[index].demographics.source_id;
+				self.demographics.reservationType = !tData.rooms[index].demographics.reservation_type_id ? '' : tData.rooms[index].demographics.reservation_type_id;
+				self.demographics.origin = !tData.rooms[index].demographics.booking_origin_id ? '' : tData.rooms[index].demographics.booking_origin_id;
 
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {
 					room.rateName = data.name;
-					$scope.reservationData.demographics.market = !data.market_segment_id ? '' : data.market_segment_id;
-					$scope.reservationData.demographics.source = !data.source_id ? '' : data.source_id;
+					//CICO-16850
+					//Default to market and source of Rate IFF there is nothing associated with the reservation yet
+					//This checkt will Save reservations state while editing
+					if (!$scope.reservationData.demographics.market) {
+						$scope.reservationData.demographics.market = !data.market_segment_id ? '' : data.market_segment_id;
+					}
+					if (!$scope.reservationData.demographics.source) {
+						$scope.reservationData.demographics.source = !data.source_id ? '' : data.source_id;
+					}
+
+					angular.forEach($scope.reservationData.rooms, function(room, index) {
+						if (!room.demographics.market) {
+							room.demographics.market = !data.market_segment_id ? '' : data.market_segment_id;
+						}
+						if (!room.demographics.source) {
+							room.demographics.source = !data.source_id ? '' : data.source_id;
+						}
+
+					});
+
 					if (data.deposit_policy_id) {
 						$scope.reservationData.depositData = {};
 						$scope.reservationData.depositData.isDepositRequired = true;
@@ -728,7 +762,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$rootScope.$broadcast("OUTSIDECLICKED");
 		};
 
-		$scope.staycardClicked = function  () {
+		$scope.staycardClicked = function() {
 			//save contact info
 			$scope.$broadcast('saveContactInfo');
 		};

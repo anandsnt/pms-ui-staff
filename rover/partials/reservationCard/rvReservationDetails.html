@@ -205,7 +205,7 @@
             <form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
                 <div class="entry">
                     <figure class="guest-image">
-                        <img src="{{guestData.primary_guest_details.image}}" alt="" />
+                        <img ng-src="{{guestData.primary_guest_details.image}}" alt="" />
                         <span ng-show="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
                     </figure>
                     <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{guestData.primary_guest_details.first_name}}" readonly />
@@ -215,7 +215,7 @@
 
                 <div class="entry" ng-repeat="guest in guestData.accompanying_guests_details">
                     <figure class="guest-image">
-                        <img src="{{guest.image}}" alt="" />
+                        <img ng-src="{{guest.image}}" alt="" />
                     </figure>
                     <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guest.first_name" value="{{guest.first_name}}" />
                     <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" />
