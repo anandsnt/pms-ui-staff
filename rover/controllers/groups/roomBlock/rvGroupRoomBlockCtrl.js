@@ -480,6 +480,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		var successCallBackOfSaveRoomBlock = function(date){
+
 			//we have save everything we have
 			//so our data is new
 			$scope.copy_selected_room_types_and_bookings = 
@@ -529,13 +530,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			// TODO write check here
 			var ref = $scope.groupConfigData.summary.selected_room_types_and_bookings,
 				is_over_booked = false,
-				indvdlSum = 0;
+				indvdlTotal = 0;
 
 			_.each (ref, function(eachRoomType){	
 				_.each(eachRoomType.dates, function(dateData){
-					indvdlSum = $scope.getTotalBookedOfIndividualRoomType (dateData);
+					indvdlTotal = $scope.getTotalBookedOfIndividualRoomType (dateData);
 
-					if (indvdlSum > dateData.availability){
+					//if there is some diff with old total we calculated earlier and new total
+					if ((indvdlTotal !== dateData.old_total) && 
+						(indvdlTotal - dateData.old_total) > dateData.availability) {
 						is_over_booked = true;
 					}
 				});
@@ -802,7 +805,16 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		/**
 		* Success callback of room block details API
 		*/
-	 	var successCallBackOfFetchRoomBlockGridDetails = function(data){		 		
+	 	var successCallBackOfFetchRoomBlockGridDetails = function(data){
+
+	 		//we need indivual room type total bookings of each date initially,
+	 		//we are using this for overbooking calculation
+	 		_.each (data.results, function(eachRoomType){	
+				_.each(eachRoomType.dates, function(dateData){
+					dateData.old_total = $scope.getTotalBookedOfIndividualRoomType (dateData);
+				});
+			});
+
 	 		$scope.groupConfigData.summary.selected_room_types_and_bookings = data.results;
 	 		$scope.groupConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
 
