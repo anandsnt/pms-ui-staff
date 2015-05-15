@@ -344,7 +344,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                                 newAddonToReservation.price_per_piece = addon.amount;
                                 newAddonToReservation.amount_type = addon.amount_type.description;
                                 newAddonToReservation.post_type = addon.post_type.description;
-                                newAddonToReservation.is_inclusive = addon.is_inclusive;
+                                newAddonToReservation.is_inclusive = !!addon.is_inclusive;
                                 $scope.addonsData.existingAddons.push(newAddonToReservation);
                                 // Temp Variable to translate API response keys
                                 // to data variable keys
