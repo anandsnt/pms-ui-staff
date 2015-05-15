@@ -64,7 +64,7 @@
 				</div>
 				
 				<!-- Add new credit card button - remove it when new card is added -->
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING')">+ New Payment Method</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'POSTING_ACCOUNT' && billingEntity !== 'GROUP_DEFAULT_BILLING') || renderAddedPayment != null">+ New Payment Method</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
