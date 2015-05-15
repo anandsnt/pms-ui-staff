@@ -1933,7 +1933,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         postData.reservationId = $scope.reservationData.reservationId;
                     }
 
-                    postData.addons = $scope.viewState.existingAddons;
+                    // postData.addons = $scope.viewState.existingAddons;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 
                 } else {
