@@ -775,7 +775,8 @@ sntRover
 	    			payment_method_used: next.occupancy.payment_method_used,
 	    			payment_method_description: next.occupancy.payment_method_description,
 	    			payment_details: next.occupancy.payment_details
-	    		}
+	    		},
+	    		demographics: next.occupancy.demographics
 			};
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);
