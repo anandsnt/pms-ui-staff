@@ -680,19 +680,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				//  In case of updating a reservation from Diary
 				// the reservation's already attached demographics
 				// information must be preserved. 
+			    
+			    //CICO-16927 - added undefined check for demographics
 				room.demographics = {
-					market: !tData.rooms[index].demographics.market_segment_id ? '' : tData.rooms[index].demographics.market_segment_id,
-					source: !tData.rooms[index].demographics.source_id ? '' : tData.rooms[index].demographics.source_id,
-					reservationType: !tData.rooms[index].demographics.reservation_type_id ? '' : tData.rooms[index].demographics.reservation_type_id,
-					origin: !tData.rooms[index].demographics.booking_origin_id ? '' : tData.rooms[index].demographics.booking_origin_id
+					market: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market_segment_id) ? '' : tData.rooms[index].demographics.market_segment_id,
+					source: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source_id) ? '' : tData.rooms[index].demographics.source_id,
+					reservationType: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id,
+					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id )? '' : tData.rooms[index].demographics.booking_origin_id
 				}
 
 				// put the same stuff in the reservationData obj as well
 
-				self.demographics.market = !tData.rooms[index].demographics.market_segment_id ? '' : tData.rooms[index].demographics.market_segment_id;
-				self.demographics.source = !tData.rooms[index].demographics.source_id ? '' : tData.rooms[index].demographics.source_id;
-				self.demographics.reservationType = !tData.rooms[index].demographics.reservation_type_id ? '' : tData.rooms[index].demographics.reservation_type_id;
-				self.demographics.origin = !tData.rooms[index].demographics.booking_origin_id ? '' : tData.rooms[index].demographics.booking_origin_id;
+				self.demographics.market = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market_segment_id) ? '' : tData.rooms[index].demographics.market_segment_id;
+				self.demographics.source = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source_id) ? '' : tData.rooms[index].demographics.source_id;
+				self.demographics.reservationType = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id;
+				self.demographics.origin = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id) ? '' : tData.rooms[index].demographics.booking_origin_id;
 
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {

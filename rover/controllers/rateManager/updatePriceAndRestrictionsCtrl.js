@@ -166,6 +166,49 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         $scope.data.hasAmountConfigured = true;
         selectedDateInfo = {};
         
+        //detect change on data values and update watch obj accordingly
+        $scope.$watch("data.single_extra_amnt", function(to, from, evt){
+            var via = 'single';
+            var d = {};
+            d.to = to;
+            d.from = from;
+            d.via = via;
+            $scope.$emit('setReadyButton',d);
+            $scope.$emit('applyAllActivity',d);
+	});  
+        $scope.$watch("data.double_extra_amnt", function(to, from, evt){
+          
+            var via = 'double';
+            var d = {};
+            d.to = to;
+            d.from = from;
+            d.via = via;
+            $scope.$emit('setReadyButton',d);
+            $scope.$emit('applyAllActivity',d);
+	});  
+        $scope.$watch("data.extra_adult_extra_amnt", function(to, from, evt){
+            
+            var via = 'extra_adult';
+            var d = {};
+            d.to = to;
+            d.from = from;
+            d.via = via;
+            $scope.$emit('setReadyButton',d);
+            $scope.$emit('applyAllActivity',d);
+	});  
+        $scope.$watch("data.child_extra_amnt", function(to, from, evt){
+           
+            var via = 'child';
+            var d = {};
+            d.to = to;
+            d.from = from;
+            d.via = via;
+            $scope.$emit('setReadyButton',d);
+            $scope.$emit('applyAllActivity',d);
+	});  
+        
+        
+        
         $scope.$on('apply-all-price-adjust',function(evt, data){
             var d = data, setVia = data.setFromValue;
                 
