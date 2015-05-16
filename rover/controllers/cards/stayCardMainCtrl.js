@@ -690,11 +690,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				}
 
 				// put the same stuff in the reservationData obj as well
+				// 
+				self.demographics = angular.copy(room.demographics);
 
-				self.demographics.market = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market_segment_id) ? '' : tData.rooms[index].demographics.market_segment_id;
-				self.demographics.source = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source_id) ? '' : tData.rooms[index].demographics.source_id;
-				self.demographics.reservationType = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id;
-				self.demographics.origin = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id) ? '' : tData.rooms[index].demographics.booking_origin_id;
+				// self.demographics.market = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market) ? '' : tData.rooms[index].demographics.market;
+				// self.demographics.source = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source) ? '' : tData.rooms[index].demographics.source;
+				// self.demographics.reservationType = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservationType) ? '' : tData.rooms[index].demographics.reservationType;
+				// self.demographics.origin = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.origin) ? '' : tData.rooms[index].demographics.origin;
 
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {

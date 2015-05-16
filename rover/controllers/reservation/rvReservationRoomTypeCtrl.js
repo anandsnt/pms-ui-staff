@@ -1373,10 +1373,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		});
 
 		$scope.toggleCalendar = function() {
-			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
-			$scope.heading = $scope.stateCheck.activeMode == "ROOM_RATE" ? "Rooms & Rates" : " Change Stay Dates";
+			//CICO-15042, CICO-15042 Disable navigation to the calendar screen temporarily  
+			//$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
+			//$scope.heading = $scope.stateCheck.activeMode == "ROOM_RATE" ? "Rooms & Rates" : " Change Stay Dates";
+			$scope.stateCheck.activeMode = 'ROOM_RATE';
+			$scope.heading = "Rooms & Rates";
 			$scope.setHeadingTitle($scope.heading);
-			$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
+			//$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
 		}
 
 		$scope.showStayDateDetails = function(selectedDate) {
