@@ -13,10 +13,8 @@
                 <div class="entry">
                     <label for="mapping-type"> Mapping type <strong>*</strong> </label>
                     <div class="select">
-                        <select ng-model="editData.mapping_value" name="mapping-type" class="placeholder" 
-                                ng-change="mappingTypeSelected()">
-                            <option value="" ng-selected="selected"> Mapping type </option>
-                            <option ng-repeat="mapping in editData.mapping_type" value="{{mapping.name}}" ng-selected="mappingTypeSelected()" >{{mapping.description}} </option>
+                        <select  ng-model="editData.mapping_type_value" ng-options="option.name as option.description for option in editData.mapping_types">
+                            <option ng-disabled="true"  ng-selected="true" value="">Mapping Type</option>
                         </select>
                     </div>
                 </div>
@@ -25,9 +23,8 @@
                 <div class="entry sntvalue">
                     <label for="snt-value"> Snt Value <strong>*</strong> </label>
                     <div class="select">
-                        <select ng-model="editData.snt_value" name="snt-value" class="placeholder">
-                            <option value="" ng-selected="selected"> Snt Value </option>
-                            <option ng-repeat="sntVal in editData.sntValues" value="{{sntVal.name}}" >{{sntVal.name}} </option>
+                        <select ng-model="editData.snt_value" ng-options="option.name as option.name for option in editData.sntValues">
+                            <option ng-disabled="true"  ng-selected="true" value="">Snt Value</option>
                         </select>
                     </div>
                 </div>
