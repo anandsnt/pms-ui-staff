@@ -13,8 +13,8 @@
         <tr ng-if="!!groupConfigData">
             <td>{{groupConfigData.summary.group_name}}</td>
             <td>{{groupConfigData.summary.group_code}}</td>
-            <td>{{groupConfigData.summary.block_from}}</td>
-            <td>{{groupConfigData.summary.block_to}}</td>
+            <td>{{groupConfigData.summary.block_from | date:dateFormat}}</td>
+            <td>{{groupConfigData.summary.block_to | date:dateFormat}}</td>
         </tr>
         <tr ng-if="!groupConfigData">
             <th>Account Name</th>
@@ -90,8 +90,8 @@
                     <span>{{charge.description[0].fees_desc}}</span>
                     <span class="reference">{{charge.reference_text}}</span>
                 </td>
-                <td class="align-right">{{currencySymbol}}{{charge.description[0].fees_amount}}</td>
-                <td class="align-right">{{currencySymbol}}{{charge.credits | number: 2}}</td>
+                <td class="align-right"><span ng-show="!!charge.description[0].fees_amount">{{currencySymbol}}{{charge.description[0].fees_amount | number: 2}}</span></td>
+                <td class="align-right"><span ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</span></td>
             </tr>
         </tbody>
     </table>

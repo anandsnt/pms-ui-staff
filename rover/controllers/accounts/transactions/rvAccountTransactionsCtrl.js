@@ -29,9 +29,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 				scrollX: true
 			});
 			$scope.showMoveCharges = $scope.hasPermissionToMoveCharges();
-
-			getTransactionDetails();
-
 			$scope.renderData = {}; //payment modal data - naming so as to reuse HTML
 			//TODO: Fetch accoutn transactions
 			$scope.paymentModalOpened = false;

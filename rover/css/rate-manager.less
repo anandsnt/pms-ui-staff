@@ -415,7 +415,7 @@
   tr {
     &.last{
       .cell-content{
-        border-bottom : 3px solid rgba(0,0,0, 0.05);  //6px solid rgba(0,0,0, 0.05); 
+      //  border-bottom : 3px solid rgba(0,0,0, 0.05);  //6px solid rgba(0,0,0, 0.05); 
       }
     }
     .first-row {
@@ -485,15 +485,28 @@
   //  padding: 5px 5px 0px 5px;
  // }
 thead tr th {
-    padding: 5px 5px 0px 5px;
+   // padding: 5px 5px 0px 5px;
   }
   .cell-container{
     /*CICO-8633 10/20/2014*/
-    border-top: 3px solid rgba(0,0,0, 0.05);
-    border-bottom: 3px solid rgba(0,0,0, 0.05);
-    border-left: 6px solid rgba(0,0,0, 0.05);
-    border-right: 6px solid rgba(0,0,0,0.05);
-
+    border-top: 5px solid rgba(0,0,0, 0.2);
+    border-left: 10px solid rgba(0,0,0, 0.2);
+    border-right: 10px solid rgba(0,0,0,0.2);
+    border-bottom: 5px solid rgba(0,0,0, 0.2);
+    border-radius: 0px 0px 0px 0px;
+    &.weekend_day{
+        border-top: 5px solid rgba(0,0,0, 0.05);
+        border-left: 10px solid rgba(0,0,0, 0.05);
+        border-right: 10px solid rgba(0,0,0,0.05);
+        border-bottom: 5px solid rgba(0,0,0, 0.05);
+    }
+    &.history_cell_container{
+        border-top: 5px solid rgba(0,0,0, 0.1);
+        border-left: 10px solid rgba(0,0,0, 0.1);
+        border-right: 10px solid rgba(0,0,0,0.1);
+        border-bottom: 5px solid rgba(0,0,0, 0.1);
+    }
+    
     .cell-content {
         cursor: pointer;
         border: none;
@@ -502,18 +515,31 @@ thead tr th {
 
         > div {
           border: none;
-          border-radius: 3px;
+          border-radius: 0px;
           padding: 0px;
           margin: 0px;
         }
     }
   }
+  > div {
+        .isHistory-cell-content{
+            border-top: 5px solid rgba(0,0,0, 0.1);
+            border-left: 10px solid rgba(0,0,0, 0.1);
+            border-right: 10px solid rgba(0,0,0,0.1);
+            border-bottom: 5px solid rgba(0,0,0, 0.1);
+        }
+    }
 
+    .isHistory-cell-content{
+        opacity:0.4 !important; 
+        cursor: default !important; 
+        //background-color:rgba(0,0,0,1);
+    }
   .cell {
     //width: 100%;
     position: relative;
     border-style:solid;
-    border-width:1px;
+    border-width:0px;
     border-color:transparent;//forces tables inline when multi-scrolling
   }
 
@@ -625,7 +651,7 @@ thead tr th {
   th { 
     height: 60px;
     background-color: transparent;
-
+    
     > .date-header {
       position: relative;
       font-weight: 600;
@@ -638,7 +664,8 @@ thead tr th {
       width: 100%;
       color: #fcfcfc;
       text-transform: uppercase;
-
+      margin-bottom: 5px;
+      
       > span {
         position: relative;
         font-size: 14px;   
@@ -664,10 +691,10 @@ thead tr th {
         right: 6px;
         bottom: 3px;
         z-index: 0; //-100; /*Fix for disappearing date header*/
-        border-radius: 3px;
+        //border-radius: 3px;
         background-color: #393c41;
-         -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;   
+        // -webkit-border-radius: 3px;
+        //-moz-border-radius: 3px; 
       }
 
       &:after {
@@ -678,9 +705,24 @@ thead tr th {
         bottom: 0;
         right: 0;
         z-index: -120;
-        background-color: rgba(0,0,0,0.05);
-       
+        background-color: rgba(0,0,0,0.03);
       }
+      
+       &.weekend_day{
+            &:before {
+                content: ' ';
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                right: 6px;
+                bottom: 3px;
+                z-index: 0; //-100; /*Fix for disappearing date header*/
+               // border-radius: 3px;
+                background-color: rgba(91,127,141, 0.8);
+                // -webkit-border-radius: 3px;
+               // -moz-border-radius: 3px; 
+          }
+        }
     }
   }
 
@@ -1042,7 +1084,7 @@ thead tr th {
 
   }
 
-  .or{
+  .or-class{
     color:#9D9D9D;
     font-style:italic;
     margin-left:2px;
@@ -1267,7 +1309,11 @@ padding-top: 80px;
     // padding-top: 10px;
     button{
       height: 45px;
-      width: 100px;
+      white-space:nowrap;
+      margin-right:10px;
+      width:auto;
+      min-width: 140px;
+      
       &.blank{
         color: #000;
       }
@@ -1450,6 +1496,7 @@ padding-top: 80px;
   padding-right: 20px;
   padding-left: 18px;
   margin-left: 0;
+  overflow: auto;
   em{
     font-size:14px;
   }
@@ -1488,7 +1535,7 @@ padding-top: 80px;
     overflow: hidden;
     color: #9D9D9D;
 
-    > .or{
+    > .or-class{
       margin: 22px; /*12px;*/
       font-size:12px;
     }
@@ -1734,4 +1781,43 @@ padding-top: 80px;
     overflow: hidden;
 }
 
+.apply-all-div{
+    height: 35px;
+    margin-top: 5px
+}
+.apply-all-button{
+    float: right;
+}
+.first-row-cell{
+    border-top: 10px solid rgba(0, 0, 0, 0.0) !important;
+    border-bottom: 10px solid rgba(0, 0, 0, 0.0) !important;
+}
+.weekend_day{
+    & > div {
+        &.cell-container{
+            border-top: 5px solid rgba(0,0,0, 0.1) !important;
+            border-left: 10px solid rgba(0,0,0, 0.1) !important;
+            border-right: 10px solid rgba(0,0,0,0.1) !important;
+            border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+        }
+    }
+}
+.history_cell_container{
+   border-top: 5px solid rgba(0,0,0, 0.1) !important;
+   border-left: 10px solid rgba(0,0,0, 0.1) !important;
+   border-right: 10px solid rgba(0,0,0,0.1) !important;
+   border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+}
+.hasOverride-label{
+    color:#F69312;
+}
 
+.expandedContainerWeekend{
+   border-top: 5px solid rgba(0,0,0, 0.1) !important;
+   border-left: 10px solid rgba(0,0,0, 0.1) !important;
+   border-right: 10px solid rgba(0,0,0,0.1) !important;
+   border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+}
+.expandedFirstRow{
+    height: 170px !important;
+}

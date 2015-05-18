@@ -10,7 +10,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 	'$state',
 	'rvPermissionSrv',
 	'$timeout',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout) {
+	'rvAccountTransactionsSrv',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -101,6 +102,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			}
 
 			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+
+			if (!$scope.isInAddMode()) {
+				$scope.groupConfigData.summary.block_from = new tzIndependentDate($scope.groupConfigData.summary.block_from);
+				$scope.groupConfigData.summary.block_to = new tzIndependentDate($scope.groupConfigData.summary.block_to);
+			}
+
 		};
 
 		/**
@@ -139,14 +146,70 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//Save summary data on tab switch (UI)
 			if (isInSummaryTab && !$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
+			};
+			//Reload the summary tab contents before switching
+			if(tab === "SUMMARY" || tab === "ACCOUNT"){
+				$scope.refreshSummaryTab();
+			};
+			//Preload the transaction data when we switch to transactions tab
+			if(tab === "TRANSACTIONS"){
+				preLoadTransactionsData();
+			} else {
+				$scope.groupConfigData.activeTab = tab;
 			}
 
-			$scope.groupConfigData.activeTab = tab;
 			//propogating an event that next clients are
 			$timeout(function() {
 				$scope.$broadcast('GROUP_TAB_SWITCHED', $scope.groupConfigData.activeTab);
 			}, 100);
 
+		};
+
+		var preLoadTransactionsData = function(){
+			var onTransactionFetchSuccess = function(data) {
+
+				$scope.$emit('hideloader');
+				$scope.transactionsDetails = data;
+				$scope.groupConfigData.activeTab = 'TRANSACTIONS';
+
+				/*
+				 * Adding billValue and oldBillValue with data. Adding with each bills fees details
+				 * To handle move to bill action
+				 * Added same value to two different key because angular is two way binding
+				 * Check in HTML moveToBillAction
+				 */
+				angular.forEach($scope.transactionsDetails.bills, function(value, key) {
+					angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
+
+						feesValue.billValue = value.bill_number; //Bill value append with bill details
+						feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
+					});
+				});
+
+			}
+			var params = {
+				"account_id": $scope.accountConfigData.summary.posting_account_id
+			}
+			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
+				successCallBack: onTransactionFetchSuccess,
+				params: params
+			});
+
+		};
+
+		$scope.refreshSummaryTab = function() {
+			var onAccountFetchSuccess = function(data) {
+				$scope.$emit('hideloader');
+				$scope.groupConfigData.summary = data.groupSummary;
+				$scope.accountConfigData.summary = data.accountSummary;
+			}
+			var params = {
+				"groupId": $scope.groupConfigData.summary.group_id
+			}
+			$scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, {
+				successCallBack: onAccountFetchSuccess,
+				params: params
+			});
 		};
 
 		/**
@@ -237,15 +300,18 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					},
 					onGroupUpdateFailure = function(errorMessage) {
 						//client controllers should get an infromation whether updation was a failure
-						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO");
+						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", errorMessage);
 						return false;
 					};
 
+				var summaryData = _.extend({}, $scope.groupConfigData.summary);
+				summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
+				summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
 				$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
 					successCallBack: onGroupUpdateSuccess,
 					failureCallBack: onGroupUpdateFailure,
 					params: {
-						summary: $scope.groupConfigData.summary
+						summary: summaryData
 					}
 				});
 			} else {
@@ -321,6 +387,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.company || !$scope.groupConfigData.summary.company.name)) {
+						$scope.groupConfigData.summary.company = {
+							id: ""
+						}
+						$scope.updateGroupSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 
@@ -344,13 +418,20 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 						});
 				},
 				select: function(event, ui) {
-
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					runDigestCycle();
 					return false;
+				},
+				change: function() {
+					if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.travel_agent || !$scope.groupConfigData.summary.travel_agent.name)) {
+						$scope.groupConfigData.summary.travel_agent = {
+							id: ""
+						}
+						$scope.updateGroupSummary();
+					}
 				}
 			}, cardsAutoCompleteCommon);
 		};

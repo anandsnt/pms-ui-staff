@@ -21,7 +21,7 @@
                 <select iscroll-stop-propagation name="reservation-type" id="reservation-type" 
                     ng-class="{'placeholder': !groupConfigData.summary.demographics.reservation_type_id}" 
                     ng-model="groupConfigData.summary.demographics.reservation_type_id">
-                    <option value="null" selected translate>RESERVATION_TYPE_PLACEHOLDER</option>
+                    <option value="" selected translate>RESERVATION_TYPE_PLACEHOLDER</option>
                     <option ng-repeat="reservationType in groupSummaryData.demographics.reservationTypes" 
                         value="{{reservationType.value}}" 
                         ng-selected="reservationType.value == groupConfigData.summary.demographics.reservation_type_id">
@@ -41,7 +41,7 @@
                 <select iscroll-stop-propagation name="market" id="market" 
                     ng-class="{'placeholder': !groupConfigData.summary.demographics.market_segment_id}" 
                     ng-model="groupConfigData.summary.demographics.market_segment_id">
-                    <option value="null" selected translate>MARKET_PLACEHOLDER</option>
+                    <option value="" selected translate>MARKET_PLACEHOLDER</option>
                     <option ng-repeat="market in groupSummaryData.demographics.markets" 
                         value="{{market.value}}" 
                         ng-selected="market.value == groupConfigData.summary.demographics.market_segment_id">
@@ -61,7 +61,7 @@
                 <select iscroll-stop-propagation name="source" id="source" 
                     ng-class="{'placeholder': !groupConfigData.summary.demographics.source_id}" 
                     ng-model="groupConfigData.summary.demographics.source_id">
-                    <option value="null" selected translate>SOURCE_PLACEHOLDER</option>
+                    <option value="" selected translate>SOURCE_PLACEHOLDER</option>
                     <option ng-repeat="source in groupSummaryData.demographics.sources" 
                         value="{{source.value}}" 
                         ng-selected="source.value == groupConfigData.summary.demographics.source_id">
@@ -81,7 +81,7 @@
                 <select iscroll-stop-propagation name="origin" id="origin" 
                     ng-class="{'placeholder': !groupConfigData.summary.demographics.booking_origin_id}" 
                     ng-model="groupConfigData.summary.demographics.booking_origin_id">
-                    <option value="null" selected translate>ORIGIN_BOOKING_PLACEHOLDER</option>
+                    <option value="" selected translate>ORIGIN_BOOKING_PLACEHOLDER</option>
                     <option ng-repeat="origin in groupSummaryData.demographics.origins" 
                         value="{{origin.value}}" 
                         ng-selected="origin.value == groupConfigData.summary.demographics.booking_origin_id">

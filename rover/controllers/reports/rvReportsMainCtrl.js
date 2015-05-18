@@ -34,6 +34,9 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
+		//refer angular.isArray in scope
+		$scope.isArray = angular.isArray;
+
 
 		$scope.reportList = reportsResponse.results;
 		$scope.reportCount = reportsResponse.total_count;

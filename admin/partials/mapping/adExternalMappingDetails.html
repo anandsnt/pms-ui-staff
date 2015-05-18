@@ -1,54 +1,51 @@
 <div style="display: block;" id="add-new" class="edit-data">
-	<div class="data-holder">
-		<!-- Add new external mappings -->
-		<form class="form inline-form float">
+    <div class="data-holder">
+        <!-- Add new external mappings -->
+        <form class="form inline-form float">
+            <a id="top"></a>
+            <div class="form-title">
+                <h3 ng-show = "isAdd"><span> Add New </span> External Mapping </h3>
+                <h3 ng-hide = "isAdd"><span> Edit </span> External Mapping </h3>
+                <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+            </div>
 
-			<div class="form-title">
-				<h3 ng-show = "isAdd"><span> Add New </span> External Mapping </h3>
-				<h3 ng-hide = "isAdd"><span> Edit </span> External Mapping </h3>
-				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-			</div>
+            <fieldset class="holder left float">
+                <div class="entry">
+                    <label for="mapping-type"> Mapping type <strong>*</strong> </label>
+                    <div class="select">
+                        <select  ng-model="editData.mapping_type_value" ng-options="option.name as option.description for option in editData.mapping_types">
+                            <option ng-disabled="true"  ng-selected="true" value="">Mapping Type</option>
+                        </select>
+                    </div>
+                </div>
 
-			<fieldset class="holder left float">
+                <div id="hideDiv" class="entry"></div>
+                <div class="entry sntvalue">
+                    <label for="snt-value"> Snt Value <strong>*</strong> </label>
+                    <div class="select">
+                        <select ng-model="editData.snt_value" ng-options="option.name as option.name for option in editData.sntValues">
+                            <option ng-disabled="true"  ng-selected="true" value="">Snt Value</option>
+                        </select>
+                    </div>
+                </div>
 
-				<div class="entry">
-					<label for="mapping-type"> Mapping type <strong>*</strong> </label>
-					<div class="select">
-						<select ng-model="editData.mapping_value" name="mapping-type" class="placeholder">
-							<option  value=""> Mapping type </option>
-							<option ng-repeat="mapping in editData.mapping_type" value="{{mapping.name}}" ng-selected="mapping.name==editData.selected_mapping_type" >{{mapping.name}} </option>
-						</select>
-					</div>
-				</div>
-				
-				<div id="hideDiv" class="entry"></div>
-				<div class="entry sntvalue">
-					<label for="snt-value"> Snt Value <strong>*</strong> </label>
-					<div class="select">
-						<select ng-model="editData.snt_value" name="snt-value" class="placeholder">
-							<option value=""> Snt Value </option>
-							<option ng-repeat="sntVal in editData.sntValues" value="{{sntVal.name}}" ng-selected="sntVal.name==editData.selected_snt_value" >{{sntVal.name}} </option>
+                <div class="entry">
+                    <label for="external-value"> External Value <strong>*</strong> </label>
+                    <input type="text" ng-model="editData.external_value" value="editData.external_value" required="yes" placeholder="Enter value" name="external-value">
+                </div>
 
-						</select>
-					</div>
-				</div>
+            </fieldset>
 
-				<div class="entry">
-					<label for="external-value"> External Value <strong>*</strong> </label>
-					<input type="text" ng-model="editData.external_value" value="editData.external_value" required="yes" placeholder="Enter value" name="external-value">
-				</div>
-
-			</fieldset>
-
-			<div class="actions float">
-				<button type="button" ng-click="closeInlineTab()" class="button blank edit-data-inline">
-					Cancel
-				</button>
-				<button type="button" ng-click="clickedSave()" class="button green edit-data-inline">
-					Save changes
-				</button>
-			</div>
-
-		</form>
-	</div>
+            <div class="actions float">
+                <button type="button" ng-click="closeInlineTab();
+                    showAddNew();" class="button blank edit-data-inline">
+                    Cancel
+                </button>
+                <button type="button" ng-click="clickedSave()" class="button green edit-data-inline">
+                    Save changes
+                </button>
+            </div>
+            <a id="bottom"></a>
+        </form>
+    </div>
 </div>

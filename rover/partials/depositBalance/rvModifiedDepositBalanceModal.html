@@ -173,11 +173,13 @@
 			</div>
 		</fieldset>
 	</form>
-	<div ng-if="shouldShowWaiting && pageloadingOver" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
-			<div class="centeralign alert-box">
-				WAITING FOR PAYMENT COMPLETION 
-			</div>
-			<div class="waiting-payment">&nbsp;</div>
+	<div ng-if="shouldShowWaiting && pageloadingOver">
+		<div class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
+				<div class="centeralign alert-box">
+					WAITING FOR PAYMENT COMPLETION 
+				</div>
+				<div class="waiting-payment">&nbsp;</div>
 		</div>
+	</div>
 	
 </div>

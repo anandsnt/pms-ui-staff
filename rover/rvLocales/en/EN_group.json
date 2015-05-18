@@ -20,10 +20,10 @@
     "ROOMS_AND_RATES": "Rooms &amp; Rates",
     "SINGLE": "Single",
     "DOUBLE": "Double",
-    "TRIPLE": "TRIPLE",
-    "QUADRUPLE": "QUADRUPLE",
-    "ADD_TRIPLE": "+ Add TRIPLE",
-    "ADD_QUADRUPLE": "+ Add QUADRUPLE",
+    "TRIPLE": "Triple",
+    "QUADRUPLE": "Quadruple",
+    "ADD_TRIPLE": "+ Add Triple",
+    "ADD_QUADRUPLE": "+ Add Quadruple",
     "TOTAL": "Total",
     "PICK_UP": "Pick-up",
     "AVAILABILITY_GROUP": "Availability: ",
@@ -71,7 +71,8 @@
     "GROUP_AUTO_ASSIGN_ROOMS":"Auto-Assign Rooms",
     "GROUP_EMAIL":"Email",
     "GROUP_PRINT":"Print",
-    "GROUP_DOWNLOAD":"Download"
+    "GROUP_DOWNLOAD":"Download",
+    "ADD_BILLING_INFO":"Add billing information"
 
 
 

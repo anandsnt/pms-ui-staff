@@ -6,6 +6,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         $scope.showExpandedView = false;
 
         $scope.data = {};
+        $scope.data.roomRateOverrides = [];
         $scope.data.showEditView = false;
 
         if($scope.popupData.fromRoomTypeView){
@@ -46,7 +47,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             if(typeof $scope.myScroll['restictionWeekDaysScroll'] != 'undefined')
             $scope.myScroll['restictionWeekDaysScroll'].refresh();
         },1000);
-    }
+    };
 
     $scope.restrictionsList = {
         selectedIndex : -1
@@ -77,6 +78,19 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
     */
     $scope.hasPermissionToUpdateRates = function(){
         return (rvPermissionSrv.getPermissionValue ('UPDATE_RATE_PRICE')); 
+    };
+    
+    /**
+    * method to determine whether the user has permission to update Rate Mgr - Rate Prices
+    * @return {Boolean}
+    */
+    $scope.clearOverrides = function(data){
+        $scope.$emit('showLoader');
+        var onsuccess = function(successData){
+            $scope.$emit('hideLoader');
+        };
+        data.room_type_id = data.selectedRoomType;
+        $scope.invokeApi(RateMngrCalendarSrv.updateRoomTypeOverride, data, onsuccess);
     };
     
     
@@ -148,14 +162,73 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         $scope.data.child_extra_amnt = '';
         $scope.data.child_amnt_diff = $rootScope.currencySymbol;
 
-        
-
         //Flag to check if the rate set amounts are configured for the selected date
         $scope.data.hasAmountConfigured = true;
-
-                
-               
         selectedDateInfo = {};
+        
+        //detect change on data values and update watch obj accordingly
+        $scope.$watch("data.single_extra_amnt", function(to, from, evt){
+            var via = 'single';
+            var d = {};
+            d.to = to;
+            d.from = from;
+            d.via = via;
+            $scope.$emit('setReadyButton',d);
+            $scope.$emit('applyAllActivity',d);
+	});  
+        $scope.$watch("data.double_extra_amnt", function(to, from, evt){
+          
+            var via = 'double';
+            var d = {};
+            d.to = to;
+            d.from = from;
+            d.via = via;
+            $scope.$emit('setReadyButton',d);
+            $scope.$emit('applyAllActivity',d);
+	});  
+        $scope.$watch("data.extra_adult_extra_amnt", function(to, from, evt){
+            
+            var via = 'extra_adult';
+            var d = {};
+            d.to = to;
+            d.from = from;
+            d.via = via;
+            $scope.$emit('setReadyButton',d);
+            $scope.$emit('applyAllActivity',d);
+	});  
+        $scope.$watch("data.child_extra_amnt", function(to, from, evt){
+           
+            var via = 'child';
+            var d = {};
+            d.to = to;
+            d.from = from;
+            d.via = via;
+            $scope.$emit('setReadyButton',d);
+            $scope.$emit('applyAllActivity',d);
+	});  
+        
+        
+        
+        $scope.$on('apply-all-price-adjust',function(evt, data){
+            var d = data, setVia = data.setFromValue;
+                
+                    $scope.data.single_sign = d[setVia+'_sign'];
+                    $scope.data.single_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.single_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.double_sign = d[setVia+'_sign'];
+                    $scope.data.double_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.double_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.extra_adult_sign = d[setVia+'_sign'];
+                    $scope.data.extra_adult_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.extra_adult_extra_amnt = d[setVia+'_extra_amnt'];
+                
+                    $scope.data.child_sign = d[setVia+'_sign'];
+                    $scope.data.child_amnt_diff = d[setVia+'_amnt_diff'];
+                    $scope.data.child_extra_amnt = d[setVia+'_extra_amnt'];
+            
+        });
 
         //Get the rate/restriction details for the selected cell
         if($scope.popupData.all_data_selected) {
@@ -163,6 +236,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             $scope.data.isHourly= $scope.calendarData.data[0][$scope.popupData.selectedDate].isHourly;                        
         } else {
             for(var i in $scope.calendarData.data){
+                
                 if($scope.calendarData.data[i].id == $scope.popupData.selectedRoomType){
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                     $scope.data.id = $scope.calendarData.data[i].id;
@@ -184,6 +258,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
                             //(CICO-9555                            
                             $scope.data.nightly= selectedDateInfo.nightly;
                             //CICO-9555)
+                            
+                            //CICO-15561
+                            $scope.data.roomRateOverrides = selectedDateInfo.overrides;
+                            //CICO-15561
                         }
                     }
                 }
@@ -290,7 +368,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             ret = true;
         }
         return ret;
-    }
+    };
 
     /* This does not handle the case of "Selected for all Rates", as this can be deduced from allData
     */
@@ -310,7 +388,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             }
         }
         return mixed;
-    }
+    };
     /**
     * Click handler for restriction on/off buttons
     * Enable disable restriction. 

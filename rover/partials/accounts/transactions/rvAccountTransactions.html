@@ -86,8 +86,8 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="expense in billItem.expense_details">
-                                        <td class="price">{{currencySymbol}}{{expense.amount | number: precisonZero}}</td>
-                                        <td>{{expense.details}}</td>
+                                        <td class="price">{{currencySymbol}}{{expense.amount | number: precisonTwo}}</td>
+                                        <td ng-bind-html="expense.details"></td>
                                         <td>{{expense.charge_type}}</td>
                                     </tr>
                                 </tbody>
@@ -204,7 +204,7 @@
                                                 {{'PAY' |translate}}
                                             </button>
                                         </td>
-                                        <td ng-hide = "billData.total_fees.balance_amount > 0"></td>
+                                        <td ></td>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -251,7 +251,7 @@
                                                 {{'EDIT' |translate}}
                                             </button>
                                         </td>
-                                        <td>
+                                        <td class="action">
                                             <label class="checkbox inline"> 
                                                 <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked -->
                                                 <input value="{charge}" type="checkbox" />
