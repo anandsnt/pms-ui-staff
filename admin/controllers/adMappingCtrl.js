@@ -134,6 +134,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
            $scope.hasValidSelection();
            
         });
+        $scope.$watch('editData.external_value',function(to, fm, evt){
+           $scope.hasValidSelection();
+           
+        });
         
         //----------------
         
@@ -306,7 +310,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             
             available_mapping_types = $scope.editData.mapping_types,
             available_snt_values = $scope.mappingInterface.mappingTypeRefs[mapping_type];
-            var valid_mapping_type = false, valid_snt_value = false;
+            var valid_mapping_type = false, valid_snt_value = false, valid_external_value = false;
+            if (external_value !== '' && external_value !== " " && typeof external_value == typeof 'string'){
+                valid_external_value = true;
+            } 
             
             for (var i in available_mapping_types){
                 if (mapping_type === available_mapping_types[i].name){
@@ -319,12 +326,12 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     valid_snt_value = true;
                 }
             }
-            if (valid_mapping_type && valid_snt_value){
+            if (valid_mapping_type && valid_snt_value && valid_external_value){
                 $scope.editData.validEditSelection = 'true';
             } else {
                 $scope.editData.validEditSelection = 'false';
             }
-        }
+        };
         
 
         $scope.clickedSave = function () {
