@@ -91,6 +91,7 @@
 "ATTACHED_ENTITIES":"Attached Entities",
 "CARDS":"Cards",
 "GROUPS_AND_CARDS":"Groups & Cards",
+"ACCOUNTS_AND_CARDS":"Accounts & Cards",
 "NO_MATCH_FOUND_MSG":"No matches have been found",
 "ENTITY_NOT_SELECTED":"Entity not selected",
 "SELECT_ENTITY_TO_CONFIGURE":"Select Entity to configure bill routing",
@@ -413,7 +414,8 @@
     "GROUP_AUTO_ASSIGN_ROOMS":"Auto-Assign Rooms",
     "GROUP_EMAIL":"Email",
     "GROUP_PRINT":"Print",
-    "GROUP_DOWNLOAD":"Download"
+    "GROUP_DOWNLOAD":"Download",
+    "ADD_BILLING_INFO":"Add billing information"
 
 
 

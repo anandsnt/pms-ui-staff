@@ -179,6 +179,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			});
 
 		};
+	
+		$scope.$on("BILLINGINFOADDED", function() {
+     			$scope.groupConfigData.summary.posting_account_billing_info = true;
+   		});
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {
