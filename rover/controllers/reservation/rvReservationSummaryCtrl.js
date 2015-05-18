@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv',
-    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv',
+    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv) {
 
 
         BaseCtrl.call(this, $scope);
@@ -1303,24 +1303,62 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         });
 
         $scope.addGuests = function(room) {
-            angular.extend(room, {
-                accompanying_guest_details: [{
-                    first_name: '',
-                    last_name: ''
-                }, {
-                    first_name: '',
-                    last_name: ''
-                }, {
-                    first_name: '',
-                    last_name: ''
-                }]
-            })
+            if (!room.accompanying_guest_details) {
+                angular.extend(room, {
+                    accompanying_guest_details: [{
+                        first_name: '',
+                        last_name: ''
+                    }, {
+                        first_name: '',
+                        last_name: ''
+                    }, {
+                        first_name: '',
+                        last_name: ''
+                    }]
+                })
+            }
             refreshScrolls();
         }
 
-        $scope.clearGuests = function(room) {
-            room.accompanying_guest_details = null;
-            refreshScrolls();
+        /**
+         * Clear guests
+         * -- DEPRECATED for CICO-16940
+         * @param  {room} room
+         * @return {undefined}
+         */
+        // $scope.clearGuests = function(room) {
+        //     room.accompanying_guest_details = null;
+        //     refreshScrolls();
+        // }
+        // 
+
+        $scope.saveAccompanyingGuests = function(room, roomIndex) {
+            $scope.errorMessage = "";
+            var validGuests = [];
+            _.each(room.accompanying_guest_details, function(guest) {
+                if (!guest.first_name && !guest.last_name) {
+                    guest.first_name = null;
+                    guest.last_name = null;
+                }
+                validGuests.push(guest);
+            });
+
+            var onupdateSuccess = function() {
+                    $scope.$emit('hideLoader');
+
+                },
+                onUpdateFailure = function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+
+
+            if (validGuests.length > 0) {
+                $scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
+                    accompanying_guests_details: validGuests,
+                    reservation_id: $scope.reservationData.reservationIds[roomIndex],
+                }, onupdateSuccess, onUpdateFailure);
+            }
         }
 
         $scope.init();
