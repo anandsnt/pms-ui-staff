@@ -1138,7 +1138,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                     room.demographics = angular.copy($scope.demographics);
                     $scope.reservationData.demographics = angular.copy($scope.demographics);
-                    var postData = $scope.computeReservationDataforUpdate(true, true, currentRoomIndex);
+                    var postData = $scope.computeReservationDataforUpdate(false, true, currentRoomIndex);
                     postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
                 });
@@ -1146,7 +1146,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             } else {
                 $scope.reservationData.rooms[index].demographics = angular.copy($scope.demographics);
                 $scope.reservationData.demographics = angular.copy($scope.demographics);
-                var postData = $scope.computeReservationDataforUpdate(true, true, index);
+                var postData = $scope.computeReservationDataforUpdate(false, true, index);
                 postData.reservationId = reservationId;
                 $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
             }

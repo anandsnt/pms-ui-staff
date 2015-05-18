@@ -1321,7 +1321,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 if ($scope.reservationData.paymentType.type.value !== null) {
                     angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
                         if ($scope.reservationData.paymentType.type.value == item.value) {
-                            data.payment_type.type_id = ($scope.reservationData.paymentType.type.value === "CC") ? $scope.reservationData.selectedPaymentId : item.id;
+                            if($scope.reservationData.paymentType.type.value === "CC"){
+                              data.payment_type.payment_method_id =  $scope.reservationData.selectedPaymentId
+                            }
+                            else{
+                              data.payment_type.type_id = item.id;
+                            }                            
                         }
                     });
                     data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
