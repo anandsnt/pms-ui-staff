@@ -10,6 +10,8 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.editData.mapping_type = '';
         $scope.editData.snt_value = '';
         $scope.editData.external_value = '';
+        
+        $scope.editData.validEditSelection = 'false';
 
         $scope.siteminder = {};
         $scope.siteminder.active = "true";
@@ -127,10 +129,20 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.siteminder_setup.mapping_type_list = [];
         
         
+        //---------------- do an isDirty check and launch isValid checks
+        $scope.$watch('editData.snt_value',function(to, fm, evt){
+           $scope.hasValidSelection();
+           
+        });
+        
+        //----------------
+        
         $scope.$watch('editData.mapping_type_value',function(to, fm, evt){
             if (to){
+               // $scope.editData.snt_value = '';//reset the value until a new one is selected
                 $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[to];
             }
+               $scope.hasValidSelection();
         });
         
         
@@ -280,6 +292,40 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             $scope.invokeApi(ADInterfaceMappingSrv.fetchInterfaceMappingsList, mappingData, $scope.fetchInterfaceMappingsSuccess);
 
         };
+        $scope.hasValidSelection = function(){
+            //check to verify if the selected values are valid
+            //ie. don't allow a user to switch from a credit card type to source_code, withoout selecting a valid SNT value
+            //loop through the available selections with the currently selected value to verify its avialable for selection
+            
+            var snt_value = $scope.editData.snt_value,
+                    mapping_type = $scope.editData.mapping_type_value,
+                    external_value = $scope.editData.external_value;
+            
+            var available_snt_values,
+                    available_mapping_types;
+            
+            available_mapping_types = $scope.editData.mapping_types,
+            available_snt_values = $scope.mappingInterface.mappingTypeRefs[mapping_type];
+            var valid_mapping_type = false, valid_snt_value = false;
+            
+            for (var i in available_mapping_types){
+                if (mapping_type === available_mapping_types[i].name){
+                    valid_mapping_type = true;
+                }
+            }
+            
+            for (var n in available_snt_values){
+                if (snt_value === available_snt_values[n].name){
+                    valid_snt_value = true;
+                }
+            }
+            if (valid_mapping_type && valid_snt_value){
+                $scope.editData.validEditSelection = 'true';
+            } else {
+                $scope.editData.validEditSelection = 'false';
+            }
+        }
+        
 
         $scope.clickedSave = function () {
             var lastInterface = getLastInterface();
