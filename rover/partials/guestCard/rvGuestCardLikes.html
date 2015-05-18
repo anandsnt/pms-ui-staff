@@ -3,16 +3,18 @@
         <div class="entry full-width">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         </div>
-
+        
         <div class="holder left">
             <strong class="h3" ng-show="guestCardData.likes.newspapers.length >0 || guestCardData.likes.roomtype.length >0 || guestCardData.likes.preferences.length >0" translate>PREFERENCES </strong>
-            
             <div class="entry full-width" ng-show="guestCardData.likes.newspapers.length >0">
                 <label for="newspaper" translate>NEWSPAPER</label>
-                <!-- <input name="newspaper" id="newspaper" value="Wall Street Journal" type="text" /> -->
-                <select ng-model="guestCardData.likes.user_newspaper">
-                    <option value=""></option>
-                    <option ng-selected="newspapers.id == guestCardData.likes.user_newspaper" ng-repeat="newspapers in guestCardData.likes.newspapers" value="{{newspapers.id}}">
+                <select iscroll-stop-propagation 
+                    ng-class="{'placeholder': !guestCardData.likes.user_newspaper }"
+                    ng-model="guestCardData.likes.user_newspaper">
+                    <option value="" selected >Select Newspaper</option>
+                    <option ng-repeat="newspapers in guestCardData.likes.newspapers"
+                    value="{{newspapers.id}}"
+                    ng-selected="newspapers.id == guestCardData.likes.user_newspaper">
                         {{newspapers.name}}
                     </option>
                 </select>
