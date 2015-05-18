@@ -22,7 +22,7 @@
 		Invoice
 	</button>
 	<!-- Button to print registration card, show only for check ins  -->
-	<button ng-show="isStandAlone" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
+	<button ng-show="isStandAlone && clickedButton == 'checkinButton'" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
 		<span class="icons icon-print"></span> 
 		Registration Card
 	</button>
