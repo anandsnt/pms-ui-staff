@@ -283,6 +283,9 @@
 "GENERAL_LABEL": "General Information",
 "LINK_LABEL": "Link",
 "SCREEN_LABEL": "Screen",
+"ADDON_LABEL": "Add On",
+"ADDON_DESCRIPTION_LABEL": "Add On Description",
+"ADDON_PRICE_LABEL": "Add On Price",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
@@ -821,4 +824,11 @@
 "EXCLUDE_ROOM_TYPES":"EXCLUDE ROOM TYPES",
 "EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES"
 
-}
+,
+
+
+"ADDON_SETUP_HEADER": "Addon Setup",
+"GUEST_ACTIONS_SWITCH_LABEL": "Guest Actions With ADD ONS",
+"DISPLAY_ADDONS_SWITCH_LABEL": "Display purchased Add Ons",
+"ALLOW_CANCELLATION_SWITCH_LABEL": "Allow cancellation of purchased Add Ons",
+"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing"}

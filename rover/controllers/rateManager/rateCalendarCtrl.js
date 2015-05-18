@@ -268,7 +268,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
                         break;
                 }
             }
-        };
+        }
 
 	/**
 	* @returns totalnumber of dates {Number} to be displayed
