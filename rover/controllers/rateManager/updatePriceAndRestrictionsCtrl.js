@@ -162,8 +162,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
         $scope.data.child_extra_amnt = '';
         $scope.data.child_amnt_diff = $rootScope.currencySymbol;
 
+        
+
         //Flag to check if the rate set amounts are configured for the selected date
         $scope.data.hasAmountConfigured = true;
+
+                
+               
         selectedDateInfo = {};
         
         //detect change on data values and update watch obj accordingly
