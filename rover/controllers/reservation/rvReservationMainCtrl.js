@@ -776,7 +776,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                  */
 
                 // we are sending the arrivaldate as in case of varying occupancies, it is ASSUMED that we go forward with the first day's occupancy
-                var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, finalRate, addon.taxDetail || addon.taxes, roomIndex, true);
+                if (!!addon.is_inclusive) {
+                    var taxApplied = {
+                        inclusive: 0.0,
+                        exclusive: 0.0,
+                        stayInclusive: 0.0,
+                        stayExclusive: 0.0,
+                        taxDescription: []
+                    }
+                } else {
+                    var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, finalRate, addon.taxDetail || addon.taxes, roomIndex, true);
+                }
 
                 // Go through the tax applied and update the calculations such that
                 // When Add-on items are being added to a reservation, their respective tax should also be added to the reservation summary screen, to 
