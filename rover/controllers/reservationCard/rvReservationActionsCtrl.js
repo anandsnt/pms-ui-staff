@@ -27,10 +27,17 @@ sntRover.controller('reservationActionsController', [
 
 		BaseCtrl.call(this, $scope);
 
+		/*
+		* The reverse checkout button is to be shown if all the following conditions are satisfied
+		* -departure date <= busssiness date
+		* -status === checkedout
+		* -has permission
+		* -is stand alone hotel
+		*/
 		var departureDatePassedbusinessDate = (new Date($scope.reservationData.reservation_card.departure_date) <= new Date($rootScope.businessDate) || $scope.reservationData.reservation_card.departure_date === $rootScope.businessDate);
        	$scope.showReverseCheckout = $scope.reservationData.reservation_card.reservation_status === "CHECKEDOUT"
-		&& departureDatePassedbusinessDate
-	    && rvPermissionSrv.getPermissionValue ('REVERSE_CHECK_OUT');
+										&& departureDatePassedbusinessDate
+	   									 && rvPermissionSrv.getPermissionValue ('REVERSE_CHECK_OUT') && $rootScope.isStandAlone;
 
 	    $scope.reverseCheckout = function(reservationId, clickedButton, smartbandHasBalance) {	
 			$state.go("rover.reservation.staycard.billcard", {
