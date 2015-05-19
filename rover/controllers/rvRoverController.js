@@ -107,6 +107,8 @@ sntRover.controller('roverController',
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
+
+    $rootScope.desktopSwipeEnabled = true; //hotelDetails.desktop_swipe_enabled;
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -485,6 +487,11 @@ sntRover.controller('roverController',
 
     $scope.numberOfCordovaCalls = 0;
 
+    var initiateDesktopCardReader = function(){
+    	var portNumber = '8126';
+    	sntapp.desktopCardReader.startDesktopReader(portNumber, options);
+    }
+
     $scope.initiateCardReader = function() {
       if (sntapp.cardSwipeDebug === true) {
         sntapp.cardReader.startReaderDebug(options);
@@ -509,12 +516,18 @@ sntRover.controller('roverController',
 
     /*
      * Start Card reader now!.
-     * Time out is to call set Browser
      */
     if ($rootScope.paymentGateway != "sixpayments") {
-      setTimeout(function() {
-        $scope.initiateCardReader();
-      }, 2000);
+		if($rootScope.desktopSwipeEnabled){
+			initiateDesktopCardReader();
+		} else {
+     		//Time out is to call set Browser
+			setTimeout(function() {
+			  $scope.initiateCardReader();
+			}, 2000);
+		}
+
+      
     }
 
 
