@@ -5,9 +5,9 @@ var GlobalApp = function(){
     this.cardReader = null;
     this.iBeaconLinker = null;
     this.enableURLChange = true;
-    this.desktopCardReader = new DesktopCardOperations();
     try{
-          this.MLIOperator = new MLIOperation();
+    	this.desktopCardReader = new DesktopCardOperations();
+        this.MLIOperator = new MLIOperation();
     }
         catch(er){
     };
