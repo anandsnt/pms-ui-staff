@@ -219,7 +219,7 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 	this.completeReverseCheckout = function(data){
 		var deferred = $q.defer();
-		var url = '/staff/checkin';
+		var url = '/staff/reverse_checkout';
 			RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){
