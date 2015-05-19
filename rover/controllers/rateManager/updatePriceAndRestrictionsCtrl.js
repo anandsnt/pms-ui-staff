@@ -102,8 +102,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             for (var i in $scope.overrideByDate) {
                 if ($scope.overrideByDate[i].date === date) {
                     for (var n in $scope.overrideByDate[i].room_types_with_override) {
-                        if ($scope.overrideByDate[i].room_types_with_override[n].toLowerCase() === room_type.toLowerCase()) {
-                            return 'true';
+                        if ($scope.overrideByDate[i].room_types_with_override[n] && room_type){
+                            if ($scope.overrideByDate[i].room_types_with_override[n].toLowerCase() === room_type.toLowerCase()) {
+                                return 'true';
+                            }
                         }
                     }
                 }
@@ -155,24 +157,27 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                     o = a.roomRateOverrides;
 
             var selected_info;
-            if (o.room_types) {
-                for (var i in o.room_types) {
-                    if (o.room_types[i].room_type.name === room_type) {
-                        selected_info = o.room_types[i];
+            if (o){
+                if (o.room_types) {
+                    for (var i in o.room_types) {
+                        if (o.room_types[i].room_type.name === room_type) {
+                            selected_info = o.room_types[i];
+                        }
                     }
-                }
-                $scope.hasAnyOverride();
-                var lbl = label.toLowerCase();
-                for (var w in selected_info.has_override) {
-                    if (selected_info.has_override[w].toLowerCase() === lbl) {
-                        $scope.selected_has_override = 'true';
-                        return true;
+                    $scope.hasAnyOverride();
+                    var lbl = label.toLowerCase();
+                    for (var w in selected_info.has_override) {
+                        if (selected_info.has_override[w].toLowerCase() === lbl) {
+                            $scope.selected_has_override = 'true';
+                            return true;
+                        }
                     }
+                    $scope.selected_has_override = 'false';
+                    return false;
                 }
-                $scope.selected_has_override = 'false';
+
                 return false;
             }
-            return false;
         };
         /**
          * method to determine whether the user has permission to update Rate Mgr - Restrictions
