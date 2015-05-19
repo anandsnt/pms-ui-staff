@@ -737,13 +737,11 @@
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
-    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
-
-
-"SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
+    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date","SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
 "SITEMINDER_SUB_TITLE": "SiteMinder API Access Configuration",
 "SITEMINDER_USERNAME_LABEL": "User Name",
 "SITEMINDER_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
+"SITEMINDER_DEFAULT_PAYMENT_METHOD": "Default Payment Method",
 "SITEMINDER_PASSWORD_LABEL": "Password",
 "SITEMINDER_ACCESS_URL_LABEL": "Access URL",
 "SITEMINDER_REQUESTOR_ID_LABEL": "Requester ID"

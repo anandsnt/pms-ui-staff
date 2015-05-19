@@ -480,11 +480,18 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		var successCallBackOfSaveRoomBlock = function(date){
+
 			//we have save everything we have
 			//so our data is new
+			$scope.copy_selected_room_types_and_bookings = 
+				angular.copy($scope.groupConfigData.summary.selected_room_types_and_bookings);
+			
 			$scope.hasBookingDataChanged = false;
 			$scope.groupConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
 			
+			//as per CICO-16087, we have to refetch the occupancy and availability after saving
+			//so, callinng the API again 
+			$scope.fetchRoomBlockGridDetails();
 		};
 
 		/**
@@ -523,13 +530,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			// TODO write check here
 			var ref = $scope.groupConfigData.summary.selected_room_types_and_bookings,
 				is_over_booked = false,
-				indvdlSum = 0;
+				indvdlTotal = 0;
 
 			_.each (ref, function(eachRoomType){	
 				_.each(eachRoomType.dates, function(dateData){
-					indvdlSum = $scope.getTotalBookedOfIndividualRoomType (dateData);
+					indvdlTotal = $scope.getTotalBookedOfIndividualRoomType (dateData);
 
-					if (indvdlSum > dateData.availability){
+					//if there is some diff with old total we calculated earlier and new total
+					if ((indvdlTotal !== dateData.old_total) && 
+						(indvdlTotal - dateData.old_total) > dateData.availability) {
 						is_over_booked = true;
 					}
 				});
@@ -796,10 +805,22 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		/**
 		* Success callback of room block details API
 		*/
-	 	var successCallBackOfFetchRoomBlockGridDetails = function(data){		 		
+	 	var successCallBackOfFetchRoomBlockGridDetails = function(data){
+
+	 		//we need indivual room type total bookings of each date initially,
+	 		//we are using this for overbooking calculation
+	 		_.each (data.results, function(eachRoomType){	
+				_.each(eachRoomType.dates, function(dateData){
+					dateData.old_total = $scope.getTotalBookedOfIndividualRoomType (dateData);
+				});
+			});
+
 	 		$scope.groupConfigData.summary.selected_room_types_and_bookings = data.results;
 	 		$scope.groupConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
 
+	 		//our total pickup count may change on coming from other tab (CICO-16835)
+	 		$scope.totalPickups = data.total_picked_count;
+	 		
 	 		//we need the copy of selected_room_type, we ned to use these to show save/discard button
 	 		$scope.copy_selected_room_types_and_bookings = util.deepCopy (data.results);
 
@@ -919,8 +940,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				$scope.createButtonClicked = true;
 				$scope.totalPickups = refData.summary.rooms_pickup;
 				$scope.totalRooms = refData.summary.rooms_total;
-
-				$scope.selectedHoldStatus = refData.summary.hold_status;
+				$scope.selectedHoldStatus = util.convertToInteger (refData.summary.hold_status);
 				
 				_.extend($scope.groupConfigData.summary, {
 					selected_room_types_and_bookings : [],

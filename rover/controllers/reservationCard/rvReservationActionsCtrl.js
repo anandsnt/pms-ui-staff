@@ -29,7 +29,10 @@ sntRover.controller('reservationActionsController', [
 		
 		//Since API is returning "true"/"false"
 		//TODO: Ask Rashila to to it from the API itself
-		$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates = ($scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === "true")
+		if (typeof $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates !== "boolean") {
+			$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates = 
+				($scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === "true")
+		}
 
 		$scope.actionsCheck = {
 			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
@@ -340,19 +343,17 @@ sntRover.controller('reservationActionsController', [
 			
 		};
 
-		var checkforDeposit = function(){
-			$scope.invokeApi(RVReservationCardSrv.fetchDepositDetails, $scope.reservationData.reservation_card.reservation_id,checkinDepositDetailsSuccess);
-		};
-		//only show deposit popup once
-		var checkinAttemptCount = 0;
 		$scope.goToCheckin = function(){
-			(checkinAttemptCount ===0) ?  checkforDeposit() :startCheckin();
-			checkinAttemptCount ++;
+			startCheckin();
 		};
 
 		/******************************************/
 		$scope.showPutInQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
 			var displayPutInQueue = false;
+			//In standalone hotels we do not show the putInQueue option
+			if($rootScope.isStandAlone){
+				return displayPutInQueue;
+			}
 			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
 				if (isQueueRoomsOn == "true" && isReservationQueued == "false") {
 					displayPutInQueue = true;
@@ -615,17 +616,19 @@ sntRover.controller('reservationActionsController', [
 				});
 			
 		};
-		$scope.showDepositBalance = function(reservationStatus, isRatesSuppressed){
-			var showDepositBalanceButtonWithoutSR = false;
-			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
 
-				if(isRatesSuppressed == "false"){
-					showDepositBalanceButtonWithoutSR = true;
-				}
-				
-			}
-			return showDepositBalanceButtonWithoutSR;
+		/**
+		 * wanted to show deposit & blance button?
+		 * @param  {String}  reservationStatus 
+		 * @return {Boolean}                  
+		 */
+		$scope.showDepositBalance = function(reservationStatus){
+			//As per CICO-15833
+			//we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
+			reservationStatus = reservationStatus.toUpperCase();
+			return (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN')
 		};
+
 		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithSR = false;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){

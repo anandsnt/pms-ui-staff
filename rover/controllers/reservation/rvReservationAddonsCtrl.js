@@ -279,7 +279,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.addons = [];
 
-        $scope.fetchAddons = function(paramChargeGrpId) {
+        $scope.fetchAddons = function(paramChargeGrpId, isInitialLoad) {
             var successCallBackFetchAddons = function(data) {
                 var inclusiveAddons =[];
                 angular.forEach(data.rate_addons, function(item) {
@@ -319,9 +319,13 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                     }
                 });
                 $scope.refreshAddonsScroller();
+
                 // Clear the variables for Enhancement pop up And rooms Add ons And repopulate.
                 // Do this only in case of create reservation. i.e. dont do if reservation ID exists.
-                if(typeof $scope.reservationData.reservationId =="undefined" || $scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null)
+
+                //CICO-16792 - DOING THIS ONLY ON INITIAL LOAD -- FOR BUG FIXING
+   
+                if(!!isInitialLoad && (typeof $scope.reservationData.reservationId =="undefined" || $scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null))
                 {
                     if(!$scope.is_rate_addons_fetch){
                     $scope.addonsData.existingAddons=[];
@@ -340,7 +344,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                                 newAddonToReservation.price_per_piece = addon.amount;
                                 newAddonToReservation.amount_type = addon.amount_type.description;
                                 newAddonToReservation.post_type = addon.post_type.description;
-                                newAddonToReservation.is_inclusive = addon.is_inclusive;
+                                newAddonToReservation.is_inclusive = !!addon.is_inclusive;
                                 $scope.addonsData.existingAddons.push(newAddonToReservation);
                                 // Temp Variable to translate API response keys
                                 // to data variable keys
@@ -406,7 +410,10 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         // first time fetch best seller addons
         // for fetching best sellers - call method without params ie. no charge group id
         // Best Sellers in not a real charge code [just hard coded charge group to fetch best sell addons]
-        $scope.fetchAddons();
+        /**
+         * CICO-16792 Sending a second parameter to the fetchAddons method to identify the initial call to the method
+         */
+        $scope.fetchAddons('',true);
         $scope.setScroller("enhanceStays");
         if ($stateParams.reservation == "HOURLY") {
             init();

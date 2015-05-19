@@ -298,6 +298,16 @@ sntRover.controller('RVbillCardController',
 		 * on the basis of payment type
 		 */
 	$scope.setNoPostStatus = function(){
+		
+		$scope.reservationBillData.roomChargeEnabled = "";
+
+		if($scope.reservationBillData.no_post == "true"){
+			$scope.reservationBillData.roomChargeEnabled = false;
+		}else if($scope.reservationBillData.no_post == "false"){
+			$scope.reservationBillData.roomChargeEnabled = true;
+		}
+
+		/*
 
 		if($scope.reservationData.paymentType.type.value === 'CC'){
 			$scope.reservationBillData.roomChargeEnabled = true;
@@ -307,7 +317,7 @@ sntRover.controller('RVbillCardController',
 			$scope.reservationBillData.roomChargeEnabled = true;
 		}else {
 			$scope.reservationBillData.roomChargeEnabled = "";
-		}
+		}*/
 
 	};
 
@@ -686,6 +696,11 @@ sntRover.controller('RVbillCardController',
 	 	$scope.$emit('SHOWPAYMENTLIST', $scope.reservationBillData);
 	 };
 
+	 $scope.$on('paymentChangedToCC', function(){
+	 	$scope.reservationBillData.no_post = "false";
+	 	$scope.reservationBillData.roomChargeEnabled = true;
+	 });
+
 
 	$scope.openPostCharge = function(activeBillNo) {
 
@@ -926,6 +941,7 @@ sntRover.controller('RVbillCardController',
 	    	$scope.isFailureScreen = false;
 	    	$scope.cc_auth_amount = data.cc_auth_amount;
 	    	$scope.cc_auth_code = data.cc_auth_code;
+	    	$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.auth_color_code = 'green';
 	    }
 	    else{
 	    	// CICO-6109 : With Authorization flow .: Auth declined
@@ -933,6 +949,7 @@ sntRover.controller('RVbillCardController',
 	    	$scope.isSuccessScreen = false;
 	    	$scope.isFailureScreen = true;
 	    	$scope.cc_auth_amount = data.cc_auth_amount;
+	    	$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.auth_color_code = 'red';
 	    }
 	};
 
@@ -1787,6 +1804,16 @@ sntRover.controller('RVbillCardController',
 			data.billIndex = key;
 			$scope.reviewStatusArray.push(data);
 		});
+	};
+
+	// Checks whether the user has signed or not
+	$scope.isSigned = function() {
+		return ($scope.reservationBillData.signature_details.is_signed == "true");
+	};
+
+	//Checks whether the user has accepted the charges during web check-in
+	$scope.isChargeAccepted = function() {
+		return $scope.reservationBillData.is_charges_accepted_from_mobile_web;
 	};
 
 	$scope.setupReviewStatusArray();

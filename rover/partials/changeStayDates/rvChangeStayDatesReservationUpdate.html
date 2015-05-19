@@ -1,181 +1,177 @@
-<div id="reservation-details" class="reservation-updates scrollable" >
-	<div class="wrapper">
-		<div class="updates-wrapper">
-		<div id="no-reservation-updates" class="updates-content no-content" ng-show="rightSideReservationUpdates==''">
-			<div class="info">
-				<strong class="h1" translate>CAHNGE_STAY_DATE_TO_SEE_ROOM_AND_RATE_CHANGES</strong>
-			</div>
+<div id="reservation-details" class="reservation-updates">
+	
+	<div id="no-reservation-updates" class="updates-content no-content" ng-show="rightSideReservationUpdates==''">
+		<div class="info">
+			<strong class="h1" translate>CAHNGE_STAY_DATE_TO_SEE_ROOM_AND_RATE_CHANGES</strong>
 		</div>
-		<!--Room Available Section -->
-		<div id="reservation-updates" class="updates-content " ng-show="rightSideReservationUpdates=='ROOM_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_AVAILABLE'}">
-			<h4 class="available-title" translate>RESERVATION_UPDATES</h4>
-			<div id="update-details" class="details scrollable" ng-iscroll="edit_staydate_updatedDetails" ng-iscroll-delay="100">
-				<div class="wrapper">
-					<h2 class="room">
-						<strong id="room-number" class="room-number" ng-class="getColorCode()">{{roomSelected}}</strong>
-						<span id="room-type">{{stayDetails.details.room_type_name}}</span>
-					</h2>
-					<ul class="data">
-						<li class="nights">
-							<span class="guest-status nights" translate>NIGHTS</span>
-							<span id="new-nights"><ng-pluralize count="calendarNightDiff"
-								  when="{'0': 'Day Use',
-	                     				'1': '1 night',
-	                     				other: '{} nights'}">
-							</ng-pluralize>	</span>
-						</li>
-						<li class="date">
-							<span class="guest-status small-icon check-in" translate>CHECK_IN</span>
-							<span id="new-check-in">
-								{{getSimplifiedDayName(checkinDateInCalender)}}
-								{{checkinDateInCalender|date:mmddyyyyFormat}}</span>
-						</li>
-						<li class="date">
-							<span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
-							<span id="new-check-out">
-								{{getSimplifiedDayName(checkoutDateInCalender)}}
-								{{checkoutDateInCalender|date:mmddyyyyFormat}}</span>
-						</li>
-					</ul>
-					<p class="rate">
-						<span class="number" ng-show="!isStayRatesSuppressed">
-							<span id="avg-daily-rate">{{currencySymbol}}{{avgRate}}</span>
-							/<strong id="total-stay-cost">{{currencySymbol}}{{totRate}}</strong>
-						</span>
-						<span class="number" ng-show="isStayRatesSuppressed">
-							<span id="avg-daily-rate" translate>SUPPRESSED_RATES_TEXT</span>
-							<strong id="total-stay-cost"></strong>
-						</span>
-						<span id="rate-desc">{{stayDetails.calendarDetails.rate_desc}}</span>
-					</p>
-					<div class="action">
-						<a id="confirm-changes"  data-transition="nested-view reload-content" class="button back-button brand-colors" ng-click="confirmUpdates()" translate>CONFIRM_UPDATES</a>
-						<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>CANCEL</button>
-					</div>
+	</div>
+	
+	<!--Room Available Section -->
+	<div id="reservation-updates" class="updates-content " ng-show="rightSideReservationUpdates=='ROOM_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_AVAILABLE'}">
+		<h4 class="available-title" translate>RESERVATION_UPDATES</h4>
+		<div id="update-details" class="details scrollable" ng-iscroll="edit_staydate_updatedDetails" ng-iscroll-delay="100">
+			<div class="wrapper">
+				<h2 class="room">
+					<strong id="room-number" class="room-number" ng-class="getColorCode()">{{roomSelected}}</strong>
+					<span id="room-type">{{stayDetails.details.room_type_name}}</span>
+				</h2>
+				<ul class="data">
+					<li class="nights">
+						<span class="guest-status nights" translate>NIGHTS</span>
+						<span id="new-nights"><ng-pluralize count="calendarNightDiff"
+							  when="{'0': 'Day Use',
+                     				'1': '1 night',
+                     				other: '{} nights'}">
+						</ng-pluralize>	</span>
+					</li>
+					<li class="date">
+						<span class="guest-status small-icon check-in" translate>CHECK_IN</span>
+						<span id="new-check-in">
+							{{getSimplifiedDayName(checkinDateInCalender)}}
+							{{checkinDateInCalender|date:mmddyyyyFormat}}</span>
+					</li>
+					<li class="date">
+						<span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
+						<span id="new-check-out">
+							{{getSimplifiedDayName(checkoutDateInCalender)}}
+							{{checkoutDateInCalender|date:mmddyyyyFormat}}</span>
+					</li>
+				</ul>
+				<p class="rate">
+					<span class="number" ng-show="!isStayRatesSuppressed">
+						<span id="avg-daily-rate">{{currencySymbol}}{{avgRate}}</span>
+						/<strong id="total-stay-cost">{{currencySymbol}}{{totRate}}</strong>
+					</span>
+					<span class="number" ng-show="isStayRatesSuppressed">
+						<span id="avg-daily-rate" translate>SUPPRESSED_RATES_TEXT</span>
+						<strong id="total-stay-cost"></strong>
+					</span>
+					{{stayDetails.calendarDetails.rate_desc}}
+				</p>
+				<div class="action">
+					<a id="confirm-changes"  data-transition="nested-view reload-content" class="button back-button brand-colors" ng-click="confirmUpdates()" translate>CONFIRM_UPDATES</a>
+					<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>CANCEL</button>
 				</div>
 			</div>
 		</div>
+	</div>
 
+	<!-- Room Type Available -->
+	<div id="room-list" class="updates-content" ng-show="rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_TYPE_AVAILABLE'}">
+		<h4 class="available-title error">
+			{{'ROOM' | translate}}
+			<span id="current-room">{{stayDetails.details.room_number}}</span>
+			{{'IS_NOT_AVAILABLE' | translate}}
+		</h4>
+		<strong class="subheading">
+			{{'PLEASE_SELECT_ANOTHER_ROOM' | translate }}
+			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
+		</strong>
+		<div id="change-room" class="details scrollable" ng-iscroll="edit_staydate_updatedDetails" ng-iscroll-delay="100">
+			<div class="wrapper">
+				<ul class="rooms">
+					<li ng-repeat="room in availableRooms">
+						<button type="button" ng-click="roomSelectedFromList(room.room_number)" class="button white">
+							<span id = "room-list-number" class="room-number" ng-class="getColorCode(stayDetails.calendarDetails.room_ready_status, stayDetails.calendarDetails.use_inspected)">{{room.room_number}}</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 
-		<!-- Room Type Available -->
-		<div id="room-list" class="updates-content" ng-show="rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_TYPE_AVAILABLE'}">
-			<h4 class="available-title error">
-				{{'ROOM' | translate}}
-				<span id="current-room">{{stayDetails.details.room_number}}</span>
-				{{'IS_NOT_AVAILABLE' | translate}}
-			</h4>
-			<strong class="subheading">
-				{{'PLEASE_SELECT_ANOTHER_ROOM' | translate }}
-				<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
-			</strong>
-			<div id="change-room" class="details scrollable" ng-iscroll="edit_staydate_updatedDetails" ng-iscroll-delay="100">
-				<div class="wrapper">
-					<ul class="rooms">
-						<li ng-repeat="room in availableRooms">
-							<button type="button" ng-click="roomSelectedFromList(room.room_number)" class="button white">
-								<span id = "room-list-number" class="room-number" ng-class="getColorCode(stayDetails.calendarDetails.room_ready_status, stayDetails.calendarDetails.use_inspected)">{{room.room_number}}</span>
-							</button>
-						</li>
-					</ul>
-				</div>
-			</div>
+	<!-- Room not avaialble -->
+	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='ROOM_NOT_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_NOT_AVAILABLE'}">
+		<div class="info">
+			<strong class="h1" translate>VALIDATION_MSG_DATE</strong>
+			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
+			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
+	</div>
 
-		<!-- Room not avaialble -->
-		<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='ROOM_NOT_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_NOT_AVAILABLE'}">
-			<div class="info">
-				<strong class="h1" translate>VALIDATION_MSG_DATE</strong>
-				<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
-				<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
-			</div>
+	<!-- Room is under Maintenance -->
+	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='MAINTENANCE'" ng-class="{'hidden': rightSideReservationUpdates!='MAINTENANCE'}">
+		<div class="info">
+			<strong class="h1" translate>ROOM_SCHEDULED_FOR_MAINTENANCE</strong>
+			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
+	</div>
 
-		<!-- Room is under Maintenance -->
-		<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='MAINTENANCE'" ng-class="{'hidden': rightSideReservationUpdates!='MAINTENANCE'}">
-			<div class="info">
-				<strong class="h1" translate>ROOM_SCHEDULED_FOR_MAINTENANCE</strong>
-				<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
+	<!-- Room is under maintainance -->
+	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='ROOM_CANNOT_UNASSIGN'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_CANNOT_UNASSIGN'}">
+		<div class="info">
+			<strong class="h1" translate>ROOM_CANNOT_UNASSIGN</strong>
+			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
+		</div>
+	</div>
+	
+	<!--If restrictions exist for the rate / room / date combination -->
+	<div id="room-restricted-continue" class="updates-content" ng-show="rightSideReservationUpdates=='RESTRICTION_EXISTS'" ng-class="{'hidden': rightSideReservationUpdates!='RESTRICTION_EXISTS'}">
+		<div id="unassign-room" class="details scrollable">
+			<div class="wrapper">
+				<h3 class="unnasign-from-guest">
+					<span ng-repeat="restriction in stayDetails.restrictions">{{restriction.name}} <span ng-show="restriction.days!= null" translate>OF</span><strong> {{restriction.days}}{{$last ? '' : ', '}}</strong>
+					<span ng-show="restriction.days== null && $last && stayDetails.restrictions.length==1" translate>RESTRICTION</span>
+					<span ng-show="restriction.days== null && $last && stayDetails.restrictions.length>1" translate>RESTRICTIONS</span>
+					</span>
+					<span translate>APPLIES_TO_RESERVATION</span>
+				</h3>
+				<button id="extend-stay" type="button" class="button green" ng-click="checkAvailabilityStatus();" translate>CONTINUE</button>
+				<button type="button" class="button blank" ng-click="resetDates()"><span translate>CANCEL</span></button>
 			</div>
 		</div>
+	</div>
 
-		<!-- Room is under maintainance -->
-		<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='ROOM_CANNOT_UNASSIGN'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_CANNOT_UNASSIGN'}">
-			<div class="info">
-				<strong class="h1" translate>ROOM_CANNOT_UNASSIGN</strong>
-				<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
+	<!-- If room is pre-assigned to another guest -->
+	<div id="room-assigned-to-another" class="updates-content" ng-show="rightSideReservationUpdates=='PREASSIGNED'" ng-class="{'hidden': rightSideReservationUpdates!='PREASSIGNED'}">
+		<h4 class="available-title error"><span translate>ROOM</span> 
+			{{roomSelected}}
+			<span translate>NOT_AVAILABLE_FOR_DATE_RANGE</span>
+		</h4>
+		<div id="unassign-room" class="details scrollable">
+			<div class="wrapper">
+				<h3 class="unnasign-from-guest">
+					<span translate>
+						UNASSIGN_ROOM_FROM
+					</span>
+					<strong>{{stayDetails.preassignedGuest.name}}</strong>, 
+					<span translate>ARRIVING </span>
+					<strong>{{stayDetails.preassignedGuest.arrival_date|date:mmddyyyyFormat}}</strong>
+					?
+				</h3>
+				<button id="extend-stay" type="button" class="button green" ng-click="showRoomAvailable();" translate>YES</button>
+				<button type="button" class="button blank" ng-click="resetDates()"><span translate>NO</span> (<span translate>RESET_DATES </span>)</button>
 			</div>
 		</div>
-		
-		<!--If restrictions exist for the rate / room / date combination -->
-		<div id="room-restricted-continue" class="updates-content" ng-show="rightSideReservationUpdates=='RESTRICTION_EXISTS'" ng-class="{'hidden': rightSideReservationUpdates!='RESTRICTION_EXISTS'}">
-			<div id="unassign-room" class="details scrollable">
-				<div class="wrapper">
-					<h3 class="unnasign-from-guest">
-						<span ng-repeat="restriction in stayDetails.restrictions">{{restriction.name}} <span ng-show="restriction.days!= null" translate>OF</span><strong> {{restriction.days}}{{$last ? '' : ', '}}</strong>
-						<span ng-show="restriction.days== null && $last && stayDetails.restrictions.length==1" translate>RESTRICTION</span>
-						<span ng-show="restriction.days== null && $last && stayDetails.restrictions.length>1" translate>RESTRICTIONS</span>
-						</span>
-						<span translate>APPLIES_TO_RESERVATION</span>
-					</h3>
-					<button id="extend-stay" type="button" class="button green" ng-click="checkAvailabilityStatus();" translate>CONTINUE</button>
-					<button type="button" class="button blank" ng-click="resetDates()"><span translate>CANCEL</span></button>
-				</div>
-			</div>
-		</div>
-		<!-- If room is pre-assigned to another guest -->
-		<div id="room-assigned-to-another" class="updates-content" ng-show="rightSideReservationUpdates=='PREASSIGNED'" ng-class="{'hidden': rightSideReservationUpdates!='PREASSIGNED'}">
-			<h4 class="available-title error"><span translate>ROOM</span> 
-				{{roomSelected}}
-				<span translate>NOT_AVAILABLE_FOR_DATE_RANGE</span>
-			</h4>
-			<div id="unassign-room" class="details scrollable">
-				<div class="wrapper">
-					<h3 class="unnasign-from-guest">
-						<span translate>
-							UNASSIGN_ROOM_FROM
-						</span>
-						<strong>{{stayDetails.preassignedGuest.name}}</strong>, 
-						<span translate>ARRIVING </span>
-						<strong>{{stayDetails.preassignedGuest.arrival_date|date:mmddyyyyFormat}}</strong>
-						?
-					</h3>
-					<button id="extend-stay" type="button" class="button green" ng-click="showRoomAvailable();" translate>YES</button>
-					<button type="button" class="button blank" ng-click="resetDates()"><span translate>NO</span> (<span translate>RESET_DATES </span>)</button>
-				</div>
-			</div>
-		</div>
+	</div>
 
-		<!-- If the checking date min length of stay criteria does not match with the num of nights selected. Only when external PMS connected  -->
-		<div id="room-restricted" class="updates-content no-content" ng-show="rightSideReservationUpdates=='STAY_RANGE_RESTRICTED'" ng-class="{'hidden': rightSideReservationUpdates!='STAY_RANGE_RESTRICTED'}">
-			<div class="info">
-				<strong class="h1" translate>VALIDATION_MSG_MIN_LENGTH</strong>
-				<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
-				<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
-			</div>
+	<!-- If the checking date min length of stay criteria does not match with the num of nights selected. Only when external PMS connected  -->
+	<div id="room-restricted" class="updates-content no-content" ng-show="rightSideReservationUpdates=='STAY_RANGE_RESTRICTED'" ng-class="{'hidden': rightSideReservationUpdates!='STAY_RANGE_RESTRICTED'}">
+		<div class="info">
+			<strong class="h1" translate>VALIDATION_MSG_MIN_LENGTH</strong>
+			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
+			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
-		
-		<!--no house or room type availabile. User will be provided with an option to go to the find room and rates screen -->
-		<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='NO_HOUSE_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='NO_HOUSE_AVAILABLE'}">
-			<div class="info">
-				<span class="h1 error" translate>UNABLE_TO_EXTEND_STAY</span>
-				<span class="h2" translate>NO_ROOMS_AVAILABLE_FOR_ROOM_TYPE</span>
-				<button type="button" class="button green" ng-click="goToRoomAndRates()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
-			</div>
-		</div>
-		<!--Multiple rates available for the reseration. User will be provided with an option to go to the find room and rates screen -->
-		<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='HAS_MULTIPLE_RATES'" ng-class="{'hidden': rightSideReservationUpdates!='HAS_MULTIPLE_RATES'}">
-			<div class="info">
-				<span class="h2" translate>MULTIPLE_RATES_EXISTS</span>
-				<button type="button" class="button green" ng-click="goToRoomAndRates()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
-			</div>
-		</div>
-
-		</div>
-		<!-- Find rooms and rates option is not available for non-standalone PMS (ROOM_TYPE_AVAILABLE, ROOM_NOT_AVAILABLE) -->
-		<div class="room-rates-btn" ng-hide="!isStandAlone || rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE' ||
-		rightSideReservationUpdates=='HAS_MULTIPLE_RATES'">
+	</div>
+	
+	<!--no house or room type availabile. User will be provided with an option to go to the find room and rates screen -->
+	<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='NO_HOUSE_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='NO_HOUSE_AVAILABLE'}">
+		<div class="info">
+			<span class="h1 error" translate>UNABLE_TO_EXTEND_STAY</span>
+			<span class="h2" translate>NO_ROOMS_AVAILABLE_FOR_ROOM_TYPE</span>
 			<button type="button" class="button green" ng-click="goToRoomAndRates()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
 		</div>
 	</div>
-</div>
 
+	<!--Multiple rates available for the reseration. User will be provided with an option to go to the find room and rates screen -->
+	<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='HAS_MULTIPLE_RATES'" ng-class="{'hidden': rightSideReservationUpdates!='HAS_MULTIPLE_RATES'}">
+		<div class="info">
+			<span class="h2" translate>MULTIPLE_RATES_EXISTS</span>
+			<button type="button" class="button green" ng-click="goToRoomAndRates()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
+		</div>
+	</div>
+
+	<!-- Find rooms and rates option is not available for non-standalone PMS (ROOM_TYPE_AVAILABLE, ROOM_NOT_AVAILABLE) -->
+	<button type="button" id="find-rooms-and-rates" class="button green" ng-click="goToRoomAndRates()" ng-hide="!isStandAlone || rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE' ||
+	rightSideReservationUpdates=='HAS_MULTIPLE_RATES'" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
+</div>

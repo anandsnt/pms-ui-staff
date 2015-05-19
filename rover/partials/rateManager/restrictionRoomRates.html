@@ -56,7 +56,9 @@
 					<option ng-selected="data.single_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
 			</span>
-			<br clear="all">			
+			<br clear="all">
+                        <div ng-if="data.single_extra_amnt" class="apply-all-div"  ng-hide="showButton(applyAllShow,'single')"><button id="apply-all-single" class="button blue apply-all-button" ng-click="applyToAll(data,'single')">Apply to all occupancies</button>
+                        </div>
 		</div>
 
 		<div class="price-fields">
@@ -79,7 +81,9 @@
 					<option ng-selected="data.double_amnt_diff == '%'" value='%'>%</option>
 					<option ng-selected="data.double_amnt_diff == currencySymbol" value='{{currencySymbol}}'>{{currencySymbol}}</option>
 				</select> 
-			</span>
+                        </span>
+                        <br><div ng-if="data.double_extra_amnt" class="apply-all-div"  ng-hide="showButton(applyAllShow,'double')"><button id="apply-all-double" class="button blue apply-all-button" ng-click="applyToAll(data,'double')">Apply to all occupancies</button>
+                        </div>
 		</div>
 
 		<div class="price-fields">
@@ -103,6 +107,8 @@
 					<option ng-selected="data.extra_adult_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
 			</span>
+                        <br><div ng-if="data.extra_adult_extra_amnt" class="apply-all-div" ng-hide="showButton(applyAllShow,'extra_adult')"><button id="apply-all-adult" class="button blue apply-all-button" ng-click="applyToAll(data,'extra_adult')">Apply to all occupancies</button>
+                        </div>
 		</div>
 
 		<div class="price-fields last-price-fields">
@@ -126,6 +132,8 @@
 					<option ng-selected="data.child_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
 			</span>
+                        <br><div ng-if="data.child_extra_amnt" class="apply-all-div"  ng-hide="showButton(applyAllShow,'child')"><button id="apply-all-child" class="button blue apply-all-button" ng-click="applyToAll(data,'child')">Apply to all occupancies</button>
+                        </div>
 		</div>
 	</section>
 </div>

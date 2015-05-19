@@ -458,7 +458,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		//$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
 			$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
-			$scope.$apply();
+			//$scope.$apply();
 		}
 		
 		
@@ -496,6 +496,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			// $scope.closeDepositModal();
 		// }
 		$scope.depositPaidSuccesFully = true;
+
+		ngDialog.close();
+		$rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
 		
 		
 	};
@@ -561,6 +564,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.card_code   = swipedCardDataToSave.cardType.toLowerCase();
 		$scope.depositBalanceMakePaymentData.ending_with = swipedCardDataToSave.cardNumber.slice(-4);
 		$scope.depositBalanceMakePaymentData.card_expiry  = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
+		$scope.depositBalanceMakePaymentData.payment_type = "CC";
  		
 		$scope.isSwipedCardSave = true;
 		
