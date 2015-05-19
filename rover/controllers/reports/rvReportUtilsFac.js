@@ -498,7 +498,7 @@ sntRover.factory('RVReportUtilsFac', [
                             type         : 'FAUX_SELECT',
                             filter       : filter,
                             show         : false,
-                            selectAll    : true,
+                            selectAll    : false,
                             defaultTitle : 'Select Guarantees',
                             title        : 'All Selected',
                             data         : angular.copy( data.guaranteeTypes )
