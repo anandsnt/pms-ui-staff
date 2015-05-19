@@ -1812,34 +1812,32 @@ sntRover.controller('RVbillCardController',
 
 
 	$scope.clickedReverseCheckoutButton = function(){
-			var reverseCheckoutsuccess = function(data){
 
-				//to delete
-				var data = {
-					   "is_reverse_checked_out":false, // if the reverse checkout process is success
-					   "is_room_already_occupied":true, // if the room is occupied by another user
-			
-	                             "room_number":"33",
-	                             "first_name":"Resheil",
-	                             "last_name":"Mohammed"
-	  					
-					}
-
-				var reservationId = $scope.reservationBillData.reservation_id,
+			var reservationId = $scope.reservationBillData.reservation_id,
 	    		confirmationNumber = $scope.reservationBillData.confirm_no;
 
-	    		//If reverse checked out refresh staycard else go to staycard and show popup
-				if(data.is_reverse_checked_out){
-					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+			var reverseCheckoutsuccess = function(data){
+				$scope.$emit("hideLoader");
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true}); 		
+			};
+
+			var reverseCheckoutFailed = function(data){
+				console.log(data);
+				$scope.$emit("hideLoader");
+				//if error is beacuse of some other reason than room already occupied
+				//show error message else go to stay card and show popup
+				if(!data.room_already_occupied){
+					$scope.errorMessage = data.error;
 				}
-				else if(data.is_room_already_occupied){
+				else{
 					$scope.rooomDetails.room_data  = data;
 					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});	
-				}
-	    		
+				};
 			}
-			reverseCheckoutsuccess();
+
+			var data ={"reservation_id" : $scope.reservationBillData.reservation_id};
+			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess,reverseCheckoutFailed);
 			
-		};
+	};
 	
 }]);
