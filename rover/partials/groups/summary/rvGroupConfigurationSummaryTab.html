@@ -98,11 +98,13 @@
             <div class="entry full-width with-button">
                 <label for="group-rate" translate>RATE</label>
                 <div class="select">
-                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation>
-                        <option value="" selected>Select Rate</option>
+                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation><optgroup>Group Rates</optgroup>
+                        <option value="" selected>Select Rate</option>                        
                         <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>
+                        <optgroup label="Group Rates"></optgroup>
                         <!-- ... repeat for all rates -->
                         <option ng-repeat="rate in groupSummaryData.rates" value="rate.id">{{rate.name}}</option>
+                        <optgroup label="Company/ Travel Agent Contract"></optgroup>
                     </select>
                 </div>
                 <a ng-click="isInAddMode() ? manageAddons() : viewAddons()" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}">
