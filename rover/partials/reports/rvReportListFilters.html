@@ -132,18 +132,18 @@
     <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
 </div>
 
-<div class="options" ng-if="showFauxSelect(item)">
+<!-- <div class="options" ng-if="showFauxSelect(item)">
     <label for="report-options">Options</label>
-    <div class="faux-select placeholder" ng-click="fauxSelectClicked($event, item)">{{ item.fauxTitle }}</div>
+    <div class="faux-select placeholder" ng-click="fauxSelectClicked($event, item)">{{ item.fauxTitle }}</div> -->
     <!-- When single checkbox selected
     <div class="faux-select">{Option}</div>
     -->
     <!-- When multiple checkboxes selected
     <div class="faux-select">{count} selected ...</div>
     -->
-    <div class="faux-select-options" ng-class="{ 'hidden': !item.fauxSelectOpen }" ng-click="fauxOptionClicked($event, item)">
+    <!-- <div class="faux-select-options" ng-class="{ 'hidden': !item.fauxSelectOpen }" ng-click="fauxOptionClicked($event, item)"> -->
         <!-- Remove class "hidden" when ".faux-select" clicked -->
-        <label class="checkbox inline" ng-if="item.hasIncludeNotes">
+        <!-- <label class="checkbox inline" ng-if="item.hasIncludeNotes">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.chosenIncludeNotes}"></span>
             <input type="checkbox" ng-model="item.chosenIncludeNotes" name="room-filters"> {{ item.hasIncludeNotes.description }}
         </label>
@@ -219,7 +219,27 @@
             {{ item.hasIncludeBoth.description }}
         </label>
     </div>
+</div> -->
+
+<div class="options long-list" ng-if="item.hasGeneralOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasGeneralOptions')">
+    <label for="report-options">Option(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasGeneralOptions)">{{ item.hasGeneralOptions.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGeneralOptions.show }">
+        <label class="checkbox inline" ng-show="item.hasGeneralOptions.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGeneralOptions.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasGeneralOptions.selectAll" ng-change="fauxSelectChange(item.hasGeneralOptions, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="option in item.hasGeneralOptions.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : option.selected }"></span>
+            <input type="checkbox" ng-model="option.selected" ng-change="fauxSelectChange(item.hasGeneralOptions)" name="room-filters"> {{ option.description }}
+        </label>
+    </div>
 </div>
+
+
+
+
+
 
 <div class="filter" ng-if="item.hasIncludeComapnyTaGroup">
     <label>Company/TA/Group</label>
@@ -273,10 +293,9 @@
 </div>
 
 <!-- Specifice markup for display options for the Source and Market reports -->
-<div class="options" ng-if="item.hasSourceMarketFilter">
+<!-- <div class="options" ng-if="item.hasSourceMarketFilter">
     <label for="report-options">Display</label>
     <div class="faux-select placeholder" ng-click="selectDisplayClicked($event, item)">{{ item.displayTitle }}</div>
-    <!-- Remove class "hidden" when ".faux-select" clicked -->
     <div class="faux-select-options" ng-class="{ 'hidden': !item.selectDisplayOpen }" ng-click="fauxOptionClicked($event, item)">
         <label class="checkbox inline" ng-if="item.hasSource">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showSource}"></span>
@@ -289,6 +308,20 @@
         <label class="checkbox inline" ng-if="item.hasOrigin">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : item.showOrigin}"></span>
             <input type="checkbox" ng-model="item.showOrigin"> {{ item.hasOrigin.description }}
+        </label>
+    </div>
+</div> -->
+<div class="options long-list" ng-if="item.hasDisplay.data.length" ng-click="catchFauxSelectClick($event, 'hasDisplay')">
+    <label for="report-options">Display(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasDisplay)">{{ item.hasDisplay.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasDisplay.show }">
+        <label class="checkbox inline" ng-show="item.hasDisplay.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasDisplay.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasDisplay.selectAll" ng-change="fauxSelectChange(item.hasDisplay, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="display in item.hasDisplay.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.selected }"></span>
+            <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(item.hasDisplay)" name="room-filters"> {{ display.description }}
         </label>
     </div>
 </div>

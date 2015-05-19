@@ -79,9 +79,9 @@ sntRover.controller('RVReportListCrl', [
 
 
                 // CICO-10202 start populating the markets list
-                if ( reportList[i]['title'] == 'Booking Source & Market Report' ) {
-                    populateMarketsList();
-                };
+                // if ( reportList[i]['title'] == 'Booking Source & Market Report' ) {
+                //     populateMarketsList();
+                // };
 
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ($rootScope.currentHotelData == 'Yotel London Heathrow') {
@@ -94,7 +94,7 @@ sntRover.controller('RVReportListCrl', [
                 };
 
                 // call atleast once
-                $scope.fauxOptionClicked(null, reportList[i]);
+                // $scope.fauxOptionClicked(null, reportList[i]);
             };
 
             $scope.refreshScroller('report-list-scroll');

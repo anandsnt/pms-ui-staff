@@ -219,7 +219,7 @@
 
 
         <!-- item_09: Options -->
-        <a href="" class="settings-title toggle has-arrow"  ng-if="showFauxSelect(chosenReport)" ng-class="{'active': filterItemsToggle.item_09}" ng-click="toggleFilterItems('item_09')">
+        <!-- <a href="" class="settings-title toggle has-arrow"  ng-if="showFauxSelect(chosenReport)" ng-class="{'active': filterItemsToggle.item_09}" ng-click="toggleFilterItems('item_09')">
             <span class="title">Options</span>
         </a>
         <div class="settings-content" ng-if="showFauxSelect(chosenReport)" ng-class="{'hidden': !filterItemsToggle.item_09}">
@@ -310,6 +310,23 @@
                     {{ chosenReport.hasIncludeBoth.description }}
                 </label>
             </div>
+        </div> -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGeneralOptions.data.length" ng-class="{ 'active': filterItemsToggle.item_09 }" ng-click="toggleFilterItems('item_09')">
+            <span class="title">Option(s)</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasGeneralOptions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_09 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasGeneralOptions.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasGeneralOptions.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasGeneralOptions.selectAll" ng-change="fauxSelectChange(chosenReport.hasGeneralOptions, true)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasGeneralOptions.data.length > 1 && chosenReport.hasGeneralOptions.selectAll) }">
+                    <label class="checkbox" ng-repeat="option in chosenReport.hasGeneralOptions.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : option.selected }"></span>
+                        <input type="checkbox" ng-model="option.selected" ng-change="fauxSelectChange(chosenReport.hasGeneralOptions)" name="room-filters"> {{ option.description }}
+                    </label>
+                </div>
+            </div>
         </div>
 
 
@@ -354,7 +371,7 @@
 
         <!-- item_12: Market Type -->
         <!-- Specifice markup for display options for the Source and Market reports -->
-        <a href="" class="settings-title toggle has-arrow"  ng-if="chosenReport.hasSourceMarketFilter" ng-class="{'active': filterItemsToggle.item_12}" ng-click="toggleFilterItems('item_12')">
+        <!-- <a href="" class="settings-title toggle has-arrow"  ng-if="chosenReport.hasSourceMarketFilter" ng-class="{'active': filterItemsToggle.item_12}" ng-click="toggleFilterItems('item_12')">
             <span class="title">Display</span>
         </a>
         <div class="settings-content" ng-if="chosenReport.hasSourceMarketFilter" ng-class="{'hidden': !filterItemsToggle.item_12}">
@@ -374,6 +391,23 @@
                     <input type="checkbox" ng-model="chosenReport.showOrigin">
                     {{ chosenReport.hasOrigin.description }}
                 </label>
+            </div>
+        </div> -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasDisplay.data.length" ng-class="{ 'active': filterItemsToggle.item_12 }" ng-click="toggleFilterItems('item_12')">
+            <span class="title">Display(s)</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasDisplay.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_12 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasDisplay.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasDisplay.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasDisplay.selectAll" ng-change="fauxSelectChange(chosenReport.hasDisplay, true)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasDisplay.data.length > 1 && chosenReport.hasDisplay.selectAll) }">
+                    <label class="checkbox" ng-repeat="display in chosenReport.hasDisplay.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.selected }"></span>
+                        <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(chosenReport.hasDisplay)" name="room-filters"> {{ display.description }}
+                    </label>
+                </div>
             </div>
         </div>
 
