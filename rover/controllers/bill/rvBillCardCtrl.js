@@ -1809,5 +1809,37 @@ sntRover.controller('RVbillCardController',
 	$scope.setupReviewStatusArray();
 
 	$scope.calculateBillDaysWidth();
+
+
+	$scope.clickedReverseCheckoutButton = function(){
+			var reverseCheckoutsuccess = function(data){
+
+				//to delete
+				var data = {
+					   "is_reverse_checked_out":false, // if the reverse checkout process is success
+					   "is_room_already_occupied":true, // if the room is occupied by another user
+			
+	                             "room_number":"33",
+	                             "first_name":"Resheil",
+	                             "last_name":"Mohammed"
+	  					
+					}
+
+				var reservationId = $scope.reservationBillData.reservation_id,
+	    		confirmationNumber = $scope.reservationBillData.confirm_no;
+
+	    		//If reverse checked out refresh staycard else go to staycard and show popup
+				if(data.is_reverse_checked_out){
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+				}
+				else if(data.is_room_already_occupied){
+					$scope.rooomDetails.room_data  = data;
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});	
+				}
+	    		
+			}
+			reverseCheckoutsuccess();
+			
+		};
 	
 }]);

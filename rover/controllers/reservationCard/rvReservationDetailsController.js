@@ -1,6 +1,8 @@
 sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
 	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
 
+
+
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -776,5 +778,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 			$scope.closeDialog();
 		}
+
+		//reverse checkout process-
+		//show room already occupied popup
+		var openRoomOccupiedPopup = function(){
+			ngDialog.open({
+							template: '/assets/partials/reservation/alerts/rvReverseNotPossible.html',
+							className: '',
+							scope: $scope,
+							data: JSON.stringify($scope.rooomDetails.room_data)
+						});
+		};
+
+		if($scope.rooomDetails.room_data.is_room_already_occupied){
+			openRoomOccupiedPopup();
+			$scope.initRoomDetails();
+		};
 	}
 ]);

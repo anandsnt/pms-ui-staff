@@ -10,7 +10,7 @@ sntRover.controller('reservationActionsController', [
 	'RVSearchSrv',
 	'RVDepositBalanceSrv',
 	'$filter',
-	'RVChargeItems','RVPaymentSrv',
+	'RVChargeItems','RVPaymentSrv','rvPermissionSrv',
 	function($rootScope, 
 		$scope, 
 		ngDialog, 
@@ -22,10 +22,23 @@ sntRover.controller('reservationActionsController', [
 		RVSearchSrv,
 		RVDepositBalanceSrv, 
 		$filter,
-		RVChargeItems,RVPaymentSrv) {
+		RVChargeItems,RVPaymentSrv,rvPermissionSrv) {
 
 
 		BaseCtrl.call(this, $scope);
+
+		var departureDatePassedbusinessDate = (new Date($scope.reservationData.reservation_card.departure_date) <= new Date($rootScope.businessDate) || $scope.reservationData.reservation_card.departure_date === $rootScope.businessDate);
+       	$scope.showReverseCheckout = $scope.reservationData.reservation_card.reservation_status === "CHECKEDOUT"
+		&& departureDatePassedbusinessDate
+	    && rvPermissionSrv.getPermissionValue ('REVERSE_CHECK_OUT');
+
+	    $scope.reverseCheckout = function(reservationId, clickedButton, smartbandHasBalance) {	
+			$state.go("rover.reservation.staycard.billcard", {
+				"reservationId": reservationId,
+				"clickedButton": clickedButton,
+				"userId": $scope.guestCardData.userId
+			});
+		};
 		
 		//Since API is returning "true"/"false"
 		//TODO: Ask Rashila to to it from the API itself
