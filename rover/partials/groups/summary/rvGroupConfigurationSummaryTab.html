@@ -102,6 +102,7 @@
                         <option value="" selected>Select Rate</option>
                         <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>
                         <!-- ... repeat for all rates -->
+                        <option ng-repeat="rate in groupSummaryData.rates" value="rate.id">{{rate.name}}</option>
                     </select>
                 </div>
                 <a ng-click="isInAddMode() ? manageAddons() : viewAddons()" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}">

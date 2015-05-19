@@ -9,12 +9,36 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			demographics: null,
 			promptMandatoryDemographics: false,
 			isDemographicsPopupOpen: false,
-			newNote: ""
+			newNote: "",
+			rates:[]
 		}
 		$s = $scope;
 
 		var summaryMemento = {};
 		$scope.billingInfoModalOpened = false;
+
+		var fetchApplicableRates = function() {
+			var onFetchRatesSuccess = function(data) {
+					console.log(data);
+					// TODO : redo the array here
+					groupSummaryData.rates = data.results;
+				},
+				onFetchRatesFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+
+			$scope.callAPI(rvGroupConfigurationSrv.getRates, {
+				successCallBack: onFetchRatesSuccess,
+				failureCallBack: onFetchRatesFailure,
+				params:{
+					from_date: '2015-01-03',
+					to_date: '2015-01-04',
+					company_id : ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.company.id) || null,
+					travel_agent_id: ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.id) || null
+				}
+			});
+
+		}
 
 		var initGroupSummaryView = function() {
 			// Have a handler to update the summary - IFF in edit mode
@@ -28,6 +52,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					}
 				});
 			}
+
+			// Fetch rates to show in dropdown
+			if(!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to){
+				fetchApplicableRates();
+			}
+
 		}
 
 		/**
@@ -179,10 +209,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			});
 
 		};
-	
+
 		$scope.$on("BILLINGINFOADDED", function() {
-     			$scope.groupConfigData.summary.posting_account_billing_info = true;
-   		});
+			$scope.groupConfigData.summary.posting_account_billing_info = true;
+		});
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {
