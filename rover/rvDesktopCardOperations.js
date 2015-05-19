@@ -1,27 +1,29 @@
 var DesktopCardOperations = function(){
 	var that = this;
-	var ws;
+	var ws = {};
+	//Set to true if the desktop swipe is enabled and a WebSocket connection is established.
+    that.isActive = false;
+
 	this.swipeCallbacks;
-		
-	var startDesktopReader = function(portNumber, swipeCallbacks){
+	this.startDesktopReader = function(portNumber, swipeCallbacks){
 		that.portNumber = portNumber;
 		that.swipeCallbacks = swipeCallbacks;
 		createConnection();
 	}
 
 	var createConnection = function(){
-		ws = new WebSocket("ws://localhost:" + that.portNumber);
+		ws = new WebSocket("ws://10.7.1.236:" + that.portNumber);
 	}
 
 	//Triggers when websocket connection is established.
     ws.onopen = function () {
+    	that.isActive = true;
 		alert("Connected. Warning : Clicking on Connect multipple times will create multipple connections to the server");
 		listenToSwipeActions();
     };
 
     var listenToSwipeActions = function(){
-    	console.log("listenToSwipeActions");
-    	console.log(that.swipeCallbacks);
+    	console.log("observeForSwipe");
 		ws.send("observeForSwipe");
     };
 
