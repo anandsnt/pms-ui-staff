@@ -143,7 +143,8 @@ sntRover.factory('RVReportUtilsFac', [
             'DUE_IN_ARRIVALS'    : true,
             'DUE_OUT_DEPARTURES' : true,
             'INCLUDE_NEW'        : true,
-            'INCLUDE_BOTH'       : true
+            'INCLUDE_BOTH'       : true,
+            'SHOW_RATE_ADJUSTMENTS_ONLY' : true
         };
 
         var __displayFilterNames = {
