@@ -218,99 +218,7 @@
 
 
 
-        <!-- item_09: Options -->
-        <!-- <a href="" class="settings-title toggle has-arrow"  ng-if="showFauxSelect(chosenReport)" ng-class="{'active': filterItemsToggle.item_09}" ng-click="toggleFilterItems('item_09')">
-            <span class="title">Options</span>
-        </a>
-        <div class="settings-content" ng-if="showFauxSelect(chosenReport)" ng-class="{'hidden': !filterItemsToggle.item_09}">
-            <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
-                <label class="checkbox" ng-if="chosenReport.hasIncludeNotes">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeNotes}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeNotes" name="room-filters">
-                    {{ chosenReport.hasIncludeNotes.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeCancelled">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeCancelled}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeCancelled" name="room-filters">
-                    {{ chosenReport.hasIncludeCancelled.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeVip">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeVip}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeVip" name="room-filters">
-                    {{ chosenReport.hasIncludeVip.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeNoShow">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeNoShow}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeNoShow" name="room-filters">
-                    {{ chosenReport.hasIncludeNoShow.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasShowGuests">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenShowGuests}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenShowGuests" name="room-filters">
-                    {{ chosenReport.hasShowGuests.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeRoverUsers">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeRoverUsers}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeRoverUsers" name="room-filters">
-                    {{ chosenReport.hasIncludeRoverUsers.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeZestUsers">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestUsers}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeZestUsers" name="room-filters">
-                    {{ chosenReport.hasIncludeZestUsers.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeZestWebUsers">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeZestWebUsers}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeZestWebUsers" name="room-filters">
-                    {{ chosenReport.hasIncludeZestWebUsers.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeDepositPaid">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeDepositPaid}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeDepositPaid" name="room-filters">
-                    {{ chosenReport.hasIncludeDepositPaid.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeDepositDue">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeDepositDue}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeDepositDue" name="room-filters">
-                    {{ chosenReport.hasIncludeDepositDue.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeDepositPastDue">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeDepositPastDue}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeDepositPastDue" name="room-filters">
-                    {{ chosenReport.hasIncludeDepositPastDue.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasVariance">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenVariance}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenVariance" name="room-filters">
-                    {{ chosenReport.hasVariance.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasLastYear">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenLastYear}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenLastYear" name="room-filters">
-                    {{ chosenReport.hasLastYear.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasDueInArrivals">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenDueInArrivals}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenDueInArrivals" name="room-filters">
-                    {{ chosenReport.hasDueInArrivals.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasDueOutDepartures">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenDueOutDepartures}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenDueOutDepartures" name="room-filters">
-                    {{ chosenReport.hasDueOutDepartures.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeNew">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeNew}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeNew" name="room-filters">
-                    {{ chosenReport.hasIncludeNew.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasIncludeBoth">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.chosenIncludeBoth}"></span>
-                    <input type="checkbox" ng-model="chosenReport.chosenIncludeBoth" name="room-filters">
-                    {{ chosenReport.hasIncludeBoth.description }}
-                </label>
-            </div>
-        </div> -->
+        
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGeneralOptions.data.length" ng-class="{ 'active': filterItemsToggle.item_09 }" ng-click="toggleFilterItems('item_09')">
             <span class="title">Option(s)</span>
         </a>
@@ -369,30 +277,7 @@
 
 
 
-        <!-- item_12: Market Type -->
-        <!-- Specifice markup for display options for the Source and Market reports -->
-        <!-- <a href="" class="settings-title toggle has-arrow"  ng-if="chosenReport.hasSourceMarketFilter" ng-class="{'active': filterItemsToggle.item_12}" ng-click="toggleFilterItems('item_12')">
-            <span class="title">Display</span>
-        </a>
-        <div class="settings-content" ng-if="chosenReport.hasSourceMarketFilter" ng-class="{'hidden': !filterItemsToggle.item_12}">
-            <div class="faux-select-options" ng-click="fauxOptionClicked($event, chosenReport)">
-                <label class="checkbox" ng-if="chosenReport.hasSource">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showSource}"></span>
-                    <input type="checkbox" ng-model="chosenReport.showSource">
-                    {{ chosenReport.hasSource.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasMarket">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showMarket}"></span>
-                    <input type="checkbox" ng-model="chosenReport.showMarket">
-                    {{ chosenReport.hasMarket.description }}
-                </label>
-                <label class="checkbox" ng-if="chosenReport.hasOrigin">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked' : chosenReport.showOrigin}"></span>
-                    <input type="checkbox" ng-model="chosenReport.showOrigin">
-                    {{ chosenReport.hasOrigin.description }}
-                </label>
-            </div>
-        </div> -->
+        
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasDisplay.data.length" ng-class="{ 'active': filterItemsToggle.item_12 }" ng-click="toggleFilterItems('item_12')">
             <span class="title">Display(s)</span>
         </a>

@@ -11,7 +11,7 @@
     <div ng-hide="hasNoData" id="report-content" class="report-content with-graphs scrollable" ng-iscroll="report-details-scroll">
         <div class="wrapper">
             <!-- Sources -->
-            <div class="report-block" ng-if="chosenReport.showSource && sources.length > 0">
+            <div class="report-block" ng-if="sources.length">
                 <ul class="graph-summary">
                     <li class="header">
                         <span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort()">Source</span>
@@ -124,7 +124,7 @@
             </div>
 
             <!-- Markets: Identical Markup as for Sources, except titles -->
-            <div class="report-block" ng-if="chosenReport.showMarket && markets.length > 0">
+            <div class="report-block" ng-if="markets.length">
                 <ul class="graph-summary">
                     <li class="header">
                         <span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true)">Market</span>
