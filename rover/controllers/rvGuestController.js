@@ -82,14 +82,15 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var dataSource = $scope.guestCardData.contactInfo;
 			var data = {
 				'firstname': dataSource.first_name,
-				'lastname': dataSource.last_name,
+				'lastname': dataSource.last_name,				
 				'vip': dataSource.vip
 			};
-
+			
 			if (dataSource.address) {
 				if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
 					data.location = (dataSource.address.city + ', ' + dataSource.address.state);
-				} else {
+				}
+				else {
 					data.location = false;
 				}
 			}
@@ -256,7 +257,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
-				if (typeof data.userId != 'undefined') {
+				if(typeof data.userId != 'undefined'){
 					$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
 				}
 			}
@@ -585,7 +586,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 				$scope.$broadcast('guestSearchInitiated');
 			};
-			if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || $scope.searchData.guestCard.guestCity != '' || $scope.searchData.guestCard.guestLoyaltyNumber != '' || $scope.searchData.guestCard.email != '') {
+			if ($scope.searchData.guestCard.guestFirstName != '' 
+				|| $scope.searchData.guestCard.guestLastName != '' 
+				|| $scope.searchData.guestCard.guestCity != '' 
+				|| $scope.searchData.guestCard.guestLoyaltyNumber != ''
+				|| $scope.searchData.guestCard.email != '') {
 				var paramDict = {
 					'first_name': $scope.searchData.guestCard.guestFirstName,
 					'last_name': $scope.searchData.guestCard.guestLastName,
@@ -593,7 +598,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'membership_no': $scope.searchData.guestCard.guestLoyaltyNumber,
 					'email': $scope.searchData.guestCard.email
 				};
-				if (shouldSearch()) {
+				if(shouldSearch()){
 					$scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
 				}
 			} else {
@@ -605,15 +610,19 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		var previousSearchData = {
-			'lastName': '',
-			'firstName': '',
-			'city': '',
-			'loyaltyNumber': '',
-			'email': ''
-		}
+		      'lastName': '',
+		      'firstName': '',
+		      'city': '',
+		      'loyaltyNumber': '',
+		      'email': ''
+		    }
 
-		var shouldSearch = function() {
-			if (previousSearchData.lastName == $scope.searchData.guestCard.guestLastName && previousSearchData.firstName == $scope.searchData.guestCard.guestFirstName && previousSearchData.city == $scope.searchData.guestCard.guestCity && previousSearchData.loyaltyNumber == $scope.searchData.guestCard.guestLoyaltyNumber && previousSearchData.email == $scope.searchData.guestCard.email) {
+		var shouldSearch = function(){
+			if( previousSearchData.lastName == $scope.searchData.guestCard.guestLastName 
+				&& previousSearchData.firstName == $scope.searchData.guestCard.guestFirstName 
+				&& previousSearchData.city == $scope.searchData.guestCard.guestCity 
+				&& previousSearchData.loyaltyNumber == $scope.searchData.guestCard.guestLoyaltyNumber
+				&& previousSearchData.email == $scope.searchData.guestCard.email ){
 				return false;
 			}
 			previousSearchData.lastName = $scope.searchData.guestCard.guestLastName;
@@ -622,7 +631,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			previousSearchData.loyaltyNumber = $scope.searchData.guestCard.guestLoyaltyNumber;
 			previousSearchData.email = $scope.searchData.guestCard.email;
 
-			return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 || $scope.searchData.guestCard.guestCity != '' || $scope.searchData.guestCard.guestLoyaltyNumber != '' || $scope.searchData.guestCard.email != '');
+			return ($scope.searchData.guestCard.guestLastName.length >= 2 
+				|| $scope.searchData.guestCard.guestFirstName.length >= 1 
+				|| $scope.searchData.guestCard.guestCity != '' 
+				|| $scope.searchData.guestCard.guestLoyaltyNumber != ''
+				|| $scope.searchData.guestCard.email != '');
 		}
 
 		$scope.searchCompany = function() {
@@ -978,19 +991,15 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.init();
 
 		// CICO-6049 Toggle VIP button
-		$scope.vipToggleClicked = function() {
+		$scope.vipToggleClicked = function(){
 			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
 			$scope.updateContactInfo();
 		};
 
 
-		$scope.guestCardClicked = function() {
+		$scope.guestCardClicked = function  () {
 			//save contact info
-			//CICO-16965 Do IFF the card is saved - NOT in Add mode
-			if (!$scope.viewState.isAddNewCard) {
-				// Call save if NOT 'AddNewCard' mode
-				$scope.$broadcast('saveContactInfo');
-			}
+			$scope.$broadcast('saveContactInfo');
 		};
 
 	}

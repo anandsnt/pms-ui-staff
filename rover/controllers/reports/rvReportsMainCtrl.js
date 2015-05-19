@@ -47,8 +47,10 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.chargeGroups = chargeGroups;
 		$scope.chargeCodes = chargeCodes;
 
+		// make all the guarantee type unselected
 		// make all the charge groups selected by default
-		_.each([$scope.chargeGroups], function (dataArry) {
+		// make all the charge codes selected by default
+		_.each([$scope.guaranteeTypes, $scope.chargeGroups], function (dataArry) {
 			_.each(dataArry, function(item) {
 				item.selected = true;
 			});
