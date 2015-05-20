@@ -62,9 +62,8 @@ sntRover.service('RVreportsSrv', [
 
 					// TESTING: REMOVE BEFORE MERGE TO DEVELOP
 					var data = data;
-					if ( params.id == 15 ) {
-						data.results[0]['adjustment_reasons'] = ['reason 1', 'reason 2', 'reason 3'];
-					};
+					data.results[0]['rate_adjustment_reasons'] = ['reason 1', 'reason 2', 'reason 3'];
+					console.log(data);
 
 					deferred.resolve(data);
 				}.bind(this), function(data) {

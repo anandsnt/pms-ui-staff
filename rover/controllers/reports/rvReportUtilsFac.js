@@ -35,6 +35,21 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
+
+        /**
+         * A simple getter to returned the actual report name form __reportNames dict
+         * @param  {String} name The capitalized standard report name
+         * @return {String}      The actual report name
+         */
+        factory.getName = function (name) {
+            return __reportNames[name] ? __reportNames[name] : undefined;
+        };
+
+
+
+
+
+
         /**
          * This is a function that can return CG & CC with no payment entries or only payment entries
          * @param  {Array} chargeGroupsAry Array of charge groups
@@ -197,20 +212,6 @@ sntRover.factory('RVReportUtilsFac', [
                 description : filter.description,
                 selected    : false,
             });
-        };
-
-
-
-
-
-
-        /**
-         * A simple getter to returned the actual report name form __reportNames dict
-         * @param  {String} name The capitalized standard report name
-         * @return {String}      The actual report name
-         */
-        factory.getName = function (name) {
-            return __reportNames[name] ? __reportNames[name] : undefined;
         };
 
 

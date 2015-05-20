@@ -377,45 +377,84 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			});
 		};
-		$scope.toggleFauxSelect = function(e, list) {
+		$scope.toggleFauxSelect = function(e, fauxDS) {
 			$timeout(function(){
 				$scope.refreshScroller('report-list-scroll');
 				$scope.myScroll['report-list-scroll'].refresh();
 			}, 100);
 
-			if ( !e || !list ) {
+			if ( !e || !fauxDS ) {
 				return;
 			};
 
-			list.show = !list.show;
+			fauxDS.show = !fauxDS.show;
 		};
-		$scope.fauxSelectChange = function(list, allTapped) {
+		$scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
 			var selectedItems;
 
-			if ( allTapped ) {
-				if ( list.selectAll ) {
-					list.title = 'All Selected';
-				} else {
-					list.title = list.defaultTitle;
+			var updateQuickFlags = function() {
+				if ( ! reportItem.hasOwnProperty('hasGeneralOptions') ) {
+					return;
 				};
 
-				_.each(list.data, function(each) {
-					each.selected = list.selectAll;
+				reportItem.chosenNotes          = false;
+				reportItem.chosenShowGuests     = false;
+				reportItem.chosenCancelled      = false;
+				reportItem.chosenShowRateAdjust = false;
+
+				_.each(fauxDS.data, function(item) {
+					switch ( item.paramKey.toUpperCase() ) {
+						case 'INCLUDE_NOTES':
+							reportItem.chosenNotes = item.selected;
+							break;
+
+						case 'SHOW_GUESTS':
+							reportItem.chosenShowGuests = item.selected;
+							break;
+
+						case 'INCLUDE_CANCELLED':
+						case 'INCLUDE_CANCELED':
+							reportItem.chosenCancelled = item.selected;
+							break;
+
+						case 'SHOW_RATE_ADJUSTMENTS_ONLY':
+							reportItem.chosenShowRateAdjust = item.selected;
+							break;
+
+						default:
+							break;
+					};
 				});
+			};
+
+			if ( allTapped ) {
+				if ( fauxDS.selectAll ) {
+					fauxDS.title = 'All Selected';
+				} else {
+					fauxDS.title = fauxDS.defaultTitle;
+				};
+
+				_.each(fauxDS.data, function(each) {
+					each.selected = fauxDS.selectAll;
+				});
+
+				updateQuickFlags();
 			} else {
-				selectedItems = _.where(list.data, { selected: true });
+				selectedItems = _.where(fauxDS.data, { selected: true });
 
 				if ( selectedItems.length == 0 ) {
-					list.title = list.defaultTitle;
+					fauxDS.title = fauxDS.defaultTitle;
 				} else if ( selectedItems.length == 1 ) {
-					list.title = selectedItems[0].description || selectedItems[0].name;
-				} else if ( selectedItems.length == list.data.length ) {
-					list.selectAll = true;
-					list.title = 'All Selected';
+					fauxDS.title = selectedItems[0].description || selectedItems[0].name;
+				} else if ( selectedItems.length == fauxDS.data.length ) {
+					fauxDS.selectAll = true;
+					fauxDS.title = 'All Selected';
 				} else {
-					list.selectAll = false;
-					list.title = selectedItems.length + ' Selected';
+					fauxDS.selectAll = false;
+					fauxDS.title = selectedItems.length + ' Selected';
 				};
+
+				updateQuickFlags();
 
 				// CICO-10202
 				$scope.$emit( 'report.filter.change' );

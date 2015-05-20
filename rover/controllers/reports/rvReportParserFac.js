@@ -96,12 +96,12 @@ sntRover.factory('RVReportParserFac', [
                 return excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]) ? !!item['cancel_reason'] : false;
             };
 
-            var checkAdjustReason = function(item) {
-                if ( !options['checkAdjustReason'] ) {
+            var checkRateAdjust = function(item) {
+                if ( !options['checkRateAdjust'] ) {
                     return false;
                 };
 
-                return !!item['adjustment_reasons'] && !!item['adjustment_reasons'].length;
+                return !!item['rate_adjustment_reasons'] && !!item['rate_adjustment_reasons'].length;
             };
 
             if ( $_isForGenericReports(reportName) ) {
@@ -143,10 +143,10 @@ sntRover.factory('RVReportParserFac', [
                         customData.push( noteData );
                     };
 
-                    if ( checkAdjustReason(makeCopy) ) {
+                    if ( checkRateAdjust(makeCopy) ) {
                         adjustData = {
                             isAdjustData : true,
-                            reasons      : angular.copy( makeCopy['adjustment_reasons'] )
+                            reasons      : angular.copy( makeCopy['rate_adjustment_reasons'] )
                         };
                         customData.push( adjustData );
                     };
