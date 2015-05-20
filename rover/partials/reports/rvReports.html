@@ -15,7 +15,7 @@
                             <em>{{ item.description }}</em>
                         </div>
                     </a>
-                    <div class="configure-report" ng-show="item.show_filter" ng-include="'/assets/partials/reports/rvReportListFilters.html'"></div>
+                    <div class="configure-report" ng-show="item.show_filter" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
                 </li>
             </ul>
         </div>
@@ -26,7 +26,7 @@
     <!-- the details of the chosen report are shown here -->
     <section id="report-details" class="content reports-wrapper" role="main" ng-show="showReportDetails" ng-click="toggleSidebar()">
         <div ng-controller="RVReportDetailsCtrl">
-            <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/rvReportDetailsFilters.html'"></div>
+            <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'"></div>
 
             <section>
                 <div class="report-header" ng-show="showReportHeader">
