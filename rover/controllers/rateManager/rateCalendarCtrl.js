@@ -241,10 +241,13 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
          */
 
         $scope.hasOverrideValue = function (date, room_type) {
+            var override_obj, override_room_type;
             for (var i in $scope.overrideByDate) {
-                if ($scope.overrideByDate[i].date === date) {
-                    for (var n in $scope.overrideByDate[i].room_types_with_override) {
-                        if ($scope.overrideByDate[i].room_types_with_override[n].toLowerCase() === room_type.toLowerCase()) {
+                override_obj = $scope.overrideByDate[i];
+                if (override_obj.date === date) {
+                    for (var n in override_obj.room_types_with_override) {
+                        override_room_type = override_obj.room_types_with_override[n];
+                        if (override_room_type.toLowerCase() === room_type.toLowerCase()) {
                             return 'true';
                         }
                     }
@@ -287,7 +290,11 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
                     'overrides': occupancyOverrides
                 });
             }
-            return 'true';
+            if ($scope.popupData && $scope.data){
+                if ($scope.popupData.selectedDate && $scope.data.selected_room_type){
+                    return $scope.hasOverrideValue($scope.popupData.selectedDate, $scope.data.selected_room_type);
+                }
+            }
         };
         
         
@@ -299,15 +306,49 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
             }
         };
         
-        $scope.rateDateHasOverride = function (rate, date, occ) {//room_type, date, occupancy
+       $scope.rateDateHasOverride = function (rate, date, occ) {//room_type, date, occupancy
+           /*
+            * 
+            * this is a three step check to determine if--
+            *   on each specific date the room type > occupancy has an override
+            *  -step 1- find the data for the given date
+            *  -step 2- in the date object, find the correct room_type
+            *  -step 3- using the room/type & date, determine if the occupancy 'has override'
+            *  
+            */
+           
             var room_type = rate.name;
-            var occ_s = $scope.getOccupancyRestrictions(room_type, date);
-            for (var x in occ_s){
-                if (occ.toLowerCase() === occ_s[x].toLowerCase()){
-                    return 'true';
-                }
+            if (typeof date === typeof undefined){
+                date = $scope.popupData.selectedDate;//use the popup data
             }
+            var override_obj, override_date, room_type_obj;
+                for (var i in $scope.overrideByDate) {
+                    override_obj = $scope.overrideByDate[i];
+                    override_date = override_obj.date;
+                    if (override_date === date) {
+                            if (override_obj.room_types_with_override){
+                            for (var r in override_obj.room_types_with_override){
+                                if (override_obj.room_types_with_override[r] === room_type){
+                                    if (occ === 'nightly'){//hourly / nightly
+                                        $scope.popupData.hasOverride = true;
+                                        return true;
+                                    }
+                                    for (var rtn in override_obj.room_types){
+                                        room_type_obj = override_obj.room_types[rtn];
+                                        if (room_type === room_type_obj.name){
+                                            if (room_type_obj.with_override){
+                                                    if (room_type_obj.with_override.length > 0){
+                                                            return 'true';
 
+                                                    } 
+                                            }
+                                        }
+                                    }
+                                }
+                            };
+                        }
+                    }
+                }
             return 'false';
         };
 

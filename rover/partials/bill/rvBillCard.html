@@ -147,7 +147,7 @@
 									</li>
 
 									<!-- packages -->
-									<li class="package active" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
+									<li class="package active" click-touch="showAddons($index)" ng-repeat="addons in billData.addons">
 										<div class="toggle" ng-class="{'active': $index == showAddonIndex}"> 
 											<span class="expense"> {{addons.title}}</span> 
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
