@@ -254,9 +254,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.cancelGroup = function(cancellationReason) {
 			var onCancelGroupSuccess = function() {
 					// reload the groupSummary
+					$scope.closeDialog();
 					$state.go('rover.groups.config', {
 						id: $scope.groupConfigData.summary.group_id
-					}, true)
+					}, {
+						reload: true
+					});
+
 				},
 				onCancelGroupFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;

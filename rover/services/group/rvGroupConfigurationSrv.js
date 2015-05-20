@@ -161,7 +161,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 
 		this.cancelGroup = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/group_reservations/'+params.group_id+'/cancel';
+				url = '/api/groups/'+params.group_id+'/cancel';
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -384,8 +384,8 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 
 		this.removeRoomingListItem = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/group_reservations/' + data.id;
-			rvBaseWebSrvV2.deleteJSON(url, data)
+				url = 'api/group_reservations/' + data.id + '/cancel';
+			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
