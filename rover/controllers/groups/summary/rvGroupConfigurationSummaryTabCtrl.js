@@ -9,8 +9,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			demographics: null,
 			promptMandatoryDemographics: false,
 			isDemographicsPopupOpen: false,
-			newNote: ""
+			newNote: "",
+			existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status) //This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
 		}
+
 		$s = $scope;
 
 		var summaryMemento = {};
@@ -46,6 +48,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			dateFormat: $rootScope.jqDateFormat,
 			numberOfMonths: 1,
 			yearRange: '-1:',
+			disabled: $scope.groupConfigData.summary.is_cancelled,
 			minDate: tzIndependentDate($rootScope.businessDate),
 			beforeShow: function(input, inst) {
 				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -76,6 +79,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			dateFormat: $rootScope.jqDateFormat,
 			numberOfMonths: 1,
 			yearRange: '-1:',
+			disabled: $scope.groupConfigData.summary.is_cancelled,
 			minDate: tzIndependentDate($rootScope.businessDate),
 			beforeShow: function(input, inst) {
 				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -179,10 +183,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			});
 
 		};
-	
+
 		$scope.$on("BILLINGINFOADDED", function() {
-     			$scope.groupConfigData.summary.posting_account_billing_info = true;
-   		});
+			$scope.groupConfigData.summary.posting_account_billing_info = true;
+		});
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {
@@ -206,13 +210,16 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.warnReleaseRooms = function() {
-			ngDialog.open({
-				template: '/assets/partials/groups/summary/warnReleaseRoomsPopup.html',
-				className: '',
-				scope: $scope,
-				closeByDocument: false,
-				closeByEscape: false
-			});
+			// Release Rooms NA for cancelled groups and groups that arent saved yet
+			if (!$scope.groupConfigData.summary.is_cancelled && !$scope.isInAddMode()) {
+				ngDialog.open({
+					template: '/assets/partials/groups/summary/warnReleaseRoomsPopup.html',
+					className: '',
+					scope: $scope,
+					closeByDocument: false,
+					closeByEscape: false
+				});
+			}
 		}
 
 		/**
@@ -238,10 +245,60 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			});
 		}
 
+		$scope.abortCancelGroup = function() {
+			// Reset the hold status to the last saved status
+			$scope.groupConfigData.summary.hold_status = $scope.groupSummaryData.existingHoldStatus;
+			$scope.closeDialog();
+		}
+
+		$scope.cancelGroup = function(cancellationReason) {
+			var onCancelGroupSuccess = function() {
+					// reload the groupSummary
+					$state.go('rover.groups.config', {
+						id: $scope.groupConfigData.summary.group_id
+					}, true)
+				},
+				onCancelGroupFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+					$scope.abortCancelGroup();
+				}
+			$scope.callAPI(rvGroupConfigurationSrv.cancelGroup, {
+				successCallBack: onCancelGroupSuccess,
+				failureCallBack: onCancelGroupFailure,
+				params: {
+					group_id: $scope.groupConfigData.summary.group_id,
+					reason: cancellationReason
+				}
+			});
+		}
+
 		$scope.onHoldStatusChange = function() {
 			if (!$scope.isInAddMode()) {
-				$scope.updateGroupSummary();
+				var selectedStatus = _.findWhere($scope.groupConfigData.holdStatusList, {
+					id: parseInt($scope.groupConfigData.summary.hold_status)
+				})
+				if (selectedStatus && selectedStatus.name == 'Cancel' && !!selectedStatus.is_system) {
+					ngDialog.open({
+						template: '/assets/partials/groups/summary/warnCancelGroupPopup.html',
+						className: '',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
+				} else {
+					$scope.updateGroupSummary();
+					$scope.groupSummaryData.existingHoldStatus = parseInt($scope.groupConfigData.summary.hold_status);
+
+				}
 			}
+		}
+
+		/**
+		 * Method to check if the cancel option be available in the hold status select options
+		 * @return {Boolean}
+		 */
+		$scope.isCancellable = function() {
+			return !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations == 0 && parseFloat($scope.groupConfigData.summary.balance) == 0.0);
 		}
 
 		/**

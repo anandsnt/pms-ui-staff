@@ -32,10 +32,9 @@
             </div>
             <div class="entry break full-width">
                 <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
-                <a ng-click ="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
-                <a ng-click ="openBillingInformation();" class="button blue" ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>                               
+                <a ng-click="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
+                <a ng-click="openBillingInformation();" class="button blue" ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
             </div>
-
         </div>
         <div class="holder right">
             <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
@@ -47,7 +46,7 @@
                 <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
                 <!--<input id="group-block-from" ng-if="!isInAddMode()" type="text" value="{{groupConfigData.summary.block_from | date:dateFormat}}" readonly />-->
                 <!-- If new group, add class "datepicker" -->
-                <input id="group-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{groupConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_from" readonly ng-class="{'not-selected': !groupConfigData.summary.block_from}" />
+                <input id="group-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{groupConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_from" readonly ng-class="{'not-selected': !groupConfigData.summary.block_from}"/>
             </div>
             <div class="entry has-datepicker">
                 <label for="group-block-to">
@@ -66,7 +65,7 @@
                 </label>
                 <!-- releaseDateOptions -->
                 <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{groupConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !groupConfigData.summary.release_date}" />
-                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode()}" translate>RELEASE_NOW</button>
+                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!groupConfigData.summary.is_cancelled}" translate>RELEASE_NOW</button>
                 <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
             </div>
             <div class="entry clear">
@@ -77,7 +76,7 @@
                 <div class="select">
                     <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();">
                         <option value="" selected translate ng-if="!groupConfigData.summary.hold_status">SET_STATUS</option>
-                        <option ng-repeat="holdstatus in groupConfigData.holdStatusList" value="{{holdstatus.id}}" ng-selected="holdstatus.id == groupConfigData.summary.hold_status">
+                        <option ng-repeat="holdstatus in groupConfigData.holdStatusList" value="{{holdstatus.id}}" ng-selected="holdstatus.id == groupConfigData.summary.hold_status" ng-hide="holdstatus.name == 'Cancel' && holdstatus.is_system && !isCancellable()">
                             {{holdstatus.name}}
                         </option>
                     </select>
@@ -104,7 +103,7 @@
                         <!-- ... repeat for all rates -->
                     </select>
                 </div>
-                <a ng-click="isInAddMode() ? manageAddons() : viewAddons()" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}">
+                <a ng-click="!groupConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !groupConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!groupConfigData.summary.is_cancelled}">
                     <!-- {addons-link} can either be for a popup (existing group) or an addons screne (new group) -->
                     <!-- If addons already exist, show:  -->
                     <span ng-show="groupConfigData.summary.addons_count > 0" class="count">
