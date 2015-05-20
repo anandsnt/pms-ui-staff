@@ -107,8 +107,8 @@ sntRover.controller('roverController',
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
-    $rootScope.desktopSwipeEnabled = true; //hotelDetails.desktop_swipe_enabled;
-	$rootScope.ccSwipeListeningPort = 8126; // hotelDetails.cc_swipe_listening_port;
+    $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
+	$rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     
     //set MLI Merchant Id
     try {
