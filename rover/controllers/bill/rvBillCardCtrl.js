@@ -1131,7 +1131,7 @@ sntRover.controller('RVbillCardController',
 	 		    	ngDialog.open({
 						template: '/assets/partials/bill/ccAuthorization.html',
 						className: '',
-						closeByDocument: true,
+						closeByDocument: false,
 						scope: $scope
 					});
 					data.authorize_credit_card = true;

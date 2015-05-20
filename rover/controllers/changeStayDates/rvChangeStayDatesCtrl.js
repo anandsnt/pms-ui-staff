@@ -1,5 +1,5 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter',
-	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
+sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter','ngDialog',
+	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 		
@@ -323,10 +323,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		$scope.continueWithoutCC = function(){
 			$scope.requireAuthorization = false;
 			$scope.confirmUpdates();
+			$scope.closeDialog();
 		};
 
 		$scope.continueAfterSuccessAuth = function(){
 			$scope.goBack();
+			$scope.closeDialog();
 		};
 	
 		this.successCallbackConfirmUpdates = function(data) {
@@ -376,8 +378,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		};
 
 		// Success after autherization
-		$scope.successCallbackCCAuthConfirmUpdates = function(data){
-			
+		this.successCallbackCCAuthConfirmUpdates = function(data){
 			$scope.$emit('hideLoader');
 
 			// CICO-7306 : With Authorization flow .: Auth Success
@@ -404,7 +405,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				'dep_date': getDateString($scope.checkoutDateInCalender),
 				'reservation_id': $scope.stayDetails.calendarDetails.reservation_id
 			};
-
 			// CICO-7306 authorization for CC.
 			if($scope.requireAuthorization && $scope.isStandAlone){
 				// Start authorization process...
@@ -415,7 +415,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
  		    	ngDialog.open({
 					template: '/assets/partials/bill/ccAuthorization.html',
 					className: '',
-					closeByDocument: true,
+					closeByDocument: false,
 					scope: $scope
 				});
 				postParams.authorize_credit_card = true;
