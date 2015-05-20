@@ -58,18 +58,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.addonsData.existingAddons = [];
 
         //to set data for reverse checkout process
-        $scope.initRoomDetails = function(){
-            $scope.rooomDetails =   {
-                   room_data:{
-                                room_number:"",
-                                first_name:"",
-                                last_name:"",
-                                is_room_already_occupied:false
-                            }
-                                            
+        $scope.initreverseCheckoutDetails = function(){
+            $scope.reverseCheckoutDetails =   {
+                data:{
+                        is_reverse_checkout_failed:false,
+                        errormessage:""
+                     }                                            
             };
         }   
-        $scope.initRoomDetails();             
+        $scope.initreverseCheckoutDetails();             
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;

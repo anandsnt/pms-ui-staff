@@ -1828,16 +1828,17 @@ sntRover.controller('RVbillCardController',
 
 			var reverseCheckoutsuccess = function(data){
 				$scope.$emit("hideLoader");
-		
-				//if error is beacuse of some other reason than room already occupied
-				//show error message else go to stay card and show popup
-				if(data.is_reverse_checkout){
+					
+				//if error go to stay card and show popup
+				//else go to staycard and refresh 
+				if(data.status === "success"){
 					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
 				}
-				else if(data.room_already_occupied){
-					$scope.rooomDetails.room_data  = data;
+				else{
+					$scope.reverseCheckoutDetails.data.is_reverse_checkout_failed  = true;
+					$scope.reverseCheckoutDetails.data.errormessage= data.message;
 					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});	
-				}				 		
+				};				 		
 			};
 
 			var data ={"reservation_id" : $scope.reservationBillData.reservation_id};

@@ -786,13 +786,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 							template: '/assets/partials/reservation/alerts/rvReverseNotPossible.html',
 							className: '',
 							scope: $scope,
-							data: JSON.stringify($scope.rooomDetails.room_data)
+							data: JSON.stringify($scope.reverseCheckoutDetails.data)
 						});
 		};
-
-		if($scope.rooomDetails.room_data.room_already_occupied){
+		console.log($scope.reverseCheckoutDetails.data)
+		if($scope.reverseCheckoutDetails.data.is_reverse_checkout_failed){
 			openRoomOccupiedPopup();
-			$scope.initRoomDetails();
+			$scope.initreverseCheckoutDetails();
 		};
 	}
 ]);
