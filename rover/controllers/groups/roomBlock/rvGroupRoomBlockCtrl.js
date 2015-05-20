@@ -151,7 +151,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableHoldStatusChange = function() {
-			return !hasPermissionToEditSummaryGroup();
+			return !hasPermissionToEditSummaryGroup() || !!$scope.groupConfigData.summary.is_cancelled;
 		};
 
 		/**
