@@ -1818,14 +1818,14 @@ sntRover.controller('RVbillCardController',
 
 			var reverseCheckoutsuccess = function(data){
 				$scope.$emit("hideLoader");
-				var data =  {  
-				                is_reverse_checkout:false,
-				                room_already_occupied: true, 
-				                 room_number: "33",
-				                first_name: "Resheil",
-				                last_name: "Mohammed"
+				// var data =  {  
+				//                 is_reverse_checkout:false,
+				//                 room_already_occupied: true, 
+				//                  room_number: "33",
+				//                 first_name: "Resheil",
+				//                 last_name: "Mohammed"
 
-    						 }
+    // 						 }
 				//if error is beacuse of some other reason than room already occupied
 				//show error message else go to stay card and show popup
 				if(data.is_reverse_checkout){
