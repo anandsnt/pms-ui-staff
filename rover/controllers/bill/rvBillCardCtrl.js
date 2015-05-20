@@ -1818,25 +1818,32 @@ sntRover.controller('RVbillCardController',
 
 			var reverseCheckoutsuccess = function(data){
 				$scope.$emit("hideLoader");
-				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true}); 		
-			};
+				var data =  {  
+				                is_reverse_checkout:false,
+				                room_already_occupied: true, 
+				                 room_number: "33",
+				                first_name: "Resheil",
+				                last_name: "Mohammed"
 
-			var reverseCheckoutFailed = function(data){
-				console.log(data);
-				$scope.$emit("hideLoader");
+    						 }
 				//if error is beacuse of some other reason than room already occupied
 				//show error message else go to stay card and show popup
-				if(!data.room_already_occupied){
-					$scope.errorMessage = data.error;
+				if(data.is_reverse_checkout){
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
 				}
-				else{
+				else if(data.room_already_occupied){
 					$scope.rooomDetails.room_data  = data;
 					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});	
-				};
-			}
+				}				 		
+			};
+
+			//////to delete
+
+			// reverseCheckoutsuccess();
+
 
 			var data ={"reservation_id" : $scope.reservationBillData.reservation_id};
-			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess,reverseCheckoutFailed);
+			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess);
 			
 	};
 	

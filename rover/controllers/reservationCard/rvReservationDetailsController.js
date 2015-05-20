@@ -790,7 +790,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 						});
 		};
 
-		if($scope.rooomDetails.room_data.is_room_already_occupied){
+		if($scope.rooomDetails.room_data.room_already_occupied){
 			openRoomOccupiedPopup();
 			$scope.initRoomDetails();
 		};
