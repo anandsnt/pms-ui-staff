@@ -74,7 +74,7 @@
                     <strong>*</strong>
                 </label>
                 <div class="select">
-                    <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();">
+                    <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();" ng-disabled="!!groupConfigData.summary.is_cancelled">
                         <option value="" selected translate ng-if="!groupConfigData.summary.hold_status">SET_STATUS</option>
                         <option ng-repeat="holdstatus in groupConfigData.holdStatusList" value="{{holdstatus.id}}" ng-selected="holdstatus.id == groupConfigData.summary.hold_status" ng-hide="holdstatus.name == 'Cancel' && holdstatus.is_system && !isCancellable()">
                             {{holdstatus.name}}
