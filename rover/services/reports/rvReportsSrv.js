@@ -34,15 +34,6 @@ sntRover.service('RVreportsSrv', [
 							});
 						};
 
-						// TESTING: REMOVE BEFORE MERGE TO DEVELOP
-						// var reservationByUserReport = _.where(this.cacheReportList.results, { title: 'Reservations By User' });
-						// if ( !!reservationByUserReport && !!reservationByUserReport.length ) {
-						// 	reservationByUserReport[0].filters.push({
-						// 		value: "SHOW_RATE_ADJUSTMENTS_ONLY", description: "Show Rate Adjustments Only"
-						// 	});
-						// };
-
-
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {
 						deferred.reject(data);
@@ -59,11 +50,6 @@ sntRover.service('RVreportsSrv', [
 
 			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
-
-					// TESTING: REMOVE BEFORE MERGE TO DEVELOP
-					// var data = data;
-					// data.results[0]['rate_adjustment_reasons'] = ['reason 1', 'reason 2', 'reason 3'];
-
 					deferred.resolve(data);
 				}.bind(this), function(data) {
 					deferred.reject(data);
