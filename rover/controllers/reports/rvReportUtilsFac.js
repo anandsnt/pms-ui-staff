@@ -67,6 +67,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( setting == 'REMOVE_PAYMENTS' ) {
                 _.each(chargeGroupsAry, function (each) {
                     if ( each.name !== 'Payments' ) {
+                        each.selected = true;
                         newChargeGroupsAry.push(each);
                     } else {
                         paymentId = each.id;
@@ -79,6 +80,7 @@ sntRover.factory('RVReportUtilsFac', [
                     });
 
                     if ( !cgAssociated ) {
+                        each.selected = true;
                         newChargeCodesAry.push(each);
                     };
                 });
@@ -91,6 +93,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 if ( !!paymentEntry ) {
                     paymentId = paymentEntry.id;
+                    paymentEntry.selected = true;
                     newChargeGroupsAry.push(paymentEntry);
 
                     _.each(chargeCodesAry, function (each) {
@@ -99,6 +102,7 @@ sntRover.factory('RVReportUtilsFac', [
                         });
 
                         if ( !!cgAssociated ) {
+                            each.selected = true;
                             newChargeCodesAry.push(each);
                         };
                     });

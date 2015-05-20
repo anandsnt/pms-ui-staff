@@ -393,7 +393,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			var selectedItems;
 
 			var updateQuickFlags = function() {
-				if ( ! reportItem.hasOwnProperty('hasGeneralOptions') ) {
+				if ( !reportItem['hasGeneralOptions']['data'].length ) {
 					return;
 				};
 

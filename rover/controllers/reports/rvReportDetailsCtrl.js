@@ -758,6 +758,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportSubmit = $scope.$on('report.submit', function() {
 			$_pageNo = 1;
+			$scope.errorMessage = [];
 
 			afterFetch();
 			findBackNames();
@@ -766,6 +767,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 		});
 
 		var reportUpdated = $scope.$on('report.updated', function() {
+			$scope.errorMessage = [];
+
 			afterFetch();
 			findBackNames();
 			calPagination();
@@ -773,12 +776,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 		});
 
 		var reportPageChanged = $scope.$on('report.page.changed', function() {
+			$scope.errorMessage = [];
+
 			afterFetch();
 			calPagination();
 			refreshScroll();
 		});
 
 		var reportPrinting = $scope.$on('report.printing', function() {
+			$scope.errorMessage = [];
+
 			afterFetch();
 			findBackNames();
 			printReport();
@@ -787,6 +794,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportAPIfailure = $scope.$on('report.API.failure', function() {
 			$scope.errorMessage = $scope.$parent.errorMessage;
+			
 			afterFetch();
 			calPagination();
 			refreshScroll();
