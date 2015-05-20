@@ -922,6 +922,10 @@ sntRover.controller('RVbillCardController',
 		$scope.clickedCompleteCheckin();
 	};
 
+	$scope.continueAfterSuccessAuth = function(){
+		$scope.triggerKeyCreationProcess();
+	};
+	
 	// Normal checkin process success.
 	$scope.completeCheckinSuccessCallback = function(data){
 		// CICO-6109 : Without Authorization flow ..

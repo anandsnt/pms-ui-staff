@@ -23,8 +23,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		$scope.$emit('HeaderChanged', translatedHeading);
 		$scope.setTitle(translatedHeading);
 
-		//CICO-7897
+		// CICO-7897
 		$scope.isChanging = false;
+		// CICO-7306
+		$scope.requireAuthorization = false;
 		var isFirstTime = true;
 		/**
 		 * setting the scroll options for the room list
@@ -186,6 +188,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.$emit("hideLoader");
 			$scope.availabilityDetails = data;
 
+			//CICO-7306 Flag setting whether need Authorization or not.
+			$scope.requireAuthorization = data.require_cc_auth;
+
 			//if restrictions exist for the rate / room / date combination
 			//					display the existing restriction 
 			//Only for standalone. In pms connected, restrictions handled in server 
@@ -276,7 +281,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.isStayRatesSuppressed = false;
 			var checkinRate = '';
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-				console.log(this);
 				if(this.is_sr == "true"){
 					$scope.isStayRatesSuppressed = true;
 					return false;// Exit from loop
@@ -313,14 +317,28 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.showRoomAvailable();
 		};
 
+		/*
+		 * success callback of ConfirmUpdates
+		 */
+		$scope.continueWithoutCC = function(){
+			$scope.requireAuthorization = false;
+			$scope.confirmUpdates();
+		};
+
+		$scope.continueAfterSuccessAuth = function(){
+			$scope.goBack();
+		};
+	
 		this.successCallbackConfirmUpdates = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.goBack();
 		};
-		this.failureCallbackConfirmUpdates = function(errorMessage) {
 
+		this.failureCallbackConfirmUpdates = function(errorMessage) {
 			$scope.$emit("hideLoader");
 			$scope.errorMessage = errorMessage;
+			// Some error in date extending process - auth popup closing..
+			$scope.closeDialog();
 		};
 
 		$scope.resetDates = function() {
@@ -357,6 +375,28 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			return getMappedRoomStatusColor(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly);
 		};
 
+		// Success after autherization
+		$scope.successCallbackCCAuthConfirmUpdates = function(data){
+			
+			$scope.$emit('hideLoader');
+
+			// CICO-7306 : With Authorization flow .: Auth Success
+			if(data.auth_status){
+			 	$scope.isInProgressScreen = false;
+		    	$scope.isSuccessScreen = true;
+		    	$scope.isFailureScreen = false;
+		    	$scope.cc_auth_amount = data.cc_auth_amount;
+		    	$scope.cc_auth_code = data.cc_auth_code;
+		    }
+		    else{
+		    	// CICO-7306 : With Authorization flow .: Auth declined
+		    	$scope.isInProgressScreen = false;
+		    	$scope.isSuccessScreen = false;
+		    	$scope.isFailureScreen = true;
+		    	$scope.cc_auth_amount = data.cc_auth_amount;
+		    }
+		};
+
 		$scope.confirmUpdates = function() {
 			var postParams = {
 				'room_selected': $scope.roomSelected,
@@ -364,7 +404,27 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				'dep_date': getDateString($scope.checkoutDateInCalender),
 				'reservation_id': $scope.stayDetails.calendarDetails.reservation_id
 			};
-			$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackConfirmUpdates, that.failureCallbackConfirmUpdates);
+
+			// CICO-7306 authorization for CC.
+			if($scope.requireAuthorization && $scope.isStandAlone){
+				// Start authorization process...
+				$scope.isInProgressScreen = true;
+ 		    	$scope.isSuccessScreen = false;
+ 		    	$scope.isFailureScreen = false;
+ 		    	
+ 		    	ngDialog.open({
+					template: '/assets/partials/bill/ccAuthorization.html',
+					className: '',
+					closeByDocument: true,
+					scope: $scope
+				});
+				postParams.authorize_credit_card = true;
+				$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackCCAuthConfirmUpdates, that.failureCallbackConfirmUpdates);
+			}
+			else{
+				postParams.authorize_credit_card = false;
+				$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackConfirmUpdates, that.failureCallbackConfirmUpdates);
+			}
 		};
 		/*
 		 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.
