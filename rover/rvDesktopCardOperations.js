@@ -12,7 +12,7 @@ var DesktopCardOperations = function(){
 	}
 
 	var createConnection = function(){
-		ws = new WebSocket("ws://10.7.1.236:" + that.portNumber);
+		ws = new WebSocket("ws://localhost:" + that.portNumber);
 
 		//Triggers when websocket connection is established.
 	    ws.onopen = function () {
