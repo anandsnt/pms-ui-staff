@@ -26,9 +26,13 @@
 			               <span class="label">{{getRouteType(route)}}</span>
 			               {{getCharges(route)}}
 			            </div>
-			            <div class="bill">
+			            <div class="bill" ng-hide="route.guest_id == null">
 			               <span class="label">Bill #</span>
 			               {{route.bill_no}}
+			            </div>
+			            <div class="bill" ng-show="route.guest_id == null">
+			               <span class="label" ng-show="route.room_no == ''" >ROOM</span>
+			               {{route.room_no}}
 			            </div>
 			         </a>
 			         <div id="remove-route-1" class="icons icon-remove-40" ng-click = "deleteRoute($index)">-</div> 
