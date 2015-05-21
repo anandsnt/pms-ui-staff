@@ -793,6 +793,12 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['singleValueDate']  = _getDates.yesterday;
                     break;
 
+                // dates range must be the current business date
+                case __reportNames['FORECAST_BY_DATE']:
+                    reportItem['fromDate']  = _getDates.businessDate;
+                    reportItem['untilDate'] = _getDates.aMonthAfter;
+                    break;
+
                 // by default date range must be from a week ago to current business date
                 default:
                     reportItem['fromDate']        = _getDates.aWeekAgo;
@@ -825,7 +831,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'businessDate' : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
-                'aWeekAfter'   : new Date(_year, _month, _date + 7)
+                'aWeekAfter'   : new Date(_year, _month, _date + 7),
+                'aMonthAfter'  : new Date(_year, _month, _date + 30),
             };
 
             if ( parseInt(xDays) != NaN ) {
