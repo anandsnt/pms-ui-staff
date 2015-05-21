@@ -29,7 +29,8 @@ sntRover.factory('RVReportUtilsFac', [
             'DAILY_TRANSACTIONS'           : 'Daily Transactions',
             'DAILY_PAYMENTS'               : 'Daily Payments',
             'FORECAST_BY_DATE'             : 'Forecast',
-            'ROOMS_QUEUED'                 : 'Rooms Queued'
+            'ROOMS_QUEUED'                 : 'Rooms Queued',
+            'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups'
         };
 
 

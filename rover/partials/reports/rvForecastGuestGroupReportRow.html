@@ -1,0 +1,39 @@
+<tr ng-repeat="each in results track by $index" ng-class="{'weekend' : each.week_day == 'Saturday' || each.week_day == 'Sunday'}">
+	<td class="date">
+		<span>{{ each.date | date : dateFormat }}</span>
+		<span>{{ each.week_day }}</span>
+	</td>
+
+	<td>{{ each.ooo_count }}</td>
+
+	<td>{{ each.guest_arrival_count }}</td>
+	<td>{{ each.guest_inhouse_count }}</td>
+	<td>{{ each.guest_departure_count }}</td>
+
+	<td>{{ each.group_arrival_count }}</td>
+	<td>{{ each.group_arrival_gtd }}</td>
+	<td>{{ each.group_inhouse_count }}</td>
+	<td>{{ each.group_occupied_rooms_gtd }}</td>
+	<td>{{ each.group_departure_count }}</td>
+	<td>{{ each.group_departure_gtd }}</td>
+
+	<td>{{ each.total_arrival_count }}</td>
+	<td>{{ each.total_inhouse_count }}</td>
+	<td>{{ each.total_departure_count }}</td>
+
+	<td>{{ each.guest_occupied_room_percentage }}</td>
+	<td>{{ each.group_occupied_room_percentage }}</td>
+	<td>{{ each.total_occupied_room_percentage }}</td>
+	<td>{{ each.total_available_room_percentage }}</td>
+
+	<td>{{ each.guest_room_revenue | currency:currencySymbol:2 }}</td>
+	<td>{{ each.group_room_revenue | currency:currencySymbol:2 }}</td>
+	<td>{{ each.total_room_revenue | currency:currencySymbol:2 }}</td>
+
+	<td>{{ each.adr | currency:currencySymbol:2 }}</td>
+
+	<td>{{ each.rev_par | currency:currencySymbol:2 }}</td>
+
+	<td>{{ each.actual_rooms_last_year }}</td>
+	<td>{{ each.variance }}</td>
+</tr>
