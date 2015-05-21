@@ -30,6 +30,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         maxDate : $scope.routeDates.to
     };
 
+    /**
+        Watch the changes on from and to dates and set their min/max limits within
+        the allowed range
+    **/
     $scope.$watch('routeDates', function() {      
       $scope.routingDateFromOptions.maxDate = $scope.routeDates.to,
       $scope.routingDateToOptions.minDate   = $scope.routeDates.from;
