@@ -1,4 +1,4 @@
-sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv){
+sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', 'dateFilter', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, dateFilter){
 	BaseCtrl.call(this, $scope);
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
@@ -10,6 +10,30 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.swipedCardDataToSave = {};
     $scope.showCreditCardDropDown = false;
     $scope.isShownExistingCCPayment = false;
+
+    var arrivalDate = new Date($scope.reservation.reservation_card.arrival_date),
+        defaultRouteFromDate = $rootScope.businessDate > arrivalDate ? $rootScope.businessDate : arrivalDate;
+        
+    $scope.routeDates = {
+        from : defaultRouteFromDate,
+        to : new Date($scope.reservation.reservation_card.departure_date)
+    };    
+
+    $scope.routingDateFromOptions = {       
+        dateFormat : "dd-mm-yy",
+        minDate : $scope.routeDates.from,
+        maxDate : $scope.routeDates.to
+    };
+    $scope.routingDateToOptions = {       
+        dateFormat : "dd-mm-yy",
+        minDate : $scope.routeDates.from,
+        maxDate : $scope.routeDates.to
+    };
+
+    $scope.$watch('routeDates', function() {      
+      $scope.routingDateFromOptions.maxDate = $scope.routeDates.to,
+      $scope.routingDateToOptions.minDate   = $scope.routeDates.from;
+    }, true);
    
     if($scope.selectedEntity.credit_card_details != undefined && $scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
     	
@@ -646,6 +670,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	        }else {
 	        	//CICO-12797 workaround to meet the API expected params
                 var params =  angular.copy($scope.selectedEntity);
+
+                if($scope.routeDates) {
+                  params.from_date = dateFilter($scope.routeDates.from, 'yyyy-MM-dd'); 
+                  params.to_date = dateFilter($scope.routeDates.to, 'yyyy-MM-dd');  
+                }
                 console.log(params);
 	        	if($scope.selectedEntity.entity_type === "POSTING_ACCOUNT"){
 					 params.entity_type  = 'GROUP';
