@@ -27,10 +27,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	};
 
 	this.updateRoomTypeOverride = function(data){
-            console.log('sending clear override:',data);
-		var url =  '/api/daily_rates';	//change
+		var url =  '/api/daily_rates';
 		var deferred = $q.defer();
-			BaseWebSrvV2.postJSON(url).then(function(data) {
+			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 			},function(data){
 				deferred.reject(data);
