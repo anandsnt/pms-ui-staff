@@ -103,10 +103,10 @@
                         <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>
                         <optgroup ng-show="!!groupSummaryData.rates.length" label="Group Rates">
                             <!-- ... repeat for all rates -->
-                            <option ng-repeat="rate in groupSummaryData.rates" value="rate.id">{{rate.name}}</option>
+                            <option ng-repeat="rate in groupSummaryData.rates" value="{{rate.id}}">{{rate.name}}</option>
                         </optgroup>
                         <optgroup ng-show="!!groupSummaryData.contractedRates.length" label="Company/ Travel Agent Contract">
-                            <option ng-repeat="rate in groupSummaryData.contractedRates" value="rate.id">{{rate.name}}</option>
+                            <option ng-repeat="rate in groupSummaryData.contractedRates" value="{{rate.id}}">{{rate.name}}</option>
                         </optgroup>
                     </select>
                 </div>
