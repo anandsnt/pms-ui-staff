@@ -480,7 +480,12 @@ sntRover.controller('roverController',
       $scope.$broadcast('SWIPE_ACTION', data);
     };
 
-    $scope.failureCallBackSwipe = function() {};
+    $scope.failureCallBackSwipe = function(errorMessage) {
+    	$scope.errorMessage = errorMessage;
+    	if($rootScope.desktopSwipeEnabled){
+    		$rootScope.showWebsocketConnectionError();
+    	}
+    };
 
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
@@ -589,6 +594,18 @@ sntRover.controller('roverController',
           window.scrollTo(0, 0);
         }, 700);
       }
+    };
+
+    $rootScope.showWebsocketConnectionError = function() {
+
+      // Hide loading message
+      $scope.$emit('hideLoader');
+        ngDialog.open({
+          template: '/assets/partials/desktopSwipe/rvWebsocketConnectionError.html',
+          className: 'ngdialog-theme-default1 modal-theme1',
+          closeByDocument: false,
+          scope: $scope
+        });
     };
 
     /**

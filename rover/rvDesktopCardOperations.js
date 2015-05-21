@@ -31,6 +31,7 @@ var DesktopCardOperations = function(){
 		ws.onclose = function () {
             // websocket is closed.
             console.log("Websocket server is not running.");
+            that.swipeCallbacks.failureCallBack();
         };
 	}
 
