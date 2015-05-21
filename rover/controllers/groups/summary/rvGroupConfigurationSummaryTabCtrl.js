@@ -29,6 +29,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					$scope.groupSummaryData.contractedRates = _.where(data.results, {
 						is_contracted: true
 					});
+
+					runDigestCycle();
 				},
 				onFetchRatesFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -299,6 +301,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 		$scope.onHoldStatusChange = function() {
+			if (!$scope.isInAddMode()) {
+				$scope.updateGroupSummary();
+			}
+		}
+
+		$scope.onRateChange = function(){
 			if (!$scope.isInAddMode()) {
 				$scope.updateGroupSummary();
 			}

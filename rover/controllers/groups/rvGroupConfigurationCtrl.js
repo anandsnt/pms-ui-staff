@@ -58,6 +58,13 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			$scope.setHeadingTitle(title);
 		};
 
+		$scope.parseCurrency = function(value) {
+			if (!!value) {
+				return $rootScope.currencySymbol + $filter('number')(value, 2);
+			} else {
+				return ""
+			}
+		}
 
 
 		/**
