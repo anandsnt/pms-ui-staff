@@ -337,10 +337,13 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
                                         room_type_obj = override_obj.room_types[rtn];
                                         if (room_type === room_type_obj.name){
                                             if (room_type_obj.with_override){
-                                                    if (room_type_obj.with_override.length > 0){
-                                                            return 'true';
-
-                                                    } 
+                                                if (room_type_obj.with_override.length > 0){
+                                                    for (var n in room_type_obj.with_override){
+                                                        if (room_type_obj.with_override[n].toLowerCase() === occ.toLowerCase()){
+                                                                return 'true';
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
