@@ -417,6 +417,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvRoomQueuedReportRow.html';
 					break;
 
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					template = '/assets/partials/reports/rvForecastGuestGroupReportRow.html';
+					break;
+
 				default:
 					template = '/assets/partials/reports/rvCommonReportRow.html';
 					break;
@@ -662,6 +666,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 					orientation = 'landscape';
 					break;
 

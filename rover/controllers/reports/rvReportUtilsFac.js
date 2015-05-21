@@ -299,6 +299,10 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icons guest-status icon-queued';
                     break;
 
+                case __reportNames['FORECAST_GUEST_GROUPS']:
+                    reportItem['reportIconCls'] = 'icon-report';
+                    break;
+
                 default:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
@@ -375,6 +379,7 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['FORECAST_BY_DATE']:
+                case __reportNames['FORECAST_GUEST_GROUPS']:
                     reportItem['hasDateLimit'] = false;
                     break;
 
@@ -796,6 +801,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // dates range must be the current business date
                 case __reportNames['FORECAST_BY_DATE']:
+                case __reportNames['FORECAST_GUEST_GROUPS']:
                     reportItem['fromDate']  = _getDates.businessDate;
                     reportItem['untilDate'] = _getDates.aMonthAfter;
                     break;
