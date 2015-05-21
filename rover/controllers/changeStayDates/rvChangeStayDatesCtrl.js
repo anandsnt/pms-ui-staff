@@ -1,5 +1,5 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter','ngDialog',
-	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog) {
+sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter','ngDialog','rvPermissionSrv',
+	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 		
@@ -37,6 +37,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		$scope.setScroller('edit_staydate_updatedDetails', scrollerOptions);
 		$scope.setScroller('edit_staydate_calendar', scrollerOptions);
+
+		// Flag for CC auth permission
+	    $scope.hasCCAuthPermission = function() {
+	        return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');    
+	    };
 
 		this.dataAssign = function() {
 			//Data from Resolve method
@@ -411,7 +416,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				$scope.isInProgressScreen = true;
  		    	$scope.isSuccessScreen = false;
  		    	$scope.isFailureScreen = false;
- 		    	
+ 		    	$scope.isCCAuthPermission = $scope.hasCCAuthPermission();
+
  		    	ngDialog.open({
 					template: '/assets/partials/bill/ccAuthorization.html',
 					className: '',

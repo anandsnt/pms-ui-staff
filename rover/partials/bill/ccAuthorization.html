@@ -14,7 +14,7 @@
 		<!-- Step 2, B: Failure -->
 			<span ng-show="isFailureScreen" class="icons icon-cc-authorization failure"></span>
 			<span ng-show="isFailureScreen" class="h2 message red"> CC Authorization for {{currencySymbol}}{{cc_auth_amount}} declined.</span>
-			<button ng-click="continueWithoutCC()" ng-show="isFailureScreen" type="button" class="button blue">Continue without CC</button>
+			<button ng-disabled="!isCCAuthPermission" ng-click="continueWithoutCC()" ng-show="isFailureScreen" type="button" class="button blue">Continue without CC</button>
 			<button ng-click="closeDialog()" ng-show="isFailureScreen" type="button" class="button blank">Cancel</button>
 		
 	</div>
