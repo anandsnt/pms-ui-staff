@@ -224,7 +224,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 				return (list_of_triples.length > 0)
 			} else {
-				return true;
+				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
 			}
 		};
 
@@ -246,7 +246,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 				return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType))
 			} else {
-				return true;
+				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
 			}
 		};
 
