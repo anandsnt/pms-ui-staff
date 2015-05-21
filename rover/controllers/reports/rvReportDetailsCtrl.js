@@ -316,10 +316,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.parsedApiFor = $scope.chosenReport.title;
 
 			var parseAPIoptions = {
-				'groupedByKey' : $scope.$parent.reportGroupedBy,
-				'checkNote'    : $scope.chosenReport.chosenIncludeNotes ? true : false,
-				'checkGuest'   : $scope.chosenReport.chosenShowGuests ? true : false,
-				'checkCancel'  : $scope.chosenReport.chosenIncludeCancelled ? true : false
+				'groupedByKey'    : $scope.$parent.reportGroupedBy,
+				'checkNote'       : $scope.chosenReport.chosenNotes ? true : false,
+				'checkGuest'      : $scope.chosenReport.chosenShowGuests ? true : false,
+				'checkCancel'     : $scope.chosenReport.chosenCancelled ? true : false,
+				'checkRateAdjust' : $scope.chosenReport.chosenShowRateAdjust ? true : false
 			};
 
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
@@ -757,6 +758,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportSubmit = $scope.$on('report.submit', function() {
 			$_pageNo = 1;
+			$scope.errorMessage = [];
 
 			afterFetch();
 			findBackNames();
@@ -765,6 +767,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 		});
 
 		var reportUpdated = $scope.$on('report.updated', function() {
+			$scope.errorMessage = [];
+
 			afterFetch();
 			findBackNames();
 			calPagination();
@@ -772,12 +776,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 		});
 
 		var reportPageChanged = $scope.$on('report.page.changed', function() {
+			$scope.errorMessage = [];
+
 			afterFetch();
 			calPagination();
 			refreshScroll();
 		});
 
 		var reportPrinting = $scope.$on('report.printing', function() {
+			$scope.errorMessage = [];
+
 			afterFetch();
 			findBackNames();
 			printReport();
@@ -786,6 +794,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportAPIfailure = $scope.$on('report.API.failure', function() {
 			$scope.errorMessage = $scope.$parent.errorMessage;
+			
 			afterFetch();
 			calPagination();
 			refreshScroll();
