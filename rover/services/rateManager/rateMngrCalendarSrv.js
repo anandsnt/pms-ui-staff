@@ -27,14 +27,15 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	};
 
 	this.updateRoomTypeOverride = function(data){
-		var url =  '/api/daily_rates';
-		var deferred = $q.defer();
-			BaseWebSrvV2.postJSON(url, data).then(function(data) {
-				deferred.resolve(data);
-			},function(data){
-				deferred.reject(data);
-			});
-		return deferred.promise;
+            var dateStr = 'from_date='+data.selectedDate+'&per_page=1&to_date='+data.selectedDate;
+            var url =  '/api/daily_rates/'+data.selectedRate+'/remove_custom_rate?'+dateStr;
+            var deferred = $q.defer();
+                    BaseWebSrvV2.postJSON(url, data).then(function(data) {
+                            deferred.resolve(data);
+                    },function(data){
+                            deferred.reject(data);
+                    });
+            return deferred.promise;
 	};
 
 
